@@ -25,7 +25,7 @@
 		"update": "UPDATES=$(npm outdated | awk 'NR>1 {print $1\"@\"$4}' || true); if [ -n \"$UPDATES\" ]; then echo \"Updating the following packages: $UPDATES\"; echo \"$UPDATES\" | xargs npm install --force --save 2>/dev/null || true; echo \"✅ Successfully updated: $UPDATES\"; else echo \"✅ No dependency updates needed.\"; fi; npm audit fix --force 2>/dev/null || true"
 	},
 	"dependencies": {
-		"@pixelated-tech/components": "workspace:*",
+		"@pixelated-tech/components": "3.15.2",
 		"date-fns": "^4.1.0",
 		"globals": "^17.4.0",
 		"html-entities": "^2.6.0",
