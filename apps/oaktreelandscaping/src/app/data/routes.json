@@ -1,0 +1,370 @@
+{
+	"siteInfo": {
+		"name": "Oaktree Landscaping",
+		"author": "Oaktree Landscaping",
+		"description": "Oaktree Landscaping - Professional Landscaping Services in the Hardeeville South Carolina area",
+		"keywords": "oaktree landscaping, bluffton, hilton head island, lowcountry, south carolina, professional landscaping, lawn care, garden design",
+		"url": "https://www.oaktreelandscaping.com",
+		"email": "oaktreelandscaper@gmail.com",
+		"favicon": "/images/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/logo/oaktree-logo-vertical.jpg",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "(843) 227-1210",
+		"address": {
+			"streetAddress": "26504 Whyte Hardee Boulevard",
+			"addressLocality": "Hardeeville",
+			"addressRegion": "SC",
+			"postalCode": "29927",
+			"addressCountry": "US"
+		},
+		"priceRange": "$$",
+		"sameAs": [
+			"https://www.facebook.com/oaktreelandscaper",
+			"https://www.instagram.com/oaktreelandscaper",
+			"https://oaktreelandscaping.wordpress.com",
+			"https://x.com/OaktreeLndscape",
+			"https://www.linkedin.com/in/oaktree-landscaping/",
+			"https://share.google/DQWYZ0XO8H2zXA7bh",
+			"https://www.yelp.com/user_details?userid=andHa8MtqORJtmY9rHnxHg",
+			"https://nextdoor.com/page/oaktree-landscaping-1/"
+		]
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/",
+			"title": "Oaktree Landscaping | Home | Professional Landscaping in Hardeeville SC",
+			"description": "Get premium landscaping services in Hardeeville, SC with Oaktree Landscaping. We provide comprehensive lawn care, design, and maintenance for homes and businesses.",
+			"keywords": [
+				"landscaping Hardeeville SC",
+				"Hardeeville landscaping",
+				"professional landscaping",
+				"lawn care Hardeeville",
+				"Hardeeville lawn service",
+				"tree services Hardeeville",
+				"garden design Hardeeville",
+				"yard maintenance Hardeeville",
+				"hardscaping Hardeeville",
+				"irrigation Hardeeville",
+				"Oaktree Landscaping"
+			]
+		},
+		{
+			"name": "About Us",
+			"path": "/about",
+			"title": "Oaktree Landscaping | About | Professional Landscaping in Hardeeville SC",
+			"description": "Learn more about Oaktree Landscaping, your trusted professional landscaping service provider in Hardeeville, SC. Discover our story, mission, and commitment to quality.",
+			"keywords": [
+				"Oaktree Landscaping",
+				"about us",
+				"landscaping Hardeeville SC",
+				"professional landscaping Hardeeville",
+				"Hardeeville SC landscaping services",
+				"South Carolina landscaping",
+				"landscaping company Hardeeville",
+				"our story",
+				"Hardeeville landscaping experts"
+			]
+		},
+		{
+			"name": "Services",
+			"path": "/services",
+			"title": "Oaktree Landscaping | Services | Professional Landscaping in Hardeeville SC",
+			"description": "Discover Oaktree Landscaping's comprehensive professional services in Hardeeville, SC. From expert lawn care to stunning garden design, we transform outdoor spaces. Contact us today!",
+			"keywords": [
+				"landscaping services Hardeeville SC",
+				"professional landscaping Hardeeville",
+				"lawn care Hardeeville",
+				"tree services Hardeeville SC",
+				"garden design Hardeeville",
+				"yard maintenance Hardeeville",
+				"Oaktree Landscaping Hardeeville",
+				"Hardeeville South Carolina landscaping"
+			]
+		},
+		{
+			"name": "Our Projects",
+			"path": "/projects",
+			"title": "Oaktree Landscaping | Our Projects | Professional Landscaping in Hardeeville SC",
+			"description": "Explore Oaktree Landscaping's portfolio of stunning projects in Hardeeville, SC. View professional landscape designs, hardscaping, and outdoor transformations.",
+			"keywords": [
+				"hardeeville landscaping projects",
+				"landscaping portfolio hardeeville sc",
+				"oaktree landscaping projects",
+				"professional landscaping examples hardeeville",
+				"landscape design hardeeville sc",
+				"hardscaping projects hardeeville",
+				"outdoor living spaces hardeeville",
+				"residential landscaping hardeeville",
+				"commercial landscaping hardeeville"
+			]
+		},
+		{
+			"name": "Blog",
+			"path": "/blog",
+			"title": "Oaktree Landscaping | Blog | Professional Landscaping in Hardeeville SC",
+			"description": "Explore Oaktree Landscaping's blog for expert landscaping tips, local garden advice, and company updates in Hardeeville, SC. Enhance your outdoor space!",
+			"keywords": [
+				"landscaping Hardeeville SC",
+				"Hardeeville landscaping blog",
+				"landscaping tips Hardeeville",
+				"lawn care Hardeeville SC",
+				"garden design Hardeeville",
+				"outdoor living Hardeeville",
+				"Oaktree Landscaping news",
+				"professional landscaping Hardeeville"
+			]
+		},
+		{
+			"name": "Contact Us",
+			"path": "/contact",
+			"title": "Oaktree Landscaping | Contact Us | Professional Landscaping in Hardeeville SC",
+			"description": "Ready for beautiful landscaping? Contact Oaktree Landscaping in Hardeeville, SC for professional services, free estimates, and expert advice. Reach out today!",
+			"keywords": [
+				"Oaktree Landscaping contact",
+				"contact Oaktree Landscaping",
+				"landscaping Hardeeville SC contact",
+				"professional landscaping Hardeeville SC",
+				"Hardeeville landscaping services",
+				"get a quote landscaping Hardeeville",
+				"landscaping near me Hardeeville SC",
+				"Hardeeville South Carolina landscaping"
+			]
+		},
+		{
+			"name": "FAQs",
+			"path": "/faqs",
+			"hidden": true,
+			"title": "Oaktree Landscaping | FAQs | Professional Landscaping in Hardeeville SC",
+			"description": "Find answers to frequently asked questions about Oaktree Landscaping's services in Hardeeville, SC. Get the information you need for your landscaping project.",
+			"keywords": [
+				"Oaktree Landscaping contact",
+				"contact Oaktree Landscaping",
+				"landscaping Hardeeville SC contact",
+				"professional landscaping Hardeeville SC",
+				"Hardeeville landscaping services",
+				"landscaping frequently asked questions",
+				"landscaping near me Hardeeville SC",
+				"Hardeeville South Carolina landscaping"
+			]
+		},
+		{
+			"name": "Style Guide",
+			"hidden": true,
+			"path": "/styleguide",
+			"title": "Oaktree Landscaping - Style Guide",
+			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+			"keywords": [
+				"Oaktree Landscaping",
+				"style guide"
+			]
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "Oaktree Landscaping - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": ["Oaktree Landscaping", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "Oaktree Landscaping - Sitemap",
+					"description": "Oaktree Landscaping sitemap.xml",
+					"keywords": ["Oaktree Landscaping", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "Oaktree Landscaping - Robots.txt",
+					"description": "Oaktree Landscaping robots.txt",
+					"keywords": ["Oaktree Landscaping", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "Oaktree Landscaping - Web Manifest",
+					"description": "Oaktree Landscaping web manifest",
+					"keywords": ["Oaktree Landscaping", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "Oaktree Landscaping - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["Oaktree Landscaping", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "Oaktree Landscaping - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["Oaktree Landscaping","security txt","security"]
+				} 
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": {
+			"value": "#19471b",
+			"type": "color",
+			"group": "palette",
+			"label": "Primary color"
+		},
+		"secondary-color": {
+			"value": "#959882",
+			"type": "color",
+			"group": "palette",
+			"label": "Secondary color"
+		},
+		"accent1-color": {
+			"value": "#b26443",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 1"
+		},
+		"accent2-color": {
+			"value": "#beab6c",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 2"
+		},
+		"bg-color": {
+			"value": "#F4F3EF",
+			"type": "color",
+			"group": "palette",
+			"label": "Background color"
+		},
+		"text-color": {
+			"value": "#2C2C2C",
+			"type": "color",
+			"group": "palette",
+			"label": "Font color"
+		},
+		"header-font": {
+			"value": "\"Playfair Display\", serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Header font"
+		},
+		"body-font": {
+			"value": "\"Lato\", sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Body font"
+		},
+		"font-size1-min": {
+			"value": "4.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 min"
+		},
+		"font-size1-max": {
+			"value": "5.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 max"
+		},
+		"font-size2-min": {
+			"value": "2.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 min"
+		},
+		"font-size2-max": {
+			"value": "3.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 max"
+		},
+		"font-size3-min": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 min"
+		},
+		"font-size3-max": {
+			"value": "1.75rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 max"
+		},
+		"font-size4-min": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 min"
+		},
+		"font-size4-max": {
+			"value": "1.25rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 max"
+		},
+		"font-size5-min": {
+			"value": "0.83rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 min"
+		},
+		"font-size5-max": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 max"
+		},
+		"font-size6-min": {
+			"value": "0.67rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 min"
+		},
+		"font-size6-max": {
+			"value": "0.85rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 max"
+		},
+		"font-min-screen": {
+			"value": "375px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font min screen"
+		},
+		"font-max-screen": {
+			"value": "1440px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font max screen"
+		},
+		"border-radius": {
+			"value": "0.5rem",
+			"type": "size",
+			"group": "layout",
+			"label": "Border radius"
+		},
+		"box-shadow": {
+			"value": "0 2px 4px rgba(0,0,0,0.1)",
+			"type": "shadow",
+			"group": "layout",
+			"label": "Box shadow"
+		},
+		"transition": {
+			"value": "all 0.3s ease",
+			"type": "transition",
+			"group": "layout",
+			"label": "Transition"
+		}
+	}
+}

@@ -1,0 +1,62 @@
+{
+	"name": "manningmetalworks",
+	"version": "0.1.16",
+	"private": false,
+	"description": "Manning Metalworks - A custom metal fabrication company specializing in high-quality craftsmanship and personalized service.",
+	"scripts": {
+		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3010 --experimental-https",
+		"build": "npm run clean && NODE_ENV=production next build --webpack",
+		"start": "npm run clean && next build --webpack && next start",
+		"lint": "eslint --fix",
+		"clean": "rm -rf .next && rm -rf out",
+		"generate-site-images": "node ./node_modules/@pixelated-tech/components/dist/scripts/generate-site-images.js",
+		"config:vault": "npx tsx ./node_modules/@pixelated-tech/components/dist/scripts/config-vault.ts",
+		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
+		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
+		"release:prep": "npm run update && npm run lint && npm run build",
+		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
+		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
+	},
+	"dependencies": {
+		"@pixelated-tech/components": "^3.14.2",
+		"html-entities": "^2.6.0",
+		"md5": "^2.3.0",
+		"next": "^16.2.2",
+		"prop-types": "^15.8.1",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
+		"sass": "^1.98.0",
+		"typescript-eslint": "^8.58.0"
+	},
+	"devDependencies": {
+		"@types/md5": "^2.3.6",
+		"@types/node": "^25.5.0",
+		"@types/prop-types": "^15.7.15",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.0.6",
+		"eslint": "9.39.4",
+		"eslint-config-next": "^16.2.2",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"typescript": "^6.0.2"
+	},
+	"overrides": {
+		"@aws-sdk/xml-builder": {
+			"fast-xml-parser": "^5.3.4"
+		}
+	},
+	"eslintConfig": {
+		"settings": {
+			"import/resolver": {
+				"typescript": {
+					"alwaysTryTypes": true,
+					"project": "./tsconfig.json"
+				}
+			}
+		}
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/brianwhaley/pixelated-template.git"
+	}
+}

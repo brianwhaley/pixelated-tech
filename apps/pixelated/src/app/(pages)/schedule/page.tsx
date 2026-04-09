@@ -1,0 +1,81 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
+import { PageSection, PageGridItem } from "@pixelated-tech/components";
+import { FormEngine } from "@pixelated-tech/components";
+import formData from "@/app/data/contactform.json";
+import SocialTags from '@/app/elements/socialtags';
+import routes from "@/app/data/routes.json";
+const siteInfo = (routes as any).siteInfo;
+
+export default function Schedule() {
+    
+	const [bodyContent, setBodyContent] = useState<React.ReactNode>(null);
+
+	useEffect(() => {
+		setBodyContent(
+			<div>
+				<div className="meetings-iframe-container"
+					data-src="https://meetings-na2.hubspot.com/pixelated?embed=true"
+					suppressHydrationWarning={true} />
+				<script async
+					type="text/javascript"
+					src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js" />
+			</div>
+		);
+	}, []);
+
+	return (
+
+		<>
+			<PageTitleHeader title="Schedule your free Digital Assessment" />
+			<PageSection columns={1} maxWidth="768px" id="social-section">
+				<PageGridItem>
+					<div>
+						<p>
+						Our team of experts is here to help understand your
+						current state of business and digital presence -
+						web, social media, and search engine optimization -
+						and review tailored solutions that help you focus
+						on your customers and achieve your business goals.
+						Fill out the form below to schedule a free no-obligation review of your current website,
+						search engine optimization, content strategy, and social media presence.
+						Our review also includes honest, tailored recommendations to strengthen your
+						digital footprint, connection to your community, and ease some of your daily frustrations.
+						Or you can contact us via email or phone to discuss your needs and set up a meeting.
+						</p>
+					</div>
+				</PageGridItem>
+				<PageGridItem>
+					<div>
+						<PageSectionHeader title="Contact Information:" />
+						<h3>Email: <a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></h3>
+						<h3>Phone: {siteInfo.telephone}</h3>
+					</div>
+				</PageGridItem>
+				<PageGridItem>
+					<div suppressHydrationWarning={true}>
+						{bodyContent}
+					</div>
+				</PageGridItem>
+				<PageGridItem>
+					<PageSectionHeader title="Contact Us" />
+					<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
+						<FormEngine formData={formData as any} />
+					</div>
+				</PageGridItem>
+			</PageSection>
+
+			
+			<PageSection columns={12} background={"var(--secondary-color)"} id="social-section">
+				<PageGridItem columnStart={3} columnEnd={11}>
+					<SocialTags />
+				</PageGridItem>
+			</PageSection>
+			<br />
+		</>
+
+
+	);
+}

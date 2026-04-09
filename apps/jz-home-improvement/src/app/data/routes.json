@@ -1,0 +1,306 @@
+{
+	"siteInfo": {
+		"name": "JZ Home Improvement",
+		"author": "JZ Home Improvement",
+		"description": "JZ Home Improvement - Expert Home Remodeling and Renovation Services",
+		"keywords": "JZ Home Improvement, home remodeling, home renovation, union new jersey",
+		"url": "https://www.jzhomeimprovement.com",
+		"email": "jacek@jzhomeimprovement.com",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/logo/jz-home-improvement.png",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "(908) 377-5013",
+		"address": {
+			"streetAddress": "1151 Reeves Terrace",
+			"addressLocality": "Union",
+			"addressRegion": "NJ",
+			"postalCode": "07083",
+			"addressCountry": "US"
+		},
+		"priceRange": "$",
+		"sameAs": [
+			"https://www.jzhomeimprovement.com"
+		],
+		"services": []
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/",
+			"title": "JZ Home Improvement - Home",
+			"description": "Welcome to JZ Home Improvement, your trusted partner for expert home remodeling and renovation services in Union, New Jersey.",
+			"keywords": [
+				"JZ Home Improvement",
+				"home remodeling",
+				"home renovation",
+				"Union NJ"
+			]
+		},
+		{
+			"name": "About",
+			"path": "/about",
+			"title": "JZ Home Improvement - About",
+			"description": "Learn more about JZ Home Improvement, your trusted partner for expert home remodeling and renovation services in Union, New Jersey.",
+			"keywords": [
+				"JZ Home Improvement",
+				"about us",
+				"home remodeling",
+				"home renovation",
+				"Union NJ"
+			]
+		},
+		{
+			"name": "Services",
+			"path": "/services",
+			"title": "JZ Home Improvement - Services",
+			"description": "Discover the range of expert home remodeling and renovation services offered by JZ Home Improvement in Union, New Jersey.",
+			"keywords": [
+				"JZ Home Improvement"
+			]
+		},
+		{
+			"name": "Projects",
+			"path": "/projects",
+			"title": "JZ Home Improvement - Projects",
+			"description": "Explore the portfolio of successful home remodeling and renovation projects completed by JZ Home Improvement in Union, New Jersey.",
+			"keywords": [
+				"JZ Home Improvement"
+			]
+		},
+		{
+			"name": "FAQs",
+			"path": "/faqs",
+			"title": "JZ Home Improvement - FAQs",
+			"description": "Find answers to frequently asked questions about JZ Home Improvement's expert home remodeling and renovation services in Union, New Jersey.",
+			"keywords": [
+				"JZ Home Improvement"
+			]
+		},
+		{
+			"name": "Contact",
+			"path": "/contact",
+			"title": "JZ Home Improvement - Contact",
+			"description": "Get in touch with JZ Home Improvement for expert home remodeling and renovation services in Union, New Jersey.",
+			"keywords": [
+				"JZ Home Improvement"
+			]
+		},
+		{
+			"name": "Style Guide",
+			"hidden": true,
+			"path": "/styleguide",
+			"title": "JZ Home Improvement - Style Guide",
+			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+			"keywords": [
+				"JZ Home Improvement",
+				"style guide"
+			]
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "JZ Home Improvement - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": ["JZ Home Improvement", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "JZ Home Improvement - Sitemap",
+					"description": "JZ Home Improvement sitemap.xml",
+					"keywords": ["JZ Home Improvement", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "JZ Home Improvement - Robots.txt",
+					"description": "JZ Home Improvement robots.txt",
+					"keywords": ["JZ Home Improvement", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "JZ Home Improvement - Web Manifest",
+					"description": "JZ Home Improvement web manifest",
+					"keywords": ["JZ Home Improvement", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "JZ Home Improvement - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["JZ Home Improvement", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "JZ Home Improvement - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["JZ Home Improvement","security txt","security"]				} 
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": {
+			"value": "#1f3a5f",
+			"type": "color",
+			"group": "palette",
+			"label": "Primary color"
+		},
+		"secondary-color": {
+			"value": "#3a3a3a",
+			"type": "color",
+			"group": "palette",
+			"label": "Secondary color"
+		},
+		"accent1-color": {
+			"value": "#e46b2c",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 1"
+		},
+		"accent2-color": {
+			"value": "#e6e9ed",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 2"
+		},
+		"bg-color": {
+			"value": "#ffffff",
+			"type": "color",
+			"group": "palette",
+			"label": "Background color"
+		},
+		"text-color": {
+			"value": "#222222",
+			"type": "color",
+			"group": "palette",
+			"label": "Font color"
+		},
+		"header-font": {
+			"value": "\"Montserrat\", Verdana, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Header font"
+		},
+		"body-font": {
+			"value": "\"Open Sans\", Arial, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Body font"
+		},
+		"font-size1-min": {
+			"value": "2.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 min"
+		},
+		"font-size1-max": {
+			"value": "3.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 max"
+		},
+		"font-size2-min": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 min"
+		},
+		"font-size2-max": {
+			"value": "1.75rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 max"
+		},
+		"font-size3-min": {
+			"value": "1.17rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 min"
+		},
+		"font-size3-max": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 max"
+		},
+		"font-size4-min": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 min"
+		},
+		"font-size4-max": {
+			"value": "1.25rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 max"
+		},
+		"font-size5-min": {
+			"value": "0.83rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 min"
+		},
+		"font-size5-max": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 max"
+		},
+		"font-size6-min": {
+			"value": "0.67rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 min"
+		},
+		"font-size6-max": {
+			"value": "0.85rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 max"
+		},
+		"font-min-screen": {
+			"value": "375px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font min screen"
+		},
+		"font-max-screen": {
+			"value": "1440px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font max screen"
+		},
+		"border-radius": {
+			"value": "0.5rem",
+			"type": "size",
+			"group": "layout",
+			"label": "Border radius"
+		},
+		"box-shadow": {
+			"value": "0 2px 4px rgba(0,0,0,0.1)",
+			"type": "shadow",
+			"group": "layout",
+			"label": "Box shadow"
+		},
+		"transition": {
+			"value": "all 0.3s ease",
+			"type": "transition",
+			"group": "layout",
+			"label": "Transition"
+		}
+	}
+}

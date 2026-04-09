@@ -1,6 +1,6 @@
 {
   "name": "pixelated-tech",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Pixelated Technologies - Unified platform monorepo",
   "workspaces": [
@@ -9,10 +9,39 @@
     "tools/*"
   ],
   "scripts": {
-    "build": "npm run build -w packages/pixelated-components && npm run build -w apps/*",
+    "build": "npm run build -ws",
     "test": "npm run test -ws",
     "test:coverage": "npm run test:coverage -ws",
-    "lint": "npm run lint -w packages/pixelated-components && npm run lint -w apps/*",
-    "dev": "npm run dev -w apps/brianwhaley"
+    "lint": "npm run lint -ws",
+    "release:prep": "bash packages/pixelated-components/src/scripts/release.sh --prep",
+    "release:simple": "bash packages/pixelated-components/src/scripts/release.sh --simple",
+    "release": "bash packages/pixelated-components/src/scripts/release.sh",
+    "release-monorepo": "bash packages/pixelated-components/src/scripts/release-monorepo.sh",
+    "update": "bash packages/pixelated-components/src/scripts/update.sh",
+    "generate-site-images": "node packages/pixelated-components/src/scripts/generate-site-images.js",
+    "config:vault": "npx tsx packages/pixelated-components/src/scripts/config-vault.ts",
+    "config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
+    "config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc"
+  },
+  "dependencies": {
+    "@aws-sdk/client-amplify": "^3.1028.0",
+    "@aws-sdk/client-cloudwatch": "^3.1028.0",
+    "@aws-sdk/client-iam": "^3.1028.0",
+    "@aws-sdk/client-route-53": "^3.1028.0",
+    "@next/third-parties": "^16.2.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.4",
+    "@vitest/ui": "^4.1.4",
+    "eslint": "^10.2.0",
+    "vitest": "^4.1.4"
+  },
+  "optionalDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.4",
+    "@vitest/ui": "^4.1.4",
+    "eslint": "^10.2.0",
+    "vitest": "^4.1.4"
   }
 }

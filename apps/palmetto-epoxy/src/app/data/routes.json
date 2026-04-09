@@ -1,0 +1,488 @@
+{
+	"siteInfo": {
+		"name": "Palmetto Epoxy",
+		"author": "Palmetto Epoxy",
+		"description": "Palmetto Epoxy - Professional Epoxy Flooring Services in Bluffton, South Carolina",
+		"keywords": "palmetto epoxy, bluffton, south carolina, epoxy flooring, professional services",
+		"url": "https://www.palmetto-epoxy.com",
+		"email": "palmettoepoxy@gmail.com",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/palmetto-epoxy-logo.jpg",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "(516) 510-8186",
+		"address": {
+			"streetAddress": "116 Beckenridge Circle",
+			"addressLocality": "Bluffton",
+			"addressRegion": "SC",
+			"postalCode": "29910",
+			"addressCountry": "US"
+		},
+		"priceRange": "$",
+		"sameAs": [
+			"https://www.facebook.com/palmettoepoxy",
+			"https://www.instagram.com/palmetto_epoxy/",
+			"https://x.com/palmetto_epoxy",
+			"https://www.youtube.com/@PalmettoEpoxy",
+			"https://www.yelp.com/biz/palmetto-epoxy-bluffton",
+			"https://www.reddit.com/user/palmettoepoxy/",
+			"https://nextdoor.com/pages/palmetto-epoxy-bluffton-sc/",
+			"https://www.houzz.com/hznb/professionals/flooring-contractors/palmetto-epoxy-pfvwus-pf~1171449525",
+			"https://www.votedlowcountrysbest.com/listing/palmetto-epoxy.html",
+			"https://bni-sclowcountry.com/en-US/memberdetails?encryptedMemberId=nF5nozAX3%2BzPl0hTaNt4zQ%3D%3D"
+		],
+		"services": [
+			{
+				"name": "Residential",
+				"description": "Enhance your home with durable, stylish epoxy floors tailored to any room.",
+				"url": "https://www.palmetto-epoxy.com/services",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			},
+			{
+				"name": "Commercial",
+				"description": "Upgrade your business space with sleek, resilient commercial-grade epoxy flooring.",
+				"url": "https://www.palmetto-epoxy.com/services",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			},
+			{
+				"name": "Paver Sealing",
+				"description": "Protect and beautify your pavers with our professional sealing services.",
+				"url": "https://www.palmetto-epoxy.com/services",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			},
+			{
+				"name": "Driveway Coating",
+				"description": "Boost curb appeal and durability with our specialized driveway coating solutions.",
+				"url": "https://www.palmetto-epoxy.com/services",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			},
+			{
+				"name": "Epoxy Garage Floors",
+				"description": "Transform your garage with our high-performance, spill-resistant epoxy floors.",
+				"url": "https://www.palmetto-epoxy.com/services",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			},
+			{
+				"name": "Resin Countertops",
+				"description": "Transform your kitchen or bathroom with our high-performance resin countertops.",
+				"url": "https://www.palmetto-epoxy.com/services",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			},
+			{
+				"name": "Concrete Polishing",
+				"description": "Bring out the natural beauty of your concrete with our expert polishing services.\n",
+				"url": "",
+				"areaServed": [
+					"Bluffton SC",
+					"Hilton Head SC",
+					"Hardeeville SC",
+					"Okatie SC",
+					"Ridgeland SC",
+					"Beaufort SC"
+				]
+			}
+		],
+		"openingHours": "Mo-Fr 09:00-17:00",
+		"copyrightYear": "2026"
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/",
+			"title": "Palmetto Epoxy",
+			"description": "Transform your space with Palmetto Epoxy! We specialize in creating beautiful, durable epoxy floors that add value and functionality to any space. Contact us for custom designs and fast, efficient installation.",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Bluffton",
+				"South Carolina",
+				"beautiful epoxy floors",
+				"durable epoxy floors",
+				"custom epoxy floor designs",
+				"fast epoxy installation"
+			]
+		},
+		{
+			"name": "Services",
+			"path": "/services",
+			"title": "Palmetto Epoxy - Services",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential epoxy flooring",
+				"commercial epoxy flooring",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing"
+			]
+		},
+		{
+			"name": "Projects",
+			"path": "/projects",
+			"title": "Palmetto Epoxy - Projects",
+			"description": "Flip through a collection of completed projects from Palmetto Epoxy. Examples include local residential and commercial coatings, floors, polishing, and paver sealing applications in the Bluffton South Carolina area. ",
+			"keywords": [
+				"Palmetto Epoxy",
+				"completed projects",
+				"residential floor coating",
+				"commercial floor coating",
+				"floor polishing",
+				"paver sealing",
+				"Bluffton",
+				"South Carolina"
+			]
+		},
+		{
+			"name": "FAQs",
+			"path": "/faqs",
+			"title": "Palmetto Epoxy - FAQs",
+			"description": "Palmetto Epoxy is a family owned business, run by Dennis and Martha Aberle, committed to making sure our customers are always satisfied. We're proud to serve the South Carolina Lowcountry, including Bluffton, Hilton Head, Hardeeville, Okatie, Ridgeland, and Beaufort.",
+			"keywords": [
+				"Palmetto Epoxy",
+				"family owned business",
+				"Dennis Aberle",
+				"Martha Aberle",
+				"South Carolina epoxy",
+				"low country epoxy",
+				"lowcountry epoxy",
+				"Bluffton epoxy",
+				"Hilton Head epoxy",
+				"Hardeeville epoxy",
+				"Okatie epoxy",
+				"Ridgeland epoxy",
+				"Beaufort epoxy",
+				"faqs",
+				"frequently asked questions"
+			]
+		},
+		{
+			"name": "Blog",
+			"path": "/blog",
+			"title": "Palmetto Epoxy - Blog",
+			"description": "Palmetto Epoxy is a family owned business, run by Dennis and Martha Aberle, committed to making sure our customers are always satisfied. We're proud to serve the South Carolina Lowcountry, including Bluffton, Hilton Head, Hardeeville, Okatie, Ridgeland, and Beaufort.",
+			"keywords": [
+				"Palmetto Epoxy",
+				"family owned business",
+				"Dennis Aberle",
+				"Martha Aberle",
+				"South Carolina epoxy",
+				"low country epoxy",
+				"lowcountry epoxy",
+				"Bluffton epoxy",
+				"Hilton Head epoxy",
+				"Hardeeville epoxy",
+				"Okatie epoxy",
+				"Ridgeland epoxy",
+				"Beaufort epoxy",
+				"blog",
+				"epoxy flooring tips",
+				"epoxy flooring trends"
+			]
+		},
+		{
+			"name": "About",
+			"path": "/about",
+			"title": "Palmetto Epoxy - About",
+			"description": "Palmetto Epoxy is a family owned business, run by Dennis and Martha Aberle, committed to making sure our customers are always satisfied. We're proud to serve the South Carolina Lowcountry, including Bluffton, Hilton Head, Hardeeville, Okatie, Ridgeland, and Beaufort.",
+			"keywords": [
+				"Palmetto Epoxy",
+				"family owned business",
+				"Dennis Aberle",
+				"Martha Aberle",
+				"South Carolina epoxy",
+				"low country epoxy",
+				"lowcountry epoxy",
+				"Bluffton epoxy",
+				"Hilton Head epoxy",
+				"Hardeeville epoxy",
+				"Okatie epoxy",
+				"Ridgeland epoxy",
+				"Beaufort epoxy"
+			]
+		},
+		{
+			"name": "Contact",
+			"path": "/contact",
+			"title": "Palmetto Epoxy - Contact",
+			"description": "Contact Palmetto Epoxy by filling out the form or by scheduling an appointment to answer any questions or set up an appointment to talk about Epoxy Flooring. ",
+			"keywords": [
+				"Palmetto Epoxy",
+				"epoxy floor coatings",
+				"contact us",
+				"schedule an appointment"
+			]
+		},
+		{
+			"name": "Submit Review",
+			"hidden": true,
+			"path": "/submitreview",
+			"title": "Palmetto Epoxy - Submit your Review",
+			"description": "Share your experience with Palmetto Epoxy! We value your feedback and would love to hear about your epoxy flooring project. ",
+			"keywords": [
+				"Palmetto Epoxy",
+				"epoxy floor coatings",
+				"share your feedback"
+			]
+		},
+		{
+			"name": "Style Guide",
+			"hidden": true,
+			"path": "/styleguide",
+			"title": "Palmetto Epoxy - Style Guide",
+			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+			"keywords": [
+				"Palmetto Epoxy",
+				"epoxy floor coatings",
+				"style guide"
+			]
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "Palmetto Epoxy - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": ["Palmetto Epoxy", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "Palmetto Epoxy - Sitemap",
+					"description": "Palmetto Epoxy sitemap.xml",
+					"keywords": ["Palmetto Epoxy", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "Palmetto Epoxy - Robots.txt",
+					"description": "Palmetto Epoxy robots.txt",
+					"keywords": ["Palmetto Epoxy", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "Palmetto Epoxy - Web Manifest",
+					"description": "Palmetto Epoxy web manifest",
+					"keywords": ["Palmetto Epoxy", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "Palmetto Epoxy - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["Palmetto Epoxy", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "Palmetto Epoxy - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["Palmetto Epoxy","security txt","security"]
+				} 
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": {
+			"value": "#369",
+			"type": "color",
+			"group": "palette",
+			"label": "Primary color"
+		},
+		"secondary-color": {
+			"value": "#BCD",
+			"type": "color",
+			"group": "palette",
+			"label": "Secondary color"
+		},
+		"accent1-color": {
+			"value": "#CCC",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 1"
+		},
+		"accent2-color": {
+			"value": "#EEE",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 2"
+		},
+		"bg-color": {
+			"value": "#ffffff",
+			"type": "color",
+			"group": "palette",
+			"label": "Background color"
+		},
+		"text-color": {
+			"value": "#000000",
+			"type": "color",
+			"group": "palette",
+			"label": "Font color"
+		},
+		"header-font": {
+			"value": "\"Montserrat\", Verdana, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Header font"
+		},
+		"body-font": {
+			"value": "\"Roboto\", Arial, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Body font"
+		},
+		"font-size1-min": {
+			"value": "2.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 min"
+		},
+		"font-size1-max": {
+			"value": "3.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 max"
+		},
+		"font-size2-min": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 min"
+		},
+		"font-size2-max": {
+			"value": "1.75rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 max"
+		},
+		"font-size3-min": {
+			"value": "1.17rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 min"
+		},
+		"font-size3-max": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 max"
+		},
+		"font-size4-min": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 min"
+		},
+		"font-size4-max": {
+			"value": "1.25rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 max"
+		},
+		"font-size5-min": {
+			"value": "0.83rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 min"
+		},
+		"font-size5-max": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 max"
+		},
+		"font-size6-min": {
+			"value": "0.67rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 min"
+		},
+		"font-size6-max": {
+			"value": "0.85rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 max"
+		},
+		"font-min-screen": {
+			"value": "375px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font min screen"
+		},
+		"font-max-screen": {
+			"value": "1440px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font max screen"
+		},
+		"border-radius": {
+			"value": "0.5rem",
+			"type": "size",
+			"group": "layout",
+			"label": "Border radius"
+		},
+		"box-shadow": {
+			"value": "0 2px 4px rgba(0,0,0,0.1)",
+			"type": "shadow",
+			"group": "layout",
+			"label": "Box shadow"
+		},
+		"transition": {
+			"value": "all 0.3s ease",
+			"type": "transition",
+			"group": "layout",
+			"label": "Transition"
+		}
+	}
+}

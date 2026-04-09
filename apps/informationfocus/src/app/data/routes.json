@@ -1,0 +1,131 @@
+{
+	"siteInfo": {
+		"name": "Information Focus",
+		"author": "Mary Ann Sarao",
+		"description": "Information Focus - Professional Services",
+		"keywords": "information focus, professional services, consulting",
+		"url": "https://www.informationfocus.net",
+		"email": "maryann.sarao@gmail.com",
+		"favicon": "/images/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/informationfocus-sq.png",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "+1-973-722-2601",
+		"address": {
+			"streetAddress": "10 Jade Circle",
+			"addressLocality": "Denville",
+			"addressRegion": "NJ",
+			"postalCode": "07834",
+			"addressCountry": "US"
+		},
+		"priceRange": "$",
+		"sameAs": [
+			"https://www.linkedin.com/in/mary-ann-sarao"
+		]
+	},
+	"routes": [
+		{ 
+			"name": "Home", 
+			"path": "/", 
+			"title": "InformationFocus - Home",
+			"description": "InformationFocus by Mary Ann Sarao - Competitive Intelligence Consulting",
+			"keywords": "information focus, competitive intelligence, consulting, pharma,pharmaceutical industry"  
+		} , { 
+			"name": "Resume", 
+			"path": "/resume", 
+			"title": "InformationFocus - Resume",
+			"description": "InformationFocus by Mary Ann Sarao - Competitive Intelligence Consulting",
+			"keywords": "information focus, competitive intelligence, consulting, pharma, pharmaceutical industry, resume"  
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "InformationFocus - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": ["InformationFocus", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "InformationFocus - Sitemap",
+					"description": "InformationFocus sitemap.xml",
+					"keywords": ["InformationFocus", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "InformationFocus - Robots.txt",
+					"description": "InformationFocus robots.txt",
+					"keywords": ["InformationFocus", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "InformationFocus - Web Manifest",
+					"description": "InformationFocus web manifest",
+					"keywords": ["InformationFocus", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "InformationFocus - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["InformationFocus", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "InformationFocus - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["InformationFocus","security txt","security"]
+				} , {
+					"name": "Style Guide",
+					"hidden": true,
+					"path": "/styleguide",
+					"title": "InformationFocus - Style Guide",
+					"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+					"keywords": [
+						"InformationFocus", "style guide"
+					]
+				}
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": { "value": "#369", "type": "color", "group": "palette", "label": "Primary color" },
+		"secondary-color": { "value": "#BCD", "type": "color", "group": "palette", "label": "Secondary color" },
+		"accent1-color": { "value": "#CCC", "type": "color", "group": "palette", "label": "Accent color 1" },
+		"accent2-color": { "value": "#EEE", "type": "color", "group": "palette", "label": "Accent color 2" },
+		"bg-color": { "value": "#ffffff", "type": "color", "group": "palette", "label": "Background color" },
+		"text-color": { "value": "#000000", "type": "color", "group": "palette", "label": "Font color" },
+		"header-font": { "value": "Helvetica, sans-serif", "type": "font", "group": "typography", "label": "Header font" },
+		"body-font": { "value": "Helvetica, sans-serif", "type": "font", "group": "typography", "label": "Body font" },
+		"font-size1-min": { "value": "1.75rem", "type": "size", "group": "typography", "label": "Font size 1 min" },
+		"font-size1-max": { "value": "2.50rem", "type": "size", "group": "typography", "label": "Font size 1 max" },
+		"font-size2-min": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 2 min" },
+		"font-size2-max": { "value": "1.75rem", "type": "size", "group": "typography", "label": "Font size 2 max" },
+		"font-size3-min": { "value": "1.17rem", "type": "size", "group": "typography", "label": "Font size 3 min" },
+		"font-size3-max": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 3 max" },
+		"font-size4-min": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 4 min" },
+		"font-size4-max": { "value": "1.25rem", "type": "size", "group": "typography", "label": "Font size 4 max" },
+		"font-size5-min": { "value": "0.83rem", "type": "size", "group": "typography", "label": "Font size 5 min" },
+		"font-size5-max": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 5 max" },
+		"font-size6-min": { "value": "0.67rem", "type": "size", "group": "typography", "label": "Font size 6 min" },
+		"font-size6-max": { "value": "0.85rem", "type": "size", "group": "typography", "label": "Font size 6 max" },
+		"font-min-screen": { "value": "375px", "type": "size", "group": "typography", "label": "Font min screen" },
+		"font-max-screen": { "value": "1440px", "type": "size", "group": "typography", "label": "Font max screen" },
+		"border-radius": { "value": "0.5rem", "type": "size", "group": "layout", "label": "Border radius" },
+		"box-shadow": { "value": "0 2px 4px rgba(0,0,0,0.1)", "type": "shadow", "group": "layout", "label": "Box shadow" },
+		"transition": { "value": "all 0.3s ease", "type": "transition", "group": "layout", "label": "Transition" }
+	}
+}

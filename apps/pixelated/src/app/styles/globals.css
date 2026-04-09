@@ -1,0 +1,148 @@
+
+/* ========================================
+    CUSTOM Pixelated Styles
+ ======================================== */
+
+#page-header {
+    background-image: url(/images/pix/pix-bg.gif);
+}
+
+.panel-menu-button {
+	margin: 0;
+    padding: 0;
+}
+
+#page-header-nav {
+    color: white;
+    z-index: 2000;
+    /* background-color: var(--accent1-color); */
+    background-image: url(/images/pix/pix-bg-bw.gif);
+    background-color: rgba(255, 255, 255, 0.5);
+    background-blend-mode: overlay;
+    height: 40px;
+}
+
+.fixed-header-nav {
+
+    z-index: 1000;
+    width: 100%;
+    position: fixed;
+    top: 60px;
+    left: 0;
+
+    .menu-item {
+        background: none;
+    }
+    .menu-item:hover {
+        background-color: var(--accent1-color);
+    }
+    .menu-item a {
+        font-size: unset;
+        background: none;
+    }
+    .menu-item a.selected {
+        background-color: var(--secondary-color);
+    }
+    .menu-item a:hover {
+        background: none;
+        border: none;
+    }
+
+}
+
+#fixed-header-nav-spacer {
+    height: 40px;
+}
+
+.button, 
+.centered-button {
+    background-image: url(/images/pix/pix-bg-sm-bw.gif);
+}
+
+@media screen and (max-width: 480px) {
+	#page-header h2 {
+    	transform: scaleX(0.9);
+    	transform-origin: left;
+	}
+    .fixed-header-nav {
+        display: none;
+    }
+    #fixed-header-nav-spacer {
+        display: none;
+    }
+}
+
+
+/* ========================================
+    CUSTOM Pixelated ACCORDION Menu Styles
+ ======================================== */
+
+ /* only for fullMenu QS param */
+.accordion-menu-wrapper,
+.accordion-down, 
+.accordion-up {
+	top: 100px;
+}
+
+.panel-menu-button,
+#panel-menu-button {
+    display: none;
+}
+
+.accordion-menu > ul > li > a,
+.accordion-menu > ul > ul > li > a {
+    background-image: url(/images/pix/pix-bg-bw.gif);
+    background-color: rgba(255, 255, 255, 0.5);
+    background-blend-mode: overlay;
+}
+.accordion-menu > ul > li > a:hover,
+.accordion-menu > ul > ul > li > a:hover {
+	background: #96befab3;
+}
+
+@media screen and (max-width: 480px) {
+    .accordion-menu-wrapper,
+    .accordion-down, 
+    .accordion-up {
+        top: 60px;
+    }
+    .panel-menu-button,
+    #panel-menu-button {
+        display: block;
+    }
+}
+
+
+
+
+/* ========================================
+    CUSTOM PIXELATED BLOG SUMMARY Styles
+ ======================================== */
+
+.blog-post-summary .article-featured-image img {
+    border: 5px solid var(--primary-color);
+    border-radius: 10px;
+}
+
+
+
+
+/* ========================================
+    PAGE SPECIFIC Pixelated Styles
+ ======================================== */
+
+/* ===== HOME PAGE ===== */
+
+#social-section .blog-post-summary { 
+	border: 1px solid #999; 
+}
+
+
+
+/* ========================================
+	CURATOR.IO Styles
+ ======================================== */
+
+.crt-feed div[data-position="2"] {
+	display: none;
+}

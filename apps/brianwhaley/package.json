@@ -7,25 +7,15 @@
 		"url": "https://www.pixelated.tech/"
 	},
 	"scripts": {
-		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev -p 3000 --experimental-https",
-		"build": "npm run clean && NODE_ENV=production next build",
-		"start": "npm run clean && next build && next start",
+		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3000 --experimental-https",
+		"build": "npm run clean && NODE_ENV=production next build --webpack",
+		"start": "npm run clean && next build --webpack && next start --webpack",
 		"lint": "eslint --fix",
 		"clean": "rm -rf .next && rm -rf out",
-		"generate-site-images": "node ./node_modules/@pixelated-tech/components/dist/scripts/generate-site-images.js",
-		"config:vault": "npx tsx ./node_modules/@pixelated-tech/components/dist/scripts/config-vault.ts",
-		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
-		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "npm run update && npm run lint && npm run build",
-		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
-		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
-	},
-	"scripts-unused": {
-		"dev": "next dev --turbopack",
-		"update": "UPDATES=$(npm outdated | awk 'NR>1 {print $1\"@\"$4}' || true); if [ -n \"$UPDATES\" ]; then echo \"Updating the following packages: $UPDATES\"; echo \"$UPDATES\" | xargs npm install --force --save 2>/dev/null || true; echo \"✅ Successfully updated: $UPDATES\"; else echo \"✅ No dependency updates needed.\"; fi; npm audit fix --force 2>/dev/null || true"
+		"release:prep": "npm run lint && npm run build"
 	},
 	"dependencies": {
-		"@pixelated-tech/components": "3.15.2",
+		"@pixelated-tech/components": "*",
 		"date-fns": "^4.1.0",
 		"globals": "^17.4.0",
 		"html-entities": "^2.6.0",

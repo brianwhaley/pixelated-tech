@@ -1,0 +1,120 @@
+[
+  {
+    "name": "brianwhaley",
+    "localPath": "/Volumes/btw_x10_pro/Git/brianwhaley",
+    "remote": "brianwhaley",
+    "repo": "brianwhaley",
+    "healthCheckId": "8907c3f0-265e-4942-8bbc-767b4bc03ea9",
+    "url": "https://www.brianwhaley.com",
+    "ga4PropertyId": "494828096",
+    "gscSiteUrl": "https://www.brianwhaley.com"
+  },
+  {
+    "name": "informationfocus",
+    "localPath": "/Volumes/btw_x10_pro/Git/informationfocus",
+    "remote": "informationfocus",
+    "repo": "informationfocus",
+    "healthCheckId": "c075c675-ebc7-4661-b715-fe0303c6c012",
+    "url": "https://www.informationfocus.net",
+    "ga4PropertyId": "517625381",
+    "gscSiteUrl": "sc-domain:informationfocus.net"
+  },
+  {
+    "name": "jz-home-improvement",
+    "localPath": "/Volumes/btw_x10_pro/Git/jz-home-improvement",
+    "remote": "jz-home-improvement",
+    "repo": "jz-home-improvement",
+    "healthCheckId": "c5937d51-e262-4b3d-87d5-141e273dd288",
+    "url": "https://www.jzhomeimprovement.com",
+    "ga4PropertyId": "526756156",
+    "gscSiteUrl": "sc-domain:jzhomeimprovement.com"
+  },
+  {
+    "name": "leadscraper",
+    "localPath": "/Volumes/btw_x10_pro/Git/leadscraper",
+    "remote": "leadscraper",
+    "repo": "leadscraper",
+    "ga4PropertyId": "GA4_PROPERTY_ID_HERE",
+    "gscSiteUrl": "sc-domain:leadscraper.com"
+  },
+  {
+	"name": "manningmetalworks",
+	"localPath": "/Volumes/btw_x10_pro/Git/manningmetalworks",
+	"remote": "manningmetalworks",
+	"repo": "manningmetalworks",
+	"healthCheckId": "",
+	"url": "https://www.manningmetalworks.com",
+	"ga4PropertyId": "",
+	"gscSiteUrl": "",
+	"googleMapsPlaceId": "ChIJ66eRE3qnw4kRD79U7II0QoQ"
+  },
+  {
+    "name": "oaktreelandscaping",
+    "localPath": "/Volumes/btw_x10_pro/Git/oaktreelandscaping",
+    "remote": "oaktreelandscaping",
+    "repo": "oaktreelandscaping",
+    "healthCheckId": "a98e1373-2f41-45f6-89d2-5ff71c60c238",
+    "url": "https://www.oaktree-landscaping.com",
+    "ga4PropertyId": "516538573",
+    "gscSiteUrl": "sc-domain:oaktree-landscaping.com"
+  },
+  {
+    "name": "palmetto-epoxy",
+    "localPath": "/Volumes/btw_x10_pro/Git/palmetto-epoxy",
+    "remote": "palmetto-epoxy",
+    "repo": "palmetto-epoxy",
+    "healthCheckId": "985f8951-64f6-422c-b5a8-e357b3f36a68",
+    "url": "https://www.palmetto-epoxy.com",
+    "ga4PropertyId": "492316713",
+    "gscSiteUrl": "sc-domain:palmetto-epoxy.com"
+  },
+  {
+    "name": "pixelated",
+    "localPath": "/Volumes/btw_x10_pro/Git/pixelated",
+    "remote": "pixelated",
+    "repo": "pixelated",
+    "healthCheckId": "92f4a0d8-db33-4115-9a20-71886509eb9b",
+    "url": "https://www.pixelated.tech",
+    "ga4PropertyId": "414312932",
+    "gscSiteUrl": "sc-domain:pixelated.tech"
+  },
+  {
+    "name": "pixelated-admin",
+    "localPath": "/Volumes/btw_x10_pro/Git/pixelated-admin",
+    "remote": "pixelated-admin",
+    "repo": "pixelated-admin",
+    "healthCheckId": "87fde80b-6a16-4a61-bd4d-43050634e2af",
+    "url": "https://admin.pixelated.tech",
+    "ga4PropertyId": "414312932",
+    "gscSiteUrl": "https://admin.pixelated.tech"
+  },
+  {
+    "name": "pixelated-components",
+    "localPath": "/Volumes/btw_x10_pro/Git/pixelated-components",
+    "remote": "pixelated-components",
+    "repo": "pixelated-components",
+    "healthCheckId": "865c6d61-e882-4386-9d35-a275ebefd587",
+    "url": "https://storybook.pixelated.tech",
+    "ga4PropertyId": "414312932",
+    "gscSiteUrl": "https://storybook.pixelated.tech"
+  },
+  {
+    "name": "pixelated-template",
+    "localPath": "/Volumes/btw_x10_pro/Git/pixelated-template",
+    "remote": "pixelated-template",
+    "repo": "pixelated-template",
+    "ga4PropertyId": "GA4_PROPERTY_ID_HERE",
+    "gscSiteUrl": "sc-domain:pixelatedtemplate.com"
+  },
+  {
+    "name": "pixelvivid",
+    "localPath": "/Volumes/btw_x10_pro/Git/pixelvivid",
+    "remote": "pixelvivid",
+    "repo": "pixelvivid",
+    "healthCheckId": "42cb79db-889f-4bbb-b698-0548e168a5fa",
+    "url": "https://www.pixelvivid.com",
+    "ga4PropertyId": "494907112",
+    "gscSiteUrl": "https://www.pixelvivid.com",
+	"googleMapsPlaceId": "ChIJ_6tnLDW5nyARFR6EtthB4c4"
+  }
+]

@@ -1,0 +1,331 @@
+
+/* ===== HEADER STYLES ===== */
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    font-variant-caps: small-caps;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.header-logo{
+    overflow: hidden;
+}
+
+.header-logo img {
+    clip-path: rect(1% 98% 98% 1% round 15%);
+} 
+
+@media screen and (max-width: 480px) {
+    .header-logo {
+        max-width: 70%;
+        margin: auto 15%;
+    }
+}
+
+.header-right {
+    margin: auto 0;
+}
+
+.header-address {
+    margin: auto 0;
+}
+
+@media screen and (max-width: 480px) {
+    .header-address {
+        text-align: center
+    }
+}
+
+.header-social {
+    margin: auto 0;
+} 
+
+
+/* ===== CALLOUT STYLES ===== */
+
+#aboutus-section .grid-item {
+    margin: auto 0;
+}
+
+
+/* ===== BUTTON STYLES ===== */
+
+button:hover, 
+.button:hover {
+	background-image: url('/images/splatter.jpg'); 
+	background-position: center;
+  	background-size: cover; 
+    background-repeat: no-repeat  !important;
+}
+button:hover, 
+button:hover a, 
+.button:hover,
+.button:hover a {
+	color: #fff !important;
+    text-shadow: 
+		-1px 1px 1px #000, 
+		1px 1px 1px #000, 
+		1px -1px 1px #000, 
+		-1px -1px 1px #000, 
+		-1px 1px 5px #000, 
+		1px 1px 5px #000, 
+		1px -1px 5px #000, 
+		-1px -1px 5px #000;
+}
+
+
+
+/* ===== CAROUSEL STYLES ===== */
+
+.carousel-container {
+    background: none !important;
+    /* border: none !important; */
+}
+
+.carousel-card a {
+    color: black;
+}
+
+a:has(.carousel-card-body):hover {
+    text-decoration: none;
+    color: #369;
+}
+
+
+/* ===== SECTION STYLES ===== */
+
+body {
+    font-size: 16px;
+}
+
+main .section-container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#homeCTA-section {
+	padding: 30px 0;
+}
+
+section, 
+section.page-section {
+	padding: 30px 0 !important;
+}
+
+.section-alt {
+    background-color: #DDD;
+	padding: 30px 0 !important;
+}
+
+.section-bluechip {
+    background-image: 
+        linear-gradient(rgba(255,255,255,.25), 
+        rgba(255,255,255,.25)), 
+        url('https://images.ctfassets.net/0b82pebh837v/72Ctu7oGaGNja5gHpTz4Fd/50984bad832c63d7845e3c6d511a1735/BluChips.jpg?fm=webp');
+    background-position: center;
+    background-size: cover;
+	padding: 30px 0 !important;
+}
+
+.section-bwchip {
+    background-image: 
+        linear-gradient(rgba(255,255,255,.25), 
+        rgba(255,255,255,.25)), 
+        url('https://images.ctfassets.net/0b82pebh837v/10u8y8Qcv6hkLnp1stjZZx/b9b6be999291a643f2c1cb1c22e5fc58/IMG_5559.jpg?fm=webp');
+    background-position: center;
+    background-size: cover;
+	padding: 30px 0 !important;
+}
+
+.section-pavers {
+    background-image: 
+        linear-gradient(rgba(255,255,255,.25), 
+        rgba(255,255,255,.25)), 
+        url('https://images.ctfassets.net/0b82pebh837v/4vT6cKz1jGZNVnrLM8cNHG/6520f512d7dacd00224d13e87ae8084b/IMG_6229.jpg?fm=webp');
+    background-position: center;
+    background-size: cover;
+	padding: 30px 0 !important;
+}
+
+
+.big-text {
+    margin: auto 10%;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.tight-grid,
+.section-container .row-1col {
+    gap: 0px;
+}
+
+.menu-wrapper {
+    text-align: center;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+
+/* ===== SIMPLE MENU STYLES ===== */
+
+.menu-wrapper {
+    width: 100% !important;
+}
+
+.menu, 
+.menu ul {
+    width: 100% !important;
+    padding: 0px !important;
+}
+
+.menu-item {
+    border: 0px  !important;
+    width: 20%  !important; /* 5 MENU ITEMS */
+    text-indent: 0px  !important;
+}
+
+.menu-item:not(:first-child) {
+	border-left: 0px transparent !important;
+}
+
+.menu-item:hover {
+    background-color: unset;
+}
+
+.menu-item a {
+    background: none  !important;
+    text-align: center  !important;
+    text-indent: 0px  !important;
+    height: 25px  !important;
+}
+
+.menu-item a:hover {
+	/* background: #FFF; */
+	font-size: 1.05em;
+	font-weight: bold !important;
+	border-left: none  !important;
+    text-indent: 0px  !important;
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("/images/splatter.jpg")  !important;
+    background-repeat: no-repeat  !important;
+    background-position: center  !important;
+    background-size: cover  !important; 
+}
+
+
+/* ===== FORM STYLES ===== */
+
+.display-vertical {
+    display: block;
+    margin: 5px 5px 20px 5px !important;
+    padding: 5px;
+}
+
+
+@media screen and (max-width: 480px) {
+    label, input, textarea, select, form button {
+        font-size: 1.0em !important;
+    }
+}
+
+
+/* =================
+   ===== PAGES ===== 
+   ================= */
+
+/* ===== HOME PAGE ===== */
+
+#homeCTA-section .home-cta ,
+#reviewCTA-section .home-cta,
+#contact-section .contact-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2.0em;
+    margin-bottom: 30px;
+}
+#homeCTA-section .home-cta button ,
+#reviewCTA-section .home-cta button,
+#contact-section .contact-cta button {
+    border: 1px solid #999;
+    cursor: pointer; 
+    text-decoration: underline;
+    color: #369;
+    /* .rounded; */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    font-weight: bold;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.contact-cta {
+    color: white;
+}
+
+
+#home-callouts-section {
+     .callout-image-vert {
+        width: 90%;
+    }
+}
+
+#home-reviews-section {
+	padding: 30px 0;
+	
+    .carousel-container {
+        height: 400px;
+    	border-radius: 20px;
+    }
+    .carousel-cards-container {
+        width: 60%;
+        height: 350px;
+        margin: 0 auto;
+    }
+	.carousel-card-wrapper {
+		display: flex;
+		align-items: center;
+		justify-items: center;
+	}
+    .carousel-card-body {
+        text-align: center;
+        padding-top: 40px;
+    }
+    @media screen and (max-width: 480px) {
+        .carousel-cards-container {
+            width: 90%;
+        }
+    }
+    .carousel-card-header {
+        font-size: 1.2em;
+    }
+}
+
+
+
+/* ===== PROJECTS PAGE ===== */
+
+#projects-section {
+    .carousel-container {
+        border: none
+    }
+}
+
+/* ===== PROJECT PAGE ===== */
+
+#project-carousel-section {
+    .carousel-container {
+        height: 450px;
+        border: none
+    }
+    .carousel-cards-container {
+        height: 400px;
+    }
+}

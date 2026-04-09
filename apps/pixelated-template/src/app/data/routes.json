@@ -1,0 +1,185 @@
+{
+	"siteInfo": {
+		"name": "__SITE_NAME__",
+		"author": "__SITE_NAME__",
+		"description": "__SITE_NAME__ - Modern Web Development Template",
+		"keywords": "__SITE_NAME__, web development template, modern web development",
+		"url": "__SITE_URL__",
+		"email": "__EMAIL_ADDRESS__",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/pix-bg-512.gif",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "+1-973-710-8008",
+		"address": {
+			"streetAddress": "10 Jade Circle",
+			"addressLocality": "Denville",
+			"addressRegion": "NJ",
+			"postalCode": "07834",
+			"addressCountry": "US"
+		},
+		"priceRange": "$",
+		"sameAs": [
+			"__SITE_URL__"
+		]
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/",
+			"title": "__SITE_NAME__ - Home",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "About",
+			"path": "/about",
+			"title": "__SITE_NAME__ - About",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "Blog",
+			"path": "/blog",
+			"title": "__SITE_NAME__ - Blog",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "Contact",
+			"path": "/contact",
+			"title": "__SITE_NAME__ - Contact",
+			"description": "",
+			"keywords": ""
+		}, { 
+			"name": "FAQs",
+			"path": "/faqs",
+			"title": "__SITE_NAME__ - FAQs",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "Partners",
+			"path": "/partners",
+			"title": "__SITE_NAME__ - Partners",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "Podcast",
+			"path": "/podcast",
+			"title": "__SITE_NAME__ - Podcast",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "Projects",
+			"path": "/projects",
+			"title": "__SITE_NAME__ - Projects",
+			"description": "",
+			"keywords": ""
+		} , {
+			"name": "Services",
+			"path": "/services",
+			"title": "__SITE_NAME__ - Services",
+			"description": "A list of services offered by this company.",
+			"keywords": ["__SITE_NAME__","services"]
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "__SITE_NAME__ - Page Not Found",
+					"description": "The page you requested could not be found.",
+					"keywords": ["__SITE_NAME__", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "__SITE_NAME__ - Sitemap",
+					"description": "__SITE_NAME__ sitemap.xml",
+					"keywords": ["__SITE_NAME__", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "__SITE_NAME__ - Robots.txt",
+					"description": "__SITE_NAME__ robots.txt",
+					"keywords": ["__SITE_NAME__", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "__SITE_NAME__ - Web Manifest",
+					"description": "__SITE_NAME__ web manifest",
+					"keywords": ["__SITE_NAME__", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "__SITE_NAME__ - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["__SITE_NAME__", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "__SITE_NAME__ - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["__SITE_NAME__","security txt","security"]
+				} , {
+					"name": "Style Guide",
+					"hidden": true,
+					"path": "/styleguide",
+					"title": "__SITE_NAME__ - Style Guide",
+					"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+					"keywords": ["__SITE_NAME__","style guide"]
+				} , {
+					"name": "Blog Calendar",
+					"hidden": true,
+					"path": "/blogcalendar",
+					"title": "__SITE_NAME__ - Blog Calendar",
+					"description": "",
+					"keywords": ""
+				} , {
+					"name": "Updates",
+					"hidden": true,
+					"path": "/updates",
+					"title": "__SITE_NAME__ - Updates",
+					"description": "",
+					"keywords": ""
+				} 
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": { "value": "#369", "type": "color", "group": "palette", "label": "Primary color" },
+		"secondary-color": { "value": "#BCD", "type": "color", "group": "palette", "label": "Secondary color" },
+		"accent1-color": { "value": "#CCC", "type": "color", "group": "palette", "label": "Accent color 1" },
+		"accent2-color": { "value": "#EEE", "type": "color", "group": "palette", "label": "Accent color 2" },
+		"bg-color": { "value": "#ffffff", "type": "color", "group": "palette", "label": "Background color" },
+		"text-color": { "value": "#000000", "type": "color", "group": "palette", "label": "Font color" },
+		"header-font": { "value": "\"Montserrat\", Verdana, sans-serif", "type": "font", "group": "typography", "label": "Header font" },
+		"body-font": { "value": "\"Roboto\", Arial, sans-serif", "type": "font", "group": "typography", "label": "Body font" },
+		"font-size1-min": { "value": "2.00rem", "type": "size", "group": "typography", "label": "Font size 1 min" },
+		"font-size1-max": { "value": "3.00rem", "type": "size", "group": "typography", "label": "Font size 1 max" },
+		"font-size2-min": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 2 min" },
+		"font-size2-max": { "value": "1.75rem", "type": "size", "group": "typography", "label": "Font size 2 max" },
+		"font-size3-min": { "value": "1.17rem", "type": "size", "group": "typography", "label": "Font size 3 min" },
+		"font-size3-max": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 3 max" },
+		"font-size4-min": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 4 min" },
+		"font-size4-max": { "value": "1.25rem", "type": "size", "group": "typography", "label": "Font size 4 max" },
+		"font-size5-min": { "value": "0.83rem", "type": "size", "group": "typography", "label": "Font size 5 min" },
+		"font-size5-max": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 5 max" },
+		"font-size6-min": { "value": "0.67rem", "type": "size", "group": "typography", "label": "Font size 6 min" },
+		"font-size6-max": { "value": "0.85rem", "type": "size", "group": "typography", "label": "Font size 6 max" },
+		"font-min-screen": { "value": "375px", "type": "size", "group": "typography", "label": "Font min screen" },
+		"font-max-screen": { "value": "1440px", "type": "size", "group": "typography", "label": "Font max screen" },
+		"border-radius": { "value": "0.5rem", "type": "size", "group": "layout", "label": "Border radius" },
+		"box-shadow": { "value": "0 2px 4px rgba(0,0,0,0.1)", "type": "shadow", "group": "layout", "label": "Box shadow" },
+		"transition": { "value": "all 0.3s ease", "type": "transition", "group": "layout", "label": "Transition" }
+	}
+}

@@ -1,0 +1,114 @@
+ :root {
+    --bg-color: rgb(213, 199, 186);
+    --text-color: #333;
+	--header-font: 'Bodoni Moda', serif;
+	--body-font: 'Bodoni Moda', serif;
+ }
+
+body {
+    background-color: var(--bg-color) !important;
+    font-family: var(--body-font);
+    color: var(--text-color);
+}
+
+body.buttonring .callout button:hover {
+    outline-color: var(--text-color) !important; 
+}
+
+body.buttonring .callout.overlay button:hover {
+    outline-color: var(--bg-color) !important; 
+}
+
+a, a:visited, a:hover, a:active {
+    color: var(--text-color);
+    text-decoration-color: var(--text-color);
+}
+
+nav a {
+    color: var(--text-color);
+}
+
+nav hr {
+    border-color: var(--text-color);
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 130px !important;
+    width: auto;
+    filter: grayscale(60%);
+    margin: 10px;
+}
+
+.menu-item a {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.callout {
+    .callout-title {
+        font-size: 48px;
+        color: var(--text-color);
+    }
+    .callout-subtitle {
+        font-size: 36px;
+    }
+    .callout-content {
+        font-size: 18px;
+    }
+    .callout-button button {
+        background-color: var(--text-color);
+        color: var(--bg-color);
+    }
+}
+
+.callout.overlay {
+    .callout-title {
+        font-size: 36px;
+        color: var(--bg-color);
+    }
+    img {
+        filter: brightness(50%);
+    }
+    .callout-button button {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+ }
+
+.callout.split .callout-image {
+    --do-nothing: true;
+    flex-flow: column; /* FIX */
+}
+
+.callout.split .callout-image,
+.callout.split .callout-image a {
+    flex-grow: 1; /* FIX */
+}
+
+.callout.split .callout-body {
+    border: 1px solid #333;
+}
+
+.social-container {
+    margin-bottom: 30px;
+}
+
+.details-container {
+    margin-bottom: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    .menu-wrapper,
+    .menu-wrapper * {
+        flex-wrap: wrap;
+    }
+    .details-container iframe {
+        padding-top: 20px;
+    }
+}

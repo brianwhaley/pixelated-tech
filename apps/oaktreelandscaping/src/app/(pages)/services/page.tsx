@@ -1,0 +1,153 @@
+"use client";
+
+import { Callout, PageTitleHeader, PageSection } from "@pixelated-tech/components";
+
+export default function About() {
+    
+	return (
+		<>
+
+			<PageTitleHeader title="Oaktree Services" />
+
+			<PageSection columns={2} maxWidth="1024px" padding="20px" id="primary-service-section">
+				<Callout 
+					layout="vertical"
+					img="https://images.ctfassets.net/h791s4nkwi9z/1j6SKy7OXQkXwZLuN1WPro/1a5c3dde8178c98950dc6206d43008e0/city-view.jpg"
+					title="Commercial"
+					content="As a reputable landscape company we understand that the 
+					exterior appearance of a business is a direct reflection of its 
+					professional standards and brand image. We  offer a comprehensive 
+					suite of services designed to enhance curb appeal, ensure safety, 
+					and maintain aesthetic integrity year-round. Offerings typically 
+					extend beyond basic mowing to include specialized services such as 
+					sustainable irrigation management, hardscape maintenance, and 
+					crucial winter weather services like snow and ice removal. 
+					By partnering with property managers and business owners we can 
+					ensure their grounds remain pristine, welcoming, and compliant 
+					with local regulations, freeing them to focus on core operational 
+					priorities while the landscape professionals manage the outdoor environment."
+				/>
+				<Callout 
+					layout="vertical"
+					img="https://images.ctfassets.net/h791s4nkwi9z/7zWhkHqtrgZK4EdpOzBhfQ/9b803af31a1777a83846135fbfe02ecc/garden-with-natural-vegetation-with-lots-trees-pool-that-creates-armonic-atmosphere.jpg"
+					title="Residential"
+					content="As a reputable landscape company we cater to homeowners to 
+					transform their private outdoor spaces into personalized sanctuaries 
+					and extensions of interior living areas. We collaborate closely 
+					with clients to design, install, and maintain beautiful, functional 
+					landscapes that meet the unique needs and lifestyles of families. 
+					We also provide routine maintenance—such as precision mowing and 
+					garden care—with bespoke enhancement projects, including the 
+					installation of custom patios, elegant outdoor lighting, native 
+					planting. We aim to achieve maximum curb appeal that increases 
+					the value of the home and at the same time provide a beautiful 
+					backdrop for our clients to appreciate everyday, without the them 
+					having to lift a finger."
+				/>
+			</PageSection>
+
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="secondary-service-section">
+				<Callout
+					variant="boxed grid"
+					gridColumns={{left:1, right:3}}
+					layout="horizontal"
+					direction="left"
+					img="https://images.ctfassets.net/h791s4nkwi9z/5EipAWtqUyBZyIXoGjRu3P/93520a3368de11f797ce3a423cc843f4/pexels-luis-negron-260501657-13630739.jpg"
+					title="Lawn Care"
+					content="Our comprehensive Lawn Care program is designed to cultivate a vibrant, resilient, and beautiful turf that serves as the centerpiece of your landscape. We understand that a healthy lawn requires more than just regular mowing, which is why our services extend to include professional edging, precise fertilization schedules tailored to your soil composition, and targeted weed and pest control treatments. To ensure deep root health and optimal nutrient absorption, we also offer core aeration and overseeding services, especially beneficial for thin or high-traffic areas. This meticulous, year-round approach guarantees that your grass remains lush and green, enhancing your property's overall curb appeal and providing a perfect setting for outdoor enjoyment. We are committed to using best practices to create a durable, sustainable lawn you can be proud of."
+				/>
+				<Callout
+					variant="boxed grid"
+					gridColumns={{left:3, right:1}}
+					layout="horizontal"
+					direction="right"
+					// img="/images/stock/pexels-shvetsa-5027602.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/5boSsCxiNMe5NC5RZxhl1Q/2ecc1d8b8c8dbfaeae47e1d38c49ae7b/worker-cutting-bush-with-hedge-shears-outdoors-closeup-gardening-tool.jpg"
+					title="Garden Care"
+					content="With our specialized Garden Care services, we transform your planting beds into stunning, flourishing displays that evolve with the seasons. We begin by implementing a routine maintenance schedule that includes expert pruning of all shrubs, perennials, and ornamental grasses to encourage healthy growth and desirable shapes. A key component of our service is professional mulching, which not only provides a clean, finished look but also significantly helps in retaining soil moisture, suppressing weed growth, and regulating soil temperature. Our team also manages seasonal cleanups, deadheading spent blooms, and can design and install new seasonal plantings or annual color rotations to keep your garden vibrant and interesting year-round. Let us handle the detailed work so you can relax and enjoy a meticulously maintained garden space."
+				/>
+				<Callout
+					variant="boxed grid"
+					gridColumns={{left:1, right:3}}
+					layout="horizontal"
+					direction="left"
+					img="https://images.ctfassets.net/h791s4nkwi9z/4O8TMN4425q2m6TMjq3Dca/0d60ed6dc4dfbb30837b755a4420d5ac/natural-grass-close-up.jpg"
+					title="Hardscape"
+					content="Transforming the functionality and architecture of your 
+					outdoor living space is the goal of our Hardscaping services, 
+					where we integrate durable, non-living elements to define and 
+					enhance your property. We can conceptualize and install stunning 
+					new patios for entertaining, functional retaining walls to manage 
+					slopes and add planting areas, and beautiful, safe walkways to 
+					connect different areas of your yard. Beyond basic structures, 
+					we also build custom outdoor kitchens, fire pits, and seating walls, 
+					creating personalized extensions of your indoor living space. 
+					These carefully constructed features add significant aesthetic 
+					appeal and lasting value to your home."
+				/>
+				<Callout
+					variant="boxed grid"
+					gridColumns={{left:3, right:1}}
+					layout="horizontal"
+					direction="right"
+					// img="/images/stock/outside-view-restaurant-cottage-night-time.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/1Z0D9ejLW9qJSNc8Ctddyv/a7ddb0b2923e482680ebe37f5713f123/rooftop-sunset-city-view.jpg"
+					title="Lighting"
+					content="Enhance the beauty, safety, and functionality of your 
+					property after dusk what better way to showcase your home's best 
+					features while providing essential security. We will work closely 
+					with you to create a custom lighting plan that artfully highlights 
+					architectural elements, pathways, mature trees, and garden features, 
+					transforming your outdoor space into an inviting evening oasis. 
+					We exclusively install high-quality, energy-efficient LED systems 
+					that offer superior illumination, durability, and significant 
+					long-term energy savings compared to outdated halogen options. 
+					Whether you need subtle path lighting for safe navigation, 
+					or dramatic accent lighting to enhance curb appeal, we manage 
+					the entire process from installation to ongoing maintenance and 
+					repairs. Let us illuminate your landscape, extending the enjoyment 
+					of your outdoor investment well into the night."
+				/>
+				<Callout
+					variant="boxed grid"
+					gridColumns={{left:1, right:3}}
+					layout="horizontal"
+					direction="left"
+					img="https://images.ctfassets.net/h791s4nkwi9z/77H7t1IuFc9FjKMXn72pbu/eee4e3dfb01eea84a5ea45bb8c3841f0/automatic-sprinkler-lawn-watering-system-sprays-water-circle-lawn-summer-day.jpg"
+					title="Irrigation"
+					content="Effective and efficient water delivery is paramount to 
+					the health of your entire landscape, and our Irrigation services 
+					ensure every plant receives the precise amount of hydration it needs. 
+					Our team are experienced in design, installation maintenance, and 
+					repair of custom irrigation systems, ranging from traditional 
+					sprinklers to modern, water-saving drip lines and we ensure compliance 
+					with local water conservation guidelines. Regular system audits and 
+					seasonal winterization and startup services are included to maintain 
+					peak efficiency and protect your investment from damage. Trust us 
+					to manage your water needs responsibly, promoting a healthy landscape 
+					while saving you money on utility bills."
+				/>
+				<Callout
+					variant="boxed grid"
+					gridColumns={{left:3, right:1}}
+					layout="horizontal"
+					direction="right"
+					img="https://images.ctfassets.net/h791s4nkwi9z/4ZD7kOExWrsam0kmJOsx4I/ecb691bdefbd8d936635f7af37970971/asian-man-cutting-trees-using-electrical-chainsaw.jpg"
+					title="Tree Services"
+					content="Ensuring the safety, health, and beauty of your mature trees 
+					and large shrubs is the core focus of our company We provide expert 
+					care that extends the life and vitality of your valuable woody plants. 
+					We offer strategic pruning and trimming services to remove dead or 
+					hazardous limbs, improve canopy structure, and enhance light penetration 
+					to your lawn below. When necessary, we perform safe and efficient tree 
+					and stump removal, handling all cleanup and debris hauling with the 
+					utmost care for your property. We also provide preventative maintenance, 
+					including health assessments and treatments for common diseases or pest 
+					infestations, ensuring the long-term integrity of the mature elements 
+					in your landscape."
+				/>
+			</PageSection>
+
+		</>
+	);
+}

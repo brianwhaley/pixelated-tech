@@ -1,0 +1,16 @@
+
+/* ========== ACCORDION MENU ========== */
+
+.accordion-menu-wrapper {
+	background-color: rgba(255,255,255,0.8) !important;
+}
+.accordion-menu > ul > li > a {
+	background-image: url(/images/pixelvivid/pix-bg.gif) !important;
+	background-color: rgba(255,255,255,0.8) !important;
+    background-blend-mode: lighten;
+}
+
+.accordion-menu > ul > li > a:hover {
+	background: #EDD !important;
+	background-image: url(/images/pix/pix-bg-sm-bw.gif) !important;
+}

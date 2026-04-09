@@ -1,0 +1,210 @@
+{
+	"siteInfo": {
+		"name": "PixelVivid",
+		"author": "Brian Whaley",
+		"description": "PixelVivid - Custom Painted Sunglasses and Creative Services",
+		"keywords": "pixelvivid, custom painted sunglasses, creative services, upcycling",
+		"url": "https://www.pixelvivid.com",
+		"email": "info@pixelvivid.com",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/pixelvivid/pix-512.jpg",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "(973) 710-8008",
+		"address": {
+			"streetAddress": "10 Jade Circle",
+			"addressLocality": "Denville",
+			"addressRegion": "NJ",
+			"postalCode": "07834",
+			"addressCountry": "US"
+		},
+		"priceRange": "$",
+		"sameAs": [
+			"https://www.facebook.com/pixelvivid",
+			"https://www.facebook.com/profile.php?id=61577216017129",
+			"https://twitter.com/pixelvivid2025",
+			"https://www.linkedin.com/company/pixelvivid/",
+			"https://www.pinterest.com/pixelvivid/",
+			"https://www.ebay.com/str/pixelvivid",
+			"https://www.instagram.com/pixelvivid",
+			"https://www.reddit.com/user/pixelvivid2025/",
+			"https://share.google/JhXXmqpY4m1FEc6Y1",
+			"https://www.linkedin.com/company/106825397/",
+			"https://www.facebook.com/profile.php?id=61577216017129",
+			"https://www.instagram.com/pixelated.views/",
+			"https://500px.com/brianwhaley",
+			"http://www.flickr.com/photos/brianwhaley/",
+			"https://secure.istockphoto.com/portfolio/brianwhaley",
+			"http://www.shutterstock.com/g/brianwhaley",
+			"http://www.blurb.com/user/brianwhaley",
+			"http://brianwhaley.shutterfly.com",
+			"https://blog.pixelvivid.com",
+			"https://share.google/an1Yqe6CTFA946zZV"
+		]
+	},
+	"routes": [
+		{ 
+			"name": "Home", 
+			"path": "/", 
+			"title": "PixelVivid - Home",
+			"description": "PixelVivid offers a wide varity of products and services, including custom painted sunglasses, stock photography, touchup services, and more.",
+			"keywords": "PixelVivid, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"  
+		} , {
+			"name": "About Us", 
+			"path": "/about", 
+			"title": "PixelVivid - About us",
+			"description": "PixelVivid, born during the COVID Pandemic, gives old boring sunglasses a second life, with bold vivid colors and an array of styles unique to each customer.",
+			"keywords": "PixelVivid, about us, Brian Whaley, Mary Ann Sarao, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"  
+		} , { 
+			"name": "Store", 
+			"path": "/store", 
+			"title": "PixelVivid - Custom Sunglasses Store",
+			"description": "Check out my Custom Sunglasses store where I sell my custom painted sunglasses",
+			"keywords": "PixelVivid, online store, ecommerce, custom sunglasses" 
+		} , { 
+			"name": "Sunglasses", 
+			"path": "/customsunglasses", 
+			"title": "PixelVivid - Custom Sunglasses Overview",
+			"description": "A sampling of the custom sunglasses I paint in my spare time",
+			"keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, colors, styles, feedback, examples" 
+		}, { 
+			"name": "Gallery", 
+			"path": "/customsgallery", 
+			"title": "PixelVivid - Custom Sunglasses Gallery",
+			"description": "A sampling of the custom sunglasses I paint in my spare time",
+			"keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, gallery, carousel" 
+		} , { 
+			"name": "Requests", 
+			"path": "/requests", 
+			"title": "PixelVivid - Custom Sunglass Request",
+			"description": "Request some custom sunglass work for yourself.",
+			"keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, requests, form" 
+		} , { 
+			"name": "Subscribe", 
+			"path": "/subscribe", 
+			"title": "PixelVivid - Subscribe",
+			"description": "Subscribe to the PixelVivid newsletters, announcements, and updates.",
+			"keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, subscribe, subscription, newsletter, announcement, drop, update" 
+		} , { 
+			"name": "Return Policy", 
+			"path": "/returns", 
+			"title": "PixelVivid - Return Policy",
+			"description": "PixelVivid Return Policy",
+			"keywords": "PixelVivid, return policy"  
+		} , { 
+			"name": "Contact Us", 
+			"path": "/contact", 
+			"title": "PixelVivid - Contact Us",
+			"description": "PixelVivid Contact Us",
+			"keywords": "PixelVivid, contact us"  
+		} , {
+			"name": "Frequently Asked Questions",
+			"hidden": true,
+			"path": "/faqs",
+			"title": "PixelVivid - Frequently Asked Questions",
+			"description": "A comprehensive guide to ordering, customizing, and caring for hand-painted eyewear from PixelVivid.",
+			"keywords": ["PixelVivid", "FAQs", "frequently asked questions" ]
+		} , {
+			"name": "Photography", 
+			"hidden": true,
+			"path": "/photography", 
+			"title": "PixelVivid - Photography",
+			"description": "An overview of the PixelVivid phtography portfolio.",
+			"keywords": "PixelVivid, photography, stock photography, overview, gallery, carousel, social media" 
+		} , { 
+			"name": "Preorder 2026 Collection",
+			"hidden": true,
+			"path": "/preorder-2026",
+			"title": "PixelVivid - Preorder 2026 Collection",
+			"description": "Preorder the exclusive 2026 collection of PixelVivid custom painted sunglasses.",
+			"keywords": ["PixelVivid", "preorder", "2026 collection", "custom sunglasses" ]
+		} , {
+			"name": "Style Guide",
+			"hidden": true,
+			"path": "/styleguide",
+			"title": "PixelVivid - Style Guide",
+			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+			"keywords": ["PixelVivid", "style guide" ]
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "PixelVivid - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": ["PixelVivid", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "PixelVivid - Sitemap",
+					"description": "PixelVivid sitemap.xml",
+					"keywords": ["PixelVivid", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "PixelVivid - Robots.txt",
+					"description": "PixelVivid robots.txt",
+					"keywords": ["PixelVivid", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "PixelVivid - Web Manifest",
+					"description": "PixelVivid web manifest",
+					"keywords": ["PixelVivid", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "PixelVivid - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["PixelVivid", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "PixelVivid - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["PixelVivid","security txt","security"]				} 
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": { "value": "#369", "type": "color", "group": "palette", "label": "Primary color" },
+		"secondary-color": { "value": "#BCD", "type": "color", "group": "palette", "label": "Secondary color" },
+		"accent1-color": { "value": "#CCC", "type": "color", "group": "palette", "label": "Accent color 1" },
+		"accent2-color": { "value": "#EEE", "type": "color", "group": "palette", "label": "Accent color 2" },
+		"bg-color": { "value": "#ffffff", "type": "color", "group": "palette", "label": "Background color" },
+		"text-color": { "value": "#000000", "type": "color", "group": "palette", "label": "Font color" },
+		"header-font": { "value": "\"Montserrat\", Verdana, sans-serif", "type": "font", "group": "typography", "label": "Header font" },
+		"body-font": { "value": "\"Roboto\", Arial, sans-serif", "type": "font", "group": "typography", "label": "Body font" },
+		"font-size1-min": { "value": "2.00rem", "type": "size", "group": "typography", "label": "Font size 1 min" },
+		"font-size1-max": { "value": "3.00rem", "type": "size", "group": "typography", "label": "Font size 1 max" },
+		"font-size2-min": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 2 min" },
+		"font-size2-max": { "value": "1.75rem", "type": "size", "group": "typography", "label": "Font size 2 max" },
+		"font-size3-min": { "value": "1.17rem", "type": "size", "group": "typography", "label": "Font size 3 min" },
+		"font-size3-max": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 3 max" },
+		"font-size4-min": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 4 min" },
+		"font-size4-max": { "value": "1.25rem", "type": "size", "group": "typography", "label": "Font size 4 max" },
+		"font-size5-min": { "value": "0.83rem", "type": "size", "group": "typography", "label": "Font size 5 min" },
+		"font-size5-max": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 5 max" },
+		"font-size6-min": { "value": "0.67rem", "type": "size", "group": "typography", "label": "Font size 6 min" },
+		"font-size6-max": { "value": "0.85rem", "type": "size", "group": "typography", "label": "Font size 6 max" },
+		"font-min-screen": { "value": "375px", "type": "size", "group": "typography", "label": "Font min screen" },
+		"font-max-screen": { "value": "1440px", "type": "size", "group": "typography", "label": "Font max screen" },
+		"border-radius": { "value": "0.5rem", "type": "size", "group": "layout", "label": "Border radius" },
+		"box-shadow": { "value": "0 2px 4px rgba(0,0,0,0.1)", "type": "shadow", "group": "layout", "label": "Box shadow" },
+		"transition": { "value": "all 0.3s ease", "type": "transition", "group": "layout", "label": "Transition" }
+	}
+}

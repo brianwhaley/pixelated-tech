@@ -1,0 +1,245 @@
+:root {
+    --primary-color: darkgreen;
+    --secondary-color: #090;
+    --text-color: black;
+}
+
+body {
+    background-color: white;
+}
+button {
+    /* why these dont inherit by default is beyond me */
+    font-family: inherit;
+    font-size: inherit;
+}
+
+
+h2 { font-size: clamp(2.5rem, calc(2.3rem + 1.0vw), 3.5rem) !important; }
+	/* --h3-font-size: clamp(1.17rem, calc(1.15rem + 0.25vw), 1.375rem); */
+h3 { font-size: clamp(1.15rem, calc(1.15rem + 0.25vw), 1.5rem) !important; }
+
+header {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.5), 
+        rgba(255, 255, 255, 0.5)), 
+        url(https://thumbs.dreamstime.com/b/moscow-region-aug-landscape-design-residential-house-taken-above-beautiful-landscaping-home-garden-summer-aerial-view-167797292.jpg);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+#header-logo-row {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 10px;
+
+    h1 {
+        text-align: left;
+        color: var(--primary-color);
+        display: inline-block;
+		font-size: 2rem;
+    }
+    img {
+        height: 100px;
+        width: auto;
+        padding: 0 15px;
+        mix-blend-mode: multiply;
+    }
+}
+
+main > section:first-child {
+    padding-top: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    .header-nav {
+        float: left;
+        width: 100%;
+    }
+}
+
+.menu-wrapper { 
+    .menu-item {
+        border: none;
+    }
+    .menu-item:not(:first-child) {
+        border-left: 2px solid var(--primary-color);
+    }
+    .menu-item a {
+        background: none;
+        color: var(--primary-color);
+        font-size: 16px;
+        border: none;
+    }
+    .menu-item a:hover {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+    }
+    hr {
+        display: none;
+    }
+}
+
+nav {
+    --do-nothing: true;
+}
+
+main {
+    background-color: white;
+}
+
+#header-callout-section,
+#landscape-callout-section,
+#schedule-callout-section,
+#landscape-services-section,
+#footer-callout-section {
+    .callout-header,
+    .callout-header a {
+        text-align: center;
+        font-size: 32px;
+        color: var(--primary-color);
+    }
+    .callout-content {
+        font-size: 18px;
+        color: var(--primary-color);
+        font-style: normal;
+        line-height: 1.6;
+        letter-spacing: 0em;
+    }
+    .callout-button button {
+        background-color: var(--primary-color);
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        color: white;
+    }
+}
+
+#header-callout-section {
+    .callout-title, 
+    .callout-subtitle, 
+    .callout-subtitle h3, 
+    .callout-button,
+    .callout-button button {
+        text-align: left;
+        margin: 0 !important;
+    }
+    .callout-header a { 
+        font-size: 26px;
+    }
+    .callout-subtitle { 
+        font-size: 24px;
+        color: var(--primary-color);
+    }
+}
+
+
+#schedule-callout-section {
+    .callout {
+        padding: 30px 100px;
+    }
+    .callout-image a {
+        width: 100%;
+        height: auto;
+    }
+    .callout-title {
+        text-align: left;
+    }
+}
+
+.tile-image-overlay {
+    background: rgba(0, 102, 0, .7);
+}
+
+#landscape-services-section {
+    background-image: url(https://www.bednarlandscape.com/wp-content/uploads/2024/01/bg_module2.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+#landscape-services-section {
+    .callout-image.round {
+        background-color: var(--secondary-color);
+        border: 1px solid black;
+    }
+    .callout-header,
+    .callout-header a {
+        color: white;
+    }
+    .callout-subtitle {
+        color: white;
+    }
+    .callout-content {
+        color: white;
+    }
+    .callout-button {
+        text-align: center;
+    }
+    .callout-button button {
+        background-color: var(--secondary-color);
+    }
+} 
+
+footer {
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.5), 
+        rgba(255, 255, 255, 0.5)), 
+        url(https://static.vecteezy.com/system/resources/previews/052/544/850/non_2x/fresh-green-lawn-grass-close-up-isolated-on-transparent-background-free-png.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#footer-callout-section {
+    padding: 30px 0;
+
+    .menu-wrapper {
+        margin-bottom: 20px;
+    }
+    .menu {
+        padding: 0;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    #header-callout-section,
+    #landscape-callout-section,
+    #landscape-services-section,
+    #schedule-callout-section,
+    #footer-callout-section {
+        .callout-header,
+        .callout-header a { 
+            font-size: 20px;
+        }
+        .callout-subtitle { 
+            font-size: 16px;
+            color: var(--primary-color);
+        }
+        .callout-content {
+            font-size: 14px;
+        }
+    }
+    #landscape-services-section {
+        .callout-subtitle {
+            color: white;
+        }
+    }
+    #schedule-callout-section {
+        .callout {
+            padding: 15px;
+        }
+    }   
+}
+

@@ -1,0 +1,445 @@
+{
+  "siteInfo": {
+    "name": "Manning Metalworks",
+    "author": "Manning Metalworks",
+    "description": "Manning Metalworks - Custom metal fabrication and welding services in Morris Plains, NJ. We specialize in custom metal work for residential and commercial clients, including railings, gates, furniture, and more.",
+    "keywords": "Manning Metalworks, custom metal fabrication, welding services, Morris Plains NJ, railings, gates, furniture",
+    "url": "https://www.manningmetalworks.com",
+    "email": "manningmetalworks@gmail.com",
+    "favicon": "/favicon.ico",
+    "favicon_sizes": "64x64 32x32 24x24 16x16",
+    "favicon_type": "image/x-icon",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "default_locale": "en",
+    "display": "standalone",
+    "image": "/images/logo/mm-logo-white-bg.webp",
+    "image_height": "512",
+    "image_width": "512",
+    "telephone": "+1-973-906-0441",
+    "address": {
+      "streetAddress": "24 West Hanover Avenue",
+      "addressLocality": "Morris Plains",
+      "addressRegion": "NJ",
+      "postalCode": "07950",
+      "addressCountry": "US"
+    },
+    "priceRange": "$",
+    "services": [
+      {
+        "name": "Precision Metal Fabrication",
+        "description": "Manning Metalworks provides premier residential, commercial, and municipal metal fabrication across the region. We specialize in the complete project lifecycle, from CAD-assisted design and CNC plasma cutting to high-standard AWS certified assembly.",
+        "url": "https://www.manningmetalworks.com/services",
+        "areaServed": [
+          "Morris County, New Jersey"
+        ]
+      },
+      {
+        "name": "Expert Repairs and Custom Fabrication",
+        "description": "We offer bespoke metal solutions and restoration services that off-the-shelf products simply cannot provide. Our technicians utilize MIG, TIG, and Stick welding processes to deliver high-strength repairs for everything from heavy machinery to antique ironwork.",
+        "url": "https://www.manningmetalworks.com/services",
+        "areaServed": [
+          "Morris County, New Jersey"
+        ]
+      },
+      {
+        "name": "24/7 Mobile Welding Services",
+        "description": "Our 24/7 mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide immediate, industrial-grade support for emergency structural failures and machinery repairs at any hour of the day or night.",
+        "url": "https://www.manningmetalworks.com/services",
+        "areaServed": [
+          "Morris County, New Jersey"
+        ]
+      }
+    ],
+    "sameAs": [
+      "https://www.manningmetalworks.com",
+      "https://www.facebook.com/p/Manning-Metalworks-LLC-61572722814701/",
+      "https://www.instagram.com/manning.metalworks/",
+      "https://www.linkedin.com/in/tim-manning-89736430a/",
+      "https://www.linkedin.com/in/gregory-manning-62a75428/"
+    ]
+  },
+  "routes": [
+    {
+      "name": "Home",
+      "path": "/",
+      "title": "Manning Metalworks | Custom Metal Fabrication | Morris Plains, NJ",
+      "description": "Manning Metalworks offers expert custom metal fabrication and welding services in Morris Plains, NJ. Specializing in railings, gates, and furniture for homes & businesses.",
+      "keywords": [
+        "custom metal fabrication Morris Plains NJ",
+        "welding services Morris Plains NJ",
+        "metal railings Morris Plains NJ",
+        "metal gates Morris Plains NJ",
+        "metal furniture Morris Plains NJ",
+        "residential metalwork Morris Plains",
+        "commercial metalwork Morris Plains",
+        "metal fabricator Morris Plains NJ",
+        "custom metal work Northern NJ"
+      ]
+    },
+    {
+      "name": "About Us",
+      "path": "/about-us",
+      "title": "Manning Metalworks | Custom Metal Fabrication | Morris Plains, NJ",
+      "description": "Discover Manning Metalworks, offering custom metal fabrication, welding, railings, gates, & furniture in Morris Plains, NJ for residential & commercial needs.",
+      "keywords": [
+        "Manning Metalworks",
+        "custom metal fabrication Morris Plains NJ",
+        "welding services Morris Plains NJ",
+        "metal railings Morris Plains",
+        "metal gates Morris Plains",
+        "metal furniture Morris Plains",
+        "residential metalwork Morris Plains NJ",
+        "commercial metalwork Morris Plains NJ",
+        "metal fabricator Morris Plains",
+        "Morris Plains metal fabrication",
+        "Morris County metalwork"
+      ]
+    },
+    {
+      "name": "Services",
+      "path": "/services",
+      "title": "Manning Metalworks | Custom Metal Fab & Welding | Morris Plains, NJ",
+      "description": "Manning Metalworks: Custom metal fabrication & welding services in Morris Plains, NJ. We craft railings, gates, furniture for residential & commercial clients.",
+      "keywords": [
+        "custom metal fabrication Morris Plains NJ",
+        "welding services Morris Plains NJ",
+        "metalwork Morris Plains NJ",
+        "custom railings Morris Plains",
+        "metal gates Morris Plains",
+        "custom metal furniture NJ",
+        "residential metal fabrication",
+        "commercial welding services",
+        "metal fabricator New Jersey",
+        "Morris Plains NJ welding",
+        "metal fabrication Morris Plains",
+        "welding Morris Plains"
+      ]
+    },
+    {
+      "name": "Gallery",
+      "path": "/gallery",
+      "title": "Manning Metalworks | Custom Metal Fabrication Gallery | Morris Plains, NJ",
+      "description": "Explore Manning Metalworks' gallery of custom metal fabrication and welding projects in Morris Plains, NJ. See our craftsmanship in railings, gates, furniture, and more.",
+      "keywords": [
+        "custom metal fabrication gallery Morris Plains NJ",
+        "metal welding projects Morris Plains",
+        "custom railings portfolio",
+        "metal gates examples NJ",
+        "metal furniture designs",
+        "residential metalwork gallery",
+        "commercial metal fabrication projects"
+      ],
+      "hidden": ""
+    },
+    {
+      "name": "FAQs",
+      "path": "/faqs",
+      "title": "Manning Metalworks FAQs | Metal Fabrication | Morris Plains, NJ",
+      "description": "Have questions about custom metalwork? Get answers from Manning Metalworks, your Morris Plains, NJ experts for railings, gates & furniture.",
+      "keywords": [
+        "Manning Metalworks",
+        "metal fabrication Morris Plains NJ",
+        "welding services Morris Plains",
+        "custom metalwork Morris Plains",
+        "metal railings Morris Plains NJ",
+        "metal gates Morris Plains NJ",
+        "custom furniture fabrication NJ",
+        "residential metalwork FAQs",
+        "commercial welding FAQs",
+        "metal fabrication questions"
+      ],
+      "hidden": ""
+    },
+    {
+      "name": "Blog",
+      "path": "/blog",
+      "title": "Manning Metalworks Blog | Custom Metal Fabrication & Welding | Morris Plains, NJ",
+      "description": "Explore the Manning Metalworks blog for expert articles on custom metal fabrication, welding, railings, gates, and furniture. Serving Morris Plains, Morris Plains, NJ & beyond.",
+      "keywords": [
+        "custom metal fabrication",
+        "welding services",
+        "metal railings",
+        "metal gates",
+        "metal furniture",
+        "residential metalwork",
+        "commercial metalwork",
+        "Morris Plains NJ",
+        "Morris Plains NJ",
+        "metal fabrication blog"
+      ]
+    },
+    {
+      "name": "Contact Us",
+      "path": "/contact-us",
+      "title": "Contact Manning Metalworks | Metalwork | Morris Plains, NJ",
+      "description": "Contact Manning Metalworks for custom metal fabrication, welding, railings, and gates in Morris Plains, NJ. Get a free quote for your residential or commercial project today!",
+      "keywords": [
+        "Manning Metalworks",
+        "custom metal fabrication Morris Plains NJ",
+        "welding services Morris Plains NJ",
+        "metal railings Morris Plains",
+        "metal gates Morris Plains NJ",
+        "custom metalwork",
+        "residential metal fabrication",
+        "commercial metal fabrication",
+        "contact us",
+        "metal fabricator quote"
+      ]
+    },
+    {
+      "name": "Admin",
+      "hidden": true,
+      "routes": [
+        {
+          "name": "404",
+          "path": "/404",
+          "hidden": true,
+          "title": "Manning Metalworks - Page Not Found",
+          "description": "The page you are looking for could not be found.",
+          "keywords": [
+            "Manning Metalworks",
+            "404",
+            "page not found"
+          ]
+        },
+        {
+          "name": "Sitemap",
+          "path": "/sitemap.xml",
+          "hidden": true,
+          "title": "Manning Metalworks | Sitemap | Morris Plains, NJ",
+          "description": "Manning Metalworks sitemap.xml",
+          "keywords": [
+            "Manning Metalworks",
+            "sitemap.xml"
+          ]
+        },
+        {
+          "name": "Robots.txt",
+          "path": "/robots.txt",
+          "hidden": true,
+          "title": "Manning Metalworks | Robots.txt | Morris Plains, NJ",
+          "description": "Manning Metalworks robots.txt",
+          "keywords": [
+            "Manning Metalworks",
+            "robots.txt"
+          ]
+        },
+        {
+          "name": "Web Manifest",
+          "path": "/manifest.webmanifest",
+          "hidden": true,
+          "title": "Manning Metalworks | Web Manifest | Morris Plains, NJ",
+          "description": "Manning Metalworks web manifest",
+          "keywords": [
+            "Manning Metalworks",
+            "manifest.webmanifest"
+          ]
+        },
+        {
+          "name": "Humans Txt",
+          "path": "/humans.txt",
+          "hidden": true,
+          "title": "Manning Metalworks | Humans Txt | Morris Plains, NJ",
+          "description": "Humans Txt",
+          "keywords": [
+            "Manning Metalworks",
+            "humans txt"
+          ]
+        },
+        {
+          "name": "Security Txt",
+          "hidden": true,
+          "path": "/security.txt",
+          "title": "Manning Metalworks | Security Txt | Morris Plains, NJ",
+          "description": "Security contact and vulnerability disclosure information.",
+          "keywords": [
+            "Manning Metalworks",
+            "security txt",
+            "security"
+          ]
+        },
+        {
+          "name": "Style Guide",
+          "hidden": true,
+          "path": "/styleguide",
+          "title": "Manning Metalworks | Style Guide | Morris Plains, NJ",
+          "description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+          "keywords": [
+            "Manning Metalworks",
+            "style guide"
+          ]
+        },
+        {
+          "name": "Blog Calendar",
+          "hidden": true,
+          "path": "/blogcalendar",
+          "title": "Manning Metalworks | Blog Calendar | Morris Plains, NJ",
+          "description": "",
+          "keywords": ""
+        },
+        {
+          "name": "Updates",
+          "hidden": true,
+          "path": "/updates",
+          "title": "Manning Metalworks | Updates | Morris Plains, NJ",
+          "description": "",
+          "keywords": ""
+        }
+      ],
+      "keywords": []
+    }
+  ],
+  "visualdesign": {
+    "primary-color": {
+      "value": "#369",
+      "type": "color",
+      "group": "palette",
+      "label": "Primary color"
+    },
+    "secondary-color": {
+      "value": "#BCD",
+      "type": "color",
+      "group": "palette",
+      "label": "Secondary color"
+    },
+    "accent1-color": {
+      "value": "#CCC",
+      "type": "color",
+      "group": "palette",
+      "label": "Accent color 1"
+    },
+    "accent2-color": {
+      "value": "#EEE",
+      "type": "color",
+      "group": "palette",
+      "label": "Accent color 2"
+    },
+    "bg-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "group": "palette",
+      "label": "Background color"
+    },
+    "text-color": {
+      "value": "#000000",
+      "type": "color",
+      "group": "palette",
+      "label": "Font color"
+    },
+    "header-font": {
+      "value": "\"Montserrat\", Verdana, sans-serif",
+      "type": "font",
+      "group": "typography",
+      "label": "Header font"
+    },
+    "body-font": {
+      "value": "\"Roboto\", Arial, sans-serif",
+      "type": "font",
+      "group": "typography",
+      "label": "Body font"
+    },
+    "font-size1-min": {
+      "value": "2.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 1 min"
+    },
+    "font-size1-max": {
+      "value": "3.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 1 max"
+    },
+    "font-size2-min": {
+      "value": "1.35rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 2 min"
+    },
+    "font-size2-max": {
+      "value": "1.75rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 2 max"
+    },
+    "font-size3-min": {
+      "value": "1.17rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 3 min"
+    },
+    "font-size3-max": {
+      "value": "1.35rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 3 max"
+    },
+    "font-size4-min": {
+      "value": "1.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 4 min"
+    },
+    "font-size4-max": {
+      "value": "1.25rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 4 max"
+    },
+    "font-size5-min": {
+      "value": "0.83rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 5 min"
+    },
+    "font-size5-max": {
+      "value": "1.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 5 max"
+    },
+    "font-size6-min": {
+      "value": "0.67rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 6 min"
+    },
+    "font-size6-max": {
+      "value": "0.85rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 6 max"
+    },
+    "font-min-screen": {
+      "value": "375px",
+      "type": "size",
+      "group": "typography",
+      "label": "Font min screen"
+    },
+    "font-max-screen": {
+      "value": "1440px",
+      "type": "size",
+      "group": "typography",
+      "label": "Font max screen"
+    },
+    "border-radius": {
+      "value": "0.5rem",
+      "type": "size",
+      "group": "layout",
+      "label": "Border radius"
+    },
+    "box-shadow": {
+      "value": "0 2px 4px rgba(0,0,0,0.1)",
+      "type": "shadow",
+      "group": "layout",
+      "label": "Box shadow"
+    },
+    "transition": {
+      "value": "all 0.3s ease",
+      "type": "transition",
+      "group": "layout",
+      "label": "Transition"
+    }
+  }
+}

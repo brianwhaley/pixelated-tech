@@ -23,7 +23,7 @@ export default function LayoutClient() {
 			formglow: true,
 			grayscalehover: true,
 			imgscale: true,
-			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .scrollFadeElement',
+			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, scroll-fade-element',
 		});
 	}, []);
 

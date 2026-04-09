@@ -1,0 +1,216 @@
+
+#page-header {
+	background-image: url(/images/pixelvivid/pix-bg.webp);
+	background-color: rgba(255,255,255,0.3);
+    background-blend-mode: lighten;
+}
+
+header .section-container { 
+	justify-content: space-between;
+}
+
+.pix-cart-item * {
+	/* FIX FOR SAME HEIGHT GRID COLUMNS */
+	align-content: start;
+}
+
+/* .tile-image-overlay {
+	background: linear-gradient(
+		135deg, 
+		rgba(255, 0, 0, 0.5), 
+		rgba(255, 165, 0, 0.5), 
+		rgba(255, 255, 0, 0.5), 
+		rgba(0, 128, 0, 0.5), 
+		rgba(0, 0, 255, 0.5), 
+		rgba(75, 0, 130, 0.5),
+		rgba(238, 130, 238, 0.5) 
+	);
+} */
+
+
+.tile-image-overlay {
+	background: 
+		linear-gradient( 52deg, rgba(255, 0, 0, 0.5), transparent 60% ),
+   		linear-gradient( 104deg, rgba(255, 165, 0, 0.5), transparent 60% ),
+		linear-gradient( 156deg, rgba(255, 255, 0, 0.5), transparent 60% ),
+   		linear-gradient( 208deg, rgba(0, 128, 0, 0.5), transparent 60% ),
+		linear-gradient( 260deg, rgba(0, 0, 255, 0.5), transparent 60% ),
+   		linear-gradient( 312deg, rgba(75, 0, 130, 0.5), transparent 60% ),
+		linear-gradient( 365deg, rgba(238, 130, 238, 0.5), transparent 60% );
+}
+
+.modal-image-container {
+	overflow: hidden;
+}
+
+
+
+
+/* ========================================
+    CUSTOM Pixelated  SIMPLE Menu Styles
+ ======================================== */
+
+:root {
+  --primary-color: #369;
+  --secondary-color: #CDE;
+  --accent1-color: #CCC;
+  --accent2-color: #EEE;	
+}
+
+#page-header-nav {
+    color: white;
+    z-index: 2000;
+    /* background-color: var(--accent1-color); */
+	background-image: url(/images/pixelvivid/pix-bg-lite.gif);
+    /* background-color: rgba(255, 255, 255, 0.75); */
+    /* background-blend-mode: overlay; */ /* or lighten */
+    height: 40px;
+}
+
+.fixed-header-nav {
+    z-index: 1000;
+    width: 100%;
+    position: fixed;
+    top: 60px;
+    left: 0;
+}
+
+.fixed-header-nav {
+
+    .menu-wrapper, .menu-wrapper *:not(.menu-item-hidden) {
+        display: flex;
+        flex-direction: row;
+        flex-basis: 100%;
+        justify-content: center;  
+        align-items: center;
+        text-align: center;
+    }
+
+    .menu-wrapper hr {
+        display: none;
+    }
+
+    .menu {
+        width: 100%;
+        padding: 5px 0;
+    }
+
+    .menu ul {
+        --do-nothing: true;
+    }
+
+    .menu-item {
+        background: none;
+        width: auto;
+        height: 30px;
+        border: none;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: content; /* each item is its own size instead of auto */
+		font-size: var(--font-size5);
+    }
+
+    .menu-item:hover {
+        /* background-image: url(/images/pix/pix-bg-bw.gif); */
+        background-color: var(--accent1-color);
+    }
+
+    .menu-item:not(:first-child) {
+        border-left: 2px solid var(--primary-color);
+    }
+
+    .menu-item a {
+        text-indent: unset;
+        font-size: unset;
+        background: none;
+	    line-height: unset;
+    }
+
+
+    .menu-item a:hover {
+        background: none;
+        text-indent: 0;
+        border: none;
+    }
+
+}
+
+#fixed-header-nav-spacer {
+    height: 40px;
+}
+
+@media screen and (max-width: 480px) {
+    .fixed-header-nav {
+        display: none;
+    }
+    #fixed-header-nav-spacer {
+        display: none;
+    }
+}
+
+
+/* ========================================
+    CUSTOM Pixelated ACCORDION Menu Styles
+ ======================================== */
+
+/* .accordionDown, 
+.accordionUp {
+	top: 100px;
+} */
+
+.panel-menu-button,
+#panel-menu-button {
+    display: none;
+}
+
+@media screen and (max-width: 480px) {
+    .panel-menu-button,
+    #panel-menu-button {
+        display: block;
+    }
+    /* .accordion-down, 
+    .accordion-up {
+        top: 60px;
+    } */
+}
+
+
+
+
+
+
+/* ========================================
+    CUSTOM Pixelated ACCORDION Menu Styles
+ ======================================== */
+
+#review-section {
+	padding: 30px 0;
+	
+    .carousel-container {
+        height: 400px;
+		background-color: #EEE;
+    	border-radius: 20px;
+    }
+    .carousel-cards-container {
+        width: 60%;
+        height: 350px;
+        margin: 0 auto;
+    }
+	.carousel-card-wrapper {
+		display: flex;
+		align-items: center;
+		justify-items: center;
+	}
+    .carousel-card-body {
+        text-align: center;
+        padding-top: 40px;
+    }
+    @media screen and (max-width: 480px) {
+        .carousel-cards-container {
+            width: 90%;
+        }
+    }
+    .carousel-card-header {
+        font-size: 1.2em;
+    }
+}

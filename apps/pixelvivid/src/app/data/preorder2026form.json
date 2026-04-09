@@ -1,0 +1,167 @@
+{
+	"properties": {
+		"name": "preorder-2026",
+		"id": "preorder2026Form",
+		"toggleLoading": true,
+		"openModal": true,
+		"resetForm": true
+	},
+	"fields" : [
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "from",
+				"name" : "from",
+				"value" : "contactus@pixelvivid.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "to",
+				"name" : "to",
+				"value" : "contactus@pixelvivid.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "subject",
+				"name" : "subject",
+				"value" : "PixelVivid Preorder 2026 Submit"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "domain",
+				"name" : "domain",
+				"value" : "pixelvivid.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "formName",
+				"name" : "formName",
+				"value" : "preorder-2026"
+			}
+		},{
+			"component" : "FormHoneypot",
+			"props" : {
+				"id": "winnie",
+				"name" : "website"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "firstname",
+				"name" : "firstname",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "First Name (required) : ",
+				"tooltip" : "Please type in your First Name"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "lastname",
+				"name" : "lastname",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Last Name (required) : ",
+				"tooltip" : "Please type in your Last Name"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "email",
+				"id" : "email",
+				"name" : "email",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Email Address (required) : ",
+				"validate" : "isValidEmailAddress",
+				"tooltip" : "Please type in your Email Address"
+			}
+		},{
+            "component" : "FormSelect",
+            "props" : {
+                "id" : "style",
+                "name" : "style",
+				"defaultValue" : "",
+				"multiple" : null,
+				"required" : "required",
+				"display" : "vertical",
+				"label" : "Paint Style (required) : ",
+				"options" : [
+					{ "value" : "", "text" : "" },
+					{ "value" : "2026-red-white-blue", "text" : "Red White & Blue Fade" },
+					{ "value" : "2026-lace-spray", "text" : "Lace Spray Over" },
+					{ "value" : "2026-coastal", "text" : "Coastal Blue & Tan" },
+					{ "value" : "2026-halloween-confetti", "text" : "Halloween Confetti" },
+					{ "value" : "2026-blended-candy-holographic", "text" : "Blended Candy over Holographic" },
+					{ "value" : "2026-christmas-tree", "text" : "Christmas Tree" },
+					{ "value" : "2026-custom", "text" : "Custom - Please describe your design in the Message field" }
+				],
+				"tooltip" : "Choose the paint style you would like to preorder"
+            }
+		},{
+            "component" : "FormSelect",
+            "props" : {
+                "id" : "frame",
+                "name" : "frame",
+				"defaultValue" : "",
+				"multiple" : null,
+				"required" : "required",
+				"display" : "vertical",
+				"label" : "Frame (required) : ",
+				"options" : [
+					{ "value" : "", "text" : "" },
+					{ "value" : "oakley-batwolf", "text" : "Oakley Batwolf" },
+					{ "value" : "oakley-crankshaft", "text" : "Oakley Crankshaft" },
+					{ "value" : "oakley-flakjacket", "text" : "Oakley Flak Jacket" },
+					{ "value" : "oakley-frogskins", "text" : "Oakley Frogskins" },
+					{ "value" : "oakley-fuelcell", "text" : "Oakley Fuel Cell" },
+					{ "value" : "oakley-gascan", "text" : "Oakley Gascan" },
+					{ "value" : "oakley-holbrook", "text" : "Oakley Holbrook" },
+					{ "value" : "oakley-m2frame", "text" : "Oakley M2 Frame" },
+					{ "value" : "oakley-radar", "text" : "Oakley Radar" },
+					{ "value" : "oakley-sliver", "text" : "Oakley Sliver" },
+					{ "value" : "oakley-sylas", "text" : "Oakley Sylas" },
+					{ "value" : "other-self-provided", "text" : "Other - Self Provided" },
+					{ "value" : "other", "text" : "Other - Please describe your frame in the Message field" }
+				],
+				"tooltip" : "Choose the frame you would like for your chosen paint style."
+            }
+		},{
+			"component" : "FormTextarea",
+			"props" : {
+				"id" : "message",
+				"name" : "message",
+				"rows" : "5",
+				"cols" : "30",
+				"defaultValue" : null,
+				"display" : "vertical",
+				"label" : "Message : ",
+				"tooltip": "Please enter any additional details of your preorder"
+			}
+		},{
+			"component" : "FormButton",
+			"props" : {
+				"type" : "submit",
+				"id" : "submit",
+				"text" : "Submit Request"
+			}
+		}
+	]
+}

@@ -1,0 +1,205 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "Oaktree Landscaping FAQs",
+  "description": "Frequently asked questions about Oaktree Landscaping's commercial and residential landscaping services in the Lowcountry of South Carolina and Georgia.",
+  "author": {
+    "@type": "Organization",
+    "name": "Oaktree Landscaping",
+    "url": "https://www.oaktree-landscaping.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oaktree Landscaping",
+    "url": "https://www.oaktree-landscaping.com"
+  },
+  "datePublished": "2026-01-21",
+  "dateModified": "2026-01-21",
+  "inLanguage": "en-US",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Oaktree Landscaping",
+    "url": "https://www.oaktree-landscaping.com"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.oaktree-landscaping.com/faqs"
+  },
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What commercial landscaping services does Oaktree Landscaping offer?",
+      "category": "Commercial Services",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Oaktree Landscaping provides comprehensive commercial landscape services including maintenance plans, landscape installation, irrigation system management, hardscape design, seasonal color programs, and lighting solutions.",
+          "Our tailored solutions help property managers, retail centers, office parks, and HOAs maintain curb appeal and brand presence year-round."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do your commercial services differ from what BrightView offers in Bluffton?",
+      "category": "Why Choose Oaktree",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "While companies like BrightView provide broad commercial landscape services in the Bluffton area, Oaktree Landscaping focuses on personalized service with local Lowcountry expertise, direct owner involvement, and responsive communication tuned to your property’s needs.",
+          "We emphasize strategic enhancement over transactional service and partner with clients to align maintenance with business goals."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer landscape installation and design for businesses as well as maintenance?",
+      "category": "Commercial Services",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Yes — beyond weekly or seasonal commercial maintenance, Oaktree Landscaping handles full landscape installation and design.",
+          "From concept to completion, our team works with you to implement plant selections, hardscape features, and irrigation designs that enhance both aesthetics and long-term performance."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get a custom landscape plan for my residential property?",
+      "category": "Residential Services",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Absolutely. Oaktree Landscaping offers residential landscape design services that include custom layouts, plant selection tailored to the Lowcountry climate, irrigation planning, and construction.",
+          "Whether you’re building a new outdoor space or renovating an existing one, our designers help you maximize curb appeal and enjoyment."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Oaktree Landscaping support environmentally responsible landscaping?",
+      "category": "Sustainability",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "We incorporate Lowcountry-appropriate plant species, optimized irrigation strategies, and sustainable maintenance practices to conserve water and reduce long-term costs.",
+          "By focusing on plant health and efficient systems, we help minimize environmental impact while keeping properties vibrant."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should commercial clients expect from a maintenance plan with you?",
+      "category": "Maintenance & Operations",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Commercial maintenance plans include scheduled mowing, pruning, edging, fertilization, irrigation checks, seasonal color change-outs, and debris/removal services.",
+          "Our maintenance crews are trained to uphold safety and property standards that reinforce your professional image."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When should I schedule spring or fall landscape services?",
+      "category": "Seasonal Services",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "In the Lowcountry, spring services should begin in late February to early March to optimize plant health and weed control.",
+          "Fall services are best scheduled September through November when prepping turf and plants for cooler weather improves winter survival."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do your services compare with The Greenery or Ruppert Landscape?",
+      "category": "Why Choose Oaktree",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Unlike larger national or regional providers such as The Greenery or Ruppert Landscape, Oaktree Landscaping delivers hands-on, locally owned service that values flexibility and direct customer communication.",
+          "We combine commercial-grade expertise with the community understanding that only local Lowcountry professionals can provide, ensuring responsive scheduling and customized plans."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you handle irrigation and lighting installations?",
+      "category": "Services",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Yes — we design, install, and maintain irrigation systems tuned to site conditions and plant needs, and implement outdoor lighting to extend use of outdoor spaces, enhance safety, and highlight architectural and landscape features."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a first-time consultation include?",
+      "category": "Getting Started",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Your first consultation begins with a site walk-through to identify priorities, assess site conditions, and discuss budget.",
+          "We then recommend options — whether it’s a maintenance plan, landscape refresh, or full design/build — with transparent pricing and timelines."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer irrigation winterization and storm cleanup?",
+      "category": "Maintenance & Operations",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Yes. We provide seasonal irrigation winterization to protect systems and comprehensive storm cleanup services to ensure safety and property aesthetics after severe weather."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I get a quote or schedule a site visit?",
+      "category": "Getting Started",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Visit our Contact Us page to request a quote or schedule a site visit.",
+          "We respond promptly and offer flexible appointment times to meet your commercial or residential landscaping needs."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you help with plant health care and fertilization?",
+      "category": "Plant Health Care",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Yes — Oaktree Landscaping offers plant health care solutions including fertilization, disease and pest monitoring, soil amendments, and cultural practices that improve landscape resilience throughout the seasons."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas do you serve in South Carolina and Georgia?",
+      "category": "Service Area",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "We serve the Lowcountry region of South Carolina and select service areas in Georgia, providing tailored landscape solutions adapted to each locality’s climate and soil conditions."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer service contracts for residential properties?",
+      "category": "Residential Services",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": [
+          "Yes. Residential service contracts are available for weekly, bi-weekly, and seasonal visits, and include lawn care, pruning, weed control, irrigation checks, and landscape maintenance tailored to your property’s needs."
+        ]
+      }
+    }
+  ]
+}

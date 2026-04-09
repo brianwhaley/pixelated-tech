@@ -1,0 +1,82 @@
+html, body { padding: 0; margin: 0; }
+* { box-sizing: border-box; }
+#root { min-height:100vh; }
+
+
+
+
+/* ========================================
+	ABOUT US REVIEWS Styles
+ ======================================== */
+
+ #header-section {
+	padding: 0px;
+
+	.page-section-content {
+		padding: 0px !important;
+	}
+
+	.hero {
+		margin: 0px;
+    	background-position: 50% 35%;
+		#logo-section {
+			padding: 0px;
+			img {
+				max-height: 30vh;
+				max-width: 30vh;
+			}
+		}
+	}
+ }
+
+
+
+/* ========================================
+	ABOUT US REVIEWS Styles
+ ======================================== */
+
+#reviews-section {
+	.carousel-container {
+		height: 470px;
+    	padding: 20px;
+		border-radius: 20px;
+	}
+	.carousel-cards-container {
+		height: 400px;
+	}
+	.carousel-card-wrapper {
+		display: flex;
+  		align-items: center;
+	}
+	.carousel-card-image {
+		object-fit: cover;
+		width: 100px;
+		height: 100px;
+	}
+}
+
+/* ========================================
+	MENU Styles
+ ======================================== */
+
+
+.panel-menu-button,
+#panel-menu-button {
+    display: none;
+}
+
+@media screen and (max-width: 720px) {
+	.menu-item a {
+		font-size: var(--font-size5);
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.menu-wrapper {
+		display: none;
+	}
+    .panel-menu-button,
+    #panel-menu-button {
+        display: block;
+    }
+}

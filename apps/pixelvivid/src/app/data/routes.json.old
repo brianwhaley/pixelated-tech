@@ -1,0 +1,65 @@
+{
+	"routes": [
+		{ 
+			"name": "Home", 
+			"path": "/", 
+			"title": "PixelVivid - Home",
+			"description": "PixelVivid offers a wide varity of products and services, including custom painted sunglasses, stock photography, touchup services, and more.",
+			"keywords": "PixelVivid, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"  
+		} , {
+			"name": "About Us", 
+			"path": "/about", 
+			"title": "PixelVivid - About us",
+			"description": "PixelVivid, born during the COVID Pandemic, gives old boring sunglasses a second life, with bold vivid colors and an array of styles unique to each customer.",
+			"keywords": "PixelVivid, about us, Brian Whaley, Mary Ann Sarao, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"  
+		} , { 
+			"name": "Sunglass Store", 
+			"path": "/store", 
+			"title": "PixelVivid - Custom Sunglasses Store",
+			"description": "Check out my Custom Sunglasses store where I sell my custom painted sunglasses",
+			"keywords": "PixelVivid, online store, ecommerce, custom sunglasses" 
+		} , { 
+			"name": "Sunglasses Overview", 
+			"path": "/customsunglasses", 
+			"title": "PixelVivid - Custom Sunglasses Overview",
+			"description": "A sampling of the custom sunglasses I paint in my spare time",
+			"keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, colors, styles, feedback, examples" 
+		}, { 
+			"name": "Sunglasses Gallery", 
+			"path": "/customsgallery", 
+			"title": "PixelVivid - Custom Sunglasses Gallery",
+			"description": "A sampling of the custom sunglasses I paint in my spare time",
+			"keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, gallery, carousel" 
+		} , { 
+			"name": "Custom Requests", 
+			"path": "/requests", 
+			"title": "PixelVivid - Custom Sunglass Request",
+			"description": "Request some custom sunglass work for yourself.",
+			"keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, requests, form" 
+		} , { 
+			"name": "Subscribe", 
+			"path": "/subscribe", 
+			"title": "PixelVivid - Subscribe",
+			"description": "Subscribe to the PixelVivid newsletters, announcements, and updates.",
+			"keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, subscribe, subscription, newsletter, announcement, drop, update" 
+		} , { 
+			"name": "Photography", 
+			"path": "/photography", 
+			"title": "PixelVivid - Photography",
+			"description": "An overview of the PixelVivid phtography portfolio.",
+			"keywords": "PixelVivid, photography, stock photography, overview, gallery, carousel, social media" 
+		} , { 
+			"name": "Return Policy", 
+			"path": "/returns", 
+			"title": "PixelVivid - Return Policy",
+			"description": "PixelVivid Return Policy",
+			"keywords": "PixelVivid, return policy"  
+		} , { 
+			"name": "Contact Us", 
+			"path": "/contact", 
+			"title": "PixelVivid - Contact Us",
+			"description": "PixelVivid Contact Us",
+			"keywords": "PixelVivid, contact us"  
+		}
+	]
+}

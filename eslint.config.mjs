@@ -4,6 +4,10 @@ import pluginNext from "@next/eslint-plugin-next";
 import tseslint from "typescript-eslint";
 import parser from "@typescript-eslint/parser";
 import pixelatedPlugin from "@pixelated-tech/components/scripts/pixelated-eslint-plugin.js";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default [
 	{
@@ -12,6 +16,9 @@ export default [
 			"certificates/",
 			"node_modules/**",
 			"dist/",
+			"shared/configs/**",
+			"packages/pixelated-components/src/scripts/**",
+
 		],
 	},
 	{
@@ -26,6 +33,7 @@ export default [
 				ecmaVersion: "latest",
 				sourceType: "module",
 				jsx: true,
+				tsconfigRootDir: __dirname,
 			},
 		},
 		plugins: {

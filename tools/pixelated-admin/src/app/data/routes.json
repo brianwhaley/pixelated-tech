@@ -1,0 +1,269 @@
+{
+	"siteInfo": {
+		"name": "Pixelated Admin",
+		"author": "Brian Whaley",
+		"description": "Pixelated Admin",
+		"keywords": "web development, react, typescript",
+		"url": "https://admin.pixelated.tech",
+		"email": "brian@pixelated.tech",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#336699",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/pix-bg-512.gif",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "19737108008",
+		"address": {
+			"streetAddress": "10 Jade Circle",
+			"addressLocality": "Denville",
+			"addressRegion": "NJ",
+			"postalCode": "07834",
+			"addressCountry": "United States"
+		},
+		"priceRange": "$",
+		"sameAs": [
+			"https://www.pixelated.tech"
+		]
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/"
+		},
+		{
+			"name": "Login",
+			"path": "/login"
+		},
+		{
+			"name": "Site Health",
+			"path": "/site-health"
+		},
+		{
+			"name": "Component Usage",
+			"path": "/component-usage"
+		},
+		{
+			"name": "Config Builder",
+			"path": "/configbuilder"
+		},
+		{
+			"name": "Form Builder",
+			"path": "/formbuilder"
+		},
+		{
+			"name": "Page Builder",
+			"path": "/pagebuilder"
+		},
+		{
+			"name": "Contentful Migration",
+			"path": "/contentful-migrate"
+		},
+		{
+			"name": "New Deployment",
+			"hidden": false,
+			"path": "/newdeployment"
+		},
+		{
+			"name": "Style Guide",
+			"hidden": true,
+			"path": "/styleguide",
+			"title": "Pixelated Admin - Style Guide",
+			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+			"keywords": [
+				"Pixelated Admin",
+				"style guide"
+			]
+		} , {
+			"name": "Admin",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "404", 
+					"path": "/404", 
+					"hidden": true,
+					"title": "Pixelated Admin - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": ["Pixelated Admin", "404", "page not found"]  
+				} , { 
+					"name": "Sitemap", 
+					"path": "/sitemap.xml", 
+					"hidden": true,
+					"title": "Pixelated Admin - Sitemap",
+					"description": "Pixelated Admin sitemap.xml",
+					"keywords": ["Pixelated Admin", "sitemap.xml"]  
+				} , {
+					"name" : "Robots.txt",
+					"path" : "/robots.txt",
+					"hidden": true,
+					"title": "Pixelated Admin - Robots.txt",
+					"description": "Pixelated Admin robots.txt",
+					"keywords": ["Pixelated Admin", "robots.txt"]
+				} , {
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "Pixelated Admin - Web Manifest",
+					"description": "Pixelated Admin web manifest",
+					"keywords": ["Pixelated Admin", "manifest.webmanifest"]
+				} , { 
+					"name": "Humans Txt", 
+					"path": "/humans.txt", 
+					"hidden": true,
+					"title": "Pixelated Admin - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": ["Pixelated Admin", "humans txt"] 
+				} , {
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "Pixelated Admin - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": ["Pixelated Admin","security txt","security"]				} 
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": {
+			"value": "#336699"
+		},
+		"secondary-color": {
+			"value": "#bbccdd"
+		},
+		"accent1-color": {
+			"value": "#cccccc"
+		},
+		"accent2-color": {
+			"value": "#eeeeee"
+		},
+		"bg-color": {
+			"value": "#ffffff",
+			"type": "color",
+			"group": "palette",
+			"label": "Background color"
+		},
+		"text-color": {
+			"value": "#000000",
+			"type": "color",
+			"group": "palette",
+			"label": "Font color"
+		},
+		"header-font": {
+			"value": "\"Montserrat\", Verdana, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Header font"
+		},
+		"body-font": {
+			"value": "\"Roboto\", Arial, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Body font"
+		},
+		"font-size1-min": {
+			"value": "2.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 min"
+		},
+		"font-size1-max": {
+			"value": "3.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 max"
+		},
+		"font-size2-min": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 min"
+		},
+		"font-size2-max": {
+			"value": "1.75rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 max"
+		},
+		"font-size3-min": {
+			"value": "1.17rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 min"
+		},
+		"font-size3-max": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 max"
+		},
+		"font-size4-min": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 min"
+		},
+		"font-size4-max": {
+			"value": "1.25rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 max"
+		},
+		"font-size5-min": {
+			"value": "0.83rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 min"
+		},
+		"font-size5-max": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 max"
+		},
+		"font-size6-min": {
+			"value": "0.67rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 min"
+		},
+		"font-size6-max": {
+			"value": "0.85rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 max"
+		},
+		"font-min-screen": {
+			"value": "375px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font min screen"
+		},
+		"font-max-screen": {
+			"value": "1440px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font max screen"
+		},
+		"border-radius": {
+			"value": "0.5rem",
+			"type": "size",
+			"group": "layout",
+			"label": "Border radius"
+		},
+		"box-shadow": {
+			"value": "0 2px 4px rgba(0,0,0,0.1)",
+			"type": "shadow",
+			"group": "layout",
+			"label": "Box shadow"
+		},
+		"transition": {
+			"value": "all 0.3s ease",
+			"type": "transition",
+			"group": "layout",
+			"label": "Transition"
+		}
+	}
+}

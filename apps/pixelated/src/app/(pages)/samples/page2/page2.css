@@ -1,0 +1,265 @@
+:root {
+    --primary-color: #F3EAD9; /* linen white */
+	--header-font: "Great Vibes", Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--primary-color);
+}
+
+
+body { 
+	font-family: var(--body-font); 
+	font-size: clamp(1.0rem, calc(0.9rem + 0.25vw), 1.25rem) !important; 
+}
+h1 { font-size: clamp(4.0rem, calc(3.8rem + 1.5vw), 5.0rem) !important; }
+	/* --h2-font-size: clamp(1.5rem, calc(1.4rem + 0.7vw), 2.0rem); */
+h2 { font-size: clamp(2.5rem, calc(2.3rem + 1.0vw), 3.5rem) !important; }
+	/* --h3-font-size: clamp(1.17rem, calc(1.15rem + 0.25vw), 1.375rem); */
+h3 { font-size: clamp(1.5rem, calc(1.5rem + 0.5vw), 2.5rem) !important; }
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--header-font); 
+	line-height: 1.1;
+}
+
+
+
+.negative-image {
+    filter: invert(100%) grayscale(100%) sepia(50%); /* Adjust filters as needed */
+    /* You can add more filters like brightness, contrast, etc. */
+}
+
+
+header {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--primary-color);
+}
+
+
+.header-bg, 
+.section-bg {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover; 
+    object-position: center top;
+    position: absolute; 
+    opacity: 0.3;
+    background-color: var(--primary-color);
+}
+
+
+header nav,
+header section {
+    position: relative;
+    z-index: 1;
+}
+
+#header-logo-row {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 10px;
+
+    h1 {
+        text-align: left;
+        display: inline-block;
+    }
+    img {
+        height: 100px;
+        width: auto;
+        padding: 0 15px;
+        mix-blend-mode: multiply;
+    }
+}
+
+nav {
+    display: inline-block;
+    width: 100%;
+}
+
+.logo {
+    max-width: 300px;
+    max-height: 100px;
+    margin: 5px;
+}
+.logo-image {
+    /* max-width: 60px;
+    max-height: 60px; */
+    vertical-align: middle;
+}
+.logo-text {
+    vertical-align: middle;
+    text-align: left;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.menu-wrapper { 
+    margin: 5px;
+
+    .menu-item {
+        border: none;
+    }
+    .menu-item a {
+        background: none;
+        font-size: 16px;
+        border: none;
+        color: black;
+        padding: 0 10px;
+    }
+    .menu-item a:hover {
+        background: black;
+        color: var(--primary-color);
+        border: none;
+    }
+}
+
+nav {
+    --do-nothing: true;
+}
+
+main {
+    background-color: var(--primary-color);
+}
+
+footer {
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+.social-container {
+    margin-bottom: 50px;
+}
+
+
+section {
+    position: relative;
+    overflow: hidden;
+
+    .callout {
+        z-index: 1;
+    }
+
+    .callout-header,
+    .callout-header a {
+        color: black;
+        text-align: center;
+        font-family: 'Great Vibes', cursive;
+        font-size: 32px;
+    }
+    .callout-subtitle { 
+        font-size: 24px;
+        font-weight: normal;
+    }
+    .callout-content {
+        font-size: 16px;
+        font-style: normal;
+        line-height: 1.6;
+        letter-spacing: 0em;
+    }
+    .callout .callout-button button {
+        background-color: black;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        color: var(--primary-color);
+    }
+}
+
+
+#header-callout-section .callout {
+    padding: 300px 0px 0px;
+}
+
+
+
+#main-callout-section {
+    .callout {
+        padding: 30px 15%;
+    }
+    .callout-image {
+        border: 10px solid black;
+    }
+    .callout-image a {
+        width: 100%;
+        height: auto;
+    }
+    .callout-title,
+    .callout-subtitle,
+    .callout-content {
+        text-align: right;
+    }
+}
+
+#services-section {
+    .callout {
+        padding: 400px 0 0 0;
+    }
+}
+
+.tile-image-overlay {
+    background: rgba(250, 240, 230, .5);
+}
+.tile-image-overlay-text {
+    color: black;
+}
+
+#footer-callout-section {
+    padding: 50px 0;
+
+    .menu-wrapper {
+        margin-bottom: 20px;
+    }
+    hr {
+        margin: 0px auto 20px auto;
+        width: 80%;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    main {
+        margin-top: 0;
+    }
+    nav > div {
+        width: 100%;
+    }
+    nav .menu {
+        padding: 0;
+    }
+    #header-callout-section,
+    #main-callout-section,
+    #aboutus-callout-section,
+    #services-section,
+    #footer-callout-section {
+        .callout {
+            margin: 0;
+            padding: 5px;
+        }
+        .callout-header,
+        .callout-header a { 
+            font-size: 28px;
+            text-align: center;
+        }
+        .callout-title { 
+            text-align: center;
+        }
+        .callout-subtitle { 
+            font-size: 20px;
+        }
+        .callout-content {
+            font-size: 16px;
+        }
+    }
+    #header-callout-section .callout,
+    #services-section .callout {
+        padding: 0;
+    }
+}
