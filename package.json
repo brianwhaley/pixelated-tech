@@ -1,0 +1,18 @@
+{
+  "name": "pixelated-tech",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pixelated Technologies - Unified platform monorepo",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "tools/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w packages/pixelated-components && npm run build -w apps/*",
+    "test": "npm run test -ws",
+    "test:coverage": "npm run test:coverage -ws",
+    "lint": "npm run lint -w packages/pixelated-components && npm run lint -w apps/*",
+    "dev": "npm run dev -w apps/brianwhaley"
+  }
+}
