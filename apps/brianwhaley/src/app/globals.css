@@ -1,0 +1,94 @@
+#page-header {
+	background-color: #CCC;
+	background-image: url(/images/pix/pix-bg-bw-big.gif);
+	color: #000;
+}
+
+a {
+    color: black !important;
+}
+a:hover {
+    color: #369 !important;
+}
+
+.p-resume * {
+	/* FIX FOR SAME HEIGHT GRID COLUMNS */
+	align-content: start;
+}
+
+
+/* ========================================
+=====      SLIDING PANEL MENU         =====
+======================================== */
+
+.panel-menu-button {
+	/* background-color: rgba(255,255,255,0.7); */
+	/* display: none; */
+	/* display: inline; */
+	margin: 0px 10px 0px 0px;
+	padding: 5px;
+	text-align: center;
+	width: 35px;
+
+	/* .rounded; */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+} 
+
+@media screen and (max-width: 480px) {
+	.panel-menu-button {
+		display: inline;
+	}
+}
+
+.panel-menu-header {
+	background-color: #BBB;
+	background-image: url(/images/pix/pix-bg-bw.gif) !important;
+	color: #FFFFFF;
+	padding: 15px;
+
+	/* .rounded; */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+
+/* ========================================
+============  ACCORDION MENU   ============
+======================================== */
+
+.accordion-menu-wrapper {
+	/* background: #FFF; */
+	background: rgba(208, 208, 208, 0.7) !important;
+}
+
+/* ===== LEVEL 1 ===== */
+
+.accordion-menu > ul > li > a {
+	/* this is the button */
+	background: #CCC;
+	/* background-image: url(/images/pix/pix-bg-bw.gif) !important; */
+}
+
+.accordion-menu > ul > li > a:hover {
+	/* background-image: none !important; */
+	background: #DDD !important;
+	background-image: url(/images/pix/pix-bg-sm-bw.gif) !important;
+	background-blend-mode: lighten;
+} 
+
+/* ===== LEVEL 2 ===== */
+
+.accordion-menu > ul > ul > li > a {
+	/* this is the button */
+	background: #CCC;
+	/* background-image: url(/images/pix/pix-bg-bw.gif) !important; */
+}
+
+.accordion-menu > ul > ul > li > a:hover {
+	background: #DDD !important;
+	background-image: url(/images/pix/pix-bg-sm-bw.gif) !important;
+	background-blend-mode: lighten;
+} 

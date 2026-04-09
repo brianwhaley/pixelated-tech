@@ -1,0 +1,95 @@
+
+#page-hero {
+    border: 0px !important;
+}
+
+#page-hero .carousel-container {
+    height: 150px;
+    border: 0px !important;
+}
+
+#page-hero .carousel-cards-container {
+    height: 100%;
+}
+
+#page-hero .carousel-card-wrapper { --do-nothing: true;}
+
+#page-hero .carousel-card { --do-nothing: true;}
+
+#page-hero .carousel-card-link { --do-nothing: true;}
+
+#page-hero .carousel-card-image { 
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0px !important;
+}
+
+#page-hero .carousel-card-header { 
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
+    width: 50%;
+}
+#page-hero .carousel-card-header h3 {
+    text-align: left;
+    font-size: 11px !important;
+    font-weight: normal !important;
+    color: white;
+    text-shadow: -1px 1px 1px black, 
+        1px 1px 1px black, 
+        1px -1px 1px black, 
+        -1px -1px 1px black, 
+        -1px 1px 5px black, 
+        1px 1px 5px black, 
+        1px -1px 5px black, 
+        -1px -1px 5px black;
+}
+
+#page-hero .carousel-card-subheader { 
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    width: 50%;
+    
+}
+#page-hero .carousel-card-subheader h4 {
+    text-align: right;
+    font-size: 11px !important;
+    font-weight: normal !important;
+    color: white;
+    text-shadow: -1px 1px 1px black, 
+        1px 1px 1px black, 
+        1px -1px 1px black, 
+        -1px -1px 1px black, 
+        -1px 1px 5px black, 
+        1px 1px 5px black, 
+        1px -1px 5px black, 
+        -1px -1px 5px black;
+}
+
+@media screen and (max-width: 480px) {
+    #page-hero .carousel-card-header { 
+        width: 100%;
+    }
+    #page-hero .carousel-card-header h3 {
+        text-align: center;
+    }
+    #page-hero .carousel-card-subheader { 
+        width: 0%;
+        display: none
+        
+    }
+} 
+
+#page-hero .carousel-card-body { --do-nothing: true;}
+
+#page-hero .carousel-buttons { 
+    display: none;
+}
+
+#page-hero .carousel-button { 
+    display: none;
+}
+
+#page-hero .carousel-loading { --do-nothing: true;}
