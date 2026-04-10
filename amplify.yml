@@ -6,7 +6,7 @@ applications:
         preBuild:
           commands:
             - echo "Installing dependencies for monorepo"
-            - npm ci --prefix ../../ 
+            - npm install --prefix ../../ 
             - echo "Dependencies installed"
         build:
           commands:
