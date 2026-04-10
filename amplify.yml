@@ -5,7 +5,6 @@ applications:
       phases:
         preBuild:
           commands:
-            - cd ../.. # move to monorepo root
             - rm -f package-lock.json
             - npm cache clean --force
             - rm -rf node_modules
@@ -13,7 +12,7 @@ applications:
             - rm -rf out
             - npm install --force
             - echo "Dependencies installed"
-            - npm run build
+            - npm run build --workspace=packages/pixelated-components
             - cd apps/manningmetalworks
         build:
           commands:
