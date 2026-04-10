@@ -20,7 +20,7 @@ applications:
           commands:
             - node -v
             - npm run build
-            - npm run generate-site-images
+            # - npm run generate-site-images
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
