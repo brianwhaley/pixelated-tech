@@ -5,12 +5,19 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo"
-            - npm install --prefix ../../ 
+            - cd ../..
+            - rm -f package-lock.json
+            - npm cache clean --force
+            - rm -rf node_modules
+            - npm install --force
             - echo "Dependencies installed"
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm install --force
+            - npm run build
+            - cd ../../apps/manningmetalworks
         build:
           commands:
-            - echo "Building Next.js app"
             - node -v
             - npm run build
             - npm run generate-site-images
@@ -24,6 +31,6 @@ applications:
           - '**/*'
       cache:
         paths:
-          - ../../node_modules/**/*
           - .next/cache/**/*
           - .next/static/**/*
+          - node_modules/**/*
