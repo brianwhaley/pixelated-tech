@@ -9,7 +9,7 @@ import SocialTags from "@/app/elements/socialtags";
 export default function Work() {
     
 	return (
-		<>
+		<> 
 
 			<PageSection columns={8} background="#DDD" id="about-section">
 				<PageGridItem columnStart={1} columnEnd={9}>
