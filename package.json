@@ -19,8 +19,8 @@
     "release": "bash packages/pixelated-components/src/scripts/release.sh",
     "release-monorepo": "bash packages/pixelated-components/src/scripts/release-monorepo.sh",
     "update": "bash packages/pixelated-components/src/scripts/update.sh",
-    "generate-site-images": "node packages/pixelated-components/src/scripts/generate-site-images.js",
-    "config:vault": "npx tsx packages/pixelated-components/src/scripts/config-vault.ts",
+	"generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
+	"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))') postbuild",
     "config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
     "config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc"
   },
