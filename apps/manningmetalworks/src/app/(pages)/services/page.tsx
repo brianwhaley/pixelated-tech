@@ -15,7 +15,7 @@ export default function ServicesPage() {
 					gridColumns={{left:1, right:3}}
 					layout="horizontal"
 					direction="left"
-					img="/images/stock/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
+					img="https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
 					title="Precision Metal Fabrication"
 					subtitle="Manning Metalworks provides premier residential, commercial, and municipal metal fabrication across the region. We specialize in the complete project lifecycle, from CAD-assisted design and CNC plasma cutting to high-standard AWS certified assembly."
 				/>
@@ -30,7 +30,7 @@ export default function ServicesPage() {
 					gridColumns={{left:3, right:1}}
 					layout="horizontal"
 					direction="right"
-					img="/images/mm/manning-welding.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
 					title="Expert Repairs and Custom Fabrication"
 					subtitle="We offer bespoke metal solutions and restoration services that off-the-shelf products simply cannot provide. Our technicians utilize MIG, TIG, and Stick welding processes to deliver high-strength repairs for everything from heavy machinery to antique ironwork."
 				/>
@@ -47,7 +47,7 @@ export default function ServicesPage() {
 					gridColumns={{left:1, right:3}}
 					layout="horizontal"
 					direction="left"
-					img="/images/mm/manning-mobile.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/3PNAwcHeCocC45Gha5l8nb/efd09e7c86a32611cb812290ed3aff5a/manning-mobile.jpg"
 					title="24/7 Mobile Welding Services"
 					subtitle="Our 24/7 mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide immediate, industrial-grade support for emergency structural failures and machinery repairs at any hour of the day or night."
 				/>

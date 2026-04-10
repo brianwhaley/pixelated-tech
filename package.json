@@ -6,7 +6,8 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "tools/*"
+    "tools/*",
+	"shared/*"
   ],
   "scripts": {
     "build": "npm run build -ws",

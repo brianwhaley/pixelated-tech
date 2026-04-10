@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { PageGridItem, PageSection, PageTitleHeader, PageSectionHeader } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
-import { getWordPressItems, BlogPostList, type BlogPostType } from "@pixelated-tech/components";
+import { BlogPostList, getCachedWordPressItems } from "@pixelated-tech/components";
 import { ToggleLoading } from "@pixelated-tech/components";
 import Script from "next/script";
 
@@ -11,7 +11,7 @@ const wpSite = "manningmetalworks.wpcomstaging.com";
 
 /* 
 Alternative Tag Lines
-"Morris County’s Choice for Certified Craftsmanship & 24/7 Reliability."
+"Morris County's Choice for Certified Craftsmanship & 24/7 Reliability."
 "Legacy of Excellence: Father-and-Son Owned, Artisan-Grade Fabrication."
 "From Ornamental Art to Industrial Strength—We Weld It All."
 "Your On-Site Solution for Precision Welding, Day or Night."
@@ -21,11 +21,11 @@ Alternative Tag Lines
 export default function Home() {
 
 
-	const [wpPosts, setWpPosts] = useState<BlogPostType[]>([]);
+	const [wpPosts, setWpPosts] = useState<Awaited<ReturnType<typeof getCachedWordPressItems>>>([]);
 	useEffect(() => {
 		async function fetchPosts() {
 			ToggleLoading({ show: true });
-			const posts = (await getWordPressItems({ site: wpSite, count: 1 })) ?? [];
+			const posts = (await getCachedWordPressItems({ site: wpSite, count: 1 })) ?? [];
 			if (posts) {
 				setWpPosts(posts);
 				ToggleLoading({ show: false });
@@ -59,7 +59,7 @@ export default function Home() {
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					img="/images/stock/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
+					img="https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
 					url="/services#callout-precision-metal-fabrication"
 					title="Precision Metal Fabrication"
 				/>
@@ -67,7 +67,7 @@ export default function Home() {
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					img="/images/mm/manning-welding.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
 					url="/services#callout-expert-repairs-and-custom-fabrication"
 					title="Expert Repairs and Custom Fabrication"
 				/>
@@ -75,7 +75,7 @@ export default function Home() {
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					img="/images/mm/manning-mobile.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/3PNAwcHeCocC45Gha5l8nb/efd09e7c86a32611cb812290ed3aff5a/manning-mobile.jpg"
 					url="/services#callout-247-mobile-welding-services"
 					title="24/7 Mobile Welding Services"
 				/>
@@ -89,7 +89,7 @@ export default function Home() {
 					variant="boxed grid"
 					gridColumns={{ left: 1, right: 3 }}
 					layout="horizontal"
-					img="/images/mm/manning-repair.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/3MWxQf0bBzfA9fKyX8YlR/8978cac4569a3422331f5a66313be23f/manning-repair.jpg"
 					url="/services#callout-247-mobile-welding-services"
 					subtitle="At Manning Metalworks, our reputation is forged in every weld we strike. We combine a 100% satisfaction guarantee with a sophisticated quality control system to ensure that every residential, commercial, and municipal project meets the highest industry standards for safety and durability."
 				/>

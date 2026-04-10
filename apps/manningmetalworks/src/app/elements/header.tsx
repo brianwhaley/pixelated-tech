@@ -12,7 +12,7 @@ const allRoutes = myroutes.routes;
 export default function Header() {
 
 	const videos = [
-		"/videos/0_Welding_Metal_3840x2160.mp4",
+		"https://videos.ctfassets.net/j4mgog9ij96e/5SrvQuZYq2bXRjEEtzNyYK/9d23f764e350ff8b9e1972a0b4b914b1/Welding_Metal_1920x1080.mp4",
 	];
 	const [heroVideo, setHeroVideo] = useState<string>();
 	useEffect(() => {
