@@ -64,6 +64,40 @@ applications:
             value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
 
 
+
+  #========================================
+  - appRoot: apps/jz-home-improvement
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
   #========================================
   - appRoot: apps/manningmetalworks
     customHeaders:
@@ -94,3 +128,203 @@ applications:
         headers: &page_headers
           - key: "Cache-Control"
             value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
+  #========================================
+  - appRoot: apps/oaktreelandscaping
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
+  #========================================
+  - appRoot: apps/palmetto-epoxy
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
+  #========================================
+  - appRoot: apps/pixelated
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
+  #========================================
+  - appRoot: tools/pixelated-admin
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
+  #========================================
+  - appRoot: apps/pixelvivid
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+
+
+  #========================================
+  - appRoot: apps/threemuses
+    customHeaders:
+
+      # 1. Next.js Internal Assets (Always Hashed - 1 Year)
+      - pattern: "/_next/static/**/*"
+        headers: &static_headers
+          - key: "Cache-Control"
+            value: "public, max-age=31536000, s-maxage=31536000, immutable"
+
+      # 2. Public & Image Assets (1 Week - Safe to update)
+      - pattern: "/_next/image/**/*"
+        headers: &public_headers
+          - key: "Cache-Control"
+            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+
+      - pattern: "/images/**/*"
+        headers: *public_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *public_headers
+
+      - pattern: "/videos/**/*"
+        headers: *public_headers
+
+      # 3. Everything else (HTML, Pages, etc.)
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+

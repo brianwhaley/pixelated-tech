@@ -32,3 +32,4 @@ pnpm-lock.yaml
 *.swp
 *.tsbuildinfo
 *~
+packages/pixelated-components/storybook-static/
