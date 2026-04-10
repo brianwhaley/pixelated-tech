@@ -316,7 +316,7 @@ applications:
 
 
 #========================================
-  - appRoot: apps/pixelated-components
+  - appRoot: packages/pixelated-components
     frontend:
       phases:
         preBuild:
