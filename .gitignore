@@ -18,16 +18,13 @@ next-env.d.ts
 node_modules/
 npm-debug.log*
 out/
+pixelated.config.json
 pnpm-lock.yaml
 
 /.local
 /.pnp
 /certificates
 /build
-/src/app/config/pixelated.config.json
-/src/config/pixelated.config.json
-/src/pixelated.config.json
-/src/pixelated.config.json.enc
 
 *.log
 *.pem
