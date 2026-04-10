@@ -5,6 +5,7 @@
     "remote": "brianwhaley",
     "repo": "brianwhaley",
     "healthCheckId": "8907c3f0-265e-4942-8bbc-767b4bc03ea9",
+	"amplifyAppId": "d2ysf7fqwwsmjl",
     "url": "https://www.brianwhaley.com",
     "ga4PropertyId": "494828096",
     "gscSiteUrl": "https://www.brianwhaley.com"
@@ -15,6 +16,7 @@
     "remote": "informationfocus",
     "repo": "informationfocus",
     "healthCheckId": "c075c675-ebc7-4661-b715-fe0303c6c012",
+	"amplifyAppId": "d1p5oldpldjwqc",
     "url": "https://www.informationfocus.net",
     "ga4PropertyId": "517625381",
     "gscSiteUrl": "sc-domain:informationfocus.net"
@@ -25,6 +27,7 @@
     "remote": "jz-home-improvement",
     "repo": "jz-home-improvement",
     "healthCheckId": "c5937d51-e262-4b3d-87d5-141e273dd288",
+	"amplifyAppId": "d3ffn9mtbcdkb8",
     "url": "https://www.jzhomeimprovement.com",
     "ga4PropertyId": "526756156",
     "gscSiteUrl": "sc-domain:jzhomeimprovement.com"
@@ -34,6 +37,7 @@
     "localPath": "/Volumes/btw_x10_pro/Git/leadscraper",
     "remote": "leadscraper",
     "repo": "leadscraper",
+	"amplifyAppId": "",
     "ga4PropertyId": "GA4_PROPERTY_ID_HERE",
     "gscSiteUrl": "sc-domain:leadscraper.com"
   },
@@ -43,6 +47,7 @@
 	"remote": "manningmetalworks",
 	"repo": "manningmetalworks",
 	"healthCheckId": "",
+	"amplifyAppId": "d3jndv57oz5non",
 	"url": "https://www.manningmetalworks.com",
 	"ga4PropertyId": "",
 	"gscSiteUrl": "",
@@ -54,6 +59,7 @@
     "remote": "oaktreelandscaping",
     "repo": "oaktreelandscaping",
     "healthCheckId": "a98e1373-2f41-45f6-89d2-5ff71c60c238",
+	"amplifyAppId": "dc5rw5lojrc0t",
     "url": "https://www.oaktree-landscaping.com",
     "ga4PropertyId": "516538573",
     "gscSiteUrl": "sc-domain:oaktree-landscaping.com"
@@ -64,6 +70,7 @@
     "remote": "palmetto-epoxy",
     "repo": "palmetto-epoxy",
     "healthCheckId": "985f8951-64f6-422c-b5a8-e357b3f36a68",
+	"amplifyAppId": "d3qn08icex2pfd",
     "url": "https://www.palmetto-epoxy.com",
     "ga4PropertyId": "492316713",
     "gscSiteUrl": "sc-domain:palmetto-epoxy.com"
@@ -74,6 +81,7 @@
     "remote": "pixelated",
     "repo": "pixelated",
     "healthCheckId": "92f4a0d8-db33-4115-9a20-71886509eb9b",
+	"amplifyAppId": "d1bwvapspanbnf",
     "url": "https://www.pixelated.tech",
     "ga4PropertyId": "414312932",
     "gscSiteUrl": "sc-domain:pixelated.tech"
@@ -84,6 +92,7 @@
     "remote": "pixelated-admin",
     "repo": "pixelated-admin",
     "healthCheckId": "87fde80b-6a16-4a61-bd4d-43050634e2af",
+	"amplifyAppId": "d1otn7ep5wx13i",
     "url": "https://admin.pixelated.tech",
     "ga4PropertyId": "414312932",
     "gscSiteUrl": "https://admin.pixelated.tech"
@@ -94,6 +103,7 @@
     "remote": "pixelated-components",
     "repo": "pixelated-components",
     "healthCheckId": "865c6d61-e882-4386-9d35-a275ebefd587",
+	"amplifyAppId": "d2nsl6hjtzqw3d",
     "url": "https://storybook.pixelated.tech",
     "ga4PropertyId": "414312932",
     "gscSiteUrl": "https://storybook.pixelated.tech"
@@ -103,6 +113,7 @@
     "localPath": "/Volumes/btw_x10_pro/Git/pixelated-template",
     "remote": "pixelated-template",
     "repo": "pixelated-template",
+	"amplifyAppId": "",
     "ga4PropertyId": "GA4_PROPERTY_ID_HERE",
     "gscSiteUrl": "sc-domain:pixelatedtemplate.com"
   },
@@ -112,9 +123,22 @@
     "remote": "pixelvivid",
     "repo": "pixelvivid",
     "healthCheckId": "42cb79db-889f-4bbb-b698-0548e168a5fa",
+	"amplifyAppId": "d2yn1gtc7ig0hi",
     "url": "https://www.pixelvivid.com",
     "ga4PropertyId": "494907112",
     "gscSiteUrl": "https://www.pixelvivid.com",
 	"googleMapsPlaceId": "ChIJ_6tnLDW5nyARFR6EtthB4c4"
+  },
+  {
+    "name": "threemuses",
+    "localPath": "/Volumes/btw_x10_pro/Git/threemuses",
+    "remote": "threemuses",
+    "repo": "threemuses",
+    "healthCheckId": "4",
+	"amplifyAppId": "d17pj30yytnnjd",
+    "url": "https://www.thethreemusesofbluffton.com",
+    "ga4PropertyId": "",
+    "gscSiteUrl": "https://www.thethreemusesofbluffton.com",
+	"googleMapsPlaceId": ""
   }
 ]
