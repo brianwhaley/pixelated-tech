@@ -5,21 +5,24 @@ applications:
       phases:
         preBuild:
           commands:
+            - echo "Installing dependencies for monorepo..."
             - cd ../..
-            - rm -f package-lock.json
-            - npm cache clean --force
-            - rm -rf node_modules
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
             - npm install --force
             - echo "Dependencies installed"
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm install --force
-            - npm run build
-            - cd ../../apps/manningmetalworks
         build:
           commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/manningmetalworks
+            - echo "Building Next.js app..."
             - node -v
             - npm run build
+            - ls -R . # This will show you where files actually are
             # - npm run generate-site-images
         postBuild:
           commands:
