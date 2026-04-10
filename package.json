@@ -1,6 +1,6 @@
 {
   "name": "pixelated-tech",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Pixelated Technologies - Unified platform monorepo",
   "workspaces": [
