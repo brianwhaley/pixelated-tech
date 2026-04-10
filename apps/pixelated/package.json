@@ -26,7 +26,6 @@
 		"update-all": "npm run update && UPDATES=$(npm outdated --dev | awk 'NR>1 {print $1\"@\"$3}') && [ -n \"$UPDATES\" ] && echo \"$UPDATES\" | xargs npm install --force --save-dev; UPDATES=$(npm outdated --optional | awk 'NR>1 {print $1\"@\"$3}') && [ -n \"$UPDATES\" ] && echo \"$UPDATES\" | xargs npm install --force --save-optional; npm audit fix"
 	},
 	"dependencies": {
-		"@aws-amplify/adapter-nextjs": "^1.7.2",
 		"@aws-sdk/core": "^3.973.26",
 		"date-fns": "^4.1.0",
 		"globals": "^17.4.0",
