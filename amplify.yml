@@ -1,6 +1,7 @@
 version: 1
 applications:
-  - frontend:
+  - appRoot: $AMPLIFY_MONOREPO_APP_ROOT
+    frontend:
       phases:
         preBuild:
           commands:
@@ -34,4 +35,3 @@ applications:
           - .next/cache/**/*
           - .next/static/**/*
           - node_modules/**/*
-      appRoot: apps/manningmetalworks
