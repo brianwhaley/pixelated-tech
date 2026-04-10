@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 import path from "path";
 import { getBaseNextConfig } from '../../shared/configs/next.config.base';
+import { withAmplifyHosting } from '@aws-amplify/adapter-nextjs';
 
 const nextConfig: NextConfig = {
 	...getBaseNextConfig(),
@@ -17,4 +18,4 @@ const nextConfig: NextConfig = {
 	},
 };
 
-export default nextConfig;
+export default withAmplifyHosting(nextConfig);

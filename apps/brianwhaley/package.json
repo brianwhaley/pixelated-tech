@@ -15,6 +15,7 @@
 		"release:prep": "npm run lint && npm run build"
 	},
 	"dependencies": {
+		"@aws-amplify/adapter-nextjs": "^1.7.2",
 		"@pixelated-tech/components": "*",
 		"date-fns": "^4.1.0",
 		"globals": "^17.4.0",

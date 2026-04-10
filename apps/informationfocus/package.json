@@ -21,6 +21,7 @@
 		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
 	},
 	"dependencies": {
+		"@aws-amplify/adapter-nextjs": "^1.7.2",
 		"@pixelated-tech/components": "^3.15.1",
 		"html-entities": "^2.6.0",
 		"md5": "^2.3.0",
