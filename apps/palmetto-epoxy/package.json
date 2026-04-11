@@ -20,20 +20,15 @@
 		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
 		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
 	},
-	"scripts-unused": {
-		"dev": "next dev --turbopack"
-	},
 	"dependencies": {
-		"@pixelated-tech/components": "^3.15.1",
-		"html-entities": "^2.6.0",
-		"md5": "^2.3.0",
+		"@next/third-parties": "^16.2.2",
+		"@pixelated-tech/components": "workspace:*",
 		"next": "^16.2.2",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4"
+		"prop-types": "^15.8.1",
+		"react": "^19.2.4"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",
-		"@next/third-parties": "^16.2.2",
 		"@types/node": "^25.5.2",
 		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",

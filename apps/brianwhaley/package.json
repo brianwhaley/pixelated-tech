@@ -22,18 +22,13 @@
 
 	},
 	"dependencies": {
-		"@pixelated-tech/components": "*",
-		"date-fns": "^4.1.0",
-		"globals": "^17.4.0",
-		"html-entities": "^2.6.0",
-		"md5": "^2.3.0",
+		"@pixelated-tech/components": "workspace:*",
 		"next": "^16.2.2",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4"
+		"prop-types": "^15.8.1",
+		"react": "^19.2.4"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",
-		"@eslint/js": "9.39.4",
 		"@eslint/json": "^1.2.0",
 		"@next/eslint-plugin-next": "^16.2.2",
 		"@next/third-parties": "^16.2.2",
@@ -54,7 +49,5 @@
 		"typescript-eslint": "^8.58.0"
 	},
 	"optionalDependencies": {
-		"@eslint/js": "9.39.4",
-		"eslint": "9.39.4"
 	}
 }

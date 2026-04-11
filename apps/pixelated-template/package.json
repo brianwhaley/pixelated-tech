@@ -18,21 +18,13 @@
 		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
 	},
 	"dependencies": {
-		"@pixelated-tech/components": "^3.15.1",
-		"html-entities": "^2.6.0",
-		"md5": "^2.3.0",
+		"@pixelated-tech/components": "workspace:*",
 		"next": "^16.2.2",
-		"prop-types": "^15.8.1",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4",
-		"sass": "^1.99.0"
+		"react": "^19.2.4"
 	},
 	"devDependencies": {
-		"@types/md5": "^2.3.6",
 		"@types/node": "^25.5.2",
-		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",
-		"@types/react-dom": "^19.0.6",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"eslint-import-resolver-typescript": "^4.4.4",

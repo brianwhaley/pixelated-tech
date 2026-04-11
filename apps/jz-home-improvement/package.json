@@ -18,14 +18,9 @@
 		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
 	},
 	"dependencies": {
-		"@pixelated-tech/components": "^3.15.2",
-		"html-entities": "^2.6.0",
-		"md5": "^2.3.0",
+		"@pixelated-tech/components": "workspace:*",
 		"next": "^16.2.3",
-		"prop-types": "^15.8.1",
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5",
-		"sass": "^1.99.0"
+		"react": "^19.2.5"
 	},
 	"devDependencies": {
 		"@next/eslint-plugin-next": "^16.2.3",
@@ -63,7 +58,5 @@
 		"url": "https://github.com/brianwhaley/pixelated-template.git"
 	},
 	"optionalDependencies": {
-		"eslint": "9.39.4",
-		"eslint-config-next": "^16.2.1"
 	}
 }
