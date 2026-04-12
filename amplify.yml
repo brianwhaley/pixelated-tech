@@ -16,7 +16,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -58,7 +57,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -100,7 +98,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -142,7 +139,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -184,7 +180,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -226,7 +221,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -268,7 +262,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -310,7 +303,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -352,7 +344,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -392,7 +383,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:
@@ -434,7 +424,6 @@ applications:
             # - rm -rf node_modules
             - node -v && npm -v
             - pwd
-            - ls -la package.json package-lock.json
             - npm install --force
             - echo "Dependencies installed"
         build:

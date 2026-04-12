@@ -11,7 +11,7 @@
 		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
 	},
 	"dependencies": {
-		"@pixelated-tech/components": "workspace:*",
+		"@pixelated-tech/components": "*",
 		"md5": "^2.3.0",
 		"next": "^16.2.2",
 		"puppeteer": "^24.40.0",
