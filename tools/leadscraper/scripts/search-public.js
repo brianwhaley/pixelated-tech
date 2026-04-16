@@ -22,19 +22,31 @@ function parseArgs(argv) {
 }
 
 function listFiles(pattern) {
-	// simple glob for public/*.json patterns
-	if (pattern === 'public/*.json' || pattern === 'public/*.json') {
-		return fs.readdirSync('public').filter(f => f.endsWith('.json')).map(f => path.join('public', f));
+	const patterns = pattern.split(',').map(p => p.trim()).filter(Boolean);
+	const files = [];
+	for (const pat of patterns) {
+		if (pat.includes('*')) {
+			const dir = path.dirname(pat) || '.';
+			const base = path.basename(pat);
+			if (!fs.existsSync(dir)) continue;
+			const regex = new RegExp('^' + base.split('*').map(part => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*') + '$');
+			files.push(...fs.readdirSync(dir).filter(f => regex.test(f)).map(f => path.join(dir, f)));
+			continue;
+		}
+		if (fs.existsSync(pat)) {
+			files.push(pat);
+			continue;
+		}
+		// if the path doesn't exist, treat as directory pattern if possible
+		const dirMatch = pat.match(/^(.+)\/[.a-zA-Z0-9_-]+$/);
+		if (dirMatch) {
+			const dir = dirMatch[1];
+			if (fs.existsSync(dir)) {
+				files.push(path.join(dir, path.basename(pat)));
+			}
+		}
 	}
-	// support simple wildcard *.json in a directory
-	const m = pattern.match(/^(.+)\/(\*\.json)$/);
-	if (m) {
-		const dir = m[1];
-		if (!fs.existsSync(dir)) return [];
-		return fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => path.join(dir, f));
-	}
-	// fallback: literal path
-	return pattern.split(',').map(p => p.trim()).filter(Boolean);
+	return files;
 }
 
 function parseFilter(spec) {
@@ -124,7 +136,13 @@ async function main(argv) {
 	for (const f of files) {
 		let obj;
 		try { obj = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { console.error('parse failed', f, e); continue; }
-		const rows = Array.isArray(obj.results) ? obj.results : [];
+		const rows = Array.isArray(obj.results)
+			? obj.results
+			: Array.isArray(obj.processed)
+				? obj.processed
+				: Array.isArray(obj)
+					? obj
+					: [];
 		for (let i = 0; i < rows.length; i++) {
 			const r = rows[i];
 			const ok = matchers.every(m => m(r));

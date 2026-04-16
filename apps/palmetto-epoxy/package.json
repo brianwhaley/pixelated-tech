@@ -1,6 +1,6 @@
 {
 	"name": "palmetto-epoxy",
-	"version": "0.4.7",
+	"version": "0.4.11",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -16,19 +16,20 @@
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "npm run update && npm run lint && npm run build",
-		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
-		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
+		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@next/third-parties": "^16.2.2",
+		"@next/third-parties": "^16.2.4",
 		"@pixelated-tech/components": "*",
-		"next": "^16.2.2",
+		"next": "^16.2.4",
 		"prop-types": "^15.8.1",
 		"react": "^19.2.4"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",
+		"@eslint/js": "9.39.4",
 		"@types/node": "^25.5.2",
 		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",
@@ -43,7 +44,5 @@
 		"typescript-eslint": "^8.58.0",
 		"webpack": "^5.105.4"
 	},
-	"optionalDependencies": {
-		"eslint": "9.39.4"
-	}
+	"optionalDependencies": {}
 }

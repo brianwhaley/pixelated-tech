@@ -1,6 +1,6 @@
 {
 	"name": "PixelVivid",
-	"version": "3.1.14",
+	"version": "3.1.18",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -16,13 +16,13 @@
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "npm run update && npm run lint && npm run build",
-		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
-		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
+		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
-		"next": "^16.2.2",
+		"next": "^16.2.4",
 		"prop-types": "15.8.1",
 		"react": "^19.2.4"
 	},
@@ -31,7 +31,6 @@
 		"@eslint/js": "9.39.4",
 		"@eslint/json": "^1.2.0",
 		"@next/eslint-plugin-next": "^16.2.2",
-		"@next/third-parties": "^16.2.2",
 		"@types/estree": "^1.0.8",
 		"@types/node": "^25.5.2",
 		"@types/prop-types": "^15.7.15",
@@ -42,12 +41,12 @@
 		"css-loader": "^7.1.4",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
-		"eslint-plugin-react": "^7.37.5",
 		"sass": "^1.99.0",
 		"sass-loader": "^16.0.7",
 		"style-loader": "^4.0.0",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.0"
 	},
+	"optionalDependencies": {},
 	"overrides": {}
 }

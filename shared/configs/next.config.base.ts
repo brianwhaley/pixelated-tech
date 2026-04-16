@@ -18,6 +18,12 @@ export function getBaseNextConfig(): NextConfig {
 		},
 		transpilePackages: ['@pixelated-tech/components'],
 		trailingSlash: false,
+		reactStrictMode: false,
+		webpack: (config: any, options: any) => {
+			config.resolve = config.resolve || {};
+			config.resolve.fallback = { fs: false, path: false };
+			return config;
+		},
 		typescript: {
 			ignoreBuildErrors: true,
 		},

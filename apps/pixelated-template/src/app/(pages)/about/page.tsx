@@ -12,16 +12,14 @@ export default function About() {
 	const [ profile1, setProfile1 ] = useState<GravatarProfile | null>(null);
 
 	useEffect(() => {
-		if (email1) {
-			getGravatarProfile(email1)
-				.then((data) => {
-					setProfile1(data);
-				})
-				.catch(() => {
-					// Silently handle CORS or network errors
-					setProfile1(null);
-				});
-		}
+		getGravatarProfile(email1)
+			.then((data) => {
+				setProfile1(data);
+			})
+			.catch(() => {
+				// Silently handle CORS or network errors
+				setProfile1(null);
+			});
 	}, [ email1 ]); 
 
 	const mycards = [

@@ -304,6 +304,8 @@ applications:
             - node -v && npm -v
             - pwd
             - npm install --force
+            # This app requires config decryption before build, unlike other amplify app sections
+            - if [ -n "$PIXELATED_CONFIG_KEY" ]; then npm run config:decrypt || (echo "pixelated.config.json decrypt failed" && exit 1); else echo "PIXELATED_CONFIG_KEY not set; skipping config decrypt"; fi 
             - echo "Dependencies installed"
         build:
           commands:
@@ -318,6 +320,7 @@ applications:
             - npm run generate-site-images
         postBuild:
           commands:
+            # This postbuild inject is kept only for pixelated-admin and differs from other amplify app sections
             - echo "Calling Config Vault postbuild"
             - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
       artifacts:

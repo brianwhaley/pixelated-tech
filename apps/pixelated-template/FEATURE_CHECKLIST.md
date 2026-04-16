@@ -8,26 +8,91 @@ This checklist serves two purposes:
 1. **Features**: A comprehensive list of what's included in the template
 2. **Adoption**: Step-by-step guide for adopting the template to a new customer project
 
+## Standard Site Structure
+
+The repository defines shared standards for all customer sites and template apps.
+
+- Use a single shared page route group: `src/app/(pages)/(home)/page.tsx` for the home page and keep all page routes under `src/app/(pages)/`
+- Keep shared Next.js configuration centralized in `shared/configs/next.config.base.ts`
+- Set `reactStrictMode: false` in the shared base config for consistent behavior across all sites
+- Apply webpack browser fallback handling in the shared base config with `config.resolve.fallback = { fs: false, path: false }`
+- Keep per-site `next.config.ts` focused on app-specific aliasing and redirects only
+- All apps under `/apps/*` are private packages and should use `private: true`
+- Only include `@next/third-parties` in apps that import it
+- All apps should expose shared utility scripts such as `generate-site-images` and config helpers
+- TypeScript-based apps should use `.tsx` for React component source files
+
 ## Template Features
 
-### Core Framework
+### Core Development Framework
 - **Next.js 16** with App Router (src/app directory structure)
-- **TypeScript** for type safety and better development experience
+- **TypeScript 6** for type safety and better development experience
 - **React 19** with latest features and performance optimizations
-- **ESLint** configuration for code quality and consistency
+- **ESLint 9** configuration for code quality and consistency
 
-### UI & Styling
-- **Pixelated Components Library** - Pre-built, reusable components for common UI elements
-- **SCSS/Sass** support for advanced styling capabilities
-- **Responsive Design** - Mobile-first approach with flexible layouts
-- **Visual Design System** - Configurable design tokens (colors, fonts, spacing) via routes.json
-- **App-level loading & skeleton UI** — canonical `SkeletonLoading` available at `src/app/loading.tsx` (consistent page-level loading state)
-- **App Router global error boundary** — accessible `global-error` at `src/app/global-error.tsx` (branded, testable error UI)
+### Foundation Features
+- Cache Manger for standard cache management
+- CSS priority and load time amanagement
+- Image priority and load time management
+- Intersection observer for managing events above the fold / within the viiewport
+- Dynamic route management and metadata loading for pages via layout.tsx
+- MicroInteractions centralized via flags on layout.tsx
+- Proxy handler for Content Security management and standardized response headers
+- Standard use of Rich Schemas for SEO / AEO - BlogPosting, Breadcrumb, FAQ, LocalBusiness, Podcast, Product, Recipe, Review, Services, Website
+- App Router global error boundary — accessible `global-error` at `src/app/global-error.tsx` (branded, testable error UI)- SmartFetch to help manage Next based caching of API data via fetch
+- URL Builder for key-value pairs, properties, and directories
+- Well-Known txt pages such as humans.txt, security.txt
+- A general set of other utilities managing a wide variety of functions
+
+### Caching
+- Cache Manager to manage localstorage caching on demand
+- SmartImage - leverage Next based image caching
+- Next.cofig.js - caching for images
+- customHttp.yml - cache strategy for CloudFront and edge caching via Amplify
+
+### Foundation Pages
+- 404 Error Page / Not Found page
+- Global Error page
+- Humans.txt
+- Loading page
+- Manifest.webmanifest page
+- Robots.txt
+- Security.txt
+- Dynamically loaded sitemap.xml driven by content and integrations via pixelated.config.json config management
+- Style Guide
+- App-level loading & skeleton UI — canonical `SkeletonLoading` available at `src/app/loading.tsx` (consistent page-level loading state)
+
+### Development Tools and CI / CD
+- **Setup Script** - Automated project initialization and configuration
+- **Build Scripts** - Development, build, and deployment commands
+- **Package Update Script**
+- **Release Script**
+- **TypeScript Configuration** - Optimized tsconfig.json settings
+- **Package Management** - NPM scripts for common tasks
+- **Environment Variables** - Support for .env files and runtime configuration
+- **Centralized Config Managment** All integration configuration ( ie Contentful, Cloudinary, Ebay, Flickr, Google APIs, Wordpress, Yelp, etc) are all centralized in the config/pixelated.config.json file, and properly encrypted / decrypted as necessary for CI/CD and Build
+
+### Content Management
+- **JSON-based Configuration** - Easy-to-edit site data in routes.json
+- **Component-based Architecture** - Modular, reusable page components
+- **Image Optimization** - Next.js built-in image handling
+- **Config Provider** - PixelatedServerConfigProvider for centralized configuration management
 
 ### Routing & Navigation
 - **File-based Routing** - Automatic route generation from routes.json configuration
 - **Dynamic Navigation** - Header, footer, and navigation components
 - **SEO-friendly URLs** - Clean, readable URL structures
+
+### UI & Styling
+- **Pixelated Components Library** - Pre-built, reusable components for common UI elements
+- **General Components** - Accordion, Callout, Carousel, CountUp, FAQ Accordion, Hero, Markdown Display, Menus (accordion, expando, simple), Modal, Semantic (pagesection, pagesectionheader, pagetitleheader, pagegriditem, pageflexitem), sidepanel, SmartImage, SmartVideo, Split Scroll, Tab, Table, Tiles, Timeline
+- **Content Components** - Buzzword Bingo, Resume, Recipe, NerdJokes
+- **Integration Components** - Calendly, Cloudinary, Contentful, Flickr, Gemini, Google (reviews, analytics, maps, places, search), Gravatar, Hubspot, Instagram, LoremIpsum, Spotify, Wordpress, Yelp
+- **Shopping Cart Functionality** - Integrates with PayPal
+- **SiteBuilder** - Configuration Builder (SiteInfo, Routes, VisualDesign), Form Builder, Page Builder, 
+- **SCSS/Sass** support for advanced styling capabilities
+- **Responsive Design** - Mobile-first approach with flexible layouts
+- **Visual Design System** - Configurable design tokens (colors, fonts, spacing) via routes.json
 
 ### SEO & Performance
 - **Meta Tags** - Automatic generation from route configuration
@@ -40,18 +105,6 @@ This checklist serves two purposes:
 - **Automated Rich Schemas** - LocalBusiness, WebSite, Breadcrumb, Product, Services, BlogPosts, Podcast, FAQ, Review, Resume, Recipe
 - ** Automaed SEO features**  - Sitemap.xml, Robots.txt, Humans.txt, Security.txt, Manifest.webmanifest
 
-### Development Tools
-- **Setup Script** - Automated project initialization and configuration
-- **Build Scripts** - Development, build, and deployment commands
-- **TypeScript Configuration** - Optimized tsconfig.json settings
-- **Package Management** - NPM scripts for common tasks
-- **Environment Variables** - Support for .env files and runtime configuration
-
-### Content Management
-- **JSON-based Configuration** - Easy-to-edit site data in routes.json
-- **Component-based Architecture** - Modular, reusable page components
-- **Image Optimization** - Next.js built-in image handling
-- **Config Provider** - PixelatedServerConfigProvider for centralized configuration management
 
 ## Adoption Checklist
 

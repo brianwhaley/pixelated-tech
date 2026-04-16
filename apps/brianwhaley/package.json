@@ -1,6 +1,6 @@
 {
 	"name": "brianwhaley",
-	"version": "2.7.4",
+	"version": "2.7.8",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -16,38 +16,40 @@
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "npm run update && npm run lint && npm run build",
-		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
-		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
-
+		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
+		"@aws-sdk/client-amplify": "^3.1030.0",
+		"@aws-sdk/client-cloudwatch": "^3.1030.0",
+		"@aws-sdk/client-iam": "^3.1030.0",
+		"@aws-sdk/client-route-53": "^3.1030.0",
 		"@pixelated-tech/components": "*",
-		"next": "^16.2.2",
+		"happy-dom": "^20.9.0",
+		"next": "^16.2.4",
 		"prop-types": "^15.8.1",
 		"react": "^19.2.4"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",
+		"@eslint/js": "9.39.4",
 		"@eslint/json": "^1.2.0",
 		"@next/eslint-plugin-next": "^16.2.2",
-		"@next/third-parties": "^16.2.2",
 		"@types/node": "^25.5.2",
 		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"@typescript-eslint/eslint-plugin": "^8.58.0",
-		"@typescript-eslint/parser": "^8.58.0",
+		"@typescript-eslint/eslint-plugin": "^8.58.2",
+		"@typescript-eslint/parser": "^8.58.2",
 		"css-loader": "^7.1.4",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
-		"eslint-plugin-react": "^7.37.5",
 		"sass": "^1.99.0",
 		"sass-loader": "^16.0.7",
 		"style-loader": "^4.0.0",
 		"typescript": "^6.0.2",
-		"typescript-eslint": "^8.58.0"
+		"typescript-eslint": "^8.58.2"
 	},
-	"optionalDependencies": {
-	}
+	"optionalDependencies": {}
 }

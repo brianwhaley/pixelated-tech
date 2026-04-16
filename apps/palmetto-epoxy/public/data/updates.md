@@ -1,5 +1,14 @@
 # Palmetto Epoxy -- Updates
 
+## 2026-04-15 Update
+
+* [ x ] Move meeting to April 22
+* [ x ] Thank you for the payment for March!
+* [ x ] Looks like Dennis got a request for paver sealing quote yesterday… good timing with the blog post!  It looks like they are really starting to make some traction.  
+* [  ] I am working on a post related to site safety, and plan on including info related to 2 day installs for summertime heat
+* [  ] I got the information about Clay, dod you want me to add any additional details about your other employees?  I thought including a bit about the gentleman doing resin countertops would be a good idea, focusing on business expansion, hiring, etc.  
+* [  ] I will be working on your google business profile again this week, getting that back up and running.  I have reached out to the google community to get some help from them about exactly what is wrong.  
+* [  ] No new reviews on Facebook, and one of the last emails from the site mentioned a referral.  That is all I have seen for the referral program.  
 
 ## 2026-04-02 Update
 * summertime - 2 day jobs because of the heat - do a blog post?

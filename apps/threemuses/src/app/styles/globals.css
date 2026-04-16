@@ -3,7 +3,9 @@ html, body { padding: 0; margin: 0; }
 #root { min-height:100vh; }
 
 
-
+section.page-section {
+    padding: 20px;
+}
 
 /* ========================================
 	ABOUT US REVIEWS Styles

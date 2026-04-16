@@ -6,7 +6,7 @@ import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 export default function SewingPage() {
 	return (
 		<>
-			<PageSection columns={1} maxWidth="100%" id="header-section">
+			<PageSection columns={1} maxWidth="100%" id="sewing-section">
 				<PageTitleHeader title="Erato's Sewing Studio" />
 				<div>
 					<p>

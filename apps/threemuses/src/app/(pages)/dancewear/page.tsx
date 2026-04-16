@@ -6,7 +6,7 @@ import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 export default function DancewearPage() {
 	return (
 		<>
-			<PageSection columns={1} maxWidth="100%" id="header-section">
+			<PageSection columns={1} maxWidth="100%" id="dancewear-section">
 				<PageTitleHeader title="Terpsichore's Dancewear" />
 				<div>
 					<p>

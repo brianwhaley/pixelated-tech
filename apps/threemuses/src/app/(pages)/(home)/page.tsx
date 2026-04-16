@@ -8,7 +8,7 @@ import { Callout } from '@pixelated-tech/components';
 export default function Home() {
 	return (
 		<>
-			<PageSection columns={1} maxWidth="100%" id="header-section">
+			<PageSection columns={1} maxWidth="100%" id="welcome-section">
 				<PageTitleHeader title="Welcome to The Three Muses of Bluffton" />
 				<div>
 					<p>

@@ -20,7 +20,10 @@ export default function Header() {
 					height="40vh">
 					<PageSection columns={1} maxWidth="100%" id="logo-section">
 						<PageGridItem>
-							<SmartImage src="/images/logo/three-muses-color-round.png" fetchPriority="high" alt="The Three Muses of Bluffton Logo"/>
+							<SmartImage 
+								src="/images/logo/three-muses-color-round.png" 
+								aboveFold={true} 
+								alt="The Three Muses of Bluffton Logo"/>
 						</PageGridItem>
 					</PageSection>
 				</Hero>

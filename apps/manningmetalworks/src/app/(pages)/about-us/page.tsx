@@ -88,27 +88,15 @@ export default function AboutUsPage() {
 			</PageSection>
 
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="bio-section">
+			<PageSection columns={1} maxWidth="768px" padding="20px" id="bio-section">
 				<PageSectionHeader title="Meet the Team" />
 				<Callout
 					variant="boxed grid"
 					gridColumns={{left:1, right:3}}
-					layout="horizontal"
-					direction="left"
+					layout="vertical"
 					img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
-					title="Tim Manning | Founder & Lead Fabricator"
-					subtitle="With a career forged in some of the most prestigious ornamental and structural shops in the industry, Tim brings an artisan's eye and an engineer's precision to every project."
-					content="Tim Manning established Manning Metalworks on the principle that high-end craftsmanship should be accessible to residential, commercial, and municipal clients alike. His professional journey includes years of experience at La Forge De Style, where he mastered the intricate details of elite-level ornamental ironwork and fine-scale fabrication. Tim also spent significant time at White Iron LLC, where he honed his skills in heavy-duty structural welding and developed the robust industry relationships he maintains today. Now leading the shop in Morris Plains, Tim oversees every project to ensure it meets his uncompromising standards for structural integrity and aesthetic finish."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:1, right:3}}
-					layout="horizontal"
-					direction="left"
-					img="https://images.ctfassets.net/j4mgog9ij96e/3MWxQf0bBzfA9fKyX8YlR/8978cac4569a3422331f5a66313be23f/manning-repair.jpg"
-					title="Greg Manning | Partner & Certified Welder"
-					subtitle="Bringing a lifelong commitment to precision and care from the fire department, Greg transitioned into the family business to provide a unique, detail-oriented approach to metalwork."
-					content="Greg Manning represents the 'father' in our son-and-father-owned partnership, joining the firm after a distinguished career as a firefighter with the FDNY. This background in the fire service instilled in Greg a deep-seated discipline and a 'measure twice, cut once' mentality that is rare in the construction trades. After completing his formal welding certification, Greg stepped into the shop to merge his attention to detail with the technical demands of modern fabrication. His presence ensures that Manning Metalworks operates with a level of organization and safety that reflects his decades of professional service, providing our clients with peace of mind and reliable results."
+					title="Tim and Greg Manning"
+					subtitle="The Son-and-Father Fabrication Duo"
 				/>
 			</PageSection>
 

@@ -1,48 +1,54 @@
 {
-  "name": "pixelated-tech",
-  "version": "1.0.9",
-  "private": true,
-  "description": "Pixelated Technologies - Unified platform monorepo",
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "tools/*",
-    "shared/*"
-  ],
-  "scripts": {
-    "build": "npm run build -ws",
-    "test": "npm run test -ws",
-    "test:coverage": "npm run test:coverage -ws",
-    "lint": "npm run lint -ws",
-    "release:prep": "bash packages/pixelated-components/src/scripts/release.sh --prep",
-    "release:simple": "bash packages/pixelated-components/src/scripts/release.sh --simple",
-    "release": "bash packages/pixelated-components/src/scripts/release.sh",
-    "release-monorepo": "bash packages/pixelated-components/src/scripts/release-monorepo.sh",
-    "update": "bash packages/pixelated-components/src/scripts/update.sh",
-    "generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
-    "config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
-    "config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
-    "config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc"
-  },
-  "dependencies": {
-    "@aws-sdk/client-amplify": "^3.1028.0",
-    "@aws-sdk/client-cloudwatch": "^3.1028.0",
-    "@aws-sdk/client-iam": "^3.1028.0",
-    "@aws-sdk/client-route-53": "^3.1028.0",
-    "@next/third-parties": "^16.2.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@vitest/coverage-v8": "^4.1.4",
-    "@vitest/ui": "^4.1.4",
-    "eslint": "^10.2.0",
-    "vitest": "^4.1.4"
-  },
-  "optionalDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@vitest/coverage-v8": "^4.1.4",
-    "@vitest/ui": "^4.1.4",
-    "eslint": "^10.2.0",
-    "vitest": "^4.1.4"
-  }
+	"name": "pixelated-tech",
+	"version": "1.0.9",
+	"private": true,
+	"description": "Pixelated Technologies - Unified platform monorepo",
+	"workspaces": [
+		"packages/*",
+		"apps/*",
+		"tools/*",
+		"shared/*"
+	],
+	"scripts": {
+		"build": "npm run build -ws",
+		"test": "npm run test -ws",
+		"test:coverage": "npm run test:coverage -ws",
+		"lint": "npm run lint -ws",
+		"generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
+		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
+		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
+		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
+		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+		"release:simple": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))') --simple",
+		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
+	},
+	"scripts-disabled": {
+		"release:monorepo": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))') --monorepo"
+	},
+	"dependencies": {
+		"@aws-sdk/client-amplify": "^3.1028.0",
+		"@aws-sdk/client-cloudwatch": "^3.1028.0",
+		"@aws-sdk/client-iam": "^3.1028.0",
+		"@aws-sdk/client-route-53": "^3.1028.0",
+		"@next/third-parties": "^16.2.3",
+		"axe-core": "^4.11.3",
+		"next-auth": "^4.24.14"
+	},
+	"devDependencies": {
+		"@eslint/js": "9.39.4",
+		"@testing-library/jest-dom": "^6.0.0",
+		"@testing-library/react": "^16.3.2",
+		"@vitejs/plugin-react": "^6.0.1",
+		"@vitest/coverage-v8": "^4.1.4",
+		"@vitest/ui": "^4.1.4",
+		"eslint": "9.39.4",
+		"jsdom": "^29.0.2",
+		"vitest": "^4.1.4"
+	},
+	"optionalDependencies": {},
+	"overrides": {
+		"react": "19.2.5",
+		"react-dom": "19.2.5"
+	}
 }

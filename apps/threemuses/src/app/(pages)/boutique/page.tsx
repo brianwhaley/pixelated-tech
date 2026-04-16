@@ -6,7 +6,7 @@ import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 export default function BoutiquePage() {
 	return (
 		<>
-			<PageSection columns={1} maxWidth="100%" id="header-section">
+			<PageSection columns={1} maxWidth="100%" id="boutique-section">
 				<PageTitleHeader title="Thalia's Boutique" />
 				<div>
 					<p>

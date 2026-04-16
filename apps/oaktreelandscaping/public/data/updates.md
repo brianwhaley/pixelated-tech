@@ -1,5 +1,33 @@
 # Oaktree Landscaping -- Updates
 
+
+## 2026-04-15 Update
+* Quote - Wexford Village
+* a lot bigger than Park Plaza
+* They are happy with who they have now
+* Need to be competitive - both cost as well as innovative ideas
+* It is about landscaping, but it is also about art
+* Maybe having a program manager to manage the site
+* gardens that are tiered, times, and consistent across the whole facility
+* quick trips is 33,000 sqft - wexford is bigger
+* Quote structure:
+	1. About Oaktree
+	2. Oaktree Projects
+	3. Wexford Village Today
+	4. What is missing
+	5. How Oaktree can solve the problem
+* Something innovative like SCAD environment installations
+* need to scale but with less people 0 2 crews instead of 1
+* Other goings on with the web site
+	1. added prospects to wordpress
+	2. use list for social media follows
+	3. manage unsubscribers
+	4. BBB for more prospects
+	5. Add park Plaza photos to site and to social
+* Regroup Monday @ 4pm
+
+
+## 2026-03 Updates
 1. Create Lists of Targeted companies
 * Hilton Head has lots of little plazas
 * Quick Trip

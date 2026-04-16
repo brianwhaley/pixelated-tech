@@ -1,6 +1,6 @@
 {
 	"name": "oaktreelandscaping",
-	"version": "1.1.6",
+	"version": "1.1.10",
 	"private": true,
 	"scripts": {
 		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3007 --experimental-https",
@@ -12,16 +12,17 @@
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "npm run update && npm run lint && npm run build",
-		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
-		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
+		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
-		"next": "^16.2.3",
+		"next": "^16.2.4",
 		"react": "^19.2.5"
 	},
 	"devDependencies": {
+		"@eslint/js": "9.39.4",
 		"@types/node": "^25.5.2",
 		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",
@@ -30,7 +31,5 @@
 		"eslint-config-next": "^16.2.3",
 		"typescript": "^6.0.2"
 	},
-	"optionalDependencies": {
-		"eslint": "9.39.4"
-	}
+	"optionalDependencies": {}
 }

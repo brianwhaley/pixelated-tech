@@ -10,7 +10,7 @@ export default function FAQsPage() {
 		<>
 			<SchemaFAQ faqsData={faqsData} />
 
-			<PageSection columns={1} maxWidth="1024px" id="header-section">
+			<PageSection columns={1} maxWidth="1024px" id="faq-header-section">
 				<PageTitleHeader
 					title="Frequently Asked Questions"
 					subtitle="Find answers to common questions about our web design and development services"

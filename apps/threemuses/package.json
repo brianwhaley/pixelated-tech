@@ -1,8 +1,13 @@
 {
 	"name": "threemuses",
-	"version": "0.1.15",
-	"private": false,
+	"version": "0.1.19",
+	"private": true,
 	"description": "Pixelated starter template for Next.js, Typescript, and common configs",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/brianwhaley/pixelated-template.git"
+	},
 	"scripts": {
 		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3011 --experimental-https",
 		"build": "npm run clean && NODE_ENV=production next build --webpack",
@@ -13,16 +18,17 @@
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "npm run update && npm run lint && npm run build",
-		"release": "./node_modules/@pixelated-tech/components/dist/scripts/release.sh",
-		"update": "bash node_modules/@pixelated-tech/components/dist/scripts/update.sh"
+		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
-		"next": "^16.2.2",
+		"next": "^16.2.4",
 		"react": "^19.2.4"
 	},
 	"devDependencies": {
+		"@eslint/js": "9.39.4",
 		"@types/md5": "^2.3.6",
 		"@types/node": "^25.5.0",
 		"@types/prop-types": "^15.7.15",
@@ -33,24 +39,10 @@
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"typescript": "^6.0.2"
 	},
+	"optionalDependencies": {},
 	"overrides": {
 		"@aws-sdk/xml-builder": {
 			"fast-xml-parser": "^5.3.4"
 		}
-	},
-	"eslintConfig": {
-		"settings": {
-			"import/resolver": {
-				"typescript": {
-					"alwaysTryTypes": true,
-					"project": "./tsconfig.json"
-				}
-			}
-		}
-	},
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/brianwhaley/pixelated-template.git"
 	}
 }
