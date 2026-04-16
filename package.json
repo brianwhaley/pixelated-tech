@@ -1,6 +1,6 @@
 {
 	"name": "pixelated-tech",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"private": true,
 	"description": "Pixelated Technologies - Unified platform monorepo",
 	"workspaces": [
@@ -19,7 +19,6 @@
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
 		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
-		"release:simple": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))') --simple",
 		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
@@ -37,6 +36,8 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "9.39.4",
+		"@storybook/react-dom-shim": "^10.1.4",
+		"@storybook/react-webpack5": "^10.3.5",
 		"@testing-library/jest-dom": "^6.0.0",
 		"@testing-library/react": "^16.3.2",
 		"@vitejs/plugin-react": "^6.0.1",
