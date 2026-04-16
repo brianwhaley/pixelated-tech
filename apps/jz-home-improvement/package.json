@@ -24,6 +24,7 @@
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
+		"glob": "^13.0.6",
 		"next": "^16.2.4",
 		"react": "^19.2.5"
 	},
@@ -43,7 +44,6 @@
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.1"
 	},
-	"optionalDependencies": {},
 	"overrides": {
 		"@aws-sdk/xml-builder": {
 			"fast-xml-parser": "^5.3.4"

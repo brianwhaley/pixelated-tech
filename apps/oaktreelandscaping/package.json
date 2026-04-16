@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
+		"glob": "^13.0.6",
 		"next": "^16.2.4",
 		"react": "^19.2.5"
 	},
@@ -30,6 +31,5 @@
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.3",
 		"typescript": "^6.0.2"
-	},
-	"optionalDependencies": {}
+	}
 }

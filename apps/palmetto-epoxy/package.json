@@ -23,6 +23,7 @@
 	"dependencies": {
 		"@next/third-parties": "^16.2.4",
 		"@pixelated-tech/components": "*",
+		"glob": "^13.0.6",
 		"next": "^16.2.4",
 		"prop-types": "^15.8.1",
 		"react": "^19.2.4"
@@ -43,6 +44,5 @@
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.0",
 		"webpack": "^5.105.4"
-	},
-	"optionalDependencies": {}
+	}
 }

@@ -26,6 +26,7 @@
 		"@aws-sdk/client-iam": "^3.1030.0",
 		"@aws-sdk/client-route-53": "^3.1030.0",
 		"@pixelated-tech/components": "*",
+		"glob": "^13.0.6",
 		"happy-dom": "^20.9.0",
 		"next": "^16.2.4",
 		"prop-types": "^15.8.1",
@@ -50,6 +51,5 @@
 		"style-loader": "^4.0.0",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.2"
-	},
-	"optionalDependencies": {}
+	}
 }

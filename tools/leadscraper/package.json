@@ -16,6 +16,8 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
+		"glob": "^13.0.6",
+		"next": "^16.2.4",
 		"puppeteer": "^24.40.0"
 	},
 	"devDependencies": {
@@ -27,13 +29,11 @@
 		"@types/react-dom": "^19.2.3",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
-		"next": "^16.2.4",
 		"typescript": "^6.0.2"
 	},
 	"overrides": {
 		"@aws-sdk/xml-builder": {
 			"fast-xml-parser": "^5.3.4"
 		}
-	},
-	"optionalDependencies": {}
+	}
 }
