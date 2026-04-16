@@ -1,18 +1,17 @@
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
 import path from 'path';
+import rootConfig from '../../shared/configs/vitest.config.base.ts';
 
 export default defineConfig({
-	plugins: [react()],
+	...rootConfig,
 	test: {
-		// eslint-disable-next-line pixelated/no-hardcoded-config-keys -- vitest config, not pixelated config
-		environment: 'jsdom',
+		...rootConfig.test,
 		setupFiles: ['./src/test/setup.ts'],
 		globals: true,
 	},
 	resolve: {
 		alias: {
-			'@': path.resolve(__dirname, './src'),
+			'@': path.resolve(process.cwd(), './src'),
 		},
 	},
 });

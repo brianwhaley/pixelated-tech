@@ -1,5 +1,8 @@
+ 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TEST_CONFIG } from '@/test/fixtures';
+
+vi.unmock('@pixelated-tech/components/server');
 
 // Helper to mock the config module before importing auth module
 const fakeConfig = {
@@ -30,8 +33,6 @@ describe('NextAuth config (server)', () => {
 	it('throws when required values are missing', async () => {
 		vi.resetModules();
 		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({}) }));
-		await expect(async () => {
-			await import('@/lib/auth');
-		}).rejects.toThrow('nextAuth.secret not configured');
+		await expect(import('@/lib/auth')).rejects.toThrow('nextAuth.secret not configured');
 	});
 });

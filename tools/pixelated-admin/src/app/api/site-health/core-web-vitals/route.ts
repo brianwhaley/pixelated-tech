@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
+import * as fs from 'fs';
 import path from 'path';
 import { performCoreWebVitalsAnalysis, CoreWebVitalsData } from '@pixelated-tech/components/adminserver';
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 	try {
 		// Read sites configuration
 		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
-		const sitesData = await fs.readFile(sitesPath, 'utf-8');
+		const sitesData = await fs.promises.readFile(sitesPath, 'utf-8');
 		const sites: Site[] = JSON.parse(sitesData);
 
 		// Check if a specific site was requested
