@@ -3,6 +3,293 @@ version: 1
 applications:
 
 
+  #========================================
+  - appRoot: apps/brianwhaley
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/brianwhaley
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+  #========================================
+  - appRoot: apps/informationfocus
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/informationfocus
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/jz-home-improvement
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/jz-home-improvement
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/manningmetalworks
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/manningmetalworks
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/oaktreelandscaping
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/oaktreelandscaping
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/palmetto-epoxy
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/palmetto-epoxy
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/pixelated
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/pixelated
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
 #========================================
   - appRoot: tools/pixelated-admin
     frontend:
@@ -47,3 +334,123 @@ applications:
           - .next/static/**/*
           - node_modules/**/*
 
+
+#========================================
+  - appRoot: packages/pixelated-components
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building Next.js app..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build --legacy-peer-deps
+            - echo "Building Storybook with extra memory to avoid CI OOM"
+            - NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook --legacy-peer-deps
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: storybook-static
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+
+#========================================
+  - appRoot: apps/pixelvivid
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/pixelvivid
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/threemuses
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing dependencies for monorepo..."
+            - cd ../..
+            # - rm -f package-lock.json
+            # - npm cache clean --force
+            # - rm -rf node_modules
+            - node -v && npm -v
+            - pwd
+            - npm install --force
+            - echo "Dependencies installed"
+        build:
+          commands:
+            - echo "Building dependent monorepo packages..."
+            - cd packages/pixelated-components
+            - rm -rf dist
+            - npm run build
+            - cd ../../apps/threemuses
+            - echo "Building Next.js app..."
+            - node -v
+            - npm run build
+            - npm run generate-site-images
+        postBuild:
+          commands:
+            - echo "Calling Config Vault postbuild"
+            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
