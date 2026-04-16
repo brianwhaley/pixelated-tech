@@ -305,7 +305,9 @@ applications:
             - pwd
             - npm install --force
             # This app requires config decryption before build, unlike other amplify app sections
-            - if [ -n "$PIXELATED_CONFIG_KEY" ]; then npm run config:decrypt || (echo "pixelated.config.json decrypt failed" && exit 1); else echo "PIXELATED_CONFIG_KEY not set; skipping config decrypt"; fi 
+            # THEORY: This will work if installing pixelated-components from an npm package
+            # THEORY: Since we switched to using the monorepo version of pixelated-components this seems to be breaking
+            # - if [ -n "$PIXELATED_CONFIG_KEY" ]; then npm run config:decrypt || (echo "pixelated.config.json decrypt failed" && exit 1); else echo "PIXELATED_CONFIG_KEY not set; skipping config decrypt"; fi 
             - echo "Dependencies installed"
         build:
           commands:

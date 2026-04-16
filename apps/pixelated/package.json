@@ -28,6 +28,7 @@
 	"dependencies": {
 		"@pixelated-tech/components": "*",
 		"glob": "^13.0.6",
+		"next": "^16.2.4",
 		"prop-types": "15.8.1",
 		"react": "^19.2.4"
 	},
@@ -45,7 +46,6 @@
 		"css-loader": "^7.1.4",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
-		"next": "^16.2.4",
 		"sass": "^1.99.0",
 		"sass-loader": "^16.0.7",
 		"style-loader": "^4.0.0",
