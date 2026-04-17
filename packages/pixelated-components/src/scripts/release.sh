@@ -636,30 +636,6 @@ step_create_github_release() {
     fi
 }
 
-step_npm_publish() {
-    echo ""
-    echo "📚 Step $((STEP_COUNT++)): Publishing to npm..."
-    echo "================================================="
-    if [ "$CONTEXT_TYPE" != "component" ]; then
-        echo "ℹ️  Not a component library; skipping npm publish"
-        return
-    fi
-    
-    read -p "Publish to npm? (y/N): " publish_npm
-    publish_npm=${publish_npm:-n}
-    
-    if [[ "$publish_npm" =~ ^[Yy] ]]; then
-        if npm publish --access public; then
-            echo "✅ Published to npm"
-        else
-            echo "❌ Failed to publish to npm"
-            return 1
-        fi
-    else
-        echo "ℹ️  Skipping npm publish"
-    fi
-}
-
 step_git_subtree_deploy() {
     echo ""
     echo "🚀 Step $((STEP_COUNT++)): Git Subtree Push (if applicable)..."
@@ -767,7 +743,6 @@ run_full_workflow() {
     step_push_tags
     step_push_to_main
     step_create_github_release
-    step_npm_publish
     step_git_subtree_deploy
     print_summary_full
 }
