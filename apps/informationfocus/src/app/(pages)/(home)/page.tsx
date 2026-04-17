@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React from "react"; 
 import { PageSectionHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
