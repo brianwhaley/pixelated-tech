@@ -10,34 +10,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/brianwhaley/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/brianwhaley
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/brianwhaley
+                npm run generate-site-images -w apps/brianwhaley
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -56,34 +59,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/informationfocus/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/informationfocus
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/informationfocus
+                npm run generate-site-images -w apps/informationfocus
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -102,34 +108,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/jz-home-improvement/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/jz-home-improvement
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/jz-home-improvement
+                npm run generate-site-images -w apps/jz-home-improvement
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -148,34 +157,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/manningmetalworks/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/manningmetalworks
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/manningmetalworks
+                npm run generate-site-images -w apps/manningmetalworks
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -194,34 +206,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/oaktreelandscaping/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/oaktreelandscaping
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/oaktreelandscaping
+                npm run generate-site-images -w apps/oaktreelandscaping
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -240,34 +255,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/palmetto-epoxy/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/palmetto-epoxy
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/palmetto-epoxy
+                npm run generate-site-images -w apps/palmetto-epoxy
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -286,34 +304,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/pixelated/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/pixelated
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/pixelated
+                npm run generate-site-images -w apps/pixelated
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -332,39 +353,44 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(tools/pixelated-admin/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
                 cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../tools/pixelated-admin
-            # Decrypt after shared package build so @pixelated-tech/components/scripts/config-vault.js resolves correctly.
-            # This app still requires plaintext pixelated.config.json before the Next build.
-            - if [ -n "$PIXELATED_CONFIG_KEY" ]; then npm run config:decrypt || (echo "pixelated.config.json decrypt failed" && exit 1); else echo "PIXELATED_CONFIG_KEY not set; skipping config decrypt"; fi
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building dependent monorepo packages..."
+                npm run build -w packages/pixelated-components
+                cd ../../tools/pixelated-admin
+                # Decrypt after shared package build so @pixelated-tech/components/scripts/config-vault.js resolves correctly.
+                # This app still requires plaintext pixelated.config.json before the Next build.
+                if [ -n "$PIXELATED_CONFIG_KEY" ]; then npm run config:decrypt || (echo "pixelated.config.json decrypt failed" && exit 1); else echo "PIXELATED_CONFIG_KEY not set; skipping config decrypt"; fi
+                echo "Building Next.js app..."
+                node -v
+                npm run build
+                npm run generate-site-images
+              fi
         postBuild:
           commands:
-            # This postbuild inject is kept only for pixelated-admin and differs from other amplify app sections
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                echo "Calling Config Vault postbuild"
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -383,32 +409,39 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
+              # Check changes for the shared components package only
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
                 cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building Next.js app..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build --legacy-peer-deps
-            - echo "Building Storybook with extra memory to avoid CI OOM"
-            - NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook --legacy-peer-deps
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p storybook-static
+              else
+                echo "Building shared components package..."
+                cd packages/pixelated-components
+                rm -rf dist
+                npm run build --legacy-peer-deps
+                echo "Building Storybook with extra memory to avoid CI OOM"
+                NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook --legacy-peer-deps
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: storybook-static
         files:
@@ -428,34 +461,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/pixelvivid/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/pixelvivid
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/pixelvivid
+                npm run generate-site-images -w apps/pixelvivid
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
@@ -474,34 +510,37 @@ applications:
         preBuild:
           commands:
             - |
-                APP_DIR=$(basename $(pwd))
-                cd ../..
-                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
-                if [ "$CHANGED" -eq 0 ]; then
-                  echo "No changes detected for $APP_DIR. Skipping build."
-                  exit 0
-                fi
-                echo "Changes detected for $APP_DIR. Proceeding with build."
-            - echo "Installing dependencies for monorepo..."
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+              # Check changes for the app OR the shared components
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^(apps/threemuses/|packages/pixelated-components/)" | wc -l)
+
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected. Creating skip token."
+                touch ../../SKIP_BUILD_TOKEN
+              else
+                echo "Changes detected. Proceeding..."
+                npm install --force
+              fi
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/threemuses
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping build phase..."
+                mkdir -p .next
+              else
+                echo "Building shared components..."
+                npm run build -w packages/pixelated-components
+                echo "Building Next.js app..."
+                npm run build -w apps/threemuses
+                npm run generate-site-images -w apps/threemuses
+              fi
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              if [ -f "../../SKIP_BUILD_TOKEN" ]; then
+                echo "Skipping postBuild phase..."
+              else
+                npm run config:vault -- postbuild
+              fi
       artifacts:
         baseDirectory: .next
         files:
