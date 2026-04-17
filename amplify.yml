@@ -9,11 +9,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -50,11 +55,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -91,11 +101,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -132,11 +147,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -173,11 +193,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -214,11 +239,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -255,11 +285,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -296,11 +331,17 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
             - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -341,11 +382,17 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
             - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -380,11 +427,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
@@ -421,11 +473,16 @@ applications:
       phases:
         preBuild:
           commands:
+            - |
+                APP_DIR=$(basename $(pwd))
+                cd ../..
+                CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/|^tools/$APP_DIR/|^packages/$APP_DIR/" | wc -l)
+                if [ "$CHANGED" -eq 0 ]; then
+                  echo "No changes detected for $APP_DIR. Skipping build."
+                  exit 0
+                fi
+                echo "Changes detected for $APP_DIR. Proceeding with build."
             - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            # - rm -f package-lock.json
-            # - npm cache clean --force
-            # - rm -rf node_modules
             - node -v && npm -v
             - pwd
             - npm install --force
