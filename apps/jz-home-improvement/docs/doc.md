@@ -6,7 +6,7 @@ git branch -M dev
 git push -u origin dev
 git branch -M main
 git push -u origin main
-
+ 
 
 ## ===== DEPLOY SCRIPT - ALL OTHER TIMES
 echo "Updating packages..." && npm outdated | awk 'NR>1 {print $1"@"$4}' | while read pkg; do echo "$pkg" >> /tmp/npm-updates.log && printf "." && npm install --force --save "$pkg" > /dev/null 2>&1; done && echo "\n\n✓ Updated packages:" && cat /tmp/npm-updates.log && rm /tmp/npm-updates.log
