@@ -99,23 +99,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/jz-home-improvement
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
@@ -137,23 +144,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/manningmetalworks
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
@@ -175,23 +189,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/oaktreelandscaping
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
@@ -213,23 +234,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/palmetto-epoxy
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
@@ -251,23 +279,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/pixelated
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
@@ -367,23 +402,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/pixelvivid
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
@@ -405,23 +447,30 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo..."
-            - cd ../..
-            - node -v && npm -v
-            - pwd
-            - npm install --force
-            - echo "Dependencies installed"
+            - |
+              APP_DIR=$(basename $(pwd))
+              git fetch origin main --depth=1 || true
+              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              if [ "$CHANGED" -eq 0 ]; then
+                echo "No changes detected for $APP_DIR. Build will be skipped."
+                exit 1
+              fi
+              echo "Changes detected for $APP_DIR. Proceeding with build."
+              echo "Installing dependencies for monorepo..."
+              node -v && npm -v
+              pwd
+              npm install --force
+              echo "Dependencies installed"
         build:
           commands:
-            - echo "Building dependent monorepo packages..."
-            - cd packages/pixelated-components
-            - rm -rf dist
-            - npm run build
-            - cd ../../apps/threemuses
-            - echo "Building Next.js app..."
-            - node -v
-            - npm run build
-            - npm run generate-site-images
+            - |
+              APP_DIR=$(basename $(pwd))
+              PARENT_DIR=$(basename $(dirname $(pwd)))
+              echo "Building shared components..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $APP_DIR ..."
+              npm run build -w $PARENT_DIR/$APP_DIR
+              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
