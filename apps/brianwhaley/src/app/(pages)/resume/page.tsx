@@ -9,19 +9,9 @@ import { ResumeName, ResumeContact, ResumeQualifications, ResumeSkills,
 	SmartImage} from "@pixelated-tech/components";
 import { Modal, handleModalOpen } from "@pixelated-tech/components";
 import ResumeData from "@/app/data/resume.json";
-// import ReferencesData from '@/app/data/references.json';
-
-// ResumeData.items[0].properties.references = ReferencesData.items[0].properties.references;
-
-/* 
-import ReferencesData from "@/app/data/references.json";
-<ResumeReferences title="References" data={ReferencesData.items[0].properties.references} collapsible={true} />
-*/
 
 export default function Resume() {
-
 	const [modalContent, setModalContent] = useState<React.JSX.Element | undefined>();
-
 	if (typeof window !== 'undefined') {
 		const images = document.querySelectorAll('.u-photo-icon');
 		images.forEach(image => {
@@ -36,25 +26,6 @@ export default function Resume() {
 		setModalContent(myContent);
 		handleModalOpen(event as MouseEvent);
 	};
-
-	/* 
-	if (typeof window !== 'undefined') {
-		const urls = document.querySelectorAll('.u-url-icon');
-		urls.forEach(url => {
-			url.addEventListener('click', (e) => {
-				handleUrlClick(e, (e.target as HTMLElement).parentElement?.getAttribute('href') || '');
-			});
-		});
-	}
-	const handleUrlClick = (event: React.MouseEvent, url: string) => {
-		event.preventDefault();
-		const myContent = <iframe src={url} width="80%" height="80%" /> ;
-		setModalContent(myContent);
-		handleModalOpen(event);
-	};
-	*/
-
-
 	return (
 		<>
 			<PageSection columns={12} className="p-resume" id="resume-section">

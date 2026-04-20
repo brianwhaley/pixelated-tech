@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
@@ -10,7 +10,6 @@ export default function Work() {
     
 	return (
 		<> 
-
 			<PageSection columns={8} background="#DDD" id="about-section">
 				<PageGridItem columnStart={1} columnEnd={9}>
 					<PageTitleHeader title="About Brian Whaley" />
@@ -57,9 +56,9 @@ export default function Work() {
 					img='/images/icons/readme-icon.png'
 					imgShape='squircle'
 					subtitle='Readme'
-					content='The objective of my README is to share who I am, set some expectations, 
-						and share management styles. What I don&#39;t want this document to do is dictate how to work with me. 
-						I believe that good leaders adjust to the personality styles of the people working with them.' />
+					content="The objective of my README is to share who I am, set some expectations, 
+						and share management styles. What I don't want this document to do is dictate how to work with me. 
+						I believe that good leaders adjust to the personality styles of the people working with them." />
 				<Callout
 					layout='vertical' 
 					url='http://twitter.com/brianwhaley' 
