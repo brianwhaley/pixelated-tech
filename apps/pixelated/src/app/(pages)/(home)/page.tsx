@@ -213,7 +213,7 @@ export default function Home() {
 						imgShape="squircle" 
 						title='eCommerce Solutions'
 						subtitle='Do you want to move your business online to 
-							start selling your products or services digitally?
+							sell your products or services digitally?
 							Do you need a secure and reliable eCommerce platform that integrates with your existing systems?
 							Are you looking for ways to improve your online sales and customer experience?' 
 						content='Pixelated Technologies can help you set up and manage an eCommerce platform that meets your business needs.

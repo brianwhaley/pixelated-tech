@@ -281,8 +281,8 @@ applications:
           commands:
             - |
               APP_DIR=$(basename $(pwd))
-              git fetch origin main --depth=1 || true
-              CHANGED=$(git diff --name-only origin/main...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
+              git fetch origin main --depth=2
+              CHANGED=$(git diff --name-only HEAD^...HEAD | grep -E "^apps/$APP_DIR/" | wc -l)
               if [ "$CHANGED" -eq 0 ]; then
                 echo "No changes detected for $APP_DIR. Build will be skipped."
                 exit 1
