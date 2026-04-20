@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import React, { useState, useEffect } from "react";
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";

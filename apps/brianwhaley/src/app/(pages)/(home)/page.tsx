@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
