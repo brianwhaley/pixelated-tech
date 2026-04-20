@@ -2,7 +2,7 @@
 
 import { FourOhFour } from "@pixelated-tech/components";
 const images = [
-	{   "img": "https://www.palmetto-epoxy.com/images/palmetto-epoxy-logo.jpg", 
+	{   "img": "https://www.palmetto-epoxy.com/images/logo/palmetto-epoxy-logo.jpg", 
 		"text": "Page Not Found.",
 		"description": "Palmetto Epoxy Page Not Found" 
 	}

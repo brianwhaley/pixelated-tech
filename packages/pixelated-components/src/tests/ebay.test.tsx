@@ -3,14 +3,6 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { EbayItems } from '../components/shoppingcart/ebay.components';
 
-// Mock eBay functions
-vi.mock('../components/shoppingcart/ebay.functions', () => ({
-	getEbayItems: vi.fn(),
-	getEbayItem: vi.fn(),
-	getShoppingCartItem: vi.fn(),
-	getEbayRateLimits: vi.fn(),
-	getEbayAppToken: vi.fn(),
-}));
 
 // Mock dependencies
 vi.mock('../components/general/carousel', () => ({
@@ -54,7 +46,12 @@ vi.mock('../components/integrations/cloudinary', () => ({
 	getCloudinaryRemoteFetchURL: (url: string) => url
 }));
 
-import { getEbayItems, getShoppingCartItem } from '../components/shoppingcart/ebay.functions';
+vi.mock('../components/foundation/smartfetch', () => ({
+	smartFetch: vi.fn()
+}));
+
+import * as ebayModule from '../components/shoppingcart/ebay.components';
+import { smartFetch } from '../components/foundation/smartfetch';
 import { ebayData } from '../test/test-data';
 
 describe('eBay integration Tests', () => {
@@ -63,8 +60,11 @@ describe('eBay integration Tests', () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks();
-		(getEbayItems as any).mockResolvedValue(mockApiResponse);
-		(getShoppingCartItem as any).mockReturnValue({
+		const mockedSmartFetch = vi.mocked(smartFetch);
+		mockedSmartFetch
+			.mockResolvedValueOnce({ access_token: 'test-token' })
+			.mockResolvedValueOnce(mockApiResponse as any);
+		vi.spyOn(ebayModule, 'getShoppingCartItem').mockReturnValue({
 			itemImageURL: 'https://example.com/image.jpg',
 			itemID: '12345',
 			itemURL: 'https://ebay.com/item/12345',
@@ -90,8 +90,8 @@ describe('eBay integration Tests', () => {
 			}, { timeout: 200 });
 		});
 
-		it('should call getEbayItems with provided apiProps', async () => {
-			render(
+		it('should fetch eBay items with provided apiProps', async () => {
+			const { container } = render(
 				<EbayItems
 					apiProps={{
 						apiKey: 'test-key',
@@ -101,7 +101,7 @@ describe('eBay integration Tests', () => {
 			);
 
 			await waitFor(() => {
-				expect(getEbayItems).toHaveBeenCalled();
+				expect(container.querySelectorAll('.ebay-item').length).toBeGreaterThan(0);
 			});
 		});
 
@@ -263,7 +263,7 @@ describe('eBay integration Tests', () => {
 
 	describe('Error Handling', () => {
 		it('should handle API errors gracefully', async () => {
-			(getEbayItems as any).mockRejectedValue(new Error('API Error'));
+			vi.mocked(smartFetch).mockRejectedValueOnce(new Error('API Error'));
 
 			const { container } = render(
 				<EbayItems

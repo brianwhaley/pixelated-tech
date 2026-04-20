@@ -23,14 +23,24 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 				]
 			};
 
-			// Apply response transformer if provided
-			const transformedData = endpoint?.responseTransformer
+			let transformedData = endpoint?.responseTransformer
 				? endpoint.responseTransformer(mockSiteData)
 				: mockSiteData;
 
+			if (siteName === 'empty') {
+				transformedData = [];
+			} else if (siteName === 'invalid' || siteName === 'baddata') {
+				transformedData = [{ invalid: true }];
+			} else if (siteName === 'valid') {
+				transformedData = [
+					{ date: '2024-01-01', currentPageViews: 100, previousPageViews: 80 },
+					{ date: '2024-01-02', currentPageViews: 150, previousPageViews: 110 }
+				];
+			}
+
 			setData(transformedData);
 			setLoading(false);
-		}, [endpoint]);
+		}, [endpoint, siteName]);
 
 		if (loading) {
 			return <div>Loading...</div>;
@@ -113,6 +123,27 @@ describe('SiteHealthGoogleAnalytics Component', () => {
 		expect(template).toBeDefined();
 	});
 
+	it('should render placeholder when Google Analytics data is empty', async () => {
+		render(<SiteHealthGoogleAnalytics siteName="empty" />);
+		await waitFor(() => {
+			expect(screen.getByText('No data available for the selected date range')).toBeInTheDocument();
+		});
+	});
+
+	it('should render placeholder when Google Analytics data is invalid', async () => {
+		render(<SiteHealthGoogleAnalytics siteName="invalid" />);
+		await waitFor(() => {
+			expect(screen.getByText('Invalid data format received from Google Analytics API.')).toBeInTheDocument();
+		});
+	});
+
+	it('should render invalid data placeholder when response contains invalid objects', async () => {
+		render(<SiteHealthGoogleAnalytics siteName="baddata" />);
+		await waitFor(() => {
+			expect(screen.getByText('Invalid data format received from Google Analytics API.')).toBeInTheDocument();
+		});
+	});
+
 	it('should handle different site configurations', async () => {
 		const { rerender } = render(
 			<SiteHealthGoogleAnalytics siteName="prod" />
@@ -186,6 +217,15 @@ describe('SiteHealthGoogleAnalytics Component', () => {
 		await waitFor(() => {
 			const template = screen.getByTestId('health-template');
 			expect(template).toBeDefined();
+		});
+	});
+
+	it('should render chart components when valid analytics data is provided', async () => {
+		render(<SiteHealthGoogleAnalytics siteName="valid" />);
+		await waitFor(() => {
+			expect(screen.getByTestId('composed-chart')).toBeInTheDocument();
+			expect(screen.getByTestId('bar-currentPageViews')).toBeInTheDocument();
+			expect(screen.getByTestId('line-previousPageViews')).toBeInTheDocument();
 		});
 	});
 });

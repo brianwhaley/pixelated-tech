@@ -1,6 +1,12 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '../test/test-utils';
+import { smartFetch } from '../components/foundation/smartfetch';
+
+vi.mock('../components/foundation/smartfetch', () => ({
+  smartFetch: vi.fn()
+}));
+
 import {
   SocialCards,
   SocialCard,
@@ -362,6 +368,135 @@ describe('SocialCard Components', () => {
       );
       expect(container).toBeInTheDocument();
     });
+
+    it('should render blank source card when feed URL is unknown', async () => {
+      const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <item>
+              <title>Unknown Post</title>
+              <link>https://unknown.example.com/post</link>
+              <description><p>Unknown content</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>unknown-1</guid>
+            </item>
+          </channel>
+        </rss>`;
+
+      vi.mocked(smartFetch).mockResolvedValueOnce(rssXml);
+
+      render(
+        <SocialCards
+          sources={{
+            other: {
+              url: 'https://unknown.example.com/feed',
+              entryCount: 1,
+              iconSrc: '/images/logos/blog-logo.png',
+              iconSrcAlt: 'Blog Post'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Unknown Post')).toBeInTheDocument();
+    });
+
+    it('should render GitHub social card when feed contains github.com links', async () => {
+      const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <item>
+              <title>GitHub Activity</title>
+              <link>https://github.com/project/repo</link>
+              <description><p>GitHub update</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>github-1</guid>
+            </item>
+          </channel>
+        </rss>`;
+
+      vi.mocked(smartFetch).mockResolvedValueOnce(rssXml);
+
+      render(
+        <SocialCards
+          sources={{
+            github: {
+              url: 'https://example.com/github-feed',
+              entryCount: 1,
+              iconSrc: '/images/logos/github-logo.png',
+              iconSrcAlt: 'Github Activity'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText('GitHub Activity')).toBeInTheDocument();
+    });
+
+    it('should render feed entries from Atom-style entry XML', async () => {
+      const atomXml = `<?xml version="1.0" encoding="UTF-8"?>
+        <feed xmlns="http://www.w3.org/2005/Atom">
+          <entry>
+            <title>Atom Entry</title>
+            <link href="https://example.com/atom-post" />
+            <id>atom-guid-1</id>
+            <updated>2026-04-19T12:00:00Z</updated>
+            <content type="html"><p>Atom content</p></content>
+          </entry>
+        </feed>`;
+
+      vi.mocked(smartFetch).mockResolvedValueOnce(atomXml);
+
+      render(
+        <SocialCards
+          sources={{
+            blog: {
+              url: 'https://example.com/atom-feed',
+              entryCount: 1,
+              iconSrc: '/images/logos/blog-logo.png',
+              iconSrcAlt: 'Blog Post'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Atom Entry')).toBeInTheDocument();
+    });
+
+    it('should render blank card when feed fetch fails', async () => {
+      vi.mocked(smartFetch).mockRejectedValueOnce(new Error('Feed fetch failed'));
+
+      render(
+        <SocialCards
+          sources={{
+            blog: {
+              url: 'https://example.com/failure-feed',
+              entryCount: 1,
+              iconSrc: '/images/logos/blog-logo.png',
+              iconSrcAlt: 'Blog Post'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Atom Entry')).not.toBeInTheDocument();
+    });
   });
 
   describe('SocialCard - Edge Cases', () => {
@@ -590,6 +725,71 @@ describe('SocialCard Components', () => {
       );
       const body = container.querySelector('.card-body');
       expect(body?.innerHTML).toContain('href="https://external.com');
+    });
+  });
+
+  describe('SocialCards feed loading', () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('should fetch RSS feed entries and render a social card', async () => {
+      const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <item>
+              <title>Test Feed Item</title>
+              <link>https://example.com/post</link>
+              <description><p>Test description</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>feed-item-1</guid>
+            </item>
+          </channel>
+        </rss>`;
+
+      vi.mocked(smartFetch).mockResolvedValue(rssXml);
+
+      render(
+        <SocialCards
+          sources={{
+            blog: {
+              url: 'https://example.com/feed',
+              entryCount: 1,
+              iconSrc: '/images/logos/blog-logo.png',
+              iconSrcAlt: 'Blog Post'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Test Feed Item')).toBeInTheDocument();
+    });
+
+    it('should handle RSS fetch failures and render loading state gracefully', async () => {
+      vi.mocked(smartFetch).mockRejectedValue(new Error('Fetch failed'));
+
+      render(
+        <SocialCards
+          sources={{
+            blog: {
+              url: 'https://example.com/feed',
+              entryCount: 1,
+              iconSrc: '/images/logos/blog-logo.png',
+              iconSrcAlt: 'Blog Post'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Test Feed Item')).not.toBeInTheDocument();
     });
   });
 });

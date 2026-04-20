@@ -99,6 +99,11 @@ function parseComponentExports(content: string): string[] {
 	for (const line of lines) {
 		const trimmed = line.trim();
 
+		// Skip commented export lines
+		if (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) {
+			continue;
+		}
+
 		// Match: export * from './components/folder/filename';
 		const match = trimmed.match(/export \* from '\.\/components\/([^']+)';/);
 		if (match) {

@@ -83,6 +83,8 @@ SmartImage.propTypes = {
 	/** Fetch priority hint for modern browsers. */
 	fetchPriority: PropTypes.oneOf(['high', 'low', 'auto']),
 	/** Sizes attribute override for responsive images. */
+	unoptimized: PropTypes.bool,
+	/** Override for Next.js Image optimization behavior. */
 	sizes: PropTypes.string,
 	/** Srcset override to pass explicit srcset values. */
 	srcSet: PropTypes.string,
@@ -200,6 +202,8 @@ export function SmartImage(props: SmartImageType) {
 				});
 			newProps.sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
 		}
+
+		newProps.unoptimized = true; // Opt out of Next.js Image optimization since Cloudinary is handling it
 	} 
 
 	/* ===== NEXTJS VARIANT ===== */

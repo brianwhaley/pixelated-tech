@@ -16,8 +16,6 @@ export * from './components/foundation/metadata.components';
 export * from './components/foundation/metadata.functions';
 export * from './components/foundation/microinteractions';
 export * from './components/foundation/schema';
-export * from './components/foundation/schema.functions';
-export * from './components/foundation/sitemap';
 export * from './components/foundation/skeleton';
 export * from './components/foundation/skeleton-loading';
 export * from './components/foundation/smarterrorboundary';
@@ -82,7 +80,6 @@ export * from './components/integrations/yelp';
 export * from './components/pixelated/pixelated.components';
 
 export * from './components/shoppingcart/ebay.components';
-export * from './components/shoppingcart/ebay.functions';
 export * from './components/shoppingcart/paypal';
 export * from './components/shoppingcart/shoppingcart.components';
 export * from './components/shoppingcart/shoppingcart.functions';
@@ -91,8 +88,8 @@ export * from './components/sitebuilder/config/CompoundFontSelector';
 export * from './components/sitebuilder/config/ConfigBuilder';
 export * from './components/sitebuilder/config/ConfigEngine';
 export * from './components/sitebuilder/config/FontSelector';
+export * from './components/sitebuilder/config/google-fonts.client';
 export * from './components/sitebuilder/config/fonts';
-export * from './components/sitebuilder/config/google-fonts';
 
 export * from './components/sitebuilder/form/formbuilder';
 export * from './components/sitebuilder/form/formcomponents';

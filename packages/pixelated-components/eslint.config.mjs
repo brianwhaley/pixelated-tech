@@ -7,6 +7,10 @@ import reactPlugin from 'eslint-plugin-react';
 import importPlugin from 'eslint-plugin-import';
 import a11yPlugin from 'eslint-plugin-jsx-a11y';
 import pixelatedPlugin from './dist/scripts/pixelated-eslint-plugin.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default [
 	{
@@ -21,6 +25,7 @@ export default [
 		languageOptions: {
 			parser: tsParser,
 			parserOptions: {
+				tsconfigRootDir: __dirname,
 				project: './tsconfig.json',
 			},
 			globals: {

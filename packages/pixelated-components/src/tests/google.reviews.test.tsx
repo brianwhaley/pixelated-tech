@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@/test/test-utils';
-import { GoogleReviewsCard } from '@/components/integrations/google.reviews.components';
-import { getGoogleReviewsByPlaceId } from '@/components/integrations/google.reviews.functions';
+import '@testing-library/jest-dom';
+import { render, screen, waitFor } from '../test/test-utils';
+import { GoogleReviewsCard } from '../components/integrations/google.reviews.components';
+import { getGoogleReviewsByPlaceId } from '../components/integrations/google.reviews.functions';
 
 // Mock the functions
 vi.mock('@/components/integrations/google.reviews.functions', () => ({
@@ -83,7 +84,7 @@ describe('GoogleReviewsCard', () => {
 		// Check for profile photo
 		const images = screen.getAllByRole('img');
 		expect(images).toHaveLength(1);
-		expect(images[0]).toHaveAttribute('src', expect.stringContaining('https%3A%2F%2Fexample.com%2Fphoto.jpg'));
+		expect(images[0]).toHaveAttribute('src', expect.stringContaining('https://example.com/photo.jpg'));
 		expect(images[0]).toHaveAttribute('alt', 'John Doe');
 	});
 

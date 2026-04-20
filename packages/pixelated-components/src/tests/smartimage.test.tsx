@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@/test/test-utils';
 import { SmartImage } from '@/components/general/smartimage';
+import { mockCloudinary } from '@/test/test-data';
 
 // Mock the buildCloudinaryUrl function
 vi.mock('@/components/integrations/cloudinary', () => ({
@@ -12,16 +13,8 @@ import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
 
 const mockBuildCloudinaryUrl = vi.mocked(buildCloudinaryUrl);
 
-const smartImageConfig = {
-	cloudinary: {
-		product_env: 'test-env',
-		baseUrl: 'https://res.cloudinary.com/test/',
-		transforms: 'f_auto,c_limit,q_auto,dpr_auto',
-	},
-};
-
 const renderSmartImage = (ui: React.ReactElement, options = {}) => {
-	return render(ui, { config: smartImageConfig, ...options });
+	return render(ui, { config: { cloudinary: mockCloudinary }, ...options });
 };
 
 describe('SmartImage Component', () => {
@@ -129,8 +122,8 @@ describe('SmartImage Component', () => {
 			expect(img).toHaveAttribute('data-nimg');
 			expect(mockBuildCloudinaryUrl).toHaveBeenCalledWith({
 				src: 'https://example.com/test-image.jpg',
-				productEnv: 'test-env',
-				cloudinaryDomain: 'https://res.cloudinary.com/test/',
+				productEnv: 'dlbon7tpq',
+				cloudinaryDomain: 'https://res.cloudinary.com',
 				quality: 75,
 				width: 500,
 				transforms: 'f_auto,c_limit,q_auto,dpr_auto',
@@ -256,14 +249,14 @@ describe('SmartImage Component', () => {
 			rerender(<SmartImage src="https://example.com/different-image.jpg" alt="Test image" variant="cloudinary" />);
 			
 			// Should be back to cloudinary (buildCloudinaryUrl called for new src)
-			expect(mockBuildCloudinaryUrl).toHaveBeenCalledWith({
+			expect(mockBuildCloudinaryUrl).toHaveBeenCalledWith(expect.objectContaining({
 				src: 'https://example.com/different-image.jpg',
-				productEnv: 'test-env',
-				cloudinaryDomain: 'https://res.cloudinary.com/test/',
+				productEnv: 'dlbon7tpq',
+				cloudinaryDomain: 'https://res.cloudinary.com',
 				quality: 75,
 				width: 500,
 				transforms: 'f_auto,c_limit,q_auto,dpr_auto',
-			});
+			}));
 		});
 
 		it('should reset fallback state when variant prop changes', () => {

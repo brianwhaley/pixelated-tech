@@ -1,19 +1,25 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { EbayItems } from '../components/shoppingcart/ebay.components';
+import * as ebayModule from '../components/shoppingcart/ebay.components';
+import * as ebayFunctions from '../components/shoppingcart/ebay.functions';
 import { renderWithProviders } from '../test/test-utils';
 import { ebayData } from '../test/test-data';
 
+const mockedEbayFunctions = vi.mocked(ebayFunctions, true) as any;
+
+vi.mock('../components/shoppingcart/shoppingcart.functions', () => ({
+	addToShoppingCart: vi.fn(),
+}));
+
 vi.mock('../components/shoppingcart/ebay.functions', () => ({
+	getEbayAppToken: vi.fn(),
 	getEbayItems: vi.fn(),
 	getEbayItem: vi.fn(),
 	getShoppingCartItem: vi.fn(),
 	getEbayRateLimits: vi.fn(),
-	getEbayAppToken: vi.fn(),
-}));
-
-vi.mock('../components/shoppingcart/shoppingcart.functions', () => ({
-	addToShoppingCart: vi.fn(),
+	getEbayItemsSearch: vi.fn(),
+	getEbayProductSchema: vi.fn(),
 }));
 
 vi.mock('../components/general/carousel', () => ({
@@ -39,6 +45,20 @@ vi.mock('../general/loading', () => ({
 }));
 
 describe('eBay Components Suite', () => {
+	beforeEach(() => {
+		mockedEbayFunctions.getEbayItems.mockResolvedValue([] as any);
+		mockedEbayFunctions.getEbayItem.mockResolvedValue({} as any);
+		mockedEbayFunctions.getShoppingCartItem.mockReturnValue({
+			itemImageURL: 'https://example.com/image.jpg',
+			itemID: '12345',
+			itemURL: 'https://ebay.com/item/12345',
+			itemTitle: 'Test Item',
+			itemQuantity: 1,
+			itemCost: '99.99'
+		});
+		mockedEbayFunctions.getEbayRateLimits.mockResolvedValue({} as any);
+		mockedEbayFunctions.getEbayAppToken.mockResolvedValue('token' as any);
+	});
 	const rawEbayListing = ebayData.listings[0];
 	const mockEbayListing = {
 		...rawEbayListing,

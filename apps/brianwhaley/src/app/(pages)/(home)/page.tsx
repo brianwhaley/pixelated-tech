@@ -120,7 +120,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='https://www.pixelvivid.com/customsunglasses' 
-					img='/images/customs/blue-splatter-3.jpg'
+					img='/images/blue-splatter-3.jpg'
 					imgShape='squircle' 
 					title='Custom Sunglasses'
 					content='I refurbish, repair, and customize Oakley sunglasses. 

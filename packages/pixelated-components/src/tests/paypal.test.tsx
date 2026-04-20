@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { PayPal } from '../components/shoppingcart/paypal';
-import { mockPayPalOrder } from '../test/fixtures';
+import { PayPal, initPayPalButton } from '../components/shoppingcart/paypal';
+import { mockPayPalOrder, mockPayPalCheckoutData } from '../test/fixtures';
 
 // Mock window.paypal
 (window as any).paypal = {
@@ -24,26 +24,7 @@ describe('PayPal Integration Tests', () => {
 		},
 	};
 
-	const mockCheckoutData = {
-		subtotal: 89.99,
-		shippingCost: 0.00,
-		handlingFee: 0.00,
-		salesTax: 10.00,
-		subtotal_discount: 0,
-		total: 99.99,
-		items: [
-			{
-				itemID: 'LAPTOP-001',
-				itemQuantity: 1,
-				itemCost: 89.99,
-				itemTitle: 'Laptop Computer',
-				itemURL: 'https://example.com/laptop',
-			},
-		],
-		shippingTo: {
-			name: 'John Doe',
-		},
-	};
+	const mockCheckoutData = mockPayPalCheckoutData;
 
 	const mockPayPalCapture = {
 		id: 'ORDER-12345',
@@ -69,11 +50,13 @@ describe('PayPal Integration Tests', () => {
 
 	beforeEach(() => {
 		document.body.innerHTML = '';
+		document.head.innerHTML = '';
 	});
 
 	afterEach(() => {
 		vi.clearAllMocks();
 		document.body.innerHTML = '';
+		document.head.innerHTML = '';
 	});
 
 	describe('PayPal Component Rendering', () => {
@@ -168,7 +151,7 @@ describe('PayPal Integration Tests', () => {
 			expect(sdkUrl).toContain('paypal.com');
 		});
 
-		it('should prevent duplicate script loading', () => {
+		it('should append PayPal SDK script when not already loaded', () => {
 			render(
 				<PayPal 
 					payPalClientID={mockPayPalConfig.clientId}
@@ -177,22 +160,13 @@ describe('PayPal Integration Tests', () => {
 				/>
 			);
 
-			// Check that script management logic is in place
-			const paypalScripts = document.querySelectorAll('script[src*="paypal"]');
-			expect(paypalScripts.length).toBeGreaterThanOrEqual(0);
-		});
-	});
-
-	describe('Checkout Data Handling', () => {
-		it('should handle checkout data structure', () => {
-			const data = mockCheckoutData;
-			expect(data.total).toBeGreaterThan(0);
-			expect(data.items).toHaveLength(1);
-			expect(data.items[0].itemCost).toBe(89.99);
+			const paypalScript = document.head.querySelector('script[src*="paypal.com/sdk/js"]');
+			expect(paypalScript).toBeDefined();
 		});
 
-		it('should render component with full checkout details', () => {
-			const { container } = render(
+		it('should prevent duplicate script loading when sdk already exists', () => {
+			document.head.innerHTML = '<script src="https://www.paypal.com/sdk/js?client-id=existing"></script>';
+			render(
 				<PayPal 
 					payPalClientID={mockPayPalConfig.clientId}
 					checkoutData={mockCheckoutData}
@@ -200,10 +174,124 @@ describe('PayPal Integration Tests', () => {
 				/>
 			);
 
-			expect(container.querySelector('#paypal-button-container')).toBeDefined();
+			const paypalScripts = document.head.querySelectorAll('script[src*="paypal.com/sdk/js"]');
+			expect(paypalScripts.length).toBe(1);
 		});
 
-		it('should handle order response structure', () => {
+		it('should initialize PayPal button when script onload fires', () => {
+			const onApprove = vi.fn();
+			const buttonRender = vi.fn();
+			const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+			(window as any).paypal.Buttons = buttons;
+			(window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+			render(
+				<PayPal 
+					payPalClientID={mockPayPalConfig.clientId}
+					checkoutData={mockCheckoutData}
+					onApprove={onApprove}
+				/>
+			);
+
+			const paypalScript = document.head.querySelector('script[src*="paypal.com/sdk/js"]') as HTMLScriptElement;
+			expect(paypalScript).toBeDefined();
+			if (paypalScript && paypalScript.onload) {
+				const onLoad = paypalScript.onload as (event: Event) => unknown;
+				onLoad(new Event('load'));
+			}
+
+			expect(buttons).toHaveBeenCalled();
+		});
+
+		it('should create PayPal button config from initPayPalButton', () => {
+			const onApprove = vi.fn();
+			const checkoutData = mockCheckoutData;
+			const buttonRender = vi.fn();
+			const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+			(window as any).paypal.Buttons = buttons;
+			(window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+			initPayPalButton({ checkoutData, onApprove });
+			expect(buttons).toHaveBeenCalled();
+			const config = buttons.mock.calls[0][0];
+			expect(typeof config.createOrder).toBe('function');
+			expect(typeof config.onApprove).toBe('function');
+			expect(typeof config.onError).toBe('function');
+			expect(typeof config.onCancel).toBe('function');
+		});
+
+		it('should configure PayPal button callbacks correctly', async () => {
+			const onApprove = vi.fn();
+			const buttonRender = vi.fn();
+			const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+			(window as any).paypal.Buttons = buttons;
+			(window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+			initPayPalButton({ checkoutData: mockCheckoutData, onApprove });
+			const config = buttons.mock.calls[0][0];
+
+			const actions = {
+				order: {
+					create: vi.fn(() => Promise.resolve({ id: 'ORDER-12345' })),
+					capture: vi.fn(() => Promise.resolve(mockPayPalCapture)),
+				}
+			};
+
+			await expect(config.createOrder(null, actions)).resolves.toBeDefined();
+			expect((actions.order.create as any)).toHaveBeenCalled();
+			expect((actions.order.create as any).mock.calls[0][0]).toMatchObject({
+				purchase_units: [
+					{
+						amount: {
+							currency_code: 'USD',
+							value: mockCheckoutData.total,
+						}
+					}
+				]
+			});
+			expect(config.onApprove).toBeInstanceOf(Function);
+		});
+
+        it('should handle PayPal onError gracefully', () => {
+            const showInfoBanner = vi.fn();
+            const showError = vi.fn();
+            (window as any).showInfoBanner = showInfoBanner;
+            (window as any).showError = showError;
+
+            const onApprove = vi.fn();
+            const buttonRender = vi.fn();
+            const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+            (window as any).paypal.Buttons = buttons;
+            (window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+            initPayPalButton({ checkoutData: mockCheckoutData, onApprove });
+            const config = buttons.mock.calls[0][0];
+
+            config.onError(new Error('Detected popup close'));
+            expect(showInfoBanner).toHaveBeenCalledWith('PayPal Payment cancelled');
+
+            config.onError(new Error('Unknown failure'));
+            expect(showError).toHaveBeenCalledWith('PayPal error');
+        });
+
+        it('should handle PayPal onCancel by redirecting to cart', () => {
+            const onApprove = vi.fn();
+            const buttonRender = vi.fn();
+            const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+            (window as any).paypal.Buttons = buttons;
+            (window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+            delete (window as any).location;
+            (window as any).location = { href: '' };
+
+            initPayPalButton({ checkoutData: mockCheckoutData, onApprove });
+            const config = buttons.mock.calls[0][0];
+
+            config.onCancel({});
+            expect((window as any).location.href).toBe('/cart');
+        });
+
+        it('should handle order response structure', () => {
 			const order = mockPayPalOrder;
 			expect(order.id).toBeDefined();
 			expect(order.status).toBe('CREATED');

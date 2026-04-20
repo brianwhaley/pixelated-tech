@@ -15,7 +15,7 @@ export default function Header() {
 			<div className="row-10col">
 				<div className="grid-s1-e3 header-logo">
 					<a href="/">
-						<SmartImage src="/images/palmetto-epoxy-logo.jpg" 
+						<SmartImage src="/images/logo/palmetto-epoxy-logo.jpg" 
 							alt="Palmetto Epoxy Logo" aboveFold={true} 
 							fetchPriority="high" loading="eager" />
 					</a>

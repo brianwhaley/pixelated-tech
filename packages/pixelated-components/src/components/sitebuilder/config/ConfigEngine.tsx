@@ -1,5 +1,5 @@
 import React from 'react';
-import { generateGoogleFontsUrl } from './google-fonts';
+import { generateGoogleFontsUrl } from './google-fonts.client';
 import { ALL_WEBSAFE_FONTS } from './fonts';
 import { assertVisualDesign } from '../../config/config.validators';
 import type { VisualDesignType } from './ConfigBuilder';

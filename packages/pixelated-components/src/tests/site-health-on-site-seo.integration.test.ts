@@ -1,6 +1,11 @@
 /// <reference types="vitest/globals" />
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { performOnSiteSEOAnalysis, OnSiteSEOData, OnSiteSEOAudit } from '../components/admin/site-health/site-health-on-site-seo.integration';
+import { smartFetch } from '../components/foundation/smartfetch';
+
+vi.mock('../components/foundation/smartfetch', () => ({
+	smartFetch: vi.fn()
+}));
 
 // Mock external dependencies to allow testing without actual network requests
 const mockSeoHtml = `
@@ -26,34 +31,36 @@ const mockSeoHtml = `
 `;
 
 vi.mock('puppeteer', () => ({
-	launch: vi.fn(async () => ({
-		isConnected: vi.fn(() => true),
-		close: vi.fn(),
-		newPage: vi.fn(async () => ({
-			goto: vi.fn(async () => ({
-				ok: true,
-				status: vi.fn(() => 200),
-				headers: vi.fn(() => ({ 'content-type': 'text/html' }))
-			})),
-			content: vi.fn(async () => mockSeoHtml),
-			setRequestInterception: vi.fn(),
-			on: vi.fn(),
-			setViewport: vi.fn(),
-			setUserAgent: vi.fn(),
-			waitForSelector: vi.fn(),
-			evaluate: vi.fn(async (fn: any) => {
-				// Simulating the DOM evaluation from the mock HTML
-				return {
-					title: 'Example Page',
-					h1Count: 1,
-					h2Count: 1,
-					h1Elements: [{ text: 'Main Heading' }],
-					h2Elements: [{ text: 'Sub Heading' }]
-				};
-			}),
-			close: vi.fn()
+	default: {
+		launch: vi.fn(async () => ({
+			isConnected: vi.fn(() => true),
+			close: vi.fn(),
+			newPage: vi.fn(async () => ({
+				goto: vi.fn(async () => ({
+					ok: true,
+					status: vi.fn(() => 200),
+					headers: vi.fn(() => ({ 'content-type': 'text/html' }))
+				})),
+				content: vi.fn(async () => mockSeoHtml),
+				setRequestInterception: vi.fn(),
+				on: vi.fn(),
+				setViewport: vi.fn(),
+				setUserAgent: vi.fn(),
+				waitForSelector: vi.fn(),
+				evaluate: vi.fn(async (fn: any) => {
+					// Simulating the DOM evaluation from the mock HTML
+					return {
+						title: 'Example Page',
+						h1Count: 1,
+						h2Count: 1,
+						h1Elements: [{ text: 'Main Heading' }],
+						h2Elements: [{ text: 'Sub Heading' }]
+					};
+				}),
+				close: vi.fn()
+			}))
 		}))
-	}))
+	}
 }));
 
 vi.mock('path', async () => {
@@ -83,13 +90,79 @@ vi.mock('fs', async () => {
 			if (path.includes('seo-metrics.config.json')) {
 				return JSON.stringify({
 					categories: {
-						structure: {
-							name: 'Structure',
+						'on-page': {
+							name: 'On Page',
 							priority: 1,
-							metrics: {}
+							metrics: {
+								'h1-tags': {
+									id: 'h1-tags',
+									title: 'H1 Tags',
+									scoreDisplayMode: 'binary'
+								},
+								'h2-tags': {
+									id: 'h2-tags',
+									title: 'H2 Tags',
+									scoreDisplayMode: 'binary'
+								},
+								'image-alt-text': {
+									id: 'image-alt-text',
+									title: 'Image Alt Text',
+									scoreDisplayMode: 'binary',
+									pattern: "<img[^>]*alt=[\"'][^\"']+[\"'][^>]*>",
+								},
+								'canonical-urls': {
+									id: 'canonical-urls',
+									title: 'Canonical URLs',
+									scoreDisplayMode: 'binary',
+									pattern: "<link[^>]*rel=[\"']canonical[\"'][^>]*>",
+								},
+								'language-tags': {
+									id: 'language-tags',
+									title: 'Language Tags',
+									scoreDisplayMode: 'binary',
+									pattern: "lang=[\"'][^\"']+[\"']",
+								},
+								'schema-website': {
+									id: 'schema-website',
+									title: 'Website Schema',
+									scoreDisplayMode: 'binary',
+									pattern: '@type"\\s*:\\s*"WebSite"'
+								}
+							}
+						},
+					'on-site': {
+						name: 'On Site',
+						priority: 1,
+						metrics: {
+							'https': {
+								id: 'https',
+								title: 'HTTPS',
+								scoreDisplayMode: 'binary'
+							},
+							'url-structure': {
+								id: 'url-structure',
+								title: 'URL Structure',
+								scoreDisplayMode: 'binary'
+							},
+							'robots-txt': {
+								id: 'robots-txt',
+								title: 'Robots.txt',
+								scoreDisplayMode: 'binary'
+							},
+							'sitemap-xml': {
+								id: 'sitemap-xml',
+								title: 'Sitemap.xml',
+								scoreDisplayMode: 'binary'
+							},
+							'manifest-file': {
+								id: 'manifest-file',
+								title: 'Manifest File',
+								scoreDisplayMode: 'binary'
+							}
 						}
 					}
-				});
+				}
+			});
 			}
 			return '';
 		})
@@ -102,6 +175,14 @@ describe('performOnSiteSEOAnalysis', () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks();
+		vi.mocked(smartFetch).mockImplementation(async () => ({
+			ok: true,
+			status: 200,
+			text: async () => '',
+			headers: {
+				get: vi.fn(() => '')
+			}
+		}) as any);
 		
 		// Mock fetch globally for sitemap and robots.txt requests
 		global.fetch = vi.fn(async (url: string | Request | URL) => {
@@ -188,6 +269,32 @@ describe('performOnSiteSEOAnalysis', () => {
 				expect(robotsAudit.displayValue).toContain('Robots.txt');
 			}
 		});
+
+		it('should report robots.txt not accessible when the request fails', async () => {
+			vi.mocked(smartFetch).mockImplementation(async (url: string) => {
+				if (typeof url === 'string' && url.includes('/robots.txt')) {
+					return { ok: false, status: 404, statusText: 'Not Found', text: async () => '' } as any;
+				}
+				return { ok: true, status: 200, text: async () => '', headers: { get: vi.fn(() => '') } } as any;
+			});
+
+			const result = await performOnSiteSEOAnalysis(mockBaseUrl);
+			const robotsAudit = result.onSiteAudits.find(audit => audit.id === 'robots-txt');
+			if (robotsAudit) {
+				expect(robotsAudit.score).toBe(0);
+				expect(robotsAudit.displayValue).toContain('Robots.txt not found');
+			}
+		});
+
+		it('should continue when sitemap discovery fails and still return results from page analysis', async () => {
+			vi.mocked(smartFetch).mockRejectedValue(new Error('Network unavailable'));
+
+			const result = await performOnSiteSEOAnalysis(mockBaseUrl);
+			expect(result.status).toBe('success');
+			expect(result.pagesAnalyzed.length).toBeGreaterThanOrEqual(0);
+			expect(result.onSiteAudits.length).toBeGreaterThan(0);
+			expect(result.error).toBeUndefined();
+		});
 	});
 
 	describe('URL Structure Analysis', () => {
@@ -250,11 +357,22 @@ describe('performOnSiteSEOAnalysis', () => {
 			})) as any);
 
 			const result = await performOnSiteSEOAnalysis(mockBaseUrl);
+			const pageAudit = result.pagesAnalyzed[0]?.audits.find((audit: any) => audit.id === 'image-alt-text');
+			expect(pageAudit).toBeDefined();
+		});
 
-			const altTextAudit = result.onSiteAudits.find(audit => audit.id === 'image-alt-text');
-			if (altTextAudit) {
-				expect(altTextAudit).toBeDefined();
-			}
+		it('should detect canonical URL tags in HTML', async () => {
+			const result = await performOnSiteSEOAnalysis(mockBaseUrl);
+			const canonicalAudit = result.pagesAnalyzed[0]?.audits.find((audit: any) => audit.id === 'canonical-urls');
+			expect(canonicalAudit).toBeDefined();
+			expect(canonicalAudit?.displayValue).toContain('https://example.com/page');
+		});
+
+		it('should detect language tags in HTML', async () => {
+			const result = await performOnSiteSEOAnalysis(mockBaseUrl);
+			const languageAudit = result.pagesAnalyzed[0]?.audits.find((audit: any) => audit.id === 'language-tags');
+			expect(languageAudit).toBeDefined();
+			expect(languageAudit?.displayValue).toContain('Language: en');
 		});
 	});
 
@@ -416,6 +534,85 @@ describe('performOnSiteSEOAnalysis', () => {
 			const result = await performOnSiteSEOAnalysis(mockBaseUrl);
 
 			expect(['success', 'error']).toContain(result.status);
+		});
+	});
+
+	describe('Sitemap and site-wide audit coverage', () => {
+		it('should use robots.txt sitemap directive and include site-wide audit results', async () => {
+			const mockSmartFetch = vi.mocked(smartFetch);
+			mockSmartFetch.mockImplementation(async (url: string, options?: any) => {
+				if (typeof url === 'string' && url.endsWith('/robots.txt')) {
+					return {
+						ok: true,
+						status: 200,
+						text: async () => 'Sitemap: https://example.com/sitemap.xml'
+					};
+				}
+
+				if (typeof url === 'string' && url.endsWith('/sitemap.xml')) {
+					return {
+						ok: true,
+						status: 200,
+						text: async () => '<?xml version="1.0"?><urlset><url><loc>https://example.com/page1</loc></url></urlset>'
+					};
+				}
+
+				if (options?.requestInit?.method === 'HEAD') {
+					return {
+						ok: true,
+						status: 200,
+						headers: {
+							get: (header: string) => {
+								if (header.toLowerCase() === 'cache-control') return 'max-age=3600';
+								if (header.toLowerCase() === 'expires') return new Date(Date.now() + 3600000).toUTCString();
+								if (header.toLowerCase() === 'last-modified') return new Date(Date.now() - 3600000).toUTCString();
+								if (header.toLowerCase() === 'etag') return '"abc123"';
+								return '';
+							}
+						}
+					};
+				}
+
+				if (typeof url === 'string' && url.endsWith('/manifest.webmanifest')) {
+					return { ok: true, status: 200, text: async () => '{}' };
+				}
+
+				return { ok: true, status: 200, text: async () => '' };
+			});
+
+			const result = await performOnSiteSEOAnalysis('https://example.com');
+
+			expect(result.status).toBe('success');
+			expect(result.pagesAnalyzed.length).toBeGreaterThan(0);
+			expect(result.onSiteAudits.some(audit => audit.id === 'robots-txt')).toBe(true);
+			expect(result.onSiteAudits.some(audit => audit.id === 'sitemap-xml')).toBe(true);
+			expect(result.onSiteAudits.some(audit => audit.id === 'manifest-file')).toBe(true);
+			expect(result.onSiteAudits.some(audit => audit.id === 'gzip-compression')).toBe(true);
+			expect(result.onSiteAudits.some(audit => audit.id === 'browser-caching')).toBe(true);
+		});
+
+		it('should fall back to crawl when sitemap discovery fails', async () => {
+			const mockSmartFetch = vi.mocked(smartFetch);
+			mockSmartFetch.mockImplementation(async (url: string, options?: any) => {
+				if (typeof url === 'string' && url.endsWith('/robots.txt')) {
+					return { ok: false, status: 404, text: async () => '' };
+				}
+				if (typeof url === 'string' && url.endsWith('/sitemap.xml')) {
+					return { ok: false, status: 404, text: async () => '' };
+				}
+				if (typeof url === 'string' && url.includes('page1')) {
+					return { ok: true, status: 200, text: async () => '<html><body><a href="https://example.com/page2">Next</a></body></html>' };
+				}
+				if (typeof url === 'string' && url.includes('page2')) {
+					return { ok: true, status: 200, text: async () => '<html><body></body></html>' };
+				}
+				return { ok: true, status: 200, text: async () => '' };
+			});
+
+			const result = await performOnSiteSEOAnalysis('https://example.com');
+			expect(result.status).toBe('success');
+			expect(result.pagesAnalyzed.length).toBeGreaterThan(0);
+			expect(result.totalPages).toBeGreaterThan(0);
 		});
 	});
 });

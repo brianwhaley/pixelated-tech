@@ -12,7 +12,7 @@ import { CacheManager, type CacheMode } from "../foundation/cache-manager";
 import { getDomain } from '../foundation/utilities';
 import "./wordpress.css";
 import { SchemaBlogPosting } from '../foundation/schema';
-import { mapWordPressToBlogPosting } from '../foundation/schema.functions';
+import { mapWordPressToBlogPosting } from '../integrations/wordpress.functions';
 import { SmartErrorBoundary } from '../foundation/smarterrorboundary';
 
 // https://microformats.org/wiki/h-entry

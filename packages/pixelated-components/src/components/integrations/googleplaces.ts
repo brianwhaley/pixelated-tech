@@ -7,6 +7,8 @@ import { usePixelatedConfig } from '../config/config.client';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 
+const debug = false;
+
 interface PlacePrediction {
 	placeId: string;
 	mainText: string;
@@ -45,6 +47,13 @@ export class GooglePlacesService {
 			this.cacheTTL = config.cacheTTL || 3600000;
 		}
 		this.sessionToken = this.generateSessionToken();
+		if (debug) {
+			console.log('[GooglePlacesService] constructor', {
+				apiKeyConfigured: Boolean(this.apiKey),
+				cacheTTL: this.cacheTTL,
+				sessionToken: this.sessionToken,
+			});
+		}
 	}
 
 	/**
@@ -87,18 +96,48 @@ export class GooglePlacesService {
 			// Use global proxy to avoid CORS issues
 			const proxyURL = config?.global?.proxyUrl || '';
 
+			if (debug) {
+				console.log('[GooglePlacesService] getPlacePredictions start', {
+					input,
+					restrictions,
+					proxyURL,
+				});
+			}
+
 			const apiUrl = buildUrl({
 				baseUrl: 'https://maps.googleapis.com',
 				pathSegments: ['maps', 'api', 'place', 'autocomplete', 'json'],
 				params: params,
-				proxyUrl: proxyURL || undefined,
 			});
 
+			const proxyOptions = proxyURL ? { url: proxyURL, forceProxy: true, fallbackOnCors: true } : undefined;
+			if (debug) {
+				console.log('[GooglePlacesService] getPlacePredictions request', {
+					apiUrl,
+					proxyOptions,
+				});
+			}
 			const data = await smartFetch(apiUrl, {
-				proxy: proxyURL ? { url: proxyURL, fallbackOnCors: true } : undefined,
+				proxy: proxyOptions,
 			});
+
+			if (debug) {
+				console.log('[GooglePlacesService] getPlacePredictions response', {
+					status: data?.status,
+					predictionsCount: Array.isArray(data?.predictions) ? data.predictions.length : undefined,
+					errorMessage: data?.error_message,
+				});
+			}
+
+			if (data.status && data.status !== 'OK') {
+				console.error('Google Places autocomplete failed:', data.status, data.error_message || 'No error_message provided.');
+				return [];
+			}
 
 			if (!data.predictions) {
+				if (data.error_message) {
+					console.error('Google Places autocomplete returned no predictions:', data.error_message);
+				}
 				return [];
 			}
 
@@ -134,6 +173,13 @@ export class GooglePlacesService {
 			// Use global proxy to avoid CORS issues
 			const proxyURL = config?.global?.proxyUrl || '';
 
+			if (debug) {
+				console.log('[GooglePlacesService] getPlaceDetails start', {
+					placeId,
+					proxyURL,
+				});
+			}
+
 			const apiUrl = buildUrl({
 				baseUrl: 'https://maps.googleapis.com',
 				pathSegments: ['maps', 'api', 'place', 'details', 'json'],
@@ -143,14 +189,38 @@ export class GooglePlacesService {
 					fields: 'address_component,formatted_address',
 					sessiontoken: this.sessionToken
 				},
-				proxyUrl: proxyURL || undefined,
 			});
 
+			const proxyOptions = proxyURL ? { url: proxyURL, forceProxy: true, fallbackOnCors: true } : undefined;
+			if (debug) {
+				console.log('[GooglePlacesService] getPlaceDetails request', {
+					apiUrl,
+					proxyOptions,
+				});
+			}
 			const data = await smartFetch(apiUrl, {
-				proxy: proxyURL ? { url: proxyURL, fallbackOnCors: true } : undefined,
+				proxy: proxyOptions,
 			});
 
-			if (!data.result) return null;
+			if (debug) {
+				console.log('[GooglePlacesService] getPlaceDetails response', {
+					status: data?.status,
+					resultKeys: data?.result ? Object.keys(data.result) : undefined,
+					errorMessage: data?.error_message,
+				});
+			}
+
+			if (data.status && data.status !== 'OK') {
+				console.error('Google Places place details failed:', data.status, data.error_message || 'No error_message provided.');
+				return null;
+			}
+
+			if (!data.result) {
+				if (data.error_message) {
+					console.error('Google Places place details returned no result:', data.error_message);
+				}
+				return null;
+			}
 
 			const result = data.result;
 			const addressComponents: AddressComponent[] = result.address_components || [];

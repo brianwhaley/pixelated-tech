@@ -14,7 +14,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -46,7 +46,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -79,7 +79,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -112,7 +112,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -145,7 +145,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -178,7 +178,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -211,7 +211,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -244,7 +244,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -277,7 +277,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -310,7 +310,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers
@@ -343,7 +343,7 @@ applications:
       - pattern: "/_next/image/**/*"
         headers: &public_headers
           - key: "Cache-Control"
-            value: "public, max-age=259200, s-maxage=31536000, stale-while-revalidate=604800"
+            value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
 
       - pattern: "/images/**/*"
         headers: *public_headers

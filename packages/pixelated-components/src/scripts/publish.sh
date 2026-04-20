@@ -57,22 +57,26 @@ find_remote_by_repository_url() {
 prompt_version_type() {
     local current_version
     current_version=$(node -p "require('./package.json').version")
-    echo "Current version: $current_version"
-    echo "Select version bump type:"
-    echo "1) patch (x.x.1)"
-    echo "2) minor (x.1.0)"
-    echo "3) major (1.x.x)"
-    echo "4) none (use current version)"
+    printf "Current version: %s\n" "$current_version" >&2
+    printf "Select version bump type:\n" >&2
+    printf "1) patch (x.x.1)\n" >&2
+    printf "2) minor (x.1.0)\n" >&2
+    printf "3) major (1.x.x)\n" >&2
+    printf "4) none (use current version)\n" >&2
 
     local choice
     while true; do
-        read -p "Enter choice (1-4): " choice
+        printf "Enter choice (1-4): " >&2
+        if ! read -r choice; then
+            printf "\n❌ No choice entered. Aborting.\n" >&2
+            exit 1
+        fi
         case "$choice" in
-            1) echo "patch"; return 0 ;; 
-            2) echo "minor"; return 0 ;; 
-            3) echo "major"; return 0 ;; 
-            4) echo "none"; return 0 ;; 
-            *) echo "Invalid choice. Please choose 1, 2, 3, or 4." ;; 
+            1) printf 'patch\n'; return 0 ;; 
+            2) printf 'minor\n'; return 0 ;; 
+            3) printf 'major\n'; return 0 ;; 
+            4) printf 'none\n'; return 0 ;; 
+            *) printf 'Invalid choice. Please choose 1, 2, 3, or 4.\n' >&2 ;; 
         esac
     done
 }

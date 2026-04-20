@@ -1,3 +1,9 @@
+// Server-only utility for local page storage. Do not import from client-side modules.
+
+// NOTE: PAGE STORAGE HAAS MOVED TO CONTENTFUL INTEGRATION. 
+// THIS MODULE IS DEPRECATED AND SHOULD NOT BE USED FOR NEW DEVELOPMENT. 
+// IT MAY BE REMOVED IN FUTURE VERSIONS.
+
 import fs from 'fs';
 import path from 'path';
 import type { PageData } from './types';

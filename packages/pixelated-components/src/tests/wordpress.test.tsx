@@ -10,6 +10,7 @@ vi.mock('../components/integrations/wordpress.functions', () => ({
 	getWordPressPost: vi.fn(),
 	getWordPressComments: vi.fn(),
 	getWordPressLastModified: vi.fn(),
+	mapWordPressToBlogPosting: vi.fn((post: any) => post),
 }));
 
 // Mock dependencies
@@ -35,10 +36,6 @@ vi.mock('../components/general/cache-manager', () => ({
 
 vi.mock('../components/foundation/schema', () => ({
 	SchemaBlogPosting: () => null
-}));
-
-vi.mock('../components/foundation/schema.functions', () => ({
-	mapWordPressToBlogPosting: (post: any) => post
 }));
 
 vi.mock('../components/config/config.client', () => ({

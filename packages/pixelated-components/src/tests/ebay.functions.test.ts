@@ -1,38 +1,49 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import PropTypes from 'prop-types';
-import { getShoppingCartItem, getEbayAppToken } from '../components/shoppingcart/ebay.functions';
+import { getShoppingCartItem } from '../components/shoppingcart/ebay.components';
+import { getEbayAppToken, getEbayItemsSearch, getEbayProductSchema } from '../components/shoppingcart/ebay.functions';
+import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
-import type { CartItemType } from '../components/shoppingcart/shoppingcart.functions';
+import { smartFetch } from '../components/foundation/smartfetch';
 
 // Mock dependencies
-vi.mock('../integrations/cloudinary', () => ({
+vi.mock('../components/integrations/cloudinary', () => ({
 	getCloudinaryRemoteFetchURL: vi.fn((opts) => `https://cloudinary.com/${opts.url}`)
 }));
 
-vi.mock('../general/cache-manager', () => {
-	const mockCache = {
-		get: vi.fn(),
-		set: vi.fn(),
-		clear: vi.fn()
-	};
+vi.mock('../components/foundation/cache-manager', () => {
+	const store: Record<string, any> = {};
 	return {
-		CacheManager: vi.fn(() => mockCache)
+		CacheManager: class {
+			static clearStore() {
+				Object.keys(store).forEach(key => delete store[key]);
+			}
+			get(key: string) {
+				return store[key];
+			}
+			set(key: string, value: any) {
+				store[key] = value;
+			}
+			clear() {
+				Object.keys(store).forEach(key => delete store[key]);
+			}
+		}
 	};
 });
 
-vi.mock('../general/utilities', () => ({
+vi.mock('../components/foundation/utilities', () => ({
 	getDomain: vi.fn(() => 'example.com')
 }));
 
-vi.mock('../general/smartfetch', () => ({
+vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn().mockResolvedValue({ ok: true, json: vi.fn() })
 }));
 
-vi.mock('../general/urlbuilder', () => ({
-	buildUrl: vi.fn((base, params) => `${base}?params=${JSON.stringify(params)}`)
-}));
-
 describe('ebay.functions - Real Tests', () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+		;(CacheManager as any).clearStore?.();
+	});
+
 	const mockEbayItem = {
 		legacyItemId: '123456',
 		title: 'Test Product',
@@ -185,6 +196,64 @@ describe('ebay.functions - Real Tests', () => {
 
 		it('should have propTypes defined', () => {
 			expect(getEbayAppToken.propTypes).toBeDefined();
+		});
+
+		it('should return undefined when token fetch fails', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
+			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+			const token = await getEbayAppToken({ apiProps: mockApiProps });
+			expect(token).toBeUndefined();
+			consoleError.mockRestore();
+		});
+	});
+
+	describe('getEbayItemsSearch', () => {
+		it('should return search results when fetch resolves', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockResolvedValueOnce({ results: [{ id: '1' }] });
+
+			const result = await getEbayItemsSearch({ apiProps: mockApiProps, token: 'token' });
+
+			expect(result).toEqual({ results: [{ id: '1' }] });
+		});
+
+		it('should catch errors and return undefined when fetch fails', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockRejectedValueOnce(new Error('Network failure'));
+			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+			const result = await getEbayItemsSearch({ apiProps: mockApiProps, token: 'token-abc' });
+
+			expect(result).toBeUndefined();
+			consoleError.mockRestore();
+		});
+	});
+
+	describe('getEbayProductSchema', () => {
+		it('should return schema object for valid item', () => {
+			const item = {
+				legacyItemId: '123456',
+				title: 'Test Product',
+				price: { value: '29.99', currency: 'USD' },
+				image: { imageUrl: 'https://pic.ebay.com/image.jpg' },
+				thumbnailImages: [{ imageUrl: 'https://pic.ebay.com/image.jpg' }],
+				itemWebUrl: 'https://ebay.com/itm/123456',
+			};
+
+			const schema = getEbayProductSchema({ item, brandName: 'TestBrand', siteUrl: 'https://example.com' });
+
+			expect(schema).toBeDefined();
+			expect(schema).toHaveProperty('@type', 'Product');
+			expect(schema).toHaveProperty('name', 'Test Product');
+			expect(schema).toHaveProperty('brand');
+			expect(schema?.image).toContain('https://pic.ebay.com/image.jpg');
+		});
+
+		it('should return null when item is missing required fields', () => {
+			const schema = getEbayProductSchema({ item: { legacyItemId: '123456' } as any });
+			expect(schema).toBeNull();
 		});
 	});
 

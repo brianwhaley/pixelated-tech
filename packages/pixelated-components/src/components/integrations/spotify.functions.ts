@@ -1,6 +1,126 @@
 
 import PropTypes, { InferProps } from "prop-types";
 import { smartFetch } from '../foundation/smartfetch';
+import { decode } from 'html-entities';
+
+
+
+
+/* ========================================
+	PODCAST SCHEMA FUNCTIONS
+======================================== */
+
+export interface PodcastEpisodeSchema {
+	'@context': string;
+	'@type': string;
+	url: string;
+	name: string;
+	description?: string;
+	image?: string;
+	datePublished: string;
+	author?: {
+		'@type': string;
+		name: string;
+	};
+	audio?: {
+		'@type': string;
+		contentUrl: string;
+		encodingFormat: string;
+	};
+	duration?: string;
+	episodeNumber?: number | string;
+	isPartOf?: {
+		'@type': string;
+		name: string;
+		url?: string;
+	};
+	explicit?: boolean;
+}
+
+export interface PodcastSeriesSchema {
+	'@context': string;
+	'@type': string;
+	name: string;
+	url?: string;
+	description?: string;
+	image?: string;
+	author?: {
+		'@type': string;
+		name: string;
+	};
+	numberOfEpisodes?: number;
+}
+
+/**
+ * Converts a podcast episode object to schema.org PodcastEpisode format
+ * @param episode Podcast episode data
+ */
+export function mapPodcastEpisodeToSchema(episode: SpotifyPodcastEpisodeType): PodcastEpisodeSchema {
+	const cleanContent = (content: string): string => {
+		if (!content) return '';
+		// Strip HTML tags and decode all HTML entities
+		const stripped = content.replace(/<[^>]*>/g, '');
+		const decoded = decode(stripped).replace(/\[…\]/g, '').trim();
+		// Normalize whitespace: collapse multiple spaces/nbsp into single space
+		return decoded.replace(/\s+/g, ' ');
+	};
+	const description = cleanContent(episode.summary || episode.description);
+	const schema: PodcastEpisodeSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'PodcastEpisode',
+		url: episode.link,
+		name: cleanContent(episode.title),
+		description: description || cleanContent(episode.title),
+		datePublished: episode.pubDate,
+		image: episode.image,
+		explicit: episode.explicit,
+	};
+	if (episode.creator) {
+		schema.author = {
+			'@type': 'Person',
+			name: episode.creator,
+		};
+	}
+	if (episode.enclosure?.url) {
+		schema.audio = {
+			'@type': 'AudioObject',
+			contentUrl: episode.enclosure.url,
+			encodingFormat: episode.enclosure.type || 'audio/mpeg',
+		};
+	}
+	if (episode.duration) { schema.duration = episode.duration; }
+	if (episode.episode) { schema.episodeNumber = episode.episode; }
+	return schema;
+}
+
+/**
+ * Converts podcast series metadata to schema.org PodcastSeries format
+ * @param series Podcast series data from RSS
+ */
+export function mapPodcastSeriesToSchema(series: SpotifyPodcastSeriesType): PodcastSeriesSchema {
+	const normalizeWhitespace = (text: string): string => {
+		return text.replace(/\s+/g, ' ').trim();
+	};
+	const schema: PodcastSeriesSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'PodcastSeries',
+		name: normalizeWhitespace(decode(series.title)),
+		description: series.description ? normalizeWhitespace(decode(series.description)) : undefined,
+		url: series.link,
+		image: series.image,
+	};
+	if (series.author) {
+		schema.author = {
+			'@type': 'Person',
+			name: series.author,
+		};
+	}
+	return schema;
+}
+
+
+
+
 
 
 export type SpotifyPodcastSeriesType = {

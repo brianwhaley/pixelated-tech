@@ -439,7 +439,10 @@ export function FormGooglePlacesInput(props: FormGooglePlacesInputType) {
 							<li key={idx} role="option" aria-selected={false}>
 								<button
 									type="button"
-									onClick={() => handleSelectPlace(pred)}
+									onMouseDown={(event) => {
+										event.preventDefault();
+										handleSelectPlace(pred);
+									}}
 									className="prediction-item"
 								>
 									<strong>{pred.mainText}</strong>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import { getWordPressItems, BlogPostList, type BlogPostType } from "@pixelated-tech/components";
+import { getWordPressItems, BlogPostList } from "@pixelated-tech/components";
 import SocialTags from "@/app/elements/socialtags";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { ToggleLoading } from "@pixelated-tech/components";
@@ -27,7 +27,7 @@ export default function Home() {
 	}, []);
 
 
-	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
+	const [ wpPosts, setWpPosts ] = useState<Awaited<ReturnType<typeof getCachedWordPressItems>>>([]);
 	useEffect(() => {
 		async function fetchPosts() {
 			ToggleLoading({show: true});
@@ -87,7 +87,7 @@ export default function Home() {
 						layout='vertical'
 						url='/portfolio'
 						// img='/images/icons/portfolio.png'
-						img='/images/pix-icons/portfolio.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/5o6Znbm8NrLxnAYNigmZ9v/1c86b278e3c15271d452c3a4d25ff1c2/portfolio.jpg'
 						imgAlt='Portfolio'
 						imgShape='bevel'
 						title='View Our Work Portfolio'
@@ -106,7 +106,7 @@ export default function Home() {
 						layout='vertical'
 						url='/samples'
 						// img='/images/icons/samples.png'
-						img='/images/pix-icons/samples.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/6eYGISUKzCqZnQ7J9uASQK/a31c298d8a6e4da5c174a9615e9cb1e8/samples.jpg'
 						imgAlt='Samples'
 						imgShape='bevel'
 						title='View Some Samples'
@@ -136,7 +136,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="left"
 						// img='/images/icons/webdev.png'
-						img='/images/pix-icons/webdev.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg'
 						imgAlt='Web Development'
 						imgShape="squircle" 
 						title='Web Development'
@@ -155,7 +155,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="right"
 						// img='/images/icons/socialmedia.png'
-						img='/images/pix-icons/socialmedia.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg'
 						imgAlt='Social Media Marketing'
 						imgShape="squircle" 
 						title='Social Media Marketing'
@@ -173,7 +173,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="left"
 						// img='/images/icons/seo-2.png'
-						img='/images/pix-icons/seo.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg'
 						imgAlt='Search Engine Optimization'
 						imgShape="squircle" 
 						title='Search Engine Optimization'
@@ -190,7 +190,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="right"
 						// img='/images/icons/content.png'
-						img='/images/pix-icons/content.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg'
 						imgAlt='Content Management'
 						imgShape="squircle"
 						title='Content Management'
@@ -208,7 +208,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="left"
 						// img='/images/icons/ecommerce.png'
-						img='/images/pix-icons/ecommerce.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg'
 						imgAlt='eCommerce Solutions'
 						imgShape="squircle" 
 						title='eCommerce Solutions'
@@ -226,7 +226,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="right"
 						// img='/images/icons/custom.png'
-						img='/images/pix-icons/modernization.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg'
 						imgAlt='Small Business Modernization'
 						imgShape="squircle" 
 						title='Small Business Modernization'

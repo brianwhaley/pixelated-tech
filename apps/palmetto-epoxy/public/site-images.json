@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generatedAt": "2026-04-17T17:49:01.352Z",
-    "imageCount": 69
+    "generatedAt": "2026-04-20T18:28:39.005Z",
+    "imageCount": 67
   },
   "images": [
     "images/dennis-and-martha-aberle.jpg",
@@ -21,6 +21,10 @@
     "images/icons/tooltip-icon.png",
     "images/icons/up.jpg",
     "images/icons/www.png",
+    "images/logo/palmetto-epoxy-logo-2.jpg",
+    "images/logo/palmetto-epoxy-logo-lg.jpg",
+    "images/logo/palmetto-epoxy-logo.jpg",
+    "images/logo/rainbow-coloured-watercolour-splatter-design-0307_1048-19245.jpg",
     "images/logos/500px-logo.png",
     "images/logos/amazon-logo.png",
     "images/logos/ancestry-logo.jpg",
@@ -58,8 +62,6 @@
     "images/logos/x-logo.png",
     "images/logos/yelp-logo.png",
     "images/logos/youtube-logo.png",
-    "images/palmetto-epoxy-logo-lg.jpg",
-    "images/palmetto-epoxy-logo.jpg",
     "images/projects/Driveway_Polish.jpg",
     "images/projects/Epoxy_Floor_4.jpg",
     "images/projects/Epoxy_Shining.jpg",
@@ -68,10 +70,6 @@
     "images/projects/IMG_8829.jpeg",
     "images/projects/Seapines_1_Done.jpeg",
     "images/projects/image-asset.jpeg",
-    "images/splatter.jpg",
-    "images/stock/customer-experience-creative-collage.jpg",
-    "images/stock/hand-holds-wooden-cube-with-text-subscribe-now.jpg",
-    "images/wip/palmetto-epoxy-logo-2.jpg",
-    "images/wip/rainbow-coloured-watercolour-splatter-design-0307_1048-19245.jpg"
+    "images/splatter.jpg"
   ]
 }

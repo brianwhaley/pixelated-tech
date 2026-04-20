@@ -1,5 +1,6 @@
 import PropTypes, { InferProps } from "prop-types";
 import type { MetadataRoute } from 'next';
+import type { NextRequest } from 'next/server';
 import { encode } from 'html-entities';
 import { getAllRoutes } from "./metadata.functions";
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";

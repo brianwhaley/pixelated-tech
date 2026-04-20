@@ -217,6 +217,34 @@ export const mockBlogPost = {
 	link: 'https://example.com/test-post',
 };
 
+export const mockPayPalCheckoutData = {
+	subtotal: 89.99,
+	shippingCost: 0.00,
+	handlingFee: 0.00,
+	salesTax: 10.00,
+	subtotal_discount: 0,
+	total: 99.99,
+	items: [
+		{
+			itemID: 'LAPTOP-001',
+			itemQuantity: 1,
+			itemCost: 89.99,
+			itemTitle: 'Laptop Computer',
+			itemURL: 'https://example.com/laptop',
+		},
+	],
+	shippingTo: {
+		name: 'John Doe',
+		street1: '123 Market St',
+		city: 'Exampleville',
+		state: 'CA',
+		zip: '94103',
+		country: 'US',
+		email: 'john.doe@example.com',
+		phone: '555-123-4567',
+	},
+};
+
 export const mockPosts = [
 	mockBlogPost,
 	{

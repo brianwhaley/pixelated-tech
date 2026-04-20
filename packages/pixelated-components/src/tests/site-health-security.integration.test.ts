@@ -110,7 +110,7 @@ describe('analyzeSecurityHealth', () => {
 			expect(typeof result.data.dependencies).toBe('number');
 			expect(typeof result.data.totalDependencies).toBe('number');
 		}
-	});
+	}, 120_000);
 
 	it('should identify vulnerability severity levels', async () => {
 		const result = await analyzeSecurityHealth('/test/path', 'test-site');

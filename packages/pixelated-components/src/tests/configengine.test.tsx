@@ -137,7 +137,7 @@ describe('ConfigEngine Components', () => {
       // Check for stylesheet link
       const stylesheet = container.querySelector('link[rel="stylesheet"]');
       expect(stylesheet).toBeInTheDocument();
-      expect(stylesheet?.getAttribute('href')).toBe('https://fonts.googleapis.com/css2?family=Montserrat|Open+Sans&display=swap');
+      expect(stylesheet?.getAttribute('href')).toBe('https://fonts.googleapis.com/css2?family=Montserrat%7COpen%2BSans&display=swap');
     });
 
     it('should not render when only web-safe fonts are present', () => {

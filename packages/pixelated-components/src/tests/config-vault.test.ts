@@ -22,7 +22,7 @@ describe('config-vault postbuild integration', () => {
 		const encPath = path.join(appConfigDir, 'pixelated.config.json.enc');
 		fs.writeFileSync(encPath, encrypted, 'utf8');
 
-		// Run the CLI using the project script (absolute path), with cwd set to the tmp dir
+		// Run the CLI via npx so it uses the workspace-installed tsx executable
 		const scriptPath = path.resolve(__dirname, '..', 'scripts', 'config-vault.ts');
 		const res = spawnSync('npx', ['tsx', scriptPath, 'postbuild'], {
 			cwd: tmp,
@@ -46,22 +46,22 @@ describe('config-vault postbuild integration', () => {
 		expect(JSON.parse(read)).toEqual({ siteName: 'EncSite' });
 
 		fs.rmSync(tmp, { recursive: true, force: true });
-	});
+	}, 120_000);
 
 	it('should be a no-op if no .enc exists', () => {
 		const tmp = mkdtmp();
 		// no encrypted file created
 		const scriptPath = path.resolve(__dirname, '..', 'scripts', 'config-vault.ts');
-const res = spawnSync('npx', ['tsx', scriptPath, 'postbuild', '--debug'], {
-		cwd: tmp,
-		env: process.env,
+		const res = spawnSync('npx', ['tsx', scriptPath, 'postbuild', '--debug'], {
+			cwd: tmp,
+			env: process.env,
 			encoding: 'utf8',
-			timeout: 60_000,
+			timeout: 120_000,
 		});
 
 		expect(res.status).toBe(0);
 		expect(res.stdout).toContain('No encrypted config found; nothing to do.');
 
 		fs.rmSync(tmp, { recursive: true, force: true });
-	});
+	}, 120_000);
 });

@@ -117,7 +117,7 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 					<ServicesSchema siteInfo={siteInfo} />
 					<VisualDesignStyles visualdesign={myRoutes.visualdesign} />
 					<link rel="preload" fetchPriority="high" as="image" type="image/webp" 
-						href="https://www.palmetto-epoxy.com/images/palmetto-epoxy-logo.jpg" ></link>
+						href="https://www.palmetto-epoxy.com/images/logo/palmetto-epoxy-logo.jpg" ></link>
 				</head>
 				<body>
 					<PixelatedServerConfigProvider>

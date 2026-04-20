@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
 import { SchemaBlogPosting } from '@/components/foundation/schema';
-import { mapWordPressToBlogPosting } from '@/components/foundation/schema.functions';
+import { mapWordPressToBlogPosting } from '@/components/integrations/wordpress.functions';
 import type { BlogPostType } from '../components/integrations/wordpress.functions';
 
 describe('SchemaBlogPosting Component', () => {

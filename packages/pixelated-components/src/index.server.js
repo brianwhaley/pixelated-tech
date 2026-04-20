@@ -14,7 +14,6 @@ export * from './components/config/crypto';
 export * from './components/foundation/manifest';
 export * from './components/foundation/metadata.functions';
 export * from './components/foundation/proxy-handler';
-export * from './components/foundation/schema.functions';
 export * from './components/foundation/sitemap';
 export * from './components/foundation/skeleton';
 export * from './components/foundation/smartfetch';

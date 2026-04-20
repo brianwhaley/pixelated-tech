@@ -1,6 +1,17 @@
-import { describe, it, expect, vi } from 'vitest';
-import { generateGoogleFontsUrl, generateGoogleFontsLink } from '../components/sitebuilder/config/google-fonts';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/sitebuilder/config/google-fonts';
+import { generateGoogleFontsUrl, generateGoogleFontsLink } from '../components/sitebuilder/config/google-fonts.client';
 import { buildUrl } from '../components/foundation/urlbuilder';
+import { smartFetch } from '../components/foundation/smartfetch';
+import { getFullPixelatedConfig } from '../components/config/config';
+
+vi.mock('../components/foundation/smartfetch', () => ({
+	smartFetch: vi.fn()
+}));
+
+vi.mock('../components/config/config', () => ({
+	getFullPixelatedConfig: vi.fn()
+}));
 
 const mockApiKey = 'test-api-key-123';
 
@@ -139,6 +150,96 @@ describe('google-fonts', () => {
 			// buildUrl encodes pipes as %7C
 			expect(link).toContain('Roboto%7CLato');
 			expect(link).toContain('display=swap');
+		});
+	});
+
+	describe('fetchGoogleFonts and getFontOptions', () => {
+		const mockSmartFetch = vi.mocked(smartFetch);
+		const mockConfig = vi.mocked(getFullPixelatedConfig);
+
+		beforeEach(async () => {
+			vi.clearAllMocks();
+			await clearGoogleFontsCache();
+		});
+
+		const createMockGoogleConfig = (apiKey?: string) => ({
+			google: {
+				client_id: '',
+				client_secret: '',
+				api_key: apiKey || '',
+				refresh_token: ''
+			}
+		} as any);
+
+		it('should return empty list when api key is missing', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig());
+			const fonts = await fetchGoogleFonts();
+			expect(fonts).toEqual([]);
+		});
+
+		it('should return empty list when fetch fails', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig(mockApiKey));
+			mockSmartFetch.mockRejectedValueOnce(new Error('API failure'));
+
+			const fonts = await fetchGoogleFonts();
+			expect(fonts).toEqual([]);
+		});
+
+		it('should fetch fonts when api key is present', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig(mockApiKey));
+			mockSmartFetch.mockResolvedValue({ items: [{ family: 'Roboto', category: 'sans-serif', variants: [], subsets: [], version: '', lastModified: '', kind: '', menu: '', files: {} }] });
+
+			const fonts = await fetchGoogleFonts();
+			expect(fonts).toHaveLength(1);
+			expect(fonts[0].family).toBe('Roboto');
+		});
+
+		it('should return cached fonts on second fetch within cache duration', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig(mockApiKey));
+			vi.resetModules();
+			const googleFontsModule = await import('../components/sitebuilder/config/google-fonts');
+			mockSmartFetch.mockResolvedValueOnce({ items: [{ family: 'Roboto', category: 'sans-serif', variants: [], subsets: [], version: '', lastModified: '', kind: '', menu: '', files: {} }] });
+
+			const fonts1 = await googleFontsModule.fetchGoogleFonts();
+			const fonts2 = await googleFontsModule.fetchGoogleFonts();
+
+			expect(fonts1).toBe(fonts2);
+			expect(fonts1).toHaveLength(1);
+			expect(mockSmartFetch).toHaveBeenCalledTimes(1);
+		});
+
+		it('should return fallback fonts when config retrieval returns no fonts', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig());
+			const options = await getFontOptions();
+			expect(options.length).toBeGreaterThan(0);
+			expect(options[0]).toHaveProperty('value');
+			expect(options[0]).toHaveProperty('label');
+		});
+
+		it('should fall back to default fonts when API returns an empty list', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig(mockApiKey));
+			mockSmartFetch.mockResolvedValue({ items: [] });
+
+			const options = await getFontOptions();
+			expect(options.length).toBeGreaterThan(0);
+			expect(options[0]).toHaveProperty('value');
+			expect(options[0]).toHaveProperty('label');
+		});
+
+		it('should use fetched fonts for getFontOptions when available', async () => {
+			mockConfig.mockReturnValue(createMockGoogleConfig(mockApiKey));
+			mockSmartFetch.mockResolvedValue({ items: [{ family: 'Open Sans', category: 'sans-serif', variants: [], subsets: [], version: '', lastModified: '', kind: '', menu: '', files: {} }] });
+
+			const options = await getFontOptions();
+			expect(options).toEqual([{ value: 'Open Sans', label: 'Open Sans (sans-serif)', category: 'sans-serif' }]);
+		});
+
+		it('should fall back to default fonts when config retrieval throws', async () => {
+			mockConfig.mockImplementationOnce(() => { throw new Error('config failure'); });
+
+			const options = await getFontOptions();
+			expect(options.length).toBeGreaterThan(0);
+			expect(options[0]).toHaveProperty('value');
 		});
 	});
 });

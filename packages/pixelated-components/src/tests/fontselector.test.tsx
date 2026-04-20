@@ -3,15 +3,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '../test/test-utils';
 import { FontSelector } from '../components/sitebuilder/config/FontSelector';
 
-// Mock the google-fonts module
-vi.mock('../components/sitebuilder/config/google-fonts', () => ({
-  fetchGoogleFonts: vi.fn(() => Promise.resolve([
-    { family: 'Roboto', category: 'sans-serif' },
-    { family: 'Open Sans', category: 'sans-serif' },
-    { family: 'Montserrat', category: 'sans-serif' },
-    { family: 'Times New Roman', category: 'serif' },
-    { family: 'Arial', category: 'sans-serif' }
-  ])),
+// Mock the google-fonts.client module
+vi.mock('../components/sitebuilder/config/google-fonts.client', () => ({
   getFontOptions: vi.fn(() => Promise.resolve([
     { value: 'Roboto', label: 'Roboto (sans-serif)', category: 'sans-serif' },
     { value: 'Open Sans', label: 'Open Sans (sans-serif)', category: 'sans-serif' },
