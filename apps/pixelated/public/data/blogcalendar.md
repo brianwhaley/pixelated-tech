@@ -1,7 +1,7 @@
 
 # Pixelated Technologies: 100-Week Content Strategy
 
-## Criteria for each individual Blog Post:
+## Criteria for each individual Blog Post :
 * Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
 * After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.pixelated.tech/schedule
 * Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..  

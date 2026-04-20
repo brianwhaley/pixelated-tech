@@ -33,9 +33,9 @@ export default function Home() {
 						imgShape="square"
 						subtitle="Good CI can be done within legal and ethical guidelines.
                             Information Focus will help guide you every step of the way to building
-                            a valuable and sustainable CI unit with the right people,
+                            a valuable and sustainable Competitive Intelligence (CI) unit with the right people,
                             processes, and technologies."
-						content="Global Corporations need Competitive Intelligence (CI) to advance their business strategies.
+						content="Global Corporations need CI to advance their business strategies.
                             Information Focus has over 30 years of experience in building large, mid-size,
                             and one-person CI units." />
 				</div>

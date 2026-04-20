@@ -26,7 +26,7 @@ export default function Work() {
 							launching and managing digital products, and developing and executing unified product and technology strategies. 
 							I have managed Highly available e-commerce portals, web sites, web applications, and mobile applications, 
 							in the media, finance, pharmaceutical, and telecommunications industries, 
-							leading departments up to 300 staff, budgets to $50 million, using onshore staff, offshore partners, and hybrid teams'/>
+							leading departments up to 300 staff, budgets to $50 million, using onshore staff, offshore partners, and hybrid teams.'/>
 				</PageGridItem>
 			</PageSection>
 

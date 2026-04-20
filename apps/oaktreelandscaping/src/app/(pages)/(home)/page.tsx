@@ -55,8 +55,8 @@ export default function Home() {
 					with their own distinct vision and preferences. 
 					That's why we go above and beyond to tailor the 
 					individual needs and desires of each client. 
-					From stunning flower beds, serene water features to 
-					corporate site maintenance we pay meticulous attention to 
+					From stunning flower beds and serene water features to 
+					corporate site maintenance, we pay meticulous attention to 
 					detail to ensure that every element of the landscape skills 
 					reflects the customer's personal style and preferences." 
 				/>

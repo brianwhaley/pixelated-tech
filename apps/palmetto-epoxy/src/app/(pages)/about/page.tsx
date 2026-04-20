@@ -18,12 +18,12 @@ export default function About() {
 						aboveFold={true}
 						imgShape='bevel' 
 						imgAlt="Dennis and Martha Aberle of Palmetto Epoxy" 
-						subtitle='The Palmetto Epoxy team is made up of the dynamic duo of Dennis and Martha Aberle, 
-									and together, we&#39;re committed to making sure our customers are always satisfied. 
+						subtitle="The Palmetto Epoxy team is made up of the dynamic duo of Dennis and Martha Aberle, 
+									and together, we're committed to making sure our customers are always satisfied. 
 									We believe that the key to great flooring is all about the details, 
-									and we don&#39;t cut corners when it comes to our installations. 
-									We&#39;re all about quality products, meticulous workmanship, 
-									and unmatched customer service.'
+									and we don't cut corners when it comes to our installations. 
+									We're all about quality products, meticulous workmanship, 
+									and unmatched customer service."
 						content=''
 						layout='vertical' />
 				</PageGridItem>
