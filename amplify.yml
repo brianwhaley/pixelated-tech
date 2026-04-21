@@ -10,27 +10,23 @@ applications:
         preBuild:
           commands:
             - |
-              echo "Env Var AMPLIFY_MONOREPO_APP_ROOT = $AMPLIFY_MONOREPO_APP_ROOT"
-              APP_DIR=$(basename $(pwd))
-              echo "Installing dependencies for monorepo..."
-              pwd
+              echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              cd ../../ && pwd
               npm install --force
               echo "Dependencies installed"
         build:
           commands:
             - |
-              APP_DIR=$(basename $(pwd))
-              PARENT_DIR=$(basename $(dirname $(pwd)))
-              echo "Building shared components..."
-              cd ../../ && pwd
+              echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
-              echo "Building Next.js app: $APP_DIR ..."
-              npm run build -w $PARENT_DIR/$APP_DIR
-              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
+              echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
+              npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild"
-            - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+            - |
+              echo "Calling Config Vault postbuild ..."
+              npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "Config postbuild decrypt failed" && exit 1)
       artifacts:
         baseDirectory: .next
         files:
@@ -235,26 +231,21 @@ applications:
 
 #========================================
   - appRoot: apps/pixelated
-    env:
-      variables:
-        APP_ROOT: "apps/pixelated"
+    #env:
+      #variables:
+        #APP_ROOT: "apps/pixelated"
     frontend:
       phases:
         preBuild:
           commands:
             - |
-              echo "Env Var APP_ROOT = $APP_ROOT"
-              echo "Env Var AMPLIFY_MONOREPO_APP_ROOT = $AMPLIFY_MONOREPO_APP_ROOT"
-              APP_DIR=$(basename $(pwd))
-              echo "Installing dependencies for monorepo: $APP_DIR ..."
+              echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."
               cd ../../ && pwd
               npm install --force
               echo "Dependencies installed"
         build:
           commands:
             - |
-              APP_DIR=$(basename $(pwd))
-              PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
@@ -264,9 +255,6 @@ applications:
           commands:
             - |
               echo "Calling Config Vault postbuild ..."
-              pwd
-              ls -la src/app/config || true
-              ls -la .next/server || true
               npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "Config postbuild decrypt failed" && exit 1)
       artifacts:
         baseDirectory: .next
