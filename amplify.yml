@@ -255,11 +255,11 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
-              echo "Building shared components: $PARENT_DIR/$APP_DIR ..."
+              echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
-              npm run build -w $PARENT_DIR/$APP_DIR
-              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
+              npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
+              npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
           commands:
             - |
