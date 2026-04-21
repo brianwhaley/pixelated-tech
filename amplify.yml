@@ -21,7 +21,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
-              cd ../../
+              cd ../../ && pwd
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -241,7 +241,7 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              pwd
+              cd ../../ && pwd
               npm install --force
               echo "Dependencies installed"
         build:
@@ -250,7 +250,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
-              cd ../../
+              cd ../../ && pwd
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -258,6 +258,9 @@ applications:
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
+            - pwd
+            - ls -la src/app/config || true
+            - ls -la .next/server || true
             - npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
       artifacts:
         baseDirectory: .next
