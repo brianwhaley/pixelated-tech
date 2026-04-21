@@ -257,7 +257,7 @@ applications:
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
-              echo "Building Next.js app: $APP_DIR ..."
+              echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -267,7 +267,7 @@ applications:
               pwd
               ls -la src/app/config || true
               ls -la .next/server || true
-              npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
+              npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "Config postbuild decrypt failed" && exit 1)
       artifacts:
         baseDirectory: .next
         files:
