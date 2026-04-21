@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.15.14",
+	"version": "3.15.15",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -85,6 +85,7 @@
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/config/pixelated.config.json",
 		"config:decrypt": "npm run config:vault -- decrypt src/config/pixelated.config.json.enc",
+		"config:postbuild": "npm run config:vault -- postbuild",
 		"release:prep": "node src/scripts/release-prep.js",
 		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
 		"publish": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/publish.sh\"))')",
