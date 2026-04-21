@@ -12,7 +12,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -22,6 +21,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -51,7 +51,6 @@ applications:
               APP_DIR=$(basename $(pwd))
               echo "Changes detected for $APP_DIR. Proceeding with build."
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -61,6 +60,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -89,7 +89,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -99,6 +98,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -127,7 +127,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -137,6 +136,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -165,7 +165,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -175,6 +174,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -203,7 +203,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -213,6 +212,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -241,7 +241,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -251,6 +250,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -278,7 +278,6 @@ applications:
           commands:
             - echo "Installing dependencies for monorepo..."
             - cd ../..
-            - node -v && npm -v
             - pwd
             - npm install --force
             - echo "Dependencies installed"
@@ -321,7 +320,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -331,6 +329,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building Next.js app: $APP_DIR ..."
+              cd ../../
               npm run build -w $PARENT_DIR/$APP_DIR
               # BUILD STORYBOOK WITH EXTRA MEMORY TO AVOID CI OOM
             - echo "Building Storybook with extra memory to avoid CI OOM"
@@ -360,7 +359,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -370,6 +368,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
@@ -398,7 +397,6 @@ applications:
             - |
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
-              node -v && npm -v
               pwd
               npm install --force
               echo "Dependencies installed"
@@ -408,6 +406,7 @@ applications:
               APP_DIR=$(basename $(pwd))
               PARENT_DIR=$(basename $(dirname $(pwd)))
               echo "Building shared components..."
+              cd ../../
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
               npm run build -w $PARENT_DIR/$APP_DIR
