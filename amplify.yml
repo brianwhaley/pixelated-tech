@@ -10,6 +10,7 @@ applications:
         preBuild:
           commands:
             - |
+              echo "Env Var AMPLIFY_MONOREPO_APP_ROOT = $AMPLIFY_MONOREPO_APP_ROOT"
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo..."
               pwd
@@ -236,12 +237,13 @@ applications:
   - appRoot: apps/pixelated
     env:
       variables:
-        AMPLIFY_MONOREPO_APP_ROOT: "apps/pixelated"
+        APP_ROOT: "apps/pixelated"
     frontend:
       phases:
         preBuild:
           commands:
             - |
+              echo "Env Var APP_ROOT = $APP_ROOT"
               echo "Env Var AMPLIFY_MONOREPO_APP_ROOT = $AMPLIFY_MONOREPO_APP_ROOT"
               APP_DIR=$(basename $(pwd))
               echo "Installing dependencies for monorepo: $APP_DIR ..."
@@ -260,8 +262,9 @@ applications:
               npm run generate-site-images -w $PARENT_DIR/$APP_DIR
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild: "
             - |
+              echo "Calling Config Vault postbuild ..."
+              pwd
               ls -la src/app/config || true
               ls -la .next/server || true
               npm run config:vault -- postbuild || (echo "Config postbuild decrypt failed" && exit 1)
