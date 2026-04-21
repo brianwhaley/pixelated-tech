@@ -247,14 +247,12 @@ applications:
         build:
           commands:
             - |
-              APP_DIR=$(basename $(pwd))
-              PARENT_DIR=$(basename $(dirname $(pwd)))
+              APP_DIR=apps/pixelated
               echo "Building shared components..."
-              cd ../../ && pwd
               npm run build -w packages/pixelated-components
               echo "Building Next.js app: $APP_DIR ..."
-              npm run build -w $PARENT_DIR/$APP_DIR
-              npm run generate-site-images -w $PARENT_DIR/$APP_DIR
+              npm run build -w $APP_DIR
+              npm run generate-site-images -w $APP_DIR
         postBuild:
           commands:
             - echo "Calling Config Vault postbuild"
