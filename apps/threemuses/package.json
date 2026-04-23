@@ -1,6 +1,6 @@
 {
 	"name": "threemuses",
-	"version": "0.1.24",
+	"version": "0.1.25",
 	"private": true,
 	"description": "Pixelated starter template for Next.js, Typescript, and common configs",
 	"license": "MIT",
@@ -25,7 +25,6 @@
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
-		"glob": "^13.0.6",
 		"next": "^16.2.4",
 		"react": "^19.2.4"
 	},

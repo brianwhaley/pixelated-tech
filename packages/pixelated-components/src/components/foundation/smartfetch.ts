@@ -7,7 +7,7 @@
  * - Retry with exponential backoff
  * - Request timeout handling
  * - Dual caching: Next.js fetch cache + CacheManager
- * - Enhanced error messages with domain info
+ * - Enhanced error messages with hostname info
  * - Optional callbacks (onSuccess, onError, onComplete)
  * - Debug logging
  *
@@ -96,9 +96,9 @@ export interface SmartFetchOptions {
 }
 
 /**
- * Extract domain from URL for enhanced error messages
+ * Extract hostname from URL for enhanced error messages
  */
-function getDomain(url: string): string {
+function getHostname(url: string): string {
 	try {
 		return new URL(url).hostname;
 	} catch {
@@ -142,14 +142,14 @@ export async function smartFetch(
 		onComplete,
 	} = options;
 
-	const domain = getDomain(url);
+	const hostname = getHostname(url);
 
 	try {
 		// Step 1: Check CacheManager first (fastest, cross-request)
 		if ((cacheStrategy === 'local' || cacheStrategy === 'both') && cache && cacheKey) {
 			const cached = cache.get(cacheKey);
 			if (cached) {
-				if (debug) console.log(`[smartFetch] ${domain}: Cache hit (${cacheKey})`);
+				if (debug) console.log(`[smartFetch] ${hostname}: Cache hit (${cacheKey})`);
 				onSuccess?.(cached);
 				onComplete?.();
 				return cached;
@@ -163,7 +163,7 @@ export async function smartFetch(
 		if (proxy?.forceProxy) {
 			fetchUrl = proxy.url + encodeURIComponent(url);
 			tryDirect = false;
-			if (debug) console.log(`[smartFetch] ${domain}: Using proxy (force)`);
+			if (debug) console.log(`[smartFetch] ${hostname}: Using proxy (force)`);
 		}
 
 		// Step 3: Fetch with retry loop
@@ -172,13 +172,13 @@ export async function smartFetch(
 		for (let attempt = 0; attempt <= retries; attempt++) {
 			try {
 				if (debug && attempt > 0) {
-					console.log(`[smartFetch] ${domain}: Retry attempt ${attempt + 1}/${retries + 1}`);
+					console.log(`[smartFetch] ${hostname}: Retry attempt ${attempt + 1}/${retries + 1}`);
 				}
 
 				// Attempt direct fetch
 				if (tryDirect) {
 					try {
-						if (debug) console.log(`[smartFetch] ${domain}: Fetching (direct)`);
+						if (debug) console.log(`[smartFetch] ${hostname}: Fetching (direct)`);
 
 						// Set up timeout for this fetch attempt
 						const controller = new AbortController();
@@ -200,7 +200,7 @@ export async function smartFetch(
 						}
 						// If responseType is 'ok' or 'status', return the raw Response object
 						if (responseType === 'ok' || responseType === 'status') {
-							if (debug) console.log(`[smartFetch] ${domain}: Success (returning Response object)`);
+							if (debug) console.log(`[smartFetch] ${hostname}: Success (returning Response object)`);
 							onSuccess?.(response);
 							onComplete?.();
 							return response;
@@ -212,14 +212,14 @@ export async function smartFetch(
 							cache.set(cacheKey, data);
 						}
 
-						if (debug) console.log(`[smartFetch] ${domain}: Success`);
+						if (debug) console.log(`[smartFetch] ${hostname}: Success`);
 						onSuccess?.(data);
 						onComplete?.();
 						return data;
 					} catch (error) {
 						// On CORS error, try proxy if available
 						if (proxy?.fallbackOnCors && isCorsError(error as Error)) {
-							if (debug) console.log(`[smartFetch] ${domain}: CORS error, falling back to proxy`);
+							if (debug) console.log(`[smartFetch] ${hostname}: CORS error, falling back to proxy`);
 							tryDirect = false;
 							fetchUrl = proxy.url + encodeURIComponent(url);
 							// Fall through to proxy attempt below
@@ -231,7 +231,7 @@ export async function smartFetch(
 
 				// Attempt via proxy (if set or after direct CORS failure)
 				if (!tryDirect) {
-					if (debug) console.log(`[smartFetch] ${domain}: Fetching (proxy)`);
+					if (debug) console.log(`[smartFetch] ${hostname}: Fetching (proxy)`);
 
 					// Set up timeout for this fetch attempt
 					const controller = new AbortController();
@@ -254,7 +254,7 @@ export async function smartFetch(
 
 					// If responseType is 'ok' or 'status', return the raw Response object
 					if (responseType === 'ok' || responseType === 'status') {
-						if (debug) console.log(`[smartFetch] ${domain}: Success (via proxy, returning Response object)`);
+						if (debug) console.log(`[smartFetch] ${hostname}: Success (via proxy, returning Response object)`);
 						onSuccess?.(response);
 						onComplete?.();
 						return response;
@@ -267,7 +267,7 @@ export async function smartFetch(
 						cache.set(cacheKey, data);
 					}
 
-					if (debug) console.log(`[smartFetch] ${domain}: Success (via proxy)`);
+					if (debug) console.log(`[smartFetch] ${hostname}: Success (via proxy)`);
 					onSuccess?.(data);
 					onComplete?.();
 					return data;
@@ -278,14 +278,14 @@ export async function smartFetch(
 				// If we have retries left, wait before retrying
 				if (attempt < retries) {
 					const delay = Math.pow(2, attempt) * 100; // Exponential backoff: 100ms, 200ms, 400ms...
-					if (debug) console.log(`[smartFetch] ${domain}: Waiting ${delay}ms before retry`);
+					if (debug) console.log(`[smartFetch] ${hostname}: Waiting ${delay}ms before retry`);
 					await new Promise(resolve => setTimeout(resolve, delay));
 				}
 			}
 		}
 
 		// If we got here, all attempts failed
-		const errorMessage = `[smartFetch] ${domain}: ${lastError?.message || 'Unknown error'}`;
+		const errorMessage = `[smartFetch] ${hostname}: ${lastError?.message || 'Unknown error'}`;
 		const error = new Error(errorMessage);
 
 		if (debug) console.error(errorMessage);

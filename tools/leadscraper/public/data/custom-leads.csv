@@ -1,0 +1,12 @@
+id,category,company,phone,website,web_domain,email_domain,address,street_address,city,state,zip,full_name,first_name,last_name,notes,email
+1,customer,Palmetto Epoxy,(516) 510-8186,https://www.palmetto-epoxy.com,palmetto-epoxy.com,gmail.com,"116 Beckenridge Circle, Bluffton, SC 29910",116 Beckenridge Circle,Bluffton,SC,29910,Dennis Aberle,Dennis,Aberle,,palmettoepoxy@gmail.com
+2,customer,Oaktree Landscaping,(843) 227-1210,https://www.oaktreelandscaping.com,oaktreelandscaping.com,gmail.com,"26504 Whyte Hardee Boulevard, Hardeeville, SC 29927",26504 Whyte Hardee Boulevard,Hardeeville,SC,29927,Renee Garcia,Renee,Garcia,,oaktreelandscaper@gmail.com
+3,customer,JZ Home Improvement,(908) 377-5013,https://www.jzhomeimprovement.com,jzhomeimprovement.com,jzhomeimprovement.com,"1151 Reeves Terrace, Union, NJ 07083",1151 Reeves Terrace,Union,NJ,07083,Jacek Machnik,Jacek,Machnik,,jacek@jzhomeimprovement.com
+4,customer,Manning Metalworks,(973) 906-0441,https://www.manningmetalworks.com,manningmetalworks.com,gmail.com,"24 West Hanover Avenue, Morris Plains, NJ 07950",24 West Hanover Avenue,Morris Plains,NJ,07950,Tim Manning,Tim,Manning,,manningmetalworks@gmail.com
+5,customer,The Three Muses of Bluffton,(843) 705-0837,https://www.thethreemusesofbluffton.com,thethreemusesofbluffton.com,thethreemusesofbluffton.com,"1460 Fording Island Road, Bluffton, SC 29910",1460 Fording Island Road,Bluffton,SC,29910,Katie Coupland,Katie,Coupland,,info@thethreemusesofbluffton.com
+,lead,Mackenzie Lawn Maintenance,(973) 508-2001,,,gmail.com,,,,,,Jimmy Mackenzie,Jimmy,Mackenzie,,jimmymackenzie61907@gmail.com
+,"lead, beers and referrals",Advanced Gigahertz Technologies LLC,(732) 310-8653,https://www.advghztech.com/,advghztech.com,advghztech.com,,,Manville,NJ,,Andrew G. Thomson,Andrew,Thomson,,athomson@advghztech.com
+,lead,Exclusive Hardwood Floors,(848) 246-8229,,,gmail.com,"9 W Hillsdale Ave, Long Branch, NJ 07740",,Long Branch,NJ,07740,,,,,exclusiveflrs@gmail.com
+,"networking, beers and referrals",Scomage,(908) 458-9200,https://www.scomage.com,scomage.com,scomage.com,,,,,,Stephen Flood,Stephen,Flood,,steveflood@scomage.com
+,"networking, beers and referrals",Optimum Media,(201) 527-8981,https://www.optimum.media,optimum.media,optimum.media,"683 Rte 10, Randolph NJ 07869",683 Rte 10,Randolph,NJ,07869,Bruce Ackerman,Bruce,Ackerman,,bruce.ackerman@optimum.media
+,"networking, beers and referrals",BidWaves,(973) 600-2603,https://www.bidwaves.com,bidwaves.com,bidwaves.com,,,,,,Greg Markowitz,Greg,Markowitz,,greg.markowitz@bidwaves.com

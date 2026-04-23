@@ -18,7 +18,7 @@ async function requestHandler(req: NextRequest): Promise<NextResponse | undefine
 	// determine output filename for upserts (use json if provided, else generate from scrape url)
 	const outFileName = (fileName && fileName.endsWith('.json')) ? fileName : makeDefaultFileNameFromUrl("https://www.google.com");
 
-	const filePath = path.join(process.cwd(), 'public', fileName);
+	const filePath = path.join(process.cwd(), 'public', 'data', fileName);
 	console.log('Looking for companies file at:', filePath);
 	if (!fs.existsSync(filePath)) {
 		console.error(`Companies file not found: ${filePath}`);

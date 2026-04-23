@@ -10,6 +10,8 @@ import { parseNumber, safeString, sanitizeMediaString } from './smartmediautils'
 const CLOUDINARY_DOMAIN = 'https://res.cloudinary.com/';
 const CLOUDINARY_TRANSFORMS = 'f_auto,c_limit,q_auto,dpr_auto';
 
+const debug = false;
+
 function generateSrcSet(
 	src: string, 
 	productEnv: string | null | undefined, 
@@ -117,10 +119,10 @@ export function SmartImage(props: SmartImageType) {
 	
 	const handleError = (error?: any) => {
 		if (currentVariant === 'cloudinary') {
-			console.warn(`SmartImage: Cloudinary variant failed for "${props.src}", falling back to Next.js Image`, error);
+			if (debug) console.warn(`SmartImage: Cloudinary variant failed for "${props.src}", falling back to Next.js Image`, error);
 			setCurrentVariant('nextjs');
 		} else if (currentVariant === 'nextjs') {
-			console.warn(`SmartImage: Next.js Image variant failed for "${props.src}", falling back to HTML img`, error);
+			if (debug) console.warn(`SmartImage: Next.js Image variant failed for "${props.src}", falling back to HTML img`, error);
 			setCurrentVariant('img');
 		}
 		// No more fallbacks after 'img'
@@ -234,7 +236,7 @@ export function SmartImage(props: SmartImageType) {
 				/>
 			);
 		} catch (e) {
-			console.warn(`SmartImage: Next.js Image threw exception for "${props.src}", falling back to plain img`, e);
+			if (debug) console.warn(`SmartImage: Next.js Image threw exception for "${props.src}", falling back to plain img`, e);
 			// Force fallback to img variant
 			setCurrentVariant('img');
 		}

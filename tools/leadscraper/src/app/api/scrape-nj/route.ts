@@ -50,8 +50,9 @@ async function requestHandler(req: NextRequest): Promise<NextResponse> {
 						// const postalcode = member.querySelector('[itemprop="postal-code"]')?.textContent?.trim();
 						const address = member.querySelector('.address')?.textContent?.trim();
 						const phone = member.querySelector('.mfieldtype_coretelephone .output')?.textContent?.trim();
-						const website = ("https://njccdirectory.com" + member.querySelector('.website a')?.getAttribute('href') || null);
-						const newmember = { category, companyname, address, phone, website };
+						const href = member.querySelector('.website a')?.getAttribute('href');
+						const website = href ? `https://njccdirectory.com${href}` : null;
+						const newmember = { category, company: companyname, address, phone, website };
 						return newmember;
 					})
 				);

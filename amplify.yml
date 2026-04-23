@@ -301,7 +301,7 @@ applications:
               # npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
               # BUILD STORYBOOK WITH EXTRA MEMORY TO AVOID CI OOM
               echo "Building Storybook with extra memory to avoid CI OOM"
-              NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook --legacy-peer-deps
+              NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
           commands:
             - |

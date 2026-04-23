@@ -1,11 +1,25 @@
 const fs = require('fs');
 const path = require('path');
 
-const inFile = process.argv[2] || 'reports/companies-with-emails-no-website.json';
-const outFile = process.argv[3] || (inFile.replace(/\.json$/, '.csv'));
+const inFile = process.argv[2] || 'public/reports/companies-with-emails-no-website.json';
+const outFile = process.argv[3] || (() => {
+	const parsed = path.parse(inFile);
+	return path.join(parsed.dir, `${parsed.name}.csv`);
+})();
 
 function normalizeKey(k) {
 	return k.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+}
+
+function normalizeEmails(value) {
+	if (!value) return [];
+	if (Array.isArray(value)) {
+		return value.map((email) => String(email || '').trim()).filter(Boolean);
+	}
+	return String(value)
+		.split(/[;,|\n]+/)
+		.map((email) => String(email || '').trim())
+		.filter(Boolean);
 }
 
 function toCsvRow(values) {
@@ -31,7 +45,9 @@ try { obj = JSON.parse(raw); } catch (e) { console.error('Failed to parse JSON:'
 
 let rows;
 if (Array.isArray(obj)) rows = obj;
+else if (Array.isArray(obj.processed)) rows = obj.processed;
 else if (Array.isArray(obj.results)) rows = obj.results;
+else if (Array.isArray(obj.leads)) rows = obj.leads;
 else rows = [];
 // Determine fields to include (take union of keys across objects)
 const keysSet = new Set();
@@ -51,7 +67,7 @@ const outLines = [];
 outLines.push(header.join(','));
 
 rows.forEach(r => {
-	const emails = Array.isArray(r.emails) ? r.emails : [];
+	const emails = normalizeEmails(r.emails || r.email);
 	emails.forEach(email => {
 		if (!email || String(email).trim() === '') return; // skip empty
 		const vals = keys.map(k => {

@@ -32,7 +32,7 @@ export function LayoutClient() {
 			buttonring: true,
 			formglow: true,
 			imgscale: true,
-			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, scroll-fade-element',
+			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .scroll-fade-element',
 		});
 	}, []);
 

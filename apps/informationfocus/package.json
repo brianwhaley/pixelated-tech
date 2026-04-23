@@ -1,6 +1,6 @@
 {
 	"name": "informationfocus",
-	"version": "2.3.17",
+	"version": "2.3.18",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -23,7 +23,6 @@
 	},
 	"dependencies": {
 		"@pixelated-tech/components": "*",
-		"glob": "^13.0.6",
 		"next": "^16.2.4",
 		"react": "^19.2.4"
 	},

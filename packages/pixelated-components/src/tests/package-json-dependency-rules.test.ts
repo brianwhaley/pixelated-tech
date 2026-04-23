@@ -150,6 +150,25 @@ describe('pixelated package-json dependency rules', () => {
 		expect(context.reports.some(r => r.messageId === 'prodUsedInDev')).toBe(false);
 	});
 
+	it('does not report next imported from a tools package runtime file as dev-only', async () => {
+		const plugin = await import('../scripts/pixelated-eslint-plugin.js');
+		const projectRoot = createTemporaryProject({
+			'package.json': JSON.stringify({}, null, 2),
+			'tools/leadscraper/package.json': JSON.stringify({
+				dependencies: { next: '^15.0.0' },
+			}, null, 2),
+			'tools/leadscraper/src/app/api/scrape-emails/route.ts': "import { NextRequest, NextResponse } from 'next/server';",
+		});
+
+		const filePath = path.join(projectRoot, 'tools/leadscraper/src/app/api/scrape-emails/route.ts');
+		const context = createRuleContext(filePath);
+		const visitor = plugin.default.rules['package-json-wrong-dependency-type'].create(context);
+		visitor.ImportDeclaration?.({ source: { value: 'next/server' } });
+
+		fs.rmSync(projectRoot, { recursive: true, force: true });
+		expect(context.reports.some(r => r.messageId === 'prodUsedInDev')).toBe(false);
+	});
+
 	it('does not warn about a dev-only file import when the package is also used in runtime source', async () => {
 		const plugin = await import('../scripts/pixelated-eslint-plugin.js');
 		const projectRoot = createTemporaryProject({

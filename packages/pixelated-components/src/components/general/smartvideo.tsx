@@ -13,7 +13,12 @@ import {
 	SmartMediaUtilsPropTypes,
 } from './smartmediautils';
 
+const debug = false;
+
+
 export type SmartVideoVariant = 'cloudinary' | 'html';
+
+
 /**
  * SmartVideo — renders a video optimized for Cloudinary or browser HTML fallback.
  *
@@ -112,10 +117,7 @@ export function SmartVideo(props: SmartVideoType) {
 		height: height,
 		onError: (event) => {
 			if (currentVariant === 'cloudinary') {
-				console.warn(
-					`SmartVideo: Cloudinary video failed for "${normalizedSrc}", falling back to HTML video`,
-					event
-				);
+				if (debug) console.warn( `SmartVideo: Cloudinary video failed for "${normalizedSrc}", falling back to HTML video`, event );
 				setCurrentVariant('html');
 			}
 			if (props.onError) props.onError(event);

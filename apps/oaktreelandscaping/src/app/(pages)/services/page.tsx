@@ -13,6 +13,7 @@ export default function About() {
 				<Callout 
 					layout="vertical"
 					img="https://images.ctfassets.net/h791s4nkwi9z/1j6SKy7OXQkXwZLuN1WPro/1a5c3dde8178c98950dc6206d43008e0/city-view.jpg"
+					aboveFold={true}
 					title="Commercial"
 					content="As a reputable landscape company we understand that the 
 					exterior appearance of a business is a direct reflection of its 

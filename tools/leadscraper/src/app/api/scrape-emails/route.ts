@@ -15,7 +15,7 @@ async function requestHandler(req: NextRequest): Promise<NextResponse | undefine
 	// determine output filename for upserts (if the route's fileName is not a JSON file, generate a new json file name)
 	const outFileName = (fileName && fileName.endsWith('.json')) ? fileName : makeDefaultFileNameFromUrl("https://www.google.com");
 
-	const filePath = path.join(process.cwd(), 'public', fileName);
+	const filePath = path.join(process.cwd(), 'public', 'data', fileName);
 	console.log('Looking for companies file at:', filePath);
 	if (!fs.existsSync(filePath)) {
 		console.error(`Companies file not found: ${filePath}`);
@@ -66,10 +66,10 @@ async function requestHandler(req: NextRequest): Promise<NextResponse | undefine
 				console.log(`Extracted HTML for ${company}:`, emailsHTML ? emailsHTML.substring(0, 200) : '(no html)'); // Log first 200 characters
 				
 				const emailData = extractEmailsFromResults(emailsHTML);
-				for (const email of emailData) {
+				if (emailData.length) {
 					results.push({
 						company: company,
-						email: email
+						emails: emailData
 					});
 				}
 

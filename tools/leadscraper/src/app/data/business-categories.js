@@ -1,4 +1,8 @@
 export const categories = [
+	'food truck'
+];
+
+export const categories_20260401 = [
 	'commercial photographer',
 	'aerial photographer',
 	'bathroom remodeler',

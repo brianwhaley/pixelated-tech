@@ -54,7 +54,7 @@ export default function SamplePage2() {
 			formglow: true,
 			imgscale: true,
 			grayscalehover: true,
-			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .timeline-container, .tile, scroll-fade-element',
+			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .timeline-container, .tile, .scroll-fade-element',
 		});
 	}, []);
 

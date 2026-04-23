@@ -48,7 +48,7 @@ export default function SamplePage1() {
 			buttonring: true,
 			formglow: true,
 			imgscale: true,
-			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .timeline-container, .tile, scroll-fade-element',
+			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .timeline-container, .tile, .scroll-fade-element',
 		});
 	}, []);
 

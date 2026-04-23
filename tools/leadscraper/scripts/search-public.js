@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 function parseArgs(argv) {
-	const args = { filters: [], filePattern: 'public/*.json', limit: 0, output: null, format: 'matches' };
+	const args = { filters: [], filePattern: 'public/data/*.json', limit: 0, output: null, format: 'matches' };
 	for (let i = 0; i < argv.length; i++) {
 		const a = argv[i];
 		if (a === '--filter' && argv[i+1]) { args.filters.push(argv[++i]); continue; }
@@ -116,7 +116,7 @@ function makeMatcher(f) {
 async function main(argv) {
 	const args = parseArgs(argv);
 	if (args.help) {
-		console.log('Usage: node scripts/search-public.js --filter "emails:exists" --filter "website:regex:(^$|facebook|instagram)" [--filePattern public/*.json] [--limit N] [--output out.json]');
+		console.log('Usage: node scripts/search-public.js --filter "emails:exists" --filter "website:regex:(^$|facebook|instagram)" [--filePattern public/data/*.json] [--limit N] [--output public/reports/out.json]');
 		return;
 	}
 
@@ -128,7 +128,7 @@ async function main(argv) {
 	// default report filename (timestamped) when no --output provided
 	if (!args.output) {
 		const ts = new Date().toISOString().replace(/[:.]/g, '').replace(/-/g, '');
-		args.output = path.join('reports', `search-${ts}.json`);
+		args.output = path.join('public', 'reports', `search-${ts}.json`);
 		args.format = args.format || 'records';
 		console.log(`No --output specified; will write to ${args.output}`);
 	}

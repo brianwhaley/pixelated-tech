@@ -6,7 +6,7 @@ export const CompanySpec = {
 	leadType: { type: 'string' },
 	emails: { type: 'string[]' },
 	phone: { type: 'string' },
-	website: { type: 'string|null' },
+	website: { type: 'string|string[]|null' },
 	'web domain': { type: 'string' },
 	'email domain': { type: 'string' },
 	'street address': { type: 'string' },
@@ -31,8 +31,8 @@ export type CompanyKeys = keyof typeof CompanySpec;
 // Map spec types to TypeScript types
 type SpecToTs<S> = S extends { type: 'string' } ? string :
 	S extends { type: 'string[]' } ? string[] :
-	S extends { type: 'boolean' } ? boolean :
-	S extends { type: 'string|null' } ? string | null : any;
+	S extends { type: 'string|string[]|null' } ? string | string[] | null :
+	S extends { type: 'boolean' } ? boolean : any;
 
 export type CompanyType = {
 	[K in keyof typeof CompanySpec]?: SpecToTs<(typeof CompanySpec)[K]>;
@@ -74,20 +74,6 @@ export function normalizeFlag(val: any): boolean {
 }
 
 
-// Key mapping aliases (incoming keys -> canonical keys)
-const keyMapping: Record<string, CompanyKeys> = {
-	'Company': 'company',
-	'Name': 'first name',
-	'name': 'first name',
-	'address': 'street address',
-	'street_address': 'street address',
-	'City': 'city',
-	'State': 'state',
-	'Phone': 'phone',
-	'Website': 'website',
-	'Category': 'category'
-};
-
 export class Company {
 	data: CompanyType;
 
@@ -95,18 +81,9 @@ export class Company {
 		this.data = data;
 	}
 
-	static mapKeys(obj: any): any {
-		const out: any = {};
-		for (const k of Object.keys(obj)) {
-			const mapped = (keyMapping[k] as string) || k;
-			out[mapped] = out[mapped] || obj[k];
-		}
-		return out;
-	}
-
 	static validate(obj: any): { valid: boolean; errors: Record<string, string[]> } {
 		const errors: Record<string, string[]> = {};
-		const row = this.mapKeys(obj);
+		const row = obj;
 
 		for (const key of Object.keys(CompanySpec) as CompanyKeys[]) {
 			const spec = CompanySpec[key];
@@ -123,6 +100,10 @@ export class Company {
 					errors[key as string] = errors[key as string] || [];
 					errors[key as string].push('not a string');
 				}
+				if (spec.type === 'string|string[]|null' && val !== null && !(typeof val === 'string' || Array.isArray(val))) {
+					errors[key as string] = errors[key as string] || [];
+					errors[key as string].push('must be a string, array of strings, or null');
+				}
 				if (spec.type === 'string[]') {
 					const emails = splitEmails(val);
 					if (!Array.isArray(emails) || emails.length === 0) {
@@ -134,6 +115,14 @@ export class Company {
 								errors[key as string] = errors[key as string] || [];
 								errors[key as string].push(`invalid email:${e}`);
 							}
+						}
+					}
+				}
+				if (spec.type === 'string|string[]|null' && Array.isArray(val)) {
+					for (const item of val) {
+						if (typeof item !== 'string') {
+							errors[key as string] = errors[key as string] || [];
+							errors[key as string].push('array elements must be strings');
 						}
 					}
 				}
@@ -151,18 +140,24 @@ export class Company {
 	}
 
 	static from(obj: any): Company {
-		const mapped = Company.mapKeys(obj);
 		const out: any = {};
 
 		for (const key of Object.keys(CompanySpec) as CompanyKeys[]) {
 			const spec = CompanySpec[key];
-			const v = mapped[key as string];
+			const v = obj[key as string];
 			if (v === undefined || v === null) continue;
 
 			if (spec.type === 'string') out[key] = String(v).trim();
-			else if (spec.type === 'string|null') out[key] = v === null ? null : String(v).trim();
 			else if (spec.type === 'string[]') out[key] = Array.from(new Set(splitEmails(v)));
-			else if (spec.type === 'boolean') out[key] = normalizeFlag(v);
+			else if (spec.type === 'string|string[]|null') {
+				if (v === null) {
+					out[key] = null;
+				} else if (Array.isArray(v)) {
+					out[key] = Array.from(new Set((v as any[]).map((item) => String(item).trim()).filter(Boolean)));
+				} else {
+					out[key] = String(v).trim();
+				}
+			} else if (spec.type === 'boolean') out[key] = normalizeFlag(v);
 			else out[key] = v;
 		}
 

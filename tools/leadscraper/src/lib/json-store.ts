@@ -15,6 +15,13 @@ function safeWriteSync(filePath: string, data: any) {
 	fs.renameSync(tmp, filePath);
 }
 
+function getDataFilePath(fileName: string): string {
+	if (path.isAbsolute(fileName)) return fileName;
+	if (fileName.startsWith('public' + path.sep)) return path.join(process.cwd(), fileName);
+	if (fileName.startsWith('data' + path.sep)) return path.join(process.cwd(), 'public', fileName);
+	return path.join(process.cwd(), 'public', 'data', fileName);
+}
+
 export function makeDefaultFileNameFromUrl(url: string): string {
 	try {
 		const u = new URL(url);
@@ -34,7 +41,7 @@ export function makeDefaultFileNameFromUrl(url: string): string {
  * Primary key: prefer `id`, fallback to lowercase trimmed `company` name
  */
 export function upsertCompanyToFile(fileName: string, raw: any, _scrapeUrl = 'https://example.com') {
-	const filePath = path.join(process.cwd(), 'public', fileName);
+	const filePath = getDataFilePath(fileName);
 	let out: any;
 	try {
 		const rawStr = fs.readFileSync(filePath, 'utf8');
@@ -92,7 +99,7 @@ export function upsertCompanyToFile(fileName: string, raw: any, _scrapeUrl = 'ht
  * New records are appended.
  */
 export function appendOrMergeResults(fileName: string, items: any[]) {
-	const filePath = path.join(process.cwd(), 'public', fileName);
+	const filePath = getDataFilePath(fileName);
 	let out: any;
 	try {
 		const rawStr = fs.readFileSync(filePath, 'utf8');

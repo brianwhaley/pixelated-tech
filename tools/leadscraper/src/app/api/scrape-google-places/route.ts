@@ -66,11 +66,14 @@ function appendQueryResultToReport(query: string, places: any[], leads: any[], p
 
 type Lead = {
 	id?: string;
-	name?: string;
+	company?: string;
 	phone?: string;
 	address?: string;
 	website?: string;
 	leadType?: string;
+	category?: string;
+	rating?: string;
+	'rating count'?: string;
 };
 
 export async function GET(_req: NextRequest) {
@@ -168,10 +171,10 @@ export async function GET(_req: NextRequest) {
 					const hasNoWebsite = !website;
 					const isSocialOnly = !!website && (website.includes('facebook.com') || website.includes('instagram.com') || website.includes('yelp.com'));
 					if (hasNoWebsite || isSocialOnly) {
-						const name = typeof data.displayName === 'string' ? data.displayName : data.displayName?.text ?? data.name ?? '';
+						const company = typeof data.displayName === 'string' ? data.displayName : data.displayName?.text ?? data.name ?? '';
 						return {
 							id: data.id ?? '',
-							name: name,
+							company,
 							phone: data.nationalPhoneNumber ?? 'N/A',
 							address: data.formattedAddress ?? '',
 							website: website || '',

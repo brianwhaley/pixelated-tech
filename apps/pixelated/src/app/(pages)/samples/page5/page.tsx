@@ -39,7 +39,7 @@ export default function SamplePage5() {
 			buttonring: true,
 			formglow: true,
 			imgscale: true,
-			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .timeline-container, .tile-container, .tile, scroll-fade-element',
+			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .timeline-container, .tile-container, .tile, .scroll-fade-element',
 		});
 	}, []);
 

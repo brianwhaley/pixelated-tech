@@ -32,7 +32,7 @@ export default function Podcast() {
 	
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeElements: '.tile , .blogPostSummary, scroll-fade-element',
+			scrollfadeElements: '.tile , .blogPostSummary, .scroll-fade-element',
 		});
 	}, [episodes]); 
 

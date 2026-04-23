@@ -318,12 +318,21 @@ function isDevFile(filename) {
 	if (!filename) return false;
 	if (isConfigFile(filename)) return true;
 	if (isTestFile(filename)) return true;
+
+	const packageJsonPath = getNearestPackageJsonPath(filename);
 	const normalized = filename.replace(/\\/g, '/');
+	const relative = packageJsonPath
+		? path.relative(path.dirname(packageJsonPath), normalized).replace(/\\/g, '/')
+		: normalized;
+
 	const patterns = [
-		/\/(?:scripts|build|tools|config)\//,
+		/(?:^|\/)scripts\//,
+		/(?:^|\/)build\//,
+		/(?:^|\/)tools\//,
+		/(?:^|\/)config\//,
 		/\b(?:jest|vite|webpack|rollup|tailwind|postcss|tsconfig|swc|vitest|eslint)\.(?:js|cjs|mjs|ts|tsx|json)$/i,
 	];
-	return patterns.some(re => re.test(normalized));
+	return patterns.some(re => re.test(relative));
 }
 
 const packageJsonNoUnusedDependencyRule = {

@@ -33,7 +33,19 @@ async function requestHandler(req: NextRequest): Promise<NextResponse> {
 					const postalcode = member.querySelector('[itemprop="postal-code"]')?.textContent?.trim();
 					const phone = member.querySelector('.ListingResults_Level5_PHONE1')?.textContent?.trim();
 					const website = member.querySelector('.ListingResults_Level5_VISITSITE a')?.getAttribute('href') || null;
-					const newmember = { category, companyname, membername, streetaddress, locality, region, postalcode, phone, website };
+					const address = [streetaddress, locality, region, postalcode].filter(Boolean).join(', ');
+					const newmember = {
+						category,
+						company: companyname,
+						'full name': membername,
+						address,
+						'street address': streetaddress,
+						city: locality,
+						state: region,
+						zip: postalcode,
+						phone,
+						website
+					};
 					return newmember;
 				})
 			);

@@ -23,7 +23,7 @@ export function LayoutClient() {
 			buttonring: true,
 			formglow: true,
 			imgscale: true,
-			scrollfadeElements: '.page-section-header, .callout , .calloutSmall , .carousel-container, .timeline-container, .tile-container, .tile, scroll-fade-element',
+			scrollfadeElements: '.page-section-header, .callout , .calloutSmall , .carousel-container, .timeline-container, .tile-container, .tile, .scroll-fade-element',
 		});
 	}, []);
 

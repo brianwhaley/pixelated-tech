@@ -22,10 +22,10 @@ async function requestHandler(req: NextRequest): Promise<NextResponse> {
 			await page.waitForSelector('[data-page="' + pagenumber + '"]');
 			const pageData = await page.$$eval('[data-page="' + pagenumber + '"] .c-card__member', members =>
 				members.map(member => {
-					const name = member.querySelector('.c-card__member-title a')?.textContent?.trim();
+					const company = member.querySelector('.c-card__member-title a')?.textContent?.trim();
 					const phone = member.querySelector('.c-card__member-links a.phone-link')?.getAttribute('href') || null;
 					const website = member.querySelector('.c-card__member-links a.website-link')?.getAttribute('href') || null;
-					const newmember = { name, phone, website };
+					const newmember = { company, phone, website };
 					return newmember;
 				})
 			);

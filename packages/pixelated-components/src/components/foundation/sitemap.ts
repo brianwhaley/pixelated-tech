@@ -11,6 +11,7 @@ import { CacheManager } from '../foundation/cache-manager';
 import { getDomain } from './utilities';
 import { smartFetch } from './smartfetch';
 
+const debug = false;
 
 export type SitemapEntry = MetadataRoute.Sitemap[number];
 /* export type SitemapEntry = {
@@ -482,7 +483,7 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 		// Process video assets
 		if (videoAssets.length > 0) {
 
-			console.log("Video Assets", videoAssets);
+			if (debug) console.log("Video Assets", videoAssets);
 
 			sitemap.push({
 				url: `${props.origin}/videos`,

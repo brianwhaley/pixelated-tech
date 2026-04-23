@@ -1,6 +1,6 @@
 {
 	"name": "brianwhaley",
-	"version": "2.7.17",
+	"version": "2.7.18",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -22,13 +22,7 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-amplify": "^3.1030.0",
-		"@aws-sdk/client-cloudwatch": "^3.1030.0",
-		"@aws-sdk/client-iam": "^3.1030.0",
-		"@aws-sdk/client-route-53": "^3.1030.0",
 		"@pixelated-tech/components": "*",
-		"glob": "^13.0.6",
-		"happy-dom": "^20.9.0",
 		"next": "^16.2.4",
 		"prop-types": "^15.8.1",
 		"react": "^19.2.4"

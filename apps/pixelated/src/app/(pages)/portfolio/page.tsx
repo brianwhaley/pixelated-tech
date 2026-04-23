@@ -34,7 +34,7 @@ export default function Portfolio() {
 	}, []); 
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeElements: '.tile, scroll-fade-element',
+			scrollfadeElements: '.tile, .scroll-fade-element',
 		});
 	}, [flickrCards]); 
 	return ( 

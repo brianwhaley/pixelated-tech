@@ -125,8 +125,8 @@ Array.prototype.contains = function(obj) {
  * Get the domain name to use as a key component for CacheManager.
  * Safe to call in browser contexts. For server-side, use getDomainFromHeaders() instead.
  *
- * Extracts the domain name from the current hostname to use as a cache/storage prefix.
- * This ensures multi-tenant applications don't have key collisions across different domain instances.
+ * If a URL string is passed, it parses the URL hostname and returns a normalized domain name.
+ * Otherwise, it derives the domain from the current runtime host.
  *
  * @returns Domain name suitable for multi-tenant cache isolation (lowercase, no special characters)
  *
@@ -144,7 +144,16 @@ Array.prototype.contains = function(obj) {
  * // manningmetalworks.com → "manningmetalworks"
  * // localhost → "pixelated" (development)
  */
-export function getDomain(): string {
+export function getDomain(url?: string): string {
+	if (typeof url === 'string' && url.trim()) {
+		try {
+			const hostname = new URL(url).hostname;
+			return extractDomainName(hostname);
+		} catch {
+			return extractDomainName(url);
+		}
+	}
+
 	// Browser environment
 	if (typeof window !== 'undefined' && window.location?.hostname) {
 		return extractDomainName(window.location.hostname);

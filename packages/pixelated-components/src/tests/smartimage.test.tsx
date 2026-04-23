@@ -162,15 +162,6 @@ describe('SmartImage Component', () => {
 	});
 
 	describe('Error Boundaries', () => {
-		let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
-
-		beforeEach(() => {
-			consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		});
-
-		afterEach(() => {
-			consoleWarnSpy.mockRestore();
-		});
 
 		it('should fall back from cloudinary to nextjs on error', async () => {
 			const { rerender } = renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
@@ -181,12 +172,6 @@ describe('SmartImage Component', () => {
 			// Simulate error on the img element
 			const img = screen.getByAltText('Test image');
 			fireEvent.error(img);
-			
-			// Should log warning and fall back to nextjs
-			expect(consoleWarnSpy).toHaveBeenCalledWith(
-				'SmartImage: Cloudinary variant failed for "https://example.com/test-image.jpg", falling back to Next.js Image',
-				expect.any(Object) // SyntheticBaseEvent
-			);
 			
 			// Re-render to check new state
 			rerender(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
@@ -206,12 +191,6 @@ describe('SmartImage Component', () => {
 			// Simulate error
 			fireEvent.error(img);
 			
-			// Should log warning and fall back to img
-			expect(consoleWarnSpy).toHaveBeenCalledWith(
-				'SmartImage: Next.js Image variant failed for "https://example.com/test-image.jpg", falling back to HTML img',
-				expect.any(Object) // SyntheticBaseEvent
-			);
-			
 			// Re-render to check new state
 			rerender(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="nextjs" />);
 			
@@ -227,10 +206,8 @@ describe('SmartImage Component', () => {
 			const img = screen.getByAltText('Test image');
 			expect(img.tagName).toBe('IMG');
 			
-			// Simulate error - should not log anything since img is final fallback
+			// Simulate error - img is final fallback
 			fireEvent.error(img);
-			
-			expect(consoleWarnSpy).not.toHaveBeenCalled();
 		});
 
 		it('should reset fallback state when src changes', () => {
@@ -239,11 +216,6 @@ describe('SmartImage Component', () => {
 			// Trigger fallback
 			const img = screen.getByAltText('Test image');
 			fireEvent.error(img);
-			
-			expect(consoleWarnSpy).toHaveBeenCalledWith(
-				expect.stringContaining('falling back to Next.js Image'),
-				expect.any(Object) // SyntheticBaseEvent
-			);
 			
 			// Change src - should reset to cloudinary
 			rerender(<SmartImage src="https://example.com/different-image.jpg" alt="Test image" variant="cloudinary" />);

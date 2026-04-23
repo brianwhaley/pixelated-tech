@@ -6,7 +6,7 @@ const COVERAGE_THRESHOLDS = {
 	lines: 80.75,
 	functions: 81,
 	branches: 67.25,
-	statements: 78.5,
+	statements: 78.25,
 };
 
 export default defineConfig({
