@@ -6,7 +6,6 @@ import { PixelatedFooter } from "@pixelated-tech/components";
 import { GoogleAnalytics, GoogleAnalyticsEvent } from "@pixelated-tech/components";
 // import { GoogleAnalytics } from '@next/third-parties/google';
 
-
 export default function Footer() {
 	return (
 		<PageSection id="footer-section" columns={1} padding="20px 0 0 0">
@@ -25,9 +24,7 @@ export default function Footer() {
 				<br />
 				<div className="centered">
 					<p className="footer-text">&copy; {new Date().getFullYear()} Pixelated Technologies. All rights reserved.</p>
-
 					<PixelatedFooter />
-					
 				</div>
 				<br /><br />
 			</div>

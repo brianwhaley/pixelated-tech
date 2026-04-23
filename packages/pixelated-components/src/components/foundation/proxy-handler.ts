@@ -70,7 +70,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 		"font-src 'self' data: https://fonts.gstatic.com",
 
-		"media-src 'self' https://*.ctfassets.net",
+		"media-src 'self' https://*.ctfassets.net https://res.cloudinary.com",
 
 		"frame-src 'self' https://calendly.com https://*.hubspot.com https://*.googletagmanager.com https://*.adtrafficquality.google https://*.google.com https://*.calendly.com https://*.hsforms.net https://www.paypal.com https://www.paypalobjects.com https://syndicatedsearch.goog",
 
