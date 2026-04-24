@@ -80,6 +80,7 @@ export async function getPixelatedComponentsPackageVersion(cwd: string) {
 export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};
+	// THIS DOES NOT WORK IN PROD, USE PASSED SITECONFIG INSTEAD
 	const data = opts.siteConfig ?? (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
 	const site = data.siteInfo ?? {};
 	const routes = Array.isArray(data.routes) ? data.routes : [];
@@ -115,7 +116,7 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 		`   Developer Address: 10 Jade Circle, Denville NJ 07834 USA`,
 		`   Developer Email: brian@pixelated.tech`,
 		`   Developer Website: https://www.pixelated.tech`,
-		`   Developer Telephone: +1 (973) 722-2601`,
+		`   Developer Telephone: (973) 710-8008`,
 		'',
 		'/* SITE */',
 		`   Site Name: ${sanitizeString(site.name ?? '')}`,
