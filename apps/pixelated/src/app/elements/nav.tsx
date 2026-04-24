@@ -4,8 +4,8 @@ import React from "react";
 import { useSearchParams } from "next/navigation";
 import { MenuAccordion } from "@pixelated-tech/components";
 // import { getAccordionMenuData } from "../components/metadata/pixelated.metadata";
-import myroutes from '../data/routes.json';
-const allRoutes = myroutes.routes;
+import siteConfig from '../data/siteconfig.json';
+const allRoutes = siteConfig.routes;
 
 // const menuItems = getAccordionMenuData(allRoutes);
 

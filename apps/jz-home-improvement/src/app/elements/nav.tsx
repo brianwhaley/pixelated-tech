@@ -3,8 +3,8 @@
 import React from "react";
 import { PageSection } from "@pixelated-tech/components";
 import { MenuSimple } from "@pixelated-tech/components";
-import myroutes from '../data/routes.json';
-const allRoutes = myroutes.routes;
+import siteConfig from '../data/siteconfig.json';
+const allRoutes = siteConfig.routes;
 
 // const menuItems = getAccordionMenuData(allRoutes);
 

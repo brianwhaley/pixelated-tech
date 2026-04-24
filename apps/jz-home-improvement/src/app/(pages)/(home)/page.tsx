@@ -6,8 +6,8 @@ import { Callout } from "@pixelated-tech/components";
 import { CountUp } from '@pixelated-tech/components';
 import { FormButton } from '@pixelated-tech/components';
 import { Hero } from '@pixelated-tech/components';
-import routes from "@/app/data/routes.json";
-const siteInfo = (routes as any).siteInfo;
+import siteConfig from "@/app/data/siteconfig.json";
+const siteInfo = (siteConfig as any).siteInfo;
 
 export default function Home() {
 

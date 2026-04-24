@@ -4,8 +4,8 @@ import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
 import { Hero } from "@pixelated-tech/components";
 import { MenuAccordion, MenuAccordionButton } from "@pixelated-tech/components";
-import myroutes from '../data/routes.json';
-const allRoutes = myroutes.routes;
+import siteConfig from '../data/siteconfig.json';
+const allRoutes = siteConfig.routes;
 
 export default function Header() {
     

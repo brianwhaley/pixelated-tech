@@ -104,8 +104,8 @@ export const getMetadata = (routes: any, key: string = "name", value: string = "
 	}
 };
 
-export function getAccordionMenuData(myRoutes: Route) {
-	const menuItems = myRoutes.map((thisRoute: Route) => (
+export function getAccordionMenuData(siteConfig: Route) {
+	const menuItems = siteConfig.map((thisRoute: Route) => (
 		thisRoute.routes
 			? { [thisRoute.name as string]: thisRoute.routes.map((subRoute: Route) => ({ [subRoute.name as string]: subRoute.path })) }
 			: { [thisRoute.name as string]: thisRoute.path }

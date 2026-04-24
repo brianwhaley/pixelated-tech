@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { VisualDesignType } from "@pixelated-tech/components";
-import myRoutes from "@/app/data/routes.json";
+import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "./styles/globals.css";
@@ -28,7 +28,7 @@ export default async function RootLayout({
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(myRoutes.routes, "path", pathname);
+	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
 
 	// Check if running on localhost
 	const hostname = reqHeaders.get("host")?.split(':')[0];
@@ -68,7 +68,7 @@ export default async function RootLayout({
 	}
 
 	// Coerce siteInfo to the components package SiteInfo type
-	const siteInfo = myRoutes.siteInfo as SiteInfo;
+	const siteInfo = siteConfig.siteInfo as SiteInfo;
 
 	return (
 		<html lang="en">
@@ -84,7 +84,7 @@ export default async function RootLayout({
 				<WebsiteSchema siteInfo={siteInfo} />
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
-				<VisualDesignStyles visualdesign={myRoutes.visualdesign as unknown as VisualDesignType} />
+				<VisualDesignStyles visualdesign={siteConfig.visualdesign as unknown as VisualDesignType} />
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>

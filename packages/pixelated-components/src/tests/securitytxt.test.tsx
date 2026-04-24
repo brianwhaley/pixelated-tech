@@ -30,7 +30,7 @@ describe('securitytxt (server)', () => {
     const routes = testData.routes || [];
     const siteInfo = testData.siteInfo || { name: 'Test Site', email: 'test@example.com' };
 
-    const { body, headers, etag } = await generateSecurityTxt({ routesJson: { siteInfo, routes } });
+    const { body, headers, etag } = await generateSecurityTxt({ siteConfig: { siteInfo, routes } });
 
     expect(body).toContain('Contact:');
     expect(body).toContain('Expires:');
@@ -41,16 +41,16 @@ describe('securitytxt (server)', () => {
   it('createWellKnownResponse("security") returns 200 and body, and 304 when if-none-match matches', async () => {
     const routes = [{ path: '/a', title: 'A' }];
 
-    const generated = await generateSecurityTxt({ routesJson: { siteInfo: { email: 'security@example.test' }, routes } });
+    const generated = await generateSecurityTxt({ siteConfig: { siteInfo: { email: 'security@example.test' }, routes } });
 
     const req1 = new NextRequest(new URL('https://example.test/.well-known/security.txt'));
-    const resp1 = await createWellKnownResponse('security', req1, { routesJson: { siteInfo: { email: 'security@example.test' }, routes } });
+    const resp1 = await createWellKnownResponse('security', req1, { siteConfig: { siteInfo: { email: 'security@example.test' }, routes } });
     expect(resp1.status).toBe(200);
     const text = await resp1.text();
     expect(text).toBe(generated.body);
 
     const req2 = new NextRequest(new URL('https://example.test/.well-known/security.txt'), { headers: { 'if-none-match': generated.etag } });
-    const resp2 = await createWellKnownResponse('security', req2, { routesJson: { siteInfo: { email: 'security@example.test' }, routes } });
+    const resp2 = await createWellKnownResponse('security', req2, { siteConfig: { siteInfo: { email: 'security@example.test' }, routes } });
     expect(resp2.status).toBe(304);
   });
 });

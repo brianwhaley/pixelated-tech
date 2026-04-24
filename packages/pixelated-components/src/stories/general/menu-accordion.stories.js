@@ -2,8 +2,8 @@ import React from 'react';
 import { MenuAccordionButton, MenuAccordion } from '@/components/general/menu-accordion';
 import { getAccordionMenuData } from "@/components/foundation/metadata.functions";
 import '@/css/pixelated.global.css';
-import myRoutes from '@/data/routes.json';
-const allRoutes = myRoutes.routes;
+import siteConfig from '@/data/siteconfig.json';
+const allRoutes = siteConfig.routes;
 
 // const menuItems = getAccordionMenuData(allRoutes);
 

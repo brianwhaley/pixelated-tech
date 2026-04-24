@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '../test/test-utils';
 import { ConfigBuilder } from '../components/sitebuilder/config/ConfigBuilder';
-import defaultConfigData from '../data/routes.json';
+import siteConfig from '../data/siteconfig.json';
 import testConfigData from '../test/test-data';
 
 describe('ConfigBuilder Component', () => {
@@ -57,7 +57,7 @@ describe('ConfigBuilder Component', () => {
     it('should render visual design form with initial config', () => {
       const initialConfig = {
         siteInfo: { 
-          ...defaultConfigData.siteInfo,
+          ...siteConfig.siteInfo,
           name: 'Test Site', 
           author: 'Test Author',
           description: 'A test site', 
@@ -71,7 +71,7 @@ describe('ConfigBuilder Component', () => {
           default_locale: 'en'
         },
         routes: [],
-        visualdesign: defaultConfigData.visualdesign
+        visualdesign: siteConfig.visualdesign
       };
       render(<ConfigBuilder initialConfig={initialConfig as any} />);
       

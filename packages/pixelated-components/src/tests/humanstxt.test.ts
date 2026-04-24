@@ -33,9 +33,10 @@ describe('humanstxt (server)', () => {
     const routes = testData.routes || [];
     const siteInfo = testData.siteInfo || { name: 'Test Site' };
 
-    const { body, headers, etag } = await generateHumansTxt({ pkg, routesJson: { siteInfo, routes } });
+    const { body, headers, etag } = await generateHumansTxt({ pkg, siteConfig: { siteInfo, routes } });
 
     expect(body).toContain(`Site Name: ${siteInfo.name}`);
+    expect(body).toContain('Site Pixelated Components Package Version: N/A');
     // sanity: ensure at least one real route was used from test-data
     if ((routes || []).length > 0) {
       expect(body).toContain(`${routes[0].path} - ${routes[0].title}`);
@@ -48,16 +49,17 @@ describe('humanstxt (server)', () => {
     const pkg = { name: 'acme', version: '9.9.9' };
     const routes = [ { path: '/a', title: 'A' } ];
 
-    const generated = await generateHumansTxt({ pkg, routesJson: { siteInfo: { name: 'ACME' }, routes } });
+    const generated = await generateHumansTxt({ pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });
+    expect(generated.body).toContain('Site Pixelated Components Package Version: N/A');
 
     const req1 = new NextRequest(new URL('https://example.test/humans.txt'));
-    const resp1 = await createWellKnownResponse('humans', req1, { pkg, routesJson: { siteInfo: { name: 'ACME' }, routes } });
+    const resp1 = await createWellKnownResponse('humans', req1, { pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });
     expect(resp1.status).toBe(200);
     const text = await resp1.text();
     expect(text).toBe(generated.body);
 
     const req2 = new NextRequest(new URL('https://example.test/humans.txt'), { headers: { 'if-none-match': generated.etag } });
-    const resp2 = await createWellKnownResponse('humans', req2, { pkg, routesJson: { siteInfo: { name: 'ACME' }, routes } });
+    const resp2 = await createWellKnownResponse('humans', req2, { pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });
     expect(resp2.status).toBe(304);
   });
 });

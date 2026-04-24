@@ -226,13 +226,13 @@ export const TOKEN_MAP = {
 	"__EMAIL_ADDRESS__": '' 
 };
 
-// Helper: add a route entry to the routes.json structure for a newly created page
-export function addRouteEntry(routesJson, pageSlug, displayName, rootDisplayName) {
-	if (!routesJson || !Array.isArray(routesJson.routes)) return false;
+// Helper: add a route entry to the siteconfig.json structure for a newly created page
+export function addRouteEntry(siteConfig, pageSlug, displayName, rootDisplayName) {
+	if (!siteConfig || !Array.isArray(siteConfig.routes)) return false;
 	const candidatePath = `/${pageSlug}`;
-	if (routesJson.routes.some(r => r.path === candidatePath)) return false;
+	if (siteConfig.routes.some(r => r.path === candidatePath)) return false;
 	const name = displayName.split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-	routesJson.routes.push({
+	siteConfig.routes.push({
 		"name": name,
 		"path": candidatePath,
 		"title": `${rootDisplayName} - ${displayName}`,
@@ -646,15 +646,15 @@ async function main() {
 
 			const proceedPages = (await rl.question('Proceed with these pages? (Y/n): ')) || 'y';
 			if (proceedPages.toLowerCase() === 'y' || proceedPages.toLowerCase() === 'yes') {
-				const siteRoutesFile = path.join(destPath, 'src', 'app', 'data', 'routes.json');
-				let routesJson = null;
+				const siteRoutesFile = path.join(destPath, 'src', 'app', 'data', 'siteconfig.json');
+				let siteConfig = null;
 				
 				try {
-					routesJson = JSON.parse(await fs.readFile(siteRoutesFile, 'utf8'));
-					routesJson.siteInfo = routesJson.siteInfo || {};
-					routesJson.siteInfo.name = rootDisplayName;
+					siteConfig = JSON.parse(await fs.readFile(siteRoutesFile, 'utf8'));
+					siteConfig.siteInfo = siteConfig.siteInfo || {};
+					siteConfig.siteInfo.name = rootDisplayName;
 				} catch (e) {
-					console.error('❌ Failed to read routes.json:', e?.message || e);
+					console.error('❌ Failed to read siteconfig.json:', e?.message || e);
 					process.exit(1);
 				}
 
@@ -684,8 +684,8 @@ async function main() {
 								await fs.writeFile(pageFile, content, 'utf8');
 								console.log(` - Updated component name to ${compName}`);
 								
-								// Update route path in routes.json
-								const route = routesJson.routes.find(r => r.path === `/${templateFolderName}`);
+								// Update route path in siteconfig.json
+								const route = siteConfig.routes.find(r => r.path === `/${templateFolderName}`);
 								if (route) {
 									route.path = `/${p.slug}`;
 									route.name = p.displayName.split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -719,7 +719,7 @@ async function main() {
 								"description": "",
 								"keywords": ""
 							};
-							routesJson.routes.push(newRoute);
+							siteConfig.routes.push(newRoute);
 							console.log(` - Added route /${p.slug}`);
 						} catch (e) {
 							console.error(`❌ Failed to create custom page ${p.slug}:`, e?.message || e);
@@ -729,7 +729,7 @@ async function main() {
 				}
 
 				// Delete unwanted template pages
-				// The Admin section (an object with nested routes for metadata pages) is in routesJson.routes
+				// The Admin section (an object with nested routes for metadata pages) is in siteConfig.routes
 				// but doesn't have folders in the (pages) directory, so it's never encountered by fs.readdir().
 				// We can safely delete page folders without worrying about removing the Admin section.
 				try {
@@ -752,8 +752,8 @@ async function main() {
 							await fs.rm(folderPath, { recursive: true });
 							console.log(`Deleted template page ${folderName}`);
 							
-							// Remove the corresponding route from routes.json
-							routesJson.routes = routesJson.routes.filter(r => r.path !== `/${folderName}`);
+							// Remove the corresponding route from siteconfig.json
+							siteConfig.routes = siteConfig.routes.filter(r => r.path !== `/${folderName}`);
 						} catch (e) {
 							console.warn(`⚠️  Failed to delete ${folderName}:`, e?.message || e);
 						}
@@ -763,12 +763,12 @@ async function main() {
 					console.warn(`⚠️  Could not read pages directory for cleanup:`, e?.message || e);
 				}
 
-				// Write final routes.json
+				// Write final siteconfig.json
 				try {
-					await fs.writeFile(siteRoutesFile, JSON.stringify(routesJson, null, '\t'), 'utf8');
-					console.log('✅ routes.json updated.');
+					await fs.writeFile(siteRoutesFile, JSON.stringify(siteConfig, null, '\t'), 'utf8');
+					console.log('✅ siteconfig.json updated.');
 				} catch (e) {
-					console.error('❌ Failed to write routes.json:', e?.message || e);
+					console.error('❌ Failed to write siteconfig.json:', e?.message || e);
 					process.exit(1);
 				}
 			} else {

@@ -12,7 +12,7 @@ import Search from '@/app/elements/search';
 import Footer from '@/app/elements/footer';
 import Interactions from "@/app/elements/interactions";
 import LayoutClient from "./elements/layoutclient";
-import myRoutes from "@/app/data/routes.json";
+import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "./styles/globals.css";
@@ -25,9 +25,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 	const url = headersList.get("x-url") || "";
 	const origin = headersList.get("x-origin") || "";
 	const pathname = headersList.get("x-path") || "";
-	const siteInfo = myRoutes.siteInfo;
+	const siteInfo = siteConfig.siteInfo;
 
-	let myMetadata = getRouteByKey(myRoutes.routes, "path", pathname);
+	let myMetadata = getRouteByKey(siteConfig.routes, "path", pathname);
 	let productSchema = null;
 
 	if (!myMetadata && pathname.includes('/store/')) {
@@ -72,12 +72,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 					url: url ?? "",
 					siteInfo: siteInfo as SiteInfo,
 				})}
-				<BreadcrumbListSchema routes={myRoutes.routes} currentPath={pathname} siteUrl={siteInfo.url} />
+				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
 				{productSchema && <ProductSchema product={productSchema} />}
 				<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
-				<VisualDesignStyles visualdesign={myRoutes.visualdesign} />
+				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
 			</head>
 
 			<body>

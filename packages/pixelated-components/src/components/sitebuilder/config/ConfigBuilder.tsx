@@ -13,7 +13,7 @@ import siteInfoForm from './siteinfo-form.json';
 import visualDesignForm from './visualdesignform.json';
 import routesForm from './routes-form.json';
 import servicesForm from './services-form.json';
-import defaultConfigData from '../../../data/routes.json';
+import defaultConfigData from '../../../data/siteconfig.json';
 import './ConfigBuilder.css';
 
 // Debug logging: set to true to surface verbose AI/debug actions locally

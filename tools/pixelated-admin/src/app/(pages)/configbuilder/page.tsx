@@ -21,7 +21,7 @@ const downloadJsonFile = (data: any, filename: string) => {
 
 export default function ConfigBuilderPage() {
 	const handleSave = (config: any) => {
-		downloadJsonFile(config, 'routes.json');
+		downloadJsonFile(config, 'siteconfig.json');
 	};
 
 	return (

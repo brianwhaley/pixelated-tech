@@ -9,7 +9,7 @@ import LayoutClient from '@/app/elements/layout-client';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
 import Footer from '@/app/elements/footer';
-import myRoutes from "@/app/data/routes.json";
+import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import './styles/globals.css';
@@ -25,7 +25,7 @@ export default async function RootLayout({
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(myRoutes.routes, "path", pathname);
+	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
 
 	return (
 		<html lang="en">
@@ -37,13 +37,13 @@ export default async function RootLayout({
 					keywords: metadata?.keywords ?? "",
 					origin: origin ?? "",
 					url: url ?? "",
-					siteInfo: myRoutes.siteInfo as SiteInfo,
+					siteInfo: siteConfig.siteInfo as SiteInfo,
 				}) }
-				<BreadcrumbListSchema routes={myRoutes.routes} currentPath={pathname} siteUrl={myRoutes.siteInfo.url} />
-				<WebsiteSchema siteInfo={myRoutes.siteInfo as SiteInfo} />
-				<LocalBusinessSchema siteInfo={myRoutes.siteInfo} />
-				<ServicesSchema siteInfo={myRoutes.siteInfo} />
-				<VisualDesignStyles visualdesign={myRoutes.visualdesign} />
+				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteConfig.siteInfo.url} />
+				<WebsiteSchema siteInfo={siteConfig.siteInfo as SiteInfo} />
+				<LocalBusinessSchema siteInfo={siteConfig.siteInfo} />
+				<ServicesSchema siteInfo={siteConfig.siteInfo} />
+				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>

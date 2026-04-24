@@ -114,7 +114,7 @@ describe('pixelated-admin page components', () => {
 		});
 	}
 
-	it('downloads routes.json from the config builder page', async () => {
+	it('downloads siteconfig.json from the config builder page', async () => {
 		const createObjectURLSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob://123' as any);
 		const mod = await importModule('src/app/(pages)/configbuilder/page.tsx');
 		const Page = mod.default;
@@ -192,6 +192,49 @@ describe('pixelated-admin page components', () => {
 		fireEvent.click(migrateButton);
 
 		await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Migration completed successfully!'));
+	});
+
+	it('shows an error when contentful content types cannot be loaded', async () => {
+		mockSmartFetch.mockImplementation(async (url: unknown) => {
+			const stringUrl = String(url);
+			if (stringUrl.includes('/api/contentful/validate')) {
+				return { ok: true, json: async () => ({ success: true }) };
+			}
+			if (stringUrl.includes('/api/contentful/content-types')) {
+				return { ok: true, json: async () => ({ success: false, error: 'load failed' }) };
+			}
+			return { ok: true, json: async () => ({}) };
+		});
+
+		const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+		const mod = await importModule('src/app/(pages)/contentful-migrate/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		const sourceInput = screen.getByPlaceholderText('Source space ID');
+		const sourceTokenInput = screen.getByPlaceholderText('Source management access token');
+		const targetInput = screen.getByPlaceholderText('Target space ID');
+		const targetTokenInput = screen.getByPlaceholderText('Target management access token');
+		const validateButton = screen.getByRole('button', { name: /Validate & Load Content Types/i });
+
+		fireEvent.change(sourceInput, { target: { value: 'space-a' } });
+		fireEvent.change(sourceTokenInput, { target: { value: 'token-a' } });
+		fireEvent.change(targetInput, { target: { value: 'space-b' } });
+		fireEvent.change(targetTokenInput, { target: { value: 'token-b' } });
+
+		fireEvent.click(validateButton);
+
+		await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Error loading content types: load failed'));
+	});
+
+	it('shows a fallback when site-health site loading fails', async () => {
+		mockSmartFetch.mockRejectedValueOnce(new Error('fail'));
+		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
+		expect(screen.getByLabelText(/Select Site/i)).toBeInTheDocument();
 	});
 
 	it('reports a validation error when required contentful fields are missing', async () => {

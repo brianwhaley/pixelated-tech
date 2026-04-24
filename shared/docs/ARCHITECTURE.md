@@ -15,7 +15,7 @@ pixelated-tech/
 ## Setup Status
 
 ✅ **MVP Bootstrap Complete**
-- Root configs: `tsconfig.base.json`, `eslint.config.mjs`, `vitest.config.ts`
+- Root configs: `shared/configs/tsconfig.base.json`, `eslint.config.mjs`, `vitest.config.ts`
 - npm workspaces configured in root `package.json`
 - brianwhaley linked to local pixelated-components (verified: `npm ls @pixelated-tech/components`)
 

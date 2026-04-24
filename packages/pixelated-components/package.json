@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.15.17",
+	"version": "3.15.18",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -92,8 +92,8 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-amplify": "^3.1035.0",
-		"@aws-sdk/client-iam": "^3.1035.0",
+		"@aws-sdk/client-amplify": "^3.1036.0",
+		"@aws-sdk/client-iam": "^3.1036.0",
 		"date-fns": "^4.1.0",
 		"globals": "^17.5.0",
 		"html-entities": "^2.6.0",
@@ -169,8 +169,8 @@
 		"react-dom": "^19.2.5"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1035.0",
-		"@aws-sdk/client-route-53": "^3.1035.0",
+		"@aws-sdk/client-cloudwatch": "^3.1036.0",
+		"@aws-sdk/client-route-53": "^3.1036.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^171.4.0",

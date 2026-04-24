@@ -70,7 +70,7 @@ export const ConfigBuilderUI = {
 			}
 		},
 		onSave: (config: any) => {
-			downloadJsonFile(config, 'routes.json');
+			downloadJsonFile(config, 'siteconfig.json');
 		}
 	},
 };

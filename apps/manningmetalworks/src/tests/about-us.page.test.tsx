@@ -32,9 +32,9 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 import AboutUsPage from '@/app/(pages)/about-us/page';
 
 describe('About Us page', () => {
-	it('renders the page title', () => {
+	it('renders the page title', async () => {
 		render(<AboutUsPage />);
-		expect(screen.getByTestId('mock-pagetitleheader')).toHaveTextContent('About Manning Metalworks');
+		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader')).toHaveTextContent('About Manning Metalworks'));
 	});
 
 	it('fetches and renders review cards and schema when apiKey is configured', async () => {

@@ -1,6 +1,6 @@
 {
 	"name": "jz-home-improvement",
-	"version": "1.0.18",
+	"version": "1.0.19",
 	"private": true,
 	"description": "JZ Home Improvement website built with the Pixelated template",
 	"license": "MIT",
@@ -41,6 +41,7 @@
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.3",
 		"eslint-import-resolver-typescript": "^4.4.4",
+		"glob": "^13.0.6",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.1"
 	},

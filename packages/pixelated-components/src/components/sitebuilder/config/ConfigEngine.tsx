@@ -5,7 +5,7 @@ import { assertVisualDesign } from '../../config/config.validators';
 import type { VisualDesignType } from './ConfigBuilder';
 
 export function VisualDesignStyles({ visualdesign }: { visualdesign: VisualDesignType }) {
-	// Validate visualdesign early so invalid routes.json fails fast
+	// Validate visualdesign early so invalid siteconfig.json fails fast
 	assertVisualDesign(visualdesign);
 	const tokens: Record<string, any> = visualdesign as any;
 

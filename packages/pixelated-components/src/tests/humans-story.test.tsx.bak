@@ -9,7 +9,7 @@ describe('Humans story', () => {
     await waitFor(() => expect(screen.queryByText(/Loading/)).toBeNull());
     // The generator always includes "Site name:" line
     expect(screen.getByText(/Site name:/i)).toBeInTheDocument();
-    // Ensure the configured site name from routes.json is present
+    // Ensure the configured site name from siteconfig.json is present
     expect(screen.getByText(/Pixelated Technologies/i)).toBeInTheDocument();
   });
 });

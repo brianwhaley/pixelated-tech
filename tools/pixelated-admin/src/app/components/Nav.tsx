@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { SidePanel, MenuAccordion } from '@pixelated-tech/components';
 import { useSession, signOut } from 'next-auth/react';
-import myroutes from '../data/routes.json';
-const allRoutes = myroutes.routes;
+import siteConfig from '../data/siteconfig.json';
+const allRoutes = siteConfig.routes;
 
 export default function Nav() {
 	const [isOpen, setIsOpen] = useState(false);

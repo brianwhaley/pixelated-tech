@@ -106,17 +106,17 @@ function getSegmentName(routes: Route[], path: string, segment: string): string 
 ======================================== */
 
 /**
- * BreadcrumbListSchema — auto-generates a breadcrumb list as JSON-LD from routes.json data.
+ * BreadcrumbListSchema — auto-generates a breadcrumb list as JSON-LD from siteconfig.json data.
  * Parses the current path, builds breadcrumb trail by matching path segments to routes array,
  * and embeds as schema.org/BreadcrumbList for SEO rich snippets.
- * Accepts flexible route objects from routes.json with any additional properties.
+ * Accepts flexible route objects from siteconfig.json with any additional properties.
  *
- * @param {array} [props.routes] - Routes array from routes.json with name and optional path properties.
+ * @param {array} [props.routes] - Routes array from siteconfig.json with name and optional path properties.
  * @param {string} [props.currentPath] - Current page path (e.g. "/store/vintage-oakley"). Defaults to "/" if not provided.
  * @param {string} [props.siteUrl] - Full domain URL from siteInfo.url. Defaults to https://example.com.
  */
 BreadcrumbListSchema.propTypes = {
-	/** Routes array from routes.json. Accepts routes with any properties; only uses name and path. */
+	/** Routes array from siteconfig.json. Accepts routes with any properties; only uses name and path. */
 	routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 	/** Current page path to generate breadcrumbs for (e.g. "/store/item-slug"). Defaults to "/". */
 	currentPath: PropTypes.string,

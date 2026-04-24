@@ -10,7 +10,7 @@ interface Route {
   keywords: string;
 }
 
-interface RoutesJson {
+interface SiteConfig {
   routes: Route[];
   siteInfo?: { name?: string; [key: string]: any };
 }
@@ -148,90 +148,90 @@ describe('create-pixelated-app template mapping', () => {
 describe('route management', () => {
   describe('addRouteEntry - Basic Operations', () => {
     it('adds a services route when missing and prevents duplicates', () => {
-      const routesJson: RoutesJson = {
+      const siteConfig: SiteConfig = {
         routes: [
           { name: 'Home', path: '/', title: 'Test - Home', description: '', keywords: '' },
           { name: 'Contact', path: '/contact', title: 'Test - Contact', description: '', keywords: '' }
         ]
       };
 
-      const added = addRouteEntry(routesJson, 'services', 'Services', 'Test');
+      const added = addRouteEntry(siteConfig, 'services', 'Services', 'Test');
       expect(added).toBe(true);
-      expect(routesJson.routes.some(r => r.path === '/services')).toBe(true);
+      expect(siteConfig.routes.some(r => r.path === '/services')).toBe(true);
 
       // Trying again should not add a duplicate
-      const addedAgain = addRouteEntry(routesJson, 'services', 'Services', 'Test');
+      const addedAgain = addRouteEntry(siteConfig, 'services', 'Services', 'Test');
       expect(addedAgain).toBe(false);
 
       // Check the title formatting
-      const svc = routesJson.routes.find(r => r.path === '/services');
+      const svc = siteConfig.routes.find(r => r.path === '/services');
       expect(svc).toBeDefined();
       expect(svc!.title).toBe('Test - Services');
       expect(svc!.name).toBe('Services');
     });
 
     it('adds a single new route to empty routes array', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      const added = addRouteEntry(routesJson, 'about', 'About', 'Company');
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      const added = addRouteEntry(siteConfig, 'about', 'About', 'Company');
       expect(added).toBe(true);
-      expect(routesJson.routes.length).toBe(1);
-      expect(routesJson.routes[0].path).toBe('/about');
+      expect(siteConfig.routes.length).toBe(1);
+      expect(siteConfig.routes[0].path).toBe('/about');
     });
 
     it('adds multiple different routes', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'about', 'About', 'Company');
-      addRouteEntry(routesJson, 'contact', 'Contact', 'Company');
-      addRouteEntry(routesJson, 'services', 'Services', 'Company');
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'about', 'About', 'Company');
+      addRouteEntry(siteConfig, 'contact', 'Contact', 'Company');
+      addRouteEntry(siteConfig, 'services', 'Services', 'Company');
       
-      expect(routesJson.routes.length).toBe(3);
-      expect(routesJson.routes.map(r => r.path)).toContain('/about');
-      expect(routesJson.routes.map(r => r.path)).toContain('/contact');
-      expect(routesJson.routes.map(r => r.path)).toContain('/services');
+      expect(siteConfig.routes.length).toBe(3);
+      expect(siteConfig.routes.map(r => r.path)).toContain('/about');
+      expect(siteConfig.routes.map(r => r.path)).toContain('/contact');
+      expect(siteConfig.routes.map(r => r.path)).toContain('/services');
     });
 
     it('returns false when route already exists', () => {
-      const routesJson: RoutesJson = {
+      const siteConfig: SiteConfig = {
         routes: [{ name: 'Home', path: '/', title: 'Home', description: '', keywords: '' }]
       };
-      const added = addRouteEntry(routesJson, '', 'Home', 'Test');
+      const added = addRouteEntry(siteConfig, '', 'Home', 'Test');
       expect(added).toBe(false);
     });
 
     it('creates route path from slug', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'my-page', 'My Page', 'Site');
-      const route = routesJson.routes.find(r => r.path === '/my-page');
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'my-page', 'My Page', 'Site');
+      const route = siteConfig.routes.find(r => r.path === '/my-page');
       expect(route).toBeDefined();
     });
   });
 
   describe('addRouteEntry - Route Fields', () => {
     it('sets correct name field', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'test', 'TestName', 'Prefix');
-      const route = routesJson.routes[0];
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'test', 'TestName', 'Prefix');
+      const route = siteConfig.routes[0];
       expect(route.name).toBe('TestName');
     });
 
     it('formats title with prefix', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'services', 'Services', 'MyCompany');
-      const route = routesJson.routes[0];
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'services', 'Services', 'MyCompany');
+      const route = siteConfig.routes[0];
       expect(route.title).toBe('MyCompany - Services');
     });
 
     it('initializes description field', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'about', 'About', 'Company');
-      const route = routesJson.routes[0];
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'about', 'About', 'Company');
+      const route = siteConfig.routes[0];
       expect(typeof route.description).toBe('string');
     });
 
     it('initializes keywords field', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'about', 'About', 'Company');
-      const route = routesJson.routes[0];
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'about', 'About', 'Company');
+      const route = siteConfig.routes[0];
       expect(typeof route.keywords).toBe('string');
     });
 
@@ -244,10 +244,10 @@ describe('route management', () => {
       ];
 
       routes.forEach(({ slug, expectedPath }) => {
-        const routesJson: RoutesJson = { routes: [] as Route[] };
-        addRouteEntry(routesJson, slug, 'Test', 'Prefix');
-        if (routesJson.routes.length > 0) {
-          expect(routesJson.routes[0].path).toBe(expectedPath);
+        const siteConfig: SiteConfig = { routes: [] as Route[] };
+        addRouteEntry(siteConfig, slug, 'Test', 'Prefix');
+        if (siteConfig.routes.length > 0) {
+          expect(siteConfig.routes[0].path).toBe(expectedPath);
         }
       });
     });
@@ -255,55 +255,55 @@ describe('route management', () => {
 
   describe('addRouteEntry - Edge Cases', () => {
     it('handles empty slug', () => {
-      const routesJson: RoutesJson = { routes: [] };
-      const added = addRouteEntry(routesJson, '', 'Home', 'Test');
+      const siteConfig: SiteConfig = { routes: [] };
+      const added = addRouteEntry(siteConfig, '', 'Home', 'Test');
       expect(typeof added).toBe('boolean');
     });
 
     it('handles special characters in slug', () => {
-      const routesJson: RoutesJson = { routes: [] };
-      const added = addRouteEntry(routesJson, 'page@test', 'Test', 'Prefix');
+      const siteConfig: SiteConfig = { routes: [] };
+      const added = addRouteEntry(siteConfig, 'page@test', 'Test', 'Prefix');
       expect(typeof added).toBe('boolean');
     });
 
     it('handles very long slug names', () => {
-      const routesJson: RoutesJson = { routes: [] };
+      const siteConfig: SiteConfig = { routes: [] };
       const longSlug = 'a'.repeat(100);
-      const added = addRouteEntry(routesJson, longSlug, 'Test', 'Prefix');
+      const added = addRouteEntry(siteConfig, longSlug, 'Test', 'Prefix');
       expect(typeof added).toBe('boolean');
     });
 
     it('handles null or empty prefix', () => {
-      const routesJson: RoutesJson = { routes: [] };
-      const added1 = addRouteEntry(routesJson, 'test', 'Test', '');
-      const added2 = addRouteEntry(routesJson, 'test2', 'Test2', null as any);
+      const siteConfig: SiteConfig = { routes: [] };
+      const added1 = addRouteEntry(siteConfig, 'test', 'Test', '');
+      const added2 = addRouteEntry(siteConfig, 'test2', 'Test2', null as any);
       expect(typeof added1).toBe('boolean');
       expect(typeof added2).toBe('boolean');
     });
 
     it('handles unicode characters in name', () => {
-      const routesJson: RoutesJson = { routes: [] };
-      const added = addRouteEntry(routesJson, 'test', 'Тест', 'Компания');
+      const siteConfig: SiteConfig = { routes: [] };
+      const added = addRouteEntry(siteConfig, 'test', 'Тест', 'Компания');
       expect(typeof added).toBe('boolean');
     });
 
     it('preserves existing routes when adding new ones', () => {
-      const routesJson: RoutesJson = {
+      const siteConfig: SiteConfig = {
         routes: [
           { name: 'Home', path: '/', title: 'Home', description: 'Home page', keywords: 'home' }
         ]
       };
-      const originalRoute = routesJson.routes[0];
-      addRouteEntry(routesJson, 'about', 'About', 'Company');
+      const originalRoute = siteConfig.routes[0];
+      addRouteEntry(siteConfig, 'about', 'About', 'Company');
       
-      expect(routesJson.routes[0]).toEqual(originalRoute);
-      expect(routesJson.routes.length).toBe(2);
+      expect(siteConfig.routes[0]).toEqual(originalRoute);
+      expect(siteConfig.routes.length).toBe(2);
     });
 
     it('prevents duplicates case-insensitively if applicable', () => {
-      const routesJson: RoutesJson = { routes: [] };
-      addRouteEntry(routesJson, 'Test', 'Test', 'Prefix');
-      const addedAgain = addRouteEntry(routesJson, 'test', 'Test', 'Prefix');
+      const siteConfig: SiteConfig = { routes: [] };
+      addRouteEntry(siteConfig, 'Test', 'Test', 'Prefix');
+      const addedAgain = addRouteEntry(siteConfig, 'test', 'Test', 'Prefix');
       
       // Behavior depends on implementation (case-sensitive or not)
       expect(typeof addedAgain).toBe('boolean');
@@ -312,22 +312,22 @@ describe('route management', () => {
 
   describe('addRouteEntry - Data Integrity', () => {
     it('maintains route array structure', () => {
-      const routesJson: RoutesJson = { routes: [] };
-      addRouteEntry(routesJson, 'test', 'Test', 'Prefix');
-      expect(Array.isArray(routesJson.routes)).toBe(true);
+      const siteConfig: SiteConfig = { routes: [] };
+      addRouteEntry(siteConfig, 'test', 'Test', 'Prefix');
+      expect(Array.isArray(siteConfig.routes)).toBe(true);
     });
 
     it('does not modify source manifest', () => {
       const manifest = { name: 'Test Company' };
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'test', 'Test', 'Test Company');
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'test', 'Test', 'Test Company');
       expect(manifest.name).toBe('Test Company');
     });
 
     it('creates valid route objects', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'test', 'Test', 'Prefix');
-      const route = routesJson.routes[0];
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'test', 'Test', 'Prefix');
+      const route = siteConfig.routes[0];
       
       expect(route).toHaveProperty('name');
       expect(route).toHaveProperty('path');
@@ -337,9 +337,9 @@ describe('route management', () => {
     });
 
     it('maintains data types of route properties', () => {
-      const routesJson: RoutesJson = { routes: [] as Route[] };
-      addRouteEntry(routesJson, 'test', 'TestName', 'Prefix');
-      const route = routesJson.routes[0];
+      const siteConfig: SiteConfig = { routes: [] as Route[] };
+      addRouteEntry(siteConfig, 'test', 'TestName', 'Prefix');
+      const route = siteConfig.routes[0];
       
       expect(typeof route.name).toBe('string');
       expect(typeof route.path).toBe('string');

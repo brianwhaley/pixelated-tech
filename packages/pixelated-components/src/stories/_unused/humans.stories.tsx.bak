@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { generateHumansTxt } from '@/components/general/humanstxt';
-import routesJson from '@/data/routes.json';
+import  from '@/data/siteconfig.json';
 import pkg from '../../../package.json';
 
 const meta = { title: 'General/humans.txt' } as const;
@@ -15,8 +15,8 @@ export const Example: React.FC = () => {
     let mounted = true;
     (async () => {
       try {
-        // Provide pkg + routesJson explicitly so the generator is pure and doesn't rely on fs
-        const { body } = await generateHumansTxt({ pkg: { name: pkg.name, version: pkg.version }, routesJson });
+        // Provide pkg +  explicitly so the generator is pure and doesn't rely on fs
+        const { body } = await generateHumansTxt({ pkg: { name: pkg.name, version: pkg.version },  });
         if (mounted) setBody(body);
       } catch (err: any) {
         if (mounted) setError(String(err));

@@ -43,7 +43,7 @@ import manifest from '@/app/manifest';
 import robots from '@/app/robots';
 import SiteMapXML from '@/app/sitemap';
 import NotFound from '@/app/not-found';
-import routesJson from '@/app/data/routes.json';
+import siteConfig from '@/app/data/siteconfig.json';
 import LayoutClient from '@/app/elements/layout-client';
 import SocialTags from '@/app/elements/socialtags';
 import RootLayout from '@/app/layout';
@@ -96,10 +96,10 @@ describe('App shell coverage', () => {
 		expect(screen.getAllByTestId('callout').length).toBeGreaterThan(0);
 	});
 
-	it('uses real routes.json siteInfo and route data', () => {
-		expect(routesJson.siteInfo).toBeDefined();
-		expect(routesJson.siteInfo.url).toContain('__SITE_URL__');
-		expect(routesJson.routes.some(route => route.path === '/')).toBe(true);
+	it('uses real siteconfig.json siteInfo and route data', () => {
+		expect(siteConfig.siteInfo).toBeDefined();
+		expect(siteConfig.siteInfo.url).toContain('__SITE_URL__');
+		expect(siteConfig.routes.some(route => route.path === '/')).toBe(true);
 	});
 
 	it('renders root layout with metadata and children', async () => {

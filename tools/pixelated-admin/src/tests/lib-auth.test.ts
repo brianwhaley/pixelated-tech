@@ -50,8 +50,6 @@ describe('NextAuth config (legacy)', () => {
 		vi.resetModules();
 		// Provide nextAuth.secret but omit google settings
 		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({ nextAuth: { secret: TEST_CONFIG.nextAuth.secret } }) }));
-		await expect(async () => {
-			await import('@/lib/auth');
-		}).rejects.toThrow('Google OAuth credentials not configured');
+		await expect(import('@/lib/auth')).rejects.toThrow('Google OAuth credentials not configured');
 	});
 });

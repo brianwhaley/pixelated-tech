@@ -37,7 +37,7 @@ export type SitemapConfig = {
 	wordpress?: { site?: string };
 	imageJson?: { path?: string };
 	contentful?: any; // contentful api props object
-	routes?: any; // accept route data like myRoutes
+	routes?: any; // accept route data like siteConfig
 };
 
 /**
@@ -235,10 +235,10 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 
 
 
-export async function createPageURLs(myRoutes: { path: string }[], origin: string) {
+export async function createPageURLs(siteConfig: { path: string }[], origin: string) {
 	const sitemap: SitemapEntry[] = [];
 	// const origin = await getOrigin();
-	const allRoutes = getAllRoutes(myRoutes, "routes");
+	const allRoutes = getAllRoutes(siteConfig, "routes");
 	for ( const route of allRoutes ){
 		if(route.path.substring(0, 4).toLowerCase() !== 'http') {
 			sitemap.push({

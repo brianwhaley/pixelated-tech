@@ -4,8 +4,8 @@ import React from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { PageTitleHeader, PageSection } from "../general/semantic";
 import { flattenRoutes } from "./sitemap";
-import routesData from '../../data/routes.json';
-const routes = routesData.routes;
+import siteConfig from '../../data/siteconfig.json';
+const routes = siteConfig.routes;
 
 /**
  * StyleGuideUI — developer style guide and design tokens viewer (colors, fonts, IA routes).

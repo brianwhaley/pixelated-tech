@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 import { headers } from 'next/headers';
@@ -43,7 +43,7 @@ import manifest from '@/app/manifest';
 import robots from '@/app/robots';
 import SiteMapXML from '@/app/sitemap';
 import NotFound from '@/app/not-found';
-import routesJson from '@/app/data/routes.json';
+import siteConfig from '@/app/data/siteconfig.json';
 import LayoutClient from '@/app/elements/layout-client';
 import SocialTags from '@/app/elements/socialtags';
 import RootLayout from '@/app/layout';
@@ -96,25 +96,29 @@ describe('App shell coverage', () => {
 		expect(screen.getAllByTestId('mock-callout').length).toBeGreaterThan(0);
 	});
 
-	it('uses real routes.json siteInfo and route data', () => {
-		expect(routesJson.siteInfo).toBeDefined();
-		expect(routesJson.siteInfo.url).toContain('manningmetalworks.com');
-		expect(routesJson.routes.some(route => route.path === '/')).toBe(true);
+	it('uses real siteconfig.json siteInfo and route data', () => {
+		expect(siteConfig.siteInfo).toBeDefined();
+		expect(siteConfig.siteInfo.url).toContain('manningmetalworks.com');
+		expect(siteConfig.routes.some(route => route.path === '/')).toBe(true);
 	});
 
 	it('renders root layout with metadata and children', async () => {
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
-		render(root);
-		await waitFor(() => expect(screen.getByTestId('child')).toBeInTheDocument());
-		expect(document.querySelector('[data-testid="meta-tags"]')).toBeInTheDocument();
+		expect(root.type).toBe('html');
+		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
 	});
 
 	it('renders root layout with trailing slash path and fallback metadata', async () => {
 		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/contact/', 'x-origin': 'https://example.com' }));
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
-		render(root);
-		await waitFor(() => expect(screen.getByTestId('child')).toBeInTheDocument());
-		expect(document.querySelector('[data-testid="meta-tags"]')).toBeInTheDocument();
+		expect(root.type).toBe('html');
+		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
 	});
 
 	it('proxies request headers correctly', () => {

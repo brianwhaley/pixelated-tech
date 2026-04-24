@@ -22,8 +22,26 @@ const mockSmartFetch = vi.fn(async (url: unknown) => {
 	return { ok: true, json: async () => ({}) };
 });
 
+const mockRedirect = vi.fn();
+const mockHeaders = {
+	get: (name: string) => {
+		if (name === 'x-path') return '/login';
+		if (name === 'x-origin') return 'https://admin.pixelated.tech';
+		if (name === 'x-url') return 'https://admin.pixelated.tech/login';
+		if (name === 'host') return 'admin.pixelated.tech';
+		return null;
+	},
+};
+
 vi.mock('next/navigation', () => ({
+	__esModule: true,
 	useSearchParams: () => new URLSearchParams('callbackUrl=/'),
+	redirect: mockRedirect,
+}));
+
+vi.mock('next/headers', () => ({
+	__esModule: true,
+	headers: () => mockHeaders,
 }));
 
 vi.mock('@pixelated-tech/components', async () => {
@@ -119,18 +137,6 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	saveContentfulPage: async () => ({ success: true }),
 	getSiteConfig: async () => ({ siteName: 'test' }),
 	getRuntimeEnvFromHeaders: () => ({ isTest: true }),
-}));
-
-vi.mock('next/headers', () => ({
-	headers: () => ({
-		get: (name: string) => {
-			if (name === 'x-path') return '/login';
-			if (name === 'x-origin') return 'https://admin.pixelated.tech';
-			if (name === 'x-url') return 'https://admin.pixelated.tech/login';
-			if (name === 'host') return 'admin.pixelated.tech';
-			return null;
-		},
-	}),
 }));
 
 const appPages = [
@@ -242,10 +248,41 @@ describe('pixelated-admin extra coverage', () => {
 	});
 
 	it('renders RootLayout for login route without redirecting', async () => {
+		mockRedirect.mockReset();
 		const mod = await importModule('src/app/layout.tsx');
 		const Layout = mod.default;
 		const element = await Layout({ children: <div data-testid="layout-child" /> });
-		render(element);
-		expect(screen.getByTestId('layout-child')).toBeTruthy();
+		expect(element.type).toBe('html');
+		expect(mockRedirect).not.toHaveBeenCalled();
+	});
+
+	it('redirects /newdeployment to login when unauthenticated and not localhost', async () => {
+		mockRedirect.mockReset();
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/newdeployment';
+			if (name === 'x-origin') return 'https://admin.pixelated.tech';
+			if (name === 'x-url') return 'https://admin.pixelated.tech/newdeployment';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).toHaveBeenCalledWith('/login');
+	});
+
+	it('redirects protected routes to login when unauthenticated', async () => {
+		mockRedirect.mockReset();
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/configbuilder';
+			if (name === 'x-origin') return 'https://admin.pixelated.tech';
+			if (name === 'x-url') return 'https://admin.pixelated.tech/configbuilder';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).toHaveBeenCalledWith('/login');
 	});
 });

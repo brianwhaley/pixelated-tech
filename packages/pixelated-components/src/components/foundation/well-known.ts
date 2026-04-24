@@ -1,6 +1,7 @@
 import PropTypes, { InferProps } from 'prop-types';
 import { readFile } from 'fs/promises';
 import crypto from 'crypto';
+import path from 'path';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { flattenRoutes } from './sitemap';
@@ -42,22 +43,49 @@ export function createTextResponsePayload(body: string) {
 /* ========== HUMANS.TXT ========== */
 
 generateHumansTxt.propTypes = {
-	/** base directory to read package.json / routes.json from (defaults to process.cwd()) */
+	/** base directory to read package.json / siteconfig.json from (defaults to process.cwd()) */
 	cwd: PropTypes.string,
 	/** optional package.json object (if provided, fs is not used) */
 	pkg: PropTypes.object,
-	/** optional routes.json object (if provided, fs is not used) */
-	routesJson: PropTypes.object,
+	/** optional siteconfig.json object (if provided, fs is not used) */
+	siteConfig: PropTypes.object,
 	/** limit how many routes to include (default 50) */
 	maxRoutes: PropTypes.number,
 };
 export type GenerateHumansTxtType = InferProps<typeof generateHumansTxt.propTypes>;
+function usesPixelatedComponents(pkg: any) {
+	return !!(
+		pkg.dependencies?.['@pixelated-tech/components'] ||
+		pkg.devDependencies?.['@pixelated-tech/components'] ||
+		pkg.peerDependencies?.['@pixelated-tech/components'] ||
+		pkg.optionalDependencies?.['@pixelated-tech/components']
+	);
+}
+
+export async function getPixelatedComponentsPackageVersion(cwd: string) {
+	const candidates = [
+		path.join(cwd, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
+		path.join(cwd, '..', 'node_modules', '@pixelated-tech', 'components', 'package.json'),
+		path.join(cwd, '..', '..', 'node_modules', '@pixelated-tech', 'components', 'package.json'),
+	];
+	for (const candidate of candidates) {
+		const pkg = await safeJSON(candidate);
+		if (pkg && typeof pkg.version === 'string' && pkg.version.trim()) {
+			return pkg.version.trim();
+		}
+	}
+	return null;
+}
+
 export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};
-	const data = opts.routesJson ?? (await safeJSON(cwd + '/src/app/data/routes.json')) ?? {};
+	const data = opts.siteConfig ?? (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
 	const site = data.siteInfo ?? {};
 	const routes = Array.isArray(data.routes) ? data.routes : [];
+	const pixelatedComponentsPackageVersion = usesPixelatedComponents(pkg)
+		? (await getPixelatedComponentsPackageVersion(cwd)) ?? 'N/A'
+		: 'N/A';
 
 	const lines: string[] = [
 		'/* HUMAN-READABLE SITE INFORMATION - generated at runtime */',
@@ -93,6 +121,7 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 		`   Site Name: ${sanitizeString(site.name ?? '')}`,
 		`   Site Package Name: ${sanitizeString(pkg.name ?? '')}`,
 		`   Site Package Version: ${sanitizeString(pkg.version ?? '')}`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersion)}`,
 		`   Site URL: ${sanitizeString(site.url ?? '')}`,
 		`   Site Languages: React, Node, NextJS, JavaScript, HTML5, CSS3, SASS `,
 		`   Site Tools: VSCode, GitHub, AWS, Contently, Cloudinary, Wordpress, Google Analytics, Google Search Console`,
@@ -113,11 +142,11 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 /* ========== SECURITY.TXT ========== */
 
 generateSecurityTxt.propTypes = {
-	routesJson: PropTypes.object,
+	siteConfig: PropTypes.object,
 };
 export type GenerateSecurityTxtType = InferProps<typeof generateSecurityTxt.propTypes>;
 export async function generateSecurityTxt(props: GenerateSecurityTxtType = {}) {
-	const data = props.routesJson ?? (await safeJSON(process.cwd() + '/src/app/data/routes.json')) ?? {};
+	const data = props.siteConfig ?? (await safeJSON(process.cwd() + '/src/app/data/siteconfig.json')) ?? {};
 	const siteInfo = data.siteInfo ?? {};
 
 	const lines: string[] = [

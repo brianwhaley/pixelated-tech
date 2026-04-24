@@ -19,8 +19,8 @@ export default {
 export const Schema_LocalBusiness_From_Config = {
 	render: () => (
 		<div>
-			<h3>LocalBusiness Schema (using routes.json data)</h3>
-			<p>This component automatically pulls business data from the siteInfo section of routes.json</p>
+			<h3>LocalBusiness Schema (using siteconfig.json data)</h3>
+			<p>This component automatically pulls business data from the siteInfo section of siteconfig.json</p>
 			<LocalBusinessSchema />
 		</div>
 	),
@@ -42,8 +42,8 @@ export const Schema_LocalBusiness_Custom_Props = {
 export const Schema_Website_From_Config = {
 	render: () => (
 		<div>
-			<h3>Website Schema (using routes.json data)</h3>
-			<p>This component automatically pulls website data from the siteInfo section of routes.json</p>
+			<h3>Website Schema (using siteconfig.json data)</h3>
+			<p>This component automatically pulls website data from the siteInfo section of siteconfig.json</p>
 			<WebsiteSchema />
 		</div>
 	),

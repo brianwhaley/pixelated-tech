@@ -6,8 +6,8 @@ import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
 import SocialTags from '@/app/elements/socialtags';
-import routes from "@/app/data/routes.json";
-const siteInfo = (routes as any).siteInfo;
+import siteConfig from "@/app/data/siteconfig.json";
+const siteInfo = (siteConfig as any).siteInfo;
 
 export default function Schedule() {
     

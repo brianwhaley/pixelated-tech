@@ -10,7 +10,7 @@ import Hero from "./elements/hero";
 import Nav from "./elements/nav";
 import Search from './elements/search';
 import Footer from './elements/footer';
-import myRoutes from "@/app/data/routes.json";
+import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 // LOAD THIS AS LAST CSS FILE
@@ -23,9 +23,9 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(myRoutes.routes, "path", pathname);
+	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
 
-	const siteInfo = myRoutes.siteInfo;
+	const siteInfo = siteConfig.siteInfo;
 
 	return (
 		<html lang="en">
@@ -39,11 +39,11 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 					url: url ?? "",
 					siteInfo: siteInfo as SiteInfo,
 				}) }
-				<BreadcrumbListSchema routes={myRoutes.routes} currentPath={pathname} siteUrl={siteInfo.url} />
+				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
 				<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
-				<VisualDesignStyles visualdesign={myRoutes.visualdesign} />
+				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
 				<meta name="google-site-verification" content="t2yy9wL1bXPiPQjBqDee2BTgpiGQjwVldlfa4X5CQkU" />
 				<meta name="google-site-verification" content="l7D0Y_JsgtACBKNCeFAXPe-UWqo13fPTUCWhkmHStZ4" />
 			</head>

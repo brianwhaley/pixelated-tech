@@ -57,7 +57,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 - [ ] **Type-Safe Configuration**: Implement strict TypeScript interfaces with runtime validation for configuration objects.
 - [ ] **CMS API Client**: Create standardized CMS API clients (`ContentfulClient.ts`, `WordPressClient.ts`) with base `ApiClient.ts` for consistent error handling.
 - [ ] **Decentralize sites.json data**: split the sites.json data file and put the sections per site into routes.json.  
-- [  ] **Rename routes.json** Consider renaming routes.json to siteconfig.json
 
 
 ### WORKSPACE Enhancements

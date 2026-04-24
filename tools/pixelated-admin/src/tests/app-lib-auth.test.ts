@@ -32,6 +32,7 @@ describe('NextAuth config (server)', () => {
 
 	it('throws when required values are missing', async () => {
 		vi.resetModules();
+		vi.doUnmock('@pixelated-tech/components/server');
 		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({}) }));
 		await expect(import('@/lib/auth')).rejects.toThrow('nextAuth.secret not configured');
 	});

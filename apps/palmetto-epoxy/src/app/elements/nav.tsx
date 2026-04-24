@@ -3,8 +3,8 @@
 
 import React from "react";
 import { MenuSimple } from "@pixelated-tech/components";
-import myRoutes from '@/app/data/routes.json';
-const allRoutes = myRoutes.routes;
+import siteConfig from '@/app/data/siteconfig.json';
+const allRoutes = siteConfig.routes;
 
 /* 
 const menuItems = allRoutes

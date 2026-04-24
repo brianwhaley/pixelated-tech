@@ -12,7 +12,7 @@ import Nav from "@/app/elements/nav";
 import Search from '@/app/elements/search';
 import Footer from '@/app/elements/footer';
 // import { BlogPostsProvider } from "@/app/providers/blog-posts-provider";
-import myRoutes from "@/app/data/routes.json";
+import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "@/app/styles/globals.css";
@@ -24,10 +24,10 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(myRoutes.routes, "path", pathname);
+	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
 
-	// Extract siteinfo from routes.json for schema components
-	const siteInfo = myRoutes.siteInfo;
+	// Extract siteinfo from siteconfig.json for schema components
+	const siteInfo = siteConfig.siteInfo;
 		
 	// Minimal layout for /samples routes - no CSS, no header/nav/footer
 	const regexPattern = /^\/samples\/.+$/;
@@ -73,11 +73,11 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 						url: url ?? "",
 						siteInfo: siteInfo as SiteInfo,
 					}) }
-					<BreadcrumbListSchema routes={myRoutes.routes} currentPath={pathname} siteUrl={siteInfo.url} />
+					<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
 					<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
-					<LocalBusinessSchema siteInfo={myRoutes.siteInfo} />
+					<LocalBusinessSchema siteInfo={siteConfig.siteInfo} />
 					<ServicesSchema siteInfo={siteInfo} />
-					<VisualDesignStyles visualdesign={myRoutes.visualdesign} />
+					<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
 					<LocalBusinessSchema
 						siteInfo={siteInfo}
 						streetAddress="4 Raymond Court"

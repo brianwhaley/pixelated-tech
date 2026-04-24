@@ -27,16 +27,21 @@ export const resetMockState = () => {
 	mockState.spotifyEpisodes = [{ id: 1, pubDate: '2024-01-01' }];
 };
 
-const mockComponent = (name: string) => ({ children, title, site, posts, markdowndata, faqsData, ...props }: any) => {
+const mockComponent = (name: string) => ({ children, title, site, posts, markdowndata, faqsData, className, id, style }: any) => {
 	const textContent = title ??
 		(site && Array.isArray(posts) ? `site:${site} count:${posts.length}` :
 			markdowndata ??
 		(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
 			undefined));
 
+	const props: any = { 'data-testid': `mock-${name.toLowerCase()}` };
+	if (className) props.className = className;
+	if (id) props.id = id;
+	if (style) props.style = style;
+
 	return React.createElement(
 		'div',
-		{ 'data-testid': `mock-${name.toLowerCase()}`, ...props },
+		props,
 		textContent ?? children ?? null,
 	);
 };

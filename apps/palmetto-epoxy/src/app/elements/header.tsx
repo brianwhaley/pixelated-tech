@@ -5,8 +5,8 @@ import React from "react";
 import { SmartImage } from "@pixelated-tech/components";
 import Social from "@/app/elements/social";
 import Nav from "@/app/elements/nav";
-import routes from "@/app/data/routes.json";
-const siteInfo = (routes as any).siteInfo;
+import siteConfig from "@/app/data/siteconfig.json";
+const siteInfo = (siteConfig as any).siteInfo;
 
 export default function Header() {
 	return (
