@@ -47,7 +47,7 @@ export default function ServicesPage() {
 					gridColumns={{left:1, right:3}}
 					layout="horizontal"
 					direction="left"
-					img="https://images.ctfassets.net/j4mgog9ij96e/3PNAwcHeCocC45Gha5l8nb/efd09e7c86a32611cb812290ed3aff5a/manning-mobile.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
 					title="24/7 Mobile Welding Services"
 					subtitle="Our 24/7 mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night."
 				/>

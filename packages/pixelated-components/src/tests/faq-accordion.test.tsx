@@ -159,6 +159,36 @@ describe('FAQAccordion Component', () => {
 			expect(screen.getByText('bold')).toBeInTheDocument();
 			expect(screen.getByText('italic')).toBeInTheDocument();
 		});
+
+		it('renders FAQ images as SmartImage with inline float and size styles', () => {
+			const faqWithImage = {
+				...mockFaqsData,
+				mainEntity: [{
+					"@type": "Question",
+					"name": "Image FAQ",
+					"category": "Services",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Answer with image",
+						"image": {
+							"@type": "ImageObject",
+							"contentUrl": "/images/test.jpg",
+							"name": "Test image",
+							"width": 100,
+							"height": 100,
+							"layout": "right"
+						}
+					}
+				}]
+			};
+
+			render(<FAQAccordion faqsData={faqWithImage} />);
+
+			const image = screen.getByAltText('Test image');
+			expect(image).toBeInTheDocument();
+			expect(image).toHaveStyle({ float: 'right', width: '100px', height: '100px' });
+			expect(screen.getByText('Answer with image')).toBeInTheDocument();
+		});
 	});
 
 	describe('Category Icons', () => {

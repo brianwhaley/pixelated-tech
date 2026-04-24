@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { Accordion, AccordionItem } from '../general/accordion';
+import { SmartImage } from './smartimage';
 import './faq-accordion.css';
 
 type CategoryKey = 'Getting Started' | 'Process & Timeline' | 'Technical Details' | 'Content & Management' | 'Support & Maintenance' | 'Ownership & Legal' | 'Services' | '';
@@ -40,6 +41,13 @@ FAQAccordion.propTypes = {
 				category: PropTypes.string,
 				/** Accepted answer object with text or list of paragraphs. */
 				acceptedAnswer: PropTypes.shape({
+					image: PropTypes.shape({
+						contentUrl: PropTypes.string,
+						name: PropTypes.string,
+						width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+						height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+						layout: PropTypes.oneOf(['left', 'right']),
+					}),
 					text: PropTypes.oneOfType([
 						PropTypes.string,
 						PropTypes.arrayOf(PropTypes.string)
@@ -82,7 +90,29 @@ export function FAQAccordion({ faqsData }: FAQAccordionType) {
 
 	// Transform FAQ data to Accordion format
 	const accordionItems: AccordionItem[] = filteredFaqs.map((faq: any, index: number) => {
-		const content: React.ReactNode = Array.isArray(faq.acceptedAnswer.text) ? (
+		const answerImage = faq.acceptedAnswer?.image;
+		const imageLayout = answerImage?.layout === 'right' ? 'right' : 'left';
+		const imageStyle: React.CSSProperties = {
+			float: imageLayout,
+			width: answerImage?.width ? (typeof answerImage.width === 'number' ? `${answerImage.width}px` : answerImage.width) : undefined,
+			height: answerImage?.height ? (typeof answerImage.height === 'number' ? `${answerImage.height}px` : answerImage.height) : undefined,
+			margin: imageLayout === 'right' ? '0 0 1rem 1rem' : '0 1rem 1rem 0',
+		};
+
+		const imageElement = answerImage?.contentUrl ? (
+			<SmartImage
+				variant="img"
+				src={answerImage.contentUrl}
+				alt={answerImage.name || faq.name}
+				width={typeof answerImage.width === 'number' ? answerImage.width : undefined}
+				height={typeof answerImage.height === 'number' ? answerImage.height : undefined}
+				style={imageStyle}
+				//eslint-disable-next-line 
+				className={`faq-answer-image faq-answer-image-${imageLayout}`}
+			/>
+		) : null;
+
+		const answerText: React.ReactNode = Array.isArray(faq.acceptedAnswer.text) ? (
 			<div>
 				{faq.acceptedAnswer.text.map((paragraph: string, pIndex: number) => (
 					<p key={pIndex} dangerouslySetInnerHTML={{ __html: paragraph }} />
@@ -91,6 +121,14 @@ export function FAQAccordion({ faqsData }: FAQAccordionType) {
 		) : (
 			<div dangerouslySetInnerHTML={{ __html: faq.acceptedAnswer.text }} />
 		);
+
+		const content: React.ReactNode = (
+			<div className="faq-answer">
+				{imageElement}
+				<div className="faq-answer-text">{answerText}</div>
+			</div>
+		);
+
 		return {
 			/* title: `${categoryIcons[faq.category as CategoryKey] || '❓'} ${faq.name}`, */
 			title: `${categoryIcons[faq.category as CategoryKey] || ''} ${faq.name}`,
@@ -128,7 +166,7 @@ export function FAQAccordion({ faqsData }: FAQAccordionType) {
 						aria-label="Collapse all FAQ answers"
 						title="Collapse all answers"
 					>
-						−
+						-
 					</button>
 				</div>
 			</div>

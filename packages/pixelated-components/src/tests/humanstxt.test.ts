@@ -7,6 +7,7 @@ import {
   generateHumansTxt,
   sanitizeString,
   createWellKnownResponse,
+  getPixelatedComponentsPackageVersion,
 } from '@/components/foundation/well-known';
 
 import testData from '../test/test-data';
@@ -26,6 +27,11 @@ describe('humanstxt (server)', () => {
     // avoid spying on the ESM fs/promises namespace (not configurable in some runners)
     const v = await safeJSON('/no/such/path.json');
     expect(v).toBeNull();
+  });
+
+  it('getPixelatedComponentsPackageVersion resolves the installed package version', async () => {
+    const version = await getPixelatedComponentsPackageVersion(process.cwd());
+    expect(version).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+/);
   });
 
   it('generateHumansTxt produces expected body + headers when passed data', async () => {

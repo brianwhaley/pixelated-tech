@@ -31,6 +31,14 @@
       "name": "What should I expect during my first professional pointe shoe fitting?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "A professional pointe shoe fitting is a highly technical process that usually takes about forty-five to sixty minutes. We begin by assessing the unique shape, strength, and flexibility of your feet while you are barefoot. Our experts will then guide you through trying several different brands and styles to find your perfect match. You will be asked to perform basic movements like tendu and relevé to test the shoe's support. This individualized attention ensures that your shoes provide the safety and alignment necessary for advanced ballet work.",
           "We recommend that you wear convertible tights and bring any toe pads or spacers you currently use. It is also very helpful to bring your old pointe shoes so we can see your wear patterns. Proper fitting is essential because a shoe that is too small or too large can cause injury. After we find the right pair, we can provide a tutorial on how to sew your ribbons. We want every dancer to leave feeling confident and fully prepared for their next class at the barre."
@@ -42,6 +50,14 @@
       "name": "What is the best way to care for and clean my professional dancewear?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "Proper care is essential for extending the life and maintaining the elasticity of your high-performance dancewear. We recommend hand washing your leotards and tights in cold water using a mild, specialized detergent. Avoid using fabric softeners as they can break down the spandex fibers that provide necessary compression. Never put your dancewear in a tumble dryer because the high heat will damage the delicate elastic. Instead, lay your items flat on a clean towel or hang them to air dry away from sunlight.",
           "For pointe shoes, never use water or liquid cleaners as the paste in the box will soften. You should always remove your padding from your shoes immediately after class to allow them to dry. Using a mesh bag for storage helps the air circulate and prevents the growth of odor-causing bacteria. If your shoes become damp from sweat, let them dry completely before wearing them again for your next rehearsal. Following these simple steps will ensure your gear stays in peak condition for as long as possible."
@@ -53,6 +69,14 @@
       "name": "Can you help me find the specific dress code for my local dance studio?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "We maintain an updated list of dress code requirements for the major dance studios located throughout the Bluffton and Hilton Head area. Our team communicates regularly with local instructors to ensure we stock the exact colors and styles they require for each level. When you visit our shop, simply mention the name of your studio and the specific class your dancer is attending. We will quickly pull the appropriate leotards, tights, and shoes to meet your school's professional standards. This service takes the guesswork out of back-to-school shopping for parents and ensures a uniform look for the class.",
           "If your studio requires a specialized item that we do not currently have in stock, we are happy to place a custom order. Most special orders arrive within seven to ten business days so your dancer will be ready for their next rehearsal. We can also provide advice on how to properly style hair in a classical ballet bun to meet class expectations. Our goal is to be a comprehensive resource that supports both the studios and the families in our vibrant arts community. We take pride in helping our local dancers look their best as they step into the studio."
@@ -64,6 +88,14 @@
       "name": "What is your return and exchange policy for dancewear and shoes?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "We want you to be completely satisfied with your purchase, so we offer returns and exchanges on most items within fourteen days. To qualify for a refund, all garments must be unworn and unwashed with the original tags still firmly attached. Shoes must show no signs of wear on the soles and must be in their original, undamaged packaging. Please note that certain hygiene-sensitive items like tights and hair accessories are considered final sale once opened. We strive to make the exchange process as simple and efficient as possible for our busy dance families.",
           "If you are unsure about a size, we highly recommend trying items on in our dressing rooms before leaving. Our staff is always available to help verify the fit of leotards and shoes to prevent future returns. For online orders, the customer is responsible for return shipping costs unless the item arrived damaged or incorrect. Once we receive and inspect your return, we will process your refund to the original payment method. We value your business and are committed to ensuring every dancer has the high-quality gear they need."
@@ -75,6 +107,14 @@
       "name": "Do I need to own a sewing machine to enroll in your sewing classes?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "You do not need to own a sewing machine to begin your creative journey in our studio. We provide high-quality, modern sewing machines for every student to use during our instructional workshops and classes. This allows you to explore the craft without making a large initial investment in expensive equipment. Our instructors will teach you how to operate these machines safely and effectively from the very first day. We believe that everyone should have access to the joy of sewing regardless of their home setup.",
           "If you do happen to have a machine at home, you are more than welcome to bring it. Learning on your own equipment can help you build muscle memory for when you practice between our sessions. Our studio is equipped with all the necessary heavy tools like cutting tables, irons, and specialized presser feet. We also keep a variety of thread and notions on hand for student use during class hours. Our goal is to provide a stress-free environment where you can focus entirely on your new skills."
@@ -86,6 +126,14 @@
       "name": "What specific items should I bring with me to an alteration fitting?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "To ensure the most accurate fit possible, you must bring the exact shoes you plan to wear. Even a half-inch difference in heel height can drastically change how a hemline should be measured. You should also wear the specific undergarments or shapewear that will be worn with the finished garment. These foundational layers significantly affect how the fabric drapes and fits around your natural body contours. Having these items present prevents the need for multiple re-adjustments after the sewing has already begun.",
           "If your alteration involves a specific accessory like a belt or a sash, please bring those as well. We want to see the full ensemble to ensure the proportions are balanced and aesthetically pleasing. Bringing these items to the first fitting saves time and ensures a better result on the first try. Our dressing rooms are private and comfortable, allowing you to change with ease during your appointment. We are committed to making sure you look and feel your absolute best in your tailored clothes."
@@ -97,6 +145,14 @@
       "name": "Do you offer alterations for bridesmaids dresses and formalwear?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "We are pleased to offer professional alteration services for bridesmaids, gala attendees, and those wearing formal evening wear. Our team is highly experienced in working with delicate fabrics like chiffon, silk, and intricate lace overlays. We focus on creating a perfect silhouette that allows you to feel confident and comfortable throughout your event. Whether you need a simple hem or a complex bodice adjustment, we provide expert technical precision. Our goal is to ensure your formal attire looks custom-made specifically for your unique body type.",
           "To achieve the best results, we recommend scheduling your first fitting at least four weeks before your occasion. Please remember to bring the exact shoes and undergarments you plan to wear with the dress. These items are essential for determining the correct hem length and ensuring the bodice sits perfectly. Having your foundational layers present during the fitting prevents the need for multiple unnecessary re-adjustments later. We take great pride in helping our Bluffton neighbors look their absolute best for life's most celebrated moments."
@@ -108,6 +164,14 @@
       "name": "Do you provide alteration services for bridal gowns?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "While we specialize in a wide range of formalwear and dancewear, we do not offer bridal gown alterations. Bridal gowns often require specialized structural work and extended timelines that fall outside of our current service scope. We choose to focus our expertise on bridesmaids, mother-of-the-bride, and general formal evening attire instead. This allows us to maintain a consistent and efficient turnaround time for our other valued clients. We want to ensure every garment we accept receives the full technical attention it deserves.",
           "If you are a bride-to-be, we would be happy to recommend several local bridal specialists in the area. Our team understands how important your wedding day is and wants you to have the best experience. You can still visit our boutique for unique bridal accessories or custom-sewn items for your bridal party. We often create bespoke hairpieces and gift sets that add a personal touch to your celebration. Please feel free to stop by and browse our curated collection of handcrafted boutique treasures."
@@ -119,6 +183,14 @@
       "name": "How do I sign up to attend one of your sewing classes?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "Joining one of our sewing classes is a wonderful way to learn a new skill in a supportive environment. Our current schedule features a variety of levels ranging from absolute beginners to more advanced technical workshops. You can view our upcoming dates and project themes directly on our website's dedicated class calendar page. Each session is kept intentionally small to ensure every student receives personalized instruction from our expert teachers. We provide all the heavy equipment so you can start creating as soon as you arrive.",
           "To reserve your seat in an upcoming class, please reach out to us through our online portal. You can find all of our registration details and current availability by visiting our <a href='/contact-us'>Contact Us</a> page today. Simply fill out the inquiry form and specify which class level or date you are interested in. A member of our team will get back to you quickly to confirm your registration and payment. We look forward to helping you discover the rhythm of the needle and the joy of creating."
@@ -130,6 +202,14 @@
       "name": "Can I host a private sewing event or party at your studio?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "We love hosting private sewing events for birthday parties, bridal showers, or unique team-building experiences for local groups. Our studio provides a creative and inspiring backdrop for you and your friends to learn something new together. You can choose from several project options that match the skill level and interests of your specific guests. We provide the machines, tools, and expert guidance to ensure everyone leaves with a finished handmade item. It is a memorable way to celebrate a special occasion while fostering a sense of community.",
           "Planning your private event starts with a consultation to discuss your preferred date, group size, and project theme. To begin the booking process, please send us a detailed message through our <a href='/contact-us'>Contact Us</a> page. We will review our studio calendar and provide you with a customized quote for your private workshop. Please let us know if you have any special requests or specific items you would like to create. We are excited to help you host a creative and fun-filled event for your guests."
@@ -141,6 +221,14 @@
       "name": "How do your custom boutique items differ from mass-produced retail goods?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "Our custom boutique items are characterized by their superior craftsmanship and unique design elements that you won't find elsewhere. Unlike mass-produced goods, many of our pieces are handcrafted right here in Bluffton by local artisans and makers. We carefully select high-quality fabrics and unique notions to ensure every item is durable and beautiful. This focus on detail means that no two items are exactly alike, giving you a truly personal product. When you shop with us, you are investing in a piece of wearable or decorative art.",
           "We take pride in offering items that reflect the coastal charm and artistic spirit of the Lowcountry. Our curated selection includes everything from bespoke dance accessories to one-of-a-kind gifts for special milestones. Because we handle our own production, we can often customize colors or sizes to meet your specific needs. This level of personalized service is something that larger big-box retailers simply cannot provide to their customers. We invite you to explore our ever-changing collection and discover the difference that handmade quality makes."
@@ -152,6 +240,14 @@
       "name": "Do you offer professional gift wrapping for boutique and custom items?",
       "acceptedAnswer": {
         "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
         "text": [
           "We are delighted to offer beautiful, professional gift wrapping services to make your boutique purchase feel even more special. Every gift is wrapped with high-quality paper and finished with a hand-tied ribbon that reflects our shop's elegant aesthetic. We believe that the presentation of a gift is just as important as the treasure hidden inside the box. Our signature wrapping style often incorporates small creative touches that echo the themes of our three muses. This complimentary service is our way of adding a little extra joy to your shopping experience at our store.",
           "If you are purchasing a gift to be sent directly to a recipient, we can also include a handwritten note. Simply provide us with your personalized message, and we will carefully scribe it onto one of our custom gift tags. We take great care to ensure that all pricing information is removed before your gift is elegantly packaged for delivery. Our boutique is the perfect place to find unique, ready-to-give items for birthdays, recitals, and holiday celebrations. Let us handle the details so you can enjoy the pleasure of giving a perfectly presented gift."

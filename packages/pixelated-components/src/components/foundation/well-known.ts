@@ -2,6 +2,7 @@ import PropTypes, { InferProps } from 'prop-types';
 import { readFile } from 'fs/promises';
 import crypto from 'crypto';
 import path from 'path';
+import { createRequire } from 'module';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { flattenRoutes } from './sitemap';
@@ -62,7 +63,27 @@ function usesPixelatedComponents(pkg: any) {
 	);
 }
 
+const requireFromThisFile = createRequire(import.meta.url);
+
+async function getPixelatedComponentsPackageVersionFromResolver() {
+	try {
+		const pkgPath = requireFromThisFile.resolve('@pixelated-tech/components/package.json');
+		const pkg = await safeJSON(pkgPath);
+		if (pkg && typeof pkg.version === 'string' && pkg.version.trim()) {
+			return pkg.version.trim();
+		}
+	} catch {
+		return null;
+	}
+	return null;
+}
+
 export async function getPixelatedComponentsPackageVersion(cwd: string) {
+	const resolvedVersion = await getPixelatedComponentsPackageVersionFromResolver();
+	if (resolvedVersion) {
+		return resolvedVersion;
+	}
+
 	const candidates = [
 		path.join(cwd, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
 		path.join(cwd, '..', 'node_modules', '@pixelated-tech', 'components', 'package.json'),

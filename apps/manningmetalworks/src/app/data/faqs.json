@@ -1,210 +1,363 @@
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "name": "Manning Metalworks FAQs",
-  "description": "Expert answers to frequently asked questions about residential, commercial, and industrial metal fabrication and 24/7 mobile welding services in New Jersey.",
-  "author": {
-    "@type": "Organization",
-    "name": "Manning Metalworks",
-    "url": "https://www.manningmetalworks.com"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Manning Metalworks",
-    "url": "https://www.manningmetalworks.com"
-  },
-  "datePublished": "2023-10-01",
-  "dateModified": "2026-03-20",
-  "inLanguage": "en-US",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "Manning Metalworks",
-    "url": "https://www.manningmetalworks.com"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://www.manningmetalworks.com/faqs"
-  },
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What sets Manning Metalworks apart from other local New Jersey welding shops?",
-      "category": "General Information",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks delivers 24/7 mobile welding and custom metal fabrication in New Jersey, providing emergency industrial repairs and certified structural steel work for residential and municipal projects. We distinguish ourselves through a unique combination of high-precision shop fabrication and truly responsive 24/7 mobile emergency services. While many local competitors operate on strict nine-to-five schedules, we understand that critical infrastructure failures and residential emergencies do not stick to standard business hours. Our team is equipped with state-of-the-art portable welding units that allow us to bring industrial-grade quality directly to your job site or home at any hour of the day or night. This dual-threat capability ensures that whether you need a custom-designed ornamental railing or an emergency repair on a heavy construction vehicle, you have a single, reliable point of contact. We prioritize rapid response times because we know that every hour of downtime costs our commercial clients money and every broken gate compromises a homeowner's security.",
-          "Beyond our availability, our competitive edge lies in our rigorous quality control and our deep understanding of local building codes for both residential and commercial projects. We do not just join metal components together; we engineer solutions that are designed for long-term structural integrity, safety, and aesthetic appeal. Our technicians are cross-trained in multiple welding disciplines, including MIG, TIG, and Stick welding, allowing us to handle diverse materials like stainless steel, aluminum, and heavy structural carbon steel. By choosing Manning Metalworks, you are investing in a partnership that prioritizes structural integrity and rapid turnaround times without compromising on the fine details that define premium craftsmanship. We maintain a cleaner workspace and higher safety standards than typical independent contractors, ensuring a professional experience from the first spark to the final polish."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you provide on-site mobile welding for residential repairs?",
-      "category": "Mobile Services",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Yes, Manning Metalworks delivers comprehensive on-site mobile welding for residential repairs, providing the restoration of iron gates, pool fences, and structural deck supports. Our mobile welding division is specifically designed to handle residential repairs that are too large or immobile to be transported to a traditional shop. Homeowners often face challenges with heavy items like wrought iron gates, custom pool fences, or structural deck supports that require professional attention right where they stand. Our mobile units arrive fully equipped with their own power sources and shielding equipment to protect your driveway, lawn, and landscaping while we perform the work. We take great care to ensure that the work area remains clean and safe for your family throughout the entire repair process, treating your home with the same respect we would our own. Our goal is to provide a seamless, stress-free experience where the highest quality welding is performed efficiently at your convenience, eliminating the logistical headache of transporting heavy metal.",
-          "Our residential mobile services extend far beyond simple structural fixes to include decorative and functional upgrades for your living space. We frequently assist homeowners with the repair of ornamental iron furniture, the reinforcement of utility trailers, and the on-site modification of custom metal handrails. Because we operate 24/7, we are also available for emergency situations, such as a collapsed gate or a broken security door that compromises your home's safety after hours. We provide a level of finish that blends the repair into the original structure, often making the fix virtually invisible to the naked eye. This commitment to aesthetics and utility ensures that your residential metalwork remains beautiful and functional for decades to come. Many competitors avoid residential 'small' jobs, but we believe in supporting our local community with expert care regardless of the project size."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Manning Metalworks handle commercial and municipal contracts?",
-      "category": "Commercial & Municipal",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks is a certified provider for commercial, municipal, and government contracts, offering structural steel fabrication, safety bollards, and HVAC support frames. We are fully equipped and insured to manage high-volume commercial, municipal, and government fabrication projects with strict adherence to timeline and budget constraints. We have extensive experience working with general contractors and project managers to provide structural steel components, custom safety bollards, and complex HVAC support frames. Our facility is optimized for scalable production, meaning we can move from a single prototype to a large-batch production run without losing the precision required for government-standard work. We understand the bureaucratic and safety rigors of municipal contracts and maintain all necessary certifications to ensure compliance with local and federal regulations. Our administrative team is proficient in handling the paperwork, insurance requirements, and safety documentation that commercial entities require for their vendors.",
-          "Our commercial services also include long-term maintenance contracts for facilities that require regular metalwork inspections and preventative repairs. From repairing heavy equipment for public works departments to fabricating custom security grilles for retail storefronts, we offer a versatile range of solutions. We prioritize clear documentation and transparent communication, providing detailed estimates and progress reports that satisfy the reporting requirements of large organizations. By leveraging our 24/7 mobile capability, we can also perform commercial repairs during off-peak hours or overnight shifts to minimize disruption to business operations or public access. This flexibility makes us the preferred choice for high-traffic environments like hospitals, schools, and shopping centers where safety and silence are paramount. We stand ready to tackle the most demanding structural projects with the engineering precision your commercial facility deserves."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does your 24/7 emergency welding service work for industrial machinery?",
-      "category": "Industrial",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks offers 24/7 emergency mobile welding for industrial machinery, deploying certified technicians within hours to repair excavator buckets, production lines, and heavy equipment. For our industrial and heavy machinery clients, equipment downtime represents a significant financial loss that requires an immediate and professional response. Our 24/7 emergency welding service is structured like a rapid-response unit, with technicians on standby ready to deploy to warehouses, construction sites, or industrial plants. When you call our emergency line, you will speak with a knowledgeable professional who can assess the situation and dispatch a mobile rig stocked with the necessary alloys and equipment. We provide 'field-expedient' repairs that get your machinery back in operation safely while providing a permanent solution that meets or exceeds original manufacturer specifications. You do not have to wait for the next business day to get your production line moving again when you have us on call.",
-          "Common industrial emergencies we handle include cracked excavator buckets, failed structural supports in manufacturing lines, and broken hydraulic cylinder mounts on heavy transport vehicles. Our mobile welders are proficient in working in challenging environments, including confined spaces or high-elevation points, while maintaining strict OSHA safety standards. We do not just provide a temporary patch; we analyze why the failure occurred and often suggest reinforcements to prevent future occurrences. This proactive approach to emergency repair has made us a trusted partner for local logistics companies and heavy equipment operators who cannot afford to wait for a standard shop to open."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What materials do you work with for custom fabrication projects?",
-      "category": "Technical Details",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks offers the fabrication of carbon steel, stainless steel, and aluminum, utilizing advanced MIG, TIG, and Stick welding techniques for diverse project needs. At Manning Metalworks, we pride ourselves on our technical mastery over a wide spectrum of metals, ensuring we can meet the specific requirements of any project. We are highly skilled in working with stainless steel, which is essential for projects requiring corrosion resistance or high-end aesthetics, such as commercial kitchen equipment or modern architectural features. Our technicians produce clean, sanitary, and visually stunning welds on all materials that we work with. We ensure that every material is sourced from reputable suppliers to guarantee that the chemical composition meets the structural needs of your specific application.",
-          "In addition to steel, we offer comprehensive aluminum fabrication services, which require specialized equipment and a high degree of skill due to the metal's unique thermal properties. Whether it is a lightweight marine component, a custom automotive part, or a modern residential gate, our aluminum welding is performed with precision to ensure maximum structural integrity. We also handle other materials and alloys upon request, including cast iron repairs and decorative copper or brass work for architectural accents. By maintaining a diverse inventory of materials and gasses required for each, we can begin your custom project immediately without long lead times for supplies. Our expertise allows us to recommend the best material for your environment, whether you need something rust-proof for outdoors or high-strength for heavy industrial loads."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I get an estimate for my custom metal project?",
-      "category": "Getting Started",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "To get a project estimate from Manning Metalworks, clients can contact us for an initial consultation, share project blueprints, or provide photos for a rapid preliminary quote. Obtaining a detailed and accurate estimate from Manning Metalworks is a straightforward process designed to provide you with clarity and confidence before any work begins. For most projects, the process starts with an initial consultation where we discuss your goals, review any blueprints or sketches you may have, and determine the necessary materials and labor. If you are a homeowner with a simple repair, you can often send us photos via email or text for a preliminary ballpark quote to save time. For larger commercial or structural projects, we typically schedule an on-site visit to take precise measurements and evaluate any site-specific challenges that might impact the fabrication or installation process. We believe that a thorough initial assessment is the only way to ensure that the final product meets your expectations and stays within your budget.",
-          "Once we have gathered all the necessary data, we provide a formal written proposal that outlines the scope of work, material costs, estimated timeline, and total investment. We believe in transparent pricing, so our quotes are broken down clearly to ensure there are no hidden fees or unexpected 'surprises' once the job is underway. If your project has a strict budget, our engineers can often suggest value-engineering options, such as alternative materials or simplified designs, that achieve your goals more economically. We provide these detailed quotes quickly so that you can make an informed decision and keep your project moving forward without delay. Once you approve the estimate, we move into the scheduling phase, ensuring that your project is slotted into our production pipeline to meet your specific deadlines and operational needs."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you offer custom design services for ornamental ironwork?",
-      "category": "Services",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks provides custom ornamental ironwork design and fabrication for handrails, gates, and architectural features, blending artistic aesthetics with structural durability. Manning Metalworks specializes in the design and creation of custom ornamental ironwork that enhances the beauty and value of your property. We work closely with homeowners, architects, and interior designers to turn artistic visions into durable metal realities that stand the test of time. Whether you are looking for a grand entrance gate with intricate scrollwork, a modern minimalist handrail, or a custom-designed fireplace screen, our team has the creative expertise to deliver. We take the time to understand your aesthetic preferences and the architectural style of your home to ensure the final piece looks like it was always meant to be there. Our design process includes detailed sketches and material samples so you can visualize the project before we strike the first arc.",
-          "Our ornamental work is not just about looks; it is built with the same structural integrity as our industrial projects to ensure safety and longevity. We use premium finishes, including powder coating and professional-grade paints, to protect your investment from the elements and minimize future maintenance requirements. Unlike mass-produced railings found at big-box stores, our custom pieces are hand-forged and welded to fit your specific dimensions perfectly, eliminating unsightly gaps or awkward transitions. We also offer restoration services for historical ironwork, carefully repairing and replicating antique designs to preserve their original character while adding modern strength. Choosing custom ironwork from Manning Metalworks means you are receiving a one-of-a-kind piece of functional art that will remain a focal point of your property for generations. We pride ourselves on the fine craftsmanship that distinguishes our work from the more utilitarian approach of our local competitors."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are your welders certified and insured for heavy structural work?",
-      "category": "Technical Details",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Every welder at Manning Metalworks is AWS certified and the company carries comprehensive liability insurance for high-risk industrial and heavy structural welding projects. Yes, every welder at Manning Metalworks is fully certified and follows the strict guidelines set forth by the American Welding Society (AWS) and other relevant industry standards. We believe that certification is the baseline for safety, but we go further by requiring our team to undergo continuous training in new technologies and safety protocols. This commitment to expertise ensures that every weld we perform, especially in structural applications, is capable of withstanding the loads and stresses it was designed to carry. We maintain comprehensive general liability and workers' compensation insurance to protect both our team and our clients throughout the duration of any project. You should never hire an uninsured welder for structural work, as the liability for a failure could fall back on the property owner or general contractor.",
-          "In addition to our welding certifications, we adhere to all OSHA safety standards on every job site, whether it is a small residential repair or a massive industrial installation. We provide our team with the best safety gear and equipment, and we conduct regular safety audits to ensure that our high standards are never compromised. Our insurance coverage is specifically tailored for the high-risk nature of welding and metal fabrication, providing peace of mind to our municipal and government clients who require proof of significant coverage. We are happy to provide copies of our certifications and insurance binders upon request as part of our transparent bidding process. When you hire Manning Metalworks, you are hiring a professional organization that prioritizes technical excellence and legal compliance above all else. This professional approach protects your investment and ensures that your structural metalwork is safe, legal, and built to last."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the typical lead time for a custom fabrication project?",
-      "category": "Process & Timeline",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks offers lead times ranging from a few days for minor repairs to 2-4 weeks for complex structural or ornamental fabrication projects. The lead time for a custom fabrication project at Manning Metalworks varies depending on the complexity of the design, the volume of material required, and our current production schedule. For smaller repairs or simple custom pieces, we can often complete the work within a few days to a week of receiving the initial deposit. Larger, more complex projects like structural steel frames for new construction or high-end ornamental railings typically require a lead time of two to four weeks for design and fabrication. We provide a projected timeline during the estimating phase so that you can coordinate with other contractors or plan your business operations accordingly. Our goal is always to deliver high-quality work as quickly as possible without cutting corners on the vital cooling or finishing stages.",
-          "We understand that in the world of construction and industrial maintenance, time is often the most critical factor in a project's success. To help manage tight deadlines, we maintain a large inventory of common metal stock and have established relationships with local suppliers for rapid delivery of necessary alloys. Our 24/7 mobile capability also allows us to perform on-site installations and repairs outside of standard shop hours, which can significantly accelerate the overall project timeline. We provide regular status updates throughout the fabrication process so you are never left wondering about the progress of your order. If a delay occurs due to material availability or weather, we communicate this immediately and work to find an alternative solution to keep your project on track. Our reputation for reliability is built on meeting our deadlines while maintaining the highest standards of metalwork quality in New Jersey."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you offer repair services for aluminum trailers and marine equipment?",
-      "category": "Services",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks provides aluminum TIG welding services for the repair of utility trailers, boat hulls, marine hardware, and lightweight structural components. Yes, Manning Metalworks provides expert aluminum welding and repair services specifically for utility trailers, boat hulls, and marine hardware. Aluminum requires a specific set of skills and equipment, particularly TIG welding, which allows for precise heat control to prevent warping or structural weakening of the metal. Many general welding shops avoid aluminum because it is difficult to work with, but our technicians have the experience necessary to perform high-strength repairs on these critical items. We can fix everything from cracked trailer frames and broken ramps to leaking aluminum boat seams and damaged pontoon tubes. Our repairs are designed to restore the original strength of the aluminum while maintaining a clean, professional appearance that resists the harsh effects of road salt or water.",
-          "Our mobile welding units are also fully equipped to handle aluminum repairs on-site, which is particularly helpful for heavy trailers that are no longer road-worthy or boats docked at a marina. We use high-grade aluminum alloys that match your equipment's original material to ensure a compatible and durable weld every time. In addition to repairs, we also fabricate custom aluminum accessories such as ladder racks, toolboxes, and mounting brackets for marine electronics. We take the time to clean and prep the aluminum properly, which is a crucial step that many competitors skip, ensuring that the weld penetrates deeply and holds fast under vibration. Whether you have a small jet ski trailer or a large commercial transport fleet, we have the necessary tools to keep your aluminum equipment in top condition. Our expertise in this niche market makes us a valuable resource for local outdoor enthusiasts and logistics companies alike."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Manning Metalworks replicate existing metal designs for historical restoration?",
-      "category": "Services",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks offers historical restoration services, replicating antique wrought iron and cast steel designs for residential and municipal landmarks. Manning Metalworks is proud to offer restoration and replication services for historical metalwork found in older homes and municipal buildings. We understand that preserving the architectural integrity of a historic property requires a deep respect for traditional blacksmithing and fabrication techniques. Our team can analyze existing ironwork to determine its original construction and then create exact replicas of missing or damaged components. This process involves careful measurement, templating, and sometimes hand-forging parts to ensure they match the scale and detail of the original pieces. We work with a variety of materials, including wrought iron and cast steel, to ensure the restoration is both historically accurate and structurally sound for modern safety requirements.",
-          "The restoration process often involves more than just welding; it requires removing decades of rust and old paint to reveal the true condition of the metal underneath. We offer various finishing options that mimic historical patinas while providing modern protection against the elements, ensuring the restored piece lasts for another century. Our passion for metalwork history drives us to take on these challenging projects that many modern fabrication shops find too time-consuming or complex. We have successfully restored cemetery gates, historic courthouse railings, and ornamental features on Victorian-era homes throughout the region. By combining old-world craftsmanship with modern welding technology, we can preserve the beauty of our local history while ensuring the metalwork is safe for public use. We are happy to consult with local historical societies and preservation boards to ensure our work meets their specific standards and guidelines."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you provide metal cutting and bending services as well as welding?",
-      "category": "Services",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks offers full-service fabrication including CNC plasma cutting, hydraulic shearing, and precision bending for sheet metal, pipes, and structural plates. Yes, Manning Metalworks is a full-service fabrication shop, which means we offer comprehensive metal cutting, bending, and forming services in addition to our core welding expertise. We utilize advanced equipment like CNC plasma cutters and heavy-duty hydraulic shears to cut steel, aluminum, and stainless steel with extreme precision. This allows us to create complex shapes and parts that are ready for assembly without the need for extensive manual grinding or adjustment. Our bending capabilities include a variety of press brakes and tube benders that can handle everything from thin sheet metal to thick structural plates and heavy-walled pipes. Having these services in-house allows us to maintain total control over the quality and accuracy of every component in your project.",
-          "By handling the cutting and forming ourselves, we can significantly reduce the lead time and overall cost of your project compared to shops that have to outsource these processes. We can take your raw ideas or CAD drawings and turn them into finished components that fit together perfectly during the final welding stage. This integrated approach also minimizes material waste, as our precision cutting tools allow us to nest parts efficiently on a single sheet of metal. Whether you need a simple set of custom brackets, a complex manifold, or a series of bent railings, our shop is equipped to handle the task with speed and accuracy. We also offer hole punching, drilling, and threading services to provide a truly 'plug-and-play' experience for our commercial and industrial clients. Our goal is to be your one-stop shop for all metal fabrication needs, from the initial cut to the final weld and finish."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Manning Metalworks help with emergency repairs for heavy equipment?",
-      "category": "Industrial",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks provides 24/7 mobile emergency repairs for heavy equipment, as well as high-strength welding for excavator booms, buckets, and hydraulic mounts on-site. Heavy equipment is the lifeblood of the construction and mining industries, and when a machine breaks down, the financial impact can be devastating for a project's timeline. Manning Metalworks offers emergency repair services of heavy machinery, offering 24/7 mobile welding services to get your excavators, bulldozers, and cranes back in service immediately. We are experienced in welding the high-strength, abrasion-resistant steels typically used in heavy equipment, which require specific pre-heating and cooling procedures to avoid cracking. Our mobile rigs are stocked with heavy-duty wire feeders and high-capacity generators capable of performing deep-penetration welds on thick-plate steel right in the field. We understand that you cannot always transport a massive machine to a shop, so we bring the shop to the machine, no matter how remote the job site is.",
-          "Our repair services include fixing cracked booms, reinforcing worn-out buckets, and replacing damaged hydraulic mounts or structural pins. We don't just patch the problem; we analyze the stress points and often add reinforcements to ensure the repair is stronger than the original part. Because we are available around the clock, we can perform these repairs overnight or on weekends to ensure your crew is ready to work the very next morning. We have built a reputation for being the first call for local construction firms because of our ability to handle massive repairs under pressure and in difficult environments. Our technicians are trained in field safety and equipment mechanics, ensuring that our welding work integrates perfectly with the rest of your machine's operation. When every minute of downtime counts, you can rely on Manning Metalworks to provide a fast, professional, and permanent solution for your heavy equipment failures."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can you assist with the repair of commercial kitchen and food-grade equipment?",
-      "category": "Commercial & Municipal",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "Manning Metalworks provides sanitary TIG welding for stainless steel commercial kitchen equipment, ensuring food-grade repairs that meet health department standards. Commercial kitchens rely heavily on stainless steel for its sanitary properties, but regular use can lead to broken welds on tables, sinks, and cooking equipment. Manning Metalworks offers food-grade TIG welding, which allows us to create the smooth, crevice-free welds required to prevent bacterial growth and meet strict health department standards. We understand that a broken prep table or a leaking sink can disrupt your entire operation, so we offer rapid mobile service to perform repairs during your off-hours. Our technicians are trained in the specific metallurgy of food-grade stainless steel to ensure that our repairs do not compromise the material's corrosion resistance or structural integrity. We provide a clean, professional service that respects the hygiene requirements of your kitchen environment.",
-          "In addition to emergency repairs, we also provide custom fabrication services for commercial kitchens, such as custom-sized shelves, stainless steel wall cladding, and equipment stands. We can modify existing equipment to better fit your workflow or build entirely new components that are designed for the high-intensity environment of a professional kitchen. Our custom work is built to be both durable and easy to clean, helping you maintain a safe and efficient workspace for your staff. We work with restaurant owners, hospital kitchen managers, and industrial food processors to provide reliable metalwork solutions that keep their facilities running smoothly. By choosing Manning Metalworks for your kitchen repairs, you are ensuring that your equipment remains compliant with health codes and is repaired to a professional standard. Our expertise in stainless steel fabrication makes us the preferred partner for the local hospitality and food service industry."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I do in a metalwork emergency after business hours?",
-      "category": "Mobile Services",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": [
-          "In a metalwork emergency, call Manning Metalworks' 24/7 hotline for immediate dispatch of a mobile welding unit to secure your property or repair critical machinery. When a metalwork emergency occurs after business hours—whether it's a broken main gate at a residential complex or a critical machinery failure at a production facility—the first step is to contact our 24/7 emergency hotline. Our dispatch team will assess the urgency of your situation and immediately coordinate with a mobile technician who is on call and ready to deploy. While you wait for our arrival, we recommend securing the area to prevent unauthorized access or further damage to the equipment or property. Our mobile units are equipped with their own lighting and power, so we can begin work immediately even in dark or remote locations. We prioritize these calls to ensure that safety hazards are mitigated and business operations can resume as quickly as possible.",
-          "Upon arrival, our technician will perform a rapid assessment of the damage and provide you with an immediate plan for a safe, effective repair. We carry a wide range of common materials and welding supplies on our mobile rigs to ensure that most emergency repairs can be completed in a single visit. If the repair is too complex for an immediate on-site fix, we will perform a temporary stabilization to ensure the area is safe and secure until a permanent solution can be fabricated. We provide detailed documentation of the emergency repair for your insurance company or safety records, giving you a clear account of the work performed. Our 24/7 availability is a cornerstone of our commitment to the local community, ensuring that you are never left vulnerable due to a metal failure. No matter the time of night or the severity of the weather, Manning Metalworks is ready to respond with professional, high-quality welding services whenever you need them most."
-        ]
-      }
-    }
-  ]
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	"name": "Manning Metalworks FAQs",
+	"description": "Expert answers to frequently asked questions about residential, commercial, and industrial metal fabrication and 24/7 mobile welding services in New Jersey.",
+	"author": {
+		"@type": "Organization",
+		"name": "Manning Metalworks",
+		"url": "https://www.manningmetalworks.com"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "Manning Metalworks",
+		"url": "https://www.manningmetalworks.com"
+	},
+	"datePublished": "2026-04-24T00:00:00Z",
+	"dateModified": "2026-04-24T00:00:00Z",
+	"inLanguage": "en-US",
+	"isPartOf": {
+		"@type": "WebSite",
+		"name": "Manning Metalworks",
+		"url": "https://www.manningmetalworks.com"
+	},
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": "https://www.manningmetalworks.com/faqs"
+	},
+	"mainEntity": [
+		{
+			"@type": "Question",
+			"name": "What sets Manning Metalworks apart from other local New Jersey welding shops?",
+			"category": "General Information",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/5UmllVA5n2IqNRYTtLw7oT/dcc6e148774a967995fbcc5fd14f5f1e/img_1214.png",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Mobile Welding",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks delivers 24/7 mobile welding and custom metal fabrication in New Jersey, providing emergency industrial repairs and certified structural steel work for residential and municipal projects. We distinguish ourselves through a unique combination of high-precision shop fabrication and truly responsive 24/7 mobile emergency services. While many local competitors operate on strict nine-to-five schedules, we understand that critical infrastructure failures and residential emergencies do not stick to standard business hours. Our team is equipped with state-of-the-art portable welding units that allow us to bring industrial-grade quality directly to your job site or home at any hour of the day or night. This dual-threat capability ensures that whether you need a custom-designed ornamental railing or an emergency repair on a heavy construction vehicle, you have a single, reliable point of contact. We prioritize rapid response times because we know that every hour of downtime costs our commercial clients money and every broken gate compromises a homeowner's security.",
+
+					"Beyond our availability, our competitive edge lies in our rigorous quality control and our deep understanding of local building codes for both residential and commercial projects. We do not just join metal components together; we engineer solutions that are designed for long-term structural integrity, safety, and aesthetic appeal. Our technicians are cross-trained in multiple welding disciplines, including MIG, TIG, and Stick welding, allowing us to handle diverse materials like stainless steel, aluminum, and heavy structural carbon steel. By choosing Manning Metalworks, you are investing in a partnership that prioritizes structural integrity and rapid turnaround times without compromising on the fine details that define premium craftsmanship. We maintain a cleaner workspace and higher safety standards than typical independent contractors, ensuring a professional experience from the first spark to the final polish."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you provide on-site mobile welding for residential repairs?",
+			"category": "Mobile Services",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/3XXTRPgwhYxQ6EVP9BSLMJ/8e323b4c22176b81dd477560eed5dcac/IMG_1543.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Residential mobile welding",
+					"layout": "right"
+				},
+				"text": [
+					"Yes, Manning Metalworks delivers comprehensive on-site mobile welding for residential repairs, providing the restoration of iron gates, pool fences, and structural deck supports. Our mobile welding division is specifically designed to handle residential repairs that are too large or immobile to be transported to a traditional shop. Homeowners often face challenges with heavy items like wrought iron gates, custom pool fences, or structural deck supports that require professional attention right where they stand. Our mobile units arrive fully equipped with their own power sources and shielding equipment to protect your driveway, lawn, and landscaping while we perform the work. We take great care to ensure that the work area remains clean and safe for your family throughout the entire repair process, treating your home with the same respect we would our own. Our goal is to provide a seamless, stress-free experience where the highest quality welding is performed efficiently at your convenience, eliminating the logistical headache of transporting heavy metal.",
+
+					"Our residential mobile services extend far beyond simple structural fixes to include decorative and functional upgrades for your living space. We frequently assist homeowners with the repair of ornamental iron furniture, the reinforcement of utility trailers, and the on-site modification of custom metal handrails. Because we operate 24/7, we are also available for emergency situations, such as a collapsed gate or a broken security door that compromises your home's safety after hours. We provide a level of finish that blends the repair into the original structure, often making the fix virtually invisible to the naked eye. This commitment to aesthetics and utility ensures that your residential metalwork remains beautiful and functional for decades to come. Many competitors avoid residential 'small' jobs, but we believe in supporting our local community with expert care regardless of the project size."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can Manning Metalworks handle commercial and municipal contracts?",
+			"category": "Commercial & Municipal",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/6VbCeXyK8TO4Wd7gL0lFk9/e644dd70336fe64ff1fe05964235b61b/IMG_0186.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Commercial fabrication",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks is a certified provider for commercial, municipal, and government contracts, offering structural steel fabrication, safety bollards, and HVAC support frames. We are fully equipped and insured to manage high-volume commercial, municipal, and government fabrication projects with strict adherence to timeline and budget constraints. We have extensive experience working with general contractors and project managers to provide structural steel components, custom safety bollards, and complex HVAC support frames. Our facility is optimized for scalable production, meaning we can move from a single prototype to a large-batch production run without losing the precision required for government-standard work. We understand the bureaucratic and safety rigors of municipal contracts and maintain all necessary certifications to ensure compliance with local and federal regulations. Our administrative team is proficient in handling the paperwork, insurance requirements, and safety documentation that commercial entities require for their vendors.",
+
+					"Our commercial services also include long-term maintenance contracts for facilities that require regular metalwork inspections and preventative repairs. From repairing heavy equipment for public works departments to fabricating custom security grilles for retail storefronts, we offer a versatile range of solutions. We prioritize clear documentation and transparent communication, providing detailed estimates and progress reports that satisfy the reporting requirements of large organizations. By leveraging our 24/7 mobile capability, we can also perform commercial repairs during off-peak hours or overnight shifts to minimize disruption to business operations or public access. This flexibility makes us the preferred choice for high-traffic environments like hospitals, schools, and shopping centers where safety and silence are paramount. We stand ready to tackle the most demanding structural projects with the engineering precision your commercial facility deserves."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How does your 24/7 emergency welding service work for industrial machinery?",
+			"category": "Industrial",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/4CP6947eeGVzEzE5LrW2Tj/73384c7f147f3db22e848e79a78206dc/IMG_0345.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Emergency industrial welding",
+					"layout": "right"
+				},
+				"text": [
+					"Manning Metalworks offers 24/7 emergency mobile welding for industrial machinery, deploying certified technicians within hours to repair excavator buckets, production lines, and heavy equipment. For our industrial and heavy machinery clients, equipment downtime represents a significant financial loss that requires an immediate and professional response. Our 24/7 emergency welding service is structured like a rapid-response unit, with technicians on standby ready to deploy to warehouses, construction sites, or industrial plants. When you call our emergency line, you will speak with a knowledgeable professional who can assess the situation and dispatch a mobile rig stocked with the necessary alloys and equipment. We provide 'field-expedient' repairs that get your machinery back in operation safely while providing a permanent solution that meets or exceeds original manufacturer specifications. You do not have to wait for the next business day to get your production line moving again when you have us on call.",
+
+					"Common industrial emergencies we handle include cracked excavator buckets, failed structural supports in manufacturing lines, and broken hydraulic cylinder mounts on heavy transport vehicles. Our mobile welders are proficient in working in challenging environments, including confined spaces or high-elevation points, while maintaining strict OSHA safety standards. We do not just provide a temporary patch; we analyze why the failure occurred and often suggest reinforcements to prevent future occurrences. This proactive approach to emergency repair has made us a trusted partner for local logistics companies and heavy equipment operators who cannot afford to wait for a standard shop to open."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What materials do you work with for custom fabrication projects?",
+			"category": "Technical Details",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/4OjwUhhM3sduvX3OO5gMw8/d8aae9878cd13752a29dc13f60f6caaa/IMG_3502.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Metal fabrication materials",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks offers the fabrication of carbon steel, stainless steel, and aluminum, utilizing advanced MIG, TIG, and Stick welding techniques for diverse project needs. At Manning Metalworks, we pride ourselves on our technical mastery over a wide spectrum of metals, ensuring we can meet the specific requirements of any project. We are highly skilled in working with stainless steel, which is essential for projects requiring corrosion resistance or high-end aesthetics, such as commercial kitchen equipment or modern architectural features. Our technicians produce clean, sanitary, and visually stunning welds on all materials that we work with. We ensure that every material is sourced from reputable suppliers to guarantee that the chemical composition meets the structural needs of your specific application.",
+
+					"In addition to steel, we offer comprehensive aluminum fabrication services, which require specialized equipment and a high degree of skill due to the metal's unique thermal properties. Whether it is a lightweight marine component, a custom automotive part, or a modern residential gate, our aluminum welding is performed with precision to ensure maximum structural integrity. We also handle other materials and alloys upon request, including cast iron repairs and decorative copper or brass work for architectural accents. By maintaining a diverse inventory of materials and gasses required for each, we can begin your custom project immediately without long lead times for supplies. Our expertise allows us to recommend the best material for your environment, whether you need something rust-proof for outdoors or high-strength for heavy industrial loads."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How do I get an estimate for my custom metal project?",
+			"category": "Getting Started",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/67Z2bYQ9dGiOUN41I8aeuj/80caf9ea45045c57f2167453fc8f3292/IMG_3543.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Metal project estimate",
+					"layout": "right"
+				},
+				"text": [
+					"To get a project estimate from Manning Metalworks, clients can contact us for an initial consultation, share project blueprints, or provide photos for a rapid preliminary quote. Obtaining a detailed and accurate estimate from Manning Metalworks is a straightforward process designed to provide you with clarity and confidence before any work begins. For most projects, the process starts with an initial consultation where we discuss your goals, review any blueprints or sketches you may have, and determine the necessary materials and labor. If you are a homeowner with a simple repair, you can often send us photos via email or text for a preliminary ballpark quote to save time. For larger commercial or structural projects, we typically schedule an on-site visit to take precise measurements and evaluate any site-specific challenges that might impact the fabrication or installation process. We believe that a thorough initial assessment is the only way to ensure that the final product meets your expectations and stays within your budget.",
+
+					"Once we have gathered all the necessary data, we provide a formal written proposal that outlines the scope of work, material costs, estimated timeline, and total investment. We believe in transparent pricing, so our quotes are broken down clearly to ensure there are no hidden fees or unexpected 'surprises' once the job is underway. If your project has a strict budget, our engineers can often suggest value-engineering options, such as alternative materials or simplified designs, that achieve your goals more economically. We provide these detailed quotes quickly so that you can make an informed decision and keep your project moving forward without delay. Once you approve the estimate, we move into the scheduling phase, ensuring that your project is slotted into our production pipeline to meet your specific deadlines and operational needs."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you offer custom design services for ornamental ironwork?",
+			"category": "Services",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/crFZ6LLDIok1n8en9YvzK/ad2eee09d73787ea69bed6d6eeb07d50/IMG_3516.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Ornamental ironwork design",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks provides custom ornamental ironwork fabrication for handrails, gates, and architectural features, combining artistic aesthetics with structural durability. We partner with the project manager, customer, or a local designer to implement the vision for each piece, so your ornamental metalwork reflects the style and function you want while our team handles the expert fabrication. Whether you are looking for a grand entrance gate with intricate scrollwork, a modern minimalist handrail, or a custom fireplace screen, we take the time to understand your aesthetic preferences and the architectural character of the space. Our team uses detailed sketches and material samples to help you visualize the project before we begin fabrication.",
+
+					"Our ornamental work is not just about looks; it is built with the same structural integrity as our industrial projects to ensure safety and longevity. We use premium finishes, including powder coating and professional-grade paints, to protect your investment from the elements and minimize future maintenance requirements. Unlike mass-produced railings found at big-box stores, our custom pieces are hand-forged and welded to fit your specific dimensions perfectly, eliminating unsightly gaps or awkward transitions. We also offer restoration services for historical ironwork, carefully repairing and replicating antique designs to preserve their original character while adding modern strength.",
+
+					"Each custom ornamental project is unique and important to Manning Metalworks, so reach out to us to discuss your specific needs and let us help you achieve your vision and bring it to life. <a href=\"/contact\">Contact us</a> with our online form, or <a href=\"/contact\">call us</a> to get started."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Are your welders certified and insured for heavy structural work?",
+			"category": "Technical Details",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/5NVYQZUOavHzvfMKELY8oH/e5931ad1f5414b40f03ca1f29b8e7dfd/img_1385.png",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Certified and Insured for heavy work",
+					"layout": "right"
+				},
+				"text": [
+					"Every welder at Manning Metalworks is AWS certified and the company carries comprehensive liability insurance for high-risk industrial and heavy structural welding projects. Yes, every welder at Manning Metalworks is fully certified and follows the strict guidelines set forth by the American Welding Society (AWS) and other relevant industry standards. We believe that certification is the baseline for safety, but we go further by requiring our team to undergo continuous training in new technologies and safety protocols. This commitment to expertise ensures that every weld we perform, especially in structural applications, is capable of withstanding the loads and stresses it was designed to carry. We maintain comprehensive general liability and workers' compensation insurance to protect both our team and our clients throughout the duration of any project. You should never hire an uninsured welder for structural work, as the liability for a failure could fall back on the property owner or general contractor.",
+
+					"In addition to our welding certifications, we adhere to all OSHA safety standards on every job site, whether it is a small residential repair or a massive industrial installation. We provide our team with the best safety gear and equipment, and we conduct regular safety audits to ensure that our high standards are never compromised. Our insurance coverage is specifically tailored for the high-risk nature of welding and metal fabrication, providing peace of mind to our municipal and government clients who require proof of significant coverage. We are happy to provide copies of our certifications and insurance binders upon request as part of our transparent bidding process. When you hire Manning Metalworks, you are hiring a professional organization that prioritizes technical excellence and legal compliance above all else. This professional approach protects your investment and ensures that your structural metalwork is safe, legal, and built to last."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What is the typical lead time for a custom fabrication project?",
+			"category": "Process & Timeline",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/2bMrYNTZCRmXcLMDKAFc97/a33e9c4cf9f79a7a6c95f340f42b04a0/img_1105.png",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Fabrication lead time",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks offers lead times ranging from a few days for minor repairs to 2-4 weeks for complex structural or ornamental fabrication projects. The lead time for a custom fabrication project at Manning Metalworks varies depending on the complexity of the design, the volume of material required, and our current production schedule. For smaller repairs or simple custom pieces, we can often complete the work within a few days to a week of receiving the initial deposit. Larger, more complex projects like structural steel frames for new construction or high-end ornamental railings typically require a lead time of two to four weeks for design and fabrication. We provide a projected timeline during the estimating phase so that you can coordinate with other contractors or plan your business operations accordingly. Our goal is always to deliver high-quality work as quickly as possible without cutting corners on the vital cooling or finishing stages.",
+
+					"We understand that in the world of construction and industrial maintenance, time is often the most critical factor in a project's success. To help manage tight deadlines, we maintain a large inventory of common metal stock and have established relationships with local suppliers for rapid delivery of necessary alloys. Our 24/7 mobile capability also allows us to perform on-site installations and repairs outside of standard shop hours, which can significantly accelerate the overall project timeline. We provide regular status updates throughout the fabrication process so you are never left wondering about the progress of your order. If a delay occurs due to material availability or weather, we communicate this immediately and work to find an alternative solution to keep your project on track. Our reputation for reliability is built on meeting our deadlines while maintaining the highest standards of metalwork quality in New Jersey."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you offer repair services for aluminum trailers and marine equipment?",
+			"category": "Services",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/3bPjYAoYhCWCCWrfpgBM8l/0c0b61bd4e91681d5eb1624b4df67134/IMG_2604.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Aluminum trailer repair",
+					"layout": "right"
+				},
+				"text": [
+					"Manning Metalworks provides aluminum TIG welding services for the repair of utility trailers, boat hulls, marine hardware, and lightweight structural components. Yes, Manning Metalworks provides expert aluminum welding and repair services specifically for utility trailers, boat hulls, and marine hardware. Aluminum requires a specific set of skills and equipment, particularly TIG welding, which allows for precise heat control to prevent warping or structural weakening of the metal. Many general welding shops avoid aluminum because it is difficult to work with, but our technicians have the experience necessary to perform repairs on these critical items. We can fix everything from cracked trailer frames and broken ramps to leaking aluminum boat seams and damaged pontoon tubes. Our repairs are designed to restore the original strength of the aluminum while maintaining a clean, professional appearance that resists the harsh effects of road salt or water.",
+
+					"Our mobile welding units are also fully equipped to handle aluminum repairs on-site, which is particularly helpful for heavy trailers that are no longer road-worthy or boats docked at a marina. We use aluminum alloys that match your equipment's original material to ensure a compatible and durable weld every time. In addition to repairs, we also fabricate custom aluminum accessories such as ladder racks, toolboxes, and mounting brackets for marine electronics. We take the time to clean and prep the aluminum properly, which is a crucial step that many competitors skip, ensuring that the weld penetrates deeply and holds fast under vibration. Whether you have a small jet ski trailer or a large commercial transport fleet, we have the necessary tools to keep your aluminum equipment in top condition."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can Manning Metalworks replicate existing metal designs and restore older metalwork?",
+			"category": "Services",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/ASzDt21c0AYtCk1FPhCX8/f592f6dc3701ed0176d77233f3e2a97f/IMG_1697.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Historical restoration welding",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks offers restoration services, replicating  wrought iron and cast steel designs for residential and municipal landmarks. Manning Metalworks is proud to restore and repair existing metalwork found in older homes and municipal buildings. We understand that preserving the architectural integrity of a historic property requires a deep respect for traditional blacksmithing and fabrication techniques. Our team can analyze existing ironwork to determine its original construction and then create exact replicas of missing or damaged components. This process involves careful measurement, templating, and sometimes hand-forging parts to ensure they match the scale and detail of the original pieces. We work with a variety of materials, including wrought iron and cast steel, to ensure the restoration is both historically accurate and structurally sound for modern safety requirements.",
+
+					"This process often involves more than just welding; it requires removing decades of rust and old paint to reveal the true condition of the metal underneath. We offer various finishing options that mimic historical patinas while providing modern protection against the elements, ensuring the restored piece lasts for another century. Our passion for metalwork history drives us to take on these challenging projects that many modern fabrication shops find too time-consuming or complex. We have successfully repaired cemetery gates, historic courthouse railings, and ornamental features on Victorian-era homes throughout the region. By combining old-world craftsmanship with modern welding technology, we can preserve the beauty of our local history while ensuring the metalwork is safe for public use."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you provide metal cutting and bending services as well as welding?",
+			"category": "Services",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/1pLmOVPbOJpGeTVsZqHMjq/b9a99965edcee02a76d2c3be65924542/IMG_3398.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Cutting and bending services",
+					"layout": "right"
+				},
+				"text": [
+					
+					"Manning Metalworks provides metal cutting and bending services for small to mid-size jobs, with a practical focus on the kinds of fabrication that help local contractors, homeowners, and small businesses get the job done right. We keep the service generalized and flexible, supporting work like custom brackets and gussets, bent handrail sections, trailer components, and small architectural trim. Our equipment handles steel, stainless steel, and aluminum, and we can cut, shear, and bend parts so they arrive ready for welding and final assembly.",
+
+					"Each project is unique and important to Manning Metalworks, so reach out to us to discuss your specific needs so we can help you deliver for you and bring your project to life. <a href=\"/contact\">Call us</a> or fill out our <a href=\"/contact\">Contact Us</a> form to get started."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can Manning Metalworks help with emergency repairs for heavy equipment?",
+			"category": "Industrial",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/6VbCeXyK8TO4Wd7gL0lFk9/e644dd70336fe64ff1fe05964235b61b/IMG_0186.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Heavy equipment emergency repair",
+					"layout": "left"
+				},
+				"text": [
+					"Manning Metalworks provides 24/7 mobile emergency repairs for heavy equipment, as well as high-strength welding for excavator booms, buckets, and hydraulic mounts on-site. Heavy equipment is the lifeblood of the construction and mining industries, and when a machine breaks down, the financial impact can be devastating for a project's timeline. Manning Metalworks offers emergency repair services of heavy machinery, offering 24/7 mobile welding services to get your excavators, bulldozers, and cranes back in service immediately. We are experienced in welding the high-strength, abrasion-resistant steels typically used in heavy equipment, which require specific pre-heating and cooling procedures to avoid cracking. Our mobile rigs are stocked with heavy-duty wire feeders and high-capacity generators capable of performing deep-penetration welds on thick-plate steel right in the field. We understand that you cannot always transport a massive machine to a shop, so we bring the shop to the machine, no matter how remote the job site is.",
+
+					"Our repair services include fixing cracked booms, reinforcing worn-out buckets, and replacing damaged hydraulic mounts or structural pins. We don't just patch the problem; we analyze the stress points and often add reinforcements to ensure the repair is stronger than the original part. Because we are available around the clock, we can perform these repairs overnight or on weekends to ensure your crew is ready to work the very next morning. We have built a reputation for being the first call for local construction firms because of our ability to handle massive repairs under pressure and in difficult environments. Our technicians are trained in field safety and equipment mechanics, ensuring that our welding work integrates perfectly with the rest of your machine's operation. When every minute of downtime counts, you can rely on Manning Metalworks to provide a fast, professional, and permanent solution for your heavy equipment failures.",
+
+					"Each emergency repair is unique and critical to Manning Metalworks to get it right, so reach out to us to discuss your specific needs and let us help you when it matters most. <a href=\"/contact\">Contact us</a> with our online form, or <a href=\"/contact\">call us</a> to get started."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can you assist with the repair of commercial kitchen and food-grade equipment?",
+			"category": "Commercial & Municipal",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/6BBosPktLNVgrI7CS8e7Cb/a7078c351be18bf271b6861441a593c2/IMG_9510.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks Food-grade equipment repair",
+					"layout": "right"
+				},
+				"text": [
+					"Manning Metalworks provides sanitary TIG welding for stainless steel commercial kitchen equipment, ensuring food-grade repairs that meet health department standards. Commercial kitchens rely heavily on stainless steel for its sanitary properties, but regular use can lead to broken welds on tables, sinks, and cooking equipment. Manning Metalworks offers food-grade TIG welding, which allows us to create the smooth, crevice-free welds required to prevent bacterial growth and meet strict health department standards. We understand that a broken prep table or a leaking sink can disrupt your entire operation, so we offer rapid mobile service to perform repairs during your off-hours. Our technicians are trained in the specific metallurgy of food-grade stainless steel to ensure that our repairs do not compromise the material's corrosion resistance or structural integrity. We provide a clean, professional service that respects the hygiene requirements of your kitchen environment.",
+					"In addition to emergency repairs, we also provide custom fabrication services for commercial kitchens, such as custom-sized shelves, stainless steel wall cladding, and equipment stands. We can modify existing equipment to better fit your workflow or build entirely new components that are designed for the high-intensity environment of a professional kitchen. Our custom work is built to be both durable and easy to clean, helping you maintain a safe and efficient workspace for your staff. We work with restaurant owners, hospital kitchen managers, and industrial food processors to provide reliable metalwork solutions that keep their facilities running smoothly. By choosing Manning Metalworks for your kitchen repairs, you are ensuring that your equipment remains compliant with health codes and is repaired to a professional standard. Our expertise in stainless steel fabrication makes us the preferred partner for the local hospitality and food service industry."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What should I do in a metalwork emergency after business hours?",
+			"category": "Mobile Services",
+			"datePublished": "2026-04-24T00:00:00Z",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"image": {
+					"@type": "ImageObject",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg",
+					"width": 200,
+					"height": 200,
+					"name": "Manning Metalworks After-hours emergency welding",
+					"layout": "left"
+				},
+				"text": [
+					"In a metalwork emergency, call Manning Metalworks' 24/7 hotline for immediate dispatch of a mobile welding unit to secure your property or repair critical machinery. When a metalwork emergency occurs after business hours—whether it's a broken main gate at a residential complex or a critical machinery failure at a production facility—the first step is to contact our 24/7 emergency hotline. Our dispatch team will assess the urgency of your situation and immediately coordinate with a mobile technician who is on call and ready to deploy. While you wait for our arrival, we recommend securing the area to prevent unauthorized access or further damage to the equipment or property. Our mobile units are equipped with their own lighting and power, so we can begin work immediately even in dark or remote locations. We prioritize these calls to ensure that safety hazards are mitigated and business operations can resume as quickly as possible.",
+					"Upon arrival, our technician will perform a rapid assessment of the damage and provide you with an immediate plan for a safe, effective repair. We carry a wide range of common materials and welding supplies on our mobile rigs to ensure that most emergency repairs can be completed in a single visit. If the repair is too complex for an immediate on-site fix, we will perform a temporary stabilization to ensure the area is safe and secure until a permanent solution can be fabricated. We provide detailed documentation of the emergency repair for your insurance company or safety records, giving you a clear account of the work performed. Our 24/7 availability is a cornerstone of our commitment to the local community, ensuring that you are never left vulnerable due to a metal failure. No matter the time of night or the severity of the weather, Manning Metalworks is ready to respond with professional, high-quality welding services whenever you need them most."
+				]
+			}
+		}
+	]
 }

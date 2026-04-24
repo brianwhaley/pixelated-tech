@@ -2,7 +2,7 @@
 
 
 ## 2026-04-15 Updates
-* [  ] Home Page, mobile truck picture - replace (to come)
+* [ x ] Home Page, mobile truck picture - replace (to come)
 * [ x ] Home Page, Quality section, Paragraph 2, remove second sentence
 * [ x ] About Us - Meet the Team - remove Tim and Greg Profiles
 * [  ] About Us - Meet the Team - add one team photo ( to come )
@@ -17,34 +17,32 @@
 * [ x ] FAQs - Materials - remove the sentence that starts with "Our primary work involves carbon steel"
 * [ x ] Faqs - Materials - "Our technicians use advanced TIG welding techniques" - this was a big dal years ago, common today.  rework.  
 * [ x ] FAQs - Materials (and everywhere) avoid pulling in mention of competitors
-* [  ] FAQs - custom design services - rework
-* [  ] FAQs - Aluminum Trailers - Remove "we specialize"
-* [  ] FAQs - Aluminum Trailers - rework "high grade"
-* [  ] FAQs - existing design - remove "restoration
+* [ x ] FAQs - custom design services - rework
+* [ x ] FAQs - Aluminum Trailers - Remove "we specialize"
+* [ x ] FAQs - Aluminum Trailers - rework "high grade"
+* [ x ] FAQs - existing design - remove "restoration
 * [ x ] FAQs - What do i look for - remove
 * [ x ] FAQs - buildings and bridges - remove
-* [  ] FAQs - metal cutting - rework for smaller jobs, be more generalized, give examples of previous jobs, add a call us at the end
-* [  ] FAQs - add pictures to some / all FAQs
+* [ x ] FAQs - metal cutting - rework for smaller jobs, be more generalized, give examples of previous jobs, add a call us at the end
+* [ x ] FAQs - add pictures to some / all FAQs
 * [ x ] FAQS - everywhere - remove "specialized".  
 * [ x ] FAQs - weld failure - remove
 * [ x ] FAQS - powder coating / painting - remove
 * [ x ] FAQS - government and municipal safety - remove
-* [  ] FAQS - emergency after hours - add a call section
+* [ x ] FAQS - emergency after hours - add a call section
 
 
 ## 2026-03-28 - BUILD - TO DO 
 * [  ] Curator.io - Instagram Gallery - Home Page 
 * [  ] Curator.io - Instagram Gallery - Gallery Page
-* [  ] About Us - Photo - Tim
-* [  ] About Us - Photo - Greg
 * [  ] VisualDesign section of routes.json - colors, fonts
 * [  ] X / Twitter Account
 * [  ] Yelp Account
 * [  ] Nextdoor Account
 * [  ] Reddit Account
 * [  ] Sign Up for Jetpack
-* [  ] Contentful
-* [  ] Cloudinary
+* [ x ] Contentful
+* [ x ] Cloudinary
 * [  ] First 2 months of blog posts (2)
 
 

@@ -75,7 +75,7 @@ export default function Home() {
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					img="https://images.ctfassets.net/j4mgog9ij96e/3PNAwcHeCocC45Gha5l8nb/efd09e7c86a32611cb812290ed3aff5a/manning-mobile.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
 					url="/services#callout-247-mobile-welding-services"
 					title="24/7 Mobile Welding Services"
 				/>

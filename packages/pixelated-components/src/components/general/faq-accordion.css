@@ -102,6 +102,31 @@
 	transition: background-color 0.15s ease-in-out;
 }
 
+.faq-answer {
+	overflow: hidden;
+}
+
+.faq-answer-image {
+	display: block;
+	max-width: 100%;
+	border-radius: 20px;
+    object-fit: cover;
+}
+
+.faq-answer-image-left {
+	margin-right: 1rem;
+	margin-left: 0;
+}
+
+.faq-answer-image-right {
+	margin-left: 1rem;
+	margin-right: 0;
+}
+
+.faq-answer-text p {
+	margin-bottom: 1rem;
+}
+
 .faq-list .accordion-content:hover {
 	background-color: var(--accent2-color, #fefefe);
 }
