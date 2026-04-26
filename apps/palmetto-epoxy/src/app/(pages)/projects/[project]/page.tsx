@@ -48,13 +48,7 @@ export default function Project({params}: { params: Promise<{ project: string }>
 				searchVal: project
 			});
 			setCard(card);
-			let images = await getContentfulImagesFromEntries({ images: card.fields.carouselImages, assets: cards.includes.Asset });
-			images = images.map(img => {
-				return {
-					image: img.image.replace("//images.ctfassets.net", "https://images.ctfassets.net"),
-					imageAlt: img.imageAlt
-				};
-			});
+			const images = await getContentfulImagesFromEntries({ images: card.fields.carouselImages, assets: cards.includes.Asset });
 			setCarouselCards(images);
 		}
 		getCarouselCards(project);

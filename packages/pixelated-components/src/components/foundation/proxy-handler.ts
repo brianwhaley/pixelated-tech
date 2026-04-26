@@ -53,7 +53,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 	// Content Security Policy (CSP)
 	// Includes all discovered domains in the workspace: HubSpot, Gravatar, Flickr, Contentful, Cloudinary, eBay, and Google Analytics + Search.
-	const scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://*.googletagmanager.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hsforms.net https://*.hscollectedforms.net https://*.hs-banner.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://*.hsappstatic.net https://assets.calendly.com https://cdn.jsdelivr.net https://www.paypal.com https://www.paypalobjects.com https://cdn.curator.io https://connect.facebook.net";
+	const scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://*.googletagmanager.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hsforms.net https://*.hscollectedforms.net https://*.hs-banner.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://*.hsappstatic.net https://assets.calendly.com https://cdn.jsdelivr.net https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com https://cdn.curator.io https://connect.facebook.net https://*.cloudflareinsights.com";
 	
 	const csp = [
 		"default-src 'self'",
@@ -62,7 +62,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 		`script-src-elem ${scriptSrc}`,
 
-		"connect-src 'self' https: https://*.hubspot.com https://*.pixelated.tech https://*.google-analytics.com https://*.analytics.google.com https://cdn.jsdelivr.net https://*.gravatar.com",
+		"connect-src 'self' https: https://*.hubspot.com https://*.pixelated.tech https://*.google-analytics.com https://*.analytics.google.com https://cdn.jsdelivr.net https://*.gravatar.com https://*.cloudflareinsights.com",
 
 		"img-src 'self' data: https: https://*.gravatar.com https://*.staticflickr.com https://*.ctfassets.net https://res.cloudinary.com https://*.ebayimg.com",
 
@@ -72,7 +72,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 		"media-src 'self' https://*.ctfassets.net https://res.cloudinary.com",
 
-		"frame-src 'self' https://calendly.com https://*.hubspot.com https://*.googletagmanager.com https://*.adtrafficquality.google https://*.google.com https://*.calendly.com https://*.hsforms.net https://www.paypal.com https://www.paypalobjects.com https://syndicatedsearch.goog",
+		"frame-src 'self' https://calendly.com https://*.hubspot.com https://*.googletagmanager.com https://*.adtrafficquality.google https://*.google.com https://*.calendly.com https://*.hsforms.net https://*.paypal.com https://*.paypalobjects.com https://syndicatedsearch.goog",
 
 		"frame-ancestors 'none'",
 

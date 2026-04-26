@@ -58,6 +58,27 @@ export default function Home() {
 				/>
 
 			</PageSection>
+
+
+
+			<PageSection columns={1} maxWidth="1024px" id="home-events-section">
+
+				<PageGridItem columnSpan={3}>
+					<PageSectionHeader title="Our Upcoming Events" />
+				</PageGridItem>
+
+				<Callout
+					variant="boxedgrid"
+					layout="horizontal"
+					img="/images/logo/muse2-erato.png"
+					url="/events"
+					title="Erato's Upcoming Sewing Events"
+					subtitle="Join Us for Sewing Workshops, Classes, and Summer Camps" 
+					content="Whether you're a beginner eager to learn the basics or an experienced sewer looking to refine your skills, Erato's sewing events offer something for everyone. Our workshops and classes cover a range of topics, from mastering the fundamentals of sewing to exploring advanced techniques. Plus, our summer camps provide an immersive experience for young creatives to dive into the world of sewing in a fun and supportive environment. Join us and let Erato inspire your creativity with every stitch."
+					buttonText="Upcoming Sewing Events"
+				/>
+
+			</PageSection>
 		</>
 	);
 }

@@ -7,6 +7,7 @@ import {
 	createContentfulAssetURLs,
 	createEbayItemURLs,
 	generateSitemap,
+	buildSitemapConfig,
 	clearEbaySitemapCache,
 	type SitemapEntry
 } from '../components/foundation/sitemap';
@@ -294,6 +295,55 @@ describe('Sitemap Helper Functions', () => {
 				field: 'title'
 			});
 		});
+
+		it('should support a custom sitemap routePrefix', async () => {
+			const mockIds = ['event-1', 'event-2'];
+
+			const mockGetContentfulFieldValues = vi.mocked(contentfulModule.getContentfulFieldValues);
+			mockGetContentfulFieldValues.mockResolvedValue(mockIds);
+
+			const result = await createContentfulURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'event',
+					sitemapField: 'id',
+					sitemapRoutePrefix: '/events'
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(result).toHaveLength(2);
+			expect(result[0].url).toBe('https://example.com/events/event-1');
+		});
+
+		describe('buildSitemapConfig', () => {
+			it('should support flattened Contentful sitemap fields', () => {
+				const pixelatedConfig = {
+					contentful: {
+						space_id: 'space-id',
+						delivery_access_token: 'token',
+						sitemapContentType: 'event',
+						sitemapField: 'id',
+						sitemapRoutePrefix: '/events'
+					}
+				};
+
+				const sitemapConfig = buildSitemapConfig(pixelatedConfig, []);
+
+				expect(sitemapConfig.contentful).toMatchObject({
+					space_id: 'space-id',
+					access_token: 'token',
+					sitemapContentType: 'event',
+					sitemapField: 'id',
+					sitemapRoutePrefix: '/events'
+				});
+				expect(sitemapConfig.createContentfulURLs).toBe(true);
+			});
+		});
+
 	});
 
 	describe('createContentfulAssetURLs', () => {

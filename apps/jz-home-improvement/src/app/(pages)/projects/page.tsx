@@ -21,18 +21,13 @@ export default async function ProjectsPage() {
 			let images: any[] = [];
 			if (card.fields.images && card.fields.images.length > 0) {
 				images = await getContentfulImagesFromEntries({ images: [...card.fields.images], assets: typeCards.includes?.Asset ?? [] });
-				images = images.map((img: any, index: number) => {
-					const imgUrl = img.image.startsWith("//images.ctfassets.net")
-						? img.image.replace("//images.ctfassets.net", "https://images.ctfassets.net")
-						: img.image;
-					return {
-						index: 100 * cardCount + index,
-						cardIndex: index,
-						cardLength: images.length,
-						image: imgUrl,
-						imageAlt: img.imageAlt ?? "",
-					};
-				});
+				images = images.map((img: any, index: number) => ({
+					index: 100 * cardCount + index,
+					cardIndex: index,
+					cardLength: images.length,
+					image: img.image,
+					imageAlt: img.imageAlt ?? "",
+				}));
 			}
 			projectCards.push({
 				title: card.fields.title ?? "",

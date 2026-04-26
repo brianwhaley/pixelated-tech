@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { PayPal } from "./paypal";
 import { CalloutHeader } from "../general/callout";
 import { FormEngine } from "../sitebuilder/form/formengine";
 import { FormButton } from '../sitebuilder/form/formcomponents';
@@ -13,9 +12,11 @@ import { MicroInteractions } from '../foundation/microinteractions';
 import { Modal, handleModalOpen } from '../general/modal';
 import { Table } from "../general/table";
 import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, formatAsUSD, getCartItemCount } from "./shoppingcart.functions";
-import type { CartItemType, AddressType, CheckoutType } from "./shoppingcart.functions";
+import type { CartItemType, CheckoutType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
 import { SmartImage } from '../general/smartimage';
+import { PayPalCheckout, renderPayPalThankYou } from './paypal.components';
+import { SquareCheckout, renderSquareThankYou } from './square.components';
 import shippingToData from "./shipping.to.json";
 import "./shoppingcart.css";
 
@@ -36,16 +37,49 @@ const debug = false;
 ShoppingCart.propTypes = {
 	/** Optional PayPal client ID to enable PayPal checkout */
 	payPalClientID: PropTypes.string,
+	/** Optional Square application ID to enable Square checkout */
+	squareApplicationId: PropTypes.string,
+	/** Optional Square location ID to enable Square checkout */
+	squareLocationId: PropTypes.string,
 };
 export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes>;
 export function ShoppingCart( props: ShoppingCartType ) {
 	const config = usePixelatedConfig();
 	const payPalClientID = props.payPalClientID || config?.paypal?.payPalApiKey || config?.paypal?.sandboxPayPalApiKey;
+	const squareApplicationId = props.squareApplicationId || config?.square?.applicationId;
+	const squareLocationId = props.squareLocationId || config?.square?.locationId;
+	const configuredProvider = config?.shoppingcart?.provider?.toString().toLowerCase();
 
-	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>();
-	const [ shippingData, setShippingData ] = useState<AddressType[]>();
+	type PaymentProviderKey = 'paypal' | 'square';
+	const providerMap: Record<PaymentProviderKey, {
+		component: React.ComponentType<any>;
+		isConfigured: boolean;
+		props: Record<string, any>;
+	}> = {
+		paypal: {
+			component: PayPalCheckout,
+			isConfigured: Boolean(payPalClientID),
+			props: { payPalClientID },
+		},
+		square: {
+			component: SquareCheckout,
+			isConfigured: Boolean(squareApplicationId && squareLocationId),
+			props: { applicationId: squareApplicationId, locationId: squareLocationId },
+		},
+	};
+
+	const requestedProvider = (configuredProvider === 'paypal' || configuredProvider === 'square') ? configuredProvider as PaymentProviderKey : undefined;
+	const providerPriority: PaymentProviderKey[] = ['square', 'paypal'];
+	const activeProvider: PaymentProviderKey | undefined = requestedProvider && providerMap[requestedProvider].isConfigured
+		? requestedProvider
+		: providerPriority.find(provider => providerMap[provider].isConfigured);
+
+	const PaymentProviderComponent = activeProvider ? providerMap[activeProvider].component : null;
+	const paymentProviderProps = activeProvider ? providerMap[activeProvider].props : {};
+	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
+	const [ shippingData, setShippingData ] = useState<any>();
 	const [ checkoutData, setcheckoutData ] = useState<CheckoutType>();
-	const [ orderData, setOrderData ] = useState() as any;
+	const [ orderData, setOrderData ] = useState<any>();
 	const [ progressStep, setProgressStep ] = useState<ProgressStepType>("EmptyCart");
 
 	type ProgressStepType = "EmptyCart" | "CartItems" | "ShippingInfo" | "Checkout" | "ThankYou" ;
@@ -57,9 +91,9 @@ export function ShoppingCart( props: ShoppingCartType ) {
 			if (debug) console.log("hasShoppingCart", hasShoppingCart);
 			const hasShippingInfo = Object.keys(getShippingInfo()).length > 0 ;
 			if (debug) console.log("hasShippingInfo", hasShippingInfo);
-			const hasOrderData = orderData && orderData.length > 0 ;
+			const hasOrderData = orderData && ((Array.isArray(orderData) && orderData.length > 0) || (!Array.isArray(orderData) && Object.keys(orderData).length > 0));
 			if (debug) console.log("hasOrderData", hasOrderData);
-			if (debug) console.log(orderData?.length);
+			if (debug && orderData && !Array.isArray(orderData)) console.log(Object.keys(orderData).length);
 			if ( hasOrderData ) {
 				setProgressStep("ThankYou");
 			} else if ( hasShippingInfo && hasShoppingCart ) {
@@ -104,11 +138,11 @@ export function ShoppingCart( props: ShoppingCartType ) {
 
 	useEffect(() => {
 		// LOAD THE SHIPPING INFO FORM WITH VALUES IF SHIPPING INFO HAS ALREADY BEEN SAVED
-  		const form: HTMLFormElement = document.getElementById("address_to") as HTMLFormElement;
-		if( shippingData && form ) {
+  		const form: HTMLFormElement | null = document.getElementById("address_to") as HTMLFormElement | null;
+		if (shippingData && form) {
 			for (const key in shippingData) {
-				const input = form.elements[key] as HTMLInputElement;
-				if (input) { // Check if the form element exists
+				const input = form.elements.namedItem(key) as HTMLInputElement | null;
+				if (input) {
 					input.value = shippingData[key].toString();
 				}
   			}
@@ -120,8 +154,8 @@ export function ShoppingCart( props: ShoppingCartType ) {
 	};
 	function paintCartItems(items: CartItemType[]){
 		if (debug) console.log("Painting Shopping Cart Items");
-		let newItems = [];
-		for (let key in items) {
+		const newItems = [];
+		for (const key in items) {
 			const myItem: CartItemType = items[key];
 			const newItem = <ShoppingCartItem item={myItem} key={myItem.itemID}  />;
 			newItems.push(newItem);
@@ -138,21 +172,18 @@ export function ShoppingCart( props: ShoppingCartType ) {
 	}
 
 	/**
-	 * handleOnApprove — PayPal approval handler invoked after successful payment.
+	 * handlePaymentSuccess — invoked after a payment provider reports success.
 	 *
-	 * @param {object} [props.data] - Payment approval payload returned by PayPal's onApprove.
+	 * @param {object} [props.data] - Payment approval payload returned by the provider.
 	 */
-	handleOnApprove.propTypes = {
-		/** PayPal onApprove payload */
-		data: PropTypes.object.isRequired
+	handlePaymentSuccess.propTypes = {
+		data: PropTypes.any.isRequired
 	};
-	type handleOnApproveType = InferProps<typeof handleOnApprove.propTypes>;
-	function handleOnApprove(props: handleOnApproveType ){
-		if (debug) console.log("Handling onApprove");
-		 
+	type handlePaymentSuccessType = InferProps<typeof handlePaymentSuccess.propTypes>;
+	function handlePaymentSuccess(props: handlePaymentSuccessType ){
+		if (debug) console.log("Handling payment success");
 		setOrderData(props.data);
 		clearShoppingCart();
-		// SetProgressStep();
 		SetProgressStep("ThankYou");
 	}
 
@@ -160,28 +191,47 @@ export function ShoppingCart( props: ShoppingCartType ) {
 		// ========== SENDMAIL ==========
 		const cartConfig = config?.shoppingcart;
 		const json = {
-			'to' : cartConfig?.orderTo,
-			'from' : cartConfig?.orderFrom,
-			'subject' : cartConfig?.orderSubject,
-			'orderData' : JSON.stringify(orderData, null, 2),
+			'to': cartConfig?.orderTo,
+			'from': cartConfig?.orderFrom,
+			'subject': cartConfig?.orderSubject,
+			'orderData': JSON.stringify(orderData, null, 2),
 		};
 		const sendMailResponse = emailJSON(json);
 		if (debug) console.log("SendMail Response:", sendMailResponse);
 
 		// ========== THANK YOU ==========
-		const pmt = orderData.purchase_units[0].payments.captures[0];
+		if (debug) console.log('SendMail Response:', sendMailResponse);
+
+		const renderThankYouContent = () => {
+			if (!orderData) {
+				return (
+					<div>
+						<h3>Thank you for your payment!</h3>
+					</div>
+				);
+			}
+
+			if (activeProvider === 'paypal') {
+				return renderPayPalThankYou(orderData, config);
+			}
+
+			if (activeProvider === 'square') {
+				return renderSquareThankYou(orderData, config);
+			}
+
+			return (
+				<div>
+					<h3>Thank you for your payment!</h3>
+					<pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{JSON.stringify(orderData, null, 2)}</pre>
+				</div>
+			);
+		};
+
 		return (
 			<div className="pix-cart">
 				<CalloutHeader title="Shopping Cart : " />
 				<br />
-				<div id="paypal-button-container" className="paypal-button-container" />
-				<div>
-					<h3>Thank you for your payment!</h3>
-                        Payment ID : {pmt.id} <br />
-                        Status : {pmt.status} <br />
-                        Amount : ${pmt.amount.value + " " + (config?.shoppingcart?.currency || pmt.amount.currency_code)} <br />
-                        Created : {pmt.create_time} <br />
-				</div>
+				{renderThankYouContent()}
 			</div>
 
 		);
@@ -195,10 +245,14 @@ export function ShoppingCart( props: ShoppingCartType ) {
 				<FormButton className="pix-cart-button" type="button" id="backToCart" text="<= Back To Cart"
 					onClick={() => SetProgressStep("ShippingInfo")} />
 				<br />
-				{payPalClientID && (
-					<PayPal payPalClientID={payPalClientID} 
-						checkoutData={getCheckoutData()} 
-						onApprove={handleOnApprove} />
+				{PaymentProviderComponent ? (
+					<PaymentProviderComponent
+						{...paymentProviderProps}
+						checkoutData={getCheckoutData()}
+						onApprove={handlePaymentSuccess}
+					/>
+				) : (
+					<div>No payment provider is configured. Add PayPal or Square configuration to pixelated.config.json.</div>
 				)}
 			</div>
 		);
@@ -228,7 +282,6 @@ export function ShoppingCart( props: ShoppingCartType ) {
 				<CalloutHeader title="Shopping Cart : " />
 				<br />
 				<div className="centered">No items in your shopping cart</div>
-				<div id="paypal-button-container" className="paypal-button-container" />
 			</div>
 
 		);

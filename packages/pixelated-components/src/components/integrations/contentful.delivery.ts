@@ -74,6 +74,11 @@ getContentfulEntries.propTypes = {
 };
 export type getContentfulEntriesType = InferProps<typeof getContentfulEntries.propTypes>;
 export async function getContentfulEntries(props: getContentfulEntriesType) {
+	if (!props?.apiProps || !props.apiProps.base_url || !props.apiProps.space_id || !props.apiProps.environment || !props.apiProps.delivery_access_token) {
+		if (debug) console.warn('getContentfulEntries: missing apiProps or required Contentful config. Skipping fetch.');
+		return null;
+	}
+
 	const { base_url, space_id, environment, delivery_access_token } = props.apiProps;
 	const full_url = buildUrl({
 		baseUrl: base_url,
@@ -267,6 +272,20 @@ export async function getContentfulFieldValues(props: getContentfulFieldValuesTy
 
 
 /* ========== GET CONTENTFUL IMAGES FROM CARDS ========== */
+
+function normalizeContentfulAssetUrl(url: string): string {
+	if (!url) return url;
+	if (url.startsWith('//')) return `https:${url}`;
+	if (url.startsWith('/')) return `https://images.ctfassets.net${url}`;
+	return url;
+}
+
+function resolveContentfulAssets(assets: any): any[] {
+	if (Array.isArray(assets)) return assets;
+	if (assets && Array.isArray(assets.items)) return assets.items;
+	return [];
+}
+
 /**
  * getContentfulImagesFromEntries — Resolve image asset URLs and alt text for entry image references.
  *
@@ -281,17 +300,30 @@ getContentfulImagesFromEntries.propTypes = {
 };
 export type getContentfulImagesFromEntriesType = InferProps<typeof getContentfulImagesFromEntries.propTypes>;
 export async function getContentfulImagesFromEntries(props: getContentfulImagesFromEntriesType){
-	const imageURLs = [];
-	for (const image of props.images) {
-		for (const asset of props.assets) {
-			if( image.sys.id == asset.sys.id ) {
-				imageURLs.push({ 
-					image: asset.fields.file.url + ctfQSParams,
-					imageAlt: asset.fields.description,
-				});
-			}
+	const images = props.images ? (Array.isArray(props.images) ? props.images : [props.images]) : [];
+	const assets = resolveContentfulAssets(props.assets);
+	const imageURLs: Array<{ image: string; imageAlt?: string }> = [];
+
+	for (const image of images) {
+		let asset: any;
+
+		if (image?.sys?.id) {
+			asset = assets.find((item: any) => item?.sys?.id === image.sys.id);
+		} else if (image?.fields?.file?.url) {
+			asset = image;
 		}
+
+		if (!asset) continue;
+		const fileUrl = asset.fields?.file?.url;
+		if (!fileUrl) continue;
+
+		const normalizedUrl = normalizeContentfulAssetUrl(fileUrl);
+		imageURLs.push({
+			image: normalizedUrl + ctfQSParams,
+			imageAlt: asset.fields?.description || asset.fields?.title || undefined,
+		});
 	}
+
 	return imageURLs;
 }
 

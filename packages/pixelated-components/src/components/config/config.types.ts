@@ -25,6 +25,10 @@ export interface ContentfulConfig {
 	delivery_access_token?: string;
 	management_access_token?: string;
 	preview_access_token?: string;
+	sitemapContentType?: string;
+	sitemapField?: string;
+	sitemapRoutePrefix?: string;
+	sitemapRouteTemplate?: string;
 }
 
 export interface EbayConfig {
@@ -146,7 +150,16 @@ export interface PaypalConfig {
 	payPalSecret: string;
 }
 
+export interface SquareConfig {
+	applicationId: string;
+	locationId: string;
+	accessToken: string;
+	environment?: 'sandbox' | 'production';
+}
+
 export interface ShoppingCartConfig {
+	/** Payment provider override; choose 'paypal' or 'square' */
+	provider?: 'paypal' | 'square';
 	/** Email address for order notifications */
 	orderTo: string;
 	/** Sender email address for transactional emails */
@@ -259,6 +272,9 @@ export const SECRET_CONFIG_KEYS = {
 			'sandboxPayPalSecret',
 			'payPalApiKey',
 			'payPalSecret'
+		],
+		square: [
+			'accessToken'
 		]
 	}
 };
@@ -276,7 +292,6 @@ export interface PixelatedConfig {
 	ebay?: EbayConfig;
 	flickr?: FlickrConfig;
 	github?: GitHubConfig;
-	globlalConfig?: GlobalConfig;
 	google?: Google;
 	googleAnalytics?: GoogleAnalyticsConfig;
 	googleGemini?: GoogleGemini;
@@ -288,7 +303,8 @@ export interface PixelatedConfig {
 	instagram?: InstagramConfig;
 	nextAuth?: NextAuth;
 	paypal?: PaypalConfig;
-	shoppingcart?: ShoppingCartConfig;
-	wordpress?: WordpressConfig;
 	puppeteer?: PuppeteerConfig;
+	shoppingcart?: ShoppingCartConfig;
+	square?: SquareConfig;
+	wordpress?: WordpressConfig;
 }

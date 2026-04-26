@@ -105,9 +105,7 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const data = opts.siteConfig ?? (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
 	const site = data.siteInfo ?? {};
 	const routes = Array.isArray(data.routes) ? data.routes : [];
-	const pixelatedComponentsPackageVersion = usesPixelatedComponents(pkg)
-		? (await getPixelatedComponentsPackageVersion(cwd)) ?? 'N/A'
-		: 'N/A';
+	const pixelatedComponentsPackageVersion = (await getPixelatedComponentsPackageVersion(cwd)) ?? 'N/A';
 
 	const lines: string[] = [
 		'/* HUMAN-READABLE SITE INFORMATION - generated at runtime */',

@@ -64,13 +64,29 @@ export function buildSitemapConfig(
 	// Contentful integration
 	if (pixelatedConfig.contentful?.space_id) {
 		const hasCompleteContentfulConfig = !!pixelatedConfig.contentful?.delivery_access_token;
-		sitemapConfig.contentful = {
+		const contentfulConfig: any = {
 			base_url: pixelatedConfig.contentful.base_url ?? '',
 			space_id: pixelatedConfig.contentful.space_id ?? '',
 			environment: pixelatedConfig.contentful.environment ?? '',
 			access_token: pixelatedConfig.contentful.delivery_access_token ?? '',
 		};
-		sitemapConfig.createContentfulURLs = false;
+		if (pixelatedConfig.contentful?.sitemap) {
+			contentfulConfig.sitemap = { ...pixelatedConfig.contentful.sitemap };
+		}
+		if (pixelatedConfig.contentful?.sitemapContentType) {
+			contentfulConfig.sitemapContentType = pixelatedConfig.contentful.sitemapContentType;
+		}
+		if (pixelatedConfig.contentful?.sitemapField) {
+			contentfulConfig.sitemapField = pixelatedConfig.contentful.sitemapField;
+		}
+		if (pixelatedConfig.contentful?.sitemapRoutePrefix) {
+			contentfulConfig.sitemapRoutePrefix = pixelatedConfig.contentful.sitemapRoutePrefix;
+		}
+		if (pixelatedConfig.contentful?.sitemapRouteTemplate) {
+			contentfulConfig.sitemapRouteTemplate = pixelatedConfig.contentful.sitemapRouteTemplate;
+		}
+		sitemapConfig.contentful = contentfulConfig;
+		sitemapConfig.createContentfulURLs = !!(pixelatedConfig.contentful?.sitemap || pixelatedConfig.contentful?.sitemapContentType);
 		sitemapConfig.createContentfulAssetURLs = hasCompleteContentfulConfig;
 	}
 
@@ -332,30 +348,58 @@ createContentfulURLs.propTypes = {
 		environment: PropTypes.string.isRequired,
 		/** Delivery API token */
 		delivery_access_token: PropTypes.string.isRequired,
+		/** Contentful sitemap configuration */
+		sitemap: PropTypes.shape({
+			contentType: PropTypes.string,
+			field: PropTypes.string,
+			routePrefix: PropTypes.string,
+			routeTemplate: PropTypes.string,
+		}),
+		/** Flattened Contentful sitemap config for pixelated.config.json */
+		sitemapContentType: PropTypes.string,
+		sitemapField: PropTypes.string,
+		sitemapRoutePrefix: PropTypes.string,
+		sitemapRouteTemplate: PropTypes.string,
 	}).isRequired,
 	/** Origin used to build absolute URLs */
 	origin: PropTypes.string.isRequired,
+	/** Optional override for Contentful content type */
+	contentType: PropTypes.string,
+	/** Optional override for field used to generate page slugs */
+	field: PropTypes.string,
+	/** Optional route prefix for generated URLs */
+	routePrefix: PropTypes.string,
+	/** Optional route template for generated URLs */
+	routeTemplate: PropTypes.string,
 };
 export type createContentfulURLsType = InferProps<typeof createContentfulURLs.propTypes>;
 export async function createContentfulURLs(props: createContentfulURLsType){
 	const sitemap: SitemapEntry[] = [];
-	// const origin = await getOrigin();
-	const contentType = "carouselCard"; 
-	const field = "title";
-
 	const providerContentfulApiProps = getFullPixelatedConfig()?.contentful;
-	// Changed order: provider config overrides apiProps for security (tokens)
 	const mergedApiProps = { ...props.apiProps, ...providerContentfulApiProps };
-	// const mergedApiProps = { ...providerContentfulApiProps, ...props.apiProps }; // Old: apiProps overrode provider
+	const sitemapConfig = props.apiProps || {} as any;
 
-	const contentfulTitles = await getContentfulFieldValues({
-		apiProps: mergedApiProps, contentType: contentType, field: field
+	const contentType = props.contentType || sitemapConfig.sitemapContentType || sitemapConfig.sitemap?.contentType || 'carouselCard';
+	const field = props.field || sitemapConfig.sitemapField || sitemapConfig.sitemap?.field || 'title';
+	const routePrefix = props.routePrefix || sitemapConfig.sitemapRoutePrefix || sitemapConfig.sitemap?.routePrefix || '/projects';
+	const routeTemplate = props.routeTemplate || sitemapConfig.sitemapRouteTemplate || sitemapConfig.sitemap?.routeTemplate;
+
+	const contentfulFieldValues = await getContentfulFieldValues({
+		apiProps: mergedApiProps,
+		contentType,
+		field
 	});
-	for ( const title of contentfulTitles ){
+
+	for ( const value of contentfulFieldValues ){
+		const encodedValue = encodeURIComponent(String(value));
+		const relativePath = routeTemplate
+			? routeTemplate.replace(/\$\{value\}/g, encodedValue)
+			: `${routePrefix.replace(/\/$/, '')}/${encodedValue}`;
+		const normalizedPath = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
 		sitemap.push({
-			url: `${props.origin}/projects/${encodeURIComponent(title)}` ,
+			url: `${props.origin}${normalizedPath}` ,
 			lastModified: new Date(),
-			changeFrequency: "hourly",
+			changeFrequency: 'hourly',
 			priority: 1.0,
 		});
 	}

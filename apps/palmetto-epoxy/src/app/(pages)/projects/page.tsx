@@ -34,15 +34,7 @@ export default function Projects() {
 			const reviewCards : CarouselCardType[] = [];
 			for (const card of typeCards.items) {
 				if ( card.sys.contentType.sys.id == contentType ) {
-					let images = await getContentfulImagesFromEntries({ images: [card.fields.image], assets: typeCards.includes.Asset });
-					/* Contentful images start with two slashes */
-					images = images.map(img => {
-						return img.image.startsWith("//images.ctfassets.net")
-							? { image: img.image.replace("//images.ctfassets.net", "https://images.ctfassets.net"),
-								imageAlt: img.imageAlt }
-							: { image: img.image,
-								imageAlt: img.imageAlt };
-					});
+					const images = await getContentfulImagesFromEntries({ images: [card.fields.image], assets: typeCards.includes.Asset });
 					reviewCards.push({
 						index: card.sys.contentType.sys.id.indexOf("card"),
 						cardIndex: reviewCards.length,
@@ -56,9 +48,6 @@ export default function Projects() {
 					});
 				}
 			}
-			/* for (const img of reviewCards) {
-				img.image = img.image.replace("//images.ctfassets.net", imageOrigin);
-			} */
 			setCarouselCards(reviewCards);
 		}
 		getCarouselCards();

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
+import type { SiteInfo } from '../config/config.types';
 
 
 
@@ -37,6 +38,92 @@ export function SchemaBlogPosting(props: SchemaBlogPostingType) {
 	const { post } = props;
 	return (
 		<SchemaScript schema={post} />
+	);
+}
+
+
+
+
+
+/* ========================================
+	EVENT SCHEMA COMPONENTS
+======================================== */
+
+function toIsoDate(value: unknown) {
+	const date = new Date(value as string);
+	return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
+}
+
+function normalizeEventImageUrl(url: unknown) {
+	if (!url || typeof url !== 'string') return undefined;
+	return url.startsWith('//images.ctfassets.net') ? `https:${url}` : url;
+}
+
+function normalizeEventImages(images: unknown): string[] {
+	if (!Array.isArray(images)) return [];
+	return images
+		.map((image: any) => normalizeEventImageUrl(image?.image))
+		.filter((url: string | undefined): url is string => Boolean(url));
+}
+
+/**
+ * Build an Event JSON-LD object from raw event data and optional site info.
+ *
+ * @param {object} event - Contentful event entry payload.
+ * @param {object} [siteInfo] - Site metadata used for canonical URL, location, and organizer details.
+ */
+export function buildEventSchema(event: any, siteInfo?: SiteInfo | null) {
+	const baseUrl = siteInfo?.url?.replace(/\/$/, '') ?? '';
+	const eventUrl = baseUrl ? `${baseUrl}/events/${event.fields.id}` : `/events/${event.fields.id}`;
+	const images = normalizeEventImages(event.fields.carouselImages);
+
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Event',
+		name: event.fields.title,
+		startDate: toIsoDate(event.fields.startDate),
+		endDate: toIsoDate(event.fields.endDate),
+		eventStatus: 'https://schema.org/EventScheduled',
+		location: {
+			'@type': 'Place',
+			name: siteInfo?.name,
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: siteInfo?.address?.streetAddress,
+				addressLocality: siteInfo?.address?.addressLocality,
+				postalCode: siteInfo?.address?.postalCode,
+				addressRegion: siteInfo?.address?.addressRegion,
+				addressCountry: siteInfo?.address?.addressCountry,
+			},
+		},
+		image: images.length ? images : undefined,
+		description: event.fields.description,
+		url: eventUrl,
+		offers: event.fields.price != null ? {
+			'@type': 'Offer',
+			url: eventUrl,
+			price: event.fields.price,
+			priceCurrency: 'USD',
+			availability: event.fields.maxSeats > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+			validFrom: toIsoDate(event.fields.startDate),
+		} : undefined,
+		organizer: {
+			'@type': 'Organization',
+			name: siteInfo?.name,
+			url: siteInfo?.url,
+		},
+	};
+}
+
+SchemaEvent.propTypes = {
+	/** Structured Event JSON-LD object */
+	event: PropTypes.object.isRequired,
+};
+export type SchemaEventType = InferProps<typeof SchemaEvent.propTypes>;
+export function SchemaEvent(props: SchemaEventType) {
+	const { event } = props;
+	return (
+		<SchemaScript schema={event} />
 	);
 }
 
@@ -219,8 +306,6 @@ export function SchemaFAQ({ faqsData }: SchemaFAQType) {
 /* ========================================
 	LOCAL BUSINESS SCHEMA COMPONENTS
 ======================================== */
-
-import type { SiteInfo } from '../config/config.types';
 
 /**
  * LocalBusiness Schema Component

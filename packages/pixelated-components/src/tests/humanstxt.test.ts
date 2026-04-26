@@ -38,11 +38,12 @@ describe('humanstxt (server)', () => {
     const pkg = { name: 'acme', version: '9.9.9' };
     const routes = testData.routes || [];
     const siteInfo = testData.siteInfo || { name: 'Test Site' };
+    const pixelatedVersion = await getPixelatedComponentsPackageVersion(process.cwd());
 
     const { body, headers, etag } = await generateHumansTxt({ pkg, siteConfig: { siteInfo, routes } });
 
     expect(body).toContain(`Site Name: ${siteInfo.name}`);
-    expect(body).toContain('Site Pixelated Components Package Version: N/A');
+    expect(body).toContain(`Site Pixelated Components Package Version: ${pixelatedVersion ?? 'N/A'}`);
     // sanity: ensure at least one real route was used from test-data
     if ((routes || []).length > 0) {
       expect(body).toContain(`${routes[0].path} - ${routes[0].title}`);
@@ -54,9 +55,10 @@ describe('humanstxt (server)', () => {
   it('createHumansTxtResponse returns 200 and body, and 304 when if-none-match matches', async () => {
     const pkg = { name: 'acme', version: '9.9.9' };
     const routes = [ { path: '/a', title: 'A' } ];
+    const pixelatedVersion = await getPixelatedComponentsPackageVersion(process.cwd());
 
     const generated = await generateHumansTxt({ pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });
-    expect(generated.body).toContain('Site Pixelated Components Package Version: N/A');
+    expect(generated.body).toContain(`Site Pixelated Components Package Version: ${pixelatedVersion ?? 'N/A'}`);
 
     const req1 = new NextRequest(new URL('https://example.test/humans.txt'));
     const resp1 = await createWellKnownResponse('humans', req1, { pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });

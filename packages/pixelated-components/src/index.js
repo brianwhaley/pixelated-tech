@@ -81,6 +81,9 @@ export * from './components/pixelated/pixelated.components';
 
 export * from './components/shoppingcart/ebay.components';
 export * from './components/shoppingcart/paypal';
+export * from './components/shoppingcart/paypal.components';
+export * from './components/shoppingcart/square';
+export * from './components/shoppingcart/square.components';
 export * from './components/shoppingcart/shoppingcart.components';
 export * from './components/shoppingcart/shoppingcart.functions';
 

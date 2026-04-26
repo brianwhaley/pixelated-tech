@@ -345,15 +345,32 @@ describe('Contentful Delivery API', () => {
 			expect(result[0].imageAlt).toBe('Image 1');
 		});
 
-		it('should include query parameters in URL', async () => {
-			const result = await contentfulModule.getContentfulImagesFromEntries({
-				images: mockImages,
-				assets: mockAssets
-			});
-
-			expect(result[0].image).toContain('fm=webp');
-			expect(result[0].image).toContain('q=50');
+	it('should normalize protocol-relative asset URLs to https', async () => {
+		const result = await contentfulModule.getContentfulImagesFromEntries({
+			images: mockImages,
+			assets: [
+				{
+					sys: { id: 'image1' },
+					fields: {
+						file: { url: '//images.ctfassets.net/test/image1.jpg' },
+						description: 'Image 1'
+					}
+				}
+			]
 		});
+
+		expect(result[0].image).toContain('https://images.ctfassets.net/test/image1.jpg');
+	});
+
+	it('should accept asset containers with items arrays', async () => {
+		const result = await contentfulModule.getContentfulImagesFromEntries({
+			images: mockImages,
+			assets: { items: mockAssets }
+		});
+
+		expect(result).toHaveLength(2);
+		expect(result[1].image).toContain('image2.jpg');
+	});
 
 		it('should return empty array if no matches', async () => {
 			const result = await contentfulModule.getContentfulImagesFromEntries({

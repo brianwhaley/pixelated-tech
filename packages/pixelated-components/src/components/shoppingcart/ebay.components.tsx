@@ -150,9 +150,12 @@ export function EbayItems(props: EbayItemsType) {
 
 	useEffect(() => {
 		if (debug) console.log("Running useEffect");
-		ToggleLoading(true);
-		fetchItems();
-		ToggleLoading(false);
+		async function init() {
+			ToggleLoading(true);
+			await fetchItems();
+			ToggleLoading(false);
+		}
+		init();
 	}, []);
 
 	if (items && items.length > 0) {
