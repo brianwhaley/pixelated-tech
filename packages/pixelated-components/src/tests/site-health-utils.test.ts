@@ -88,11 +88,19 @@ describe('site-health-utils', () => {
 			})).toBe('45px');
 		});
 
+		it('should handle numeric value objects without explicit unit', () => {
+			expect(formatAuditItem({ value: { type: 'numeric', value: 12.5 } })).toBe('12.5');
+		});
+
 		it('should handle statistics', () => {
 			expect(formatAuditItem({ 
 				statistic: 'Total Request count', 
 				value: { type: 'numeric', value: 45 } 
 			})).toBe('45');
+		});
+
+		it('should return generic fallback text for unknown audit item object', () => {
+			expect(formatAuditItem({ unknownField: 'nope' })).toBe('Performance metric data available');
 		});
 
 		it('should handle raw numbers with context (Server)', () => {

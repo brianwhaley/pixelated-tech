@@ -23,6 +23,7 @@
 - For questions about architecture: Describe patterns, cite examples from codebase.  Do not implement a solution until discussed and agreed upon before writing any code into the project files.  
 - For questions about processes: Walk through workflows, explain rationale.  Do not implement a solution until discussed and agreed upon before writing any code into the project files.  
 - For questions about problems: Analyze issues, suggest approaches.  Do not implement a solution until discussed and agreed upon before writing any code into the project files.  
+- Copilot Agents are not to use Python or automation scripts to make code changes; perform edits manually using the editor and file tools.  
 
 ### Question-Answering Priority
 1. **Direct Answers First** - Provide the requested information immediately
@@ -36,6 +37,7 @@
 - All command output MUST display directly to stdout/stderr
 - User must be able to see all output in the terminal
 - Transparency is required - do not hide or pre-filter execution details
+- Do not use Python or automation scripts to modify files; all file edits must be done manually through the editor or file tools.
 - **Bad examples** (FORBIDDEN):
   - `npm run test:coverage | grep "FAIL"`
   - `npm run build > build.log`

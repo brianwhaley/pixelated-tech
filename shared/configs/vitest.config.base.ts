@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 const COVERAGE_THRESHOLDS = {
-	lines: 81,
-	functions: 81.25,
-	branches: 67.5,
-	statements: 78.5,
+	lines: 82,// actually targeting 80%
+	functions: 82, // actually targeting 80%
+	branches: 68, // actually targeting 80%
+	statements: 79.5, // actually targeting 80%
 };
 
 export default defineConfig({

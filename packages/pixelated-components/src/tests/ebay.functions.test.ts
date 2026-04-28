@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getShoppingCartItem } from '../components/shoppingcart/ebay.components';
-import { getEbayAppToken, getEbayItemsSearch, getEbayProductSchema } from '../components/shoppingcart/ebay.functions';
+import { getEbayAppToken, getEbayItems, getEbayItem, getEbayItemsSearch, getEbayProductSchema } from '../components/shoppingcart/ebay.functions';
 import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
@@ -198,6 +198,29 @@ describe('ebay.functions - Real Tests', () => {
 			expect(getEbayAppToken.propTypes).toBeDefined();
 		});
 
+		it('should proxy token request through configured proxy', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockResolvedValueOnce({ access_token: 'token-abc' });
+
+			const token = await getEbayAppToken({ apiProps: mockApiProps });
+
+			expect(token).toBe('token-abc');
+			expect(mockFetch).toHaveBeenCalledWith('https://api.ebay.com/token', expect.objectContaining({
+				proxy: {
+					url: 'https://proxy.example.com',
+					forceProxy: true,
+					fallbackOnCors: true,
+				},
+				requestInit: expect.objectContaining({
+					method: 'POST',
+					headers: expect.objectContaining({
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Authorization': expect.stringContaining('Basic '),
+					}),
+				}),
+			}));
+		});
+
 		it('should return undefined when token fetch fails', async () => {
 			const mockFetch = vi.mocked(smartFetch);
 			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
@@ -205,6 +228,36 @@ describe('ebay.functions - Real Tests', () => {
 
 			const token = await getEbayAppToken({ apiProps: mockApiProps });
 			expect(token).toBeUndefined();
+			consoleError.mockRestore();
+		});
+	});
+
+	describe('getEbayItems', () => {
+		it('should abort and return an empty object when app token acquisition fails', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
+			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+			const result = await getEbayItems({ apiProps: mockApiProps });
+
+			expect(result).toEqual({});
+			expect(mockFetch).toHaveBeenCalledTimes(1);
+			expect(consoleError).toHaveBeenCalledWith('Unable to fetch eBay app token; aborting eBay item search.');
+			consoleError.mockRestore();
+		});
+	});
+
+	describe('getEbayItem', () => {
+		it('should abort and return an empty object when app token acquisition fails', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
+			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+			const result = await getEbayItem({ apiProps: mockApiProps });
+
+			expect(result).toEqual({});
+			expect(mockFetch).toHaveBeenCalledTimes(1);
+			expect(consoleError).toHaveBeenCalledWith('Unable to fetch eBay app token; aborting eBay item details fetch.');
 			consoleError.mockRestore();
 		});
 	});

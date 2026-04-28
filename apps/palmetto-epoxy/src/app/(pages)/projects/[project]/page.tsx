@@ -2,14 +2,15 @@
 "use client";
 
 import React from "react";
-import { use, useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 // import { Metadata } from 'next';
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, Loading } from "@pixelated-tech/components";
 import { Carousel } from "@pixelated-tech/components";
 import { PageSection } from '@pixelated-tech/components';
 
-export default function Project({params}: { params: Promise<{ project: string }> }){
+export default function Project(){
 
 	interface Card {
 		fields: {
@@ -36,12 +37,16 @@ export default function Project({params}: { params: Promise<{ project: string }>
 
 	const [ card , setCard ] = useState<Card | null>(null);
 	const [ carouselCards , setCarouselCards ] = useState<{ image: any }[]>([]);
-	const { project } = use(params);
-  
+	const params = useParams();
+	const project = typeof params?.project === 'string' ? params.project : '';
+
 	useEffect(() => {
+		if (!project) {
+			return;
+		}
 		async function getCarouselCards(project: string) {
-			const contentType = "carouselCard"; 
-			const cards = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
+			const contentType = "carouselCard";
+			const cards = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType });
 			const card = await getContentfulEntryByField({
 				cards: cards,
 				searchField: "title",
@@ -55,14 +60,13 @@ export default function Project({params}: { params: Promise<{ project: string }>
 	}, [project]);
 
 
-	const isMounted = useRef(false);
+	const [isMounted, setIsMounted] = useState(false);
 	useEffect(() => {
-		isMounted.current = true;
+		setIsMounted(true);
 		return () => {
-			isMounted.current = false;
+			setIsMounted(false);
 		};
 	}, []);
-
 
 	return (
 		<>
@@ -89,7 +93,7 @@ export default function Project({params}: { params: Promise<{ project: string }>
 				</>
 			) : (
 				<PageSection columns={1} id="project-section">
-					<div>Loading data...</div>
+					{ /* <div>Loading data...</div> */ }
 				</PageSection>
 			)
 			}
@@ -97,6 +101,5 @@ export default function Project({params}: { params: Promise<{ project: string }>
 				<CalloutLibrary.ContactCTA />
 			</PageSection>
 		</>
-		
 	);
 }

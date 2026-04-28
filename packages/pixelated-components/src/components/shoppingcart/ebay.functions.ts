@@ -8,6 +8,16 @@ import { buildUrl } from "../foundation/urlbuilder";
 
 const debug = false;
 
+function encodeBase64(value: string) {
+	if (typeof btoa === 'function') {
+		return btoa(value);
+	}
+	if (typeof Buffer !== 'undefined') {
+		return Buffer.from(value, 'utf-8').toString('base64');
+	}
+	throw new Error('No base64 encoder available');
+}
+
 export type EbayApiType = {
     proxyURL: string;
     baseTokenURL: string;
@@ -89,12 +99,19 @@ export function getEbayAppToken(props: getEbayAppTokenType) {
 	const fetchToken = async () => {
 		if (debug) console.log("Fetching Token");
 		try {
-			const data = await smartFetch(apiProps.proxyURL + apiProps.baseTokenURL, {
+			const data = await smartFetch(apiProps.baseTokenURL, {
+				proxy: apiProps.proxyURL
+					? {
+						url: apiProps.proxyURL,
+						forceProxy: true,
+						fallbackOnCors: true,
+					}
+					: undefined,
 				requestInit: {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
-						'Authorization': 'Basic ' + btoa(`${apiProps.appId}:${apiProps.appCertId}`),
+						'Authorization': 'Basic ' + encodeBase64(`${apiProps.appId}:${apiProps.appCertId}`),
 					},
 					body: new URLSearchParams({
 						grant_type: 'client_credentials',
@@ -302,6 +319,10 @@ export async function getEbayItems(props: getEbayItemsType) {
 	const apiProps = getMergedEbayConfig(props.apiProps);
 	try {
 		const response = await getEbayAppToken({ apiProps: apiProps });
+		if (!response) {
+			console.error('Unable to fetch eBay app token; aborting eBay item search.');
+			return {};
+		}
 		if (debug) console.log("eBay App Token Response:", response);
 		const data = await getEbayBrowseSearch({ apiProps: apiProps, token: response });
 		if (debug) console.log("eBay Browse Search Data:", data);
@@ -329,6 +350,10 @@ export async function getEbayItem(props: getEbayItemType) {
 	const apiProps = getMergedEbayConfig(props.apiProps);
 	try {
 		const response = await getEbayAppToken({ apiProps: apiProps });
+		if (!response) {
+			console.error('Unable to fetch eBay app token; aborting eBay item details fetch.');
+			return {};
+		}
 		if (debug) console.log("eBay App Token Response:", response);
 		const data = await getEbayBrowseItem({ apiProps: apiProps, token: response });
 		if (debug) console.log("eBay Browse Item Data:", data);

@@ -38,6 +38,7 @@ export * from './components/integrations/spotify.functions';
 export * from './components/integrations/wordpress.functions';
 
 export * from './components/shoppingcart/ebay.functions';
+export * from './components/shoppingcart/providersRegistry';
 export * from './components/shoppingcart/square';
 
 export * from './components/sitebuilder/config/ConfigEngine';

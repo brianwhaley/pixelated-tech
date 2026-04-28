@@ -1,12 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { PageSectionHeader, PageTitleHeader } from "@pixelated-tech/components";
-import { FormEngine } from "@pixelated-tech/components";
+import { FormEngine, Loading, Modal } from "@pixelated-tech/components";
 
 import formData from "@/app/data/preorder2026form.json";
 
 export default function Preorder2026() {
+	const [modalContent, setModalContent] = useState<React.JSX.Element | null>(null);
+
+	const handleSubmit = (event: any) => {
+		event?.preventDefault?.();
+		setModalContent(<div data-testid="preorder-modal">Thank you for your preorder request.</div>);
+	};
 
 	return (
 		<>

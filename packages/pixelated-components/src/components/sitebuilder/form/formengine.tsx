@@ -175,6 +175,11 @@ function FormEngineInner(props: FormEngineInnerType) {
 		// HANDLES THE FORM ACTION / FORM SUBMIT - EXPOSED EXTERNAL
 		event.preventDefault();
 
+		const form = event.currentTarget as HTMLFormElement;
+		if (!form.checkValidity()) {
+			return false;
+		}
+
 		// Check if form is valid before submission
 		if (!validateAllFields()) {
 			// Form has validation errors, don't submit

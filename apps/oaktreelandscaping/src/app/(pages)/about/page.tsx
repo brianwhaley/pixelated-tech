@@ -14,16 +14,14 @@ export default function About() {
 	// const [profile2, setProfile2] = useState<GravatarProfile | null>(null);
 
 	useEffect(() => {
-		if (email1) {
-			getGravatarProfile(email1)
-				.then((data) => {
-					setProfile1(data);
-				})
-				.catch(() => {
-					// Silently handle CORS or network errors
-					setProfile1(null);
-				});
-		}
+		getGravatarProfile(email1)
+			.then((data) => {
+				setProfile1(data);
+			})
+			.catch(() => {
+				// Silently handle CORS or network errors
+				setProfile1(null);
+			});
 		/* if (email2) {
 			getGravatarProfile(email2).then((data) => {
 				setProfile2(data);

@@ -1,10 +1,14 @@
 {
 	"properties": {
-		"name": "contact-us",
-		"id": "contact-us-form",
+		"name": "register",
+		"id": "register-form",
 		"toggleLoading": true,
 		"openModal": true,
-		"resetForm": true
+		"resetForm": true,
+		"notes": [
+			"https://docs.google.com/forms/d/e/1FAIpQLSfZ6pjY_hZmO6wPNGNzB-lIcmoHb4e787PU_wf27rSwADvszQ/viewform",
+			"https://docs.google.com/forms/d/1TAPyeta033vl1yuINYIBDnuMY13Le_YRRvSb0ISzInI/edit?ts=69ee3a0b"
+		]
 	},
 	"fields" : [
 		{
@@ -37,13 +41,41 @@
 				"type" : "hidden",
 				"id" : "subject",
 				"name" : "subject",
-				"value" : "Three Muses Contact Us Submit"
+				"value" : "Three Muses Registration Submit"
 			}
 		},{
 			"component" : "FormHoneypot",
 			"props" : {
 				"id": "winnie",
 				"name" : "website"
+			}
+		},
+		
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "eventname",
+				"name" : "eventname",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"readOnly" : "readOnly",
+				"label" : "Event Name (required) : "
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "eventId",
+				"name" : "eventId",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"readOnly" : "readOnly",
+				"label" : "Event ID (required) : "
 			}
 		},{
 			"component" : "FormInput",
@@ -55,11 +87,9 @@
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
-				"label" : "First Name (required) : ",
-				"tooltip" : "Please type in your First Name"
+				"label" : "First Name (required) : "
 			}
-		},
-		{
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",
@@ -69,11 +99,9 @@
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
-				"label" : "Last Name (required) : ",
-				"tooltip" : "Please type in your Last Name"
+				"label" : "Last Name (required) : "
 			}
-		},
-		{
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "email",
@@ -84,11 +112,9 @@
 				"display" : "vertical",
 				"required" : "required",
 				"label" : "Email Address (required) : ",
-				"validate" : "isValidEmailAddress",
-				"tooltip" : "Please type in your Email Address"
+				"validate" : "isValidEmailAddress"
 			}
-		},
-		{
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "tel",
@@ -99,42 +125,31 @@
 				"display" : "vertical",
 				"required" : "required",
 				"label" : "Telephone (required) : ",
-				"validate" : "isValidUSPhoneNumber",
-				"tooltip" : "Please type in your Telephone Number"
+				"validate" : "isValidUSPhoneNumber"
 			}
-		},
-		{
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",
-				"id" : "eventname",
-				"name" : "eventname",
+				"id" : "child_name",
+				"name" : "child_name",
 				"defaultValue" : null,
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
-				"label" : "Event Name (required) : ",
-				"tooltip" : "Please type in the name of your event"
-			}
-		},
-		{
-			"component" : "FormTextarea",
-			"props" : {
-				"id" : "message",
-				"name" : "message",
-				"rows" : "5",
-				"cols" : "30",
-				"defaultValue" : null,
-				"display" : "vertical",
-				"label" : "Additional Information : ",
-				"tooltip": "Please type in any additional information about your event registration or questions you may have for us"
+				"label" : "Child's Name (required if under 16) : "
 			}
 		},{
-			"component" : "FormButton",
+			"component" : "FormInput",
 			"props" : {
-				"type" : "submit",
-				"id" : "submit",
-				"text" : "Submit Registration"
+				"type" : "date",
+				"id" : "birthdate",
+				"name" : "birthdate",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Child's Birthdate (required if under 16) : "
 			}
 		}
 	]

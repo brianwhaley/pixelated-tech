@@ -1,0 +1,122 @@
+{
+	"fields" : [
+		{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "full_payment",
+				"name" : "full_payment",
+				"label" : "",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneChecked",
+				"options" : [
+					{"value" : "yes", "text" : "I understand that pre-registration and full payment are required to secure this seat in this Three Muses of Bluffton Sewing Class" }
+				]
+			}
+		},{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "cancellation_policy",
+				"name" : "cancellation_policy",
+				"label" : "",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneChecked",
+				"options" : [
+					{ "value" : "yes", "text" : "I understand the 48-hour cancellation policy and that no refunds are issued for late cancellations or no-shows.  If the attendee is sick an unable to attend the class, please contact us so we may schedule them to make up the class. ", "selected" : "" }
+				]
+			}
+		},{
+			"component" : "FormRadio",
+			"props" : {
+				"id" : "photo_consent",
+				"name" : "photo_consent",
+				"label" : "Photos may be taken for marketing unless you opt out.",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneRadioSelected",
+				"options" : [
+					{ "value" : "yes", "text" : "Yes", "checked" : "" },
+					{ "value" : "no", "text" : "No", "checked" : "" }
+				]
+			}
+		},{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "closed_toe_shoes",
+				"name" : "closed_toe_shoes",
+				"label" : "",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneChecked",
+				"options" : [
+					{ "value" : "yes", "text" : "I understand that closed-toe shoes are required.", "selected" : "" }
+				]
+			}
+		},{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "class_materials",
+				"name" : "class_materials",
+				"label" : "",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneChecked",
+				"options" : [
+					{ "value" : "yes", "text" : "I understand that class materials are included only when stated.  All class materials are included with the Three Muses of Bluffton Sewing Class.", "selected" : "" }
+				]
+			}
+		},{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "minimum_students",
+				"name" : "minimum_students",
+				"label" : "",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneChecked",
+				"options" : [
+					{ "value" : "yes", "text" : "I understand classes require a minimum number of students to run.  In the event a class is unable to run we will notify you immediately.", "selected" : "" }
+				]
+			}
+		},{
+			"component" : "FormTextarea",
+			"props" : {
+				"id" : "food_allergies",
+				"name" : "food_allergies",
+				"rows" : "5",
+				"cols" : "30",
+				"defaultValue" : null,
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Does the attendee have any food allergies : "
+			}
+		},{
+			"component" : "FormRadio",
+			"props" : {
+				"id" : "bleeding_disorder",
+				"name" : "bleeding_disorder",
+				"label" : "Does the attendee have a bleeding disorder :",
+				"display" : "vertical",
+				"required" : "required",
+				"validate" : "isOneRadioSelected",
+				"options" : [
+					{ "value" : "yes", "text" : "Yes", "checked" : "" },
+					{ "value" : "no", "text" : "No", "checked" : "" }
+				]
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "injury_liability",
+				"name" : "injury_liability",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "I acknowledge that sewing involves the use of sharp tools and machinery and may result in injury. I voluntarily assume all risks associated with participation in sewing classes at The Three Muses of Bluffton. I release and hold harmless The Three Muses of Bluffton, its owners, employees, and instructors from any liability for injury, loss, or damage arising from participation. I agree to follow all safety instructions, studio policies, and instructor guidance.  Please type your name or Parent/Guardian's name below."
+			}
+		}
+	]
+}

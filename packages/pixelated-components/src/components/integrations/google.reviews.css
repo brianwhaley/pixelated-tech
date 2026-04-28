@@ -54,6 +54,31 @@
 	object-fit: cover;
 }
 
+.google-reviews-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 16px;
+	margin-top: 16px;
+}
+
+.google-review-grid-card {
+	border: 1px solid #e0e0e0;
+	border-radius: 12px;
+	padding: 16px;
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.google-review-grid-card .rating {
+	margin-top: 8px;
+}
+
+.google-review-grid-card .review-time {
+	font-size: 0.9em;
+	color: #666;
+	margin-top: 4px;
+}
+
 .google-reviews-card .profile-placeholder {
 	width: 100%;
 	height: 100%;

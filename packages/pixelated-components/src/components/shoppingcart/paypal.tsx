@@ -22,18 +22,58 @@ https://www.freecodecamp.org/news/integrate-paypal-into-html-css-js-product-page
 https://dev.to/evansifyke/how-to-integrate-paypal-with-html-css-and-javascript-2mnb
 */
 
-PayPal.PropTypes = {
+PayPal.propTypes = {
     payPalClientID: PropTypes.string.isRequired,
+    payPalSecret: PropTypes.string,
+    payPalApiBaseUrl: PropTypes.string,
     checkoutData: PropTypes.object.isRequired,
-    onApprove: PropTypes.func.isRequired
+    onApprove: PropTypes.func.isRequired,
 }
 export type PayPalType = InferProps<typeof PayPal.propTypes>;
 export function PayPal(props: any) {
+    const payPalSecret = props.payPalSecret || '';
+    const payPalApiBaseUrl = props.payPalApiBaseUrl || '';
+
+    if (debug) {
+        console.log('PayPal debug init:', {
+            payPalClientID: props.payPalClientID,
+            payPalApiBaseUrl,
+            payPalSecretPresent: Boolean(payPalSecret),
+            checkoutEmail: props.checkoutData?.shippingTo?.email,
+            checkoutData: {
+                total: props.checkoutData?.total,
+                subtotal: props.checkoutData?.subtotal,
+                shippingCost: props.checkoutData?.shippingCost,
+                handlingFee: props.checkoutData?.handlingFee,
+            }
+        });
+    }
+
     const paypalScript = document.createElement('script');
-    paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${props.payPalClientID}&currency=USD&components=buttons&enable-funding=venmo,applepay,card&disable-funding=paylater`;
+    const paypalSdkUrl = new URL('https://www.paypal.com/sdk/js');
+    paypalSdkUrl.searchParams.set('client-id', props.payPalClientID);
+    paypalSdkUrl.searchParams.set('currency', 'USD');
+    paypalSdkUrl.searchParams.set('components', 'buttons');
+    paypalSdkUrl.searchParams.set('enable-funding', 'venmo,applepay,card');
+    paypalSdkUrl.searchParams.set('disable-funding', 'paylater');
+
+    paypalScript.src = paypalSdkUrl.toString();
     paypalScript.onload = () => {
         if (window.paypal) {
-            // Now you can access paypal object within the window scope
+            if (payPalApiBaseUrl) {
+                (window as any).payPalApiBaseUrl = payPalApiBaseUrl;
+            }
+            if (payPalSecret) {
+                (window as any).payPalSecret = payPalSecret;
+            }
+            if (debug) {
+                console.log('PayPal SDK loaded:', {
+                    scriptSrc: paypalScript.src,
+                    payPalApiBaseUrl,
+                    payPalSecretPresent: Boolean(payPalSecret),
+                    windowPaypal: Boolean(window.paypal),
+                });
+            }
             const PayPalButton = paypal.Buttons.driver("react", {
                 React,
                 ReactDOM
@@ -41,7 +81,11 @@ export function PayPal(props: any) {
             initPayPalButton({checkoutData: props.checkoutData, onApprove: props.onApprove});
         }
     };
-    if(!isScriptSrc('https://www.paypal.com/sdk/js')) {
+    const existingScript = isScriptSrc('https://www.paypal.com/sdk/js');
+    if (debug) {
+        console.log('PayPal script exists?', existingScript, 'desiredSrc:', paypalScript.src);
+    }
+    if(!existingScript) {
         document.head.appendChild(paypalScript);
     }
 	return (

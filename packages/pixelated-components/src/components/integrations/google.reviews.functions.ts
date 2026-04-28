@@ -1,6 +1,14 @@
 // Server-side: Fetch Google reviews by place_id
 // Requires: GOOGLE_MAPS_API_KEY or hard-coded key
 // Flow: Place Details (reviews)
+//
+// Conversation summary:
+// - Google Places Details is limited to 5 reviews per request.
+// - There is no parameter to increase this limit for standard place searches.
+// - The Google Business Profile API can return more reviews, but only for
+//   businesses that the requesting account owns or manages.
+// - Our current implementation uses Places Details, so it may return fewer
+//   reviews than the business profile total.
 
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';

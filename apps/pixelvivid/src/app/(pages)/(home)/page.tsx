@@ -1,14 +1,12 @@
 "use client"; 
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { PageTitleHeader } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import SocialTags from "@/app/elements/socialtags";
-import { Carousel } from "@pixelated-tech/components";
-import type { CarouselCardType } from "@pixelated-tech/components";
+import { ContentfulReviewsCarousel } from "@pixelated-tech/components";
 import { Loading } from '@pixelated-tech/components';
-import { getContentfulEntriesByType, getContentfulReviewsSchema, ReviewSchema } from "@pixelated-tech/components";
 import { usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function Home() {
@@ -17,42 +15,6 @@ export default function Home() {
 	if (!config) {
 		return <Loading />;
 	}
-
-	const [ carouselCards , setCarouselCards ] = useState<CarouselCardType[]>([]);
-	const [ reviewSchemas , setReviewSchemas ] = useState<any[]>([]);
-	const apiProps = {
-		base_url: config?.contentful?.base_url ?? "",
-		space_id: config?.contentful?.space_id ?? "",
-		environment: config?.contentful?.environment ?? "",
-		delivery_access_token: config?.contentful?.delivery_access_token ?? "",
-	};
-	useEffect(() => {
-		async function getCarouselCards() {
-			const contentType = "feedback"; 
-			const typeCards = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
-			const items = typeCards.items.filter((card: any) => card.sys.contentType.sys.id === contentType);
-			const cardLength = items.length;
-			const reviewCards = items.map(function (card: any, index: number) {
-				return {
-					headerText: card.fields.description,
-					bodyText: card.fields.reviewer,
-					index: index,
-					cardIndex: index,
-					cardLength: cardLength,
-				};
-			});
-			setCarouselCards(reviewCards);
-
-			const schemas = await getContentfulReviewsSchema({
-				apiProps: apiProps,
-				itemName: "PixelVivid Custom Sunglasses",
-				itemType: "Service",
-				publisherName: "PixelVivid"
-			});
-			setReviewSchemas(await schemas);
-		}
-		getCarouselCards();
-	}, []);
 
 	return (
 		<>
@@ -117,13 +79,14 @@ export default function Home() {
 					<div className="row-1col">
 
 						<div className="grid-item">
-							{reviewSchemas.map((review, idx) => (
-								<ReviewSchema key={idx} review={review} />
-							))}
-							<Carousel 
-								cards={carouselCards} 
+							<ContentfulReviewsCarousel
+								reviewContentType="feedback"
+								itemName="PixelVivid Custom Sunglasses"
+								itemType="Service"
+								publisherName="PixelVivid"
 								draggable={true}
-								imgFit='contain' />
+								imgFit='contain'
+							/>
 						</div>
 
 						<div className="grid-item">

@@ -15,8 +15,7 @@ import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteD
 import type { CartItemType, CheckoutType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
 import { SmartImage } from '../general/smartimage';
-import { PayPalCheckout, renderPayPalThankYou } from './paypal.components';
-import { SquareCheckout, renderSquareThankYou } from './square.components';
+import { getActivePaymentProvider } from './providersRegistry';
 import shippingToData from "./shipping.to.json";
 import "./shoppingcart.css";
 
@@ -48,34 +47,24 @@ export function ShoppingCart( props: ShoppingCartType ) {
 	const payPalClientID = props.payPalClientID || config?.paypal?.payPalApiKey || config?.paypal?.sandboxPayPalApiKey;
 	const squareApplicationId = props.squareApplicationId || config?.square?.applicationId;
 	const squareLocationId = props.squareLocationId || config?.square?.locationId;
-	const configuredProvider = config?.shoppingcart?.provider?.toString().toLowerCase();
 
-	type PaymentProviderKey = 'paypal' | 'square';
-	const providerMap: Record<PaymentProviderKey, {
-		component: React.ComponentType<any>;
-		isConfigured: boolean;
-		props: Record<string, any>;
-	}> = {
+	const effectiveConfig = {
+		...(config || {}),
 		paypal: {
-			component: PayPalCheckout,
-			isConfigured: Boolean(payPalClientID),
-			props: { payPalClientID },
+			...(config?.paypal || {}),
+			payPalApiKey: payPalClientID,
 		},
 		square: {
-			component: SquareCheckout,
-			isConfigured: Boolean(squareApplicationId && squareLocationId),
-			props: { applicationId: squareApplicationId, locationId: squareLocationId },
+			...(config?.square || {}),
+			applicationId: squareApplicationId,
+			locationId: squareLocationId,
 		},
 	};
 
-	const requestedProvider = (configuredProvider === 'paypal' || configuredProvider === 'square') ? configuredProvider as PaymentProviderKey : undefined;
-	const providerPriority: PaymentProviderKey[] = ['square', 'paypal'];
-	const activeProvider: PaymentProviderKey | undefined = requestedProvider && providerMap[requestedProvider].isConfigured
-		? requestedProvider
-		: providerPriority.find(provider => providerMap[provider].isConfigured);
-
-	const PaymentProviderComponent = activeProvider ? providerMap[activeProvider].component : null;
-	const paymentProviderProps = activeProvider ? providerMap[activeProvider].props : {};
+	const activeProvider = getActivePaymentProvider(effectiveConfig);
+	const PaymentProviderComponent = activeProvider ? activeProvider.component : null;
+	const checkoutDataForProvider = getCheckoutData();
+	const paymentProviderProps = activeProvider ? activeProvider.getProps(effectiveConfig, checkoutDataForProvider) : {};
 	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
 	const [ shippingData, setShippingData ] = useState<any>();
 	const [ checkoutData, setcheckoutData ] = useState<CheckoutType>();
@@ -211,12 +200,8 @@ export function ShoppingCart( props: ShoppingCartType ) {
 				);
 			}
 
-			if (activeProvider === 'paypal') {
-				return renderPayPalThankYou(orderData, config);
-			}
-
-			if (activeProvider === 'square') {
-				return renderSquareThankYou(orderData, config);
+			if (activeProvider?.renderThankYou) {
+				return activeProvider.renderThankYou(orderData, config);
 			}
 
 			return (

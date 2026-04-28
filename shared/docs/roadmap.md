@@ -49,8 +49,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] **NerdJoke Component**: Add props to useEffect dependencies if endpoint becomes configurable.
 
-- [  ] **GoogleReviews Component**: Add carousel/grid display modes.
-
 - [  ] **Instagram Component**: Add accessToken and userId to config provider for centralized API credentials.
 
 - [  ] **Critters Integration**: Explore adding critters CSS inlining tool for improved page load performance and critical CSS optimization.
@@ -58,6 +56,8 @@ This document outlines planned improvements and refactoring initiatives for the 
 - [  ] **SplitScroll Enhancement**: Improve scrolling behavior and image transitions to match [safariportal lookbook style](https://itineraries.safariportal.app/Mary-Ann-Sarao/1589988388230923612?type=lookbook) (smoother layering and focal point transitions).
 
 - [  ] **FormHoneypot**: Future - configurable global honeypot name, timing/token checks, optional telemetry for spam signal analysis.
+
+- [  ] **Form validation on submit**: Ensure untouched required fields are validated on submit by processing all form schema fields, not only fields that have been interacted with.
 
 
 ### Platform Enhancements
@@ -105,11 +105,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 #### SCALING BLOCKERS
 
-##### Single Payment Provider
-1. Only PayPal integration
-1. No abstraction layer for payment processors
-1. Hard to add Stripe, Square, or other gateways
-
 ##### Zero Backend Integration
 1. All cart/shipping data stored in browser localStorage only
 1. No server-side persistence or session management
@@ -142,12 +137,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 #### RECOMMENDATIONS FOR SCALE
 
 ##### Architecture Redesign
-
-1. Create Payment Abstraction Layer
-
-	* Interface-based payment gateway system
-	* Support PayPal, Stripe, Square simultaneously
-	* Route selection based on site config
 
 1. Implement Backend Order Service
 
@@ -216,7 +205,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 1. Component Isolation
 
-	* Extract payment UI into separate component
 	* Form builder for dynamic checkout fields
 	* Separate concerns: cart display → shipping form → payment → thanks
 	* Make each composable and reusable

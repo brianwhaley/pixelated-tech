@@ -1,8 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import fs from 'fs';
+import * as componentAnalysisModule from '../components/admin/componentusage/componentAnalysis';
 import { folderFilenameToExportName, getAllFiles, checkComponentUsage, analyzeComponentUsage } from '../components/admin/componentusage/componentAnalysis';
 import type { SiteConfig } from '../components/admin/sites/sites.integration';
 
 describe('Component Analysis', () => {
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
 	describe('folderFilenameToExportName', () => {
 		it('should convert folder/filename to export name', () => {
 			const name = folderFilenameToExportName('general/modal');
@@ -198,37 +204,42 @@ describe('Component Analysis', () => {
 			expect(typeof getAllFiles).toBe('function');
 		});
 
-		it('should return empty array for empty directory', async () => {
-			expect(typeof getAllFiles).toBe('function');
-		});
-
-		it('should accept extension filter parameter', async () => {
-			expect(typeof getAllFiles).toBe('function');
-		});
-
-		it('should work with .tsx extensions', async () => {
-			expect(typeof getAllFiles).toBe('function');
-		});
-
-		it('should work with .ts extensions', async () => {
-			expect(typeof getAllFiles).toBe('function');
-		});
-
 		it('should return an array', async () => {
 			const result = await getAllFiles('.');
 			expect(Array.isArray(result)).toBe(true);
 		});
 
-		it('should skip node_modules', async () => {
-			const files = await getAllFiles('.');
-			const hasNodeModules = files.some(f => f.includes('node_modules'));
-			expect(hasNodeModules).toBe(false);
+		it('should scan directories recursively and filter extensions', async () => {
+			const dirents = [
+				{ name: 'subdir', isDirectory: () => true, isFile: () => false },
+				{ name: 'file.ts', isDirectory: () => false, isFile: () => true }
+			];
+
+			vi.spyOn(fs.promises, 'readdir').mockResolvedValueOnce(dirents as any).mockResolvedValueOnce(
+				[{ name: 'nested.ts', isDirectory: () => false, isFile: () => true }] as any
+			);
+
+			const result = await getAllFiles('/root', ['.ts']);
+			expect(result).toEqual(['/root/subdir/nested.ts', '/root/file.ts']);
 		});
 
-		it('should skip .next directory', async () => {
-			const files = await getAllFiles('.');
-			const hasNext = files.some(f => f.includes('.next'));
-			expect(hasNext).toBe(false);
+		it('should return empty array when directory cannot be read', async () => {
+			vi.spyOn(fs.promises, 'readdir').mockRejectedValueOnce(new Error('ENOENT'));
+
+			const result = await getAllFiles('/nope', ['.ts']);
+			expect(result).toEqual([]);
+		});
+
+		it('should skip node_modules and .next directories during scanning', async () => {
+			const dirents = [
+				{ name: 'node_modules', isDirectory: () => true, isFile: () => false },
+				{ name: '.next', isDirectory: () => true, isFile: () => false },
+				{ name: 'file.ts', isDirectory: () => false, isFile: () => true }
+			];
+
+			vi.spyOn(fs.promises, 'readdir').mockResolvedValueOnce(dirents as any);
+			const result = await getAllFiles('/root', ['.ts']);
+			expect(result).toEqual(['/root/file.ts']);
 		});
 	});
 
@@ -238,9 +249,41 @@ describe('Component Analysis', () => {
 			expect(result).toBe(false);
 		});
 
-		it('should return false for non-existent directory', async () => {
-			const result = await checkComponentUsage('/nonexistent/path', 'general/button');
-			expect(result).toBe(false);
+		it('should detect semantic component usage in site files', async () => {
+			vi.spyOn(fs.promises, 'readdir').mockResolvedValueOnce([{ name: 'index.tsx', isDirectory: () => false, isFile: () => true }] as any);
+			vi.spyOn(fs.promises, 'readFile').mockResolvedValueOnce('import { PageTitleHeader } from "@pixelated-tech/components";');
+
+			const result = await checkComponentUsage('/site', 'general/semantic');
+			expect(result).toBe(true);
+		});
+
+		it('should detect regular component usage by export name', async () => {
+			vi.spyOn(fs.promises, 'readdir').mockResolvedValueOnce([{ name: 'index.tsx', isDirectory: () => false, isFile: () => true }] as any);
+			vi.spyOn(fs.promises, 'readFile').mockResolvedValueOnce('import { Modal } from "@pixelated-tech/components";');
+
+			const result = await checkComponentUsage('/site', 'general/modal');
+			expect(result).toBe(true);
+		});
+	});
+
+	describe('analyzeComponentUsage', () => {
+		it('should populate usage matrix and ignore failed site scans', async () => {
+			const spy = vi.spyOn(componentAnalysisModule, 'checkComponentUsage').mockImplementation(async (_sitePath, componentName) => {
+				if (componentName === 'fail-component') {
+					throw new Error('scan failed');
+				}
+				return componentName === 'used-component';
+			});
+
+			const result = await analyzeComponentUsage(
+				['used-component', 'fail-component'],
+				[{ name: 'site1', localPath: '/site' } as SiteConfig]
+			);
+
+				expect(result.usageMatrix).toHaveProperty('used-component');
+				expect(result.usageMatrix).toHaveProperty('fail-component');
+				expect(result.usageMatrix['used-component']).toHaveProperty('site1');
+				expect(result.usageMatrix['fail-component']).toHaveProperty('site1');
 		});
 
 		it('should handle semantic components specially', async () => {

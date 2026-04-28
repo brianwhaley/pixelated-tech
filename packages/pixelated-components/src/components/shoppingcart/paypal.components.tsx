@@ -16,6 +16,8 @@ import type { CheckoutType } from './shoppingcart.functions';
 */
 PayPalCheckout.propTypes = {
 	payPalClientID: PropTypes.string.isRequired,
+	payPalSecret: PropTypes.string,
+	payPalApiBaseUrl: PropTypes.string,
 	checkoutData: PropTypes.object.isRequired,
 	onApprove: PropTypes.func.isRequired,
 };
@@ -29,6 +31,8 @@ export function PayPalCheckout(props: PayPalCheckoutType) {
 		<div className="pix-cart-payment-method">
 			<PayPal
 				payPalClientID={props.payPalClientID}
+				payPalSecret={props.payPalSecret}
+				payPalApiBaseUrl={props.payPalApiBaseUrl}
 				checkoutData={props.checkoutData}
 				onApprove={props.onApprove}
 			/>

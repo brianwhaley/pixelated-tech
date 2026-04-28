@@ -61,15 +61,21 @@ export async function getAllFiles(dirPath: string, extensions: string[] = []): P
 		}
 	}
 
+	let scanFailed = false;
 	try {
 		await scan(dirPath);
 	} catch {
 		// Dir doesn't exist, continue
+		scanFailed = true;
 	}
 
-	// If no source dirs found, scan the whole dir but exclude common non-source
-	if (files.length === 0) {
-		await scan(dirPath);
+	// If no files were found and the initial scan did not fail, attempt a broader scan
+	if (files.length === 0 && !scanFailed) {
+		try {
+			await scan(dirPath);
+		} catch {
+			// ignore secondary scan failures as well
+		}
 	}
 
 	return files;

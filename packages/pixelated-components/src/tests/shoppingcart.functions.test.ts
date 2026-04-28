@@ -15,6 +15,8 @@ import {
 	getShippingInfo,
 	setShippingInfo,
 	getShippingCost,
+	validateDiscountCode,
+	getRemoteDiscountCodes,
 	getLocalDiscountCodes,
 	setDiscountCodes,
 	getDiscountCode,
@@ -30,6 +32,13 @@ import {
 	type AddressType,
 	type DiscountCodeType,
 } from '../components/shoppingcart/shoppingcart.functions';
+import { getContentfulDiscountCodes } from '../components/integrations/contentful.delivery';
+
+vi.mock('../components/integrations/contentful.delivery', () => ({
+	getContentfulDiscountCodes: vi.fn()
+}));
+
+const mockGetContentfulDiscountCodes = vi.mocked(getContentfulDiscountCodes);
 
 type ShoppingCartType = CartItemType;
 
@@ -309,20 +318,33 @@ describe('Shopping Cart Functions', () => {
 			expect(cart[0].itemQuantity).toBe(1);
 		});
 
-		it('should increase quantity if item already in cart', () => {
+		it('should increase quantity if item already in cart and less than requested quantity', () => {
 			const item: ShoppingCartType = {
 				itemID: '1',
 				itemTitle: 'Item 1',
 				itemQuantity: 5,
 				itemCost: 10,
 			};
-			// ensure public store is clean
-			setCart([]);
+			setCart([{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 }]);
 			addToShoppingCart(item);
-			addToShoppingCart(item);
+
 			const cart = getCart();
 			expect(cart.length).toBe(1);
 			expect(cart[0].itemQuantity).toBe(2);
+		});
+
+		it('should not increase quantity when existing quantity is greater than requested quantity', () => {
+			const item: ShoppingCartType = {
+				itemID: '1',
+				itemTitle: 'Item 1',
+				itemQuantity: 1,
+				itemCost: 10,
+			};
+			setCart([{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 5, itemCost: 10 }]);
+			addToShoppingCart(item);
+
+			const cart = getCart();
+			expect(cart[0].itemQuantity).toBe(5);
 		});
 	});
 
@@ -561,6 +583,61 @@ describe('Shopping Cart Functions', () => {
 
 		it('should return undefined for empty string', () => {
 			const result = getDiscountCode('');
+			expect(result).toBeUndefined();
+		});
+	});
+
+	describe('validateDiscountCode', () => {
+		beforeEach(() => {
+			mockGetContentfulDiscountCodes.mockReset();
+		});
+
+		it('should return true for empty discount code value', async () => {
+			mockGetContentfulDiscountCodes.mockResolvedValue([{ codeName: 'SAVE10', codeDescription: 'Save 10%', codeType: 'percent', codeStart: '2024-01-01', codeEnd: '2024-12-31', codeValue: 0.1 }]);
+			const result = await validateDiscountCode({ value: '' });
+			expect(result).toBe(true);
+		});
+
+		it('should validate active percent discount codes', async () => {
+			mockGetContentfulDiscountCodes.mockResolvedValue([{ codeName: 'SAVE10', codeDescription: 'Save 10%', codeType: 'percent', codeStart: '2000-01-01', codeEnd: '2099-12-31', codeValue: 0.1 }]);
+			const result = await validateDiscountCode({ value: 'SAVE10' });
+			expect(result).toBe(true);
+		});
+
+		it('should reject expired discount codes', async () => {
+			mockGetContentfulDiscountCodes.mockResolvedValue([{ codeName: 'SAVE5', codeDescription: 'Save $5', codeType: 'amount', codeStart: '2000-01-01', codeEnd: '2000-12-31', codeValue: 5 }]);
+			const result = await validateDiscountCode({ value: 'SAVE5' });
+			expect(result).toBe(false);
+		});
+
+		it('should return false for unknown discount codes', async () => {
+			mockGetContentfulDiscountCodes.mockResolvedValue([{ codeName: 'SAVE10', codeDescription: 'Save 10%', codeType: 'percent', codeStart: '2000-01-01', codeEnd: '2099-12-31', codeValue: 0.1 }]);
+			const result = await validateDiscountCode({ value: 'UNKNOWN' });
+			expect(result).toBe(false);
+		});
+
+		it('should propagate errors when discount code fetch fails', async () => {
+			mockGetContentfulDiscountCodes.mockRejectedValue(new Error('Fetch failed'));
+			await expect(validateDiscountCode({ value: 'SAVE10' })).rejects.toThrow('Fetch failed');
+		});
+	});
+
+	describe('getRemoteDiscountCodes', () => {
+		beforeEach(() => {
+			mockGetContentfulDiscountCodes.mockReset();
+		});
+
+		it('should return remote discount codes when fetch succeeds', async () => {
+			const codes: DiscountCodeType[] = [{ codeName: 'SAVE10', codeDescription: 'Save 10%', codeType: 'percent', codeStart: '2000-01-01', codeEnd: '2099-12-31', codeValue: 0.1 }];
+			mockGetContentfulDiscountCodes.mockResolvedValue(codes);
+
+			const result = await getRemoteDiscountCodes();
+			expect(result).toEqual(codes);
+		});
+
+		it('should return undefined on fetch error', async () => {
+			mockGetContentfulDiscountCodes.mockRejectedValue(new Error('Remote fetch error'));
+			const result = await getRemoteDiscountCodes();
 			expect(result).toBeUndefined();
 		});
 	});

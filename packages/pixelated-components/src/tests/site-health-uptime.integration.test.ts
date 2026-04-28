@@ -1,11 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { checkUptimeHealth, UptimeCheckResult } from '../components/admin/site-health/site-health-uptime.integration';
+import { checkUptimeHealth } from '../components/admin/site-health/site-health-uptime.integration';
+import { Route53Client } from '@aws-sdk/client-route-53';
+import { getFullPixelatedConfig } from '../components/config/config';
+
+const sendMock = vi.fn();
+const getFullPixelatedConfigMock = vi.fn(() => ({
+	aws: {
+		region: 'us-east-1',
+		access_key_id: 'test-key',
+		secret_access_key: 'test-secret'
+	}
+}));
 
 vi.mock('@aws-sdk/client-route-53', () => ({
 	Route53Client: vi.fn(function() {
-		return {
-			send: vi.fn()
-		};
+		return { send: sendMock };
 	}),
 	GetHealthCheckStatusCommand: vi.fn(function(this: any, params: any) {
 		this.HealthCheckId = params.HealthCheckId;
@@ -14,13 +23,7 @@ vi.mock('@aws-sdk/client-route-53', () => ({
 }));
 
 vi.mock('../../config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({
-		aws: {
-			region: 'us-east-1',
-			access_key_id: 'test-key',
-			secret_access_key: 'test-secret'
-		}
-	}))
+	getFullPixelatedConfig: getFullPixelatedConfigMock
 }));
 
 describe('checkUptimeHealth', () => {
@@ -234,26 +237,50 @@ describe('checkUptimeHealth', () => {
 
 	describe('Uptime Metrics', () => {
 		it('should track multiple regional health observations', async () => {
+			sendMock.mockResolvedValueOnce({
+				HealthCheckObservations: [{ StatusReport: { Status: 'Success' } }]
+			});
 			const result = await checkUptimeHealth('health-check-id');
 
-			expect(result).toBeDefined();
+			expect(result.data?.status).toBe('Healthy');
 		});
 
 		it('should support various AWS regions', async () => {
-			const regions = ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1'];
+			getFullPixelatedConfigMock.mockReturnValueOnce({ aws: { region: 'eu-west-1' } } as any);
+			sendMock.mockResolvedValueOnce({
+				HealthCheckObservations: [{ StatusReport: { Status: 'Failure' } }]
+			});
 
-			for (const region of regions) {
-				const result = await checkUptimeHealth('health-check-id');
-				expect(result).toBeDefined();
-			}
+			const result = await checkUptimeHealth('health-check-id');
+			expect(result.data?.status).toBe('Unhealthy');
 		});
 
 		it('should calculate overall health from regional observations', async () => {
+			sendMock.mockResolvedValueOnce({
+				HealthCheckObservations: [{ StatusReport: { Status: 'Unknown' } }]
+			});
 			const result = await checkUptimeHealth('health-check-id');
+			expect(result.data?.status).toBe('Unknown');
+		});
 
-			if (result.data) {
-				expect(['Healthy', 'Unhealthy', 'Unknown']).toContain(result.data.status);
-			}
+		it('should handle missing observations gracefully', async () => {
+			sendMock.mockResolvedValueOnce({});
+			const result = await checkUptimeHealth('health-check-id');
+			expect(result.data?.status).toBe('Unknown');
+		});
+
+		it('should handle AWS SDK failures gracefully', async () => {
+			sendMock.mockRejectedValueOnce(new Error('AWS error'));
+			const result = await checkUptimeHealth('health-check-id');
+			expect(result.data?.status).toBe('Unknown');
+			expect(result.data?.message).toBe('Check failed');
+		});
+
+		it('should fall back to default region when no region is configured', async () => {
+			getFullPixelatedConfigMock.mockReturnValueOnce({} as any);
+			sendMock.mockResolvedValueOnce({ HealthCheckObservations: [{ StatusReport: { Status: 'Success' } }] });
+			const result = await checkUptimeHealth('health-check-id');
+			expect(result.data?.status).toBe('Healthy');
 		});
 	});
 });

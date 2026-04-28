@@ -1,6 +1,6 @@
 {
 	"name": "threemuses",
-	"version": "0.1.29",
+	"version": "0.1.30",
 	"private": true,
 	"description": "Pixelated starter template for Next.js, Typescript, and common configs",
 	"license": "MIT",
@@ -13,6 +13,10 @@
 		"build": "npm run clean && NODE_ENV=production next build --webpack",
 		"start": "npm run clean && next build --webpack && next start",
 		"lint": "eslint --fix",
+		"test": "vitest run --silent",
+		"test:coverage": "vitest run --coverage",
+		"test:watch": "vitest",
+		"test:ui": "vitest --ui",
 		"clean": "rm -rf .next && rm -rf out",
 		"generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
@@ -30,6 +34,7 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "9.39.4",
+		"@testing-library/react": "^16.3.2",
 		"@types/md5": "^2.3.6",
 		"@types/node": "^25.5.0",
 		"@types/prop-types": "^15.7.15",
@@ -39,7 +44,9 @@
 		"eslint-config-next": "^16.2.2",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"glob": "^13.0.6",
-		"typescript": "^6.0.2"
+		"jsdom": "^29.1.0",
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.5"
 	},
 	"overrides": {
 		"@aws-sdk/xml-builder": {

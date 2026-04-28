@@ -5,13 +5,17 @@ import { createMockConfig } from '../test/config.mock';
 import { ShoppingCart } from '../components/shoppingcart/shoppingcart.components';
 import { setCart, setShippingInfo, clearShoppingCart } from '../components/shoppingcart/shoppingcart.functions';
 
-vi.mock('../components/shoppingcart/paypal.components', () => ({
-	PayPalCheckout: ({ onApprove }: any) => (
-		<button data-testid="paypal-checkout" onClick={() => onApprove({ data: 'paypal-success' })}>
-			PayPal Checkout
-		</button>
-	),
-}));
+vi.mock('../components/shoppingcart/paypal.components', async () => {
+	const actual = await vi.importActual<typeof import('../components/shoppingcart/paypal.components')>('../components/shoppingcart/paypal.components');
+	return {
+		...actual,
+		PayPalCheckout: ({ onApprove }: any) => (
+			<button data-testid="paypal-checkout" onClick={() => onApprove({ data: 'paypal-success' })}>
+				PayPal Checkout
+			</button>
+		),
+	};
+});
 
 vi.mock('../components/shoppingcart/square.components', async () => {
 	const actual = await vi.importActual<typeof import('../components/shoppingcart/square.components')>('../components/shoppingcart/square.components');

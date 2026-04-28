@@ -4,8 +4,33 @@ import React, { use } from 'react';
 import { EbayItemDetail, usePixelatedConfig } from "@pixelated-tech/components";
 import { ContentfulItemDetail } from "@pixelated-tech/components";
 
-function isNumeric(value: any) {
+export function isNumeric(value: any) {
 	return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
+export function createEbayItemApiProps(pixelatedConfig: any, item: string) {
+	return {
+		proxyURL: pixelatedConfig.ebay?.proxyURL || '',
+		qsItemURL: `/v1|${item}|0?fieldgroups=PRODUCT,ADDITIONAL_SELLER_DETAILS`,
+		appId: pixelatedConfig.ebay?.appId || '', // clientId
+		appCertId: pixelatedConfig.ebay?.appCertId || '', // clientSecret
+		tokenScope: pixelatedConfig.ebay?.tokenScope || '',
+		globalId: pixelatedConfig.ebay?.globalId || 'EBAY-US',
+	};
+}
+
+export function createContentfulItemApiProps(pixelatedConfig: any) {
+	return {
+		proxyURL: pixelatedConfig.contentful?.proxyURL || '',
+		base_url: pixelatedConfig.contentful?.base_url || "",
+		space_id: pixelatedConfig.contentful?.space_id || "",
+		environment: pixelatedConfig.contentful?.environment || "",
+		delivery_access_token: pixelatedConfig.contentful?.delivery_access_token || "",
+	};
+}
+
+export function createItemCloudinaryProductEnv(pixelatedConfig: any) {
+	return pixelatedConfig.cloudinary?.product_env || "";
 }
 
 export default function EbayItem({params}: { params: Promise<{ item: string }> }){
@@ -16,22 +41,9 @@ export default function EbayItem({params}: { params: Promise<{ item: string }> }
 	if (!pixelatedConfig) return null;
 
 	if (debug) console.log(item);
-	const ebayApiProps = {
-		proxyURL: pixelatedConfig.ebay?.proxyURL || '',
-		qsItemURL: `/v1|${item}|0?fieldgroups=PRODUCT,ADDITIONAL_SELLER_DETAILS`,
-		appId: pixelatedConfig.ebay?.appId || '', // clientId
-		appCertId: pixelatedConfig.ebay?.appCertId || '', // clientSecret
-		tokenScope: pixelatedConfig.ebay?.tokenScope || '',
-		globalId: pixelatedConfig.ebay?.globalId || 'EBAY-US',
-	};
-	const contentfulApiProps = {
-		proxyURL: pixelatedConfig.contentful?.proxyURL || '',
-		base_url: pixelatedConfig.contentful?.base_url || "",
-		space_id: pixelatedConfig.contentful?.space_id || "",
-		environment: pixelatedConfig.contentful?.environment || "",
-		delivery_access_token: pixelatedConfig.contentful?.delivery_access_token || "",
-	};
-	const cloudinaryProductEnv = pixelatedConfig.cloudinary?.product_env || ""; // Cloudinary environment for product images
+	const ebayApiProps = createEbayItemApiProps(pixelatedConfig, item);
+	const contentfulApiProps = createContentfulItemApiProps(pixelatedConfig);
+	const cloudinaryProductEnv = createItemCloudinaryProductEnv(pixelatedConfig); // Cloudinary environment for product images
 	
 	return (
 		<>

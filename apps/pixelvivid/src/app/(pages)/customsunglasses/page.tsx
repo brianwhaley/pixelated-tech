@@ -1,16 +1,14 @@
  
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { PageTitleHeader, PageSectionHeader, Loading } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { Modal, handleModalOpen } from "@pixelated-tech/components";
-import { Carousel } from "@pixelated-tech/components";
+import { ContentfulReviewsCarousel } from "@pixelated-tech/components";
 import { usePixelatedConfig } from "@pixelated-tech/components";
-import { getContentfulEntriesByType, getContentfulReviewsSchema, ReviewSchema } from "@pixelated-tech/components";
 // import GalleryWrapper from "@/app/elements/gallerywrapper";
-import type { CarouselCardType } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
 
 export default function CustomSunglasses() {
@@ -30,41 +28,6 @@ export default function CustomSunglasses() {
 		handleModalOpen(event.nativeEvent);
   	};
 
-	const [ carouselCards , setCarouselCards ] = useState<CarouselCardType[]>([]);
-	const [ reviewSchemas , setReviewSchemas ] = useState<any[]>([]);
-	const apiProps = {
-		base_url: pixelatedConfig?.contentful?.base_url || "",
-		space_id: pixelatedConfig?.contentful?.space_id || "",
-		environment: pixelatedConfig?.contentful?.environment || "",
-		delivery_access_token: pixelatedConfig?.contentful?.delivery_access_token || "",
-	};
-	useEffect(() => {
-		async function getCarouselCards() {
-			const contentType = "feedback"; 
-			const typeCards = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
-			const items = typeCards.items.filter((card: any) => card.sys.contentType.sys.id === contentType);
-			const cardLength = items.length;
-			const reviewCards = items.map(function (card: any, index: number) {
-				return {
-					headerText: card.fields.description,
-					bodyText: card.fields.reviewer,
-					index: index,
-					cardIndex: index,
-					cardLength: cardLength,
-				};
-			});
-			setCarouselCards(reviewCards);
-			
-			const schemas = await getContentfulReviewsSchema({
-				apiProps: apiProps,
-				itemName: "PixelVivid Custom Sunglasses",
-				itemType: "Service",
-				publisherName: "PixelVivid"
-			});
-			setReviewSchemas(await schemas);
-		}
-		getCarouselCards();
-	}, []);
 
 	return (
 		<>
@@ -196,16 +159,16 @@ export default function CustomSunglasses() {
 			<section style={{backgroundColor: "var(--accent1-color)"}} id="feedback-section">
 				<div className="section-container">
 					<PageSectionHeader title="Customer Feedback" />
-					{reviewSchemas.map((review, idx) => (
-						<ReviewSchema key={idx} review={review} />
-					))}
-					<Carousel 
-						cards={carouselCards} 
+					<ContentfulReviewsCarousel
+						reviewContentType="feedback"
+						itemName="PixelVivid Custom Sunglasses"
+						itemType="Service"
+						publisherName="PixelVivid"
 						draggable={false}
-						imgFit='contain' />
+						imgFit='contain'
+					/>
 				</div>
 			</section>
-
 
 			<section className="section" id="examples-section">
 				<div className="section-container">
@@ -317,30 +280,8 @@ export default function CustomSunglasses() {
 
 						{/* 
 						===== Additional Examples =====
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/50797971781_69834d1b6f_b.jpg" imgClick ={handleImageClick} img="/images/customs/brown-splatter.jpg" imgAlt="Brown Splatter" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/50756659327_c4ca8fdb52_b.jpg" imgClick ={handleImageClick} img="/images/customs/gold-silver-splatter-2.jpg" imgAlt="Gold Silver Splatter" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/50685248287_3e8ebe5201_b.jpg" imgClick ={handleImageClick} img="/images/customs/green-splatter.jpg" imgAlt="Green Splatter" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/50652294433_b48c9ef0e4_b.jpg'" imgClick ={handleImageClick} img="/images/customs/repair-nose.jpg" imgAlt="Repair Nose" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/51202265371_9830735bb9_b.jpg" imgClick ={handleImageClick} img="/images/customs/blue-drip.jpg" imgAlt="Blue Drip" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/50961082721_cb3bc6daf7_b.jpg" imgClick ={handleImageClick} img="/images/customs/camo-drip-2.jpg" imgAlt="Camo Drip" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/51062790717_0e1496d383_b.jpg" imgClick ={handleImageClick} img="/images/customs/red-drip.jpg" imgAlt="Red Drip" title={""} content={""} />
-						</div>
-						<div className="grid-item">
-							<Callout variant="full" layout="vertical" url="https://farm66.static.flickr.com/65535/51203329450_38d7a8bf74_b.jpg" imgClick ={handleImageClick} img="/images/customs/red-white-blue-drip.jpg" imgAlt="Red White Blue Drip" title={""} content={""} />
-						</div>
+{/*
+					Additional example items removed to keep the JSX valid.
 						*/}
 
 					</div>

@@ -26,4 +26,11 @@ describe('Blog page', () => {
 		await waitFor(() => expect(screen.getByTestId('blog-post-list')).toBeInTheDocument());
 		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('site:blog.oaktree-landscaping.com count:0');
 	});
+
+	it('renders the blog page when cached posts are undefined', async () => {
+		mockState.wordpressPosts = undefined as any;
+		render(<Blog />);
+		await waitFor(() => expect(screen.getByTestId('blog-post-list')).toBeInTheDocument());
+		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('site:blog.oaktree-landscaping.com count:0');
+	});
 });

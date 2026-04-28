@@ -1,71 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
-import { Carousel } from "@pixelated-tech/components";
+import { GoogleReviewsCarousel } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import { ReviewSchema } from "@pixelated-tech/components";
-import { getGoogleReviewsByPlaceId } from "@pixelated-tech/components";
 import { usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function AboutUsPage() {
-	const config = usePixelatedConfig();
-	const [carouselCards, setCarouselCards] = useState<any[]>([]);
-	const [reviewSchemas, setReviewSchemas] = useState<any[]>([]);
-
-	useEffect(() => {
-		const fetchReviews = async () => {
-			try {
-				const result = await getGoogleReviewsByPlaceId({
-					placeId: config?.googlePlaces?.placeId || "",
-					proxyBase: config?.global?.proxyUrl || "",
-					apiKey: config?.googlePlaces?.apiKey || "",
-					maxReviews: 100,
-				});
-
-				// Transform reviews to carousel cards
-				const cards = result.reviews.map((review: any, index: number) => ({
-					headerText: `${review.rating}/5 Stars`,
-					subHeaderText: review.text || "",
-					bodyText: `- ${review.author_name}`,
-					index: index,
-					cardIndex: index,
-					cardLength: result.reviews.length,
-					image: review.profile_photo_url || "",
-				}));
-				setCarouselCards(cards);
-
-				// Generate ReviewSchema from same data
-				const schemas = result.reviews.map((review: any) => ({
-					"@context": "https://schema.org/",
-					"@type": "Review",
-					"reviewRating": {
-						"@type": "Rating",
-						"ratingValue": review.rating.toString(),
-					},
-					"author": {
-						"@type": "Person",
-						"name": review.author_name,
-					},
-					"reviewBody": review.text || "",
-					"itemReviewed": {
-						"@type": "LocalBusiness",
-						"name": "Manning Metalworks",
-					},
-				}));
-
-				setReviewSchemas(schemas);
-			} catch (error) {
-				console.error("Error fetching reviews:", error);
-			}
-		};
-
-		if (config?.googleMaps?.apiKey) {
-			fetchReviews();
-		}
-	}, [config?.googleMaps?.apiKey]);
-
-    
+	const config = usePixelatedConfig();    
 	return (
 		<>
 
@@ -102,10 +44,15 @@ export default function AboutUsPage() {
 
 			<PageSection columns={1} maxWidth="768px" padding="20px" id="reviews-section">
 				<PageSectionHeader title="Customer Reviews" />
-				{reviewSchemas.map((review, idx) => (
-					<ReviewSchema key={idx} review={review} />
-				))}
-				{carouselCards.length > 0 && <Carousel cards={carouselCards} />}
+				{config?.googlePlaces?.placeId && (
+					<GoogleReviewsCarousel
+						placeId={config.googlePlaces.placeId}
+						apiKey={config?.googlePlaces?.apiKey || ''}
+						proxyBase={config?.global?.proxyUrl || ''}
+						maxReviews={10}
+						businessName="Manning Metalworks"
+					/>
+				)}
 			</PageSection>
 
 		</>

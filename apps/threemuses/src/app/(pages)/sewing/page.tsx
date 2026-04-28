@@ -1,7 +1,8 @@
 "use client"; 
 
 import React from 'react';
-import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
+import { Callout } from '@pixelated-tech/components';
 
 export default function SewingPage() {
 	return (
@@ -14,9 +15,30 @@ export default function SewingPage() {
 					</p>
 				
 					<p>
-In addition to our scheduled curriculum, Erato's Sewing Studio offers the unique opportunity to host custom-held events tailored specifically to your group’s interests and celebrations. Whether you are looking to organize a memorable "sip and sew" bridal shower, a creative birthday party for a young aspiring designer, or a specialized team-building workshop for your organization, we can design a private event that perfectly suits your vision. Beyond education and celebration, we provide essential in-house technical services including professional alterations and precise body measurements. Our expert seamstresses handle everything from simple hems to complex formalwear adjustments with the meticulous attention to detail that ensures your wardrobe fits exactly as it was intended. By providing these services in-house, we offer a level of craftsmanship and personalized care that mass-market tailors simply cannot match. We invite you to visit the studio to discuss your next custom project, book a private fitting, or join a community of makers who believe that every stitch tells a story of skill and dedication.
+					In addition to our scheduled curriculum, Erato's Sewing Studio offers the unique opportunity to host custom-held events tailored specifically to your group’s interests and celebrations. Whether you are looking to organize a memorable "sip and sew" bridal shower, a creative birthday party for a young aspiring designer, or a specialized team-building workshop for your organization, we can design a private event that perfectly suits your vision. Beyond education and celebration, we provide essential in-house technical services including professional alterations and precise body measurements. Our expert seamstresses handle everything from simple hems to complex formalwear adjustments with the meticulous attention to detail that ensures your wardrobe fits exactly as it was intended. By providing these services in-house, we offer a level of craftsmanship and personalized care that mass-market tailors simply cannot match. We invite you to visit the studio to discuss your next custom project, book a private fitting, or join a community of makers who believe that every stitch tells a story of skill and dedication.
 					</p>
 				</div>
+			</PageSection>
+
+
+
+			<PageSection columns={1} maxWidth="1024px" id="events-section">
+
+				<PageGridItem columnSpan={3}>
+					<PageSectionHeader title="Our Upcoming Events" />
+				</PageGridItem>
+
+				<Callout
+					variant="boxedgrid"
+					layout="horizontal"
+					img="/images/logo/muse2-erato.png"
+					url="/events"
+					title="Erato's Upcoming Sewing Events"
+					subtitle="Join Us for Sewing Workshops, Classes, and Summer Camps" 
+					content="Whether you're a beginner eager to learn the basics or an experienced sewer looking to refine your skills, Erato's sewing events offer something for everyone. Our workshops and classes cover a range of topics, from mastering the fundamentals of sewing to exploring advanced techniques. Plus, our summer camps provide an immersive experience for young creatives to dive into the world of sewing in a fun and supportive environment. Join us and let Erato inspire your creativity with every stitch."
+					buttonText="Upcoming Sewing Events"
+				/>
+
 			</PageSection>
 		</>
 	);

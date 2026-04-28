@@ -255,6 +255,17 @@ describe('pageStorageLocal - Real Implementation Tests', () => {
 			expect(result.pages).toEqual([]);
 		});
 
+		it('should create pages directory when missing', async () => {
+			(fs.existsSync as any).mockReturnValueOnce(false);
+			(fs.readdirSync as any).mockReturnValueOnce(['page-a.json']);
+
+			const result = await listPages();
+
+			expect(result.success).toBe(true);
+			expect(result.pages).toEqual(['page-a']);
+			expect((fs.mkdirSync as any)).toHaveBeenCalledWith(expect.stringContaining('public/data/pages'), { recursive: true });
+		});
+
 		it('should filter only .json files', async () => {
 			(fs.existsSync as any).mockReturnValue(true);
 			(fs.readdirSync as any).mockReturnValue(['page-a.json', 'readme.txt', 'page-b.json']);
@@ -331,6 +342,18 @@ describe('pageStorageLocal - Real Implementation Tests', () => {
 			expect((fs.writeFileSync as any)).toHaveBeenCalled();
 		});
 
+		it('should return failure when writeFileSync throws', async () => {
+			(fs.existsSync as any).mockReturnValue(false);
+			(fs.writeFileSync as any).mockImplementation(() => {
+				throw new Error('Disk full');
+			});
+
+			const result = await savePage('test-page', { components: [] });
+
+			expect(result.success).toBe(false);
+			expect(result.message).toContain('Failed to save page');
+		});
+
 		it('should reject invalid page name', async () => {
 			const result = await savePage('page#invalid', { components: [] });
 
@@ -352,6 +375,18 @@ describe('pageStorageLocal - Real Implementation Tests', () => {
 
 			expect(result.success).toBe(true);
 			expect((fs.unlinkSync as any)).toHaveBeenCalled();
+		});
+
+		it('should return failure when unlinkSync throws', async () => {
+			(fs.existsSync as any).mockReturnValue(true);
+			(fs.unlinkSync as any).mockImplementation(() => {
+				throw new Error('Permission denied');
+			});
+
+			const result = await deletePage('old-page');
+
+			expect(result.success).toBe(false);
+			expect(result.message).toContain('Failed to delete page');
 		});
 
 		it('should reject invalid page name', async () => {

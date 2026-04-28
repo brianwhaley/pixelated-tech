@@ -1,4 +1,7 @@
 import React from 'react';
+import fs from 'node:fs';
+import path from 'node:path';
+import config from '@/app/config/pixelated.config.json';
 
 export interface FileDataState {
 	data: string | null;
@@ -25,52 +28,180 @@ export const resetMockState = () => {
 	mockState.wordpressPosts = [{ id: 1, title: 'Test Post' }];
 	mockState.spotifySeries = { name: 'Test Series' };
 	mockState.spotifyEpisodes = [{ id: 1, pubDate: '2024-01-01' }];
+	resetFileDataState();
+	resetPixelatedConfigOverride();
+	resetGoogleReviewsResponse();
+	resetContentfulMocks();
 };
 
-export const createPageComponentMocks = (overrides: Record<string, any> = {}) => ({
+let fileDataState: FileDataState | null = null;
+export const setFileDataState = (state: FileDataState | null) => {
+	fileDataState = state;
+};
+export const resetFileDataState = () => {
+	fileDataState = null;
+};
+
+let pixelatedConfigOverride: any = undefined;
+export const setPixelatedConfigOverride = (override: any | null) => {
+	pixelatedConfigOverride = override;
+};
+export const resetPixelatedConfigOverride = () => {
+	pixelatedConfigOverride = undefined;
+};
+
+let googleReviewsResponse = {
+	reviews: [
+		{
+			rating: 5,
+			text: 'Excellent service',
+			author_name: 'John Doe',
+			profile_photo_url: 'https://example.com/photo.jpg',
+		},
+	],
+};
+export const setGoogleReviewsResponse = (response: any) => {
+	googleReviewsResponse = response;
+};
+export const resetGoogleReviewsResponse = () => {
+	googleReviewsResponse = {
+		reviews: [
+			{
+				rating: 5,
+				text: 'Excellent service',
+				author_name: 'John Doe',
+				profile_photo_url: 'https://example.com/photo.jpg',
+			},
+		],
+	};
+};
+
+let contentfulEntriesResponse: any = { items: [], includes: { Asset: [] } };
+let contentfulEntryResponse: any = null;
+let contentfulImagesResponse: any[] = [];
+let buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
+
+export const setContentfulEntriesResponse = (response: any) => {
+	contentfulEntriesResponse = response;
+};
+export const setContentfulEntryResponse = (response: any) => {
+	contentfulEntryResponse = response;
+};
+export const setContentfulImagesResponse = (response: any[]) => {
+	contentfulImagesResponse = response;
+};
+export const setBuildEventSchema = (fn: (event: any) => any) => {
+	buildEventSchemaImpl = fn;
+};
+export const resetContentfulMocks = () => {
+	contentfulEntriesResponse = { items: [], includes: { Asset: [] } };
+	contentfulEntryResponse = null;
+	contentfulImagesResponse = [];
+	buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
+};
+
+const readPublicData = (filePath: string): string | null => {
+	const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+	const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
+	if (!fs.existsSync(resolvedPath)) {
+		return null;
+	}
+	return fs.readFileSync(resolvedPath, 'utf-8');
+};
+
+const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style }: any) => {
+	const textContent = title ??
+		content ??
+		(site && Array.isArray(posts) ? `site:${site} count:${posts.length}` :
+			markdowndata ??
+			(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
+				undefined));
+
+	const props: any = { 'data-testid': testId ?? `mock-${name.toLowerCase()}` };
+	if (className) props.className = className;
+	if (id) props.id = id;
+	if (style) props.style = style;
+
+	return React.createElement(
+		'div',
+		props,
+		textContent ?? children ?? null,
+	);
+};
+
+const defaultMocks: Record<string, any> = {
 	__esModule: true,
-	PageTitleHeader: ({ title }: any) => React.createElement('h1', { 'data-testid': 'page-title-header' }, title),
-	PageSection: ({ children, id }: any) => React.createElement('section', { 'data-testid': 'page-section', id }, children),
-	PageSectionHeader: ({ title }: any) => React.createElement('h2', { 'data-testid': 'page-section-header' }, title),
-	PageGridItem: ({ children }: any) => React.createElement('div', { 'data-testid': 'page-grid-item' }, children),
-	PageFlexItem: ({ children }: any) => React.createElement('div', { 'data-testid': 'page-flex-item' }, children),
-	Callout: ({ content }: any) => React.createElement('div', { 'data-testid': 'callout' }, content),
-	FAQAccordion: ({ faqsData }: any) => React.createElement('div', { 'data-testid': 'faq-accordion' }, `faq:${faqsData?.length}`),
-	SchemaFAQ: () => React.createElement('div', { 'data-testid': 'schema-faq' }, null),
-	Markdown: ({ markdowndata }: any) => React.createElement('div', { 'data-testid': 'markdown' }, markdowndata),
-	useFileData: () => mockState.fileData,
-	BlogPostList: ({ site, posts }: any) => React.createElement('div', { 'data-testid': 'blog-post-list' }, `site:${site} count:${posts?.length}`),
-	SchemaBlogPosting: () => React.createElement('div', { 'data-testid': 'schema-blog-posting' }, null),
-	mapWordPressToBlogPosting: (post: any) => post,
+	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
+	useFileData: (filePath: string) => {
+		if (fileDataState) {
+			return fileDataState;
+		}
+		if (mockState.fileData !== undefined && mockState.fileData !== null) {
+			return mockState.fileData;
+		}
+		const data = readPublicData(filePath);
+		return {
+			data,
+			loading: false,
+			error: data === null ? `File not found: ${filePath}` : null,
+		};
+	},
 	getCachedWordPressItems: async () => mockState.wordpressPosts,
-	ToggleLoading: () => null,
 	getSpotifySeries: async () => mockState.spotifySeries,
 	getSpotifyEpisodes: async () => mockState.spotifyEpisodes,
-	PodcastEpisodeList: ({ episodes }: any) => React.createElement('div', { 'data-testid': 'podcast-episode-list' }, `episodes:${episodes?.length}`),
-	SchemaPodcastSeries: () => React.createElement('div', { 'data-testid': 'schema-podcast-series' }, null),
-	SchemaPodcastEpisode: () => React.createElement('div', { 'data-testid': 'schema-podcast-episode' }, null),
+	mapWordPressToBlogPosting: (post: any) => post,
 	mapPodcastSeriesToSchema: (series: any) => series,
 	mapPodcastEpisodeToSchema: (episode: any) => episode,
+	getGoogleReviewsByPlaceId: async () => googleReviewsResponse,
+	getContentfulEntriesByType: async () => contentfulEntriesResponse,
+	getContentfulEntryByField: async () => contentfulEntryResponse,
+	getContentfulImagesFromEntries: async () => contentfulImagesResponse,
+	buildEventSchema: (event: any) => buildEventSchemaImpl(event),
+	getGravatarProfile: async () => null,
+	ToggleLoading: () => null,
 	MicroInteractions: () => null,
-	FormEngine: () => React.createElement('div', { 'data-testid': 'form-engine' }, null),
-	Calendly: () => React.createElement('div', { 'data-testid': 'calendly' }, null),
-	StyleGuideUI: ({ routes }: any) => React.createElement('div', { 'data-testid': 'styleguide-ui' }, `routes:${routes?.length}`),
-	Tiles: ({ cards }: any) => React.createElement('div', { 'data-testid': 'tiles' }, `cards:${cards?.length}`),
-	MenuAccordion: ({ children }: any) => React.createElement('div', { 'data-testid': 'menu-accordion' }, children),
-	MenuAccordionButton: () => React.createElement('button', { 'data-testid': 'menu-accordion-button' }, 'Menu'),
-	MenuSimple: ({ children }: any) => React.createElement('div', { 'data-testid': 'menu-simple' }, children),
-	SmartImage: ({ src, alt }: any) => React.createElement('img', { 'data-testid': 'smart-image', src: src || '/images/placeholder.png', alt: alt || '' }),
-	GoogleAnalytics: () => React.createElement('div', { 'data-testid': 'google-analytics' }, null),
-	PixelatedFooter: () => React.createElement('div', { 'data-testid': 'pixelated-footer' }, null),
+	preloadAllCSS: () => null,
+	preloadImages: () => null,
+	SkeletonLoading: () => React.createElement('div', { 'data-testid': 'skeleton-loading' }, null),
+	GlobalErrorUI: ({ error, reset }: any) => React.createElement('div', { 'data-testid': 'global-error-ui' }, [error?.message, typeof reset]),
+	FourOhFour: mockComponent('FourOhFour', 'four-oh-four'),
+	PageTitleHeader: mockComponent('PageTitleHeader', 'page-title-header'),
+	PageSection: mockComponent('PageSection'),
+	PageSectionHeader: mockComponent('PageSectionHeader'),
+	BreadcrumbListSchema: () => null,
 	WebsiteSchema: () => null,
 	LocalBusinessSchema: () => null,
 	ServicesSchema: () => null,
-	BreadcrumbListSchema: () => null,
-	VisualDesignStyles: () => null,
-	FourOhFour: ({ images }: any) => React.createElement('div', { 'data-testid': 'four-oh-four' }, `images:${images?.length}`),
-	SkeletonLoading: () => React.createElement('div', { 'data-testid': 'skeleton-loading' }, null),
-	preloadAllCSS: () => null,
-	preloadImages: () => null,
-	GlobalErrorUI: ({ error, reset }: any) => React.createElement('div', { 'data-testid': 'global-error-ui' }, [error?.message, typeof reset]),
-	...overrides,
-});
+	Hero: mockComponent('Hero'),
+	SmartImage: mockComponent('SmartImage', 'smart-image'),
+	MenuAccordion: mockComponent('MenuAccordion'),
+	MenuAccordionButton: mockComponent('MenuAccordionButton', 'menu-accordion-button'),
+	MenuSimple: mockComponent('MenuSimple', 'menu-simple'),
+	GoogleAnalytics: mockComponent('GoogleAnalytics', 'google-analytics'),
+	PixelatedFooter: mockComponent('PixelatedFooter', 'pixelated-footer'),
+	PageGridItem: mockComponent('PageGridItem'),
+	PageFlexItem: mockComponent('PageFlexItem'),
+	Callout: mockComponent('Callout', 'callout'),
+	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
+	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
+	Markdown: mockComponent('Markdown', 'markdown'),
+	BlogPostList: mockComponent('BlogPostList', 'blog-post-list'),
+	SchemaBlogPosting: mockComponent('SchemaBlogPosting', 'schema-blog-posting'),
+	StyleGuideUI: mockComponent('StyleGuideUI', 'styleguide-ui'),
+	Calendly: mockComponent('Calendly', 'calendly'),
+	FormEngine: mockComponent('FormEngine', 'form-engine'),
+	Carousel: mockComponent('Carousel', 'carousel'),
+	ReviewSchema: mockComponent('ReviewSchema'),
+	GravatarCard: mockComponent('GravatarCard', 'gravatar-card'),
+	PodcastEpisodeList: mockComponent('PodcastEpisodeList', 'podcast-episode-list'),
+	SchemaPodcastSeries: mockComponent('SchemaPodcastSeries', 'schema-podcast-series'),
+	SchemaPodcastEpisode: mockComponent('SchemaPodcastEpisode', 'schema-podcast-episode'),
+	Tiles: mockComponent('Tiles', 'tiles'),
+};
+
+export const createPageComponentMocks = (overrides: Record<string, any> = {}) => {
+	return {
+		...defaultMocks,
+		...overrides,
+	};
+};

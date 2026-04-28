@@ -91,6 +91,26 @@
 			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
 			"keywords": ["Three Muses","style guide"]
 		} , {
+			"name": "Hidden",
+			"hidden": true,
+			"routes": [ 
+				{ 
+					"name": "Events", 
+					"path": "/events", 
+					"hidden": true,
+					"title": "The Three Muses of Bluffton - Events",
+					"description": "The Three Muses of Bluffton Events page - where you can see adult, youth, and summer camp events.",
+					"keywords": ["Three Muses", "events", "event registration", "adult events", "youth events", "summer camp events"]  
+				} , { 
+					"name": "Event Registration", 
+					"path": "/register", 
+					"hidden": true,
+					"title": "The Three Muses of Bluffton - Event Registration",
+					"description": "Register for events at The Three Muses of Bluffton.",
+					"keywords": ["Three Muses", "event registration", "adult events", "youth events", "summer camp events"]  
+				}
+			]
+		} , {
 			"name": "Admin",
 			"hidden": true,
 			"routes": [ 

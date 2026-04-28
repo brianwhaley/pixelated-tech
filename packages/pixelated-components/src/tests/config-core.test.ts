@@ -122,12 +122,23 @@ describe('config core logic', () => {
 				cloudinary: {
 					product_env: 'prod',
 					api_secret: 'top-secret'
+				},
+				paypal: {
+					sandboxPayPalApiKey: 'sandbox-client-id',
+					sandboxPayPalSecret: 'sandbox-secret',
+					payPalApiKey: 'prod-client-id',
+					payPalSecret: 'prod-secret'
 				}
 			};
 			const client = getClientOnlyPixelatedConfig(fullConfig as any);
 			expect(client.global?.proxyUrl).toBe('test');
 			expect(client.cloudinary).toBeDefined();
 			expect((client.cloudinary as any).api_secret).toBeUndefined();
+			expect(client.paypal).toBeDefined();
+			expect((client.paypal as any).sandboxPayPalApiKey).toBe('sandbox-client-id');
+			expect((client.paypal as any).payPalApiKey).toBe('prod-client-id');
+			expect((client.paypal as any).sandboxPayPalSecret).toBeUndefined();
+			expect((client.paypal as any).payPalSecret).toBeUndefined();
 		});
 	});
 });

@@ -1,6 +1,6 @@
 {
 	"name": "informationfocus",
-	"version": "2.3.22",
+	"version": "2.3.23",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -12,6 +12,10 @@
 		"start": "npm run clean && next build --webpack && next start",
 		"lint": "eslint --fix",
 		"clean": "rm -rf .next && rm -rf out",
+		"test": "vitest run --silent",
+		"test:coverage": "vitest run --coverage",
+		"test:watch": "vitest",
+		"test:ui": "vitest --ui",
 		"generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
 		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
@@ -29,12 +33,15 @@
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "9.39.4",
+		"@testing-library/react": "^16.3.2",
 		"@types/node": "^25.5.2",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
+		"@types/testing-library__react": "^10.0.1",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",
-		"typescript": "^6.0.2"
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.5"
 	}
 }

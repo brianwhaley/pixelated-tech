@@ -347,6 +347,242 @@ describe('Form Component', () => {
       expect(container.querySelector('form')).toBeInTheDocument();
     });
 
+    it('should allow toggling a checkbox option', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormCheckbox',
+            props: {
+              id: 'agree',
+              name: 'agree',
+              label: 'Agreement',
+              display: 'vertical',
+              options: [
+                { value: 'yes', text: 'I agree' }
+              ]
+            }
+          }
+        ]
+      };
+      render(<FormEngine formData={formData as any} />);
+      const checkbox = screen.getByLabelText('I agree') as HTMLInputElement;
+      expect(checkbox.checked).toBe(false);
+      fireEvent.click(checkbox);
+      expect(checkbox.checked).toBe(true);
+      fireEvent.click(checkbox);
+      expect(checkbox.checked).toBe(false);
+    });
+
+    it('should allow selecting different radio options', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormRadio',
+            props: {
+              id: 'choice',
+              name: 'choice',
+              label: 'Choose',
+              display: 'vertical',
+              options: [
+                { value: 'one', text: 'One' },
+                { value: 'two', text: 'Two' }
+              ]
+            }
+          }
+        ]
+      };
+      render(<FormEngine formData={formData as any} />);
+      const optionOne = screen.getByLabelText('One') as HTMLInputElement;
+      const optionTwo = screen.getByLabelText('Two') as HTMLInputElement;
+      expect(optionOne.checked).toBe(false);
+      expect(optionTwo.checked).toBe(false);
+      fireEvent.click(optionOne);
+      expect(optionOne.checked).toBe(true);
+      expect(optionTwo.checked).toBe(false);
+      fireEvent.click(optionTwo);
+      expect(optionOne.checked).toBe(false);
+      expect(optionTwo.checked).toBe(true);
+    });
+
+    it('should block submit when required checkbox is unchecked', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormCheckbox',
+            props: {
+              id: 'agree',
+              name: 'agree',
+              label: 'Agreement',
+              display: 'vertical',
+              required: 'required',
+              validate: 'isOneChecked',
+              options: [
+                { value: 'yes', text: 'I agree' }
+              ]
+            }
+          },
+          {
+            component: 'FormButton',
+            props: { type: 'submit', label: 'Submit' }
+          }
+        ]
+      };
+      const submitHandler = vi.fn();
+      const { container } = render(<FormEngine formData={formData as any} onSubmitHandler={submitHandler} />);
+      const form = container.querySelector('form') as HTMLFormElement;
+      fireEvent.submit(form);
+      expect(submitHandler).not.toHaveBeenCalled();
+    });
+
+    it('should block submit when required radio group has no selection', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormRadio',
+            props: {
+              id: 'choice',
+              name: 'choice',
+              label: 'Choose',
+              display: 'vertical',
+              required: 'required',
+              validate: 'isOneRadioSelected',
+              options: [
+                { value: 'one', text: 'One' },
+                { value: 'two', text: 'Two' }
+              ]
+            }
+          },
+          {
+            component: 'FormButton',
+            props: { type: 'submit', label: 'Submit' }
+          }
+        ]
+      };
+      const submitHandler = vi.fn();
+      const { container } = render(<FormEngine formData={formData as any} onSubmitHandler={submitHandler} />);
+      const form = container.querySelector('form') as HTMLFormElement;
+      fireEvent.submit(form);
+      expect(submitHandler).not.toHaveBeenCalled();
+    });
+
+    it('should allow toggling a checkbox option', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormCheckbox',
+            props: {
+              id: 'agree',
+              name: 'agree',
+              label: 'Agreement',
+              display: 'vertical',
+              options: [
+                { value: 'yes', text: 'I agree' }
+              ]
+            }
+          }
+        ]
+      };
+      render(<FormEngine formData={formData as any} />);
+      const checkbox = screen.getByLabelText('I agree') as HTMLInputElement;
+      expect(checkbox.checked).toBe(false);
+      fireEvent.click(checkbox);
+      expect(checkbox.checked).toBe(true);
+      fireEvent.click(checkbox);
+      expect(checkbox.checked).toBe(false);
+    });
+
+    it('should allow selecting different radio options', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormRadio',
+            props: {
+              id: 'choice',
+              name: 'choice',
+              label: 'Choose',
+              display: 'vertical',
+              options: [
+                { value: 'one', text: 'One' },
+                { value: 'two', text: 'Two' }
+              ]
+            }
+          }
+        ]
+      };
+      render(<FormEngine formData={formData as any} />);
+      const optionOne = screen.getByLabelText('One') as HTMLInputElement;
+      const optionTwo = screen.getByLabelText('Two') as HTMLInputElement;
+      expect(optionOne.checked).toBe(false);
+      expect(optionTwo.checked).toBe(false);
+      fireEvent.click(optionOne);
+      expect(optionOne.checked).toBe(true);
+      expect(optionTwo.checked).toBe(false);
+      fireEvent.click(optionTwo);
+      expect(optionOne.checked).toBe(false);
+      expect(optionTwo.checked).toBe(true);
+    });
+
+    it('should block submit when required checkbox is unchecked', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormCheckbox',
+            props: {
+              id: 'agree',
+              name: 'agree',
+              label: 'Agreement',
+              display: 'vertical',
+              required: 'required',
+              validate: 'isOneChecked',
+              options: [
+                { value: 'yes', text: 'I agree' }
+              ]
+            }
+          },
+          {
+            component: 'FormButton',
+            props: { type: 'submit', label: 'Submit' }
+          }
+        ]
+      };
+      const submitHandler = vi.fn();
+      const { container } = render(<FormEngine formData={formData as any} onSubmitHandler={submitHandler} />);
+      const form = container.querySelector('form') as HTMLFormElement;
+      fireEvent.submit(form);
+      expect(submitHandler).not.toHaveBeenCalled();
+    });
+
+    it('should block submit when required radio group has no selection', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormRadio',
+            props: {
+              id: 'choice',
+              name: 'choice',
+              label: 'Choose',
+              display: 'vertical',
+              required: 'required',
+              validate: 'isOneRadioSelected',
+              options: [
+                { value: 'one', text: 'One' },
+                { value: 'two', text: 'Two' }
+              ]
+            }
+          },
+          {
+            component: 'FormButton',
+            props: { type: 'submit', label: 'Submit' }
+          }
+        ]
+      };
+      const submitHandler = vi.fn();
+      const { container } = render(<FormEngine formData={formData as any} onSubmitHandler={submitHandler} />);
+      const form = container.querySelector('form') as HTMLFormElement;
+      fireEvent.submit(form);
+      expect(submitHandler).not.toHaveBeenCalled();
+    });
+
     it('should render select component', () => {
       const formData = {
         fields: [

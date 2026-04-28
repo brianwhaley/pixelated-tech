@@ -82,3 +82,16 @@ section.page-section {
         display: block;
     }
 }
+
+
+
+
+/* ========================================
+	FORM Styles
+ ======================================== */
+
+#register-form > div > label,
+#register-form .display-horizontal,
+#register-form .display-vertical {
+    margin-left: 0px !important;
+}

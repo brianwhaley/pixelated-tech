@@ -300,23 +300,23 @@ export const mockPageEngineData = {
 export const mockPayPalOrder = {
 	id: 'ORDER-12345',
 	status: 'CREATED',
+	create_time: new Date().toISOString(),
 	purchase_units: [
 		{
 			amount: {
-				currency_code: 'USD',
 				value: '99.99',
 				breakdown: {
-					item_total: { currency_code: 'USD', value: '89.99' },
-					tax_total: { currency_code: 'USD', value: '10.00' },
-					shipping: { currency_code: 'USD', value: '0.00' },
+					item_total: { value: '89.99' },
+					tax_total: { value: '10.00' },
+					shipping: { value: '0.00' },
 				},
 			},
 			items: [
 				{
 					name: 'Laptop Computer',
-					unit_amount: { currency_code: 'USD', value: '89.99' },
+					unit_amount: { value: '89.99' },
 					quantity: '1',
-					sku: 'LAPTOP-001',
+					description: 'Laptop Computer',
 					category: 'PHYSICAL_GOODS',
 				},
 			],
@@ -337,7 +337,6 @@ export const mockPayPalOrder = {
 		email_address: 'john@example.com',
 		payer_id: 'PAYERID12345',
 	},
-	create_time: new Date().toISOString(),
 };
 
 export const mockContentfulImageAssets = {
@@ -466,3 +465,79 @@ export const mockWordPressPosts = [
 		author: null,
 	},
 ];
+
+export function createPayPalSandboxOrderPayload(sandboxEmail: string) {
+	return {
+		intent: 'CAPTURE',
+		purchase_units: [
+			{
+				reference_id: 'PU1',
+				description: 'Pixelated sandbox transaction',
+				amount: {
+					currency_code: 'USD',
+					value: '10.00',
+					breakdown: {
+						item_total: { currency_code: 'USD', value: '7.00' },
+						shipping: { currency_code: 'USD', value: '1.50' },
+						handling: { currency_code: 'USD', value: '0.50' },
+						tax_total: { currency_code: 'USD', value: '1.00' },
+						discount: { currency_code: 'USD', value: '0.00' },
+					},
+				},
+				items: [
+					{
+						name: 'Pixelated Test Widget',
+						unit_amount: { currency_code: 'USD', value: '7.00' },
+						quantity: '1',
+						description: 'Sandbox order item for integration test',
+						category: 'PHYSICAL_GOODS',
+						url: 'https://example.com/product/123',
+					},
+				],
+				shipping: {
+					name: { full_name: 'Jane Buyer' },
+					address: {
+						address_line_1: '123 Market St',
+						address_line_2: 'Suite 100',
+						admin_area_2: 'San Francisco',
+						admin_area_1: 'CA',
+						postal_code: '94103',
+						country_code: 'US',
+					},
+					email_address: sandboxEmail,
+					phone: { phone_number: '5551234567' },
+				},
+			},
+		],
+		payer: {
+			email_address: sandboxEmail,
+			name: {
+				given_name: 'Jane',
+				surname: 'Buyer',
+			},
+			address: {
+				address_line_1: '123 Market St',
+				admin_area_2: 'San Francisco',
+				admin_area_1: 'CA',
+				postal_code: '94103',
+				country_code: 'US',
+			},
+		},
+		payment_source: {
+			card: {
+				number: '4111111111111111',
+				expiry: '2028-12',
+				security_code: '123',
+				name: 'Jane Buyer',
+				billing_address: {
+					address_line_1: '123 Market St',
+					address_line_2: 'Suite 100',
+					admin_area_2: 'San Francisco',
+					admin_area_1: 'CA',
+					postal_code: '94103',
+					country_code: 'US',
+				},
+			},
+		},
+	};
+}

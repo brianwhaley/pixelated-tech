@@ -1,8 +1,47 @@
 # The Three Muses of Bluffton -- Updates
 
-- [ x ] square integration for event registration
+## 2026-04-24 BUILD TO DO
+
+### FOR BRIAN : 
+
+- [  ] Create Social Media accounts as second wave
+- [  ] Build boutique ecommerce as third wave
+- [ x ] Events listing page
+- [ x ] Event 1-Up Description page
+- [ x ] Registration & Checkout Page
+- [  ] add Registration Schedule field to Contentful Event content type
+- [ X ] Get Google Docs from Katie with registration fields
+- [  ] Save each completed registration / payment in Dynamo DB
+- [  ] limit registrations to registration count in contentful
+- [ x ] Square integration for Event Registration
 - [ x ] add contentful events to sitemap.xml like palmetto epoxy projects, find a way to make them generic
-- [  ] save completed transaction data to dynamo db
+- [ X ] Change Kathy to Kathie
+- [  ] Make dancer - lavendar, craft - gold, celebration - deep purple
+- [  ] Summer Hours - June 1 - July 31 - Mon - Thu 12-5, camp 8-12 ; Fri 12-4 adult 4-6, Sat Sun Closed .  Maybe wire this to a contentful content type for no-code updates if it will change regularly.  
+- [  ] Use kKatie's interest list spreadsheet as registrations for the blog
+- [  ] Create wordpress blog, add most recent to home page, create blog listing pae, write announcement blog post
+- [  ] Move Square domain to AWS
+- [  ] Set up improvmx for email address
+
+
+### FOR KATIE
+- [  ] Get an id / password on Katie's Square account (or use hers) to get API key, secret, app id, location id
+- [  ] Get access to info@thethreemusesofbluffton.com email account (or a dedicated one)  for signup for contentful, cloudinary
+- [  ] Get descriptions, dates, times, sessions, schedules, etc of each of the the classes
+- [  ] Initial deposit payment is due, thank you!
+
+
+### Notes :
+ * Bought squishies from Fair - help to bring in walk-ins
+ * hired 2 new seamstresses working 1 day a week
+ * pants hem takes 20 mins, $25 vs competitors' $40
+ * summer camps start in June, 50% deposit to hold the spot
+ * if customer cancels within 48 hours - lose the deposit
+ * 2 week cancellation policy
+ * use of square for ecommerce, if need to we can use PayPal
+ * Adult Sewing Class - May 15 - 8 weeks
+ * Square can send 2500 text messages, and has email service too
+
 
 
 ## 2026-03-28 - BUILD - TO DO 
@@ -20,4 +59,5 @@
 * [  ] Sign Up for Jetpack
 * [  ] Contentful
 * [  ] Cloudinary
+* [  ] Wordpress Blog Account
 * [  ] First month of blog posts (4)

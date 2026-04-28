@@ -127,6 +127,15 @@ describe('App shell coverage', () => {
 		expect(result.request.headers.get('x-origin')).toBe('https://example.com');
 	});
 
+	it('proxies request headers with fallback url when href is unavailable', () => {
+		const result = proxy({
+			nextUrl: { pathname: '/test', search: '?a=1', origin: 'https://example.com', href: undefined },
+			headers: new Headers({}),
+			url: 'https://example.com/test?a=1',
+		} as any);
+		expect(result.request.headers.get('x-url')).toBe('https://example.com/test?a=1');
+	});
+
 	it('returns humans well-known response', async () => {
 		const result = await humansGET({ url: 'https://example.com/humans.txt' } as any);
 		expect(result).toEqual({ type: 'humans', url: 'https://example.com/humans.txt' });

@@ -1,12 +1,16 @@
 {
 	"name": "oaktreelandscaping",
-	"version": "1.1.23",
+	"version": "1.1.24",
 	"private": true,
 	"scripts": {
 		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3007 --experimental-https",
 		"build": "npm run clean && NODE_ENV=production next build --webpack",
 		"start": "npm run clean && next build --webpack && next start",
 		"lint": "eslint --fix",
+		"test": "vitest run --silent",
+		"test:coverage": "vitest run --coverage",
+		"test:watch": "vitest",
+		"test:ui": "vitest --ui",
 		"clean": "rm -rf .next && rm -rf out",
 		"generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
 		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
@@ -24,13 +28,16 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "9.39.4",
+		"@testing-library/react": "^16.3.2",
 		"@types/node": "^25.5.2",
 		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19",
+		"@types/testing-library__react": "^10.0.1",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.3",
 		"glob": "^13.0.6",
-		"typescript": "^6.0.2"
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.5"
 	}
 }

@@ -991,8 +991,12 @@ export type FormCheckboxOptionType = InferProps<typeof FormCheckboxOption.propTy
 function FormCheckboxOption(props: FormCheckboxOptionType) {
 	const inputProps = setupInputProps(props);
 	const isChecked = props.parent.checked ? props.parent.checked.includes(props.value) : false;
+	const parentHasOnChange = Boolean(props.parent && typeof props.parent.onChange === 'function');
+	const controlProps = parentHasOnChange
+		? { checked: isChecked }
+		: { defaultChecked: Boolean(props.selected) };
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (props.parent.onChange) {
+		if (props.parent && typeof props.parent.onChange === 'function') {
 			const currentChecked = props.parent.checked || [];
 			let newChecked;
 			if (e.target.checked) {
@@ -1008,7 +1012,8 @@ function FormCheckboxOption(props: FormCheckboxOptionType) {
 			<input type="checkbox" 
 				id={props.parent.name + "_" + props.text} 
 				name={props.text} value={props.value} 
-				checked={isChecked}
+				{...controlProps}
+				required={!!(props.parent && props.parent.required)}
 				onChange={handleChange}
 				{...inputProps}
 			/>

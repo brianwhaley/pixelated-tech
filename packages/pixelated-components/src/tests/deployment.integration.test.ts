@@ -2,43 +2,51 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { executeDeployment, DeploymentRequest } from '../components/admin/deploy/deployment.integration';
 import type { SiteConfig } from '../components/admin/sites/sites.integration';
 
-// Mock child_process.exec
-vi.mock('child_process', () => {
-	const mockExec = vi.fn((cmd: string, options: any, callback: any) => {
-		// Simulate different command responses
-		if (cmd.includes('git branch --show-current')) {
-			callback(null, { stdout: 'dev\n' });
-		} else if (cmd.includes('git pull')) {
-			callback(null, { stdout: 'Already up to date\n' });
-		} else if (cmd.includes('npm outdated --json')) {
-			callback(null, { stdout: '{}' });
-		} else if (cmd.includes('npm run lint')) {
-			callback(null, { stdout: 'Lint passed\n' });
-		} else if (cmd.includes('npm audit fix')) {
-			callback(null, { stdout: 'Fixed\n' });
-		} else if (cmd.includes('npm version')) {
-			callback(null, { stdout: '1.0.0\n' });
-		} else if (cmd.includes('npm run build')) {
-			callback(null, { stdout: 'Built successfully\n' });
-		} else if (cmd.includes('git add')) {
-			callback(null, { stdout: 'Added files\n' });
-		} else if (cmd.includes('git commit')) {
-			callback(null, { stdout: 'Committed\n' });
-		} else if (cmd.includes('node -p')) {
-			callback(null, { stdout: '1.2.3\n' });
-		} else if (cmd.includes('git push')) {
-			callback(null, { stdout: 'Pushed\n' });
-		} else {
-			callback(null, { stdout: 'Success\n' });
-		}
-	});
+let execBehavior: ((cmd: string, options: any, callback: any) => void) | null = null;
+let mockExec: any;
+function execProxy(...args: any[]) {
+	return mockExec(...args);
+}
+const defaultExec = (cmd: string, options: any, callback: any) => {
+	if (cmd.includes('git branch --show-current')) {
+		callback(null, { stdout: 'dev\n' });
+	} else if (cmd.includes('git pull')) {
+		callback(null, { stdout: 'Already up to date\n' });
+	} else if (cmd.includes('npm outdated --json')) {
+		callback(null, { stdout: '{}' });
+	} else if (cmd.includes('npm run lint')) {
+		callback(null, { stdout: 'Lint passed\n' });
+	} else if (cmd.includes('npm audit fix')) {
+		callback(null, { stdout: 'Fixed\n' });
+	} else if (cmd.includes('npm version')) {
+		callback(null, { stdout: '1.0.0\n' });
+	} else if (cmd.includes('npm run build')) {
+		callback(null, { stdout: 'Built successfully\n' });
+	} else if (cmd.includes('git add')) {
+		callback(null, { stdout: 'Added files\n' });
+	} else if (cmd.includes('git commit')) {
+		callback(null, { stdout: 'Committed\n' });
+	} else if (cmd.includes('node -p')) {
+		callback(null, { stdout: '1.2.3\n' });
+	} else if (cmd.includes('git push')) {
+		callback(null, { stdout: 'Pushed\n' });
+	} else {
+		callback(null, { stdout: 'Success\n' });
+	}
+};
 
-	return {
-		default: { exec: mockExec },
-		exec: mockExec
-	};
+mockExec = vi.fn((cmd: string, options: any, callback: any) => {
+	if (execBehavior) {
+		return execBehavior(cmd, options, callback);
+	}
+
+	return defaultExec(cmd, options, callback);
 });
 
+vi.mock('child_process', () => ({
+	default: { exec: execProxy },
+	exec: execProxy
+}));
 vi.mock('util', () => ({
 	default: {
 		promisify: (fn: any) => {
@@ -79,6 +87,7 @@ describe('Deployment Integration', () => {
 	};
 
 	beforeEach(() => {
+		execBehavior = null;
 		vi.clearAllMocks();
 	});
 
@@ -190,14 +199,85 @@ describe('Deployment Integration', () => {
 				environments: []
 			};
 
-			try {
-				const result = await executeDeployment(request, mockSiteConfig, true);
-				if (result) {
-					expect(Object.keys(result.environments).length).toBe(0);
+			const result = await executeDeployment(request, mockSiteConfig, true);
+			expect(result.environments).toEqual({});
+		});
+
+		it('should fail when not on dev branch', async () => {
+			execBehavior = (cmd, options, callback) => {
+				if (cmd.includes('git branch --show-current')) {
+					callback(null, { stdout: 'main\n' });
+				} else {
+					defaultExec(cmd, options, callback);
 				}
-			} catch (error) {
-				expect(error).toBeDefined();
-			}
+			};
+
+			await expect(executeDeployment(mockRequest, mockSiteConfig, true)).rejects.toThrow('Must be on dev branch');
+		});
+
+		it('should return non-fast-forward environment failure details', async () => {
+			execBehavior = (cmd, options, callback) => {
+				if (cmd.includes('git push')) {
+					callback(new Error('non-fast-forward'), null);
+				} else {
+					defaultExec(cmd, options, callback);
+				}
+			};
+
+			const result = await executeDeployment(mockRequest, mockSiteConfig, true);
+			expect(result.environments.dev).toContain('Non-fast-forward error');
+		});
+
+		it('should return repository not found fallback message', async () => {
+			execBehavior = (cmd, options, callback) => {
+				if (cmd.includes('git push')) {
+					callback(new Error('Repository not found'), null);
+				} else {
+					defaultExec(cmd, options, callback);
+				}
+			};
+
+			const result = await executeDeployment(mockRequest, mockSiteConfig, true);
+			expect(result.environments.dev).toContain('Repository not found or access denied');
+		});
+
+		it('should handle package update check failure gracefully', async () => {
+			execBehavior = (cmd, options, callback) => {
+				if (cmd.includes('npm outdated --json')) {
+					callback(new Error('npm outdated failure'), null);
+				} else {
+					defaultExec(cmd, options, callback);
+				}
+			};
+
+			const result = await executeDeployment(mockRequest, mockSiteConfig, true);
+			expect(result.prep).toContain('Package update check failed');
+		});
+
+		it('should handle lint failure gracefully', async () => {
+			execBehavior = (cmd, options, callback) => {
+				if (cmd.includes('npm run lint')) {
+					callback(new Error('lint failed'), null);
+				} else {
+					defaultExec(cmd, options, callback);
+				}
+			};
+
+			const result = await executeDeployment(mockRequest, mockSiteConfig, true);
+			expect(result.prep).toContain('Linting failed');
+		});
+
+		it('should handle audit fix failure gracefully', async () => {
+			execBehavior = (cmd, options, callback) => {
+				if (cmd.includes('npm audit fix')) {
+					callback(new Error('audit fix failed'), null);
+				} else {
+					defaultExec(cmd, options, callback);
+				}
+			};
+
+			const result = await executeDeployment(mockRequest, mockSiteConfig, true);
+			expect(result.prep).toContain('Audit fix failed');
 		});
 	});
 

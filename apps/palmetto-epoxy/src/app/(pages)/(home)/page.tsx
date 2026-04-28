@@ -5,8 +5,7 @@ import React, { useState, useEffect } from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { usePixelatedConfig } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import { Carousel, type CarouselCardType } from "@pixelated-tech/components";
-import { getContentfulEntriesByType, getContentfulReviewsSchema, ReviewSchema } from "@pixelated-tech/components";
+import { ContentfulReviewsCarousel } from "@pixelated-tech/components";
 import { PageSection, PageSectionHeader, PageGridItem } from "@pixelated-tech/components";
 import { BlogPostList , type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
 import { Loading, ToggleLoading } from '@pixelated-tech/components';
@@ -18,8 +17,6 @@ export default function Home() {
 		return <Loading />;
 	}
 
-	const [ reviewSchemas , setReviewSchemas ] = useState<any[]>([]);
-
 	const wpSite = "blog.palmetto-epoxy.com";
 	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
 	useEffect(() => {
@@ -30,43 +27,7 @@ export default function Home() {
 			ToggleLoading({show: false});
 		})();
 	}, []);
-
-	const [ carouselCards , setCarouselCards ] = useState<CarouselCardType[]>([]);
-	const apiProps = {
-		base_url: config?.contentful?.base_url ?? "",
-		space_id: config?.contentful?.space_id ?? "",
-		environment: config?.contentful?.environment ?? "",
-		delivery_access_token: config?.contentful?.delivery_access_token ?? "",
-	};
-	useEffect(() => {
-		async function getCarouselCards() {
-			const contentType = "reviews"; 
-			const typeCards = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
-			const items = typeCards.items.filter((card: any) => card.sys.contentType.sys.id === contentType);
-			const cardLength = items.length;
-			const reviewCards = items.map(function (card: any, index: number) {
-				return {
-					headerText: card.fields.description,
-					bodyText: card.fields.reviewer,
-					index: index,
-					cardIndex: index,
-					cardLength: cardLength,
-				};
-			});
-			setCarouselCards(reviewCards);
-
-			// Fetch review schemas for JSON-LD
-			const schemas = await getContentfulReviewsSchema({
-				apiProps: apiProps,
-				itemName: "Epoxy Flooring Service",
-				itemType: "Service",
-				publisherName: "Palmetto Epoxy"
-			});
-			setReviewSchemas(schemas);
-		}
-		getCarouselCards();
-	}, []);
-		
+	
 	return (
 		<>
 			<CalloutLibrary.PageTitle title="Palmetto Epoxy" />
@@ -119,13 +80,15 @@ export default function Home() {
 
 
 			<PageSection columns={1} id="home-reviews-section">
-				{reviewSchemas.map((review, idx) => (
-					<ReviewSchema key={idx} review={review} />
-				))}
-				<Carousel 
-					cards={carouselCards} 
+				<ContentfulReviewsCarousel
+					reviewContentType="reviews"
+					itemName="Epoxy Flooring Service"
+					itemType="Service"
+					publisherName="Palmetto Epoxy"
+					maxReviews={100}
 					draggable={true}
-					imgFit='contain' />
+					imgFit='contain'
+				/>
 			</PageSection>
 
 			<PageSection  columns={1} className="section-pavers text-outline" id="reviewCTA-section">

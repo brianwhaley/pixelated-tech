@@ -3,10 +3,11 @@
 
 import React from "react";
 import { use, useState, useEffect, useRef } from 'react';
-import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, FormButton } from "@pixelated-tech/components";
 import { SchemaEvent, buildEventSchema } from "@pixelated-tech/components";
 import { Loading } from "@pixelated-tech/components";
 import { PageTitleHeader,  PageSection, PageSectionHeader } from '@pixelated-tech/components';
+import { useRouter } from 'next/navigation';
 
 type EventCard = {
 	fields: {
@@ -27,6 +28,7 @@ type EventCard = {
 export default function Event({params}: { params: Promise<{ event: string }> }){
 
 	const config = usePixelatedConfig();
+	const router = useRouter();
 
 	if (!config) {
 		return <Loading />;
@@ -87,6 +89,16 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 						<div>Duration: {eventData?.fields?.duration} hours</div>
 						<div>Seats Available: {eventData?.fields?.maxSeats}</div>
 						<div>Price: {toDollars.format(eventData?.fields?.price)}</div>
+						<FormButton
+							id="register-event-button"
+							type="button"
+							text="Register for this event"
+							className="pix-cart-button"
+							onClick={() => {
+								if (!eventData?.fields?.id) return;
+								router.push(`/register?event=${eventData.fields.id}`);
+							}}
+						/>
 					</PageSection>
 					<br /><br />
 				</>
@@ -97,6 +109,5 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 			)
 			}
 		</>
-		
 	);
 }

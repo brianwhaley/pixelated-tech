@@ -146,8 +146,11 @@ export interface NextAuth {
 export interface PaypalConfig {
 	sandboxPayPalApiKey: string;
 	sandboxPayPalSecret: string;
+	sandboxPayPalApiBaseUrl?: string;
+	sandboxPayPalEmails?: string[];
 	payPalApiKey: string;
 	payPalSecret: string;
+	prodPayPalApiBaseUrl?: string;
 }
 
 export interface SquareConfig {
@@ -268,9 +271,7 @@ export const SECRET_CONFIG_KEYS = {
 			'accessToken'
 		],
 		paypal: [
-			'sandboxPayPalApiKey',
 			'sandboxPayPalSecret',
-			'payPalApiKey',
 			'payPalSecret'
 		],
 		square: [

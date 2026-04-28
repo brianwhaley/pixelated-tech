@@ -11,6 +11,7 @@ export function getBaseNextConfig(): NextConfig {
 	return {
 		experimental: {
 			optimizeCss: false,
+			externalDir: true,
 		},
 		outputFileTracingRoot: path.resolve(__dirname, '../../'),
 		outputFileTracingIncludes: {

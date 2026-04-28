@@ -33,6 +33,7 @@
 		"@aws-sdk/client-route-53": "^3.1028.0",
 		"@next/third-parties": "^16.2.3",
 		"axe-core": "^4.11.3",
+		"next": "^16.2.4",
 		"next-auth": "^4.24.14"
 	},
 	"devDependencies": {

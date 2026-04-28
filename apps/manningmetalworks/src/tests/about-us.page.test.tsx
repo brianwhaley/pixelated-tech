@@ -37,12 +37,11 @@ describe('About Us page', () => {
 		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader')).toHaveTextContent('About Manning Metalworks'));
 	});
 
-	it('fetches and renders review cards and schema when apiKey is configured', async () => {
+	it('renders the GoogleReviewsCarousel when apiKey is configured', async () => {
 		render(<AboutUsPage />);
 
 		await waitFor(() => {
-			expect(screen.getAllByTestId('mock-reviewschema').length).toBe(2);
-			expect(screen.getByTestId('mock-carousel')).toBeInTheDocument();
+			expect(screen.getByTestId('mock-googlereviewscarousel')).toBeInTheDocument();
 		});
 	});
 });

@@ -3,6 +3,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { PayPal, initPayPalButton } from '../components/shoppingcart/paypal';
 import { mockPayPalOrder, mockPayPalCheckoutData } from '../test/fixtures';
+import { mockConfig } from '../test/config.mock';
+import configJson from '@/config/pixelated.config.json';
 
 // Mock window.paypal
 (window as any).paypal = {
@@ -12,19 +14,17 @@ import { mockPayPalOrder, mockPayPalCheckoutData } from '../test/fixtures';
 };
 
 describe('PayPal Integration Tests', () => {
-	const mockPayPalConfig = {
-		clientId: 'AZXjxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-		scriptSrc: 'https://www.paypal.com/sdk/js',
-		sdkParams: {
-			'client-id': 'AZXjxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-			'intent': 'capture',
-			'currency': 'USD',
-			'disable-funding': 'credit,card',
-			'disable-card': 'amex',
+	const paypalConfig = mockConfig.paypal!;
+	const sandboxPayPalClientId = paypalConfig.sandboxPayPalApiKey;
+	const sandboxPayPalSecret = paypalConfig.sandboxPayPalSecret;
+	const sandboxPayPalApiBaseUrl = paypalConfig.sandboxPayPalApiBaseUrl || '';
+	const mockCheckoutData = {
+		...mockPayPalCheckoutData,
+		shippingTo: {
+			...mockPayPalCheckoutData.shippingTo,
+			email: paypalConfig.sandboxPayPalEmails?.[0] || mockPayPalCheckoutData.shippingTo.email,
 		},
 	};
-
-	const mockCheckoutData = mockPayPalCheckoutData;
 
 	const mockPayPalCapture = {
 		id: 'ORDER-12345',
@@ -63,7 +63,7 @@ describe('PayPal Integration Tests', () => {
 		it('should render PayPal button container', () => {
 			const { container } = render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={vi.fn()}
 				/>
@@ -76,7 +76,7 @@ describe('PayPal Integration Tests', () => {
 		it('should include PayPal stylesheet link', () => {
 			const { container } = render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={vi.fn()}
 				/>
@@ -89,7 +89,7 @@ describe('PayPal Integration Tests', () => {
 		it('should apply correct class to button container', () => {
 			const { container } = render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={vi.fn()}
 				/>
@@ -114,7 +114,7 @@ describe('PayPal Integration Tests', () => {
 		it('should accept checkoutData prop with invoice details', () => {
 			const { container } = render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={vi.fn()}
 				/>
@@ -127,7 +127,7 @@ describe('PayPal Integration Tests', () => {
 			const onApprove = vi.fn();
 			const { container } = render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={onApprove}
 				/>
@@ -139,13 +139,13 @@ describe('PayPal Integration Tests', () => {
 
 	describe('PayPal SDK Script Loading', () => {
 		it('should load PayPal SDK script with client ID', () => {
-			const clientId = mockPayPalConfig.clientId;
+			const clientId = sandboxPayPalClientId;
 			expect(clientId).toBeDefined();
 			expect(clientId.length).toBeGreaterThan(10);
 		});
 
 		it('should construct correct SDK URL with parameters', () => {
-			const sdkUrl = `https://www.paypal.com/sdk/js?client-id=${mockPayPalConfig.clientId}&currency=USD`;
+			const sdkUrl = `https://www.paypal.com/sdk/js?client-id=${sandboxPayPalClientId}&currency=USD`;
 			expect(sdkUrl).toContain('client-id');
 			expect(sdkUrl).toContain('currency=USD');
 			expect(sdkUrl).toContain('paypal.com');
@@ -154,9 +154,11 @@ describe('PayPal Integration Tests', () => {
 		it('should append PayPal SDK script when not already loaded', () => {
 			render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={vi.fn()}
+					payPalSecret={sandboxPayPalSecret}
+					payPalApiBaseUrl={sandboxPayPalApiBaseUrl}
 				/>
 			);
 
@@ -164,11 +166,38 @@ describe('PayPal Integration Tests', () => {
 			expect(paypalScript).toBeDefined();
 		});
 
+		it('should expose real sandbox PayPal secret and API base URL from config', () => {
+			const buttonRender = vi.fn();
+			const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+			(window as any).paypal.Buttons = buttons;
+			(window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+			render(
+				<PayPal 
+					payPalClientID={sandboxPayPalClientId}
+					checkoutData={mockCheckoutData}
+					onApprove={vi.fn()}
+					payPalSecret={sandboxPayPalSecret}
+					payPalApiBaseUrl={sandboxPayPalApiBaseUrl}
+				/>
+			);
+
+			const paypalScript = document.head.querySelector('script[src*="paypal.com/sdk/js"]') as HTMLScriptElement;
+			expect(paypalScript).toBeDefined();
+			if (paypalScript && paypalScript.onload) {
+				const onLoad = paypalScript.onload as (event: Event) => unknown;
+				onLoad(new Event('load'));
+			}
+
+			expect((window as any).payPalSecret).toBe(sandboxPayPalSecret);
+			expect((window as any).payPalApiBaseUrl).toBe(sandboxPayPalApiBaseUrl);
+		});
+
 		it('should prevent duplicate script loading when sdk already exists', () => {
 			document.head.innerHTML = '<script src="https://www.paypal.com/sdk/js?client-id=existing"></script>';
 			render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={vi.fn()}
 				/>
@@ -187,7 +216,7 @@ describe('PayPal Integration Tests', () => {
 
 			render(
 				<PayPal 
-					payPalClientID={mockPayPalConfig.clientId}
+					payPalClientID={sandboxPayPalClientId}
 					checkoutData={mockCheckoutData}
 					onApprove={onApprove}
 				/>
@@ -252,6 +281,29 @@ describe('PayPal Integration Tests', () => {
 			expect(config.onApprove).toBeInstanceOf(Function);
 		});
 
+		it('should call onApprove with a completed transaction JSON object', async () => {
+			const onApprove = vi.fn();
+			const buttonRender = vi.fn();
+			const buttons = vi.fn((config: any) => ({ render: buttonRender }));
+			(window as any).paypal.Buttons = buttons;
+			(window as any).paypal.Buttons.driver = vi.fn(() => vi.fn());
+
+			initPayPalButton({ checkoutData: mockCheckoutData, onApprove });
+			const config = buttons.mock.calls[0][0];
+
+			const actions = {
+				order: {
+					create: vi.fn(() => Promise.resolve({ id: 'ORDER-12345' })),
+					capture: vi.fn(() => Promise.resolve(mockPayPalCapture)),
+				},
+			};
+
+			await config.onApprove({ orderID: 'ORDER-12345' }, actions);
+			expect(actions.order.capture).toHaveBeenCalled();
+			expect(onApprove).toHaveBeenCalledWith({ data: mockPayPalCapture });
+			expect(onApprove.mock.calls[0][0].data.status).toBe('COMPLETED');
+		});
+
         it('should handle PayPal onError gracefully', () => {
             const showInfoBanner = vi.fn();
             const showError = vi.fn();
@@ -303,6 +355,70 @@ describe('PayPal Integration Tests', () => {
 			expect(capture.status).toBe('COMPLETED');
 			expect(capture.purchase_units[0].payments.captures[0].status).toBe('COMPLETED');
 		});
+	});
+
+	describe('PayPal Sandbox REST API Integration', () => {
+		it('submits a real sandbox PayPal order using pixelated.config.json', async () => {
+			const payPalConfig = configJson.paypal || {};
+			const clientId = payPalConfig.sandboxPayPalApiKey;
+			const secret = payPalConfig.sandboxPayPalSecret;
+			const baseUrl = payPalConfig.sandboxPayPalApiBaseUrl;
+
+			if (!clientId || !secret || !baseUrl) {
+				throw new Error('Missing sandbox PayPal credentials in pixelated.config.json');
+			}
+
+			const auth = Buffer.from(`${clientId}:${secret}`).toString('base64');
+			const tokenRes = await fetch(`${baseUrl}/v1/oauth2/token`, {
+				method: 'POST',
+				headers: {
+					Authorization: `Basic ${auth}`,
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: 'grant_type=client_credentials',
+			});
+
+			const tokenJson = await tokenRes.json();
+			expect(tokenJson.access_token).toBeDefined();
+
+			const orderPayload = {
+				intent: 'CAPTURE',
+				purchase_units: [
+					{
+						amount: {
+							currency_code: 'USD',
+							value: '1.00',
+							breakdown: {
+								item_total: { currency_code: 'USD', value: '1.00' },
+							},
+						},
+						items: [
+							{
+								name: 'Pixelated Sandbox Test',
+								unit_amount: { currency_code: 'USD', value: '1.00' },
+								quantity: '1',
+							},
+						],
+					},
+				],
+			};
+
+			const orderRes = await fetch(`${baseUrl}/v2/checkout/orders`, {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${tokenJson.access_token}`,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(orderPayload),
+			});
+
+			const orderJson = await orderRes.json();
+			expect(orderJson).toMatchObject({
+				status: 'CREATED',
+			});
+			expect(orderJson.id).toBeDefined();
+			console.log('PAYPAL_SANDBOX_ORDER_RESPONSE', JSON.stringify(orderJson, null, 2));
+		}, 20000);
 	});
 
 	describe('Button Configuration', () => {
