@@ -480,6 +480,44 @@ step_bump_version() {
     fi
 }
 
+step_encrypt_config() {
+    echo ""
+    echo "🔐 Step $((STEP_COUNT++)): Encrypt updated config..."
+    echo "================================================="
+
+    if [ "$VERSION_TYPE" = "none" ]; then
+        echo "ℹ️  Version bump is none; skipping config encryption"
+        return
+    fi
+
+    if [ "$CONTEXT_TYPE" = "root" ]; then
+        if [ ${#CHANGED_WORKSPACES[@]} -eq 0 ]; then
+            echo "ℹ️  No changed workspaces; skipping config encryption"
+            return
+        fi
+
+        for workspace_dir in "${CHANGED_WORKSPACES[@]}"; do
+            local full_path="$MONOREPO_ROOT/$workspace_dir"
+            if [ -d "$full_path" ] && [ -f "$full_path/package.json" ]; then
+                if [ -f "$full_path/src/app/config/pixelated.config.json" ] || [ -f "$full_path/src/config/pixelated.config.json" ] || [ -f "$full_path/src/pixelated.config.json" ]; then
+                    echo "  🔐 Encrypting config for $workspace_dir"
+                    pushd "$full_path" >/dev/null
+                    npm run config:encrypt
+                    popd >/dev/null
+                else
+                    echo "  ℹ️  No config source in $workspace_dir; skipping"
+                fi
+            fi
+        done
+    else
+        if [ -f "$WORKSPACE_ROOT/src/app/config/pixelated.config.json" ] || [ -f "$WORKSPACE_ROOT/src/config/pixelated.config.json" ] || [ -f "$WORKSPACE_ROOT/src/pixelated.config.json" ]; then
+            npm run config:encrypt
+        else
+            echo "ℹ️  No config source in workspace; skipping config encryption"
+        fi
+    fi
+}
+
 bump_workspace_package() {
     local workspace_dir="$1"
     local workspace_name
@@ -738,6 +776,7 @@ run_full_workflow() {
     else
         step_bump_version
     fi
+    step_encrypt_config
     step_commit_changes
     step_push_dev
     step_push_tags
