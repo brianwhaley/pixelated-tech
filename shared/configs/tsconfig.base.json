@@ -17,5 +17,9 @@
     "jsx": "react-jsx",
     "incremental": true,
     "plugins": [{ "name": "next" }]
-  }
+  },
+  "exclude": [
+    "**/src/test",
+    "**/src/tests"
+  ]
 }

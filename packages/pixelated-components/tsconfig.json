@@ -129,6 +129,9 @@
   "exclude": [ 
     "dist", 
     "node_modules", 
-    "src/components/pagebuilder/documentation/**"
+    "src/components/pagebuilder/documentation/**",
+    "src/stories",
+    "src/test",
+    "src/tests"
   ]
 }
