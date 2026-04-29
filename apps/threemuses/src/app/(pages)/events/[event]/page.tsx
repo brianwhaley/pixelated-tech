@@ -22,6 +22,7 @@ type EventCard = {
 		duration: number;
 		maxSeats: number;
 		price: number;
+		status: string;
 	};
 };
 
@@ -51,7 +52,7 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
   
 	useEffect(() => {
 		async function getEvent(event: string) {
-			const contentType = "event"; 
+			const contentType = "75OqioFABdZZ1QaQChRGic"; 
 			const entries = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
 			const eventObj = await getContentfulEntryByField({
 				cards: entries,
@@ -84,21 +85,23 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 					<SchemaEvent event={buildEventSchema(eventData, config.siteInfo)} />
 					<PageTitleHeader title={eventData?.fields.title + " - " + eventData?.fields.id || ""} />
 					<PageSection columns={1} id="event-callout-section">
-						<PageSectionHeader title={eventData?.fields?.startDate + " - " + eventData?.fields?.endDate} />
+						<PageSectionHeader title={ new Date(eventData?.fields.startDate).toLocaleString() + " - " + new Date(eventData?.fields.endDate).toLocaleString() } />
 						<div>{eventData?.fields?.description}</div>
 						<div>Duration: {eventData?.fields?.duration} hours</div>
 						<div>Seats Available: {eventData?.fields?.maxSeats}</div>
 						<div>Price: {toDollars.format(eventData?.fields?.price)}</div>
-						<FormButton
-							id="register-event-button"
-							type="button"
-							text="Register for this event"
-							className="pix-cart-button"
-							onClick={() => {
-								if (!eventData?.fields?.id) return;
-								router.push(`/register?event=${eventData.fields.id}`);
-							}}
-						/>
+						{ (eventData?.fields?.status?.toLowerCase?.() === "open") ? 
+							<FormButton
+								id="register-event-button"
+								type="button"
+								text="Register for this event"
+								className="pix-cart-button"
+								onClick={() => {
+									if (!eventData?.fields?.id) return;
+									router.push(`/register?event=${eventData.fields.id}`);
+								}}
+							/>
+							: "" }
 					</PageSection>
 					<br /><br />
 				</>

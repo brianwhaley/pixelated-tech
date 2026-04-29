@@ -24,6 +24,15 @@
 			"postalCode": "07834",
 			"addressCountry": "US"
 		},
+		"openingHours": [
+			{ "day": "Mon", "open": "09:00", "close": "17:00" },
+			{ "day": "Tue", "open": "09:00", "close": "17:00" },
+			{ "day": "Wed", "open": "09:00", "close": "17:00" },
+			{ "day": "Thu", "open": "09:00", "close": "17:00" },
+			{ "day": "Fri", "open": "09:00", "close": "17:00" },
+			{ "day": "Sat", "closed": true },
+			{ "day": "Sun", "closed": true }
+		],
 		"priceRange": "$",
 		"sameAs": [
 			"https://www.facebook.com/pixelvivid",

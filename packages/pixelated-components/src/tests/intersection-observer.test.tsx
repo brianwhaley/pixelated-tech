@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { render, waitFor } from '@testing-library/react';
 import {
 	isElementInViewport,
 	isElementPartiallyInViewport,
@@ -514,6 +515,58 @@ describe('Intersection Observer Utilities', () => {
 		it('should handle undefined element for isElementPartiallyInViewport', () => {
 			const result = isElementPartiallyInViewport(undefined as any);
 			expect(result).toBe(false);
+		});
+	});
+
+	describe('Observer integration scenarios', () => {
+		beforeEach(() => {
+			const IntersectionObserverMock = vi.fn(function (this: any, callback: any) {
+				this.observe = vi.fn((element: any) => {
+					this._element = element;
+				});
+				this.disconnect = vi.fn();
+				this.unobserve = vi.fn();
+				this.trigger = (entries: any) => callback(entries, this);
+			});
+
+			vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+		});
+
+		it('should observe an element using observeIntersection', () => {
+			const callback = vi.fn();
+			const element = document.createElement('div');
+			element.className = 'observed-element';
+			document.body.appendChild(element);
+
+			const cleanup = observeIntersection('.observed-element', callback, {
+				disconnectAfterIntersection: true
+			});
+
+			expect((IntersectionObserver as any).mock.calls.length).toBe(1);
+			const observerInstance = (IntersectionObserver as any).mock.results[0].value;
+			expect(observerInstance.observe).toHaveBeenCalledWith(element);
+
+			observerInstance.trigger([{ target: element, isIntersecting: true }]);
+			expect(callback).toHaveBeenCalled();
+			expect(observerInstance.unobserve).toHaveBeenCalledWith(element);
+
+			cleanup();
+			expect(observerInstance.disconnect).toHaveBeenCalled();
+		});
+
+		it('should use the useIntersectionObserver hook and attach a ref element', async () => {
+			const callback = vi.fn();
+
+			function TestObserver() {
+				const ref = useIntersectionObserver<HTMLDivElement>(callback, { disconnectAfterIntersection: true });
+				return <div ref={ref} data-testid="observed-hook" />;
+			}
+
+			render(<TestObserver />);
+
+			await waitFor(() => {
+				expect((IntersectionObserver as any).mock.results[0].value.observe).toHaveBeenCalled();
+			});
 		});
 	});
 });

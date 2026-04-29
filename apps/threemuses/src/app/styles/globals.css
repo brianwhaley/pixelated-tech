@@ -32,30 +32,7 @@ section.page-section {
  }
 
 
-
-/* ========================================
-	ABOUT US REVIEWS Styles
- ======================================== */
-
-#reviews-section {
-	.carousel-container {
-		height: 470px;
-    	padding: 20px;
-		border-radius: 20px;
-	}
-	.carousel-cards-container {
-		height: 400px;
-	}
-	.carousel-card-wrapper {
-		display: flex;
-  		align-items: center;
-	}
-	.carousel-card-image {
-		object-fit: cover;
-		width: 100px;
-		height: 100px;
-	}
-}
+ 
 
 /* ========================================
 	MENU Styles
@@ -94,4 +71,31 @@ section.page-section {
 #register-form .display-horizontal,
 #register-form .display-vertical {
     margin-left: 0px !important;
+}
+
+
+.callout .callout-button button:hover {
+	color: var(--primary-color) !important;
+}
+
+body.buttonring { 
+	button:hover, .button:hover, .centered-button:hover {
+		outline-color: var(--primary-color) !important;
+	}
+}
+
+
+body.formglow {
+    form input:hover, select:hover, textarea:hover {
+		outline-color: color-mix(in srgb, var(--primary-color), transparent 80%) !important;
+    }
+}
+
+body.formglow {
+    form button:hover, 
+	input:focus, input:focus:hover, 
+	select:focus, select:focus:hover, 
+	textarea:focus, textarea:focus:hover {
+        outline-color: var(--primary-color) !important;
+    }
 }

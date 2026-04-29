@@ -1,9 +1,9 @@
 {
 	"siteInfo": {
-		"name": "Three Muses",
-		"author": "Three Muses",
+		"name": "The Three Muses of Bluffton",
+		"author": "The Three Muses of Bluffton",
 		"description": "The Three Muses of Bluffton - a dancewear boutique in Bluffton, South Carolina.",
-		"keywords": "Three Muses, dancewear, boutique, Bluffton, South Carolina",
+		"keywords": "The Three Muses of Bluffton, dancewear, boutique, Bluffton, South Carolina",
 		"url": "https://www.thethreemusesofbluffton.com",
 		"email": "info@thethreemusesofbluffton.com",
 		"favicon": "/favicon.ico",
@@ -24,6 +24,15 @@
 			"postalCode": "29910",
 			"addressCountry": "US"
 		},
+		"openingHours": [
+			{ "day": "Mon", "closed": true },
+			{ "day": "Tue", "closed": true },
+			{ "day": "Wed", "open": "10:00", "close": "18:00" },
+			{ "day": "Thu", "open": "10:00", "close": "18:00" },
+			{ "day": "Fri", "open": "11:00", "close": "18:00" },
+			{ "day": "Sat", "open": "11:00", "close": "19:00" },
+			{ "day": "Sun", "open": "12:00", "close": "16:00" }
+		],
 		"priceRange": "$",
 		"sameAs": [
 			"https://www.thethreemusesofbluffton.com",
@@ -162,16 +171,22 @@
 	],
 	"visualdesign": {
 		"primary-color": {
-			"value": "#369",
+			"value": "#875CA1",
 			"type": "color",
 			"group": "palette",
 			"label": "Primary color"
 		},
 		"secondary-color": {
-			"value": "#BCD",
+			"value": "#E0BB7F",
 			"type": "color",
 			"group": "palette",
 			"label": "Secondary color"
+		},
+		"tertiary-color": {
+			"value": "#CCB7E5",
+			"type": "color",
+			"group": "palette",
+			"label": "Tertiary color"
 		},
 		"accent1-color": {
 			"value": "#CCC",

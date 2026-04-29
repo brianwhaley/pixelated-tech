@@ -1,8 +1,13 @@
 /* eslint-disable pixelated/no-hardcoded-config-keys */
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import path from 'path';
 import { pathToFileURL } from 'url';
+
+const mockSearchParams = new URLSearchParams('callbackUrl=/');
+const mockSignIn = vi.fn(async () => true);
+const mockSignOut = vi.fn(async () => Promise.resolve());
+const mockUseSession = vi.fn(() => ({ data: null, status: 'unauthenticated' }));
 
 const mockSmartFetch = vi.fn(async (url: unknown) => {
 	const stringUrl = String(url);
@@ -35,7 +40,7 @@ const mockHeaders = {
 
 vi.mock('next/navigation', () => ({
 	__esModule: true,
-	useSearchParams: () => new URLSearchParams('callbackUrl=/'),
+	useSearchParams: () => mockSearchParams,
 	redirect: mockRedirect,
 }));
 
@@ -104,8 +109,9 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 }));
 
 vi.mock('next-auth/react', () => ({
-	useSession: () => ({ data: null, status: 'unauthenticated' }),
-	signIn: vi.fn(),
+	useSession: () => mockUseSession(),
+	signIn: mockSignIn,
+	signOut: mockSignOut,
 	SessionProvider: ({ children }: any) => <>{children}</>,
 }));
 
@@ -220,6 +226,43 @@ describe('pixelated-admin extra coverage', () => {
 		const Nav = mod.default;
 		render(<Nav />);
 		expect(screen.getByText('Not signed in')).toBeTruthy();
+	});
+
+	it('renders the Nav component in loading and authenticated states', async () => {
+		mockUseSession.mockReturnValueOnce({ data: null, status: 'loading' });
+		let mod = await importModule('src/app/components/Nav.tsx');
+		let Nav = mod.default;
+		render(<Nav />);
+		expect(screen.getByText('Loading...')).toBeTruthy();
+
+		mockUseSession.mockReturnValueOnce({ data: { user: { name: 'Test User', email: 'test@example.com' } }, status: 'authenticated' });
+		mod = await importModule('src/app/components/Nav.tsx');
+		Nav = mod.default;
+		render(<Nav />);
+		expect(screen.getByText('Test User')).toBeTruthy();
+		fireEvent.click(screen.getByRole('button', { name: /Sign Out/i }));
+		expect(mockSignOut).toHaveBeenCalledWith({ callbackUrl: '/login' });
+	});
+
+	it('calls signIn with normalized callbackUrl for login redirects', async () => {
+		mockSearchParams.set('callbackUrl', '/login');
+		const mod = await importModule('src/app/(pages)/login/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+		fireEvent.click(screen.getByRole('button', { name: /Sign in with Google/i }));
+		await waitFor(() => expect(mockSignIn).toHaveBeenCalledWith('google', { callbackUrl: '/' }));
+	});
+
+	it('handles signIn rejection and restores the login button state', async () => {
+		mockSearchParams.set('callbackUrl', '/');
+		mockSignIn.mockRejectedValueOnce(new Error('fail'));
+		const mod = await importModule('src/app/(pages)/login/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+		const button = screen.getByRole('button', { name: /Sign in with Google/i });
+		fireEvent.click(button);
+		await waitFor(() => expect(mockSignIn).toHaveBeenCalled());
+		expect(button).not.toBeDisabled();
 	});
 
 	it('renders Providers with children', async () => {

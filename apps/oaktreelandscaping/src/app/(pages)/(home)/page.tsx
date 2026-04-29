@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { PageSection, PageGridItem, PageSectionHeader } from "@pixelated-tech/components";
+import { PageSection, PageGridItem, PageSectionHeader, BusinessFooter, usePixelatedConfig } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { BlogPostList , type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
 import { ToggleLoading } from '@pixelated-tech/components';
@@ -12,7 +12,8 @@ const siteInfo = (siteConfig as any).siteInfo;
 const wpSite = "blog.oaktree-landscaping.com";
 
 export default function Home() {
-
+	const config = usePixelatedConfig();
+	const googleMapsApiKey = config?.googleMaps?.apiKey ?? undefined;
 
 	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
 	useEffect(() => {
@@ -142,50 +143,8 @@ export default function Home() {
 			</PageSection>
 
 			<PageSection maxWidth="1024px" id="service-area-section" columns={1}>
-				<div className="row-3col">
-					<div className="grid-item" style={{ textAlign: 'center' }}>
-						<div>Oaktree Landscaping</div>
-						<div>
-							<a href={`https://maps.app.goo.gl/${siteInfo.address.mapLink}`} target="_blank" rel="noopener noreferrer">
-								{siteInfo.address.streetAddress}
-							</a>
-						</div>
-						<div>
-							<a href={`https://maps.app.goo.gl/${siteInfo.address.mapLink}`} target="_blank" rel="noopener noreferrer">
-								{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
-							</a>
-						</div>
-						<h3>Contact Us</h3>
-						<div>Phone: <a href={`tel:${siteInfo.telephone}`}>{siteInfo.telephone}</a></div>
-						<div>Email: <a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></div>
-					</div>
-
-					<div className="grid-item">
-						<iframe 
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3372.562123684374!2d-81.07583072435703!3d32.29674867386802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88fb914cfa82df15%3A0x9ce34b73caa5a2f!2s26504%20Whyte%20Hardee%20Blvd%2C%20Hardeeville%2C%20SC%2029927!5e0!3m2!1sen!2sus!4v1766428900089!5m2!1sen!2sus" 
-							width="100%" 
-							height="300" 
-							style={{ border: 0 }} 
-							allowFullScreen
-							loading="lazy" 
-							referrerPolicy="no-referrer-when-downgrade">
-						</iframe>
-					</div>
-
-					<div className="grid-item"  style={{ textAlign: 'center' }}>
-						<h3>Hours</h3>
-						<div>Mon: 7AM - 5PM</div>
-						<div>Tue: 7AM - 5PM</div>
-						<div>Wed: 7AM - 5PM</div>
-						<div>Thu: 7AM - 5PM</div>
-						<div>Fri: 7AM - 5PM</div>
-						<div>Sat: 7AM - 5PM</div>
-						<div>Sun: CLOSED</div>
-					</div>
-
-				</div>
+				<BusinessFooter siteInfo={siteInfo} googleMapsApiKey={googleMapsApiKey} />
 			</PageSection>
-
 		</>
 	);
 }

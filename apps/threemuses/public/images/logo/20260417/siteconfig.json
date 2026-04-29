@@ -1,0 +1,22 @@
+{
+	"visualdesign": {
+		"primary-color": {
+			"value": "#E4A9A1",
+			"type": "color",
+			"group": "palette",
+			"label": "Primary color"
+		},
+		"secondary-color": {
+			"value": "#A2B18A",
+			"type": "color",
+			"group": "palette",
+			"label": "Secondary color"
+		},
+		"tertiary-color": {
+			"value": "#C5A46E",
+			"type": "color",
+			"group": "palette",
+			"label": "Tertiary color"
+		}
+	}
+}

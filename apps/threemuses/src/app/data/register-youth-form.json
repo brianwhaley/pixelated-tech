@@ -55,8 +55,8 @@
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",
-				"id" : "eventname",
-				"name" : "eventname",
+				"id" : "eventName",
+				"name" : "eventName",
 				"defaultValue" : null,
 				"size" : "40",
 				"display" : "vertical",

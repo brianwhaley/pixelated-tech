@@ -2,15 +2,13 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { PageTitleHeader, PageSection, PageGridItem, SquareCheckout, emailJSON, CheckoutType, FormEngine, usePixelatedConfig, getContentfulEntriesByType, getContentfulEntryByField } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection, PageGridItem } from "@pixelated-tech/components";
+import { SquareCheckout, emailJSON, FormEngine, usePixelatedConfig } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulEntryByField } from "@pixelated-tech/components";
+import type { CheckoutType } from "@pixelated-tech/components";
 import youthFormData from "@/app/data/register-youth-form.json";
-// import adultFormData from "@/app/data/register-youth-form.json";
+import adultFormData from "@/app/data/register-adult-form.json";
 import sectionTwoFormData from "@/app/data/register-section-two-form.json";
-
-const formData = {
-	properties: { ...youthFormData.properties },
-	fields: [...youthFormData.fields, ...sectionTwoFormData.fields]
-};
 
 export default function Register() {
 	const searchParams = useSearchParams();
@@ -21,6 +19,17 @@ export default function Register() {
 	const [eventData, setEventData] = useState<any | null>(null);
 	const eventName = eventData?.fields?.title ?? '';
 	const eventPrice = eventData?.fields?.price ?? 0;
+	const eventContentType = '75OqioFABdZZ1QaQChRGic';
+
+	const selectedBaseFormData = useMemo(() => {
+		const category = eventData?.fields?.category?.toString?.().toLowerCase?.() ?? '';
+		return category === 'adult' ? adultFormData : youthFormData;
+	}, [eventData]);
+
+	const formData = useMemo(() => ({
+		properties: { ...selectedBaseFormData.properties },
+		fields: [...selectedBaseFormData.fields, ...sectionTwoFormData.fields],
+	}), [selectedBaseFormData]);
 
 	const [paymentReady, setPaymentReady] = useState(false);
 	const [checkoutData, setCheckoutData] = useState<CheckoutType | null>(null);
@@ -29,10 +38,7 @@ export default function Register() {
 	const [paymentSuccess, setPaymentSuccess] = useState(false);
 
 	useEffect(() => {
-		if (!eventId || !config) {
-			return;
-		}
-
+		if (!eventId || !config) { return; }
 		async function loadEvent() {
 			const apiProps = {
 				base_url: config?.contentful?.base_url ?? "",
@@ -40,31 +46,36 @@ export default function Register() {
 				environment: config?.contentful?.environment ?? "",
 				delivery_access_token: config?.contentful?.delivery_access_token ?? "",
 			};
-
-			const entries = await getContentfulEntriesByType({ apiProps, contentType: 'event' });
+			const entries = await getContentfulEntriesByType({ apiProps, contentType: eventContentType });
 			const eventObj = await getContentfulEntryByField({ cards: entries, searchField: 'id', searchVal: eventId });
 			if (eventObj) {
 				setEventData(eventObj);
 			}
 		}
-
 		loadEvent();
-	}, [eventId, config]);
+	}, [eventId, config, eventContentType]);
 
 	const registrationFormData = useMemo(() => {
 		const defaults: Record<string, string> = {
-			eventname: eventName,
+			eventName,
 			eventId,
 		};
 
 		const fields = formData.fields.map((field: any) => {
 			if (field.component === 'FormInput' && field.props?.id && defaults[field.props.id]) {
+				const updatedProps = {
+					...field.props,
+				};
+
+				if (field.props.id === 'eventName') {
+					updatedProps.value = defaults[field.props.id];
+				} else {
+					updatedProps.defaultValue = defaults[field.props.id];
+				}
+
 				return {
 					...field,
-					props: {
-						...field.props,
-						defaultValue: defaults[field.props.id],
-					},
+					props: updatedProps,
 				};
 			}
 			return field;
@@ -85,7 +96,7 @@ export default function Register() {
 				},
 			],
 		};
-	}, [eventId, eventName]);
+	}, [formData, eventId, eventName]);
 
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();

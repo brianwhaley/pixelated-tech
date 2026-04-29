@@ -92,31 +92,6 @@ html, body { padding: 0; margin: 0; }
 
 
 /* ========================================
-	ABOUT US REVIEWS Styles
- ======================================== */
-
-#reviews-section {
-	.carousel-container {
-		height: 470px;
-    	padding: 20px;
-		border-radius: 20px;
-	}
-	.carousel-cards-container {
-		height: 400px;
-	}
-	.carousel-card-wrapper {
-		display: flex;
-  		align-items: center;
-	}
-	.carousel-card-image {
-		object-fit: cover;
-		width: 100px;
-		height: 100px;
-	}
-}
-
-
-/* ========================================
 	CURATOR.IO Styles
  ======================================== */
 

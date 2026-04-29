@@ -307,6 +307,46 @@ export function SchemaFAQ({ faqsData }: SchemaFAQType) {
 	LOCAL BUSINESS SCHEMA COMPONENTS
 ======================================== */
 
+export function normalizeOpeningHoursValue(value: unknown): string | string[] | undefined {
+	if (!value) {
+		return undefined;
+	}
+	if (typeof value === 'string') {
+		return value;
+	}
+	if (!Array.isArray(value)) {
+		return undefined;
+	}
+	if (value.every((item) => typeof item === 'string')) {
+		return value as string[];
+	}
+	const normalized = value
+		.map((item: any) => {
+			if (!item || typeof item !== 'object') {
+				return undefined;
+			}
+			const day = item.day?.toString?.().trim();
+			if (!day) {
+				return undefined;
+			}
+			if (item.closed) {
+				return undefined;
+			}
+			const hours = item.hours?.toString?.().trim();
+			const open = item.open?.toString?.().trim();
+			const close = item.close?.toString?.().trim();
+			if (open && close) {
+				return `${day} ${open}-${close}`;
+			}
+			if (hours) {
+				return `${day} ${hours}`;
+			}
+			return undefined;
+		})
+		.filter(Boolean) as string[];
+	return normalized.length ? normalized : undefined;
+}
+
 /**
  * LocalBusiness Schema Component
  * Generates JSON-LD structured data for SEO
@@ -330,7 +370,7 @@ export function SchemaFAQ({ faqsData }: SchemaFAQType) {
  * @param {string} [props.url] - Canonical website URL.
  * @param {string} [props.logo] - Logo image URL.
  * @param {string} [props.image] - Representative image URL.
- * @param {oneOfType} [props.openingHours] - Opening hours string or array in schema.org format.
+ * @param {oneOfType} [props.openingHours] - Opening hours string, array of strings, or array of day objects in schema.org format.
  * @param {string} [props.description] - Short business description.
  * @param {string} [props.email] - Contact email address.
  * @param {string} [props.priceRange] - Price range (e.g. '$$', optional).
@@ -371,8 +411,18 @@ LocalBusinessSchema.propTypes = {
 	logo: PropTypes.string,
 	/** Representative image URL. */
 	image: PropTypes.string,
-	/** Opening hours as a string or array in schema.org format (e.g., "Mo-Fr 09:00-17:00"). */
-	openingHours: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+	/** Opening hours as a string, array of strings, or array of day objects in schema.org format. */
+	openingHours: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.arrayOf(PropTypes.string),
+		PropTypes.arrayOf(PropTypes.shape({
+			day: PropTypes.string.isRequired,
+			open: PropTypes.string,
+			close: PropTypes.string,
+			hours: PropTypes.string,
+			closed: PropTypes.bool,
+		})),
+	]),
 	/** Short description for schema. */
 	description: PropTypes.string,
 	/** Contact email address. */
@@ -401,7 +451,7 @@ export function LocalBusinessSchema (props: LocalBusinessSchemaType) {
 	const url = props.url || siteInfo?.url;
 	const logo = props.logo || siteInfo?.image;
 	const image = props.image || siteInfo?.image || logo;
-	const openingHours = props.openingHours;
+	const openingHours = props.openingHours || normalizeOpeningHoursValue(siteInfo?.openingHours);
 	const description = props.description || siteInfo?.description;
 	const email = props.email || siteInfo?.email;
 	const priceRange = props.priceRange || siteInfo?.priceRange;

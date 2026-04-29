@@ -184,6 +184,14 @@ export interface WordpressConfig {
 
 export type DisplayMode = 'standalone' | 'fullscreen' | 'minimal-ui' | 'browser';
 
+export interface OpeningHoursEntry {
+	day: string;
+	open?: string;
+	close?: string;
+	closed?: boolean;
+	hours?: string;
+}
+
 export interface SiteInfo {
 	// Core site fields are required for downstream schemas (Website, LocalBusiness).
 	// Keep secondary fields optional for backward compatibility.
@@ -203,7 +211,7 @@ export interface SiteInfo {
 		postalCode?: string;
 		addressCountry?: string;
 	};
-	openingHours?: string;
+	openingHours?: string | string[] | OpeningHoursEntry[];
 	priceRange?: string;
 	sameAs?: string[];
 	keywords?: string;

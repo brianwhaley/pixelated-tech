@@ -4,6 +4,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import appConfig from '@/app/config/pixelated.config.json';
 import { createPageComponentMocks, resetPixelatedConfigOverride, setPixelatedConfigOverride, setContentfulEntryResponse } from '@/test/page-mocks';
 
+let formEngineProps: any = null;
+
 vi.mock('next/navigation', () => ({
 	useSearchParams: () => new URLSearchParams('event=event-1'),
 }));
@@ -11,6 +13,7 @@ vi.mock('next/navigation', () => ({
 vi.mock('@pixelated-tech/components', () => {
 	const baseMocks = createPageComponentMocks({
 		FormEngine: (props: any) => {
+			formEngineProps = props;
 			const handleSubmit = () => {
 				const form = document.createElement('form');
 				const addInput = (name: string, value: string) => {
@@ -68,6 +71,10 @@ describe('Register page', () => {
 	it('renders the registration form initially', async () => {
 		render(<RegisterPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-formengine-submit')).toBeTruthy());
+		await waitFor(() => {
+			expect(formEngineProps).not.toBeNull();
+			expect(formEngineProps.formData.fields.some((field: any) => field.props?.id === 'eventName')).toBe(true);
+		});
 	});
 
 	it('shows SquareCheckout after the form is submitted', async () => {

@@ -14,13 +14,6 @@ export default function ContactUsPage() {
 		<>
 			<PageTitleHeader title="Contact Three Muses" />
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-us-section">
-				<PageSectionHeader title="Contact Us" />
-				<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
-					<FormEngine formData={formData as any} />
-				</div>
-			</PageSection>
-
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-info-section">
 				<PageSectionHeader title="Contact Information" />
 				<div style={{ margin: '0 auto' }}>
@@ -34,6 +27,13 @@ export default function ContactUsPage() {
 					<p><a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></p>
 					<h3>Phone:</h3>
 					<p><a href={`tel:${siteInfo.telephone}`}>{siteInfo.telephone}</a></p>
+				</div>
+			</PageSection>
+
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-us-section">
+				<PageSectionHeader title="Contact Us" />
+				<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
+					<FormEngine formData={formData as any} />
 				</div>
 			</PageSection>
 

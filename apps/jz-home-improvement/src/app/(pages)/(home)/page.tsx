@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, BusinessFooter, usePixelatedConfig } from '@pixelated-tech/components';
 import { Callout } from "@pixelated-tech/components";
 import { CountUp } from '@pixelated-tech/components';
 import { FormButton } from '@pixelated-tech/components';
@@ -10,6 +10,8 @@ import siteConfig from "@/app/data/siteconfig.json";
 const siteInfo = (siteConfig as any).siteInfo;
 
 export default function Home() {
+	const config = usePixelatedConfig();
+	const googleMapsApiKey = config?.googleMaps?.apiKey ?? undefined;
 
 	return (
 		<>
@@ -148,41 +150,7 @@ export default function Home() {
 
 
 			<PageSection maxWidth="1024px" id="service-area-section" columns={1}>
-				<div className="row-3col">
-					<div className="grid-item" style={{ textAlign: 'center' }}>
-						<h3>Location</h3>
-						<div>JZ Home Improvement</div>
-						<div><a href="https://maps.app.goo.gl/nnVYQynhUq9T54Bx6" target="_blank" rel="noopener noreferrer">{siteInfo.address.streetAddress}</a></div>
-						<div><a href="https://maps.app.goo.gl/nnVYQynhUq9T54Bx6" target="_blank" rel="noopener noreferrer">{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}</a></div>
-						<h3>Contact Us</h3>
-						<div>Phone: <a href={`tel:${siteInfo.telephone}`}>{siteInfo.telephone}</a></div>
-						<div>Email: <a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></div>
-					</div>
-
-					<div className="grid-item">
-						<iframe 
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3025.017623950529!2d-74.2521616!3d40.695609499999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3ad1296ced7cd%3A0x9d7a13491825e3f8!2s1151%20Reeves%20Terrace%2C%20Union%2C%20NJ%2007083!5e0!3m2!1sen!2sus!4v1769802801457!5m2!1sen!2sus" 
-							width="100%" 
-							height="300" 
-							style={{ border: 0 }} 
-							allowFullScreen
-							loading="lazy" 
-							referrerPolicy="no-referrer-when-downgrade">
-						</iframe>
-					</div>
-
-					<div className="grid-item"  style={{ textAlign: 'center' }}>
-						<h3>Hours</h3>
-						<div>Mon: 9AM - 5PM</div>
-						<div>Tue: 9AM - 5PM</div>
-						<div>Wed: 9AM - 5PM</div>
-						<div>Thu: 9AM - 5PM</div>
-						<div>Fri: 9AM - 5PM</div>
-						<div>Sat: CLOSED</div>
-						<div>Sun: CLOSED</div>
-					</div>
-
-				</div>
+				<BusinessFooter siteInfo={siteInfo} googleMapsApiKey={googleMapsApiKey} />
 			</PageSection>
 
 

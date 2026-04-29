@@ -57,7 +57,17 @@ const SiteInfoPropTypes = {
 	priceRange: PropTypes.string,
 	sameAs: PropTypes.arrayOf(PropTypes.string.isRequired),
 	keywords: PropTypes.string,
-	openingHours: PropTypes.string,
+	openingHours: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.arrayOf(PropTypes.string),
+		PropTypes.arrayOf(PropTypes.shape({
+			day: PropTypes.string.isRequired,
+			open: PropTypes.string,
+			close: PropTypes.string,
+			hours: PropTypes.string,
+			closed: PropTypes.bool,
+		})),
+	]),
 	publisherType: PropTypes.string,
 	copyrightYear: PropTypes.number,
 	potentialAction: PropTypes.shape({

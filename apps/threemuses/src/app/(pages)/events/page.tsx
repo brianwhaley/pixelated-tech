@@ -29,9 +29,9 @@ export default function Events() {
 
 	useEffect(() => {
 		async function getCarouselCards() {
-			const contentType = "event"; 
+			const contentType = "75OqioFABdZZ1QaQChRGic"; 
 			const eventObjects: CalloutType[] = [];
-			const events = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
+			const events = await getContentfulEntriesByType({ apiProps: apiProps, contentType });
 			const eventSchemasRaw: any[] = [];
 			const sortedItems = [...events.items].sort((a: any, b: any) => {
 				return new Date(a.fields.startDate).getTime() - new Date(b.fields.startDate).getTime();
@@ -45,7 +45,7 @@ export default function Events() {
 						img: images[0]?.image,
 						imgAlt: event.fields.title,
 						title: event.fields.title,
-						subtitle: new Date(event.fields.startDate).toLocaleDateString() + " - " + new Date(event.fields.endDate).toLocaleDateString(),
+						subtitle: new Date(event.fields.startDate).toLocaleString() + " - " + new Date(event.fields.endDate).toLocaleString(),
 						content: event.fields.description,
 						url: "/events/" + event.fields.id,
 						urlTarget: "_self",

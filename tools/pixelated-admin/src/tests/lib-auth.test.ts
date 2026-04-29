@@ -53,4 +53,25 @@ describe('NextAuth config (legacy)', () => {
 		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({ nextAuth: { secret: TEST_CONFIG.nextAuth.secret } }) }));
 		await expect(import('@/lib/auth')).rejects.toThrow('Google OAuth credentials not configured');
 	});
+
+	it('does not add accessToken when no account access_token is present', async () => {
+		const mod = await import('@/lib/auth');
+		const { authOptions } = mod as any;
+
+		const jwtResult = await authOptions.callbacks.jwt({ token: { sub: 'user' }, account: {} });
+		expect(jwtResult).toMatchObject({ sub: 'user' });
+		expect(jwtResult).not.toHaveProperty('accessToken');
+
+		const sessionResult = await authOptions.callbacks.session({ session: { user: { name: 'Test' } }, token: {} });
+		expect(sessionResult).toMatchObject({ user: { name: 'Test' } });
+		expect(sessionResult).not.toHaveProperty('accessToken');
+	});
+
+	it('returns baseUrl for external redirect URLs', async () => {
+		const mod = await import('@/lib/auth');
+		const { authOptions } = mod as any;
+
+		const redirectResult = await authOptions.callbacks.redirect({ url: 'https://example.com/other', baseUrl: 'https://admin.pixelated.tech' });
+		expect(redirectResult).toBe('https://admin.pixelated.tech');
+	});
 });

@@ -11,6 +11,18 @@
 * Leverage at least one primary keyword and 2 to 3 supporting keywords
 * Blog content should be able to be repurposed into Social media posts, Google Business Profile updates, Email newsletters, Sales talking points
 
+
+## INITIAL BLOG POSTS
+
+1. Why Local Businesses Choose Manning Metalworks
+1. Welding Solutions for Property Managers
+1. Metal Railings: Repair vs. Replacement
+1. Custom Metal Fabrication for Homeowners
+1. Mobile Welding for Construction and Contractors
+1. Year in Review: Projects We’re Proud Of
+1. Working With Contractors: How We Partner on Jobs
+1. Welding Repairs for Industrial Equipment
+
 ## Q1 – Foundations & Awareness (January–March)
 
 Goal: Educate new visitors, build trust, and establish authority

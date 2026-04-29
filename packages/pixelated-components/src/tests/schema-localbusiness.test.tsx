@@ -69,6 +69,17 @@ describe('LocalBusinessSchema', () => {
 		expect(schema.sameAs).toEqual(siteInfo.sameAs);
 	});
 
+	it('uses siteInfo openingHours when props do not provide openingHours', () => {
+		const openingHours = [
+			{ day: 'Mon', open: '09:00', close: '17:00' },
+			{ day: 'Tue', open: '09:00', close: '17:00' },
+		];
+		const siteMeta = { ...siteInfo, openingHours };
+		const { container } = renderSchema({ openingHours: undefined }, siteMeta as any);
+		const schema = getSchema(container);
+		expect(schema.openingHours).toEqual(['Mon 09:00-17:00', 'Tue 09:00-17:00']);
+	});
+
 	it('renders additional fields passed via props', () => {
 		const { container } = renderSchema({ description: 'Great service' });
 		const schema = getSchema(container);

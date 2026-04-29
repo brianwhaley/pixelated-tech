@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.15.23",
+	"version": "3.15.24",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -23,7 +23,7 @@
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
-	"types": "./dist/types/index.d.ts",
+	"types": "./dist/index.d.ts",
 	"sideEffects": [
 		"*.css",
 		"*.scss"
@@ -36,27 +36,27 @@
 	},
 	"exports": {
 		".": {
-			"types": "./dist/types/index.d.ts",
+			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
 			"require": "./dist/index.js"
 		},
 		"./server": {
-			"types": "./dist/types/index.server.d.ts",
+			"types": "./dist/index.server.d.ts",
 			"import": "./dist/index.server.js",
 			"default": "./dist/index.server.js"
 		},
 		"./adminserver": {
-			"types": "./dist/types/index.adminserver.d.ts",
+			"types": "./dist/index.adminserver.d.ts",
 			"import": "./dist/index.adminserver.js",
 			"default": "./dist/index.adminserver.js"
 		},
 		"./adminclient": {
-			"types": "./dist/types/index.adminclient.d.ts",
+			"types": "./dist/index.adminclient.d.ts",
 			"import": "./dist/index.adminclient.js",
 			"default": "./dist/index.adminclient.js"
 		},
 		"./config": {
-			"types": "./dist/types/index.config.d.ts",
+			"types": "./dist/index.config.d.ts",
 			"import": "./dist/index.config.js",
 			"default": "./dist/index.config.js"
 		},

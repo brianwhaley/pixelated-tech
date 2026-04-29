@@ -23,6 +23,7 @@ export * from './components/foundation/smartfetch';
 export * from './components/foundation/urlbuilder';
 
 export * from './components/general/accordion';
+export * from './components/general/businessfooter';
 export * from './components/general/buzzwordbingo';
 export * from './components/general/callout';
 export * from './components/general/carousel';

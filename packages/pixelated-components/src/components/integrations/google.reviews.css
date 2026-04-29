@@ -1,3 +1,39 @@
+
+
+/* ========================================
+ * Google Reviews CAROUSEL Card Styles
+ * ======================================== */
+
+.google-reviews-card {
+
+	.carousel-container {
+		height: 470px;
+    	padding: 20px;
+		border-radius: 20px;
+	}
+	.carousel-cards-container {
+		height: 400px;
+	}
+	.carousel-card-wrapper {
+		display: flex;
+  		align-items: center;
+	}
+	.carousel-card-image {
+		object-fit: cover;
+		width: 100px;
+		height: 100px;
+	}
+}
+
+
+
+
+
+
+/* ========================================
+ * Google Reviews Card Styles
+ * ======================================== */
+
 .google-reviews-card {
 	padding: 16px;
 }

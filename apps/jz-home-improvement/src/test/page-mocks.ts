@@ -178,6 +178,7 @@ const defaultMocks: Record<string, any> = {
 	PixelatedFooter: mockComponent('PixelatedFooter'),
 	PageGridItem: mockComponent('PageGridItem'),
 	PageFlexItem: mockComponent('PageFlexItem'),
+	BusinessFooter: mockComponent('BusinessFooter'),
 	Callout: mockComponent('Callout'),
 	FAQAccordion: mockComponent('FAQAccordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ'),

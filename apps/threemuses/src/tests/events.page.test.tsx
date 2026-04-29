@@ -63,9 +63,14 @@ const exampleEvent1 = {
 		startDate: '2025-01-05',
 		endDate: '2025-01-06',
 		image: { sys: { id: 'img-1' } },
+		status: 'open',
+		price: 100,
+		duration: 4,
+		maxSeats: 25,
+		carouselImages: [],
 	},
 	sys: {
-		contentType: { sys: { id: 'event' } },
+		contentType: { sys: { id: '75OqioFABdZZ1QaQChRGic' } },
 	},
 };
 
@@ -77,9 +82,14 @@ const exampleEvent2 = {
 		startDate: '2025-01-01',
 		endDate: '2025-01-02',
 		image: { sys: { id: 'img-2' } },
+		status: 'open',
+		price: 120,
+		duration: 3,
+		maxSeats: 30,
+		carouselImages: [],
 	},
 	sys: {
-		contentType: { sys: { id: 'event' } },
+		contentType: { sys: { id: '75OqioFABdZZ1QaQChRGic' } },
 	},
 };
 
@@ -114,7 +124,7 @@ describe('Events page', () => {
 
 		render(<EventsPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Events'));
-		expect(screen.getAllByTestId('mock-callout').length).toBeGreaterThan(0);
+		await waitFor(() => expect(screen.getAllByTestId('mock-callout').length).toBeGreaterThan(0));
 	});
 
 	it('renders the event detail page with event data', async () => {
