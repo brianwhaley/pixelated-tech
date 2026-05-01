@@ -92,12 +92,12 @@ export function FAQAccordion({ faqsData }: FAQAccordionType) {
 	const accordionItems: AccordionItem[] = filteredFaqs.map((faq: any, index: number) => {
 		const answerImage = faq.acceptedAnswer?.image;
 		const imageLayout = answerImage?.layout === 'right' ? 'right' : 'left';
-		const imageStyle: React.CSSProperties = {
+		/* const imageStyle: React.CSSProperties = {
 			float: imageLayout,
 			width: answerImage?.width ? (typeof answerImage.width === 'number' ? `${answerImage.width}px` : answerImage.width) : undefined,
 			height: answerImage?.height ? (typeof answerImage.height === 'number' ? `${answerImage.height}px` : answerImage.height) : undefined,
 			margin: imageLayout === 'right' ? '0 0 1rem 1rem' : '0 1rem 1rem 0',
-		};
+		}; */
 
 		const imageElement = answerImage?.contentUrl ? (
 			<SmartImage
@@ -106,7 +106,7 @@ export function FAQAccordion({ faqsData }: FAQAccordionType) {
 				alt={answerImage.name || faq.name}
 				width={typeof answerImage.width === 'number' ? answerImage.width : undefined}
 				height={typeof answerImage.height === 'number' ? answerImage.height : undefined}
-				style={imageStyle}
+				/* style={imageStyle} */
 				//eslint-disable-next-line 
 				className={`faq-answer-image faq-answer-image-${imageLayout}`}
 			/>

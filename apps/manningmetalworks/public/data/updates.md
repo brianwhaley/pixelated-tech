@@ -5,13 +5,13 @@
 * [ x ] Home Page, mobile truck picture - replace (to come)
 * [ x ] Home Page, Quality section, Paragraph 2, remove second sentence
 * [ x ] About Us - Meet the Team - remove Tim and Greg Profiles
-* [  ] About Us - Meet the Team - add one team photo ( to come )
+* [ x ] About Us - Meet the Team - add one team photo ( to come )
 * [ x ] Services - CNC Plasma Cutting - leaving for now
 * [ x ] Services - 2nd paragraph - While many local shops... remove up to "We offer"
 * [ x ] services - Our technicians provide... remove deep penetraion, high strenght... 
 * [ x ] Services - we provide (remove immediate, industrial grade) emergency support for ...
 * [ x ] Services - 24/7 section, remove second paragraph, add a contact us paragraph
-* [  ] Blog Topics - TBD from Greg and Tim
+* [ x ] Blog Topics - TBD from Greg and Tim
 * [ x ] FAQs - Commercial - remove "large scale"
 * [ x ] FAQs - industrial machinery - remove last sentence
 * [ x ] FAQs - Materials - remove the sentence that starts with "Our primary work involves carbon steel"

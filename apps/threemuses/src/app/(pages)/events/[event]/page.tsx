@@ -7,7 +7,9 @@ import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulIma
 import { SchemaEvent, buildEventSchema } from "@pixelated-tech/components";
 import { Loading } from "@pixelated-tech/components";
 import { PageTitleHeader,  PageSection, PageSectionHeader } from '@pixelated-tech/components';
+import { SmartImage } from "@pixelated-tech/components";
 import { useRouter } from 'next/navigation';
+import "./event-details.css";
 
 type EventCard = {
 	fields: {
@@ -54,16 +56,29 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 		async function getEvent(event: string) {
 			const contentType = "75OqioFABdZZ1QaQChRGic"; 
 			const entries = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
+
+			console.log("Entries fetched: ", await entries);
+
 			const eventObj = await getContentfulEntryByField({
 				cards: entries,
 				searchField: "id",
 				searchVal: event
 			});
+
+			console.log("Event object found: ", await eventObj);
+
 			if (!eventObj) {
 				return;
 			}
-			setEventData(eventObj);
-			const images = await getContentfulImagesFromEntries({ images: eventObj.fields.carouselImages ?? [], assets: entries.includes.Asset });
+			const contentfulImageRefs = eventObj.fields.carouselImages?.length
+				? eventObj.fields.carouselImages
+				: eventObj.fields.image
+					? [eventObj.fields.image]
+					: [];
+			const images = await getContentfulImagesFromEntries({ images: contentfulImageRefs, assets: entries.includes.Asset });
+
+			console.log("Event images found: ", await images);
+
 			setEventData({ ...eventObj, fields: { ...eventObj.fields, carouselImages: images } });
 		}
 		getEvent(event);
@@ -92,10 +107,14 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 								dateStyle: 'short', timeStyle: 'short'
 							}).replace(',', '')  
 						} />
-						<div>{eventData?.fields?.description}</div>
-						<div>Duration: {eventData?.fields?.duration} hours</div>
-						<div>Seats Available: {eventData?.fields?.maxSeats}</div>
-						<div>Price: {toDollars.format(eventData?.fields?.price)}</div>
+						<div className="event-image">{eventData.fields.carouselImages?.[0]?.image ? 
+							<SmartImage src={eventData.fields.carouselImages[0].image} alt={eventData.fields.title} /> 
+							: undefined}</div>
+						<div className="event-description">{eventData?.fields?.description}</div>
+						<div className="event-duration">Duration: {eventData?.fields?.duration} hours</div>
+						<div className="event-schedule">Schedule: {eventData?.fields?.schedule}</div>
+						<div className="event-seats">Seats Available: {eventData?.fields?.maxSeats}</div>
+						<div className="event-price">Price: {toDollars.format(eventData?.fields?.price)}</div>
 						{ (eventData?.fields?.status?.toLowerCase?.() === "open") ? 
 							<FormButton
 								id="add-to-cart-button"
@@ -111,6 +130,7 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 										itemQuantity: 1,
 										itemURL: `/events/${eventData.fields.id}`,
 										itemCategory: eventData.fields.category?.toString?.() ?? undefined,
+										itemImageURL: eventData.fields.carouselImages?.[0]?.image ?? undefined,
 									});
 									router.push('/cart');
 								}}

@@ -409,17 +409,20 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 					<br />
 					<div><b>Item ID: </b>{thisItem.itemID}</div>
 					<div><b>Quantity: </b>{thisItem.itemQuantity}</div>
-					<br />
-					<div>
-						<FormButton className="pix-cart-button" type="button" id={`btn-rm-${thisItem.itemID}`} text="Remove Item From Cart"
-							onClick={()=>removeFromShoppingCart(thisItem as CartItemType)} />
-					</div>
 				</div>
 			</div>
 			<div className="grid-s11-e13">
 				<div className="pix-cart-item-price">
 					{ formatAsUSD(thisItem.itemCost) }
 				</div>
+
+
+				<br />
+				<div>
+					<FormButton className="pix-cart-button" type="button" id={`btn-rm-${thisItem.itemID}`} text="Remove"
+						onClick={()=>removeFromShoppingCart(thisItem as CartItemType)} />
+				</div>
+
 			</div>
 		</div>
 	);
@@ -564,7 +567,7 @@ export function CartButton(props: CartButtonType) {
 		}
 	}, [cartCount]);
 	return (
-		<div className="pix-cart">
+		<div className="pix-cart-button-wrapper">
 			<button className="pix-cart-button" type="button" id="pix-cart-button" 
 				onClick={()=>window.location.href=props.href} >
 				<SmartImage src="/images/icons/cart-icon.png" title="View Shopping Cart" alt="View Shopping Cart" 

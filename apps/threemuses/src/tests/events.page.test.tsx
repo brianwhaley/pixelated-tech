@@ -52,6 +52,7 @@ const mockGetContentfulEntriesByType = pixelatedComponents.getContentfulEntriesB
 const mockGetContentfulEntryByField = pixelatedComponents.getContentfulEntryByField as ReturnType<typeof vi.fn>;
 const mockGetContentfulImagesFromEntries = pixelatedComponents.getContentfulImagesFromEntries as ReturnType<typeof vi.fn>;
 const mockBuildEventSchema = pixelatedComponents.buildEventSchema as ReturnType<typeof vi.fn>;
+const mockAddToShoppingCart = pixelatedComponents.addToShoppingCart as ReturnType<typeof vi.fn>;
 
 import EventsPage from '@/app/(pages)/events/page';
 import EventDetailPage from '@/app/(pages)/events/[event]/page';
@@ -114,6 +115,7 @@ describe('Events page', () => {
 		mockGetContentfulEntriesByType.mockReset();
 		mockGetContentfulEntryByField.mockReset();
 		mockGetContentfulImagesFromEntries.mockReset();
+		mockAddToShoppingCart.mockReset();
 		mockBuildEventSchema.mockReset();
 		resetPixelatedConfigOverride();
 		setPixelatedConfigOverride(createEventsConfig());
@@ -144,7 +146,7 @@ describe('Events page', () => {
 	it('adds event to the shopping cart and redirects to cart page', async () => {
 		mockGetContentfulEntriesByType.mockResolvedValue({ items: [exampleEvent1], includes: { Asset: [] } });
 		mockGetContentfulEntryByField.mockResolvedValue(exampleEvent1);
-		mockGetContentfulImagesFromEntries.mockResolvedValue([]);
+		mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: '/images/event.jpg' }]);
 		mockBuildEventSchema.mockImplementation((event: any) => ({ title: event.fields.title }));
 
 		await act(async () => {
@@ -152,9 +154,18 @@ describe('Events page', () => {
 		});
 
 		await waitFor(() => expect(screen.getByTestId('mock-formbutton')).toBeTruthy());
+		expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith(expect.objectContaining({
+			images: [exampleEvent1.fields.image],
+			assets: expect.anything(),
+		}));
 		const button = screen.getByTestId('mock-formbutton');
 		button.click();
 		expect(mockRouterPush).toHaveBeenCalledWith('/cart');
+		expect(mockAddToShoppingCart).toHaveBeenCalledWith(expect.objectContaining({
+			itemID: 'event-1',
+			itemTitle: 'Test Event One',
+			itemImageURL: '/images/event.jpg',
+		}));
 	});
 
 	it('renders the loading state when no config is available', async () => {

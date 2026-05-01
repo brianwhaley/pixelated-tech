@@ -36,7 +36,7 @@ export default function AboutUsPage() {
 					variant="boxed grid"
 					gridColumns={{left:1, right:3}}
 					layout="vertical"
-					img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/7lm3xgrTmm74atmZEL0DAx/750366dfab893923832bf3e4cbceccd5/tim-and-greg-manning.jpg"
 					title="Tim and Greg Manning"
 					subtitle="The Son-and-Father Fabrication Duo"
 				/>

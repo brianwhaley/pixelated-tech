@@ -50,35 +50,39 @@ export default function Home() {
 			</PageSection>
 
 
+
+			<PageSectionHeader title="Our Services" />
 			<PageSection columns={3} maxWidth="1024px" id="home-services-section">
 
-				<PageGridItem columnSpan={3}>
-					<PageSectionHeader title="Our Services" />
+				<PageGridItem>
+					<Callout
+						variant="boxed"
+						layout="vertical"
+						img="https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
+						url="/services#callout-precision-metal-fabrication"
+						title="Precision Metal Fabrication"
+					/>
 				</PageGridItem>
 
-				<Callout
-					variant="boxed"
-					layout="vertical"
-					img="https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
-					url="/services#callout-precision-metal-fabrication"
-					title="Precision Metal Fabrication"
-				/>
+				<PageGridItem>
+					<Callout
+						variant="boxed"
+						layout="vertical"
+						img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
+						url="/services#callout-expert-repairs-and-custom-fabrication"
+						title="Expert Repairs and Custom Fabrication"
+					/>
+				</PageGridItem>
 
-				<Callout
-					variant="boxed"
-					layout="vertical"
-					img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
-					url="/services#callout-expert-repairs-and-custom-fabrication"
-					title="Expert Repairs and Custom Fabrication"
-				/>
-
-				<Callout
-					variant="boxed"
-					layout="vertical"
-					img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
-					url="/services#callout-247-mobile-welding-services"
-					title="24/7 Mobile Welding Services"
-				/>
+				<PageGridItem>
+					<Callout
+						variant="boxed"
+						layout="vertical"
+						img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
+						url="/services#callout-247-mobile-welding-services"
+						title="24/7 Mobile Welding Services"
+					/>
+				</PageGridItem>
 
 			</PageSection>
 

@@ -11,11 +11,11 @@
 * [ x ] Brian to add new consignment page
 * [ x ] Brian to add retail packages on dance page
 * [ x ] Brian to add adult sewing class on teh events page
-* [  ] fix the cart button
-* [  ] move the remove item from cart button to the right of the item
+* [ x ] fix the cart button - pix-cart wrapper is wrong, need position absolute and right / top 10
+* [ x ] move the remove item from cart button to the right of the item
 * [ x ] add dates back to events page and events detail page
 * [ x ] hero image array for header
-* [  ] go through photos and add them to header, home page, faqs, everywhere
+* [ x ] go through photos and add them to header, home page, faqs, everywhere
 * [ x ] on event detail page - remove "Add to Cart button" if event status is not "Open"
 * [ x ] on events listing page remove event from the listing if status = "Archived"
 * [  ] explore the ability to tie specific header images to specific pages
