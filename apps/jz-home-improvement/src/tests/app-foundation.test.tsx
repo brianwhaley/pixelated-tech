@@ -1,10 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { createPageComponentMocks } from '@/test/page-mocks';
+import { headers } from 'next/headers';
+import * as componentsServer from '@pixelated-tech/components/server';
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 vi.mock('@pixelated-tech/components/server', () => ({
-	getRouteByKey: () => ({ title: 'Home', description: 'desc', keywords: 'kw' }),
+	getRouteByKey: vi.fn(() => ({ title: 'Home', description: 'desc', keywords: 'kw' })),
 	generateMetaTags: () => <meta data-testid="mock-meta" />,
 	WebsiteSchema: () => <div data-testid="mock-websiteschema" />,
 	LocalBusinessSchema: () => <div data-testid="mock-businessschema" />,
@@ -20,14 +22,14 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	Manifest: ({ siteInfo }: any) => ({ siteInfo }),
 }));
 vi.mock('next/headers', () => ({
-	headers: () => ({
+	headers: vi.fn(() => ({
 		get: (key: string) => {
 			if (key === 'x-path') return '/';
 			if (key === 'x-origin') return 'http://localhost';
 			if (key === 'x-url') return 'http://localhost/';
 			return null;
 		},
-	}),
+	})),
 }));
 
 import Layout from '@/app/layout';
@@ -87,5 +89,24 @@ describe('JZ app foundation', () => {
 
 		const layoutElement = await Layout({ children: <div data-testid="layout-child" /> });
 		expect(layoutElement).toBeTruthy();
+	});
+
+	it('renders root layout with trailing slash path and fallback metadata', async () => {
+		vi.mocked(headers).mockImplementationOnce(() => ({
+			get: (key: string) => {
+				if (key === 'x-path') return '/contact/';
+				if (key === 'x-origin') return 'https://example.com';
+				return null;
+			},
+		} as any));
+
+		vi.mocked(componentsServer.getRouteByKey).mockReturnValueOnce(undefined as any);
+
+		const layoutElement = await Layout({ children: <div data-testid="layout-child" /> });
+		expect(layoutElement.type).toBe('html');
+		const head = Array.isArray(layoutElement.props.children) ? layoutElement.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'mock-meta')).toBe(true);
 	});
 });

@@ -9,7 +9,8 @@ import { SchemaBlogPosting } from "@pixelated-tech/components";
 import { mapWordPressToBlogPosting } from "@pixelated-tech/components";
 import { ToggleLoading } from '@pixelated-tech/components';
 
-const wpSite = "blog.oaktree-landscaping.com";
+// const wpSite = "blog.thethreemusesofbluffton.com";
+const wpSite = "thethreemusesofbluffton.wordpress.com";
 
 export default function BlogCalendarPage() {
 
@@ -38,7 +39,7 @@ export default function BlogCalendarPage() {
 			{ blogSchemas.map((schema, index) => (
 				<SchemaBlogPosting key={index} post={schema} />
 			)) }
-			<PageTitleHeader title="Oaktree Landscaping Blog Posts" />
+			<PageTitleHeader title="The Three Muses of Bluffton Blog Posts" />
 			<PageSection columns={1} maxWidth="1024px" id="blog-section">
 				<BlogPostList site={wpSite} posts={wpPosts} showCategories={false} />
 			</PageSection>

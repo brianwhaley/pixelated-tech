@@ -26,7 +26,7 @@ export default [
 			parser: tsParser,
 			parserOptions: {
 				tsconfigRootDir: __dirname,
-				project: './tsconfig.json',
+				project: './tsconfig.eslint.json',
 			},
 			globals: {
 				...globals.browser,

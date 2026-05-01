@@ -15,7 +15,7 @@ export default function Home() {
 	if (!config) {
 		return <Loading />;
 	}
-
+ 
 	return (
 		<>
 			<section id="products-section">

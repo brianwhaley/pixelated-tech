@@ -14,12 +14,54 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 		const [data, setData] = React.useState<any>(null);
 
 		React.useEffect(() => {
-			const transformedData = endpoint?.responseTransformer
-				? endpoint.responseTransformer({ data: mockSiteData })
-				: mockSiteData;
+			let transformedData: any;
+			if (siteName === 'error') {
+				transformedData = mockErrorData;
+			} else if (siteName === 'detailed') {
+				transformedData = {
+					site: 'test-site',
+					url: 'https://example.com',
+					overallScore: 0.5,
+					pagesAnalyzed: [
+						{
+							url: 'https://example.com/page',
+							title: 'Page',
+							statusCode: 200,
+							audits: [
+								{
+									id: 'seo-headings',
+									title: 'Heading checks',
+									score: 0,
+									scoreDisplayMode: 'binary',
+									displayValue: '0/1 pages pass',
+									category: 'on-page',
+									details: {
+										items: [
+											{
+												type: 'required',
+												tags: [
+												{ tag: 'h1', present: false }
+												],
+											},
+										]
+									}
+								}
+							]
+						}
+					],
+					onSiteAudits: [],
+					totalPages: 1,
+					timestamp: '2024-01-01T00:00:00Z',
+					status: 'success'
+				};
+			} else {
+				transformedData = endpoint?.responseTransformer
+					? endpoint.responseTransformer({ data: mockSiteData })
+					: mockSiteData;
+			}
 
 			setData(transformedData);
-		}, [endpoint]);
+		}, [endpoint, siteName]);
 
 		return (
 			<div data-testid="health-template">
@@ -110,6 +152,23 @@ describe('SiteHealthOnSiteSEO Component', () => {
 		
 		await waitFor(() => {
 			expect(screen.getByTestId('health-content')).toBeInTheDocument();
+		});
+	});
+
+	it('should display an error message when the API returns an error', async () => {
+		render(<SiteHealthOnSiteSEO siteName="error" />);
+		
+		await waitFor(() => {
+			expect(screen.getByText(/Error:/)).toBeInTheDocument();
+		});
+	});
+
+	it('should render detailed page issue breakdown for audits with details', async () => {
+		render(<SiteHealthOnSiteSEO siteName="detailed" />);
+		
+		await waitFor(() => {
+			expect(screen.getByText(/Required tags found:/)).toBeInTheDocument();
+			expect(screen.getByText(/Heading checks/)).toBeInTheDocument();
 		});
 	});
 

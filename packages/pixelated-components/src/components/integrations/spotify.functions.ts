@@ -1,6 +1,7 @@
 
 import PropTypes, { InferProps } from "prop-types";
 import { smartFetch } from '../foundation/smartfetch';
+import { sanitizeString } from '../foundation/utilities';
 import { decode } from 'html-entities';
 
 
@@ -62,7 +63,7 @@ export function mapPodcastEpisodeToSchema(episode: SpotifyPodcastEpisodeType): P
 		const stripped = content.replace(/<[^>]*>/g, '');
 		const decoded = decode(stripped).replace(/\[…\]/g, '').trim();
 		// Normalize whitespace: collapse multiple spaces/nbsp into single space
-		return decoded.replace(/\s+/g, ' ');
+		return sanitizeString(decoded);
 	};
 	const description = cleanContent(episode.summary || episode.description);
 	const schema: PodcastEpisodeSchema = {
@@ -98,14 +99,11 @@ export function mapPodcastEpisodeToSchema(episode: SpotifyPodcastEpisodeType): P
  * @param series Podcast series data from RSS
  */
 export function mapPodcastSeriesToSchema(series: SpotifyPodcastSeriesType): PodcastSeriesSchema {
-	const normalizeWhitespace = (text: string): string => {
-		return text.replace(/\s+/g, ' ').trim();
-	};
 	const schema: PodcastSeriesSchema = {
 		'@context': 'https://schema.org',
 		'@type': 'PodcastSeries',
-		name: normalizeWhitespace(decode(series.title)),
-		description: series.description ? normalizeWhitespace(decode(series.description)) : undefined,
+		name: sanitizeString(decode(series.title)),
+		description: series.description ? sanitizeString(decode(series.description)) : undefined,
 		url: series.link,
 		image: series.image,
 	};

@@ -17,7 +17,9 @@ import {
 type ShoppingCartType = CartItemType;
 
 // Use on-disk fixtures where available to keep tests 'real'
-import shippingToData from '../components/shoppingcart/shipping.to.json';
+import personalInfoData from '../components/shoppingcart/checkout.personal.info.json';
+import discountInfoData from '../components/shoppingcart/checkout.discount.info.json';
+import shippingInfoData from '../components/shoppingcart/checkout.shipping.info.json';
 
 describe('ShoppingCart — observable contract (storage keys & shapes)', () => {
   beforeEach(() => {
@@ -41,7 +43,14 @@ describe('ShoppingCart — observable contract (storage keys & shapes)', () => {
   });
 
   it('stores and retrieves shipping info using the documented key (uses real fixture)', () => {
-    // shipping.to.json is a form descriptor (fields array) — tests need a real Address-shaped object
+    const shippingFieldNames = personalInfoData.fields
+      .map((field) => field.props?.name)
+      .filter(Boolean);
+    expect(shippingFieldNames).toEqual(
+      expect.arrayContaining(['name', 'street1', 'city', 'state', 'zip', 'country']),
+    );
+    expect(shippingInfoData.fields.some((field) => field.props?.name === 'shippingMethod')).toBe(true);
+
     const shipping = {
       name: 'Test User',
       street1: '123 Test Ave',
@@ -72,6 +81,7 @@ describe('ShoppingCart — observable contract (storage keys & shapes)', () => {
     setDiscountCodes(codes as any);
     const saved = getLocalDiscountCodes();
     expect(saved).toEqual(codes);
+    expect(discountInfoData.fields.some((field) => field.props?.name === 'discountCode')).toBe(true);
 
     // apply to a real-like cart
     const cart = [ { itemID: 'x', itemTitle: 'X', itemQuantity: 1, itemCost: 100 } ];

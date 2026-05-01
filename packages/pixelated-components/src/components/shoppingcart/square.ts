@@ -1,26 +1,89 @@
 import { getFullPixelatedConfig } from '../config/config';
 import { smartFetch } from '../foundation/smartfetch';
-import type { SquareConfig } from '../config/config.types';
 import type { CheckoutType } from './shoppingcart.functions';
 
-const SQUARE_PAYMENTS_URL = 'https://connect.squareup.com/v2/payments';
+const debug = false;
 
-export function getSquareConfig(): SquareConfig | undefined {
-	const cfg = getFullPixelatedConfig();
-	const squareConfig = cfg?.square;
-	if (!squareConfig) {
-		return undefined;
-	}
-	if (!squareConfig.applicationId || !squareConfig.locationId || !squareConfig.accessToken) {
-		return undefined;
-	}
-	return squareConfig;
+const DEFAULT_SQUARE_PAYMENTS_URL = 'https://connect.squareup.com/v2/payments';
+const DEFAULT_SQUARE_SANDBOX_PAYMENTS_URL = 'https://connect.squareupsandbox.com/v2/payments';
+
+function maskToken(token?: string) {
+	return typeof token === 'string' && token.length > 8 ? `${token.slice(0, 8)}...${token.slice(-4)}` : token || '';
 }
 
-function requireSquareConfig(): SquareConfig {
-	const squareConfig = getSquareConfig();
+interface SelectedSquareCredentials {
+	applicationId: string;
+	locationId: string;
+	accessToken: string;
+	useSandbox: boolean;
+	paymentsUrl: string;
+}
+
+function normalizeEmail(value?: any) {
+	return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+function resolveSquareCredentials(squareConfig: any, checkoutData?: CheckoutType): SelectedSquareCredentials | undefined {
 	if (!squareConfig) {
-		throw new Error('Square is not configured. Add square.applicationId, square.locationId, and square.accessToken to pixelated.config.json.');
+		return undefined;
+	}
+
+	const checkoutEmail = normalizeEmail(checkoutData?.shippingTo?.email);
+	const sandboxEmails = Array.isArray(squareConfig?.sandboxSquareEmails)
+		? squareConfig.sandboxSquareEmails.map((value: any) => normalizeEmail(value))
+		: [];
+	const explicitSandbox = squareConfig?.environment === 'sandbox';
+	const useSandbox = explicitSandbox || Boolean(checkoutEmail && sandboxEmails.includes(checkoutEmail));
+
+	const productionApplicationId = squareConfig?.squareApplicationId;
+	const productionLocationId = squareConfig?.squareLocationId;
+	const productionAccessToken = squareConfig?.squareAccessToken;
+
+	const sandboxApplicationId = squareConfig?.sandboxSquareApplicationId;
+	const sandboxLocationId = squareConfig?.sandboxSquareLocationId;
+	const sandboxAccessToken = squareConfig?.sandboxSquareAccessToken;
+
+	const selected = {
+		applicationId: useSandbox ? sandboxApplicationId : productionApplicationId,
+		locationId: useSandbox ? sandboxLocationId : productionLocationId,
+		accessToken: useSandbox ? sandboxAccessToken : productionAccessToken,
+		useSandbox,
+		paymentsUrl: useSandbox
+			? squareConfig?.sandboxSquarePaymentsUrl || DEFAULT_SQUARE_SANDBOX_PAYMENTS_URL
+			: squareConfig?.squarePaymentsUrl || DEFAULT_SQUARE_PAYMENTS_URL,
+	};
+
+	if (debug) {
+		console.log('resolveSquareCredentials', {
+			useSandbox,
+			explicitSandbox,
+			checkoutEmail,
+			sandboxEmails,
+			selected: {
+				applicationId: selected.applicationId,
+				locationId: selected.locationId,
+				accessToken: maskToken(selected.accessToken),
+				paymentsUrl: selected.paymentsUrl,
+			},
+		});
+	}
+
+	if (!selected.applicationId || !selected.locationId || !selected.accessToken) {
+		return undefined;
+	}
+
+	return selected;
+}
+
+export function getSquareConfig(checkoutData?: CheckoutType): SelectedSquareCredentials | undefined {
+	const cfg = getFullPixelatedConfig();
+	return resolveSquareCredentials(cfg?.square, checkoutData);
+}
+
+function requireSquareConfig(checkoutData?: CheckoutType): SelectedSquareCredentials {
+	const squareConfig = getSquareConfig(checkoutData);
+	if (!squareConfig) {
+		throw new Error('Square is not configured. Add square.squareApplicationId, square.squareLocationId, and square.squareAccessToken to pixelated.config.json.');
 	}
 	return squareConfig;
 }
@@ -37,7 +100,7 @@ function buildBillingAddress(shippingTo: CheckoutType['shippingTo']) {
 }
 
 export function buildSquarePaymentBody(sourceId: string, checkoutData: CheckoutType, idempotencyKey: string) {
-	const squareConfig = requireSquareConfig();
+	const squareConfig = requireSquareConfig(checkoutData);
 	return {
 		source_id: sourceId,
 		idempotency_key: idempotencyKey,
@@ -55,9 +118,22 @@ export function buildSquarePaymentBody(sourceId: string, checkoutData: CheckoutT
 }
 
 export async function captureSquarePayment(sourceId: string, checkoutData: CheckoutType, idempotencyKey: string) {
-	const squareConfig = requireSquareConfig();
+	const squareConfig = requireSquareConfig(checkoutData);
 	const body = buildSquarePaymentBody(sourceId, checkoutData, idempotencyKey);
-	const json = await smartFetch(SQUARE_PAYMENTS_URL, {
+	const paymentsUrl = squareConfig.paymentsUrl;
+	if (debug) {
+		console.log('captureSquarePayment', {
+			paymentsUrl,
+			locationId: squareConfig.locationId,
+			useSandbox: squareConfig.useSandbox,
+			accessToken: maskToken(squareConfig.accessToken),
+			sourceId,
+			idempotencyKey,
+			amount: body.amount_money?.amount,
+			body,
+		});
+	}
+	const json = await smartFetch(paymentsUrl, {
 		responseType: 'json',
 		cacheStrategy: 'none',
 		requestInit: {

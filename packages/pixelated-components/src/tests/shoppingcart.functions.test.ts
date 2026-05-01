@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { formatAsUSD, formatAsHundredths } from '../components/foundation/utilities';
 import {
-	formatAsUSD,
-	formatAsHundredths,
 	getCart,
 	setCart,
 	alreadyInCart,

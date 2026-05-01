@@ -17,7 +17,7 @@ Alternative Tag Lines
 "Your On-Site Solution for Precision Welding, Day or Night."
 "Forging Relationships Through Quality Fabrication and Expert Repair."
 */
-
+ 
 export default function Home() {
 
 

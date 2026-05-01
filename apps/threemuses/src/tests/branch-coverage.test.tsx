@@ -24,7 +24,7 @@ vi.mock('next/server', () => ({
 
 import Home from '@/app/(pages)/(home)/page';
 import Events from '@/app/(pages)/events/page';
-import BlogCalendar from '@/app/(pages)/blog-calendar/page';
+import BlogCalendar from '@/app/(pages)/blogcalendar/page';
 
 describe('ThreeMuses branch coverage', () => {
 	beforeEach(() => {
@@ -48,8 +48,8 @@ describe('ThreeMuses branch coverage', () => {
 		await waitFor(() => expect(screen.getAllByTestId(/mock-/).length).toBeGreaterThan(0));
 	});
 
-	it('renders blog calendar and blog post list', async () => {
+	it('renders the blog calendar markdown content', async () => {
 		render(<BlogCalendar />);
-		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).not.toBeNull());
+		await waitFor(() => expect(screen.getByTestId('mock-markdown')).not.toBeNull());
 	});
 });

@@ -1,7 +1,44 @@
-import { describe, it, expect } from 'vitest';
 import React from 'react';
-import { render, screen } from '../test/test-utils';
-import { CheckoutItems } from '../components/shoppingcart/shoppingcart.components';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import {
+  CheckoutItems,
+  CartButton,
+  ViewItemDetails,
+  AddToCartButton,
+  GoToCartButton,
+} from '../components/shoppingcart/shoppingcart.components';
+
+vi.mock('../components/config/config.client', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../components/config/config.client')>();
+  return {
+    ...actual,
+    usePixelatedConfig: vi.fn(() => ({
+      cloudinary: { product_env: 'prod', baseUrl: 'test', transforms: '' },
+      paypal: { payPalApiKey: 'paypal-key' },
+      square: { squareApplicationId: 'sq-app', squareLocationId: 'sq-loc' },
+    })),
+  };
+});
+
+vi.mock('../components/shoppingcart/shoppingcart.functions', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../components/shoppingcart/shoppingcart.functions')>();
+  return {
+    ...actual,
+    getCartItemCount: vi.fn(() => 2),
+    getCart: vi.fn(() => [{ id: '1', name: 'Item', price: 10, quantity: 1 }]),
+    formatAsUSD: vi.fn((cost: number) => `$${cost.toFixed(2)}`),
+  };
+});
+
+vi.mock('../components/general/modal', () => ({
+  Modal: ({ modalContent }: any) => <div>{modalContent}</div>,
+  handleModalOpen: vi.fn(),
+}));
+
+vi.mock('../components/general/smartimage', () => ({
+  SmartImage: ({ alt, src }: any) => <img alt={alt} src={src} />,
+}));
 
 describe('ShoppingCart Components Tests', () => {
 	describe('Cart Structure', () => {
@@ -372,6 +409,83 @@ describe('ShoppingCart Components Tests', () => {
 			const rounded = Math.round(total * 100) / 100;
 			
 			expect(rounded).toBe(20.00);
+		});
+	});
+
+	describe('ShoppingCart exported components', () => {
+		it('renders CheckoutItems with summary rows', () => {
+			render(
+				<CheckoutItems
+					items={[{ itemID: '1', itemTitle: 'Test Item', itemQuantity: 2, itemCost: 10 }]}
+					shippingTo={{ name: 'Joe', street1: '123 Main', city: 'City', state: 'CA', zip: '90210' }}
+					subtotal_discount={0}
+					subtotal={20}
+					shippingCost={5}
+					handlingFee={2}
+					salesTax={1.6}
+					total={28.6}
+				/>
+			);
+
+			expect(screen.getByText(/Shopping Cart Items/i)).toBeInTheDocument();
+			expect(screen.getByText(/Shipping Address/i)).toBeInTheDocument();
+			expect(screen.queryByText(/Subtotal Discount/i)).not.toBeInTheDocument();
+		});
+
+		it('renders CartButton and shows cart item count', async () => {
+			const originalLocation = window.location;
+			delete (window as any).location;
+			(window as any).location = { href: 'http://localhost/' };
+
+			render(<CartButton href="/cart" />);
+
+			const button = await screen.findByRole('button');
+			expect(button).toBeInTheDocument();
+			expect(button.textContent).toContain('(2)');
+
+			(window as any).location = originalLocation;
+		});
+
+		it('renders ViewItemDetails and navigates on click', () => {
+			const originalLocation = window.location;
+			delete (window as any).location;
+			(window as any).location = { href: 'http://localhost/' };
+
+			render(<ViewItemDetails href="/product" itemID="123" />);
+			fireEvent.click(screen.getByRole('button', { name: /View Item Details/i }));
+
+			expect(window.location.href).toContain('/product/123');
+			(window as any).location = originalLocation;
+		});
+
+		it('renders GoToCartButton and navigates to cart', () => {
+			const originalLocation = window.location;
+			delete (window as any).location;
+			(window as any).location = { href: 'http://localhost/' };
+
+			render(<GoToCartButton href="/cart" itemID="cart" />);
+			fireEvent.click(screen.getByRole('button', { name: /Go to Shopping Cart/i }));
+
+			expect(window.location.href).toContain('/cart');
+			(window as any).location = originalLocation;
+		});
+
+		it('renders AddToCartButton and shows modal content after clicking', async () => {
+			const handler = vi.fn();
+
+			render(
+				<AddToCartButton
+					handler={handler}
+					item={{ id: '123', name: 'Item', price: 10, quantity: 1 }}
+					itemID="123"
+				/>
+			);
+
+			const button = screen.getByRole('button', { name: /Add to Shopping Cart/i });
+			fireEvent.click(button);
+
+			expect(handler).toHaveBeenCalled();
+			await waitFor(() => expect(screen.getByText(/Item 123 has been added to your cart/i)).toBeInTheDocument());
 		});
 	});
 });

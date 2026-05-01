@@ -1,6 +1,18 @@
 {
+	"properties": {
+		"name": "shopping-cart",
+		"id": "shopping-cart-form",
+		"toggleLoading": true,
+		"openModal": true,
+		"resetForm": true
+	},
 	"fields" : [
 		{
+			"component" : "FormSectionHeader",
+			"props" : {
+				"title" : "Personal Info"
+			}
+		}, {
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",
@@ -18,16 +30,31 @@
 		},{
 			"component" : "FormGooglePlacesInput",
 			"props" : {
+				"id" : "findMyAddress",
+				"name" : "findMyAddress",
+				"defaultValue" : null,
+				"placeholder": "Find My Address (start typing)",
+				"autoComplete" : "off",
+				"size" : "40",
+				"display" : "horizontal",
+				"required": false,
+				"label" : "Find My Address : ",
+				"tooltip" : "Start typing an address and select from suggestions"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
 				"id" : "street1",
 				"name" : "street1",
 				"defaultValue" : null,
-				"placeholder": "Street Address (start typing)",
+				"placeholder": "Street Address",
 				"autoComplete" : "street-address",
 				"size" : "40",
 				"display" : "horizontal",
 				"required": true,
 				"label" : "Street Address : ",
-				"tooltip" : "Start typing your street address and select from suggestions"
+				"tooltip" : "Please enter your street address"
 			}
 		},{
 			"component" : "FormInput",
@@ -372,48 +399,6 @@
 				"label" : "Email Address : ",
 				"tooltip" : "Please enter your Email Address",
 				"validate" : "isValidEmailAddress"
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "text",
-				"id" : "discountCode",
-				"name" : "discountCode",
-				"defaultValue" : null,
-				"placeholder": "Discount Code",
-				"size" : "40",
-				"display" : "horizontal",
-				"required" : null,
-				"label" : "Discount Code : ",
-				"tooltip" : "Please enter any discount code you have received",
-				"validate" : "isValidDiscountCode"
-			}
-		} ,
-		{
-			"component" : "FormRadio",
-			"props" : {
-				"id" : "shippingMethod",
-				"name" : "shippingMethod",
-				"label" : "Shipping Method : ",
-				"display" : "vertical",
-				"tooltip" : "Please select your Shipping Method",
-				"options" : [
-						{ "value" : "USPS-GA", "text" : "USPS Ground Advantage ( 2 - 5 days ) $9.99" },
-						{ "value" : "USPS-PM", "text" : "USPS Priority Mail ( 2 - 3 days ) $14.99" },
-						{ "value" : "USPS-PMX", "text" : "USPS Priority Mail Express ( 1 - 3 days ) $39.99" },
-						{ "value" : "USPS-FCP-I", "text" : "USPS First Class Package International ( Varies ) $24.99" },
-					{ "value" : "USPS-PM-I", "text" : "USPS Priority Mail International ( 6 - 10 days ) $39.99" },
-					{ "value" : "USPS-PMX-I", "text" : "USPS Priority Mail Express International ( 3 - 5 days ) $69.99" }
-				],
-				"checked": "USPS-GA"
-			}
-		},
-		{
-			"component" : "FormButton",
-			"props" : {
-				"type" : "submit",
-				"id" : "submit",
-				"text" : "Checkout"
 			}
 		}
 	]

@@ -3,10 +3,10 @@ import { NextRequest } from 'next/server';
 
 import {
   safeJSON,
-  sanitizeString,
   generateSecurityTxt,
   createWellKnownResponse,
 } from '@/components/foundation/well-known';
+import { sanitizeString } from '@/components/foundation/utilities';
 
 import testData from '../test/test-data';
 

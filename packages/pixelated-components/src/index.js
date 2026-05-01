@@ -21,6 +21,7 @@ export * from './components/foundation/skeleton-loading';
 export * from './components/foundation/smarterrorboundary';
 export * from './components/foundation/smartfetch';
 export * from './components/foundation/urlbuilder';
+export * from './components/foundation/utilities';
 
 export * from './components/general/accordion';
 export * from './components/general/businessfooter';
@@ -84,7 +85,7 @@ export * from './components/pixelated/pixelated.components';
 export * from './components/shoppingcart/ebay.components';
 export * from './components/shoppingcart/paypal';
 export * from './components/shoppingcart/paypal.components';
-export * from './components/shoppingcart/providersRegistry';
+export * from './components/shoppingcart/shoppingcart.providers';
 export * from './components/shoppingcart/square';
 export * from './components/shoppingcart/square.components';
 export * from './components/shoppingcart/shoppingcart.components';

@@ -30,6 +30,11 @@ export function StyleGuideUI(props: StyleGuideUIType) {
 		primaryBodyFont = bodyFonts.split(',')[0].replaceAll('"', '').replaceAll("'", '');
 	}
 
+	function getCssVar(varName: string) {
+		if (typeof document === 'undefined') return '';
+		return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+	}
+
 	return (
 		<>
 			<PageTitleHeader title="Style Guide" />
@@ -37,12 +42,12 @@ export function StyleGuideUI(props: StyleGuideUIType) {
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="colors-section">
 				<h2>Color Palette</h2>
 				<div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-					<div style={{ backgroundColor: 'var(--primary-color)', color: '#fff' }} className="color-swatch">Primary Color</div>
-					<div style={{ backgroundColor: 'var(--secondary-color)' }} className="color-swatch">Secondary Color</div>
-					<div style={{ backgroundColor: 'var(--accent1-color)' }} className="color-swatch">Accent 1 Color</div>
-					<div style={{ backgroundColor: 'var(--accent2-color)' }} className="color-swatch">Accent 2 Color</div>
-					<div style={{ backgroundColor: 'var(--bg-color)' }} className="color-swatch">Background Color</div>
-					<div style={{ backgroundColor: 'var(--text-color)' }} className="color-swatch">Text Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: 'var(--primary-color)', color: '#fff' }} className="color-swatch">Primary Color - {getCssVar('--primary-color')}</div>
+					<div suppressHydrationWarning style={{ backgroundColor: 'var(--secondary-color)' }} className="color-swatch">Secondary Color - {getCssVar('--secondary-color')}</div>
+					<div suppressHydrationWarning style={{ backgroundColor: 'var(--accent1-color)' }} className="color-swatch">Accent 1 Color - {getCssVar('--accent1-color')}</div>
+					<div suppressHydrationWarning style={{ backgroundColor: 'var(--accent2-color)' }} className="color-swatch">Accent 2 Color - {getCssVar('--accent2-color')}</div>
+					<div suppressHydrationWarning style={{ backgroundColor: 'var(--bg-color)' }} className="color-swatch">Background Color - {getCssVar('--bg-color')}</div>
+					<div suppressHydrationWarning style={{ backgroundColor: 'var(--text-color)' }} className="color-swatch">Text Color - {getCssVar('--text-color')}</div>
 				</div>
 			</PageSection>
 

@@ -134,4 +134,33 @@ describe('JZ Home Improvement projects page', () => {
 		render(pageElement);
 		expect(screen.getByTestId('mock-projectsclient').textContent).toBe('2');
 	});
+
+	it('orders numeric titles before alphabetic titles to exercise mixed sorting branch', async () => {
+		mockGetContentfulEntriesByType.mockResolvedValue({
+			items: [
+				{
+					sys: { contentType: { sys: { id: '5yLwz568n8n0BwOzHYda0W' } } },
+					fields: {
+						title: 'Project Alpha',
+						description: 'Alpha project',
+						images: [],
+					},
+				},
+				{
+					sys: { contentType: { sys: { id: '5yLwz568n8n0BwOzHYda0W' } } },
+					fields: {
+						title: '2 Project',
+						description: 'Second project',
+						images: [],
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		mockGetContentfulImagesFromEntries.mockResolvedValue([]);
+
+		const pageElement = await ProjectsPage();
+		render(pageElement);
+		expect(screen.getByTestId('mock-projectsclient').textContent).toBe('2');
+	});
 });

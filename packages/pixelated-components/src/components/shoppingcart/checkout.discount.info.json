@@ -1,0 +1,25 @@
+{
+	"fields" : [
+		{
+			"component" : "FormSectionHeader",
+			"props" : {
+				"title" : "Discount Info"
+			}
+		}, {
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "discountCode",
+				"name" : "discountCode",
+				"defaultValue" : null,
+				"placeholder": "Discount Code",
+				"size" : "40",
+				"display" : "horizontal",
+				"required" : null,
+				"label" : "Discount Code : ",
+				"tooltip" : "Please enter any discount code you have received",
+				"validate" : "isValidDiscountCode"
+			}
+		} 		
+	]
+}

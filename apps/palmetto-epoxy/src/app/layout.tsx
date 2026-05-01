@@ -12,16 +12,7 @@ import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "@/app/styles/globals.css";
-
-/** Capitalize the first letter of each word/segment in `input`. */
-export function capitalizeWords(input: string): string {
-	if (!input) return input;
-	// Match word-like segments (letters plus internal apostrophes/hyphens),
-	// using Unicode-aware \p{L} class.
-	return input.replace(/\p{L}[\p{L}'’-]*/gu, (w) =>
-		w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-	);
-}
+import { capitalizeWords } from "@pixelated-tech/components";
 
 
 export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {

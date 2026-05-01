@@ -5,10 +5,10 @@ import * as fs from 'fs/promises';
 import {
   safeJSON,
   generateHumansTxt,
-  sanitizeString,
   createWellKnownResponse,
   getPixelatedComponentsPackageVersion,
 } from '@/components/foundation/well-known';
+import { sanitizeString } from '@/components/foundation/utilities';
 
 import testData from '../test/test-data';
 

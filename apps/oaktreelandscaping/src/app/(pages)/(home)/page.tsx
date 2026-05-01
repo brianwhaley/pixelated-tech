@@ -10,7 +10,7 @@ import siteConfig from "@/app/data/siteconfig.json";
 const siteInfo = (siteConfig as any).siteInfo;
 
 const wpSite = "blog.oaktree-landscaping.com";
-
+ 
 export default function Home() {
 	const config = usePixelatedConfig();
 	const googleMapsApiKey = config?.googleMaps?.apiKey ?? undefined;

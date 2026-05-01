@@ -1,3 +1,5 @@
+
+import { vi } from 'vitest';
 import type { CarouselCardType } from '@/components/general/carousel';
 
 export const emptyFormData = { fields: [] };
@@ -194,6 +196,7 @@ export const tileCardsWithoutAlt: CarouselCardType[] = [
 	},
 ];
 
+
 export const tileCardsWithoutBody: CarouselCardType[] = [
 	{
 		index: 0,
@@ -203,6 +206,36 @@ export const tileCardsWithoutBody: CarouselCardType[] = [
 		imageAlt: 'Title',
 	},
 ];
+
+export function createAxeCoreLocalFallbackPageMock(): any {
+	return {
+		setViewport: vi.fn().mockResolvedValue(undefined),
+		on: vi.fn().mockReturnValue(undefined),
+		setUserAgent: vi.fn().mockResolvedValue(undefined),
+		goto: vi.fn().mockResolvedValue(undefined),
+		addScriptTag: vi.fn()
+			.mockRejectedValueOnce(new Error('CDN blocked'))
+			.mockResolvedValue(undefined),
+		frames: vi.fn().mockReturnValue([
+			{
+				evaluate: vi.fn()
+					.mockResolvedValueOnce(false)
+					.mockResolvedValueOnce({
+						violations: [],
+						passes: [],
+						incomplete: [],
+						inapplicable: [],
+						testEngine: { name: 'axe-core', version: '4.0.0' },
+						testRunner: { name: 'mock' },
+						testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
+						timestamp: new Date().toISOString(),
+						url: 'http://example.com'
+					}),
+			},
+		]),
+		close: vi.fn().mockResolvedValue(undefined),
+	};
+}
 
 export const mockBlogPost = {
 	id: 123,

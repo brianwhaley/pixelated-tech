@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { CalloutHeader } from "../general/callout";
+import { PageSectionHeader } from '../general/semantic';
 import { FormEngine } from "../sitebuilder/form/formengine";
 import { FormButton } from '../sitebuilder/form/formcomponents';
 import { emailJSON } from "../sitebuilder/form/formsubmit";
@@ -11,12 +11,15 @@ import '../sitebuilder/form/form.css';
 import { MicroInteractions } from '../foundation/microinteractions';
 import { Modal, handleModalOpen } from '../general/modal';
 import { Table } from "../general/table";
-import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, formatAsUSD, getCartItemCount } from "./shoppingcart.functions";
+import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount } from "./shoppingcart.functions";
+import { formatAsUSD, formatAsHundredths } from "../foundation/utilities";
 import type { CartItemType, CheckoutType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
 import { SmartImage } from '../general/smartimage';
-import { getActivePaymentProvider } from './providersRegistry';
-import shippingToData from "./shipping.to.json";
+import { getActivePaymentProvider } from './shoppingcart.providers';
+import personalInfoData from "./checkout.personal.info.json";
+import discountInfoData from "./checkout.discount.info.json";
+import shippingInfoData from "./checkout.shipping.info.json";
 import "./shoppingcart.css";
 
 
@@ -27,44 +30,96 @@ const debug = false;
 /* ========== SHOPPING CART UI COMPONENT ========== */
 /* ================================================ */
 
+type ShoppingCartFormOverride = {
+	fields?: any[];
+	properties?: Record<string, any>;
+};
+
 /**
  * ShoppingCart — page-level shopping cart UI that handles items, shipping, and checkout flows.
  *
  * Props:
- * @param {string} [props.payPalClientID] - Optional PayPal client ID to enable the PayPal checkout button.
+ * @param {function} [props.onPaymentCapture] - Optional callback invoked to capture payment on the server.
  */
 ShoppingCart.propTypes = {
-	/** Optional PayPal client ID to enable PayPal checkout */
-	payPalClientID: PropTypes.string,
-	/** Optional Square application ID to enable Square checkout */
-	squareApplicationId: PropTypes.string,
-	/** Optional Square location ID to enable Square checkout */
-	squareLocationId: PropTypes.string,
+	/** Optional callback invoked to capture payment on the server */
+	onPaymentCapture: PropTypes.func,
+	/** Optional app-specific custom subtotal discount */
+	subtotalDiscountCustom: PropTypes.number,
+	/** Optional override for the checkout personal info form */
+	personalInfoForm: PropTypes.object,
+	/** Optional override for the checkout discount form */
+	discountInfoForm: PropTypes.object,
+	/** Optional override for the checkout shipping form */
+	shippingInfoForm: PropTypes.object,
+	/** Optional override for additional checkout info fields */
+	additionalInfoForm: PropTypes.object,
+	/** Optional flag to hide the shipping section when cart items are non-shippable */
+	showShippingInfoSection: PropTypes.bool,
 };
-export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes>;
-export function ShoppingCart( props: ShoppingCartType ) {
+export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes> & { personalInfoForm?: ShoppingCartFormOverride; discountInfoForm?: ShoppingCartFormOverride; shippingInfoForm?: ShoppingCartFormOverride; additionalInfoForm?: ShoppingCartFormOverride; };
+export function ShoppingCart(props: ShoppingCartType) {
 	const config = usePixelatedConfig();
-	const payPalClientID = props.payPalClientID || config?.paypal?.payPalApiKey || config?.paypal?.sandboxPayPalApiKey;
-	const squareApplicationId = props.squareApplicationId || config?.square?.applicationId;
-	const squareLocationId = props.squareLocationId || config?.square?.locationId;
-
-	const effectiveConfig = {
-		...(config || {}),
-		paypal: {
-			...(config?.paypal || {}),
-			payPalApiKey: payPalClientID,
-		},
-		square: {
-			...(config?.square || {}),
-			applicationId: squareApplicationId,
-			locationId: squareLocationId,
-		},
-	};
+	const effectiveConfig = config || {};
 
 	const activeProvider = getActivePaymentProvider(effectiveConfig);
 	const PaymentProviderComponent = activeProvider ? activeProvider.component : null;
 	const checkoutDataForProvider = getCheckoutData();
-	const paymentProviderProps = activeProvider ? activeProvider.getProps(effectiveConfig, checkoutDataForProvider) : {};
+	const checkoutDiscountCustom = props.subtotalDiscountCustom ?? 0;
+
+	const personalInfoFormData = props.personalInfoForm ?? personalInfoData;
+	const discountInfoFormData = props.discountInfoForm ?? discountInfoData;
+	const shippingInfoFormData = props.shippingInfoForm ?? shippingInfoData;
+	const additionalInfoFormData = props.additionalInfoForm;
+	const showShippingInfoSection = props.showShippingInfoSection !== false;
+
+	const discountFormData = discountInfoFormData;
+	const shippingFormFields = [
+		...(personalInfoFormData?.fields ?? []),
+		...(discountFormData?.fields ?? []),
+		...(checkoutDiscountCustom > 0 ? [{
+			component: "FormLabel",
+			props: {
+				id: "checkout_discount_custom_label",
+				label: `Discount applied: ${formatAsUSD(checkoutDiscountCustom)}`,
+				className: "pix-cart-discount-applied"
+			}
+		}] : []),
+		...(showShippingInfoSection ? (shippingInfoFormData?.fields ?? []) : []),
+		...(additionalInfoFormData ? [{
+			component: "FormSectionHeader",
+			props: {
+				"title": "Additional Checkout Info"
+			}
+		}] : []),
+		...(additionalInfoFormData?.fields ?? []),
+		{
+			component: "FormButton",
+			props: {
+				id: "saveShippingInfo",
+				type: "submit",
+				text: "Continue to Checkout",
+				className: "pix-cart-button"
+			}
+		}
+	];
+	const shippingFormDataCombined = {
+		properties: personalInfoFormData?.properties ?? {},
+		fields: shippingFormFields
+	};
+	const effectiveSubtotalDiscount = formatAsHundredths((checkoutDataForProvider.subtotal_discount || 0) + checkoutDiscountCustom);
+	const effectiveCheckoutData: CheckoutType = {
+		...checkoutDataForProvider,
+		subtotal_discount: effectiveSubtotalDiscount,
+		total: formatAsHundredths(
+			checkoutDataForProvider.subtotal - effectiveSubtotalDiscount + checkoutDataForProvider.shippingCost + checkoutDataForProvider.handlingFee + (checkoutDataForProvider.insuranceCost ?? 0) + (checkoutDataForProvider.shipping_discount ?? 0) + checkoutDataForProvider.salesTax
+		)
+	};
+	const paymentProviderProps = activeProvider ? {
+		...activeProvider.getProps(effectiveConfig, effectiveCheckoutData, {
+			onPaymentCapture: props.onPaymentCapture ?? undefined,
+		}),
+	} : {};
 	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
 	const [ shippingData, setShippingData ] = useState<any>();
 	const [ checkoutData, setcheckoutData ] = useState<CheckoutType>();
@@ -127,16 +182,22 @@ export function ShoppingCart( props: ShoppingCartType ) {
 
 	useEffect(() => {
 		// LOAD THE SHIPPING INFO FORM WITH VALUES IF SHIPPING INFO HAS ALREADY BEEN SAVED
-  		const form: HTMLFormElement | null = document.getElementById("address_to") as HTMLFormElement | null;
-		if (shippingData && form) {
-			for (const key in shippingData) {
-				const input = form.elements.namedItem(key) as HTMLInputElement | null;
-				if (input) {
-					input.value = shippingData[key].toString();
+		if (shippingData && progressStep === "ShippingInfo") {
+			Object.entries(shippingData).forEach(([key, value]) => {
+				const elements = Array.from(document.getElementsByName(key) as NodeListOf<HTMLInputElement>);
+				if (!elements.length) return;
+				if (elements[0].type === 'radio') {
+					elements.forEach(el => {
+						(el as HTMLInputElement).checked = String((value ?? '')).trim() === (el as HTMLInputElement).value;
+					});
+				} else {
+					elements.forEach(el => {
+						(el as HTMLInputElement).value = String(value ?? '');
+					});
 				}
-  			}
+			});
 		}
-	}, [progressStep]);
+	}, [progressStep, shippingData]);
 
 	paintCartItems.PropTypes = {
 		items: PropTypes.array.isRequired
@@ -152,11 +213,10 @@ export function ShoppingCart( props: ShoppingCartType ) {
 		return newItems;
 	}
 
-	function onShippingSubmit(/* event: Event */){
-		const formID = 'address_to' as const;
-		const formElement = document.getElementById(formID) as HTMLFormElement;
-		const formData = new FormData(formElement);
-		const formObject = Object.fromEntries(formData);
+	function onShippingSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const form = event.currentTarget as HTMLFormElement;
+		const formObject = Object.fromEntries(new FormData(form));
 		setShippingInfo(formObject);
 	}
 
@@ -200,9 +260,18 @@ export function ShoppingCart( props: ShoppingCartType ) {
 				);
 			}
 
-			if (activeProvider?.renderThankYou) {
-				return activeProvider.renderThankYou(orderData, config);
+			const receipt = buildReceiptData(orderData, config);
+			if (receipt) {
+				return (
+					<div>
+						<h3>Thank you for your payment!</h3>
+						<br />
+						<h3 style={{"textAlign": "center"}}>Your Receipt:</h3>
+						{renderReceiptTable(receipt)}
+					</div>
+				);
 			}
+
 
 			return (
 				<div>
@@ -214,7 +283,7 @@ export function ShoppingCart( props: ShoppingCartType ) {
 
 		return (
 			<div className="pix-cart">
-				<CalloutHeader title="Shopping Cart : " />
+				<PageSectionHeader title="Shopping Cart : " />
 				<br />
 				{renderThankYouContent()}
 			</div>
@@ -224,16 +293,17 @@ export function ShoppingCart( props: ShoppingCartType ) {
 		// ========== CHECKOUT ==========
 		return (
 			<div className="pix-cart">
-				<CalloutHeader title="Checkout Summary : " />
-				{ checkoutData && <CheckoutItems {...checkoutData} /> }
+				<PageSectionHeader title="Checkout Summary : " />
+				{ effectiveCheckoutData && <CheckoutItems {...effectiveCheckoutData} /> }
 				<br />
 				<FormButton className="pix-cart-button" type="button" id="backToCart" text="<= Back To Cart"
 					onClick={() => SetProgressStep("ShippingInfo")} />
 				<br />
+				<PageSectionHeader title="Payment Options : " />
 				{PaymentProviderComponent ? (
 					<PaymentProviderComponent
 						{...paymentProviderProps}
-						checkoutData={getCheckoutData()}
+						checkoutData={effectiveCheckoutData}
 						onApprove={handlePaymentSuccess}
 					/>
 				) : (
@@ -246,7 +316,7 @@ export function ShoppingCart( props: ShoppingCartType ) {
 		// ========== SHIPPING INFO ==========
 		return (
 			<div className="pix-cart">
-				<CalloutHeader title="Shopping Cart : " />
+				<PageSectionHeader title="Shopping Cart : " />
 				{ paintCartItems(shoppingCart ?? []) }
 				<br />
 				<div>
@@ -255,8 +325,8 @@ export function ShoppingCart( props: ShoppingCartType ) {
 				</div>
 				<br /><br /><hr /><br /><br />
 				<div>
-					<CalloutHeader title="Shipping To : " />
-					<FormEngine name="address_to" id="address_to" formData={shippingToData as any} onSubmitHandler={onShippingSubmit} />
+					<PageSectionHeader title="Checkout Info" />
+					<FormEngine name="checkout_shipping" id="checkout_shipping" formData={shippingFormDataCombined as any} onSubmitHandler={onShippingSubmit} />
 				</div>
 			</div>
 		);
@@ -264,7 +334,7 @@ export function ShoppingCart( props: ShoppingCartType ) {
 		// ========== EMPTY SHOPPING CART ==========
 		return (
 			<div className="pix-cart">
-				<CalloutHeader title="Shopping Cart : " />
+				<PageSectionHeader title="Shopping Cart : " />
 				<br />
 				<div className="centered">No items in your shopping cart</div>
 			</div>
@@ -272,7 +342,6 @@ export function ShoppingCart( props: ShoppingCartType ) {
 		);
 	}
 }
-
 
 /**
  * ShoppingCartItem — Render a single cart line item showing thumbnail, title, quantity and price.
@@ -594,10 +663,171 @@ export function GoToCartButton(props: GoToCartButtonType){
 }
 
 
-// function ThankYou() { }
+
+type ReceiptItem = {
+	itemID: string;
+	itemTitle: string;
+	itemQuantity: number;
+	itemCost: number;
+};
+
+type ReceiptData = {
+	orderId?: string;
+	dateTime?: string;
+	paymentStatus?: string;
+	paymentMethod?: string;
+	orderSource?: string;
+	amount?: string;
+	currency?: string;
+	fullName?: string;
+	address?: string;
+	phone?: string;
+	email?: string;
+	shipping?: string;
+	handling?: string;
+	tax?: string;
+	creditCardLast4?: string;
+	receiptUrl?: string;
+	items?: ReceiptItem[];
+};
+
+function formatReceiptAddress(shippingTo: any) {
+	if (!shippingTo) return '';
+	const parts = [
+		shippingTo.street1,
+		shippingTo.street2,
+		shippingTo.city,
+		shippingTo.state,
+		shippingTo.zip,
+		shippingTo.country,
+	].filter(Boolean);
+	return parts.join(', ');
+}
+
+function parseMoney(value: any) {
+	if (value === null || value === undefined || value === '') return undefined;
+	const parsed = Number(value);
+	return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function formatMoney(value: any) {
+	const parsed = parseMoney(value);
+	return parsed !== undefined ? formatAsUSD(parsed) : '';
+}
+
+function buildReceiptData(orderData: any, config?: any): ReceiptData | null {
+	const payload = orderData?.data ? orderData.data : orderData;
+	if (!payload) return null;
+
+	const checkoutData = orderData?.checkoutData || payload?.checkoutData || payload?.purchase_units?.[0]?.shipping || {};
+	const purchaseUnit = payload?.purchase_units?.[0] || {};
+	const breakdown = purchaseUnit?.amount?.breakdown || {};
+	const paymentCapture = payload.captureResponse?.payment || purchaseUnit?.payments?.captures?.[0] || payload;
+
+	const orderId = paymentCapture?.id || payload?.id || payload?.orderID || payload?.order_id;
+	const dateTime = paymentCapture?.created_at || paymentCapture?.create_time || paymentCapture?.updated_at || payload?.create_time || payload?.updated_at;
+	const paymentStatus = paymentCapture?.status || payload?.status || 'Completed';
+	const paymentMethod = payload?.sourceId ? 'Square' : 'PayPal';
+	const currency = config?.shoppingcart?.currency || paymentCapture?.amount_money?.currency || paymentCapture?.amount?.currency_code || purchaseUnit?.amount?.currency_code || 'USD';
+
+	const amountValue = parseMoney(checkoutData?.total)
+		?? parseMoney(purchaseUnit?.amount?.value)
+		?? parseMoney(paymentCapture?.amount?.value)
+		?? (paymentCapture?.amount_money?.amount ? paymentCapture.amount_money.amount / 100 : undefined);
+	const amount = amountValue !== undefined ? `${formatAsUSD(amountValue)} ${currency}` : '';
+
+	const items: ReceiptItem[] = Array.isArray(checkoutData?.items)
+		? checkoutData.items.map((item: any) => ({
+			itemID: item.itemID || item.name || item.id || '',
+			itemTitle: item.itemTitle || item.description || item.name || '',
+			itemQuantity: item.itemQuantity ?? item.quantity ?? 0,
+			itemCost: parseMoney(item.itemCost ?? item.unit_amount?.value) ?? 0,
+		}))
+		: Array.isArray(purchaseUnit?.items)
+			? purchaseUnit.items.map((item: any) => ({
+				itemID: item.name || item.id || '',
+				itemTitle: item.description || item.name || '',
+				itemQuantity: parseMoney(item.quantity) ?? 0,
+				itemCost: parseMoney(item.unit_amount?.value) ?? 0,
+			}))
+			: [];
+
+	const shippingTo = checkoutData?.shippingTo || purchaseUnit?.shipping?.address || {};
+	const payerName = payload?.payer?.name || {};
+	const fullName = checkoutData?.shippingTo?.name
+		|| payerName?.full_name
+		|| `${payerName?.given_name || ''} ${payerName?.surname || ''}`.trim();
+
+	return {
+		orderId,
+		dateTime,
+		paymentStatus,
+		paymentMethod,
+		orderSource: paymentMethod,
+		amount,
+		currency,
+		fullName: fullName || 'Unknown',
+		address: formatReceiptAddress(checkoutData?.shippingTo || purchaseUnit?.shipping?.address),
+		phone: checkoutData?.shippingTo?.phone || payload?.payer?.phone?.phone_number?.national_number || '',
+		email: checkoutData?.shippingTo?.email || payload?.payer?.email_address || payload?.buyer_email_address || '',
+		shipping: formatMoney(checkoutData?.shippingCost ?? breakdown?.shipping?.value),
+		handling: formatMoney(checkoutData?.handlingFee ?? breakdown?.handling?.value),
+		tax: formatMoney(checkoutData?.salesTax ?? breakdown?.tax_total?.value),
+		creditCardLast4: payload?.card?.details?.card?.last4 || paymentCapture?.card_details?.card?.last_4 || '',
+		receiptUrl: paymentCapture?.receipt_url || '',
+		items,
+	};
+}
+
+function renderReceiptTable(receipt: ReceiptData) {
+	const rows: Array<{ Field: string; Value: React.ReactNode }> = [
+		{ Field: 'Order ID', Value: receipt.orderId || 'Unknown' },
+		{ Field: 'Date & Time', Value: receipt.dateTime || 'Unknown' },
+		{ Field: 'Payment Status', Value: receipt.paymentStatus || 'Unknown' },
+		{ Field: 'Payment Method', Value: receipt.paymentMethod || 'Unknown' },
+		{ Field: 'Amount', Value: receipt.amount || 'Unknown' },
+		{ Field: 'Full Name', Value: receipt.fullName || 'Unknown' },
+		{ Field: 'Address', Value: receipt.address || 'Unknown' },
+		{ Field: 'Phone', Value: receipt.phone || 'Unknown' },
+		{ Field: 'Email', Value: receipt.email || 'Unknown' },
+		{ Field: 'Shipping', Value: receipt.shipping || '0.00' },
+		{ Field: 'Handling', Value: receipt.handling || '0.00' },
+		{ Field: 'Tax', Value: receipt.tax || '0.00' },
+		{ Field: 'Credit Card (Last 4)', Value: receipt.creditCardLast4 || 'N/A' },
+	];
+
+	if (receipt.receiptUrl) {
+		rows.push({
+			Field: 'Receipt URL',
+			Value: <a href={receipt.receiptUrl} target="_blank" rel="noreferrer">View receipt</a>,
+		});
+	}
+
+	if (receipt.items && receipt.items.length > 0) {
+		rows.push({
+			Field: 'Items',
+			Value: (
+				<Table
+					id="receipt-items-table"
+					data={receipt.items.map((item) => ({
+						ID: item.itemID,
+						Title: item.itemTitle,
+						Quantity: item.itemQuantity,
+						'Price per item': formatAsUSD(item.itemCost),
+					}))}
+				/>
+			),
+		});
+	}
+
+	return (
+		<div style={{ maxWidth: 768, margin: '0 auto' }}>
+			<Table id="receipt-summary-table" data={rows} />
+		</div>
+	);
+}
 
 
-// function WishList() { }
 
 
 

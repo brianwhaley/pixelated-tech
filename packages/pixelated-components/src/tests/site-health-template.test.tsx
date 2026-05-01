@@ -104,6 +104,46 @@ describe('SiteHealthTemplate', () => {
     });
   });
 
+  it('includes additional endpoint params in the request URL', async () => {
+    const mockData = { success: true, data: { test: 'data' } };
+    const mockResponse = {
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve(mockData)
+    };
+
+    mockSmartFetch.mockResolvedValue(mockResponse);
+
+    render(
+      <SiteHealthTemplate 
+        siteName="test-site" 
+        endpoint={{
+          endpoint: '/api/test',
+          params: { foo: 'bar' },
+          responseTransformer: (result) => result.data
+        }}
+      >
+        {(data: { test: string } | null) => <div>Data: {data?.test}</div>}
+      </SiteHealthTemplate>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Data: data')).toBeInTheDocument();
+    });
+
+    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=test-site&foo=bar', {
+      responseType: 'ok',
+      requestInit: {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: undefined,
+      }
+    });
+  });
+
   it('handles non-Error thrown values', async () => {
     mockSmartFetch.mockRejectedValue('String error');
 

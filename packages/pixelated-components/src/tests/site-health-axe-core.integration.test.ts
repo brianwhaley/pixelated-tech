@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { createAxeCoreLocalFallbackPageMock } from '../test/fixtures';
 
 // Mock setTimeout to resolve instantly for tests
 const originalSetTimeout = global.setTimeout;
@@ -124,6 +125,40 @@ describe('site-health-axe-core.integration', () => {
 			expect(result.summary.violations).toBeGreaterThanOrEqual(1);
 			expect(result.summary.passes).toBeGreaterThanOrEqual(1);
 			expect(result.summary.critical).toBeGreaterThanOrEqual(1);
+		});
+
+		it('should fall back to local inline injection when CDN injection fails', async () => {
+			const puppeteerModule = await import('puppeteer');
+			const pageMock = createAxeCoreLocalFallbackPageMock();
+			pageMock.frames.mockReturnValue([
+				{
+					evaluate: vi.fn()
+						.mockResolvedValueOnce(false)
+						.mockResolvedValueOnce(true)
+						.mockResolvedValueOnce({
+							violations: [],
+							passes: [],
+							incomplete: [],
+							inapplicable: [],
+							testEngine: { name: 'axe-core', version: '4.0.0' },
+							testRunner: { name: 'mock' },
+							testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
+							timestamp: new Date().toISOString(),
+							url: 'http://example.com'
+						})
+				}
+			]);
+
+			vi.mocked(puppeteerModule.default.launch as any).mockResolvedValueOnce({
+				newPage: vi.fn().mockResolvedValue(pageMock),
+				close: vi.fn().mockResolvedValue(undefined)
+			} as any);
+
+			const result = await performAxeCoreAnalysis('http://example.com');
+
+			expect(result.status).toBe('success');
+			expect(result.injectionSource).toBe('local-inline');
+			expect(pageMock.addScriptTag).toHaveBeenCalledTimes(2);
 		});
 
 		it('should handle errors and return error status', async () => {

@@ -9,10 +9,9 @@ import SewingPage from '@/app/(pages)/sewing/page';
 import BoutiquePage from '@/app/(pages)/boutique/page';
 import ContactUsPage from '@/app/(pages)/contact-us/page';
 import FAQsPage from '@/app/(pages)/faqs/page';
-import StyleGuidePage from '@/app/(pages)/style-guide/page';
-import BlogCalendarPage from '@/app/(pages)/blog-calendar/page';
+import StyleGuidePage from '@/app/(pages)/styleguide/page';
+import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
-import Register from '@/app/(pages)/register/page';
 
 describe('Threemuses page coverage', () => {
 	it('renders the dancewear page title', async () => {
@@ -47,10 +46,9 @@ describe('Threemuses page coverage', () => {
 		expect(screen.getByTestId('mock-styleguideui')).toBeTruthy();
 	});
 
-	it('renders the blog calendar page and blog post list', async () => {
+	it('renders the blog calendar markdown content', async () => {
 		render(<BlogCalendarPage />);
-		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Oaktree Landscaping Blog Posts'));
-		expect(screen.getByTestId('mock-blogpostlist')).toBeTruthy();
+		await waitFor(() => expect(screen.getByTestId('mock-markdown')).toBeTruthy());
 	});
 
 	it('renders the updates page markdown section', async () => {
@@ -58,9 +56,5 @@ describe('Threemuses page coverage', () => {
 		await waitFor(() => expect(screen.getByTestId('mock-markdown')).toBeTruthy());
 	});
 
-	it('renders the register page title and form', async () => {
-		render(<Register />);
-		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Register for a Three Muses Event'));
-		expect(screen.getByTestId('mock-formengine')).toBeTruthy();
-	});
+	// Register page removed; remaining coverage is for active routes.
 });

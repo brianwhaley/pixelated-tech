@@ -31,7 +31,7 @@ function UseQuery() {
 export default function Stkr() {
 	return (
 		<>
-			<style jsx>{`.bigpad { padding: 20px; }`}</style>
+			<style>{`.bigpad { padding: 20px; }`}</style>
 			<PageTitleHeader title="Stkr" />
 			<PageSection columns={1} id="stkr-section">
 				<div className="callout-body">

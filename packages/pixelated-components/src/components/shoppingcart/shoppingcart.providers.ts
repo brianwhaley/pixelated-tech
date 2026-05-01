@@ -11,13 +11,42 @@ export interface PaymentProviderCheckoutProps {
 	onApprove: (props: { data: any }) => void;
 }
 
+export interface PaymentProviderCallbacks {
+	onPaymentCapture?: (payload: { sourceId: string; checkoutData?: CheckoutType; card?: any }) => Promise<any>;
+}
+
 export interface PaymentProviderDefinition {
 	key: PaymentProviderKey;
 	displayName: string;
 	component: ComponentType<any>;
 	isConfigured: (config?: any) => boolean;
-	getProps: (config?: any, checkoutData?: CheckoutType) => Record<string, any>;
+	getProps: (config?: any, checkoutData?: CheckoutType, callbacks?: PaymentProviderCallbacks) => Record<string, any>;
 	renderThankYou: (orderData: any, config?: any) => ReactNode;
+}
+
+function normalizeEmail(value?: any) {
+	return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+function getSquareCheckoutProps(config?: any, checkoutData?: CheckoutType) {
+	const square = config?.square || {};
+	const checkoutEmail = normalizeEmail(checkoutData?.shippingTo?.email);
+	const sandboxEmails = Array.isArray(square?.sandboxSquareEmails)
+		? square.sandboxSquareEmails.map((value: any) => normalizeEmail(value))
+		: [];
+	const explicitSandbox = square?.environment === 'sandbox';
+	const useSandbox = explicitSandbox || Boolean(checkoutEmail && sandboxEmails.includes(checkoutEmail));
+
+	const productionApplicationId = square?.squareApplicationId;
+	const productionLocationId = square?.squareLocationId;
+	const sandboxApplicationId = square?.sandboxSquareApplicationId;
+	const sandboxLocationId = square?.sandboxSquareLocationId;
+
+	return {
+		applicationId: useSandbox ? sandboxApplicationId : productionApplicationId,
+		locationId: useSandbox ? sandboxLocationId : productionLocationId,
+		useSandbox,
+	};
 }
 
 export const paymentProviders: Record<PaymentProviderKey, PaymentProviderDefinition> = {
@@ -28,7 +57,7 @@ export const paymentProviders: Record<PaymentProviderKey, PaymentProviderDefinit
 		isConfigured: (config?: any) => Boolean(
 			config?.paypal?.payPalApiKey || config?.paypal?.sandboxPayPalApiKey
 		),
-		getProps: (config?: any, checkoutData?: CheckoutType) => {
+		getProps: (config?: any, checkoutData?: CheckoutType, callbacks?: PaymentProviderCallbacks) => {
 			const email = checkoutData?.shippingTo?.email?.toString().trim().toLowerCase();
 			const sandboxEmails = Array.isArray(config?.paypal?.sandboxPayPalEmails)
 				? config.paypal.sandboxPayPalEmails.map((value: string) => value.toString().trim().toLowerCase())
@@ -53,13 +82,18 @@ export const paymentProviders: Record<PaymentProviderKey, PaymentProviderDefinit
 		key: 'square',
 		displayName: 'Square',
 		component: SquareCheckout,
-		isConfigured: (config?: any) => Boolean(
-			config?.square?.applicationId && config?.square?.locationId
-		),
-		getProps: (config?: any) => ({
-			applicationId: config?.square?.applicationId || '',
-			locationId: config?.square?.locationId || '',
-		}),
+		isConfigured: (config?: any) => {
+			const props = getSquareCheckoutProps(config);
+			return Boolean(props.applicationId && props.locationId);
+		},
+		getProps: (config?: any, checkoutData?: CheckoutType, callbacks?: PaymentProviderCallbacks) => {
+			const props = getSquareCheckoutProps(config, checkoutData);
+			return {
+				applicationId: props.applicationId || '',
+				locationId: props.locationId || '',
+				...(callbacks?.onPaymentCapture ? { onSquarePaymentCapture: callbacks.onPaymentCapture } : {}),
+			};
+		},
 		renderThankYou: renderSquareThankYou,
 	},
 	stripe: {
@@ -67,7 +101,7 @@ export const paymentProviders: Record<PaymentProviderKey, PaymentProviderDefinit
 		displayName: 'Stripe',
 		component: StripeCheckout,
 		isConfigured: () => false,
-		getProps: () => ({}),
+		getProps: (_config?: any, _checkoutData?: CheckoutType, _callbacks?: PaymentProviderCallbacks) => ({}),
 		renderThankYou: renderStripeThankYou,
 	},
 };

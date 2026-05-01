@@ -3,7 +3,7 @@
 
 import React from "react";
 import { use, useState, useEffect, useRef } from 'react';
-import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, FormButton } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, FormButton, addToShoppingCart } from "@pixelated-tech/components";
 import { SchemaEvent, buildEventSchema } from "@pixelated-tech/components";
 import { Loading } from "@pixelated-tech/components";
 import { PageTitleHeader,  PageSection, PageSectionHeader } from '@pixelated-tech/components';
@@ -85,20 +85,34 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 					<SchemaEvent event={buildEventSchema(eventData, config.siteInfo)} />
 					<PageTitleHeader title={eventData?.fields.title + " - " + eventData?.fields.id || ""} />
 					<PageSection columns={1} id="event-callout-section">
-						<PageSectionHeader title={ new Date(eventData?.fields.startDate).toLocaleString() + " - " + new Date(eventData?.fields.endDate).toLocaleString() } />
+						<PageSectionHeader title={ 
+							new Date(eventData?.fields?.startDate).toLocaleString('en-US', {
+								dateStyle: 'short', timeStyle: 'short'
+							}).replace(',', '') + " - " + new Date(eventData?.fields?.endDate).toLocaleString('en-US', {
+								dateStyle: 'short', timeStyle: 'short'
+							}).replace(',', '')  
+						} />
 						<div>{eventData?.fields?.description}</div>
 						<div>Duration: {eventData?.fields?.duration} hours</div>
 						<div>Seats Available: {eventData?.fields?.maxSeats}</div>
 						<div>Price: {toDollars.format(eventData?.fields?.price)}</div>
 						{ (eventData?.fields?.status?.toLowerCase?.() === "open") ? 
 							<FormButton
-								id="register-event-button"
+								id="add-to-cart-button"
 								type="button"
-								text="Register for this event"
+								text="Add to Cart"
 								className="pix-cart-button"
 								onClick={() => {
-									if (!eventData?.fields?.id) return;
-									router.push(`/register?event=${eventData.fields.id}`);
+									if (!eventData?.fields?.id || !eventData?.fields?.title) return;
+									addToShoppingCart({
+										itemID: eventData.fields.id,
+										itemTitle: eventData.fields.title,
+										itemCost: Number(eventData.fields.price) || 0,
+										itemQuantity: 1,
+										itemURL: `/events/${eventData.fields.id}`,
+										itemCategory: eventData.fields.category?.toString?.() ?? undefined,
+									});
+									router.push('/cart');
 								}}
 							/>
 							: "" }

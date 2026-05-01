@@ -88,14 +88,14 @@
 		},{
 			"name": "Blog Calendar",
 			"hidden": true,
-			"path": "/blog-calendar",
+			"path": "/blogcalendar",
 			"title": "The Three Muses of Bluffton - Blog",
 			"description": "",
 			"keywords": ""
 		},{
 			"name": "Style Guide",
 			"hidden": true,
-			"path": "/style-guide",
+			"path": "/styleguide",
 			"title": "The Three Muses of Bluffton - Style Guide",
 			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
 			"keywords": ["Three Muses","style guide"]
@@ -104,6 +104,27 @@
 			"hidden": true,
 			"routes": [ 
 				{ 
+					"name": "Blog", 
+					"path": "/blog", 
+					"hidden": true,
+					"title": "The Three Muses of Bluffton - Blog",
+					"description": "The Three Muses of Bluffton Blog page - where you can see adult, youth, and summer camp events.",
+					"keywords": ["Three Muses", "blog"]  
+				} , { 
+					"name": "Cart", 
+					"path": "/cart", 
+					"hidden": true,
+					"title": "The Three Muses of Bluffton - Cart",
+					"description": "The Three Muses of Bluffton Cart page - where you can view your selected items.",
+					"keywords": ["Three Muses", "cart", "shopping cart", "ecommerce"]  
+				} , { 
+					"name": "Consign", 
+					"path": "/consign", 
+					"hidden": true,
+					"title": "The Three Muses of Bluffton - Consign With Us",
+					"description": "The Three Muses of Bluffton Consign page - where you can consign your costumes and formal dresses into something beautiful",
+					"keywords": ["Three Muses", "consign", "consignment", "consign costume", "consign formal dress", "consign costumes", "consign formal dresses"]  
+				} , { 
 					"name": "Events", 
 					"path": "/events", 
 					"hidden": true,
@@ -111,12 +132,13 @@
 					"description": "The Three Muses of Bluffton Events page - where you can see adult, youth, and summer camp events.",
 					"keywords": ["Three Muses", "events", "event registration", "adult events", "youth events", "summer camp events"]  
 				} , { 
-					"name": "Event Registration", 
-					"path": "/register", 
+
+					"name": "Updates", 
+					"path": "/updates", 
 					"hidden": true,
-					"title": "The Three Muses of Bluffton - Event Registration",
-					"description": "Register for events at The Three Muses of Bluffton.",
-					"keywords": ["Three Muses", "event registration", "adult events", "youth events", "summer camp events"]  
+					"title": "The Three Muses of Bluffton - Updates",
+					"description": "Updates for The Three Muses of Bluffton web site.",
+					"keywords": ["Three Muses", "updates"]  
 				}
 			]
 		} , {
@@ -183,22 +205,28 @@
 			"label": "Secondary color"
 		},
 		"tertiary-color": {
-			"value": "#CCB7E5",
+			"value": "#68AEB7",
 			"type": "color",
 			"group": "palette",
 			"label": "Tertiary color"
 		},
 		"accent1-color": {
-			"value": "#CCC",
+			"value": "#EEE2F5",
 			"type": "color",
 			"group": "palette",
 			"label": "Accent color 1"
 		},
 		"accent2-color": {
-			"value": "#EEE",
+			"value": "#D1EAEE",
 			"type": "color",
 			"group": "palette",
 			"label": "Accent color 2"
+		},
+		"accent3-color": {
+			"value": "#EFE7D9",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 3"
 		},
 		"bg-color": {
 			"value": "#ffffff",
@@ -213,7 +241,7 @@
 			"label": "Font color"
 		},
 		"header-font": {
-			"value": "\"Montserrat\", Verdana, sans-serif",
+			"value": "\"Young Serif\", Verdana, serif",
 			"type": "font",
 			"group": "typography",
 			"label": "Header font"
@@ -225,25 +253,25 @@
 			"label": "Body font"
 		},
 		"font-size1-min": {
-			"value": "2.00rem",
+			"value": "2.50rem",
 			"type": "size",
 			"group": "typography",
 			"label": "Font size 1 min"
 		},
 		"font-size1-max": {
-			"value": "3.00rem",
+			"value": "3.50rem",
 			"type": "size",
 			"group": "typography",
 			"label": "Font size 1 max"
 		},
 		"font-size2-min": {
-			"value": "1.35rem",
+			"value": "1.5rem",
 			"type": "size",
 			"group": "typography",
 			"label": "Font size 2 min"
 		},
 		"font-size2-max": {
-			"value": "1.75rem",
+			"value": "2.0rem",
 			"type": "size",
 			"group": "typography",
 			"label": "Font size 2 max"

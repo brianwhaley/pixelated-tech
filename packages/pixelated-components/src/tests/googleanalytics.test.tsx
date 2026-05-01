@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { GoogleAnalytics } from '../components/integrations/googleanalytics';
+import { GoogleAnalytics, GoogleAnalyticsEvent } from '../components/integrations/googleanalytics';
 
 // Mock the config hook
 vi.mock('../components/config/config.client', () => ({
@@ -119,6 +119,26 @@ describe('GoogleAnalytics Component', () => {
 		
 		const gaScript = document.querySelector('script#ga') as HTMLScriptElement | null;
 		expect(gaScript?.src).toContain('https:');
+	});
+
+	it('should render nothing extra when GA is already configured', () => {
+		(window as any).gtag = vi.fn();
+		document.head.innerHTML = '<script id="ga-init"></script>';
+
+		render(<GoogleAnalytics id="G-TEST123" />);
+
+		const gaScripts = document.querySelectorAll('script#ga');
+		expect(gaScripts.length).toBe(0);
+		expect(document.querySelectorAll('script#ga-init').length).toBe(1);
+	});
+
+	it('should send an event through gtag when GoogleAnalyticsEvent is rendered', () => {
+		(window as any).dataLayer = [];
+		(window as any).gtag = vi.fn();
+
+		render(<GoogleAnalyticsEvent event_name="purchase" event_parameters={{ value: 42 }} />);
+
+		expect((window as any).gtag).toHaveBeenCalledWith('event', 'purchase', { value: 42 });
 	});
 
 	it('should throw error if ID not provided and not in config', () => {

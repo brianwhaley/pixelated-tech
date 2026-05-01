@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor } from '../test/test-utils';
 import { FormEngine } from '../components/sitebuilder/form/formengine';
 import { FormBuilder, FormBuild } from '../components/sitebuilder/form/formbuilder';
 import { FormExtractor } from '../components/sitebuilder/form/formextractor';
+import { FormSectionHeader } from '../components/sitebuilder/form/formcomponents';
 import {
   emptyFormData,
   singleTextInputFormData,
@@ -146,6 +147,32 @@ describe('Form Component', () => {
       );
       const textarea = container.querySelector('textarea[name="message"]') as HTMLTextAreaElement;
       expect(textarea.rows).toBe(10);
+    });
+
+    it('should render a section header component directly', () => {
+      const { container } = render(
+        <FormSectionHeader title="Section Title" text="Additional details" className="custom-header" />
+      );
+      expect(container.querySelector('.form-section-header')).toBeInTheDocument();
+      expect(screen.getByText('Section Title')).toBeInTheDocument();
+      expect(screen.getByText('Additional details')).toBeInTheDocument();
+    });
+
+    it('should render FormSectionHeader through FormEngine field generation', () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormSectionHeader',
+            props: {
+              title: 'Checkout Section',
+              text: 'Please complete the checkout info below',
+            }
+          }
+        ]
+      };
+      render(<FormEngine formData={formData as any} />);
+      expect(screen.getByText('Checkout Section')).toBeInTheDocument();
+      expect(screen.getByText('Please complete the checkout info below')).toBeInTheDocument();
     });
 
     it('should not convert already numeric props', () => {

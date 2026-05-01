@@ -6,7 +6,8 @@ import {
 	useFormValidation,
 	FormValidationProvider,
 	validatePasswordMatch,
-	validateAgeRestriction
+	validateAgeRestriction,
+	validateFormLevel
 } from '../components/sitebuilder/form/formvalidator';
 
 describe('Form Validation', () => {
@@ -59,16 +60,75 @@ describe('Form Validation', () => {
 			const result = await validateField(fieldProps, event);
 			expect(result).toBeDefined();
 		});
+
+	it('should run a custom validation rule when validate prop is present', async () => {
+		const fieldProps = { validate: 'isValidEmailAddress' };
+		const event = {
+			target: {
+				checkValidity: () => true,
+				value: 'user@example.com'
+			}
+		} as any;
+
+		const result = await validateField(fieldProps, event);
+		expect(result.isValid).toBe(true);
+		expect(result.errors).toHaveLength(0);
 	});
 
-	describe('validatePasswordMatch', () => {
-		it('should validate matching passwords', () => {
-			const formData = {
-				password: { value: 'Secret123!' },
-				passwordConfirm: { value: 'Secret123!' }
-			};
+	it('should fail a custom validation rule with invalid input', async () => {
+		const fieldProps = { validate: 'isValidEmailAddress' };
+		const event = {
+			target: {
+				checkValidity: () => true,
+				value: 'not-an-email'
+			}
+		} as any;
 
-			const result = validatePasswordMatch(formData);
+		const result = await validateField(fieldProps, event);
+		expect(result.isValid).toBe(false);
+		expect(result.errors).toContain('isValidEmailAddress validation failed');
+	});
+
+	it('should run parent validation when parent.validate is provided', async () => {
+		const fieldProps = { parent: { validate: 'isValidUSZipCode' } };
+		const event = {
+			target: {
+				checkValidity: () => true,
+				value: 'abcde'
+			}
+		} as any;
+
+		const result = await validateField(fieldProps, event);
+		expect(result.isValid).toBe(false);
+		expect(result.errors).toContain('Parent isValidUSZipCode validation failed');
+	});
+});
+
+describe('validateFormLevel', () => {
+	it('should aggregate default and custom validators', () => {
+		const formData = {
+			password: { value: 'Secret123!' },
+			passwordConfirm: { value: 'Secret123!' },
+			age: { value: '18' }
+		};
+
+		const customValidator = vi.fn(() => ({ isValid: false, errors: ['Custom rule failed'] }));
+		const result = validateFormLevel(formData, [customValidator]);
+
+		expect(result.isValid).toBe(false);
+		expect(result.errors).toContain('Custom rule failed');
+		expect(customValidator).toHaveBeenCalledWith(formData);
+	});
+});
+
+describe('validatePasswordMatch', () => {
+	it('should return valid when passwords match', () => {
+		const formData = {
+			password: { value: 'Secret123!' },
+			passwordConfirm: { value: 'Secret123!' }
+		};
+
+		const result = validatePasswordMatch(formData);
 			expect(result.isValid).toBe(true);
 			expect(result.errors).toHaveLength(0);
 		});

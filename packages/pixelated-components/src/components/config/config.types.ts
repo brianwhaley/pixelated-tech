@@ -154,10 +154,22 @@ export interface PaypalConfig {
 }
 
 export interface SquareConfig {
-	applicationId: string;
-	locationId: string;
-	accessToken: string;
 	environment?: 'sandbox' | 'production';
+
+	squareApplicationId: string;
+	squareAccessToken: string;
+	squareAppSecret: string;
+	squareLocationId: string;
+	squareScriptUrl?: string;
+	squarePaymentsUrl?: string;
+
+	sandboxSquareApplicationId: string;
+	sandboxSquareAccessToken: string;
+	sandboxSquareAppSecret: string;
+	sandboxSquareLocationId: string;
+	sandboxSquareScriptUrl?: string;
+	sandboxSquarePaymentsUrl?: string;
+	sandboxSquareEmails?: string[];
 }
 
 export interface ShoppingCartConfig {

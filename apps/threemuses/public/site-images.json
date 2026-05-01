@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generatedAt": "2026-04-29T05:35:36.426Z",
-    "imageCount": 156
+    "generatedAt": "2026-05-01T08:15:56.016Z",
+    "imageCount": 165
   },
   "images": [
     "images/group-modern-ballet-dancers.jpg",
@@ -67,13 +67,21 @@
     "images/logo/20260417/three-muses-color.jpg",
     "images/logo/20260417/three-muses-v2.jpg",
     "images/logo/20260417/three-muses.jpg",
+    "images/logo/20260430/muse1-terpsichore.png",
+    "images/logo/20260430/muse2-erato.png",
+    "images/logo/20260430/muse3-thalia.png",
+    "images/logo/20260430/three-muses-color-round.png",
+    "images/logo/20260430/three-muses-color.jpg",
+    "images/logo/20260430/three-muses-logo-aqua-variant.jpg",
+    "images/logo/20260430/three-muses-logo-moss-variant.jpg",
+    "images/logo/20260430/three-muses-logo-rose-variant.jpg",
     "images/logo/muse1-terpsichore.png",
     "images/logo/muse2-erato.png",
     "images/logo/muse3-thalia.png",
+    "images/logo/original/three-muses-v2.jpg",
+    "images/logo/original/three-muses.jpg",
     "images/logo/three-muses-color-round.png",
     "images/logo/three-muses-color.jpg",
-    "images/logo/three-muses-v2.jpg",
-    "images/logo/three-muses.jpg",
     "images/logos/500px-logo.png",
     "images/logos/akama-logo.png",
     "images/logos/alignable-logo.png",
@@ -159,6 +167,7 @@
     "images/logos/yelp-logo.png",
     "images/logos/youtube-logo.png",
     "images/pix-bg-512.jpg",
-    "images/placeholder.png"
+    "images/placeholder.png",
+    "images/site/consignment-period.png"
   ]
 }

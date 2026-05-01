@@ -141,6 +141,11 @@ const generateOptions = (
  * @param {string} [props.tooltip] - Optional tooltip text explaining the field.
  * @param {string} [props.className] - Optional CSS class names for the label element.
  */
+FormLabel.defaultProps = {
+	id: "",
+	label: "",
+	tooltip: "",
+};
 FormLabel.propTypes = {
 /** ID of the control associated with this label */
 	id: PropTypes.string.isRequired,
@@ -151,13 +156,8 @@ FormLabel.propTypes = {
 	/** Additional CSS class names */
 	className: PropTypes.string,
 };
-FormLabel.defaultProps = {
-	id: "",
-	label: "",
-	tooltip: "",
-};
 export type FormLabelType = InferProps<typeof FormLabel.propTypes>;
-function FormLabel(props: FormLabelType) {
+export function FormLabel(props: FormLabelType) {
 	return (
 		< >
 			{ props.label && props.id 
@@ -172,6 +172,39 @@ function FormLabel(props: FormLabelType) {
 }
 
 
+
+
+
+/**
+ * FormSectionHeader — Render a section heading or static content block inside a form.
+ *
+ * @param {string} [props.title] - Section heading text.
+ * @param {string} [props.text] - Optional body text under the heading.
+ * @param {string} [props.className] - Additional CSS class names.
+ */
+
+FormSectionHeader.defaultProps = {
+	title: "",
+	text: "",
+	className: "",
+};
+FormSectionHeader.propTypes = {
+	/** Section title text */
+	title: PropTypes.string,
+	/** Optional text content */
+	text: PropTypes.string,
+	/** Additional CSS class names */
+	className: PropTypes.string,
+};
+export type FormSectionHeaderType = InferProps<typeof FormSectionHeader.propTypes>;
+export function FormSectionHeader(props: FormSectionHeaderType) {
+	return (
+		<div className={`form-section-header ${props.className || ''}`}>
+			{ props.title ? <div className="form-section-header-title"><h3 suppressHydrationWarning={true}>{props.title}</h3></div> : null }
+			{ props.text ? <div className="form-section-header-text">{props.text}</div> : null }
+		</div>
+	);
+}
 
 
 

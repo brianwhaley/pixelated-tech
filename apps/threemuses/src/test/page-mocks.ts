@@ -146,6 +146,7 @@ const defaultMocks: Record<string, any> = {
 		};
 	},
 	getCachedWordPressItems: async () => mockState.wordpressPosts,
+	getWordPressItems: async () => mockState.wordpressPosts,
 	getSpotifySeries: async () => mockState.spotifySeries,
 	getSpotifyEpisodes: async () => mockState.spotifyEpisodes,
 	mapWordPressToBlogPosting: (post: any) => post,
@@ -176,6 +177,7 @@ const defaultMocks: Record<string, any> = {
 	SmartImage: mockComponent('SmartImage'),
 	MenuAccordion: mockComponent('MenuAccordion'),
 	MenuAccordionButton: mockComponent('MenuAccordionButton'),
+	CartButton: mockComponent('CartButton'),
 	MenuSimple: mockComponent('MenuSimple'),
 	GoogleAnalytics: mockComponent('GoogleAnalytics'),
 	PixelatedFooter: mockComponent('PixelatedFooter'),

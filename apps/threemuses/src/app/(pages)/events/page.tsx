@@ -38,6 +38,10 @@ export default function Events() {
 			});
 			for (const event of sortedItems) {
 				if ( event.sys.contentType.sys.id == contentType ) {
+					const status = event.fields.status?.toString?.().toLowerCase?.();
+					if (status === 'archived') {
+						continue;
+					}
 					const images = await getContentfulImagesFromEntries({ images: [event.fields.image], assets: events.includes.Asset });
 					eventObjects.push({
 						variant: "grid",
@@ -45,7 +49,11 @@ export default function Events() {
 						img: images[0]?.image,
 						imgAlt: event.fields.title,
 						title: event.fields.title,
-						subtitle: new Date(event.fields.startDate).toLocaleString() + " - " + new Date(event.fields.endDate).toLocaleString(),
+						subtitle: new Date(event.fields.startDate).toLocaleString('en-US', {
+							dateStyle: 'short', timeStyle: 'short'
+						}).replace(',', '') + " - " + new Date(event.fields.endDate).toLocaleString('en-US', {
+							dateStyle: 'short', timeStyle: 'short'
+						}).replace(',', ''),
 						content: event.fields.description,
 						url: "/events/" + event.fields.id,
 						urlTarget: "_self",

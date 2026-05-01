@@ -9,7 +9,7 @@ import SocialTags from "@/app/elements/socialtags";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { ToggleLoading } from "@pixelated-tech/components";
 import { Hero } from "@pixelated-tech/components";
-
+ 
 const wpSite = "blog.pixelated.tech";
 
 export default function Home() {

@@ -2,6 +2,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { createPageComponentMocks, mockState, resetMockState } from '@/test/page-mocks';
+import { PixelatedClientConfigProvider } from '@pixelated-tech/components';
+
+const renderWithConfig = (ui: React.ReactElement) =>
+	render(
+		<PixelatedClientConfigProvider config={{ global: {} } as any}>
+			{ui}
+		</PixelatedClientConfigProvider>,
+	);
 
 vi.mock('next/navigation', () => ({
 	useSearchParams: () => new URLSearchParams('?installed=true'),
@@ -52,7 +60,7 @@ describe('Pixelated page coverage', () => {
 	});
 
 	it('renders the home page with page hero and blog list', async () => {
-		render(<Home />);
+		renderWithConfig(<Home />);
 		await waitFor(() => expect(screen.getByTestId('page-title-header')).not.toBeNull());
 		expect(screen.getByTestId('hero')).not.toBeNull();
 		expect(screen.getByTestId('blog-post-list')).not.toBeNull();
@@ -88,7 +96,7 @@ describe('Pixelated page coverage', () => {
 		];
 
 		for (const page of pages) {
-			render(React.createElement(page.Component));
+			renderWithConfig(React.createElement(page.Component));
 			if (page.name === 'StyleGuide') {
 				await waitFor(() => expect(screen.getByTestId('styleguide-ui')).not.toBeNull());
 			} else {

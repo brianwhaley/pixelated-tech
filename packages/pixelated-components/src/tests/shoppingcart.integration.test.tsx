@@ -19,7 +19,9 @@ import {
 type ShoppingCartType = CartItemType;
 
 // Use an on-disk fixture where possible (shipping / discount fixtures live with the component)
-import shippingToData from '../components/shoppingcart/shipping.to.json';
+import personalInfoData from '../components/shoppingcart/checkout.personal.info.json';
+import discountInfoData from '../components/shoppingcart/checkout.discount.info.json';
+import shippingInfoData from '../components/shoppingcart/checkout.shipping.info.json';
 
 describe('ShoppingCart — integration (component + localStorage)', () => {
   beforeEach(() => {
@@ -68,15 +70,21 @@ describe('ShoppingCart — integration (component + localStorage)', () => {
     const item: ShoppingCartType = { itemID: 's-1', itemTitle: 'Ship Item', itemQuantity: 1, itemCost: 5 };
     setCart([item]);
 
-    render(<ShoppingCart />);
+    const { container } = render(<ShoppingCart subtotalDiscountCustom={10} />);
 
-    // should show the shipping form section
-    expect(await screen.findByText(/Shipping To :/)).toBeInTheDocument();
+    // should show the checkout info section
+    expect(await screen.findByText(/Checkout Info/)).toBeInTheDocument();
     // cart item should still be visible
     expect(screen.getByText(/Ship Item/)).toBeInTheDocument();
+    // should render the checkout shipping form wrapper
+    expect(container.querySelector('form#checkout_shipping')).toBeInTheDocument();
+    expect(screen.getByText(/Discount applied: \$10\.00/)).toBeInTheDocument();
+    expect(screen.getByText(/Continue to Checkout/)).toBeInTheDocument();
+    expect(personalInfoData.fields.map((field) => field.props?.name).filter(Boolean)).toEqual(
+      expect.arrayContaining(['name', 'street1', 'city', 'state', 'zip', 'country']),
+    );
+    expect(shippingInfoData.fields.some((field) => field.props?.name === 'shippingMethod')).toBe(true);
   });
-
-
 
   it('CheckoutItems renders table rows and formats values', () => {
     // pass `items` as a renderable array (strings/React nodes) — Table cannot render raw objects directly

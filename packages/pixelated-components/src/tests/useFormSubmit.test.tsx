@@ -200,4 +200,55 @@ describe('useFormSubmit', () => {
     expect(onFinally).toHaveBeenCalled();
     expect(screen.getByTestId('error').textContent).toContain('Bad Gateway');
   });
+
+  it('emailJSON should submit regular JSON and invoke callback', async () => {
+    const callback = vi.fn();
+    vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+
+    const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
+    await emailJSON({ name: 'Test' }, callback);
+
+    expect(callback).toHaveBeenCalled();
+    expect(smartFetch).toHaveBeenCalled();
+  });
+
+  it('emailJSON should bypass submission when honeypot field is present', async () => {
+    const callback = vi.fn();
+    const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
+    await emailJSON({ winnie: 'spam' }, callback);
+
+    expect(callback).toHaveBeenCalled();
+    expect(smartFetch).not.toHaveBeenCalled();
+  });
+
+  it('emailFormData should gather form data and submit successfully', async () => {
+    const callback = vi.fn();
+    vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+
+    const form = document.createElement('form');
+    form.id = 'test-form';
+    const email = document.createElement('input');
+    email.name = 'email';
+    email.value = 'user@example.com';
+    form.appendChild(email);
+
+    const honeypot = document.createElement('input');
+    honeypot.name = 'winnie';
+    honeypot.value = '';
+    form.appendChild(honeypot);
+
+    document.body.appendChild(form);
+
+    const event = {
+      target: form,
+      preventDefault: vi.fn(),
+    } as any;
+
+    const { emailFormData } = await import('../components/sitebuilder/form/formsubmit');
+    const result = await emailFormData(event, callback);
+    expect(result.success).toBe(true);
+
+    expect(callback).toHaveBeenCalled();
+    expect(smartFetch).toHaveBeenCalled();
+  });
 });

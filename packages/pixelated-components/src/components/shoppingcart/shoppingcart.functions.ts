@@ -1,7 +1,7 @@
 
 import { getContentfulDiscountCodes } from "../integrations/contentful.delivery";
 import { CacheManager } from "../foundation/cache-manager";
-import { getDomain } from "../foundation/utilities";
+import { getDomain, formatAsUSD, formatAsHundredths } from "../foundation/utilities";
 
 // Migration-time verbose tracing per user request — remove after verification
 const debug = false;
@@ -40,6 +40,7 @@ export type CartItemType = {
     itemImageURL? : string,
     itemQuantity: number,
     itemCost: number,
+    itemCategory?: string,
 }
 
 /* Historical: legacy ShoppingCartItemType removed — use CartItemType as the canonical data type */
@@ -141,16 +142,6 @@ const shippingOptions = [
 /* ========== SHOPPING CART FUNCTIONS ========== */
 
 
-export function formatAsUSD(cost: number) {
-	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-}
-
-
-export function formatAsHundredths(num: number) {
-	return Math.trunc(num * 100) / 100;
-}
-
-
 export function getCart() {
 	if (debug) console.debug('ShoppingCart:getCart -> using CacheManager.get', shoppingCartKey);
 	// Use CacheManager as the single source-of-truth. Legacy raw-localStorage fallbacks
@@ -212,7 +203,6 @@ export function getCartItemCount(cart: CartItemType[]) {
 	}
 	return cartCount;
 }
-
 
 export function getCartSubTotal(cart: CartItemType[]) {
 	let cartSubTotal = 0;
@@ -377,17 +367,19 @@ export function getDiscountCode(codeString: string){
 
 
 export function getCartSubtotalDiscount(cart: CartItemType[]) {
-	if (!cart) { return 0; } // If cart is empty, return null
+	if (!cart) { return 0; } // If cart is empty, return 0
 	const cartSubTotal = getCartSubTotal(cart);
 	const shippingInfo = getShippingInfo();
 	const discountCode = getDiscountCode(shippingInfo.discountCode);
-	if (!discountCode) { return 0; } // If no codes are found, return null
 	let discountAmount = 0;
-	if(discountCode.codeType === 'amount'){
-		discountAmount = formatAsHundredths(discountCode.codeValue);
-	} else if(discountCode.codeType === 'percent'){
-		discountAmount = formatAsHundredths(cartSubTotal * discountCode.codeValue);
+	if (discountCode) {
+		if(discountCode.codeType === 'amount'){
+			discountAmount = formatAsHundredths(discountCode.codeValue);
+		} else if(discountCode.codeType === 'percent'){
+			discountAmount = formatAsHundredths(cartSubTotal * discountCode.codeValue);
+		}
 	}
+
 	return discountAmount;
 }
 

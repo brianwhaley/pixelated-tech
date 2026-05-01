@@ -1,101 +1,72 @@
 import { describe, it, expect } from 'vitest';
-import { getPropTypeInfo } from '../components/sitebuilder/page/lib/propTypeIntrospection';
+import { getPropTypeInfo, generateFormFieldFromPropType } from '../components/sitebuilder/page/lib/propTypeIntrospection';
 
 describe('PropType Introspection', () => {
-	it('should export getPropTypeInfo function', () => {
-		expect(typeof getPropTypeInfo).toBe('function');
-	});
+  it('exports getPropTypeInfo as a function', () => {
+    expect(typeof getPropTypeInfo).toBe('function');
+  });
 
-	it('should return PropTypeInfo for component prop', () => {
-		const info = getPropTypeInfo({}, 'Button', 'variant');
-		expect(info).toBeDefined();
-		expect(info).toHaveProperty('type');
-	});
+  it('returns select metadata for known component props', () => {
+    const info = getPropTypeInfo({}, 'Callout', 'variant');
+    expect(info.type).toBe('select');
+    expect(Array.isArray(info.options)).toBe(true);
+    expect(info.options?.length).toBeGreaterThan(0);
+  });
 
-	it('should handle missing metadata gracefully', () => {
-		const info = getPropTypeInfo({}, 'UnknownComponent', 'unknownProp');
-		expect(info).toBeDefined();
-	});
+  it('detects object shape propType structures', () => {
+    const info = getPropTypeInfo({ _propType: 'shape', shapeTypes: { title: { type: 'string' } } });
+    expect(info.type).toBe('object');
+    expect(info.options).toEqual({ title: { type: 'string' } });
+    expect(info.isRequired).toBe(true);
+  });
 
-	it('should process different propType structures', () => {
-		const testCases = [
-			{ type: 'string' },
-			{ type: 'number' },
-			{ type: 'boolean' },
-			{ type: 'array' },
-			{ type: 'object' },
-		];
+  it('detects arrayOf propType structures', () => {
+    const info = getPropTypeInfo({ _propType: 'arrayOf', elementType: { name: 'string' } });
+    expect(info.type).toBe('array');
+    expect(info.elementType).toEqual({ name: 'string' });
+  });
 
-		testCases.forEach(testCase => {
-			const info = getPropTypeInfo(testCase);
-			expect(info).toBeDefined();
-		});
-	});
+  it('maps basic PropTypes names to field types', () => {
+    expect(getPropTypeInfo({ name: 'number' }).type).toBe('number');
+    expect(getPropTypeInfo({ name: 'bool' }).type).toBe('checkbox');
+    expect(getPropTypeInfo({ name: 'func' }).type).toBe('function');
+    expect(getPropTypeInfo({ name: 'node' }).type).toBe('children');
+    expect(getPropTypeInfo({ name: 'object' }).type).toBe('json');
+  });
 
-	it('should identify prop options when available', () => {
-		const propWithOptions = {
-			__proto__: { oneOf: ['option1', 'option2'] },
-		};
-		const info = getPropTypeInfo(propWithOptions);
-		expect(info).toBeDefined();
-	});
+  it('preserves optional prop types when isRequired exists', () => {
+    const info = getPropTypeInfo({ isRequired: true, name: 'string' });
+    expect(info.isRequired).toBe(false);
+  });
 
-	it('should handle required vs optional props', () => {
-		const requiredProp = { isRequired: true };
-		const optionalProp = { isRequired: false };
-		
-		const requiredInfo = getPropTypeInfo(requiredProp);
-		const optionalInfo = getPropTypeInfo(optionalProp);
-		
-		expect(requiredInfo).toBeDefined();
-		expect(optionalInfo).toBeDefined();
-	});
+  it('generates a FormSelect field configuration for select metadata', () => {
+    const result = generateFormFieldFromPropType('variant', { name: 'string' }, undefined, 'Callout');
+    expect(result.component).toBe('FormSelect');
+    expect(result.props.options).toBeDefined();
+    expect(result.props.options[0]).toEqual({ value: '', text: '-- Select --' });
+  });
 
-	it('should support component-specific metadata lookup', () => {
-		const knownComponentProp = getPropTypeInfo({}, 'Modal', 'isOpen');
-		const unknownComponentProp = getPropTypeInfo({}, 'NonExistent', 'prop');
-		
-		expect(knownComponentProp).toBeDefined();
-		expect(unknownComponentProp).toBeDefined();
-	});
+  it('generates a number input field configuration', () => {
+    const result = generateFormFieldFromPropType('columns', { name: 'number' });
+    expect(result.component).toBe('FormInput');
+    expect(result.props.type).toBe('number');
+  });
 
-	it('should generate consistent results for same input', () => {
-		const input = { type: 'string' };
-		const result1 = getPropTypeInfo(input, 'Test', 'testProp');
-		const result2 = getPropTypeInfo(input, 'Test', 'testProp');
-		
-		expect(result1.type).toBe(result2.type);
-	});
+  it('generates a checkbox field configuration for bool props', () => {
+    const result = generateFormFieldFromPropType('responsive', { name: 'bool' });
+    expect(result.component).toBe('FormInput');
+    expect(result.props.type).toBe('checkbox');
+  });
 
-	describe('PropType Analysis Integration', () => {
-		it('should work with React PropTypes patterns', () => {
-			// Simulate a typical PropTypes definition
-			const stringPropType = { type: 'string' };
-			const boolPropType = { type: 'boolean' };
-			const arrayPropType = { type: 'array' };
-			
-			expect(getPropTypeInfo(stringPropType)).toBeDefined();
-			expect(getPropTypeInfo(boolPropType)).toBeDefined();
-			expect(getPropTypeInfo(arrayPropType)).toBeDefined();
-		});
+  it('generates a JSON text field for object prop types', () => {
+    const result = generateFormFieldFromPropType('settings', { name: 'object' });
+    expect(result.component).toBe('FormInput');
+    expect(result.props.placeholder).toContain('JSON object');
+  });
 
-		it('should support form field generation', () => {
-			const propInfo = getPropTypeInfo({ type: 'string' }, 'Text', 'value');
-			expect(propInfo).toHaveProperty('type');
-			// If options are available, should be in an array
-			if (propInfo.options) {
-				expect(Array.isArray(propInfo.options)).toBe(true);
-			}
-		});
-
-		it('should handle complex component hierarchies', () => {
-			const components = ['Button', 'Modal', 'Form', 'Select', 'Input'];
-			
-			components.forEach(comp => {
-				const info = getPropTypeInfo({}, comp, 'someProp');
-				expect(info).toBeDefined();
-				expect(typeof info.type).toBe('string');
-			});
-		});
-	});
+  it('generates an array input field configuration', () => {
+    const result = generateFormFieldFromPropType('items', { _propType: 'arrayOf', elementType: { name: 'string' } });
+    expect(result.component).toBe('FormInput');
+    expect(result.props.placeholder).toContain('Comma-separated values');
+  });
 });

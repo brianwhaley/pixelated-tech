@@ -87,7 +87,7 @@ describe('ShoppingCart provider selection and approval integration', () => {
 
 		renderWithConfig({
 			shoppingcart: { provider: 'square' },
-			square: { applicationId: 'app-id', locationId: 'location-id' },
+			square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
 		});
 
 		await waitFor(() => {
@@ -102,7 +102,7 @@ describe('ShoppingCart provider selection and approval integration', () => {
 
 		renderWithConfig({
 			shoppingcart: { provider: 'paypal' },
-			square: { applicationId: '', locationId: '' },
+			square: { squareApplicationId: '', squareLocationId: '' },
 		});
 
 		await waitFor(() => {
@@ -117,7 +117,7 @@ describe('ShoppingCart provider selection and approval integration', () => {
 
 		renderWithConfig({
 			shoppingcart: { provider: 'square' },
-			square: { applicationId: 'app-id', locationId: 'location-id' },
+			square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
 		});
 
 		const checkoutButton = await screen.findByTestId('square-checkout');

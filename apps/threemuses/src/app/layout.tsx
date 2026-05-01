@@ -46,6 +46,10 @@ export default async function RootLayout({
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
 				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
+
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet" />
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>

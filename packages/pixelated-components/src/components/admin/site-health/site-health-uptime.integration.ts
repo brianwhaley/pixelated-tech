@@ -3,6 +3,23 @@ import { getFullPixelatedConfig } from '../../config/config';
 
 const debug = false;
 
+export function normalizeUptimeStatus(rawStatus?: string): 'Healthy' | 'Unhealthy' | 'Unknown' {
+	if (!rawStatus) {
+		return 'Unknown';
+	}
+
+	const normalized = rawStatus.toLowerCase();
+	if (normalized.includes('success')) {
+		return 'Healthy';
+	}
+
+	if (normalized.includes('failure')) {
+		return 'Unhealthy';
+	}
+
+	return 'Unknown';
+}
+
 export interface UptimeCheckResult {
   status: 'success' | 'error';
   data?: {
@@ -38,9 +55,8 @@ export async function checkUptimeHealth(healthCheckId: string): Promise<UptimeCh
 			HealthCheckId: healthCheckId,
 		}));
 
-		const rawStatus = response.HealthCheckObservations?.[0]?.StatusReport?.Status;
-		const status = rawStatus?.toLowerCase().includes('success') ? 'Healthy' :
-			rawStatus?.toLowerCase().includes('failure') ? 'Unhealthy' : 'Unknown';
+		const rawStatus = response?.HealthCheckObservations?.[0]?.StatusReport?.Status;
+		const status = normalizeUptimeStatus(rawStatus);
 
 		return {
 			status: 'success',

@@ -1,70 +1,64 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render } from '@testing-library/react';
-import { FormBuilder } from '../components/sitebuilder/form/formbuilder';
+import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import { FormBuilder, FormBuild } from '../components/sitebuilder/form/formbuilder';
 
-describe('FormBuilder - Component Tests', () => {
-  describe('Basic Rendering', () => {
-    it('should render FormBuilder component', () => {
-      const { container } = render(<FormBuilder />);
-      expect(container).toBeDefined();
-    });
+describe('FormBuilder', () => {
+  it('renders the builder and preview panel', () => {
+    const { container } = render(<FormBuilder />);
+    expect(container).toBeDefined();
+    expect(screen.getByText(/Build/i)).toBeInTheDocument();
+  });
 
-    it('should initialize form builder', () => {
-      const { container } = render(<FormBuilder />);
-      expect(container.firstChild).not.toBeNull();
-    });
+  it('generates a field JSON schema when the field type is submitted', async () => {
+    const onSetFormData = vi.fn();
+    const { container } = render(<FormBuild setFormData={onSetFormData} />);
 
-    it('should render user interface', () => {
-      const { container } = render(<FormBuilder />);
-      expect(container).toBeDefined();
+    const typeInput = screen.getByLabelText(/Type/i) as HTMLInputElement;
+    fireEvent.change(typeInput, { target: { value: 'checkbox' } });
+
+    const buildForm = container.querySelector('form#build') as HTMLFormElement;
+    expect(buildForm).toBeInTheDocument();
+    fireEvent.submit(buildForm);
+
+    await waitFor(() => expect(onSetFormData).toHaveBeenCalled());
+    const generatedForm = onSetFormData.mock.calls[0][0];
+    expect(generatedForm).toHaveProperty('fields');
+    expect(generatedForm.fields[0].props.type).toBe('text');
+  });
+
+  it('appends a new form field to the live preview JSON', async () => {
+    const { container } = render(<FormBuilder />);
+
+    const typeInput = screen.getByLabelText(/Type/i) as HTMLInputElement;
+    fireEvent.change(typeInput, { target: { value: 'checkbox' } });
+    const buildForm = container.querySelector('form#build') as HTMLFormElement;
+    expect(buildForm).toBeInTheDocument();
+    fireEvent.submit(buildForm);
+
+    await waitFor(() => {
+      expect(screen.getByText(/FormCheckbox/i)).toBeInTheDocument();
     });
   });
 
-  describe('Form Field Operations', () => {
-    it('should accept setFormData callback', () => {
-      const { container } = render(<FormBuilder />);
-      
-      expect(container).toBeDefined();
+  it('maintains an append-only schema when adding multiple fields', async () => {
+    const { container } = render(<FormBuilder />);
+
+    const typeInput = screen.getByLabelText(/Type/i) as HTMLInputElement;
+    fireEvent.change(typeInput, { target: { value: 'text' } });
+    const buildForm = container.querySelector('form#build') as HTMLFormElement;
+    expect(buildForm).toBeInTheDocument();
+    fireEvent.submit(buildForm);
+
+    await waitFor(() => {
+      expect(screen.getByText(/FormInput/i)).toBeInTheDocument();
     });
 
-    it('should handle component initialization with callback', () => {
-      const { container } = render(<FormBuilder />);
-      
-      expect(container).toBeDefined();
-    });
+    fireEvent.change(typeInput, { target: { value: 'select' } });
+    fireEvent.submit(buildForm);
 
-    it('should handle field addition', () => {
-      const { container } = render(<FormBuilder />);
-      expect(container).toBeDefined();
-    });
-
-    it('should handle field removal', () => {
-      const { container } = render(<FormBuilder />);
-      expect(container).toBeDefined();
-    });
-  });
-
-  describe('Component Stability', () => {
-    it('should render without props', () => {
-      const { container } = render(<FormBuilder />);
-      expect(container).toBeDefined();
-    });
-
-    it('should render multiple instances', () => {
-      const { container: container1 } = render(<FormBuilder />);
-      const { container: container2 } = render(<FormBuilder />);
-      
-      expect(container1).toBeDefined();
-      expect(container2).toBeDefined();
-    });
-
-    it('should handle re-renders', () => {
-      const { rerender } = render(<FormBuilder />);
-      
-      // Re-render with same props
-      rerender(<FormBuilder />);
-      expect(true).toBe(true);
+    await waitFor(() => {
+      expect(screen.getByText(/FormSelect/i)).toBeInTheDocument();
     });
   });
 });

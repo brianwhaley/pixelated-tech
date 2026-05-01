@@ -20,7 +20,7 @@ section.page-section {
 
 	.hero {
 		margin: 0px;
-    	background-position: 50% 35%;
+    	background-position: 50% 38%;
 		#logo-section {
 			padding: 0px;
 			img {
@@ -98,4 +98,31 @@ body.formglow {
 	textarea:focus, textarea:focus:hover {
         outline-color: var(--primary-color) !important;
     }
+}
+
+
+
+
+
+/* ========================================
+	SHOPPING CART BUTTON Styles
+ ======================================== */
+
+/* .pix-cart {
+    position: absolute;
+    z-index: 10;
+    top: 5px;
+    right: 5px;
+} */
+
+
+
+
+/* ========================================
+	CALLOUT Styles
+ ======================================== */
+
+.callout .callout-image.round {
+    padding: 8px;
+    background-color: var(--primary-color);
 }

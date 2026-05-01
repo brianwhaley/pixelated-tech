@@ -29,4 +29,10 @@ describe('Updates page', () => {
 		render(<UpdatesPage />);
 		expect(screen.getByText('Error: Failed to load')).toBeInTheDocument();
 	});
+
+	it('renders empty markdown fallback when file data is null with no error', () => {
+		mockState.fileData = { data: null, loading: false, error: null };
+		render(<UpdatesPage />);
+		expect(screen.getByTestId('mock-markdown')).toHaveTextContent('');
+	});
 });

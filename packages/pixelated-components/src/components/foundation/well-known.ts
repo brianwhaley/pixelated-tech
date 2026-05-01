@@ -6,6 +6,7 @@ import { createRequire } from 'module';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { flattenRoutes } from './sitemap';
+import { sanitizeString } from './utilities';
 
 /**
  * Read JSON from disk safely — returns null on error. Exported for testing.
@@ -17,14 +18,6 @@ export async function safeJSON(path: string) {
 	} catch {
 		return null;
 	}
-}
-
-/**
- * Normalize a value into a single-line trimmed string (safe for humans.txt / security.txt).
- * Exported for testing.
- */
-export function sanitizeString(v: unknown) {
-	return v == null ? '' : String(v).replace(/\s+/g, ' ').trim();
 }
 
 /**

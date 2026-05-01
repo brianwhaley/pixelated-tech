@@ -5,7 +5,7 @@ import { Callout } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import SocialTags from "@/app/elements/socialtags";
 
-
+ 
 export default function Work() {
     
 	return (

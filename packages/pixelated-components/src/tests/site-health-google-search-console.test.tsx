@@ -28,14 +28,18 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 				}
 			];
 
-			// Apply response transformer if provided
-			const transformedData = endpoint?.responseTransformer
-				? endpoint.responseTransformer({ data: mockData })
-				: mockData;
+			let transformedData: any;
+			if (siteName === 'invalid') {
+				transformedData = [{ invalid: true }];
+			} else {
+				transformedData = endpoint?.responseTransformer
+					? endpoint.responseTransformer({ data: mockData })
+					: mockData;
+			}
 
 			setData(transformedData);
 			setLoading(false);
-		}, [endpoint]);
+		}, [endpoint, siteName]);
 
 		if (loading) {
 			return <div>Loading...</div>;
@@ -222,4 +226,9 @@ describe('SiteHealthGoogleSearchConsole Component', () => {
 			expect(screen.getByTestId('y-axis')).toBeDefined();
 		}, { timeout: 100 });
 	});
-});
+	it('should display invalid data placeholder for malformed API payloads', async () => {
+		render(<SiteHealthGoogleSearchConsole siteName="invalid" />);
+		await waitFor(() => {
+			expect(screen.getByText('Invalid data format received from Google Search Console API.')).toBeInTheDocument();
+		});
+	});});

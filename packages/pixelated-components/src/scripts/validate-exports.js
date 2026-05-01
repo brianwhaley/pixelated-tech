@@ -44,9 +44,9 @@ function analyzeComponentFile(filePath) {
 // Analyze all component files
 const analyzedComponents = allComponentFiles.map(analyzeComponentFile);
 
-// Special handling for utilities/functions.ts - it's safe for both client and server despite containing pattern definitions
+// Special handling for foundation/utilities.ts - this file is safe for both client and server despite containing pattern definitions
 analyzedComponents.forEach(comp => {
-	if (comp.exportPath === './components/utilities/functions') {
+	if (comp.exportPath === './components/foundation/utilities') {
 		comp.isClientOnly = false;
 		comp.isServerOnly = false;
 	}

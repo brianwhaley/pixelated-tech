@@ -318,48 +318,42 @@ describe('flickr - GetFlickrData', () => {
 	});
 
 	describe('GetFlickrData Function', () => {
-		it('should accept flickr configuration object', () => {
+		it('should accept flickr configuration object', async () => {
 			const mockFlickrConfig = {
 				baseURL: 'https://api.flickr.com/services/rest/?',
 				proxyURL: '',
 				urlProps: { method: 'flickr.photos.search', api_key: 'test-key', user_id: 'test-user', tags: 'nature' }
 			};
-			expect(() => {
-				GetFlickrData({ flickr: mockFlickrConfig });
-			}).not.toThrow();
+			await GetFlickrData({ flickr: mockFlickrConfig });
+			expect(true).toBe(true);
 		});
 
-		it('should accept config provider object', () => {
-			expect(() => {
-				GetFlickrData({ config: { global: { proxyURL: 'https://proxy.example.com' } } });
-			}).not.toThrow();
+		it('should accept config provider object', async () => {
+			await GetFlickrData({ config: { global: { proxyURL: 'https://proxy.example.com' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should handle empty props', () => {
-			expect(() => {
-				GetFlickrData({});
-			}).not.toThrow();
+		it('should handle empty props', async () => {
+			await GetFlickrData({});
+			expect(true).toBe(true);
 		});
 
-		it('should merge flickr config with defaults', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { urlProps: { tags: 'custom' } } });
-			}).not.toThrow();
+		it('should merge flickr config with defaults', async () => {
+			await GetFlickrData({ flickr: { urlProps: { tags: 'custom' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should apply global proxy URL', () => {
-			expect(() => {
-				GetFlickrData({ config: { global: { proxyURL: 'https://proxy.example.com' } } });
-			}).not.toThrow();
+		it('should apply global proxy URL', async () => {
+			await GetFlickrData({ config: { global: { proxyURL: 'https://proxy.example.com' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should prioritize flickr-specific proxyURL over global', () => {
-			expect(() => {
-				GetFlickrData({
-					flickr: { proxyURL: 'https://flickr-proxy.com' },
-					config: { global: { proxyURL: 'https://global-proxy.com' } }
-				});
-			}).not.toThrow();
+		it('should prioritize flickr-specific proxyURL over global', async () => {
+			await GetFlickrData({
+				flickr: { proxyURL: 'https://flickr-proxy.com' },
+				config: { global: { proxyURL: 'https://global-proxy.com' } }
+			});
+			expect(true).toBe(true);
 		});
 	});
 
@@ -381,114 +375,98 @@ describe('flickr - GetFlickrData', () => {
 			}
 		};
 
-		it('should include method parameter', () => {
-			expect(() => {
-				GetFlickrData({ flickr: mockFlickrConfig });
-			}).not.toThrow();
+		it('should include method parameter', async () => {
+			await GetFlickrData({ flickr: mockFlickrConfig });
+			expect(true).toBe(true);
 		});
 
-		it('should include api_key parameter', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, api_key: 'my-key' } } });
-			}).not.toThrow();
+		it('should include api_key parameter', async () => {
+			await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, api_key: 'my-key' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should support tag-based search', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, tags: 'landscape,nature' } } });
-			}).not.toThrow();
+		it('should support tag-based search', async () => {
+			await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, tags: 'landscape,nature' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should support user_id filtering', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, user_id: '123456' } } });
-			}).not.toThrow();
+		it('should support user_id filtering', async () => {
+			await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, user_id: '123456' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should support sorting options', () => {
+		it('should support sorting options', async () => {
 			const sortOptions = ['date-posted-desc', 'date-taken-desc', 'interestingness-desc', 'relevance'];
-			sortOptions.forEach(sort => {
-				expect(() => {
-					GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, sort } } });
-				}).not.toThrow();
-			});
+			await Promise.all(sortOptions.map(async sort => {
+				await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, sort } } });
+			}));
+			expect(true).toBe(true);
 		});
 
-		it('should support pagination with per_page', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, per_page: 250 } } });
-			}).not.toThrow();
+		it('should support pagination with per_page', async () => {
+			await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, per_page: 250 } } });
+			expect(true).toBe(true);
 		});
 
-		it('should request JSON format', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, format: 'json' } } });
-			}).not.toThrow();
+		it('should request JSON format', async () => {
+			await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, format: 'json' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should disable JSON callback', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, nojsoncallback: 'true' } } });
-			}).not.toThrow();
+		it('should disable JSON callback', async () => {
+			await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, nojsoncallback: 'true' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should request photo extras', () => {
+		it('should request photo extras', async () => {
 			const extras = ['date_taken', 'description', 'owner_name', 'tags', 'url_sq', 'url_t', 'url_s'];
-			extras.forEach(extra => {
-				expect(() => {
-					GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, extras: extra } } });
-				}).not.toThrow();
-			});
+			await Promise.all(extras.map(async extra => {
+				await GetFlickrData({ flickr: { ...mockFlickrConfig, urlProps: { ...mockFlickrConfig.urlProps, extras: extra } } });
+			}));
+			expect(true).toBe(true);
 		});
 	});
 
 	describe('Proxy URL Handling', () => {
-		it('should use proxyURL when provided', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com/services/rest/?', proxyURL: 'https://proxy.mysite.com/fetch?url=' } });
-			}).not.toThrow();
+		it('should use proxyURL when provided', async () => {
+			await GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com/services/rest/?', proxyURL: 'https://proxy.mysite.com/fetch?url=' } });
+			expect(true).toBe(true);
 		});
 
-		it('should use baseURL directly when no proxy', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com/services/rest/?', proxyURL: '' } });
-			}).not.toThrow();
+		it('should use baseURL directly when no proxy', async () => {
+			await GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com/services/rest/?', proxyURL: '' } });
+			expect(true).toBe(true);
 		});
 
-		it('should prefer flickr proxyURL over global proxy', () => {
-			expect(() => {
-				GetFlickrData({
-					config: { global: { proxyURL: 'https://global-proxy.com' } },
-					flickr: { proxyURL: 'https://flickr-specific-proxy.com' }
-				});
-			}).not.toThrow();
+		it('should prefer flickr proxyURL over global proxy', async () => {
+			await GetFlickrData({
+				config: { global: { proxyURL: 'https://global-proxy.com' } },
+				flickr: { proxyURL: 'https://flickr-specific-proxy.com' }
+			});
+			expect(true).toBe(true);
 		});
 	});
 
 	describe('Configuration Merging', () => {
-		it('should use default config as base', () => {
-			expect(() => {
-				GetFlickrData({});
-			}).not.toThrow();
+		it('should use default config as base', async () => {
+			await GetFlickrData({});
+			expect(true).toBe(true);
 		});
 
-		it('should merge provided flickr config with defaults', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { urlProps: { tags: 'custom-tag' } } });
-			}).not.toThrow();
+		it('should merge provided flickr config with defaults', async () => {
+			await GetFlickrData({ flickr: { urlProps: { tags: 'custom-tag' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should deep merge nested config objects', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { baseURL: 'https://custom.api.com/', urlProps: { per_page: 50 } } });
-			}).not.toThrow();
+		it('should deep merge nested config objects', async () => {
+			await GetFlickrData({ flickr: { baseURL: 'https://custom.api.com/', urlProps: { per_page: 50 } } });
+			expect(true).toBe(true);
 		});
 
-		it('should handle partial config objects', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com' } });
-				GetFlickrData({ flickr: { proxyURL: 'https://proxy.com' } });
-			}).not.toThrow();
+		it('should handle partial config objects', async () => {
+			await GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com' } });
+			await GetFlickrData({ flickr: { proxyURL: 'https://proxy.com' } });
+			expect(true).toBe(true);
 		});
 	});
 
@@ -505,60 +483,52 @@ describe('flickr - GetFlickrData', () => {
 			expect(GetFlickrData.propTypes?.config).toBeDefined();
 		});
 
-		it('should accept any type for flickr', () => {
+		it('should accept any type for flickr', async () => {
 			const validProps = [{}, { flickr: {} }, { flickr: { baseURL: 'https://api.flickr.com' } }];
-			validProps.forEach(props => {
-				expect(() => {
-					GetFlickrData(props);
-				}).not.toThrow();
-			});
+			await Promise.all(validProps.map(async props => {
+				await GetFlickrData(props as any);
+			}));
+			expect(true).toBe(true);
 		});
 
-		it('should accept any type for config', () => {
+		it('should accept any type for config', async () => {
 			const validProps = [{ config: {} }, { config: { global: { proxyURL: 'https://proxy.com' } } }];
-			validProps.forEach(props => {
-				expect(() => {
-					GetFlickrData(props);
-				}).not.toThrow();
-			});
+			await Promise.all(validProps.map(async props => {
+				await GetFlickrData(props as any);
+			}));
+			expect(true).toBe(true);
 		});
 	});
 
 	describe('Coverage Edge Cases', () => {
-		it('should handle empty tags', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { urlProps: { tags: '' } } });
-			}).not.toThrow();
+		it('should handle empty tags', async () => {
+			await GetFlickrData({ flickr: { urlProps: { tags: '' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should handle very large per_page value', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { urlProps: { per_page: 500 } } });
-			}).not.toThrow();
+		it('should handle very large per_page value', async () => {
+			await GetFlickrData({ flickr: { urlProps: { per_page: 500 } } });
+			expect(true).toBe(true);
 		});
 
-		it('should handle special characters in tags', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { urlProps: { tags: 'tag-1, tag_2, tag.3' } } });
-			}).not.toThrow();
+		it('should handle special characters in tags', async () => {
+			await GetFlickrData({ flickr: { urlProps: { tags: 'tag-1, tag_2, tag.3' } } });
+			expect(true).toBe(true);
 		});
 
-		it('should handle missing urlProps', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com', proxyURL: '' } });
-			}).not.toThrow();
+		it('should handle missing urlProps', async () => {
+			await GetFlickrData({ flickr: { baseURL: 'https://api.flickr.com', proxyURL: '' } });
+			expect(true).toBe(true);
 		});
 
-		it('should handle long URLs with encoding', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { proxyURL: 'https://proxy.example.com/fetch?url=' } });
-			}).not.toThrow();
+		it('should handle long URLs with encoding', async () => {
+			await GetFlickrData({ flickr: { proxyURL: 'https://proxy.example.com/fetch?url=' } });
+			expect(true).toBe(true);
 		});
 
-		it('should support multiple size formats in coverage', () => {
-			expect(() => {
-				GetFlickrData({ flickr: { urlProps: { photoSize: 'Large' } } });
-			}).not.toThrow();
+		it('should support multiple size formats in coverage', async () => {
+			await GetFlickrData({ flickr: { urlProps: { photoSize: 'Large' } } });
+			expect(true).toBe(true);
 		});
 	});
 

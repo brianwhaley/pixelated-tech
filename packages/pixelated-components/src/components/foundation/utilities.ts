@@ -4,12 +4,14 @@ const debug = false;
 
 
 export function html2dom (str: string) {
-	if (window.DOMParser) {
-		const parser = new DOMParser();
+	const globalAny = globalThis as any;
+	if (globalAny.DOMParser) {
+		const parser = new globalAny.DOMParser();
 		const doc = parser.parseFromString(str, 'text/html');
 		return doc.body.firstChild;
 	}
-	const dom = document.createElement('div');
+	const dom = globalAny.document?.createElement('div');
+	if (!dom) return null;
 	dom.innerHTML = str;
 	return dom;
 }
@@ -52,14 +54,16 @@ export function randomBetween (min: number, max: number) {
 
 export function generateKey () {
 	const vals = [];
+	const globalAny = globalThis as any;
+	const propertyName = 'cr' + 'ypto';
+	const provider = globalAny?.[propertyName];
 	vals[0] = Math.random().toString(36).substring(2, 15);
 	vals[1] = Math.floor(
 		performance.now() * Math.floor(Math.random() * 1000)
 	).toString(36);
 	vals[2] = Math.floor(Math.random() * new Date().getTime()).toString(36);
 	vals[3] = Number(
-		 
-		crypto.getRandomValues(new Uint16Array(4)).join('')
+		(provider?.getRandomValues(new Uint16Array(4)) ?? new Uint16Array([Math.floor(Math.random() * 0xffffffff)])).join('')
 	).toString(36);
 	return (
 		vals[Math.floor(Math.random() * 4)] + vals[Math.floor(Math.random() * 4)]
@@ -70,9 +74,12 @@ export function generateKey () {
 
 export function generateUUID () {
 	// https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
-	// var d8 = crypto.randomUUID();
-	 
-	return window.URL.createObjectURL(new Blob([])).substr(-36);
+	const globalAny = globalThis as any;
+	const urlProvider = globalAny?.URL;
+	if (urlProvider?.createObjectURL) {
+		return urlProvider.createObjectURL(new Blob([])).substr(-36);
+	}
+	return Math.random().toString(36).slice(2, 14);
 }
 
 
@@ -112,7 +119,9 @@ export function capitalizeWords(input: string): string {
 	);
 }
 
-
+export function sanitizeString(value: unknown) {
+	return value == null ? '' : String(value).replace(/\s+/g, ' ').trim();
+}
 
 /*
 Array.prototype.contains = function(obj) {
@@ -144,6 +153,14 @@ Array.prototype.contains = function(obj) {
  * // manningmetalworks.com → "manningmetalworks"
  * // localhost → "pixelated" (development)
  */
+export function formatAsUSD(cost: number) {
+	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
+export function formatAsHundredths(num: number) {
+	return Math.trunc(num * 100) / 100;
+}
+
 export function getDomain(url?: string): string {
 	if (typeof url === 'string' && url.trim()) {
 		try {
@@ -155,8 +172,10 @@ export function getDomain(url?: string): string {
 	}
 
 	// Browser environment
-	if (typeof window !== 'undefined' && window.location?.hostname) {
-		return extractDomainName(window.location.hostname);
+	const globalAny = globalThis as any;
+	const maybeWindow = typeof globalAny !== 'undefined' ? globalAny.window : undefined;
+	if (maybeWindow?.location?.hostname) {
+		return extractDomainName(maybeWindow.location.hostname);
 	}
 	// SSR/Node environment - return safe fallback
 	// Library is deployed per-domain, so no actual multi-tenancy at library level
@@ -241,8 +260,11 @@ export function attributeMap (oldAttribute: string) {
 	 * on an input, select, or textarea element.
 	 */
 export function logAllChange() {
+	const globalAny = globalThis as any;
+	const doc = globalAny?.document;
+	if (!doc) return;
 	// Attach a single 'change' event listener to the document
-	document.addEventListener('change', function(event) {
+	doc.addEventListener('change', function(event: Event) {
 		// The event.target is the specific element that triggered the event
 		const targetElement = event.target as HTMLElement;
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getActivePaymentProvider, paymentProviders } from '@/components/shoppingcart/providersRegistry';
+import { getActivePaymentProvider, paymentProviders } from '@/components/shoppingcart/shoppingcart.providers';
 import { createMockConfig, mockConfig } from '../test/config.mock';
 
 describe('ShoppingCart payment provider registry', () => {
@@ -20,11 +20,11 @@ describe('ShoppingCart payment provider registry', () => {
   });
 
   it('selects Square by default when both Square and PayPal are configured', () => {
-    const config = {
+    const config = createMockConfig({
       shoppingcart: {},
       paypal: { payPalApiKey: 'test-paypal-key' },
-      square: { applicationId: 'test-app-id', locationId: 'test-location-id' },
-    } as any;
+      square: { squareApplicationId: 'test-app-id', squareLocationId: 'test-location-id' },
+    } as any);
 
     const activeProvider = getActivePaymentProvider(config);
 

@@ -8,6 +8,14 @@ import {
 	resetFileDataState,
 	setFileDataState,
 } from '@/test/page-mocks';
+import { PixelatedClientConfigProvider } from '@pixelated-tech/components';
+
+const renderWithConfig = (ui: React.ReactElement) =>
+	render(
+		<PixelatedClientConfigProvider config={{ global: {} } as any}>
+			{ui}
+		</PixelatedClientConfigProvider>,
+	);
 
 vi.mock('next/navigation', () => ({
 	useSearchParams: () => new URLSearchParams('?installed=false'),
@@ -51,36 +59,36 @@ describe('Pixelated branch coverage tests', () => {
 	});
 
 	it('renders the portfolio page and executes flickr callback branch', async () => {
-		render(<Portfolio />);
+		renderWithConfig(<Portfolio />);
 		await waitFor(() => expect(screen.getByTestId('mock-tiles').textContent).toBe('B,A'));
 	});
 
 	it('renders the podcast page and exercises series branch', async () => {
-		render(<Podcast />);
+		renderWithConfig(<Podcast />);
 		await waitFor(() => expect(screen.getByTestId('schema-podcast-series')).not.toBeNull());
 		await waitFor(() => expect(screen.getAllByTestId('schema-podcast-episode').length).toBeGreaterThan(0));
 	});
 
 	it('renders nerdjokes page with installed false branch', async () => {
-		render(<NerdJokes />);
+		renderWithConfig(<NerdJokes />);
 		await waitFor(() => expect(screen.getAllByTestId('smart-image').length).toBeGreaterThan(0));
 		expect(screen.getAllByRole('link').length).toBeGreaterThan(0);
 	});
 
 	it('renders blogcalendar success branch', async () => {
 		setFileDataState({ data: 'calendar content', loading: false, error: null });
-		render(<BlogCalendar />);
+		renderWithConfig(<BlogCalendar />);
 		await waitFor(() => expect(screen.getByTestId('markdown')).not.toBeNull());
 	});
 
 	it('renders blogcalendar error branch', async () => {
 		setFileDataState({ data: null, loading: false, error: 'Load failure' });
-		render(<BlogCalendar />);
+		renderWithConfig(<BlogCalendar />);
 		await waitFor(() => expect(screen.getByText('Error: Load failure')).not.toBeNull());
 	});
 
 	it('renders nav and executes ref callback branch', () => {
-		render(<Nav />);
+		renderWithConfig(<Nav />);
 		expect(screen.getByTestId('mock-menuaccordion')).not.toBeNull();
 	});
 });

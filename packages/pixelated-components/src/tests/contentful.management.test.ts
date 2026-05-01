@@ -1,4 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+vi.mock('../components/foundation/smartfetch', () => ({
+	smartFetch: vi.fn()
+}));
+import { smartFetch } from '../components/foundation/smartfetch';
 import * as contentfulManagement from '../components/integrations/contentful.management';
 import { buildUrl } from '../components/foundation/urlbuilder';
 
@@ -186,6 +190,119 @@ describe('Contentful Management Module', () => {
 			};
 			const environment = config.environment || 'master';
 			expect(environment).toBe('master');
+		});
+	});
+
+	describe('Contentful Management API functions', () => {
+		const config = {
+			space_id: 'test-space',
+			management_access_token: 'token',
+			environment: 'master'
+		};
+
+		it('should list entries successfully', async () => {
+			vi.mocked(smartFetch).mockResolvedValueOnce({ items: [{ sys: { id: 'entry-1' }, fields: { title: { 'en-US': 'Entry 1' } } }] });
+
+			const result = await contentfulManagement.listEntries('article', config as any);
+
+			expect(result.success).toBe(true);
+			expect(result.entries).toHaveLength(1);
+		});
+
+		it('should return a not found message for getEntryById 404', async () => {
+			const error: any = new Error('Not found');
+			error.status = 404;
+			vi.mocked(smartFetch).mockRejectedValueOnce(error);
+
+			const result = await contentfulManagement.getEntryById('entry-404', config as any);
+
+			expect(result.success).toBe(false);
+			expect(result.message).toBe('Entry not found.');
+		});
+
+		it('should search entries by field successfully', async () => {
+			vi.mocked(smartFetch).mockResolvedValueOnce({ items: [{ sys: { id: 'entry-2' }, fields: { name: { 'en-US': 'Test' } } }] });
+
+			const result = await contentfulManagement.searchEntriesByField('article', 'name', 'Test', config as any);
+
+			expect(result.success).toBe(true);
+			expect(result.entries).toHaveLength(1);
+		});
+
+		it('should create entry without publishing when autoPublish is false', async () => {
+			vi.mocked(smartFetch).mockResolvedValueOnce({ sys: { id: 'entry-3', version: 1 } });
+
+			const result = await contentfulManagement.createEntry('article', { title: 'New Entry' }, config as any, false);
+
+			expect(result.success).toBe(true);
+			expect(result.entryId).toBe('entry-3');
+		});
+
+		it('should update entry successfully', async () => {
+			vi.mocked(smartFetch)
+				.mockResolvedValueOnce({ sys: { id: 'entry-4', version: 2 } })
+				.mockResolvedValueOnce({ sys: { version: 3 } })
+				.mockResolvedValueOnce({});
+
+			const result = await contentfulManagement.updateEntry('entry-4', { title: 'Updated' }, config as any, true);
+
+			expect(result.success).toBe(true);
+			expect(result.entryId).toBe('entry-4');
+		});
+
+		it('should delete entry successfully', async () => {
+			vi.mocked(smartFetch)
+				.mockResolvedValueOnce({ sys: { id: 'entry-5', version: 2 } })
+				.mockResolvedValueOnce({})
+				.mockResolvedValueOnce({});
+
+			const result = await contentfulManagement.deleteEntry('entry-5', config as any);
+
+			expect(result.success).toBe(true);
+			expect(result.message).toContain('deleted successfully');
+		});
+
+		it('should validate Contentful credentials successfully', async () => {
+			vi.mocked(smartFetch).mockResolvedValueOnce({});
+
+			const result = await contentfulManagement.validateContentfulCredentials({ spaceId: 'test-space', accessToken: 'token' });
+
+			expect(result.valid).toBe(true);
+		});
+
+		it('should return invalid for invalid Contentful credentials', async () => {
+			vi.mocked(smartFetch).mockRejectedValueOnce(new Error('Unauthorized'));
+
+			const result = await contentfulManagement.validateContentfulCredentials({ spaceId: 'test-space', accessToken: 'token' });
+
+			expect(result.valid).toBe(false);
+			expect(result.error).toContain('Unauthorized');
+		});
+
+		it('should fetch content types using fallback environments', async () => {
+			vi.mocked(smartFetch)
+				.mockResolvedValueOnce({})
+				.mockRejectedValueOnce(new Error('Not found'))
+				.mockResolvedValueOnce({ items: [{ sys: { id: 'ct1', type: 'ContentType' }, name: 'Article', fields: [] }] });
+
+			const result = await contentfulManagement.getContentTypes({ spaceId: 'test-space', accessToken: 'token' });
+
+			expect(result).toHaveLength(1);
+			expect(result[0].name).toBe('Article');
+		});
+
+		it('should migrate content type successfully', async () => {
+			vi.mocked(smartFetch)
+				.mockResolvedValueOnce({ sys: { id: 'ct1' } })
+				.mockResolvedValueOnce({});
+
+			const result = await contentfulManagement.migrateContentType(
+				{ spaceId: 'source-space', accessToken: 'token' },
+				{ spaceId: 'dest-space', accessToken: 'token' },
+				'article'
+			);
+
+			expect(result.success).toBe(true);
 		});
 	});
 });

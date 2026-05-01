@@ -193,7 +193,7 @@ export function initPayPalButton(props: {checkoutData: CheckoutType, onApprove: 
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (orderData) {
                 if (debug) console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
-                props.onApprove({data: orderData});
+                props.onApprove({ data: orderData });
                 // Show a success message within this page, for example:
                 /* const element = document.getElementById("paypal-button-container");
                 if(element){

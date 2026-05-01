@@ -59,6 +59,8 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] **Form validation on submit**: Ensure untouched required fields are validated on submit by processing all form schema fields, not only fields that have been interacted with.
 
+- [  ] **Shipping section automation**: Revisit `showShippingInfoSection` so it can be derived automatically from cart item metadata (`isShippable`) instead of only via props.
+
 
 ### Platform Enhancements
 

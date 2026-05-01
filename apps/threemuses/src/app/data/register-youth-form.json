@@ -1,133 +1,6 @@
 {
-	"properties": {
-		"name": "register",
-		"id": "register-form",
-		"toggleLoading": true,
-		"openModal": true,
-		"resetForm": true,
-		"notes": [
-			"https://docs.google.com/forms/d/e/1FAIpQLSfZ6pjY_hZmO6wPNGNzB-lIcmoHb4e787PU_wf27rSwADvszQ/viewform",
-			"https://docs.google.com/forms/d/1TAPyeta033vl1yuINYIBDnuMY13Le_YRRvSb0ISzInI/edit?ts=69ee3a0b"
-		]
-	},
 	"fields" : [
 		{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "hidden",
-				"id" : "from",
-				"name" : "from",
-				"value" : "info@thethreemusesofbluffton.com"
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "hidden",
-				"id" : "to",
-				"name" : "to",
-				"value" : "info@thethreemusesofbluffton.com"
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "hidden",
-				"id" : "domain",
-				"name" : "domain",
-				"value" : "thethreemusesofbluffton.com"
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "hidden",
-				"id" : "subject",
-				"name" : "subject",
-				"value" : "Three Muses Registration Submit"
-			}
-		},{
-			"component" : "FormHoneypot",
-			"props" : {
-				"id": "winnie",
-				"name" : "website"
-			}
-		},
-		
-		{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "text",
-				"id" : "eventName",
-				"name" : "eventName",
-				"defaultValue" : null,
-				"size" : "40",
-				"display" : "vertical",
-				"required" : "required",
-				"readOnly" : "readOnly",
-				"label" : "Event Name (required) : "
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "text",
-				"id" : "eventId",
-				"name" : "eventId",
-				"defaultValue" : null,
-				"size" : "40",
-				"display" : "vertical",
-				"required" : "required",
-				"readOnly" : "readOnly",
-				"label" : "Event ID (required) : "
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "text",
-				"id" : "firstname",
-				"name" : "firstname",
-				"defaultValue" : null,
-				"size" : "40",
-				"display" : "vertical",
-				"required" : "required",
-				"label" : "First Name (required) : "
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "text",
-				"id" : "lastname",
-				"name" : "lastname",
-				"defaultValue" : null,
-				"size" : "40",
-				"display" : "vertical",
-				"required" : "required",
-				"label" : "Last Name (required) : "
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "email",
-				"id" : "email",
-				"name" : "email",
-				"defaultValue" : null,
-				"size" : "40",
-				"display" : "vertical",
-				"required" : "required",
-				"label" : "Email Address (required) : ",
-				"validate" : "isValidEmailAddress"
-			}
-		},{
-			"component" : "FormInput",
-			"props" : {
-				"type" : "tel",
-				"id" : "telephone",
-				"name" : "telephone",
-				"defaultValue" : null,
-				"size" : "40",
-				"display" : "vertical",
-				"required" : "required",
-				"label" : "Telephone (required) : ",
-				"validate" : "isValidUSPhoneNumber"
-			}
-		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",
@@ -143,8 +16,8 @@
 			"component" : "FormInput",
 			"props" : {
 				"type" : "date",
-				"id" : "birthdate",
-				"name" : "birthdate",
+				"id" : "child_birthdate",
+				"name" : "child_birthdate",
 				"defaultValue" : null,
 				"size" : "40",
 				"display" : "vertical",

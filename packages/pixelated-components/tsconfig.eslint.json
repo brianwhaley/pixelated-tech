@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src",
+    "src/test",
+    "src/tests",
+    "src/stories"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/components/pagebuilder/documentation/**"
+  ]
+}

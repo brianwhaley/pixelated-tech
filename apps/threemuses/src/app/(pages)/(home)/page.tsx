@@ -1,11 +1,29 @@
 "use client"; 
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageSection, PageSectionHeader, PageTitleHeader } from '@pixelated-tech/components';
 import { PageGridItem } from '@pixelated-tech/components';
-import { Callout } from '@pixelated-tech/components';
+import { Callout, ToggleLoading } from '@pixelated-tech/components';
+import { getWordPressItems, BlogPostList } from "@pixelated-tech/components";
+
+// const wpSite = "blog.thethreemusesofbluffton.com";
+const wpSite = "thethreemusesofbluffton.wordpress.com";
 
 export default function Home() {
+
+	const [ wpPosts, setWpPosts ] = useState<Awaited<ReturnType<typeof getCachedWordPressItems>>>([]);
+	useEffect(() => {
+		async function fetchPosts() {
+			ToggleLoading({show: true});
+			const posts = (await getWordPressItems({ site: wpSite, count: 1 })) ?? [];
+			if(posts) { 
+				setWpPosts(posts);
+				ToggleLoading({show: false});
+			}
+		}
+		fetchPosts();
+	}, []); 
+
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="welcome-section">
@@ -62,14 +80,11 @@ export default function Home() {
 
 
 			<PageSection columns={1} maxWidth="1024px" id="home-events-section">
-
-				<PageGridItem columnSpan={3}>
-					<PageSectionHeader title="Our Upcoming Events" />
-				</PageGridItem>
-
 				<Callout
-					variant="boxedgrid"
+					variant="boxed grid"
 					layout="horizontal"
+					direction="left"
+					gridColumns={{ left: 1, right: 3 }}
 					img="/images/logo/muse2-erato.png"
 					url="/events"
 					title="Erato's Upcoming Sewing Events"
@@ -77,8 +92,32 @@ export default function Home() {
 					content="Whether you're a beginner eager to learn the basics or an experienced sewer looking to refine your skills, Erato's sewing events offer something for everyone. Our workshops and classes cover a range of topics, from mastering the fundamentals of sewing to exploring advanced techniques. Plus, our summer camps provide an immersive experience for young creatives to dive into the world of sewing in a fun and supportive environment. Join us and let Erato inspire your creativity with every stitch."
 					buttonText="Upcoming Sewing Events"
 				/>
+			</PageSection>
+
+		
+
+			<PageSection columns={1} maxWidth="1024px" id="home-consign-section">
+				<Callout
+					variant="grid"
+					layout="horizontal"
+					direction="right"
+					gridColumns={{ left: 3, right: 1 }}
+					img="https://images.ctfassets.net/luf8eony1687/6RlzYli6GihWE5ZlX5NMjd/7062a3019f693b0aea9b98cf2a2c6797/dress-from-collection-museum-fine-arts.jpg"
+					url="/consign"
+					title="Consign With Us"
+					subtitle="Turn Your Gently Loved Items into Something Beautiful" 
+					content="The Three Muses of Bluffton invites you to consign your gently loved costumes and formal dresses to turn them into something beautiful. Bring in clean, high-quality, and excellent condition items that are ready to sell. We will price, display, and sell the items for you, allowing you to earn money as soon as they find a new home. We are ready to help you make beautiful new connections through your cherished wardrobe pieces."
+					buttonText="Consign With Us"
+				/>
 
 			</PageSection>
+
+
+			<PageSection id="social-section" columns={1} background="var(--accent1-color)" >
+				<PageSectionHeader title="Read Our Most Recent Blog Post" />
+				<BlogPostList site={wpSite} posts={wpPosts} count={1} />
+			</PageSection>
+
 		</>
 	);
 }

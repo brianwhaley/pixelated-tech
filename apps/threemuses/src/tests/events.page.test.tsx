@@ -42,6 +42,7 @@ vi.mock('@pixelated-tech/components', () =>
 		getContentfulEntryByField: vi.fn(),
 		getContentfulImagesFromEntries: vi.fn(),
 		buildEventSchema: vi.fn((event: any) => ({ title: event.fields.title })),
+		addToShoppingCart: vi.fn(),
 		FormButton: (props: any) => React.createElement('button', { 'data-testid': 'mock-formbutton', onClick: props.onClick }, props.text || 'Button'),
 	})
 );
@@ -140,7 +141,7 @@ describe('Events page', () => {
 		expect(screen.getByTestId('mock-schemaevent')).toBeTruthy();
 	});
 
-	it('passes only event id to register page query string', async () => {
+	it('adds event to the shopping cart and redirects to cart page', async () => {
 		mockGetContentfulEntriesByType.mockResolvedValue({ items: [exampleEvent1], includes: { Asset: [] } });
 		mockGetContentfulEntryByField.mockResolvedValue(exampleEvent1);
 		mockGetContentfulImagesFromEntries.mockResolvedValue([]);
@@ -153,7 +154,7 @@ describe('Events page', () => {
 		await waitFor(() => expect(screen.getByTestId('mock-formbutton')).toBeTruthy());
 		const button = screen.getByTestId('mock-formbutton');
 		button.click();
-		expect(mockRouterPush).toHaveBeenCalledWith('/register?event=event-1');
+		expect(mockRouterPush).toHaveBeenCalledWith('/cart');
 	});
 
 	it('renders the loading state when no config is available', async () => {

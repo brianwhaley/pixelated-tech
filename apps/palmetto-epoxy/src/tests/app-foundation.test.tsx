@@ -6,6 +6,7 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	GlobalErrorUI: ({ error }: any) => <div data-testid="global-error-ui">{error?.message}</div>,
 	SkeletonLoading: () => <div data-testid="mock-loading" />,
 	FourOhFour: () => <div data-testid="mock-404" />,
+	capitalizeWords: (str: string) => str.replace(/\b\w/g, char => char.toUpperCase()),
 }));
 
 vi.mock('@pixelated-tech/components/server', () => ({
@@ -50,7 +51,7 @@ vi.mock('next/headers', () => ({
 	}),
 }));
 
-import Layout, { capitalizeWords } from '@/app/layout';
+import Layout from '@/app/layout';
 import GlobalError from '@/app/global-error';
 import Loading from '@/app/loading';
 import manifest from '@/app/manifest';
@@ -66,12 +67,6 @@ describe('Palmetto Epoxy app foundation', () => {
 	beforeEach(() => {
 		resetContentfulMocks();
 		resetPixelatedConfigOverride();
-	});
-
-	it('capitalizes words and normalizes humanized slugs', () => {
-		expect(capitalizeWords('palmetto epoxy')).toBe('Palmetto Epoxy');
-		expect(capitalizeWords('palmetto_epoxy')).toBe('Palmetto_Epoxy');
-		expect(capitalizeWords('')).toBe('');
 	});
 
 	it('renders route helpers and metadata utilities', async () => {

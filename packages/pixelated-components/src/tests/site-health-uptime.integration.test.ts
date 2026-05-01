@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { checkUptimeHealth } from '../components/admin/site-health/site-health-uptime.integration';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { checkUptimeHealth, normalizeUptimeStatus } from '../components/admin/site-health/site-health-uptime.integration';
 import { Route53Client } from '@aws-sdk/client-route-53';
 import { getFullPixelatedConfig } from '../components/config/config';
 
@@ -29,6 +29,17 @@ vi.mock('../../config/config', () => ({
 describe('checkUptimeHealth', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		getFullPixelatedConfigMock.mockImplementation(() => ({
+			aws: {
+				region: 'us-east-1',
+				access_key_id: 'test-key',
+				secret_access_key: 'test-secret'
+			}
+		}) as any);
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
 	});
 
 	describe('Health Check Execution', () => {
@@ -232,6 +243,15 @@ describe('checkUptimeHealth', () => {
 			if (result.data) {
 				expect(['Healthy', 'Unhealthy', 'Unknown']).toContain(result.data.status);
 			}
+		});
+	});
+
+	describe('Status Normalization', () => {
+		it('should normalize raw status strings into health labels', () => {
+			expect(normalizeUptimeStatus('Success')).toBe('Healthy');
+			expect(normalizeUptimeStatus('Failure')).toBe('Unhealthy');
+			expect(normalizeUptimeStatus('UNKNOWN')).toBe('Unknown');
+			expect(normalizeUptimeStatus(undefined)).toBe('Unknown');
 		});
 	});
 

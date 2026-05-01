@@ -77,6 +77,6 @@ export function generateGoogleFontsLink(fonts: string[]): string {
 	if (!url) return '';
 
 	return `<link rel="preconnect" fetchPriority="high" href="https://fonts.googleapis.com">
-<link rel="preconnect" fetchPriority="high" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" fetchPriority="high" href="https://fonts.gstatic.com" crossOrigin="anonymous">
 <link rel="stylesheet" fetchPriority="high" href="${url}">`;
 }

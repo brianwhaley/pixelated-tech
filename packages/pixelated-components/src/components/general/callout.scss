@@ -50,16 +50,22 @@
     border-radius: 0%;
 }
 
-.callout .callout-image.bevel {
+.callout .callout-image.bevel,
+.callout .callout-image.bevel img {
     clip-path: rect(1% 98% 98% 1% round 5%);
+    aspect-ratio: 1;
 }
 
-.callout .callout-image.squircle {
+.callout .callout-image.squircle,
+.callout .callout-image.squircle img {
     clip-path: rect(1% 98% 98% 1% round 25%);
+    aspect-ratio: 1;
 }
 
-.callout .callout-image.round {
+.callout .callout-image.round,
+.callout .callout-image.round img {
     clip-path: rect(1% 98% 98% 1% round 100%);
+    aspect-ratio: 1;
 }
 
 .callout .callout-body {

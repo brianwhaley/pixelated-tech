@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import type { CheckoutType } from './shoppingcart.functions';
+import { usePixelatedConfig } from '../config/config.client';
 
-const squareScriptUrl = 'https://web.squarecdn.com/v1/square.js';
+const SQUARE_PRODUCTION_SCRIPT_URL = 'https://web.squarecdn.com/v1/square.js';
+const SQUARE_SANDBOX_SCRIPT_URL = 'https://sandbox.web.squarecdn.com/v1/square.js';
 
 function isScriptSrc(scriptSrc: string) {
 	const scripts = document.querySelectorAll<HTMLScriptElement>('script[src]');
@@ -14,6 +16,32 @@ function isScriptSrc(scriptSrc: string) {
 		}
 	}
 	return false;
+}
+
+function normalizeEmail(value?: any) {
+	return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+function isSandboxSquare(squareConfig: any, checkoutData?: CheckoutType) {
+	const checkoutEmail = normalizeEmail(checkoutData?.shippingTo?.email);
+	const sandboxEmails = Array.isArray(squareConfig?.sandboxSquareEmails)
+		? squareConfig.sandboxSquareEmails.map((value: any) => normalizeEmail(value))
+		: [];
+	const explicitSandbox = squareConfig?.environment === 'sandbox';
+	return explicitSandbox || Boolean(checkoutEmail && sandboxEmails.includes(checkoutEmail));
+}
+
+function getSquareScriptUrl(applicationId?: string, squareConfig?: any, checkoutData?: CheckoutType) {
+	if (squareConfig) {
+		const useSandbox = isSandboxSquare(squareConfig, checkoutData);
+		return useSandbox
+			? squareConfig?.sandboxSquareScriptUrl || SQUARE_SANDBOX_SCRIPT_URL
+			: squareConfig?.squareScriptUrl || SQUARE_PRODUCTION_SCRIPT_URL;
+	}
+
+	return applicationId?.startsWith('sandbox-')
+		? SQUARE_SANDBOX_SCRIPT_URL
+		: SQUARE_PRODUCTION_SCRIPT_URL;
 }
 
 function loadSquareScript(src: string) {
@@ -51,11 +79,15 @@ SquareCheckout.propTypes = {
 	locationId: PropTypes.string.isRequired,
 	checkoutData: PropTypes.object.isRequired,
 	onApprove: PropTypes.func.isRequired,
+	onSquarePaymentCapture: PropTypes.func,
 };
-export type SquareCheckoutType = InferProps<typeof SquareCheckout.propTypes>;
+export type SquareCheckoutType = InferProps<typeof SquareCheckout.propTypes> & { checkoutData: CheckoutType };
 export function SquareCheckout(props: SquareCheckoutType) {
+	const config = usePixelatedConfig();
+	const squareConfig = config?.square;
 	const [card, setCard] = useState<any>(null);
 	const [initialized, setInitialized] = useState(false);
+	const [isProcessing, setIsProcessing] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -67,6 +99,7 @@ export function SquareCheckout(props: SquareCheckoutType) {
 			}
 
 			try {
+				const squareScriptUrl = getSquareScriptUrl(props.applicationId, squareConfig, props.checkoutData);
 				await loadSquareScript(squareScriptUrl);
 				if (!active) return;
 
@@ -92,7 +125,7 @@ export function SquareCheckout(props: SquareCheckoutType) {
 		return () => {
 			active = false;
 		};
-	}, [props.applicationId, props.locationId]);
+	}, [props.applicationId, props.locationId, props.checkoutData, squareConfig]);
 
 	async function handleSquarePayment(event: React.MouseEvent<HTMLButtonElement>) {
 		event.preventDefault();
@@ -104,13 +137,24 @@ export function SquareCheckout(props: SquareCheckoutType) {
 		}
 
 		try {
+			setIsProcessing(true);
 			const result = await card.tokenize();
 			if (result.status === 'OK') {
+				let captureResponse: any = undefined;
+				if (typeof props.onSquarePaymentCapture === 'function') {
+					captureResponse = await props.onSquarePaymentCapture({
+						sourceId: result.token,
+						checkoutData: props.checkoutData,
+						card: result,
+					});
+				}
+
 				props.onApprove({
 					data: {
 						sourceId: result.token,
 						card: result,
 						checkoutData: props.checkoutData,
+						captureResponse,
 					},
 				});
 			} else {
@@ -118,7 +162,9 @@ export function SquareCheckout(props: SquareCheckoutType) {
 				setErrorMessage(errors);
 			}
 		} catch (error: any) {
-			setErrorMessage(error?.message || 'Square tokenization failed.');
+			setErrorMessage(error?.message || 'Square payment capture failed.');
+		} finally {
+			setIsProcessing(false);
 		}
 	}
 
@@ -126,8 +172,8 @@ export function SquareCheckout(props: SquareCheckoutType) {
 		<div className="pix-cart-payment-method">
 			<div id="square-card-container" className="square-card-container" />
 			{errorMessage && <div className="pix-cart-error">{errorMessage}</div>}
-			<button className="pix-cart-button" type="button" onClick={handleSquarePayment} disabled={!initialized}>
-				{initialized ? 'Pay with Square' : 'Loading Square...' }
+			<button className="pix-cart-button" type="button" onClick={handleSquarePayment} disabled={!initialized || isProcessing}>
+				{isProcessing ? 'Processing payment...' : initialized ? 'Pay with Square' : 'Loading Square...' }
 			</button>
 		</div>
 	);
