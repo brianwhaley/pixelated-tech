@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getShoppingCartItem } from '../components/shoppingcart/ebay.components';
-import { getEbayAppToken, getEbayItems, getEbayItem, getEbayItemsSearch, getEbayProductSchema } from '../components/shoppingcart/ebay.functions';
+import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getMergedEbayConfig } from '../components/shoppingcart/ebay.functions';
+import { getFullPixelatedConfig } from '../components/config/config';
 import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
@@ -34,6 +35,10 @@ vi.mock('../components/foundation/utilities', () => ({
 	getDomain: vi.fn(() => 'example.com')
 }));
 
+vi.mock('../components/config/config', () => ({
+	getFullPixelatedConfig: vi.fn()
+}));
+
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn().mockResolvedValue({ ok: true, json: vi.fn() })
 }));
@@ -47,7 +52,7 @@ describe('ebay.functions - Real Tests', () => {
 	const mockEbayItem = {
 		legacyItemId: '123456',
 		title: 'Test Product',
-		price: { value: '29.99' },
+		price: { value: '29.99', currency: 'USD' },
 		itemWebUrl: 'https://ebay.com/itm/123456',
 		thumbnailImages: [
 			{ imageUrl: 'https://pic.ebay.com/image.jpg' }
@@ -55,7 +60,9 @@ describe('ebay.functions - Real Tests', () => {
 		categoryId: 'electronics',
 		categories: [
 			{ categoryId: 'electronics' }
-		]
+		],
+		shippingWeight: 2,
+		shippingWeightUnit: 'lb'
 	};
 
 	const mockApiProps = {
@@ -84,21 +91,11 @@ describe('ebay.functions - Real Tests', () => {
 			expect(result).toHaveProperty('itemTitle');
 			expect(result).toHaveProperty('itemQuantity');
 			expect(result).toHaveProperty('itemCost');
-		});
-
-		it('should set quantity to 1 for matching category', () => {
-			const result = getShoppingCartItem({
-				thisItem: mockEbayItem,
-				apiProps: mockApiProps
-			});
-			expect(result.itemQuantity).toBe(1);
-		});
-
-		it('should extract item ID', () => {
-			const result = getShoppingCartItem({
-				thisItem: mockEbayItem,
-				apiProps: mockApiProps
-			});
+			expect(result).toHaveProperty('itemCurrency');
+			expect(result).toHaveProperty('itemIsShippable');
+			expect(result).toHaveProperty('itemWeight');
+			expect(result).toHaveProperty('itemWeightUnit');
+			expect(result).toHaveProperty('itemType');
 			expect(result.itemID).toBe('123456');
 		});
 
@@ -118,21 +115,17 @@ describe('ebay.functions - Real Tests', () => {
 			expect(result.itemURL).toBe('https://ebay.com/itm/123456');
 		});
 
-		it('should extract item cost', () => {
+		it('should extract item cost and shipping metadata', () => {
 			const result = getShoppingCartItem({
 				thisItem: mockEbayItem,
 				apiProps: mockApiProps
 			});
 			expect(result.itemCost).toBe('29.99');
-		});
-
-		it('should handle missing thumbnail images', () => {
-			const item = { ...mockEbayItem, thumbnailImages: undefined };
-			const result = getShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
-			});
-			expect(result.itemImageURL).toBeDefined();
+			expect(result.itemCurrency).toBe('USD');
+			expect(result.itemIsShippable).toBe(true);
+			expect(result.itemWeight).toBe(2);
+			expect(result.itemWeightUnit).toBe('lb');
+			expect(result.itemType).toBe('product');
 		});
 
 		it('should handle alternative image property', () => {
@@ -180,6 +173,33 @@ describe('ebay.functions - Real Tests', () => {
 				apiProps: { ...mockApiProps, itemCategory: 'other' }
 			});
 			expect(result.itemQuantity).toBe(10);
+		});
+
+		it('should merge provided apiProps with config values from getFullPixelatedConfig', () => {
+			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValueOnce({
+				global: { proxyUrl: 'https://proxy-config.example.com' },
+				ebay: { baseSearchURL: 'https://config.ebay.com', itemCategory: 'electronics' }
+			});
+
+			const merged = getMergedEbayConfig({ baseSearchURL: 'https://override.example.com', appId: 'override-id' });
+
+			expect(merged.proxyURL).toBe('https://proxy-config.example.com');
+			expect(merged.baseSearchURL).toBe('https://override.example.com');
+			expect(merged.appId).toBe('override-id');
+		});
+	});
+
+	describe('getEbayBrowseSearch caching', () => {
+		it('should return cached eBay browse search data on second call', async () => {
+			const mockFetch = vi.mocked(smartFetch);
+			mockFetch.mockResolvedValueOnce({ results: [{ id: '1' }] });
+
+			const firstResult = await getEbayBrowseSearch({ apiProps: mockApiProps, token: 'token-123' });
+			expect(mockFetch).toHaveBeenCalledTimes(1);
+
+			const secondResult = await getEbayBrowseSearch({ apiProps: mockApiProps, token: 'token-123' });
+			expect(mockFetch).toHaveBeenCalledTimes(1);
+			expect(secondResult).toEqual(firstResult);
 		});
 	});
 

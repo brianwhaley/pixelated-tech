@@ -11,10 +11,15 @@ import '../sitebuilder/form/form.css';
 import { MicroInteractions } from '../foundation/microinteractions';
 import { Modal, handleModalOpen } from '../general/modal';
 import { Table } from "../general/table";
-import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount } from "./shoppingcart.functions";
+import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount, getCartShippingWeight, getShippingOption, getShippingCost } from "./shoppingcart.functions";
 import { formatAsUSD, formatAsHundredths } from "../foundation/utilities";
-import type { CartItemType, CheckoutType } from "./shoppingcart.functions";
+import type { CartItemType, CheckoutType, ShippingInfoType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
+import type { SiteInfo } from '../config/siteconfig.types';
+import { GenericShippingForm } from './usps.generic.components';
+// USPSShippingForm preserved for the new USPS Shipping Component integration.
+// This import remains commented while the generic shipping form is used.
+// import { USPSShippingForm } from './usps.components';
 import { SmartImage } from '../general/smartimage';
 import { getActivePaymentProvider } from './shoppingcart.providers';
 import personalInfoData from "./checkout.personal.info.json";
@@ -50,6 +55,8 @@ ShoppingCart.propTypes = {
 	personalInfoForm: PropTypes.object,
 	/** Optional override for the checkout discount form */
 	discountInfoForm: PropTypes.object,
+	/** Optional site metadata used for shipping origin defaults */
+	siteInfo: PropTypes.object,
 	/** Optional override for the checkout shipping form */
 	shippingInfoForm: PropTypes.object,
 	/** Optional override for additional checkout info fields */
@@ -57,14 +64,21 @@ ShoppingCart.propTypes = {
 	/** Optional flag to hide the shipping section when cart items are non-shippable */
 	showShippingInfoSection: PropTypes.bool,
 };
-export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes> & { personalInfoForm?: ShoppingCartFormOverride; discountInfoForm?: ShoppingCartFormOverride; shippingInfoForm?: ShoppingCartFormOverride; additionalInfoForm?: ShoppingCartFormOverride; };
+export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes> & { personalInfoForm?: ShoppingCartFormOverride; discountInfoForm?: ShoppingCartFormOverride; shippingInfoForm?: ShoppingCartFormOverride; additionalInfoForm?: ShoppingCartFormOverride; siteInfo?: SiteInfo };
 export function ShoppingCart(props: ShoppingCartType) {
 	const config = usePixelatedConfig();
 	const effectiveConfig = config || {};
+	const siteInfo = props.siteInfo;
 
 	const activeProvider = getActivePaymentProvider(effectiveConfig);
 	const PaymentProviderComponent = activeProvider ? activeProvider.component : null;
-	const checkoutDataForProvider = getCheckoutData();
+	const shippingDefaults = {
+		originPostalCode: siteInfo?.address?.postalCode ?? undefined,
+		originCountry: siteInfo?.address?.addressCountry ?? undefined,
+	};
+	// USPSShippingForm feature flag preserved for the new USPS Shipping Component integration.
+	// const hasUSPSShipping = Boolean(effectiveConfig?.usps);
+	const checkoutDataForProvider = getCheckoutData(shippingDefaults);
 	const checkoutDiscountCustom = props.subtotalDiscountCustom ?? 0;
 
 	const personalInfoFormData = props.personalInfoForm ?? personalInfoData;
@@ -73,18 +87,23 @@ export function ShoppingCart(props: ShoppingCartType) {
 	const additionalInfoFormData = props.additionalInfoForm;
 	const showShippingInfoSection = props.showShippingInfoSection !== false;
 
-	const discountFormData = discountInfoFormData;
+	const discountFormData = checkoutDiscountCustom > 0 ? {
+		...discountInfoFormData,
+		fields: [
+			...(discountInfoFormData?.fields ?? []),
+			{
+				component: "FormLabel",
+				props: {
+					id: "checkout_discount_custom_label",
+					label: `Discount applied: ${formatAsUSD(checkoutDiscountCustom)}`,
+					className: "pix-cart-discount-applied"
+				}
+			}
+		]
+	} : discountInfoFormData;
 	const shippingFormFields = [
 		...(personalInfoFormData?.fields ?? []),
 		...(discountFormData?.fields ?? []),
-		...(checkoutDiscountCustom > 0 ? [{
-			component: "FormLabel",
-			props: {
-				id: "checkout_discount_custom_label",
-				label: `Discount applied: ${formatAsUSD(checkoutDiscountCustom)}`,
-				className: "pix-cart-discount-applied"
-			}
-		}] : []),
 		...(showShippingInfoSection ? (shippingInfoFormData?.fields ?? []) : []),
 		...(additionalInfoFormData ? [{
 			component: "FormSectionHeader",
@@ -115,6 +134,8 @@ export function ShoppingCart(props: ShoppingCartType) {
 			checkoutDataForProvider.subtotal - effectiveSubtotalDiscount + checkoutDataForProvider.shippingCost + checkoutDataForProvider.handlingFee + (checkoutDataForProvider.insuranceCost ?? 0) + (checkoutDataForProvider.shipping_discount ?? 0) + checkoutDataForProvider.salesTax
 		)
 	};
+	const checkoutShippingWeight = checkoutDataForProvider.shippingWeight ?? 0;
+	const checkoutShippingOption = getShippingOption(checkoutDataForProvider.shippingTo?.shippingMethod);
 	const paymentProviderProps = activeProvider ? {
 		...activeProvider.getProps(effectiveConfig, effectiveCheckoutData, {
 			onPaymentCapture: props.onPaymentCapture ?? undefined,
@@ -170,7 +191,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 		function handleStorageChange(){
 			setShoppingCart( getCart() );
 			setShippingData( getShippingInfo() );
-			setcheckoutData( getCheckoutData() );
+			setcheckoutData( getCheckoutData(shippingDefaults) );
 			SetProgressStep();
 		}
 		window.addEventListener('storage', handleStorageChange);
@@ -217,7 +238,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 		event.preventDefault();
 		const form = event.currentTarget as HTMLFormElement;
 		const formObject = Object.fromEntries(new FormData(form));
-		setShippingInfo(formObject);
+		setShippingInfo(formObject as unknown as ShippingInfoType);
 	}
 
 	/**
@@ -243,6 +264,8 @@ export function ShoppingCart(props: ShoppingCartType) {
 			'to': cartConfig?.orderTo,
 			'from': cartConfig?.orderFrom,
 			'subject': cartConfig?.orderSubject,
+			'formName': cartConfig?.orderFormName,
+			'domain': cartConfig?.orderDomain,
 			'orderData': JSON.stringify(orderData, null, 2),
 		};
 		const sendMailResponse = emailJSON(json);
@@ -294,7 +317,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 		return (
 			<div className="pix-cart">
 				<PageSectionHeader title="Checkout Summary : " />
-				{ effectiveCheckoutData && <CheckoutItems {...effectiveCheckoutData} /> }
+				{ effectiveCheckoutData && <CheckoutItems {...effectiveCheckoutData} shippingWeight={checkoutShippingWeight} /> }
 				<br />
 				<FormButton className="pix-cart-button" type="button" id="backToCart" text="<= Back To Cart"
 					onClick={() => SetProgressStep("ShippingInfo")} />
@@ -326,7 +349,36 @@ export function ShoppingCart(props: ShoppingCartType) {
 				<br /><br /><hr /><br /><br />
 				<div>
 					<PageSectionHeader title="Checkout Info" />
-					<FormEngine name="checkout_shipping" id="checkout_shipping" formData={shippingFormDataCombined as any} onSubmitHandler={onShippingSubmit} />
+					{shippingData?.shippingMethod ? (
+						<div className="pix-cart-shipping-summary">
+							<div><strong>Selected Shipping:</strong> {getShippingOption(shippingData.shippingMethod)?.service ?? shippingData.shippingMethod}</div>
+							<div><strong>Shipping Weight:</strong> {getCartShippingWeight(shoppingCart ?? [])} lb</div>
+							<div><strong>Estimated Shipping Cost:</strong> {formatAsUSD(getShippingCost())}</div>
+							<div><strong>Origin Country:</strong> {shippingData.originCountry ?? shippingDefaults.originCountry ?? 'US'}</div>
+							<div><strong>Origin Zip:</strong> {shippingData.originPostalCode ?? shippingDefaults.originPostalCode ?? 'Unknown'}</div>
+						</div>
+					) : (
+						<div className="pix-cart-shipping-summary">
+							<div>Select a shipping method below to calculate your shipping cost.</div>
+						</div>
+					)}
+					{/*
+						USPSShippingForm block preserved for the new USPS Shipping Component integration.
+						The generic shipping form is used while the new USPS form integration is being developed.
+						{hasUSPSShipping ? (
+							<USPSShippingForm
+								shippingData={shippingData ?? {}}
+								shippingDefaults={shippingDefaults}
+								personalInfoFormData={personalInfoFormData as any}
+								discountInfoFormData={discountFormData as any}
+								shoppingCart={shoppingCart}
+								onShippingSubmit={onShippingSubmit}
+								/>
+						) : (
+							<GenericShippingForm shippingFormData={shippingFormDataCombined as any} onShippingSubmit={onShippingSubmit} />
+						)}
+					*/}
+					<GenericShippingForm shippingFormData={shippingFormDataCombined as any} onShippingSubmit={onShippingSubmit} />
 				</div>
 			</div>
 		);
@@ -369,6 +421,12 @@ ShoppingCartItem.propTypes = {
 		itemQuantity: PropTypes.number.isRequired,
 		/** Per-item price */
 		itemCost: PropTypes.number.isRequired,
+		/** Whether the item can be shipped */
+		itemIsShippable: PropTypes.bool,
+		/** Item weight used for shipping calculations */
+		itemWeight: PropTypes.number,
+		/** Item weight unit (lb, kg, oz) */
+		itemWeightUnit: PropTypes.string,
 	}).isRequired
 };
 export type ShoppingCartItemType = InferProps<typeof ShoppingCartItem.propTypes>;
@@ -409,6 +467,11 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 					<br />
 					<div><b>Item ID: </b>{thisItem.itemID}</div>
 					<div><b>Quantity: </b>{thisItem.itemQuantity}</div>
+					{thisItem.itemIsShippable ? (
+						<div><b>Weight: </b>{thisItem.itemWeight ?? 'N/A'} {thisItem.itemWeightUnit || 'lb'}</div>
+					) : (
+						<div><b>Shipping:</b> Non-shippable item</div>
+					)}
 				</div>
 			</div>
 			<div className="grid-s11-e13">
@@ -465,7 +528,13 @@ CheckoutItems.propTypes = {
 		city: PropTypes.string.isRequired,
 		state: PropTypes.string.isRequired,
 		zip: PropTypes.string.isRequired,
+		country: PropTypes.string,
+		email: PropTypes.string,
+		phone: PropTypes.string,
+		shippingMethod: PropTypes.string,
 	}).isRequired,
+	/** Optional shipping weight for the order */
+	shippingWeight: PropTypes.number,
 	/** Discount amount applied to subtotal */
 	subtotal_discount: PropTypes.number.isRequired,
 	/** Subtotal amount before shipping and taxes */
@@ -481,7 +550,7 @@ CheckoutItems.propTypes = {
 };
 export type CheckoutItemsType = InferProps<typeof CheckoutItems.propTypes>;
 export function CheckoutItems(props: CheckoutItemsType) {
-	const { items, shippingTo, subtotal_discount, subtotal, shippingCost, handlingFee, salesTax, total } = props;
+	const { items, shippingTo, shippingWeight, subtotal_discount, subtotal, shippingCost, handlingFee, salesTax, total } = props;
 
 	const cartItems = (
 		<ul>
@@ -492,8 +561,16 @@ export function CheckoutItems(props: CheckoutItemsType) {
 		</ul>
 	);
 	const to = shippingTo;
-	const addr = <><div>{to.name}</div><div>{to.street1}</div><div>{to.city}, {to.state} {to.zip}</div></> ;
+	const addr = <>
+		<div>{to.name}</div>
+		<div>{to.street1}</div>
+		<div>{to.city}, {to.state} {to.zip}</div>
+		{to.country ? <div>{to.country}</div> : null}
+		{to.email ? <div>{to.email}</div> : null}
+		{to.phone ? <div>{to.phone}</div> : null}
+	</>;
 
+	const selectedShippingOption = getShippingOption(shippingTo?.shippingMethod ?? '');
 	let checkoutTableData = [{
 		"Name": "Shopping Cart Items : ",
 		"Value": cartItems,
@@ -506,7 +583,13 @@ export function CheckoutItems(props: CheckoutItemsType) {
 	},{
 		"Name": "Shipping Address : ",
 		"Value": addr,
-	},{
+	}, {
+		"Name": "Shipping Method : ",
+		"Value": shippingTo?.shippingMethod ? `${selectedShippingOption?.service ?? shippingTo.shippingMethod} (${shippingTo.shippingMethod})` : 'Not selected',
+	}, {
+		"Name": "Shipping Weight : ",
+		"Value": shippingWeight ? `${formatAsHundredths(shippingWeight)} lb` : 'Not available',
+	}, {
 		"Name": "Shipping Cost : ",
 		"Value": formatAsUSD(shippingCost),
 	},{

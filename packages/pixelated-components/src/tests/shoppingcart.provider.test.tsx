@@ -127,4 +127,35 @@ describe('ShoppingCart provider selection and approval integration', () => {
 			expect(screen.getByText(/Thank you for your payment!/i)).toBeInTheDocument();
 		});
 	});
+
+	it('passes orderFormName and orderDomain from shoppingcart config into emailJSON payload', async () => {
+		await act(async () => {
+			setShoppingState();
+		});
+
+		renderWithConfig({
+			shoppingcart: {
+				provider: 'square',
+				orderTo: 'orders@example.com',
+				orderFrom: 'noreply@example.com',
+				orderSubject: 'New Order',
+				orderFormName: 'Order Details',
+				orderDomain: 'example.com',
+			},
+			square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+		});
+
+		const checkoutButton = await screen.findByTestId('square-checkout');
+		fireEvent.click(checkoutButton);
+
+		await waitFor(async () => {
+			expect(screen.getByText(/Thank you for your payment!/i)).toBeInTheDocument();
+			const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
+			expect(emailJSON).toHaveBeenCalledTimes(1);
+			expect(emailJSON).toHaveBeenCalledWith(expect.objectContaining({
+				formName: 'Order Details',
+				domain: 'example.com',
+			}));
+		});
+	});
 });

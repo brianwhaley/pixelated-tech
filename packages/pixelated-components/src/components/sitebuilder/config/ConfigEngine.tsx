@@ -2,7 +2,7 @@ import React from 'react';
 import { generateGoogleFontsUrl } from './google-fonts.client';
 import { ALL_WEBSAFE_FONTS } from './fonts';
 import { assertVisualDesign } from '../../config/config.validators';
-import type { VisualDesignType } from './ConfigBuilder';
+import type { VisualDesignType } from '../../config/siteconfig.types';
 
 export function VisualDesignStyles({ visualdesign }: { visualdesign: VisualDesignType }) {
 	// Validate visualdesign early so invalid siteconfig.json fails fast

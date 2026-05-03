@@ -3,6 +3,7 @@
 export * from './components/config/config.client';
 export * from './components/config/config.types';
 export * from './components/config/config.validators';
+export * from './components/config/siteconfig.types';
 
 export * from './components/foundation/404';
 export * from './components/foundation/cache-manager';
@@ -60,6 +61,7 @@ export * from './components/integrations/contentful.items.components';
 export * from './components/integrations/contentful.management';
 export * from './components/integrations/flickr';
 export * from './components/integrations/gemini-api.client';
+export * from './components/integrations/gemini-api.functions';
 export * from './components/integrations/google.reviews.components';
 export * from './components/integrations/google.reviews.functions';
 export * from './components/integrations/googleplaces';
@@ -69,6 +71,7 @@ export * from './components/integrations/googlesearch';
 export * from './components/integrations/gravatar.components';
 export * from './components/integrations/gravatar.functions';
 export * from './components/integrations/hubspot.components';
+export * from './components/integrations/contentful.contenttypes';
 export * from './components/integrations/instagram.components';
 export * from './components/integrations/instagram.functions';
 export * from './components/integrations/lipsum';
@@ -83,14 +86,15 @@ export * from './components/integrations/yelp';
 export * from './components/pixelated/pixelated.components';
 
 export * from './components/shoppingcart/ebay.components';
+export * from './components/shoppingcart/usps.generic.components';
 export * from './components/shoppingcart/paypal';
 export * from './components/shoppingcart/paypal.components';
 export * from './components/shoppingcart/shoppingcart.providers';
-export * from './components/shoppingcart/square';
 export * from './components/shoppingcart/square.components';
 export * from './components/shoppingcart/shoppingcart.components';
 export * from './components/shoppingcart/shoppingcart.functions';
 export * from './components/shoppingcart/stripe.components';
+export * from './components/shoppingcart/usps.components';
 
 export * from './components/sitebuilder/config/CompoundFontSelector';
 export * from './components/sitebuilder/config/ConfigBuilder';
@@ -125,3 +129,4 @@ export * from './components/sitebuilder/page/lib/propTypeIntrospection';
 export * from './components/sitebuilder/page/lib/types';
 export * from './components/sitebuilder/page/lib/usePageBuilder';
 
+export * from './version';

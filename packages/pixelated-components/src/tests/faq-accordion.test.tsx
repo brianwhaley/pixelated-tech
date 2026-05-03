@@ -186,7 +186,7 @@ describe('FAQAccordion Component', () => {
 
 			const image = screen.getByAltText('Test image');
 			expect(image).toBeInTheDocument();
-			expect(image).toHaveStyle({ float: 'right', width: '100px', height: '100px' });
+			expect(image).toHaveClass('faq-answer-image', 'faq-answer-image-right');
 			expect(screen.getByText('Answer with image')).toBeInTheDocument();
 		});
 	});

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { captureSquarePayment } from '@pixelated-tech/components';
+import { captureSquarePayment } from '@pixelated-tech/components/server';
 
 export async function POST(req: Request) {
 	try {

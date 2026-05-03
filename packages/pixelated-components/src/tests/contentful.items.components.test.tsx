@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ContentfulItems, ContentfulListItem } from '../components/integrations/contentful.items.components';
 import * as contentfulFunctions from '../components/integrations/contentful.delivery';
+import { mockContentfulItems, mockContentfulAssets } from '../test/fixtures';
 
 // Mock the config hook
 vi.mock('../components/config/config.client', () => ({
@@ -36,7 +37,19 @@ vi.mock('../components/general/semantic', () => ({
 }));
 
 vi.mock('../components/shoppingcart/shoppingcart.components', () => ({
-	AddToCartButton: ({ item }: any) => <button data-testid="add-to-cart">Add to Cart</button>,
+	AddToCartButton: ({ item }: any) => (
+		<button
+			data-testid="add-to-cart"
+			data-itemid={item?.itemID}
+			data-itemcurrency={item?.itemCurrency}
+			data-itemisshippable={String(item?.itemIsShippable)}
+			data-itemweight={item?.itemWeight}
+			data-itemweightunit={item?.itemWeightUnit}
+			data-itemtype={item?.itemType}
+		>
+			Add to Cart
+		</button>
+	),
 	ViewItemDetails: ({ item }: any) => <a href="#details">Details</a>
 }));
 
@@ -46,40 +59,8 @@ describe('ContentfulItems Component', () => {
 		delivery_access_token: 'test-token'
 	};
 
-	const mockItems = [
-		{
-			sys: { id: 'item-1', createdAt: '2024-01-01' },
-			fields: {
-				title: 'Product 1',
-				images: [],
-				imageUrl: 'https://example.com/image1.jpg',
-				imageAlt: 'Product 1',
-				price: 99.99,
-				quantity: 1
-			}
-		},
-		{
-			sys: { id: 'item-2', createdAt: '2024-01-02' },
-			fields: {
-				title: 'Product 2',
-				images: [],
-				imageUrl: 'https://example.com/image2.jpg',
-				imageAlt: 'Product 2',
-				price: 149.99,
-				quantity: 1
-			}
-		}
-	];
-
-	const mockAssets = [
-		{
-			sys: { id: 'asset-1', createdAt: '2024-01-01' },
-			fields: {
-				file: { url: 'https://example.com/asset1.jpg' },
-				title: 'Asset 1'
-			}
-		}
-	];
+	const mockItems = mockContentfulItems;
+	const mockAssets = mockContentfulAssets;
 
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -273,7 +254,11 @@ describe('ContentfulListItem Component', () => {
 			title: 'Test Product',
 			imageUrl: 'https://example.com/image.jpg',
 			price: 99.99,
-			quantity: 1
+			priceCurrency: 'USD',
+			quantity: 1,
+			weight: 2,
+			weightUnit: 'lb',
+			isShippable: true
 		}
 	};
 
@@ -326,8 +311,13 @@ describe('ContentfulListItem Component', () => {
 	it('should structure shopping cart item with correct properties', () => {
 		render(<ContentfulListItem item={mockItem} />);
 		
-		// Component should render and pass item data to cart button
-		expect(screen.getByTestId('add-to-cart')).toBeInTheDocument();
+		const button = screen.getByTestId('add-to-cart');
+		expect(button).toBeInTheDocument();
+		expect(button).toHaveAttribute('data-itemcurrency', 'USD');
+		expect(button).toHaveAttribute('data-itemisshippable', 'true');
+		expect(button).toHaveAttribute('data-itemweight', '2');
+		expect(button).toHaveAttribute('data-itemweightunit', 'lb');
+		expect(button).toHaveAttribute('data-itemtype', 'product');
 	});
 
 	it('should set link target to _self', () => {

@@ -106,7 +106,7 @@ loadAllImagesFromCloudinary.propTypes = {
 };
 export type loadAllImagesFromCloudinaryType = InferProps<typeof loadAllImagesFromCloudinary.propTypes>;
 export function loadAllImagesFromCloudinary(props: loadAllImagesFromCloudinaryType){
-	const origin = document.location.origin;
+	const origin = typeof window !== 'undefined' ? window.location.origin : document.location.origin;
 	if(origin && origin.includes("localhost")) { return; } // do nothing in local dev 
 	const images = document.querySelectorAll('img');
 	images.forEach(img => {

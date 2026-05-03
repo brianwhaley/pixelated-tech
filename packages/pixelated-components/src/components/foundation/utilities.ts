@@ -153,14 +153,6 @@ Array.prototype.contains = function(obj) {
  * // manningmetalworks.com → "manningmetalworks"
  * // localhost → "pixelated" (development)
  */
-export function formatAsUSD(cost: number) {
-	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-}
-
-export function formatAsHundredths(num: number) {
-	return Math.trunc(num * 100) / 100;
-}
-
 export function getDomain(url?: string): string {
 	if (typeof url === 'string' && url.trim()) {
 		try {
@@ -182,6 +174,20 @@ export function getDomain(url?: string): string {
 	// Each domain runs its own isolated copy of this library
 	return 'pixelated';
 }
+
+
+
+export function formatAsUSD(cost: number) {
+	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
+
+
+
+export function formatAsHundredths(num: number) {
+	return Math.trunc(num * 100) / 100;
+}
+
 
 
 
@@ -366,6 +372,7 @@ export const SERVER_ONLY_PATTERNS = [
 	/\bfs\.readFileSync\b/,
 	/\bfs\.existsSync\b/,
 	/\bcrypto\b/,
+	/\bgetFullPixelatedConfig\b/,
 	/\bimport.*googleapis\b|\brequire.*googleapis\b/,  // Actual import of googleapis
 	/\bimport.*next\/server\b|\brequire.*next\/server\b/,  // Actual import of next/server
 	/\bimport.*path\b|\brequire.*path\b/,  // Actual import of path module

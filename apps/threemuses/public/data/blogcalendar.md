@@ -3,10 +3,10 @@
 
 ## Criteria for each individual Blog Post:
 * Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
-* After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.pixelated.tech/schedule
+* After the conclusion of each post, add a call to action to sign up for our blog newsletter, check our our online boutique (./boutique) or to stop by our store. 
 * Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..  
-* Add links to other blog posts or other content on pixelated.tech
-* Use a tone of empthy, understanding as a small business owner myself, an expert in the field of web and marketing, and straightforward language
+* Add links to other blog posts or other content on the threemusesofbluffton web site
+* Use a tone of empthy, understanding as a small business owner, and a sense of community
 
 ## Criteria for Blog Post to Podcast Conversion
 * Making the minimum amount of changes possible, Write a podcast-friendly script for this blog post.

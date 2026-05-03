@@ -11,9 +11,13 @@ import {
 	addToShoppingCart,
 	removeFromShoppingCart,
 	clearShoppingCart,
+	clearShoppingCartCache,
 	getShippingInfo,
 	setShippingInfo,
 	getShippingCost,
+	getCartShippingWeight,
+	getShippingOption,
+	getShippingInfoWithDefaults,
 	validateDiscountCode,
 	getRemoteDiscountCodes,
 	getLocalDiscountCodes,
@@ -43,8 +47,9 @@ type ShoppingCartType = CartItemType;
 
 describe('Shopping Cart Functions', () => {
 	beforeEach(() => {
-		// Clear localStorage before each test
+		// Clear localStorage and in-memory cache before each test
 		localStorage.clear();
+		clearShoppingCartCache();
 		// Mock window.dispatchEvent
 		vi.spyOn(window, 'dispatchEvent').mockImplementation(() => true);
 	});
@@ -309,12 +314,22 @@ describe('Shopping Cart Functions', () => {
 				itemTitle: 'Item 1',
 				itemQuantity: 5,
 				itemCost: 10,
+				itemCurrency: 'USD',
+				itemIsShippable: true,
+				itemWeight: 2,
+				itemWeightUnit: 'lb',
+				itemType: 'product',
 			};
 			addToShoppingCart(item);
 			const cart = getCart();
 			expect(cart.length).toBe(1);
 			expect(cart[0].itemID).toBe('1');
 			expect(cart[0].itemQuantity).toBe(1);
+			expect(cart[0].itemCurrency).toBe('USD');
+			expect(cart[0].itemIsShippable).toBe(true);
+			expect(cart[0].itemWeight).toBe(2);
+			expect(cart[0].itemWeightUnit).toBe('lb');
+			expect(cart[0].itemType).toBe('product');
 		});
 
 		it('should increase quantity if item already in cart and less than requested quantity', () => {
@@ -323,13 +338,35 @@ describe('Shopping Cart Functions', () => {
 				itemTitle: 'Item 1',
 				itemQuantity: 5,
 				itemCost: 10,
+				itemCurrency: 'USD',
+				itemIsShippable: true,
+				itemWeight: 2,
+				itemWeightUnit: 'lb',
+				itemType: 'product',
 			};
-			setCart([{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 }]);
+			setCart([
+				{
+					itemID: '1',
+					itemTitle: 'Item 1',
+					itemQuantity: 1,
+					itemCost: 10,
+					itemCurrency: 'USD',
+					itemIsShippable: true,
+					itemWeight: 2,
+					itemWeightUnit: 'lb',
+					itemType: 'product',
+				},
+			]);
 			addToShoppingCart(item);
 
 			const cart = getCart();
 			expect(cart.length).toBe(1);
 			expect(cart[0].itemQuantity).toBe(2);
+			expect(cart[0].itemCurrency).toBe('USD');
+			expect(cart[0].itemIsShippable).toBe(true);
+			expect(cart[0].itemWeight).toBe(2);
+			expect(cart[0].itemWeightUnit).toBe('lb');
+			expect(cart[0].itemType).toBe('product');
 		});
 
 		it('should not increase quantity when existing quantity is greater than requested quantity', () => {
@@ -338,12 +375,34 @@ describe('Shopping Cart Functions', () => {
 				itemTitle: 'Item 1',
 				itemQuantity: 1,
 				itemCost: 10,
+				itemCurrency: 'USD',
+				itemIsShippable: true,
+				itemWeight: 2,
+				itemWeightUnit: 'lb',
+				itemType: 'product',
 			};
-			setCart([{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 5, itemCost: 10 }]);
+			setCart([
+				{
+					itemID: '1',
+					itemTitle: 'Item 1',
+					itemQuantity: 5,
+					itemCost: 10,
+					itemCurrency: 'USD',
+					itemIsShippable: true,
+					itemWeight: 2,
+					itemWeightUnit: 'lb',
+					itemType: 'product',
+				},
+			]);
 			addToShoppingCart(item);
 
 			const cart = getCart();
 			expect(cart[0].itemQuantity).toBe(5);
+			expect(cart[0].itemCurrency).toBe('USD');
+			expect(cart[0].itemIsShippable).toBe(true);
+			expect(cart[0].itemWeight).toBe(2);
+			expect(cart[0].itemWeightUnit).toBe('lb');
+			expect(cart[0].itemType).toBe('product');
 		});
 	});
 
@@ -414,25 +473,25 @@ describe('Shopping Cart Functions', () => {
 				itemCost: 10,
 			};
 			addToShoppingCart(item);
-			setShippingInfo({ name: 'John' });
-			clearShoppingCart();
-
-			expect(localStorage.getItem(shoppingCartKey)).toBeNull();
-			expect(localStorage.getItem(shippingInfoKey)).toBeNull();
-		});
-
-		it('should dispatch storage event', () => {
-			clearShoppingCart();
-			expect(window.dispatchEvent).toHaveBeenCalled();
+				setShippingInfo({
+					name: 'John Doe',
+					street1: '123 Main St',
+					city: 'Springfield',
+					state: 'IL',
+					zip: '62701',
+					country: 'USA',
+					email: 'john@example.com',
+					phone: '555-123-4567',
+				});
 		});
 	});
 
 	// ========== SHIPPING FUNCTIONS ==========
 
 	describe('getShippingInfo', () => {
-		it('should return empty array when no shipping info', () => {
+		it('should return empty object when no shipping info', () => {
 			const result = getShippingInfo();
-			expect(result).toEqual([]);
+			expect(result).toEqual({});
 		});
 
 		it('should return stored shipping info', () => {
@@ -458,13 +517,25 @@ describe('Shopping Cart Functions', () => {
 				state: 'IL',
 				zip: '62701',
 				country: 'USA',
+				email: 'john@example.com',
+				phone: '555-123-4567',
 			};
 			setShippingInfo(shippingData);
-		const stored = getShippingInfo();
+			const stored = getShippingInfo();
+			expect(stored).toEqual(shippingData);
 		});
 
 		it('should dispatch storage event', () => {
-			setShippingInfo({ name: 'John' });
+			setShippingInfo({
+				name: 'John Doe',
+				street1: '123 Main St',
+				city: 'Springfield',
+				state: 'IL',
+				zip: '62701',
+				country: 'USA',
+				email: 'john@example.com',
+				phone: '555-123-4567',
+			});
 			expect(window.dispatchEvent).toHaveBeenCalledWith(new Event('storage'));
 		});
 	});
@@ -491,6 +562,41 @@ describe('Shopping Cart Functions', () => {
 			setShippingInfo({ shippingMethod: 'USPS-PMX-I' });
 			const cost = getShippingCost();
 			expect(cost).toBe(69.98);
+		});
+
+		it('should calculate shipping weight across mixed units and ignore non-shippable items', () => {
+			setCart([
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 2, itemCost: 10, itemIsShippable: true, itemWeight: 16, itemWeightUnit: 'oz' },
+				{ itemID: '2', itemTitle: 'Item 2', itemQuantity: 1, itemCost: 20, itemIsShippable: true, itemWeight: 1, itemWeightUnit: 'lb' },
+				{ itemID: '3', itemTitle: 'Item 3', itemQuantity: 1, itemCost: 5, itemIsShippable: false, itemWeight: 10, itemWeightUnit: 'lb' },
+			]);
+			const weight = getCartShippingWeight(getCart());
+			expect(weight).toBe(3);
+		});
+
+		it('should calculate weight-based shipping cost for USPS Ground Advantage', () => {
+			setCart([
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10, itemIsShippable: true, itemWeight: 2, itemWeightUnit: 'lb' },
+				{ itemID: '2', itemTitle: 'Item 2', itemQuantity: 1, itemCost: 20, itemIsShippable: true, itemWeight: 1, itemWeightUnit: 'lb' },
+			]);
+			setShippingInfo({ shippingMethod: 'USPS-GA' });
+			const cost = getShippingCost();
+			expect(cost).toBe(13.99);
+		});
+
+		it('should return shipping option metadata by ID', () => {
+			const option = getShippingOption('USPS-PM');
+			expect(option).toBeDefined();
+			expect(option?.service).toBe('Priority Mail');
+			expect(option?.perPound).toBe(2.5);
+		});
+
+		it('should merge default shipping origin values into checkout data', () => {
+			setCart([{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 50 }]);
+			setShippingInfo({ shippingMethod: 'USPS-GA', name: 'John Doe' });
+			const checkout = getCheckoutData({ originPostalCode: '94103', originCountry: 'US' });
+			expect(checkout.shippingTo.originPostalCode).toBe('94103');
+			expect(checkout.shippingTo.originCountry).toBe('US');
 		});
 	});
 

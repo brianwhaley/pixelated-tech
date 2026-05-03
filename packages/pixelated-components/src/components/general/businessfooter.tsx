@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { PageSection, PageSectionHeader } from './semantic';
 import { normalizeOpeningHoursValue } from '../foundation/schema';
-import type { SiteInfo } from '../config/config.types';
+import type { SiteInfo } from '../config/siteconfig.types';
 import './businessfooter.css';
 
 function buildAddressQuery(address?: {

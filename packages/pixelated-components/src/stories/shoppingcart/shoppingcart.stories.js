@@ -1,5 +1,6 @@
 import React from 'react';
 import { addToShoppingCart, clearShoppingCart, setShippingInfo } from '@/components/shoppingcart/shoppingcart.functions';
+import { PixelatedClientConfigProvider } from '@/components/config/config.client';
 import { ShoppingCart } from '@/components/shoppingcart/shoppingcart.components';
 
 export default {
@@ -33,7 +34,7 @@ const item3 = {
 }; 
 
 // Parent Component
-const ParentShoppingCart = () => {
+const ParentShoppingCart = ({ siteInfo } = {}) => {
 	return (
 	  	<>
 			<div>
@@ -45,7 +46,7 @@ const ParentShoppingCart = () => {
 			</div>
             <br />
 			<div>
-				<ShoppingCart />
+				<ShoppingCart siteInfo={siteInfo} />
 			</div>
 		</>
 	);
@@ -53,3 +54,24 @@ const ParentShoppingCart = () => {
 
 export const ShoppingCartPage = () => <ParentShoppingCart />;
 ShoppingCartPage.args = { };
+
+const shippingSiteInfo = {
+	address: {
+		postalCode: '30301',
+		addressCountry: 'US',
+	},
+};
+
+export const ShoppingCartWithUSPS = () => (
+	<PixelatedClientConfigProvider config={{
+		usps: {
+			consumerKey: 'bQH78ecaPH57FDfG4RnArBnFBWX1uyAhSLxQo1aw3gD8wemu',
+			consumerSecret: 'RKInU5tI72dFGzPB8OW2xXZlI6WU1Rb4GfB8SqnhIBk8SapzmNpk6r3UZAaXs0pT',
+			environment: 'sandbox',
+			sandboxBaseURL: 'https://apis-tem.usps.com/ShippingAPI.dll',
+		},
+	}}>
+		<ParentShoppingCart siteInfo={shippingSiteInfo} />
+	</PixelatedClientConfigProvider>
+);
+ShoppingCartWithUSPS.storyName = 'Shopping Cart with USPS';

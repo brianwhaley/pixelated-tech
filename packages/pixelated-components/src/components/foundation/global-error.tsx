@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { SiteInfo } from '../config/config.types';
+import type { SiteInfo } from '../config/siteconfig.types';
 import './global-error.css';
 
 /**

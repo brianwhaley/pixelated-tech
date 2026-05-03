@@ -92,17 +92,13 @@ export interface Google {
 	refresh_token: string;
 }
 
-export interface GooglePSI {
-	api_key: string;
+export interface GoogleAnalyticsConfig {
+	id: string; // e.g. G-XXXXXXX
+	adId?: string; // e.g. AW-XXXXXXXXX
 }
 
 export interface GoogleGemini {
 	api_key: string;
-}
-
-export interface GoogleAnalyticsConfig {
-	id: string; // e.g. G-XXXXXXX
-	adId?: string; // e.g. AW-XXXXXXXXX
 }
 
 export interface GoogleMapsConfig {
@@ -116,6 +112,10 @@ export interface GooglePlacesConfig {
 	debounceDelay?: number;
 	cacheTTL?: number;
 	placeId: string; 
+}
+
+export interface GooglePSI {
+	api_key: string;
 }
 
 export interface GoogleSearchConsoleConfig {
@@ -153,6 +153,33 @@ export interface PaypalConfig {
 	prodPayPalApiBaseUrl?: string;
 }
 
+export type DisplayMode = 'standalone' | 'fullscreen' | 'minimal-ui' | 'browser';
+export interface PuppeteerConfig {
+	executable_path?: string;
+	cache_dir?: string;
+}
+
+export interface ShoppingCartConfig {
+	/** Payment provider override; choose 'paypal' or 'square' */
+	provider?: 'paypal' | 'square';
+	/** Email address for order notifications */
+	orderTo: string;
+	/** Sender email address for transactional emails */
+	orderFrom: string;
+	/** Subject line for order confirmation emails */
+	orderSubject: string;
+	/** Name of the form used to collect order details, for inclusion in email */
+	orderFormName: string; 
+	/** Domain for the order form, for inclusion in email */
+	orderDomain: string; 
+	/** Store/company name displayed in communications */
+	storeName: string;
+	/** Currency code (e.g., 'USD', 'EUR') */
+	currency?: string;
+	/** Tax rate as a decimal (e.g., 0.07 for 7%) */
+	taxRate?: number;
+}
+
 export interface SquareConfig {
 	environment?: 'sandbox' | 'production';
 
@@ -172,77 +199,24 @@ export interface SquareConfig {
 	sandboxSquareEmails?: string[];
 }
 
-export interface ShoppingCartConfig {
-	/** Payment provider override; choose 'paypal' or 'square' */
-	provider?: 'paypal' | 'square';
-	/** Email address for order notifications */
-	orderTo: string;
-	/** Sender email address for transactional emails */
-	orderFrom: string;
-	/** Subject line for order confirmation emails */
-	orderSubject: string;
-	/** Store/company name displayed in communications */
-	storeName: string;
-	/** Currency code (e.g., 'USD', 'EUR') */
-	currency?: string;
-	/** Tax rate as a decimal (e.g., 0.07 for 7%) */
-	taxRate?: number;
+export interface USPSConfig {
+	/** USPS API consumer key */
+	consumerKey?: string;
+	/** USPS API consumer secret */
+	consumerSecret?: string;
+	/** Optional production API base URL override */
+	baseURL?: string;
+	/** Optional sandbox/test environment API base URL override */
+	sandboxBaseURL?: string;
+	/** Optional environment override for USPS shipping integration */
+	environment?: 'production' | 'sandbox';
+	/** Optional proxy URL to avoid CORS restrictions */
+	proxyUrl?: string;
 }
 
 export interface WordpressConfig {
 	baseURL: string; // REST API base URL, e.g. 'https://public-api.wordpress.com/rest/v1/sites/'
 	site: string; // WordPress site identifier (e.g., 'pixelatedviews.wordpress.com')
-}
-
-export type DisplayMode = 'standalone' | 'fullscreen' | 'minimal-ui' | 'browser';
-
-export interface OpeningHoursEntry {
-	day: string;
-	open?: string;
-	close?: string;
-	closed?: boolean;
-	hours?: string;
-}
-
-export interface SiteInfo {
-	// Core site fields are required for downstream schemas (Website, LocalBusiness).
-	// Keep secondary fields optional for backward compatibility.
-	name: string;
-	description: string;
-	url: string;
-	email?: string;
-	image?: string;
-	image_height?: string | number;
-	image_width?: string | number;
-	favicon?: string;
-	telephone?: string;
-	address?: {
-		streetAddress?: string;
-		addressLocality?: string;
-		addressRegion?: string;
-		postalCode?: string;
-		addressCountry?: string;
-	};
-	openingHours?: string | string[] | OpeningHoursEntry[];
-	priceRange?: string;
-	sameAs?: string[];
-	keywords?: string;
-	publisherType?: string;
-	copyrightYear?: number;
-	potentialAction?: {
-		"@type"?: string;
-		target?: string;
-		"query-input"?: string;
-		queryInput?: string;
-	};
-	// PWA Manifest properties
-	author?: string;
-	theme_color?: string;
-	background_color?: string;
-	default_locale?: string;
-	display?: DisplayMode;
-	favicon_sizes?: string;
-	favicon_type?: string;
 }
 
 /**
@@ -296,14 +270,12 @@ export const SECRET_CONFIG_KEYS = {
 		],
 		square: [
 			'accessToken'
+		],
+		usps: [
+			'consumerSecret'
 		]
 	}
 };
-
-export interface PuppeteerConfig {
-	executable_path?: string;
-	cache_dir?: string;
-}
 
 export interface PixelatedConfig {
 	global?: GlobalConfig;
@@ -327,5 +299,6 @@ export interface PixelatedConfig {
 	puppeteer?: PuppeteerConfig;
 	shoppingcart?: ShoppingCartConfig;
 	square?: SquareConfig;
+	usps?: USPSConfig;
 	wordpress?: WordpressConfig;
 }

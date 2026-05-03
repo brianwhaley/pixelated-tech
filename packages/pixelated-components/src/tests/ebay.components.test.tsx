@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { cleanup, render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { EbayItems, EbayListFilter, EbayItemHeader, EbayListItem, getShoppingCartItem } from '../components/shoppingcart/ebay.components';
+import { EbayItems, EbayListFilter, EbayItemHeader, EbayListItem, EbayItemDetail, getShoppingCartItem } from '../components/shoppingcart/ebay.components';
 import * as ebayFunctions from '../components/shoppingcart/ebay.functions';
 
 vi.mock('../components/config/config.client', () => ({
@@ -20,6 +20,7 @@ vi.mock('../components/shoppingcart/ebay.functions', async () => {
 	return {
 		...actual,
 		getEbayItems: vi.fn(),
+		getEbayItem: vi.fn(),
 	};
 });
 
@@ -132,6 +133,42 @@ describe('EbayItems component', () => {
 		});
 
 		expect(getEbayItemsMock).toHaveBeenCalledTimes(1);
+	});
+
+	it('renders EbayItemDetail when item data is loaded', async () => {
+		const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
+		getEbayItemMock.mockResolvedValueOnce({
+			legacyItemId: 'ITEM-DETAIL',
+			title: 'Detail Item',
+			price: { value: '55.00', currency: 'USD' },
+			description: '<p>Detailed description</p>',
+			additionalImages: [{ imageUrl: 'https://example.com/detail.jpg' }],
+			categoryId: 'electronics',
+			itemPath: 'test',
+		});
+
+		render(
+			<EbayItemDetail
+				apiProps={{
+					proxyURL: '',
+					baseTokenURL: '',
+					baseSearchURL: '',
+					qsSearchURL: '',
+					baseItemURL: '',
+					qsItemURL: '',
+					baseAnalyticsURL: '',
+					appId: '',
+					appCertId: '',
+					globalId: '',
+					itemCategory: 'electronics',
+				}}
+			itemID="ITEM-DETAIL"
+			/>
+		);
+
+		await waitFor(() => {
+			expect(screen.getByText('Detail Item')).toBeInTheDocument();
+		});
 	});
 });
 

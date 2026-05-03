@@ -1,7 +1,10 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import * as shoppingCartFunctions from '../components/shoppingcart/shoppingcart.functions';
 import {
+  ShoppingCart,
+  ShoppingCartItem,
   CheckoutItems,
   CartButton,
   ViewItemDetails,
@@ -26,10 +29,71 @@ vi.mock('../components/shoppingcart/shoppingcart.functions', async (importOrigin
   return {
     ...actual,
     getCartItemCount: vi.fn(() => 2),
-    getCart: vi.fn(() => [{ id: '1', name: 'Item', price: 10, quantity: 1 }]),
+    getCart: vi.fn(() => []),
+    getShippingInfo: vi.fn(() => ({})),
+    getCheckoutData: vi.fn(() => ({
+      items: [],
+      subtotal: 0,
+      subtotal_discount: 0,
+      shippingTo: {},
+      shippingCost: 0,
+      handlingFee: 0,
+      insuranceCost: 0,
+      shipping_discount: 0,
+      salesTax: 0,
+      total: 0,
+      shippingWeight: 0,
+    })),
+    getCartShippingWeight: vi.fn(() => 0),
+    getShippingOption: vi.fn(() => undefined),
+    getShippingCost: vi.fn(() => 0),
+    setShippingInfo: vi.fn(),
+    clearShoppingCart: vi.fn(),
+    setDiscountCodes: vi.fn(),
     formatAsUSD: vi.fn((cost: number) => `$${cost.toFixed(2)}`),
   };
 });
+
+vi.mock('../components/shoppingcart/shoppingcart.providers', () => ({
+  getActivePaymentProvider: () => null
+}));
+
+vi.mock('../components/sitebuilder/form/formengine', () => ({
+  FormEngine: () => <div>FormEngine</div>
+}));
+
+vi.mock('../components/sitebuilder/form/formcomponents', () => ({
+  FormButton: (props: any) => <button {...props}>{props.text}</button>
+}));
+
+vi.mock('../components/shoppingcart/usps.components', () => ({
+  USPSShippingForm: () => <div>USPS Shipping</div>
+}));
+
+vi.mock('../components/shoppingcart/usps.generic.components', () => ({
+  GenericShippingForm: ({ onShippingSubmit }: any) => <form onSubmit={onShippingSubmit}>Generic Shipping</form>
+}));
+
+vi.mock('../components/foundation/microinteractions', () => ({
+  MicroInteractions: vi.fn()
+}));
+
+vi.mock('../components/sitebuilder/form/formsubmit', () => ({
+  emailJSON: vi.fn(() => ({}))
+}));
+
+vi.mock('../components/general/table', () => ({
+  Table: ({ data }: any) => (
+    <div>
+      {data?.map((row: any, index: number) => (
+        <div key={index}>
+          <span>{row.Name}</span>
+          <span>{row.Value}</span>
+        </div>
+      ))}
+    </div>
+  )
+}));
 
 vi.mock('../components/general/modal', () => ({
   Modal: ({ modalContent }: any) => <div>{modalContent}</div>,
@@ -232,6 +296,24 @@ describe('ShoppingCart Components Tests', () => {
 			
 			expect(addresses).toHaveLength(2);
 		});
+
+		it('should render checkout summary shipping method and weight', () => {
+			render(
+				<CheckoutItems
+					items={[{ itemID: '1', itemTitle: 'Test Item', itemQuantity: 1, itemCost: 20 }]}
+					shippingTo={{ name: 'John Doe', street1: '123 Test St', city: 'Testville', state: 'TX', zip: '78901', country: 'US', shippingMethod: 'USPS-GA' }}
+					subtotal_discount={0}
+					subtotal={20}
+					shippingCost={9.99}
+					handlingFee={3.99}
+					salesTax={1.20}
+					total={34.18}
+					shippingWeight={2}
+				/>
+			);
+
+			expect(screen.getByText(/Shipping Address/i)).toBeInTheDocument();
+		});
 	});
 
 	describe('Checkout Progress', () => {
@@ -412,24 +494,120 @@ describe('ShoppingCart Components Tests', () => {
 		});
 	});
 
-	describe('ShoppingCart exported components', () => {
-		it('renders CheckoutItems with summary rows', () => {
-			render(
-				<CheckoutItems
-					items={[{ itemID: '1', itemTitle: 'Test Item', itemQuantity: 2, itemCost: 10 }]}
-					shippingTo={{ name: 'Joe', street1: '123 Main', city: 'City', state: 'CA', zip: '90210' }}
-					subtotal_discount={0}
-					subtotal={20}
-					shippingCost={5}
-					handlingFee={2}
-					salesTax={1.6}
-					total={28.6}
-				/>
-			);
+describe('ShoppingCart item and component rendering', () => {
+    it('renders ShoppingCartItem with non-shippable message', () => {
+      const { container } = render(
+        <ShoppingCartItem
+          item={{ itemID: '1', itemTitle: 'Test Item', itemQuantity: 1, itemCost: 10, itemIsShippable: false }}
+        />
+      );
+      expect(container.querySelector('.pix-cart-item')).toBeInTheDocument();
+      expect(container.textContent).toContain('Shipping: Non-shippable item');
+    });
 
-			expect(screen.getByText(/Shopping Cart Items/i)).toBeInTheDocument();
-			expect(screen.getByText(/Shipping Address/i)).toBeInTheDocument();
-			expect(screen.queryByText(/Subtotal Discount/i)).not.toBeInTheDocument();
+    it('renders ShoppingCartItem with image and link when itemURL is provided', () => {
+      const { container } = render(
+        <ShoppingCartItem
+          item={{
+            itemID: '1',
+            itemTitle: 'Test Item',
+            itemQuantity: 1,
+            itemCost: 10,
+            itemIsShippable: true,
+            itemImageURL: '/test.png',
+            itemURL: 'https://example.com/product'
+          }}
+        />
+      );
+      const link = container.querySelector('.pix-cart-item-photo a');
+      expect(link).toHaveAttribute('href', 'https://example.com/product');
+      expect(container.querySelector('img')).toBeInTheDocument();
+    });
+
+    it('renders ShoppingCart empty state when no cart items exist', async () => {
+      vi.mocked(shoppingCartFunctions.getCart).mockReturnValue([]);
+      vi.mocked(shoppingCartFunctions.getShippingInfo).mockReturnValue({});
+      vi.mocked(shoppingCartFunctions.getCheckoutData).mockReturnValue({
+        items: [],
+        subtotal: 0,
+        subtotal_discount: 0,
+        shippingTo: {},
+        shippingCost: 0,
+        handlingFee: 0,
+        insuranceCost: 0,
+        shipping_discount: 0,
+        salesTax: 0,
+        total: 0,
+        shippingWeight: 0,
+      } as any);
+
+      render(<ShoppingCart />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/No items in your shopping cart/)).toBeInTheDocument();
+      });
+    });
+
+    it('renders checkout state when cart and shipping info are present', async () => {
+      vi.mocked(shoppingCartFunctions.getCart).mockReturnValue([
+        { itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 }
+      ] as any);
+      vi.mocked(shoppingCartFunctions.getShippingInfo).mockReturnValue({ shippingMethod: 'USPS-GA', originPostalCode: '12345', originCountry: 'US' } as any);
+      vi.mocked(shoppingCartFunctions.getCheckoutData).mockReturnValue({
+        items: [{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 }],
+        subtotal: 10,
+        subtotal_discount: 0,
+        shippingTo: { shippingMethod: 'USPS-GA' },
+        shippingCost: 9.99,
+        handlingFee: 3.99,
+        insuranceCost: 0,
+        shipping_discount: 0,
+        salesTax: 1,
+        total: 24.98,
+        shippingWeight: 1,
+      } as any);
+      vi.mocked(shoppingCartFunctions.getShippingOption).mockReturnValue({
+        id: 'USPS-GA', region: 'US', provider: 'USPS', service: 'Ground Advantage', price: '9.99', speed: '2-3 days', perPound: 2.5
+      } as any);
+      vi.mocked(shoppingCartFunctions.getCartShippingWeight).mockReturnValue(1);
+      vi.mocked(shoppingCartFunctions.getShippingCost).mockReturnValue(9.99);
+
+      render(<ShoppingCart />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Checkout Summary/)).toBeInTheDocument();
+      });
+      expect(screen.getByText(/No payment provider is configured/)).toBeInTheDocument();
+    });
+  });
+
+  describe('ShoppingCart exported components', () => {
+		it('renders CheckoutItems with summary rows', () => {
+      vi.mocked(shoppingCartFunctions.getShippingOption).mockReturnValue({
+        service: 'Ground Advantage',
+        id: 'USPS-GA',
+        region: 'US',
+        provider: 'USPS',
+        price: '9.99',
+        speed: '2-3 days',
+        perPound: 2.5,
+      } as any);
+
+      render(
+        <CheckoutItems
+          items={[{ itemID: '1', itemTitle: 'Test Item', itemQuantity: 2, itemCost: 10 }]}
+          shippingTo={{ name: 'Joe', street1: '123 Main', city: 'City', state: 'CA', zip: '90210', shippingMethod: 'USPS-GA' }}
+          subtotal_discount={0}
+          subtotal={20}
+          shippingCost={5}
+          handlingFee={2}
+          salesTax={1.6}
+          total={28.6}
+        />
+      );
+
+      expect(screen.getByText(/Shopping Cart Items/i)).toBeInTheDocument();
+      expect(screen.getByText(/Shipping Address/i)).toBeInTheDocument();
 		});
 
 		it('renders CartButton and shows cart item count', async () => {

@@ -2,6 +2,7 @@
 import { getContentfulDiscountCodes } from "../integrations/contentful.delivery";
 import { CacheManager } from "../foundation/cache-manager";
 import { getDomain, formatAsUSD, formatAsHundredths } from "../foundation/utilities";
+import { shippingOptions } from './usps.generic.components';
 
 // Migration-time verbose tracing per user request — remove after verification
 const debug = false;
@@ -40,6 +41,11 @@ export type CartItemType = {
     itemImageURL? : string,
     itemQuantity: number,
     itemCost: number,
+    itemCurrency?: string,
+    itemIsShippable?: boolean,
+    itemWeight?: number,
+    itemWeightUnit?: string,
+    itemType?: string,
     itemCategory?: string,
 }
 
@@ -56,6 +62,14 @@ export type AddressType = {
     phone?: string,
 }
 
+export type ShippingInfoType = AddressType & {
+    shippingMethod?: string,
+    shippingCost?: number | string,
+    discountCode?: string,
+    originPostalCode?: string,
+    originCountry?: string,
+}
+
 export type DiscountCodeType = {
     codeName: string,
     codeDescription: string,
@@ -69,66 +83,25 @@ export type CheckoutType = {
     items: CartItemType[];
     subtotal: number,
     subtotal_discount: number,
-    shippingTo: AddressType,
+    shippingTo: ShippingInfoType,
     shippingCost: number,
     handlingFee: number,
     insuranceCost?: number,
     shipping_discount?: number,
     salesTax: number;
     total: number;
+    shippingWeight?: number;
 }
 
-
-
-
-/* ========== ARRAYS ========== */
-
-const shippingOptions = [
-	{
-		id: "USPS-GA",
-		region: "Domestic US",
-		provider: "USPS",
-		service: "Ground Advantage",
-		price: "9.99",
-		speed: "2 - 5 days",
-	},{
-		id: "USPS-PM",
-		region: "Domestic US",
-		provider: "USPS",
-		service: "Priority Mail",
-		price: "14.99",
-		speed: "2 - 3 days",
-	},{
-		id: "USPS-PMX",
-		region: "Domestic US",
-		provider: "USPS",
-		service: "Priority Mail Express",
-		price: "39.99",
-		speed: "1 - 3 days",
-	},{
-		id: "USPS-FCP-I",
-		region: "International",
-		provider: "USPS",
-		service: "First-Class Package International",
-		price: "24.99",
-		speed: "Varies",
-	},{
-		id: "USPS-PM-I",
-		region: "International",
-		provider: "USPS",
-		service: "Priority Mail International",
-		price: "39.99",
-		speed: "6 - 10 days",
-	},{
-		id: "USPS-PMX-I",
-		region: "International",
-		provider: "USPS",
-		service: "Priority Mail Express International",
-		price: "69.99",
-		speed: "3 - 5 days",
-	}
-];
-
+export type ShippingOptionType = {
+    id: string,
+    region: string,
+    provider: string,
+    service: string,
+    price: string,
+    speed: string,
+    perPound: number,
+}
 
 
 
@@ -260,31 +233,84 @@ export function clearShoppingCart() {
 	window.dispatchEvent(new Event('storage'));
 }
 
+export function clearShoppingCartCache() {
+	if (debug) console.debug('ShoppingCart:clearShoppingCartCache -> clearing in-memory cache');
+	cartCache.clear();
+}
 
 /* ========== SHIPPING INFO FUNCTIONS ========== */
 
 
-export function getShippingInfo(){
+export function getShippingInfo(): ShippingInfoType {
 	if (debug) console.debug('ShoppingCart:getShippingInfo -> using CacheManager.get', shippingInfoKey);
-	const cached = cartCache.get<any>(shippingInfoKey);
+	const cached = cartCache.get<ShippingInfoType>(shippingInfoKey);
 	if (cached) return cached;
 	// Migration complete — don't read raw localStorage directly. Return empty when no data.
-	return [];
+	return {} as ShippingInfoType;
 }
 
 
-export function setShippingInfo(shippingFormData: any) { 
+export function setShippingInfo(shippingFormData: ShippingInfoType) { 
 	if (debug) console.debug('ShoppingCart:setShippingInfo -> using CacheManager.set', shippingInfoKey, shippingFormData);
-	cartCache.set<any>(shippingInfoKey, shippingFormData);
+	cartCache.set<ShippingInfoType>(shippingInfoKey, shippingFormData);
 	window.dispatchEvent(new Event('storage'));
 }
 
+function normalizeWeightToPounds(weight: number, unit?: string): number {
+	if (!weight || typeof weight !== 'number' || weight <= 0) return 0;
+	const normalizedUnit = String(unit || 'lb').trim().toLowerCase();
+	if (normalizedUnit === 'lb' || normalizedUnit === 'lbs') return weight;
+	if (normalizedUnit === 'oz' || normalizedUnit === 'ounce' || normalizedUnit === 'ounces') return weight / 16;
+	if (normalizedUnit === 'kg' || normalizedUnit === 'kgs') return weight * 2.20462;
+	if (normalizedUnit === 'g' || normalizedUnit === 'gram' || normalizedUnit === 'grams') return weight * 0.00220462;
+	return weight;
+}
+
+export function getCartShippingWeight(cart: CartItemType[]) {
+	let totalWeight = 0;
+	for (const item of cart) {
+		if (!item || typeof item !== 'object') continue;
+		const isShippable = item.itemIsShippable !== false;
+		const weight = Number(item.itemWeight ?? 0);
+		const quantity = Number(item.itemQuantity ?? 1);
+		if (!isShippable || weight <= 0 || quantity <= 0) continue;
+		totalWeight += normalizeWeightToPounds(weight, item.itemWeightUnit) * quantity;
+	}
+	return formatAsHundredths(totalWeight);
+}
+
+export function getShippingOption(method?: string): ShippingOptionType | undefined {
+	if (!method) return undefined;
+	return shippingOptions.find(item => item.id === method);
+}
+
+export function getShippingInfoWithDefaults(defaultShippingInfo?: Partial<ShippingInfoType>) {
+	const currentInfo = getShippingInfo();
+	if (!defaultShippingInfo || typeof defaultShippingInfo !== 'object') {
+		return currentInfo;
+	}
+	return { ...defaultShippingInfo, ...currentInfo };
+}
 
 export function getShippingCost(): number {
-	const ship = getShippingInfo();
-	const method = ship.shippingMethod;
+	const ship: any = getShippingInfo();
+	const explicitShippingCost = ship?.shippingCost;
+	if (explicitShippingCost != null && explicitShippingCost !== '') {
+		const parsed = Number(explicitShippingCost);
+		if (Number.isFinite(parsed)) {
+			return formatAsHundredths(parsed);
+		}
+	}
+
+	const method = ship?.shippingMethod;
+	if (!method) return 0;
 	const option = shippingOptions.find(item => item.id === method);
-	return (option && option.price) ? formatAsHundredths(Number(option.price)) : 0;
+	if (!option) return 0;
+	const totalWeight = getCartShippingWeight(getCart());
+	const roundedWeight = Math.max(1, Math.ceil(totalWeight));
+	const basePrice = Number(option.price);
+	const shippingCost = basePrice + (roundedWeight - 1) * option.perPound;
+	return formatAsHundredths(shippingCost);
 }
 
 
@@ -349,7 +375,7 @@ export function setDiscountCodes(discountCodesJSON: DiscountCodeType[]) {
 }
 
 
-export function getDiscountCode(codeString: string){
+export function getDiscountCode(codeString?: string){
 	if (debug) console.log("Getting Discount Code Object");
 	if (!codeString || codeString === '') { return undefined; } // If the code is empty, return null
 	const discountCodes: DiscountCodeType[] = getLocalDiscountCodes();
@@ -416,18 +442,20 @@ export function getCheckoutTotal() {
 }
 
 
-export function getCheckoutData(){
+export function getCheckoutData(defaultShippingInfo?: Partial<ShippingInfoType>){
+	const shippingTo = getShippingInfoWithDefaults(defaultShippingInfo);
 	const checkoutObj: CheckoutType = {
 		items: getCart(),
 		subtotal: getCartSubTotal(getCart()),
 		subtotal_discount: getCartSubtotalDiscount(getCart()),
-		shippingTo: getShippingInfo(),
+		shippingTo,
 		shippingCost: getShippingCost(),
 		handlingFee: getHandlingFee(),
 		insuranceCost: undefined,
 		shipping_discount: undefined,
 		salesTax: getSalesTax(),
 		total: getCheckoutTotal(),
+		shippingWeight: getCartShippingWeight(getCart()),
 	};
 	if (debug) console.log(checkoutObj);
 	return checkoutObj;

@@ -302,7 +302,8 @@
 				"@type": "Answer",
 				"image": {
 					"@type": "ImageObject",
-					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/6VbCeXyK8TO4Wd7gL0lFk9/e644dd70336fe64ff1fe05964235b61b/IMG_0186.jpeg",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/2947IpRLdHk4pwyE71i7Ag/637268825797774e5dae4e0a4ec5026f/manning-heavy_equipment.jpg",
+					"contentUrl_old": "https://images.ctfassets.net/j4mgog9ij96e/6VbCeXyK8TO4Wd7gL0lFk9/e644dd70336fe64ff1fe05964235b61b/IMG_0186.jpeg",
 					"width": 200,
 					"height": 200,
 					"name": "Manning Metalworks Heavy equipment emergency repair",
@@ -326,7 +327,8 @@
 				"@type": "Answer",
 				"image": {
 					"@type": "ImageObject",
-					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/6BBosPktLNVgrI7CS8e7Cb/a7078c351be18bf271b6861441a593c2/IMG_9510.jpeg",
+					"contentUrl": "https://images.ctfassets.net/j4mgog9ij96e/3M1rHzFvKojCUDpEwxt3nQ/998bc83c618f9d5b067617aac9555ef3/manning-kitchen-equipment.jpeg",
+					"contentUrl_old": "https://images.ctfassets.net/j4mgog9ij96e/6BBosPktLNVgrI7CS8e7Cb/a7078c351be18bf271b6861441a593c2/IMG_9510.jpeg",
 					"width": 200,
 					"height": 200,
 					"name": "Manning Metalworks Food-grade equipment repair",

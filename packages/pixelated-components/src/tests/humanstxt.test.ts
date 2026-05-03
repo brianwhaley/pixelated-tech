@@ -1,12 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NextRequest } from 'next/server';
 import * as fs from 'fs/promises';
+import os from 'os';
+import path from 'path';
 
 import {
   safeJSON,
   generateHumansTxt,
   createWellKnownResponse,
   getPixelatedComponentsPackageVersion,
+  getPixelatedComponentsPackageVersionInfo,
 } from '@/components/foundation/well-known';
 import { sanitizeString } from '@/components/foundation/utilities';
 
@@ -32,6 +35,136 @@ describe('humanstxt (server)', () => {
   it('getPixelatedComponentsPackageVersion resolves the installed package version', async () => {
     const version = await getPixelatedComponentsPackageVersion(process.cwd());
     expect(version).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+/);
+  });
+
+  it('getPixelatedComponentsPackageVersionInfo returns all candidate sources from metadata', async () => {
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-version-info-'));
+    try {
+      await fs.mkdir(path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
+      await fs.writeFile(
+        path.join(tmpDir, 'package.json'),
+        JSON.stringify({
+          name: 'test-app',
+          version: '1.0.0',
+          dependencies: { '@pixelated-tech/components': '^3.15.33' },
+        }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'package-lock.json'),
+        JSON.stringify({
+          name: 'test-app',
+          lockfileVersion: 3,
+          dependencies: {
+            '@pixelated-tech/components': { version: '3.15.33' },
+          },
+        }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'npm-shrinkwrap.json'),
+        JSON.stringify({
+          name: 'test-app',
+          lockfileVersion: 1,
+          dependencies: {
+            '@pixelated-tech/components': { version: '3.15.33' },
+          },
+        }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'pnpm-lock.yaml'),
+        `"@pixelated-tech/components@^3.15.33":\n  version: '3.15.33'\n`
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'yarn.lock'),
+        `"@pixelated-tech/components@^3.15.33":\n  version \"3.15.33\"\n`
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
+        JSON.stringify({ name: '@pixelated-tech/components', version: '3.15.33' }, null, 2)
+      );
+
+      const info = await getPixelatedComponentsPackageVersionInfo(tmpDir);
+      expect(info.selfExportedVersion).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+$/);
+      expect(info.packageJsonDependencyVersion).toBe('^3.15.33');
+      expect(info.nodeModulesPackageJsonVersion).toBe('3.15.33');
+      expect(info.packageLockVersion).toBe('3.15.33');
+      expect(info.npmShrinkwrapVersion).toBe('3.15.33');
+      expect(info.pnpmLockVersion).toBe('3.15.33');
+      expect(info.yarnLockVersion).toBe('3.15.33');
+      expect(info.resolverVersion).toBe('3.15.33');
+      expect(info.resolvedVersion).toBe(info.selfExportedVersion);
+    } finally {
+      await fs.rm(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('getPixelatedComponentsPackageVersionInfo reads package-lock.json from monorepo root for nested app cwd', async () => {
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-version-info-root-'));
+    try {
+      const appDir = path.join(tmpDir, 'apps', 'test-app');
+      await fs.mkdir(path.join(appDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
+      await fs.writeFile(
+        path.join(appDir, 'package.json'),
+        JSON.stringify({
+          name: 'test-app',
+          version: '1.0.0',
+          dependencies: { '@pixelated-tech/components': '^3.15.33' },
+        }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'package.json'),
+        JSON.stringify({
+          name: 'root-test-app',
+          version: '1.0.0',
+          dependencies: { '@pixelated-tech/components': '^3.15.33' },
+        }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'package-lock.json'),
+        JSON.stringify({
+          name: 'test-app',
+          lockfileVersion: 3,
+          dependencies: {
+            '@pixelated-tech/components': { version: '3.15.33' },
+          },
+        }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(appDir, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
+        JSON.stringify({ name: '@pixelated-tech/components', version: '3.15.33' }, null, 2)
+      );
+
+      const info = await getPixelatedComponentsPackageVersionInfo(appDir);
+      expect(info.packageLockVersion).toBe('3.15.33');
+      expect(info.rootPackageJsonDependencyVersion).toBe('^3.15.33');
+    } finally {
+      await fs.rm(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('generateHumansTxt reads package.json from provided cwd when pkg is not passed', async () => {
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-humans-txt-'));
+    try {
+      await fs.mkdir(path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
+      await fs.writeFile(
+        path.join(tmpDir, 'package.json'),
+        JSON.stringify({ name: 'test-app', version: '1.0.0' }, null, 2)
+      );
+      await fs.writeFile(
+        path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
+        JSON.stringify({ name: '@pixelated-tech/components', version: '3.15.33' }, null, 2)
+      );
+
+      const { body } = await generateHumansTxt({
+        cwd: tmpDir,
+        siteConfig: { siteInfo: { name: 'Temp App' }, routes: [] },
+      });
+
+      expect(body).toContain('Site Package Name: test-app');
+      expect(body).toContain('Site Package Version: 1.0.0');
+      expect(body).toContain('Site Pixelated Components Package Version: 3.15.33');
+    } finally {
+      await fs.rm(tmpDir, { recursive: true, force: true });
+    }
   });
 
   it('generateHumansTxt produces expected body + headers when passed data', async () => {

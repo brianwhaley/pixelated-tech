@@ -9,6 +9,7 @@ import { createGeminiApiService, GeminiRecommendationResponse } from '../../inte
 import { FormEngine } from '../form/formengine';
 import { FormValidationProvider } from '../form/formvalidator';
 import * as FC from '../form/formcomponents';
+import type { RouteType, SiteConfigType, SiteInfoType, VisualDesignType } from '../../config/siteconfig.types';
 import siteInfoForm from './siteinfo-form.json';
 import visualDesignForm from './visualdesignform.json';
 import routesForm from './routes-form.json';
@@ -16,74 +17,7 @@ import servicesForm from './services-form.json';
 import defaultConfigData from '../../../data/siteconfig.json';
 import './ConfigBuilder.css';
 
-// Debug logging: set to true to surface verbose AI/debug actions locally
 const debug = false;
-
-
-const RoutePropTypes = {
-	name: PropTypes.string,
-	path: PropTypes.string.isRequired,
-	title: PropTypes.string,
-	description: PropTypes.string,
-	keywords: PropTypes.arrayOf(PropTypes.string),
-	hidden: PropTypes.bool,
-};
-export type RouteType = InferProps<typeof RoutePropTypes>;
-
-const SiteInfoPropTypes = {
-	name: PropTypes.string.isRequired,
-	author: PropTypes.string.isRequired,
-	description: PropTypes.string.isRequired,
-	url: PropTypes.string.isRequired,
-	email: PropTypes.string.isRequired,
-	favicon: PropTypes.string.isRequired,
-	favicon_sizes: PropTypes.string.isRequired,
-	favicon_type: PropTypes.string.isRequired,
-	theme_color: PropTypes.string.isRequired,
-	background_color: PropTypes.string.isRequired,
-	default_locale: PropTypes.string.isRequired,
-	display: PropTypes.string.isRequired,
-	image: PropTypes.string,
-	image_height: PropTypes.string,
-	image_width: PropTypes.string,
-	telephone: PropTypes.string,
-	address: PropTypes.shape({
-		streetAddress: PropTypes.string.isRequired,
-		addressLocality: PropTypes.string.isRequired,
-		addressRegion: PropTypes.string.isRequired,
-		postalCode: PropTypes.string.isRequired,
-		addressCountry: PropTypes.string.isRequired,
-	}),
-	priceRange: PropTypes.string,
-	sameAs: PropTypes.arrayOf(PropTypes.string.isRequired),
-	keywords: PropTypes.string,
-	openingHours: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.arrayOf(PropTypes.string),
-		PropTypes.arrayOf(PropTypes.shape({
-			day: PropTypes.string.isRequired,
-			open: PropTypes.string,
-			close: PropTypes.string,
-			hours: PropTypes.string,
-			closed: PropTypes.bool,
-		})),
-	]),
-	publisherType: PropTypes.string,
-	copyrightYear: PropTypes.number,
-	potentialAction: PropTypes.shape({
-		'@type': PropTypes.string,
-		target: PropTypes.string.isRequired,
-		'query-input': PropTypes.string,
-		queryInput: PropTypes.string,
-	}),
-	services: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
-		url: PropTypes.string,
-		areaServed: PropTypes.arrayOf(PropTypes.string.isRequired),
-	})),
-};
-export type SiteInfoType = InferProps<typeof SiteInfoPropTypes>;
 
 const VisualDesignVariable = {
 	value: PropTypes.string.isRequired,
@@ -91,40 +25,7 @@ const VisualDesignVariable = {
 	group: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired
 };
-const VisualDesignPropTypes = {
-	'primary-color': PropTypes.shape(VisualDesignVariable).isRequired,
-	'secondary-color': PropTypes.shape(VisualDesignVariable).isRequired,
-	'accent1-color': PropTypes.shape(VisualDesignVariable).isRequired,
-	'accent2-color': PropTypes.shape(VisualDesignVariable).isRequired,
-	'bg-color': PropTypes.shape(VisualDesignVariable).isRequired,
-	'text-color': PropTypes.shape(VisualDesignVariable).isRequired,
-	'header-font': PropTypes.shape(VisualDesignVariable).isRequired,
-	'body-font': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size1-min': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size1-max': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size2-min': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size2-max': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size3-min': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size3-max': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size4-min': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size4-max': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size5-min': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size5-max': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size6-min': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-size6-max': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-min-screen': PropTypes.shape(VisualDesignVariable).isRequired,
-	'font-max-screen': PropTypes.shape(VisualDesignVariable).isRequired,
-};
-export type VisualDesignType = InferProps<typeof VisualDesignPropTypes>;
 
-const SiteConfigPropTypes = {
-	siteInfo: PropTypes.shape(SiteInfoPropTypes).isRequired,
-	routes: PropTypes.arrayOf(PropTypes.shape(RoutePropTypes).isRequired).isRequired,
-	visualdesign: PropTypes.shape(VisualDesignPropTypes).isRequired,
-};
-type SiteConfigType = InferProps<typeof SiteConfigPropTypes>;
-
-type FullConfigType = SiteConfigType;
 
 /**
  * ConfigBuilder — Interactive configuration editor for site-level settings (siteInfo, routes, visual design) with optional AI-assisted recommendations.
@@ -133,8 +34,94 @@ type FullConfigType = SiteConfigType;
  * @param {function} [props.onSave] - Callback invoked when the user saves the configuration (receives the full config object).
  */
 ConfigBuilder.propTypes = {
-/** Initial site configuration to edit */
-	initialConfig: PropTypes.shape(SiteConfigPropTypes),
+	/** Initial site configuration to edit */
+	initialConfig: PropTypes.shape({
+		siteInfo: PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			author: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			url: PropTypes.string.isRequired,
+			email: PropTypes.string.isRequired,
+			favicon: PropTypes.string.isRequired,
+			favicon_sizes: PropTypes.string.isRequired,
+			favicon_type: PropTypes.string.isRequired,
+			theme_color: PropTypes.string.isRequired,
+			background_color: PropTypes.string.isRequired,
+			default_locale: PropTypes.string.isRequired,
+			display: PropTypes.string.isRequired,
+			image: PropTypes.string,
+			image_height: PropTypes.string,
+			image_width: PropTypes.string,
+			telephone: PropTypes.string,
+			address: PropTypes.shape({
+				streetAddress: PropTypes.string.isRequired,
+				addressLocality: PropTypes.string.isRequired,
+				addressRegion: PropTypes.string.isRequired,
+				postalCode: PropTypes.string.isRequired,
+				addressCountry: PropTypes.string.isRequired,
+			}),
+			priceRange: PropTypes.string,
+			sameAs: PropTypes.arrayOf(PropTypes.string.isRequired),
+			keywords: PropTypes.string,
+			openingHours: PropTypes.oneOfType([
+				PropTypes.string,
+				PropTypes.arrayOf(PropTypes.string),
+				PropTypes.arrayOf(PropTypes.shape({
+					day: PropTypes.string.isRequired,
+					open: PropTypes.string,
+					close: PropTypes.string,
+					hours: PropTypes.string,
+					closed: PropTypes.bool,
+				})),
+			]),
+			publisherType: PropTypes.string,
+			copyrightYear: PropTypes.number,
+			potentialAction: PropTypes.shape({
+				'@type': PropTypes.string,
+				target: PropTypes.string.isRequired,
+				'query-input': PropTypes.string,
+				queryInput: PropTypes.string,
+			}),
+			services: PropTypes.arrayOf(PropTypes.shape({
+				name: PropTypes.string.isRequired,
+				description: PropTypes.string.isRequired,
+				url: PropTypes.string,
+				areaServed: PropTypes.arrayOf(PropTypes.string.isRequired),
+			})),
+		}).isRequired,
+		routes: PropTypes.arrayOf(PropTypes.shape({
+			name: PropTypes.string,
+			path: PropTypes.string.isRequired,
+			title: PropTypes.string,
+			description: PropTypes.string,
+			keywords: PropTypes.arrayOf(PropTypes.string),
+			hidden: PropTypes.bool,
+		}).isRequired).isRequired,
+		visualdesign: PropTypes.shape({
+			'primary-color': PropTypes.shape(VisualDesignVariable).isRequired,
+			'secondary-color': PropTypes.shape(VisualDesignVariable).isRequired,
+			'accent1-color': PropTypes.shape(VisualDesignVariable).isRequired,
+			'accent2-color': PropTypes.shape(VisualDesignVariable).isRequired,
+			'bg-color': PropTypes.shape(VisualDesignVariable).isRequired,
+			'text-color': PropTypes.shape(VisualDesignVariable).isRequired,
+			'header-font': PropTypes.shape(VisualDesignVariable).isRequired,
+			'body-font': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size1-min': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size1-max': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size2-min': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size2-max': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size3-min': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size3-max': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size4-min': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size4-max': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size5-min': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size5-max': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size6-min': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-size6-max': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-min-screen': PropTypes.shape(VisualDesignVariable).isRequired,
+			'font-max-screen': PropTypes.shape(VisualDesignVariable).isRequired,
+		}).isRequired,
+	}),
 	/** Save callback to persist config changes */
 	onSave: PropTypes.func,
 };
@@ -150,11 +137,11 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 		visualdesign: defaultConfigData.visualdesign as VisualDesignType
 	};
 
-	const [config, setConfig] = useState<FullConfigType>({
+	const [config, setConfig] = useState<SiteConfigType>({
 		...defaultConfig,
 		...initialConfig,
-		siteInfo: { ...defaultConfig.siteInfo, ...initialConfig?.siteInfo },
-		routes: initialConfig?.routes || [],
+		siteInfo: { ...defaultConfig.siteInfo, ...initialConfig?.siteInfo } as SiteInfoType,
+		routes: (initialConfig?.routes || []) as RouteType[],
 		visualdesign: { ...(defaultConfig.visualdesign as VisualDesignType), ...initialConfig?.visualdesign }
 	});
 
@@ -173,7 +160,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 	// Validate form whenever config changes
 	useEffect(() => {
 		const siteInfo = config.siteInfo || {};
-		const isValid = 
+		const isValid =
 			String(siteInfo.name || '').trim() !== '' &&
 			String(siteInfo.author || '').trim() !== '' &&
 			String(siteInfo.description || '').trim() !== '' &&
@@ -181,7 +168,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 			String(siteInfo.email || '').trim() !== '' &&
 			// Basic email validation
 			/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(siteInfo.email || '');
-		
+
 		setIsFormValid(isValid);
 	}, [config]);
 
@@ -207,15 +194,15 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 			try {
 				const jsonContent = e.target?.result as string;
 				const parsedConfig = JSON.parse(jsonContent);
-				
+
 				// Validate the structure
 				if (parsedConfig.siteInfo && parsedConfig.routes) {
 					// Ensure keywords are arrays for all routes
 					const normalizedRoutes = parsedConfig.routes.map((route: any) => ({
 						...route,
-						keywords: Array.isArray(route.keywords) 
-							? route.keywords 
-							: (typeof route.keywords === 'string' 
+						keywords: Array.isArray(route.keywords)
+							? route.keywords
+							: (typeof route.keywords === 'string'
 								? route.keywords.split(',').map((k: string) => k.trim()).filter((k: string) => k.length > 0)
 								: [])
 					}));
@@ -229,7 +216,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 								? service.areaServed.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
 								: [])
 					}));
-					
+
 					setConfig({
 						...parsedConfig,
 						siteInfo: {
@@ -247,7 +234,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 			}
 		};
 		reader.readAsText(file);
-		
+
 		// Reset the input
 		event.target.value = '';
 	};
@@ -257,13 +244,13 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 			// Ensure keywords are arrays for all routes
 			const normalizedRoutes = (initialConfig.routes || []).map((route: any) => ({
 				...route,
-				keywords: Array.isArray(route.keywords) 
-					? route.keywords 
-					: (typeof route.keywords === 'string' 
+				keywords: Array.isArray(route.keywords)
+					? route.keywords
+					: (typeof route.keywords === 'string'
 						? route.keywords.split(',').map((k: string) => k.trim()).filter((k: string) => k.length > 0)
 						: [])
 			}));
-			
+
 			setConfig((prev: any) => ({
 				siteInfo: { ...prev.siteInfo, ...initialConfig.siteInfo },
 				routes: normalizedRoutes,
@@ -303,7 +290,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 						const target = value.target;
 						actualValue = target.type === 'checkbox' ? (target.checked ? target.value : '') : target.value;
 					}
-					
+
 					setConfig((prev: any) => {
 						const newSiteInfo = { ...prev.siteInfo };
 						setNestedValue(newSiteInfo, field.props.name, actualValue);
@@ -337,8 +324,8 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 						visualdesign: {
 							...(prev.visualdesign || {}),
 							[field.props.name]: {
-								...(prev.visualdesign && (prev.visualdesign as any)[field.props.name] 
-									? (prev.visualdesign as any)[field.props.name] 
+								...(prev.visualdesign && (prev.visualdesign as any)[field.props.name]
+									? (prev.visualdesign as any)[field.props.name]
 									: {}),
 								value: actualValue
 							}
@@ -353,7 +340,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
 		const siteInfoData: any = {};
-		
+
 		// Extract form data
 		for (const [key, value] of formData.entries()) {
 			setNestedValue(siteInfoData, key, value);
@@ -373,11 +360,11 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 	const updateAddress = (field: keyof NonNullable<SiteInfoType['address']>, value: string) => {
 		setConfig(prev => ({
 			...prev,
-			siteInfo: { 
-				...prev.siteInfo, 
-				address: { 
+			siteInfo: {
+				...prev.siteInfo,
+				address: {
 					...(prev.siteInfo.address || {}),
-					[field]: value 
+					[field]: value
 				} as NonNullable<SiteInfoType['address']>
 			}
 		}));
@@ -566,8 +553,8 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 						label: 'Site Info',
 						content: (
 							<div className="site-info-section">
-								<FormEngine 
-									formData={formData as any} 
+								<FormEngine
+									formData={formData as any}
 									onSubmitHandler={handleFormSubmit}
 									name="siteinfo"
 									id="siteinfo"
@@ -655,16 +642,16 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 												{routesForm.fields.map((field: any) => {
 													const Component = (FC as any)[field.component];
 													if (!Component) return null;
-													
+
 													let fieldValue = (route as any)[field.props.name];
 													if (field.props.name === 'keywords' && Array.isArray(fieldValue)) {
 														fieldValue = fieldValue.join(', ');
 													}
-													
+
 													const fieldProps = {
 														...field.props,
 														id: `${field.props.id}-${index}`,
-														...(field.component === 'FormTextarea' 
+														...(field.component === 'FormTextarea'
 															? { defaultValue: fieldValue || '' }
 															: field.props.type === 'checkbox'
 																? { checked: fieldValue || false }
@@ -674,7 +661,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 															let value: any;
 															// Handle both direct values and event objects
 															const actualValue = (e && typeof e === 'object' && e.target) ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e;
-															
+
 															if (field.props.name === 'keywords' && typeof actualValue === 'string') {
 																value = actualValue.split(',').map((s: string) => s.trim()).filter((s: string) => s);
 															} else {
@@ -683,11 +670,11 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 															updateRoute(index, field.props.name, value);
 														}
 													};
-													
+
 													return <Component key={fieldProps.id} {...fieldProps} />;
 												})}
 												<div className="route-buttons">
-													<button 
+													<button
 														onClick={() => {
 															if (debug) console.log('AI Recommend button clicked for route:', index);
 															handleAiRecommendations(index);
@@ -696,7 +683,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 													>
 														<span className="ai-icon" role="img" aria-label="sparkles">✨</span> Recommend
 													</button>
-													<button 
+													<button
 														onClick={() => removeRoute(index)}
 														className="route-button remove"
 													>
@@ -723,16 +710,16 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 												{servicesForm.fields.map((field: any) => {
 													const Component = (FC as any)[field.component];
 													if (!Component) return null;
-													
+
 													let fieldValue = (service as any)[field.props.name];
 													if (field.props.name === 'areaServed' && Array.isArray(fieldValue)) {
 														fieldValue = fieldValue.join(', ');
 													}
-													
+
 													const fieldProps = {
 														...field.props,
 														id: `${field.props.id}-${index}`,
-														...(field.component === 'FormTextarea' 
+														...(field.component === 'FormTextarea'
 															? { defaultValue: fieldValue || '' }
 															: { value: fieldValue || '' }
 														),
@@ -742,11 +729,11 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 															updateService(index, field.props.name, actualValue);
 														}
 													};
-													
+
 													return <Component key={fieldProps.id} {...fieldProps} />;
 												})}
 												<div className="route-buttons">
-													<button 
+													<button
 														onClick={() => removeService(index)}
 														className="route-button remove"
 													>
@@ -777,8 +764,8 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 				]}
 				orientation="top"
 			/>
-			<button 
-				onClick={handleSave} 
+			<button
+				onClick={handleSave}
 				disabled={!isFormValid}
 				className={isFormValid ? 'save-button-valid' : 'save-button-invalid'}
 			>
@@ -813,7 +800,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 						{currentRouteIndex !== null && (
 							<p><strong>Route:</strong> {config.routes[currentRouteIndex].name || config.routes[currentRouteIndex].path}</p>
 						)}
-						
+
 						{aiLoading ? (
 							<div className="ai-loading">
 								<p>Generating AI recommendations...</p>
@@ -894,7 +881,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 
 						<div className="modal-actions">
 							<button onClick={() => setAiModalOpen(false)}>Cancel</button>
-							<button 
+							<button
 								onClick={handleAcceptAiRecommendations}
 								disabled={!acceptTitle && !acceptKeywords && !acceptDescription}
 								className="accept-button"

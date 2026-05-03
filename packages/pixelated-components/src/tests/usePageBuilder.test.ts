@@ -202,6 +202,25 @@ describe('usePageBuilder Hook', () => {
 			expect(result.current.pageJSON.components.length).toBe(0);
 		});
 
+		it('should clear edit mode and selected path when deleting the active component', () => {
+			const { result } = renderHook(() => usePageBuilder());
+			act(() => {
+				const mockEvent = new Event('test');
+				result.current.handleAddNewComponent(mockEvent);
+			});
+			act(() => {
+				result.current.handleSelectComponent({ id: 'test' } as any, 'root[0]');
+				result.current.handleEditComponent({ id: 'test' } as any, 'root[0]');
+			});
+			expect(result.current.editMode?.path).toBe('root[0]');
+			act(() => {
+				result.current.handleDeleteComponent('root[0]');
+			});
+			expect(result.current.pageJSON.components.length).toBe(0);
+			expect(result.current.editMode).toBeNull();
+			expect(result.current.selectedPath).toBe('');
+		});
+
 		it('should handle moving component up', () => {
 			const { result } = renderHook(() => usePageBuilder());
 			

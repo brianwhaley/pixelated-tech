@@ -11,6 +11,8 @@ import { SmartImage } from "@pixelated-tech/components";
 import { useRouter } from 'next/navigation';
 import "./event-details.css";
 
+const debug = false; 
+
 type EventCard = {
 	fields: {
 		id: string;
@@ -57,7 +59,7 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 			const contentType = "75OqioFABdZZ1QaQChRGic"; 
 			const entries = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
 
-			console.log("Entries fetched: ", await entries);
+			if (debug) console.log("Entries fetched: ", await entries);
 
 			const eventObj = await getContentfulEntryByField({
 				cards: entries,
@@ -65,7 +67,7 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 				searchVal: event
 			});
 
-			console.log("Event object found: ", await eventObj);
+			if (debug) console.log("Event object found: ", await eventObj);
 
 			if (!eventObj) {
 				return;
@@ -77,7 +79,7 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 					: [];
 			const images = await getContentfulImagesFromEntries({ images: contentfulImageRefs, assets: entries.includes.Asset });
 
-			console.log("Event images found: ", await images);
+			if (debug) console.log("Event images found: ", await images);
 
 			setEventData({ ...eventObj, fields: { ...eventObj.fields, carouselImages: images } });
 		}

@@ -296,5 +296,35 @@ describe('cloudinary utilities', () => {
 				});
 			}).not.toThrow();
 		});
+
+		it('should not rewrite image src in localhost origin', () => {
+			Object.defineProperty(window, 'location', {
+				value: { origin: 'http://localhost:3000' },
+				writable: true
+			});
+			const image = document.createElement('img');
+			image.setAttribute('src', 'https://example.com/image.jpg');
+			vi.spyOn(document, 'querySelectorAll').mockReturnValue({
+				forEach: (fn: any) => fn(image)
+			} as any);
+
+			cloudinaryModule.loadAllImagesFromCloudinary({ product_env: 'test-env' });
+			expect(image.getAttribute('src')).toBe('https://example.com/image.jpg');
+		});
+
+		it('should rewrite image src when origin is not localhost', () => {
+			Object.defineProperty(window, 'location', {
+				value: { origin: 'https://example.com' },
+				writable: true
+			});
+			const image = document.createElement('img');
+			image.setAttribute('src', 'https://example.com/image.jpg');
+			vi.spyOn(document, 'querySelectorAll').mockReturnValue({
+				forEach: (fn: any) => fn(image)
+			} as any);
+
+			cloudinaryModule.loadAllImagesFromCloudinary({ product_env: 'test-env' });
+			expect(image.getAttribute('src')).toContain('res.cloudinary.com');
+		});
 	});
 });

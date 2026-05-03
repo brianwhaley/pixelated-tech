@@ -178,6 +178,11 @@ export function ContentfulListItem(props: ContentfulListItemType) {
 		itemImageURL: thisItem.fields.imageUrl,
 		itemQuantity: thisItem.fields.quantity,
 		itemCost: thisItem.fields.price,
+		itemCurrency: thisItem.fields.priceCurrency || 'USD',
+		itemIsShippable: thisItem.fields.isShippable !== false,
+		itemWeight: typeof thisItem.fields.weight === 'number' ? thisItem.fields.weight : Number(thisItem.fields.weight ?? 0),
+		itemWeightUnit: thisItem.fields.weightUnit || 'lb',
+		itemType: 'product',
 	};
 
 	const itemImage = (props.cloudinaryProductEnv) 

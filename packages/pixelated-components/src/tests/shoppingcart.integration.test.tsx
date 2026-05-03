@@ -54,7 +54,7 @@ describe('ShoppingCart — integration (component + localStorage)', () => {
     expect(await screen.findByText(/Integration Item/)).toBeInTheDocument();
 
     // remove button should be present and remove the item from storage + UI
-    const removeBtn = screen.getByText('Remove Item From Cart');
+    const removeBtn = screen.getByRole('button', { name: 'Remove' });
     fireEvent.click(removeBtn);
 
     await waitFor(() => {
@@ -78,7 +78,8 @@ describe('ShoppingCart — integration (component + localStorage)', () => {
     expect(screen.getByText(/Ship Item/)).toBeInTheDocument();
     // should render the checkout shipping form wrapper
     expect(container.querySelector('form#checkout_shipping')).toBeInTheDocument();
-    expect(screen.getByText(/Discount applied: \$10\.00/)).toBeInTheDocument();
+    expect(container.querySelector('#lbl-checkout_discount_custom_label')).toBeInTheDocument();
+    expect(container.querySelector('#lbl-checkout_discount_custom_label')).toHaveTextContent('Discount applied: $10.00');
     expect(screen.getByText(/Continue to Checkout/)).toBeInTheDocument();
     expect(personalInfoData.fields.map((field) => field.props?.name).filter(Boolean)).toEqual(
       expect.arrayContaining(['name', 'street1', 'city', 'state', 'zip', 'country']),

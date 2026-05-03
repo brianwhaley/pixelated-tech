@@ -58,6 +58,11 @@ export function getShoppingCartItem(props: getShoppingCartItemType) {
 		itemTitle: thisItem.title,
 		itemQuantity: qty,
 		itemCost: thisItem.price.value,
+		itemCurrency: thisItem.price?.currency || 'USD',
+		itemIsShippable: true,
+		itemWeight: thisItem.shippingWeight ?? 0,
+		itemWeightUnit: thisItem.shippingWeightUnit || 'lb',
+		itemType: 'product',
 	};
 	return shoppingCartItem;
 }

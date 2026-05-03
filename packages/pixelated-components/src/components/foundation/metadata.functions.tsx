@@ -129,7 +129,7 @@ export function getAccordionMenuData(siteConfig: Route) {
 }
 
 import { assertSiteInfo, assertRoutes } from '../config/config.validators';
-import type { SiteInfo } from '../config/config.types';
+import type { SiteInfo } from '../config/siteconfig.types';
 
 export type GenerateMetaTagsProps = {
 	title: string;
@@ -189,14 +189,14 @@ export function generateMetaTags(props: GenerateMetaTagsProps) {
 			<meta name='owner' content={site_name} />
 			<meta name="publisher" content={site_name} />
 			<meta name='rating' content='General' />
-			<meta name='reply-to' content={email} />
+			<meta name='reply-to' content={email ?? undefined} />
 			<meta name="robots" content="index, follow" />
 			<meta name='url' content={url} />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
 			<meta property="og:description" content={description} />
-			<meta property='og:email' content={email} />
-			<meta property="og:image" content={image} />
+			<meta property='og:email' content={email ?? undefined} />
+			<meta property="og:image" content={image ?? undefined} />
 			<meta property="og:image:height" content={image_height != null ? String(image_height) : undefined} />
 			<meta property="og:image:width" content={image_width != null ? String(image_width) : undefined} />
 			<meta property="og:locale" content="en_US" />
@@ -208,14 +208,14 @@ export function generateMetaTags(props: GenerateMetaTagsProps) {
 			<meta itemProp="name" content={site_name} />
 			<meta itemProp="url" content={url} />
 			<meta itemProp="description" content={description} />
-			<meta itemProp="thumbnailUrl" content={image} />
+			<meta itemProp="thumbnailUrl" content={image ?? undefined} />
 
 			<meta property="twitter:domain" content={newOrigin} />
 			<meta property="twitter:url" content={url} />
 			<meta name="twitter:card" content="summary_large_image" />
 			<meta name="twitter:creator" content={site_name} />
 			<meta name="twitter:description" content={description} />
-			<meta name="twitter:image" content={image} />
+			<meta name="twitter:image" content={image ?? undefined} />
 			<meta name="twitter:image:height" content={image_height != null ? String(image_height) : undefined} />
 			<meta name="twitter:image:width" content={image_width != null ? String(image_width) : undefined} />
 			<meta name="twitter:title" content={title} />
@@ -223,8 +223,8 @@ export function generateMetaTags(props: GenerateMetaTagsProps) {
 			{/* <link rel="alternate" href={url} hrefLang="en-us" /> */}
 			<link rel="author" fetchPriority="high" href="humans.txt" />
 			<link rel="canonical" fetchPriority="high" href={url} />
-			<link rel="icon" fetchPriority="high" type="image/x-icon" href={favicon} />
-			<link rel="shortcut icon" fetchPriority="high" type="image/x-icon" href={favicon} />
+			<link rel="icon" fetchPriority="high" type="image/x-icon" href={favicon ?? undefined} />
+			<link rel="shortcut icon" fetchPriority="high" type="image/x-icon" href={favicon ?? undefined} />
 			<link rel="manifest" fetchPriority="high" href="/manifest.webmanifest" />
 
 			<link rel="preconnect" fetchPriority="high" href="https://images.ctfassets.net/" />

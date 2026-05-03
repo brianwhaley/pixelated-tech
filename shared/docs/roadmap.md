@@ -31,6 +31,7 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] New Callout Variant based on https://onthespothome.com/services
 
+
 ### Component Improvements
 
 - [  ] Implement minimal `createContentfulImageURLs` with single `/images` sitemap entry.
@@ -59,7 +60,14 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] **Form validation on submit**: Ensure untouched required fields are validated on submit by processing all form schema fields, not only fields that have been interacted with.
 
-- [  ] **Shipping section automation**: Revisit `showShippingInfoSection` so it can be derived automatically from cart item metadata (`isShippable`) instead of only via props.
+- [ IP ] **Shipping section automation**: based on USPS APIs.
+- [ IP ] **Shipping section automation**: Revisit `showShippingInfoSection` so it can be derived automatically from cart item metadata (`isShippable`) instead of only via props.
+
+- [  ] Create a dedicated `SiteInfoProvider` / `useSiteConfig()` hook for site metadata.
+
+- [ IP ] **Contentful Product Object** based on the Rich Product Metadata
+
+- [ IP ] **Contentful Event Object** based on the Rich Event & Product Metadata
 
 
 ### Platform Enhancements

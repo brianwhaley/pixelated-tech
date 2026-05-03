@@ -9,6 +9,7 @@ export * from './components/config/config';
 export * from './components/config/config.server';
 export * from './components/config/config.types';
 export * from './components/config/config.validators';
+export * from './components/config/siteconfig.types';
 export * from './components/config/crypto';
 
 export * from './components/foundation/manifest';
@@ -27,11 +28,13 @@ export * from './components/general/smartmediautils';
 export * from './components/integrations/contentful.delivery';
 export * from './components/integrations/contentful.management';
 export * from './components/integrations/gemini-api.server';
+export * from './components/integrations/gemini-api.functions';
 export * from './components/integrations/googleplaces';
 export * from './components/integrations/googlemap';
 export * from './components/integrations/google.reviews.functions';
 export * from './components/integrations/gravatar.functions';
 export * from './components/integrations/instagram.functions';
+export * from './components/integrations/contentful.contenttypes';
 export * from './components/integrations/lipsum';
 export * from './components/integrations/spotify.components';
 export * from './components/integrations/spotify.functions';
@@ -40,6 +43,7 @@ export * from './components/integrations/wordpress.functions';
 export * from './components/shoppingcart/ebay.functions';
 export * from './components/shoppingcart/shoppingcart.providers';
 export * from './components/shoppingcart/square';
+export * from './components/shoppingcart/usps.functions';
 
 export * from './components/sitebuilder/config/ConfigEngine';
 export * from './components/sitebuilder/config/fonts';
@@ -56,3 +60,5 @@ export * from './components/sitebuilder/page/lib/pageStorageLocal'; // used for 
 export * from './components/sitebuilder/page/lib/pageStorageTypes';
 export * from './components/sitebuilder/page/lib/propTypeIntrospection';
 export * from './components/sitebuilder/page/lib/types';
+
+export * from './version';

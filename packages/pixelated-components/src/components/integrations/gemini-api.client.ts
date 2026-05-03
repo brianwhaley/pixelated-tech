@@ -1,6 +1,6 @@
 'use client';
 
-import { RouteType, SiteInfoType } from '../sitebuilder/config/ConfigBuilder';
+import type { RouteType, SiteInfo } from '../config/siteconfig.types';
 
 // Debug logging: set to true to inspect AI model responses locally
 const debug = false;
@@ -11,7 +11,7 @@ import { buildUrl } from '../foundation/urlbuilder';
 
 export interface GeminiRecommendationRequest {
   route: RouteType;
-  siteInfo: SiteInfoType;
+  siteInfo: SiteInfo;
   baseUrl?: string;
 }
 

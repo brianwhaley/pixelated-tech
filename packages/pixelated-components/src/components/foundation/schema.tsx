@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import type { SiteInfo } from '../config/config.types';
+import type { SiteInfo } from '../config/siteconfig.types';
 
 
 
@@ -918,8 +918,8 @@ function buildPublisher(siteInfo?: SiteInfo) {
 		return undefined;
 	}
 	const logoUrl = siteInfo.image;
-	const logoWidth = parseDimension(siteInfo.image_width);
-	const logoHeight = parseDimension(siteInfo.image_height);
+	const logoWidth = parseDimension(siteInfo.image_width ?? undefined);
+	const logoHeight = parseDimension(siteInfo.image_height ?? undefined);
 	const logo = logoUrl
 		? {
 			'@type': 'ImageObject',

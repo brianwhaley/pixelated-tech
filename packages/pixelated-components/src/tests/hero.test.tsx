@@ -58,4 +58,30 @@ describe('Hero (unit)', () => {
 			expect(videoEl.src).toContain('/videos/clip.mp4');
 			expect(videoEl.getAttribute('poster')).toContain('/videos/poster.jpg');
 		});
+
+	it('renders anchored-img variant using SmartImage', () => {
+		const originalObserver = window.IntersectionObserver;
+		class MockIntersectionObserver {
+			observe = vi.fn();
+			unobserve = vi.fn();
+			disconnect = vi.fn();
+		}
+		Object.defineProperty(window, 'IntersectionObserver', {
+			value: MockIntersectionObserver,
+			writable: true
+		});
+
+		const { container } = render(<Hero img="/images/test.jpg" variant="anchored-img" imgAlt="Alt" />);
+		const hero = container.querySelector('.hero.anchored-img');
+		expect(hero).toBeInTheDocument();
+		expect(screen.getByRole('img')).toBeInTheDocument();
+
+		window.IntersectionObserver = originalObserver;
+	});
+
+	it('renders fallback hero container when no media is given', () => {
+		const { container } = render(<Hero variant="video" />);
+		const hero = container.querySelector('.hero');
+		expect(hero).toBeInTheDocument();
+	});
 });

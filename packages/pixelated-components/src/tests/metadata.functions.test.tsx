@@ -8,7 +8,7 @@ import {
 	generateMetaTags,
 	type Route
 } from '../components/foundation/metadata.functions';
-import type { SiteInfo } from '../components/config/config.types';
+import type { SiteInfo } from '../components/config/siteconfig.types';
 
 describe('Metadata Functions', () => {
 	describe('descriptionToKeywords', () => {

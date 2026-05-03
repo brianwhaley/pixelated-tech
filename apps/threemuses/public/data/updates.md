@@ -4,6 +4,8 @@
 
 * [  ] dont forget to update pixelated.config.json shoppingcart props before launch
 * [  ] dont forget to update pixelated.config.json square sandbox props before launch
+* [  ] explore the ability to tie specific header images to specific pages
+* [  ] add the ability to sort / filter events on the Events page
 * [ x ] Brian to send Katie two new versions of the logo - one with blue / cyan, one with rose / magenta
 * [ x ] Katie to send a large version of the logo
 * [ x ] Katie to send font names for the AI generated brochures - Canva Font used: Adobe Font - The Seasons
@@ -18,8 +20,6 @@
 * [ x ] go through photos and add them to header, home page, faqs, everywhere
 * [ x ] on event detail page - remove "Add to Cart button" if event status is not "Open"
 * [ x ] on events listing page remove event from the listing if status = "Archived"
-* [  ] explore the ability to tie specific header images to specific pages
-* [  ] add the ability to sort / filter events on the Events page
 
 ### Other Fonts Considered : 
 
@@ -55,7 +55,7 @@
 * [ x ] Create wordpress blog
 * [ x ] Add most recent blog to home page
 * [ x ] create blog listing page
-* [  ] write announcement blog post
+* [ x ] write announcement blog post
 * [  ] Move Square domain to AWS
 * [  ] Set up improvmx for email address
 * [ x ] Get descriptions, dates, times, sessions, schedules, etc of each of the the classes

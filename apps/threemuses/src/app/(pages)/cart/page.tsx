@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import siteConfig from "@/app/data/siteconfig.json";
 import { PageTitleHeader, PageSection, ShoppingCart, getCart, type CartItemType, smartFetch } from "@pixelated-tech/components";
 import { getThreeMusesSubtotalDiscount } from "../../lib/shoppingcart-discounts";
 import baseFormData from "@/app/data/register-base-form.json";
@@ -65,6 +66,7 @@ export default function CartPage() {
 					additionalInfoForm={additionalInfoForm}
 					showShippingInfoSection={false}
 					onPaymentCapture={handlePaymentCapture}
+					siteInfo={siteConfig.siteInfo}
 				/>
 			</PageSection>
 		</>

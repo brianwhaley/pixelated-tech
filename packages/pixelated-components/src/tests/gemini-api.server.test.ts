@@ -11,6 +11,7 @@ vi.mock('../components/config/config', () => ({
 import { smartFetch } from '../components/foundation/smartfetch';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { generateAiRecommendations } from '../components/integrations/gemini-api.server';
+import { parsePaLMResponse, inferBusinessType, parseGeminiResponse } from '../components/integrations/gemini-api.functions';
 
 const mockSiteInfo: any = {
 	name: 'Test Site',
@@ -126,5 +127,52 @@ describe('gemini-api.server', () => {
 		expect(result.title).toBe('Recommended Title');
 		expect(result.keywords).toEqual(['seo','local']);
 		expect(result.description).toBe('A sample recommendation.');
+	});
+
+	it('should throw if Gemini response has no candidates', () => {
+		expect(() => parseGeminiResponse({ candidates: [] })).toThrow('No candidates in Gemini API response');
+	});
+
+	it('should throw if Gemini response has no content parts', () => {
+		expect(() => parseGeminiResponse({ candidates: [{ content: {} }] })).toThrow('No content parts in Gemini API response');
+	});
+
+	it('should throw if Gemini response text is empty', () => {
+		expect(() => parseGeminiResponse({ candidates: [{ content: { parts: [{ text: '' }] } }] })).toThrow('No text content in Gemini API response');
+	});
+
+	it('should return general business when description contains no known keywords', () => {
+		expect(inferBusinessType({ name: '', description: 'A local service provider for everything' } as any)).toBe('general business');
+	});
+
+	it('parses PaLM-formatted output fallback', () => {
+		const result = parsePaLMResponse({
+			candidates: [
+				{ output: '{"title":"PaLM Title","keywords":["palm"],"description":"Fallback response."}' }
+			]
+		});
+
+		expect(result.title).toBe('PaLM Title');
+		expect(result.keywords).toEqual(['palm']);
+		expect(result.description).toBe('Fallback response.');
+	});
+
+	it('returns error object when PaLM output is invalid', () => {
+		const result = parsePaLMResponse({
+			candidates: [
+				{ output: 'not json' }
+			]
+		});
+
+		expect(result.error).toBe('Failed to parse AI recommendations');
+	});
+
+	it('infers business type from description keywords', () => {
+		expect(inferBusinessType({ name: '', description: 'The best real estate agency' } as any)).toBe('real estate');
+		expect(inferBusinessType({ name: '', description: 'A great restaurant serving food' } as any)).toBe('restaurant');
+		expect(inferBusinessType({ name: '', description: 'Legal services and law advice' } as any)).toBe('legal services');
+		expect(inferBusinessType({ name: '', description: 'Health and medical care' } as any)).toBe('healthcare');
+		expect(inferBusinessType({ name: '', description: 'Retail store with local products' } as any)).toBe('retail');
+		expect(inferBusinessType({ name: '', description: 'A consulting partner' } as any)).toBe('consulting');
 	});
 });

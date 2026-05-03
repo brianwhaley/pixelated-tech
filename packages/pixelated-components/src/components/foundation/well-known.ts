@@ -7,6 +7,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { flattenRoutes } from './sitemap';
 import { sanitizeString } from './utilities';
+import { pixelatedComponentsVersion as selfExportedPixelatedComponentsVersion } from '../../version';
 
 /**
  * Read JSON from disk safely — returns null on error. Exported for testing.
@@ -58,25 +59,84 @@ function usesPixelatedComponents(pkg: any) {
 
 const requireFromThisFile = createRequire(import.meta.url);
 
-async function getPixelatedComponentsPackageVersionFromResolver() {
+function createRequireFromCwd(cwd: string) {
 	try {
-		const pkgPath = requireFromThisFile.resolve('@pixelated-tech/components/package.json');
-		const pkg = await safeJSON(pkgPath);
-		if (pkg && typeof pkg.version === 'string' && pkg.version.trim()) {
-			return pkg.version.trim();
-		}
+		return createRequire(path.join(cwd, 'package.json'));
 	} catch {
 		return null;
+	}
+}
+
+function getPackageJsonDependencyVersion(pkg: any) {
+	return (
+		pkg.dependencies?.['@pixelated-tech/components'] ||
+		pkg.devDependencies?.['@pixelated-tech/components'] ||
+		pkg.peerDependencies?.['@pixelated-tech/components'] ||
+		pkg.optionalDependencies?.['@pixelated-tech/components'] ||
+		null
+	);
+}
+
+async function getVersionFromLockfileCandidates(cwd: string, filename: string) {
+	const candidates = [
+		path.join(cwd, filename),
+		path.join(cwd, '..', filename),
+		path.join(cwd, '..', '..', filename),
+	];
+	for (const candidate of candidates) {
+		const lock = await safeJSON(candidate);
+		if (!lock) continue;
+		const dependency = lock.dependencies?.['@pixelated-tech/components'];
+		if (dependency?.version) return dependency.version;
+		const packageEntry = lock.packages?.['node_modules/@pixelated-tech/components'];
+		if (packageEntry?.version) return packageEntry.version;
 	}
 	return null;
 }
 
-export async function getPixelatedComponentsPackageVersion(cwd: string) {
-	const resolvedVersion = await getPixelatedComponentsPackageVersionFromResolver();
-	if (resolvedVersion) {
-		return resolvedVersion;
-	}
+async function getVersionFromPackageLock(cwd: string) {
+	return getVersionFromLockfileCandidates(cwd, 'package-lock.json');
+}
 
+async function getVersionFromNpmShrinkwrap(cwd: string) {
+	return getVersionFromLockfileCandidates(cwd, 'npm-shrinkwrap.json');
+}
+
+async function getVersionFromRootPackageJsonDependency(cwd: string) {
+	const candidates = [
+		path.join(cwd, '..', 'package.json'),
+		path.join(cwd, '..', '..', 'package.json'),
+	];
+	for (const candidate of candidates) {
+		const pkg = await safeJSON(candidate);
+		if (!pkg) continue;
+		const dependencyVersion = getPackageJsonDependencyVersion(pkg);
+		if (dependencyVersion) return dependencyVersion;
+	}
+	return null;
+}
+
+async function getVersionFromYarnLock(lockPath: string) {
+	try {
+		const content = await readFile(lockPath, 'utf8');
+		const match = content.match(/^['"]?@pixelated-tech\/components[^:\n]*['"]?:[\s\S]*?^\s*version\s+"([^"]+)"/m);
+		return match?.[1] ?? null;
+	} catch {
+		return null;
+	}
+}
+
+async function getVersionFromPnpmLock(lockPath: string) {
+	try {
+		const content = await readFile(lockPath, 'utf8');
+		const match = content.match(/^["']?@pixelated-tech\/components(?:@[^:]+)?["']?:\s*\n\s*version:\s*['"]?([0-9]+\.[0-9]+\.[0-9]+)['"]?/m);
+		return match?.[1] ?? null;
+	} catch {
+		return null;
+	}
+}
+
+async function getVersionFromNodeModulesPackageJson(cwd: string) {
 	const candidates = [
 		path.join(cwd, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
 		path.join(cwd, '..', 'node_modules', '@pixelated-tech', 'components', 'package.json'),
@@ -91,6 +151,78 @@ export async function getPixelatedComponentsPackageVersion(cwd: string) {
 	return null;
 }
 
+async function getPixelatedComponentsPackageVersionFromResolver(cwd: string) {
+	const req = createRequireFromCwd(cwd);
+	if (!req) return null;
+	try {
+		const pkgPath = req.resolve('@pixelated-tech/components/package.json');
+		const pkg = await safeJSON(pkgPath);
+		if (pkg && typeof pkg.version === 'string' && pkg.version.trim()) {
+			return pkg.version.trim();
+		}
+	} catch {
+		return null;
+	}
+	return null;
+}
+
+export type PixelatedComponentsPackageVersionInfo = {
+	selfExportedVersion: string | null;
+	resolverVersion: string | null;
+	nodeModulesPackageJsonVersion: string | null;
+	packageLockVersion: string | null;
+	npmShrinkwrapVersion: string | null;
+	pnpmLockVersion: string | null;
+	yarnLockVersion: string | null;
+	packageJsonDependencyVersion: string | null;
+	rootPackageJsonDependencyVersion: string | null;
+	resolvedVersion: string | null;
+};
+
+export async function getPixelatedComponentsPackageVersionInfo(cwd: string) {
+	const dependencyPkg = await safeJSON(path.join(cwd, 'package.json'));
+	const packageJsonDependencyVersion = dependencyPkg ? getPackageJsonDependencyVersion(dependencyPkg) : null;
+	const rootPackageJsonDependencyVersion = await getVersionFromRootPackageJsonDependency(cwd);
+
+	const resolverVersion = await getPixelatedComponentsPackageVersionFromResolver(cwd);
+	const nodeModulesPackageJsonVersion = await getVersionFromNodeModulesPackageJson(cwd);
+	const packageLockVersion = await getVersionFromPackageLock(cwd);
+	const npmShrinkwrapVersion = await getVersionFromNpmShrinkwrap(cwd);
+	const pnpmLockVersion = await getVersionFromPnpmLock(path.join(cwd, 'pnpm-lock.yaml'));
+	const yarnLockVersion = await getVersionFromYarnLock(path.join(cwd, 'yarn.lock'));
+
+	const candidates = [
+		selfExportedPixelatedComponentsVersion || null,
+		resolverVersion,
+		nodeModulesPackageJsonVersion,
+		packageLockVersion,
+		npmShrinkwrapVersion,
+		pnpmLockVersion,
+		yarnLockVersion,
+		packageJsonDependencyVersion,
+		rootPackageJsonDependencyVersion,
+	];
+	const resolvedVersion = candidates.find((value) => typeof value === 'string' && value.length > 0) ?? null;
+
+	return {
+		selfExportedVersion: selfExportedPixelatedComponentsVersion || null,
+		resolverVersion,
+		nodeModulesPackageJsonVersion,
+		packageLockVersion,
+		npmShrinkwrapVersion,
+		pnpmLockVersion,
+		yarnLockVersion,
+		packageJsonDependencyVersion,
+		rootPackageJsonDependencyVersion,
+		resolvedVersion,
+	};
+}
+
+export async function getPixelatedComponentsPackageVersion(cwd: string) {
+	const info = await getPixelatedComponentsPackageVersionInfo(cwd);
+	return info.resolvedVersion;
+}
+
 export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};
@@ -98,7 +230,8 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const data = opts.siteConfig ?? (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
 	const site = data.siteInfo ?? {};
 	const routes = Array.isArray(data.routes) ? data.routes : [];
-	const pixelatedComponentsPackageVersion = (await getPixelatedComponentsPackageVersion(cwd)) ?? 'N/A';
+	const pixelatedComponentsPackageVersionInfo = await getPixelatedComponentsPackageVersionInfo(cwd);
+	const pixelatedComponentsPackageVersion = (pixelatedComponentsPackageVersionInfo.resolvedVersion ?? 'N/A');
 
 	const lines: string[] = [
 		'/* HUMAN-READABLE SITE INFORMATION - generated at runtime */',
@@ -135,6 +268,15 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 		`   Site Package Name: ${sanitizeString(pkg.name ?? '')}`,
 		`   Site Package Version: ${sanitizeString(pkg.version ?? '')}`,
 		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersion)}`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.selfExportedVersion ?? 'N/A')} (self-exported)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.resolverVersion ?? 'N/A')} (resolver)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.nodeModulesPackageJsonVersion ?? 'N/A')} (node_modules package.json)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.packageLockVersion ?? 'N/A')} (package-lock.json)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.npmShrinkwrapVersion ?? 'N/A')} (npm-shrinkwrap.json)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.pnpmLockVersion ?? 'N/A')} (pnpm-lock.yaml)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.yarnLockVersion ?? 'N/A')} (yarn.lock)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.packageJsonDependencyVersion ?? 'N/A')} (package.json dependency)`,
+		`   Site Pixelated Components Package Version: ${sanitizeString(pixelatedComponentsPackageVersionInfo.rootPackageJsonDependencyVersion ?? 'N/A')} (root package.json dependency)`,
 		`   Site URL: ${sanitizeString(site.url ?? '')}`,
 		`   Site Languages: React, Node, NextJS, JavaScript, HTML5, CSS3, SASS `,
 		`   Site Tools: VSCode, GitHub, AWS, Contently, Cloudinary, Wordpress, Google Analytics, Google Search Console`,

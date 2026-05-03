@@ -309,8 +309,9 @@ export async function getWordPressCategories(props: { site: string; baseURL?: st
 	const categories = [];
 	try {
 		const data = await smartFetch(wpCategoriesURL, {});
-		// Check for total pages on the first page
-		const myCategories = data.categories.map((category: BlogPostCategoryType) => ( category.name ));
+		const myCategories = Array.isArray(data?.categories)
+			? data.categories.map((category: BlogPostCategoryType) => category.name)
+			: [];
 		categories.push(...myCategories);
 	} catch (error) {
 		console.error("Error fetching WP categories:", error);

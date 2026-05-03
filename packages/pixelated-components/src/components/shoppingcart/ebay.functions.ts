@@ -69,11 +69,13 @@ export function getMergedEbayConfig(providedApiProps: any): EbayApiType {
 		const config = getFullPixelatedConfig();
 		if (config) {
 			apiProps = {
-				proxyURL: config.global?.proxyUrl || '',
 				...apiProps,
 				...(config.ebay || {}),
 				...providedApiProps,
 			};
+			if (!apiProps.proxyURL) {
+				apiProps.proxyURL = config.global?.proxyUrl || '';
+			}
 		}
 	} catch (e) {
 		// Fail-silent, use provided props

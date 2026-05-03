@@ -1,16 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getWordPressItems, getWordPressLastModified, photonToOriginalUrl } from '../components/integrations/wordpress.functions';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { mockWordPressPosts } from '../test/fixtures';
 
-vi.mock('../components/foundation/smartfetch');
+vi.mock('../components/foundation/smartfetch', () => ({
+  smartFetch: vi.fn()
+}));
 
 const { smartFetch } = await import('../components/foundation/smartfetch');
 const mockSmartFetch = vi.mocked(smartFetch);
 
+const {
+  getWordPressItems,
+  getWordPressLastModified,
+  photonToOriginalUrl,
+  mapWordPressToBlogPosting,
+  getWordPressItemImages,
+  getWordPressCategories
+} = await import('../components/integrations/wordpress.functions');
+
 describe('WordPress Functions', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe('photonToOriginalUrl', () => {
@@ -274,6 +284,67 @@ describe('WordPress Functions', () => {
 
       await getWordPressItems({ site: 'example.com' });
       expect(mockSmartFetch).toHaveBeenCalled();
+    });
+
+    it('should map WordPress post to BlogPosting schema with author and modified date', () => {
+      const post = {
+        ID: '1',
+        title: 'Test Title',
+        excerpt: '<p>Excerpt</p>',
+        content: '<p>Content</p>',
+        URL: 'https://example.com/post',
+        date: '2024-01-01T00:00:00Z',
+        modified: '2024-01-02T00:00:00Z',
+        categories: ['News', 'Updates'],
+        author: {
+          ID: 1,
+          login: 'admin',
+          name: 'Admin',
+        },
+      };
+
+      const result = mapWordPressToBlogPosting(post as any, true);
+
+      expect(result.headline).toBe('Test Title');
+      expect(result.description).toBe('Excerpt');
+      expect(result.articleBody).toContain('Content');
+      expect(result.author).toBeDefined();
+      expect(result.articleSection).toBe('News');
+      expect(result.keywords).toEqual(['News', 'Updates']);
+      expect(result.dateModified).toBe('2024-01-02T00:00:00Z');
+    });
+
+    it('should extract images from WordPress post with attachments and thumbnail', () => {
+      const post = {
+        ID: '2',
+        title: 'Image Post',
+        excerpt: 'Excerpt',
+        URL: 'https://example.com/post',
+        categories: ['Gallery'],
+        featured_image: 'https://example.com/image.jpg',
+        post_thumbnail: { URL: 'https://example.com/thumb.jpg' },
+        attachments: {
+          file1: { URL: 'https://example.com/attachment.jpg', title: 'Attachment', description: 'Desc' }
+        }
+      };
+
+      const images = getWordPressItemImages(post as any);
+      expect(images).toHaveLength(2);
+      expect(images[0].url).toContain('https://example.com/image.jpg');
+      expect(images[0].thumbnail_loc).toBe('https://example.com/thumb.jpg');
+      expect(images[1].url).toContain('https://example.com/attachment.jpg');
+    });
+
+    it('should fetch WordPress categories successfully', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ categories: [{ name: 'News' }, { name: 'Updates' }] });
+      const categories = await getWordPressCategories({ site: 'example.com' });
+      expect(categories).toEqual(['News', 'Updates']);
+    });
+
+    it('should return undefined when category fetch fails', async () => {
+      mockSmartFetch.mockRejectedValueOnce(new Error('Network failure'));
+      const result = await getWordPressCategories({ site: 'example.com' });
+      expect(result).toBeUndefined();
     });
 
     it('should sort posts by date descending', async () => {

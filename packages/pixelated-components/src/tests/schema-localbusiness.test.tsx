@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import type { SiteInfo } from '@/components/config/config.types';
+import type { SiteInfo } from '@/components/config/siteconfig.types';
 import { LocalBusinessSchema, type LocalBusinessSchemaType } from '@/components/foundation/schema';
 import configData from '../test/test-data';
 
