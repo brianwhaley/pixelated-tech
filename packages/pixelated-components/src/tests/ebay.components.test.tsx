@@ -1,7 +1,8 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { cleanup, render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { EbayItems, EbayListFilter, EbayItemHeader, EbayListItem, EbayItemDetail, getShoppingCartItem } from '../components/shoppingcart/ebay.components';
+import { EbayItems, EbayListFilter, EbayItemHeader, EbayListItem, EbayItemDetail } from '../components/shoppingcart/ebay.components';
+import { getEbayShoppingCartItem } from '../components/shoppingcart/ebay.functions';
 import * as ebayFunctions from '../components/shoppingcart/ebay.functions';
 
 vi.mock('../components/config/config.client', () => ({
@@ -294,7 +295,7 @@ describe('ebay.components - helper list components', () => {
 			seller: { username: 'seller1', feedbackScore: 100, feedbackPercentage: 99.9 },
 		};
 
-		const cartItem = getShoppingCartItem({
+		const cartItem = getEbayShoppingCartItem({
 			thisItem: item as any,
 			cloudinaryProductEnv: 'production',
 			apiProps: { itemCategory: 'electronics' },
@@ -321,7 +322,7 @@ describe('ebay.components - helper list components', () => {
 			seller: { username: 'seller1', feedbackScore: 50, feedbackPercentage: 80 },
 		};
 
-		const cartItem = getShoppingCartItem({
+		const cartItem = getEbayShoppingCartItem({
 			thisItem: item as any,
 			apiProps: { itemCategory: 'electronics' },
 		});

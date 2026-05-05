@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getShoppingCartItem } from '../components/shoppingcart/ebay.components';
-import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getMergedEbayConfig } from '../components/shoppingcart/ebay.functions';
+import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getMergedEbayConfig, getEbayShoppingCartItem } from '../components/shoppingcart/ebay.functions';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
@@ -61,8 +60,8 @@ describe('ebay.functions - Real Tests', () => {
 		categories: [
 			{ categoryId: 'electronics' }
 		],
-		shippingWeight: 2,
-		shippingWeightUnit: 'lb'
+			weight: 2,
+			weightUnit: 'lb'
 	};
 
 	const mockApiProps = {
@@ -79,9 +78,9 @@ describe('ebay.functions - Real Tests', () => {
 		itemCategory: 'electronics'
 	};
 
-	describe('getShoppingCartItem', () => {
+	describe('getEbayShoppingCartItem', () => {
 		it('should return CartItemType structure', () => {
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: mockEbayItem,
 				apiProps: mockApiProps
 			});
@@ -100,7 +99,7 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should extract item title', () => {
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: mockEbayItem,
 				apiProps: mockApiProps
 			});
@@ -108,7 +107,7 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should extract item URL', () => {
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: mockEbayItem,
 				apiProps: mockApiProps
 			});
@@ -116,7 +115,7 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should extract item cost and shipping metadata', () => {
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: mockEbayItem,
 				apiProps: mockApiProps
 			});
@@ -134,7 +133,7 @@ describe('ebay.functions - Real Tests', () => {
 				thumbnailImages: undefined,
 				image: { imageUrl: 'https://pic.ebay.com/alt.jpg' }
 			};
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: item,
 				apiProps: mockApiProps
 			});
@@ -142,7 +141,7 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should use cloudinary when provided', () => {
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: mockEbayItem,
 				cloudinaryProductEnv: 'my-cloud',
 				apiProps: mockApiProps
@@ -156,7 +155,7 @@ describe('ebay.functions - Real Tests', () => {
 				categoryId: undefined,
 				categories: [{ categoryId: 'electronics' }]
 			};
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: item,
 				apiProps: mockApiProps
 			});
@@ -168,7 +167,7 @@ describe('ebay.functions - Real Tests', () => {
 				...mockEbayItem,
 				categoryId: 'different'
 			};
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: item,
 				apiProps: { ...mockApiProps, itemCategory: 'other' }
 			});
@@ -331,24 +330,24 @@ describe('ebay.functions - Real Tests', () => {
 	});
 
 	describe('PropTypes Validation', () => {
-		it('should validate getShoppingCartItem props', () => {
-			expect(getShoppingCartItem.propTypes).toBeDefined();
-			expect(Object.keys(getShoppingCartItem.propTypes).length).toBeGreaterThan(0);
+		it('should validate getEbayShoppingCartItem props', () => {
+			expect(getEbayShoppingCartItem.propTypes).toBeDefined();
+			expect(Object.keys(getEbayShoppingCartItem.propTypes).length).toBeGreaterThan(0);
 		});
 
 		it('should require thisItem prop', () => {
-			expect(getShoppingCartItem.propTypes.thisItem).toBeDefined();
+			expect(getEbayShoppingCartItem.propTypes.thisItem).toBeDefined();
 		});
 
 		it('should require apiProps prop', () => {
-			expect(getShoppingCartItem.propTypes.apiProps).toBeDefined();
+			expect(getEbayShoppingCartItem.propTypes.apiProps).toBeDefined();
 		});
 	});
 
 	describe('Edge Cases', () => {
 		it('should handle missing price - provide default', () => {
 			const item = { ...mockEbayItem, price: { value: '0.00' } };
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: item,
 				apiProps: mockApiProps
 			});
@@ -357,7 +356,7 @@ describe('ebay.functions - Real Tests', () => {
 
 		it('should handle very large prices', () => {
 			const item = { ...mockEbayItem, price: { value: '999999.99' } };
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: item,
 				apiProps: mockApiProps
 			});
@@ -366,7 +365,7 @@ describe('ebay.functions - Real Tests', () => {
 
 		it('should handle very small prices', () => {
 			const item = { ...mockEbayItem, price: { value: '0.01' } };
-			const result = getShoppingCartItem({
+			const result = getEbayShoppingCartItem({
 				thisItem: item,
 				apiProps: mockApiProps
 			});

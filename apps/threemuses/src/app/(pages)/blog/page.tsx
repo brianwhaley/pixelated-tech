@@ -10,7 +10,7 @@ import { mapWordPressToBlogPosting } from "@pixelated-tech/components";
 import { ToggleLoading } from '@pixelated-tech/components';
 
 // const wpSite = "blog.thethreemusesofbluffton.com";
-const wpSite = "thethreemusesofbluffton.wordpress.com";
+const wpSite = "thethreemusesofbluffton.wpcomstaging.com";
 
 export default function BlogCalendarPage() {
 

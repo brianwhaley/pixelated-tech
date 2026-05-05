@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import type { CheckoutType } from './shoppingcart.functions';
 import { usePixelatedConfig } from '../config/config.client';
+import "./square.css";
 
 const SQUARE_PRODUCTION_SCRIPT_URL = 'https://web.squarecdn.com/v1/square.js';
 const SQUARE_SANDBOX_SCRIPT_URL = 'https://sandbox.web.squarecdn.com/v1/square.js';
@@ -169,13 +170,16 @@ export function SquareCheckout(props: SquareCheckoutType) {
 	}
 
 	return (
-		<div className="pix-cart-payment-method">
-			<div id="square-card-container" className="square-card-container" />
-			{errorMessage && <div className="pix-cart-error">{errorMessage}</div>}
-			<button className="pix-cart-button" type="button" onClick={handleSquarePayment} disabled={!initialized || isProcessing}>
-				{isProcessing ? 'Processing payment...' : initialized ? 'Pay with Square' : 'Loading Square...' }
-			</button>
-		</div>
+		<>
+			<div className="pix-cart-payment-method">
+				<div id="square-card-container" className="square-card-container" />
+				{errorMessage && <div className="pix-cart-error">{errorMessage}</div>}
+				<button className="pix-cart-button" type="button" onClick={handleSquarePayment} disabled={!initialized || isProcessing}>
+					{isProcessing ? 'Processing payment...' : initialized ? 'Pay with Square' : 'Loading Square...' }
+				</button>
+			</div>
+			<br /><br />
+		</>
 	);
 }
 

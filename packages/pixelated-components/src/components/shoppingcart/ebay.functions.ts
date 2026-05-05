@@ -5,6 +5,7 @@ import { CacheManager } from "../foundation/cache-manager";
 import { getDomain } from "../foundation/utilities";
 import { smartFetch } from "../foundation/smartfetch";
 import { buildUrl } from "../foundation/urlbuilder";
+import { getCloudinaryRemoteFetchURL as getImg } from "../integrations/cloudinary";
 
 const debug = false;
 
@@ -32,6 +33,57 @@ export type EbayApiType = {
     globalId: string;
     itemCategory?: string;
 };
+
+/**
+ * getEbayShoppingCartItem — Map a raw eBay item into the cart-item shape used by the shopping cart.
+ *
+ * @param {object} [props.thisItem] - Raw eBay item object.
+ * @param {string} [props.cloudinaryProductEnv] - Optional Cloudinary product environment.
+ * @param {object} [props.apiProps] - eBay API properties.
+ */
+getEbayShoppingCartItem.propTypes = {
+	/** Raw eBay item object */
+	thisItem: PropTypes.any.isRequired,
+	/** Optional Cloudinary product environment */
+	cloudinaryProductEnv: PropTypes.string,
+	/** eBay API properties */
+	apiProps: PropTypes.any,
+};
+export type getEbayShoppingCartItemType = InferProps<typeof getEbayShoppingCartItem.propTypes>;
+export function getEbayShoppingCartItem(props: getEbayShoppingCartItemType) {
+	let qty: number;
+	const thisItem = props.thisItem;
+	const apiProps = props.apiProps as EbayApiType;
+	const itemCategory = apiProps?.itemCategory;
+
+	if (thisItem.categoryId && thisItem.categoryId == itemCategory) {
+		qty = 1;
+	} else if (thisItem.categories?.[0]?.categoryId && thisItem.categories[0].categoryId == itemCategory) {
+		qty = 1;
+	} else {
+		qty = 10;
+	}
+
+	return {
+		itemImageURL: (thisItem.thumbnailImages && props.cloudinaryProductEnv)
+			? getImg({ url: thisItem.thumbnailImages[0].imageUrl, product_env: props.cloudinaryProductEnv })
+			: (thisItem.thumbnailImages)
+				? thisItem.thumbnailImages[0].imageUrl
+				: (thisItem.image && props.cloudinaryProductEnv)
+					? getImg({ url: thisItem.image.imageUrl, product_env: props.cloudinaryProductEnv })
+					: thisItem.image?.imageUrl || '',
+		itemID: thisItem.legacyItemId,
+		itemURL: thisItem.itemWebUrl,
+		itemTitle: thisItem.title,
+		itemQuantity: qty,
+		itemCost: thisItem.price.value,
+		itemCurrency: thisItem.price?.currency || 'USD',
+		itemIsShippable: true,
+		itemWeight: Number(thisItem.weight ?? 0),
+		itemWeightUnit: thisItem.weightUnit || 'lb',
+		itemType: 'product',
+	};
+}
 
 
 const ebayCache = new CacheManager({

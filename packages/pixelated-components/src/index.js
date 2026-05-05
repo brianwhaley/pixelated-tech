@@ -95,6 +95,7 @@ export * from './components/shoppingcart/shoppingcart.components';
 export * from './components/shoppingcart/shoppingcart.functions';
 export * from './components/shoppingcart/stripe.components';
 export * from './components/shoppingcart/usps.components';
+export * from './components/shoppingcart/usps.functions';
 
 export * from './components/sitebuilder/config/CompoundFontSelector';
 export * from './components/sitebuilder/config/ConfigBuilder';

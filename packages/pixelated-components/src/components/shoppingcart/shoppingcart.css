@@ -131,6 +131,10 @@
     width: 20px;
 }
 
+button.pix-cart-button#saveShippingInfo {
+    justify-self: center;
+}
+
 
 
 

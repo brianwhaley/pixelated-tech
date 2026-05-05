@@ -305,10 +305,8 @@ describe('PayPal Integration Tests', () => {
 		});
 
         it('should handle PayPal onError gracefully', () => {
-            const showInfoBanner = vi.fn();
-            const showError = vi.fn();
-            (window as any).showInfoBanner = showInfoBanner;
-            (window as any).showError = showError;
+				const consoleInfoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+				const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
             const onApprove = vi.fn();
             const buttonRender = vi.fn();
@@ -320,10 +318,13 @@ describe('PayPal Integration Tests', () => {
             const config = buttons.mock.calls[0][0];
 
             config.onError(new Error('Detected popup close'));
-            expect(showInfoBanner).toHaveBeenCalledWith('PayPal Payment cancelled');
+			expect(consoleInfoSpy).toHaveBeenCalledWith('PayPal Payment cancelled');
 
             config.onError(new Error('Unknown failure'));
-            expect(showError).toHaveBeenCalledWith('PayPal error');
+			expect(consoleErrorSpy).toHaveBeenCalledWith('PayPal error');
+
+			consoleInfoSpy.mockRestore();
+			consoleErrorSpy.mockRestore();
         });
 
         it('should handle PayPal onCancel by redirecting to cart', () => {

@@ -44,6 +44,7 @@ export * from './components/shoppingcart/ebay.functions';
 export * from './components/shoppingcart/shoppingcart.providers';
 export * from './components/shoppingcart/square';
 export * from './components/shoppingcart/usps.functions';
+export * from './components/shoppingcart/usps.server';
 
 export * from './components/sitebuilder/config/ConfigEngine';
 export * from './components/sitebuilder/config/fonts';

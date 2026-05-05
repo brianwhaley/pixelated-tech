@@ -19,7 +19,7 @@ type ShoppingCartType = CartItemType;
 // Use on-disk fixtures where available to keep tests 'real'
 import personalInfoData from '../components/shoppingcart/checkout.personal.info.json';
 import discountInfoData from '../components/shoppingcart/checkout.discount.info.json';
-import shippingInfoData from '../components/shoppingcart/checkout.shipping.info.json';
+import shippingInfoData from '../components/shoppingcart/usps.generic.shipping.info.json';
 
 describe('ShoppingCart — observable contract (storage keys & shapes)', () => {
   beforeEach(() => {
@@ -49,7 +49,7 @@ describe('ShoppingCart — observable contract (storage keys & shapes)', () => {
     expect(shippingFieldNames).toEqual(
       expect.arrayContaining(['name', 'street1', 'city', 'state', 'zip', 'country']),
     );
-    expect(shippingInfoData.fields.some((field) => field.props?.name === 'shippingMethod')).toBe(true);
+    expect(shippingInfoData.fields.some((field) => field.props?.name === 'shippingMethod')).toBe(false);
 
     const shipping = {
       name: 'Test User',

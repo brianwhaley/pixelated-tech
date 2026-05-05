@@ -1,0 +1,23 @@
+{
+	"properties": {
+		"name": "checkout_shipping",
+		"id": "checkout_shipping"
+	},
+	"fields": [
+		{
+			"component": "FormSectionHeader",
+			"props": {
+				"title": "Shipping Info"
+			}
+		},
+		{
+			"component": "FormButton",
+			"props": {
+				"id": "saveShippingInfo",
+				"type": "submit",
+				"text": "Continue to Checkout",
+				"className": "pix-cart-button"
+			}
+		}
+	]
+}

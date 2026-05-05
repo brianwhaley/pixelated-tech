@@ -65,10 +65,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] Create a dedicated `SiteInfoProvider` / `useSiteConfig()` hook for site metadata.
 
-- [ IP ] **Contentful Product Object** based on the Rich Product Metadata
-
-- [ IP ] **Contentful Event Object** based on the Rich Event & Product Metadata
-
 
 ### Platform Enhancements
 
@@ -123,7 +119,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 1. No order history or customer accounts
 
 ##### No Multi-Tenancy Support
-1. Shipping options are generic USPS rates (hardcoded array) not configurable per site
 1. Discount codes loaded from single Contentful space
 1. No site-specific pricing, tax rates, or shipping rules
 
@@ -139,7 +134,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 1. No customer communication workflows
 
 ##### Weak Form Handling
-1. Form submission uses direct DOM manipulation (document.getElementById)
 1. Shipping form fields must match exact names in localStorage
 1. No client-side validation exposed to cart
 1. No retry logic if form save fails
@@ -157,7 +151,7 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 1. Multi-Tenant Configuration
 
-	* Config-driven payment providers, shipping rules, tax rates
+	* Config-driven tax rates
 	* Per-site discount code repositories
 
 1. Session & Persistence
@@ -171,7 +165,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 1. Real Carrier Integration
 
-	* Live shipping rate calculation (EasyPost, ShipStation)
 	* Tracking integration
 	* Multi-carrier selection UI
 
@@ -212,12 +205,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 	* Decouple from localStorage for unit testing
 	* Integration tests with mock payment gateways
 	* E2E checkout flow tests
-
-1. Component Isolation
-
-	* Form builder for dynamic checkout fields
-	* Separate concerns: cart display → shipping form → payment → thanks
-	* Make each composable and reusable
 
 1. Security
 

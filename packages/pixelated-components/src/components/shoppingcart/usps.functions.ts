@@ -2,6 +2,7 @@ import { smartFetch } from '../foundation/smartfetch';
 import type { USPSConfig } from '../config/config.types';
 
 export type UspsRateOption = {
+	rateId: string;
 	serviceId: string;
 	serviceName: string;
 	rate: number;
@@ -18,93 +19,156 @@ function normalizeUspsServiceId(serviceName: string) {
 		.replace(/^-+|-+$/g, '');
 }
 
+function getUspsBaseUrl(config?: USPSConfig) {
+	const defaultUrl = config?.environment === 'sandbox' ? 'https://apis-tem.usps.com' : 'https://apis.usps.com';
+	return (config?.environment === 'sandbox'
+		? config?.sandboxBaseURL?.trim()
+		: config?.baseURL?.trim()) || defaultUrl;
+}
+
 function getUspsApiUrl(config?: USPSConfig) {
-	if (config?.environment === 'sandbox') {
-		return config.sandboxBaseURL?.trim() || 'https://apis-tem.usps.com/ShippingAPI.dll';
+	const baseUrl = getUspsBaseUrl(config).replace(/\/+$/, '');
+	if (baseUrl.toLowerCase().includes('/prices/v3')) {
+		return baseUrl;
 	}
-	return config?.baseURL?.trim() || 'https://apis.usps.com/ShippingAPI.dll';
+	return baseUrl.replace(/\/ShippingAPI\.dll$/i, '').replace(/\/+$/, '') + '/prices/v3';
 }
 
-function buildDomesticRateRequestXml(options: { fromZip: string; toZip: string; weightOunces: number; }) {
-	const pounds = Math.floor(options.weightOunces / 16);
-	const ounces = options.weightOunces % 16;
-	return `<?xml version="1.0" encoding="UTF-8"?>
-<RateV4Request>
-	<Revision>2</Revision>
-	<Package ID="1">
-		<Service>ALL</Service>
-		<ZipOrigination>${options.fromZip}</ZipOrigination>
-		<ZipDestination>${options.toZip}</ZipDestination>
-		<Pounds>${pounds}</Pounds>
-		<Ounces>${ounces}</Ounces>
-		<Container>VARIABLE</Container>
-		<Size>REGULAR</Size>
-		<Machinable>true</Machinable>
-	</Package>
-</RateV4Request>`;
+function getUspsTokenUrl(config?: USPSConfig) {
+	const baseUrl = getUspsBaseUrl(config).replace(/\/+$/, '');
+	if (baseUrl.toLowerCase().includes('/oauth2/v3/token')) {
+		return baseUrl;
+	}
+	return baseUrl.replace(/\/ShippingAPI\.dll$/i, '').replace(/\/+$/, '') + '/oauth2/v3/token';
 }
 
-function buildInternationalRateRequestXml(options: { fromZip: string; fromCountry: string; toCountry: string; weightOunces: number; packageValue?: number; }) {
-	const pounds = Math.floor(options.weightOunces / 16);
-	const ounces = options.weightOunces % 16;
-	return `<?xml version="1.0" encoding="UTF-8"?>
-<IntlRateV2Request>
-	<Revision>2</Revision>
-	<Package ID="1">
-		<Pounds>${pounds}</Pounds>
-		<Ounces>${ounces}</Ounces>
-		<MailType>Package</MailType>
-		<ValueOfContents>${options.packageValue ?? 0}</ValueOfContents>
-		<Country>${options.toCountry}</Country>
-		<Container>VARIABLE</Container>
-		<Size>REGULAR</Size>
-	</Package>
-</IntlRateV2Request>`;
+function encodeBase64(value: string) {
+	if (typeof btoa === 'function') {
+		return btoa(value);
+	}
+	if (typeof Buffer !== 'undefined') {
+		return Buffer.from(value, 'utf-8').toString('base64');
+	}
+	throw new Error('No base64 encoder available');
 }
 
-function parseDomesticRates(xml: string): UspsRateOption[] {
-	const options: UspsRateOption[] = [];
-	const errorMatch = xml.match(/<Description>([^<]+)<\/Description>/);
-	if (errorMatch) {
-		throw new Error(errorMatch[1].trim());
+async function fetchUspsAccessToken(config?: USPSConfig) {
+	const consumerKey = (config?.consumerKey || '').toString().trim();
+	const consumerSecret = (config?.consumerSecret || '').toString().trim();
+
+	if (!consumerKey) {
+		throw new Error('USPS consumerKey is required to fetch rates.');
+	}
+	if (!consumerSecret) {
+		throw new Error('USPS consumerSecret is required to fetch rates.');
 	}
 
-	const postageRegex = /<Postage\s+MAILSERVICE="([^"]+)">[\s\S]*?<Rate>([^<]+)<\/Rate>/g;
-	let match: RegExpExecArray | null;
-	while ((match = postageRegex.exec(xml)) !== null) {
-		const serviceName = match[1].trim();
-		const rate = Number(match[2].trim());
-		if (!Number.isFinite(rate)) continue;
-		options.push({
-			serviceId: normalizeUspsServiceId(serviceName),
+	const tokenUrl = getUspsTokenUrl(config);
+	const tokenRequestBody = {
+		grant_type: 'client_credentials',
+		client_id: consumerKey,
+		client_secret: consumerSecret,
+	};
+
+	const tokenResponse = await smartFetch(tokenUrl, {
+		responseType: 'json',
+		proxy: config?.proxyUrl ? { url: config.proxyUrl, fallbackOnCors: true } : undefined,
+		requestInit: {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json;charset=UTF-8',
+			},
+			body: JSON.stringify(tokenRequestBody),
+		},
+	});
+
+	if (!tokenResponse || typeof tokenResponse.access_token !== 'string') {
+		throw new Error('Invalid USPS authentication response.');
+	}
+
+	return tokenResponse.access_token;
+}
+
+function buildTotalRatesRequestBody(params: {
+	fromZip: string;
+	fromCountry: string;
+	toZip: string;
+	toCountry: string;
+	weightOunces: number;
+	isDomestic: boolean;
+}) {
+	const weightPounds = Math.max(0.1, params.weightOunces / 16);
+	return {
+		originZIPCode: params.fromZip,
+		destinationZIPCode: params.toZip,
+		weight: Number(weightPounds.toFixed(2)),
+		length: 0.1,
+		width: 0.1,
+		height: 0.1,
+		mailClass: 'USPS_GROUND_ADVANTAGE',
+		processingCategory: 'MACHINABLE',
+		rateIndicator: 'SP',
+		destinationEntryFacilityType: 'NONE',
+		priceType: 'COMMERCIAL',
+		mailingDate: new Date().toISOString().slice(0, 10),
+		hasNonstandardCharacteristics: false,
+	};
+}
+
+function parseTotalRatesResponse(response: any): UspsRateOption[] {
+	if (!response) {
+		throw new Error('Invalid USPS response format.');
+	}
+
+	if (Array.isArray(response.errors) && response.errors.length > 0) {
+		const errorMessage = response.errors
+			.map((error: any) => error.detail || error.title || error.message || JSON.stringify(error))
+			.join('; ');
+		throw new Error(errorMessage || 'USPS returned an error response.');
+	}
+
+	if (response.error) {
+		throw new Error(typeof response.error === 'string' ? response.error : 'USPS returned an error response.');
+	}
+
+	const ratesSource = Array.isArray(response.rateOptions)
+		? response.rateOptions
+		: Array.isArray(response.totalRates)
+			? response.totalRates
+			: null;
+
+	if (!Array.isArray(ratesSource)) {
+		throw new Error('Invalid USPS response format.');
+	}
+
+	const rateEntries = ratesSource.flatMap((item: any) => {
+		if (Array.isArray(item.rates)) {
+			return item.rates;
+		}
+		return [item];
+	});
+
+	const parsedRates: Array<UspsRateOption | null> = rateEntries.map((rate: any, index: number) => {
+		const serviceName = String(rate?.description ?? rate?.service?.name ?? rate?.service?.id ?? rate?.mailClass ?? '').trim();
+		const serviceId = normalizeUspsServiceId(String(rate?.service?.id ?? rate?.mailClass ?? serviceName));
+		const rawCharge = rate?.price ?? rate?.summary?.totalCharge?.value ?? rate?.summary?.totalCharge?.amount ?? rate?.totalPrice ?? rate?.totalBasePrice;
+		const charge = Number(rawCharge);
+		if (!serviceName || !Number.isFinite(charge)) {
+			return null;
+		}
+		return {
+			rateId: `${serviceId}-${index}`,
+			serviceId,
 			serviceName,
-			rate,
-		});
-	}
-	return options;
-}
+			rate: charge,
+			deliveryTime: rate?.summary?.deliveryDays ? `${rate.summary.deliveryDays} days` : undefined,
+			serviceType: rate?.serviceType ?? rate?.service?.type,
+		};
+	});
 
-function parseInternationalRates(xml: string): UspsRateOption[] {
-	const options: UspsRateOption[] = [];
-	const errorMatch = xml.match(/<Description>([^<]+)<\/Description>/);
-	if (errorMatch) {
-		throw new Error(errorMatch[1].trim());
-	}
-
-	const serviceRegex = /<Service\s+ID="([^"]+)">[\s\S]*?<SvcDescription>([^<]+)<\/SvcDescription>[\s\S]*?<Postage>([^<]+)<\/Postage>/g;
-	let match: RegExpExecArray | null;
-	while ((match = serviceRegex.exec(xml)) !== null) {
-		const serviceId = match[1].trim();
-		const serviceName = match[2].trim();
-		const rate = Number(match[3].trim());
-		if (!Number.isFinite(rate)) continue;
-		options.push({
-			serviceId: normalizeUspsServiceId(serviceId || serviceName),
-			serviceName,
-			rate,
-		});
-	}
-	return options;
+	const filteredRates: UspsRateOption[] = parsedRates.filter((item: UspsRateOption | null): item is UspsRateOption => item !== null);
+	return filteredRates.sort((a, b) => a.rate - b.rate);
 }
 
 export async function getUspsRates(params: {
@@ -132,20 +196,30 @@ export async function getUspsRates(params: {
 
 	const weightOunces = Math.max(1, Math.round(params.weightOunces));
 	const isDomestic = fromCountry === 'US' && toCountry === 'US';
-	const apiName = isDomestic ? 'RateV4' : 'IntlRateV2';
-	const xml = isDomestic
-		? buildDomesticRateRequestXml({ fromZip, toZip, weightOunces })
-		: buildInternationalRateRequestXml({ fromZip, fromCountry, toCountry, weightOunces, packageValue: params.packageValue });
-
-	const url = `${getUspsApiUrl(params.config)}?API=${apiName}&XML=${encodeURIComponent(xml)}`;
-	const responseText = await smartFetch(url, {
-		responseType: 'text',
-		proxy: params.config?.proxyUrl ? { url: params.config.proxyUrl, fallbackOnCors: true } : undefined,
+	const accessToken = await fetchUspsAccessToken(uspsConfig);
+	const url = `${getUspsApiUrl(uspsConfig)}/total-rates/search`;
+	const requestBody = buildTotalRatesRequestBody({
+		fromZip,
+		fromCountry,
+		toZip,
+		toCountry,
+		weightOunces,
+		isDomestic,
 	});
 
-	if (typeof responseText !== 'string') {
-		throw new Error('Invalid USPS response format.');
-	}
+	const response = await smartFetch(url, {
+		responseType: 'json',
+		proxy: uspsConfig?.proxyUrl ? { url: uspsConfig.proxyUrl, fallbackOnCors: true } : undefined,
+		requestInit: {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${accessToken}`,
+			},
+			body: JSON.stringify(requestBody),
+		},
+	});
 
-	return isDomestic ? parseDomesticRates(responseText) : parseInternationalRates(responseText);
+	return parseTotalRatesResponse(response);
 }

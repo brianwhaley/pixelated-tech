@@ -54,11 +54,7 @@ describe('ShoppingCart provider selection and approval integration', () => {
 	});
 
 	async function renderWithConfig(config: any) {
-		let result: any;
-		await act(async () => {
-			result = render(<ShoppingCart />, { config: createMockConfig(config) });
-		});
-		return result;
+		return render(<ShoppingCart />, { config: createMockConfig(config) });
 	}
 
 	function setShoppingState() {
@@ -83,41 +79,37 @@ describe('ShoppingCart provider selection and approval integration', () => {
 	it('renders SquareCheckout when shoppingcart.provider is square and Square is configured', async () => {
 		await act(async () => {
 			setShoppingState();
+			renderWithConfig({
+				shoppingcart: { provider: 'square' },
+				square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+			});
+			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
 
-		renderWithConfig({
-			shoppingcart: { provider: 'square' },
-			square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
-		});
-
-		await waitFor(() => {
-			expect(screen.getByTestId('square-checkout')).toBeInTheDocument();
-		});
+		expect(screen.getByTestId('square-checkout')).toBeInTheDocument();
 	});
 
 	it('renders PayPalCheckout when shoppingcart.provider is paypal and PayPal is configured', async () => {
 		await act(async () => {
 			setShoppingState();
+			renderWithConfig({
+				shoppingcart: { provider: 'paypal' },
+				square: { squareApplicationId: '', squareLocationId: '' },
+			});
+			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
 
-		renderWithConfig({
-			shoppingcart: { provider: 'paypal' },
-			square: { squareApplicationId: '', squareLocationId: '' },
-		});
-
-		await waitFor(() => {
-			expect(screen.getByTestId('paypal-checkout')).toBeInTheDocument();
-		});
+		expect(screen.getByTestId('paypal-checkout')).toBeInTheDocument();
 	});
 
 	it('transitions to Thank You state when provider onApprove is called', async () => {
 		await act(async () => {
 			setShoppingState();
-		});
-
-		renderWithConfig({
-			shoppingcart: { provider: 'square' },
-			square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+			renderWithConfig({
+				shoppingcart: { provider: 'square' },
+				square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+			});
+			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
 
 		const checkoutButton = await screen.findByTestId('square-checkout');
@@ -131,18 +123,18 @@ describe('ShoppingCart provider selection and approval integration', () => {
 	it('passes orderFormName and orderDomain from shoppingcart config into emailJSON payload', async () => {
 		await act(async () => {
 			setShoppingState();
-		});
-
-		renderWithConfig({
-			shoppingcart: {
-				provider: 'square',
-				orderTo: 'orders@example.com',
-				orderFrom: 'noreply@example.com',
-				orderSubject: 'New Order',
-				orderFormName: 'Order Details',
-				orderDomain: 'example.com',
-			},
-			square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+			renderWithConfig({
+				shoppingcart: {
+					provider: 'square',
+					orderTo: 'orders@example.com',
+					orderFrom: 'noreply@example.com',
+					orderSubject: 'New Order',
+					orderFormName: 'Order Details',
+					orderDomain: 'example.com',
+				},
+				square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+			});
+			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
 
 		const checkoutButton = await screen.findByTestId('square-checkout');

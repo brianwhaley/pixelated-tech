@@ -60,11 +60,10 @@ export default function CartPage() {
 	return (
 		<>
 			<PageTitleHeader title="Shopping Cart" />
-			<PageSection columns={1} maxWidth="100%" id="cart-page">
+			<PageSection columns={1} maxWidth="1024px" id="cart-page">
 				<ShoppingCart
 					subtotalDiscountCustom={subtotalDiscountCustom}
 					additionalInfoForm={additionalInfoForm}
-					showShippingInfoSection={false}
 					onPaymentCapture={handlePaymentCapture}
 					siteInfo={siteConfig.siteInfo}
 				/>

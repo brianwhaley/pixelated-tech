@@ -37,7 +37,7 @@ export default async function RootLayout({
 					description: metadata?.description ?? "",
 					keywords: metadata?.keywords ?? "",
 					origin: origin ?? "",
-					url: url ?? "",
+					url,
 					siteInfo: siteInfo as SiteInfo,
 				})}
 				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />

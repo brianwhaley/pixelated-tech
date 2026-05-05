@@ -41,6 +41,10 @@ FormEngine.propTypes = {
 	name: PropTypes.string,
 	/** Form id attribute. Falls back to formData.properties.id */
 	id: PropTypes.string,
+	/** Ref attached to the rendered form element */
+	formRef: PropTypes.any,
+	/** Callback invoked whenever a generated field changes */
+	onFieldChange: PropTypes.func,
 	/** HTTP method (e.g., 'post') */
 	method: PropTypes.string,
 	/** Submit handler called when the form is valid and submitted. Falls back to FormSubmitWrapper context if available */
@@ -82,6 +86,8 @@ FormEngineInner.propTypes = {
 	name: PropTypes.string,
 	/** Form id attribute */
 	id: PropTypes.string,
+	/** Callback invoked whenever a generated field changes */
+	onFieldChange: PropTypes.func,
 	/** HTTP method */
 	method: PropTypes.string,
 	/** Submit handler */
@@ -92,6 +98,7 @@ FormEngineInner.propTypes = {
 type FormEngineInnerType = InferProps<typeof FormEngineInner.propTypes>;
 function FormEngineInner(props: FormEngineInnerType) {
 	const { validateAllFields } = useFormValidation();
+	const { formRef } = props as any;
 
 	// Try to get handleSubmit from FormSubmitWrapper context
 	let contextSubmitHandler: ((event: React.FormEvent<HTMLFormElement>) => Promise<void>) | undefined;
@@ -106,7 +113,7 @@ function FormEngineInner(props: FormEngineInnerType) {
 		// GENERATE PROPS TO RENDER THE FORM CONTAINER, INTERNAL FUNCTION
 		if (debug) console.log("Generating Form Props");
 		// Create a clean copy without non-serializable properties
-		const { formData, onSubmitHandler, ...formProps } = props;
+		const { formData, onSubmitHandler, formRef, onFieldChange, ...formProps } = props;
 		
 		// Extract name/id from properties with fallback to props
 		if (!formProps.name && (formData as any)?.properties?.name) {
@@ -129,6 +136,8 @@ function FormEngineInner(props: FormEngineInnerType) {
 	generateNewFields.propTypes = {
 		/** JSON form schema with `fields` array */
 		formData: PropTypes.any.isRequired,
+		/** Callback invoked whenever a generated field changes */
+		onFieldChange: PropTypes.func,
 	};
 	type generateNewFieldsType = InferProps<typeof generateNewFields.propTypes>;
 	function generateNewFields(props: generateNewFieldsType) {
@@ -137,12 +146,17 @@ function FormEngineInner(props: FormEngineInnerType) {
 		const newFields = [];
 		const formFields = props.formData.fields;
 		if (props.formData && formFields) {
-			// const thisFields = formFields;
 			for (let field = 0; field < formFields.length; field++) {
 				const thisField = formFields[field];
 				// Shallow clone props to preserve function handlers (JSON stringify drops functions)
 				const newProps: any = { ...thisField.props };
-				newProps.key = thisField.props.id || generateKey();
+				newProps.key = `${thisField.component}-${field}`;
+				if (props.onFieldChange) {
+					newProps.parent = {
+						...(newProps.parent ?? {}),
+						onChange: props.onFieldChange,
+					};
+				}
 
 				// Convert string numeric props to numbers where needed
 				const numericProps = ['maxLength', 'minLength', 'rows', 'cols', 'size', 'step'];
@@ -193,6 +207,13 @@ function FormEngineInner(props: FormEngineInnerType) {
 	}
 
 	return (
-		<form {...generateFormProps(props)} onSubmit={(event) => { handleSubmit(event); }} suppressHydrationWarning >{generateNewFields(props)}</form>
+		<form ref={formRef} 
+			{...generateFormProps(props)} 
+			onSubmit={(event) => { handleSubmit(event); }} 
+			suppressHydrationWarning >
+			{generateNewFields({ 
+				formData: props.formData, 
+				onFieldChange: props.onFieldChange })}
+		</form>
 	);
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '../test/test-utils';
-import { PageTitleHeader, PageSection, PageNav, PageFooter, PageSectionBackgroundImage } from '@/components/general/semantic';
+import { PageTitleHeader, PageSection, PageNav, PageFooter, PageSectionBackgroundImage, PageHeader, PageGridItem, PageFlexItem, PageMain } from '@/components/general/semantic';
 
 // Mock SmartImage component
 vi.mock('@/components/general/smartimage', () => ({
@@ -15,6 +15,20 @@ vi.mock('@/components/general/smartimage', () => ({
     ...props
   })
 }));
+
+vi.mock('@/components/config/config.client', async () => {
+  const actual = await vi.importActual<typeof import('@/components/config/config.client')>('@/components/config/config.client');
+  return {
+    ...actual,
+    usePixelatedConfig: vi.fn(() => ({
+      cloudinary: {
+        product_env: 'test-env',
+        baseUrl: 'https://res.cloudinary.com/test',
+        transforms: 'f_auto,q_auto',
+      },
+    })),
+  };
+});
 
 describe('Semantic Components', () => {
   describe('PageTitleHeader', () => {
@@ -103,6 +117,32 @@ describe('Semantic Components', () => {
       render(<PageTitleHeader title="Test" url="/Test-Page" />);
       const link = screen.getByRole('link');
       expect(link).toHaveAttribute('href', '/Test-Page');
+    });
+  });
+
+  describe('PageHeader', () => {
+    it('should render fixed header spacer and CTA link targets', () => {
+      render(
+        <PageHeader
+          fixed
+          eyebrow="Eyebrow"
+          headline="Headline"
+          description="Description"
+          ctaLabel="Learn More"
+          ctaHref="https://example.com"
+        >
+          <div>Child Content</div>
+        </PageHeader>
+      );
+
+      expect(screen.getByText('Eyebrow')).toBeInTheDocument();
+      expect(screen.getByText('Headline')).toBeInTheDocument();
+      expect(screen.getByText('Description')).toBeInTheDocument();
+      expect(screen.getByText('Learn More')).toHaveAttribute('target', '_blank');
+      expect(screen.getByText('Learn More')).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(screen.getByText('Child Content')).toBeInTheDocument();
+      expect(document.querySelector('.page-header-spacer')).toBeInTheDocument();
+      expect(document.querySelector('.page-header')).toHaveClass('fixed-header');
     });
   });
 
@@ -209,6 +249,63 @@ describe('Semantic Components', () => {
       );
       const section = container.querySelector('section');
       expect(section).toBeInTheDocument();
+    });
+  });
+
+  describe('PageSectionBackgroundImage', () => {
+    it('should render the smart image with cloudinary config props', () => {
+      render(<PageSectionBackgroundImage backgroundImage="https://example.com/bg.jpg" id="hero" />);
+
+      const image = screen.getByTestId('smart-image');
+      expect(image).toHaveAttribute('src', 'https://example.com/bg.jpg');
+      expect(image).toHaveAttribute('id', 'hero-background-image');
+      expect(image).toHaveAttribute('title', 'hero background image');
+      expect(image).toHaveAttribute('alt', 'hero background image');
+    });
+  });
+
+  describe('PageGridItem', () => {
+    it('should apply grid span and placement classes', () => {
+      const { container } = render(
+        <PageGridItem id="grid-item" className="custom-grid" columnSpan={3} columnStart={2} rowSpan={2}>
+          <div>Grid Content</div>
+        </PageGridItem>
+      );
+
+      const item = container.querySelector('#grid-item');
+      expect(item).toHaveClass('grid-item');
+      expect(item).toHaveClass('custom-grid');
+      expect(item).toHaveClass('grid-s2-w3');
+      expect(item).toHaveStyle({ gridRow: 'span 2' });
+    });
+  });
+
+  describe('PageFlexItem', () => {
+    it('should apply flex, order, and alignment styles', () => {
+      const { container } = render(
+        <PageFlexItem flex="2 1 auto" order={3} alignSelf="center">
+          <div>Flex Content</div>
+        </PageFlexItem>
+      );
+
+      const item = container.querySelector('.flex-item');
+      expect(item).toHaveStyle({ flex: '2 1 auto', order: '3', alignSelf: 'center' });
+    });
+  });
+
+  describe('PageMain', () => {
+    it('should render with custom size styles', () => {
+      const { container } = render(
+        <PageMain id="main" className="wide" maxWidth="1440px" padding="10px">
+          <div>Main Content</div>
+        </PageMain>
+      );
+
+      const main = container.querySelector('main');
+      expect(main).toHaveAttribute('id', 'main');
+      expect(main).toHaveClass('page-main');
+      expect(main).toHaveClass('wide');
+      expect(main).toHaveStyle({ maxWidth: '1440px', padding: '10px' });
     });
   });
 

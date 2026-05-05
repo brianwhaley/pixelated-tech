@@ -21,7 +21,7 @@ type ShoppingCartType = CartItemType;
 // Use an on-disk fixture where possible (shipping / discount fixtures live with the component)
 import personalInfoData from '../components/shoppingcart/checkout.personal.info.json';
 import discountInfoData from '../components/shoppingcart/checkout.discount.info.json';
-import shippingInfoData from '../components/shoppingcart/checkout.shipping.info.json';
+import shippingInfoData from '../components/shoppingcart/usps.generic.shipping.info.json';
 
 describe('ShoppingCart — integration (component + localStorage)', () => {
   beforeEach(() => {
@@ -46,12 +46,14 @@ describe('ShoppingCart — integration (component + localStorage)', () => {
       itemQuantity: 2,
       itemCost: 9.99,
     };
-    setCart([item]);
-
-    render(<ShoppingCart />);
+    await act(async () => {
+      setCart([item]);
+      render(<ShoppingCart />);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
 
     // ensure the component rendered the item title
-    expect(await screen.findByText(/Integration Item/)).toBeInTheDocument();
+    expect(screen.getByText(/Integration Item/)).toBeInTheDocument();
 
     // remove button should be present and remove the item from storage + UI
     const removeBtn = screen.getByRole('button', { name: 'Remove' });
@@ -68,23 +70,27 @@ describe('ShoppingCart — integration (component + localStorage)', () => {
 
   it('shows ShippingInfo when cart exists but no shipping info', async () => {
     const item: ShoppingCartType = { itemID: 's-1', itemTitle: 'Ship Item', itemQuantity: 1, itemCost: 5 };
-    setCart([item]);
-
-    const { container } = render(<ShoppingCart subtotalDiscountCustom={10} />);
+    let container: HTMLElement;
+    await act(async () => {
+      setCart([item]);
+      ({ container } = render(<ShoppingCart subtotalDiscountCustom={10} />));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
 
     // should show the checkout info section
-    expect(await screen.findByText(/Checkout Info/)).toBeInTheDocument();
+    expect(screen.getByText(/Checkout Info/)).toBeInTheDocument();
     // cart item should still be visible
     expect(screen.getByText(/Ship Item/)).toBeInTheDocument();
     // should render the checkout shipping form wrapper
     expect(container.querySelector('form#checkout_shipping')).toBeInTheDocument();
     expect(container.querySelector('#lbl-checkout_discount_custom_label')).toBeInTheDocument();
     expect(container.querySelector('#lbl-checkout_discount_custom_label')).toHaveTextContent('Discount applied: $10.00');
-    expect(screen.getByText(/Continue to Checkout/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /shipping info/i })).toBeInTheDocument();
+    expect(screen.getByText(/Complete the Zip Code Field to see your USPS Rates/i)).toBeInTheDocument();
     expect(personalInfoData.fields.map((field) => field.props?.name).filter(Boolean)).toEqual(
       expect.arrayContaining(['name', 'street1', 'city', 'state', 'zip', 'country']),
     );
-    expect(shippingInfoData.fields.some((field) => field.props?.name === 'shippingMethod')).toBe(true);
+    expect(shippingInfoData.fields.some((field) => field.props?.name === 'shippingMethod')).toBe(false);
   });
 
   it('CheckoutItems renders table rows and formats values', () => {
@@ -114,7 +120,10 @@ describe('ShoppingCart — integration (component + localStorage)', () => {
       itemCost: 1,
     };
 
-    render(<CartButton href="/cart" />);
+    await act(async () => {
+      render(<CartButton href="/cart" />);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
 
     // initially zero
     expect(screen.getByText(/\(0\)/)).toBeInTheDocument();

@@ -5,6 +5,11 @@ import BlogCalendar from '@/app/(pages)/blogcalendar/page';
 import RequestsPage from '@/app/(pages)/prospects/page';
 
 let currentPath = '/';
+let headerOverrides: Record<string, string | null | undefined> = {
+	'x-path': currentPath,
+	'x-origin': 'http://localhost',
+	'x-url': 'http://localhost/',
+};
 let routeMetadata: { title: string; description: string; keywords: string } | undefined = {
 	title: 'Home',
 	description: 'desc',
@@ -40,10 +45,7 @@ vi.mock('@pixelated-tech/components/server', () => ({
 vi.mock('next/headers', () => ({
 	headers: () => ({
 		get: (key: string) => {
-			if (key === 'x-path') return currentPath;
-			if (key === 'x-origin') return 'http://localhost';
-			if (key === 'x-url') return 'http://localhost/';
-			return null;
+			return headerOverrides[key] ?? null;
 		},
 	}),
 }));
@@ -72,7 +74,7 @@ describe('Oaktree app foundation', () => {
 		render(<Footer />);
 		render(<LayoutClient />);
 		render(<SocialTags />);
-		render(<UnderConstruction />);
+		expect(UnderConstruction()).toBeTruthy();
 		render(<GlobalError error={new Error('boom')} reset={() => {}} />);
 		render(<Loading />);
 		render(<NotFound />);
@@ -93,10 +95,20 @@ describe('Oaktree app foundation', () => {
 	});
 
 	it('renders fallback route metadata and path normalization in RootLayout', async () => {
+		headerOverrides = {
+			'x-path': null,
+			'x-origin': null,
+			'x-url': null,
+		};
 		currentPath = '/services/';
 		routeMetadata = undefined;
 		const layoutElement = await Layout({ children: <div data-testid="layout-fallback-child" /> });
 		expect(layoutElement).toBeTruthy();
+		headerOverrides = {
+			'x-path': currentPath,
+			'x-origin': 'http://localhost',
+			'x-url': 'http://localhost/',
+		};
 		currentPath = '/';
 		routeMetadata = { title: 'Home', description: 'desc', keywords: 'kw' };
 	});

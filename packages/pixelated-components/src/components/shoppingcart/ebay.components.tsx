@@ -16,56 +16,9 @@ import { usePixelatedConfig } from "../config/config.client";
 import "../../css/pixelated.grid.scss";
 import "./ebay.css";
 
-import { type EbayApiType, getMergedEbayConfig, getEbayAppToken, getEbayRateLimits, getEbayItems, getEbayItem } from "./ebay.functions";
+import { type EbayApiType, getMergedEbayConfig, getEbayAppToken, getEbayRateLimits, getEbayItems, getEbayItem, getEbayShoppingCartItem } from "./ebay.functions";
 
 const debug = false;
-
-
-
-
-getShoppingCartItem.propTypes = {
-	/** Raw eBay item object */
-	thisItem: PropTypes.any.isRequired,
-	/** Optional Cloudinary product environment */
-	cloudinaryProductEnv: PropTypes.string,
-	/** eBay API properties */
-	apiProps: PropTypes.any,
-};
-export type getShoppingCartItemType = InferProps<typeof getShoppingCartItem.propTypes>;
-export function getShoppingCartItem(props: getShoppingCartItemType) {
-	let qty: number;
-	const thisItem = props.thisItem;
-	const apiProps = props.apiProps as EbayApiType;
-	const itemCategory = apiProps?.itemCategory;
-
-	if (thisItem.categoryId && thisItem.categoryId == itemCategory) {
-		qty = 1;
-	} else if (thisItem.categories?.[0]?.categoryId && thisItem.categories[0].categoryId == itemCategory) {
-		qty = 1;
-	} else {
-		qty = 10;
-	}
-	const shoppingCartItem = {
-		itemImageURL: (thisItem.thumbnailImages && props.cloudinaryProductEnv)
-			? getImg({ url: thisItem.thumbnailImages[0].imageUrl, product_env: props.cloudinaryProductEnv })
-			: (thisItem.thumbnailImages)
-				? thisItem.thumbnailImages[0].imageUrl
-				: (thisItem.image && props.cloudinaryProductEnv)
-					? getImg({ url: thisItem.image.imageUrl, product_env: props.cloudinaryProductEnv })
-					: thisItem.image?.imageUrl || '',
-		itemID: thisItem.legacyItemId,
-		itemURL: thisItem.itemWebUrl,
-		itemTitle: thisItem.title,
-		itemQuantity: qty,
-		itemCost: thisItem.price.value,
-		itemCurrency: thisItem.price?.currency || 'USD',
-		itemIsShippable: true,
-		itemWeight: thisItem.shippingWeight ?? 0,
-		itemWeightUnit: thisItem.shippingWeightUnit || 'lb',
-		itemType: 'product',
-	};
-	return shoppingCartItem;
-}
 
 
 
@@ -207,6 +160,8 @@ EbayListFilter.propTypes = {
 };
 export type EbayListFilterType = InferProps<typeof EbayListFilter.propTypes>;
 export function EbayListFilter(props: EbayListFilterType) {
+	const [selectedAspectName, setSelectedAspectName] = useState('');
+	const [selectedAspectValue, setSelectedAspectValue] = useState('');
 
 	if (!props.aspects || !Array.isArray(props.aspects)) {
 		return null;
@@ -216,7 +171,7 @@ export function EbayListFilter(props: EbayListFilterType) {
 		aspect.localizedAspectName
 	)).sort();
 
-	let aspectNamesValues: any = {};
+	const aspectNamesValues: Record<string, string[]> = {};
 	for (const aspect of props.aspects) {
 		const thisAspectName: string = aspect.localizedAspectName;
 		const aspectNameValues = aspect.aspectValueDistributions.map((aspectValue: any) => {
@@ -225,31 +180,20 @@ export function EbayListFilter(props: EbayListFilterType) {
 		aspectNamesValues[thisAspectName] = aspectNameValues;
 	}
 
-	function onAspectNameChange() {
-		const aspectName = document.getElementById("aspectName") as HTMLSelectElement;
-		const aspectValue = document.getElementById("aspectValue") as HTMLSelectElement;
-		const aspectNameValues = aspectNamesValues[aspectName.value];
-		aspectNameValues.unshift("");
-		aspectValue.options.length = 0;
-		aspectNameValues.forEach((aspectValueString: string) => {
-			const option = document.createElement('option');
-			option.textContent = aspectValueString;
-			option.value = aspectValueString;
-			aspectValue.appendChild(option);
-		});
+	const selectedAspectValues = selectedAspectName ? (aspectNamesValues[selectedAspectName] || []) : [];
+
+	function onAspectNameChange(event: React.ChangeEvent<HTMLSelectElement>) {
+		setSelectedAspectName(event.target.value);
+		setSelectedAspectValue('');
 	}
 
-	function onAspectValueChange() {
-		// const aspectName = document.getElementById("aspectName") as HTMLSelectElement;
-		// const aspectValue = document.getElementById("aspectValue") as HTMLSelectElement;
-		return;
+	function onAspectValueChange(event: React.ChangeEvent<HTMLSelectElement>) {
+		setSelectedAspectValue(event.target.value);
 	}
 
 	function handleAspectFilter() {
-		const aspectName = document.getElementById("aspectName") as HTMLSelectElement;
-		const aspectValue = document.getElementById("aspectValue") as HTMLSelectElement;
-		if (aspectName.value && aspectValue.value) {
-			props.callback({ aspectName: aspectName.value, aspectValue: aspectValue.value });
+		if (selectedAspectName && selectedAspectValue) {
+			props.callback({ aspectName: selectedAspectName, aspectValue: selectedAspectValue });
 		}
 	}
 
@@ -257,8 +201,7 @@ export function EbayListFilter(props: EbayListFilterType) {
 		<form name="ebay-items-filter" id="ebay-items-filter">
 			<span className="filter-input">
 				<label htmlFor="aspectName">Aspect:</label>
-				{ }
-				<select id="aspectName" onChange={onAspectNameChange}>
+				<select id="aspectName" value={selectedAspectName} onChange={onAspectNameChange}>
 					<option value=""></option>
 					{aspectNames.map((aspectName: any, index: number) =>
 						<option key={index} value={aspectName}>{aspectName}</option>
@@ -266,13 +209,16 @@ export function EbayListFilter(props: EbayListFilterType) {
 				</select>
 			</span>
 			<span className="filter-input">
-				<label htmlFor="aspectValue" onChange={onAspectValueChange}>Value:</label>
-				<select id="aspectValue">
+				<label htmlFor="aspectValue">Value:</label>
+				<select id="aspectValue" value={selectedAspectValue} onChange={onAspectValueChange} disabled={!selectedAspectName}>
 					<option value=""></option>
+					{selectedAspectValues.map((aspectValueString: string, index: number) => (
+						<option key={index} value={aspectValueString}>{aspectValueString}</option>
+					))}
 				</select>
 			</span>
 			<span className="filter-input">
-				<button type="button" onClick={handleAspectFilter}>Filter</button>
+				<button type="button" onClick={handleAspectFilter} disabled={!selectedAspectName || !selectedAspectValue}>Filter</button>
 			</span>
 		</form>
 	);
@@ -307,7 +253,7 @@ export function EbayListItem(props: EbayListItemType) {
 	const itemImage = (props.cloudinaryProductEnv)
 		? getImg({ url: thisItem.thumbnailImages?.[0]?.imageUrl || thisItem.image?.imageUrl || '', product_env: props.cloudinaryProductEnv })
 		: thisItem.thumbnailImages?.[0]?.imageUrl || thisItem.image?.imageUrl || '';
-	const shoppingCartItem = getShoppingCartItem({ thisItem: thisItem, cloudinaryProductEnv: props.cloudinaryProductEnv, apiProps: apiProps });
+	const shoppingCartItem = getEbayShoppingCartItem({ thisItem: thisItem, cloudinaryProductEnv: props.cloudinaryProductEnv, apiProps: apiProps });
 	// CHANGE EBAY URL TO LOCAL EBAY ITEM DETAIL URL
 	shoppingCartItem.itemURL = itemURL;
 	const config = usePixelatedConfig();
@@ -434,7 +380,7 @@ export function EbayItemDetail(props: EbayItemDetailType) {
 		));
 		const itemURL = undefined;
 		const itemURLTarget = "_self"; /* "_blank" */
-		const shoppingCartItem = getShoppingCartItem({ thisItem: thisItem, cloudinaryProductEnv: props.cloudinaryProductEnv, apiProps: apiProps });
+		const shoppingCartItem = getEbayShoppingCartItem({ thisItem: thisItem, cloudinaryProductEnv: props.cloudinaryProductEnv, apiProps: apiProps });
 		shoppingCartItem.itemURL = itemURL;
 		return (
 			<>

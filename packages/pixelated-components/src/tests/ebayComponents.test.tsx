@@ -16,7 +16,7 @@ vi.mock('../components/shoppingcart/ebay.functions', () => ({
 	getEbayAppToken: vi.fn(),
 	getEbayItems: vi.fn(),
 	getEbayItem: vi.fn(),
-	getShoppingCartItem: vi.fn(),
+	getEbayShoppingCartItem: vi.fn(),
 	getEbayRateLimits: vi.fn(),
 	getEbayItemsSearch: vi.fn(),
 	getEbayProductSchema: vi.fn(),
@@ -48,7 +48,7 @@ describe('eBay Components Suite', () => {
 	beforeEach(() => {
 		mockedEbayFunctions.getEbayItems.mockResolvedValue([] as any);
 		mockedEbayFunctions.getEbayItem.mockResolvedValue({} as any);
-		mockedEbayFunctions.getShoppingCartItem.mockReturnValue({
+		mockedEbayFunctions.getEbayShoppingCartItem.mockReturnValue({
 			itemImageURL: 'https://example.com/image.jpg',
 			itemID: '12345',
 			itemURL: 'https://ebay.com/item/12345',

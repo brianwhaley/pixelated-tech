@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { getUspsRates } from '../components/shoppingcart/usps.functions';
 import { smartFetch } from '../components/foundation/smartfetch';
 
@@ -11,29 +11,35 @@ afterEach(() => {
 });
 
 describe('getUspsRates', () => {
-	it('parses USPS domestic rates returned by RateV4Response XML', async () => {
-		const mockXml = `<?xml version="1.0" encoding="UTF-8"?>
-<RateV4Response>
-	<Package ID="1">
-		<ZipOrigination>30301</ZipOrigination>
-		<ZipDestination>90210</ZipDestination>
-		<Zone>8</Zone>
-		<Postage MAILSERVICE="Priority Mail">
-			<MailService>Priority Mail</MailService>
-			<Rate>14.50</Rate>
-		</Postage>
-		<Postage MAILSERVICE="First-Class Mail Parcel">
-			<MailService>First-Class Mail Parcel</MailService>
-			<Rate>5.25</Rate>
-		</Postage>
-	</Package>
-</RateV4Response>`;
-
+	it('fetches USPS rates with OAuth2 and parses total rates from Prices API v3', async () => {
 		const mockSmartFetch = vi.mocked(smartFetch, true);
-		mockSmartFetch.mockResolvedValueOnce(mockXml as any);
+		mockSmartFetch
+			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({
+				rateOptions: [
+					{
+						rates: [
+							{
+								mailClass: 'USPS_GROUND_ADVANTAGE',
+								description: 'Priority Mail',
+								price: 14.5,
+							},
+						],
+					},
+					{
+						rates: [
+							{
+								mailClass: 'FIRST_CLASS_PACKAGE_SERVICE',
+								description: 'First-Class Mail Parcel',
+								price: 5.25,
+							},
+						],
+					},
+				],
+			});
 
 		const rates = await getUspsRates({
-			config: {},
+			config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
 			fromZip: '30301',
 			fromCountry: 'US',
 			toZip: '90210',
@@ -41,56 +47,115 @@ describe('getUspsRates', () => {
 			weightOunces: 16,
 		});
 
+		expect(mockSmartFetch).toHaveBeenCalledTimes(2);
+		expect(mockSmartFetch.mock.calls[0][0]).toBe('https://apis.usps.com/oauth2/v3/token');
+		expect(mockSmartFetch.mock.calls[0][1]?.requestInit?.headers).toMatchObject({
+			'Accept': 'application/json',
+			'Content-Type': 'application/json;charset=UTF-8',
+		});
+		expect(mockSmartFetch.mock.calls[0][1]?.requestInit?.body).toBe(JSON.stringify({
+			grant_type: 'client_credentials',
+			client_id: 'TESTUSER',
+			client_secret: 'TESTSECRET',
+		}));
+		expect(mockSmartFetch.mock.calls[1][0]).toBe('https://apis.usps.com/prices/v3/total-rates/search');
+		expect(mockSmartFetch.mock.calls[1][1]?.requestInit?.headers).toMatchObject({
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer TEST_USPS_TOKEN',
+		});
+		const totalRatesRequestBody = JSON.parse(String(mockSmartFetch.mock.calls[1][1]?.requestInit?.body ?? '{}'));
+		expect(totalRatesRequestBody).toMatchObject({
+			originZIPCode: '30301',
+			destinationZIPCode: '90210',
+			weight: 1,
+			length: 0.1,
+			width: 0.1,
+			height: 0.1,
+			mailClass: 'USPS_GROUND_ADVANTAGE',
+			processingCategory: 'MACHINABLE',
+			rateIndicator: 'SP',
+			destinationEntryFacilityType: 'NONE',
+			priceType: 'COMMERCIAL',
+			hasNonstandardCharacteristics: false,
+		});
 		expect(rates).toHaveLength(2);
-		expect(rates[0]).toMatchObject({
-			serviceName: 'Priority Mail',
-			rate: 14.5,
-		});
-		expect(rates[1]).toMatchObject({
-			serviceName: 'First-Class Mail Parcel',
-			rate: 5.25,
-		});
+		expect(rates[0]).toMatchObject({ serviceName: 'First-Class Mail Parcel', rate: 5.25 });
+		expect(rates[1]).toMatchObject({ serviceName: 'Priority Mail', rate: 14.5 });
 	});
 
-	it('throws when the USPS API responds with an error', async () => {
-		const mockXml = `<?xml version="1.0" encoding="UTF-8"?>
-<Error>
-	<Number>80040B1A</Number>
-	<Source>RateV4Request</Source>
-	<Description>Authentication Succeeded. User Authorization Failed.</Description>
-</Error>`;
+	it('throws when USPS Prices API returns an error payload', async () => {
 		const mockSmartFetch = vi.mocked(smartFetch, true);
-		mockSmartFetch.mockResolvedValueOnce(mockXml as any);
+		mockSmartFetch
+			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({ errors: [{ title: 'Unauthorized', detail: 'Invalid credentials' }] });
 
 		await expect(
 			getUspsRates({
-				config: {},
+				config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
 				fromZip: '30301',
 				fromCountry: 'US',
 				toZip: '90210',
 				toCountry: 'US',
 				weightOunces: 16,
 			})
-		).rejects.toThrow('Authentication Succeeded. User Authorization Failed.');
+		).rejects.toThrow('Invalid credentials');
 	});
 
-	it('uses sandbox URL when environment is sandbox', async () => {
-		const mockXml = `<?xml version="1.0" encoding="UTF-8"?>
-<RateV4Response>
-	<Package ID="1">
-		<ZipOrigination>30301</ZipOrigination>
-		<ZipDestination>90210</ZipDestination>
-		<Postage MAILSERVICE="Priority Mail">
-			<MailService>Priority Mail</MailService>
-			<Rate>12.00</Rate>
-		</Postage>
-	</Package>
-</RateV4Response>`;
+	it('throws when USPS consumerKey is missing', async () => {
+		await expect(
+			getUspsRates({
+				config: { consumerKey: '', consumerSecret: 'TESTSECRET' },
+				fromZip: '30301',
+				fromCountry: 'US',
+				toZip: '90210',
+				toCountry: 'US',
+				weightOunces: 16,
+			})
+		).rejects.toThrow('USPS consumerKey is required to fetch rates.');
+	});
+
+	it('throws when USPS consumerSecret is missing', async () => {
+		await expect(
+			getUspsRates({
+				config: { consumerKey: 'TESTUSER', consumerSecret: '' },
+				fromZip: '30301',
+				fromCountry: 'US',
+				toZip: '90210',
+				toCountry: 'US',
+				weightOunces: 16,
+			})
+		).rejects.toThrow('USPS consumerSecret is required to fetch rates.');
+	});
+
+	it('throws when origin or destination postal codes are missing', async () => {
+		await expect(
+			getUspsRates({
+				config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
+				fromZip: '',
+				fromCountry: 'US',
+				toZip: '90210',
+				toCountry: 'US',
+				weightOunces: 16,
+			})
+		).rejects.toThrow('Origin and destination postal codes are required.');
+	});
+
+	it('uses sandbox URLs when environment is sandbox', async () => {
 		const mockSmartFetch = vi.mocked(smartFetch, true);
-		mockSmartFetch.mockResolvedValueOnce(mockXml as any);
+		mockSmartFetch
+			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({
+				totalRates: [
+					{
+						service: { id: 'PRIORITY_MAIL', name: 'Priority Mail' },
+						summary: { totalCharge: { value: '12.00', currency: 'USD' } },
+					},
+				],
+			});
 
 		const rates = await getUspsRates({
-			config: { environment: 'sandbox', sandboxBaseURL: 'https://sandbox.usps.com/ShippingAPI.dll' },
+			config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET', environment: 'sandbox', sandboxBaseURL: 'https://apis-tem.usps.com' },
 			fromZip: '30301',
 			fromCountry: 'US',
 			toZip: '90210',
@@ -98,26 +163,58 @@ describe('getUspsRates', () => {
 			weightOunces: 16,
 		});
 
-		expect(mockSmartFetch).toHaveBeenCalledWith(expect.stringContaining('https://sandbox.usps.com/ShippingAPI.dll'), expect.objectContaining({ responseType: 'text' }));
+		expect(mockSmartFetch.mock.calls[0][0]).toBe('https://apis-tem.usps.com/oauth2/v3/token');
+		expect(mockSmartFetch.mock.calls[1][0]).toBe('https://apis-tem.usps.com/prices/v3/total-rates/search');
 		expect(rates).toHaveLength(1);
 		expect(rates[0]).toMatchObject({ serviceName: 'Priority Mail', rate: 12 });
 	});
 
-	it('parses international USPS rates correctly', async () => {
-		const mockXml = `<?xml version="1.0" encoding="UTF-8"?>
-<IntlRateV2Response>
-	<Package ID="1">
-		<Service ID="123">
-			<SvcDescription>Priority Mail International</SvcDescription>
-			<Postage>45.75</Postage>
-		</Service>
-	</Package>
-</IntlRateV2Response>`;
+	it('includes deliveryDays and serviceType when USPS returns them', async () => {
 		const mockSmartFetch = vi.mocked(smartFetch, true);
-		mockSmartFetch.mockResolvedValueOnce(mockXml as any);
+		mockSmartFetch
+			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({
+				totalRates: [
+					{
+						service: { id: 'PRIORITY_MAIL', name: 'Priority Mail', type: 'EXPRESS' },
+						summary: { totalCharge: { value: '12.00', currency: 'USD' }, deliveryDays: 3 },
+					},
+				],
+			});
 
 		const rates = await getUspsRates({
-			config: {},
+			config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
+			fromZip: '30301',
+			fromCountry: 'US',
+			toZip: '90210',
+			toCountry: 'US',
+			weightOunces: 16,
+		});
+
+		expect(rates).toHaveLength(1);
+		expect(rates[0]).toMatchObject({
+			serviceName: 'Priority Mail',
+			rate: 12,
+			deliveryTime: '3 days',
+			serviceType: 'EXPRESS',
+		});
+	});
+
+	it('parses international USPS rates correctly', async () => {
+		const mockSmartFetch = vi.mocked(smartFetch, true);
+		mockSmartFetch
+			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({
+				totalRates: [
+					{
+						service: { id: 'PRI_INTL', name: 'Priority Mail International' },
+						summary: { totalCharge: { value: '45.75', currency: 'USD' } },
+					},
+				],
+			});
+
+		const rates = await getUspsRates({
+			config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
 			fromZip: '30301',
 			fromCountry: 'US',
 			toZip: 'M5V',
@@ -130,13 +227,15 @@ describe('getUspsRates', () => {
 		expect(rates[0]).toMatchObject({ serviceName: 'Priority Mail International', rate: 45.75 });
 	});
 
-	it('throws when USPS response is not a string', async () => {
+	it('throws when USPS response is invalid', async () => {
 		const mockSmartFetch = vi.mocked(smartFetch, true);
-		mockSmartFetch.mockResolvedValueOnce({} as any);
+		mockSmartFetch
+			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({} as any);
 
 		await expect(
 			getUspsRates({
-				config: {},
+				config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
 				fromZip: '30301',
 				fromCountry: 'US',
 				toZip: '90210',

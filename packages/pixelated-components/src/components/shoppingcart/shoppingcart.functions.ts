@@ -2,7 +2,7 @@
 import { getContentfulDiscountCodes } from "../integrations/contentful.delivery";
 import { CacheManager } from "../foundation/cache-manager";
 import { getDomain, formatAsUSD, formatAsHundredths } from "../foundation/utilities";
-import { shippingOptions } from './usps.generic.components';
+import type { ShoppingCartConfig } from "../config/config.types";
 
 // Migration-time verbose tracing per user request — remove after verification
 const debug = false;
@@ -86,24 +86,14 @@ export type CheckoutType = {
     shippingTo: ShippingInfoType,
     shippingCost: number,
     handlingFee: number,
+	currency?: string,
+	handlingFeeCurrency?: string,
     insuranceCost?: number,
     shipping_discount?: number,
     salesTax: number;
     total: number;
     shippingWeight?: number;
 }
-
-export type ShippingOptionType = {
-    id: string,
-    region: string,
-    provider: string,
-    service: string,
-    price: string,
-    speed: string,
-    perPound: number,
-}
-
-
 
 /* ======================================= */
 /* ========== BACKEND FUNCTIONS ========== */
@@ -226,45 +216,45 @@ export function removeFromShoppingCart(thisItem: CartItemType) {
 }
 
 
-export function clearShoppingCart() { 
-	if (debug) console.debug('ShoppingCart:clearShoppingCart -> removing keys via CacheManager');
+export function clearShoppingCart() {
+	if (debug) console.debug('ShoppingCart:clearShoppingCart -> using CacheManager.remove', shoppingCartKey, shippingInfoKey);
 	cartCache.remove(shoppingCartKey);
 	cartCache.remove(shippingInfoKey);
 	window.dispatchEvent(new Event('storage'));
 }
 
+
 export function clearShoppingCartCache() {
-	if (debug) console.debug('ShoppingCart:clearShoppingCartCache -> clearing in-memory cache');
+	if (debug) console.debug('ShoppingCart:clearShoppingCartCache -> using CacheManager.clear');
 	cartCache.clear();
 }
 
 /* ========== SHIPPING INFO FUNCTIONS ========== */
 
-
 export function getShippingInfo(): ShippingInfoType {
 	if (debug) console.debug('ShoppingCart:getShippingInfo -> using CacheManager.get', shippingInfoKey);
 	const cached = cartCache.get<ShippingInfoType>(shippingInfoKey);
-	if (cached) return cached;
 	// Migration complete — don't read raw localStorage directly. Return empty when no data.
-	return {} as ShippingInfoType;
+	return cached || ({} as ShippingInfoType);
 }
 
 
-export function setShippingInfo(shippingFormData: ShippingInfoType) { 
+export function setShippingInfo(shippingFormData: ShippingInfoType) {
 	if (debug) console.debug('ShoppingCart:setShippingInfo -> using CacheManager.set', shippingInfoKey, shippingFormData);
 	cartCache.set<ShippingInfoType>(shippingInfoKey, shippingFormData);
 	window.dispatchEvent(new Event('storage'));
 }
+
 
 function normalizeWeightToPounds(weight: number, unit?: string): number {
 	if (!weight || typeof weight !== 'number' || weight <= 0) return 0;
 	const normalizedUnit = String(unit || 'lb').trim().toLowerCase();
 	if (normalizedUnit === 'lb' || normalizedUnit === 'lbs') return weight;
 	if (normalizedUnit === 'oz' || normalizedUnit === 'ounce' || normalizedUnit === 'ounces') return weight / 16;
-	if (normalizedUnit === 'kg' || normalizedUnit === 'kgs') return weight * 2.20462;
 	if (normalizedUnit === 'g' || normalizedUnit === 'gram' || normalizedUnit === 'grams') return weight * 0.00220462;
 	return weight;
 }
+
 
 export function getCartShippingWeight(cart: CartItemType[]) {
 	let totalWeight = 0;
@@ -274,15 +264,12 @@ export function getCartShippingWeight(cart: CartItemType[]) {
 		const weight = Number(item.itemWeight ?? 0);
 		const quantity = Number(item.itemQuantity ?? 1);
 		if (!isShippable || weight <= 0 || quantity <= 0) continue;
-		totalWeight += normalizeWeightToPounds(weight, item.itemWeightUnit) * quantity;
+		const unit = item.itemWeightUnit;
+		totalWeight += normalizeWeightToPounds(weight, unit) * quantity;
 	}
 	return formatAsHundredths(totalWeight);
 }
 
-export function getShippingOption(method?: string): ShippingOptionType | undefined {
-	if (!method) return undefined;
-	return shippingOptions.find(item => item.id === method);
-}
 
 export function getShippingInfoWithDefaults(defaultShippingInfo?: Partial<ShippingInfoType>) {
 	const currentInfo = getShippingInfo();
@@ -301,16 +288,45 @@ export function getShippingCost(): number {
 			return formatAsHundredths(parsed);
 		}
 	}
+	return 0;
+}
+/* ========== CHECKOUT FUNCTIONS ========== */
 
-	const method = ship?.shippingMethod;
-	if (!method) return 0;
-	const option = shippingOptions.find(item => item.id === method);
-	if (!option) return 0;
-	const totalWeight = getCartShippingWeight(getCart());
-	const roundedWeight = Math.max(1, Math.ceil(totalWeight));
-	const basePrice = Number(option.price);
-	const shippingCost = basePrice + (roundedWeight - 1) * option.perPound;
-	return formatAsHundredths(shippingCost);
+
+export function getCheckoutData(defaultShippingInfo?: Partial<ShippingInfoType>, shoppingcartConfig?: Partial<ShoppingCartConfig>, subtotalDiscountCustom = 0) {
+	const shippingTo = getShippingInfoWithDefaults(defaultShippingInfo);
+	const itemCost = getCartSubTotal(getCart());
+	const subtotalDiscount = getCartSubtotalDiscount(getCart(), subtotalDiscountCustom);
+	const shippingCost = getShippingCost();
+	const handlingFeeType = shoppingcartConfig?.handlingFeeType === 'percentage' ? 'percentage' : 'fixed';
+	const handlingFeeAmount = Number(shoppingcartConfig?.handlingFeeAmount ?? 3.99);
+	const handlingFee = handlingFeeType === 'percentage'
+		? formatAsHundredths((itemCost - subtotalDiscount + shippingCost) * (Number.isFinite(handlingFeeAmount) && handlingFeeAmount >= 0 ? handlingFeeAmount : 0))
+		: formatAsHundredths(Number.isFinite(handlingFeeAmount) && handlingFeeAmount >= 0 ? handlingFeeAmount : 0);
+	const checkoutCurrency = typeof (shoppingcartConfig?.handlingFeeCurrency || shoppingcartConfig?.currency || 'USD') === 'string' && String(shoppingcartConfig?.handlingFeeCurrency || shoppingcartConfig?.currency || 'USD').trim()
+		? String(shoppingcartConfig?.handlingFeeCurrency || shoppingcartConfig?.currency || 'USD').trim().toUpperCase()
+		: 'USD';
+	const salesTaxRateValue = Number(shoppingcartConfig?.taxRate);
+	const salesTaxRate = Number.isFinite(salesTaxRateValue) && salesTaxRateValue >= 0 ? salesTaxRateValue : 0.06675;
+	const salesTax = formatAsHundredths(salesTaxRate * (itemCost + shippingCost + handlingFee));
+	const checkoutTotal = formatAsHundredths(itemCost - subtotalDiscount + shippingCost + handlingFee + salesTax);
+	const checkoutObj: CheckoutType = {
+		items: getCart(),
+		subtotal: itemCost,
+		subtotal_discount: subtotalDiscount,
+		shippingTo,
+		shippingCost,
+		handlingFee,
+		handlingFeeCurrency: checkoutCurrency,
+		currency: checkoutCurrency,
+		insuranceCost: undefined,
+		shipping_discount: undefined,
+		salesTax,
+		total: checkoutTotal,
+		shippingWeight: getCartShippingWeight(getCart()),
+	};
+	if (debug) console.log(checkoutObj);
+	return checkoutObj;
 }
 
 
@@ -392,7 +408,7 @@ export function getDiscountCode(codeString?: string){
 }
 
 
-export function getCartSubtotalDiscount(cart: CartItemType[]) {
+export function getCartSubtotalDiscount(cart: CartItemType[], subtotalDiscountCustom = 0) {
 	if (!cart) { return 0; } // If cart is empty, return 0
 	const cartSubTotal = getCartSubTotal(cart);
 	const shippingInfo = getShippingInfo();
@@ -406,62 +422,10 @@ export function getCartSubtotalDiscount(cart: CartItemType[]) {
 		}
 	}
 
-	return discountAmount;
+	const customDiscountAmount = Number(subtotalDiscountCustom);
+	const additionalDiscount = Number.isFinite(customDiscountAmount) && customDiscountAmount > 0 ? formatAsHundredths(customDiscountAmount) : 0;
+
+	return formatAsHundredths(discountAmount + additionalDiscount);
 }
 
-
-
-/* ========== CHECKOUT FUNCTIONS ========== */
-
-
-export function getHandlingFee(){
-	return 3.99;
-}
-
-
-export function getSalesTax(): number {
-	const itemCost = getCartSubTotal(getCart());
-	const shippingCost = getShippingCost();
-	const handlingFee = getHandlingFee();
-	const njSalesTaxRate = 0.06675;
-	const salesTax = njSalesTaxRate * (itemCost + shippingCost + handlingFee);
-	return formatAsHundredths(salesTax); 
-}
-
-
-export function getCheckoutTotal() {
-	const itemCost = getCartSubTotal(getCart());
-	const itemDiscount = getCartSubtotalDiscount(getCart());	
-	const shippingCost = getShippingCost();
-	const handlingFee = getHandlingFee();
-	const insuranceCost = 0;
-	const shipping_discount = 0;
-	const salesTax = getSalesTax();
-	const checkoutTotal = itemCost - itemDiscount + shippingCost + handlingFee + insuranceCost + shipping_discount + salesTax;
-	return formatAsHundredths(checkoutTotal);
-}
-
-
-export function getCheckoutData(defaultShippingInfo?: Partial<ShippingInfoType>){
-	const shippingTo = getShippingInfoWithDefaults(defaultShippingInfo);
-	const checkoutObj: CheckoutType = {
-		items: getCart(),
-		subtotal: getCartSubTotal(getCart()),
-		subtotal_discount: getCartSubtotalDiscount(getCart()),
-		shippingTo,
-		shippingCost: getShippingCost(),
-		handlingFee: getHandlingFee(),
-		insuranceCost: undefined,
-		shipping_discount: undefined,
-		salesTax: getSalesTax(),
-		total: getCheckoutTotal(),
-		shippingWeight: getCartShippingWeight(getCart()),
-	};
-	if (debug) console.log(checkoutObj);
-	return checkoutObj;
-}
-
-
-/* function completeCheckout() {
-} */
 

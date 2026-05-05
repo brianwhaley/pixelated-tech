@@ -3,12 +3,18 @@
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { FormEngine } from '../sitebuilder/form/formengine';
-import type { ShippingOptionType } from './shoppingcart.functions';
+import genericShippingFormData from './usps.generic.shipping.info.json';
 
-/**
- * Generic shipping options used by the legacy cart shipping flow.
- * Kept in the generic shipping component area because this is client-side UI data.
- */
+type ShippingOptionType = {
+	id: string;
+	region: string;
+	provider: string;
+	service: string;
+	price: string;
+	speed: string;
+	perPound: number;
+};
+
 export const shippingOptions: ShippingOptionType[] = [
 	{
 		id: 'USPS-GA',
@@ -66,20 +72,59 @@ export const shippingOptions: ShippingOptionType[] = [
 	}
 ];
 
+
+
+export function getGenericShippingOption(method?: string): ShippingOptionType | undefined {
+	if (!method) return undefined;
+	return shippingOptions.find((option) => option.id === method);
+}
+
+
+
 GenericShippingForm.propTypes = {
 	/** JSON schema for the shipping form */
-	shippingFormData: PropTypes.object.isRequired,
+	shippingFormData: PropTypes.object,
 	/** Submit handler invoked when the shipping form is submitted */
 	onShippingSubmit: PropTypes.func.isRequired,
 };
 export type GenericShippingFormType = InferProps<typeof GenericShippingForm.propTypes>;
 export function GenericShippingForm(props: GenericShippingFormType) {
+	const shippingFormData = (props.shippingFormData ?? genericShippingFormData) as any;
+	const shippingMethodField = {
+		component: 'FormRadio',
+		props: {
+			id: 'shippingMethod',
+			name: 'shippingMethod',
+			label: 'Shipping Method : ',
+			display: 'vertical',
+			tooltip: 'Please select your Shipping Method',
+			options: shippingOptions.map((option) => ({
+				value: option.id,
+				text: `USPS ${option.service} ( ${option.speed} ) $${option.price}`,
+			})),
+			checked: shippingOptions[0]?.id ?? '',
+		},
+	};
+
+	const genericFields = Array.isArray(shippingFormData.fields) ? [...shippingFormData.fields] : [];
+	const buttonIndex = genericFields.findIndex((field: any) => field?.component === 'FormButton');
+	if (buttonIndex >= 0) {
+		genericFields.splice(buttonIndex, 0, shippingMethodField);
+	} else {
+		genericFields.push(shippingMethodField);
+	}
+
 	return (
 		<FormEngine
 			name="checkout_shipping"
 			id="checkout_shipping"
-			formData={props.shippingFormData}
+			formData={{
+				...shippingFormData,
+				fields: genericFields,
+			}}
 			onSubmitHandler={props.onShippingSubmit}
 		/>
 	);
 }
+
+

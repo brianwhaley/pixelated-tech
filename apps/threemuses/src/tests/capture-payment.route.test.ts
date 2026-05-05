@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { POST } from '@/app/api/capture-payment/route';
 
-vi.mock('@pixelated-tech/components', () => ({
+vi.mock('@pixelated-tech/components/server', () => ({
 	captureSquarePayment: vi.fn(async () => ({ success: true })),
 }));
 

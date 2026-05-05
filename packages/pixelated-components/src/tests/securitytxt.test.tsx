@@ -5,6 +5,7 @@ import {
   safeJSON,
   generateSecurityTxt,
   createWellKnownResponse,
+  createTextResponsePayload,
 } from '@/components/foundation/well-known';
 import { sanitizeString } from '@/components/foundation/utilities';
 
@@ -52,5 +53,15 @@ describe('securitytxt (server)', () => {
     const req2 = new NextRequest(new URL('https://example.test/.well-known/security.txt'), { headers: { 'if-none-match': generated.etag } });
     const resp2 = await createWellKnownResponse('security', req2, { siteConfig: { siteInfo: { email: 'security@example.test' }, routes } });
     expect(resp2.status).toBe(304);
+  });
+
+  it('createTextResponsePayload returns stable headers and etag for the same body', () => {
+    const first = createTextResponsePayload('hello world');
+    const second = createTextResponsePayload('hello world');
+
+    expect(first.body).toBe('hello world');
+    expect(first.etag).toBe(second.etag);
+    expect(first.headers['Content-Type']).toContain('text/plain');
+    expect(first.headers['Cache-Control']).toContain('max-age=60');
   });
 });

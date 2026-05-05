@@ -16,17 +16,17 @@ import UpdatesPage from '@/app/(pages)/updates/page';
 describe('Threemuses page coverage', () => {
 	it('renders the dancewear page title', async () => {
 		render(<DancewearPage />);
-		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Terpsichore's Dancewear"));
+		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Dancewear"));
 	});
 
 	it('renders the sewing page title', async () => {
 		render(<SewingPage />);
-		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Erato's Sewing Studio"));
+		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Sewing Studio"));
 	});
 
 	it('renders the boutique page title', async () => {
 		render(<BoutiquePage />);
-		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Thalia's Boutique"));
+		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Boutique"));
 	});
 
 	it('renders the contact page title and contact info links', async () => {

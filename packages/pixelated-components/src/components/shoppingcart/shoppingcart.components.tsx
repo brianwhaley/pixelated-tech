@@ -1,44 +1,50 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { PageSectionHeader } from '../general/semantic';
-import { FormEngine } from "../sitebuilder/form/formengine";
+import { FormEngine } from '../sitebuilder/form/formengine';
 import { FormButton } from '../sitebuilder/form/formcomponents';
 import { emailJSON } from "../sitebuilder/form/formsubmit";
 import '../sitebuilder/form/form.css';
 import { MicroInteractions } from '../foundation/microinteractions';
 import { Modal, handleModalOpen } from '../general/modal';
 import { Table } from "../general/table";
-import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount, getCartShippingWeight, getShippingOption, getShippingCost } from "./shoppingcart.functions";
+import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount, getCartShippingWeight, getShippingCost } from "./shoppingcart.functions";
 import { formatAsUSD, formatAsHundredths } from "../foundation/utilities";
 import type { CartItemType, CheckoutType, ShippingInfoType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
 import type { SiteInfo } from '../config/siteconfig.types';
-import { GenericShippingForm } from './usps.generic.components';
-// USPSShippingForm preserved for the new USPS Shipping Component integration.
-// This import remains commented while the generic shipping form is used.
-// import { USPSShippingForm } from './usps.components';
+import './usps.components';
+import type { UspsRateOption } from './usps.functions';
 import { SmartImage } from '../general/smartimage';
 import { getActivePaymentProvider } from './shoppingcart.providers';
 import personalInfoData from "./checkout.personal.info.json";
 import discountInfoData from "./checkout.discount.info.json";
-import shippingInfoData from "./checkout.shipping.info.json";
 import "./shoppingcart.css";
-
-
 
 const debug = false;
 
+
+
 /* ================================================ */
-/* ========== SHOPPING CART UI COMPONENT ========== */
+/* ============ SHOPPING CART HELPERS ============= */
 /* ================================================ */
 
 type ShoppingCartFormOverride = {
 	fields?: any[];
 	properties?: Record<string, any>;
 };
+
+
+
+
+
+
+/* ================================================ */
+/* ========== SHOPPING CART UI COMPONENT ========== */
+/* ================================================ */
 
 /**
  * ShoppingCart — page-level shopping cart UI that handles items, shipping, and checkout flows.
@@ -61,12 +67,12 @@ ShoppingCart.propTypes = {
 	shippingInfoForm: PropTypes.object,
 	/** Optional override for additional checkout info fields */
 	additionalInfoForm: PropTypes.object,
-	/** Optional flag to hide the shipping section when cart items are non-shippable */
-	showShippingInfoSection: PropTypes.bool,
 };
 export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes> & { personalInfoForm?: ShoppingCartFormOverride; discountInfoForm?: ShoppingCartFormOverride; shippingInfoForm?: ShoppingCartFormOverride; additionalInfoForm?: ShoppingCartFormOverride; siteInfo?: SiteInfo };
 export function ShoppingCart(props: ShoppingCartType) {
 	const config = usePixelatedConfig();
+	const shippingFormRef = useRef<HTMLFormElement | null>(null);
+	const [shippingFormRevision, setShippingFormRevision] = useState(0);
 	const effectiveConfig = config || {};
 	const siteInfo = props.siteInfo;
 
@@ -76,16 +82,21 @@ export function ShoppingCart(props: ShoppingCartType) {
 		originPostalCode: siteInfo?.address?.postalCode ?? undefined,
 		originCountry: siteInfo?.address?.addressCountry ?? undefined,
 	};
-	// USPSShippingForm feature flag preserved for the new USPS Shipping Component integration.
-	// const hasUSPSShipping = Boolean(effectiveConfig?.usps);
-	const checkoutDataForProvider = getCheckoutData(shippingDefaults);
 	const checkoutDiscountCustom = props.subtotalDiscountCustom ?? 0;
+	const checkoutDataForProvider = getCheckoutData(shippingDefaults, effectiveConfig?.shoppingcart, checkoutDiscountCustom);
 
 	const personalInfoFormData = props.personalInfoForm ?? personalInfoData;
 	const discountInfoFormData = props.discountInfoForm ?? discountInfoData;
-	const shippingInfoFormData = props.shippingInfoForm ?? shippingInfoData;
 	const additionalInfoFormData = props.additionalInfoForm;
-	const showShippingInfoSection = props.showShippingInfoSection !== false;
+	const hasUSPSShipping = Boolean(effectiveConfig?.usps);
+	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
+	const [ shippingData, setShippingData ] = useState<any>();
+	const [ orderData, setOrderData ] = useState<any>();
+	const [ progressStep, setProgressStep ] = useState<ProgressStepType>("EmptyCart");
+	const [ uspsRates, setUspsRates ] = useState<UspsRateOption[]>([]);
+	const [ selectedUspsRate, setSelectedUspsRate ] = useState<any>(null);
+	const lastEmailSentForOrderRef = useRef<string | null>(null);
+	const showShippingSubForm = shoppingCart.some((item) => item?.itemIsShippable !== false);
 
 	const discountFormData = checkoutDiscountCustom > 0 ? {
 		...discountInfoFormData,
@@ -101,58 +112,59 @@ export function ShoppingCart(props: ShoppingCartType) {
 			}
 		]
 	} : discountInfoFormData;
+	const checkoutContinueButtonField = (!showShippingSubForm || selectedUspsRate) ? [{
+		component: 'FormButton',
+		props: {
+			id: 'saveShippingInfo',
+			type: 'submit',
+			text: 'Continue to Checkout',
+			className: 'pix-cart-button',
+		},
+	}] : [];
 	const shippingFormFields = [
 		...(personalInfoFormData?.fields ?? []),
 		...(discountFormData?.fields ?? []),
-		...(showShippingInfoSection ? (shippingInfoFormData?.fields ?? []) : []),
 		...(additionalInfoFormData ? [{
 			component: "FormSectionHeader",
 			props: {
 				"title": "Additional Checkout Info"
 			}
 		}] : []),
-		...(additionalInfoFormData?.fields ?? []),
-		{
-			component: "FormButton",
-			props: {
-				id: "saveShippingInfo",
-				type: "submit",
-				text: "Continue to Checkout",
-				className: "pix-cart-button"
-			}
-		}
+		...(additionalInfoFormData?.fields ?? [])
 	];
-	const shippingFormDataCombined = {
+	const checkoutFormData = {
 		properties: personalInfoFormData?.properties ?? {},
-		fields: shippingFormFields
-	};
-	const effectiveSubtotalDiscount = formatAsHundredths((checkoutDataForProvider.subtotal_discount || 0) + checkoutDiscountCustom);
-	const effectiveCheckoutData: CheckoutType = {
-		...checkoutDataForProvider,
-		subtotal_discount: effectiveSubtotalDiscount,
-		total: formatAsHundredths(
-			checkoutDataForProvider.subtotal - effectiveSubtotalDiscount + checkoutDataForProvider.shippingCost + checkoutDataForProvider.handlingFee + (checkoutDataForProvider.insuranceCost ?? 0) + (checkoutDataForProvider.shipping_discount ?? 0) + checkoutDataForProvider.salesTax
-		)
+		fields: [
+			...shippingFormFields,
+			...(showShippingSubForm && hasUSPSShipping ? [{
+				component: 'USPSShippingForm',
+				props: {
+					shippingDefaults,
+					formRef: shippingFormRef,
+					formRevision: shippingFormRevision,
+					shoppingCart,
+					rates: uspsRates,
+					selectedRate: selectedUspsRate,
+					onRatesChange: setUspsRates,
+					onSelectedRateChange: setSelectedUspsRate,
+				},
+			}] : []),
+			...checkoutContinueButtonField,
+		]
 	};
 	const checkoutShippingWeight = checkoutDataForProvider.shippingWeight ?? 0;
-	const checkoutShippingOption = getShippingOption(checkoutDataForProvider.shippingTo?.shippingMethod);
 	const paymentProviderProps = activeProvider ? {
-		...activeProvider.getProps(effectiveConfig, effectiveCheckoutData, {
+		...activeProvider.getProps(effectiveConfig, checkoutDataForProvider, {
 			onPaymentCapture: props.onPaymentCapture ?? undefined,
 		}),
 	} : {};
-	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
-	const [ shippingData, setShippingData ] = useState<any>();
-	const [ checkoutData, setcheckoutData ] = useState<CheckoutType>();
-	const [ orderData, setOrderData ] = useState<any>();
-	const [ progressStep, setProgressStep ] = useState<ProgressStepType>("EmptyCart");
-
-	type ProgressStepType = "EmptyCart" | "CartItems" | "ShippingInfo" | "Checkout" | "ThankYou" ;
+	type ProgressStepType = "EmptyCart" | "CartItems" | "Checkout" | "ThankYou" ;
 	function SetProgressStep(step?: ProgressStepType){
 		if (step) {
 			setProgressStep(step);
 		} else {
-			const hasShoppingCart = getCart().length > 0;
+			const currentCart = getCart();
+			const hasShoppingCart = currentCart.length > 0;
 			if (debug) console.log("hasShoppingCart", hasShoppingCart);
 			const hasShippingInfo = Object.keys(getShippingInfo()).length > 0 ;
 			if (debug) console.log("hasShippingInfo", hasShippingInfo);
@@ -164,7 +176,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 			} else if ( hasShippingInfo && hasShoppingCart ) {
 				setProgressStep("Checkout");
 			} else if (hasShoppingCart) {
-				setProgressStep("ShippingInfo");
+				setProgressStep("CartItems");
 			} else {
 				setProgressStep("EmptyCart");
 			}
@@ -191,7 +203,6 @@ export function ShoppingCart(props: ShoppingCartType) {
 		function handleStorageChange(){
 			setShoppingCart( getCart() );
 			setShippingData( getShippingInfo() );
-			setcheckoutData( getCheckoutData(shippingDefaults) );
 			SetProgressStep();
 		}
 		window.addEventListener('storage', handleStorageChange);
@@ -203,13 +214,21 @@ export function ShoppingCart(props: ShoppingCartType) {
 
 	useEffect(() => {
 		// LOAD THE SHIPPING INFO FORM WITH VALUES IF SHIPPING INFO HAS ALREADY BEEN SAVED
-		if (shippingData && progressStep === "ShippingInfo") {
+		if (shippingData && progressStep === "CartItems") {
 			Object.entries(shippingData).forEach(([key, value]) => {
 				const elements = Array.from(document.getElementsByName(key) as NodeListOf<HTMLInputElement>);
 				if (!elements.length) return;
-				if (elements[0].type === 'radio') {
+				if (elements[0].type === 'radio' || elements[0].type === 'checkbox') {
+					const selectedValues = Array.isArray(value)
+						? value.map((item) => String(item ?? '').trim())
+						: [String((value ?? '')).trim()];
 					elements.forEach(el => {
-						(el as HTMLInputElement).checked = String((value ?? '')).trim() === (el as HTMLInputElement).value;
+						const elementValue = String((el as HTMLInputElement).value ?? '').trim();
+						if (el.type === 'radio') {
+							(el as HTMLInputElement).checked = selectedValues.includes(elementValue);
+						} else {
+							(el as HTMLInputElement).checked = selectedValues.includes(elementValue) || selectedValues.includes('true') || selectedValues.includes('on');
+						}
 					});
 				} else {
 					elements.forEach(el => {
@@ -220,25 +239,55 @@ export function ShoppingCart(props: ShoppingCartType) {
 		}
 	}, [progressStep, shippingData]);
 
-	paintCartItems.PropTypes = {
-		items: PropTypes.array.isRequired
-	};
-	function paintCartItems(items: CartItemType[]){
-		if (debug) console.log("Painting Shopping Cart Items");
-		const newItems = [];
-		for (const key in items) {
-			const myItem: CartItemType = items[key];
-			const newItem = <ShoppingCartItem item={myItem} key={myItem.itemID}  />;
-			newItems.push(newItem);
+	useEffect(() => {
+		if (progressStep !== 'ThankYou' || !orderData) {
+			return;
 		}
-		return newItems;
-	}
+
+		const emailMarker = orderData?.id || orderData?.orderID || JSON.stringify(orderData);
+		if (lastEmailSentForOrderRef.current === emailMarker) {
+			return;
+		}
+
+		const cartConfig = config?.shoppingcart;
+		const json = {
+			'to': cartConfig?.orderTo,
+			'from': cartConfig?.orderFrom,
+			'subject': cartConfig?.orderSubject,
+			'formName': cartConfig?.orderFormName,
+			'domain': cartConfig?.orderDomain,
+			'orderData': JSON.stringify(orderData, null, 2),
+		};
+		emailJSON(json);
+		setShippingFormRevision((revision) => revision + 1);
+		lastEmailSentForOrderRef.current = emailMarker;
+	}, [progressStep, orderData, config]);
+
+	useEffect(() => {
+		if (progressStep !== 'CartItems' || !shippingData) {
+			return;
+		}
+
+		const savedRates = (shippingData as any).uspsRates;
+		if (Array.isArray(savedRates) && savedRates.length > 0 && uspsRates.length === 0) {
+			setUspsRates(savedRates);
+		}
+
+		const savedSelectedRate = (shippingData as any).selectedUspsRate;
+		if (savedSelectedRate && !selectedUspsRate) {
+			setSelectedUspsRate(savedSelectedRate);
+		}
+	}, [progressStep, shippingData, selectedUspsRate, uspsRates.length]);
 
 	function onShippingSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		const form = event.currentTarget as HTMLFormElement;
 		const formObject = Object.fromEntries(new FormData(form));
-		setShippingInfo(formObject as unknown as ShippingInfoType);
+		setShippingInfo({
+			...(formObject as unknown as ShippingInfoType),
+			uspsRates,
+			selectedUspsRate,
+		} as unknown as ShippingInfoType);
 	}
 
 	/**
@@ -259,56 +308,12 @@ export function ShoppingCart(props: ShoppingCartType) {
 
 	if ( progressStep === "ThankYou" ) {
 		// ========== SENDMAIL ==========
-		const cartConfig = config?.shoppingcart;
-		const json = {
-			'to': cartConfig?.orderTo,
-			'from': cartConfig?.orderFrom,
-			'subject': cartConfig?.orderSubject,
-			'formName': cartConfig?.orderFormName,
-			'domain': cartConfig?.orderDomain,
-			'orderData': JSON.stringify(orderData, null, 2),
-		};
-		const sendMailResponse = emailJSON(json);
-		if (debug) console.log("SendMail Response:", sendMailResponse);
-
 		// ========== THANK YOU ==========
-		if (debug) console.log('SendMail Response:', sendMailResponse);
-
-		const renderThankYouContent = () => {
-			if (!orderData) {
-				return (
-					<div>
-						<h3>Thank you for your payment!</h3>
-					</div>
-				);
-			}
-
-			const receipt = buildReceiptData(orderData, config);
-			if (receipt) {
-				return (
-					<div>
-						<h3>Thank you for your payment!</h3>
-						<br />
-						<h3 style={{"textAlign": "center"}}>Your Receipt:</h3>
-						{renderReceiptTable(receipt)}
-					</div>
-				);
-			}
-
-
-			return (
-				<div>
-					<h3>Thank you for your payment!</h3>
-					<pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{JSON.stringify(orderData, null, 2)}</pre>
-				</div>
-			);
-		};
-
 		return (
 			<div className="pix-cart">
 				<PageSectionHeader title="Shopping Cart : " />
 				<br />
-				{renderThankYouContent()}
+				<ShoppingCartReceipt orderData={orderData} config={config} />
 			</div>
 
 		);
@@ -317,69 +322,40 @@ export function ShoppingCart(props: ShoppingCartType) {
 		return (
 			<div className="pix-cart">
 				<PageSectionHeader title="Checkout Summary : " />
-				{ effectiveCheckoutData && <CheckoutItems {...effectiveCheckoutData} shippingWeight={checkoutShippingWeight} /> }
-				<br />
-				<FormButton className="pix-cart-button" type="button" id="backToCart" text="<= Back To Cart"
-					onClick={() => SetProgressStep("ShippingInfo")} />
-				<br />
-				<PageSectionHeader title="Payment Options : " />
 				{PaymentProviderComponent ? (
-					<PaymentProviderComponent
-						{...paymentProviderProps}
-						checkoutData={effectiveCheckoutData}
-						onApprove={handlePaymentSuccess}
+					<CheckoutSummary
+						effectiveCheckoutData={checkoutDataForProvider}
+						checkoutShippingWeight={checkoutShippingWeight}
+						PaymentProviderComponent={PaymentProviderComponent}
+						paymentProviderProps={paymentProviderProps}
+						onBackToCart={() => SetProgressStep("CartItems")}
+						handlePaymentSuccess={handlePaymentSuccess}
 					/>
 				) : (
 					<div>No payment provider is configured. Add PayPal or Square configuration to pixelated.config.json.</div>
 				)}
 			</div>
 		);
-	} else if ( progressStep === "ShippingInfo" ) {
-		// ========== SHOPPING CART ==========
-		// ========== SHIPPING INFO ==========
+	} else if ( progressStep === "CartItems" ) {
 		return (
 			<div className="pix-cart">
 				<PageSectionHeader title="Shopping Cart : " />
-				{ paintCartItems(shoppingCart ?? []) }
+				<ShoppingCartItems items={shoppingCart ?? []} />
 				<br />
-				<div>
-					<FormButton className="pix-cart-button" type="button" id="backToCart" text="Clear Cart"
+				<div className="pix-cart-actions">
+					<FormButton className="pix-cart-button" type="button" id="clearCart" text="Clear Cart"
 						onClick={() => clearShoppingCart()} />
 				</div>
-				<br /><br /><hr /><br /><br />
-				<div>
-					<PageSectionHeader title="Checkout Info" />
-					{shippingData?.shippingMethod ? (
-						<div className="pix-cart-shipping-summary">
-							<div><strong>Selected Shipping:</strong> {getShippingOption(shippingData.shippingMethod)?.service ?? shippingData.shippingMethod}</div>
-							<div><strong>Shipping Weight:</strong> {getCartShippingWeight(shoppingCart ?? [])} lb</div>
-							<div><strong>Estimated Shipping Cost:</strong> {formatAsUSD(getShippingCost())}</div>
-							<div><strong>Origin Country:</strong> {shippingData.originCountry ?? shippingDefaults.originCountry ?? 'US'}</div>
-							<div><strong>Origin Zip:</strong> {shippingData.originPostalCode ?? shippingDefaults.originPostalCode ?? 'Unknown'}</div>
-						</div>
-					) : (
-						<div className="pix-cart-shipping-summary">
-							<div>Select a shipping method below to calculate your shipping cost.</div>
-						</div>
-					)}
-					{/*
-						USPSShippingForm block preserved for the new USPS Shipping Component integration.
-						The generic shipping form is used while the new USPS form integration is being developed.
-						{hasUSPSShipping ? (
-							<USPSShippingForm
-								shippingData={shippingData ?? {}}
-								shippingDefaults={shippingDefaults}
-								personalInfoFormData={personalInfoFormData as any}
-								discountInfoFormData={discountFormData as any}
-								shoppingCart={shoppingCart}
-								onShippingSubmit={onShippingSubmit}
-								/>
-						) : (
-							<GenericShippingForm shippingFormData={shippingFormDataCombined as any} onShippingSubmit={onShippingSubmit} />
-						)}
-					*/}
-					<GenericShippingForm shippingFormData={shippingFormDataCombined as any} onShippingSubmit={onShippingSubmit} />
-				</div>
+				<br />
+				<hr />
+				<br />
+				<PageSectionHeader title="Checkout Info" />
+				<CheckoutInfoForm
+					checkoutFormData={checkoutFormData}
+					formRef={shippingFormRef}
+					onFieldChange={() => setShippingFormRevision((revision) => revision + 1)}
+					onShippingSubmit={onShippingSubmit}
+				/>
 			</div>
 		);
 	} else {
@@ -394,6 +370,195 @@ export function ShoppingCart(props: ShoppingCartType) {
 		);
 	}
 }
+
+
+
+
+
+/* ========================================
+====== SHOPPING CART ITEMS COMPONENT ======
+======================================== */
+
+/**
+ * ShoppingCartItems — renders the list of items in the shopping cart.
+ *
+ * @param {array} [props.items] - Array of shopping cart line items to render.
+ * Each item should have the shape: { itemID, itemURL, itemTitle, itemImageURL, itemQuantity, itemCost, itemIsShippable, itemWeight, itemWeightUnit }
+ */
+ShoppingCartItems.propTypes = {
+	items: PropTypes.arrayOf(PropTypes.shape({
+		itemID: PropTypes.string.isRequired,
+		itemURL: PropTypes.string,
+		itemTitle: PropTypes.string.isRequired,
+		itemImageURL: PropTypes.string,
+		itemQuantity: PropTypes.number.isRequired,
+		itemCost: PropTypes.number.isRequired,
+		itemIsShippable: PropTypes.bool,
+		itemWeight: PropTypes.number,
+		itemWeightUnit: PropTypes.string,
+	})).isRequired,
+};
+export type ShoppingCartItemsType = InferProps<typeof ShoppingCartItems.propTypes>;
+export function ShoppingCartItems({ items }: ShoppingCartItemsType) {
+	if (debug) console.log('Painting Shopping Cart Items');
+	return (
+		<>
+			{items.map((item) => item ? (
+				<ShoppingCartItem item={item} key={item.itemID} />
+			) : null)}
+		</>
+	);
+}
+
+
+
+
+
+
+/* ================================================ */
+/* ========= CHECKOUT INFO FORM COMPONENT ========= */
+/* ================================================ */
+
+/**
+ * CheckoutInfoForm — renders the form for collecting checkout information, including personal info, discounts, and additional fields.
+ *
+ * @param {object} [props.checkoutFormData] - Form configuration object containing fields and properties for the checkout form.
+ * @param {function} [props.onShippingSubmit] - Callback function invoked when the checkout form is submitted.
+ */
+CheckoutInfoForm.propTypes = {
+	checkoutFormData: PropTypes.object.isRequired,
+	formRef: PropTypes.any,
+	onFieldChange: PropTypes.func,
+	onShippingSubmit: PropTypes.func.isRequired,
+};
+export type CheckoutInfoFormType = InferProps<typeof CheckoutInfoForm.propTypes>;
+export function CheckoutInfoForm({ checkoutFormData, formRef, onFieldChange, onShippingSubmit }: CheckoutInfoFormType) {
+	return (
+		<FormEngine
+			name="checkout_shipping"
+			id="checkout_shipping"
+			formRef={formRef}
+			onFieldChange={onFieldChange}
+			formData={checkoutFormData as any}
+			onSubmitHandler={onShippingSubmit}
+		/>
+	);
+}
+
+
+
+
+
+/* ================================================ */
+/* ========== CHECKOUT SUMMARY COMPONENT ========== */
+/* ================================================ */
+
+/**
+ * CheckoutSummary — renders the checkout summary including order details and payment options.
+ *
+ * @param {object} [props.effectiveCheckoutData] - The computed checkout data including totals and discounts.
+ * @param {number} [props.checkoutShippingWeight] - The total shipping weight of the order.
+ * @param {React.ComponentType} [props.PaymentProviderComponent] - The payment provider component to render for processing payments.
+ * @param {object} [props.paymentProviderProps] - The props to pass to the payment provider component.
+ * @param {function} [props.onBackToCart] - Callback function invoked when the user wants to go back to the cart from the checkout summary.
+ * @param {function} [props.handlePaymentSuccess] - Callback function invoked when a payment is successfully processed.
+ */
+CheckoutSummary.propTypes = {
+	effectiveCheckoutData: PropTypes.object.isRequired,
+	checkoutShippingWeight: PropTypes.number.isRequired,
+	PaymentProviderComponent: PropTypes.elementType.isRequired,
+	paymentProviderProps: PropTypes.object.isRequired,
+	onBackToCart: PropTypes.func.isRequired,
+	handlePaymentSuccess: PropTypes.func.isRequired,
+};
+export type CheckoutSummaryType = InferProps<typeof CheckoutSummary.propTypes>;
+export function CheckoutSummary({
+	effectiveCheckoutData,
+	checkoutShippingWeight,
+	PaymentProviderComponent,
+	paymentProviderProps,
+	onBackToCart,
+	handlePaymentSuccess,
+}: CheckoutSummaryType) {
+	return (
+		<>
+			{ effectiveCheckoutData && <CheckoutItems {...(effectiveCheckoutData as any)} shippingWeight={checkoutShippingWeight} /> }
+			<br />
+			<div className="pix-cart-actions">
+				<FormButton className="pix-cart-button" type="button" id="backToCart" text="<= Back To Cart"
+					onClick={onBackToCart} />
+				<FormButton className="pix-cart-button" type="button" id="clearCart" text="Clear Cart"
+					onClick={() => clearShoppingCart()} />
+			</div>
+			<br />
+			<PageSectionHeader title="Payment Options : " />
+			<PaymentProviderComponent
+				{...paymentProviderProps}
+				checkoutData={effectiveCheckoutData}
+				onApprove={handlePaymentSuccess}
+			/>
+		</>
+	);
+}
+
+
+
+
+
+
+/* ================================================ */
+/* ======== SHOPPING CART RECEIPT COMPONENT ======= */
+/* ================================================ */
+
+/**
+ * ShoppingCartReceipt — renders the receipt details after a successful order, or a thank you message if no order data is available.
+ *
+ * @param {object} [props.orderData] - The order data returned after a successful payment, used to build the receipt.
+ * @param {object} [props.config] - Optional configuration object that may be used to customize receipt rendering.
+ */
+ShoppingCartReceipt.propTypes = {
+	orderData: PropTypes.any.isRequired,
+	config: PropTypes.any,
+};
+export type ShoppingCartReceiptType = InferProps<typeof ShoppingCartReceipt.propTypes>;
+export function ShoppingCartReceipt({ orderData, config }: ShoppingCartReceiptType) {
+	if (!orderData) {
+		return (
+			<div>
+				<h3>Thank you for your payment!</h3>
+			</div>
+		);
+	}
+
+	const receipt = buildReceiptData(orderData, config);
+	if (receipt) {
+		return (
+			<div>
+				<h3>Thank you for your payment!</h3>
+				<br />
+				<h3 style={{ textAlign: 'center' }}>Your Receipt:</h3>
+				{renderReceiptTable(receipt)}
+			</div>
+		);
+	}
+
+	return (
+		<div>
+			<h3>Thank you for your payment!</h3>
+			<pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{JSON.stringify(orderData, null, 2)}</pre>
+		</div>
+	);
+}
+
+
+
+
+
+
+
+/* ================================================ */
+/* ========= SHOPPING CART ITEM COMPONENT ========= */
+/* ================================================ */
 
 /**
  * ShoppingCartItem — Render a single cart line item showing thumbnail, title, quantity and price.
@@ -493,6 +658,11 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 
 
 
+
+/* ================================================ */
+/* =========== CHECKOUT ITEMS COMPONENT =========== */
+/* ================================================ */
+
 /**
  * CheckoutItems — Display a checkout summary with itemized lines and shipping information.
  *
@@ -566,17 +736,11 @@ export function CheckoutItems(props: CheckoutItemsType) {
 		<div>{to.street1}</div>
 		<div>{to.city}, {to.state} {to.zip}</div>
 		{to.country ? <div>{to.country}</div> : null}
-		{to.email ? <div>{to.email}</div> : null}
-		{to.phone ? <div>{to.phone}</div> : null}
 	</>;
 
-	const selectedShippingOption = getShippingOption(shippingTo?.shippingMethod ?? '');
 	let checkoutTableData = [{
 		"Name": "Shopping Cart Items : ",
 		"Value": cartItems,
-	}, {
-		"Name": "Subtotal Discount : ",
-		"Value": formatAsUSD(subtotal_discount),
 	}, {
 		"Name": "Subtotal : ",
 		"Value": formatAsUSD(subtotal),
@@ -584,11 +748,20 @@ export function CheckoutItems(props: CheckoutItemsType) {
 		"Name": "Shipping Address : ",
 		"Value": addr,
 	}, {
+		"Name": "Email : ",
+		"Value": to.email ? to.email : 'Not provided',
+	}, {
+		"Name": "Phone : ",
+		"Value": to.phone ? to.phone : 'Not provided',
+	}, {
 		"Name": "Shipping Method : ",
-		"Value": shippingTo?.shippingMethod ? `${selectedShippingOption?.service ?? shippingTo.shippingMethod} (${shippingTo.shippingMethod})` : 'Not selected',
+		"Value": shippingTo?.shippingMethod ? `${shippingTo.shippingMethod}` : 'Not selected',
 	}, {
 		"Name": "Shipping Weight : ",
 		"Value": shippingWeight ? `${formatAsHundredths(shippingWeight)} lb` : 'Not available',
+	}, {
+		"Name": "Discount : ",
+		"Value": formatAsUSD(subtotal_discount),
 	}, {
 		"Name": "Shipping Cost : ",
 		"Value": formatAsUSD(shippingCost),
@@ -617,6 +790,14 @@ export function CheckoutItems(props: CheckoutItemsType) {
 	);
 }
 
+
+
+
+
+
+/* ================================================ */
+/* ======== SHOPPING CART BUTTON COMPONENT ======== */
+/* ================================================ */
 
 /**
  * CartButton — Render a cart button showing the current cart item count and navigates to the cart page when clicked.
@@ -664,6 +845,13 @@ export function CartButton(props: CartButtonType) {
 }
 
 
+
+
+
+/* ================================================ */
+/* ====== VIEW ITEM DETAILS BUTTON COMPONENT ====== */
+/* ================================================ */
+
 /**
  * ViewItemDetails — Button to navigate to an item detail page for a given item ID.
  *
@@ -687,6 +875,14 @@ export function ViewItemDetails(props: ViewItemDetailsType){
 	);
 }
 
+
+
+
+
+
+/* ================================================ */
+/* ======== ADD TO CART BUTTON COMPONENT ========== */
+/* ================================================ */
 
 /**
  * AddToCartButton — Button that adds an item to the shopping cart and displays a confirmation modal.
@@ -724,6 +920,13 @@ export function AddToCartButton(props: AddToCartButtonType){
 	);
 }
 
+
+
+
+
+/* ================================================ */
+/* ======== GO TO  CART BUTTON COMPONENT ========== */
+/* ================================================ */
 
 /**
  * GoToCartButton — Button that navigates the user to the shopping cart page.
@@ -801,7 +1004,7 @@ function formatMoney(value: any) {
 	return parsed !== undefined ? formatAsUSD(parsed) : '';
 }
 
-function buildReceiptData(orderData: any, config?: any): ReceiptData | null {
+export function buildReceiptData(orderData: any, config?: any): ReceiptData | null {
 	const payload = orderData?.data ? orderData.data : orderData;
 	if (!payload) return null;
 
@@ -865,21 +1068,32 @@ function buildReceiptData(orderData: any, config?: any): ReceiptData | null {
 	};
 }
 
-function renderReceiptTable(receipt: ReceiptData) {
+export function renderReceiptTable(receipt: ReceiptData) {
 	const rows: Array<{ Field: string; Value: React.ReactNode }> = [
 		{ Field: 'Order ID', Value: receipt.orderId || 'Unknown' },
 		{ Field: 'Date & Time', Value: receipt.dateTime || 'Unknown' },
-		{ Field: 'Payment Status', Value: receipt.paymentStatus || 'Unknown' },
-		{ Field: 'Payment Method', Value: receipt.paymentMethod || 'Unknown' },
-		{ Field: 'Amount', Value: receipt.amount || 'Unknown' },
 		{ Field: 'Full Name', Value: receipt.fullName || 'Unknown' },
 		{ Field: 'Address', Value: receipt.address || 'Unknown' },
-		{ Field: 'Phone', Value: receipt.phone || 'Unknown' },
 		{ Field: 'Email', Value: receipt.email || 'Unknown' },
+		{ Field: 'Phone', Value: receipt.phone || 'Unknown' },
+		{ Field: 'Items', Value: receipt.items && receipt.items.length > 0 ? (
+			<Table
+				id="receipt-items-table"
+				data={receipt.items.map((item) => ({
+					ID: item.itemID,
+					Title: item.itemTitle,
+					Quantity: item.itemQuantity,
+					'Price per item': formatAsUSD(item.itemCost),
+				}))}
+			/>
+		) : 'None' },
 		{ Field: 'Shipping', Value: receipt.shipping || '0.00' },
 		{ Field: 'Handling', Value: receipt.handling || '0.00' },
 		{ Field: 'Tax', Value: receipt.tax || '0.00' },
+		{ Field: 'Total Amount', Value: receipt.amount || 'Unknown' },
+		{ Field: 'Payment Method', Value: receipt.paymentMethod || 'Unknown' },
 		{ Field: 'Credit Card (Last 4)', Value: receipt.creditCardLast4 || 'N/A' },
+		{ Field: 'Payment Status', Value: receipt.paymentStatus || 'Unknown' },
 	];
 
 	if (receipt.receiptUrl) {
@@ -889,31 +1103,10 @@ function renderReceiptTable(receipt: ReceiptData) {
 		});
 	}
 
-	if (receipt.items && receipt.items.length > 0) {
-		rows.push({
-			Field: 'Items',
-			Value: (
-				<Table
-					id="receipt-items-table"
-					data={receipt.items.map((item) => ({
-						ID: item.itemID,
-						Title: item.itemTitle,
-						Quantity: item.itemQuantity,
-						'Price per item': formatAsUSD(item.itemCost),
-					}))}
-				/>
-			),
-		});
-	}
-
 	return (
 		<div style={{ maxWidth: 768, margin: '0 auto' }}>
 			<Table id="receipt-summary-table" data={rows} />
 		</div>
 	);
 }
-
-
-
-
 

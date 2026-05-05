@@ -1,9 +1,14 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-03T04:04:34.717Z",
-    "imageCount": 165
+    "generatedAt": "2026-05-05T05:34:48.420Z",
+    "imageCount": 171
   },
   "images": [
+    "images/favicon/android-chrome-192x192.png",
+    "images/favicon/android-chrome-512x512.png",
+    "images/favicon/apple-touch-icon.png",
+    "images/favicon/favicon-16x16.png",
+    "images/favicon/favicon-32x32.png",
     "images/group-modern-ballet-dancers.jpg",
     "images/icons/1x1-white.jpg",
     "images/icons/1x1.png",
@@ -75,6 +80,7 @@
     "images/logo/20260430/three-muses-logo-aqua-variant.jpg",
     "images/logo/20260430/three-muses-logo-moss-variant.jpg",
     "images/logo/20260430/three-muses-logo-rose-variant.jpg",
+    "images/logo/favicon.jpg",
     "images/logo/muse1-terpsichore.png",
     "images/logo/muse2-erato.png",
     "images/logo/muse3-thalia.png",

@@ -61,7 +61,7 @@ describe('Square payment helper', () => {
 			},
 			location_id: 'test-location-id',
 			buyer_email_address: 'test@example.com',
-			statement_description_identifier: 'PixelatedCart',
+			statement_description_identifier: 'ThreeMusesCart',
 		});
 	});
 

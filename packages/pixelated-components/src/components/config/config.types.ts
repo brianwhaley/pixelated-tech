@@ -178,6 +178,12 @@ export interface ShoppingCartConfig {
 	currency?: string;
 	/** Tax rate as a decimal (e.g., 0.07 for 7%) */
 	taxRate?: number;
+	/** Handling fee calculation mode */
+	handlingFeeType?: 'fixed' | 'percentage';
+	/** Handling fee amount or percentage rate, expressed as a decimal */
+	handlingFeeAmount?: number;
+	/** Currency code used for handling fee configuration */
+	handlingFeeCurrency?: string;
 }
 
 export interface SquareConfig {
@@ -202,7 +208,7 @@ export interface SquareConfig {
 export interface USPSConfig {
 	/** USPS API consumer key */
 	consumerKey?: string;
-	/** USPS API consumer secret */
+	/** USPS API consumer secret (OAuth2 client secret) */
 	consumerSecret?: string;
 	/** Optional production API base URL override */
 	baseURL?: string;

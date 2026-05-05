@@ -10,6 +10,7 @@ import {
   createWellKnownResponse,
   getPixelatedComponentsPackageVersion,
   getPixelatedComponentsPackageVersionInfo,
+  createTextResponsePayload,
 } from '@/components/foundation/well-known';
 import { sanitizeString } from '@/components/foundation/utilities';
 
@@ -37,113 +38,16 @@ describe('humanstxt (server)', () => {
     expect(version).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+/);
   });
 
-  it('getPixelatedComponentsPackageVersionInfo returns all candidate sources from metadata', async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-version-info-'));
-    try {
-      await fs.mkdir(path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
-      await fs.writeFile(
-        path.join(tmpDir, 'package.json'),
-        JSON.stringify({
-          name: 'test-app',
-          version: '1.0.0',
-          dependencies: { '@pixelated-tech/components': '^3.15.33' },
-        }, null, 2)
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'package-lock.json'),
-        JSON.stringify({
-          name: 'test-app',
-          lockfileVersion: 3,
-          dependencies: {
-            '@pixelated-tech/components': { version: '3.15.33' },
-          },
-        }, null, 2)
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'npm-shrinkwrap.json'),
-        JSON.stringify({
-          name: 'test-app',
-          lockfileVersion: 1,
-          dependencies: {
-            '@pixelated-tech/components': { version: '3.15.33' },
-          },
-        }, null, 2)
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'pnpm-lock.yaml'),
-        `"@pixelated-tech/components@^3.15.33":\n  version: '3.15.33'\n`
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'yarn.lock'),
-        `"@pixelated-tech/components@^3.15.33":\n  version \"3.15.33\"\n`
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
-        JSON.stringify({ name: '@pixelated-tech/components', version: '3.15.33' }, null, 2)
-      );
-
-      const info = await getPixelatedComponentsPackageVersionInfo(tmpDir);
-      expect(info.selfExportedVersion).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+$/);
-      expect(info.packageJsonDependencyVersion).toBe('^3.15.33');
-      expect(info.nodeModulesPackageJsonVersion).toBe('3.15.33');
-      expect(info.packageLockVersion).toBe('3.15.33');
-      expect(info.npmShrinkwrapVersion).toBe('3.15.33');
-      expect(info.pnpmLockVersion).toBe('3.15.33');
-      expect(info.yarnLockVersion).toBe('3.15.33');
-      expect(info.resolverVersion).toBe('3.15.33');
-      expect(info.resolvedVersion).toBe(info.selfExportedVersion);
-    } finally {
-      await fs.rm(tmpDir, { recursive: true, force: true });
-    }
-  });
-
-  it('getPixelatedComponentsPackageVersionInfo reads package-lock.json from monorepo root for nested app cwd', async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-version-info-root-'));
-    try {
-      const appDir = path.join(tmpDir, 'apps', 'test-app');
-      await fs.mkdir(path.join(appDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
-      await fs.writeFile(
-        path.join(appDir, 'package.json'),
-        JSON.stringify({
-          name: 'test-app',
-          version: '1.0.0',
-          dependencies: { '@pixelated-tech/components': '^3.15.33' },
-        }, null, 2)
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'package.json'),
-        JSON.stringify({
-          name: 'root-test-app',
-          version: '1.0.0',
-          dependencies: { '@pixelated-tech/components': '^3.15.33' },
-        }, null, 2)
-      );
-      await fs.writeFile(
-        path.join(tmpDir, 'package-lock.json'),
-        JSON.stringify({
-          name: 'test-app',
-          lockfileVersion: 3,
-          dependencies: {
-            '@pixelated-tech/components': { version: '3.15.33' },
-          },
-        }, null, 2)
-      );
-      await fs.writeFile(
-        path.join(appDir, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
-        JSON.stringify({ name: '@pixelated-tech/components', version: '3.15.33' }, null, 2)
-      );
-
-      const info = await getPixelatedComponentsPackageVersionInfo(appDir);
-      expect(info.packageLockVersion).toBe('3.15.33');
-      expect(info.rootPackageJsonDependencyVersion).toBe('^3.15.33');
-    } finally {
-      await fs.rm(tmpDir, { recursive: true, force: true });
-    }
+  it('getPixelatedComponentsPackageVersionInfo returns the exported version info', async () => {
+    const info = await getPixelatedComponentsPackageVersionInfo(process.cwd());
+    expect(info.selfExportedVersion).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+$/);
+    expect(info.resolvedVersion).toBe(info.selfExportedVersion);
   });
 
   it('generateHumansTxt reads package.json from provided cwd when pkg is not passed', async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-humans-txt-'));
     try {
+      const pixelatedVersion = await getPixelatedComponentsPackageVersion(process.cwd());
       await fs.mkdir(path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
       await fs.writeFile(
         path.join(tmpDir, 'package.json'),
@@ -161,7 +65,7 @@ describe('humanstxt (server)', () => {
 
       expect(body).toContain('Site Package Name: test-app');
       expect(body).toContain('Site Package Version: 1.0.0');
-      expect(body).toContain('Site Pixelated Components Package Version: 3.15.33');
+      expect(body).toContain(`Site Pixelated Components Package Version: ${pixelatedVersion}`);
     } finally {
       await fs.rm(tmpDir, { recursive: true, force: true });
     }
@@ -202,5 +106,15 @@ describe('humanstxt (server)', () => {
     const req2 = new NextRequest(new URL('https://example.test/humans.txt'), { headers: { 'if-none-match': generated.etag } });
     const resp2 = await createWellKnownResponse('humans', req2, { pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });
     expect(resp2.status).toBe(304);
+  });
+
+  it('createTextResponsePayload returns stable headers and etag for the same body', () => {
+    const first = createTextResponsePayload('hello humans');
+    const second = createTextResponsePayload('hello humans');
+
+    expect(first.body).toBe('hello humans');
+    expect(first.etag).toBe(second.etag);
+    expect(first.headers['Content-Type']).toContain('text/plain');
+    expect(first.headers['Cache-Control']).toContain('max-age=60');
   });
 });

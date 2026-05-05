@@ -1,10 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { cleanup, render } from '@testing-library/react';
 import { DragHandler } from '../components/general/carousel.drag';
 
 // Test DragHandler as class, not React component
 describe('carousel.drag - DragHandler class', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		document.body.innerHTML = '';
+	});
+
+	afterEach(() => {
+		cleanup();
 		document.body.innerHTML = '';
 	});
 
@@ -87,10 +93,67 @@ describe('carousel.drag - DragHandler class', () => {
 		expect(element).toBeTruthy();
 		expect(element?.getAttribute('data-dragactive')).toBe('true');
 	});
+
+	it('calls nextImage when a drag moves far enough to the left', () => {
+		const nextImageMock = vi.fn();
+		const previousImageMock = vi.fn();
+		document.body.innerHTML = '<div class="carousel-card-wrapper" id="card"><span>Drag me</span></div>';
+		const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+		Object.defineProperty(wrapper, 'offsetLeft', { configurable: true, value: 10 });
+		render(<DragHandler activeIndex={0} targetDiv="carousel-card-wrapper" nextImage={nextImageMock} previousImage={previousImageMock} />);
+
+		const mouseDown = new MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 100 });
+		Object.defineProperty(mouseDown, 'pageX', { value: 100 });
+		wrapper.dispatchEvent(mouseDown);
+
+		const mouseMove = new MouseEvent('mousemove', { bubbles: true, cancelable: true, clientX: 20 });
+		Object.defineProperty(mouseMove, 'pageX', { value: 20 });
+		wrapper.dispatchEvent(mouseMove);
+
+		const mouseUp = new MouseEvent('mouseup', { bubbles: true, cancelable: true, clientX: 20 });
+		Object.defineProperty(mouseUp, 'pageX', { value: 20 });
+		wrapper.dispatchEvent(mouseUp);
+
+		expect(nextImageMock).toHaveBeenCalledTimes(1);
+		expect(previousImageMock).not.toHaveBeenCalled();
+	});
+
+	it('calls previousImage when a drag moves far enough to the right', () => {
+		const nextImageMock = vi.fn();
+		const previousImageMock = vi.fn();
+		document.body.innerHTML = '<div class="carousel-card-wrapper" id="card"><span>Drag me</span></div>';
+		const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+		Object.defineProperty(wrapper, 'offsetLeft', { configurable: true, value: 10 });
+		render(<DragHandler activeIndex={0} targetDiv="carousel-card-wrapper" nextImage={nextImageMock} previousImage={previousImageMock} />);
+
+		const mouseDown = new MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 20 });
+		Object.defineProperty(mouseDown, 'pageX', { value: 20 });
+		wrapper.dispatchEvent(mouseDown);
+
+		const mouseMove = new MouseEvent('mousemove', { bubbles: true, cancelable: true, clientX: 120 });
+		Object.defineProperty(mouseMove, 'pageX', { value: 120 });
+		wrapper.dispatchEvent(mouseMove);
+
+		const mouseUp = new MouseEvent('mouseup', { bubbles: true, cancelable: true, clientX: 120 });
+		Object.defineProperty(mouseUp, 'pageX', { value: 120 });
+		wrapper.dispatchEvent(mouseUp);
+
+		expect(previousImageMock).toHaveBeenCalledTimes(1);
+		expect(nextImageMock).not.toHaveBeenCalled();
+	});
+
+	it('restores the left position when the transition ends', () => {
+		document.body.innerHTML = '<div class="carousel-card-wrapper" id="card" style="left: 25px;"><span>Drag me</span></div>';
+		const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+		render(<DragHandler activeIndex={0} targetDiv="carousel-card-wrapper" nextImage={vi.fn()} previousImage={vi.fn()} />);
+
+		wrapper.dispatchEvent(new Event('transitionend', { bubbles: true }));
+
+		expect(wrapper.style.left).toBe('0px');
+	});
 });
 
-describe('DragHandler Component - Real Tests', () => {
-	const { render } = require('@testing-library/react');
+	describe('DragHandler Component - Real Tests', () => {
 
 	const createMockProps = () => ({
 		activeIndex: 0,

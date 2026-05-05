@@ -7,7 +7,7 @@
     {
       "component": "FormSectionHeader",
       "props": {
-        "title": "USPS Shipping Rates"
+        "title": "Shipping Info"
       }
     },
     {

@@ -16,7 +16,6 @@ import {
 	setShippingInfo,
 	getShippingCost,
 	getCartShippingWeight,
-	getShippingOption,
 	getShippingInfoWithDefaults,
 	validateDiscountCode,
 	getRemoteDiscountCodes,
@@ -24,9 +23,6 @@ import {
 	setDiscountCodes,
 	getDiscountCode,
 	getCartSubtotalDiscount,
-	getHandlingFee,
-	getSalesTax,
-	getCheckoutTotal,
 	getCheckoutData,
 	shoppingCartKey,
 	shippingInfoKey,
@@ -35,6 +31,7 @@ import {
 	type AddressType,
 	type DiscountCodeType,
 } from '../components/shoppingcart/shoppingcart.functions';
+import { getGenericShippingOption } from '../components/shoppingcart/usps.generic.components';
 import { getContentfulDiscountCodes } from '../components/integrations/contentful.delivery';
 
 vi.mock('../components/integrations/contentful.delivery', () => ({
@@ -546,22 +543,16 @@ describe('Shopping Cart Functions', () => {
 			expect(cost).toBe(0);
 		});
 
-		it('should return correct cost for valid shipping method', () => {
-			setShippingInfo({ shippingMethod: 'USPS-GA' });
+		it('should return the explicit shipping cost when one is stored', () => {
+			setShippingInfo({ shippingCost: '9.99' });
 			const cost = getShippingCost();
 			expect(cost).toBe(9.99);
 		});
 
-		it('should return 0 for invalid shipping method', () => {
-			setShippingInfo({ shippingMethod: 'INVALID' });
+		it('should ignore shipping method when no explicit shipping cost is stored', () => {
+			setShippingInfo({ shippingMethod: 'USPS-GA' });
 			const cost = getShippingCost();
 			expect(cost).toBe(0);
-		});
-
-		it('should handle multiple shipping options', () => {
-			setShippingInfo({ shippingMethod: 'USPS-PMX-I' });
-			const cost = getShippingCost();
-			expect(cost).toBe(69.98);
 		});
 
 		it('should calculate shipping weight across mixed units and ignore non-shippable items', () => {
@@ -581,11 +572,11 @@ describe('Shopping Cart Functions', () => {
 			]);
 			setShippingInfo({ shippingMethod: 'USPS-GA' });
 			const cost = getShippingCost();
-			expect(cost).toBe(13.99);
+			expect(cost).toBe(0);
 		});
 
 		it('should return shipping option metadata by ID', () => {
-			const option = getShippingOption('USPS-PM');
+			const option = getGenericShippingOption('USPS-PM');
 			expect(option).toBeDefined();
 			expect(option?.service).toBe('Priority Mail');
 			expect(option?.perPound).toBe(2.5);
@@ -597,6 +588,22 @@ describe('Shopping Cart Functions', () => {
 			const checkout = getCheckoutData({ originPostalCode: '94103', originCountry: 'US' });
 			expect(checkout.shippingTo.originPostalCode).toBe('94103');
 			expect(checkout.shippingTo.originCountry).toBe('US');
+		});
+
+		it('should return current shipping info when defaults are missing or invalid', () => {
+			const shippingInfo = { name: 'Jane Doe', shippingMethod: 'USPS-PM' };
+			setShippingInfo(shippingInfo);
+			expect(getShippingInfoWithDefaults()).toEqual(shippingInfo);
+			expect(getShippingInfoWithDefaults(null as any)).toEqual(shippingInfo);
+		});
+
+		it('should merge default shipping values with current shipping info', () => {
+			const shippingInfo = { name: 'Jane Doe', shippingMethod: 'USPS-PM' };
+			setShippingInfo(shippingInfo);
+			const merged = getShippingInfoWithDefaults({ originPostalCode: '10001', originCountry: 'US' });
+			expect(merged.originPostalCode).toBe('10001');
+			expect(merged.originCountry).toBe('US');
+			expect(merged.name).toBe('Jane Doe');
 		});
 	});
 
@@ -796,6 +803,14 @@ describe('Shopping Cart Functions', () => {
 			expect(discount).toBe(5);
 		});
 
+		it('should include a custom subtotal discount amount', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
+			];
+			const discount = getCartSubtotalDiscount(cart, 10);
+			expect(discount).toBe(10);
+		});
+
 		it('should return 0 for empty cart', () => {
 			// ensure no persisted discount or cart state from other tests
 			setDiscountCodes([]);
@@ -807,82 +822,13 @@ describe('Shopping Cart Functions', () => {
 
 	// ========== CHECKOUT FUNCTIONS ==========
 
-	describe('getHandlingFee', () => {
-		it('should return constant handling fee', () => {
-			const fee = getHandlingFee();
-			expect(fee).toBe(3.99);
-		});
-	});
-
-	describe('getSalesTax', () => {
-		it('should calculate sales tax correctly', () => {
-			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
-			];
-			setCart(cart);
-			setShippingInfo({ shippingMethod: 'USPS-GA' });
-			const tax = getSalesTax();
-			// (100 + 9.99 + 3.99) * 0.06675 = 7.60
-			expect(tax).toBeGreaterThan(7);
-			expect(tax).toBeLessThan(8);
-		});
-
-		it('should return formatted value', () => {
-			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 50.555 },
-			];
-			setCart(cart);
-			const tax = getSalesTax();
-			// Should be formatted to hundredths
-			expect(tax).toEqual(Math.trunc(tax * 100) / 100);
-		});
-	});
-
-	describe('getCheckoutTotal', () => {
-		it('should calculate total correctly', () => {
-			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
-			];
-			setCart(cart);
-			setShippingInfo({ shippingMethod: 'USPS-GA' });
-			const total = getCheckoutTotal();
-			// Subtotal: 100, Shipping: 9.99, Handling: 3.99, Tax: ~7.60
-			expect(total).toBeGreaterThan(120);
-		});
-
-		it('should include discount in total', () => {
-			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
-			];
-			setCart(cart);
-			setShippingInfo({ shippingMethod: 'USPS-GA' });
-			const totalWithoutDiscount = getCheckoutTotal();
-
-			const codes: DiscountCodeType[] = [
-				{
-					codeName: 'SAVE10',
-					codeDescription: 'Save 10%',
-					codeType: 'percent',
-					codeStart: '2024-01-01',
-					codeEnd: '2024-12-31',
-					codeValue: 0.1,
-				},
-			];
-			setDiscountCodes(codes);
-			setShippingInfo({ shippingMethod: 'USPS-GA', discountCode: 'SAVE10' });
-			const totalWithDiscount = getCheckoutTotal();
-
-			expect(totalWithDiscount).toBeLessThan(totalWithoutDiscount);
-		});
-	});
-
 	describe('getCheckoutData', () => {
 		it('should return complete checkout object', () => {
 			const cart: ShoppingCartType[] = [
 				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 2, itemCost: 50 },
 			];
 			setCart(cart);
-			setShippingInfo({ shippingMethod: 'USPS-GA', name: 'John Doe' });
+			setShippingInfo({ shippingCost: 9.99, name: 'John Doe' });
 
 			const checkout = getCheckoutData();
 
@@ -917,7 +863,7 @@ describe('Shopping Cart Functions', () => {
 				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
 			];
 			setCart(cart);
-			setShippingInfo({ shippingMethod: 'USPS-PM' });
+			setShippingInfo({ shippingCost: 14.99 });
 
 			const checkout = getCheckoutData();
 			const expectedSubtotal = 100;
@@ -927,6 +873,45 @@ describe('Shopping Cart Functions', () => {
 			expect(checkout.subtotal).toBe(expectedSubtotal);
 			expect(checkout.shippingCost).toBe(expectedShipping);
 			expect(checkout.handlingFee).toBe(expectedHandling);
+		});
+
+		it('should use configured handling fee settings', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
+			];
+			setCart(cart);
+			setShippingInfo({ shippingCost: 0, name: 'John Doe' });
+
+			const checkout = getCheckoutData(undefined, {
+				handlingFeeType: 'percentage',
+				handlingFeeAmount: 0.03,
+				handlingFeeCurrency: 'USD',
+				currency: 'USD',
+			} as any);
+
+			expect(checkout.currency).toBe('USD');
+			expect(checkout.handlingFeeCurrency).toBe('USD');
+			expect(checkout.handlingFee).toBe(3);
+			expect(checkout.total).toBeGreaterThan(103);
+		});
+
+		it('should include a custom subtotal discount in checkout data', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 100 },
+			];
+			setCart(cart);
+			setShippingInfo({ shippingCost: 0, name: 'John Doe' });
+
+			const checkout = getCheckoutData(undefined, {
+				handlingFeeType: 'fixed',
+				handlingFeeAmount: 0,
+				handlingFeeCurrency: 'USD',
+				taxRate: 0,
+				currency: 'USD',
+			} as any, 10);
+
+			expect(checkout.subtotal_discount).toBe(10);
+			expect(checkout.total).toBe(90);
 		});
 	});
 
@@ -969,7 +954,7 @@ describe('Shopping Cart Functions', () => {
 				shippingMethod: 'USPS-PMX',
 			});
 
-			expect(getShippingCost()).toBe(39.99);
+			expect(getShippingCost()).toBe(0);
 
 			// Apply discount
 			setDiscountCodes([

@@ -101,19 +101,20 @@ function buildBillingAddress(shippingTo: CheckoutType['shippingTo']) {
 
 export function buildSquarePaymentBody(sourceId: string, checkoutData: CheckoutType, idempotencyKey: string) {
 	const squareConfig = requireSquareConfig(checkoutData);
+	const currency = checkoutData.currency || 'USD';
 	return {
 		source_id: sourceId,
 		idempotency_key: idempotencyKey,
 		amount_money: {
 			amount: Math.round(checkoutData.total * 100),
-			currency: 'USD',
+			currency,
 		},
 		location_id: squareConfig.locationId,
 		autocomplete: true,
 		buyer_email_address: checkoutData.shippingTo?.email,
 		billing_address: buildBillingAddress(checkoutData.shippingTo),
-		note: 'Online order from Pixelated Tech shopping cart',
-		statement_description_identifier: 'PixelatedCart',
+		note: 'Online order from Three Muses of Bluffton shopping cart',
+		statement_description_identifier: 'ThreeMusesCart',
 	};
 }
 

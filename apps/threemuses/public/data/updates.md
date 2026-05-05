@@ -1,5 +1,25 @@
 # The Three Muses of Bluffton -- Updates
 
+## launch Day Activities
+
+* [  ] dont forget to update pixelated.config.json shoppingcart props before launch
+* [  ] dont forget to update pixelated.config.json square sandbox props before launch
+* [ X ] Move Square domain to AWS
+* [  ] Set up improvmx for email address
+* [  ] Use Katie's interest list spreadsheet as registrations for the blog
+* [  ] publish new introductory blog post
+
+## 2026-05-04 Final Final To Do List
+* [ x ] Spelling Mistake - Boutique - updaet to update
+* [ x ] Remove Muse names throughout the site - Terpsichore , Erato , Thalia
+* [  ] Square - use for email blast announcement for Launch, Summer Camps, etc.
+* [ x ] Note - Siblings must be in the same class to get the $25 discount
+* [ x ] Credit Card 3% Processing Fee
+* [ x ] Consign component - add to dance and boutique page too
+* [ x ] Katie is getting the Square Transfer Code
+* [  ] Send Katie the Blog Post to review
+
+
 ## 2026-04-30 Final To Do List
 
 * [  ] dont forget to update pixelated.config.json shoppingcart props before launch
@@ -20,6 +40,7 @@
 * [ x ] go through photos and add them to header, home page, faqs, everywhere
 * [ x ] on event detail page - remove "Add to Cart button" if event status is not "Open"
 * [ x ] on events listing page remove event from the listing if status = "Archived"
+* [ x ] custom favicon.ico
 
 ### Other Fonts Considered : 
 
@@ -56,7 +77,7 @@
 * [ x ] Add most recent blog to home page
 * [ x ] create blog listing page
 * [ x ] write announcement blog post
-* [  ] Move Square domain to AWS
+* [ X ] Move Square domain to AWS
 * [  ] Set up improvmx for email address
 * [ x ] Get descriptions, dates, times, sessions, schedules, etc of each of the the classes
 

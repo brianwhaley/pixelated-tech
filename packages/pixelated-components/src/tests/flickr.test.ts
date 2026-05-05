@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GetFlickrData } from '../components/integrations/flickr';
+import { GetFlickrData, FlickrWrapper } from '../components/integrations/flickr';
 
 // Mock fetch before importing the module
 global.fetch = vi.fn();
@@ -541,6 +541,74 @@ describe('flickr - GetFlickrData', () => {
 			};
 			expect(errorResponse.stat).toBe('fail');
 			expect(errorResponse.code).toBeGreaterThan(0);
+		});
+
+		it('returns undefined when Flickr API reports a failure status', async () => {
+			vi.mocked(global.fetch).mockResolvedValueOnce({
+				ok: true,
+				json: () => Promise.resolve({
+					stat: 'fail',
+					message: 'Bad API key',
+				}),
+			} as any);
+
+			const result = await GetFlickrData({});
+			expect(result).toBeUndefined();
+		});
+
+		it('returns undefined when Flickr API does not include photos or photoset', async () => {
+			vi.mocked(global.fetch).mockResolvedValueOnce({
+				ok: true,
+				json: () => Promise.resolve({
+					stat: 'ok',
+				}),
+			} as any);
+
+			const result = await GetFlickrData({});
+			expect(result).toBeUndefined();
+		});
+
+		it('invokes FlickrWrapper callback with scrubbed cards', async () => {
+			vi.mocked(global.fetch).mockResolvedValueOnce({
+				ok: true,
+				json: () => Promise.resolve({
+					photos: {
+						photo: [
+							{
+								id: '123',
+								title: 'Photo 1',
+								server: 'server',
+								secret: 'abc',
+								farm: 1,
+								datetaken: '2026-01-01 00:00:00',
+								description: { _content: 'A test image' },
+								ownername: 'photographer',
+							},
+						],
+					},
+					stat: 'ok',
+				}),
+			} as any);
+
+			const callback = vi.fn();
+			const cards = await FlickrWrapper({
+				api_key: 'test-key',
+				user_id: 'test-user',
+				callback,
+				photoSize: 'Medium',
+			} as any);
+
+			expect(callback).toHaveBeenCalledTimes(1);
+			expect(callback).toHaveBeenCalledWith([
+				expect.objectContaining({
+					index: 0,
+					cardIndex: 0,
+					cardLength: 1,
+					imageAlt: 'Photo 1',
+					subHeaderText: '1 of 1 by photographer on 2026-01-01 00:00:00',
+				}),
+			]);
+			expect(cards).toHaveLength(1);
 		});
 
 		it('should handle network timeouts', () => {

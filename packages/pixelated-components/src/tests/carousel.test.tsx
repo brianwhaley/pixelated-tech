@@ -441,6 +441,32 @@ describe('Carousel Draggable Functionality', () => {
 		expect(typeof dragHandlerCall.nextImage).toBe('function');
 		expect(typeof dragHandlerCall.previousImage).toBe('function');
 	});
+
+	it('should move to the next and previous card when navigation buttons are clicked', () => {
+		render(<Carousel cards={mockCards} />);
+
+		const buttons = screen.getAllByRole('button');
+		fireEvent.click(buttons[2]);
+
+		const wrappersAfterNext = document.querySelectorAll('.carousel-card-wrapper');
+		expect(wrappersAfterNext[0]).toHaveStyle({ transform: 'translateX(-100%)' });
+		expect(wrappersAfterNext[1]).toHaveStyle({ transform: 'translateX(0%)' });
+
+		fireEvent.click(buttons[0]);
+
+		const wrappersAfterPrevious = document.querySelectorAll('.carousel-card-wrapper');
+		expect(wrappersAfterPrevious[0]).toHaveStyle({ transform: 'translateX(0%)' });
+	});
+
+	it('should keep the current card when pause is clicked before the timer elapses', () => {
+		render(<Carousel cards={mockCards} />);
+
+		const buttons = screen.getAllByRole('button');
+		fireEvent.click(buttons[1]);
+		vi.advanceTimersByTime(5000);
+
+		expect(screen.getByText('Card 1')).toBeInTheDocument();
+	});
 });
 
 describe('Carousel Card Positioning', () => {

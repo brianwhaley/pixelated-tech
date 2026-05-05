@@ -133,6 +133,9 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 										itemURL: `/events/${eventData.fields.id}`,
 										itemCategory: eventData.fields.category?.toString?.() ?? undefined,
 										itemImageURL: eventData.fields.carouselImages?.[0]?.image ?? undefined,
+										itemIsShippable: eventData.fields.isShippable ?? false,
+										itemWeight: typeof eventData.fields.weight === 'number' ? eventData.fields.weight : Number(eventData.fields.weight ?? 0),
+										itemWeightUnit: eventData.fields.weightUnit || 'lb',
 									});
 									router.push('/cart');
 								}}

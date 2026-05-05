@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { EbayItems } from '../components/shoppingcart/ebay.components';
+import * as ebayFunctions from '../components/shoppingcart/ebay.functions';
 
 
 // Mock dependencies
@@ -50,7 +51,6 @@ vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
 }));
 
-import * as ebayModule from '../components/shoppingcart/ebay.components';
 import { smartFetch } from '../components/foundation/smartfetch';
 import { ebayData } from '../test/test-data';
 
@@ -64,7 +64,7 @@ describe('eBay integration Tests', () => {
 		mockedSmartFetch
 			.mockResolvedValueOnce({ access_token: 'test-token' })
 			.mockResolvedValueOnce(mockApiResponse as any);
-		vi.spyOn(ebayModule, 'getShoppingCartItem').mockReturnValue({
+		vi.spyOn(ebayFunctions, 'getEbayShoppingCartItem').mockReturnValue({
 			itemImageURL: 'https://example.com/image.jpg',
 			itemID: '12345',
 			itemURL: 'https://ebay.com/item/12345',

@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { PageSection, PageSectionHeader, PageTitleHeader } from '@pixelated-tech/components';
 import { PageGridItem } from '@pixelated-tech/components';
 import { Callout, ToggleLoading } from '@pixelated-tech/components';
-import { getWordPressItems, BlogPostList } from "@pixelated-tech/components";
+import { getWordPressItems, getCachedWordPressItems, BlogPostList } from "@pixelated-tech/components";
+import * as componentLibrary from '../../elements/componentlibrary';
 
 // const wpSite = "blog.thethreemusesofbluffton.com";
-const wpSite = "thethreemusesofbluffton.wordpress.com";
+const wpSite = "thethreemusesofbluffton.wpcomstaging.com";
 
 export default function Home() {
 
@@ -30,7 +31,7 @@ export default function Home() {
 				<PageTitleHeader title="Welcome to The Three Muses of Bluffton" />
 				<div>
 					<p>
-					Welcome to The Three Muses of Bluffton, a sanctuary where classical artistry meets Lowcountry craftsmanship. Our studio nurtures your creative spirit through three distinct pillars: professional dancewear and expert pointe shoe fittings guided by Terpsichore, comprehensive sewing classes and high-end alterations under Erato, and a curated boutique of artisanal treasures overseen by Thalia. Whether you are preparing for a debut recital, tailoring a cherished garment, or seeking a bespoke gift for a special milestone, we provide a community-centered atmosphere where artistry is sewn into every stitch. Experience a unique destination where grace is found in every step.
+					Welcome to The Three Muses of Bluffton, a sanctuary where classical artistry meets Lowcountry craftsmanship. Our studio nurtures your creative spirit through three distinct pillars: professional dancewear and expert pointe shoe fittings, comprehensive sewing classes and high-end alterations, and a curated boutique of artisanal treasures. Whether you are preparing for a debut recital, tailoring a cherished garment, or seeking a bespoke gift for a special milestone, we provide a community-centered atmosphere where artistry is sewn into every stitch. Experience a unique destination where grace is found in every step.
 					</p>
 				</div>
 			</PageSection>
@@ -46,9 +47,9 @@ export default function Home() {
 						layout="vertical"
 						img="/images/logo/muse1-terpsichore.png"
 						url="/dancewear"
-						title="Terpsichore: The Spirit of the Dance"
+						title="The Spirit of the Dance"
 						subtitle="The Muse of Dance" 
-						content="Grace meets performance at the barre. Whether you are preparing for your first recital or your final curtain call, Terpsichore’s collection offers premium leotards, pointe shoes, and essentials designed to move with you. Step into confidence with dancewear that feels as good as it looks."
+						content="Grace meets performance at the barre. Whether you are preparing for your first recital or your final curtain call, we offer premium leotards, pointe shoes, and essentials designed to move with you. Step into confidence with dancewear that feels as good as it looks."
 						buttonText="Explore Our Dancewear Collection"
 					/>
 				</PageGridItem>
@@ -59,9 +60,9 @@ export default function Home() {
 						layout="vertical"
 						img="/images/logo/muse2-erato.png"
 						url="/sewing"
-						title="Erato: The Heart of the Stitch"
+						title="The Heart of the Stitch"
 						subtitle="The Muse of Craft & Creation"
-						content="Precision is an art form. Under the guidance of Erato, we celebrate the rhythm of the needle through our expert alteration services and hands-on sewing classes. From tailoring your favorite garment to teaching you the skills to create your own, we find the beauty in every stitch."
+						content="Precision is an art form. We celebrate the rhythm of the needle through our expert alteration services and hands-on sewing classes. From tailoring your favorite garment to teaching you the skills to create your own, we find the beauty in every stitch."
 						buttonText="Learn to Sew & Book Alterations"
 					/>
 				</PageGridItem>
@@ -72,9 +73,9 @@ export default function Home() {
 						layout="vertical"
 						img="/images/logo/muse3-thalia.png"
 						url="/boutique"
-						title="Thalia: The Joy of the Find"
+						title="The Joy of the Find"
 						subtitle="The Muse of Celebration"
-						content="Every gift tells a story. Thalia presides over our custom boutique, a curated space filled with unique treasures, bespoke accessories, and handcrafted items perfect for life’s special moments. Discover a gift as unique as the person receiving it."
+						content="Every gift tells a story. Our custom boutique is a curated space filled with unique treasures, bespoke accessories, and handcrafted items perfect for life's special moments. Discover a gift as unique as the person receiving it."
 						buttonText="Shop the Custom Boutique"
 					/>
 				</PageGridItem>
@@ -84,36 +85,13 @@ export default function Home() {
 
 
 			<PageSection columns={1} maxWidth="1024px" id="home-events-section">
-				<Callout
-					variant="boxed grid"
-					layout="horizontal"
-					direction="left"
-					gridColumns={{ left: 1, right: 3 }}
-					img="/images/logo/muse2-erato.png"
-					url="/events"
-					title="Erato's Upcoming Sewing Events"
-					subtitle="Join Us for Sewing Workshops, Classes, and Summer Camps" 
-					content="Whether you're a beginner eager to learn the basics or an experienced sewer looking to refine your skills, Erato's sewing events offer something for everyone. Our workshops and classes cover a range of topics, from mastering the fundamentals of sewing to exploring advanced techniques. Plus, our summer camps provide an immersive experience for young creatives to dive into the world of sewing in a fun and supportive environment. Join us and let Erato inspire your creativity with every stitch."
-					buttonText="Upcoming Sewing Events"
-				/>
+				<componentLibrary.UpcomingSewingEvents />
 			</PageSection>
 
 		
 
 			<PageSection columns={1} maxWidth="1024px" id="home-consign-section">
-				<Callout
-					variant="grid"
-					layout="horizontal"
-					direction="right"
-					gridColumns={{ left: 3, right: 1 }}
-					img="https://images.ctfassets.net/luf8eony1687/6RlzYli6GihWE5ZlX5NMjd/7062a3019f693b0aea9b98cf2a2c6797/dress-from-collection-museum-fine-arts.jpg"
-					url="/consign"
-					title="Consign With Us"
-					subtitle="Turn Your Gently Loved Items into Something Beautiful" 
-					content="The Three Muses of Bluffton invites you to consign your gently loved costumes and formal dresses to turn them into something beautiful. Bring in clean, high-quality, and excellent condition items that are ready to sell. We will price, display, and sell the items for you, allowing you to earn money as soon as they find a new home. We are ready to help you make beautiful new connections through your cherished wardrobe pieces."
-					buttonText="Consign With Us"
-				/>
-
+				<componentLibrary.ConsignWithUs />
 			</PageSection>
 
 
