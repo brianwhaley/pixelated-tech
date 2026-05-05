@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import type { CheckoutType } from './shoppingcart.functions';
 import { usePixelatedConfig } from '../config/config.client';
+import { SquarePaymentError, getSquarePaymentErrorMessage } from './square';
 import "./square.css";
 
 const SQUARE_PRODUCTION_SCRIPT_URL = 'https://web.squarecdn.com/v1/square.js';
@@ -143,11 +144,21 @@ export function SquareCheckout(props: SquareCheckoutType) {
 			if (result.status === 'OK') {
 				let captureResponse: any = undefined;
 				if (typeof props.onSquarePaymentCapture === 'function') {
-					captureResponse = await props.onSquarePaymentCapture({
-						sourceId: result.token,
-						checkoutData: props.checkoutData,
-						card: result,
-					});
+					try {
+						captureResponse = await props.onSquarePaymentCapture({
+							sourceId: result.token,
+							checkoutData: props.checkoutData,
+							card: result,
+						});
+					} catch (error: any) {
+						if (error instanceof SquarePaymentError) {
+							setErrorMessage(error.userMessage);
+							return;
+						}
+
+						setErrorMessage(getSquarePaymentErrorMessage(error) || error?.message || 'Square payment capture failed.');
+						return;
+					}
 				}
 
 				props.onApprove({
@@ -163,7 +174,12 @@ export function SquareCheckout(props: SquareCheckoutType) {
 				setErrorMessage(errors);
 			}
 		} catch (error: any) {
-			setErrorMessage(error?.message || 'Square payment capture failed.');
+			if (error instanceof SquarePaymentError) {
+				setErrorMessage(error.userMessage);
+				return;
+			}
+
+			setErrorMessage(getSquarePaymentErrorMessage(error) || error?.message || 'Square payment capture failed.');
 		} finally {
 			setIsProcessing(false);
 		}

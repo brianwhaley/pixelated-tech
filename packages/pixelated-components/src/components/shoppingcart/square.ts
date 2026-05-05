@@ -19,6 +19,20 @@ interface SelectedSquareCredentials {
 	paymentsUrl: string;
 }
 
+export class SquarePaymentError extends Error {
+	code: string;
+	userMessage: string;
+	retryable: boolean;
+
+	constructor(code: string, userMessage: string, retryable = false) {
+		super(userMessage);
+		this.name = 'SquarePaymentError';
+		this.code = code;
+		this.userMessage = userMessage;
+		this.retryable = retryable;
+	}
+}
+
 function normalizeEmail(value?: any) {
 	return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
@@ -91,7 +105,6 @@ function requireSquareConfig(checkoutData?: CheckoutType): SelectedSquareCredent
 function buildBillingAddress(shippingTo: CheckoutType['shippingTo']) {
 	return {
 		address_line_1: shippingTo.street1,
-		address_line_2: '',
 		locality: shippingTo.city,
 		administrative_district_level_1: shippingTo.state,
 		postal_code: shippingTo.zip,
@@ -99,9 +112,85 @@ function buildBillingAddress(shippingTo: CheckoutType['shippingTo']) {
 	};
 }
 
+function getSquarePaymentErrorDetails(error: unknown) {
+	const message = error instanceof Error ? error.message : String(error || '');
+	const responseBodyStart = message.indexOf('{');
+	const responseBodyEnd = message.lastIndexOf('}');
+	const responseBody = responseBodyStart >= 0 && responseBodyEnd > responseBodyStart
+		? message.slice(responseBodyStart, responseBodyEnd + 1)
+		: '';
+
+	if (!responseBody) {
+		return undefined;
+	}
+
+	try {
+		return JSON.parse(responseBody);
+	} catch {
+		return undefined;
+	}
+}
+
+function createSquarePaymentError(error: unknown) {
+	const details = getSquarePaymentErrorDetails(error);
+	if (typeof details?.error === 'string' && details.error.trim().length > 0) {
+		return new SquarePaymentError('SQUARE_PAYMENT_FAILED', details.error.trim());
+	}
+	const codes = Array.isArray(details?.errors)
+		? details.errors.map((item: any) => item?.code).filter(Boolean)
+		: [];
+	const code = codes[0] || 'SQUARE_PAYMENT_FAILED';
+
+	if (code === 'CVV_FAILURE') {
+		return new SquarePaymentError(code, 'Card verification failed. Please check the CVV and try again.');
+	}
+
+	if (code === 'CARD_TOKEN_USED') {
+		return new SquarePaymentError(code, 'Please re-enter your card details and try again.');
+	}
+
+	if (code === 'GENERIC_DECLINE') {
+		return new SquarePaymentError(code, 'Your card was declined. Please try a different card or contact your bank.');
+	}
+
+	if (debug && details) {
+		console.error('Square payment failed with details:', details);
+	}
+
+	return new SquarePaymentError(code, 'Your payment could not be processed. Please try again.');
+}
+
+export function getSquarePaymentErrorMessage(error: unknown) {
+	if (error instanceof SquarePaymentError) {
+		return error.userMessage;
+	}
+
+	const details = getSquarePaymentErrorDetails(error);
+	if (typeof details?.error === 'string' && details.error.trim().length > 0) {
+		return details.error.trim();
+	}
+
+	const message = error instanceof Error ? error.message : String(error || '');
+	if (message.includes('Please re-enter your card details and try again.')) {
+		return 'Please re-enter your card details and try again.';
+	}
+
+	if (message.includes('Card verification failed. Please check the CVV and try again.')) {
+		return 'Card verification failed. Please check the CVV and try again.';
+	}
+
+	return undefined;
+}
+
 export function buildSquarePaymentBody(sourceId: string, checkoutData: CheckoutType, idempotencyKey: string) {
 	const squareConfig = requireSquareConfig(checkoutData);
 	const currency = checkoutData.currency || 'USD';
+	const billingAddress = buildBillingAddress(checkoutData.shippingTo);
+	const shippingEmail = checkoutData.shippingTo?.email;
+	let buyerEmail: string | undefined;
+	if (typeof shippingEmail === 'string' && shippingEmail.trim().length > 0) {
+		buyerEmail = shippingEmail.trim();
+	}
 	return {
 		source_id: sourceId,
 		idempotency_key: idempotencyKey,
@@ -111,8 +200,8 @@ export function buildSquarePaymentBody(sourceId: string, checkoutData: CheckoutT
 		},
 		location_id: squareConfig.locationId,
 		autocomplete: true,
-		buyer_email_address: checkoutData.shippingTo?.email,
-		billing_address: buildBillingAddress(checkoutData.shippingTo),
+		...(buyerEmail ? { buyer_email_address: buyerEmail } : {}),
+		billing_address: billingAddress,
 		note: 'Online order from Three Muses of Bluffton shopping cart',
 		statement_description_identifier: 'ThreeMusesCart',
 	};
@@ -134,19 +223,24 @@ export async function captureSquarePayment(sourceId: string, checkoutData: Check
 			body,
 		});
 	}
-	const json = await smartFetch(paymentsUrl, {
-		responseType: 'json',
-		cacheStrategy: 'none',
-		requestInit: {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${squareConfig.accessToken}`,
+	try {
+		const json = await smartFetch(paymentsUrl, {
+			responseType: 'json',
+			cacheStrategy: 'none',
+			retries: 0,
+			requestInit: {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					Authorization: `Bearer ${squareConfig.accessToken}`,
+				},
+				body: JSON.stringify(body),
 			},
-			body: JSON.stringify(body),
-		},
-	});
+		});
 
-	return json;
+		return json;
+	} catch (error) {
+		throw createSquarePaymentError(error);
+	}
 }

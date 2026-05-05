@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { captureSquarePayment, buildSquarePaymentBody } from '../components/shoppingcart/square';
+import { captureSquarePayment, buildSquarePaymentBody, SquarePaymentError } from '../components/shoppingcart/square';
 import type { CheckoutType } from '../components/shoppingcart/shoppingcart.functions';
 import { createMockConfig } from '../test/config.mock';
 
@@ -63,6 +63,14 @@ describe('Square payment helper', () => {
 			buyer_email_address: 'test@example.com',
 			statement_description_identifier: 'ThreeMusesCart',
 		});
+		expect(body.billing_address).toMatchObject({
+			address_line_1: '123 Test Lane',
+			locality: 'Testville',
+			administrative_district_level_1: 'NY',
+			postal_code: '10001',
+			country: 'US',
+		});
+		expect(body.billing_address).not.toHaveProperty('address_line_2');
 	});
 
 	it('selects sandbox credentials when checkout email matches sandboxSquareEmails', async () => {
@@ -132,6 +140,7 @@ describe('Square payment helper', () => {
 		expect(mockSmartFetch).toHaveBeenCalledWith('https://connect.squareup.com/v2/payments', {
 			responseType: 'json',
 			cacheStrategy: 'none',
+			retries: 0,
 			requestInit: {
 				method: 'POST',
 				headers: {
@@ -188,6 +197,7 @@ describe('Square payment helper', () => {
 		expect(mockSmartFetch).toHaveBeenCalledWith('https://connect.squareupsandbox.com/v2/payments', {
 			responseType: 'json',
 			cacheStrategy: 'none',
+			retries: 0,
 			requestInit: {
 				method: 'POST',
 				headers: {
@@ -286,5 +296,67 @@ describe('Square payment helper', () => {
 
 		expect(mockSmartFetch).toHaveBeenCalledWith('https://custom.sandbox.squareup.com/v2/payments', expect.any(Object));
 		expect(result).toEqual(expectedResponse);
+	});
+
+	it('throws a typed SquarePaymentError when Square rejects the payment', async () => {
+		const checkoutData = {
+			items: [],
+			subtotal: 20,
+			subtotal_discount: 0,
+			shippingTo: {
+				name: 'Test User',
+				street1: '1 Example St',
+				city: 'Testville',
+				state: 'CA',
+				zip: '90210',
+				country: 'US',
+				email: 'user@example.com',
+			},
+			shippingCost: 0,
+			handlingFee: 0,
+			salesTax: 0,
+			total: 20,
+		} as CheckoutType;
+
+		mockSmartFetch.mockRejectedValue(new Error('[smartFetch] connect.squareup.com: HTTP 400 Bad Request: {"errors":[{"code":"CVV_FAILURE","detail":"Authorization error: \'CVV_FAILURE\'","category":"PAYMENT_METHOD_ERROR"}]}'));
+
+		const capturePromise = captureSquarePayment('source-fail', checkoutData, 'idem-fail');
+		await expect(capturePromise).rejects.toBeInstanceOf(SquarePaymentError);
+		await expect(capturePromise).rejects.toMatchObject({
+			name: 'SquarePaymentError',
+			code: 'CVV_FAILURE',
+			userMessage: 'Card verification failed. Please check the CVV and try again.',
+		});
+	});
+
+	it('uses the route error message when Square capture returns a top-level error payload', async () => {
+		const checkoutData = {
+			items: [],
+			subtotal: 20,
+			subtotal_discount: 0,
+			shippingTo: {
+				name: 'Test User',
+				street1: '1 Example St',
+				city: 'Testville',
+				state: 'CA',
+				zip: '90210',
+				country: 'US',
+				email: 'user@example.com',
+			},
+			shippingCost: 0,
+			handlingFee: 0,
+			salesTax: 0,
+			total: 20,
+		} as CheckoutType;
+
+		mockSmartFetch.mockRejectedValue(new Error('[smartFetch] unknown: HTTP 500 Internal Server Error: {"error":"Please re-enter your card details and try again."}'));
+
+		const capturePromise = captureSquarePayment('source-fail', checkoutData, 'idem-fail');
+		await expect(capturePromise).rejects.toBeInstanceOf(SquarePaymentError);
+		await expect(capturePromise).rejects.toMatchObject({
+			name: 'SquarePaymentError',
+			code: 'SQUARE_PAYMENT_FAILED',
+			userMessage: 'Please re-enter your card details and try again.',
+		});
 	});
 });

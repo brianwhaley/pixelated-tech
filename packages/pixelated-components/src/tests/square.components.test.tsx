@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { SquareCheckout } from '../components/shoppingcart/square.components';
+import { SquarePaymentError } from '../components/shoppingcart/square';
 
 const squareScriptUrl = 'https://web.squarecdn.com/v1/square.js';
 const sandboxSquareScriptUrl = 'https://sandbox.web.squarecdn.com/v1/square.js';
@@ -178,6 +179,70 @@ describe('SquareCheckout component', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Invalid card')).toBeInTheDocument();
+    });
+  });
+
+  it('shows a friendly Square payment error and stops approval when capture fails', async () => {
+    const onApprove = vi.fn();
+    const onSquarePaymentCapture = vi.fn(async () => {
+      throw new SquarePaymentError('CVV_FAILURE', 'Card verification failed. Please check the CVV and try again.');
+    });
+
+    createSquareGlobal({ status: 'OK' });
+
+    render(
+      <SquareCheckout
+        applicationId="app-id"
+        locationId="location-id"
+        checkoutData={{ items: [], subtotal: 0, subtotal_discount: 0, shippingTo: { name: 'A', street1: 'S', city: 'C', state: 'NY', zip: '10001', country: 'US' }, shippingCost: 0, handlingFee: 0, salesTax: 0, total: 0 }}
+        onApprove={onApprove}
+        onSquarePaymentCapture={onSquarePaymentCapture}
+      />
+    );
+
+    const script = await waitFor(() => document.head.querySelector(`script[src="${squareScriptUrl}"]`) as HTMLScriptElement | null);
+    if (script) {
+      script.onload?.(new Event('load'));
+    }
+
+    const button = await screen.findByRole('button', { name: /Pay with Square/i });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(screen.getByText('Card verification failed. Please check the CVV and try again.')).toBeInTheDocument();
+      expect(onApprove).not.toHaveBeenCalled();
+    });
+  });
+
+  it('maps the raw smartFetch 500 message to a friendly Square payment error', async () => {
+    const onApprove = vi.fn();
+    const onSquarePaymentCapture = vi.fn(async () => {
+      throw new Error('[smartFetch] unknown: HTTP 500 Internal Server Error: {"error":"Please re-enter your card details and try again."}');
+    });
+
+    createSquareGlobal({ status: 'OK' });
+
+    render(
+      <SquareCheckout
+        applicationId="app-id"
+        locationId="location-id"
+        checkoutData={{ items: [], subtotal: 0, subtotal_discount: 0, shippingTo: { name: 'A', street1: 'S', city: 'C', state: 'NY', zip: '10001', country: 'US' }, shippingCost: 0, handlingFee: 0, salesTax: 0, total: 0 }}
+        onApprove={onApprove}
+        onSquarePaymentCapture={onSquarePaymentCapture}
+      />
+    );
+
+    const script = await waitFor(() => document.head.querySelector(`script[src="${squareScriptUrl}"]`) as HTMLScriptElement | null);
+    if (script) {
+      script.onload?.(new Event('load'));
+    }
+
+    const button = await screen.findByRole('button', { name: /Pay with Square/i });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(screen.getByText('Please re-enter your card details and try again.')).toBeInTheDocument();
+      expect(onApprove).not.toHaveBeenCalled();
     });
   });
 });
