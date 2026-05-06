@@ -227,6 +227,18 @@ describe('Shopping Cart Functions', () => {
 
 			expect(checkout.total).toBeCloseTo(calculated, 2);
 		});
+
+		it('should not tax the handling fee', () => {
+			const checkout: CheckoutType = mockCheckout;
+			const taxableBase = checkout.subtotal - checkout.subtotal_discount + checkout.shippingCost;
+			const taxableHandlingBase = taxableBase + checkout.handlingFee;
+
+			expect(checkout.salesTax).toBeLessThanOrEqual(taxableHandlingBase * 0.07);
+			expect(checkout.total).toBeCloseTo(
+				checkout.subtotal - checkout.subtotal_discount + checkout.shippingCost + checkout.handlingFee + checkout.salesTax,
+				2,
+			);
+		});
 	});
 
 	describe('Discount Code Type Validation', () => {

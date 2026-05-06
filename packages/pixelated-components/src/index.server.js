@@ -25,6 +25,7 @@ export * from './components/foundation/utilities';
 export * from './components/general/resume';
 export * from './components/general/smartmediautils';
 
+export * from './components/integrations/aws.dynamo.integration';
 export * from './components/integrations/contentful.delivery';
 export * from './components/integrations/contentful.management';
 export * from './components/integrations/gemini-api.server';

@@ -196,7 +196,7 @@ export async function smartFetch(
 						clearTimeout(timeoutId);
 
 						if (!response.ok) {
-							const errorBody = (await response.text()).trim();
+							const errorBody = typeof response.text === 'function' ? (await response.text()).trim() : '';
 							throw new Error(errorBody ? `HTTP ${response.status} ${response.statusText}: ${errorBody}` : `HTTP ${response.status} ${response.statusText}`);
 						}
 						// If responseType is 'ok' or 'status', return the raw Response object
@@ -250,7 +250,7 @@ export async function smartFetch(
 					clearTimeout(timeoutId);
 
 					if (!response.ok) {
-						const errorBody = (await response.text()).trim();
+						const errorBody = typeof response.text === 'function' ? (await response.text()).trim() : '';
 						throw new Error(errorBody ? `HTTP ${response.status} ${response.statusText}: ${errorBody}` : `HTTP ${response.status} ${response.statusText}`);
 					}
 

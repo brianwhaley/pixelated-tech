@@ -38,6 +38,7 @@ export type CartItemType = {
     itemID: string,
     itemURL?: string,
     itemTitle: string,
+	itemDescription?: string,
     itemImageURL? : string,
     itemQuantity: number,
     itemCost: number,
@@ -308,7 +309,8 @@ export function getCheckoutData(defaultShippingInfo?: Partial<ShippingInfoType>,
 		: 'USD';
 	const salesTaxRateValue = Number(shoppingcartConfig?.taxRate);
 	const salesTaxRate = Number.isFinite(salesTaxRateValue) && salesTaxRateValue >= 0 ? salesTaxRateValue : 0.06675;
-	const salesTax = formatAsHundredths(salesTaxRate * (itemCost + shippingCost + handlingFee));
+	const salesTaxBase = itemCost + shippingCost;
+	const salesTax = formatAsHundredths(salesTaxRate * salesTaxBase);
 	const checkoutTotal = formatAsHundredths(itemCost - subtotalDiscount + shippingCost + handlingFee + salesTax);
 	const checkoutObj: CheckoutType = {
 		items: getCart(),

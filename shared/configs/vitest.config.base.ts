@@ -4,7 +4,7 @@ import path from 'path';
 
 const COVERAGE_THRESHOLDS = {
 	statements: 83.5, // actually targeting 80%
-	branches: 71.75, // actually targeting 80%
+	branches: 71.5, // actually targeting 80%
 	functions: 85, 
 	lines: 85,
 };

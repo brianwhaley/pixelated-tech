@@ -114,6 +114,7 @@ describe('FormComponents', () => {
     );
 
     const optionX = screen.getByLabelText('X') as HTMLInputElement;
+    expect(optionX).toHaveAttribute('name', 'checkbox-group');
     fireEvent.click(optionX);
 
     expect(optionX.checked).toBe(true);

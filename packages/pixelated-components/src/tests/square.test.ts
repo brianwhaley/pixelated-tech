@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { captureSquarePayment, buildSquarePaymentBody, SquarePaymentError } from '../components/shoppingcart/square';
+import { captureSquarePayment, buildSquareOrderBody, buildSquarePaymentBody, createSquareOrder, SquarePaymentError } from '../components/shoppingcart/square';
 import type { CheckoutType } from '../components/shoppingcart/shoppingcart.functions';
 import { createMockConfig } from '../test/config.mock';
+import { squareOrderCheckoutData } from '../test/test-data';
 
 const mockGetFullPixelatedConfig = vi.fn();
 const mockSmartFetch = vi.fn();
@@ -71,6 +72,66 @@ describe('Square payment helper', () => {
 			country: 'US',
 		});
 		expect(body.billing_address).not.toHaveProperty('address_line_2');
+	});
+
+	it('builds a Square order body with cart items, registration data, shipping, handling, and taxes', () => {
+		const checkoutData = squareOrderCheckoutData as CheckoutType;
+
+		const body = buildSquareOrderBody(checkoutData, 'order-idempotency-key');
+
+		expect(body).toMatchObject({
+			idempotency_key: 'order-idempotency-key',
+			order: {
+				location_id: 'test-location-id',
+				line_items: [
+					{
+						name: 'Sewing Class',
+						quantity: '2',
+						base_price_money: {
+							amount: 5000,
+							currency: 'USD',
+						},
+						note: 'Beginner class',
+					},
+					{
+						name: 'registration-data',
+						quantity: '1',
+						base_price_money: {
+							amount: 0,
+							currency: 'USD',
+						},
+					},
+				],
+			},
+		});
+
+		expect(body.order.service_charges).toEqual([
+			{
+				name: 'Shipping',
+				amount_money: {
+					amount: 500,
+					currency: 'USD',
+				},
+				calculation_phase: 'TOTAL_PHASE',
+			},
+			{
+				name: 'Handling',
+				amount_money: {
+					amount: 300,
+					currency: 'USD',
+				},
+				calculation_phase: 'TOTAL_PHASE',
+			},
+		]);
+		expect(body.order.taxes).toEqual([
+			{
+				name: 'Sales Tax',
+				percentage: '6.675',
+				scope: 'ORDER',
+			},
+		]);
+		expect(body.order.fulfillments).toHaveLength(1);
+		expect(body.order.line_items[1].note).toContain('Brian T Whaley');
 	});
 
 	it('selects sandbox credentials when checkout email matches sandboxSquareEmails', async () => {
@@ -151,6 +212,74 @@ describe('Square payment helper', () => {
 				body: expect.any(String),
 			},
 		});
+		expect(result).toEqual(expectedResponse);
+	});
+
+	it('includes order_id when capturing a Square payment', async () => {
+		const checkoutData = {
+			items: [],
+			subtotal: 20,
+			subtotal_discount: 0,
+			shippingTo: {
+				name: 'Test User',
+				street1: '1 Example St',
+				city: 'Testville',
+				state: 'CA',
+				zip: '90210',
+				country: 'US',
+				email: 'user@example.com',
+			},
+			shippingCost: 0,
+			handlingFee: 0,
+			salesTax: 0,
+			total: 20,
+		} as CheckoutType;
+
+		const expectedResponse = { payment: { id: 'sq-ordered' } };
+		mockSmartFetch.mockResolvedValue(expectedResponse);
+
+		const result = await captureSquarePayment('source-ordered', checkoutData, 'idem-ordered', 'order-123');
+
+		expect(mockSmartFetch).toHaveBeenCalledWith('https://connect.squareup.com/v2/payments', expect.objectContaining({
+			requestInit: expect.objectContaining({
+				body: expect.stringContaining('"order_id":"order-123"'),
+			}),
+		}));
+		expect(result).toEqual(expectedResponse);
+	});
+
+	it('calls smartFetch with Square orders URL and returns response', async () => {
+		const checkoutData = {
+			items: [],
+			subtotal: 20,
+			subtotal_discount: 0,
+			shippingTo: {
+				name: 'Order User',
+				street1: '1 Example St',
+				city: 'Testville',
+				state: 'CA',
+				zip: '90210',
+				country: 'US',
+				email: 'user@example.com',
+			},
+			shippingCost: 0,
+			handlingFee: 0,
+			salesTax: 0,
+			total: 20,
+		} as CheckoutType;
+
+		const expectedResponse = { order: { id: 'order-123' } };
+		mockSmartFetch.mockResolvedValue(expectedResponse);
+
+		const result = await createSquareOrder(checkoutData, 'order-idem-123');
+
+		expect(mockSmartFetch).toHaveBeenCalledWith('https://connect.squareup.com/v2/orders', expect.objectContaining({
+			responseType: 'json',
+			requestInit: expect.objectContaining({
+				method: 'POST',
+				body: expect.stringContaining('"idempotency_key":"order-idem-123"'),
+			}),
+		}));
 		expect(result).toEqual(expectedResponse);
 	});
 

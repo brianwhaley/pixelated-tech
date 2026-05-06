@@ -243,6 +243,15 @@ describe('Table Component', () => {
   });
 
   describe('Table Edge Cases', () => {
+    it('should render an empty state when there are no rows', () => {
+      const { container } = render(
+        <Table data={[]} id="empty-table" />
+      );
+      expect(container.querySelector('thead')).toBeInTheDocument();
+      expect(container.querySelector('tbody')).toBeInTheDocument();
+      expect(container.textContent).toContain('No data available.');
+    });
+
     it('should render table with single row', () => {
       const singleRow = [{ Name: 'Single Item', Value: 'Test' }];
       const { container } = render(

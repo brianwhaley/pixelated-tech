@@ -1,14 +1,16 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fireEvent, render, screen } from '../test/test-utils';
+import { fireEvent, render, screen, waitFor } from '../test/test-utils';
 import {
 	ShoppingCartItems,
 	CheckoutInfoForm,
 	CheckoutSummary,
+	ShoppingCart,
 	ShoppingCartReceipt,
 	buildReceiptData,
 	renderReceiptTable,
 } from '../components/shoppingcart/shoppingcart.components';
+import { getCart, getShippingInfo } from '../components/shoppingcart/shoppingcart.functions';
 
 vi.mock('../components/config/config.client', async (importOriginal) => {
 	const actual = await importOriginal<typeof import('../components/config/config.client')>();
@@ -29,6 +31,7 @@ vi.mock('../components/shoppingcart/shoppingcart.functions', async (importOrigin
 		removeFromShoppingCart: vi.fn(),
 		getCartItemCount: vi.fn(() => 2),
 		getCart: vi.fn(() => []),
+		getShippingInfo: vi.fn(() => ({})),
 		formatAsUSD: vi.fn((cost: number) => `$${cost.toFixed(2)}`),
 		formatAsHundredths: vi.fn((cost: number) => cost.toFixed(2)),
 	};
@@ -82,6 +85,26 @@ vi.mock('../components/general/pageheader', () => ({
 describe('shopping cart component surface', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+	});
+
+	it('scrolls to the top when checkout summary appears', async () => {
+		vi.mocked(getCart).mockReturnValue([
+			{
+				itemID: 'item-1',
+				itemTitle: 'First Item',
+				itemQuantity: 1,
+				itemCost: 12.5,
+				itemIsShippable: false,
+			},
+		] as any);
+		vi.mocked(getShippingInfo).mockReturnValue({ name: 'Jane Doe', street1: '123 Main St', city: 'Austin', state: 'TX', zip: '78701', country: 'US' } as any);
+		const scrollToSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
+
+		render(<ShoppingCart siteInfo={{ address: { postalCode: '29910', addressCountry: 'US' } } as any} />);
+
+		await waitFor(() => {
+			expect(scrollToSpy).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+		});
 	});
 
 	it('renders each shopping cart item and its shipping branch', () => {

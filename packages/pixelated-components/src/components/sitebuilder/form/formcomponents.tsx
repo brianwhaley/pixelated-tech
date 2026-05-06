@@ -1044,7 +1044,7 @@ function FormCheckboxOption(props: FormCheckboxOptionType) {
 		<span className={ props.parent.display == "vertical" ? "display-vertical" : ""}>
 			<input type="checkbox" 
 				id={props.parent.name + "_" + props.text} 
-				name={props.text} value={props.value} 
+				name={props.parent.name} value={props.value} 
 				{...controlProps}
 				required={!!(props.parent && props.parent.required)}
 				onChange={handleChange}

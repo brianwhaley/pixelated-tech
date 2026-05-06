@@ -6,10 +6,10 @@
 * [ x ] dont forget to update pixelated.config.json square sandbox props before launch
 * [ x ] Move Square domain to AWS
 * [  ] Set up improvmx for email address
-* [  ] Use Katie's interest list spreadsheet as registrations for the blog
+* [ x ] Use Katie's interest list spreadsheet as registrations for the blog
 * [  ] publish new introductory blog post
-* [  ] Create a dashbaord for event registrations for three muses
-* [  ] add Individual classes to the Items array that is sent to Square
+* [ x ] Create a dashbaord for event registrations for three muses
+* [ x ] add Individual classes to the Items array that is sent to Square
 
 ## 2026-05-04 Final Final To Do List
 * [ x ] Spelling Mistake - Boutique - updaet to update
@@ -20,7 +20,8 @@
 * [ x ] Consign component - add to dance and boutique page too
 * [ x ] Katie is getting the Square Transfer Code
 * [  ] Send Katie the Blog Post to review
-* [  ] Investigate why "Type" is set to In Store in Squae
+* [  ] Investigate why "Type" is set to In Store in Square
+* [ x ] UX fix for cart info continue button to checkout summary botton-of-form
 
 
 ## 2026-04-30 Final To Do List

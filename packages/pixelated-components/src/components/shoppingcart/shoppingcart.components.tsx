@@ -264,6 +264,11 @@ export function ShoppingCart(props: ShoppingCartType) {
 	}, [progressStep, orderData, config]);
 
 	useEffect(() => {
+		if (progressStep !== 'Checkout') { return; }
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}, [progressStep]);
+
+	useEffect(() => {
 		if (progressStep !== 'CartItems' || !shippingData) {
 			return;
 		}

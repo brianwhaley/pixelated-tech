@@ -869,10 +869,14 @@ describe('Shopping Cart Functions', () => {
 			const expectedSubtotal = 100;
 			const expectedShipping = 14.99;
 			const expectedHandling = 3.99;
+			const expectedTax = 7.67;
+			const expectedTotal = 126.65;
 
 			expect(checkout.subtotal).toBe(expectedSubtotal);
 			expect(checkout.shippingCost).toBe(expectedShipping);
 			expect(checkout.handlingFee).toBe(expectedHandling);
+			expect(checkout.salesTax).toBe(expectedTax);
+			expect(checkout.total).toBe(expectedTotal);
 		});
 
 		it('should use configured handling fee settings', () => {

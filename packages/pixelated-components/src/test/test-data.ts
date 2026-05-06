@@ -8,6 +8,7 @@ import faqTestData from './data/faq-test-data.json';
 import ebayData from './data/ebay-data.json';
 import pageEngineData from './data/page-engine-data.json';
 import paypalOrder from './data/paypal-order.json';
+import squareOrderCheckoutData from './data/square-order-checkout-data.json';
 import siteHealthData from './data/site-health-data.json';
 import sitemapData from './data/sitemap-data.json';
 import realWordPressApiData from './data/real-wordpress-api.json';
@@ -24,6 +25,7 @@ export {
 	ebayData,
 	pageEngineData,
 	paypalOrder,
+	squareOrderCheckoutData,
 	siteHealthData,
 	sitemapData,
 	realWordPressApiData,
@@ -68,6 +70,7 @@ export default {
 	ebayData,
 	pageEngineData,
 	paypalOrder,
+	squareOrderCheckoutData,
 	siteHealthData,
 	sitemapData,
 	realWordPressApiData,

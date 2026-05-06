@@ -1,0 +1,39 @@
+{
+	"items": [
+		{
+			"itemID": "class-1",
+			"itemTitle": "Sewing Class",
+			"itemQuantity": 2,
+			"itemCost": 50,
+			"itemDescription": "Beginner class"
+		}
+	],
+	"subtotal": 100,
+	"subtotal_discount": 0,
+	"shippingTo": {
+		"name": "Test User",
+		"street1": "123 Test Lane",
+		"city": "Testville",
+		"state": "NY",
+		"zip": "10001",
+		"country": "US",
+		"email": "test@example.com",
+		"birthdate": "2026-05-01",
+		"emergency_contact_name": "Brian T Whaley",
+		"emergency_contact_telephone": "9737108008",
+		"full_payment": "yes",
+		"cancellation_policy": "yes",
+		"photo_consent": "yes",
+		"closed_toe_shoes": "yes",
+		"class_materials": "yes",
+		"minimum_students": "yes",
+		"food_allergies": "cats",
+		"bleeding_disorder": "no",
+		"injury_liability": "Grampy McGrampyFace"
+	},
+	"shippingCost": 5,
+	"handlingFee": 3,
+	"salesTax": 7.78,
+	"total": 115.78,
+	"currency": "USD"
+}

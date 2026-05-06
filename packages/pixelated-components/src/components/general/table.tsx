@@ -35,8 +35,16 @@ export type TableType = InferProps<typeof Table.propTypes>;
 export function Table (props: TableType) {
 
 	const [ tableData, setTableData ] = useState(props.data);
+	const hasRows = Array.isArray(tableData) && tableData.length > 0;
+
+	function getNestedTableId(parentKey: string, rowIndex: number, cellIndex: number) {
+		return `${props.id}-${parentKey}-${rowIndex}-${cellIndex}`;
+	}
 
 	function getHeadings (data: Array<{ [key: string]: any }>) {
+		if (!data || data.length === 0 || !data[0]) {
+			return null;
+		}
 		const headings = Object.keys(data[0]).map((key, i) => {
 			return (props.sortable && props.sortable == true) 
 				? <th key={i} onClick={() => { sortTable(key); }}><span>{key}</span> <span className="sort-arrow" /></th>
@@ -46,6 +54,9 @@ export function Table (props: TableType) {
 	}
 
 	function getRows (data: Array<{ [key: string]: any }>) {
+		if (!data || data.length === 0) {
+			return <tr><td colSpan={1}>No data available.</td></tr>;
+		}
 		return data.map((obj, i) => {
 			const rowStyle = (props.altRowColor && i % 2 === 1) ? { backgroundColor: props.altRowColor } : {};
 			return <tr key={i} style={rowStyle}>{getCells(obj)}</tr>;
@@ -61,20 +72,18 @@ export function Table (props: TableType) {
 				if (React.isValidElement(value)) return value;
 				if (isImageURL(value)) return <SmartImage src={value} title={String(value)} alt={String(value)} />;
 				if (value === null || value === undefined) return '';
-				if (Array.isArray(value)) return value.join(', ');
-				if (typeof value === 'object') {
-					// Render nested table for object cells (no sortable or altRowColor props)
-					try {
-						// Convert the object to an array of name-value objects
-						const nameValueArray = Object.entries(value).map(([key, value]) => {
-							return { name: key, value: value };
-						});
-						// return <Table data={[nameValueArray]} id={key} />;
-						return JSON.stringify(value, null, 2);
-					} catch (err) {
-						// Fallback: stringify if something goes wrong
-						return JSON.stringify(value, null, 2);
+				if (Array.isArray(value)) {
+					if (value.length > 0 && value.every((entry) => entry && typeof entry === 'object' && !React.isValidElement(entry))) {
+						return <Table id={getNestedTableId(key, i, 0)} data={value} />;
 					}
+					return value.join(', ');
+				}
+				if (typeof value === 'object') {
+					const nestedRows = Object.entries(value).map(([nestedKey, nestedValue]) => ({
+						field: nestedKey,
+						value: nestedValue,
+					}));
+					return <Table id={getNestedTableId(key, i, 0)} data={nestedRows} />;
 				}
 				return value;
 			})();
