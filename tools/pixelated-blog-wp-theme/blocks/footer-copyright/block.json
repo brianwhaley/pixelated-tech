@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "pixelated/footer-copyright",
+	"title": "Footer Copyright",
+	"category": "pixelated",
+	"description": "Displays the current year and Pixelated site link in the footer.",
+	"textdomain": "pixelated",
+	"supports": {
+		"html": false
+	}
+}

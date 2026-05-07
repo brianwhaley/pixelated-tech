@@ -309,7 +309,7 @@ export function getCheckoutData(defaultShippingInfo?: Partial<ShippingInfoType>,
 		: 'USD';
 	const salesTaxRateValue = Number(shoppingcartConfig?.taxRate);
 	const salesTaxRate = Number.isFinite(salesTaxRateValue) && salesTaxRateValue >= 0 ? salesTaxRateValue : 0.06675;
-	const salesTaxBase = itemCost + shippingCost;
+	const salesTaxBase = itemCost - subtotalDiscount + shippingCost;
 	const salesTax = formatAsHundredths(salesTaxRate * salesTaxBase);
 	const checkoutTotal = formatAsHundredths(itemCost - subtotalDiscount + shippingCost + handlingFee + salesTax);
 	const checkoutObj: CheckoutType = {

@@ -152,9 +152,11 @@ body.formglow {
 table#three-muses-order-report.pix-table {
     th, th span {
         font-size: 16px;
+		vertical-align: top;
 	}
 	td {
         padding: 5px;
         font-size: 14px;
+	    vertical-align: top;
     }
 }

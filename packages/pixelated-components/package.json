@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.16.2",
+	"version": "3.16.3",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -71,7 +71,7 @@
 		"build": "bash src/scripts/build.sh",
 		"lint": "eslint --fix",
 		"create-pixelated-app": "node src/scripts/create-pixelated-app.js",
-		"zip-theme": "node src/scripts/zip-pixelated-theme.js ../pixelated-blog-wp-theme Pixelated.zip",
+		"zip-theme": "node src/scripts/zip-pixelated-theme.js \"\" Pixelated.zip",
 		"validate-exports": "npx tsx src/scripts/validate-exports.js",
 		"storybook": "rm -rf node_modules/.cache && storybook dev -p 6006",
 		"buildStorybook": "rm -rf node_modules/.cache && NODE_OPTIONS=\"--max-old-space-size=8192\" storybook build",
@@ -91,16 +91,16 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-amplify": "^3.1043.0",
-		"@aws-sdk/client-dynamodb": "^3.1043.0",
-		"@aws-sdk/client-iam": "^3.1043.0",
+		"@aws-sdk/client-amplify": "^3.1044.0",
+		"@aws-sdk/client-dynamodb": "^3.1044.0",
+		"@aws-sdk/client-iam": "^3.1044.0",
 		"date-fns": "^4.1.0",
 		"globals": "^17.6.0",
 		"html-entities": "^2.6.0",
-		"next": "^16.2.4",
+		"next": "^16.2.5",
 		"prop-types": "^15.8.1",
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5"
+		"react": "^19.2.6",
+		"react-dom": "^19.2.6"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.29.0",
@@ -148,7 +148,7 @@
 		"less-loader": "^12.3.2",
 		"mini-css-extract-plugin": "^2.10.2",
 		"null-loader": "^4.0.1",
-		"react-test-renderer": "^19.2.5",
+		"react-test-renderer": "^19.2.6",
 		"sass": "^1.99.0",
 		"sass-loader": "^16.0.7",
 		"storybook": "^10.3.6",
@@ -164,18 +164,14 @@
 	"overrides": {
 		"flatted": "^3.4.2"
 	},
-	"peerDependencies": {
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5"
-	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1043.0",
-		"@aws-sdk/client-route-53": "^3.1043.0",
+		"@aws-sdk/client-cloudwatch": "^3.1044.0",
+		"@aws-sdk/client-route-53": "^3.1044.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^171.4.0",
 		"md5": "^2.3.0",
-		"puppeteer": "^24.42.0",
+		"puppeteer": "^24.43.0",
 		"recharts": "^3.8.1"
 	}
 }

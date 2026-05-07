@@ -7,9 +7,10 @@
 * [ x ] Move Square domain to AWS
 * [  ] Set up improvmx for email address
 * [ x ] Use Katie's interest list spreadsheet as registrations for the blog
-* [  ] publish new introductory blog post
+* [ x ] publish new introductory blog post
 * [ x ] Create a dashbaord for event registrations for three muses
 * [ x ] add Individual classes to the Items array that is sent to Square
+
 
 ## 2026-05-04 Final Final To Do List
 * [ x ] Spelling Mistake - Boutique - updaet to update
@@ -19,15 +20,15 @@
 * [ x ] Credit Card 3% Processing Fee
 * [ x ] Consign component - add to dance and boutique page too
 * [ x ] Katie is getting the Square Transfer Code
-* [  ] Send Katie the Blog Post to review
+* [ x ] Send Katie the Blog Post to review
 * [  ] Investigate why "Type" is set to In Store in Square
 * [ x ] UX fix for cart info continue button to checkout summary botton-of-form
 
 
 ## 2026-04-30 Final To Do List
 
-* [  ] dont forget to update pixelated.config.json shoppingcart props before launch
-* [  ] dont forget to update pixelated.config.json square sandbox props before launch
+* [ x ] dont forget to update pixelated.config.json shoppingcart props before launch
+* [ x ] dont forget to update pixelated.config.json square sandbox props before launch
 * [  ] explore the ability to tie specific header images to specific pages
 * [  ] add the ability to sort / filter events on the Events page
 * [ x ] Brian to send Katie two new versions of the logo - one with blue / cyan, one with rose / magenta
@@ -76,7 +77,7 @@
 * [ x ] Change Kathy to Kathie
 * [ x ] Make dancer - lavendar, craft - gold, celebration - deep purple
 * [  ] Summer Hours - June 1 - July 31 - Mon - Thu 12-5, camp 8-12 ; Fri 12-4 adult 4-6, Sat Sun Closed .  
-* [  ] Use Katie's interest list spreadsheet as registrations for the blog
+* [ x ] Use Katie's interest list spreadsheet as registrations for the blog
 * [ x ] Create wordpress blog
 * [ x ] Add most recent blog to home page
 * [ x ] create blog listing page

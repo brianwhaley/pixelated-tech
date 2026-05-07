@@ -1010,6 +1010,8 @@ function formatMoney(value: any) {
 }
 
 export function buildReceiptData(orderData: any, config?: any): ReceiptData | null {
+	// Receipt rows are built from checkout data first; Square payload values are fallback-only.
+	
 	const payload = orderData?.data ? orderData.data : orderData;
 	if (!payload) return null;
 

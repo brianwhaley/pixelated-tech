@@ -15,6 +15,8 @@ export async function POST(req: Request) {
 		const orderResponse = await createSquareOrder(checkoutData, orderIdempotencyKey);
 		const orderId = orderResponse?.order?.id || orderResponse?.order_id || orderResponse?.id;
 		const orderTotalMoney = orderResponse?.order?.total_money;
+		// Square requires the captured payment total to match the created order total.
+		// Prefer the order total when it exists, and fall back to checkoutData only if the order response is unavailable.
 		const paymentAmount = typeof orderTotalMoney?.amount === 'number'
 			? orderTotalMoney.amount / 100
 			: checkoutData.total;

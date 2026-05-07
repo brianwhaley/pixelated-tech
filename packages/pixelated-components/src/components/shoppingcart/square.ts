@@ -181,6 +181,23 @@ function buildSquareLineItems(checkoutData: CheckoutType, currency: string) {
 	];
 }
 
+function buildSquareDiscounts(checkoutData: CheckoutType, currency: string) {
+	const subtotalDiscount = Number(checkoutData.subtotal_discount ?? 0);
+	if (!Number.isFinite(subtotalDiscount) || subtotalDiscount <= 0) {
+		return [];
+	}
+
+	return [{
+		uid: 'SUBTOTAL_DISCOUNT',
+		name: 'Subtotal discount',
+		scope: 'ORDER',
+		amount_money: {
+			amount: formatMoneyAmount(subtotalDiscount),
+			currency,
+		},
+	}];
+}
+
 function buildSquareServiceCharges(checkoutData: CheckoutType, currency: string) {
 	const serviceCharges: Array<Record<string, any>> = [];
 	if (Number(checkoutData.shippingCost ?? 0) > 0) {
@@ -346,6 +363,7 @@ export function buildSquareOrderBody(checkoutData: CheckoutType, idempotencyKey:
 	const squareConfig = requireSquareConfig(checkoutData);
 	const currency = checkoutData.currency || 'USD';
 	const lineItems = buildSquareLineItems(checkoutData, currency);
+	const discounts = buildSquareDiscounts(checkoutData, currency);
 	const serviceCharges = buildSquareServiceCharges(checkoutData, currency);
 	const taxes = buildSquareTaxes(checkoutData);
 	const fulfillment = buildSquareFulfillment(checkoutData);
@@ -354,6 +372,7 @@ export function buildSquareOrderBody(checkoutData: CheckoutType, idempotencyKey:
 		order: {
 			location_id: squareConfig.locationId,
 			line_items: lineItems,
+			...(discounts.length > 0 ? { discounts } : {}),
 			...(serviceCharges.length > 0 ? { service_charges: serviceCharges } : {}),
 			...(taxes.length > 0 ? { taxes } : {}),
 			...(fulfillment ? { fulfillments: [fulfillment] } : {}),

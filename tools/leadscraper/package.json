@@ -1,6 +1,6 @@
 {
 	"name": "leadscraper",
-	"version": "2.4.21",
+	"version": "2.4.22",
 	"private": true,
 	"scripts": {
 		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
@@ -30,6 +30,8 @@
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",
+		"react": "^19.2.6",
+		"react-dom": "^19.2.6",
 		"typescript": "^6.0.2"
 	},
 	"overrides": {

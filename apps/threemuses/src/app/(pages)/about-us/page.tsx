@@ -39,7 +39,7 @@ export default function AboutUsPage() {
 					direction="left"
 					img="https://images.ctfassets.net/luf8eony1687/50ro5lPQGPM0PN2TReAtLw/c00cd08f9926753352dacf8190eac4c7/ThreeMusesFinal-6047.jpg"
 					title="Katie Coupland"
-					content="As the co-founder and driving force behind the dancewear division of The Three Muses, Katie brings a lifetime of elite performance experience to the Bluffton community. Having spent years training and performing as a classical dancer, she possesses an intimate understanding of the technical requirements and physical demands placed on an athlete's gear. This firsthand expertise allows her to provide specialized pointe shoe fittings and professional apparel consultations with a level of precision and empathy that only a fellow dancer can offer. Katie is dedicated to ensuring that every performer who enters the shop feels empowered, supported, and perfectly equipped to achieve their artistic dreams on stage."
+					content="As the co-founder and driving force behind the dancewear division of The Three Muses, Katie brings a lifetime of elite performance experience to the Bluffton community. Having spent 20 years training and performing as a classical ballet and ballroom dancer, she possesses an intimate understanding of the technical requirements and physical demands placed on an athlete's gear. This firsthand expertise allows her to provide specialized pointe shoe fittings and professional apparel consultations with a level of precision and empathy that only a fellow dancer can offer. Katie is dedicated to ensuring that every performer who enters the shop feels empowered, supported, and perfectly equipped to achieve their artistic dreams on stage."
 				/>
 
 				<Callout
@@ -48,7 +48,7 @@ export default function AboutUsPage() {
 					layout="horizontal"
 					direction="left"
 					img="https://images.ctfassets.net/luf8eony1687/2JAytZ9bA6pRjxhHbSok6u/f2f2e0a7e1d878e21304730836a8c1d9/ThreeMusesFinal-6131.jpg"
-					title="Kathie"
+					title="Kathie Nolte"
 					content="Kathie is the creative heart of the studio's sewing and boutique operations, where her lifelong mastery of the textile arts serves as a cornerstone for the business. With a deep passion for education and craftsmanship, she curates the shop's sewing curriculum and leads the in-house alterations department with meticulous care and an eye for timeless style. Beyond her work at the sewing machine, Kathie is a champion of the local arts scene, frequently collaborating with regional artisans to bring unique, high-quality handcrafted treasures into the boutique. Her mission is to foster a welcoming space where the Bluffton community can gather to learn, create, and celebrate the enduring beauty of handmade artistry."
 				/>
 

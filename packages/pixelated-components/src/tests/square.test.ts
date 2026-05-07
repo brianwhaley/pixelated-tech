@@ -75,7 +75,11 @@ describe('Square payment helper', () => {
 	});
 
 	it('builds a Square order body with cart items, registration data, shipping, handling, and taxes', () => {
-		const checkoutData = squareOrderCheckoutData as CheckoutType;
+		const checkoutData = {
+			...(squareOrderCheckoutData as CheckoutType),
+			subtotal_discount: 10,
+			total: 105.78,
+		} as CheckoutType;
 
 		const body = buildSquareOrderBody(checkoutData, 'order-idempotency-key');
 
@@ -98,6 +102,17 @@ describe('Square payment helper', () => {
 						quantity: '1',
 						base_price_money: {
 							amount: 0,
+							currency: 'USD',
+						},
+					},
+				],
+				discounts: [
+					{
+						uid: 'SUBTOTAL_DISCOUNT',
+						name: 'Subtotal discount',
+						scope: 'ORDER',
+						amount_money: {
+							amount: 1000,
 							currency: 'USD',
 						},
 					},
@@ -132,6 +147,7 @@ describe('Square payment helper', () => {
 		]);
 		expect(body.order.fulfillments).toHaveLength(1);
 		expect(body.order.line_items[1].note).toContain('Brian T Whaley');
+		expect(body.order.discounts).toHaveLength(1);
 	});
 
 	it('selects sandbox credentials when checkout email matches sandboxSquareEmails', async () => {

@@ -109,31 +109,24 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 ### Shopping Cart Enhancements
 
+- [  ] Pull out registration as an item from pixelated components and move to in three muses and allow custom item injection into the shopping cart
+
+- [  ] Refactor `capture-payment` api route in three muses so the Square orchestration lives in `square.ts` and the route stays as a thin HTTP wrapper. Summary: move the shared Square flow into a server helper that builds the order, derives the payment total from the order response, captures payment, and returns the combined result; keep the route responsible only for request parsing, response formatting, and status codes.
+
 #### SCALING BLOCKERS
 
-##### Zero Backend Integration
 1. All cart/shipping data stored in browser localStorage only
 1. No server-side persistence or session management
 1. Order data sent via simple emailJSON call — no real order processing system
 1. No inventory management or stock tracking
 1. No order history or customer accounts
-
-##### No Multi-Tenancy Support
 1. Discount codes loaded from single Contentful space
 1. No site-specific pricing, tax rates, or shipping rules
-
-##### Limited Tax & Shipping
 1. No real tax calculation engine
-1. Shipping costs are static (hardcoded USPS rates)
-1. No integration with real carrier APIs (no live rate shopping)
-
-##### No User/Order Management
 1. All purchases anonymous — no customer accounts or authentication
 1. No order tracking or history
 1. No abandoned cart recovery
 1. No customer communication workflows
-
-##### Weak Form Handling
 1. Shipping form fields must match exact names in localStorage
 1. No client-side validation exposed to cart
 1. No retry logic if form save fails
@@ -142,100 +135,31 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 ##### Architecture Redesign
 
-1. Implement Backend Order Service
-
-	* REST API for cart operations (add/remove/update)
-	* Persistent order storage with customer reference
-	* Real-time inventory management
-	* Order status tracking (pending → confirmed → shipped → delivered)
-
-1. Multi-Tenant Configuration
-
-	* Config-driven tax rates
-	* Per-site discount code repositories
-
-1. Session & Persistence
-
-	* User authentication (optional: anonymous sessions with tracking)
-	* Cart recovery across browser sessions
-	* Order history and tracking
-	* Wishlist support
-
-##### Feature Additions
-
-1. Real Carrier Integration
-
-	* Tracking integration
-	* Multi-carrier selection UI
-
-1. Tax Engine
-
-	* Integrate TaxJar or similar
-	* Support multiple jurisdictions
-	* Real-time tax calculation during checkout
-	* Compliance reporting
-
-1. Analytics & Monitoring
-
-	* Cart abandonment tracking
-	* Conversion funnels
-	* Error logging
-	* Payment gateway reconciliation
-
-1. Advanced Checkout
-
-	* Guest + registered checkout flows
-	* Saved payment methods
-	* Address book
-	* Order notes/special requests
-	* Coupon/loyalty point support
-
-##### Code Improvements
-
-1. Refactor State Management
-
-	* Move from localStorage → Context API + Redux/Zustand
-	* Tie to backend API calls
-	* Proper error handling and retries
-	* Loading states and optimistic updates
-
-1. Type Safety & Testing
-
-	* Expand TypeScript coverage (remove @ts-nocheck)
-	* Decouple from localStorage for unit testing
-	* Integration tests with mock payment gateways
-	* E2E checkout flow tests
-
-1. Security
-
-	* PCI compliance (never handle raw card data)
-	* Tokenization for saved payments
-	* CSRF protection
-	* Rate limiting on checkout API
-	* Webhook signature verification
-
-##### Configuration
-
-1. Site Configuration Schema
-
-	store:
-	name: "Site Name"
-	currency: "USD"
-	tax:
-		provider: "taxjar"
-		apiKey: "..."
-	shipping:
-		provider: "easypost"
-		methods: [STANDARD, EXPRESS]
-	payments:
-		providers: [paypal, stripe]
-		default: stripe
-
-1. Environment Variables
-
-	* Support secrets rotation
-	* Feature flags for payment methods per site
-
+- [  ] REST API for cart operations (add/remove/update)
+- [  ] Persistent order storage with customer reference
+- [  ] Real-time inventory management
+- [  ] Order status tracking (pending → confirmed → shipped → delivered)
+- [  ] Config-driven tax rates
+- [  ] Per-site discount code repositories
+- [  ] User authentication (optional: anonymous sessions with tracking)
+- [  ] Cart recovery across browser sessions
+- [  ] Order history and tracking
+- [  ] Wishlist support
+- [  ] Carrier Tracking integration
+- [  ] Multi-carrier selection UI
+- [  ] Integrate TaxJar or similar
+- [  ] Support multiple jurisdictions
+- [  ] Real-time tax calculation during checkout
+- [  ] Compliance reporting
+- [  ] Cart abandonment tracking
+- [  ] Conversion funnels
+- [  ] Error logging
+- [  ] Payment gateway reconciliation
+- [  ] Guest + registered checkout flows
+- [  ] Saved payment methods
+- [  ] Address book
+- [  ] Order notes/special requests
+- [  ] Coupon/loyalty point support
 
 
 ## Admin Feature Enhancements
