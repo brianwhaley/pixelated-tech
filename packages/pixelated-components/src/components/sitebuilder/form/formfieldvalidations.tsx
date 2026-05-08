@@ -62,6 +62,20 @@ export function isValidUSPhoneNumber (field: { value: string; }) {
 	return regex.test(field.value); // was match
 }
 
+export function isValidSquarePhoneNumber (field: { value: string; }) {
+	const value = String(field.value || '').trim();
+	if (!value.startsWith('+')) {
+		return false;
+	}
+
+	if (/[^\d+\s().-]/.test(value)) {
+		return false;
+	}
+
+	const digitCount = value.replace(/\D/g, '').length;
+	return digitCount >= 9 && digitCount <= 16;
+}
+
 export function isValidEmailAddress (field: { value: any; }) {
 	// let regex1 = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ;
 	const regexStr = /^\S+@\S+\.\S+$/;

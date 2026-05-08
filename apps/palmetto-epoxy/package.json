@@ -1,6 +1,6 @@
 {
 	"name": "palmetto-epoxy",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -26,7 +26,7 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@next/third-parties": "^16.2.5",
+		"@next/third-parties": "^16.2.6",
 		"@pixelated-tech/components": "*",
 		"next": "^16.2.4",
 		"prop-types": "^15.8.1"
@@ -35,7 +35,7 @@
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "9.39.4",
 		"@testing-library/react": "^16.3.2",
-		"@types/node": "^25.5.2",
+		"@types/node": "^25.6.2",
 		"@types/prop-types": "^15.7.15",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",

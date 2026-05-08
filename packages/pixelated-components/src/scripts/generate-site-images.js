@@ -33,7 +33,6 @@ if (!fs.existsSync(publicDir)) {
 const files = listFiles(publicDir);
 const manifest = {
 	metadata: {
-		generatedAt: new Date().toISOString(),
 		imageCount: files.length,
 	},
 	images: files,

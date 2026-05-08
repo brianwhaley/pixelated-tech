@@ -8,6 +8,7 @@ import {
 	isOneRadioSelected,
 	isValidUSZipCode,
 	isValidUSPhoneNumber,
+	isValidSquarePhoneNumber,
 	isValidEmailAddress,
 	isValidDate,
 	isValidUrl,
@@ -269,6 +270,28 @@ describe('Form Validations', () => {
 			expect(isValidUSPhoneNumber({ value: '123-456-7890' })).toBe(true);
 		});
 	});
+
+		describe('isValidSquarePhoneNumber', () => {
+			it('should accept a plus-prefixed international number', () => {
+				expect(isValidSquarePhoneNumber({ value: '+1 973-710-8008' })).toBe(true);
+			});
+
+			it('should accept parentheses and separators', () => {
+				expect(isValidSquarePhoneNumber({ value: '+1 (973) 710-8008' })).toBe(true);
+			});
+
+			it('should reject numbers without a leading plus', () => {
+				expect(isValidSquarePhoneNumber({ value: '19737108008' })).toBe(false);
+			});
+
+			it('should reject values with too many digits', () => {
+				expect(isValidSquarePhoneNumber({ value: '+1 973 710 8008 123456' })).toBe(false);
+			});
+
+			it('should reject letters', () => {
+				expect(isValidSquarePhoneNumber({ value: '+1 973-710-80AB' })).toBe(false);
+			});
+		});
 
 	describe('isValidEmailAddress', () => {
 		it('should accept valid email', () => {

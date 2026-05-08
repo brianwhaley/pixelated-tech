@@ -44,6 +44,7 @@ describe('Square payment helper', () => {
 				zip: '10001',
 				country: 'US',
 				email: 'test@example.com',
+				phone: '1234567890',
 			},
 			shippingCost: 5,
 			handlingFee: 2,
@@ -62,6 +63,7 @@ describe('Square payment helper', () => {
 			},
 			location_id: 'test-location-id',
 			buyer_email_address: 'test@example.com',
+			buyer_phone_number: '1234567890',
 			statement_description_identifier: 'ThreeMusesCart',
 		});
 		expect(body.billing_address).toMatchObject({
@@ -72,6 +74,13 @@ describe('Square payment helper', () => {
 			country: 'US',
 		});
 		expect(body.billing_address).not.toHaveProperty('address_line_2');
+		expect(body.shipping_address).toMatchObject({
+			address_line_1: '123 Test Lane',
+			locality: 'Testville',
+			administrative_district_level_1: 'NY',
+			postal_code: '10001',
+			country: 'US',
+		});
 	});
 
 	it('builds a Square order body with cart items, registration data, shipping, handling, and taxes', () => {
@@ -79,6 +88,11 @@ describe('Square payment helper', () => {
 			...(squareOrderCheckoutData as CheckoutType),
 			subtotal_discount: 10,
 			total: 105.78,
+			shippingTo: {
+				...((squareOrderCheckoutData as CheckoutType).shippingTo),
+				child_name: 'Grace Sturkie',
+				child_birthdate: '2017-10-21',
+			},
 		} as CheckoutType;
 
 		const body = buildSquareOrderBody(checkoutData, 'order-idempotency-key');
@@ -148,6 +162,28 @@ describe('Square payment helper', () => {
 		expect(body.order.fulfillments).toHaveLength(1);
 		expect(body.order.line_items[1].note).toContain('Brian T Whaley');
 		expect(body.order.discounts).toHaveLength(1);
+		expect(body.order.line_items[1].note).toContain('child_name');
+		expect(body.order.line_items[1].note).toContain('child_birthdate');
+	});
+
+	it('omits shipment fulfillment when all items are marked non-shippable', () => {
+		const checkoutData = {
+			...(squareOrderCheckoutData as CheckoutType),
+			items: [
+				{
+					...(squareOrderCheckoutData.items[0] as any),
+					itemIsShippable: false,
+				},
+			],
+			shippingTo: {
+				...((squareOrderCheckoutData as CheckoutType).shippingTo),
+				phone: '1234567890',
+			},
+		} as CheckoutType;
+
+		const body = buildSquareOrderBody(checkoutData, 'order-idempotency-key');
+
+		expect(body.order.fulfillments).toBeUndefined();
 	});
 
 	it('selects sandbox credentials when checkout email matches sandboxSquareEmails', async () => {

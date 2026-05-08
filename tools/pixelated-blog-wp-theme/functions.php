@@ -10,7 +10,7 @@ function pixelated_render_footer_copyright() {
 	$current_year = wp_date('Y');
 
 	return sprintf(
-		'<p class="has-secondary-color has-text-color" style="font-size:16px">Copyright %s | <a href="%s">Pixelated</a> WordPress Theme</p>',
+		'<p>Copyright %s | <a href="%s">Pixelated</a> WordPress Theme</p>',
 		esc_html($current_year),
 		esc_url('https://www.pixelated.tech')
 	);

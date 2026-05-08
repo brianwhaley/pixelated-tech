@@ -2,13 +2,15 @@ import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-vi.mock('@pixelated-tech/components', () => ({
-	__esModule: true,
-	PageTitleHeader: ({ title }: any) => React.createElement('div', { 'data-testid': 'page-title' }, title),
-	PageSection: ({ children }: any) => React.createElement('section', { 'data-testid': 'page-section' }, children),
-	PageSectionHeader: ({ title }: any) => React.createElement('div', { 'data-testid': 'section-header' }, title),
-	Table: ({ data }: any) => React.createElement('div', { 'data-testid': 'report-table', 'data-count': String(data.length) }, JSON.stringify(data)),
-}));
+vi.mock('@pixelated-tech/components', async () => {
+	const actual = await vi.importActual<any>('@pixelated-tech/components');
+	return {
+		...actual,
+		PageTitleHeader: ({ title }: any) => React.createElement('div', { 'data-testid': 'page-title' }, title),
+		PageSection: ({ children }: any) => React.createElement('section', { 'data-testid': 'page-section' }, children),
+		PageSectionHeader: ({ title }: any) => React.createElement('div', { 'data-testid': 'section-header' }, title),
+	};
+});
 
 describe('events report page', () => {
 	beforeEach(() => {
@@ -22,7 +24,17 @@ describe('events report page', () => {
 				domain: 'thethreemusesofbluffton.com',
 				formName: 'The Three Muses of Bluffton Order Form',
 				created_at: '2026-05-05T10:00:00.000Z',
-				orderData_json: '{"items":[]}',
+				registration_data: {
+					child_name: 'Grace Sturkie',
+					child_birthdate: '2017-10-21',
+				},
+				items: [
+					{
+						id: '2026-SC08',
+						title: 'SLEEPOVER SQUAD CAMP',
+						quantity: 1,
+					},
+				],
 			},
 		]);
 
@@ -36,20 +48,30 @@ describe('events report page', () => {
 			formName: 'The Three Muses of Bluffton Order Form',
 		});
 		expect(screen.getByTestId('page-title').textContent).toBe('Three Muses Order Report');
-		expect(screen.getByTestId('section-header').textContent).toBe('1 form submission');
-		expect(screen.getByTestId('report-table').getAttribute('data-count')).toBe('1');
+		expect(screen.getAllByTestId('section-header')[0].textContent).toBe('Registrants Per Class');
+		expect(screen.getAllByTestId('section-header')[1].textContent).toBe('Event Registrations ( 1 )');
+		expect(document.getElementById('three-muses-order-report')).toBeTruthy();
+		expect(document.getElementById('three-muses-event-report')).toBeTruthy();
+		expect(document.getElementById('three-muses-event-report-Registrants-2-0')).toBeTruthy();
+		expect(screen.getByText('Registrants Per Class')).toBeTruthy();
+		expect(screen.getByText('2026-SC08 - SLEEPOVER SQUAD CAMP')).toBeTruthy();
+		expect(screen.getByText('Attendee')).toBeTruthy();
+		expect(screen.getByText('Parent / guardian')).toBeTruthy();
 	});
 
 	it('renders plural rows in descending date order', async () => {
 		const server = await import('@pixelated-tech/components/server');
 		vi.spyOn(server, 'listPixelatedFormSubmissionReportRows').mockResolvedValue([
 			{
-				created_at: '2026-05-04T10:00:00.000Z',
-				orderData_json: '{"items":[{"id":1}]}',
+				created_at: '2026-05-05T10:00:00.000Z',
+				items: [{ id: 'event-b', title: 'Event B', quantity: 1 }],
+				shipping_to: { name: 'Adult Two', child_name: 'Kid Two' },
+				registration_data: { child_name: 'Kid Two' },
 			},
 			{
-				updatedAt: '2026-05-05T10:00:00.000Z',
-				orderData_json: '{"items":[{"id":2}]}',
+				created_at: '2026-05-04T10:00:00.000Z',
+				items: [{ id: 'event-a', title: 'Event A', quantity: 1 }],
+				shipping_to: { name: 'Adult One' },
 			},
 		]);
 
@@ -57,9 +79,11 @@ describe('events report page', () => {
 		const element = await EventReportPage();
 		render(element);
 
-		expect(screen.getByTestId('section-header').textContent).toBe('2 form submissions');
-		expect(screen.getByTestId('report-table').getAttribute('data-count')).toBe('2');
-		expect(screen.getByTestId('report-table').textContent).toContain('2026-05-05T10:00:00.000Z');
+		expect(screen.getAllByTestId('section-header')[1].textContent).toBe('Event Registrations ( 2 )');
+		expect(document.getElementById('three-muses-order-report')?.textContent).toContain('2026-05-05T10:00:00.000Z');
+		expect(document.getElementById('three-muses-event-report')).toBeTruthy();
+		expect(document.querySelector('#three-muses-event-report tbody > tr:first-child')?.textContent).toContain('event-a - Event A');
+		expect(document.getElementById('three-muses-event-report-Registrants-2-0')?.textContent).toContain('Adult One');
 	});
 
 	it('renders the empty-state message when no rows are returned', async () => {
@@ -70,7 +94,7 @@ describe('events report page', () => {
 		const element = await EventReportPage();
 		render(element);
 
-		expect(screen.getByTestId('section-header').textContent).toBe('0 form submissions');
+		expect(screen.getAllByTestId('section-header')[1].textContent).toBe('Event Registrations ( 0 )');
 		expect(screen.getByText('No matching form submissions were found.')).toBeTruthy();
 	});
 

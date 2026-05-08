@@ -10,6 +10,8 @@ const DEFAULT_SQUARE_SANDBOX_ORDERS_URL = 'https://connect.squareupsandbox.com/v
 const DEFAULT_SQUARE_SANDBOX_PAYMENTS_URL = 'https://connect.squareupsandbox.com/v2/payments';
 
 const REGISTRATION_FIELD_NAMES = [
+	'child_name',
+	'child_birthdate',
 	'birthdate',
 	'emergency_contact_name',
 	'emergency_contact_telephone',
@@ -225,6 +227,10 @@ function buildSquareServiceCharges(checkoutData: CheckoutType, currency: string)
 	return serviceCharges;
 }
 
+function hasShippableItems(checkoutData: CheckoutType) {
+	return checkoutData.items.some((item) => item?.itemIsShippable !== false);
+}
+
 function buildSquareTaxes(checkoutData: CheckoutType) {
 	const config = getFullPixelatedConfig();
 	const taxRateValue = Number(config?.shoppingcart?.taxRate ?? 0);
@@ -240,6 +246,10 @@ function buildSquareTaxes(checkoutData: CheckoutType) {
 }
 
 function buildSquareFulfillment(checkoutData: CheckoutType) {
+	if (!hasShippableItems(checkoutData)) {
+		return undefined;
+	}
+
 	const shippingTo = checkoutData.shippingTo;
 	if (!shippingTo?.street1 || !shippingTo?.city || !shippingTo?.state || !shippingTo?.zip) {
 		return undefined;
@@ -337,7 +347,9 @@ export function buildSquarePaymentBodyWithOrder(sourceId: string, checkoutData: 
 	const squareConfig = requireSquareConfig(checkoutData);
 	const currency = checkoutData.currency || 'USD';
 	const billingAddress = buildBillingAddress(checkoutData.shippingTo);
+	const shippingAddress = buildBillingAddress(checkoutData.shippingTo);
 	const shippingEmail = checkoutData.shippingTo?.email;
+	const shippingPhone = typeof checkoutData.shippingTo?.phone === 'string' ? checkoutData.shippingTo.phone.trim() : '';
 	let buyerEmail: string | undefined;
 	if (typeof shippingEmail === 'string' && shippingEmail.trim().length > 0) {
 		buyerEmail = shippingEmail.trim();
@@ -352,8 +364,10 @@ export function buildSquarePaymentBodyWithOrder(sourceId: string, checkoutData: 
 		location_id: squareConfig.locationId,
 		autocomplete: true,
 		...(buyerEmail ? { buyer_email_address: buyerEmail } : {}),
+		...(shippingPhone ? { buyer_phone_number: shippingPhone } : {}),
 		...(orderId ? { order_id: orderId } : {}),
 		billing_address: billingAddress,
+		shipping_address: shippingAddress,
 		note: 'Online order from Three Muses of Bluffton shopping cart',
 		statement_description_identifier: 'ThreeMusesCart',
 	};
@@ -397,6 +411,30 @@ export async function createSquareOrder(checkoutData: CheckoutType, idempotencyK
 			body: JSON.stringify(body),
 		},
 	});
+}
+
+function createSquareIdempotencyKey(suffix: string) {
+	return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}-${suffix}`;
+}
+
+function getSquarePaymentAmount(checkoutData: CheckoutType, orderResponse: any) {
+	const orderTotalMoney = orderResponse?.order?.total_money;
+	return typeof orderTotalMoney?.amount === 'number'
+		? orderTotalMoney.amount / 100
+		: checkoutData.total;
+}
+
+export async function createSquareOrderAndCapturePayment(sourceId: string, checkoutData: CheckoutType) {
+	const orderIdempotencyKey = createSquareIdempotencyKey('order');
+	const paymentIdempotencyKey = createSquareIdempotencyKey('payment');
+	const orderResponse = await createSquareOrder(checkoutData, orderIdempotencyKey);
+	const orderId = orderResponse?.order?.id || orderResponse?.order_id || orderResponse?.id;
+	const paymentAmount = getSquarePaymentAmount(checkoutData, orderResponse);
+	const captureResponse = await captureSquarePayment(sourceId, checkoutData, paymentIdempotencyKey, orderId, paymentAmount);
+	return {
+		...captureResponse,
+		orderResponse,
+	};
 }
 
 export async function captureSquarePayment(sourceId: string, checkoutData: CheckoutType, idempotencyKey: string, orderId?: string, paymentAmount?: number) {

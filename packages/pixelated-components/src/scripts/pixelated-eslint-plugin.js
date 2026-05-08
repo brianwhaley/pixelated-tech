@@ -947,6 +947,8 @@ const noStaleOverrideRule = {
 		fixable: false,
 		messages: {
 			staleOverride: 'Override for "{{library}}" -> "{{dep}}" is stale: library declares "{{libConstraint}}" which satisfies or exceeds override "{{override}}". Remove the override.'
+			,
+			missingTarget: 'Override for "{{target}}" is stale: target package is not present anywhere in the lockfile. Remove the override.'
 		},
 		schema: [],
 	},
@@ -975,6 +977,47 @@ const noStaleOverrideRule = {
 				return normalizeVersion(s.replace(/^[^0-9]*/, ''));
 			}
 			return normalizeVersion(s);
+		}
+
+		function collectVersions(lock, pkgName) {
+			const versions = [];
+			try {
+				if (lock && lock.packages && typeof lock.packages === 'object') {
+					for (const [pkgPath, pkgObj] of Object.entries(lock.packages)) {
+						if (!pkgObj || !pkgObj.version) continue;
+						if (!pkgPath || pkgPath === '') continue;
+						if (!pkgPath.startsWith('node_modules/')) continue;
+						const segments = pkgPath.split('node_modules/').slice(1);
+						for (const seg of segments) {
+							let candidate;
+							if (seg.startsWith('@')) {
+								const p = seg.split('/'); candidate = p.slice(0,2).join('/');
+							} else {
+								candidate = seg.split('/')[0];
+							}
+							if (candidate === pkgName) {
+								versions.push(pkgObj.version);
+								break;
+							}
+						}
+					}
+				}
+
+				function walk(deps) {
+					if (!deps) return;
+					for (const [k, v] of Object.entries(deps)) {
+						if (k === pkgName) {
+							if (v && typeof v === 'string') versions.push(v);
+							else if (v && v.version) versions.push(v.version);
+						}
+						if (v && v.dependencies) walk(v.dependencies);
+					}
+				}
+				if (lock && lock.dependencies) walk(lock.dependencies);
+			} catch (e) {
+				// defensive
+			}
+			return versions;
 		}
 
 		function findLibraryEntry(lock, library) {
@@ -1007,19 +1050,34 @@ const noStaleOverrideRule = {
 
 				const overrides = pkg.overrides || pkg.resolutions || (pkg['pnpm'] && pkg['pnpm'].overrides) || {};
 				for (const [k,v] of Object.entries(overrides)) {
-					// only consider nested mapping overrides: library -> { dep: version }
-					if (v && typeof v === 'object') {
+					if (v && typeof v === 'object' && !Array.isArray(v)) {
+						// only consider nested mapping overrides: library -> { dep: version }
 						const library = k;
+						const libEntry = findLibraryEntry(lock, library);
+						if (!libEntry) {
+							context.report({ node, messageId: 'missingTarget', data: { target: library } });
+							continue;
+						}
 						for (const [dep, overrideSpec] of Object.entries(v)) {
-							const libEntry = findLibraryEntry(lock, library);
-							if (!libEntry) continue;
 							const libDep = (libEntry.dependencies && libEntry.dependencies[dep]) || (libEntry.requires && libEntry.requires[dep]);
-							if (!libDep) continue;
+							if (!libDep) {
+								const depVersions = collectVersions(lock, dep);
+								if (depVersions.length === 0) {
+									context.report({ node, messageId: 'missingTarget', data: { target: dep } });
+								}
+								continue;
+							}
 							const libBase = normalizeVersion(libDep);
 							const overrideBase = parseBaseVersion(overrideSpec);
 							if (libBase && overrideBase && cmpParts(libBase, overrideBase) >= 0) {
 								context.report({ node, messageId: 'staleOverride', data: { library, dep, libConstraint: libDep, override: overrideSpec } });
 							}
+						}
+					} else {
+						const target = k;
+						const targetVersions = collectVersions(lock, target);
+						if (targetVersions.length === 0) {
+							context.report({ node, messageId: 'missingTarget', data: { target } });
 						}
 					}
 				}

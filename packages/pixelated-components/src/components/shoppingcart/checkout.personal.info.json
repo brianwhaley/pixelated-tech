@@ -382,7 +382,7 @@
 				"required": true,
 				"label" : "Phone Number : ",
 				"tooltip" : "Please enter your Phone Number",
-				"validate" : "isValidUSPhoneNumber"
+				"validate" : "isValidSquarePhoneNumber"
 			}
 		},{
 			"component" : "FormInput",

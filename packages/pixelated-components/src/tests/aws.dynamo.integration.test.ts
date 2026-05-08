@@ -57,6 +57,8 @@ describe('aws dynamo integration', () => {
 								country: 'US',
 								phone: '1234567890',
 								email: 'test@example.com',
+								child_name: 'Grace Sturkie',
+								child_birthdate: '2017-10-21',
 								birthdate: '2026-05-01',
 								emergency_contact_name: 'Test User',
 								emergency_contact_telephone: '1234567890',
@@ -94,6 +96,8 @@ describe('aws dynamo integration', () => {
 				email: 'test@example.com',
 			},
 			registration_data: {
+				child_name: 'Grace Sturkie',
+				child_birthdate: '2017-10-21',
 				birthdate: '2026-05-01',
 				emergency_contact_name: 'Test User',
 				emergency_contact_telephone: '1234567890',

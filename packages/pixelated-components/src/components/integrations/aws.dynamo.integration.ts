@@ -39,6 +39,8 @@ function selectObjectFields(source: Record<string, any>, fields: Array<string>) 
 
 function selectRegistrationData(source: Record<string, any>) {
 	return selectObjectFields(source, [
+		'child_name',
+		'child_birthdate',
 		'birthdate',
 		'emergency_contact_name',
 		'emergency_contact_telephone',

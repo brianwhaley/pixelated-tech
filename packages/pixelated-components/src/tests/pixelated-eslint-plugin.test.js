@@ -490,4 +490,36 @@ describe('pixelated-eslint-plugin', () => {
 			} finally {
 				fs.rmSync(tmpdir, { recursive: true, force: true });
 			}
-		});});
+		});
+
+		it('errors when a root override target is missing from the lockfile', async () => {
+			const mod = await import('../scripts/pixelated-eslint-plugin.js');
+			const linter = new (await import('eslint')).Linter();
+			linter.definePlugin('pixelated', mod.default);
+
+			const fs = await import('fs');
+			const os = await import('os');
+			const path = await import('path');
+			const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'pkg-'));
+			try {
+				const lock = { packages: { '': { dependencies: { react: '^19.0.0' } } } };
+				fs.writeFileSync(path.join(tmpdir, 'package-lock.json'), JSON.stringify(lock));
+				fs.writeFileSync(path.join(tmpdir, 'package.json'), JSON.stringify({ overrides: { 'left-pad': '^1.3.0' } }));
+
+				const oldCwd = process.cwd();
+				process.chdir(tmpdir);
+
+				const code = 'const x = 1;';
+				const messages = linter.verify(code, {
+					parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
+					plugins: { pixelated: true },
+					rules: { 'pixelated/no-stale-override': 'error' },
+				}, { filename: 'src/index.js' });
+
+				process.chdir(oldCwd);
+				expect(messages.some(m => m.ruleId === 'pixelated/no-stale-override')).toBe(true);
+			} finally {
+				fs.rmSync(tmpdir, { recursive: true, force: true });
+			}
+		});
+	});

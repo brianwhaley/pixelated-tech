@@ -5,7 +5,7 @@
 * [ x ] dont forget to update pixelated.config.json shoppingcart props before launch
 * [ x ] dont forget to update pixelated.config.json square sandbox props before launch
 * [ x ] Move Square domain to AWS
-* [  ] Set up improvmx for email address
+* [ x ] Set up mxrecords in route 53 for email address
 * [ x ] Use Katie's interest list spreadsheet as registrations for the blog
 * [ x ] publish new introductory blog post
 * [ x ] Create a dashbaord for event registrations for three muses
@@ -83,7 +83,7 @@
 * [ x ] create blog listing page
 * [ x ] write announcement blog post
 * [ X ] Move Square domain to AWS
-* [  ] Set up improvmx for email address
+* [ x ] Set up mxrecords in route 53 for email address
 * [ x ] Get descriptions, dates, times, sessions, schedules, etc of each of the the classes
 
 

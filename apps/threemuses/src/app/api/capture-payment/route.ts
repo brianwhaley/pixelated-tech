@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { captureSquarePayment, createSquareOrder } from '@pixelated-tech/components/server';
+import { createSquareOrderAndCapturePayment } from '@pixelated-tech/components/server';
 
 export async function POST(req: Request) {
 	try {
@@ -10,20 +10,9 @@ export async function POST(req: Request) {
 			return NextResponse.json({ error: 'sourceId and checkoutData are required' }, { status: 400 });
 		}
 
-		const orderIdempotencyKey = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}-order`;
-		const paymentIdempotencyKey = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}-payment`;
-		const orderResponse = await createSquareOrder(checkoutData, orderIdempotencyKey);
-		const orderId = orderResponse?.order?.id || orderResponse?.order_id || orderResponse?.id;
-		const orderTotalMoney = orderResponse?.order?.total_money;
-		// Square requires the captured payment total to match the created order total.
-		// Prefer the order total when it exists, and fall back to checkoutData only if the order response is unavailable.
-		const paymentAmount = typeof orderTotalMoney?.amount === 'number'
-			? orderTotalMoney.amount / 100
-			: checkoutData.total;
-		const captureResponse = await captureSquarePayment(sourceId, checkoutData, paymentIdempotencyKey, orderId, paymentAmount);
+		const captureResponse = await createSquareOrderAndCapturePayment(sourceId, checkoutData);
 		return NextResponse.json({
 			...captureResponse,
-			orderResponse,
 		});
 	} catch (error: any) {
 		console.error('Error creating Square order or capturing payment:', error);

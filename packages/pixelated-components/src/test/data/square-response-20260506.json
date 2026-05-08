@@ -1,0 +1,464 @@
+{
+    "sourceId": "cnon:CA4SECwGkM6IPr3RraPPuJdIyTMYASgC",
+    "card": {
+        "details": {
+            "billing": {
+                "postalCode": "11111"
+            },
+            "card": {
+                "brand": "VISA",
+                "expMonth": 11,
+                "expYear": 2031,
+                "last4": "1111",
+                "cardType": "CREDIT",
+                "prepaidType": "NOT_PREPAID"
+            },
+            "method": "Card"
+        },
+        "status": "OK",
+        "token": "cnon:CA4SECwGkM6IPr3RraPPuJdIyTMYASgC"
+    },
+    "checkoutData": {
+        "items": [
+            {
+                "itemID": "2026-SC01",
+                "itemTitle": "SUGAR & STITCHES CAMP",
+                "itemCost": 275,
+                "itemQuantity": 1,
+                "itemURL": "/events/2026-SC01",
+                "itemCategory": "Summer Camp",
+                "itemImageURL": "https://images.ctfassets.net/luf8eony1687/2jmCMwXhZGD4oQWpj8g2fp/83c80c4b9d48d7eb90911c838f586935/little-girl-trying-make-dress-her-doll-with-her-teacher.jpg?fm=webp&q=50",
+                "itemIsShippable": false,
+                "itemWeight": 0,
+                "itemWeightUnit": "lb"
+            },
+            {
+                "itemID": "2026-SC02",
+                "itemTitle": "WEEK AT THE BEACH CAMP",
+                "itemCost": 275,
+                "itemQuantity": 1,
+                "itemURL": "/events/2026-SC02",
+                "itemCategory": "Summer Camp",
+                "itemImageURL": "https://images.ctfassets.net/luf8eony1687/6Say1qXsqUPBTWS7272dyJ/fad45231d9766dfe77537fcb8cc76ac3/novice-tailor-learning-make-template.jpg?fm=webp&q=50",
+                "itemIsShippable": false,
+                "itemWeight": 0,
+                "itemWeightUnit": "lb"
+            }
+        ],
+        "subtotal": 550,
+        "subtotal_discount": 55,
+        "shippingTo": {
+            "originPostalCode": "29910",
+            "originCountry": "US",
+            "name": "Brian T Whaley",
+            "findMyAddress": "",
+            "street1": "10 Jade Circle",
+            "city": "Denville",
+            "state": "NJ",
+            "zip": "07834",
+            "country": "US",
+            "phone": "+19737108008",
+            "email": "pixelvivid@personal.example.com",
+            "discountCode": "",
+            "child_name": "ChildNumberOne",
+            "child_birthdate": "2026-05-01",
+            "full_payment": "yes",
+            "cancellation_policy": "yes",
+            "photo_consent": "yes",
+            "closed_toe_shoes": "yes",
+            "class_materials": "yes",
+            "minimum_students": "yes",
+            "food_allergies": "no thank you",
+            "bleeding_disorder": "no",
+            "injury_liability": "Grampy McGrampyFace",
+            "from": "info@thethreemusesofbluffton.com",
+            "to": "info@thethreemusesofbluffton.com",
+            "domain": "thethreemusesofbluffton.com",
+            "subject": "Three Muses Registration Submit",
+            "website": "",
+            "uspsRates": [],
+            "selectedUspsRate": null
+        },
+        "shippingCost": 0,
+        "handlingFee": 14.85,
+        "handlingFeeCurrency": "USD",
+        "currency": "USD",
+        "salesTax": 29.7,
+        "total": 539.55,
+        "shippingWeight": 0
+    },
+    "captureResponse": {
+        "payment": {
+            "id": "tcTA4IfLnuVKY0SXbcMncDMgQMPZY",
+            "created_at": "2026-05-07T02:53:58.346Z",
+            "updated_at": "2026-05-07T02:53:58.574Z",
+            "amount_money": {
+                "amount": 53955,
+                "currency": "USD"
+            },
+            "status": "COMPLETED",
+            "delay_duration": "PT168H",
+            "source_type": "CARD",
+            "card_details": {
+                "status": "CAPTURED",
+                "card": {
+                    "card_brand": "VISA",
+                    "last_4": "1111",
+                    "exp_month": 11,
+                    "exp_year": 2031,
+                    "fingerprint": "sq-1-PesJ0I2v1QElLROwaRwOr6NVQMjZ33KWvdLv6Ou0PE4kGZVWgP9VD1mgWHnKmBmsDQ",
+                    "card_type": "CREDIT",
+                    "prepaid_type": "NOT_PREPAID",
+                    "bin": "411111"
+                },
+                "entry_method": "KEYED",
+                "cvv_status": "CVV_ACCEPTED",
+                "avs_status": "AVS_ACCEPTED",
+                "statement_description": "SQ *DEFAULT TEST ACCOUNT",
+                "card_payment_timeline": {
+                    "authorized_at": "2026-05-07T02:53:58.480Z",
+                    "captured_at": "2026-05-07T02:53:58.574Z"
+                }
+            },
+            "location_id": "LC4GHZ7PT91HZ",
+            "order_id": "g3W6NMzEr6zeMsNP4rDaC14CukCZY",
+            "risk_evaluation": {
+                "created_at": "2026-05-07T02:53:58.480Z",
+                "risk_level": "NORMAL"
+            },
+            "buyer_email_address": "pixelvivid@personal.example.com",
+            "billing_address": {
+                "address_line_1": "10 Jade Circle",
+                "locality": "Denville",
+                "administrative_district_level_1": "NJ",
+                "postal_code": "07834",
+                "country": "US"
+            },
+            "shipping_address": {
+                "address_line_1": "10 Jade Circle",
+                "locality": "Denville",
+                "administrative_district_level_1": "NJ",
+                "postal_code": "07834",
+                "country": "US"
+            },
+            "note": "Online order from Three Muses of Bluffton shopping cart",
+            "total_money": {
+                "amount": 53955,
+                "currency": "USD"
+            },
+            "statement_description_identifier": "ThreeMusesCart",
+            "approved_money": {
+                "amount": 53955,
+                "currency": "USD"
+            },
+            "receipt_number": "tcTA",
+            "receipt_url": "https://squareupsandbox.com/receipt/preview/tcTA4IfLnuVKY0SXbcMncDMgQMPZY",
+            "delay_action": "CANCEL",
+            "delayed_until": "2026-05-14T02:53:58.346Z",
+            "application_details": {
+                "square_product": "ECOMMERCE_API",
+                "application_id": "sandbox-sq0idb-jravMMPDNFdLWe1W5x339Q"
+            },
+            "version_token": "PQKRjcTJqjHY1bp7IU9x5dIred9UhN35eGGNKya9kxq6o"
+        },
+        "orderResponse": {
+            "order": {
+                "id": "g3W6NMzEr6zeMsNP4rDaC14CukCZY",
+                "location_id": "LC4GHZ7PT91HZ",
+                "line_items": [
+                    {
+                        "uid": "2aONC96O2GXm781OQjqdAB",
+                        "quantity": "1",
+                        "name": "SUGAR & STITCHES CAMP",
+                        "base_price_money": {
+                            "amount": 27500,
+                            "currency": "USD"
+                        },
+                        "gross_sales_money": {
+                            "amount": 27500,
+                            "currency": "USD"
+                        },
+                        "total_tax_money": {
+                            "amount": 1485,
+                            "currency": "USD"
+                        },
+                        "total_discount_money": {
+                            "amount": 2750,
+                            "currency": "USD"
+                        },
+                        "total_money": {
+                            "amount": 26235,
+                            "currency": "USD"
+                        },
+                        "variation_total_price_money": {
+                            "amount": 27500,
+                            "currency": "USD"
+                        },
+                        "applied_taxes": [
+                            {
+                                "uid": "DW1BZICauymfKuqadOhEsB",
+                                "tax_uid": "BDsqvrIMeisFkFWZLyKzYC",
+                                "applied_money": {
+                                    "amount": 1485,
+                                    "currency": "USD"
+                                }
+                            }
+                        ],
+                        "applied_discounts": [
+                            {
+                                "uid": "IptV8XdU5jYVbXYGYeTkYB",
+                                "discount_uid": "SUBTOTAL_DISCOUNT",
+                                "applied_money": {
+                                    "amount": 2750,
+                                    "currency": "USD"
+                                }
+                            }
+                        ],
+                        "item_type": "ITEM",
+                        "total_service_charge_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "total_card_surcharge_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        }
+                    },
+                    {
+                        "uid": "wV9mU3OgDATw1unvNKYFFC",
+                        "quantity": "1",
+                        "name": "WEEK AT THE BEACH CAMP",
+                        "base_price_money": {
+                            "amount": 27500,
+                            "currency": "USD"
+                        },
+                        "gross_sales_money": {
+                            "amount": 27500,
+                            "currency": "USD"
+                        },
+                        "total_tax_money": {
+                            "amount": 1485,
+                            "currency": "USD"
+                        },
+                        "total_discount_money": {
+                            "amount": 2750,
+                            "currency": "USD"
+                        },
+                        "total_money": {
+                            "amount": 26235,
+                            "currency": "USD"
+                        },
+                        "variation_total_price_money": {
+                            "amount": 27500,
+                            "currency": "USD"
+                        },
+                        "applied_taxes": [
+                            {
+                                "uid": "boF9E5CdjZccth8XtyKf1B",
+                                "tax_uid": "BDsqvrIMeisFkFWZLyKzYC",
+                                "applied_money": {
+                                    "amount": 1485,
+                                    "currency": "USD"
+                                }
+                            }
+                        ],
+                        "applied_discounts": [
+                            {
+                                "uid": "GhCS4X6Xfptxz1E55WZeVD",
+                                "discount_uid": "SUBTOTAL_DISCOUNT",
+                                "applied_money": {
+                                    "amount": 2750,
+                                    "currency": "USD"
+                                }
+                            }
+                        ],
+                        "item_type": "ITEM",
+                        "total_service_charge_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "total_card_surcharge_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        }
+                    },
+                    {
+                        "uid": "2BySmDN3nBbkaja2ebj93B",
+                        "quantity": "1",
+                        "name": "registration-data",
+                        "base_price_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "note": "{\"child_name\":\"ChildNumberOne\",\"child_birthdate\":\"2026-05-01\",\"full_payment\":\"yes\",\"cancellation_policy\":\"yes\",\"photo_consent\":\"yes\",\"closed_toe_shoes\":\"yes\",\"class_materials\":\"yes\",\"minimum_students\":\"yes\",\"food_allergies\":\"no thank you\",\"bleeding_disorder\":\"no\",\"injury_liability\":\"Grampy McGrampyFace\"}",
+                        "gross_sales_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "total_tax_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "total_discount_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "total_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "variation_total_price_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "applied_taxes": [
+                            {
+                                "uid": "tGCPmUcNxviTLNvxj4jP3",
+                                "tax_uid": "BDsqvrIMeisFkFWZLyKzYC",
+                                "applied_money": {
+                                    "amount": 0,
+                                    "currency": "USD"
+                                }
+                            }
+                        ],
+                        "applied_discounts": [
+                            {
+                                "uid": "kkDSf6Pv3DrEshbc3F9EoD",
+                                "discount_uid": "SUBTOTAL_DISCOUNT",
+                                "applied_money": {
+                                    "amount": 0,
+                                    "currency": "USD"
+                                }
+                            }
+                        ],
+                        "item_type": "ITEM",
+                        "total_service_charge_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "total_card_surcharge_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        }
+                    }
+                ],
+                "taxes": [
+                    {
+                        "uid": "BDsqvrIMeisFkFWZLyKzYC",
+                        "name": "Sales Tax",
+                        "percentage": "6",
+                        "type": "ADDITIVE",
+                        "applied_money": {
+                            "amount": 2970,
+                            "currency": "USD"
+                        },
+                        "scope": "ORDER"
+                    }
+                ],
+                "discounts": [
+                    {
+                        "uid": "SUBTOTAL_DISCOUNT",
+                        "name": "Subtotal discount",
+                        "amount_money": {
+                            "amount": 5500,
+                            "currency": "USD"
+                        },
+                        "applied_money": {
+                            "amount": 5500,
+                            "currency": "USD"
+                        },
+                        "type": "FIXED_AMOUNT",
+                        "scope": "ORDER"
+                    }
+                ],
+                "created_at": "2026-05-07T02:53:57.977Z",
+                "updated_at": "2026-05-07T02:53:57.977Z",
+                "state": "OPEN",
+                "version": 1,
+                "total_tax_money": {
+                    "amount": 2970,
+                    "currency": "USD"
+                },
+                "total_discount_money": {
+                    "amount": 5500,
+                    "currency": "USD"
+                },
+                "total_tip_money": {
+                    "amount": 0,
+                    "currency": "USD"
+                },
+                "total_money": {
+                    "amount": 53955,
+                    "currency": "USD"
+                },
+                "service_charges": [
+                    {
+                        "uid": "TnsSA5BuBd81YYgXZA5rf",
+                        "name": "Handling",
+                        "amount_money": {
+                            "amount": 1485,
+                            "currency": "USD"
+                        },
+                        "applied_money": {
+                            "amount": 1485,
+                            "currency": "USD"
+                        },
+                        "calculation_phase": "TOTAL_PHASE",
+                        "taxable": false,
+                        "total_money": {
+                            "amount": 1485,
+                            "currency": "USD"
+                        },
+                        "total_tax_money": {
+                            "amount": 0,
+                            "currency": "USD"
+                        },
+                        "type": "CUSTOM",
+                        "treatment_type": "LINE_ITEM_TREATMENT"
+                    }
+                ],
+                "total_service_charge_money": {
+                    "amount": 1485,
+                    "currency": "USD"
+                },
+                "net_amounts": {
+                    "total_money": {
+                        "amount": 53955,
+                        "currency": "USD"
+                    },
+                    "tax_money": {
+                        "amount": 2970,
+                        "currency": "USD"
+                    },
+                    "discount_money": {
+                        "amount": 5500,
+                        "currency": "USD"
+                    },
+                    "tip_money": {
+                        "amount": 0,
+                        "currency": "USD"
+                    },
+                    "service_charge_money": {
+                        "amount": 1485,
+                        "currency": "USD"
+                    },
+                    "card_surcharge_money": {
+                        "amount": 0,
+                        "currency": "USD"
+                    }
+                },
+                "source": {
+                    "name": "Sandbox for sq0idp-weW-y_az31xsCJQNYCbY8A"
+                },
+                "net_amount_due_money": {
+                    "amount": 53955,
+                    "currency": "USD"
+                },
+                "total_card_surcharge_money": {
+                    "amount": 0,
+                    "currency": "USD"
+                }
+            }
+        }
+    }
+}

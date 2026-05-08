@@ -29,5 +29,6 @@ describe('generate-site-images script', () => {
 		const json = JSON.parse(raw);
 		expect(json.images).toBeDefined();
 		expect(json.metadata.imageCount).toBe(2);
+		expect(json.metadata.generatedAt).toBeUndefined();
 	});
 });

@@ -111,8 +111,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] Pull out registration as an item from pixelated components and move to in three muses and allow custom item injection into the shopping cart
 
-- [  ] Refactor `capture-payment` api route in three muses so the Square orchestration lives in `square.ts` and the route stays as a thin HTTP wrapper. Summary: move the shared Square flow into a server helper that builds the order, derives the payment total from the order response, captures payment, and returns the combined result; keep the route responsible only for request parsing, response formatting, and status codes.
-
 #### SCALING BLOCKERS
 
 1. All cart/shipping data stored in browser localStorage only
