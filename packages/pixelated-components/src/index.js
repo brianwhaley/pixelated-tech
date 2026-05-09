@@ -57,6 +57,7 @@ export * from './components/integrations/calendly';
 export * from './components/integrations/cloudinary';
 export * from './components/integrations/contentful.delivery';
 export * from './components/integrations/contentful.reviews.components';
+export * from './components/integrations/contentful.alert.components';
 export * from './components/integrations/contentful.items.components';
 export * from './components/integrations/contentful.management';
 export * from './components/integrations/flickr';

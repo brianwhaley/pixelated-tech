@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 import { encode } from 'html-entities';
 import { getAllRoutes } from "./metadata.functions";
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
-import { getContentfulFieldValues, getContentfulAssets } from "../integrations/contentful.delivery";
+import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
 import { getFullPixelatedConfig } from '../config/config';
 import { CacheManager } from '../foundation/cache-manager';
@@ -12,6 +12,8 @@ import { getDomain } from './utilities';
 import { smartFetch } from './smartfetch';
 
 const debug = false;
+
+const DEFAULT_CONTENTFUL_IMAGE_FIELDS = ['image', 'images', 'carouselImages'];
 
 export type SitemapEntry = MetadataRoute.Sitemap[number];
 /* export type SitemapEntry = {
@@ -70,21 +72,31 @@ export function buildSitemapConfig(
 			environment: pixelatedConfig.contentful.environment ?? '',
 			access_token: pixelatedConfig.contentful.delivery_access_token ?? '',
 		};
+
+		const sitemapProps = [
+			'sitemapContentType',
+			'sitemapField',
+			'sitemapRoutePrefix',
+			'sitemapRouteTemplate',
+		] as const;
+		for (const key of sitemapProps) {
+			const value = pixelatedConfig.contentful?.[key];
+			if (value) {
+				contentfulConfig[key] = value;
+			}
+		}
+
 		if (pixelatedConfig.contentful?.sitemap) {
-			contentfulConfig.sitemap = { ...pixelatedConfig.contentful.sitemap };
+			contentfulConfig.sitemap = {
+				...pixelatedConfig.contentful.sitemap,
+				...(pixelatedConfig.contentful.sitemap.imageFields ? { imageFields: [...pixelatedConfig.contentful.sitemap.imageFields] } : {}),
+			};
 		}
-		if (pixelatedConfig.contentful?.sitemapContentType) {
-			contentfulConfig.sitemapContentType = pixelatedConfig.contentful.sitemapContentType;
+
+		if (pixelatedConfig.contentful?.sitemapImageFields) {
+			contentfulConfig.sitemapImageFields = [...pixelatedConfig.contentful.sitemapImageFields];
 		}
-		if (pixelatedConfig.contentful?.sitemapField) {
-			contentfulConfig.sitemapField = pixelatedConfig.contentful.sitemapField;
-		}
-		if (pixelatedConfig.contentful?.sitemapRoutePrefix) {
-			contentfulConfig.sitemapRoutePrefix = pixelatedConfig.contentful.sitemapRoutePrefix;
-		}
-		if (pixelatedConfig.contentful?.sitemapRouteTemplate) {
-			contentfulConfig.sitemapRouteTemplate = pixelatedConfig.contentful.sitemapRouteTemplate;
-		}
+
 		sitemapConfig.contentful = contentfulConfig;
 		sitemapConfig.createContentfulURLs = !!(pixelatedConfig.contentful?.sitemap || pixelatedConfig.contentful?.sitemapContentType);
 		sitemapConfig.createContentfulAssetURLs = hasCompleteContentfulConfig;
@@ -193,6 +205,8 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 	const usePageBuilder = cfg.createPageBuilderURLs ?? false;
 	const useEbay = cfg.createEbayItemURLs ?? false;
 
+	// ORDER IS IMPORTANT - THIS IS THE ORDER THEY WILL APPEAR IN THE SITEMAP
+
 	// Pages
 	if (usePages) {
 		if (cfg.routes) {
@@ -200,29 +214,29 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 			sitemapEntries.push(...(await createPageURLs(flat, origin)));
 		}
 	}
-	// Image JSON
-	if (useImageJSON) {
-		sitemapEntries.push(...(await createImageURLsFromJSON(origin, cfg.imageJson?.path ?? 'public/site-images.json')));
-	}
-	// WordPress
-	if (useWP && cfg.wordpress?.site) {
-		sitemapEntries.push(...(await createWordPressURLs({ site: cfg.wordpress.site, includeImages: useWPImages })));
-	}
 	// Contentful (pages)
 	if (useContentful && cfg.contentful) {
 		sitemapEntries.push(...(await createContentfulURLs({ apiProps: cfg.contentful, origin })));
 	}
-	// Contentful assets (images and videos)
-	if (useContentfulAssets && cfg.contentful) {
-		sitemapEntries.push(...(await createContentfulAssetURLs({ apiProps: cfg.contentful, origin })));
+	// Ebay items
+	if (useEbay) {
+		sitemapEntries.push(...(await createEbayItemURLs(origin)));
 	}
 	// Page Builder (existing helper in package not always present)
 	if (usePageBuilder && cfg.contentful) {
 		// TODO: wire createContentfulPageBuilderURLs if needed; skipping for MVP
 	}
-	// Ebay items
-	if (useEbay) {
-		sitemapEntries.push(...(await createEbayItemURLs(origin)));
+	// WordPress
+	if (useWP && cfg.wordpress?.site) {
+		sitemapEntries.push(...(await createWordPressURLs({ site: cfg.wordpress.site, includeImages: useWPImages })));
+	}
+	// Image JSON
+	if (useImageJSON) {
+		sitemapEntries.push(...(await createImageURLsFromJSON(origin, cfg.imageJson?.path ?? 'public/site-images.json')));
+	}
+	// Contentful assets (images and videos)
+	if (useContentfulAssets && cfg.contentful) {
+		sitemapEntries.push(...(await createContentfulAssetURLs({ apiProps: cfg.contentful, origin })));
 	}
 	// Deduplicate by URL and properly merge images arrays if present
 	const map = new Map<string, any>();
@@ -291,7 +305,7 @@ export async function createImageURLsFromJSON(origin: string, jsonPath = 'public
 		// Use an array of URL strings so the sitemap serializer writes the URL text
 		const newImages = imgs.map(i => {
 			const rel = i.startsWith('/') ? i : `/${i}`;
-			return `${origin}${rel}`;
+			return encode(`${origin}${rel}`);
 		});
 		sitemap.push({
 			url: `${origin}/images`,
@@ -312,7 +326,9 @@ export async function createWordPressURLs(props: {site: string, includeImages?: 
 	const blogPosts = await getWordPressItems({site: props.site});
 	for await (const post of blogPosts ?? []) {
 		// Next.js sitemap only supports string URLs for images, so we map to .url
-		const images = props.includeImages ? getWordPressItemImages(post).map(img => img.url) : [];
+		const images = props.includeImages
+			? getWordPressItemImages(post).map(img => encode(img.url))
+			: [];
 		sitemap.push({
 			url: post.URL ,
 			lastModified: post.modified ? new Date(post.modified) : new Date(),
@@ -354,12 +370,14 @@ createContentfulURLs.propTypes = {
 			field: PropTypes.string,
 			routePrefix: PropTypes.string,
 			routeTemplate: PropTypes.string,
+			imageFields: PropTypes.arrayOf(PropTypes.string),
 		}),
 		/** Flattened Contentful sitemap config for pixelated.config.json */
 		sitemapContentType: PropTypes.string,
 		sitemapField: PropTypes.string,
 		sitemapRoutePrefix: PropTypes.string,
 		sitemapRouteTemplate: PropTypes.string,
+		sitemapImageFields: PropTypes.arrayOf(PropTypes.string),
 	}).isRequired,
 	/** Origin used to build absolute URLs */
 	origin: PropTypes.string.isRequired,
@@ -367,6 +385,8 @@ createContentfulURLs.propTypes = {
 	contentType: PropTypes.string,
 	/** Optional override for field used to generate page slugs */
 	field: PropTypes.string,
+	/** Optional image field names to resolve asset references from entries */
+	imageFields: PropTypes.arrayOf(PropTypes.string),
 	/** Optional route prefix for generated URLs */
 	routePrefix: PropTypes.string,
 	/** Optional route template for generated URLs */
@@ -379,29 +399,61 @@ export async function createContentfulURLs(props: createContentfulURLsType){
 	const mergedApiProps = { ...props.apiProps, ...providerContentfulApiProps };
 	const sitemapConfig = props.apiProps || {} as any;
 
-	const contentType = props.contentType || sitemapConfig.sitemapContentType || sitemapConfig.sitemap?.contentType || 'carouselCard';
-	const field = props.field || sitemapConfig.sitemapField || sitemapConfig.sitemap?.field || 'title';
-	const routePrefix = props.routePrefix || sitemapConfig.sitemapRoutePrefix || sitemapConfig.sitemap?.routePrefix || '/projects';
-	const routeTemplate = props.routeTemplate || sitemapConfig.sitemapRouteTemplate || sitemapConfig.sitemap?.routeTemplate;
+	const contentType = props.contentType ?? sitemapConfig.sitemapContentType ?? sitemapConfig.sitemap?.contentType;
+	const field = props.field ?? sitemapConfig.sitemapField ?? sitemapConfig.sitemap?.field;
+	const routePrefix = props.routePrefix ?? sitemapConfig.sitemapRoutePrefix ?? sitemapConfig.sitemap?.routePrefix;
+	const normalizedRoutePrefix = routePrefix?.replace(/\/$$/, '');
+	const routeTemplate = props.routeTemplate ?? sitemapConfig.sitemapRouteTemplate ?? sitemapConfig.sitemap?.routeTemplate;
+	const imageFieldsSource = props.imageFields ?? sitemapConfig.sitemapImageFields ?? sitemapConfig.sitemap?.imageFields;
 
-	const contentfulFieldValues = await getContentfulFieldValues({
-		apiProps: mergedApiProps,
-		contentType,
-		field
-	});
+	if (!contentType || !field || (!routeTemplate && !routePrefix)) {
+		return sitemap;
+	}
+	const imageFields = Array.isArray(imageFieldsSource) && imageFieldsSource.length > 0
+		? imageFieldsSource.filter((field): field is string => typeof field === 'string')
+		: DEFAULT_CONTENTFUL_IMAGE_FIELDS;
 
-	for ( const value of contentfulFieldValues ){
+	const entries = await getContentfulEntriesByType({ apiProps: mergedApiProps, contentType });
+	if (!entries?.items?.length) {
+		return sitemap;
+	}
+
+	for ( const entry of entries.items ){
+		const value = entry?.fields?.[field];
+		if (value === undefined || value === null || String(value).trim() === '') {
+			continue;
+		}
+
 		const encodedValue = encodeURIComponent(String(value));
 		const relativePath = routeTemplate
 			? routeTemplate.replace(/\$\{value\}/g, encodedValue)
-			: `${routePrefix.replace(/\/$/, '')}/${encodedValue}`;
+			: `${normalizedRoutePrefix}/${encodedValue}`;
 		const normalizedPath = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
-		sitemap.push({
+
+		const imageRefs: any[] = [];
+		for (const imageField of imageFields) {
+			const fieldValue = entry.fields?.[imageField];
+			if (!fieldValue) continue;
+			imageRefs.push(...(Array.isArray(fieldValue) ? fieldValue : [fieldValue]));
+		}
+
+		const images = imageRefs.length > 0
+			? await getContentfulImagesFromEntries({ images: imageRefs, assets: entries.includes?.Asset })
+			: [];
+		const imageUrls = images
+			.map((image: any) => image.image ? encode(image.image) : image.image)
+			.filter(Boolean);
+
+		const sitemapEntry: any = {
 			url: `${props.origin}${normalizedPath}` ,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
 			priority: 1.0,
-		});
+		};
+		if (imageUrls.length > 0) {
+			sitemapEntry.images = imageUrls;
+		}
+		sitemap.push(sitemapEntry);
 	}
 	return sitemap;
 }

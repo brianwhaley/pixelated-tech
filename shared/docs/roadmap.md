@@ -34,12 +34,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 ### Component Improvements
 
-- [  ] Implement minimal `createContentfulImageURLs` with single `/images` sitemap entry.
-
-- [  ] Review Contentful helper functions for per-page mapping capability.
-
-- [  ] Implement `createContentfulImageURLs` per-page mapping with `contentType` & `pageField` config.
-
 - [  ] Align typography to `--font-sizeN` clamp variables.
 
 - [  ] **SocialCards Component**: Fix state initialization to track prop changes properly.
@@ -59,9 +53,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 - [  ] **FormHoneypot**: Future - configurable global honeypot name, timing/token checks, optional telemetry for spam signal analysis.
 
 - [  ] **Form validation on submit**: Ensure untouched required fields are validated on submit by processing all form schema fields, not only fields that have been interacted with.
-
-- [ IP ] **Shipping section automation**: based on USPS APIs.
-- [ IP ] **Shipping section automation**: Revisit `showShippingInfoSection` so it can be derived automatically from cart item metadata (`isShippable`) instead of only via props.
 
 - [  ] Create a dedicated `SiteInfoProvider` / `useSiteConfig()` hook for site metadata.
 
@@ -187,6 +178,3 @@ This roadmap is a living document. To contribute:
 3. Discuss priorities in the project's discussions
 
 See the [main README](../README.md) for contribution guidelines.
-
-</content>
-<parameter name="filePath">/Users/btwhaley/Git/pixelated-components/README.roadmap.md

@@ -66,6 +66,14 @@ describe('About Us page', () => {
 		expect(screen.getByTestId('mock-googlereviewscarousel')).toBeTruthy();
 	});
 
+	it('renders the page title when config is unavailable', async () => {
+		setPixelatedConfigOverride(null);
+
+		render(<AboutUsPage />);
+		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('About Three Muses'));
+		expect(screen.queryAllByTestId('mock-googlereviewscarousel').length).toBe(0);
+	});
+
 	it('renders the page title even when review fetch fails', async () => {
 		render(<AboutUsPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('About Three Muses'));

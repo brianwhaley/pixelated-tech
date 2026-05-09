@@ -47,4 +47,16 @@ describe('Cart page', () => {
 		expect(cartTestState.shoppingCartProps.additionalInfoForm.fields.some((field: any) => field.props?.name === 'child_name')).toBe(true);
 		expect(cartTestState.shoppingCartProps.additionalInfoForm.fields.some((field: any) => field.props?.name === 'full_payment')).toBe(true);
 	});
+
+	it('renders base registration fields when no adult or youth items are present', async () => {
+		cartTestState.items = [
+			{ itemCategory: 'Other' },
+		];
+
+		render(<CartPage />);
+		await waitFor(() => expect(screen.getByTestId('mock-shoppingcart')).not.toBeNull());
+
+		expect(cartTestState.shoppingCartProps.additionalInfoForm.fields.some((field: any) => field.props?.name === 'full_payment')).toBe(true);
+		expect(cartTestState.shoppingCartProps.additionalInfoForm.fields.some((field: any) => field.props?.name === 'child_name')).toBe(false);
+	});
 });

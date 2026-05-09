@@ -52,4 +52,25 @@ describe('Three Muses shopping cart discounts', () => {
 		expect(getThreeMusesSiblingDiscount(cart)).toBe(25);
 		expect(getThreeMusesSubtotalDiscount(cart)).toBe(70);
 	});
+
+	it('applies no discount when no cart items qualify for a quantity discount', () => {
+		const cart = [
+			{ ...baseItem, itemQuantity: 1 },
+		];
+
+		expect(getThreeMusesQuantityDiscount(cart)).toBe(0);
+		expect(getThreeMusesSiblingDiscount(cart)).toBe(0);
+		expect(getThreeMusesSubtotalDiscount(cart)).toBe(0);
+	});
+
+	it('applies 30% discount for 9 total camp registrations', () => {
+		const cart = [
+			{ ...baseItem, itemQuantity: 5 },
+			{ ...baseItem, itemID: '2', itemQuantity: 4 },
+		];
+
+		expect(getThreeMusesQuantityDiscount(cart)).toBe(270);
+		expect(getThreeMusesSiblingDiscount(cart)).toBe(25);
+		expect(getThreeMusesSubtotalDiscount(cart)).toBe(295);
+	});
 });

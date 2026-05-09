@@ -11,7 +11,7 @@ import {
 	listPixelatedFormSubmissionReportRows,
 } from '@pixelated-tech/components/server';
 
-function sortReportRows(rows: Array<Record<string, any>>) {
+export function sortReportRows(rows: Array<Record<string, any>>) {
 	return [...rows].sort((left, right) => {
 		const leftDate = new Date(left.created_at || left.updatedAt || 0).getTime();
 		const rightDate = new Date(right.created_at || right.updatedAt || 0).getTime();
@@ -19,14 +19,14 @@ function sortReportRows(rows: Array<Record<string, any>>) {
 	});
 }
 
-function asArray(value: any) {
+export function asArray(value: any) {
 	if (Array.isArray(value)) {
 		return value;
 	}
 	return value ? [value] : [];
 }
 
-function parsePossibleJson(value: any) {
+export function parsePossibleJson(value: any) {
 	if (typeof value !== 'string') {
 		return value;
 	}
@@ -37,7 +37,7 @@ function parsePossibleJson(value: any) {
 	}
 }
 
-function normalizeReportRow(row: Record<string, any>) {
+export function normalizeReportRow(row: Record<string, any>) {
 	const payload = row?.data ? row.data : row;
 	const orderData = parsePossibleJson(
 		payload.orderData
@@ -63,7 +63,7 @@ function normalizeReportRow(row: Record<string, any>) {
 	};
 }
 
-function getEventIdentity(item: Record<string, any>) {
+export function getEventIdentity(item: Record<string, any>) {
 	return {
 		eventId: item.id ?? item.itemID ?? 'Unknown',
 		eventName: item.title ?? item.itemTitle ?? 'Unknown',
@@ -71,7 +71,7 @@ function getEventIdentity(item: Record<string, any>) {
 	};
 }
 
-function buildEventGroups(rows: Array<Record<string, any>>) {
+export function buildEventGroups(rows: Array<Record<string, any>>) {
 	const groups = new Map<string, {
 			eventId: string;
 			eventName: string;

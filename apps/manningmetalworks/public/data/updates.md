@@ -1,6 +1,17 @@
 # Manning Metalworks -- Updates
 
 
+## 2026-05-09 Launch Activities
+* [  ] Move domain from WordPress to AWS
+* [  ] ImprovMX for email address
+* [  ] Set up Wordpress subdomain with AWS
+* [  ] Create Social Media Accounts
+* [  ] Curator.io to point to Manning Instagram
+* [  ] We advertise 24/7 but we're closed Saturday/Sunday. Can we reword that showing we are still open. 
+* [  ] please call before showing up or something along those lines. If you're going to stop by we want to know about it and/or make arrangements. 
+* [  ] gallery we want them on here first and as new stuff gets posted on instagram then they will feed into the gallery.
+
+
 ## 2026-04-15 Updates
 * [ x ] Home Page, mobile truck picture - replace (to come)
 * [ x ] Home Page, Quality section, Paragraph 2, remove second sentence

@@ -9,6 +9,11 @@ import {
 	generateSitemap,
 	buildSitemapConfig,
 	clearEbaySitemapCache,
+	getOriginFromHeaders,
+	getRuntimeEnvFromHeaders,
+	getOriginFromNextHeaders,
+	jsonToSitemapEntries,
+	createContentfulPageBuilderURLs,
 	type SitemapEntry
 } from '../components/foundation/sitemap';
 
@@ -18,6 +23,7 @@ vi.mock('../components/integrations/contentful.delivery');
 vi.mock('../components/shoppingcart/ebay.functions');
 vi.mock('../components/config/config');
 vi.mock('../components/foundation/metadata.functions');
+vi.mock('next/headers', () => ({ headers: vi.fn() }));
 // Import mocked modules
 import * as wordpressModule from '../components/integrations/wordpress.functions';
 import * as contentfulModule from '../components/integrations/contentful.delivery';
@@ -101,6 +107,85 @@ describe('Sitemap Helper Functions', () => {
 		});
 	});
 
+	describe('getOriginFromHeaders', () => {
+		it('should build origin from valid headers', () => {
+			const headers = {
+				get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'example.com'
+			};
+
+			expect(getOriginFromHeaders(headers as any, 'http://fallback')).toBe('https://example.com');
+		});
+
+		it('should return fallback origin when headers throw', () => {
+			const headers = {
+				get: () => { throw new Error('bad headers'); }
+			};
+
+			expect(getOriginFromHeaders(headers as any, 'https://fallback.com')).toBe('https://fallback.com');
+		});
+	});
+
+	describe('getRuntimeEnvFromHeaders', () => {
+		it('should return local for localhost origins', () => {
+			const headers = {
+				get: (key: string) => key === 'host' ? 'localhost:3000' : 'https'
+			};
+
+			expect(getRuntimeEnvFromHeaders(headers as any)).toBe('local');
+		});
+
+		it('should return prod for remote origins', () => {
+			const headers = {
+				get: (key: string) => key === 'host' ? 'example.com' : 'https'
+			};
+
+			expect(getRuntimeEnvFromHeaders(headers as any)).toBe('prod');
+		});
+
+		it('should return auto when origin cannot be determined', () => {
+			expect(getRuntimeEnvFromHeaders(undefined, '')).toBe('auto');
+		});
+	});
+
+	describe('getOriginFromNextHeaders', () => {
+		it('should return fallback origin when next headers are unavailable', async () => {
+			const nextHeadersModule = await import('next/headers');
+			vi.mocked(nextHeadersModule.headers).mockRejectedValue(new Error('not available'));
+
+			const origin = await getOriginFromNextHeaders('https://fallback.com');
+			expect(origin).toBe('https://fallback.com');
+		});
+
+		it('should return origin from next headers when available', async () => {
+			const nextHeadersModule = await import('next/headers');
+			vi.mocked(nextHeadersModule.headers).mockResolvedValue({
+				get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'example.com'
+			});
+
+			const origin = await getOriginFromNextHeaders('https://fallback.com');
+			expect(origin).toBe('https://example.com');
+		});
+	});
+
+	describe('jsonToSitemapEntries', () => {
+		it('should serialize sitemap entries to XML fragments', () => {
+			const entries: SitemapEntry[] = [
+				{
+					url: 'https://example.com/test',
+					lastModified: '2024-01-01',
+					changeFrequency: 'daily',
+					priority: 0.5,
+				}
+			];
+
+			const result = jsonToSitemapEntries(entries);
+
+			expect(result).toContain('<loc>https://example.com/test</loc>');
+			expect(result).toContain('<changefreq>daily</changefreq>');
+			expect(result).toContain('<priority>0.5</priority>');
+		});
+	});
+
 	describe('createImageURLsFromJSON', () => {
 		it('should create sitemap entry with images from JSON array', async () => {
 			const mockJson = siteImagesData.images.slice(0, 2);
@@ -168,6 +253,18 @@ describe('Sitemap Helper Functions', () => {
 
 			expect(result).toEqual([]);
 		});
+
+		it('should escape ampersands in JSON image URLs', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => ['images/gallery.jpg?size=large&format=webp']
+			});
+
+			const origin = 'https://example.com';
+			const result = await createImageURLsFromJSON(origin, 'public/site-images.json');
+
+			expect(result[0].images[0]).toBe('https://example.com/images/gallery.jpg?size=large&amp;format=webp');
+		});
 	});
 
 	describe('createWordPressURLs', () => {
@@ -209,6 +306,26 @@ describe('Sitemap Helper Functions', () => {
 			expect(result[0].images).toEqual(['https://blog.example.com/image1.jpg', 'https://blog.example.com/image2.jpg']);
 		});
 
+		it('should escape ampersands in WordPress image URLs', async () => {
+			const mockPosts = normalizeWordPressPosts([realWordPressApiData.posts[0]]);
+			const mockImages = [
+				{ url: 'https://blog.example.com/image1.jpg?w=1200&h=800' }
+			];
+
+			const mockGetWordPressItems = vi.mocked(wordpressModule.getWordPressItems);
+			const mockGetWordPressItemImages = vi.mocked(wordpressModule.getWordPressItemImages);
+
+			mockGetWordPressItems.mockResolvedValue(mockPosts);
+			mockGetWordPressItemImages.mockReturnValue(mockImages);
+
+			const result = await createWordPressURLs({
+				site: 'example.wordpress.com',
+				includeImages: true
+			});
+
+			expect(result[0].images).toEqual(['https://blog.example.com/image1.jpg?w=1200&amp;h=800']);
+		});
+
 		it('should handle posts without modified date', async () => {
 			const mockPost = { ...normalizeWordPressPosts([realWordPressApiData.posts[0]])[0], modified: undefined } as wordpressModule.BlogPostType;
 			const mockGetWordPressItems = vi.mocked(wordpressModule.getWordPressItems);
@@ -231,10 +348,16 @@ describe('Sitemap Helper Functions', () => {
 
 	describe('createContentfulURLs', () => {
 		it('should create sitemap entries for Contentful entries', async () => {
-			const mockTitles = ['Project One', 'Project Two'];
+			const mockEntries = {
+				items: [
+					{ fields: { title: 'Project One' } },
+					{ fields: { title: 'Project Two' } }
+				],
+				includes: { Asset: [] }
+			};
 
-			const mockGetContentfulFieldValues = vi.mocked(contentfulModule.getContentfulFieldValues);
-			mockGetContentfulFieldValues.mockResolvedValue(mockTitles);
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({});
@@ -244,7 +367,10 @@ describe('Sitemap Helper Functions', () => {
 					base_url: 'https://cdn.contentful.com',
 					space_id: 'test-space',
 					environment: 'master',
-					delivery_access_token: 'test-token'
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects'
 				},
 				origin: 'https://example.com'
 			});
@@ -259,10 +385,15 @@ describe('Sitemap Helper Functions', () => {
 		});
 
 		it('should merge provider config with apiProps', async () => {
-			const mockTitles = ['Project One'];
+			const mockEntries = {
+				items: [
+					{ fields: { title: 'Project One' } }
+				],
+				includes: { Asset: [] }
+			};
 
-			const mockGetContentfulFieldValues = vi.mocked(contentfulModule.getContentfulFieldValues);
-			mockGetContentfulFieldValues.mockResolvedValue(mockTitles);
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({
@@ -274,33 +405,40 @@ describe('Sitemap Helper Functions', () => {
 				}
 			});
 
-			const result = await createContentfulURLs({
+			await createContentfulURLs({
 				apiProps: {
 					base_url: 'https://cdn.contentful.com',
 					space_id: 'custom-space',
 					environment: 'master',
-					delivery_access_token: 'custom-token'
+					delivery_access_token: 'custom-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects'
 				},
 				origin: 'https://example.com'
 			});
 
-			expect(mockGetContentfulFieldValues).toHaveBeenCalledWith({
+			expect(mockGetContentfulEntriesByType).toHaveBeenCalledWith({
 				apiProps: expect.objectContaining({
 					space_id: 'provider-space',
 					base_url: 'https://cdn.contentful.com',
 					environment: 'master',
 					delivery_access_token: 'provider-token'
 				}),
-				contentType: 'carouselCard',
-				field: 'title'
+				contentType: 'carouselCard'
 			});
 		});
 
 		it('should support a custom sitemap routePrefix', async () => {
-			const mockIds = ['event-1', 'event-2'];
+			const mockEntries = {
+				items: [
+					{ fields: { id: 'event-1' } }
+				],
+				includes: { Asset: [] }
+			};
 
-			const mockGetContentfulFieldValues = vi.mocked(contentfulModule.getContentfulFieldValues);
-			mockGetContentfulFieldValues.mockResolvedValue(mockIds);
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
 			const result = await createContentfulURLs({
 				apiProps: {
@@ -315,8 +453,242 @@ describe('Sitemap Helper Functions', () => {
 				origin: 'https://example.com'
 			});
 
-			expect(result).toHaveLength(2);
+			expect(result).toHaveLength(1);
 			expect(result[0].url).toBe('https://example.com/events/event-1');
+		});
+
+		it('should include images from contentful entry image references', async () => {
+			const mockEntries = {
+				items: [
+					{
+						fields: {
+							title: 'Project One',
+							images: [{ sys: { id: 'img-1' } }]
+						}
+					}
+				],
+				includes: {
+					Asset: [
+						{ sys: { id: 'img-1' }, fields: { file: { url: '//images.ctfassets.net/sample.jpg' }, description: 'Project image' } }
+					]
+				}
+			};
+
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
+
+			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
+			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/sample.jpg?fm=webp&q=50', imageAlt: 'Project image' }]);
+
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({});
+
+			const result = await createContentfulURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects'
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+				images: mockEntries.items[0].fields.images,
+				assets: mockEntries.includes.Asset
+			});
+			expect(result[0].images).toEqual(['https://images.ctfassets.net/sample.jpg?fm=webp&amp;q=50']);
+		});
+
+		it('should escape ampersands in Contentful image URLs', async () => {
+			const mockEntries = {
+				items: [
+					{
+						fields: {
+							title: 'Project Two',
+							images: [{ sys: { id: 'img-2' } }]
+						}
+					}
+				],
+				includes: {
+					Asset: [
+						{ sys: { id: 'img-2' }, fields: { file: { url: '//images.ctfassets.net/sample.jpg?fm=webp&q=50' }, description: 'Project image' } }
+					]
+				}
+			};
+
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
+
+			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
+			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/sample.jpg?fm=webp&q=50' }]);
+
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({});
+
+			const result = await createContentfulURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects'
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(result[0].images[0]).toBe('https://images.ctfassets.net/sample.jpg?fm=webp&amp;q=50');
+		});
+
+		it('should support image field references as well as images arrays', async () => {
+			const mockEntries = {
+				items: [
+					{
+						fields: {
+							title: 'Single Image',
+							image: { sys: { id: 'img-2' } }
+						}
+					}
+				],
+				includes: {
+					Asset: [
+						{ sys: { id: 'img-2' }, fields: { file: { url: '//images.ctfassets.net/single.jpg' }, description: 'Single image' } }
+					]
+				}
+			};
+
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
+
+			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
+			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/single.jpg?fm=webp&q=50' }]);
+
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({});
+
+			const result = await createContentfulURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects'
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+				images: [mockEntries.items[0].fields.image],
+				assets: mockEntries.includes.Asset
+			});
+			expect(result[0].images).toEqual(['https://images.ctfassets.net/single.jpg?fm=webp&amp;q=50']);
+		});
+
+		it('should support carouselImages references', async () => {
+			const mockEntries = {
+				items: [
+					{
+						fields: {
+							title: 'Carousel Item',
+							carouselImages: [{ sys: { id: 'img-3' } }, { sys: { id: 'img-4' } }]
+						}
+					}
+				],
+				includes: {
+					Asset: [
+						{ sys: { id: 'img-3' }, fields: { file: { url: '//images.ctfassets.net/carousel1.jpg' }, description: 'Carousel 1' } },
+						{ sys: { id: 'img-4' }, fields: { file: { url: '//images.ctfassets.net/carousel2.jpg' }, description: 'Carousel 2' } }
+					]
+				}
+			};
+
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
+
+			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
+			mockGetContentfulImagesFromEntries.mockResolvedValue([
+				{ image: 'https://images.ctfassets.net/carousel1.jpg?fm=webp&q=50' },
+				{ image: 'https://images.ctfassets.net/carousel2.jpg?fm=webp&q=50' }
+			]);
+
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({});
+
+			const result = await createContentfulURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects'
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+				images: mockEntries.items[0].fields.carouselImages,
+				assets: mockEntries.includes.Asset
+			});
+			expect(result[0].images).toEqual([
+				'https://images.ctfassets.net/carousel1.jpg?fm=webp&amp;q=50',
+				'https://images.ctfassets.net/carousel2.jpg?fm=webp&amp;q=50'
+			]);
+		});
+
+		it('should use custom sitemapImageFields when provided', async () => {
+			const mockEntries = {
+				items: [
+					{
+						fields: {
+							title: 'Hero Image Item',
+							heroImage: { sys: { id: 'img-hero' } }
+						}
+					}
+				],
+				includes: {
+					Asset: [
+						{ sys: { id: 'img-hero' }, fields: { file: { url: '//images.ctfassets.net/hero.jpg' }, description: 'Hero image' } }
+					]
+				}
+			};
+
+			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
+			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
+
+			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
+			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/hero.jpg?fm=webp&q=50' }]);
+
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({});
+
+			const result = await createContentfulURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token',
+					sitemapContentType: 'carouselCard',
+					sitemapField: 'title',
+					sitemapRoutePrefix: '/projects',
+					sitemapImageFields: ['heroImage']
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+				images: [mockEntries.items[0].fields.heroImage],
+				assets: mockEntries.includes.Asset
+			});
+			expect(result[0].images).toEqual(['https://images.ctfassets.net/hero.jpg?fm=webp&amp;q=50']);
 		});
 
 		describe('buildSitemapConfig', () => {
@@ -344,6 +716,24 @@ describe('Sitemap Helper Functions', () => {
 			});
 		});
 
+		it('should create page builder URLs from Contentful field values', async () => {
+			const mockGetContentfulFieldValues = vi.mocked(contentfulModule.getContentfulFieldValues);
+			mockGetContentfulFieldValues.mockResolvedValue(['Home Page', 'About Us/Team']);
+
+			const result = await createContentfulPageBuilderURLs({
+				apiProps: {
+					base_url: 'https://cdn.contentful.com',
+					space_id: 'test-space',
+					environment: 'master',
+					delivery_access_token: 'test-token'
+				},
+				origin: 'https://example.com'
+			});
+
+			expect(result).toHaveLength(2);
+			expect(result[0].url).toBe('https://example.com/Home%20Page');
+			expect(result[1].url).toBe('https://example.com/About%20Us%2FTeam');
+		});
 	});
 
 	describe('createContentfulAssetURLs', () => {
@@ -547,6 +937,21 @@ describe('Sitemap Helper Functions', () => {
 			const result = await createEbayItemURLs(origin);
 			expect(result).toEqual([]);
 			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('createEbayItemURLs skipped; unable to fetch items'), expect.any(Error));
+		});
+
+		it('should return an empty sitemap when no eBay items exist', async () => {
+			const mockToken = 'test-token';
+			const mockItems = { itemSummaries: [] };
+			const mockGetEbayAppToken = vi.mocked(ebayModule.getEbayAppToken);
+			const mockGetEbayItemsSearch = vi.mocked(ebayModule.getEbayItemsSearch);
+
+			mockGetEbayAppToken.mockResolvedValue(mockToken);
+			mockGetEbayItemsSearch.mockResolvedValue(mockItems);
+
+			const origin = 'https://example.com';
+			const result = await createEbayItemURLs(origin);
+
+			expect(result).toEqual([]);
 		});
 
 		it('treats browse search failures as empty sitemaps', async () => {

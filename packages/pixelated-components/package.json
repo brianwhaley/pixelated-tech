@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.16.4",
+	"version": "3.16.5",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -150,7 +150,7 @@
 		"null-loader": "^4.0.1",
 		"react-test-renderer": "^19.2.6",
 		"sass": "^1.99.0",
-		"sass-loader": "^16.0.7",
+		"sass-loader": "^16.0.8",
 		"storybook": "^10.3.6",
 		"style-loader": "^4.0.0",
 		"ts-loader": "^9.5.7",

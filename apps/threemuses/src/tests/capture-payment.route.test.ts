@@ -45,4 +45,13 @@ describe('Capture payment API route', () => {
 		expect(orchestrationSpy).toHaveBeenCalledWith('abc', { total: 1, foo: 'bar' });
 	});
 
+	it('returns 500 when the Square orchestration helper throws an error', async () => {
+		vi.mocked(server.createSquareOrderAndCapturePayment).mockRejectedValueOnce(new Error('Payment failed'));
+
+		const result = await POST({ json: async () => ({ sourceId: 'abc', checkoutData: { total: 1, foo: 'bar' } }) } as any);
+		expect(result.status).toBe(500);
+		const body = await result.json();
+		expect(body).toEqual({ error: 'Payment failed' });
+	});
+
 });

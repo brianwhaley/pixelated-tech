@@ -183,11 +183,39 @@ describe('Events page', () => {
 		expect(screen.queryAllByTestId('mock-callout').length).toBe(0);
 	});
 
+	it('skips archived events while building the events list', async () => {
+		mockGetContentfulEntriesByType.mockResolvedValue({
+			items: [
+				{
+					...exampleEvent1,
+					fields: {
+						...exampleEvent1.fields,
+						status: 'archived',
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		mockGetContentfulImagesFromEntries.mockResolvedValue([]);
+
+		render(<EventsPage />);
+		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Events'));
+		expect(screen.queryAllByTestId('mock-callout').length).toBe(0);
+	});
+
 	it('renders fallback event detail when the event is not found', async () => {
 		mockGetContentfulEntryByField.mockResolvedValue(null);
 		await act(async () => {
 			render(<EventDetailPage params={Promise.resolve({ event: 'event-1' }) as any} />);
 		});
 		await waitFor(() => expect(screen.getByText('Loading event data...')).toBeTruthy());
+	});
+
+	it('renders loading when no config is available for event detail', async () => {
+		setPixelatedConfigOverride(null as any);
+		await act(async () => {
+			render(<EventDetailPage params={Promise.resolve({ event: 'event-1' }) as any} />);
+		});
+		await waitFor(() => expect(screen.getByTestId('mock-loading')).toBeTruthy());
 	});
 });

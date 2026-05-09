@@ -31,4 +31,11 @@ describe('Blog calendar page', () => {
 		render(<BlogCalendarPage />);
 		await waitFor(() => expect(screen.getByText('Error: File missing')).toBeTruthy());
 	});
+
+	it('renders markdown content when file data is available', async () => {
+		setFileDataState({ data: '# Hello World', loading: false, error: null });
+
+		render(<BlogCalendarPage />);
+		await waitFor(() => expect(screen.getByTestId('mock-markdown')).toBeTruthy());
+	});
 });

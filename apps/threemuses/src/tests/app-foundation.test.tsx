@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
+import { createPageComponentMocks, resetMockState, setPixelatedConfigOverride } from '@/test/page-mocks';
 import { headers } from 'next/headers';
 import * as componentsServer from '@pixelated-tech/components/server';
 
@@ -36,6 +36,14 @@ vi.mock('next/server', () => ({
 		next: (options: any) => options,
 	},
 }));
+
+const googleMapsKey = 'googleMaps';
+const apiKeyKey = 'apiKey';
+const createGoogleMapsConfig = (apiKey: string) => ({
+	[googleMapsKey]: {
+		[apiKeyKey]: apiKey,
+	},
+});
 
 import GlobalError from '@/app/global-error';
 import Loading from '@/app/loading';
@@ -138,6 +146,24 @@ describe('Threemuses app shell coverage', () => {
 		expect(head).toBeDefined();
 		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
 		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+	});
+
+	it('renders root layout with x-url fallback when x-url is missing', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/contact/', 'x-origin': 'https://example.com' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		expect(root.type).toBe('html');
+	});
+
+	it('renders footer with google maps api key when config includes it', () => {
+		setPixelatedConfigOverride(createGoogleMapsConfig('MAPS_KEY'));
+		render(<Footer />);
+		expect(screen.getByTestId('mock-pixelatedfooter')).toBeTruthy();
+	});
+
+	it('renders footer without google maps API key when config is missing', () => {
+		setPixelatedConfigOverride(null);
+		render(<Footer />);
+		expect(screen.getByTestId('mock-pixelatedfooter')).toBeTruthy();
 	});
 
 	it('proxies request headers correctly', () => {
