@@ -24,6 +24,17 @@
 			"postalCode": "07834",
 			"addressCountry": "United States"
 		},
+		"addressAdditionalInfo": "",
+		"openingHours": [
+			{ "day": "Mon", "closed": true },
+			{ "day": "Tue", "closed": true },
+			{ "day": "Wed", "closed": true },
+			{ "day": "Thu", "closed": true },
+			{ "day": "Fri", "closed": true },
+			{ "day": "Sat", "closed": true },
+			{ "day": "Sun", "closed": true }
+		],
+		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
 		"sameAs": [
 			"https://www.pixelated.tech"

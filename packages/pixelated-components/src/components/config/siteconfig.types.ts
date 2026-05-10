@@ -73,7 +73,9 @@ export interface SiteInfo {
 		postalCode?: string | null;
 		addressCountry?: string | null;
 	} | null;
+	addressAdditionalInfo?: string | null;
 	openingHours?: string | string[] | OpeningHoursEntry[] | null;
+	openingHoursAdditionalInfo?: string | null;
 	priceRange?: string | null;
 	sameAs?: string[] | null;
 	keywords?: string | null;

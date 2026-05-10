@@ -7,8 +7,8 @@
 * [  ] Set up Wordpress subdomain with AWS
 * [  ] Create Social Media Accounts
 * [  ] Curator.io to point to Manning Instagram
-* [  ] We advertise 24/7 but we're closed Saturday/Sunday. Can we reword that showing we are still open. 
-* [  ] please call before showing up or something along those lines. If you're going to stop by we want to know about it and/or make arrangements. 
+* [ x ] We advertise 24/7 but we're closed Saturday/Sunday. Can we reword that showing we are still open. 
+* [ x ] please call before showing up or something along those lines. If you're going to stop by we want to know about it and/or make arrangements. 
 * [  ] gallery we want them on here first and as new stuff gets posted on instagram then they will feed into the gallery.
 
 

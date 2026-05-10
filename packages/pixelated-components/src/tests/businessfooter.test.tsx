@@ -49,4 +49,30 @@ describe('BusinessFooter', () => {
     const frame = screen.getByTitle('Business location map');
     expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps?q='));
   });
+
+  it('renders opening hours additional info when provided', () => {
+    render(
+      <BusinessFooter
+        siteInfo={{
+          ...siteInfo,
+          openingHoursAdditionalInfo: 'Closed on weekends and major holidays.',
+        }}
+      />
+    );
+
+    expect(screen.getByText('Closed on weekends and major holidays.')).toBeTruthy();
+  });
+
+  it('renders address additional info when provided', () => {
+    render(
+      <BusinessFooter
+        siteInfo={{
+          ...siteInfo,
+          addressAdditionalInfo: 'Suite 203, located in the Atrium Building',
+        }}
+      />
+    );
+
+    expect(screen.getByText('Suite 203, located in the Atrium Building')).toBeTruthy();
+  });
 });

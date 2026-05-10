@@ -24,6 +24,7 @@
 			"postalCode": "07834",
 			"addressCountry": "US"
 		},
+		"addressAdditionalInfo": "",
 		"priceRange": "$$",
 		"openingHours": [
 			{ "day": "Mon", "open": "09:00", "close": "17:00" },
@@ -34,6 +35,7 @@
 			{ "day": "Sat", "closed": true },
 			{ "day": "Sun", "closed": true }
 		],
+		"openingHoursAdditionalInfo": "",
 		"sameAs": [
 			"https://www.linkedin.com/in/brianwhaley",
 			"https://github.com/brianwhaley",

@@ -169,7 +169,7 @@ export default function Cost() {
 						</ul>
 					</div>
 
-					<h3>Maintenance Package 2: Standard - $150 per month</h3>
+					<h3>Maintenance Package 2: Standard - $200 per month</h3>
 					<div>
 					This package includes everything in the Essential package, plus:
 						<ul style={{marginTop: '0px'}}>
@@ -187,7 +187,7 @@ export default function Cost() {
 						</ul>
 					</div>
 
-					<h3>Maintenance Package 3: Premium - $250 per month</h3>
+					<h3>Maintenance Package 3: Premium - $300 per month</h3>
 					<div>
 					This package includes everything in the Essential and Standard package, plus:
 						<ul style={{marginTop: '0px'}}>

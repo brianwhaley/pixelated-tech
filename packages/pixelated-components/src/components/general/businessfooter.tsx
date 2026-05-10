@@ -122,6 +122,8 @@ BusinessFooter.propTypes = {
 				})
 			),
 		]),
+		openingHoursAdditionalInfo: PropTypes.string,
+		addressAdditionalInfo: PropTypes.string,
 	}),
 	googleMapsApiKey: PropTypes.string,
 };
@@ -144,14 +146,22 @@ export function BusinessFooter(props: BusinessFooterType) {
 					<>
 						{mapsUrl ? (
 							<a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="business-footer-address-link">
-								{siteInfo.address.streetAddress}
+								<div>{siteInfo.address.streetAddress}</div>
+								<div>
+									{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
+								</div>
 							</a>
 						) : (
-							<div>{siteInfo.address.streetAddress}</div>
+							<>
+								<div>{siteInfo.address.streetAddress}</div>
+								<div>
+									{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
+								</div>
+							</>
 						)}
-						<div>
-							{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
-						</div>
+						{siteInfo.addressAdditionalInfo ? (
+							<div className="business-footer-address-note">{siteInfo.addressAdditionalInfo}</div>
+						) : null}
 					</>
 				) : null}
 				<PageSectionHeader title="Contact Us" />
@@ -183,11 +193,16 @@ export function BusinessFooter(props: BusinessFooterType) {
 			<div className="business-footer-column business-footer-hours">
 				<h3>Hours</h3>
 				{hasHours ? (
-					<div className="business-footer-hours-list">
-						{hours.map((line, index) => (
-							<div key={index}>{line}</div>
-						))}
-					</div>
+					<>
+						<div className="business-footer-hours-list">
+							{hours.map((line, index) => (
+								<div key={index}>{line}</div>
+							))}
+						</div>
+						{siteInfo.openingHoursAdditionalInfo ? (
+							<div className="business-footer-hours-note">{siteInfo.openingHoursAdditionalInfo}</div>
+						) : null}
+					</>
 				) : (
 					<div>Hours not available</div>
 				)}

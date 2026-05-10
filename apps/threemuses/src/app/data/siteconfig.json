@@ -24,6 +24,7 @@
 			"postalCode": "29910",
 			"addressCountry": "US"
 		},
+		"addressAdditionalInfo": "",
 		"openingHours": [
 			{ "day": "Mon", "closed": true },
 			{ "day": "Tue", "closed": true },
@@ -33,6 +34,7 @@
 			{ "day": "Sat", "open": "11:00", "close": "19:00" },
 			{ "day": "Sun", "open": "12:00", "close": "16:00" }
 		],
+		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
 		"sameAs": [
 			"https://www.thethreemusesofbluffton.com",

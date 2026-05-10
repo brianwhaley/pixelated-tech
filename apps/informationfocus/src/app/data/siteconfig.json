@@ -24,6 +24,7 @@
 			"postalCode": "07834",
 			"addressCountry": "US"
 		},
+		"addressAdditionalInfo": "",
 		"openingHours": [
 			{ "day": "Mon", "open": "09:00", "close": "17:00" },
 			{ "day": "Tue", "open": "09:00", "close": "17:00" },
@@ -33,6 +34,7 @@
 			{ "day": "Sat", "closed": true },
 			{ "day": "Sun", "closed": true }
 		],
+		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
 		"sameAs": [
 			"https://www.linkedin.com/in/mary-ann-sarao"
