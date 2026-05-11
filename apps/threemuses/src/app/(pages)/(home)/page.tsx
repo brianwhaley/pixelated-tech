@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { PageSection, PageSectionHeader, PageTitleHeader } from '@pixelated-tech/components';
 import { PageGridItem } from '@pixelated-tech/components';
-import { Callout, ContentfulAlert, ToggleLoading } from '@pixelated-tech/components';
+import { Callout } from '@pixelated-tech/components';
+import { ToggleLoading } from '@pixelated-tech/components';
 import { getWordPressItems, getCachedWordPressItems, BlogPostList } from "@pixelated-tech/components";
 import * as componentLibrary from '../../elements/componentlibrary';
 
@@ -28,7 +29,6 @@ export default function Home() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="welcome-section">
-				<ContentfulAlert alertContentType="alert" />
 				<PageTitleHeader title="Welcome to The Three Muses of Bluffton" />
 				<div>
 					<p>

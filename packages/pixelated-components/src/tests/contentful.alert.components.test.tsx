@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { ContentfulAlert } from '../components/integrations/contentful.alert.components';
+import { ContentfulAlerts } from '../components/integrations/contentful.alert.components';
 import { usePixelatedConfig } from '../components/config/config.client';
 import * as contentfulDelivery from '../components/integrations/contentful.delivery';
 
@@ -16,39 +16,48 @@ vi.mock('../components/config/config.client', () => ({
 	})),
 }));
 
-describe('ContentfulAlert Component', () => {
+describe('ContentfulAlerts Component', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
-	it('renders loading while fetching alerts', () => {
+	it('renders no markup while fetching alerts', () => {
 		vi.spyOn(contentfulDelivery, 'getContentfulEntriesByType').mockImplementation(
 			() => new Promise(() => {})
 		);
 
-		render(<ContentfulAlert alertContentType="alert" />);
+		const { container } = render(<ContentfulAlerts alertContentType="alert" />);
 
-		expect(screen.getByText('Loading alert...')).toBeInTheDocument();
+		expect(container.firstChild).toBeNull();
 	});
 
 	it('returns no markup when no active alerts are found', async () => {
 		vi.spyOn(contentfulDelivery, 'getContentfulEntriesByType').mockResolvedValue({ items: [], includes: { Asset: [] } });
 
-		const { container } = render(<ContentfulAlert alertContentType="alert" />);
+		const { container } = render(<ContentfulAlerts alertContentType="alert" />);
 
 		await waitFor(() => {
-			expect(screen.queryByText('Loading alert...')).not.toBeInTheDocument();
+			expect(container.firstChild).toBeNull();
 		});
 
 		expect(screen.queryByText('Error:')).not.toBeInTheDocument();
-		expect(container.firstChild).toBeNull();
 	});
 
-	it('renders the first active alert entry when content is available', async () => {
+	it('renders all active alerts when content is available and sorts by end date ascending', async () => {
 		vi.spyOn(contentfulDelivery, 'getContentfulEntriesByType').mockResolvedValue({
 			items: [
 				{
-					sys: { contentType: { sys: { id: 'alert' } } },
+					sys: { id: 'alert-2', contentType: { sys: { id: 'alert' } } },
+					fields: {
+						title: 'Emergency update',
+						description: 'Immediate service interruption.',
+						startDate: new Date(Date.now() - 3600 * 1000).toISOString(),
+						endDate: new Date(Date.now() + 7200 * 1000).toISOString(),
+						status: 'Active',
+					},
+				},
+				{
+					sys: { id: 'alert-1', contentType: { sys: { id: 'alert' } } },
 					fields: {
 						title: 'Site update',
 						description: 'Maintenance starts at 10pm UTC and should complete in 30 minutes.',
@@ -61,11 +70,14 @@ describe('ContentfulAlert Component', () => {
 			includes: { Asset: [] },
 		});
 
-		render(<ContentfulAlert alertContentType="alert" />);
+		render(<ContentfulAlerts alertContentType="alert" />);
 
 		await waitFor(() => {
-			expect(screen.getByText('Site update')).toBeInTheDocument();
+			const headings = screen.getAllByRole('heading', { level: 3 });
+			expect(headings[0]).toHaveTextContent('Site update');
+			expect(headings[1]).toHaveTextContent('Emergency update');
 			expect(screen.getByText('Maintenance starts at 10pm UTC and should complete in 30 minutes.')).toBeInTheDocument();
+			expect(screen.getByText('Immediate service interruption.')).toBeInTheDocument();
 		});
 	});
 
@@ -73,7 +85,7 @@ describe('ContentfulAlert Component', () => {
 		vi.spyOn(contentfulDelivery, 'getContentfulEntriesByType').mockResolvedValue({
 			items: [
 				{
-					sys: { contentType: { sys: { id: 'alert' } } },
+					sys: { id: 'alert-1', contentType: { sys: { id: 'alert' } } },
 					fields: {
 						title: 'Draft alert',
 						status: 'Draft',
@@ -83,7 +95,7 @@ describe('ContentfulAlert Component', () => {
 			includes: { Asset: [] },
 		});
 
-		const { container } = render(<ContentfulAlert alertContentType="alert" />);
+		const { container } = render(<ContentfulAlerts alertContentType="alert" />);
 
 		await waitFor(() => {
 			expect(screen.queryByText('Draft alert')).not.toBeInTheDocument();
@@ -91,13 +103,21 @@ describe('ContentfulAlert Component', () => {
 		});
 	});
 
-	it('renders an error message when Contentful fetch fails', async () => {
+	it('logs an error and renders no markup when Contentful fetch fails', async () => {
+		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 		vi.spyOn(contentfulDelivery, 'getContentfulEntriesByType').mockRejectedValue(new Error('Network failure'));
 
-		render(<ContentfulAlert alertContentType="alert" />);
+		const { container } = render(<ContentfulAlerts alertContentType="alert" />);
 
 		await waitFor(() => {
-			expect(screen.getByText('Error: Network failure')).toBeInTheDocument();
+			expect(container.firstChild).toBeNull();
 		});
+
+		expect(consoleError).toHaveBeenCalledWith(
+			'ContentfulAlerts fetch error:',
+			expect.any(Error)
+		);
+
+		consoleError.mockRestore();
 	});
 });

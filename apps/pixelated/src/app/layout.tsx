@@ -6,6 +6,7 @@ import { LocalBusinessSchema, WebsiteSchema, ServicesSchema, BreadcrumbListSchem
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import type { /* BlogPostType, */ SiteInfo } from "@pixelated-tech/components";
 import { LayoutClient } from "@/app/elements/layoutclient";
+import { ContentfulAlerts } from "@pixelated-tech/components";
 import Header from "@/app/elements/header";
 import HeaderNav from "@/app/elements/headernav";
 import Nav from "@/app/elements/nav";
@@ -50,7 +51,10 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 			<nav>
 				<Nav />
 			</nav>
-			<main>{children}</main>
+			<main>
+				<ContentfulAlerts alertContentType="alert" />
+				{children}
+			</main>
 			<footer>
 				<Footer />
 			</footer>

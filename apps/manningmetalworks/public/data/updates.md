@@ -2,14 +2,14 @@
 
 
 ## 2026-05-09 Launch Activities
-* [  ] Move domain from WordPress to AWS
-* [  ] ImprovMX for email address
-* [  ] Set up Wordpress subdomain with AWS
-* [  ] Create Social Media Accounts
-* [  ] Curator.io to point to Manning Instagram
+* [  ] Brian to Move domain from WordPress to AWS - Tim / Greg to share the Wordpress login / password, or need Greg / Tim to initiate the transfer out on Wordpress
+* [  ] Brian to Set up ImprovMX for manningmetalworks.com email addresses
+* [  ] Brian to Set up Wordpress subdomain with AWS for blog 
+* [  ] Brian to Create Social Media Accounts - need either manningmetalworks gmail account, or need to set up a second account
+* [  ] Brian to Set up Curator.io account to point to ManningMetalworks Instagram.  Tim / Greg to share instagram login / pw with Brian
 * [ x ] We advertise 24/7 but we're closed Saturday/Sunday. Can we reword that showing we are still open. 
 * [ x ] please call before showing up or something along those lines. If you're going to stop by we want to know about it and/or make arrangements. 
-* [  ] gallery we want them on here first and as new stuff gets posted on instagram then they will feed into the gallery.
+* [  ] Greg shared feedback - gallery we want them on here first and as new stuff gets posted on instagram then they will feed into the gallery.
 
 
 ## 2026-04-15 Updates

@@ -5,6 +5,7 @@ import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchem
 import { PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import type { SiteInfo } from '@pixelated-tech/components/server';
+import { ContentfulAlerts } from '@pixelated-tech/components';
 import LayoutClient from '@/app/elements/layout-client';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
@@ -55,7 +56,10 @@ export default async function RootLayout({
 				<PixelatedServerConfigProvider>
 					<header><Header /></header>
 					<nav><Nav /></nav>
-					<main>{children}</main>
+					<main>
+						<ContentfulAlerts alertContentType="alert" />
+						{children}
+					</main>
 					<footer><Footer /></footer>
 				</PixelatedServerConfigProvider>
 			</body>

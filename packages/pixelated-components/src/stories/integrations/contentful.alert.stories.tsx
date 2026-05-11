@@ -1,12 +1,12 @@
 import React from 'react';
-import { ContentfulAlert } from '@/components/integrations/contentful.alert.components';
+import { ContentfulAlerts } from '@/components/integrations/contentful.alert.components';
 
 export default {
-	title: 'Integrations/Contentful Alert',
-	component: ContentfulAlert,
+	title: 'Integrations/Contentful Alerts',
+	component: ContentfulAlerts,
 };
 
-const Template = (args: any) => <ContentfulAlert {...args} />;
+const Template = (args: any) => <ContentfulAlerts {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
