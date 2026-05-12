@@ -1,5 +1,5 @@
 
-# The Three Muses of Bluffton: 100-Week Content Strategy
+# The Three Muses of Bluffton: 52 Week Blog Content Calendar
 
 ## Criteria for each individual Blog Post:
 * Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences

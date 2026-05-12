@@ -48,8 +48,8 @@ export default function ServicesPage() {
 					layout="horizontal"
 					direction="left"
 					img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
-					title="24/7 Mobile Welding Services"
-					subtitle="Our 24/7 mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night."
+					title="24/7 Emergency Mobile Welding Services"
+					subtitle="Our 24/7 emergency mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night."
 				/>
 				<div className="scroll-fade-element" suppressHydrationWarning>
 					<p>

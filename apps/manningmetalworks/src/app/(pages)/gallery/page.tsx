@@ -11,7 +11,8 @@ export default function Instagram() {
 			<PageSection columns={1} id="instagram-section">
 				<div id="curator-feed-default-feed-layout" />
 				<Script
-					src="https://cdn.curator.io/published/a997f463-40a0-49e8-9f34-3de237b3fc5b.js"
+					// src="https://cdn.curator.io/published/a997f463-40a0-49e8-9f34-3de237b3fc5b.js"
+					src="https://cdn.curator.io/published/019ec07b-3fcf-468f-ab7b-d48c013ee3af.js"
 					strategy="afterInteractive"
 				/>
 			</PageSection>

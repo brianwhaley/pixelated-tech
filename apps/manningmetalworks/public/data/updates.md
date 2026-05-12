@@ -2,14 +2,15 @@
 
 
 ## 2026-05-09 Launch Activities
-* [  ] Brian to Move domain from WordPress to AWS - Tim / Greg to share the Wordpress login / password, or need Greg / Tim to initiate the transfer out on Wordpress
+* [ x ] Brian to Move domain from WordPress to AWS - Tim / Greg to share the Wordpress login / password, or need Greg / Tim to initiate the transfer out on Wordpress
 * [  ] Brian to Set up ImprovMX for manningmetalworks.com email addresses
+create separate manningmetalworksinfo@gmail.com <-- info@manningmetalworks.com 
 * [  ] Brian to Set up Wordpress subdomain with AWS for blog 
 * [  ] Brian to Create Social Media Accounts - need either manningmetalworks gmail account, or need to set up a second account
-* [  ] Brian to Set up Curator.io account to point to ManningMetalworks Instagram.  Tim / Greg to share instagram login / pw with Brian
+* [ x ] Brian to Set up Curator.io account to point to ManningMetalworks Instagram.  Tim / Greg to share instagram login / pw with Brian
 * [ x ] We advertise 24/7 but we're closed Saturday/Sunday. Can we reword that showing we are still open. 
 * [ x ] please call before showing up or something along those lines. If you're going to stop by we want to know about it and/or make arrangements. 
-* [  ] Greg shared feedback - gallery we want them on here first and as new stuff gets posted on instagram then they will feed into the gallery.
+* [ x ] Greg shared feedback - gallery we want them on here first and as new stuff gets posted on instagram then they will feed into the gallery. ( Discussed with Greg, shared that curator.io mirrors instagram account). 
 
 
 ## 2026-04-15 Updates
@@ -44,9 +45,9 @@
 
 
 ## 2026-03-28 - BUILD - TO DO 
-* [  ] Curator.io - Instagram Gallery - Home Page 
-* [  ] Curator.io - Instagram Gallery - Gallery Page
-* [  ] VisualDesign section of routes.json - colors, fonts
+* [ x ] Curator.io - Instagram Gallery - Home Page 
+* [ x ] Curator.io - Instagram Gallery - Gallery Page
+* [ x ] VisualDesign section of routes.json - colors, fonts
 * [  ] X / Twitter Account
 * [  ] Yelp Account
 * [  ] Nextdoor Account

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { PageGridItem, PageSection, PageTitleHeader, PageSectionHeader } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
+import { SmartImage } from '@pixelated-tech/components';
 import { BlogPostList, getCachedWordPressItems } from "@pixelated-tech/components";
 import { ToggleLoading } from "@pixelated-tech/components";
 import Script from "next/script";
@@ -40,6 +41,12 @@ export default function Home() {
 			<PageSection columns={1} maxWidth="1024px" id="home-section">
 				<PageTitleHeader title="Manning Metalworks" />
 				<div className="scroll-fade-element" suppressHydrationWarning>
+					<SmartImage 
+						src="https://images.ctfassets.net/j4mgog9ij96e/1MaG6Df6MAvH51fxD9Vuy9/c8ff719bef2931f05ff9bc7a19e80918/img-0410-v2.png" 
+						alt="Manning Metalworks" 
+						width={200} height={200} 
+						aboveFold={true} 
+						style={{ float: "left", marginRight: "20px", marginBottom: "20px", borderRadius: "20px" }} />
 					<p>
 						Manning Metalworks is a premier, son-and-father owned fabrication firm based in Morris Plains, dedicated to providing Morris County with elite-level residential, commercial, and municipal metal solutions. Our foundation is built on a legacy of master-level craftsmanship, merging Tim Manning's experience at prestigious national firms and local expertise with Greg Manning's precision and AWS-certified welding techniques. We take pride in being a local, family-operated business that treats every structural beam, ornamental gate, and emergency repair with an artisan's attention to detail. Whether we are fabricating complex stainless steel components for a commercial kitchen or providing on-site structural reinforcement for heavy machinery, our mission is to deliver durable, code-compliant results that stand the test of time.
 					</p>
@@ -80,7 +87,7 @@ export default function Home() {
 						layout="vertical"
 						img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
 						url="/services#callout-247-mobile-welding-services"
-						title="24/7 Mobile Welding Services"
+						title="24/7 Emergency Mobile Welding Services"
 					/>
 				</PageGridItem>
 
@@ -118,11 +125,12 @@ export default function Home() {
 
 			<PageSection columns={1} maxWidth="1024px" id="home-section">
 				<PageSectionHeader title="Recent Gallery Photos" />
-				<div id="curator-feed-home-page-feed-layout" 
+				<div id="curator-feed-carousel" 
 					style={{ maxWidth: "95vw", overflow: "hidden"}}
 				/>
 				<Script
-					src="https://cdn.curator.io/published/1f7987eb-3e2a-406e-84c2-4571b6ff18f7.js"
+					// src="https://cdn.curator.io/published/1f7987eb-3e2a-406e-84c2-4571b6ff18f7.js"
+					src="https://cdn.curator.io/published/019ec07b-3fcf-468f-ab7b-d48c013ee3af_egk9qy4w.js"
 					strategy="afterInteractive"
 				/>
 			</PageSection>
