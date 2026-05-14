@@ -103,6 +103,19 @@ describe('Contentful Delivery API', () => {
 			const callUrl = (global.fetch as any).mock.calls[0][0];
 			expect(callUrl).toContain('test-token');
 		});
+
+		it('should return null when required api props are missing', async () => {
+			const result = await contentfulModule.getContentfulEntries({
+				apiProps: {
+					base_url: '',
+					space_id: '',
+					environment: '',
+					delivery_access_token: '',
+				},
+			} as any);
+
+			expect(result).toBeNull();
+		});
 	});
 
 	describe('getContentfulEntriesByType', () => {
@@ -172,6 +185,18 @@ describe('Contentful Delivery API', () => {
 
 			expect(result).toEqual(mockContentType);
 		});
+
+		it('should throw when required api props are missing', async () => {
+			await expect(contentfulModule.getContentfulContentType({
+				apiProps: {
+					base_url: '',
+					space_id: '',
+					environment: '',
+					access_token: 'test-token',
+				},
+				contentType: 'article',
+			} as any)).rejects.toThrow('Contentful API properties not configured: base_url, space_id, or environment');
+		});
 	});
 
 	describe('getContentfulEntryByEntryID', () => {
@@ -195,6 +220,18 @@ describe('Contentful Delivery API', () => {
 			});
 
 			expect(result).toEqual(mockEntry);
+		});
+
+		it('should throw when required api props are missing', async () => {
+			await expect(contentfulModule.getContentfulEntryByEntryID({
+				apiProps: {
+					base_url: '',
+					space_id: '',
+					environment: '',
+					delivery_access_token: 'test-token',
+				},
+				entry_id: 'entry123',
+			} as any)).rejects.toThrow('Contentful API properties not configured: base_url, space_id, or environment');
 		});
 
 		it('should include entry_id in URL', async () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, waitFor } from '@testing-library/react';
 import { smartFetch } from '../components/foundation/smartfetch';
 
 vi.mock('../components/foundation/smartfetch', () => ({
@@ -767,6 +768,66 @@ describe('SocialCard Components', () => {
       });
 
       expect(screen.getByText('Test Feed Item')).toBeInTheDocument();
+    });
+
+    it('should map multiple link domains to their matching card types', async () => {
+      const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0">
+          <channel>
+            <item>
+              <title>500px Item</title>
+              <link>https://500px.com/photo/1</link>
+              <description><p>Photo</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>500px-1</guid>
+            </item>
+            <item>
+              <title>Etsy Item</title>
+              <link>https://etsy.com/listing/2</link>
+              <description><p>Etsy</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>etsy-1</guid>
+            </item>
+            <item>
+              <title>Reddit Item</title>
+              <link>https://reddit.com/r/example/comments/3</link>
+              <description><p>Reddit</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>reddit-1</guid>
+            </item>
+            <item>
+              <title>X Item</title>
+              <link>https://x.com/user/status/4</link>
+              <description><p>X post</p></description>
+              <pubDate>Thu, 19 Apr 2026 12:00:00 GMT</pubDate>
+              <guid>x-1</guid>
+            </item>
+          </channel>
+        </rss>`;
+
+      vi.mocked(smartFetch).mockResolvedValueOnce(rssXml);
+
+      render(
+        <SocialCards
+          sources={{
+            blog: {
+              url: 'https://example.com/mixed-feed',
+              entryCount: 4,
+              iconSrc: '/images/logos/blog-logo.png',
+              iconSrcAlt: 'Blog Post'
+            }
+          }}
+        />
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText('500px Item')).toBeInTheDocument();
+      expect(screen.getByText('Etsy Item')).toBeInTheDocument();
+      expect(screen.getByText('Reddit Item')).toBeInTheDocument();
+      expect(screen.getByText('X Item')).toBeInTheDocument();
     });
 
     it('should handle RSS fetch failures and render loading state gracefully', async () => {

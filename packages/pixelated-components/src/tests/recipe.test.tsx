@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, fireEvent } from '@testing-library/react';
 import {
   RecipeBook,
   RecipeCategory,

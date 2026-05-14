@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getActivePaymentProvider, paymentProviders } from '@/components/shoppingcart/shoppingcart.providers';
-import { createMockConfig, mockConfig } from '../test/config.mock';
+import { createMockConfig, mockConfig } from '../test/test-utils';
 
 describe('ShoppingCart payment provider registry', () => {
   it('selects PayPal when provider is configured and requested', () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, fireEvent } from '@testing-library/react';
 import { BuzzwordBingo } from '../components/general/buzzwordbingo';
 import { buzzwords as canonicalBuzzwords } from '@/components/general/buzzwordbingo.words';
 const mockBuzzwords = canonicalBuzzwords.slice(0, 30);

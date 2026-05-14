@@ -1,7 +1,15 @@
+// @vitest-environment jsdom
+import '@testing-library/jest-dom/vitest';
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { cleanup, screen, fireEvent, waitFor } from '@testing-library/react';
 import { NerdJoke } from '../components/general/nerdjoke';
+import { smartFetch } from '../components/foundation/smartfetch';
+
+vi.mock('../components/foundation/smartfetch', () => ({
+  smartFetch: vi.fn(),
+}));
 
 const mockJokeData = {
   question: 'Why did the programmer quit his job?',
@@ -17,6 +25,16 @@ global.fetch = vi.fn(() =>
 ) as any;
 
 describe('NerdJoke Component', () => {
+  beforeEach(() => {
+    vi.mocked(smartFetch).mockResolvedValue(mockJokeData as any);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.useRealTimers();
+    cleanup();
+  });
+
   describe('Basic Rendering', () => {
     it('should render main nerdJoke container', () => {
       const { container } = render(<NerdJoke />);
@@ -405,6 +423,37 @@ describe('NerdJoke Component', () => {
       const { container } = render(<NerdJoke />);
       const labels = container.querySelectorAll('.label');
       expect(labels.length).toBeGreaterThanOrEqual(2);
+    });
+  });
+
+  it('should load and render a joke from smartFetch', async () => {
+    vi.mocked(smartFetch).mockResolvedValueOnce(mockJokeData as any);
+
+    render(<NerdJoke />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Why did the programmer quit his job\?/)).toBeInTheDocument();
+      expect(screen.getByText(/Because he didn't get arrays\./)).toBeInTheDocument();
+    });
+  });
+
+  it('should pause the timer and surface fetch errors on the next cycle', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(smartFetch)
+      .mockResolvedValueOnce(mockJokeData as any)
+      .mockRejectedValueOnce(new Error('fetch failed'));
+
+    const { container } = render(<NerdJoke />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Why did the programmer quit his job\?/)).toBeInTheDocument();
+    });
+
+    const nextButton = container.querySelector('.right button');
+    fireEvent.click(nextButton as HTMLElement);
+
+    await waitFor(() => {
+      expect(consoleError).toHaveBeenCalled();
     });
   });
 });

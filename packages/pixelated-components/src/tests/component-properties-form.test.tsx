@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ComponentPropertiesForm } from "../components/sitebuilder/page/components/ComponentPropertiesForm";
 

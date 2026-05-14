@@ -1,6 +1,7 @@
 /// <reference types="vitest/globals" />
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, act } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, waitFor, act } from '@testing-library/react';
 import { SiteHealthTemplate } from '../components/admin/site-health/site-health-template';
 import * as smartFetchModule from '../components/foundation/smartfetch';
 

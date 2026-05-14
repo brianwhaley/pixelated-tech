@@ -3,8 +3,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { PayPal, initPayPalButton } from '../components/shoppingcart/paypal';
 import { mockPayPalOrder, mockPayPalCheckoutData } from '../test/fixtures';
-import { mockConfig } from '../test/config.mock';
-import configJson from '@/config/pixelated.config.json';
+import { mockConfig } from '../test/test-utils';
 
 // Mock window.paypal
 (window as any).paypal = {
@@ -360,7 +359,7 @@ describe('PayPal Integration Tests', () => {
 
 	describe('PayPal Sandbox REST API Integration', () => {
 		it('submits a real sandbox PayPal order using pixelated.config.json', async () => {
-			const payPalConfig = configJson.paypal || {};
+			const payPalConfig = mockConfig.paypal || {};
 			const clientId = payPalConfig.sandboxPayPalApiKey;
 			const secret = payPalConfig.sandboxPayPalSecret;
 			const baseUrl = payPalConfig.sandboxPayPalApiBaseUrl;

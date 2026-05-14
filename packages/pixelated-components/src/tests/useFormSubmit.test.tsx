@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useFormSubmit } from '../components/sitebuilder/form/formsubmit';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';

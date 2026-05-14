@@ -25,7 +25,7 @@ const setupInputProps = (props: any, display?: string) => {
 	// Remove props that shouldn't go to DOM
 	inputProps = Object.fromEntries(
 		Object.entries(inputProps).filter(([key]) =>
-			!['display', 'label', 'listItems', 'validate', 'options', 'parent', 'text', 'checked'].includes(key)
+			!['display', 'label', 'listItems', 'validate', 'options', 'parent', 'text', 'checked', 'errorMessage'].includes(key)
 		)
 	);
 
@@ -90,15 +90,39 @@ const useFormComponent = (props: any) => {
 		});
 	};
 
-	const formValidate = <FormTooltip id={`${props.id}-validate`} mode="validate" text={validationState.errors} />;
+	// Tooltip shows all technical errors + custom message if provided
+	const validationErrors = !validationState.isValid && props.errorMessage
+		? [...validationState.errors, props.errorMessage]
+		: validationState.errors;
+	const formValidate = <FormTooltip id={`${props.id}-validate`} mode="validate" text={validationErrors} />;
+	
+	// Inline display: use custom message if provided, otherwise cleaned system errors
+	let inlineErrorText = '';
+	if (!validationState.isValid) {
+		if (props.errorMessage) {
+			inlineErrorText = props.errorMessage;
+		} else if (validationState.errors.length > 0) {
+			// Clean up system errors: ensure each ends with a period
+			const cleanedErrors = validationState.errors.map(err =>
+				err.trim().endsWith('.') ? err.trim() : err.trim() + '.'
+			);
+			inlineErrorText = cleanedErrors.join(' ');
+		}
+	}
+	const formErrorMessage = inlineErrorText
+		? <div className="form-field-error">{inlineErrorText}</div>
+		: null;
 	const inputProps = setupInputProps(props, props.display);
 
 	// Add validation event handlers
 	inputProps["onChange"] = handleChange;
 	inputProps["onBlur"] = handleBlur;
 	inputProps["onInput"] = handleChange; // Also handle onInput for tests
+	if (!validationState.isValid) {
+		inputProps["className"] = `${inputProps["className"] || ''} invalid`.trim();
+	}
 
-	return { validationState, formValidate, inputProps, handleChange, handleBlur };
+	return { validationState, formValidate, formErrorMessage, inputProps, handleChange, handleBlur };
 };
 
 
@@ -314,6 +338,7 @@ FormGooglePlacesInput.propTypes = {
 	tooltip: PropTypes.string,
 	className: PropTypes.string,
 	validate: PropTypes.string,
+	errorMessage: PropTypes.string,
 	onChange: PropTypes.func,
 	onAddressParsed: PropTypes.func,
 };
@@ -323,7 +348,7 @@ export function FormGooglePlacesInput(props: FormGooglePlacesInputType) {
 	const [predictions, setPredictions] = React.useState<any[]>([]);
 	const [showPredictions, setShowPredictions] = React.useState(false);
 	const [isLoading, setIsLoading] = React.useState(false);
-	const { formValidate, inputProps } = useFormComponent(props);
+	const { formValidate, formErrorMessage, inputProps } = useFormComponent(props);
 	const config = usePixelatedConfig();
 	const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
@@ -438,7 +463,7 @@ export function FormGooglePlacesInput(props: FormGooglePlacesInputType) {
 	}, []);
 
 	return (
-		<div className={`form-google-places-input ${props.className || ''}`}>
+		<div className={`form-field form-google-places-input ${props.className || ''}`}>
 			<FormLabel key={"label-" + props.id} id={props.id} label={props.label} />
 			{props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : ""}
 			{props.display === "vertical" ? formValidate : ""}
@@ -486,6 +511,8 @@ export function FormGooglePlacesInput(props: FormGooglePlacesInputType) {
 					</ul>
 				)}
 			</div>
+			{props.display !== "vertical" ? formValidate : ""}
+			{formErrorMessage}
 		</div>
 	);
 }
@@ -578,12 +605,14 @@ FormInput.propTypes = {
 	className: PropTypes.string,
 	/** Name of the validation rule to run for this field */
 	validate: PropTypes.string,
+	/** Custom error message shown when validation fails */
+	errorMessage: PropTypes.string,
 	/** Change handler invoked with the new value */
 	onChange: PropTypes.func,
 };
 export type FormInputType = InferProps<typeof FormInput.propTypes>;
 export function FormInput(props: FormInputType) {
-	const { formValidate, inputProps } = useFormComponent(props);
+	const { formValidate, formErrorMessage, inputProps } = useFormComponent(props);
 	let formDataList = props.list && props.list in FVF
 		? FVF[props.list as keyof typeof FVF]
 		: props.list && props.listItems
@@ -591,7 +620,7 @@ export function FormInput(props: FormInputType) {
 			: undefined ;
 
 	return (
-		<div>
+		<div className="form-field">
 			{ props.type == "checkbox" ? <input {...inputProps} /> : "" }
 			<FormLabel key={"label-" + props.id} id={props.id} label={props.label} />
 			{ props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : "" }
@@ -599,6 +628,7 @@ export function FormInput(props: FormInputType) {
 			{ props.type != "checkbox" ? <input {...inputProps} /> : "" }
 			{ formDataList && Array.isArray(formDataList) ? <FormDataList id={props.list ?? ''} items={formDataList} /> : "" }
 			{ props.display != "vertical" ? formValidate : "" }
+			{ formErrorMessage }
 		</div>
 	);
 }
@@ -667,15 +697,17 @@ FormSelect.propTypes = {
 	className: PropTypes.string,
 	/** Name of the validation rule to run for this field */
 	validate: PropTypes.string,
+	/** Custom error message shown when validation fails */
+	errorMessage: PropTypes.string,
 	/** Change handler invoked with the new value */
 	onChange: PropTypes.func,
 };
 export type FormSelectType = InferProps<typeof FormSelect.propTypes>;
 export function FormSelect(props: FormSelectType) {
-	const { formValidate, inputProps } = useFormComponent(props);
+	const { formValidate, formErrorMessage, inputProps } = useFormComponent(props);
 	const options = generateOptions(props.options || [], props, "select", FormSelectOption);
 	return (
-		<div>
+		<div className="form-field">
 			<FormLabel key={"label-" + props.id} id={props.id} label = {props.label} />
 			{ props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : "" }
 			{ props.display == "vertical" ? formValidate : "" }
@@ -683,6 +715,7 @@ export function FormSelect(props: FormSelectType) {
 				{options}
 			</select>
 			{ props.display != "vertical" ? formValidate : "" }
+			{ formErrorMessage }
 		</div>
 	);
 }
@@ -787,19 +820,22 @@ FormTextarea.propTypes = {
 	className: PropTypes.string,
 	/** Name of the validation rule to run for this field */
 	validate: PropTypes.string,
+	/** Custom error message shown when validation fails */
+	errorMessage: PropTypes.string,
 	/** Change handler invoked with the new value */
 	onChange: PropTypes.func,
 };
 export type FormTextareaType = InferProps<typeof FormTextarea.propTypes>;
 export function FormTextarea(props: FormTextareaType) {
-	const { formValidate, inputProps } = useFormComponent(props);
+	const { formValidate, formErrorMessage, inputProps } = useFormComponent(props);
 	return (
-		<div>
+		<div className="form-field">
 			<FormLabel key={"label-" + props.id} id={props.id} label = {props.label} />
 			{ props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : "" }
 			{ props.display == "vertical" ? formValidate : "" }
 			<textarea {...inputProps} />
 			{ props.display != "vertical" ? formValidate : "" }
+			{ formErrorMessage }
 		</div>
 	);
 }
@@ -852,20 +888,23 @@ FormRadio.propTypes = {
 	tooltip: PropTypes.string,
 	/** Named validation rule to apply */
 	validate: PropTypes.string,
+	/** Custom error message shown when validation fails */
+	errorMessage: PropTypes.string,
 	/** Handler invoked with the new selected value */
 	onChange: PropTypes.func,
 };
 export type FormRadioType = InferProps<typeof FormRadio.propTypes>;
 export function FormRadio(props: FormRadioType) {
-	const { formValidate } = useFormComponent(props);
+	const { formValidate, formErrorMessage } = useFormComponent(props);
 	const options = generateOptions(props.options || [], props, "radio", FormRadioOption);
 	return (
-		<div>
+		<div className="form-field">
 			<FormLabel key={"label-" + props.id} id={props.name} label={props.label} />
 			{ props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : "" }
 			{ props.display == "vertical" ? formValidate : "" }
 			{options}
 			{ props.display != "vertical" ? formValidate : "" }
+			{ formErrorMessage }
 		</div>
 	);
 }
@@ -975,20 +1014,23 @@ FormCheckbox.propTypes = {
 	className: PropTypes.string,
 	/** Named validation rule to apply to the group */
 	validate: PropTypes.string,
+	/** Custom error message shown when validation fails */
+	errorMessage: PropTypes.string,
 	/** Handler invoked with the updated selected values array */
 	onChange: PropTypes.func,
 };
 export type FormCheckboxType = InferProps<typeof FormCheckbox.propTypes>;
 export function FormCheckbox(props: FormCheckboxType) {
-	const { formValidate } = useFormComponent(props);
+	const { formValidate, formErrorMessage } = useFormComponent(props);
 	const options = generateOptions(props.options || [], props, "checkbox", FormCheckboxOption);
 	return (
-		<div>
+		<div className={"form-field"}>
 			<FormLabel key={"label-" + props.id} id={props.name} label={props.label} />
 			{ props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : "" }
 			{ props.display == "vertical" ? formValidate : "" }
 			{options}
 			{ props.display != "vertical" ? formValidate : "" }
+			{ formErrorMessage }
 		</div>
 	);
 }
@@ -1085,7 +1127,7 @@ FormButton.propTypes = {
 export type FormButtonType = InferProps<typeof FormButton.propTypes>;
 export function FormButton(props: FormButtonType) {
 	return (
-		<div>
+		<div className="form-field">
 			<button 
 				type={props.type as "button" | "submit" | "reset" | undefined} 
 				id={props.id} 
@@ -1185,6 +1227,8 @@ FormTagInput.propTypes = {
 	className: PropTypes.string,
 	/** Named validation rule to run for this field */
 	validate: PropTypes.string,
+	/** Custom error message shown when validation fails */
+	errorMessage: PropTypes.string,
 	/** Change handler invoked with the updated tags array */
 	onChange: PropTypes.func,
 };
@@ -1194,7 +1238,7 @@ export function FormTagInput(props: FormTagInputType) {
 	const [internalTags, setInternalTags] = useState<string[]>(
 		Array.isArray(props.defaultValue) ? props.defaultValue.filter((tag): tag is string => tag != null) : []
 	);
-	const { formValidate, handleBlur } = useFormComponent(props);
+	const { formValidate, formErrorMessage, handleBlur } = useFormComponent(props);
 	const { validateField } = useFormValidation();
 
 	// Determine if component is controlled or uncontrolled
@@ -1269,7 +1313,7 @@ export function FormTagInput(props: FormTagInputType) {
 	};
 
 	return (
-		<div className={`form-tag-input ${props.className || ''}`}>
+		<div className={`form-field form-tag-input ${props.className || ''}`}>
 			<FormLabel key={"label-" + props.id} id={props.id} label={props.label} />
 			{props.tooltip ? <FormTooltip id={props.id} text={[props.tooltip]} /> : ""}
 			{props.display === "vertical" ? formValidate : ""}
@@ -1310,6 +1354,7 @@ export function FormTagInput(props: FormTagInputType) {
 			</div>
 
 			{props.display !== "vertical" ? formValidate : ""}
+			{formErrorMessage}
 		</div>
 	);
 }

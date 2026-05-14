@@ -1,7 +1,8 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 import { GlobalErrorUI } from '../components/foundation/global-error';
 
 describe('GlobalError', () => {

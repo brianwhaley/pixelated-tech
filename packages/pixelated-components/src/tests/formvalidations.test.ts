@@ -8,7 +8,7 @@ import {
 	isOneRadioSelected,
 	isValidUSZipCode,
 	isValidUSPhoneNumber,
-	isValidSquarePhoneNumber,
+	isValidSquareUSPhoneNumber,
 	isValidEmailAddress,
 	isValidDate,
 	isValidUrl,
@@ -271,25 +271,49 @@ describe('Form Validations', () => {
 		});
 	});
 
-		describe('isValidSquarePhoneNumber', () => {
+		describe('isValidSquareUSPhoneNumber', () => {
 			it('should accept a plus-prefixed international number', () => {
-				expect(isValidSquarePhoneNumber({ value: '+1 973-710-8008' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 973-710-8008' })).toBe(true);
 			});
 
 			it('should accept parentheses and separators', () => {
-				expect(isValidSquarePhoneNumber({ value: '+1 (973) 710-8008' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 (973) 710-8008' })).toBe(true);
 			});
 
 			it('should reject numbers without a leading plus', () => {
-				expect(isValidSquarePhoneNumber({ value: '19737108008' })).toBe(false);
+				expect(isValidSquareUSPhoneNumber({ value: '19737108008' })).toBe(false);
+				expect(isValidSquareUSPhoneNumber({ value: '8438675309' })).toBe(false);
+			});
+
+			it('should require +1 country code', () => {
+				expect(isValidSquareUSPhoneNumber({ value: '+44 843-867-5309' })).toBe(false);
 			});
 
 			it('should reject values with too many digits', () => {
-				expect(isValidSquarePhoneNumber({ value: '+1 973 710 8008 123456' })).toBe(false);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 973 710 8008 123456' })).toBe(false);
 			});
 
 			it('should reject letters', () => {
-				expect(isValidSquarePhoneNumber({ value: '+1 973-710-80AB' })).toBe(false);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 973-710-80AB' })).toBe(false);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 843-867-ABCD' })).toBe(false);
+			});
+
+			it('should accept common Square US number formats', () => {
+				expect(isValidSquareUSPhoneNumber({ value: '+1 (843) 867-5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 (843) 867 5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+18438675309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 843.867.5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1.843.867.5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 843-867-5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1-843-867-5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1(843)867-5309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 8438675309' })).toBe(true);
+				expect(isValidSquareUSPhoneNumber({ value: '+1 (843)867-5309' })).toBe(true);
+			});
+
+			it('should reject incomplete US numbers', () => {
+				expect(isValidSquareUSPhoneNumber({ value: '+184386753' })).toBe(false);
+				expect(isValidSquareUSPhoneNumber({ value: '+1843867530' })).toBe(false);
 			});
 		});
 

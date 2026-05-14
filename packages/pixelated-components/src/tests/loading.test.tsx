@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 import { Loading, ToggleLoading } from '../components/foundation/loading';
 
 describe('Loading Component', () => {

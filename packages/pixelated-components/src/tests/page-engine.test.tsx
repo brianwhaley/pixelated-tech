@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
-import { fireEvent } from '@testing-library/react';
+import { render } from '../test/test-utils';
+import { screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PageEngine } from "../components/sitebuilder/page/components/PageEngine";
 import { mockPageEngineData } from '../test/fixtures';

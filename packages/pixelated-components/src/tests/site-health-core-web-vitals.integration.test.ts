@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as configModule from '../components/config/config';
 import { fetchPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
-import { mockConfig } from '../test/config.mock';
+import { mockConfig } from '../test/test-utils';
 
 // Use the test harness mock config derived from src/config/pixelated.config.json
 
@@ -23,7 +23,7 @@ describe('fetchPSIData', () => {
 	});
 
 	it('uses API key from pixelated.config.json', async () => {
-		const apiKey = mockConfig?.google?.api_key;
+		const apiKey = mockConfig?.googlePSI?.api_key;
 		expect(apiKey).toBeDefined();
 		const url = 'https://example.com';
 		await fetchPSIData(url);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 import { Tiles } from '@/components/general/tiles';
 import type { CarouselCardType } from '@/components/general/carousel';
 import {

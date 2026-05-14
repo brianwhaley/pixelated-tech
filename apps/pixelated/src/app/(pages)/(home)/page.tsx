@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import { getWordPressItems, BlogPostList } from "@pixelated-tech/components";
+import { getWordPressItems, getCachedWordPressItems, BlogPostList } from "@pixelated-tech/components";
 import SocialTags from "@/app/elements/socialtags";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { ToggleLoading } from "@pixelated-tech/components";
@@ -138,7 +138,6 @@ export default function Home() {
 						// img='/images/icons/webdev.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg'
 						imgAlt='Web Development'
-						imgShape="squircle" 
 						title='Web Development'
 						subtitle='Do you need a new website or web application for your business? 
 							Is your current website outdated or not mobile-friendly?
@@ -157,7 +156,6 @@ export default function Home() {
 						// img='/images/icons/socialmedia.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg'
 						imgAlt='Social Media Marketing'
-						imgShape="squircle" 
 						title='Social Media Marketing'
 						subtitle='Are your social media accounts active and engaging?
 							Are they integrated with your website and other online platforms?
@@ -175,7 +173,6 @@ export default function Home() {
 						// img='/images/icons/seo-2.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg'
 						imgAlt='Search Engine Optimization'
-						imgShape="squircle" 
 						title='Search Engine Optimization'
 						subtitle='Is your website optimized for search engines?
 							Does it stand out from your competition, ranking well for relevant keywords and phrases?
@@ -192,7 +189,6 @@ export default function Home() {
 						// img='/images/icons/content.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg'
 						imgAlt='Content Management'
-						imgShape="squircle"
 						title='Content Management'
 						subtitle='Do you have to rely on a web developer to make updates to your website?
 							Would you like to be able to make updates yourself, without needing technical skills?
@@ -210,7 +206,6 @@ export default function Home() {
 						// img='/images/icons/ecommerce.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg'
 						imgAlt='eCommerce Solutions'
-						imgShape="squircle" 
 						title='eCommerce Solutions'
 						subtitle='Do you want to move your business online to 
 							sell your products or services digitally?
@@ -228,7 +223,6 @@ export default function Home() {
 						// img='/images/icons/custom.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg'
 						imgAlt='Small Business Modernization'
-						imgShape="squircle" 
 						title='Small Business Modernization'
 						subtitle='Are you looking to integrate your site with other business systems,
 							such as marketing automation tools, billing and finance systems, 
@@ -248,7 +242,6 @@ export default function Home() {
 						layout='horizontal' 
 						img='/images/brianwhaley-headshot.jpg'
 						imgAlt='Brian T. Whaley'
-						imgShape='squircle'
 						title='Brian T. Whaley'
 						content='The owner of Pixelated Technologies.
 							Full Stack Developer, Passionate Technologist, 

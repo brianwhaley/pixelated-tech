@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { FontSelector } from '../components/sitebuilder/config/FontSelector';
 
 // Mock the google-fonts.client module

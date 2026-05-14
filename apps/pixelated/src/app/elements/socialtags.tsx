@@ -53,6 +53,11 @@ export default function SocialTags() {
 				</PageGridItem>
 				<PageGridItem>
 					<Callout variant="full" imgShape="squircle" layout="vertical" 
+						url="https://nextdoor.com/profile/01rbjYH2btT-yY8yF" 
+						img="/images/logos/nextdoor-logo.png" imgAlt="Nextdoor" />
+				</PageGridItem>
+				<PageGridItem>
+					<Callout variant="full" imgShape="squircle" layout="vertical" 
 						url="https://creators.spotify.com/pod/profile/pixelated-technologies/" 
 						img="/images/logos/spotify-logo.png" imgAlt="Spotify" />
 				</PageGridItem>

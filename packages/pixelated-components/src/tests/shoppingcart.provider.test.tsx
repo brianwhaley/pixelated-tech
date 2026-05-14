@@ -1,7 +1,8 @@
 import React from 'react';
 import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
-import { act, render, screen, fireEvent, waitFor } from '../test/test-utils';
-import { createMockConfig } from '../test/config.mock';
+import { render } from '../test/test-utils';
+import { act, screen, fireEvent, waitFor } from '@testing-library/react';
+import { createMockConfig } from '../test/test-utils';
 import { ShoppingCart } from '../components/shoppingcart/shoppingcart.components';
 import { setCart, setShippingInfo, clearShoppingCart } from '../components/shoppingcart/shoppingcart.functions';
 

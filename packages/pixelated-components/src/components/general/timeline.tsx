@@ -78,6 +78,7 @@ export default function TimelineItem(props: TimelineItemType) {
 				<div className="row-3col">
 					<div className="grid-s1-e2">
 						<SmartImage src={props.image || ""} title={props.title} alt={props.title} 
+							className="timeline-image" 
 							cloudinaryEnv={config?.cloudinary?.product_env ?? undefined} />
 					</div>
 					<div className="grid-s2-e4">

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SaveLoadSection } from "../components/sitebuilder/page/components/SaveLoadSection";
 import { buildUrl } from '../components/foundation/urlbuilder';

@@ -77,6 +77,34 @@ describe('EbayItems component', () => {
 		});
 	});
 
+	it('renders the fallback loading state when the API returns no items', async () => {
+		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
+		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [], refinement: { aspectDistributions: [] } } as any);
+
+		const { container } = render(
+			<EbayItems
+				apiProps={{
+					proxyURL: '',
+					baseTokenURL: '',
+					baseSearchURL: '',
+					qsSearchURL: '',
+					baseItemURL: '',
+					qsItemURL: '',
+					baseAnalyticsURL: '',
+					appId: '',
+					appCertId: '',
+					globalId: '',
+					itemCategory: 'electronics',
+				}}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(container.querySelector('#ebay-items')).toBeInTheDocument();
+		});
+		expect(screen.queryByText('Store Items')).toBeNull();
+	});
+
 	it('loads and renders items when getEbayItems resolves', async () => {
 		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
 		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [mockItem], refinement: { aspectDistributions: [] } } as any);

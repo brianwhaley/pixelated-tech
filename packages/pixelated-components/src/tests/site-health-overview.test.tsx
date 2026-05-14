@@ -1,6 +1,7 @@
 /// <reference types="vitest/globals" />
 import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
-import { render, screen, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, waitFor } from '@testing-library/react';
 import React, { useState, useEffect } from 'react';
 import { SiteHealthOverview } from '../components/admin/site-health/site-health-overview';
 import type { CoreWebVitalsResponse, CoreWebVitalsData } from '../components/admin/site-health/site-health-types';

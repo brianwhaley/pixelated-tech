@@ -1,9 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockSend = vi.hoisted(() => vi.fn());
+let lastClientConfig: any = null;
+let mockAwsConfig: any = {
+	region: 'us-east-1',
+	access_key_id: 'test-access-key',
+	secret_access_key: 'test-secret-key',
+};
 
 vi.mock('@aws-sdk/client-dynamodb', () => ({
 	DynamoDBClient: class {
+		config: any;
+
+		constructor(config: any) {
+			this.config = config;
+			lastClientConfig = config;
+		}
+
 		send = mockSend;
 	},
 	ScanCommand: class {
@@ -16,13 +29,7 @@ vi.mock('@aws-sdk/client-dynamodb', () => ({
 }));
 
 vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: () => ({
-		aws: {
-			region: 'us-east-1',
-			access_key_id: 'test-access-key',
-			secret_access_key: 'test-secret-key',
-		},
-	}),
+	getFullPixelatedConfig: () => ({ aws: mockAwsConfig }),
 }));
 
 import {
@@ -33,6 +40,12 @@ import {
 describe('aws dynamo integration', () => {
 	beforeEach(() => {
 		mockSend.mockReset();
+		lastClientConfig = null;
+		mockAwsConfig = {
+			region: 'us-east-1',
+			access_key_id: 'test-access-key',
+			secret_access_key: 'test-secret-key',
+		};
 	});
 
 	it('flattens orderData into report row fields', () => {
@@ -213,5 +226,45 @@ describe('aws dynamo integration', () => {
 		expect(rows).toHaveLength(1);
 		expect(rows[0].created_at).toBe(new Date('2026-05-05T10:00:00.000Z').toLocaleString());
 		expect(rows[0].shipping_to).toHaveProperty('name');
+	});
+
+	it('creates a Dynamo client without credentials when only region is configured', async () => {
+		mockAwsConfig = { region: 'us-east-1' };
+		mockSend.mockResolvedValueOnce({ Items: [], LastEvaluatedKey: undefined });
+
+		await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		});
+
+		expect(lastClientConfig).toMatchObject({ region: 'us-east-1' });
+		expect(lastClientConfig.credentials).toBeUndefined();
+	});
+
+	it('throws when the AWS region is missing', async () => {
+		mockAwsConfig = {};
+
+		await expect(listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		})).rejects.toThrow('AWS region is missing from pixelated.config.json.');
+	});
+
+	it('pages through scan results until LastEvaluatedKey is cleared', async () => {
+		mockAwsConfig = { region: 'us-east-1' };
+		mockSend
+			.mockResolvedValueOnce({ Items: [{ created_at: { S: '2026-05-05T10:00:00.000Z' } }], LastEvaluatedKey: { id: { S: 'next' } } })
+			.mockResolvedValueOnce({ Items: [{ created_at: { S: '2026-05-06T10:00:00.000Z' } }], LastEvaluatedKey: undefined });
+
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		});
+
+		expect(mockSend).toHaveBeenCalledTimes(2);
+		expect(rows).toHaveLength(2);
 	});
 });

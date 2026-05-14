@@ -186,6 +186,7 @@ const defaultMocks: Record<string, any> = {
 	BusinessFooter: mockComponent('BusinessFooter'),
 	Callout: mockComponent('Callout'),
 	ContentfulAlert: mockComponent('ContentfulAlert'),
+	ContentfulAlerts: mockComponent('ContentfulAlerts'),
 	FAQAccordion: mockComponent('FAQAccordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ'),
 	SchemaEvent: mockComponent('SchemaEvent'),

@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 import { FormGooglePlacesInput } from '../components/sitebuilder/form/formcomponents';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';
 import { GooglePlacesService } from '../components/integrations/googleplaces';

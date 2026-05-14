@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent, screen, act } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { fireEvent, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { FormEngine } from '../components/sitebuilder/form/formengine';
 import formJSON from '../data/requestform.json';

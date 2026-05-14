@@ -4,6 +4,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { SquareCheckout } from '../components/shoppingcart/square.components';
 import { SquarePaymentError } from '../components/shoppingcart/square';
 
+let mockPixelatedConfig: any = {};
+
+vi.mock('../components/config/config.client', () => ({
+  usePixelatedConfig: vi.fn(() => mockPixelatedConfig),
+}));
+
 const squareScriptUrl = 'https://web.squarecdn.com/v1/square.js';
 const sandboxSquareScriptUrl = 'https://sandbox.web.squarecdn.com/v1/square.js';
 
@@ -34,6 +40,7 @@ function createSquareGlobal(tokenizeResult?: { status: string; [key: string]: an
 describe('SquareCheckout component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockPixelatedConfig = {};
     document.head.innerHTML = '';
     document.body.innerHTML = '';
     delete (window as any).Square;
@@ -75,6 +82,40 @@ describe('SquareCheckout component', () => {
         applicationId="sandbox-app-id"
         locationId="sandbox-location-id"
         checkoutData={{ items: [], subtotal: 0, subtotal_discount: 0, shippingTo: { name: 'A', street1: 'S', city: 'C', state: 'NY', zip: '10001', country: 'US' }, shippingCost: 0, handlingFee: 0, salesTax: 0, total: 0 }}
+        onApprove={vi.fn()}
+      />
+    );
+
+    const script = await waitFor(() => document.head.querySelector(`script[src="${sandboxSquareScriptUrl}"]`) as HTMLScriptElement | null);
+    expect(script).toBeDefined();
+  });
+
+  it('loads sandbox Square SDK when the config environment is sandbox', async () => {
+    mockPixelatedConfig = { square: { environment: 'sandbox' } };
+    createSquareGlobal();
+
+    render(
+      <SquareCheckout
+        applicationId="app-id"
+        locationId="location-id"
+        checkoutData={{ items: [], subtotal: 0, subtotal_discount: 0, shippingTo: { name: 'A', street1: 'S', city: 'C', state: 'NY', zip: '10001', country: 'US' }, shippingCost: 0, handlingFee: 0, salesTax: 0, total: 0 }}
+        onApprove={vi.fn()}
+      />
+    );
+
+    const script = await waitFor(() => document.head.querySelector(`script[src="${sandboxSquareScriptUrl}"]`) as HTMLScriptElement | null);
+    expect(script).toBeDefined();
+  });
+
+  it('loads sandbox Square SDK when the checkout email is configured for sandbox', async () => {
+    mockPixelatedConfig = { square: { sandboxSquareEmails: ['sandbox@example.com'] } };
+    createSquareGlobal();
+
+    render(
+      <SquareCheckout
+        applicationId="app-id"
+        locationId="location-id"
+        checkoutData={{ items: [], subtotal: 0, subtotal_discount: 0, shippingTo: { name: 'A', street1: 'S', city: 'C', state: 'NY', zip: '10001', country: 'US', email: 'sandbox@example.com' }, shippingCost: 0, handlingFee: 0, salesTax: 0, total: 0 }}
         onApprove={vi.fn()}
       />
     );
@@ -243,6 +284,29 @@ describe('SquareCheckout component', () => {
     await waitFor(() => {
       expect(screen.getByText('Please re-enter your card details and try again.')).toBeInTheDocument();
       expect(onApprove).not.toHaveBeenCalled();
+    });
+  });
+
+  it('shows an error when the Square script fails to load', async () => {
+    createSquareGlobal();
+
+    render(
+      <SquareCheckout
+        applicationId="app-id"
+        locationId="location-id"
+        checkoutData={{ items: [], subtotal: 0, subtotal_discount: 0, shippingTo: { name: 'A', street1: 'S', city: 'C', state: 'NY', zip: '10001', country: 'US' }, shippingCost: 0, handlingFee: 0, salesTax: 0, total: 0 }}
+        onApprove={vi.fn()}
+      />
+    );
+
+    const script = await waitFor(() => document.head.querySelector(`script[src="${squareScriptUrl}"]`) as HTMLScriptElement | null);
+    expect(script).toBeDefined();
+    if (script) {
+      script.onerror?.(new Event('error'));
+    }
+
+    await waitFor(() => {
+      expect(screen.getByText('Failed to load Square Payments SDK.')).toBeInTheDocument();
     });
   });
 });

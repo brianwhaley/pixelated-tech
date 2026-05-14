@@ -1,6 +1,9 @@
+// @vitest-environment jsdom
+import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { usePageBuilder } from '../components/sitebuilder/page/lib/usePageBuilder';
+import { generateComponentObject } from '../components/sitebuilder/page/lib/componentGeneration';
 
 vi.mock('../components/sitebuilder/page/lib/componentGeneration', () => ({
 	generateComponentObject: vi.fn((event: any) => ({
@@ -313,6 +316,62 @@ describe('usePageBuilder Hook', () => {
 			// Should remain as last
 			expect(result.current.pageJSON.components[1]?.path).toBe(secondPath);
 			expect(result.current.pageJSON.components.length).toBe(2);
+		});
+
+		it('should add a component into a nested children path', () => {
+			const { result } = renderHook(() => usePageBuilder());
+			act(() => {
+				result.current.setPageJSON({
+					components: [
+						{
+							id: 'parent',
+							name: 'Parent',
+							type: 'div',
+							children: [
+								{ id: 'child', name: 'Child', type: 'div', children: [] },
+							],
+						},
+					],
+				});
+			});
+
+			vi.mocked(generateComponentObject).mockReturnValueOnce({
+				component: { id: 'grandchild', name: 'Grandchild', type: 'div', children: [] },
+				parentPath: 'root[0].children',
+			} as any);
+
+			act(() => {
+				result.current.handleAddNewComponent(new Event('test'));
+			});
+
+			expect(result.current.pageJSON.components[0].children).toHaveLength(2);
+			expect(result.current.pageJSON.components[0].children[1].id).toBe('grandchild');
+		});
+
+		it('should preserve nested children when editing a component', () => {
+			const { result } = renderHook(() => usePageBuilder());
+			act(() => {
+				result.current.setPageJSON({
+					components: [
+						{
+							id: 'parent',
+							name: 'Parent',
+							type: 'div',
+							children: [
+								{ id: 'child', name: 'Child', type: 'div', children: [{ id: 'grandchild', name: 'Grandchild', type: 'div', children: [] }] },
+							],
+						},
+					],
+				});
+				result.current.setEditMode({ path: 'root[0]', component: { id: 'parent' } } as any);
+			});
+
+			act(() => {
+				result.current.handleAddNewComponent(new Event('test'));
+			});
+
+			expect(result.current.pageJSON.components[0].children[0].children).toHaveLength(1);
+			expect(result.current.pageJSON.components[0].children[0].children[0].id).toBe('grandchild');
 		});
 	});
 

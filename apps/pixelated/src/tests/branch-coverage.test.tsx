@@ -17,8 +17,10 @@ const renderWithConfig = (ui: React.ReactElement) =>
 		</PixelatedClientConfigProvider>,
 	);
 
+let mockSearch = '?installed=false';
+
 vi.mock('next/navigation', () => ({
-	useSearchParams: () => new URLSearchParams('?installed=false'),
+	useSearchParams: () => new URLSearchParams(mockSearch),
 }));
 
 vi.mock('@pixelated-tech/components', async () => {
@@ -45,11 +47,18 @@ import Podcast from '@/app/(pages)/podcast/page';
 import NerdJokes from '@/app/(pages)/nerdjokes/page';
 import Portfolio from '@/app/(pages)/portfolio/page';
 import Nav from '@/app/elements/nav';
+import RootLayout from '@/app/layout';
+import { headers } from 'next/headers';
+
+vi.mock('next/headers', () => ({
+	headers: vi.fn(async () => new Headers({ 'x-path': '/', 'x-origin': 'https://example.com', 'x-url': 'https://example.com/' })),
+}));
 
 describe('Pixelated branch coverage tests', () => {
 	beforeEach(() => {
 		resetMockState();
 		resetFileDataState();
+		mockSearch = '?installed=false';
 		mockState.wordpressPosts = [{ id: 1, title: 'Hello' }];
 		vi.clearAllMocks();
 	});
@@ -90,5 +99,18 @@ describe('Pixelated branch coverage tests', () => {
 	it('renders nav and executes ref callback branch', () => {
 		renderWithConfig(<Nav />);
 		expect(screen.getByTestId('mock-menuaccordion')).not.toBeNull();
+	});
+
+	it('renders nav full menu branch when fullmenu=true', () => {
+		mockSearch = '?fullmenu=true';
+		renderWithConfig(<Nav />);
+		expect(screen.getByTestId('mock-menuaccordion')).not.toBeNull();
+	});
+
+	it('renders root layout when route metadata is missing', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/unknown', 'x-origin': 'https://example.com' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		expect(root).toBeDefined();
+		expect(root.props?.children).toBeTruthy();
 	});
 });

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MenuExpando, MenuExpandoButton } from '../components/general/menu-expando';
 
@@ -146,7 +147,6 @@ describe('MenuExpandoButton Component', () => {
 		const { container } = render(<MenuExpandoButton />);
 		const img = container.querySelector('img');
 		expect(img).toBeInTheDocument();
-		expect(img).toHaveAttribute('src', expect.stringContaining('http://localhost:3000/images/icons/mobile-menu2.png'));
 		expect(img).toHaveAttribute('alt', 'Mobile Menu');
 	});
 

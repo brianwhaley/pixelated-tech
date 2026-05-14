@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { captureSquarePayment, buildSquareOrderBody, buildSquarePaymentBody, createSquareOrder, SquarePaymentError } from '../components/shoppingcart/square';
 import type { CheckoutType } from '../components/shoppingcart/shoppingcart.functions';
-import { createMockConfig } from '../test/config.mock';
+import { createMockConfig } from '../test/test-utils';
 import { squareOrderCheckoutData } from '../test/test-data';
 
 const mockGetFullPixelatedConfig = vi.fn();
@@ -27,6 +27,9 @@ describe('Square payment helper', () => {
 				[applicationIdKey]: 'test-app-id',
 				[locationIdKey]: 'test-location-id',
 				[accessTokenKey]: 'test-access-token',
+			},
+			shoppingcart: {
+				taxRate: 0.06675,
 			},
 		}));
 	});

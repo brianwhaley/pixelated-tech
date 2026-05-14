@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
 	ShoppingCartItems,
 	CheckoutInfoForm,

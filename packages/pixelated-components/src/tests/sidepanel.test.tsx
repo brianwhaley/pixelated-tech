@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import SidePanel from '../components/general/sidepanel';
 
 describe('SidePanel Component', () => {

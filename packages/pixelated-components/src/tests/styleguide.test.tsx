@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '../test/test-utils';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 
 // Stub package-level UI used by StyleGuideUI so tests don't resolve built `dist` assets
 vi.mock('@pixelated-tech/components', () => {
