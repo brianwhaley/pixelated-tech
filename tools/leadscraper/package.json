@@ -1,6 +1,6 @@
 {
 	"name": "leadscraper",
-	"version": "2.4.24",
+	"version": "2.4.25",
 	"private": true,
 	"scripts": {
 		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
@@ -19,7 +19,7 @@
 	"dependencies": {
 		"@pixelated-tech/components": "*",
 		"next": "^16.2.4",
-		"puppeteer": "^24.40.0"
+		"puppeteer": "^25.0.2"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.5",

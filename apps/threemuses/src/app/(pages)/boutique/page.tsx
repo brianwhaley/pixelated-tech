@@ -27,7 +27,7 @@ export default function BoutiquePage() {
 					layout="horizontal"
 					direction="left"
 					gridColumns={{ left: 1, right: 3 }}
-					img="https://images.ctfassets.net/luf8eony1687/rX8FOFylfPZfkOJStyV4M/79247da0e8ebf8e767325de2924cbfc7/ThreeMusesFinal-6157.jpg"
+					img="https://images.ctfassets.net/luf8eony1687/rX8FOFylfPZfkOJStyV4M/79247da0e8ebf8e767325de2924cbfc7/ThreeMusesFinal-6157.jpg?fm=webp"
 					title="Check Back Soon"
 					subtitle="Join Us in the store or check back here for updates on our custom Boutique Items" 
 					content="Our boutique is a dynamic space that is constantly evolving with new and exciting items. We are currently in the process of curating a collection of high-end, handcrafted goods that will be available for purchase both in-store and online. We invite you to visit us in person to experience the beauty and craftsmanship of our boutique items firsthand, and we encourage you to check back here regularly for updates on our latest offerings. Whether you're looking for a unique gift or a special treat for yourself, our Boutique will soon be your go-to destination for one-of-a-kind treasures that celebrate the artistry of the Lowcountry."

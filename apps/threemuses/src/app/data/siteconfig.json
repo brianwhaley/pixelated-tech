@@ -51,19 +51,19 @@
 			"title": "The Three Muses of Bluffton - Home",
 			"description": "",
 			"keywords": ""
-		},{
+		} , {
 			"name": "Dancewear",
 			"path": "/dancewear",
 			"title": "The Three Muses of Bluffton - dancewear",
 			"description": "",
 			"keywords": ""
-		},{
+		} , {
 			"name": "Sewing",
 			"path": "/sewing",
 			"title": "The Three Muses of Bluffton - sewing",
 			"description": "",
 			"keywords": ""
-		},{
+		} , {
 			"name": "Boutique",
 			"path": "/boutique",
 			"title": "The Three Muses of Bluffton - boutique",
@@ -75,44 +75,36 @@
 			"title": "The Three Muses of Bluffton - About",
 			"description": "",
 			"keywords": ""
-		},{
+		} , {
 			"name": "FAQs",
 			"path": "/faqs",
 			"title": "The Three Muses of Bluffton - FAQs",
 			"description": "",
 			"keywords": ""
-		},{
+		} , {
+			"name": "Blog", 
+			"path": "/blog", 
+			"title": "The Three Muses of Bluffton - Blog",
+			"description": "The Three Muses of Bluffton Blog page - where you can see adult, youth, and summer camp events.",
+			"keywords": ["Three Muses", "blog"]  
+		} , { 
 			"name": "Contact Us",
 			"path": "/contact-us",
 			"title": "The Three Muses of Bluffton - Contact",
 			"description": "",
 			"keywords": ""
-		},{
-			"name": "Blog Calendar",
-			"hidden": true,
-			"path": "/blogcalendar",
-			"title": "The Three Muses of Bluffton - Blog",
-			"description": "",
-			"keywords": ""
-		},{
-			"name": "Style Guide",
-			"hidden": true,
-			"path": "/styleguide",
-			"title": "The Three Muses of Bluffton - Style Guide",
-			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
-			"keywords": ["Three Muses","style guide"]
 		} , {
 			"name": "Hidden",
 			"hidden": true,
 			"routes": [ 
 				{ 
-					"name": "Blog", 
-					"path": "/blog", 
+					"name": "Blog Calendar",
 					"hidden": true,
+					"path": "/blogcalendar",
 					"title": "The Three Muses of Bluffton - Blog",
-					"description": "The Three Muses of Bluffton Blog page - where you can see adult, youth, and summer camp events.",
-					"keywords": ["Three Muses", "blog"]  
-				} , { 
+					"description": "",
+					"keywords": ""
+				} , {
 					"name": "Cart", 
 					"path": "/cart", 
 					"hidden": true,

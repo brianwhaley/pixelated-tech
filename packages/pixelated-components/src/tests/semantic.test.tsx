@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
-import { PageTitleHeader, PageSection, PageNav, PageFooter, PageSectionBackgroundImage, PageHeader, PageGridItem, PageFlexItem, PageMain } from '@/components/general/semantic';
+import { PageTitleHeader, PageSection, PageNav, PageFooter, PageSectionHeader, PageSectionBackgroundImage, PageHeader, PageGridItem, PageFlexItem, PageMain } from '@/components/general/semantic';
 
 // Mock SmartImage component
 vi.mock('@/components/general/smartimage', () => ({
@@ -118,6 +118,70 @@ describe('Semantic Components', () => {
       render(<PageTitleHeader title="Test" url="/Test-Page" />);
       const link = screen.getByRole('link');
       expect(link).toHaveAttribute('href', '/Test-Page');
+    });
+
+    it('should render children alongside title when no url is provided', () => {
+      render(
+        <PageTitleHeader title="Parent Title">
+          <span data-testid="title-header-child">Child Node</span>
+        </PageTitleHeader>
+      );
+
+      const heading = screen.getByRole('heading', { level: 1 });
+      expect(heading).toHaveTextContent('Parent Title');
+      expect(screen.getByTestId('title-header-child')).toBeInTheDocument();
+    });
+
+    it('should render children inside linked heading when url is provided', () => {
+      render(
+        <PageTitleHeader title="Linked Title" url="/linked-title">
+          <span data-testid="title-header-linked-child">Linked Child</span>
+        </PageTitleHeader>
+      );
+
+      const link = screen.getByRole('link');
+      expect(link).toHaveAttribute('href', '/linked-title');
+      expect(screen.getByTestId('title-header-linked-child')).toBeInTheDocument();
+    });
+  });
+
+  describe('PageSectionHeader', () => {
+    it('should render children alongside title when no url is provided', () => {
+      render(
+        <PageSectionHeader title="Section Title">
+          <span data-testid="section-header-child">Section Child</span>
+        </PageSectionHeader>
+      );
+
+      const heading = screen.getByRole('heading', { level: 2 });
+      expect(heading).toHaveTextContent('Section Title');
+      expect(screen.getByTestId('section-header-child')).toBeInTheDocument();
+    });
+
+    it('should render children inside linked section heading when url is provided', () => {
+      render(
+        <PageSectionHeader title="Linked Section" url="/linked-section">
+          <span data-testid="section-header-linked-child">Linked Section Child</span>
+        </PageSectionHeader>
+      );
+
+      const link = screen.getByRole('link');
+      expect(link).toHaveAttribute('href', '/linked-section');
+      expect(link).toHaveAttribute('target', '_self');
+      expect(screen.getByTestId('section-header-linked-child')).toBeInTheDocument();
+    });
+
+    it('should keep external url link target when children are present', () => {
+      render(
+        <PageSectionHeader title="External Section" url="https://example.com">
+          <span data-testid="section-header-external-child">External Child</span>
+        </PageSectionHeader>
+      );
+
+      const link = screen.getByRole('link');
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(screen.getByTestId('section-header-external-child')).toBeInTheDocument();
     });
   });
 

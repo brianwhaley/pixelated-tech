@@ -160,10 +160,141 @@
 			]
 		},
 		{
+			"name": "Service Areas",
+			"hidden": true,
+			"path": "/service-areas",
+			"title": "Palmetto Epoxy - Service Areas",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Beaufort, SC",
+				"Bluffton, SC",
+				"Hardeeville, SC",
+				"Hilton Head, SC",
+				"Okatie, SC",
+				"Ridgeland, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Beaufort SC Service Area",
+			"hidden": true,
+			"path": "/service-areas/beaufort-sc",
+			"title": "Palmetto Epoxy - Service Areas - Beaufort, SC",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Beaufort, South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Beaufort, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Bluffton SC Service Area",
+			"hidden": true,
+			"path": "/service-areas/bluffton-sc",
+			"title": "Palmetto Epoxy - Service Areas - Bluffton, SC",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Bluffton, South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Bluffton, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Hardeeville SC Service Area",
+			"hidden": true,
+			"path": "/service-areas/hardeeville-sc",
+			"title": "Palmetto Epoxy - Service Areas - Hardeeville, SC",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Hardeeville, South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Hardeeville, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Hilton Head SC Service Area",
+			"hidden": true,
+			"path": "/service-areas/hilton-head-sc",
+			"title": "Palmetto Epoxy - Service Areas - Hilton Head, SC",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Hilton Head, South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Hilton Head, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Okatie SC Service Area",
+			"hidden": true,
+			"path": "/service-areas/okatie-sc",
+			"title": "Palmetto Epoxy - Service Areas - Okatie, SC",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Okatie, South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Okatie, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Ridgeland SC Service Area",
+			"hidden": true,
+			"path": "/service-areas/ridgeland-sc",
+			"title": "Palmetto Epoxy - Service Areas - Ridgeland, SC",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Ridgeland, South Carolina areas.  Set the standard with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"Ridgeland, SC",
+				"residential",
+				"commercial",
+				"paver sealing",
+				"driveway coating",
+				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
 			"name": "Services",
 			"path": "/services",
 			"title": "Palmetto Epoxy - Services",
-			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing.  Set the standard with Palmetto Epoxy!",
+			"description": "Let Palmetto Epoxy redesign your space, no matter the space.  We provide services to both residential and commercial spaces, paver sealing, driveway coating, epoxy garage floors, and concrete polishing in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas.  Set the standard with Palmetto Epoxy!",
 			"keywords": [
 				"Palmetto Epoxy",
 				"residential epoxy flooring",
@@ -171,7 +302,106 @@
 				"paver sealing",
 				"driveway coating",
 				"epoxy garage floors",
+				"concrete polishing",
+				"resin countertops"
+			]
+		},
+		{
+			"name": "Commercial Services",
+			"hidden": true,
+			"path": "/services/commercial",
+			"title": "Palmetto Epoxy - Services - Commercial Services",
+			"description": "Let Palmetto Epoxy redesign your commercial space with our professional epoxy flooring services. We provide durable, stylish solutions for businesses in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your commercial space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"commercial epoxy flooring",
+				"commercial paver sealing",
+				"commercial driveway coating",
+				"commercial epoxy garage floors",
+				"commercial concrete polishing",
+				"commercial resin countertops"
+			]
+		},
+		{
+			"name": "Concrete Polishing Services",
+			"hidden": true,
+			"path": "/services/concrete-polishing",
+			"title": "Palmetto Epoxy - Services - Concrete Polishing Services",
+			"description": "Let Palmetto Epoxy redesign your residential or commercial space with our professional concrete polishing services. We provide durable, stylish solutions for homes and businesses in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential concrete polishing",
+				"commercial concrete polishing",
 				"concrete polishing"
+			]
+		},
+		{
+			"name": "Driveway Coating Service",
+			"hidden": true,
+			"path": "/services/driveway-coating",
+			"title": "Palmetto Epoxy - Services - Driveway Coating Service",
+			"description": "Let Palmetto Epoxy redesign your residential or commercial space with our professional driveway coating services. We provide durable, stylish solutions for homes and businesses in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential driveway coating",
+				"commercial driveway coating",
+				"driveway coating"
+			]
+		},
+		{
+			"name": "Epoxy Garage Floors Service",
+			"hidden": true,
+			"path": "/services/epoxy-garage-floors",
+			"title": "Palmetto Epoxy - Services - Epoxy Garage Floors Service",
+			"description": "Let Palmetto Epoxy redesign your residential or commercial space with our professional epoxy garage floors services. We provide durable, stylish solutions for homes and businesses in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential epoxy garage floors",
+				"commercial epoxy garage floors",
+				"epoxy garage floors"
+			]
+		},
+		{
+			"name": "Paver Sealing Service",
+			"hidden": true,
+			"path": "/services/paver-sealing",
+			"title": "Palmetto Epoxy - Services - Paver Sealing Service",
+			"description": "Let Palmetto Epoxy redesign your residential or commercial space with our professional paver sealing services. We provide durable, stylish solutions for homes and businesses in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential paver sealing",
+				"commercial paver sealing",
+				"paver sealing"
+			]
+		},
+		{
+			"name": "Residential Service",
+			"hidden": true,
+			"path": "/services/residential",
+			"title": "Palmetto Epoxy - Services - Residential Service",
+			"description": "Let Palmetto Epoxy redesign your residential space with our professional services. We provide durable, stylish solutions for homes in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential services",
+				"residential epoxy flooring",
+				"residential concrete polishing",
+				"residential driveway coating",
+				"residential epoxy garage floors",
+				"residential paver sealing",
+				"residential resin countertops"
+			]
+		},
+		{
+			"name": "Resin Countertops Service",
+			"hidden": true,
+			"path": "/services/resin-countertops",
+			"title": "Palmetto Epoxy - Services - Resin Countertops Service",
+			"description": "Let Palmetto Epoxy redesign your residential or commercial space with our professional resin countertops services. We provide durable, stylish solutions for homes and businesses in the Beaufort, Bluffton, Hardeeville, Hilton Head, Okatie, and Ridgeland South Carolina areas. Contact us today to elevate your space with Palmetto Epoxy!",
+			"keywords": [
+				"Palmetto Epoxy",
+				"residential resin countertops",
+				"commercial resin countertops",
+				"resin countertops"
 			]
 		},
 		{

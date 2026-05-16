@@ -19,7 +19,25 @@ import {
 
 // Mock external dependencies
 vi.mock('../components/integrations/wordpress.functions');
-vi.mock('../components/integrations/contentful.delivery');
+vi.mock('../components/integrations/contentful.delivery', async () => {
+	const actual = await vi.importActual<typeof import('../components/integrations/contentful.delivery')>('../components/integrations/contentful.delivery');
+	return {
+		...actual,
+		callContentfulDeliveryAPI: vi.fn(),
+		getContentfulEntries: vi.fn(),
+		getContentfulEntriesByType: vi.fn(),
+		getContentfulContentType: vi.fn(),
+		getContentfulEntryByEntryID: vi.fn(),
+		getContentfulEntryByField: vi.fn(),
+		getContentfulFieldValues: vi.fn(),
+		getContentfulImagesFromEntries: vi.fn(),
+		getContentfulAssets: vi.fn(),
+		getContentfulAssetURLs: vi.fn(),
+		getContentfulDiscountCodes: vi.fn(),
+		getContentfulReviewsSchema: vi.fn(),
+		getContentfulProductSchema: vi.fn(),
+	};
+});
 vi.mock('../components/shoppingcart/ebay.functions');
 vi.mock('../components/config/config');
 vi.mock('../components/foundation/metadata.functions');
@@ -377,7 +395,7 @@ describe('Sitemap Helper Functions', () => {
 
 			expect(result).toHaveLength(2);
 			expect(result[0]).toMatchObject({
-				url: 'https://example.com/projects/Project%20One',
+				url: 'https://example.com/projects/project-one',
 				changeFrequency: 'hourly',
 				priority: 1,
 			});

@@ -6,30 +6,37 @@ vi.mock('next/navigation', () => ({
 	useParams: () => ({ project: 'Test Project' }),
 }));
 
-vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
-	getContentfulEntriesByType: vi.fn(async () => ({
-		items: [
-			{
-				sys: { contentType: { sys: { id: 'carouselCard' } } },
+vi.mock('@pixelated-tech/components', async () => {
+	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
+	return {
+		__esModule: true,
+		...actual,
+		...createPageComponentMocks({
+			getContentfulEntriesByType: vi.fn(async () => ({
+				items: [
+					{
+						sys: { contentType: { sys: { id: 'carouselCard' } } },
+						fields: {
+							title: 'Test Project',
+							description: 'Test description',
+							keywords: ['epoxy'],
+							carouselImages: [{ sys: { id: 'img-1' } }],
+						},
+					},
+				],
+				includes: { Asset: [{ sys: { id: 'img-1' }, fields: { image: '/images/project.jpg', imageAlt: 'Project image' } }] },
+			})),
+			getContentfulEntryByField: vi.fn(async () => ({
 				fields: {
 					title: 'Test Project',
 					description: 'Test description',
-					keywords: ['epoxy'],
 					carouselImages: [{ sys: { id: 'img-1' } }],
 				},
-			},
-		],
-		includes: { Asset: [{ sys: { id: 'img-1' }, fields: { image: '/images/project.jpg', imageAlt: 'Project image' } }] },
-	})),
-	getContentfulEntryByField: vi.fn(async () => ({
-		fields: {
-			title: 'Test Project',
-			description: 'Test description',
-			carouselImages: [{ sys: { id: 'img-1' } }],
-		},
-	})),
-	getContentfulImagesFromEntries: vi.fn(async () => [{ image: '/images/project.jpg', imageAlt: 'Project image' }]),
-}));
+			})),
+			getContentfulImagesFromEntries: vi.fn(async () => [{ image: '/images/project.jpg', imageAlt: 'Project image' }]),
+		}),
+	};
+});
 
 import ProjectPage from '@/app/(pages)/projects/[project]/page';
 

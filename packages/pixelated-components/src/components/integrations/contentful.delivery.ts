@@ -1,4 +1,5 @@
 import PropTypes, { InferProps } from "prop-types";
+import { encode, decode } from 'html-entities';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 
@@ -661,4 +662,50 @@ export async function getContentfulProductSchema(props: getContentfulProductSche
 		console.error('Error fetching product:', error);
 		return null;
 	}
+}
+
+
+
+
+/* ========== CONTENTFUL VALUE < - > SLUG ========== */
+/**
+ * contentfulValueToSlug — Convert a Contentful field value (e.g. a title) to a URL-safe, HTML-entity-encoded slug.
+ * Trims, lowercases, replaces whitespace with dashes, and HTML-entity-encodes special characters.
+ *
+ * @param {string} value - The raw field value from Contentful.
+ * @returns {string} URL and XML-safe slug, e.g. "Epoxy & Floors" → "epoxy-&amp;-floors".
+ */
+contentfulValueToSlug.propTypes = {
+/** Raw field value to convert to slug */
+	value: PropTypes.string.isRequired,
+};
+export type contentfulValueToSlugType = InferProps<typeof contentfulValueToSlug.propTypes>;
+export function contentfulValueToSlug(props: contentfulValueToSlugType): string {
+	const { value } = props;
+	return encode(
+		value
+			.trim()
+			.toLowerCase()
+			.replace(/\s+/g, '-')
+	);
+}
+
+
+
+
+/**
+ * contentfulSlugToValue — Reverse the encoding from contentfulValueToSlug to recover the original title.
+ * Decodes HTML entities and restores spaces from dashes.
+ *
+ * @param {string} slug - The encoded slug (e.g., "epoxy-&amp;-floors").
+ * @returns {string} Original title format (lowercase), e.g. "epoxy & floors".
+ */
+contentfulSlugToValue.propTypes = {
+/** Encoded slug to decode */
+	slug: PropTypes.string.isRequired,
+};
+export type contentfulSlugToValueType = InferProps<typeof contentfulSlugToValue.propTypes>;
+export function contentfulSlugToValue(props: contentfulSlugToValueType): string {
+	const { slug } = props;
+	return decode(slug).replace(/-/g, ' ');
 }

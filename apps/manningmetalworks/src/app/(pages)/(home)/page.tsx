@@ -42,7 +42,7 @@ export default function Home() {
 				<PageTitleHeader title="Manning Metalworks" />
 				<div className="scroll-fade-element" suppressHydrationWarning>
 					<SmartImage 
-						src="https://images.ctfassets.net/j4mgog9ij96e/1MaG6Df6MAvH51fxD9Vuy9/c8ff719bef2931f05ff9bc7a19e80918/img-0410-v2.png" 
+						src="https://images.ctfassets.net/j4mgog9ij96e/1MaG6Df6MAvH51fxD9Vuy9/c8ff719bef2931f05ff9bc7a19e80918/img-0410-v2.png?fm=webp" 
 						alt="Manning Metalworks" 
 						width={200} height={200} 
 						aboveFold={true} 
@@ -65,7 +65,7 @@ export default function Home() {
 					<Callout
 						variant="boxed"
 						layout="vertical"
-						img="https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp"
+						img="https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp?fm=webp"
 						url="/services#callout-precision-metal-fabrication"
 						title="Precision Metal Fabrication"
 					/>
@@ -75,7 +75,7 @@ export default function Home() {
 					<Callout
 						variant="boxed"
 						layout="vertical"
-						img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg"
+						img="https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg?fm=webp"
 						url="/services#callout-expert-repairs-and-custom-fabrication"
 						title="Expert Repairs and Custom Fabrication"
 					/>
@@ -85,7 +85,7 @@ export default function Home() {
 					<Callout
 						variant="boxed"
 						layout="vertical"
-						img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg"
+						img="https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg?fm=webp"
 						url="/services#callout-247-mobile-welding-services"
 						title="24/7 Emergency Mobile Welding Services"
 					/>
@@ -100,7 +100,7 @@ export default function Home() {
 					variant="boxed grid"
 					gridColumns={{ left: 1, right: 3 }}
 					layout="horizontal"
-					img="https://images.ctfassets.net/j4mgog9ij96e/3MWxQf0bBzfA9fKyX8YlR/8978cac4569a3422331f5a66313be23f/manning-repair.jpg"
+					img="https://images.ctfassets.net/j4mgog9ij96e/3MWxQf0bBzfA9fKyX8YlR/8978cac4569a3422331f5a66313be23f/manning-repair.jpg?fm=webp"
 					url="/services#callout-247-mobile-welding-services"
 					subtitle="At Manning Metalworks, our reputation is forged in every weld we strike. We combine a 100% satisfaction guarantee with a sophisticated quality control system to ensure that every residential, commercial, and municipal project meets the highest industry standards for safety and durability."
 				/>

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import { Metadata } from 'next';
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, Loading } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, Loading, contentfulSlugToValue } from "@pixelated-tech/components";
 import { Carousel } from "@pixelated-tech/components";
 import { PageSection } from '@pixelated-tech/components';
 
@@ -38,9 +38,14 @@ export default function Project(){
 	const [ card , setCard ] = useState<Card | null>(null);
 	const [ carouselCards , setCarouselCards ] = useState<{ image: any }[]>([]);
 	const params = useParams();
-	const project = typeof params?.project === 'string' ? params.project : '';
+	// Decode the slug from URL back to original title
+	const projectSlug = typeof params?.project === 'string' ? params.project : '';
+	const project = projectSlug ? contentfulSlugToValue({ slug: projectSlug }) : '';
 
 	useEffect(() => {
+
+		console.log("Project param:", project);
+
 		if (!project) {
 			return;
 		}

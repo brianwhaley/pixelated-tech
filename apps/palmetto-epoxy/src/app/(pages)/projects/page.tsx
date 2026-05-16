@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { Carousel, usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries, Loading } from "@pixelated-tech/components";
+import { Carousel, usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries, Loading, contentfulValueToSlug } from "@pixelated-tech/components";
 import type { CarouselCardType } from "@pixelated-tech/components";
 import { PageSection } from "@pixelated-tech/components";
 
@@ -43,7 +43,9 @@ export default function Projects() {
 						imageAlt: images[0].imageAlt,
 						headerText: card.fields.title,
 						bodyText: card.fields.description,
-						link: card.fields.link,
+						// link: card.fields.link,
+						// translate spaces to dashes for URL Friendly strings
+						link: "/projects/" + contentfulValueToSlug({ value: card.fields.title }),
 						linkTarget: "_self"
 					});
 				}

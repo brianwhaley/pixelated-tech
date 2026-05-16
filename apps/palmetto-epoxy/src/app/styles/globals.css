@@ -97,7 +97,8 @@ a:has(.carousel-card-body):hover {
 /* ===== SECTION STYLES ===== */
 
 body {
-    font-size: 16px;
+    --do-nothing: true;
+    /* font-size: 16px; */
 }
 
 main .section-container {
@@ -298,5 +299,27 @@ footer {
     }
     .carousel-cards-container {
         height: 400px;
+    }
+}
+
+
+/* ===== SERVICES PAGES ===== */
+
+section[id$="-service-section"] > div:first-child {
+    display: block !important;
+    img {
+        float: right;
+        aspect-ratio: 1 / 1;
+        width: 384px;
+        height: 384px;
+        border-radius: 20px;
+        margin: 0 0 20px 20px;
+    }
+    @media screen and (max-width: 480px) {
+        img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+        }
     }
 }

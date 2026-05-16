@@ -87,7 +87,7 @@ export default function Home() {
 						layout='vertical'
 						url='/portfolio'
 						// img='/images/icons/portfolio.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/5o6Znbm8NrLxnAYNigmZ9v/1c86b278e3c15271d452c3a4d25ff1c2/portfolio.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/5o6Znbm8NrLxnAYNigmZ9v/1c86b278e3c15271d452c3a4d25ff1c2/portfolio.jpg?fm=webp'
 						imgAlt='Portfolio'
 						imgShape='bevel'
 						title='View Our Work Portfolio'
@@ -106,7 +106,7 @@ export default function Home() {
 						layout='vertical'
 						url='/samples'
 						// img='/images/icons/samples.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/6eYGISUKzCqZnQ7J9uASQK/a31c298d8a6e4da5c174a9615e9cb1e8/samples.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/6eYGISUKzCqZnQ7J9uASQK/a31c298d8a6e4da5c174a9615e9cb1e8/samples.jpg?fm=webp'
 						imgAlt='Samples'
 						imgShape='bevel'
 						title='View Some Samples'
@@ -136,7 +136,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="left"
 						// img='/images/icons/webdev.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg?fm=webp'
 						imgAlt='Web Development'
 						title='Web Development'
 						subtitle='Do you need a new website or web application for your business? 
@@ -154,7 +154,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="right"
 						// img='/images/icons/socialmedia.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg?fm=webp'
 						imgAlt='Social Media Marketing'
 						title='Social Media Marketing'
 						subtitle='Are your social media accounts active and engaging?
@@ -171,7 +171,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="left"
 						// img='/images/icons/seo-2.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg?fm=webp'
 						imgAlt='Search Engine Optimization'
 						title='Search Engine Optimization'
 						subtitle='Is your website optimized for search engines?
@@ -187,7 +187,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="right"
 						// img='/images/icons/content.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg?fm=webp'
 						imgAlt='Content Management'
 						title='Content Management'
 						subtitle='Do you have to rely on a web developer to make updates to your website?
@@ -204,7 +204,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="left"
 						// img='/images/icons/ecommerce.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg?fm=webp'
 						imgAlt='eCommerce Solutions'
 						title='eCommerce Solutions'
 						subtitle='Do you want to move your business online to 
@@ -221,7 +221,7 @@ export default function Home() {
 						layout='horizontal' 
 						direction="right"
 						// img='/images/icons/custom.png'
-						img='https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg'
+						img='https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg?fm=webp'
 						imgAlt='Small Business Modernization'
 						title='Small Business Modernization'
 						subtitle='Are you looking to integrate your site with other business systems,

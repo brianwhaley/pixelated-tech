@@ -26,7 +26,7 @@ export default function ConsignPage() {
 						variant="grid"
 						layout="vertical"
 						imgShape="round"
-						img="https://images.ctfassets.net/luf8eony1687/6RlzYli6GihWE5ZlX5NMjd/7062a3019f693b0aea9b98cf2a2c6797/dress-from-collection-museum-fine-arts.jpg"
+						img="https://images.ctfassets.net/luf8eony1687/6RlzYli6GihWE5ZlX5NMjd/7062a3019f693b0aea9b98cf2a2c6797/dress-from-collection-museum-fine-arts.jpg?fm=webp"
 						title="Bring in clean, high quality items" />
 				</PageGridItem>
 
@@ -35,7 +35,7 @@ export default function ConsignPage() {
 						variant="grid"
 						layout="vertical"
 						imgShape="round"
-						img="https://images.ctfassets.net/luf8eony1687/2PrS6U4n2RZtbfIGmaVBwu/a8488410b2603cb3496e7fa65a52a1e4/lot-party-dresses-hanging-hangers-market.jpg"
+						img="https://images.ctfassets.net/luf8eony1687/2PrS6U4n2RZtbfIGmaVBwu/a8488410b2603cb3496e7fa65a52a1e4/lot-party-dresses-hanging-hangers-market.jpg?fm=webp"
 						title="We price, display, and sell for you" />
 				</PageGridItem>
 
@@ -44,7 +44,7 @@ export default function ConsignPage() {
 						variant="grid"
 						layout="vertical"
 						imgShape="round"
-						img="https://images.ctfassets.net/luf8eony1687/3YRpDlwKMuPFSY2jWvvZ4b/c43964e61dd814804e46dc4b8f49d8f4/currency-chronicles-dollar-bills-photography-collection.jpg"
+						img="https://images.ctfassets.net/luf8eony1687/3YRpDlwKMuPFSY2jWvvZ4b/c43964e61dd814804e46dc4b8f49d8f4/currency-chronicles-dollar-bills-photography-collection.jpg?fm=webp"
 						title="You earn when your items sell!" />
 				</PageGridItem>
 

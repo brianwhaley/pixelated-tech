@@ -12,25 +12,15 @@ export default function About() {
 			<PageSection columns={2} maxWidth="1024px" padding="20px" id="primary-service-section">
 				<Callout 
 					layout="vertical"
-					img="https://images.ctfassets.net/h791s4nkwi9z/1j6SKy7OXQkXwZLuN1WPro/1a5c3dde8178c98950dc6206d43008e0/city-view.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/1j6SKy7OXQkXwZLuN1WPro/1a5c3dde8178c98950dc6206d43008e0/city-view.jpg?fm=webp"
 					aboveFold={true}
 					title="Commercial"
-					content="As a reputable landscape company we understand that the 
-					exterior appearance of a business is a direct reflection of its 
-					professional standards and brand image. We  offer a comprehensive 
-					suite of services designed to enhance curb appeal, ensure safety, 
-					and maintain aesthetic integrity year-round. Offerings typically 
-					extend beyond basic mowing to include specialized services such as 
-					sustainable irrigation management, hardscape maintenance, and 
-					crucial winter weather services like snow and ice removal. 
-					By partnering with property managers and business owners we can 
-					ensure their grounds remain pristine, welcoming, and compliant 
-					with local regulations, freeing them to focus on core operational 
+					content="As a reputable landscape company we understand that the exterior appearance of a business is a direct reflection of its professional standards and brand image. We  offer a comprehensive suite of services designed to enhance curb appeal, ensure safety, and maintain aesthetic integrity year-round. Offerings typically extend beyond basic mowing to include specialized services such as sustainable irrigation management, hardscape maintenance, and crucial winter weather services like snow and ice removal. By partnering with property managers and business owners we can ensure their grounds remain pristine, welcoming, and compliant with local regulations, freeing them to focus on core operational 
 					priorities while the landscape professionals manage the outdoor environment."
 				/>
 				<Callout 
 					layout="vertical"
-					img="https://images.ctfassets.net/h791s4nkwi9z/7zWhkHqtrgZK4EdpOzBhfQ/9b803af31a1777a83846135fbfe02ecc/garden-with-natural-vegetation-with-lots-trees-pool-that-creates-armonic-atmosphere.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/7zWhkHqtrgZK4EdpOzBhfQ/9b803af31a1777a83846135fbfe02ecc/garden-with-natural-vegetation-with-lots-trees-pool-that-creates-armonic-atmosphere.jpg?fm=webp"
 					title="Residential"
 					content="As a reputable landscape company we cater to homeowners to 
 					transform their private outdoor spaces into personalized sanctuaries 
@@ -53,7 +43,7 @@ export default function About() {
 					gridColumns={{left:1, right:3}}
 					layout="horizontal"
 					direction="left"
-					img="https://images.ctfassets.net/h791s4nkwi9z/5EipAWtqUyBZyIXoGjRu3P/93520a3368de11f797ce3a423cc843f4/pexels-luis-negron-260501657-13630739.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/5EipAWtqUyBZyIXoGjRu3P/93520a3368de11f797ce3a423cc843f4/pexels-luis-negron-260501657-13630739.jpg?fm=webp"
 					title="Lawn Care"
 					content="Our comprehensive Lawn Care program is designed to cultivate a vibrant, resilient, and beautiful turf that serves as the centerpiece of your landscape. We understand that a healthy lawn requires more than just regular mowing, which is why our services extend to include professional edging, precise fertilization schedules tailored to your soil composition, and targeted weed and pest control treatments. To ensure deep root health and optimal nutrient absorption, we also offer core aeration and overseeding services, especially beneficial for thin or high-traffic areas. This meticulous, year-round approach guarantees that your grass remains lush and green, enhancing your property's overall curb appeal and providing a perfect setting for outdoor enjoyment. We are committed to using best practices to create a durable, sustainable lawn you can be proud of."
 				/>
@@ -63,7 +53,7 @@ export default function About() {
 					layout="horizontal"
 					direction="right"
 					// img="/images/stock/pexels-shvetsa-5027602.jpg"
-					img="https://images.ctfassets.net/h791s4nkwi9z/5boSsCxiNMe5NC5RZxhl1Q/2ecc1d8b8c8dbfaeae47e1d38c49ae7b/worker-cutting-bush-with-hedge-shears-outdoors-closeup-gardening-tool.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/5boSsCxiNMe5NC5RZxhl1Q/2ecc1d8b8c8dbfaeae47e1d38c49ae7b/worker-cutting-bush-with-hedge-shears-outdoors-closeup-gardening-tool.jpg?fm=webp"
 					title="Garden Care"
 					content="With our specialized Garden Care services, we transform your planting beds into stunning, flourishing displays that evolve with the seasons. We begin by implementing a routine maintenance schedule that includes expert pruning of all shrubs, perennials, and ornamental grasses to encourage healthy growth and desirable shapes. A key component of our service is professional mulching, which not only provides a clean, finished look but also significantly helps in retaining soil moisture, suppressing weed growth, and regulating soil temperature. Our team also manages seasonal cleanups, deadheading spent blooms, and can design and install new seasonal plantings or annual color rotations to keep your garden vibrant and interesting year-round. Let us handle the detailed work so you can relax and enjoy a meticulously maintained garden space."
 				/>
@@ -72,7 +62,7 @@ export default function About() {
 					gridColumns={{left:1, right:3}}
 					layout="horizontal"
 					direction="left"
-					img="https://images.ctfassets.net/h791s4nkwi9z/4O8TMN4425q2m6TMjq3Dca/0d60ed6dc4dfbb30837b755a4420d5ac/natural-grass-close-up.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/4O8TMN4425q2m6TMjq3Dca/0d60ed6dc4dfbb30837b755a4420d5ac/natural-grass-close-up.jpg?fm=webp"
 					title="Hardscape"
 					content="Transforming the functionality and architecture of your 
 					outdoor living space is the goal of our Hardscaping services, 
@@ -92,7 +82,7 @@ export default function About() {
 					layout="horizontal"
 					direction="right"
 					// img="/images/stock/outside-view-restaurant-cottage-night-time.jpg"
-					img="https://images.ctfassets.net/h791s4nkwi9z/1Z0D9ejLW9qJSNc8Ctddyv/a7ddb0b2923e482680ebe37f5713f123/rooftop-sunset-city-view.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/1Z0D9ejLW9qJSNc8Ctddyv/a7ddb0b2923e482680ebe37f5713f123/rooftop-sunset-city-view.jpg?fm=webp"
 					title="Lighting"
 					content="Enhance the beauty, safety, and functionality of your 
 					property after dusk what better way to showcase your home's best 
@@ -114,7 +104,7 @@ export default function About() {
 					gridColumns={{left:1, right:3}}
 					layout="horizontal"
 					direction="left"
-					img="https://images.ctfassets.net/h791s4nkwi9z/77H7t1IuFc9FjKMXn72pbu/eee4e3dfb01eea84a5ea45bb8c3841f0/automatic-sprinkler-lawn-watering-system-sprays-water-circle-lawn-summer-day.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/77H7t1IuFc9FjKMXn72pbu/eee4e3dfb01eea84a5ea45bb8c3841f0/automatic-sprinkler-lawn-watering-system-sprays-water-circle-lawn-summer-day.jpg?fm=webp"
 					title="Irrigation"
 					content="Effective and efficient water delivery is paramount to 
 					the health of your entire landscape, and our Irrigation services 
@@ -133,7 +123,7 @@ export default function About() {
 					gridColumns={{left:3, right:1}}
 					layout="horizontal"
 					direction="right"
-					img="https://images.ctfassets.net/h791s4nkwi9z/4ZD7kOExWrsam0kmJOsx4I/ecb691bdefbd8d936635f7af37970971/asian-man-cutting-trees-using-electrical-chainsaw.jpg"
+					img="https://images.ctfassets.net/h791s4nkwi9z/4ZD7kOExWrsam0kmJOsx4I/ecb691bdefbd8d936635f7af37970971/asian-man-cutting-trees-using-electrical-chainsaw.jpg?fm=webp"
 					title="Tree Services"
 					content="Ensuring the safety, health, and beauty of your mature trees 
 					and large shrubs is the core focus of our company We provide expert 

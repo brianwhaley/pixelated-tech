@@ -35,16 +35,18 @@ PageTitleHeader.propTypes = {
 /** Page title text (required) */
 	title: PropTypes.string.isRequired,
 	/** Optional URL to wrap the title with */
-	url: PropTypes.string
+	url: PropTypes.string,
+	/** Optional child nodes to render below the title */
+	children: PropTypes.node
 };
 export type PageTitleHeaderType = InferProps<typeof PageTitleHeader.propTypes>;
-export function PageTitleHeader( { title , url }: PageTitleHeaderType) {
+export function PageTitleHeader( { title , url, children }: PageTitleHeaderType) {
 	const calloutTarget = url && url.substring(0, 4).toLowerCase() === 'http' ? '_blank' : '_self';
 	return (
 		<>
 			{url
-				? <a href={url} target={calloutTarget} rel="noopener noreferrer"><h1 className="page-title-header">{title}</h1></a>
-				: <h1 className="page-title-header">{title}</h1>
+				? <a href={url} target={calloutTarget} rel="noopener noreferrer"><h1 className="page-title-header">{title}{children && <>{children}</>}</h1></a>
+				: <h1 className="page-title-header">{title}{children && <>{children}</>}</h1>
 			}
 		</>
 	);
@@ -224,21 +226,24 @@ export function PageSection({
  *
  * @param {string} [props.title] - Section title text (required).
  * @param {string} [props.url] - Optional URL to link the section title.
+ * @param {node} [props.children] - Optional child nodes to render below the title.
  */
 PageSectionHeader.propTypes = {
 /** Section title text */
 	title: PropTypes.string.isRequired,
 	/** Optional URL to link the title */
-	url: PropTypes.string
+	url: PropTypes.string,
+	/** Optional child nodes */
+	children: PropTypes.node
 };
 export type PageSectionHeaderType = InferProps<typeof PageSectionHeader.propTypes>;
-export function PageSectionHeader( { title , url }: PageSectionHeaderType) {
+export function PageSectionHeader( { title , url, children }: PageSectionHeaderType) {
 	const calloutTarget = url && url.substring(0, 4).toLowerCase() === 'http' ? '_blank' : '_self';
 	return (
 		<>
 			{url
-				? <a href={url} target={calloutTarget} rel="noopener noreferrer"><h2 className="page-section-header" suppressHydrationWarning={true}>{title}</h2></a>
-				: <h2 className="page-section-header" suppressHydrationWarning={true}>{title}</h2>
+				? <a href={url} target={calloutTarget} rel="noopener noreferrer"><h2 className="page-section-header" suppressHydrationWarning={true}>{title}{children && <>{children}</>}</h2></a>
+				: <h2 className="page-section-header" suppressHydrationWarning={true}>{title}{children && <>{children}</>}</h2>
 			}
 		</>
 	);

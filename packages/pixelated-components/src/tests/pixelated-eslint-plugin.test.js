@@ -87,6 +87,32 @@ describe('pixelated-eslint-plugin', () => {
 			expect(messages.some(m => m.ruleId === 'pixelated/require-section-ids')).toBe(true);
 	});
 
+	it('warns when a contentful image URL is missing ?fm=webp', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<img src="https://images.ctfassets.net/abc123/image.jpg" />); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2020, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/require-contentful-image-webp': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/require-contentful-image-webp')).toBe(true);
+	});
+
+	it('does not warn when a contentful image URL includes ?fm=webp', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<img src="https://images.ctfassets.net/abc123/image.jpg?fm=webp" />); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2020, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/require-contentful-image-webp': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/require-contentful-image-webp')).toBe(false);
+	});
+
 	it('enforces canonical test file locations (valid/invalid)', async () => {
 		const mod = await import('../scripts/pixelated-eslint-plugin.js');
 		const linter = new (await import('eslint')).Linter();

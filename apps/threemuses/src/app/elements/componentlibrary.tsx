@@ -25,7 +25,7 @@ export function ConsignWithUs() {
 			layout="horizontal"
 			direction="right"
 			gridColumns={{ left: 3, right: 1 }}
-			img="https://images.ctfassets.net/luf8eony1687/6RlzYli6GihWE5ZlX5NMjd/7062a3019f693b0aea9b98cf2a2c6797/dress-from-collection-museum-fine-arts.jpg"
+			img="https://images.ctfassets.net/luf8eony1687/6RlzYli6GihWE5ZlX5NMjd/7062a3019f693b0aea9b98cf2a2c6797/dress-from-collection-museum-fine-arts.jpg?fm=webp"
 			url="/consign"
 			title="Consign With Us"
 			subtitle="Turn Your Gently Loved Items into Something Beautiful" 

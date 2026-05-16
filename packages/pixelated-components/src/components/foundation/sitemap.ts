@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 import { encode } from 'html-entities';
 import { getAllRoutes } from "./metadata.functions";
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
-import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets } from "../integrations/contentful.delivery";
+import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
 import { getFullPixelatedConfig } from '../config/config';
 import { CacheManager } from '../foundation/cache-manager';
@@ -424,10 +424,10 @@ export async function createContentfulURLs(props: createContentfulURLsType){
 			continue;
 		}
 
-		const encodedValue = encodeURIComponent(String(value));
+		const slugValue = contentfulValueToSlug({ value: String(value) });
 		const relativePath = routeTemplate
-			? routeTemplate.replace(/\$\{value\}/g, encodedValue)
-			: `${normalizedRoutePrefix}/${encodedValue}`;
+			? routeTemplate.replace(/\$\{value\}/g, slugValue)
+			: `${normalizedRoutePrefix}/${slugValue}`;
 		const normalizedPath = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
 
 		const imageRefs: any[] = [];

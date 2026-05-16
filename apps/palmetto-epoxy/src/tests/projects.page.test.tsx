@@ -3,23 +3,30 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { createPageComponentMocks, resetPixelatedConfigOverride, setPixelatedConfigOverride } from '@/test/page-mocks';
 import * as pixelatedComponents from '@pixelated-tech/components';
 
-vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
-	getContentfulEntriesByType: vi.fn(async () => ({
-		items: [
-			{
-				sys: { contentType: { sys: { id: 'carouselCard' } } },
-				fields: {
-					title: 'Project One',
-					description: 'A beautiful epoxy project',
-					link: '/projects/one',
-					image: { sys: { id: 'img-1' } },
-				},
-			},
-		],
-		includes: { Asset: [{ sys: { id: 'img-1' } }] },
-	})),
-	getContentfulImagesFromEntries: vi.fn(async () => [{ image: '/images/project.jpg', imageAlt: 'Project image' }]),
-}));
+vi.mock('@pixelated-tech/components', async () => {
+	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
+	return {
+		__esModule: true,
+		...actual,
+		...createPageComponentMocks({
+			getContentfulEntriesByType: vi.fn(async () => ({
+				items: [
+					{
+						sys: { contentType: { sys: { id: 'carouselCard' } } },
+						fields: {
+							title: 'Project One',
+							description: 'A beautiful epoxy project',
+							link: '/projects/one',
+							image: { sys: { id: 'img-1' } },
+						},
+					},
+				],
+				includes: { Asset: [{ sys: { id: 'img-1' } }] },
+			})),
+			getContentfulImagesFromEntries: vi.fn(async () => [{ image: '/images/project.jpg', imageAlt: 'Project image' }]),
+		}),
+	};
+});
 
 const mockGetContentfulEntriesByType = pixelatedComponents.getContentfulEntriesByType as ReturnType<typeof vi.fn>;
 

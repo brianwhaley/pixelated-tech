@@ -16,7 +16,7 @@ export default function Home() {
 	return (
 		<>
 			<Hero
-				img="https://images.ctfassets.net/kcm01cmyxlgq/XvxJBRYhYcztjRz7EYrop/57ae459bc07c80e741a93f6a1093b2a9/IMG_3993.jpg" 
+				img="https://images.ctfassets.net/kcm01cmyxlgq/XvxJBRYhYcztjRz7EYrop/57ae459bc07c80e741a93f6a1093b2a9/IMG_3993.jpg?fm=webp" 
 				imgAlt="JZ Home Improvement - Expert Work. Honest Pricing. Beautiful Results."
 				imgId='jz-kitchen'
 				variant="anchored-img"
@@ -84,31 +84,31 @@ export default function Home() {
 					variant="boxed"
 					layout="vertical"
 					imgShape="bevel"
-					img="https://images.ctfassets.net/kcm01cmyxlgq/2Rh82mKRC4NzciFxEUkIAT/82dd860b4018c755621580fd35233fdd/IMG_3994.jpeg"
+					img="https://images.ctfassets.net/kcm01cmyxlgq/2Rh82mKRC4NzciFxEUkIAT/82dd860b4018c755621580fd35233fdd/IMG_3994.jpeg?fm=webp"
 					title="Kitchens" />
 				<Callout
 					variant="boxed"
 					layout="vertical"
 					imgShape="bevel"
-					img="https://images.ctfassets.net/kcm01cmyxlgq/Gam85MuDCo3rdt5NHva21/d93555e8d4185624527ca26e74423848/img_0738.webp"
+					img="https://images.ctfassets.net/kcm01cmyxlgq/Gam85MuDCo3rdt5NHva21/d93555e8d4185624527ca26e74423848/img_0738.webp?fm=webp"
 					title="Bathrooms" />
 				<Callout
 					variant="boxed"
 					layout="vertical"
 					imgShape="bevel"
-					img="https://images.ctfassets.net/kcm01cmyxlgq/6PdYkhzKHb6OiKg2xCgxIQ/9914251ac93d9f5ce920f2543532f301/0E4D00ED-D722-4281-8C7D-D16F2B2A7477_1_105_c.jpeg"
+					img="https://images.ctfassets.net/kcm01cmyxlgq/6PdYkhzKHb6OiKg2xCgxIQ/9914251ac93d9f5ce920f2543532f301/0E4D00ED-D722-4281-8C7D-D16F2B2A7477_1_105_c.jpeg?fm=webp"
 					title="Basements" />
 				<Callout
 					variant="boxed"
 					layout="vertical"
 					imgShape="bevel"
-					img="https://images.ctfassets.net/kcm01cmyxlgq/SBj2WBdzLYoQsgTQPXDX6/05d0ded2da645e2972d15838961c3cdb/img_2656.webp"
+					img="https://images.ctfassets.net/kcm01cmyxlgq/SBj2WBdzLYoQsgTQPXDX6/05d0ded2da645e2972d15838961c3cdb/img_2656.webp?fm=webp"
 					title="Decks" />
 			</PageSection>
 
 
 			<Hero
-				img="https://images.ctfassets.net/kcm01cmyxlgq/6rBSoc6C4x5gb3fxzkkVdh/aad0460d5b19eb0fd83e032097764ec9/img_0745.webp"
+				img="https://images.ctfassets.net/kcm01cmyxlgq/6rBSoc6C4x5gb3fxzkkVdh/aad0460d5b19eb0fd83e032097764ec9/img_0745.webp?fm=webp"
 				imgAlt="JZ Home Improvement - Expert Work. Honest Pricing. Beautiful Results."
 				imgId='jz-master-bathroom'
 				variant="anchored-img"
@@ -139,7 +139,7 @@ export default function Home() {
 			</PageSection>
 
 			<Hero
-				img="https://images.ctfassets.net/kcm01cmyxlgq/2fLlA6986LGx8f5tbZxoXW/88928e4a0246e3f86110f47b6df1b57b/2024-02-01-15.00.16.jpg"
+				img="https://images.ctfassets.net/kcm01cmyxlgq/2fLlA6986LGx8f5tbZxoXW/88928e4a0246e3f86110f47b6df1b57b/2024-02-01-15.00.16.jpg?fm=webp"
 				imgAlt="JZ Home Improvement - Expert Work. Honest Pricing. Beautiful Results."
 				imgId='jz-hall-bathroom'
 				variant="anchored-img"

@@ -1,6 +1,6 @@
 {
 	"name": "palmetto-epoxy",
-	"version": "0.5.4",
+	"version": "0.5.5",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -28,10 +28,16 @@
 	"dependencies": {
 		"@next/third-parties": "^16.2.6",
 		"@pixelated-tech/components": "*",
-		"next": "^16.2.4",
-		"prop-types": "^15.8.1"
+		"next": "^16.2.6",
+		"prop-types": "^15.8.1",
+		"react": "^19.2.6"
 	},
 	"devDependencies": {
+		"@aws-sdk/client-amplify": "^3.1048.0",
+		"@aws-sdk/client-cloudwatch": "^3.1048.0",
+		"@aws-sdk/client-dynamodb": "^3.1048.0",
+		"@aws-sdk/client-iam": "^3.1048.0",
+		"@aws-sdk/client-route-53": "^3.1048.0",
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "9.39.4",
 		"@testing-library/react": "^16.3.2",
@@ -45,7 +51,7 @@
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",
-		"react": "^19.2.6",
+		"puppeteer": "^25.0.2",
 		"react-dom": "^19.2.6",
 		"sass": "^1.99.0",
 		"sass-loader": "^16.0.7",
