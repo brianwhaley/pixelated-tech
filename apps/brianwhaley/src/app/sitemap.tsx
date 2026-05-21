@@ -9,7 +9,7 @@ const config = getFullPixelatedConfig();
 
 export default async function SiteMapXML(): Promise<MetadataRoute.Sitemap> {
 	const origin = await getOriginFromNextHeaders();
-	const sitemapConfig = buildSitemapConfig(config, siteConfig.routes);
+	const sitemapConfig = buildSitemapConfig(config, siteConfig);
 	const sitemap = await generateSitemap(sitemapConfig, origin);
 	return sitemap;
 }

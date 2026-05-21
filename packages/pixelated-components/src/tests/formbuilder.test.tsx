@@ -107,4 +107,29 @@ describe('FormBuilder', () => {
       expect(screen.getByText(/FormSelect/i)).toBeInTheDocument();
     });
   });
+
+  it('renders generated field property inputs for the selected component', async () => {
+    const { container } = render(<FormBuilder />);
+
+    const typeInput = container.querySelector('input#type') as HTMLInputElement;
+    fireEvent.change(typeInput, { target: { value: 'checkbox' } });
+    const buildForm = container.querySelector('form#build') as HTMLFormElement;
+    expect(buildForm).toBeInTheDocument();
+    fireEvent.submit(buildForm);
+
+    await waitFor(() => {
+      expect(container.querySelector('form#field_props')).toBeInTheDocument();
+    });
+
+    const fieldPropsForm = container.querySelector('form#field_props') as HTMLFormElement;
+    expect(fieldPropsForm).toBeInTheDocument();
+    expect(container.querySelector('input#id')).toBeInTheDocument();
+    expect(container.querySelector('input#name')).toBeInTheDocument();
+    expect(container.querySelector('input#options')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Add FormCheckbox/i })).toBeInTheDocument();
+
+    const preview = container.querySelector('pre');
+    expect(preview).toBeInTheDocument();
+    expect(preview).toHaveTextContent(/\{\s*"fields"\s*:\s*\[\]\s*\}/);
+  });
 });

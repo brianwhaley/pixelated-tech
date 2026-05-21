@@ -8,7 +8,7 @@ import { BlogPostList, getCachedWordPressItems } from "@pixelated-tech/component
 import { ToggleLoading } from "@pixelated-tech/components";
 import Script from "next/script";
 
-const wpSite = "manningmetalworks.wpcomstaging.com";
+const wpSite = "blog.manningmetalworks.com";
 
 /* 
 Alternative Tag Lines

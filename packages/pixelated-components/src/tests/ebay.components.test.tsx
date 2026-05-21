@@ -199,6 +199,38 @@ describe('EbayItems component', () => {
 			expect(screen.getByText('Detail Item')).toBeInTheDocument();
 		});
 	});
+
+	it('renders EbayItemDetail loading fallback when getEbayItem rejects', async () => {
+		const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
+		getEbayItemMock.mockRejectedValueOnce(new Error('fetch failed'));
+		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+		render(
+			<EbayItemDetail
+				apiProps={{
+					proxyURL: '',
+					baseTokenURL: '',
+					baseSearchURL: '',
+					qsSearchURL: '',
+					baseItemURL: '',
+					qsItemURL: '',
+					baseAnalyticsURL: '',
+					appId: '',
+					appCertId: '',
+					globalId: '',
+					itemCategory: 'electronics',
+				}}
+			itemID="ITEM-ERROR"
+			/>
+		);
+
+		await waitFor(() => {
+			expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('Error fetching eBay items:'), expect.any(Error));
+			expect(screen.getByText('Loading...')).toBeInTheDocument();
+		});
+
+		consoleError.mockRestore();
+	});
 });
 
 describe('ebay.components - helper list components', () => {
@@ -280,6 +312,26 @@ describe('ebay.components - helper list components', () => {
 		expect(container.querySelector('.ebay-item')).toBeInTheDocument();
 		expect(container.querySelector('.ebay-item-details')).toBeInTheDocument();
 		expect(container.textContent).toContain('Condition:');
+	});
+
+	it('should render fallback quantity of 10 when item category does not match apiProps.itemCategory', () => {
+		const item = {
+			legacyItemId: 'ITEM-2',
+			title: 'Fallback Quantity Item',
+			price: { value: '15.00', currency: 'USD' },
+			thumbnailImages: [{ imageUrl: 'https://example.com/image.jpg' }],
+			categories: [{ categoryId: 'tools' }],
+			categoryId: 'tools',
+			condition: 'Used',
+			seller: { username: 'seller2', feedbackScore: 50, feedbackPercentage: 95 },
+			buyingOptions: ['Auction'],
+			itemLocation: { postalCode: '54321', country: 'US' },
+			itemCreationDate: '2025-08-01',
+		};
+
+		const { container } = render(<EbayListItem item={item as any} apiProps={{ itemCategory: 'electronics' }} />);
+
+		expect(container.querySelector('.ebay-item-details')).toHaveTextContent('Quantity: 10');
 	});
 
 	it('should render EbayListItem and display item details', () => {

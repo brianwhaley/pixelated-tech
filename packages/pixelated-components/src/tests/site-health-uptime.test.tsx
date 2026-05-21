@@ -10,14 +10,39 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 		const [loading, setLoading] = React.useState(true);
 
 		React.useEffect(() => {
-			const mockSiteData = {
-				site: 'test-site',
-				url: 'https://test-site.com',
-				status: 'success',
-				uptime: 0.9999,
-				incidents: 0,
-				averageResponseTime: 150
-			};
+			let mockSiteData: any = null;
+			if (siteName === 'healthy-site') {
+				mockSiteData = {
+					site: 'healthy-site',
+					url: 'https://healthy.example.com',
+					status: 'Healthy',
+					uptime: 0.9999,
+					incidents: 0,
+					averageResponseTime: 150,
+					message: 'All systems operational',
+				};
+			} else if (siteName === 'unhealthy-site') {
+				mockSiteData = {
+					site: 'unhealthy-site',
+					url: 'https://unhealthy.example.com',
+					status: 'Unhealthy',
+					uptime: 0.6500,
+					incidents: 4,
+					averageResponseTime: 520,
+					message: 'Multiple outages detected',
+				};
+			} else if (siteName === 'nodata-site') {
+				mockSiteData = null;
+			} else {
+				mockSiteData = {
+					site: 'test-site',
+					url: 'https://test-site.com',
+					status: 'Healthy',
+					uptime: 0.9999,
+					incidents: 0,
+					averageResponseTime: 150
+				};
+			}
 
 			const transformedData = endpoint?.responseTransformer
 				? endpoint.responseTransformer(mockSiteData)
@@ -25,7 +50,7 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 
 			setData(transformedData);
 			setLoading(false);
-		}, [endpoint]);
+		}, [endpoint, siteName]);
 
 		if (loading) return <div>Loading...</div>;
 
@@ -125,6 +150,34 @@ describe('SiteHealthUptime Component', () => {
 		render(<SiteHealthUptime {...defaultProps} />);
 		await waitFor(() => {
 			expect(screen.getByTestId('health-template')).toBeDefined();
+		});
+	});
+
+	it('should render healthy status information with green styling', async () => {
+		render(<SiteHealthUptime siteName="healthy-site" />);
+		await waitFor(() => {
+			const template = screen.getByTestId('health-template');
+			expect(template).toBeDefined();
+			expect(template.textContent).toContain('Healthy');
+			expect(template.textContent).toContain('https://healthy.example.com');
+			expect(template.textContent).toContain('All systems operational');
+		});
+	});
+
+	it('should render unhealthy status information with red icon and message', async () => {
+		render(<SiteHealthUptime siteName="unhealthy-site" />);
+		await waitFor(() => {
+			const template = screen.getByTestId('health-template');
+			expect(template).toBeDefined();
+			expect(template.textContent).toContain('Unhealthy');
+			expect(template.textContent).toContain('Multiple outages detected');
+		});
+	});
+
+	it('should render fallback when no uptime data is available', async () => {
+		render(<SiteHealthUptime siteName="nodata-site" />);
+		await waitFor(() => {
+			expect(screen.getByText('No uptime data available for this site.')).toBeInTheDocument();
 		});
 	});
 });

@@ -143,7 +143,6 @@ export function sustainabilityMessage(props: CalloutLibraryType) {
 			direction={props.direction || undefined}
 			url={undefined}
 			img='/images/icons/globe-icon.png'
-			imgShape='squircle'
 			title='Sustainability Message'
 			content='By purchasing PixelVivid custom painted 
                 sunglasses, you are supporting “creative upcycling”, 

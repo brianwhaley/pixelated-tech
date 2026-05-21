@@ -18,7 +18,6 @@ export default function About() {
 								gridColumns={{left: 1, right: 3}}
 								layout='horizontal'
 								img='/images/customs/btw-mas.jpg'
-								imgShape="squircle"
 								title='Brian and Mary Ann'
 								content='PixelVivid was born during the COVID Pandemic. 
 										In the days of solitude and separation, Brian reconnected with his past 
@@ -36,7 +35,6 @@ export default function About() {
 								layout='horizontal'
 								direction='right'
 								img='/images/customs/green-confetti.jpg'
-								imgShape="squircle"
 								title='A Bit About Our Sunglasses'
 								content='Each pair of our creative upcycled sunglasses are carefully selected and prepared 
 										before beginning the design process. Once prepped to receive the paint, each pair of 

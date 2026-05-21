@@ -60,6 +60,12 @@ describe('create-pixelated-app template mapping', () => {
       expect(tmpl.name).toBe('Services');
     });
 
+    it('finds the Service Areas template by alias', async () => {
+      const tmpl = findTemplateForSlug(manifest, 'service-areas');
+      expect(tmpl).toBeTruthy();
+      expect(tmpl.name).toBe('Service Areas');
+    });
+
     it('finds the Contact template by slug', async () => {
       const tmpl = findTemplateForSlug(manifest, 'contact');
       expect(tmpl).toBeTruthy();

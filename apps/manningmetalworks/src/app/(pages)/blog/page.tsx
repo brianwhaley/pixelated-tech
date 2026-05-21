@@ -10,7 +10,7 @@ import { mapWordPressToBlogPosting } from "@pixelated-tech/components";
 import { ToggleLoading } from '@pixelated-tech/components';
 
 // const wpSite = "blog.manningmetalworks.com";
-const wpSite = "manningmetalworks.wpcomstaging.com";
+const wpSite = "blog.manningmetalworks.com";
 
 export default function BlogPage() {
 

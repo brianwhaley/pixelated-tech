@@ -127,6 +127,20 @@ describe('NerdJoke Component', () => {
       const nextButton = container.querySelector('.right button');
       expect(() => fireEvent.click(nextButton as HTMLElement)).not.toThrow();
     });
+
+    it('should recover from fetch failure and still render the component', async () => {
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(smartFetch).mockRejectedValueOnce(new Error('fetch failed'));
+
+      render(<NerdJoke />);
+
+      await waitFor(() => {
+        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('Failed to fetch joke:'), expect.any(Error));
+        expect(document.querySelector('.joke-text')).toBeInTheDocument();
+      });
+
+      errorSpy.mockRestore();
+    });
   });
 
   describe('Timer Display', () => {
@@ -158,6 +172,27 @@ describe('NerdJoke Component', () => {
       const { container } = render(<NerdJoke />);
       const rect = container.querySelector('rect');
       expect(rect).toHaveAttribute('id', 'jokeTimerPathElapsed');
+    });
+  });
+
+  describe('Timer and fetch behavior', () => {
+    it('should load the next joke when the Next Joke button is clicked', async () => {
+      const fetchSpy = vi.mocked(smartFetch);
+      fetchSpy.mockResolvedValueOnce(mockJokeData as any);
+      fetchSpy.mockResolvedValueOnce({ question: 'Second joke', answer: 'Second answer.' } as any);
+
+      const { container } = render(<NerdJoke />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Why did the programmer quit his job/i)).toBeInTheDocument();
+      });
+
+      const nextButton = container.querySelector('.right button');
+      fireEvent.click(nextButton as HTMLElement);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Second joke/i)).toBeInTheDocument();
+      }, { timeout: 10000 });
     });
   });
 

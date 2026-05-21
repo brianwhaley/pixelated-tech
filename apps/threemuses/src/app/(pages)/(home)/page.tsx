@@ -9,7 +9,7 @@ import { getWordPressItems, getCachedWordPressItems, BlogPostList } from "@pixel
 import * as componentLibrary from '../../elements/componentlibrary';
 
 // const wpSite = "blog.thethreemusesofbluffton.com";
-const wpSite = "thethreemusesofbluffton.wpcomstaging.com";
+const wpSite = "blog.thethreemusesofbluffton.com";
 
 export default function Home() {
 

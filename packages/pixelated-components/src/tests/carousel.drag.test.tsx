@@ -151,6 +151,44 @@ describe('carousel.drag - DragHandler class', () => {
 
 		expect(wrapper.style.left).toBe('0px');
 	});
+
+	it('does not navigate when drag distance is below minimum threshold', () => {
+		const nextImageMock = vi.fn();
+		const previousImageMock = vi.fn();
+		document.body.innerHTML = '<div class="carousel-card-wrapper" id="card"><span>Drag me</span></div>';
+		const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+		render(<DragHandler activeIndex={0} targetDiv="carousel-card-wrapper" nextImage={nextImageMock} previousImage={previousImageMock} />);
+
+		const mouseDown = new MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 100 });
+		Object.defineProperty(mouseDown, 'pageX', { value: 100 });
+		wrapper.dispatchEvent(mouseDown);
+
+		const mouseMove = new MouseEvent('mousemove', { bubbles: true, cancelable: true, clientX: 120 });
+		Object.defineProperty(mouseMove, 'pageX', { value: 120 });
+		wrapper.dispatchEvent(mouseMove);
+
+		const mouseUp = new MouseEvent('mouseup', { bubbles: true, cancelable: true, clientX: 120 });
+		Object.defineProperty(mouseUp, 'pageX', { value: 120 });
+		wrapper.dispatchEvent(mouseUp);
+
+		expect(nextImageMock).not.toHaveBeenCalled();
+		expect(previousImageMock).not.toHaveBeenCalled();
+	});
+
+	it('ignores dragEnd when no drag has started', () => {
+		const nextImageMock = vi.fn();
+		const previousImageMock = vi.fn();
+		document.body.innerHTML = '<div class="carousel-card-wrapper" id="card"><span>Drag me</span></div>';
+		const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+		render(<DragHandler activeIndex={0} targetDiv="carousel-card-wrapper" nextImage={nextImageMock} previousImage={previousImageMock} />);
+
+		const mouseUp = new MouseEvent('mouseup', { bubbles: true, cancelable: true, clientX: 50 });
+		Object.defineProperty(mouseUp, 'pageX', { value: 50 });
+		wrapper.dispatchEvent(mouseUp);
+
+		expect(nextImageMock).not.toHaveBeenCalled();
+		expect(previousImageMock).not.toHaveBeenCalled();
+	});
 });
 
 	describe('DragHandler Component - Real Tests', () => {

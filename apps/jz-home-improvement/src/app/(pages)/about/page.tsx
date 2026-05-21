@@ -74,7 +74,7 @@ export default function AboutPage() {
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="history-section">
 				<PageSectionHeader title="Our Service Area" />
 				<p>
-					JZ Home Improvement proudly serves homeowners throughout Union, New Jersey and the surrounding communities. Our service area includes but is not limited to the following locations:
+					JZ Home Improvement proudly serves homeowners throughout Union, New Jersey and the surrounding communities. Our <a href="/service-areas">service areas</a> include but are not limited to the following locations:
 				</p>
 				<ul>
 					<li>Sussex County, NJ</li>
@@ -93,10 +93,10 @@ export default function AboutPage() {
 					<li>Ocean County, NJ</li>
 				</ul>
 				<p>
-					We have been known to take on projects in more distant areas as well, depending on the scope and nature of the work. If you are located outside of these primary service zones, please do not hesitate to contact us to discuss your specific needs and see if we can accommodate your project.
+					We have been known to take on projects in more distant areas as well, depending on the scope and nature of the work. If you are located outside of these primary <a href="/service-areas">service areas</a>, please do not hesitate to contact us to discuss your specific needs and see if we can accommodate your project.
 				</p>
 				<p>
-					We are committed to providing expert craftsmanship, honest pricing, and beautiful results to families across these regions. Whether you are located in a bustling urban area or a quiet suburban neighborhood, JZ Home Improvement is here to help you enhance your home with quality renovations and improvements. Our local roots and strong community ties allow us to understand the unique needs of homeowners in this area and deliver personalized solutions that exceed expectations.
+					We are committed to providing expert craftsmanship, honest pricing, and beautiful results to families across these regions. Whether you are located in a bustling urban area or a quiet suburban neighborhood, JZ Home Improvement is here to help you enhance your home with quality renovations and improvements. Our local roots and strong community ties allow us to understand the unique needs of homeowners in this area and deliver <a href="/services">personalized services</a> that exceed expectations.
 				</p>
 			</PageSection>
 

@@ -81,6 +81,15 @@ export default function CommercialService() {
 				</PageGridItem>
 				
 			</PageSection>
+			
+			<PageSection columns={1} maxWidth="1024px" id="services-link-section">
+				<p>
+					Check out our <a href="/services">Services</a> page to see the services we offer and the expertise we provide.
+				</p>
+				<p>
+					<a href="/contact">Contact us</a> to learn more about our services, service areas, and how we can support your needs in your area. We are committed to providing excellent service and local expertise wherever you are.
+				</p>
+			</PageSection>
 
 			<section className="section-bluechip" id="contact-section">
 				<CalloutLibrary.ContactCTA />

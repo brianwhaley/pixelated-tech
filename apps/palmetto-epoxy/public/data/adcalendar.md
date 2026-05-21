@@ -62,3 +62,72 @@ These 10 custom color names are designed for the Lowcountry market, utilizing re
 * **Marsh Grass Amber**: A multi-tonal tan, gold, and light green blend resembling the tidal grasses of the ACE Basin.
 * **Battery Blue**: A deep, regal navy blue flake system inspired by the harbor views at The Battery.
 * **Oyster Shell Pearl**: A crisp white and light grey flake blend with high-gloss topcoat to mimic the interior of local oyster shells.
+
+
+# Social Media Advertising Plan
+
+I know money is tight (when isnt it, in an economy like this) and you need immediate business.  you cannot afford to waste budget on "awareness" campaigns or platforms where people aren't actively looking to buy. You need high-intent, hyper-local leads.  This means  you want to put your money only in front of people in the Lowcountry who are actively thinking, "I need to fix my ugly garage floor" or "I need a contractor to seal my patio." Here is my strategic recommendation for Palmetto Epoxy, based on your tight budget.
+
+## Where to Advertise
+
+### The Best for Visual Showcase: Facebook & Instagram (Paid Ads, NOT Boosts)
+
+Never click the "Boost Post" button. It is a money trap that optimizes for "likes" and "shares," not phone calls. Instead, use Facebook Ads Manager to build a targeted campaign. Target homeowners aged 35–65+ living strictly within your specific zip codes. 
+
+Use a Before/After video or carousel image showing a dramatic transformation (e.g., a cracked, stained concrete patio turning into a flawless polyaspartic flake floor).
+
+Why it works: Epoxy and resin work are highly visual. Homeowners don't always know they want an epoxy floor until they see a gorgeous transformation scroll across their feed.
+
+### The Absolute Best: Google Local Services Ads (LSAs)
+
+Do not confuse this with standard Google PPC keywords (which can get expensive fast). Local Services Ads are the boxes that appear at the very top of Google search results with a green checkmark next to "Google Screened" or "Google Guaranteed." 
+
+You set a weekly budget and select your exact service areas (Bluffton, Hilton Head, Beaufort, etc.). You only pay per qualified lead (phone call or direct message), not per click. If a telemarketer calls you, you can dispute it and get your money back.
+
+Why it works: It captures the highest-intent customers. If someone searches "epoxy garage floor installer near me," they have their wallet out.
+
+### The Best for Free/Low-Cost Local Reach: Nextdoor 
+
+Nextdoor is a goldmine for home service contractors because the entire platform is built on neighbors asking neighbors for recommendations.  
+
+First, ensure your business page is claimed and completely filled out for free. 
+
+Next, use Nextdoor Local Deals. These are small, hyper-local paid promotions where you can offer an exclusive neighborhood discount (e.g., "Lowcountry's Best 2025 Winner: $250 Off Full-Broadcast Garage Coatings for Bluffton Residents").
+
+Why it works: It targets affluent homeowners who heavily trust local reviews. When a neighbor tags Palmetto Epoxy in a comment, your ad retargeting those same neighborhoods reinforces your credibility.
+
+### Skip for Now: LinkedIn & Yelp 
+
+LinkedIn: Too expensive (high cost-per-click) and geared toward corporate B2B. Unless you want to start a targeted campaign for massive commercial warehouse accounts, skip it.
+
+Yelp: Yelp is notorious for aggressive sales tactics and high costs with low returns for concrete contractors. Your budget will disappear instantly.
+
+## Recommended Tight-Budget Strategy
+
+When cash flow is low, you should start with a $150 to $500 monthly budget ($10 to $15 per day) and allocate it entirely to the highest-performing channels.
+
+## The Budget Allocation Blueprint
+
+Facebook/Instagram Ads
+* Budget: $100 - $150
+* Strategy: Hyper-local targeting using a "Before & After" video.
+* Goal: Lead Form / Website Clicks
+
+Google Local Services Ads
+* Budget: $200 - $300
+* Strategy: Pay-per-lead for "Epoxy Garage", "Concrete Polishing" searches.
+* Goal: Direct Phone Calls
+
+Nextdoor (Local Deals)
+* Budget: $50
+* Strategy: Small neighborhood coupon/special offer.* Goal: Direct Local Inquiries
+
+# Low-Budget "Growth Hacks" to Generate Immediate Business
+
+Supplement your paid ads with these high-yield, free methods:
+
+* The "Neighbor Footprint" Method: When Clay and the crew finish a beautiful driveway or garage in a neighborhood like Sun City or Hampton Hall, place a yard sign at the edge of the property (with permission). Then, hand-deliver or door-hang a simple flyer to the 5 closest houses on either side and across the street saying: "We just finished transforming your neighbor's garage! Since our trucks are already in the neighborhood, we are offering a 10% discount on estimates this week.
+
+* "Review Automation: Reviews drive your rank for free. Send a text to every past customer with a direct link to your Google review page. 
+
+* Local Media: As the owners, shoot a short "About Us" video, post it on all your social media accounts, and share it with local media optlets. A lot of them do spotlights on local companies, for free. 

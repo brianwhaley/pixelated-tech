@@ -23,6 +23,7 @@ export * from './components/foundation/well-known';
 export * from './components/foundation/utilities';
 
 export * from './components/general/resume';
+export * from './components/general/services.functions';
 export * from './components/general/smartmediautils';
 
 export * from './components/integrations/aws.dynamo.integration';

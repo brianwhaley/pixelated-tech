@@ -36,6 +36,26 @@
 		],
 		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
+		"brand": {
+			"@type": "Brand",
+			"name": "Information Focus"
+		},
+		"termsOfService": "/terms",
+		"audience": "Pharmaceutical industry professionals, competitive intelligence practitioners, and business strategists",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://www.informationfocus.net/",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://www.informationfocus.net/",
+			"availableLanguage": ["English"],
+			"servicePhone": "(973) 722-2601"
+		},
 		"sameAs": [
 			"https://www.linkedin.com/in/mary-ann-sarao"
 		]

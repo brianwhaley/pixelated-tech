@@ -36,6 +36,26 @@
 		],
 		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
+		"brand": {
+			"@type": "Brand",
+			"name": "Pixelated Admin"
+		},
+		"termsOfService": "/",
+		"audience": "Local service businesses, contractors, and small business owners",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://admin.pixelated.tech/services",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://admin.pixelated.tech/",
+			"availableLanguage": ["English"],
+			"servicePhone": "+1-973-710-8008"
+		},
 		"sameAs": [
 			"https://www.pixelated.tech"
 		]

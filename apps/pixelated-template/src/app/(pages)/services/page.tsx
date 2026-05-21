@@ -1,106 +1,35 @@
 "use client";
 
-import { Callout, PageTitleHeader, PageSection } from "@pixelated-tech/components";
+import React from 'react';
+import siteConfig from '@/app/data/siteconfig.json';
+import { PageTitleHeader, PageSection, ServicesList } from '@pixelated-tech/components';
 
-export default function About() {
-    
+export default function ServicesPage() {
+	const siteInfo = (siteConfig as any).siteInfo;
+
 	return (
 		<>
+			<PageTitleHeader title="Services" />
+			<PageSection columns={1} maxWidth="1024px" id="services-intro">
+				<p>
+					__SITE_NAME__ provides a full suite of digital services for small businesses in New Jersey and South Carolina. Browse our service offerings and click through to learn how we can support your online growth.
+				</p>
+			</PageSection>
 
-			<PageTitleHeader title="__SITE_NAME__ Services" />
+			<ServicesList
+				siteInfo={siteInfo}
+				title="__SITE_NAME__ Services"
+				intro="Click a service to read more about how it works for your business."
+				servicePathPrefix="/services"
+			/>
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="service-section">
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:1, right:3}}
-					layout="horizontal"
-					direction="left"
-					img="/images/placeholder.png"
-					title="Service # 1"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:3, right:1}}
-					layout="horizontal"
-					direction="right"
-					img="/images/placeholder.png"
-					title="Service # 2"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:1, right:3}}
-					layout="horizontal"
-					direction="left"
-					img="/images/placeholder.png"
-					title="Service # 3"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:3, right:1}}
-					layout="horizontal"
-					direction="right"
-					img="/images/placeholder.png"
-					title="Service # 4"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:3, right:1}}
-					layout="horizontal"
-					direction="right"
-					img="/images/placeholder.png"
-					title="Service # 4"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:1, right:3}}
-					layout="horizontal"
-					direction="left"
-					img="/images/placeholder.png"
-					title="Service # 5"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
-				<Callout
-					variant="boxed grid"
-					gridColumns={{left:3, right:1}}
-					layout="horizontal"
-					direction="right"
-					img="/images/placeholder.png"
-					title="Service # 6"
-					content="This is where you can describe your service offering in detail.
-					Highlight the key benefits and features that set your service apart from competitors.
-					Explain how your expertise and experience can help clients achieve their goals.
-					Include any unique methodologies, tools, or approaches you use to deliver exceptional results.
-					Feel free to mention any relevant certifications, awards, or client testimonials that reinforce your credibility in this area."
-				/>
+			<PageSection columns={1} maxWidth="1024px" id="service-areas-link-section">
+				<p>
+					Check out our <a href="/service-areas">Service Areas</a> page to see the regions we serve and the local expertise we offer.
+				</p>
+				<p>
+					<a href="/contact">Contact us</a> to learn more about our services, service areas, and how we can support your needs in your area. We are committed to providing excellent service and local expertise wherever you are.
+				</p>
 			</PageSection>
 
 		</>

@@ -5,6 +5,7 @@
 		"description": "Custom web development and digital design agency specializing in React, Next.js, and modern web technologies",
 		"keywords": "pixelated, web development, react, next.js, custom websites, digital design, small business",
 		"url": "https://pixelated.tech",
+		"servicesPathPrefix": "/services",
 		"email": "info@pixelated.tech",
 		"favicon": "/favicon.ico",
 		"favicon_sizes": "64x64 32x32 24x24 16x16",
@@ -36,10 +37,72 @@
 			{ "day": "Sun", "closed": true }
 		],
 		"openingHoursAdditionalInfo": "",
+		"brand": {
+			"@type": "Brand",
+			"name": "Pixelated Technologies"
+		},
+		"termsOfService": "/terms",
+		"audience": "Local service businesses, contractors, and small business owners",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://pixelated.tech/services",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://pixelated.tech/contact",
+			"availableLanguage": ["English"],
+			"servicePhone": "+1-973-710-8008"
+		},
 		"sameAs": [
 			"https://www.linkedin.com/in/brianwhaley",
 			"https://github.com/brianwhaley",
 			"https://twitter.com/brianwhaley"
+		],
+		"services": [
+			{
+				"name": "Custom Website Design",
+				"description": "Mobile-first website design and development for local service businesses.",
+				"short_description": "High-converting local website design for service brands.",
+				"category": "Web Development",
+				"serviceType": "Custom Website Design",
+				"serviceOutput": "Mobile-first, SEO-optimized websites designed to convert local visitors into customers.",
+				"audience": "Local service businesses, contractors, and small business owners",
+				"termsOfService": "/terms",
+				"offers": "",
+				"image": "/images/placeholder.png"
+			},
+			{
+				"name": "Local SEO & Content",
+				"description": "Search engine optimization and local landing page content that targets service area customers.",
+				"short_description": "Targeted local SEO and content packages for service areas.",
+				"category": "Digital Marketing",
+				"serviceType": "Local SEO & Content",
+				"serviceOutput": "Technical SEO and localized content strategies that boost search visibility in target service areas.",
+				"audience": "Local service businesses, contractors, and small business owners",
+				"termsOfService": "/terms",
+				"offers": "",
+				"image": "/images/placeholder.png"
+			}
+		],
+		"serviceAreas": [
+			{
+				"name": "Denville, NJ Service Area",
+				"description": "Serving Denville and the surrounding Morris County communities with comprehensive digital services.",
+				"short_description": "Local Denville digital marketing and website services.",
+				"keywords": ["Denville service area", "Morris County web services"],
+				"highlights": ["Local small business websites", "Neighborhood SEO campaigns"]
+			},
+			{
+				"name": "Northern New Jersey Service Area",
+				"description": "Focused service coverage for the broader Northern New Jersey market.",
+				"short_description": "Regional market coverage across northern New Jersey.",
+				"keywords": ["Northern New Jersey service area", "NJ service area"],
+				"highlights": ["Regional marketing support", "Multi-city landing pages"]
+			}
 		]
 	},
 	"visualdesign": {

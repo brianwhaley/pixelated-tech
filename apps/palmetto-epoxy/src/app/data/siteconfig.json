@@ -5,6 +5,7 @@
 		"description": "Palmetto Epoxy - Professional Epoxy Flooring Services in Bluffton, South Carolina",
 		"keywords": "palmetto epoxy, bluffton, south carolina, epoxy flooring, professional services",
 		"url": "https://www.palmetto-epoxy.com",
+		"servicesPathPrefix": "/services",
 		"email": "palmettoepoxy@gmail.com",
 		"favicon": "/favicon.ico",
 		"favicon_sizes": "64x64 32x32 24x24 16x16",
@@ -26,6 +27,26 @@
 		},
 		"addressAdditionalInfo": "",
 		"priceRange": "$",
+		"brand": {
+			"@type": "Brand",
+			"name": "Palmetto Epoxy"
+		},
+		"termsOfService": "/terms",
+		"audience": "Local service businesses, contractors, and small business owners",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://www.palmetto-epoxy.com/services",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://www.palmetto-epoxy.com/contact",
+			"availableLanguage": ["English"],
+			"servicePhone": "+1-516-510-8186"
+		},
 		"sameAs": [
 			"https://www.facebook.com/palmettoepoxy",
 			"https://www.instagram.com/palmetto_epoxy/",
@@ -42,93 +63,72 @@
 			{
 				"name": "Residential",
 				"description": "Enhance your home with durable, stylish epoxy floors tailored to any room.",
-				"url": "https://www.palmetto-epoxy.com/services",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"serviceType": "Residential Epoxy Flooring",
+				"category": "Residential Epoxy Flooring",
+				"serviceOutput": "Durable, stylish epoxy floors built for residential rooms, garages, and countertops.",
+				"audience": "Homeowners seeking durable epoxy flooring",
+				"offers": "",
+				"termsOfService": "/"
 			},
 			{
 				"name": "Commercial",
 				"description": "Upgrade your business space with sleek, resilient commercial-grade epoxy flooring.",
-				"url": "https://www.palmetto-epoxy.com/services",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"serviceType": "Commercial Epoxy Flooring",
+				"category": "Commercial Epoxy Flooring",
+				"serviceOutput": "Resilient epoxy flooring for retail spaces, offices, warehouses, and showrooms.",
+				"audience": "Business owners and facility managers",
+				"offers": "",
+				"termsOfService": "/"
 			},
 			{
 				"name": "Paver Sealing",
 				"description": "Protect and beautify your pavers with our professional sealing services.",
-				"url": "https://www.palmetto-epoxy.com/services",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"serviceType": "Paver Sealing",
+				"category": "Paver Sealing",
+				"serviceOutput": "Long-lasting sealing to protect pavers from weather, stains, and wear.",
+				"audience": "Homeowners and businesses with paver surfaces",
+				"offers": "",
+				"termsOfService": "/"
 			},
 			{
 				"name": "Driveway Coating",
 				"description": "Boost curb appeal and durability with our specialized driveway coating solutions.",
-				"url": "https://www.palmetto-epoxy.com/services",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"serviceType": "Driveway Coating",
+				"category": "Driveway Coating",
+				"serviceOutput": "Protective driveway coatings that enhance appearance and resist damage.",
+				"audience": "Homeowners and property managers",
+				"offers": "",
+				"termsOfService": "/"
 			},
 			{
 				"name": "Epoxy Garage Floors",
 				"description": "Transform your garage with our high-performance, spill-resistant epoxy floors.",
-				"url": "https://www.palmetto-epoxy.com/services",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"serviceType": "Epoxy Garage Floors",
+				"category": "Epoxy Garage Floors",
+				"serviceOutput": "High-performance garage floors that resist spills, stains, and wear.",
+				"audience": "Garage owners and car enthusiasts",
+				"offers": "",
+				"termsOfService": "/"
 			},
 			{
 				"name": "Resin Countertops",
-				"description": "Transform your kitchen or bathroom with our high-performance resin countertops.",
-				"url": "https://www.palmetto-epoxy.com/services",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"description": "Transform your kitchen or bathroom with our high-performance resin countertops",
+				"serviceType": "Resin Countertops",
+				"category": "Resin Countertops",
+				"serviceOutput": "Stylish, seamless resin countertops that are easy to clean and maintain.",
+				"audience": "Homeowners upgrading kitchens and bathrooms",
+				"offers": "",
+				"termsOfService": "/"
 			},
 			{
 				"name": "Concrete Polishing",
-				"description": "Bring out the natural beauty of your concrete with our expert polishing services.\n",
-				"url": "",
-				"areaServed": [
-					"Bluffton SC",
-					"Hilton Head SC",
-					"Hardeeville SC",
-					"Okatie SC",
-					"Ridgeland SC",
-					"Beaufort SC"
-				]
+				"description": "Bring out the natural beauty of your concrete with our expert polishing services.",
+				"serviceType": "Concrete Polishing",
+				"category": "Concrete Polishing",
+				"serviceOutput": "Glossy concrete finishes that enhance durability and reduce dust.",
+				"audience": "Homeowners and businesses with concrete floors",
+				"offers": "",
+				"termsOfService": "/"
 			}
 		],
 		"openingHours": [

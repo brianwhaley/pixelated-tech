@@ -348,6 +348,107 @@ describe('Contentful Delivery API', () => {
 		});
 	});
 
+	describe('getContentfulProductSchema', () => {
+		const mockApiProps = {
+			base_url: 'https://api.contentful.com',
+			space_id: 'test-space',
+			environment: 'master',
+			delivery_access_token: 'test-token'
+		};
+
+		it('should return null when product cannot be found', async () => {
+			const mockResponse = { items: [] };
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockResponse
+			});
+
+			const result = await contentfulModule.getContentfulProductSchema({
+				apiProps: mockApiProps,
+				productId: 'MISSING_ID'
+			});
+
+			expect(result).toBeNull();
+		});
+
+		it('should fetch a product and build schema with resolved image URLs', async () => {
+			const mockResponse = {
+				items: [
+					{
+						sys: { contentType: { sys: { id: 'item' } } },
+						fields: {
+							id: 'PRD-001',
+							title: 'Product 1',
+							description: 'Great product',
+							brand: 'BrandX',
+							price: 19.99,
+							quantity: 0,
+							images: [ { sys: { id: 'img1' } } ]
+						}
+					}
+				]
+			};
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockResponse
+			});
+
+			const result = await contentfulModule.getContentfulProductSchema({
+				apiProps: mockApiProps,
+				productId: 'PRD-001',
+				siteUrl: 'https://example.com/product',
+				getAssetUrl: (id: string) => `https://assets.example.com/${id}`
+			});
+
+			expect(result).not.toBeNull();
+			expect(result?.offers?.availability).toBe('https://schema.org/OutOfStock');
+			expect(result?.image?.[0]).toBe('https://assets.example.com/img1');
+		});
+
+		it('should return product schema with in-stock availability when quantity is greater than zero', async () => {
+			const mockResponse = {
+				items: [
+					{
+						sys: { contentType: { sys: { id: 'item' } } },
+						fields: {
+							id: 'PRD-002',
+							title: 'Product 2',
+							description: 'Another product',
+							brand: 'BrandY',
+							price: 29.99,
+							quantity: 5,
+							images: []
+						}
+					}
+				]
+			};
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockResponse
+			});
+
+			const result = await contentfulModule.getContentfulProductSchema({
+				apiProps: mockApiProps,
+				productId: 'PRD-002',
+				siteUrl: 'https://example.com/product2'
+			});
+
+			expect(result?.offers?.availability).toBe('https://schema.org/InStock');
+		});
+	});
+
+	describe('contentfulValueToSlug and contentfulSlugToValue', () => {
+		it('should convert value to slug-safe string and decode it back', () => {
+			const slug = contentfulModule.contentfulValueToSlug({ value: 'Epoxy & Floors' });
+			expect(slug).toBe('epoxy-&amp;-floors');
+
+			const value = contentfulModule.contentfulSlugToValue({ slug });
+			expect(value).toBe('epoxy & floors');
+		});
+	});
+
 	describe('getContentfulImagesFromEntries', () => {
 		const mockImages = [
 			{ sys: { id: 'image1' } },

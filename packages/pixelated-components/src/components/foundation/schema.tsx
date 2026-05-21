@@ -2,7 +2,9 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
+import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import type { SiteInfo } from '../config/siteconfig.types';
+import { getServicePathPrefix } from '../general/services.functions';
 
 
 
@@ -345,6 +347,16 @@ export function normalizeOpeningHoursValue(value: unknown): string | string[] | 
 		})
 		.filter(Boolean) as string[];
 	return normalized.length ? normalized : undefined;
+}
+
+export function formatServiceDescription(description: unknown): string | undefined {
+	if (typeof description === 'string') {
+		return description;
+	}
+	if (Array.isArray(description) && description.every((item) => typeof item === 'string')) {
+		return description.join('  ');
+	}
+	return undefined;
 }
 
 /**
@@ -736,7 +748,6 @@ export function ReviewSchema(props: ReviewSchemaType) {
  * ServicesSchema — Inject JSON-LD <script> tags for each service offered by the business, using schema.org/Service format.
  *
  * @param {object} [props.siteInfo] - Optional site information object containing business details and services array.
- * @param {object} [props.provider] - Optional provider information object to override siteInfo for the service provider.
  * @param {array} [props.services] - Optional array of service objects to override siteInfo.services.
  */
 ServicesSchema.propTypes = {
@@ -744,63 +755,141 @@ ServicesSchema.propTypes = {
 		name: PropTypes.string,
 		url: PropTypes.string,
 		image: PropTypes.string,
-		telephone: PropTypes.string,
-		email: PropTypes.string,
-		services: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.string.isRequired,
-			url: PropTypes.string,
-			image: PropTypes.string,
-			areaServed: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-		}))
-	}),
-	provider: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		url: PropTypes.string.isRequired,
 		logo: PropTypes.string,
 		telephone: PropTypes.string,
 		email: PropTypes.string,
+		address: PropTypes.shape({
+			streetAddress: PropTypes.string,
+			addressLocality: PropTypes.string,
+			addressRegion: PropTypes.string,
+			postalCode: PropTypes.string,
+			addressCountry: PropTypes.string,
+		}),
+		sameAs: PropTypes.arrayOf(PropTypes.string),
+		openingHours: PropTypes.arrayOf(PropTypes.shape({
+			day: PropTypes.string,
+			open: PropTypes.string,
+			close: PropTypes.string,
+			closed: PropTypes.bool,
+		})),
+		servicesPathPrefix: PropTypes.string,
+		services: PropTypes.arrayOf(PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+			short_description: PropTypes.string,
+			image: PropTypes.string,
+			termsOfService: PropTypes.string,
+			serviceType: PropTypes.string,
+			serviceOutput: PropTypes.string,
+			category: PropTypes.string,
+			audience: PropTypes.string,
+			offers: PropTypes.any,
+		})),
+		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
+			name: PropTypes.string.isRequired,
+		})),
+		brand: PropTypes.shape({
+			"@type": PropTypes.string,
+			name: PropTypes.string,
+		}),
+		audience: PropTypes.string,
+		offers: PropTypes.any,
+		availability: PropTypes.string,
+		availableChannel: PropTypes.shape({
+			"@type": PropTypes.string,
+			serviceUrl: PropTypes.string,
+			availableLanguage: PropTypes.arrayOf(PropTypes.string),
+			servicePhone: PropTypes.string,
+		}),
+		termsOfService: PropTypes.string,
 	}),
 	services: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
-		url: PropTypes.string,
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+		short_description: PropTypes.string,
 		image: PropTypes.string,
-		areaServed: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+		termsOfService: PropTypes.string,
+		serviceType: PropTypes.string,
+		serviceOutput: PropTypes.string,
+		category: PropTypes.string,
+		audience: PropTypes.string,
+		offers: PropTypes.any,
 	})),
 };
 export type ServicesSchemaType = InferProps<typeof ServicesSchema.propTypes>;
 export function ServicesSchema(props: ServicesSchemaType) {
-	const siteInfo = props.siteInfo; 
-	const services = (siteInfo?.services || props.services || []);
-	const provider = props.provider || {
+	const siteInfo = props.siteInfo;
+	const services = props.services || siteInfo?.services || [];
+	const provider = {
 		name: siteInfo?.name || '',
 		url: siteInfo?.url || '',
-		logo: siteInfo?.image,
+		logo: siteInfo?.logo || siteInfo?.image,
 		telephone: siteInfo?.telephone,
-		email: siteInfo?.email
+		email: siteInfo?.email,
+		address: siteInfo?.address,
+		sameAs: siteInfo?.sameAs,
+		openingHours: siteInfo?.openingHours
 	};
+
+	const baseUrl = siteInfo?.url?.replace(/\/$/, '') || provider.url?.replace(/\/$/, '') || '';
+	const serviceAreas = siteInfo?.serviceAreas || [];
+	const areaServedValues = serviceAreas
+		.map(area => area?.name)
+		.filter((name): name is string => typeof name === 'string' && name.trim() !== '');
 
 	if (!services.length || !provider.name) {
 		return null;
 	}
 
-	const serviceObjects = services.filter((service): service is NonNullable<typeof service> => service != null).map((service) => ({
-		'@type': 'Service',
-		name: service.name,
-		description: service.description,
-		...(service.url && { url: service.url }),
-		...(service.image && { image: service.image }),
-		...(service.areaServed && { areaServed: service.areaServed }),
-		provider: {
-			'@type': 'LocalBusiness',
-			name: provider.name,
-			url: provider.url,
-			...(provider.logo && { logo: provider.logo }),
-			...(provider.telephone && { telephone: provider.telephone }),
-			...(provider.email && { email: provider.email })
-		}
-	}));
+	const sharedAudience = siteInfo?.audience;
+	const sharedBrand = siteInfo?.brand;
+	const sharedAvailability = siteInfo?.availability;
+	const sharedAvailableChannel = siteInfo?.availableChannel;
+	const sharedOffers = siteInfo?.offers;
+	const sharedTermsOfService = siteInfo?.termsOfService;
+	const servicePathPrefix = getServicePathPrefix(siteInfo);
+
+	const serviceObjects = services.filter((service): service is NonNullable<typeof service> => service != null).map((service) => {
+		const serviceSlug = contentfulValueToSlug({ value: service.name });
+		const serviceUrl = baseUrl && serviceSlug ? `${baseUrl}${servicePathPrefix}/${serviceSlug}` : undefined;
+		const serviceType = service.serviceType || service.name;
+		const serviceOutput = service.serviceOutput || `High-performance ${service.name.toLowerCase()} optimized for business growth and measurable results.`;
+		const category = service.category || service.name;
+		const audience = service.audience || sharedAudience;
+		const offers = service.offers || sharedOffers;
+		const termsOfService = service.termsOfService || sharedTermsOfService;
+		return {
+			'@type': 'Service',
+			name: service.name,
+			description: formatServiceDescription(service.description),
+			...(serviceUrl && { url: serviceUrl }),
+			...(service.image && { image: service.image }),
+			...(termsOfService && { termsOfService }),
+			...(serviceType && { serviceType }),
+			...(serviceOutput && { serviceOutput }),
+			...(category && { category }),
+			...(audience && { audience }),
+			...(offers && { offers }),
+			...(sharedBrand && { brand: sharedBrand }),
+			...(sharedAvailability && { availability: sharedAvailability }),
+			...(sharedAvailableChannel && { availableChannel: sharedAvailableChannel }),
+			...(areaServedValues.length > 0 && { areaServed: areaServedValues }),
+			provider: {
+				'@type': 'LocalBusiness',
+				name: provider.name,
+				url: provider.url,
+				...(provider.logo && { logo: provider.logo }),
+				...(provider.telephone && { telephone: provider.telephone }),
+				...(provider.email && { email: provider.email }),
+				...(provider.address && { address: {
+					'@type': 'PostalAddress',
+					...provider.address
+				} }),
+				...(Array.isArray(provider.sameAs) && provider.sameAs.length > 0 && { sameAs: provider.sameAs }),
+				...(Array.isArray(provider.openingHours) && provider.openingHours.length > 0 && { openingHours: provider.openingHours })
+			}
+		};
+	});
 
 	return (
 		<>

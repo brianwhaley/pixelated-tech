@@ -36,6 +36,26 @@
 		],
 		"openingHoursAdditionalInfo": "",
 		"priceRange": "$$",
+		"brand": {
+			"@type": "Brand",
+			"name": "Brian Whaley"
+		},
+		"termsOfService": "/",
+		"audience": "Local service businesses, contractors, and small business owners",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://www.brianwhaley.com/",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://www.brianwhaley.com/",
+			"availableLanguage": ["English"],
+			"servicePhone": "+1-973-710-8008"
+		},
 		"sameAs": [
 			"https://www.linkedin.com/in/brianwhaley",
 			"https://github.com/brianwhaley"

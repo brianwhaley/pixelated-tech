@@ -43,6 +43,7 @@
 	flex-basis: content; /* each item is its own size instead of auto */
 }
 
+
 .menu-item-hidden {
 	display: none;
 }
@@ -62,6 +63,12 @@
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+	.menu-item a {
+		font-size: var(--font-size5);
+	}
 }
 
 .menu-item a.selected {

@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
 	createPageURLs,
 	createImageURLsFromJSON,
+	createSiteConfigURLs,
 	createWordPressURLs,
 	createContentfulURLs,
 	createContentfulAssetURLs,
@@ -125,6 +126,66 @@ describe('Sitemap Helper Functions', () => {
 		});
 	});
 
+	describe('createSiteConfigURLs', () => {
+		it('should create sitemap entries for services and service areas from site config', async () => {
+			const origin = 'https://example.com';
+			const siteConfig = {
+				siteInfo: {
+					services: [
+						{ name: 'Epoxy Floors', url: '/services/epoxy-floors' },
+					],
+					serviceAreas: [
+						{ name: 'Coastal Area', path: '/service-areas/coastal-area' },
+					],
+				},
+			};
+
+			const result = await createSiteConfigURLs(siteConfig, origin);
+
+			expect(result).toHaveLength(2);
+			expect(result.map((entry) => entry.url)).toEqual([
+				'https://example.com/services/epoxy-floors',
+				'https://example.com/service-areas/coastal-area',
+			]);
+		});
+
+		it('should create sitemap entry for root-level service when servicesPathPrefix is blank', async () => {
+			const origin = 'https://example.com';
+			const siteConfig = {
+				siteInfo: {
+					servicesPathPrefix: '',
+					services: [
+						{ name: 'Epoxy Floors' },
+					],
+					serviceAreas: [],
+				},
+			};
+
+			const result = await createSiteConfigURLs(siteConfig, origin);
+
+			expect(result).toHaveLength(1);
+			expect(result[0].url).toBe('https://example.com/epoxy-floors');
+		});
+
+		it('should use siteInfo.servicesPathPrefix for generated service URLs', async () => {
+			const origin = 'https://example.com';
+			const siteConfig = {
+				siteInfo: {
+					servicesPathPrefix: '/offerings',
+					services: [
+						{ name: 'Epoxy Floors' },
+					],
+					serviceAreas: [],
+				},
+			};
+
+			const result = await createSiteConfigURLs(siteConfig, origin);
+
+			expect(result).toHaveLength(1);
+			expect(result[0].url).toBe('https://example.com/offerings/epoxy-floors');
+		});
+	});
+
 	describe('getOriginFromHeaders', () => {
 		it('should build origin from valid headers', () => {
 			const headers = {
@@ -176,9 +237,12 @@ describe('Sitemap Helper Functions', () => {
 
 		it('should return origin from next headers when available', async () => {
 			const nextHeadersModule = await import('next/headers');
-			vi.mocked(nextHeadersModule.headers).mockResolvedValue({
-				get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'example.com'
-			});
+			vi.mocked(nextHeadersModule.headers).mockResolvedValue(
+				new Headers([
+					['x-forwarded-proto', 'https'],
+					['host', 'example.com']
+				])
+			);
 
 			const origin = await getOriginFromNextHeaders('https://fallback.com');
 			expect(origin).toBe('https://example.com');
@@ -281,7 +345,7 @@ describe('Sitemap Helper Functions', () => {
 			const origin = 'https://example.com';
 			const result = await createImageURLsFromJSON(origin, 'public/site-images.json');
 
-			expect(result[0].images[0]).toBe('https://example.com/images/gallery.jpg?size=large&amp;format=webp');
+			expect(result[0].images![0]).toBe('https://example.com/images/gallery.jpg?size=large&amp;format=webp');
 		});
 	});
 
@@ -560,7 +624,7 @@ describe('Sitemap Helper Functions', () => {
 				origin: 'https://example.com'
 			});
 
-			expect(result[0].images[0]).toBe('https://images.ctfassets.net/sample.jpg?fm=webp&amp;q=50');
+			expect(result[0].images![0]).toBe('https://images.ctfassets.net/sample.jpg?fm=webp&amp;q=50');
 		});
 
 		it('should support image field references as well as images arrays', async () => {
@@ -721,7 +785,7 @@ describe('Sitemap Helper Functions', () => {
 					}
 				};
 
-				const sitemapConfig = buildSitemapConfig(pixelatedConfig, []);
+				const sitemapConfig = buildSitemapConfig(pixelatedConfig, { routes: [] });
 
 				expect(sitemapConfig.contentful).toMatchObject({
 					space_id: 'space-id',

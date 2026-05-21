@@ -1,0 +1,498 @@
+{
+	"siteInfo": {
+		"name": "Simple Day Concierge",
+		"author": "Simple Day Concierge",
+		"description": "Simple Day Concierge - Modern Web Development Template",
+		"keywords": "Simple Day Concierge, web development template, modern web development",
+		"url": "https://www.simpledayconcierge.com",
+		"servicesPathPrefix": "/services",
+		"email": "info@simpledayconcierge.com",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/pix-bg-512.gif",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "(973) 710-8008",
+		"address": {
+			"streetAddress": "10 Jade Circle",
+			"addressLocality": "Denville",
+			"addressRegion": "NJ",
+			"postalCode": "07834",
+			"addressCountry": "US"
+		},
+		"addressAdditionalInfo": "",
+		"openingHours": [
+			{
+				"day": "Mon",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Tue",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Wed",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Thu",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Fri",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Sat",
+				"closed": true
+			},
+			{
+				"day": "Sun",
+				"closed": true
+			}
+		],
+		"openingHoursAdditionalInfo": "",
+		"priceRange": "$",
+		"brand": {
+			"@type": "Brand",
+			"name": "Simple Day Concierge"
+		},
+		"termsOfService": "/terms",
+		"audience": "Local service businesses, contractors, and small business owners",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://www.simpledayconcierge.com/services",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://www.simpledayconcierge.com/contact",
+			"availableLanguage": [
+				"English"
+			],
+			"servicePhone": "+1-973-710-8008"
+		},
+		"sameAs": [
+			"https://www.simpledayconcierge.com"
+		],
+		"services": [
+			{
+				"name": "Website Design and Development",
+				"description": "We build fast, accessible websites combining modern design with scalable Next.js development, tailored to your business goals.",
+				"short_description": "Modern website design and development optimized for speed, usability, and conversion.",
+				"image": "/images/placeholder.png",
+				"category": "Website Design and Development",
+				"serviceType": "Website Design and Development",
+				"serviceOutput": "Fast, conversion-focused website design and scalable Next.js development.",
+				"audience": "Local service businesses, contractors, and small business owners",
+				"termsOfService": "/terms",
+				"offers": ""
+			},
+			{
+				"name": "Local SEO and Marketing",
+				"description": "We optimize your site for local search and create marketing campaigns that help customers find your business in your service area.",
+				"short_description": "Local SEO and digital marketing to increase visibility in your target region.",
+				"image": "/images/placeholder.png",
+				"category": "Local SEO and Marketing",
+				"serviceType": "Local SEO and Marketing",
+				"serviceOutput": "Local search optimization and marketing designed to grow your service-area visibility.",
+				"audience": "Local service businesses, contractors, and small business owners",
+				"termsOfService": "/terms",
+				"offers": ""
+			},
+			{
+				"name": "Other Stuff and Things",
+				"description": "We do other things and stuff to help customers with your business in your service area.",
+				"short_description": "Other things and stuff to make things happen in your target region.",
+				"image": "/images/placeholder.png",
+				"category": "Regional Business Services",
+				"serviceType": "Regional Business Services",
+				"serviceOutput": "Flexible support for local service businesses seeking better regional reach.",
+				"audience": "Local service businesses, contractors, and small business owners",
+				"termsOfService": "/terms",
+				"offers": ""
+			}
+		],
+		"serviceAreas": [
+			{
+				"name": "Metro Service Area",
+				"description": "Local businesses in the metro region get fast, reliable web and marketing support designed specifically for high-traffic urban customers.",
+				"short_description": "Local metro business support for web and marketing services.",
+				"keywords": [
+					"metro service area",
+					"urban business support",
+					"local SEO",
+					"digital marketing"
+				],
+				"highlights": [
+					"Metro-focused SEO strategies",
+					"Urban digital marketing campaigns",
+					"Fast, reliable web support for metro businesses"
+				],
+				"image": "/images/placeholder.png"
+			},
+			{
+				"name": "Coastal Service Area",
+				"description": "We serve coastal businesses with mobile-friendly, performance-first websites and regional marketing that connects with local visitors.",
+				"short_description": "Coastal business digital services focused on performance and local reach.",
+				"keywords": [
+					"coastal service area",
+					"coastal business support",
+					"local SEO",
+					"digital marketing"
+				],
+				"highlights": [
+					"Coastal-focused SEO strategies",
+					"Regional digital marketing campaigns",
+					"Mobile-friendly web support for coastal businesses"
+				],
+				"image": "/images/placeholder.png"
+			},
+			{
+				"name": "Regional Service Area",
+				"description": "We serve regional businesses with mobile-friendly, performance-first websites and regional marketing that connects with local visitors.",
+				"short_description": "Regional business digital services focused on performance and local reach.",
+				"keywords": [
+					"regional service area",
+					"regional business support",
+					"local SEO",
+					"digital marketing"
+				],
+				"highlights": [
+					"Regional-focused SEO strategies",
+					"Regional digital marketing campaigns",
+					"Mobile-friendly web support for regional businesses"
+				],
+				"image": "/images/placeholder.png"
+			}
+		]
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/",
+			"title": "Simple Day Concierge - Home",
+			"description": "",
+			"keywords": ""
+		},
+		{
+			"name": "About",
+			"path": "/about",
+			"title": "Simple Day Concierge - About",
+			"description": "",
+			"keywords": ""
+		},
+		{
+			"name": "Contact",
+			"path": "/contact",
+			"title": "Simple Day Concierge - Contact",
+			"description": "",
+			"keywords": ""
+		},
+		{
+			"name": "FAQs",
+			"path": "/faqs",
+			"title": "Simple Day Concierge - FAQs",
+			"description": "",
+			"keywords": ""
+		},
+		{
+			"name": "Services",
+			"path": "/services",
+			"title": "Simple Day Concierge - Services",
+			"description": "A list of services offered by this company.",
+			"keywords": [
+				"Simple Day Concierge",
+				"services"
+			]
+		},
+		{
+			"name": "Service Areas",
+			"path": "/service-areas",
+			"title": "Simple Day Concierge - Service Areas",
+			"description": "A list of regions and local markets where this company operates.",
+			"keywords": [
+				"Simple Day Concierge",
+				"service areas",
+				"locations"
+			]
+		},
+		{
+			"name": "Terms of Service",
+			"path": "/terms",
+			"title": "Simple Day Concierge - Terms of Service",
+			"description": "Terms of Service for using this website and its services.",
+			"keywords": [
+				"Simple Day Concierge",
+				"terms of service",
+				"terms"
+			]
+		},
+		{
+			"name": "Admin",
+			"hidden": true,
+			"routes": [
+				{
+					"name": "404",
+					"path": "/404",
+					"hidden": true,
+					"title": "Simple Day Concierge - Page Not Found",
+					"description": "The page you requested could not be found.",
+					"keywords": [
+						"Simple Day Concierge",
+						"404",
+						"page not found"
+					]
+				},
+				{
+					"name": "Blog Calendar",
+					"hidden": true,
+					"path": "/blogcalendar",
+					"title": "Simple Day Concierge - Blog Calendar",
+					"description": "",
+					"keywords": ""
+				},
+				{
+					"name": "Humans Txt",
+					"path": "/humans.txt",
+					"hidden": true,
+					"title": "Simple Day Concierge - Humans Txt",
+					"description": "Humans Txt",
+					"keywords": [
+						"Simple Day Concierge",
+						"humans txt"
+					]
+				},
+				{
+					"name": "Robots.txt",
+					"path": "/robots.txt",
+					"hidden": true,
+					"title": "Simple Day Concierge - Robots.txt",
+					"description": "Simple Day Concierge robots.txt",
+					"keywords": [
+						"Simple Day Concierge",
+						"robots.txt"
+					]
+				},
+				{
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "Simple Day Concierge - Security Txt",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": [
+						"Simple Day Concierge",
+						"security txt",
+						"security"
+					]
+				},
+				{
+					"name": "Sitemap",
+					"path": "/sitemap.xml",
+					"hidden": true,
+					"title": "Simple Day Concierge - Sitemap",
+					"description": "Simple Day Concierge sitemap.xml",
+					"keywords": [
+						"Simple Day Concierge",
+						"sitemap.xml"
+					]
+				},
+				{
+					"name": "Style Guide",
+					"hidden": true,
+					"path": "/styleguide",
+					"title": "Simple Day Concierge - Style Guide",
+					"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+					"keywords": [
+						"Simple Day Concierge",
+						"style guide"
+					]
+				},
+				{
+					"name": "Updates",
+					"hidden": true,
+					"path": "/updates",
+					"title": "Simple Day Concierge - Updates",
+					"description": "",
+					"keywords": ""
+				},
+				{
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "Simple Day Concierge - Web Manifest",
+					"description": "Simple Day Concierge web manifest",
+					"keywords": [
+						"Simple Day Concierge",
+						"manifest.webmanifest"
+					]
+				}
+			]
+		}
+	],
+	"visualdesign": {
+		"primary-color": {
+			"value": "#AE8C45",
+			"type": "color",
+			"group": "palette",
+			"label": "Primary color"
+		},
+		"secondary-color": {
+			"value": "#3F3F3F",
+			"type": "color",
+			"group": "palette",
+			"label": "Secondary color"
+		},
+		"accent1-color": {
+			"value": "#E6DBC5",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 1"
+		},
+		"accent2-color": {
+			"value": "#ECECEC",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 2"
+		},
+		"bg-color": {
+			"value": "#ffffff",
+			"type": "color",
+			"group": "palette",
+			"label": "Background color"
+		},
+		"text-color": {
+			"value": "#000000",
+			"type": "color",
+			"group": "palette",
+			"label": "Font color"
+		},
+		"header-font": {
+			"value": "\"Montserrat\", Verdana, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Header font"
+		},
+		"body-font": {
+			"value": "\"Roboto\", Arial, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Body font"
+		},
+		"font-size1-min": {
+			"value": "2.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 min"
+		},
+		"font-size1-max": {
+			"value": "3.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 max"
+		},
+		"font-size2-min": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 min"
+		},
+		"font-size2-max": {
+			"value": "1.75rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 max"
+		},
+		"font-size3-min": {
+			"value": "1.17rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 min"
+		},
+		"font-size3-max": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 max"
+		},
+		"font-size4-min": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 min"
+		},
+		"font-size4-max": {
+			"value": "1.25rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 max"
+		},
+		"font-size5-min": {
+			"value": "0.83rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 min"
+		},
+		"font-size5-max": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 max"
+		},
+		"font-size6-min": {
+			"value": "0.67rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 min"
+		},
+		"font-size6-max": {
+			"value": "0.85rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 max"
+		},
+		"font-min-screen": {
+			"value": "375px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font min screen"
+		},
+		"font-max-screen": {
+			"value": "1440px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font max screen"
+		},
+		"border-radius": {
+			"value": "0.5rem",
+			"type": "size",
+			"group": "layout",
+			"label": "Border radius"
+		},
+		"box-shadow": {
+			"value": "0 2px 4px rgba(0,0,0,0.1)",
+			"type": "shadow",
+			"group": "layout",
+			"label": "Box shadow"
+		},
+		"transition": {
+			"value": "all 0.3s ease",
+			"type": "transition",
+			"group": "layout",
+			"label": "Transition"
+		}
+	}
+}

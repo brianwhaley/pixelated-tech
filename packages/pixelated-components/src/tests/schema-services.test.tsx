@@ -1,23 +1,23 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import { ServicesSchema, type ServicesSchemaType } from '@/components/foundation/schema';
+import { ServicesSchema, type ServicesSchemaType } from '../components/foundation/schema';
 
 describe('ServicesSchema', () => {
 	const defaultProps: ServicesSchemaType = {
-		provider: {
+		siteInfo: {
 			name: 'Test Agency',
-			url: 'https://testagency.com'
-		},
-		services: [
-			{
-				name: 'Web Development',
-				description: 'Custom web development services'
-			},
-			{
-				name: 'UI Design',
-				description: 'User interface design services'
-			}
-		]
+			url: 'https://testagency.com',
+			services: [
+				{
+					name: 'Web Development',
+					description: 'Custom web development services'
+				},
+				{
+					name: 'UI Design',
+					description: 'User interface design services'
+				}
+			]
+		}
 	};
 
 	it('should render script tags with application/ld+json type', () => {
@@ -56,30 +56,30 @@ describe('ServicesSchema', () => {
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
 		expect(firstService.provider['@type']).toBe('LocalBusiness');
-		expect(firstService.provider.name).toBe(defaultProps.provider?.name);
-		expect(firstService.provider.url).toBe(defaultProps.provider?.url);
+		expect(firstService.provider.name).toBe(defaultProps.siteInfo?.name);
+		expect(firstService.provider.url).toBe(defaultProps.siteInfo?.url);
 	});
 
 	it('should include provider logo when provided', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,
-			provider: {
-				...(defaultProps.provider as any),
-				logo: 'https://testagency.com/logo.png'
+			siteInfo: {
+				...defaultProps.siteInfo,
+				image: 'https://testagency.com/logo.png'
 			}
 		};
 		const { container } = render(<ServicesSchema {...props} />);
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(firstService.provider.logo).toBe(props.provider?.logo);
+		expect(firstService.provider.logo).toBe(props.siteInfo?.image);
 	});
 
 	it('should include provider telephone when provided', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,
-			provider: {
-				...(defaultProps.provider as any),
+			siteInfo: {
+				...defaultProps.siteInfo,
 				telephone: '+1-555-0123'
 			}
 		};
@@ -93,8 +93,8 @@ describe('ServicesSchema', () => {
 	it('should include provider email when provided', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,
-			provider: {
-				...(defaultProps.provider as any),
+			siteInfo: {
+				...defaultProps.siteInfo,
 				email: 'hello@testagency.com'
 			}
 		};
@@ -105,14 +105,14 @@ describe('ServicesSchema', () => {
 		expect(firstService.provider.email).toBe('hello@testagency.com');
 	});
 
-	it('should include service URL when provided', () => {
+	it('should generate service url from name when services override is provided', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,
 			services: [
 				{
 					name: 'Web Development',
 					description: 'Custom web development services',
-					url: 'https://testagency.com/services/web-development'
+					short_description: 'Fast custom web development'
 				}
 			]
 		};
@@ -141,6 +141,128 @@ describe('ServicesSchema', () => {
 		expect(service.image).toBe('https://testagency.com/images/web-dev.jpg');
 	});
 
+	it('should generate service url from name and siteInfo.url when no url is provided', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
+		};
+
+		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.url).toBe('https://testagency.com/services/web-development');
+	});
+
+	it('should generate root-level service url when servicesPathPrefix is blank', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			servicesPathPrefix: '',
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
+		};
+
+		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.url).toBe('https://testagency.com/web-development');
+	});
+
+	it('should use siteInfo.servicesPathPrefix when generating service urls', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			servicesPathPrefix: '/offerings',
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
+		};
+
+		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.url).toBe('https://testagency.com/offerings/web-development');
+	});
+
+	it('should include areaServed from siteInfo.serviceAreas for every service', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			serviceAreas: [
+				{ name: 'Metro Area' },
+				{ name: 'Coastal Area' }
+			],
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
+		};
+
+		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.areaServed).toEqual(['Metro Area', 'Coastal Area']);
+	});
+
+	it('should include provider address, sameAs, and openingHours when provided', () => {
+		const props: ServicesSchemaType = {
+			siteInfo: {
+				name: 'Test Agency',
+				url: 'https://testagency.com',
+				logo: 'https://testagency.com/logo.png',
+				telephone: '+1-555-0123',
+				email: 'hello@testagency.com',
+				address: {
+					streetAddress: '123 Main St',
+					addressLocality: 'Anytown',
+					addressRegion: 'NY',
+					postalCode: '10001',
+					addressCountry: 'US'
+				},
+				sameAs: ['https://twitter.com/testagency'],
+				openingHours: [
+					{ day: 'Mon', open: '09:00', close: '17:00' }
+				],
+				services: [
+					{ name: 'Web Development', description: 'Custom web development services' }
+				]
+			}
+		};
+		const { container } = render(<ServicesSchema {...props} />);
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.provider.address['@type']).toBe('PostalAddress');
+		expect(service.provider.address.streetAddress).toBe('123 Main St');
+		expect(service.provider.sameAs).toEqual(['https://twitter.com/testagency']);
+		expect(service.provider.openingHours).toEqual([{ day: 'Mon', open: '09:00', close: '17:00' }]);
+	});
+
+	it('should include termsOfService when provided for a service', () => {
+		const props: ServicesSchemaType = {
+			...defaultProps,
+			services: [
+				{
+					name: 'Web Development',
+					description: 'Custom web development services',
+					termsOfService: 'https://testagency.com/terms'
+				}
+			]
+		};
+		const { container } = render(<ServicesSchema {...props} />);
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.termsOfService).toBe('https://testagency.com/terms');
+	});
+
 	it('should support siteInfo prop as a primary source of data', () => {
 		const siteInfo = {
 			name: 'SiteInfo Business',
@@ -151,8 +273,7 @@ describe('ServicesSchema', () => {
 			services: [
 				{
 					name: 'SiteInfo Service',
-					description: 'Service from SiteInfo object',
-					areaServed: ['Region A', 'Region B']
+					description: 'Service from SiteInfo object'
 				}
 			]
 		};
@@ -163,7 +284,7 @@ describe('ServicesSchema', () => {
 
 		expect(schemaData.name).toBe(siteInfo.services[0].name);
 		expect(schemaData.description).toBe(siteInfo.services[0].description);
-		expect(schemaData.areaServed).toEqual(siteInfo.services[0].areaServed);
+		expect(schemaData.areaServed).toBeUndefined();
 		
 		expect(schemaData.provider.name).toBe(siteInfo.name);
 		expect(schemaData.provider.url).toBe(siteInfo.url);
@@ -193,14 +314,13 @@ describe('ServicesSchema', () => {
 		expect(s2.name).toBe('S2');
 	});
 
-	it('should include service areaServed as string', () => {
+	it('should not include service areaServed when it is removed', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,
 			services: [
 				{
 					name: 'Web Development',
-					description: 'Custom web development services',
-					areaServed: 'United States'
+					description: 'Custom web development services'
 				}
 			]
 		};
@@ -208,17 +328,16 @@ describe('ServicesSchema', () => {
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(service.areaServed).toBe('United States');
+		expect(service.areaServed).toBeUndefined();
 	});
 
-	it('should include service areaServed as array', () => {
+	it('should still produce valid service JSON when no areaServed is provided', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,
 			services: [
 				{
 					name: 'Web Development',
-					description: 'Custom web development services',
-					areaServed: ['New Jersey', 'South Carolina', 'California']
+					description: 'Custom web development services'
 				}
 			]
 		};
@@ -226,8 +345,7 @@ describe('ServicesSchema', () => {
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(Array.isArray(service.areaServed)).toBe(true);
-		expect(service.areaServed).toEqual(['New Jersey', 'South Carolina', 'California']);
+		expect(service.areaServed).toBeUndefined();
 	});
 
 	it('should handle multiple services', () => {
@@ -256,12 +374,11 @@ describe('ServicesSchema', () => {
 		}).not.toThrow();
 	});
 
-	it('should exclude optional fields when not provided', () => {
+	it('should exclude optional fields that are not provided except generated url', () => {
 		const { container } = render(<ServicesSchema {...defaultProps} />);
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(firstService.url).toBeUndefined();
 		expect(firstService.image).toBeUndefined();
 		expect(firstService.areaServed).toBeUndefined();
 	});

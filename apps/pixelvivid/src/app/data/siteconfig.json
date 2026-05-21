@@ -36,6 +36,90 @@
 		],
 		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
+		"brand": {
+			"@type": "Brand",
+			"name": "PixelVivid"
+		},
+		"termsOfService": "/terms",
+		"audience": "Collectors of custom painted sunglasses, fans of upcycled fashion, and anyone looking for unique eyewear",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://www.pixelvivid.com/",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://www.pixelvivid.com/contact",
+			"availableLanguage": ["English"],
+			"servicePhone": "(973) 710-8008"
+		},
+		"services": [
+			{
+				"name": "Custom Upcycled Sunglasses",
+				"description": [
+					"PixelVivid sunglasses offer a wide variety of activewear sunglasses with color splashed, marbled, splattered, dripped and pixeled! Oakley frames are our favorite glasses to paint but we can paint on almost any brand.",
+					"Each pair of our creative upcycled sunglasses are carefully selected and prepared before beginning the design process. Once prepped to receive the paint, each pair of sunglasses are styled using high-end automotive paints from House of Kolor. Once all the colors are applied, each pair of sunglasses are sprayed with a two-stage gloss clear coat to protect them. Once hardened for 5 to 7 days, each creative upcycled sunglasses are fitted with new polarized lenses, ear socks, and any other rubber bits on the frame. The last step in the process is for the designer to sign their work. Each pair is unique, earth-friendly, and fun!",
+					"By purchasing PixelVivid custom painted sunglasses, you are supporting “creative upcycling”, a form of waste reduction that focuses on extending the life of materials by giving them a new purpose through artistic and innovative means. PixelVivid encourages a culture that reconnects and reuses a quality product with a new and artistic aesthetic applied. We are happy to creative-upcycle quality sunglass frames from Oakley, Ray Ban, Costa del Mar, and more. Many of the frames are vintage and are no longer manufactured, but brings back great times and great memories! Now, they are reborn at PixelVivid for you. Thank you for choosing a better product for our planet!"
+				],
+				"short_description": "PixelVivid sunglasses offer a wide variety of activewear sunglasses with color splashed, marbled, splattered, dripped and pixeled! Oakley frames are our favorite glasses to paint but we can paint on almost any brand.",
+				"image": "/images/customs/blue-splatter-3.jpg",
+				"category": "Custom Upcycled Sunglasses",
+				"serviceType": "Custom Upcycled Sunglasses",
+				"serviceOutput": "Unique, hand-painted sunglasses that stand out from the crowd.",
+				"audience": "Collectors of custom painted sunglasses, fans of upcycled fashion, and anyone looking for unique eyewear",
+				"termsOfService": "/returns",
+				"offers": ""
+			},
+			{
+				"name": "Stock Photography",
+				"description": [
+					"PixelVivid's stock photography collection features a wide variety of high-quality images across multiple categories, including nature, travel, lifestyle, and more. Each photo is carefully curated and professionally shot to provide vibrant, eye-catching visuals that can be used for websites, marketing materials, social media, and other creative projects. With a focus on authenticity and creativity, PixelVivid's stock photography offers unique perspectives and artistic compositions that help bring your projects to life. Whether you're looking for stunning landscapes, candid lifestyle shots, or vibrant close-ups, PixelVivid's stock photography collection has something for every creative need. By choosing PixelVivid's stock photos, you are supporting an independent artist and gaining access to a diverse range of images that can elevate your creative projects while promoting sustainability and artistic expression."
+				],
+				"short_description": "I have converted my passion of Landscape, Macro, and Travel Photography into a budding Stock Photography Portfolio. Check out my work on iStockPhoto or ShutterStock, or see my books on Blurb or Shutterfly.",
+				"image": "https://farm6.staticflickr.com/5682/21652998256_7c5d0ce495_b.jpg",
+				"category": "Stock Photography",
+				"serviceType": "Stock Photography",
+				"serviceOutput": "High-quality stock photos for various creative projects.",
+				"audience": "Creative professionals, marketers, bloggers, and anyone in need of high-quality stock photos for their projects.",
+				"termsOfService": "/",
+				"offers": ""
+			}
+		],
+		"serviceAreas": [
+			{
+				"name": "US Nationwide Shipping",
+				"description": "PixelVivid proudly offers premium nationwide shipping for our entire collection of hand-painted custom sunglasses across all fifty states. From coast to coast, our wearable art is securely packaged and tracked from our studio directly to your doorstep. Whether you are looking for vibrant statement eyewear in California, UV-protective polarized lenses in Florida, or a completely customized bespoke design in New York, our seamless online ordering process makes it effortless to elevate your style from anywhere in the country. We handle every step of the domestic logistics process with extreme care, ensuring your unique, hand-painted frames arrive in pristine condition and ready to turn heads. Experience high-end craftsmanship and exceptional customer support no matter where you are located in the US as we bring individualistic, vibrant artistic expression to communities nationwide.",
+				"short_description": "PixelVivid offers premium nationwide shipping across the United States, delivering hand-painted custom sunglasses and bespoke wearable art securely to your doorstep in all fifty states.",
+				"keywords": [
+				"custom painted sunglasses US",
+				"hand painted eyewear nationwide",
+				"wearable art sunglasses USA",
+				"custom sunglasses shipping United States",
+				"premium custom eyewear online",
+				"bespoke sunglasses delivery US",
+				"vibrant hand painted frames",
+				"polarized custom sunglasses USA",
+				"unique statement eyewear shipping",
+				"designer custom painted sunglasses"
+				],
+				"highlights": [
+				"Full nationwide shipping across all 50 US states",
+				"Secure, fully tracked domestic courier delivery",
+				"Insured packaging prevents damage during transit",
+				"Bespoke online custom design consultations available everywhere",
+				"100% UVA/UVB protection guaranteed on all US orders",
+				"Handcrafted by skilled independent artists in the USA",
+				"Seamless door-to-door fulfillment from our studio",
+				"Access to exclusive Signature Collections nationwide",
+				"Dedicated domestic customer support and service",
+				"Eco-friendly made-to-order production model"
+				],
+				"image": ""
+			}
+		],
 		"sameAs": [
 			"https://www.facebook.com/pixelvivid",
 			"https://www.facebook.com/profile.php?id=61577216017129",
@@ -126,7 +210,7 @@
 			"hidden": true,
 			"path": "/photography", 
 			"title": "PixelVivid - Photography",
-			"description": "An overview of the PixelVivid phtography portfolio.",
+			"description": "An overview of the PixelVivid photography portfolio.",
 			"keywords": "PixelVivid, photography, stock photography, overview, gallery, carousel, social media" 
 		} , { 
 			"name": "Preorder 2026 Collection",
@@ -136,11 +220,25 @@
 			"description": "Preorder the exclusive 2026 collection of PixelVivid custom painted sunglasses.",
 			"keywords": ["PixelVivid", "preorder", "2026 collection", "custom sunglasses" ]
 		} , {
+			"name": "Services",
+			"path": "/services",
+			"hidden": true,
+			"title": "PixelVivid - Services",
+			"description": "A list of services offered by this company.",
+			"keywords": ["PixelVivid","services"]
+		} , {
+			"name": "Service Areas",
+			"path": "/service-areas",
+			"hidden": true,
+			"title": "PixelVivid - Service Areas",
+			"description": "A list of regions and local markets where we operate.",
+			"keywords": ["PixelVivid","service areas","locations"]
+		} , {
 			"name": "Style Guide",
 			"hidden": true,
 			"path": "/styleguide",
 			"title": "PixelVivid - Style Guide",
-			"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+			"description": "A full style guide for this website, including color palette, fonts, and information architecture. ",
 			"keywords": ["PixelVivid", "style guide" ]
 		} , {
 			"name": "Admin",

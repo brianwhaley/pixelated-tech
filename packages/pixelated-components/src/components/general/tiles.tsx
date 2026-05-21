@@ -1,7 +1,12 @@
 /* eslint-disable pixelated/class-name-kebab-case */
 "use client";
 
-import React from 'react';
+// Tiles now includes built-in modal support so it can work for both direct Tiles usage
+// and the shared ProjectsClient wrapper. Because this modal behavior is managed at the
+// Tiles instance level, each Tiles render requires its own modal state and unique
+// DOM identifier via useId() to prevent collisions when multiple Tiles sections
+// are present on the same page.
+import React, { useId, useState } from 'react';
 import PropTypes, { InferProps } from "prop-types";
 import type { CarouselCardType } from "./carousel";
 import { Loading } from "../foundation/loading";
@@ -20,6 +25,8 @@ export type TilesVariantType = typeof TilesVariants[number] | undefined;
  * @param {array} [props.cards] - Array of card objects to render (image, link, imageAlt, bodyText).
  * @param {number} [props.rowCount] - Number of rows to display; affects column sizing.
  * @param {function} [props.imgClick] - Optional (event, imageUrl) click handler for tile images.
+ * @param {boolean} [props.modalOnClick] - When true, tile image clicks open an internal modal.
+ * @param {boolean} [props.showOverlay] - Whether to render the tile overlay; defaults to true.
  * @param {oneOf} [props.variant] - Visual variant: 'caption' (caption beneath image) or 'overlay' (overlay on hover).
  */
 Tiles.propTypes = {
@@ -38,6 +45,10 @@ Tiles.propTypes = {
 	rowCount: PropTypes.number,
 	/** Optional click handler for tile images; called with (event, imageUrl). */
 	imgClick: PropTypes.func,
+	/** Enable built-in modal behavior when a tile image is clicked. */
+	modalOnClick: PropTypes.bool,
+	/** Whether to render the overlay content on each tile. */
+	showOverlay: PropTypes.bool,
 	/**
 	 * Optional visual variant. Allowed values are enumerated so consumers get
 	 * a discoverable, typed API.
@@ -48,27 +59,46 @@ Tiles.propTypes = {
 export type TilesType = InferProps<typeof Tiles.propTypes>;
 export function Tiles(props: TilesType) {
 	const rowCount = props.rowCount ?? 2;
+	const modalOnClick = props.modalOnClick ?? false;
+	const showOverlay = props.showOverlay ?? true;
+	const [modalContent, setModalContent] = useState<React.ReactNode | undefined>(undefined);
+	const modalID = useId();
+
+	const handleTileImageClick = (event: React.MouseEvent<HTMLImageElement>, url: string) => {
+		const myContent = <div className="modal-image-container">
+			<SmartImage src={url} alt="Image preview" />
+		</div>;
+		setModalContent(myContent);
+		handleModalOpen(event.nativeEvent as unknown as MouseEvent, modalID);
+	};
+
+	const tileClick = props.imgClick ?? (modalOnClick ? handleTileImageClick : undefined);
+
 	if (props.cards && props.cards.length > 0) {
 		return (
-			<div className="tiles-container">
-				<div className={`tile-container row-${rowCount}col`} suppressHydrationWarning>
-					{ /*  card is not TileType due to index and cardLength not isRequired for Tiles  */ }
-					{ props.cards.map((card: any, i: number) => (
-						<div key={i} className="grid-item">
-							<Tile
-								index={card.index ?? i}
-								cardLength={card.cardLength ?? props.cards.length}
-								link={card.link}
-								image={card.image}
-								imageAlt={card.imageAlt}
-								bodyText={card.bodyText}
-								imgClick={props.imgClick}
-								variant={(props.variant ?? "overlay" ) as TilesVariantType}
-							/>
-						</div>
-					))}
+			<>
+				<div className="tiles-container">
+					<div className={`tile-container row-${rowCount}col`} suppressHydrationWarning>
+						{ /*  card is not TileType due to index and cardLength not isRequired for Tiles  */ }
+						{ props.cards.map((card: any, i: number) => (
+							<div key={i} className="grid-item">
+								<Tile
+									index={card.index ?? i}
+									cardLength={card.cardLength ?? props.cards.length}
+									link={card.link}
+									image={card.image}
+									imageAlt={card.imageAlt}
+									bodyText={card.bodyText}
+									imgClick={tileClick}
+									variant={(props.variant ?? "overlay" ) as TilesVariantType}
+									showOverlay={showOverlay}
+								/>
+							</div>
+						))}
+					</div>
 				</div>
-			</div>
+				<Modal modalID={modalID} modalContent={modalContent ?? <></>} />
+			</>
 		);
 	} else {
 		return (
@@ -107,6 +137,8 @@ Tile.propTypes = {
 	bodyText: PropTypes.string,
 	/** Click handler invoked when the tile image is clicked; receives (event, imageUrl). */
 	imgClick: PropTypes.func,
+	/** Whether to show the overlay content for this tile. */
+	showOverlay: PropTypes.bool,
 	/** 'caption' - caption beneath image; 'overlay' - overlay displayed on hover. */
 	variant: PropTypes.oneOf(TilesVariants),
 };
@@ -114,6 +146,7 @@ export type TileType = InferProps<typeof Tile.propTypes>;
 function Tile( props: TileType ) {
 	const config = usePixelatedConfig();
 	const imgClick = props.imgClick;
+	const showOverlay = props.showOverlay ?? true;
 	const captionText = (props.bodyText && props.bodyText.length > 0) ? props.bodyText : (props.imageAlt ?? "");
 	const tileBody = <div className={"tile-image" + (imgClick ? " clickable" : "")}>
 		<SmartImage 
@@ -121,12 +154,14 @@ function Tile( props: TileType ) {
 			title={props?.imageAlt ?? undefined} alt={props?.imageAlt ?? ""}
 			onClick={imgClick ? (event) => imgClick(event, props.image) : undefined}
 			cloudinaryEnv={config?.cloudinary?.product_env ?? undefined} />
-		<div className="tile-image-overlay">
-			<div className="tile-image-overlay-text">
-				<div className="tile-image-overlay-title">{props.imageAlt}</div>
-				<div className="tile-image-overlay-body">{props.bodyText}</div>
+		{showOverlay ? (
+			<div className="tile-image-overlay">
+				<div className="tile-image-overlay-text">
+					<div className="tile-image-overlay-title">{props.imageAlt}</div>
+					<div className="tile-image-overlay-body">{props.bodyText}</div>
+				</div>
 			</div>
-		</div>
+		) : null}
 	</div>;
 	const rootClass = `tile${ (props.variant) ? ' ' + props.variant : ''}`;
 	return (
@@ -151,6 +186,8 @@ function Tile( props: TileType ) {
  * @param {string} [props.description] - Description text for the project section.
  * @param {array} [props.tileCards] - Array of tile card objects (index, cardIndex, cardLength, image, imageAlt).
  * @param {function} [props.onImageClick] - Optional click handler for tile images (event, imageUrl).
+ * @param {boolean} [props.modalOnClick] - Enable built-in tile modal behavior for project images.
+ * @param {boolean} [props.showOverlay] - Whether to render tile overlay text for project images.
  */
 ProjectTiles.propTypes = {
 	title: PropTypes.string.isRequired,
@@ -165,15 +202,24 @@ ProjectTiles.propTypes = {
 		})
 	).isRequired,
 	onImageClick: PropTypes.func,
+	modalOnClick: PropTypes.bool,
+	showOverlay: PropTypes.bool,
 };
 export type ProjectTilesType = InferProps<typeof ProjectTiles.propTypes>;
 export function ProjectTiles(props: ProjectTilesType) {
-	const { title, description, tileCards, onImageClick } = props;
+	const { title, description, tileCards, onImageClick, modalOnClick, showOverlay } = props;
 	return (
 		<>
 			<h3>{title}</h3>
 			<p>{description}</p>
-			<Tiles variant="caption" cards={tileCards} rowCount={3} imgClick={onImageClick} />
+			<Tiles
+				variant="caption"
+				cards={tileCards}
+				rowCount={3}
+				imgClick={onImageClick}
+				modalOnClick={modalOnClick}
+				showOverlay={showOverlay}
+			/>
 		</>
 	);
 }
@@ -199,16 +245,12 @@ ProjectsClient.propTypes = {
 			imageAlt: PropTypes.string,
 		})).isRequired,
 	})).isRequired,
+	modalOnClick: PropTypes.bool,
+	showOverlay: PropTypes.bool,
 };
 export type ProjectsClientType = InferProps<typeof ProjectsClient.propTypes>;
 export function ProjectsClient(props: ProjectsClientType) {
-	const { projects } = props;
-	const [modalContent, setModalContent] = React.useState<React.ReactNode | undefined>(undefined);
-	const handleImageClick = (event: React.MouseEvent<HTMLImageElement>, url: string) => {
-		const myContent = <SmartImage src={url} title="Modal Image" alt="Modal Image" />;
-		setModalContent(myContent);
-		handleModalOpen(event as unknown as MouseEvent);
-	};
+	const { projects, modalOnClick, showOverlay } = props;
 
 	return (
 		<>
@@ -226,12 +268,12 @@ export function ProjectsClient(props: ProjectsClientType) {
 								image: card?.image || "",
 								imageAlt: card?.imageAlt || `Project ${idx + 1} - Tile ${cardIdx + 1}`,
 							})) || []}
-							onImageClick={handleImageClick}
+							modalOnClick={modalOnClick ?? true}
+							showOverlay={showOverlay ?? true}
 						/>
 					</div>
 				))}
 			</PageSection>
-			<Modal modalContent={modalContent ?? <></>} />
 		</>
 	);
 }

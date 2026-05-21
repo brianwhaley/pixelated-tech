@@ -10,6 +10,7 @@ import { getFullPixelatedConfig } from '../config/config';
 import { CacheManager } from '../foundation/cache-manager';
 import { getDomain } from './utilities';
 import { smartFetch } from './smartfetch';
+import { getServicePathPrefix } from '../general/services.functions';
 
 const debug = false;
 
@@ -40,6 +41,7 @@ export type SitemapConfig = {
 	imageJson?: { path?: string };
 	contentful?: any; // contentful api props object
 	routes?: any; // accept route data like siteConfig
+	siteConfig?: any; // optional siteconfig.json data for dynamic pages
 };
 
 /**
@@ -48,9 +50,11 @@ export type SitemapConfig = {
  */
 export function buildSitemapConfig(
 	pixelatedConfig: any,
-	routes: any
+	siteConfig: any
 ): SitemapConfig {
+	const routes = siteConfig?.routes;
 	const sitemapConfig: SitemapConfig = {
+		siteConfig,
 		routes,
 		createPageURLs: true,
 		createImageURLsFromJSON: true,
@@ -214,6 +218,10 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 			sitemapEntries.push(...(await createPageURLs(flat, origin)));
 		}
 	}
+	// Dynamic service and service-area pages from optional siteconfig.json data
+	if (cfg.siteConfig) {
+		sitemapEntries.push(...(await createSiteConfigURLs(cfg.siteConfig, origin)));
+	}
 	// Contentful (pages)
 	if (useContentful && cfg.contentful) {
 		sitemapEntries.push(...(await createContentfulURLs({ apiProps: cfg.contentful, origin })));
@@ -285,6 +293,45 @@ export async function createPageURLs(siteConfig: { path: string }[], origin: str
 
 
 
+
+export async function createSiteConfigURLs(siteConfig: any, origin: string): Promise<SitemapEntry[]> {
+	const sitemap: SitemapEntry[] = [];
+	if (!siteConfig || typeof siteConfig !== 'object' || !siteConfig.siteInfo) {
+		return sitemap;
+	}
+
+	const services = Array.isArray(siteConfig.siteInfo.services) ? siteConfig.siteInfo.services : [];
+	const serviceAreas = Array.isArray(siteConfig.siteInfo.serviceAreas) ? siteConfig.siteInfo.serviceAreas : [];
+
+	const servicePathPrefix = getServicePathPrefix(siteConfig?.siteInfo);
+	for (const service of services) {
+		const rawPath = `${servicePathPrefix}/${contentfulValueToSlug({ value: service.slug ?? service.name })}`;
+		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin}${rawPath.startsWith('/') ? rawPath : `/${rawPath}`}`;
+		if (url) {
+			sitemap.push({
+				url,
+				lastModified: new Date(),
+				changeFrequency: 'hourly',
+				priority: 0.8,
+			});
+		}
+	}
+
+	for (const serviceArea of serviceAreas) {
+		const rawPath = serviceArea.url || serviceArea.path || `/service-areas/${contentfulValueToSlug({ value: serviceArea.slug ?? serviceArea.name })}`;
+		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin}${rawPath.startsWith('/') ? rawPath : `/${rawPath}`}`;
+		if (url) {
+			sitemap.push({
+				url,
+				lastModified: new Date(),
+				changeFrequency: 'hourly',
+				priority: 0.8,
+			});
+		}
+	}
+
+	return sitemap;
+}
 
 export async function createImageURLsFromJSON(origin: string, jsonPath = 'public/site-images.json'): Promise<SitemapEntry[]>{
 	const sitemap: any[] = [];

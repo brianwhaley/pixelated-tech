@@ -51,6 +51,9 @@ export * from './components/foundation/styleguide';
 export * from './components/general/tab';
 export * from './components/general/table';
 export * from './components/general/tiles';
+export * from './components/general/service-areas.components';
+export * from './components/general/services.components';
+export * from './components/general/services.functions';
 export * from './components/general/timeline';
 
 export * from './components/integrations/calendly';

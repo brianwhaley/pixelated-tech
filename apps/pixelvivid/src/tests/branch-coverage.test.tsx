@@ -65,8 +65,8 @@ describe('PixelVivid branch coverage tests', () => {
 		setPixelatedConfigOverride(undefined);
 		render(<Store />);
 		await waitFor(() => expect(screen.getByText(/Custom Sunglasses For Sale/i)).not.toBeNull());
-		expect(document.getElementById('contentful-items')).not.toBeNull();
-		expect(document.getElementById('ebay-items')).not.toBeNull();
+		expect(screen.getByTestId('mock-contentfulitems')).not.toBeNull();
+		expect(screen.getByTestId('mock-ebayitems')).not.toBeNull();
 	});
 
 	it('covers store page helper branches for missing and present config values', () => {

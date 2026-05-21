@@ -6,8 +6,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import { Metadata } from 'next';
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, Loading, contentfulSlugToValue } from "@pixelated-tech/components";
-import { Carousel } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, Loading, contentfulSlugToValue, Tiles } from "@pixelated-tech/components";
 import { PageSection } from '@pixelated-tech/components';
 
 export default function Project(){
@@ -36,7 +35,7 @@ export default function Project(){
 	};
 
 	const [ card , setCard ] = useState<Card | null>(null);
-	const [ carouselCards , setCarouselCards ] = useState<{ image: any }[]>([]);
+	const [ tileCards , setTileCards ] = useState<{ image: any; imageAlt?: string }[]>([]);
 	const params = useParams();
 	// Decode the slug from URL back to original title
 	const projectSlug = typeof params?.project === 'string' ? params.project : '';
@@ -49,7 +48,7 @@ export default function Project(){
 		if (!project) {
 			return;
 		}
-		async function getCarouselCards(project: string) {
+		async function getTileCards(project: string) {
 			const contentType = "carouselCard";
 			const cards = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType });
 			const card = await getContentfulEntryByField({
@@ -59,11 +58,10 @@ export default function Project(){
 			});
 			setCard(card);
 			const images = await getContentfulImagesFromEntries({ images: card.fields.carouselImages, assets: cards.includes.Asset });
-			setCarouselCards(images);
+			setTileCards(images);
 		}
-		getCarouselCards(project);
+		getTileCards(project);
 	}, [project]);
-
 
 	const [isMounted, setIsMounted] = useState(false);
 	useEffect(() => {
@@ -83,15 +81,18 @@ export default function Project(){
 						<div>
 							{card?.fields.description}
 						</div>
-						<Carousel
-							cards={carouselCards.map((card, index) => ({
-								...card,
-								index: index,
+						<Tiles
+							cards={tileCards.map((tile, index) => ({
+								index,
 								cardIndex: index,
-								cardLength: carouselCards.length
-							}))} 
-							draggable={true}
-							imgFit='contain'
+								cardLength: tileCards.length,
+								image: tile.image,
+								imageAlt: tile.imageAlt ?? ''
+							}))}
+							variant="caption"
+							rowCount={3}
+							modalOnClick={true}
+							showOverlay={false}
 						/>
 					</PageSection>
 					<br /><br />

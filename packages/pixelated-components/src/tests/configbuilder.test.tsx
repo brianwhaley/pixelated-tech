@@ -386,8 +386,9 @@ describe('ConfigBuilder Component', () => {
       const addButton = screen.getByText(/Add Service/i);
       fireEvent.click(addButton);
       
-      // Find the name field (FormEngine should render it based on services-form.json)
-      const nameInput = screen.getByLabelText(/Service Name/i);
+      // Find the new name field (FormEngine renders existing services plus the new one)
+      const nameInputs = screen.getAllByLabelText(/Service Name/i);
+      const nameInput = nameInputs[nameInputs.length - 1];
       fireEvent.change(nameInput, { target: { value: 'New Test Service' } });
       
       // Preview should update

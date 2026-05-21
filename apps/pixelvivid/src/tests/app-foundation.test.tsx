@@ -30,6 +30,8 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		buildSitemapConfig: () => ({ sitemap: true }),
 		generateSitemap: async () => [{ url: 'https://example.com/sitemap.xml' }],
 		getOriginFromNextHeaders: async () => 'https://example.com',
+		getEbayItem: vi.fn(async () => ({ legacyItemId: '123456789012', title: 'Test Sunglasses', description: 'Test description' })),
+		getEbayProductSchema: vi.fn(() => ({ '@type': 'Product', name: 'Test Sunglasses' })),
 		Manifest: vi.fn((opts: any) => ({ manifest: true, ...opts })),
 	};
 });
@@ -154,6 +156,18 @@ describe('App shell coverage', () => {
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
 		expect(root).toBeDefined();
 		expect(root.props?.children).toBeTruthy();
+	});
+
+	it('renders store item route metadata branch in root layout', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/store/123456789012', 'x-origin': 'https://example.com', 'x-url': 'https://example.com/store/123456789012' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		expect(root).toBeDefined();
+		expect(root.props?.children).toBeTruthy();
+		expect(vi.mocked(componentsServer.generateMetaTags)).toHaveBeenCalledWith(expect.objectContaining({
+			title: expect.stringContaining('PixelVivid - Item 123456789012'),
+			origin: 'https://example.com',
+			url: 'https://example.com/store/123456789012',
+		}));
 	});
 
 	it('proxies request headers correctly', () => {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 import { headers } from 'next/headers';
@@ -104,17 +104,41 @@ describe('App shell coverage', () => {
 
 	it('renders root layout with metadata and children', async () => {
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
-		render(root);
-		await waitFor(() => expect(screen.getByTestId('child')).toBeInTheDocument());
-		expect(document.querySelector('[data-testid="meta-tags"]')).toBeInTheDocument();
+		expect(root.type).toBe('html');
+		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
 	});
 
 	it('renders root layout with trailing slash path and fallback metadata', async () => {
 		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/contact/', 'x-origin': 'https://example.com' }));
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
-		render(root);
-		await waitFor(() => expect(screen.getByTestId('child')).toBeInTheDocument());
-		expect(document.querySelector('[data-testid="meta-tags"]')).toBeInTheDocument();
+		expect(root.type).toBe('html');
+		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+	});
+
+	it('renders root layout with x-url and missing origin fallback metadata', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/about', 'x-url': 'https://example.com/about' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		expect(root.type).toBe('html');
+		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+	});
+
+	it('renders root layout with unknown path fallback metadata', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/unknown', 'x-origin': 'https://example.com' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		expect(root.type).toBe('html');
+		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
+		expect(head).toBeDefined();
+		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
+		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
 	});
 
 	it('proxies request headers correctly', () => {

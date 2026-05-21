@@ -16,13 +16,13 @@ describe('Blog page', () => {
 		mockState.wordpressPosts = [{ id: 1, title: 'Hello' }];
 		render(<BlogPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).toBeInTheDocument());
-		expect(screen.getByTestId('mock-blogpostlist')).toHaveTextContent('site:manningmetalworks.wpcomstaging.com count:1');
+		expect(screen.getByTestId('mock-blogpostlist')).toHaveTextContent('site:blog.manningmetalworks.com count:1');
 	});
 
 	it('renders the blog page when wordpress posts are unavailable', async () => {
 		mockState.wordpressPosts = null as any;
 		render(<BlogPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).toBeInTheDocument());
-		expect(screen.getByTestId('mock-blogpostlist')).toHaveTextContent('site:manningmetalworks.wpcomstaging.com count:0');
+		expect(screen.getByTestId('mock-blogpostlist')).toHaveTextContent('site:blog.manningmetalworks.com count:0');
 	});
 });

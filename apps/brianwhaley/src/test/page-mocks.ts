@@ -1,6 +1,7 @@
 import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
+import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
 export interface FileDataState {
@@ -129,6 +130,14 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 	);
 };
 
+const contentfulValueToSlug = ({ value }: any) =>
+	encode(
+		String(value ?? '')
+			.trim()
+			.toLowerCase()
+			.replace(/\s+/g, '-'),
+	);
+
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -188,6 +197,7 @@ const defaultMocks: Record<string, any> = {
 	PageGridItem: mockComponent('PageGridItem'),
 	PageFlexItem: mockComponent('PageFlexItem'),
 	Callout: mockComponent('Callout', 'callout'),
+	contentfulValueToSlug,
 	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 	Markdown: mockComponent('Markdown', 'markdown'),

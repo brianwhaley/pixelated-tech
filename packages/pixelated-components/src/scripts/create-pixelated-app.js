@@ -86,6 +86,7 @@ export async function loadManifest(baseDir = path.resolve(__dirname)) {
 export function findTemplateForSlug(manifest, slug) {
 	if (!manifest || !Array.isArray(manifest.templates)) return null;
 	slug = (slug || '').toLowerCase();
+	const fuzzyCandidates = [];
 	for (const t of manifest.templates) {
 		// Skip templates that have action: "ignore" (metadata routes in Admin section)
 		if (t.action === 'ignore') continue;
@@ -94,13 +95,21 @@ export function findTemplateForSlug(manifest, slug) {
 			a = a.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 			if (a === slug) return t;
 		}
-		// also fuzzy match (e.g., 'about-us' -> 'about')
 		for (let a of t.aliases) {
 			a = a.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-			if (slug === a || slug.startsWith(a + '-') || slug.endsWith('-' + a) || slug.includes('-' + a + '-')) return t;
+			if (slug === a) return t;
+			if (slug.startsWith(a + '-')) {
+				fuzzyCandidates.push({ template: t, score: a.length + 2 });
+			} else if (slug.endsWith('-' + a)) {
+				fuzzyCandidates.push({ template: t, score: a.length + 1 });
+			} else if (slug.includes('-' + a + '-')) {
+				fuzzyCandidates.push({ template: t, score: a.length });
+			}
 		}
 	}
-	return null;
+	if (fuzzyCandidates.length === 0) return null;
+	fuzzyCandidates.sort((a, b) => b.score - a.score);
+	return fuzzyCandidates[0].template;
 }
 
 export function printAvailableTemplates(manifest) {
@@ -653,6 +662,7 @@ async function main() {
 					siteConfig = JSON.parse(await fs.readFile(siteRoutesFile, 'utf8'));
 					siteConfig.siteInfo = siteConfig.siteInfo || {};
 					siteConfig.siteInfo.name = rootDisplayName;
+					siteConfig.siteInfo.termsOfService = siteConfig.siteInfo.termsOfService || '/terms';
 				} catch (e) {
 					console.error('❌ Failed to read siteconfig.json:', e?.message || e);
 					process.exit(1);

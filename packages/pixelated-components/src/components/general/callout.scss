@@ -124,8 +124,9 @@
     --do-nothing: true;
 }
 
-.callout .callout-content {
-    --do-nothing: true;
+.callout .callout-content,
+.callout .callout-content * {
+    flex-direction: column;
 }
 
 .callout .callout-button { 

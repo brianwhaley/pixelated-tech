@@ -60,6 +60,7 @@ export interface SiteInfo {
 	name: string;
 	description: string;
 	url: string;
+	servicesPathPrefix?: string | null;
 	email?: string | null;
 	image?: string | null;
 	image_height?: string | number | null;
@@ -78,6 +79,22 @@ export interface SiteInfo {
 	openingHoursAdditionalInfo?: string | null;
 	priceRange?: string | null;
 	sameAs?: string[] | null;
+	brand?: {
+		"@type"?: string;
+		name?: string | null;
+		[key: string]: any;
+	} | null;
+	audience?: string | null;
+	offers?: any | null;
+	availability?: string | null;
+	availableChannel?: {
+		"@type"?: string;
+		serviceUrl?: string;
+		availableLanguage?: string[];
+		servicePhone?: string | null;
+		[key: string]: any;
+	} | null;
+	termsOfService?: string | null;
 	keywords?: string | null;
 	publisherType?: string | null;
 	copyrightYear?: number | null;
@@ -97,9 +114,27 @@ export interface SiteInfo {
 	favicon_type?: string | null;
 	services?: Array<{
 		name: string;
+		description: string | string[];
+		short_description?: string | null;
+		provider?: string | null;
+		category?: string | null;
+		serviceType?: string | null;
+		serviceOutput?: string | null;
+		offers?: any | null;
+		audience?: string | null;
+		image?: string | null;
+		termsOfService?: string | null;
+		[key: string]: any;
+	}> | null;
+	serviceAreas?: Array<{
+		name: string;
 		description: string;
-		url?: string;
-		areaServed?: string[];
+		short_description?: string | null;
+		keywords?: string[] | null;
+		highlights?: string[] | null;
+		relatedServices?: string[] | null;
+		image?: string | null;
+		[key: string]: any;
 	}> | null;
 }
 

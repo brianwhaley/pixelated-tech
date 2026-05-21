@@ -7,7 +7,7 @@
 		},
 		{
 			"name": "Blog",
-			"aliases": ["blog", "blog-posts", "news", "updates", "articles"],
+			"aliases": ["blog", "blog-posts", "news", "newsletter", "articles"],
 			"src": "../../pixelated-template/src/app/(pages)/blog"
 		},
 		{
@@ -82,6 +82,11 @@
 			"name": "Services",
 			"aliases": ["services", "service", "our-services", "services-page", "offerings", "solutions", "products"],
 			"src": "../../pixelated-template/src/app/(pages)/services"
+		},
+		{
+			"name": "Service Areas",
+			"aliases": ["service-areas", "service-areas-page", "service-area", "service-area-page", "areas", "locations", "coverage", "service locations"],
+			"src": "../../pixelated-template/src/app/(pages)/service-areas"
 		},
 		{
 			"name": "Sitemap",

@@ -56,9 +56,9 @@ export function NerdJoke(props: NerdJokeType) {
 		timerIntervalRef.current = null;
 
 		if (jokeIntervalRef.current) {
-			clearInterval(jokeIntervalRef.current);
+			clearTimeout(jokeIntervalRef.current);
 		}
-		jokeIntervalRef.current = setInterval(() => {
+		jokeIntervalRef.current = setTimeout(() => {
 			if (!timePausedRef.current) {
 				loadJoke();
 			}
@@ -103,7 +103,7 @@ export function NerdJoke(props: NerdJokeType) {
 				clearInterval(timerIntervalRef.current);
 			}
 			if (jokeIntervalRef.current) {
-				clearInterval(jokeIntervalRef.current);
+				clearTimeout(jokeIntervalRef.current);
 			}
 		};
 	}, [loadJoke, startTimer]);

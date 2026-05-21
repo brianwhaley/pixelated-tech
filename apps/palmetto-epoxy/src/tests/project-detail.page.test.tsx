@@ -2,8 +2,9 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { act, render, screen } from '@testing-library/react';
 import { createPageComponentMocks, resetPixelatedConfigOverride, setPixelatedConfigOverride } from '@/test/page-mocks';
 
+const params: Record<string, string | undefined> = { project: 'Test Project' };
 vi.mock('next/navigation', () => ({
-	useParams: () => ({ project: 'Test Project' }),
+	useParams: () => params,
 }));
 
 vi.mock('@pixelated-tech/components', async () => {
@@ -57,7 +58,7 @@ describe('Palmetto Epoxy project detail page', () => {
 		await act(async () => {
 			render(<ProjectPage />);
 		});
-		await screen.findByTestId('mock-carousel');
+		await screen.findByTestId('mock-tiles');
 	});
 
 	it('renders the project detail route when contentful config fields are missing', async () => {
@@ -65,6 +66,14 @@ describe('Palmetto Epoxy project detail page', () => {
 		await act(async () => {
 			render(<ProjectPage />);
 		});
-		await screen.findByTestId('mock-carousel');
+		await screen.findByTestId('mock-tiles');
+	});
+
+	it('renders the project detail route when the project slug is missing', async () => {
+		params.project = '';
+		await act(async () => {
+			render(<ProjectPage />);
+		});
+		await screen.findByTestId('mock-tiles');
 	});
 });

@@ -57,7 +57,11 @@ export default async function ProjectsPage() {
 	return (
 		<>
 			<PageTitleHeader title="Oaktree Landscaping Projects" />
-			<ProjectsClient projects={projectCards} />
+			<ProjectsClient 
+				projects={projectCards} 
+				modalOnClick={true} 
+				showOverlay={false} 
+			/>
 		</>
 	);
 }

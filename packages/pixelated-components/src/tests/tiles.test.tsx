@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
-import { screen } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { Tiles } from '@/components/general/tiles';
 import type { CarouselCardType } from '@/components/general/carousel';
 import {
@@ -17,7 +17,8 @@ vi.mock('@/components/general/smartimage', () => ({
     src: props.src,
     alt: props.alt,
     title: props.title,
-    'data-testid': 'smart-image'
+    'data-testid': 'smart-image',
+    onClick: props.onClick,
   })
 }));
 
@@ -211,6 +212,68 @@ describe('Tiles Component', () => {
       const { container } = render(<Tiles cards={cardsWithoutBody} />);
       const body = container.querySelector('.tile-image-overlay-body');
       expect(body?.textContent).toBe('');
+    });
+
+    it('should hide overlay when showOverlay is false', () => {
+      const { container } = render(<Tiles cards={mockCards} showOverlay={false} />);
+      const overlays = container.querySelectorAll('.tile-image-overlay');
+      expect(overlays.length).toBe(0);
+    });
+
+    it('should still render overlay when showOverlay is true', () => {
+      const { container } = render(<Tiles cards={mockCards} showOverlay={true} />);
+      const overlays = container.querySelectorAll('.tile-image-overlay');
+      expect(overlays.length).toBe(mockCards.length);
+    });
+  });
+
+  describe('Modal behavior', () => {
+    it('should open internal modal when modalOnClick is true', () => {
+      const { container } = render(<Tiles cards={mockCards} modalOnClick={true} showOverlay={false} />);
+      const firstImage = container.querySelector('[data-testid="smart-image"]') as HTMLImageElement;
+      const modal = container.querySelector('.modal') as HTMLElement;
+      expect(modal).toBeInTheDocument();
+      expect(modal.style.display).toBe('none');
+
+      fireEvent.click(firstImage);
+
+      expect(modal.style.display).toBe('block');
+    });
+
+    it('should use imgClick callback when provided instead of internal modal', () => {
+      const clickHandler = vi.fn();
+      const { container } = render(<Tiles cards={mockCards} modalOnClick={true} showOverlay={false} imgClick={clickHandler} />);
+      const firstImage = container.querySelector('[data-testid="smart-image"]') as HTMLImageElement;
+      const modal = container.querySelector('.modal') as HTMLElement;
+      expect(modal).toBeInTheDocument();
+      expect(modal.style.display).toBe('none');
+
+      fireEvent.click(firstImage);
+
+      expect(clickHandler).toHaveBeenCalledTimes(1);
+      expect(modal.style.display).toBe('none');
+    });
+
+    it('should open separate modals for different Tiles instances', () => {
+      const { container } = render(
+        <>
+          <Tiles cards={mockCards} modalOnClick={true} showOverlay={false} />
+          <Tiles cards={mockCards} modalOnClick={true} showOverlay={false} />
+        </>
+      );
+
+      const modals = container.querySelectorAll('.modal');
+      expect(modals.length).toBe(2);
+      expect(modals[0].style.display).toBe('none');
+      expect(modals[1].style.display).toBe('none');
+
+      const images = container.querySelectorAll('[data-testid="smart-image"]');
+      fireEvent.click(images[0]);
+      expect(modals[0].style.display).toBe('block');
+      expect(modals[1].style.display).toBe('none');
+
+      fireEvent.click(images[mockCards.length]);
+      expect(modals[1].style.display).toBe('block');
     });
   });
 

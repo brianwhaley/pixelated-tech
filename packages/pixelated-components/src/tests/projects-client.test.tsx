@@ -7,11 +7,12 @@ import { ProjectsClient, ProjectsClientType } from '@/components/general/tiles';
 // Mock SmartImage
 vi.mock('@/components/general/smartimage', () => ({
 	SmartImage: (props: any) => {
-		const { src, alt, title } = props;
+		const { src, alt, title, onClick } = props;
 		return React.createElement('img', {
 			src,
 			alt,
 			title,
+			onClick,
 			'data-testid': 'smart-image'
 		});
 	},
@@ -108,7 +109,7 @@ describe('ProjectsClient Component', () => {
 
 		it('should render Modal component', () => {
 			render(<ProjectsClient {...mockProps} />);
-			expect(screen.getByTestId('modal')).toBeInTheDocument();
+			expect(screen.getAllByTestId('modal').length).toBeGreaterThanOrEqual(1);
 		});
 	});
 
@@ -175,13 +176,13 @@ describe('ProjectsClient Component', () => {
 
 	describe('Modal Interaction', () => {
 		it('should open modal when image is clicked', () => {
-			const { getByTestId } = render(<ProjectsClient {...mockProps} />);
+			render(<ProjectsClient {...mockProps} />);
 			const firstImage = screen.getAllByTestId('smart-image')[0];
 
 			fireEvent.click(firstImage);
 
-			const modal = getByTestId('modal');
-			expect(modal).toHaveAttribute('data-has-content', 'true');
+			const modals = screen.getAllByTestId('modal');
+			expect(modals.some((modal) => modal.getAttribute('data-has-content') === 'true')).toBe(true);
 		});
 
 		it('should render SmartImage in modal when image is clicked', () => {
@@ -213,8 +214,8 @@ describe('ProjectsClient Component', () => {
 
 			fireEvent.click(firstImage);
 
-			const modal = screen.getByTestId('modal');
-			expect(modal).toHaveAttribute('data-has-content', 'true');
+			const modals = screen.getAllByTestId('modal');
+			expect(modals.some((modal) => modal.getAttribute('data-has-content') === 'true')).toBe(true);
 		});
 	});
 
@@ -385,9 +386,9 @@ describe('ProjectsClient Component', () => {
 			render(<ProjectsClient {...mockProps} />);
 			const firstImage = screen.getAllByTestId('smart-image')[0];
 			fireEvent.click(firstImage);
-			// After click, find the modal and verify smart-image is present
-			const modal = screen.getByTestId('modal');
-			expect(modal).toHaveAttribute('data-has-content', 'true');
+			// After click, find the modal instances and verify at least one is active
+			const modals = screen.getAllByTestId('modal');
+			expect(modals.some((modal) => modal.getAttribute('data-has-content') === 'true')).toBe(true);
 		});
 
 		it('should have meaningful heading hierarchy', () => {

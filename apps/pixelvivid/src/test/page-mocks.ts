@@ -1,6 +1,7 @@
 import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
+import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
 export interface FileDataState {
@@ -129,6 +130,60 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 	);
 };
 
+const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
+	const items = Array.isArray(services) && services.length ? services : siteInfo?.services ?? [];
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-serviceslist', id },
+		title ? React.createElement('h2', null, title) : null,
+		intro ? React.createElement('p', null, intro) : null,
+		items.map((service: any, index: number) => React.createElement(
+			'div',
+			{ key: service?.name ?? index, 'data-testid': 'callout' },
+			service?.name ?? `service-${index}`,
+		)),
+	);
+};
+
+const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any) => {
+	const items = Array.isArray(serviceAreas) && serviceAreas.length ? serviceAreas : siteInfo?.serviceAreas ?? [];
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-serviceareaslist', id },
+		title ? React.createElement('h2', null, title) : null,
+		intro ? React.createElement('p', null, intro) : null,
+		items.map((area: any, index: number) => React.createElement(
+			'div',
+			{ key: area?.name ?? index, 'data-testid': 'mock-servicearea' },
+			area?.name ?? `service-area-${index}`,
+		)),
+	);
+};
+
+const mockServiceDetailPage = ({ service, title, id }: any) => {
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-servicedetailpage', id },
+		title ?? service?.name ?? 'Service Detail',
+	);
+};
+
+const mockServiceAreaDetailPage = ({ serviceArea, title, id }: any) => {
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-serviceareadetailpage', id },
+		title ?? serviceArea?.name ?? 'Service Area Detail',
+	);
+};
+
+const contentfulValueToSlug = ({ value }: any) =>
+	encode(
+		String(value ?? '')
+			.trim()
+			.toLowerCase()
+			.replace(/\s+/g, '-'),
+	);
+
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -188,6 +243,15 @@ const defaultMocks: Record<string, any> = {
 	PageGridItem: mockComponent('PageGridItem'),
 	PageFlexItem: mockComponent('PageFlexItem'),
 	Callout: mockComponent('Callout', 'callout'),
+	ServicesList: mockServicesList,
+	ServiceAreasList: mockServiceAreasList,
+	ServiceDetailPage: mockServiceDetailPage,
+	ServiceAreaDetailPage: mockServiceAreaDetailPage,
+	EbayItemDetail: mockComponent('EbayItemDetail', 'mock-ebayitemdetail'),
+	ContentfulItemDetail: mockComponent('ContentfulItemDetail', 'mock-contentfulitemdetail'),
+	ContentfulItems: mockComponent('ContentfulItems', 'mock-contentfulitems'),
+	EbayItems: mockComponent('EbayItems', 'mock-ebayitems'),
+	contentfulValueToSlug,
 	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 	Markdown: mockComponent('Markdown', 'markdown'),

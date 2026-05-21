@@ -85,8 +85,8 @@ ConfigBuilder.propTypes = {
 			services: PropTypes.arrayOf(PropTypes.shape({
 				name: PropTypes.string.isRequired,
 				description: PropTypes.string.isRequired,
+				short_description: PropTypes.string,
 				url: PropTypes.string,
-				areaServed: PropTypes.arrayOf(PropTypes.string.isRequired),
 			})),
 		}).isRequired,
 		routes: PropTypes.arrayOf(PropTypes.shape({
@@ -209,12 +209,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 
 					// Ensure services keywords/arrays are valid
 					const normalizedServices = (parsedConfig.siteInfo.services || []).map((service: any) => ({
-						...service,
-						areaServed: Array.isArray(service.areaServed)
-							? service.areaServed
-							: (typeof service.areaServed === 'string'
-								? service.areaServed.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
-								: [])
+						...service
 					}));
 
 					setConfig({
@@ -410,7 +405,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 			...prev,
 			siteInfo: {
 				...prev.siteInfo,
-				services: [...(prev.siteInfo.services || []), { name: '', description: '', url: '', areaServed: '' }]
+				services: [...(prev.siteInfo.services || []), { name: '', description: '', url: '' }]
 			}
 		} as any));
 	};
@@ -446,10 +441,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 			siteInfo: {
 				...rawConfig.siteInfo,
 				services: (rawConfig.siteInfo.services || []).map((service: any) => ({
-					...service,
-					areaServed: typeof service.areaServed === 'string'
-						? service.areaServed.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
-						: service.areaServed
+					...service
 				}))
 			},
 			routes: (rawConfig.routes || []).map((route: any) => ({
@@ -711,10 +703,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 													const Component = (FC as any)[field.component];
 													if (!Component) return null;
 
-													let fieldValue = (service as any)[field.props.name];
-													if (field.props.name === 'areaServed' && Array.isArray(fieldValue)) {
-														fieldValue = fieldValue.join(', ');
-													}
+													const fieldValue = (service as any)[field.props.name];
 
 													const fieldProps = {
 														...field.props,

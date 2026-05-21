@@ -1,6 +1,6 @@
 {
 	"name": "pixelatedtech",
-	"version": "4.6.6",
+	"version": "4.6.7",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -49,19 +49,20 @@
 		"@types/testing-library__react": "^10.0.1",
 		"@typescript-eslint/eslint-plugin": "^8.59.3",
 		"@typescript-eslint/parser": "^8.59.3",
-		"@vitest/coverage-v8": "^4.1.6",
-		"@vitest/ui": "^4.1.6",
+		"@vitest/coverage-v8": "^4.1.7",
+		"@vitest/ui": "^4.1.7",
 		"css-loader": "^7.1.4",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",
 		"react-dom": "^19.2.6",
 		"sass": "^1.99.0",
-		"sass-loader": "^16.0.7",
+		"sass-loader": "^17.0.0",
 		"style-loader": "^4.0.0",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.59.3",
-		"vitest": "^4.1.6",
+		"vitest": "^4.1.7",
+		"html-entities": "^2.3.3",
 		"webpack-dev-server": "^5.2.4"
 	}
 }

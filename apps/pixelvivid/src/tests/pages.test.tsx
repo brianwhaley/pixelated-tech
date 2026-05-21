@@ -24,6 +24,8 @@ import Preorder2026 from '@/app/(pages)/preorder-2026/page';
 import Requests from '@/app/(pages)/requests/page';
 import Returns from '@/app/(pages)/returns/page';
 import Store from '@/app/(pages)/store/page';
+import ServicesPage from '@/app/(pages)/services/page';
+import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import StyleGuide from '@/app/(pages)/styleguide/page';
 import Subscribe from '@/app/(pages)/subscribe/page';
 
@@ -53,6 +55,8 @@ describe('PixelVivid page coverage', () => {
 			{ name: 'Requests', Component: Requests },
 			{ name: 'Returns', Component: Returns },
 			{ name: 'Store', Component: Store },
+			{ name: 'Services', Component: ServicesPage },
+			{ name: 'ServiceAreas', Component: ServiceAreasPage },
 			{ name: 'StyleGuide', Component: StyleGuide },
 			{ name: 'Subscribe', Component: Subscribe },
 		];

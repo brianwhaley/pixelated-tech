@@ -156,7 +156,7 @@
 	{
 		"name": "threemuses",
 		"localPath": "/Volumes/btw_x10_pro/Git/threemuses",
-		"localPort": "3010",
+		"localPort": "3011",
 		"remote": "threemuses",
 		"repo": "threemuses",
 		"healthCheckId": "f033cb9f-b1f6-4e9c-a130-613e0630e309",
@@ -165,6 +165,20 @@
 		"url": "https://www.thethreemusesofbluffton.com",
 		"ga4PropertyId": "",
 		"gscSiteUrl": "https://www.thethreemusesofbluffton.com",
+		"googleMapsPlaceId": ""
+	},
+	{
+		"name": "simple-day-concierge",
+		"localPath": "/Volumes/btw_x10_pro/Git/simple-day-concierge",
+		"localPort": "3012",
+		"remote": "simple-day-concierge",
+		"repo": "simple-day-concierge",
+		"healthCheckId": "",
+		"amplifyAppId": "",
+		"cloudfronturl": "",
+		"url": "https://www.simpledayconcierge.com",
+		"ga4PropertyId": "",
+		"gscSiteUrl": "https://www.simpledayconcierge.com",
 		"googleMapsPlaceId": ""
 	}
 ]

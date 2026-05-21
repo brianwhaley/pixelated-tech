@@ -1,6 +1,7 @@
 import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
+import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
 export interface FileDataState {
@@ -129,6 +130,37 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 	);
 };
 
+const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
+	const items = Array.isArray(services) && services.length ? services : siteInfo?.services ?? [];
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-serviceslist', id },
+		title ? React.createElement('h2', null, title) : null,
+		intro ? React.createElement('p', null, intro) : null,
+		items.map((service: any, index: number) => React.createElement(
+			'div',
+			{ key: service?.name ?? index, 'data-testid': 'mock-callout' },
+			service?.name ?? `service-${index}`,
+		)),
+	);
+};
+
+const mockServiceDetailPage = ({ service, title, id }: any) => {
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-servicedetailpage', id },
+		title ?? service?.name ?? 'Service Detail',
+	);
+};
+
+const contentfulValueToSlug = ({ value }: any) =>
+	encode(
+		String(value ?? '')
+			.trim()
+			.toLowerCase()
+			.replace(/\s+/g, '-'),
+	);
+
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -177,6 +209,10 @@ const defaultMocks: Record<string, any> = {
 	WebsiteSchema: () => null,
 	LocalBusinessSchema: () => null,
 	ServicesSchema: () => null,
+	ServicesList: mockServicesList,
+	ServiceCard: mockComponent('ServiceCard'),
+	ServiceDetailPage: mockServiceDetailPage,
+	contentfulValueToSlug,
 	Hero: mockComponent('Hero', 'hero'),
 	SmartImage: mockComponent('SmartImage', 'smart-image'),
 	MenuAccordion: mockComponent('MenuAccordion'),
