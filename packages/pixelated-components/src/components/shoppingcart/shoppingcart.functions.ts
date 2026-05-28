@@ -41,6 +41,7 @@ export type CartItemType = {
 	itemDescription?: string,
     itemImageURL? : string,
     itemQuantity: number,
+    itemInventory: number,
     itemCost: number,
     itemCurrency?: string,
     itemIsShippable?: boolean,
@@ -140,7 +141,22 @@ export function increaseQuantityCart(cart: CartItemType[], itemID: string) {
 	for (const key in cart) {
 		const item = cart[key];
 		if (typeof item === 'object' && item !== null && Object.prototype.hasOwnProperty.call(item, 'itemID') && item.itemID == itemID) {
-			item.itemQuantity += 1;
+			const limit = Number(item.itemInventory) || 1;
+			if (item.itemQuantity < limit) {
+				item.itemQuantity += 1;
+			}
+		} 
+	}
+}
+
+
+export function decreaseQuantityCart(cart: CartItemType[], itemID: string) {
+	for (const key in cart) {
+		const item = cart[key];
+		if (typeof item === 'object' && item !== null && Object.prototype.hasOwnProperty.call(item, 'itemID') && item.itemID == itemID) {
+			if (item.itemQuantity > 1) {
+				item.itemQuantity -= 1;
+			}
 		} 
 	}
 }
@@ -184,20 +200,26 @@ export function getCartSubTotal(cart: CartItemType[]) {
 
 export function addToShoppingCart(thisItem: CartItemType) {
 	let cart: CartItemType[] = getCart();
+	const inventoryLimit = thisItem.itemInventory ?? 1;
+	
 	if(alreadyInCart(cart, thisItem.itemID)){
 		const index = getIndexInCart(cart, thisItem.itemID);
-		if ( cart[index].itemQuantity < thisItem.itemQuantity) {
+		// Sync latest inventory from source
+		cart[index].itemInventory = inventoryLimit;
+
+		if ( cart[index].itemQuantity < inventoryLimit) {
 			if (debug) console.log("Increasing quantity in cart");
 			increaseQuantityCart(cart, thisItem.itemID);
 		} else {
 			if (debug) console.log("Cant add more than item quantity to the cart");
-			// cant add moe than quantity
+			// cant add more than quantity
 		}
 	} else {
 		// BE SURE TO ADD ONLY ONE TO THE CART
 		if (debug) console.log("Adding only one to the cart");
 		const cartItem = { ...thisItem };
 		cartItem.itemQuantity = 1;
+		cartItem.itemInventory = inventoryLimit;
 		cart.push(cartItem);
 	} 
 	if (debug) console.debug('ShoppingCart:persisting cart -> CacheManager.set', shoppingCartKey, cart);
@@ -206,11 +228,36 @@ export function addToShoppingCart(thisItem: CartItemType) {
 }
 
 
-export function removeFromShoppingCart(thisItem: CartItemType) { 
-	let cart: CartItemType[] = getCart();
-	if(alreadyInCart(cart, thisItem.itemID)){
-		cart.splice(getIndexInCart(cart, thisItem.itemID), 1);
+export function increaseQuantityInCart(thisItem: CartItemType) {
+	let cart: CartItemType[] = [...getCart()];
+	const index = getIndexInCart(cart, thisItem.itemID);
+	if (index !== -1) {
+		cart[index] = { ...cart[index], itemQuantity: cart[index].itemQuantity + 1 };
+		const limit = Number(cart[index].itemInventory) || 1;
+		if (cart[index].itemQuantity > limit) {
+			cart[index].itemQuantity = limit;
+		}
 	}
+	if (debug) console.debug('ShoppingCart:increaseQuantityInCart -> persisting cart via CacheManager', shoppingCartKey, cart);
+	cartCache.set<CartItemType[]>(shoppingCartKey, cart);
+	window.dispatchEvent(new Event('storage'));
+}
+
+
+export function decreaseQuantityInCart(thisItem: CartItemType) {
+	let cart: CartItemType[] = [...getCart()];
+	const index = getIndexInCart(cart, thisItem.itemID);
+	if (index !== -1 && cart[index].itemQuantity > 1) {
+		cart[index] = { ...cart[index], itemQuantity: cart[index].itemQuantity - 1 };
+	}
+	if (debug) console.debug('ShoppingCart:decreaseQuantityInCart -> persisting cart via CacheManager', shoppingCartKey, cart);
+	cartCache.set<CartItemType[]>(shoppingCartKey, cart);
+	window.dispatchEvent(new Event('storage'));
+}
+
+
+export function removeFromShoppingCart(thisItem: CartItemType) { 
+	let cart: CartItemType[] = getCart().filter(item => item.itemID !== thisItem.itemID);
 	if (debug) console.debug('ShoppingCart:removeFromShoppingCart -> persisting cart via CacheManager', shoppingCartKey, cart);
 	cartCache.set<CartItemType[]>(shoppingCartKey, cart);
 	window.dispatchEvent(new Event('storage'));

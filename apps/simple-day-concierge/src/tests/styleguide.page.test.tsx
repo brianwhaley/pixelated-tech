@@ -4,7 +4,7 @@ import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 
-import StyleGuide from '@/app/(pages)/styleguide/page';
+import StyleGuide from '@/app/(pages)/style-guide/page';
 
 describe('StyleGuide page', () => {
 	beforeEach(() => {

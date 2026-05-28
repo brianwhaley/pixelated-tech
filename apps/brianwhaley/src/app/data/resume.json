@@ -1263,7 +1263,7 @@
 							"type": [ "h-card" ],
 							"properties": {
 								"job-title": [ "Owner" ],
-								"org": [ "Pixelated" ],
+								"org": [ "Pixelated Technologies" ],
 								"url": [ ],
 								"email": [ ],
 								"tel": [ "(973) 710-8008" ],
@@ -1275,6 +1275,36 @@
 							}
 						}],
 						"projects" : [
+							{
+								"type": [ "h-card" ],
+								"properties": {
+									"name": [ "Manning Metalworks Web Site" ],
+									"url": [ "https://www.manningmetalworks.com/" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/55264773028_c02a11e374_b.jpg" ],
+									"note": [  ],
+									"x-note": [ "May 11, 2025" ]
+								}
+							},
+							{
+								"type": [ "h-card" ],
+								"properties": {
+									"name": [ "The Three Muses of Bluffton Web Site" ],
+									"url": [ "https://www.thethreemusesofbluffton.com/" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/55253025973_90bdc1ace6_b.jpg" ],
+									"note": [  ],
+									"x-note": [ "May 5, 2026" ]
+								}
+							},
+							{
+								"type": [ "h-card" ],
+								"properties": {
+									"name": [ "JZ Home Improvement Web Site" ],
+									"url": [ "https://www.jzhomeimprovement.com/" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/55112823619_334ab334be_b.jpg" ],
+									"note": [  ],
+									"x-note": [ "December 22, 2025" ]
+								}
+							},
 							{
 								"type": [ "h-card" ],
 								"properties": {
@@ -1290,7 +1320,7 @@
 								"properties": {
 									"name": [ "PixelVivid Web Site" ],
 									"url": [ "https://www.pixelvivid.com/" ],
-									"photo": [ "https://farm66.static.flickr.com/65535/54858225547_3a37e623de.jpg" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/54858225547_3a37e623de_b.jpg" ],
 									"note": [  ],
 									"x-note": [ "June 27, 2025" ]
 								}
@@ -1300,7 +1330,7 @@
 								"properties": {
 									"name": [ "Palmetto Epoxy" ],
 									"url": [ "https://www.palmetto-epoxy.com/" ],
-									"photo": [ "https://farm66.static.flickr.com/65535/54593598482_7c25791d94.jpg" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/54593598482_7c25791d94_b.jpg" ],
 									"note": [  ],
 									"x-note": [ "March 29, 2025" ]
 								}
@@ -1309,9 +1339,19 @@
 								"properties": {
 									"name": [ "Information Focus" ],
 									"url": [ "https://www.informationfocus.net/" ],
-									"photo": [ "https://farm66.static.flickr.com/65535/54859918358_8626a5f296.jpg" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/54859918358_8626a5f296_b.jpg" ],
 									"note": [  ],
 									"x-note": [ "June 26, 2023" ]
+								}
+							},
+							{
+								"type": [ "h-card" ],
+								"properties": {
+									"name": [ "Brian Whaley Web Site" ],
+									"url": [ "https://www.brianwhaley.com/" ],
+									"photo": [ "" ],
+									"note": [  ],
+									"x-note": [ "Jan 1, 2023" ]
 								}
 							},
 							{
@@ -1320,7 +1360,8 @@
 									"name": [ "Pixelated Web Site" ],
 									"url": [ "https://www.pixelated.tech/" ],
 									"photo": [ "" ],
-									"note": [ ]
+									"note": [  ],
+									"x-note": [ "April 15, 2010" ]
 								}
 							}
 						]

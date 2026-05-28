@@ -88,8 +88,7 @@ describe('site-health-axe-core.integration', () => {
 			expect(result3).toBeDefined();
 		}, 15000);
 
-		it('should calculate summary with violation counts', async () => {
-			// For this test, we need to override the puppeteer mock to return violations
+		it('should calculate summary with violation counts including moderate and minor', async () => {
 			const puppeteerModule = await import('puppeteer');
 			vi.mocked(puppeteerModule.default.launch as any).mockResolvedValueOnce({
 				newPage: vi.fn().mockResolvedValue({
@@ -101,11 +100,12 @@ describe('site-health-axe-core.integration', () => {
 					frames: vi.fn().mockReturnValue([{ 
 						evaluate: vi.fn().mockResolvedValue({ 
 							violations: [
-								{ id: 'alt-text', impact: 'critical', description: 'Images without alt text', help: '', helpUrl: '', nodes: [], tags: [] }
+								{ id: '1', impact: 'critical', description: '', help: '', helpUrl: '', nodes: [], tags: [] },
+								{ id: '2', impact: 'serious', description: '', help: '', helpUrl: '', nodes: [], tags: [] },
+								{ id: '3', impact: 'moderate', description: '', help: '', helpUrl: '', nodes: [], tags: [] },
+								{ id: '4', impact: 'minor', description: '', help: '', helpUrl: '', nodes: [], tags: [] }
 							],
-							passes: [
-								{ id: 'color-contrast', impact: 'serious', description: 'Sufficient color contrast', help: '', helpUrl: '', nodes: [], tags: [] }
-							],
+							passes: [],
 							incomplete: [],
 							inapplicable: [],
 							testEngine: { name: 'axe-core', version: '4.0.0' },
@@ -122,9 +122,42 @@ describe('site-health-axe-core.integration', () => {
 
 			const result = await performAxeCoreAnalysis('http://example.com');
 
-			expect(result.summary.violations).toBeGreaterThanOrEqual(1);
-			expect(result.summary.passes).toBeGreaterThanOrEqual(1);
-			expect(result.summary.critical).toBeGreaterThanOrEqual(1);
+			expect(result.summary.critical).toBe(1);
+			expect(result.summary.serious).toBe(1);
+			expect(result.summary.moderate).toBe(1);
+			expect(result.summary.minor).toBe(1);
+		});
+
+		it('should handle runtime_env: prod', async () => {
+			const result = await performAxeCoreAnalysis('http://example.com', 'prod');
+			expect(result.status).toBe('success');
+		});
+
+		it('should handle runtime_env: auto', async () => {
+			const result = await performAxeCoreAnalysis('http://example.com', 'auto');
+			expect(result.status).toBe('success');
+		});
+
+		it('should provide hint on browser launch failure', async () => {
+			const puppeteerModule = await import('puppeteer');
+			vi.mocked(puppeteerModule.default.launch as any).mockRejectedValueOnce('Launch Error');
+
+			const result = await performAxeCoreAnalysis('http://example.com');
+
+			expect(result.status).toBe('error');
+			expect(result.error).toContain('Could not launch Chrome/Chromium');
+		});
+
+		it('should handle non-Error catch in performAxeCoreAnalysis', async () => {
+			const puppeteerModule = await import('puppeteer');
+			// Force a throw that is not an Error object
+			vi.mocked(puppeteerModule.default.launch as any).mockImplementationOnce(() => {
+				throw 'String error';
+			});
+
+			const result = await performAxeCoreAnalysis('http://example.com');
+			expect(result.status).toBe('error');
+			expect(result.error).toContain('String error');
 		});
 
 		it('should fall back to local inline injection when CDN injection fails', async () => {

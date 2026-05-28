@@ -556,12 +556,12 @@
 					"description": "By The Way Font",
 					"keywords": "pixelated technologies, custom font, by the way, by the way font" 
 				} , { 
-					"name": "Cost", 
+					"name": "Pricing", 
 					"hidden": true,
-					"path": "/cost", 
-					"title": "Pixelated Technologies - Cost",
-					"description": "Pixelated Technologies Cost Information",
-					"keywords": "pixelated technologies, cost, pricing, web development, small business" 
+					"path": "/pricing", 
+					"title": "Pixelated Technologies - Pricing & Value Packages",
+					"description": "Pixelated Technologies Pricing & Value Packages",
+					"keywords": "pixelated technologies, pricing, value packages, web development, small business" 
 				} , { 
 					"name": "Instagram Feed", 
 					"path": "/instagram", 

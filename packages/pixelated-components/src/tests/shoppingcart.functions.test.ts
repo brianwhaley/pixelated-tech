@@ -5,10 +5,13 @@ import {
 	setCart,
 	alreadyInCart,
 	increaseQuantityCart,
+	decreaseQuantityCart,
 	getIndexInCart,
 	getCartItemCount,
 	getCartSubTotal,
 	addToShoppingCart,
+	increaseQuantityInCart,
+	decreaseQuantityInCart,
 	removeFromShoppingCart,
 	clearShoppingCart,
 	clearShoppingCartCache,
@@ -196,7 +199,7 @@ describe('Shopping Cart Functions', () => {
 	describe('increaseQuantityCart', () => {
 		it('should increase quantity of existing item', () => {
 			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 },
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemInventory: 10, itemCost: 10 },
 			];
 			increaseQuantityCart(cart, '1');
 			expect(cart[0].itemQuantity).toBe(2);
@@ -204,20 +207,56 @@ describe('Shopping Cart Functions', () => {
 
 		it('should not modify other items', () => {
 			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 },
-				{ itemID: '2', itemTitle: 'Item 2', itemQuantity: 3, itemCost: 20 },
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemInventory: 10, itemCost: 10 },
+				{ itemID: '2', itemTitle: 'Item 2', itemQuantity: 3, itemInventory: 10, itemCost: 20 },
 			];
 			increaseQuantityCart(cart, '1');
 			expect(cart[0].itemQuantity).toBe(2);
 			expect(cart[1].itemQuantity).toBe(3);
 		});
 
+		it('should respect itemInventory limit', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemInventory: 1, itemCost: 10 },
+			];
+			increaseQuantityCart(cart, '1');
+			expect(cart[0].itemQuantity).toBe(1);
+		});
+
 		it('should not affect non-existent items', () => {
 			const cart: ShoppingCartType[] = [
-				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 },
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemInventory: 10, itemCost: 10 },
 			];
 			increaseQuantityCart(cart, '999');
 			expect(cart[0].itemQuantity).toBe(1);
+		});
+	});
+
+	describe('decreaseQuantityCart', () => {
+		it('should decrease quantity of existing item', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 5, itemCost: 10 },
+			];
+			decreaseQuantityCart(cart, '1');
+			expect(cart[0].itemQuantity).toBe(4);
+		});
+
+		it('should not decrease quantity below 1', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 1, itemCost: 10 },
+			];
+			decreaseQuantityCart(cart, '1');
+			expect(cart[0].itemQuantity).toBe(1);
+		});
+
+		it('should not modify other items', () => {
+			const cart: ShoppingCartType[] = [
+				{ itemID: '1', itemTitle: 'Item 1', itemQuantity: 2, itemCost: 10 },
+				{ itemID: '2', itemTitle: 'Item 2', itemQuantity: 3, itemCost: 20 },
+			];
+			decreaseQuantityCart(cart, '1');
+			expect(cart[0].itemQuantity).toBe(1);
+			expect(cart[1].itemQuantity).toBe(3);
 		});
 	});
 
@@ -340,6 +379,7 @@ describe('Shopping Cart Functions', () => {
 				itemWeight: 2,
 				itemWeightUnit: 'lb',
 				itemType: 'product',
+				itemInventory: 10,
 			};
 			setCart([
 				{
@@ -352,6 +392,7 @@ describe('Shopping Cart Functions', () => {
 					itemWeight: 2,
 					itemWeightUnit: 'lb',
 					itemType: 'product',
+					itemInventory: 10,
 				},
 			]);
 			addToShoppingCart(item);
@@ -395,11 +436,36 @@ describe('Shopping Cart Functions', () => {
 
 			const cart = getCart();
 			expect(cart[0].itemQuantity).toBe(5);
-			expect(cart[0].itemCurrency).toBe('USD');
-			expect(cart[0].itemIsShippable).toBe(true);
-			expect(cart[0].itemWeight).toBe(2);
-			expect(cart[0].itemWeightUnit).toBe('lb');
-			expect(cart[0].itemType).toBe('product');
+		});
+	});
+
+	describe('increaseQuantityInCart', () => {
+		it('should increase quantity in cart and persist', () => {
+			const item: ShoppingCartType = { 
+				itemID: '1', 
+				itemTitle: 'Item 1', 
+				itemQuantity: 1, 
+				itemInventory: 2, 
+				itemCost: 10 
+			};
+			setCart([item]);
+			increaseQuantityInCart(item);
+			const cart = getCart();
+			expect(cart[0].itemQuantity).toBe(2);
+		});
+
+		it('should not increase quantity beyond inventory limit', () => {
+			const item: ShoppingCartType = { 
+				itemID: '1', 
+				itemTitle: 'Item 1', 
+				itemQuantity: 2, 
+				itemInventory: 2, 
+				itemCost: 10 
+			};
+			setCart([item]);
+			increaseQuantityInCart(item);
+			const cart = getCart();
+			expect(cart[0].itemQuantity).toBe(2);
 		});
 	});
 

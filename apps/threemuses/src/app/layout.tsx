@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import { getRouteByKey } from '@pixelated-tech/components/server';
 import { generateMetaTags } from "@pixelated-tech/components/server";
 import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema } from "@pixelated-tech/components";
+import { GoogleFonts } from "@pixelated-tech/components";
 import { PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import type { SiteInfo } from '@pixelated-tech/components/server';
@@ -47,11 +48,7 @@ export default async function RootLayout({
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
 				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
-
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-				{/* eslint-disable-next-line @next/next/no-page-custom-font */}
-				<link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet" />
+				<GoogleFonts visualdesign={siteConfig.visualdesign} />
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>

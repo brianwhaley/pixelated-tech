@@ -13,7 +13,7 @@ export default function Footer() {
 				<hr style={{ margin: "0 auto", width: "80%" }} />
 				<br />
 				<div className="centered">
-					<p className="footer-text">&copy; {new Date().getFullYear()} Simple Day Concierge. All rights reserved.</p>
+					<p className="footer-text">&copy; {new Date().getFullYear()} Simple Day Concierge Service. All rights reserved.</p>
 
 					<PixelatedFooter />
 					

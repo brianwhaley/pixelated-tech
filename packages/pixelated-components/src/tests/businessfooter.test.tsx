@@ -76,4 +76,56 @@ describe('BusinessFooter', () => {
 
     expect(screen.getByText('Suite 203, located in the Atrium Building')).toBeTruthy();
   });
+
+  it('renders Google Maps with an API key when provided', () => {
+    render(<BusinessFooter siteInfo={siteInfo} googleMapsApiKey="AIza_test_key" />);
+    
+    const frame = screen.getByTitle('Business location map');
+    expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps/embed/v1/place?key=AIza_test_key'));
+  });
+
+  it('handles string based opening hours', () => {
+    render(
+      <BusinessFooter
+        siteInfo={{
+          ...siteInfo,
+          openingHours: 'Open 24/7' as any,
+        }}
+      />
+    );
+    expect(screen.getByText('Open 24/7')).toBeTruthy();
+  });
+
+  it('handles invalid time format in opening hours gracefully', () => {
+    render(
+      <BusinessFooter
+        siteInfo={{
+          ...siteInfo,
+          openingHours: [
+            { day: 'Mon', open: 'invalid', close: 'time' }
+          ],
+        }}
+      />
+    );
+    // Should display the raw invalid string if Date parsing fails
+    expect(screen.getByText('Mon: invalid - time')).toBeTruthy();
+  });
+
+  it('handles missing address gracefully', () => {
+    const { container } = render(
+      <BusinessFooter
+        siteInfo={{
+          ...siteInfo,
+          address: undefined
+        }}
+      />
+    );
+    expect(screen.queryByTitle('Business location map')).not.toBeInTheDocument();
+    expect(screen.getByText('Map unavailable')).toBeTruthy();
+  });
+
+  it('returns null if siteInfo is missing', () => {
+    const { container } = render(<BusinessFooter siteInfo={undefined as any} />);
+    expect(container.firstChild).toBeNull();
+  });
 });

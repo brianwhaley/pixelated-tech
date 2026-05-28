@@ -6,11 +6,18 @@ import type { NextRequest } from "next/server";
 export function proxy(req: NextRequest) {
 	const path = req.nextUrl.pathname + (req.nextUrl.search || "");
 	const origin = (req.nextUrl as any)?.origin ?? new URL(req.url).origin;
+	const hostName = req.nextUrl?.hostname;
 	const url = (req.nextUrl as any)?.href ?? req.url ?? `${origin}${path}`;
 	const headers = new Headers(req.headers);
 	headers.set("x-path", path);
 	headers.set("x-origin", String(origin));
 	headers.set("x-url", String(url));
+	if (hostName && hostName.endsWith('amplifyapp.com')) {
+		return NextResponse.redirect(
+			`https://www.thethreemusesofbluffton.com${path}`,
+			301
+		);
+	}
 	return NextResponse.next({
 		request: {
 			headers,

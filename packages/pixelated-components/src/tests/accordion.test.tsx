@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import { screen } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { Accordion } from '../components/general/accordion';
 
 describe('Accordion', () => {
@@ -21,7 +21,20 @@ describe('Accordion', () => {
     expect(screen.getByText('Question 1')).toBeInTheDocument();
     expect(screen.getByText('Question 2')).toBeInTheDocument();
   });
+  it('calls onToggle when an item is expanded/collapsed', () => {
+    const onToggle = vi.fn();
+    const items = [{ title: 'Item 1', content: 'Content 1' }];
+    render(<Accordion items={items} onToggle={onToggle} />);
 
+    const details = screen.getByText('Item 1').closest('details');
+    if (!details) throw new Error('Details element not found');
+
+    // Manually trigger the toggle event since fireEvent.click on summary doesn't always 
+    // trigger the 'toggle' event in JSDOM the same way a real browser does.
+    fireEvent(details, new Event('toggle'));
+    
+    expect(onToggle).toHaveBeenCalled();
+  });
   it('renders content as text when string', () => {
     render(<Accordion items={mockItems} />);
     

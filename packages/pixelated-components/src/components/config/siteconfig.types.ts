@@ -128,7 +128,7 @@ export interface SiteInfo {
 	}> | null;
 	serviceAreas?: Array<{
 		name: string;
-		description: string;
+		description: string | string[];
 		short_description?: string | null;
 		keywords?: string[] | null;
 		highlights?: string[] | null;

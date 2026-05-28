@@ -195,7 +195,7 @@ const defaultMocks: Record<string, any> = {
 	GetFlickrData: async () => [],
 	GenerateFlickrCards: () => [],
 	FlickrWrapper: async () => [],
-	ToggleLoading: () => null,
+	ToggleLoading: () => null, GoogleFonts: () => null,
 	MicroInteractions: () => null,
 	preloadAllCSS: () => null,
 	preloadImages: () => null,

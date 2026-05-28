@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getMergedEbayConfig, getEbayShoppingCartItem } from '../components/shoppingcart/ebay.functions';
+import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getMergedEbayConfig, getEbayShoppingCartItem, getEbayBrowseItem } from '../components/shoppingcart/ebay.functions';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
@@ -14,18 +14,10 @@ vi.mock('../components/foundation/cache-manager', () => {
 	const store: Record<string, any> = {};
 	return {
 		CacheManager: class {
-			static clearStore() {
-				Object.keys(store).forEach(key => delete store[key]);
-			}
-			get(key: string) {
-				return store[key];
-			}
-			set(key: string, value: any) {
-				store[key] = value;
-			}
-			clear() {
-				Object.keys(store).forEach(key => delete store[key]);
-			}
+			static clearStore() { Object.keys(store).forEach(k => delete store[k]); }
+			get(key: string) { return store[key]; }
+			set(key: string, val: any) { store[key] = val; }
+			clear() { Object.keys(store).forEach(k => delete store[k]); }
 		}
 	};
 });
@@ -35,17 +27,18 @@ vi.mock('../components/foundation/utilities', () => ({
 }));
 
 vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn()
+	getFullPixelatedConfig: vi.fn(() => ({}))
 }));
 
 vi.mock('../components/foundation/smartfetch', () => ({
-	smartFetch: vi.fn().mockResolvedValue({ ok: true, json: vi.fn() })
+	smartFetch: vi.fn()
 }));
 
 describe('ebay.functions - Real Tests', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		;(CacheManager as any).clearStore?.();
+    const cache = new CacheManager({} as any);
+    (cache as any).clear?.();
 	});
 
 	const mockEbayItem = {
@@ -96,6 +89,65 @@ describe('ebay.functions - Real Tests', () => {
 			expect(result).toHaveProperty('itemWeightUnit');
 			expect(result).toHaveProperty('itemType');
 			expect(result.itemID).toBe('123456');
+		});
+
+		it('should handle image variants for itemImageURL', () => {
+			// Case 1: image.imageUrl
+			const res1 = getEbayShoppingCartItem({
+				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: { imageUrl: 'url1' } },
+				apiProps: mockApiProps
+			});
+			expect(res1.itemImageURL).toBe('url1');
+
+			// Case 2: image (as object with imageUrl)
+			const res2 = getEbayShoppingCartItem({
+				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: { imageUrl: 'url2' } },
+				apiProps: mockApiProps
+			});
+			expect(res2.itemImageURL).toBe('url2');
+
+			// Case 3: thumbnailImages[0].imageUrl (already tested but good to have)
+			const res3 = getEbayShoppingCartItem({
+				thisItem: { ...mockEbayItem, thumbnailImages: [{ imageUrl: 'url3' }] },
+				apiProps: mockApiProps
+			});
+			expect(res3.itemImageURL).toBe('url3');
+
+			// Case 4: thumbnailImages[0] (as string)
+			const res4 = getEbayShoppingCartItem({
+				thisItem: { ...mockEbayItem, thumbnailImages: ['url4'] as any },
+				apiProps: mockApiProps
+			});
+			expect(res4.itemImageURL).toBeUndefined();
+
+			// Case 5: fallbacks
+			const res5 = getEbayShoppingCartItem({
+				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: undefined },
+				apiProps: mockApiProps
+			});
+			expect(res5.itemImageURL).toBe('');
+		});
+
+	it('should handle missing categories', () => {
+		const item = { ...mockEbayItem, categories: undefined, categoryId: undefined };
+		const result = getEbayShoppingCartItem({
+			thisItem: item,
+			apiProps: mockApiProps
+		});
+		expect(result.itemQuantity).toBe(10);
+	});
+
+		it('should handle missing categories', () => {
+			const item = {
+				...mockEbayItem,
+				categoryId: undefined,
+				categories: undefined
+			};
+			const result = getEbayShoppingCartItem({
+				thisItem: item,
+				apiProps: mockApiProps
+			});
+			expect(result.itemQuantity).toBe(10);
 		});
 
 		it('should extract item title', () => {
@@ -185,6 +237,35 @@ describe('ebay.functions - Real Tests', () => {
 			expect(merged.proxyURL).toBe('https://proxy-config.example.com');
 			expect(merged.baseSearchURL).toBe('https://override.example.com');
 			expect(merged.appId).toBe('override-id');
+		});
+	});
+
+	describe('error handling in ebay functions', () => {
+		it('getMergedEbayConfig should handle errors gracefully', () => {
+			(vi.mocked(getFullPixelatedConfig) as any).mockImplementationOnce(() => {
+				throw new Error('Config error');
+			});
+			const merged = getMergedEbayConfig({});
+			expect(merged).toBeDefined();
+			expect(merged.appId).toBeUndefined();
+		});
+
+		it('getEbayAppToken should handle fetch errors', async () => {
+			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Fetch failed'));
+			const token = await getEbayAppToken({ apiProps: mockApiProps });
+			expect(token).toBeUndefined();
+		});
+
+		it('getEbayBrowseSearch should handle fetch errors', async () => {
+			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Search failed'));
+			const results = await getEbayBrowseSearch({ apiProps: mockApiProps, token: 'token' });
+			expect(results).toBeUndefined();
+		});
+
+		it('getEbayBrowseItem should handle fetch errors', async () => {
+			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Item fetch failed'));
+			const results = await getEbayBrowseItem({ apiProps: mockApiProps, itemId: '123', token: 'token' });
+			expect(results).toBeUndefined();
 		});
 	});
 

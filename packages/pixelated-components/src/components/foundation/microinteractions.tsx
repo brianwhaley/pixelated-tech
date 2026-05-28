@@ -3,6 +3,42 @@ import PropTypes, { InferProps } from "prop-types";
 import { observeIntersection, isElementPartiallyInViewport } from './intersection-observer';
 import './microinteractions.css';
 
+
+
+
+/* ========== MICRO ANIMATION HELPERS ========== */
+
+function addClassToElements(params: {
+	selectors?: string, 
+	elements?: Element | Element[] | NodeListOf<Element>, 
+	className: string}) {
+	const { selectors, elements, className } = params;
+	const selector = selectors?.trim() || null;
+	const selectorItems = selector
+		? Array.from(document.querySelectorAll(selector))
+		: [];
+	const elementItems = elements ? (elements instanceof Element ? [elements] : Array.from(elements)) : [];
+	const items = [...selectorItems, ...elementItems];
+	items.forEach((item) => item.classList.add(className));
+}
+
+function removeClassFromElements(params: {
+	selectors?: string, 
+	elements?: Element | Element[] | NodeListOf<Element>, 
+	className: string}) {
+	const { selectors, elements, className } = params;
+	const selector = selectors?.trim() || null;
+	const selectorItems = selector
+		? Array.from(document.querySelectorAll(selector))
+		: [];
+	const elementItems = elements ? (elements instanceof Element ? [elements] : Array.from(elements)) : [];
+	const items = [...selectorItems, ...elementItems];
+	items.forEach((item) => item.classList.remove(className));
+}
+
+
+
+
 /* ========== MICRO ANIMATIONS ========== */
 
 /**
@@ -10,7 +46,7 @@ import './microinteractions.css';
  * It is typically called once in a top-level component or effect.
  * 
  * @param props - Configuration props for enabling/disabling interactions
- * @returns A cleanup function if scrollfadeElements is used
+ * @returns A cleanup function if scrollfadeSelectors is used
  */
 /**
  * MicroInteractions — enables or disables lightweight UI micro-interactions by toggling body classes and initializing scroll-fade behavior.
@@ -23,7 +59,8 @@ import './microinteractions.css';
  * @param {boolean} [props.imgtwist] - Enable small rotation animation on hover for images.
  * @param {boolean} [props.imghue] - Enable hue-shift effects on hover for images.
  * @param {boolean} [props.simplemenubutton] - Enable simplified menu button microinteractions.
- * @param {string} [props.scrollfadeElements] - CSS selector for elements to apply scroll-fade animations to.
+ * @param {string} [props.scrollfadeSelectors] - CSS selector for elements to apply scroll-fade animations to.
+ * @param {string} [props.glassSelectors] - CSS selector for elements to apply the glass style to.
  */
 MicroInteractions.propTypes = {
 /** Enable ring animation on buttons. */
@@ -43,14 +80,16 @@ MicroInteractions.propTypes = {
 	/** Toggle simplified menu button interactions. */
 	simplemenubutton: PropTypes.bool,
 	/** Selector for elements that should receive the scroll-fade animation. */
-	scrollfadeElements: PropTypes.string,
+	scrollfadeSelectors: PropTypes.string,
+	/** Selector for elements that should receive the glass style. */
+	glassSelectors: PropTypes.string,
 };
 export type MicroInteractionsType = InferProps<typeof MicroInteractions.propTypes>;
 export function MicroInteractions(props: MicroInteractionsType) {
 	const body = document.body;
-	
+	const selectorProps = ['scrollfadeSelectors', 'glassSelectors'];
 	for (const propName in props) {
-		if (Object.prototype.hasOwnProperty.call(props, propName) && propName !== 'scrollfadeElements') {
+		if (Object.prototype.hasOwnProperty.call(props, propName) && !selectorProps.includes(propName)) {
 			if ((props as any)[propName] === true) {
 				body.classList.add(propName);
 			} else if ((props as any)[propName] === false) {
@@ -58,11 +97,18 @@ export function MicroInteractions(props: MicroInteractionsType) {
 			}
 		}
 	}
-
-	if (props.scrollfadeElements) {
-		return ScrollFade(props.scrollfadeElements as string);
+	for (const selectorProp of selectorProps) {
+		if (selectorProp === 'scrollfadeSelectors' && props.scrollfadeSelectors) {
+			ScrollFade(props.scrollfadeSelectors);
+		} else if (selectorProp && (props as any)[selectorProp]) {
+			const className = selectorProp.replace('Selectors', '');		
+			addClassToElements({ selectors: (props as any)[selectorProp], className: className });
+		}
 	}
 }
+
+
+
 
 /**
  * Applies a fade-in animation to elements as they enter the viewport
@@ -70,31 +116,31 @@ export function MicroInteractions(props: MicroInteractionsType) {
  * @returns Cleanup function for the intersection observer
  */
 function ScrollFade(elements: string) {
-	const elementsToAnimate = document.querySelectorAll(elements);
-	
+	const selector = elements.trim();
+	if (!selector) { return; }
+	const elementsToAnimate = document.querySelectorAll(selector);
 	// Initial state setup
 	elementsToAnimate.forEach((element) => {
 		if (isElementPartiallyInViewport(element)) {
 			// If already in viewport, make sure it's visible without animation
-			element.classList.remove('hidden');
-			element.classList.remove('scrollfade');
+			removeClassFromElements({ elements: element, className: 'hidden' });
+			removeClassFromElements({ elements: element, className: 'scrollfade' });
 		} else {
 			// Apply initial hidden state to elements NOT on the screen
-			element.classList.add('hidden');
+			addClassToElements({ elements: element, className: 'hidden' });
 		}
 	});
-
 	// Setup observer for elements not yet visible
 	const cleanup = observeIntersection(
-		elements,
+		selector,
 		(entry, observer) => {
 			if (entry.isIntersecting) {
 				const element = entry.target;
 				
 				// Only animate if it was hidden
 				if (element.classList.contains('hidden')) {
-					element.classList.add('scrollfade');
-					element.classList.remove('hidden');
+					addClassToElements({ elements: element, className: 'scrollfade' });
+					removeClassFromElements({ elements: element, className: 'hidden' });
 					// Stop observing after animation triggers
 					observer.unobserve(element);
 				}
@@ -105,6 +151,5 @@ function ScrollFade(elements: string) {
 			threshold: 0
 		}
 	);
-
 	return cleanup;
 }

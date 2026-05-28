@@ -5,7 +5,16 @@ const nextConfig: NextConfig = {
 	...getBaseNextConfig(),
 	reactStrictMode: true,
 	async redirects() {
-		return [];
+		return [
+			{
+				source: '/:path*',
+				has: [
+					{ type: 'host', value: 'main.d17pj30yytnnjd.amplifyapp.com' },
+				],
+				destination: 'https://www.thethreemusesofbluffton.com/:path*',
+				permanent: true,
+			},
+    	];
 	},
 };
 

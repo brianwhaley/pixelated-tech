@@ -3,9 +3,9 @@
 
 ## Criteria for each individual Blog Post:
 * Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
-* After the conclusion of each post, add a call to action to sign up for our blog newsletter, check our our online boutique (./boutique) or to stop by our store. 
+* After the conclusion of each post, add a call to action to check out the events on the /events page, review the packages on /dancewear page, or sign up for our blog newsletter, or to stop by our store. 
 * Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..  
-* Add links to other blog posts or other content on the threemusesofbluffton web site
+* Add links to other blog posts or other content on thethreemusesofbluffton web site
 * Use a tone of empthy, understanding as a small business owner, and a sense of community
 
 ## The Editorial Rotation
@@ -45,21 +45,21 @@ Focus: Recitals, prom alterations, and Mother’s Day.
 19. [  ] Sewing: Upcycling 101: Turning an old dress into a new favorite.
 20. [  ] Boutique: The Mother’s Day Gift Guide: Hand-stitched elegance.
 21. [  ] Studio: A Day in the Life: Behind the scenes at The Three Muses.
-22. [  ] Dancewear: Transitioning to Pointe: Is your dancer ready?
-23. [  ] Sewing: The Art of the Hem: Why professional tailoring beats DIY.
+22. [ x ] Dancewear: Transitioning to Pointe: Is your dancer ready?
+23. [ x ] Sewing: The Art of the Hem: Why professional tailoring beats DIY.
 24. [  ] Boutique: Graduation Gifts: Unique keepsakes for the Class of 2026.
 25. [  ] Studio: Summer Class Schedule Release! (What’s coming up).
-26. [  ] Dancewear: Summer Intensive Essentials: Packing your dance bag.
+26. [ x ] Dancewear: Summer Intensive Essentials: Packing your dance bag.
 
 ## Quarter 3: Creative Camps & Back-to-School
 
 Focus: Summer sewing camps, new dance season registration, and teacher gifts.
 
-27. [  ] Sewing: Summer Sewing Camp Highlights: What our students are making.
-28. [  ] Boutique: The Perfect Hostess Gift for those Bluffton summer parties.
-29. [  ] Studio: Organizing your craft space: Tips from Sewing’s corner.
-30. [  ] Dancewear: Back-to-Dance: The 2026 Dress Code Guide for local studios.
-31. [  ] Sewing: Alterations for Kids: Saving money on school uniforms.
+27. [ x ] Sewing: Summer Sewing Camp Highlights: What our students are making.
+28. [ x ] Boutique: The Perfect Hostess Gift for those Bluffton summer parties.
+29. [ x ] Studio: Organizing your craft space: Tips from Sewing’s corner.
+30. [ x ] Dancewear: Back-to-Dance: The 2026 Dress Code Guide for local studios.
+31. [ x ] Sewing: Alterations for Kids: Saving money on school uniforms.
 32. [  ] Boutique: Personalized "Teacher Treats" for the first week of school.
 33. [  ] Studio: How we choose our Boutique brands: Quality over quantity.
 34. [  ] Dancewear: Breaking in your new shoes: Tips for a pain-free start.

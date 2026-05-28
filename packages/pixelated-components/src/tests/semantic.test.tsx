@@ -132,6 +132,18 @@ describe('Semantic Components', () => {
       expect(screen.getByTestId('title-header-child')).toBeInTheDocument();
     });
 
+    it('should render only children when title prop is missing', () => {
+      render(
+        <PageTitleHeader>
+          <span data-testid="title-header-only-child">Direct Child Content</span>
+        </PageTitleHeader>
+      );
+
+      const heading = screen.getByRole('heading', { level: 1 });
+      expect(heading).toHaveTextContent('Direct Child Content');
+      expect(screen.getByTestId('title-header-only-child')).toBeInTheDocument();
+    });
+
     it('should render children inside linked heading when url is provided', () => {
       render(
         <PageTitleHeader title="Linked Title" url="/linked-title">
@@ -156,6 +168,18 @@ describe('Semantic Components', () => {
       const heading = screen.getByRole('heading', { level: 2 });
       expect(heading).toHaveTextContent('Section Title');
       expect(screen.getByTestId('section-header-child')).toBeInTheDocument();
+    });
+
+    it('should render only children when title prop is missing', () => {
+      render(
+        <PageSectionHeader>
+          <span data-testid="section-header-only-child">Direct Section Child</span>
+        </PageSectionHeader>
+      );
+
+      const heading = screen.getByRole('heading', { level: 2 });
+      expect(heading).toHaveTextContent('Direct Section Child');
+      expect(screen.getByTestId('section-header-only-child')).toBeInTheDocument();
     });
 
     it('should render children inside linked section heading when url is provided', () => {

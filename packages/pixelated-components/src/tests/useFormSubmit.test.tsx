@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '../test/test-utils';
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor, renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { useFormSubmit } from '../components/sitebuilder/form/formsubmit';
+import { useFormSubmit, FormSubmitWrapper, useFormSubmitContext } from '../components/sitebuilder/form/formsubmit';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';
 
 // Mock smartFetch
@@ -10,7 +10,24 @@ vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
 }));
 
+// Mock foundation/loading and general/modal
+vi.mock('../components/foundation/loading', () => ({
+	ToggleLoading: vi.fn(),
+	Loading: () => <div data-testid="loading-spinner">Loading</div>
+}));
+
+vi.mock('../components/general/modal', () => ({
+	handleModalOpen: vi.fn(),
+	Modal: ({ modalContent }: any) => (
+		<div data-testid="modal-component">
+			<div data-testid="modal-content-inner">{modalContent}</div>
+		</div>
+	)
+}));
+
 import { smartFetch } from '../components/foundation/smartfetch';
+import { ToggleLoading } from '../components/foundation/loading';
+import { handleModalOpen } from '../components/general/modal';
 
 function TestForm({ options }: any) {
   const { handleSubmit, isSubmitting, submitError, modalContent } = useFormSubmit(options);
@@ -251,5 +268,105 @@ describe('useFormSubmit', () => {
 
     expect(callback).toHaveBeenCalled();
     expect(smartFetch).toHaveBeenCalled();
+  });
+
+  it('emailFormData should handle preventDefault failure in honeypot guard', async () => {
+    const form = document.createElement('form');
+    form.id = 'spam-form-2';
+    const honeypot = document.createElement('input');
+    honeypot.name = 'winnie';
+    honeypot.value = 'spam';
+    form.appendChild(honeypot);
+    document.body.appendChild(form);
+
+    const event = {
+      target: form,
+      preventDefault: vi.fn()
+        .mockImplementationOnce(() => {}) // First call at line 36
+        .mockImplementationOnce(() => { throw new Error('fail'); }), // Second call at line 51
+    } as any;
+
+    const { emailFormData } = await import('../components/sitebuilder/form/formsubmit');
+    await emailFormData(event);
+    expect(event.preventDefault).toHaveBeenCalled();
+  });
+
+  it('emailJSON should handle fetch errors', async () => {
+    vi.mocked(smartFetch).mockRejectedValueOnce(new Error('Fetch failed'));
+    const callback = vi.fn();
+    const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
+    
+    await emailJSON({ name: 'Test' }, callback);
+    expect(callback).toHaveBeenCalled();
+  });
+
+  describe('FormSubmitWrapper and context', () => {
+    it('FormSubmitWrapper provides context and renders helpers', () => {
+      const Child = () => {
+        const { isSubmitting } = useFormSubmitContext();
+        return <div data-testid="child">{String(isSubmitting)}</div>;
+      };
+
+      render(
+        <FormSubmitWrapper>
+          <Child />
+        </FormSubmitWrapper>
+      );
+
+      expect(screen.getByTestId('child')).toBeInTheDocument();
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+      expect(screen.getByTestId('modal-component')).toBeInTheDocument();
+    });
+
+    it('useFormSubmitContext throws error when used outside provider', () => {
+      const Consumer = () => {
+        useFormSubmitContext();
+        return null;
+      };
+
+      // Suppress console error for expected throw
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      
+      expect(() => render(<Consumer />)).toThrow('useFormSubmitContext must be used within FormSubmitWrapper');
+      
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('Lifecycle and options coverage', () => {
+    it('should call ToggleLoading and handleModalOpen by default', async () => {
+      vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+
+      render(<TestForm options={{}} />);
+      fireEvent.submit(screen.getByTestId('test-form'));
+
+      await waitFor(() => {
+        expect(ToggleLoading).toHaveBeenCalledWith({ show: true });
+      });
+      
+      await waitFor(() => {
+        expect(handleModalOpen).toHaveBeenCalled();
+      });
+
+      expect(ToggleLoading).toHaveBeenCalledWith({ show: false });
+    });
+
+    it('should handle handleModalOpen failure gracefully', async () => {
+      vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+      vi.mocked(handleModalOpen).mockImplementationOnce(() => {
+        throw new Error('Modal error');
+      });
+
+      render(<TestForm options={{}} />);
+      fireEvent.submit(screen.getByTestId('test-form'));
+
+      await waitFor(() => {
+        expect(handleModalOpen).toHaveBeenCalled();
+      });
+      // Should not crash the whole handleSubmit
+      await waitFor(() => {
+        expect(ToggleLoading).toHaveBeenCalledWith({ show: false });
+      });
+    });
   });
 });

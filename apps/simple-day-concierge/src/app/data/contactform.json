@@ -37,7 +37,7 @@
 				"type" : "hidden",
 				"id" : "domain",
 				"name" : "domain",
-				"value" : "Simple Day Concierge"
+				"value" : "simpledayconcierge.com"
 			}
 		},{
 			"component" : "FormInput",

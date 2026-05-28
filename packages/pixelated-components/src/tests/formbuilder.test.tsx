@@ -132,4 +132,63 @@ describe('FormBuilder', () => {
     expect(preview).toBeInTheDocument();
     expect(preview).toHaveTextContent(/\{\s*"fields"\s*:\s*\[\]\s*\}/);
   });
+
+  it('updates field props and appends to the final form JSON', async () => {
+    const { container } = render(<FormBuilder />);
+
+    // Step 1: Select "text" type to generate prop inputs
+    const typeInput = container.querySelector('input#type') as HTMLInputElement;
+    fireEvent.change(typeInput, { target: { value: 'text' } });
+    const buildForm = container.querySelector('form#build') as HTMLFormElement;
+    fireEvent.submit(buildForm);
+
+    // Step 2: Fill in the property inputs (ID, name, label)
+    await waitFor(() => {
+      expect(container.querySelector('form#field_props')).toBeInTheDocument();
+    });
+
+    const idInput = container.querySelector('input#id') as HTMLInputElement;
+    const nameInput = container.querySelector('input#name') as HTMLInputElement;
+    const labelInput = container.querySelector('input#label') as HTMLInputElement;
+
+    fireEvent.change(idInput, { target: { value: 'test-id' } });
+    fireEvent.change(nameInput, { target: { value: 'test-name' } });
+    fireEvent.change(labelInput, { target: { value: 'Test Label' } });
+
+    // Step 3: Submit the prop form to append to final JSON
+    const propForm = container.querySelector('form#field_props') as HTMLFormElement;
+    fireEvent.submit(propForm);
+
+    // Step 4: Verify the preview contains the new field
+    await waitFor(() => {
+      const preview = container.querySelector('pre');
+      expect(preview?.textContent).toContain('"id": "test-id"');
+      expect(preview?.textContent).toContain('"name": "test-name"');
+      expect(preview?.textContent).toContain('"label": "Test Label"');
+      expect(preview?.textContent).toContain('"component": "FormInput"');
+    });
+  });
+
+  it('handles empty property values gracefully', async () => {
+    const { container } = render(<FormBuilder />);
+
+    // Select type
+    const typeInput = container.querySelector('input#type') as HTMLInputElement;
+    fireEvent.change(typeInput, { target: { value: 'text' } });
+    const buildForm = container.querySelector('form#build') as HTMLFormElement;
+    fireEvent.submit(buildForm);
+
+    await waitFor(() => {
+      expect(container.querySelector('form#field_props')).toBeInTheDocument();
+    });
+
+    // Submit without filling optional props (like placeholder)
+    const propForm = container.querySelector('form#field_props') as HTMLFormElement;
+    fireEvent.submit(propForm);
+
+    await waitFor(() => {
+      const preview = container.querySelector('pre');
+      expect(preview?.textContent).toContain('"fields"');
+    });
+  });
 });

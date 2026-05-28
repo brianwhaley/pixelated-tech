@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { getFontOptions } from './google-fonts.client';
+import { getFontOptionsClient } from '../../integrations/google.fonts';
 import { WEB_SAFE_FONTS, GENERIC_FAMILIES, type FontOption } from './fonts';
 import './FontSelector.css';
 
@@ -59,12 +59,9 @@ export function FontSelector(props: FontSelectorType) {
 	useEffect(() => {
 		if (fontType === 'google') {
 			setIsLoading(true);
-			getFontOptions().then(options => {
-				setGoogleFonts(options);
-				setIsLoading(false);
-			}).catch(() => {
-				setIsLoading(false);
-			});
+			const options = getFontOptionsClient();
+			setGoogleFonts(options);
+			setIsLoading(false);
 		}
 	}, [fontType]);
 

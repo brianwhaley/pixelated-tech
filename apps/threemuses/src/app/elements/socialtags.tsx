@@ -48,7 +48,7 @@ export default function SocialTags() {
 				</PageGridItem>
 				<PageGridItem>
 					<Callout variant="full" imgShape="squircle" layout="vertical" 
-						url="https://nextdoor.com/" 
+						url="https://nextdoor.com/page/the-tree-muses-of-bluffton-bluffton-sc/" 
 						img="/images/logos/nextdoor-logo.png" imgAlt="Nextdoor" />
 				</PageGridItem>
 			</PageSection>

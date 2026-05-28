@@ -177,7 +177,8 @@ export function ContentfulListItem(props: ContentfulListItemType) {
 		itemTitle: thisItem.fields.title,
 		itemDescription: thisItem.fields.description || '',
 		itemImageURL: thisItem.fields.imageUrl,
-		itemQuantity: thisItem.fields.quantity,
+		itemQuantity: 1,
+		itemInventory: thisItem.fields.quantity,
 		itemCost: thisItem.fields.price,
 		itemCurrency: thisItem.fields.priceCurrency || 'USD',
 		itemIsShippable: thisItem.fields.isShippable !== false,
@@ -368,7 +369,8 @@ export function ContentfulItemDetail(props: ContentfulItemDetailType)  {
 			itemTitle: thisItem.fields.title,
 			itemDescription: thisItem.fields.description || '',
 			itemImageURL: thisItem.fields.imageUrl,
-			itemQuantity: thisItem.fields.quantity,
+			itemQuantity: 1,
+			itemInventory: thisItem.fields.quantity,
 			itemCost: thisItem.fields.price,
 		};
 		

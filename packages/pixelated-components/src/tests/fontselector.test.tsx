@@ -4,15 +4,15 @@ import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { FontSelector } from '../components/sitebuilder/config/FontSelector';
 
-// Mock the google-fonts.client module
-vi.mock('../components/sitebuilder/config/google-fonts.client', () => ({
-  getFontOptions: vi.fn(() => Promise.resolve([
+// Mock the google.fonts module
+vi.mock('../components/integrations/google.fonts', () => ({
+  getFontOptionsClient: vi.fn(() => [
     { value: 'Roboto', label: 'Roboto (sans-serif)', category: 'sans-serif' },
     { value: 'Open Sans', label: 'Open Sans (sans-serif)', category: 'sans-serif' },
     { value: 'Montserrat', label: 'Montserrat (sans-serif)', category: 'sans-serif' },
     { value: 'Times New Roman', label: 'Times New Roman (serif)', category: 'serif' },
     { value: 'Arial', label: 'Arial (sans-serif)', category: 'sans-serif' }
-  ])),
+  ]),
   generateGoogleFontsUrl: vi.fn((fonts) => fonts.length > 0 ? `https://fonts.googleapis.com/css2?family=${fonts.join('&family=')}` : null)
 }));
 

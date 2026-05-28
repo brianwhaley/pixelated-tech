@@ -14,7 +14,6 @@ describe('Contact page', () => {
 
 	it('renders the contact page schedule and form sections', () => {
 		render(<Contact />);
-		expect(screen.getByTestId('calendly')).toBeInTheDocument();
 		expect(screen.getByTestId('form-engine')).toBeInTheDocument();
 		expect(screen.getByText('info@simpledayconcierge.com').closest('a')).toHaveAttribute('href', 'mailto:info@simpledayconcierge.com');
 	});

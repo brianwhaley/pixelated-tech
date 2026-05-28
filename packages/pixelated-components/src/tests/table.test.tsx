@@ -4,6 +4,13 @@ import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
 import { Table } from '@/components/general/table';
 
+// Mock innerText for JSDOM
+Object.defineProperty(HTMLElement.prototype, 'innerText', {
+  get() { return this.textContent; },
+  set(v) { this.textContent = v; },
+  configurable: true
+});
+
 // Mock SmartImage component
 vi.mock('@/components/general/smartimage', () => ({
   SmartImage: (props: any) => {
@@ -516,6 +523,28 @@ describe('Table Component', () => {
       fireEvent.click(headers[0]);
       // If click executed without error, test passes
       expect(container.querySelector('table')).toBeInTheDocument();
+    });
+
+    it('should toggle sort direction on multiple clicks', () => {
+      const { container } = render(<Table data={mockTableData} sortable={true} id="test-table" />);
+      const header = screen.getByText('Name');
+      
+      // First click -> asc
+      fireEvent.click(header);
+      const arrow = header.querySelector('.sort-arrow');
+      if (!arrow) {
+        const parentHeader = header.closest('th');
+        const realArrow = parentHeader?.querySelector('.sort-arrow');
+        expect(realArrow).toHaveClass('asc');
+        
+        // Second click
+        fireEvent.click(header);
+        expect(realArrow).toHaveClass('desc');
+      } else {
+        expect(arrow).toHaveClass('asc');
+        fireEvent.click(header);
+        expect(arrow).toHaveClass('desc');
+      }
     });
 
     it('should clear all arrows before applying new sort', () => {

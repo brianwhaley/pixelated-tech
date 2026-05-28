@@ -66,6 +66,7 @@ export * from './components/integrations/contentful.management';
 export * from './components/integrations/flickr';
 export * from './components/integrations/gemini-api.client';
 export * from './components/integrations/gemini-api.functions';
+export * from './components/integrations/google.fonts';
 export * from './components/integrations/google.reviews.components';
 export * from './components/integrations/google.reviews.functions';
 export * from './components/integrations/googleplaces';
@@ -105,7 +106,6 @@ export * from './components/sitebuilder/config/CompoundFontSelector';
 export * from './components/sitebuilder/config/ConfigBuilder';
 export * from './components/sitebuilder/config/ConfigEngine';
 export * from './components/sitebuilder/config/FontSelector';
-export * from './components/sitebuilder/config/google-fonts.client';
 export * from './components/sitebuilder/config/fonts';
 
 export * from './components/sitebuilder/form/formbuilder';

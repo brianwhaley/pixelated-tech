@@ -33,6 +33,8 @@ export * from './components/integrations/gemini-api.server';
 export * from './components/integrations/gemini-api.functions';
 export * from './components/integrations/googleplaces';
 export * from './components/integrations/googlemap';
+export * from './components/integrations/google.fonts.server';
+export * from './components/integrations/google.fonts';
 export * from './components/integrations/google.reviews.functions';
 export * from './components/integrations/gravatar.functions';
 export * from './components/integrations/instagram.functions';
@@ -50,7 +52,6 @@ export * from './components/shoppingcart/usps.server';
 
 export * from './components/sitebuilder/config/ConfigEngine';
 export * from './components/sitebuilder/config/fonts';
-export * from './components/sitebuilder/config/google-fonts';
 
 export * from './components/sitebuilder/form/formtypes';
 export * from './components/sitebuilder/form/formengineutilities';

@@ -6,26 +6,33 @@ import { VisualDesignStyles, GoogleFontsImports } from '../components/sitebuilde
 // Helper to build valid VisualDesignType fixtures for tests
 import { visualdesign as harnessVisualDesign } from '../test/test-data';
 const makeToken = (value: string) => ({ value: String(value), type: 'string', group: 'test', label: 'test' });
-const defaultVisualDesign = harnessVisualDesign || {
+const defaultVisualDesign = {
   'primary-color': makeToken('#007bff'),
   'font-size1-min': makeToken('2.00rem')
 }; // fallback to generated tokens for very specific unit tests
 
 const buildVisualDesign = (overrides: Record<string, any> = {}, extras: Record<string, any> = {}) => ({ ...defaultVisualDesign, ...Object.fromEntries(Object.entries(overrides).map(([k, v]) => [k, typeof v === 'string' ? makeToken(v) : v])), ...extras });
 
-// Mock the google-fonts module
-vi.mock('../components/sitebuilder/config/google-fonts', () => ({
-  generateGoogleFontsUrl: vi.fn((fonts: string[]) => {
-    if (fonts.length === 0) return '';
-    const cleanFonts = fonts
-      .map((font: string) => font.replace(/['"]/g, '').trim())
-      .filter((font: string) => font.length > 0);
-    const fontParam = cleanFonts
-      .map((font: string) => font.replace(/\s+/g, '+'))
-      .join('|');
-    return `https://fonts.googleapis.com/css2?family=${fontParam}&display=swap`;
-  })
-}));
+// Mock the google.fonts module
+vi.mock('../components/integrations/google.fonts', async (importOriginal) => {
+  const actual = await importOriginal<any>();
+  return {
+    ...actual,
+    generateGoogleFontsUrl: vi.fn((fonts: string[]) => {
+      if (fonts.length === 0) return '';
+      const cleanFonts = fonts
+        .map((font: string) => font.replace(/['"]/g, '').trim())
+        .filter((font: string) => font.length > 0);
+      const fontParam = cleanFonts
+        .map((font: string) => {
+          const encoded = font.replace(/\s+/g, '+');
+          return encoded.includes(':') ? encoded : `${encoded}:wght@400..900`;
+        })
+        .join('|');
+      return `https://fonts.googleapis.com/css2?family=${fontParam}&display=swap`;
+    }),
+  };
+});
 
 describe('ConfigEngine Components', () => {
   describe('VisualDesignStyles Component', () => {
@@ -127,17 +134,18 @@ describe('ConfigEngine Components', () => {
   describe('GoogleFontsImports Component', () => {
     it('should render Google Fonts link when Google fonts are present', () => {
       const tokens = buildVisualDesign({}, {
-        'header-font-primary': 'Montserrat',
-        'body-font-primary': 'Open Sans',
+        'header-font-primary': { value: 'Montserrat', import_params: 'wght@400..900' },
+        'body-font-primary': { value: 'Open Sans', import_params: 'wght@400..900' },
         'accent-font-fallback': 'Arial' // web-safe, should be ignored
       });
 
       const { container } = render(<GoogleFontsImports visualdesign={tokens as any} />);
 
-      // Check for stylesheet link
-      const stylesheet = container.querySelector('link[rel="stylesheet"]');
-      expect(stylesheet).toBeInTheDocument();
-      expect(stylesheet?.getAttribute('href')).toBe('https://fonts.googleapis.com/css2?family=Montserrat%7COpen%2BSans&display=swap');
+      // Check for one stylesheet link per font
+      const stylesheets = container.querySelectorAll('link[rel="stylesheet"]');
+      expect(stylesheets.length).toBe(2);
+      expect(stylesheets[0].getAttribute('href')).toBe('https://fonts.googleapis.com/css2?family=Montserrat:wght@400..900&display=swap');
+      expect(stylesheets[1].getAttribute('href')).toBe('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..900&display=swap');
     });
 
     it('should not render when only web-safe fonts are present', () => {

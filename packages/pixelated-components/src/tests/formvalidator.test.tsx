@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import {
 	validateField,
 	useFormValidation,
@@ -265,6 +265,65 @@ describe('validatePasswordMatch', () => {
 
 			expect(getByText('Child 1')).toBeInTheDocument();
 			expect(getByText('Child 2')).toBeInTheDocument();
+		});
+
+		it('should manage field validity and errors via validateField', () => {
+			let capturedValues: any = {};
+			function TestChild() {
+				const ctx = useFormValidation();
+				capturedValues = ctx;
+				return null;
+			}
+
+			render(
+				<FormValidationProvider>
+					<TestChild />
+				</FormValidationProvider>
+			);
+
+			act(() => {
+				capturedValues.validateField('email', false, ['Invalid email']);
+			});
+			
+			expect(capturedValues.fieldValidity['email']).toBe(false);
+			expect(capturedValues.fieldErrors['email']).toEqual(['Invalid email']);
+			expect(capturedValues.isFormValid).toBe(false);
+
+			act(() => {
+				capturedValues.validateField('email', true, []);
+			});
+			expect(capturedValues.fieldValidity['email']).toBe(true);
+			expect(capturedValues.isFormValid).toBe(true);
+		});
+
+		it('should validate all fields and reset validation', () => {
+			let capturedValues: any = {};
+			function TestChild() {
+				const ctx = useFormValidation();
+				capturedValues = ctx;
+				return null;
+			}
+
+			render(
+				<FormValidationProvider>
+					<TestChild />
+				</FormValidationProvider>
+			);
+
+			act(() => {
+				capturedValues.validateField('f1', true, []);
+				capturedValues.validateField('f2', false, ['error']);
+			});
+
+			expect(capturedValues.validateAllFields()).toBe(false);
+			expect(capturedValues.isFormValid).toBe(false);
+
+			act(() => {
+				capturedValues.resetValidation();
+			});
+			expect(capturedValues.fieldValidity).toEqual({});
+			expect(capturedValues.fieldErrors).toEqual({});
+			expect(capturedValues.validateAllFields()).toBe(true); // Empty object .every returns true
 		});
 	});
 });

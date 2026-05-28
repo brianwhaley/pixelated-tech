@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/sitebuilder/config/google-fonts';
-import { generateGoogleFontsUrl, generateGoogleFontsLink } from '../components/sitebuilder/config/google-fonts.client';
+import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/integrations/google.fonts.server';
+import { generateGoogleFontsUrl, generateGoogleFontsLink } from '../components/integrations/google.fonts';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
 import { getFullPixelatedConfig } from '../components/config/config';
@@ -90,24 +90,27 @@ describe('google-fonts', () => {
 			expect(url).toBe('');
 		});
 
-		it('should generate CSS URL for single font', () => {
-			const url = generateGoogleFontsUrl(['Roboto']);
-			expect(url).toContain('https://fonts.googleapis.com/css2');
-			expect(url).toContain('family=Roboto');
-			expect(url).toContain('display=swap');
+		it('should generate correct URL for Open Sans', () => {
+			const url = generateGoogleFontsUrl(['Open Sans']);
+			expect(url).toBe('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+		});
+
+		it('should support explicit weight parameters', () => {
+			const url = generateGoogleFontsUrl(['Cinzel:wght@400..900']);
+			expect(url).toBe('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
 		});
 
 		it('should replace spaces with plus signs in font names', () => {
 			const url = generateGoogleFontsUrl(['Playfair Display', 'Libre Baskerville']);
-			// buildUrl properly encodes + as %2B
-			expect(url).toContain('Playfair%2BDisplay');
-			expect(url).toContain('Libre%2BBaskerville');
+			// Google Fonts expects literal + for spaces
+			expect(url).toContain('Playfair+Display');
+			expect(url).toContain('Libre+Baskerville');
 		});
 
 		it('should join multiple fonts with pipe separator', () => {
 			const url = generateGoogleFontsUrl(['Roboto', 'Lato', 'Poppins']);
-			// buildUrl properly encodes pipe | as %7C
-			expect(url).toContain('Roboto%7CLato%7CPoppins');
+			// Google Fonts expects literal | separator
+			expect(url).toContain('Roboto|Lato|Poppins');
 		});
 
 		it('should handle fonts with special characters', () => {
@@ -135,20 +138,21 @@ describe('google-fonts', () => {
 		it('should generate HTML link tags for font', () => {
 			const link = generateGoogleFontsLink(['Roboto']);
 			expect(link).toContain('<link');
-			expect(link).toContain('rel="preconnect"');
+			expect(link).toContain('rel="stylesheet"');
 			expect(link).toContain('https://fonts.googleapis.com');
 			expect(link).toContain('https://fonts.gstatic.com');
 		});
 
-		it('should include fetchPriority high attribute', () => {
-			const link = generateGoogleFontsLink(['Roboto']);
-			expect(link).toContain('fetchPriority="high"');
+		it('should include one link per font family', () => {
+			const link = generateGoogleFontsLink(['Roboto', 'Lato']);
+			const occurrences = (link.match(/rel="stylesheet"/g) || []).length;
+			expect(occurrences).toBe(2);
 		});
 
 		it('should construct CSS URL within the link tag', () => {
 			const link = generateGoogleFontsLink(['Roboto', 'Lato']);
-			// buildUrl encodes pipes as %7C
-			expect(link).toContain('Roboto%7CLato');
+			expect(link).toContain('family=Roboto');
+			expect(link).toContain('family=Lato');
 			expect(link).toContain('display=swap');
 		});
 	});
@@ -197,7 +201,7 @@ describe('google-fonts', () => {
 		it('should return cached fonts on second fetch within cache duration', async () => {
 			mockConfig.mockReturnValue(createMockGoogleConfig(mockApiKey));
 			vi.resetModules();
-			const googleFontsModule = await import('../components/sitebuilder/config/google-fonts');
+			const googleFontsModule = await import('../components/integrations/google.fonts.server');
 			mockSmartFetch.mockResolvedValueOnce({ items: [{ family: 'Roboto', category: 'sans-serif', variants: [], subsets: [], version: '', lastModified: '', kind: '', menu: '', files: {} }] });
 
 			const fonts1 = await googleFontsModule.fetchGoogleFonts();

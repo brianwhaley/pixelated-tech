@@ -66,6 +66,7 @@ export default function CartPage() {
 					additionalInfoForm={additionalInfoForm}
 					onPaymentCapture={handlePaymentCapture}
 					siteInfo={siteConfig.siteInfo}
+					showDiscountForm={false}
 				/>
 			</PageSection>
 		</>

@@ -3,7 +3,7 @@
 import React from "react";
 import PropTypes, { InferProps } from 'prop-types';
 import { PageSection, PageSectionHeader, PageGridItem } from './semantic';
-import { Callout } from './callout';
+import { Callout, variants, shapes, layouts, directions } from './callout';
 import { buildServiceAreaUrl } from './service-areas.components';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import { formatServiceDescription } from '../foundation/schema';
@@ -39,21 +39,34 @@ ServicesList.propTypes = {
 		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 		short_description: PropTypes.string,
 		image: PropTypes.string,
+		url: PropTypes.string,
+		slug: PropTypes.string,
 	})),
 	siteInfo: PropTypes.shape({
 		services: PropTypes.arrayOf(PropTypes.shape({
 			name: PropTypes.string.isRequired,
 			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 			short_description: PropTypes.string,
+			url: PropTypes.string,
+			slug: PropTypes.string,
 		})),
 	}),
+	variant: PropTypes.oneOf([...variants]),
+	boxShape: PropTypes.oneOf([...shapes]),
+	layout: PropTypes.oneOf([...layouts]),
+	direction: PropTypes.oneOf([...directions]),
+	gridColumns: PropTypes.shape({
+		left: PropTypes.number,
+		right: PropTypes.number,
+	}),
+	imgShape: PropTypes.oneOf([...shapes]),
 	title: PropTypes.string,
 	intro: PropTypes.string,
 	servicePathPrefix: PropTypes.string,
 	id: PropTypes.string,
 };
 export type ServicesListType = InferProps<typeof ServicesList.propTypes>;
-export function ServicesList({ services, siteInfo, title = 'Our Services', intro, servicePathPrefix, id }: ServicesListType) {
+export function ServicesList({ services, siteInfo, title = 'Our Services', intro, servicePathPrefix, id = 'services-list', variant, boxShape, layout, direction, gridColumns, imgShape }: ServicesListType) {
 	const resolvedPrefix = getServicePathPrefix(siteInfo, servicePathPrefix ?? null);
 	const items = resolveServices({ services, siteInfo });
 	if (!items?.length) {
@@ -65,10 +78,21 @@ export function ServicesList({ services, siteInfo, title = 'Our Services', intro
 			    <PageSectionHeader title={title ?? 'Our Services'} />
 			    {intro ? intro : null}
 			</PageSection>
-			<PageSection id={id} columns={1}>
+			<PageSection id={`${id}-section`} columns={1}>
 				{items.map((service: ServiceCardType['service'], index: number) => (
 					<PageGridItem key={index}>
-				        <ServiceCard key={index} index={index} service={service} servicePathPrefix={resolvedPrefix} />
+			        <ServiceCard
+							key={index}
+							index={index}
+							service={service}
+							servicePathPrefix={resolvedPrefix}
+							variant={variant}
+							boxShape={boxShape}
+							layout={layout}
+							direction={direction}
+							gridColumns={gridColumns}
+							imgShape={imgShape}
+						/>
 					</PageGridItem>
 				))}
 			</PageSection>
@@ -93,19 +117,38 @@ ServiceCard.propTypes = {
 		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 		short_description: PropTypes.string,
 		image: PropTypes.string,
+		url: PropTypes.string,
+		slug: PropTypes.string,
 		termsOfService: PropTypes.string,
 	}).isRequired,
 	servicePathPrefix: PropTypes.string,
+	variant: PropTypes.oneOf([...variants]),
+	boxShape: PropTypes.oneOf([...shapes]),
+	layout: PropTypes.oneOf([...layouts]),
+	direction: PropTypes.oneOf([...directions]),
+	gridColumns: PropTypes.shape({
+		left: PropTypes.number,
+		right: PropTypes.number,
+	}),
+	imgShape: PropTypes.oneOf([...shapes]),
 };
 export type ServiceCardType = InferProps<typeof ServiceCard.propTypes>;
-export function ServiceCard({ index, service, servicePathPrefix = defaultServicePathPrefix }: ServiceCardType) {
+export function ServiceCard({ index, service, servicePathPrefix = defaultServicePathPrefix, variant, boxShape, layout, direction, gridColumns, imgShape }: ServiceCardType) {
 	const url = buildServiceUrl(service, servicePathPrefix);
+	const effectiveVariant = variant ?? 'boxed grid';
+	const effectiveBoxShape = boxShape ?? 'squircle';
+	const effectiveLayout = layout ?? 'horizontal';
+	const effectiveDirection = direction ?? (index % 2 === 0 ? 'left' : 'right');
+	const effectiveGridColumns = gridColumns ?? (index % 2 === 0 ? {left:1, right:3} : {left:3, right:1});
+	const effectiveImgShape = imgShape ?? 'square';
 	return (
 		<Callout
-			variant="boxed grid"
-			gridColumns={index % 2 === 0 ? {left:1, right:3} : {left:3, right:1}}
-			layout="horizontal"
-			direction={index % 2 === 0 ? "left" : "right"}
+			variant={effectiveVariant}
+			boxShape={effectiveBoxShape}
+			gridColumns={effectiveGridColumns}
+			layout={effectiveLayout}
+			direction={effectiveDirection}
+			imgShape={effectiveImgShape}
 			title={service.name}
 			content={service.short_description}
 			url={url}

@@ -31,6 +31,17 @@ function findServiceAreaBySlug(props: any) {
 	}) || undefined;
 }
 
+function renderServiceAreaDescription(description: string | Array<string | null | undefined> | undefined) {
+	if (Array.isArray(description)) {
+		return description
+			.filter((paragraph): paragraph is string => typeof paragraph === 'string')
+			.map((paragraph, index) => (
+				<p key={index}>{paragraph}</p>
+			));
+	}
+	return description ? <p>{description}</p> : null;
+}
+
 
 
 
@@ -43,16 +54,15 @@ ServiceAreasList.propTypes = {
 	/** Optional service area list to render. */
 	serviceAreas: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 		short_description: PropTypes.string,
 		highlights: PropTypes.arrayOf(PropTypes.string),
 		relatedServices: PropTypes.arrayOf(PropTypes.string),
 	})),
-	/** Site info fallback containing service area data. */
 	siteInfo: PropTypes.shape({
 		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
 			name: PropTypes.string.isRequired,
-			description: PropTypes.string.isRequired,
+			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 			short_description: PropTypes.string,
 			highlights: PropTypes.arrayOf(PropTypes.string),
 			relatedServices: PropTypes.arrayOf(PropTypes.string),
@@ -105,7 +115,7 @@ ServiceAreaCard.propTypes = {
 	/** Service area object to render in the card. */
 	serviceArea: PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 		short_description: PropTypes.string,
 		keywords: PropTypes.arrayOf(PropTypes.string),
 		highlights: PropTypes.arrayOf(PropTypes.string),
@@ -147,7 +157,7 @@ ServiceAreaDetailPage.propTypes = {
 	/** Active service area object to render. */
 	serviceArea: PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 		short_description: PropTypes.string,
 		highlights: PropTypes.arrayOf(PropTypes.string),
 		relatedServices: PropTypes.arrayOf(PropTypes.string),
@@ -155,16 +165,15 @@ ServiceAreaDetailPage.propTypes = {
 	/** Optional list of service areas for lookup. */
 	serviceAreas: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 		short_description: PropTypes.string,
 		highlights: PropTypes.arrayOf(PropTypes.string),
 		relatedServices: PropTypes.arrayOf(PropTypes.string),
 	})),
-	/** Site info fallback containing service area and service data. */
 	siteInfo: PropTypes.shape({
 		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
 			name: PropTypes.string.isRequired,
-			description: PropTypes.string.isRequired,
+			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 			short_description: PropTypes.string,
 			highlights: PropTypes.arrayOf(PropTypes.string),
 			relatedServices: PropTypes.arrayOf(PropTypes.string),
@@ -198,7 +207,7 @@ export function ServiceAreaDetailPage({ serviceArea, serviceAreas, siteInfo, ser
 		<PageSection id={id} className="service-area-detail-page" layoutType="none" gap="20px">
 			<PageSectionHeader title={title ?? activeArea.name} />
 			<div className="service-area-detail-copy">
-				<p>{activeArea.description}</p>
+				{renderServiceAreaDescription(activeArea.description)}
 				{activeArea.highlights ? (
 					<>
 						<h4>Highlights</h4>

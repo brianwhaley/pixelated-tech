@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
 			{ source: '/buzzwordbingo', destination: '/', permanent: true, },
 			{ source: '/contact', destination: '/schedule', permanent: true, },
 			{ source: '/contactus', destination: '/schedule', permanent: true, },
+			{ source: '/cost', destination: '/pricing', permanent: true, },
 			{ source: '/customsgallery', destination: '/portfolio', permanent: true, },
 			{ source: '/customsgallery.html', destination: '/portfolio', permanent: true, },
 			{ source: '/customsunglasses', destination: '/portfolio', permanent: true, },

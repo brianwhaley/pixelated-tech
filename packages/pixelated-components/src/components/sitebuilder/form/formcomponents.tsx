@@ -1122,7 +1122,9 @@ FormButton.propTypes = {
 	/** Additional CSS classes for the button */
 	className: PropTypes.string,
 	/** Click handler function */
-	onClick: PropTypes.func
+	onClick: PropTypes.func,
+	/** Whether the button is disabled */
+	disabled: PropTypes.bool
 };
 export type FormButtonType = InferProps<typeof FormButton.propTypes>;
 export function FormButton(props: FormButtonType) {
@@ -1132,7 +1134,9 @@ export function FormButton(props: FormButtonType) {
 				type={props.type as "button" | "submit" | "reset" | undefined} 
 				id={props.id} 
 				className={props.className || ""} 
-				onClick={props.onClick || undefined}>{props.text}</button>
+				onClick={props.onClick || undefined}
+				disabled={props.disabled || false}
+			>{props.text}</button>
 		</div>
 	);
 }

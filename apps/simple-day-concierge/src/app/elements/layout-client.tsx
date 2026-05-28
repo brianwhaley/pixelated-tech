@@ -17,7 +17,8 @@ export default function LayoutClient() {
 			buttonring: true,
 			formglow: true,
 			imgscale: true,
-			scrollfadeElements: '.callout , .calloutSmall , .carousel-container, .scroll-fade-element',
+			scrollfadeSelectors: '.callout , .calloutSmall , .carousel-container, .scroll-fade-element',
+			// glassSelectors: '.callout, .contact-us-form-wrapper',
 		});
 	}, []);
 

@@ -11,7 +11,13 @@ import {
 	buildReceiptData,
 	renderReceiptTable,
 } from '../components/shoppingcart/shoppingcart.components';
-import { getCart, getShippingInfo } from '../components/shoppingcart/shoppingcart.functions';
+import {
+	getCart,
+	getShippingInfo,
+	removeFromShoppingCart,
+	increaseQuantityInCart,
+	decreaseQuantityInCart,
+} from '../components/shoppingcart/shoppingcart.functions';
 
 vi.mock('../components/config/config.client', async (importOriginal) => {
 	const actual = await importOriginal<typeof import('../components/config/config.client')>();
@@ -30,6 +36,8 @@ vi.mock('../components/shoppingcart/shoppingcart.functions', async (importOrigin
 		...actual,
 		clearShoppingCart: vi.fn(),
 		removeFromShoppingCart: vi.fn(),
+		increaseQuantityInCart: vi.fn(),
+		decreaseQuantityInCart: vi.fn(),
 		getCartItemCount: vi.fn(() => 2),
 		getCart: vi.fn(() => []),
 		getShippingInfo: vi.fn(() => ({})),
@@ -116,6 +124,7 @@ describe('shopping cart component surface', () => {
 						itemID: 'item-1',
 						itemTitle: 'First Item',
 						itemQuantity: 1,
+						itemInventory: 10,
 						itemCost: 12.5,
 						itemIsShippable: false,
 					},
@@ -123,6 +132,7 @@ describe('shopping cart component surface', () => {
 						itemID: 'item-2',
 						itemTitle: 'Second Item',
 						itemQuantity: 2,
+						itemInventory: 10,
 						itemCost: 7.25,
 						itemIsShippable: true,
 						itemWeight: 2,
@@ -137,6 +147,45 @@ describe('shopping cart component surface', () => {
 		expect(screen.getAllByText(/Non-shippable item/i)).not.toHaveLength(0);
 		expect(screen.getAllByText(/Weight:/i)).not.toHaveLength(0);
 		expect(screen.getAllByRole('button', { name: /Remove/i })).toHaveLength(2);
+		expect(screen.getAllByRole('button', { name: '+' })).toHaveLength(2);
+		expect(screen.getAllByRole('button', { name: '-' })).toHaveLength(2);
+	});
+
+	it('handles quantity increase/decrease button clicks', () => {
+		const item = {
+			itemID: 'item-1',
+			itemTitle: 'Test Item',
+			itemQuantity: 2,
+			itemInventory: 10,
+			itemCost: 10,
+		};
+
+		render(<ShoppingCartItems items={[item] as any} />);
+
+		const plusButton = screen.getByRole('button', { name: '+' });
+		const minusButton = screen.getByRole('button', { name: '-' });
+
+		fireEvent.click(plusButton);
+		expect(vi.mocked(increaseQuantityInCart)).toHaveBeenCalledWith(item);
+
+		fireEvent.click(minusButton);
+		expect(vi.mocked(decreaseQuantityInCart)).toHaveBeenCalledWith(item);
+	});
+
+	it('calls remove when decrease is clicked and quantity is 1', () => {
+		const item = {
+			itemID: 'item-1',
+			itemTitle: 'Test Item',
+			itemQuantity: 1,
+			itemCost: 10,
+		};
+
+		render(<ShoppingCartItems items={[item] as any} />);
+
+		const minusButton = screen.getByRole('button', { name: '-' });
+
+		fireEvent.click(minusButton);
+		expect(vi.mocked(removeFromShoppingCart)).toHaveBeenCalledWith(item);
 	});
 
 	it('renders checkout info through the form engine wrapper', () => {
@@ -305,5 +354,20 @@ describe('shopping cart component surface', () => {
 
 	it('returns null receipt data for empty payloads', () => {
 		expect(buildReceiptData(null)).toBeNull();
+	});
+
+	it('disables the plus button when quantity reaches inventory limit', () => {
+		const mockItem = {
+			itemID: '1',
+			itemTitle: 'Limited item',
+			itemQuantity: 2,
+			itemInventory: 2,
+			itemCost: 10,
+		};
+		render(<ShoppingCartItems items={[mockItem as any]} />);
+		
+		const plusButton = screen.getByText('+');
+		expect(plusButton).toBeDefined();
+		expect(plusButton).toHaveProperty('disabled', true);
 	});
 });

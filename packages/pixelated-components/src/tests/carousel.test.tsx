@@ -124,6 +124,33 @@ describe('Carousel Component', () => {
 			// Left arrow, pause, right arrow glyphs
 			expect(glyphs.length).toBe(3);
 		});
+
+		it('should loop to end when clicking previous on first card', () => {
+			render(<Carousel cards={mockCards} />);
+			const buttons = screen.getAllByRole('button');
+			// index 0 is prev, 1 is pause, 2 is next based on Carousel component
+			fireEvent.click(buttons[0]);
+			const lastCard = document.getElementById('c-2');
+			expect(lastCard).toHaveStyle('transform: translateX(0%)');
+		});
+
+		it('should loop to beginning when clicking next on last card', () => {
+			render(<Carousel cards={mockCards} />);
+			const buttons = screen.getAllByRole('button');
+			const nextButton = buttons[2];
+			
+			// Click next twice to get to last card (index 2)
+			fireEvent.click(nextButton);
+			fireEvent.click(nextButton);
+			
+			const lastCard = document.getElementById('c-2');
+			expect(lastCard).toHaveStyle('transform: translateX(0%)');
+
+			// Click next again to loop to index 0
+			fireEvent.click(nextButton);
+			const firstCard = document.getElementById('c-0');
+			expect(firstCard).toHaveStyle('transform: translateX(0%)');
+		});
 	});
 
 	describe('Image Styling', () => {

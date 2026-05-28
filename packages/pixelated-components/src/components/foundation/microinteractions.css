@@ -80,6 +80,28 @@ body.formglow {
 
 
 
+
+.glass {
+	/* From https://css.glass and https://neumorphism.io */
+    background: linear-gradient(145deg, #e6e6e633, #ffffff33);
+    box-shadow: 10px 10px 15px #cccccc, -5px -5px 8px #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 20px;
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+.page-section-content:has(.glass) {
+  	gap: 20px !important;
+}
+.grid-item:has(.glass) {
+  	overflow: visible;
+}
+
+
+
+
+
+
 /* ========== IMG GREYSCALE HOVER ========== */
 body.grayscalehover {
 
@@ -166,6 +188,7 @@ body.imgtwist {
   width: 100%;
 }
 */
+
 
 
 

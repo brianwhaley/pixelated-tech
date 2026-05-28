@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { Tiles } from '@/components/general/tiles';
+import { Tiles, ProjectTiles, ProjectsClient } from '@/components/general/tiles';
 import type { CarouselCardType } from '@/components/general/carousel';
 import {
   tileCards,
@@ -460,6 +460,39 @@ describe('Tiles Component', () => {
         expect(tile.querySelector('.tile-image')).toBeInTheDocument();
         expect(tile.querySelector('.tile-image-overlay')).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('ProjectTiles and ProjectsClient', () => {
+    it('renders ProjectTiles with title and description', () => {
+      const pTileCards = [
+        { index: 0, cardIndex: 0, cardLength: 1, image: 'img.jpg', imageAlt: 'alt' }
+      ];
+      render(
+        <ProjectTiles 
+          title="Project Title" 
+          description="Project Description" 
+          tileCards={pTileCards} 
+        />
+      );
+
+      expect(screen.getByText('Project Title')).toBeInTheDocument();
+      expect(screen.getByText('Project Description')).toBeInTheDocument();
+    });
+
+    it('renders ProjectsClient with a list of projects', () => {
+      const projects = [
+        {
+          title: 'Project 1',
+          description: 'Desc 1',
+          tileCards: [{ index: 0, cardIndex: 0, cardLength: 1, image: 'img1.jpg', imageAlt: 'alt1' }]
+        }
+      ];
+      render(<ProjectsClient projects={projects} />);
+
+      expect(screen.getByText('Our Projects')).toBeInTheDocument();
+      expect(screen.getByText('Project 1')).toBeInTheDocument();
+      expect(screen.getByText('Desc 1')).toBeInTheDocument();
     });
   });
 });

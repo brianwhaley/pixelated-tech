@@ -38,12 +38,12 @@ export default function SocialTags() {
 				</PageGridItem>
 				<PageGridItem>
 					<Callout variant="full" imgShape="squircle" layout="vertical" 
-						url="http://x.com/ManningMetalworks" 
+						url="http://x.com/ManningMetalwrx" 
 						img="/images/logos/twitter-logo.png" imgAlt="Twitter" />
 				</PageGridItem>
 				<PageGridItem>
 					<Callout variant="full" imgShape="squircle" layout="vertical" 
-						url="https://www.yelp.com/user_details?userid=andHa8MtqORJtmY9rHnxHg" 
+						url="https://www.yelp.com/biz/manning-metalworks-morris-plains" 
 						img="/images/logos/yelp-logo.png" imgAlt="Yelp" />
 				</PageGridItem>
 				<PageGridItem>

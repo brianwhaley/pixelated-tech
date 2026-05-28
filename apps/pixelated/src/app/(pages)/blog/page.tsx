@@ -30,7 +30,7 @@ export default function Blog() {
 	
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeElements: '.tile , .blogPostSummary, .scroll-fade-element',
+			scrollfadeSelectors: '.tile , .blogPostSummary, .scroll-fade-element',
 		});
 	}, [wpPosts]); 
 

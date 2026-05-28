@@ -2,10 +2,11 @@ import { headers } from 'next/headers';
 import { getRouteByKey } from '@pixelated-tech/components/server';
 import { generateMetaTags } from "@pixelated-tech/components/server";
 import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema } from "@pixelated-tech/components";
+import { GoogleFonts } from "@pixelated-tech/components";
 import { PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
-import type { SiteInfo } from '@pixelated-tech/components/server';
 import LayoutClient from '@/app/elements/layout-client';
+import PageBg from '@/app/elements/page-bg';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
 import Footer from '@/app/elements/footer';
@@ -39,18 +40,20 @@ export default async function RootLayout({
 					keywords: metadata?.keywords ?? "",
 					origin: origin ?? "",
 					url: url ?? "",
-					siteInfo: siteInfo as SiteInfo,
+					siteInfo: siteInfo as any,
 				}) }
 				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
-				<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
+				<WebsiteSchema siteInfo={siteInfo as any} />
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
 				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
+				<GoogleFonts visualdesign={siteConfig.visualdesign} />
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>
-					<header><Header /></header>
+					<PageBg image="/images/3d-style-flowing-white-golden-wavy-background.png" />
 					<nav><Nav /></nav>
+					<header><Header /></header>
 					<main>{children}</main>
 					<footer><Footer /></footer>
 				</PixelatedServerConfigProvider>

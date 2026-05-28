@@ -2,26 +2,33 @@
 # Manning Metalworks: 52 Week Content Strategy
 
 ## Criteria for each individual Blog Post:
-* Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
+* Each post must have 800 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
 * After the conclusion of each post, add a call to action to connect with us for any upcoming projects for a free estimate with a link to https://www.manningmetalworks.com/contact-us
 * Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced. 
-* Add links to other blog posts or other content on pixelated.tech
+* Add links to other blog posts or other content on manningmetalworks.com
 * Use a tone of empthy, understanding as a small business owner myself, an expert in the field of web and marketing, and straightforward language
 * Each blog post should target one of the services offered on the Services page
 * Leverage at least one primary keyword and 2 to 3 supporting keywords
 * Blog content should be able to be repurposed into Social media posts, Google Business Profile updates, Email newsletters, Sales talking points
+* No specific technique/material deep-dives: Focus on total versatility and the message that they "can do it all."
+* Greg’s background: Highlight his time as a local firefighter (bringing tactical focus, calm under pressure, and situational awareness) rather than his nursing history.
+* Tim's background - dont mention specific previewous places wof employment.  Also No competitor mentions: Completely eliminate specific references to external local competitors.
+* 24/7 services positioning: Frame this strictly as an emergency-only service for true business crises.
+* Cleaned headers/links: Keep links out of headers, placing contact details cleanly in the text body instead.
+
+
 
 
 ## INITIAL BLOG POSTS
 
-1. Why Local Businesses Choose Manning Metalworks
-1. Welding Solutions for Property Managers
-1. Metal Railings: Repair vs. Replacement
-1. Custom Metal Fabrication for Homeowners
-1. Mobile Welding for Construction and Contractors
-1. Year in Review: Projects We’re Proud Of
-1. Working With Contractors: How We Partner on Jobs
-1. Welding Repairs for Industrial Equipment
+1. [ x ] Why Local Businesses Choose Manning Metalworks
+1. [ x ] Welding Solutions for Property Managers
+1. [ x ] Metal Railings: Repair vs. Replacement
+1. [ x ] Custom Metal Fabrication for Homeowners
+1. [ x ] Mobile Welding for Construction and Contractors
+1. [ x ] Working With Contractors: How We Partner on Jobs
+1. [ x ] Welding Repairs for Industrial Equipment
+1. [  ] Year in Review: Projects We’re Proud Of
 
 ## Q1 – Foundations & Awareness (January–March)
 

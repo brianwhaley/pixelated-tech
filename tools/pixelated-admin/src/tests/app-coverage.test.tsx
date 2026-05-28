@@ -28,20 +28,21 @@ const mockSmartFetch = vi.fn(async (url: unknown) => {
 });
 
 const mockRedirect = vi.fn();
+const mockHeaderValues: Record<string, string | null> = {
+	'x-path': '/login',
+	'x-origin': 'https://admin.pixelated.tech',
+	'x-url': 'https://admin.pixelated.tech/login',
+	'host': 'admin.pixelated.tech',
+};
+
 const mockHeaders = {
-	get: (name: string) => {
-		if (name === 'x-path') return '/login';
-		if (name === 'x-origin') return 'https://admin.pixelated.tech';
-		if (name === 'x-url') return 'https://admin.pixelated.tech/login';
-		if (name === 'host') return 'admin.pixelated.tech';
-		return null;
-	},
+	get: (name: string) => mockHeaderValues[name] || null,
 };
 
 vi.mock('next/navigation', () => ({
 	__esModule: true,
 	useSearchParams: () => mockSearchParams,
-	redirect: mockRedirect,
+	redirect: (path: string) => mockRedirect(path),
 }));
 
 vi.mock('next/headers', () => ({
@@ -115,8 +116,10 @@ vi.mock('next-auth/react', () => ({
 	SessionProvider: ({ children }: any) => <>{children}</>,
 }));
 
+const mockGetServerSession = vi.fn(async () => null);
+
 vi.mock('next-auth', () => ({
-	getServerSession: async () => null,
+	getServerSession: () => mockGetServerSession(),
 }));
 
 vi.mock('@/lib/auth', () => ({
@@ -320,6 +323,34 @@ describe('pixelated-admin extra coverage', () => {
 			if (name === 'x-path') return '/configbuilder';
 			if (name === 'x-origin') return 'https://admin.pixelated.tech';
 			if (name === 'x-url') return 'https://admin.pixelated.tech/configbuilder';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).toHaveBeenCalledWith('/login');
+	});
+
+	it('RootLayout redirects /newdeployment to home when authenticated', async () => {
+		mockRedirect.mockReset();
+		mockGetServerSession.mockResolvedValue({ user: { name: 'Admin' } });
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/newdeployment';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).toHaveBeenCalledWith('/');
+	});
+
+	it('RootLayout handles session check failure for /newdeployment', async () => {
+		mockRedirect.mockReset();
+		mockGetServerSession.mockRejectedValueOnce(new Error('Auth fail'));
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/newdeployment';
 			if (name === 'host') return 'admin.pixelated.tech';
 			return null;
 		};

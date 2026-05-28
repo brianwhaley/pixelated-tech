@@ -16,7 +16,6 @@ import Header from '@/app/elements/header';
 describe('Header component', () => {
 	it('renders menu controls and logo image', () => {
 		render(<Header />);
-		expect(screen.getByTestId('menu-accordion-button')).toBeInTheDocument();
 		expect(screen.getByTestId('smart-image')).toHaveAttribute('alt', 'Simple Day Concierge Logo');
 	});
 });

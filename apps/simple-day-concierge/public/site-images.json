@@ -1,9 +1,12 @@
 {
   "metadata": {
-    "imageCount": 2
+    "imageCount": 5
   },
   "images": [
+    "images/3d-style-flowing-white-golden-wavy-background.png",
+    "images/golden-halftone-pattern-texture-white-background.png",
     "images/pix-bg-512.jpg",
-    "images/placeholder.png"
+    "images/placeholder.png",
+    "images/simple-day-concierge-logo.png"
   ]
 }

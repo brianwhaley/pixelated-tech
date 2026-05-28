@@ -130,6 +130,7 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 										itemTitle: eventData.fields.title,
 										itemCost: Number(eventData.fields.price) || 0,
 										itemQuantity: 1,
+										itemInventory: Number(eventData.fields.maxSeats) || 1,
 										itemURL: `/events/${eventData.fields.id}`,
 										itemCategory: eventData.fields.category?.toString?.() ?? undefined,
 										itemImageURL: eventData.fields.carouselImages?.[0]?.image ?? undefined,

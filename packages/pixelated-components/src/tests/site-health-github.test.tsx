@@ -4,13 +4,14 @@ import React from 'react';
 import { SiteHealthGit } from '../components/admin/site-health/site-health-github';
 
 // Mock the SiteHealthTemplate component
+let mockTemplateData: any = null;
 vi.mock('../components/admin/site-health/site-health-template', () => ({
 	SiteHealthTemplate: ({ children, siteName, title, endpoint, columnSpan }: any) => {
 		const [data, setData] = React.useState<any>(null);
 		const [loading, setLoading] = React.useState(true);
 
 		React.useEffect(() => {
-			const mockSiteData = {
+			const mockSiteData = mockTemplateData || {
 				site: 'test-site',
 				status: 'success',
 				commits: [
@@ -41,6 +42,7 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 describe('SiteHealthGit Component', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockTemplateData = null;
 	});
 
 	const defaultProps = {
@@ -57,6 +59,39 @@ describe('SiteHealthGit Component', () => {
 		await waitFor(() => {
 			const title = screen.getByText('Git Push Notes');
 			expect(title).toBeDefined();
+		});
+	});
+
+	it('should handle error status from API', async () => {
+		mockTemplateData = {
+			site: 'test-site',
+			status: 'error',
+			error: 'API connection failed'
+		};
+		render(<SiteHealthGit {...defaultProps} />);
+		await waitFor(() => {
+			expect(screen.getByText(/No git data available for this site/)).toBeInTheDocument();
+		});
+	});
+
+	it('should show empty message when no commits found', async () => {
+		mockTemplateData = {
+			success: true,
+			commits: []
+		};
+		render(<SiteHealthGit {...defaultProps} />);
+		await waitFor(() => {
+			expect(screen.getByText(/No recent commits found/)).toBeInTheDocument();
+		});
+	});
+
+	it('should show empty message when data.success is false', async () => {
+		mockTemplateData = {
+			success: false
+		};
+		render(<SiteHealthGit {...defaultProps} />);
+		await waitFor(() => {
+			expect(screen.getByText(/No git data available for this site/)).toBeInTheDocument();
 		});
 	});
 

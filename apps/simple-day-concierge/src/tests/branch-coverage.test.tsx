@@ -23,8 +23,6 @@ vi.mock('next/server', () => ({
 }));
 
 import Home from '@/app/(pages)/(home)/page';
-import BlogCalendar from '@/app/(pages)/blogcalendar/page';
-import Podcast from '@/app/(pages)/podcast/page';
 
 describe('Pixelated Template branch coverage', () => {
 	beforeEach(() => {
@@ -41,16 +39,5 @@ describe('Pixelated Template branch coverage', () => {
 	it('renders home page and includes mock content', async () => {
 		render(<Home />);
 		await waitFor(() => expect(screen.getAllByTestId(/mock-/).length).toBeGreaterThan(0));
-	});
-
-	it('renders blogcalendar success branch', async () => {
-		setFileDataState({ data: 'blog calendar content', loading: false, error: null });
-		render(<BlogCalendar />);
-		await waitFor(() => expect(screen.getByTestId('markdown')).toBeInTheDocument());
-	});
-
-	it('renders podcast page and shows podcast schema branch', async () => {
-		render(<Podcast />);
-		await waitFor(() => expect(screen.getByTestId('schema-podcast-series')).toBeInTheDocument());
 	});
 });

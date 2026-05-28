@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { PageSectionHeader } from '../general/semantic';
 import { FormEngine } from '../sitebuilder/form/formengine';
@@ -11,7 +11,7 @@ import '../sitebuilder/form/form.css';
 import { MicroInteractions } from '../foundation/microinteractions';
 import { Modal, handleModalOpen } from '../general/modal';
 import { Table } from "../general/table";
-import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount, getCartShippingWeight, getShippingCost } from "./shoppingcart.functions";
+import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount, getCartShippingWeight, getShippingCost, increaseQuantityInCart, decreaseQuantityInCart } from "./shoppingcart.functions";
 import { formatAsUSD, formatAsHundredths } from "../foundation/utilities";
 import type { CartItemType, CheckoutType, ShippingInfoType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
@@ -67,8 +67,10 @@ ShoppingCart.propTypes = {
 	shippingInfoForm: PropTypes.object,
 	/** Optional override for additional checkout info fields */
 	additionalInfoForm: PropTypes.object,
+	/** Whether to show the discount form fields (default: true) */
+	showDiscountForm: PropTypes.bool,
 };
-export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes> & { personalInfoForm?: ShoppingCartFormOverride; discountInfoForm?: ShoppingCartFormOverride; shippingInfoForm?: ShoppingCartFormOverride; additionalInfoForm?: ShoppingCartFormOverride; siteInfo?: SiteInfo };
+export type ShoppingCartType = InferProps<typeof ShoppingCart.propTypes> & { personalInfoForm?: ShoppingCartFormOverride; discountInfoForm?: ShoppingCartFormOverride; shippingInfoForm?: ShoppingCartFormOverride; additionalInfoForm?: ShoppingCartFormOverride; siteInfo?: SiteInfo; showDiscountForm?: boolean };
 export function ShoppingCart(props: ShoppingCartType) {
 	const config = usePixelatedConfig();
 	const shippingFormRef = useRef<HTMLFormElement | null>(null);
@@ -82,12 +84,15 @@ export function ShoppingCart(props: ShoppingCartType) {
 		originPostalCode: siteInfo?.address?.postalCode ?? undefined,
 		originCountry: siteInfo?.address?.addressCountry ?? undefined,
 	};
+
 	const checkoutDiscountCustom = props.subtotalDiscountCustom ?? 0;
+
 	const checkoutDataForProvider = getCheckoutData(shippingDefaults, effectiveConfig?.shoppingcart, checkoutDiscountCustom);
 
 	const personalInfoFormData = props.personalInfoForm ?? personalInfoData;
 	const discountInfoFormData = props.discountInfoForm ?? discountInfoData;
 	const additionalInfoFormData = props.additionalInfoForm;
+	const showDiscount = props.showDiscountForm !== false;
 	const hasUSPSShipping = Boolean(effectiveConfig?.usps);
 	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
 	const [ shippingData, setShippingData ] = useState<any>();
@@ -123,7 +128,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 	}] : [];
 	const shippingFormFields = [
 		...(personalInfoFormData?.fields ?? []),
-		...(discountFormData?.fields ?? []),
+		...(showDiscount ? (discountFormData?.fields ?? []) : []),
 		...(additionalInfoFormData ? [{
 			component: "FormSectionHeader",
 			props: {
@@ -346,6 +351,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 			<div className="pix-cart">
 				<PageSectionHeader title="Shopping Cart : " />
 				<ShoppingCartItems items={shoppingCart ?? []} />
+				<ShoppingCartTotals checkoutData={checkoutDataForProvider} />
 				<br />
 				<div className="pix-cart-actions">
 					<FormButton className="pix-cart-button" type="button" id="clearCart" text="Clear Cart"
@@ -412,6 +418,57 @@ export function ShoppingCartItems({ items }: ShoppingCartItemsType) {
 				<ShoppingCartItem item={item} key={item.itemID} />
 			) : null)}
 		</>
+	);
+}
+
+
+
+
+
+
+
+/* ================================================ */
+/* =========== SHOPPING CART TOTALS =============== */
+/* ================================================ */
+
+/**
+ * ShoppingCartTotals — Render a summary section showing item count, subtotal, discounts, and estimated total.
+ *
+ * @param {object} [props.checkoutData] - The calculated checkout data including totals and items.
+ */
+ShoppingCartTotals.propTypes = {
+	checkoutData: PropTypes.object.isRequired,
+};
+export type ShoppingCartTotalsType = InferProps<typeof ShoppingCartTotals.propTypes> & { checkoutData: CheckoutType };
+export function ShoppingCartTotals({ checkoutData }: ShoppingCartTotalsType) {
+	if (!checkoutData) return null;
+	const itemCount = checkoutData.items?.reduce((sum, item) => sum + (item.itemQuantity || 0), 0) || 0;
+	const currency = checkoutData.currency || 'USD';
+
+	return (
+		<div className="pix-cart-totals">
+			<PageSectionHeader title="Subtotal : " />
+			<div className="pix-cart-totals-content">
+				<div className="pix-cart-total-row">
+					<b>Total Items: </b>
+					<span>{itemCount}</span>
+				</div>
+				<div className="pix-cart-total-row">
+					<b>Subtotal: </b>
+					<span>{formatAsUSD(checkoutData.subtotal)} {currency}</span>
+				</div>
+				{checkoutData.subtotal_discount > 0 && (
+					<div className="pix-cart-total-row pix-cart-discount">
+						<b>Discounts: </b>
+						<span>-{formatAsUSD(checkoutData.subtotal_discount)} {currency}</span>
+					</div>
+				)}
+				<div className="pix-cart-total-row pix-cart-grand-total">
+					<b>Estimated Total: </b>
+					<span>{formatAsUSD(checkoutData.total)} {currency}</span>
+				</div>
+			</div>
+		</div>
 	);
 }
 
@@ -589,6 +646,8 @@ ShoppingCartItem.propTypes = {
 		itemImageURL: PropTypes.string,
 		/** Line item quantity */
 		itemQuantity: PropTypes.number.isRequired,
+		/** Stock limit for the item */
+		itemInventory: PropTypes.number,
 		/** Per-item price */
 		itemCost: PropTypes.number.isRequired,
 		/** Whether the item can be shipped */
@@ -636,7 +695,23 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 				<div className="pix-cart-item-details grid12">
 					<br />
 					<div><b>Item ID: </b>{thisItem.itemID}</div>
-					<div><b>Quantity: </b>{thisItem.itemQuantity}</div>
+					<div className="pix-cart-item-quantity">
+						<b>Quantity: </b>
+						<div className="pix-cart-quantity-controls">
+							<FormButton className="pix-cart-quantity-button" type="button" id={`btn-dec-${thisItem.itemID}`} text="-"
+								onClick={() => {
+									if (thisItem.itemQuantity > 1) {
+										decreaseQuantityInCart(thisItem as CartItemType);
+									} else {
+										removeFromShoppingCart(thisItem as CartItemType);
+									}
+								}} />
+							<span className="pix-cart-quantity-value">{thisItem.itemQuantity}</span>
+							<FormButton className="pix-cart-quantity-button" type="button" id={`btn-inc-${thisItem.itemID}`} text="+"
+								disabled={thisItem.itemQuantity >= (thisItem.itemInventory || 1)}
+								onClick={() => increaseQuantityInCart(thisItem as CartItemType)} />
+						</div>
+					</div>
 					{thisItem.itemIsShippable ? (
 						<div><b>Weight: </b>{thisItem.itemWeight ?? 'N/A'} {thisItem.itemWeightUnit || 'lb'}</div>
 					) : (
@@ -646,8 +721,13 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 			</div>
 			<div className="grid-s11-e13">
 				<div className="pix-cart-item-price">
-					{ formatAsUSD(thisItem.itemCost) }
+					{ formatAsUSD(thisItem.itemCost * thisItem.itemQuantity) }
 				</div>
+				{ thisItem.itemQuantity > 1 && (
+					<div className="pix-cart-item-price-each">
+						{formatAsUSD(thisItem.itemCost)} ea.
+					</div>
+				)}
 
 
 				<br />
@@ -693,6 +773,8 @@ CheckoutItems.propTypes = {
 		itemImageURL: PropTypes.string,
 		/** Quantity for this item */
 		itemQuantity: PropTypes.number.isRequired,
+		/** Stock limit for the item */
+		itemInventory: PropTypes.number,
 		/** Per-item price */
 		itemCost: PropTypes.number.isRequired,
 	})).isRequired,
@@ -979,6 +1061,7 @@ type ReceiptData = {
 	email?: string;
 	shipping?: string;
 	handling?: string;
+	discount?: string;
 	tax?: string;
 	creditCardLast4?: string;
 	receiptUrl?: string;
@@ -1069,6 +1152,7 @@ export function buildReceiptData(orderData: any, config?: any): ReceiptData | nu
 		shipping: formatMoney(checkoutData?.shippingCost ?? breakdown?.shipping?.value),
 		handling: formatMoney(checkoutData?.handlingFee ?? breakdown?.handling?.value),
 		tax: formatMoney(checkoutData?.salesTax ?? breakdown?.tax_total?.value),
+		discount: formatMoney(checkoutData?.subtotal_discount ?? breakdown?.discount?.value),
 		creditCardLast4: payload?.card?.details?.card?.last4 || paymentCapture?.card_details?.card?.last_4 || '',
 		receiptUrl: paymentCapture?.receipt_url || '',
 		items,
@@ -1094,6 +1178,11 @@ export function renderReceiptTable(receipt: ReceiptData) {
 				}))}
 			/>
 		) : 'None' },
+	];
+	if (receipt.discount && receipt.discount !== '0.00' && receipt.discount !== '$0.00') {
+		rows.push({ Field: 'Discounts', Value: `-${receipt.discount}` });
+	}
+	rows.push(
 		{ Field: 'Shipping', Value: receipt.shipping || '0.00' },
 		{ Field: 'Handling', Value: receipt.handling || '0.00' },
 		{ Field: 'Tax', Value: receipt.tax || '0.00' },
@@ -1101,7 +1190,7 @@ export function renderReceiptTable(receipt: ReceiptData) {
 		{ Field: 'Payment Method', Value: receipt.paymentMethod || 'Unknown' },
 		{ Field: 'Credit Card (Last 4)', Value: receipt.creditCardLast4 || 'N/A' },
 		{ Field: 'Payment Status', Value: receipt.paymentStatus || 'Unknown' },
-	];
+	);
 
 	if (receipt.receiptUrl) {
 		rows.push({

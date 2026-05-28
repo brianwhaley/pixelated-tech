@@ -4,7 +4,6 @@
 import React from "react";
 import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
-import { Calendly } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
 import siteConfig from "@/app/data/siteconfig.json";
 const siteInfo = (siteConfig as any).siteInfo;
@@ -15,20 +14,9 @@ export default function Contact() {
 		<>
 			<PageTitleHeader title="Contact Simple Day Concierge" />
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="schedule-quote-section">
-				<PageSectionHeader title="Schedule a Quote" />
-				<div suppressHydrationWarning={true}>
-					<Calendly 
-						url="" 
-						width="320px" 
-						height="800px" 
-					></Calendly>
-				</div>
-			</PageSection>
-
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-us-section">
 				<PageSectionHeader title="Contact Us" />
-				<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
+				<div className="contact-us-form-wrapper" style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
 					<FormEngine formData={formData as any} />
 				</div>
 			</PageSection>

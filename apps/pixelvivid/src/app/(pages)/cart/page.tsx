@@ -9,7 +9,7 @@ export default function Cart() {
 		<>
 			<section id="cart-section">
 				<div className="section-container">
-					<ShoppingCart siteInfo={siteConfig.siteInfo} />
+					<ShoppingCart siteInfo={siteConfig.siteInfo} showDiscountForm={true} />
 				</div>
 			</section>
 		</>

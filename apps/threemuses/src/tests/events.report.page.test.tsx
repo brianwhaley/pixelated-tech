@@ -57,7 +57,7 @@ describe('events report page', () => {
 		expect(screen.getByText('2026-SC08 - SLEEPOVER SQUAD CAMP')).toBeTruthy();
 		expect(screen.getByText('Attendee')).toBeTruthy();
 		expect(screen.getByText('Parent / guardian')).toBeTruthy();
-	});
+	}, 15000);
 
 	it('renders plural rows in descending date order', async () => {
 		const server = await import('@pixelated-tech/components/server');

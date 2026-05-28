@@ -231,6 +231,47 @@ describe('EbayItems component', () => {
 
 		consoleError.mockRestore();
 	});
+
+	it('passes aspect filters to fetchItems in EbayItems', async () => {
+		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
+		getEbayItemsMock.mockResolvedValue({ 
+			itemSummaries: [mockItem], 
+			refinement: { 
+				aspectDistributions: [{
+					localizedAspectName: 'Color',
+					aspectValueDistributions: [{ localizedAspectValue: 'Red', count: 1 }]
+				}] 
+			} 
+		} as any);
+
+		render(
+			<EbayItems
+				apiProps={{
+					proxyURL: '', baseTokenURL: '', baseSearchURL: '',
+					qsSearchURL: '?base=1', baseItemURL: '', qsItemURL: '',
+					baseAnalyticsURL: '', appId: '', appCertId: '', globalId: '',
+					itemCategory: 'electronics',
+				}}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(screen.getByText('Filter')).toBeInTheDocument();
+		});
+
+		// Trigger filter
+		fireEvent.change(screen.getByLabelText('Aspect:'), { target: { value: 'Color' } });
+		fireEvent.change(screen.getByLabelText('Value:'), { target: { value: 'Red' } });
+		fireEvent.click(screen.getByText('Filter'));
+
+		await waitFor(() => {
+			expect(getEbayItemsMock).toHaveBeenCalledWith(expect.objectContaining({
+				apiProps: expect.objectContaining({
+					qsSearchURL: expect.stringContaining('aspect_filter=Color:{Red}')
+				})
+			}));
+		});
+	});
 });
 
 describe('ebay.components - helper list components', () => {

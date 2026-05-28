@@ -30,7 +30,7 @@ export default function BlogCalendarPage() {
 
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeElements: '.tile , .blog-post-summary, .scroll-fade-element',
+			scrollfadeSelectors: '.tile , .blog-post-summary, .scroll-fade-element',
 		});
 	}, []); 
 

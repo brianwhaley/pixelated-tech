@@ -76,6 +76,7 @@ export function getEbayShoppingCartItem(props: getEbayShoppingCartItemType) {
 		itemURL: thisItem.itemWebUrl,
 		itemTitle: thisItem.title,
 		itemQuantity: qty,
+		itemInventory: qty,
 		itemCost: thisItem.price.value,
 		itemCurrency: thisItem.price?.currency || 'USD',
 		itemIsShippable: true,

@@ -6,6 +6,7 @@ vi.mock('@pixelated-tech/components', () => {
 	return {
 		PageSection: ({ children }: { children?: React.ReactNode }) => React.createElement('section', { 'data-testid': 'page-section' }, children),
 		PageTitleHeader: ({ title }: { title: string }) => React.createElement('h1', { 'data-testid': 'page-title-header' }, title),
+		PageSectionHeader: ({ title, children }: { title?: string, children?: React.ReactNode }) => React.createElement('h2', { 'data-testid': 'page-section-header' }, title || children),
 	};
 });
 
@@ -15,6 +16,6 @@ describe('Home page', () => {
 	it('renders the page title and welcome text', () => {
 		render(<Home />);
 		expect(screen.getByTestId('page-title-header')).toHaveTextContent('Simple Day Concierge');
-		expect(screen.getByText('Welcome to Simple Day Concierge')).toBeInTheDocument();
+		expect(screen.getAllByText('Welcome to Simple Day Concierge Service')[0]).toBeInTheDocument();
 	});
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { generateGoogleFontsUrl } from './google-fonts.client';
 import { ALL_WEBSAFE_FONTS } from './fonts';
 import { assertVisualDesign } from '../../config/config.validators';
 import type { VisualDesignType } from '../../config/siteconfig.types';
+import { GoogleFonts } from '../../integrations/google.fonts';
 
 export function VisualDesignStyles({ visualdesign }: { visualdesign: VisualDesignType }) {
 	// Validate visualdesign early so invalid siteconfig.json fails fast
@@ -104,16 +104,8 @@ export function VisualDesignStyles({ visualdesign }: { visualdesign: VisualDesig
 		...fontLines
 	].join('\n');
 
-	const googleFontsUsed = hasGoogleFonts();
-
 	return (
 		<>
-			{googleFontsUsed && (
-				<>
-					<link rel="preconnect" fetchPriority="high" href="https://fonts.googleapis.com" />
-					<link rel="preconnect" fetchPriority="high" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-				</>
-			)}
 			<style dangerouslySetInnerHTML={{ __html: css }} />
 		</>
 	);
@@ -122,29 +114,6 @@ export function VisualDesignStyles({ visualdesign }: { visualdesign: VisualDesig
 /**
  * Component to handle Google Fonts imports - should be used in the document head
  */
-export function GoogleFontsImports({ visualdesign }: { visualdesign: VisualDesignType }) {
-	const tokens: Record<string, any> = visualdesign as any;
-
-	const fonts: string[] = [];
-
-	// Extract Google font names from the new 3-field font structure
-	for (const [key, val] of Object.entries(tokens)) {
-		if (key.endsWith('-primary') && typeof val === 'string' && val.trim()) {
-			// Only include fonts that are not web-safe (web-safe fonts don't need Google Fonts import)
-			if (!ALL_WEBSAFE_FONTS.some(f => f.value === val.trim())) {
-				fonts.push(val.trim());
-			}
-		}
-	}
-
-	const googleFontsUrl = generateGoogleFontsUrl(fonts);
-	if (!googleFontsUrl) return null;
-
-	return (
-		<>
-			<link rel="preconnect" fetchPriority="high" href="https://fonts.googleapis.com" />
-			<link rel="preconnect" fetchPriority="high" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-			<link rel="stylesheet" fetchPriority="high" href={googleFontsUrl} />
-		</>
-	);
+export function GoogleFontsImports({ visualdesign }: { visualdesign?: VisualDesignType }) {
+	return <GoogleFonts visualdesign={visualdesign as any} />;
 }

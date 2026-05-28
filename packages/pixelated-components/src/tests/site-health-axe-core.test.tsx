@@ -181,6 +181,86 @@ describe('SiteHealthAxeCore', () => {
     });
   });
 
+  it('renders violation details with long HTML truncated', async () => {
+    const longHtml = '<div>' + 'a'.repeat(200) + '</div>';
+    const violationWithLongHtml = {
+      ...mockViolation,
+      nodes: [{
+        target: [], // No target to trigger HTML fallback
+        html: longHtml,
+        failureSummary: 'Fix it'
+      }]
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({
+        success: true,
+        data: [{ ...mockData, result: { ...mockData.result, violations: [violationWithLongHtml] } }]
+      })
+    });
+
+    render(<SiteHealthAxeCore siteName="test-site" />);
+
+    await waitFor(() => {
+      // The truncation adds '...' and limits to 100 chars
+      expect(screen.getByText(/aaaaaaaaaa\.\.\./)).toBeInTheDocument();
+    });
+  });
+
+  it('renders violation details with target selectors', async () => {
+    const violationWithTarget = {
+      ...mockViolation,
+      nodes: [{
+        target: ['.class1', '#id2'],
+        html: '<div />',
+        failureSummary: 'Fix it'
+      }]
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({
+        success: true,
+        data: [{ ...mockData, result: { ...mockData.result, violations: [violationWithTarget] } }]
+      })
+    });
+
+    render(<SiteHealthAxeCore siteName="test-site" />);
+
+    await waitFor(() => {
+      expect(screen.getByText('.class1, #id2')).toBeInTheDocument();
+    });
+  });
+
+  it('displays violation impact levels summary', async () => {
+    const mockDataWithAllImpacts = {
+      ...mockData,
+      summary: {
+        ...mockData.summary,
+        critical: 1, serious: 1, moderate: 1, minor: 1, violations: 4
+      }
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({
+        success: true,
+        data: [mockDataWithAllImpacts]
+      })
+    });
+
+    render(<SiteHealthAxeCore siteName="test-site" />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Violation Impact Levels')).toBeInTheDocument();
+      expect(screen.getByText('Critical :')).toBeInTheDocument();
+      expect(screen.getByText('Serious :')).toBeInTheDocument();
+      expect(screen.getByText('Moderate :')).toBeInTheDocument();
+      expect(screen.getByText('Minor :')).toBeInTheDocument();
+    });
+  });
+
   it('shows no data message when data array is empty', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,

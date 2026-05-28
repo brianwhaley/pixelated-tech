@@ -6,6 +6,19 @@ import { ConfigBuilder } from '../components/sitebuilder/config/ConfigBuilder';
 import siteConfig from '../data/siteconfig.json';
 import testConfigData from '../test/test-data';
 
+vi.mock('../components/integrations/gemini-api.client', () => ({
+  createGeminiApiService: () => ({
+    generateRouteRecommendations: vi.fn().mockResolvedValue({
+      success: true,
+      data: {
+        title: 'AI Suggested Title',
+        keywords: ['ai', 'test'],
+        description: 'AI Suggested Description'
+      }
+    })
+  })
+}));
+
 describe('ConfigBuilder Component', () => {
   const mockOnSave = vi.fn();
 
@@ -268,6 +281,89 @@ describe('ConfigBuilder Component', () => {
       // assert that at least the canonical social URLs appear in the rendered form
       sameAs.slice(0, 3).forEach(url => {
         if (url) expect(screen.getByDisplayValue(new RegExp(url))).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Route and Service Management', () => {
+    it('should add, update, and remove routes', () => {
+      render(<ConfigBuilder />);
+      
+      // Switch to Routes tab
+      fireEvent.click(screen.getByText('Routes'));
+      
+      // Add route
+      fireEvent.click(screen.getByText('Add Route'));
+      
+      // Find path input for the new route (it will be empty)
+      const pathInputs = screen.getAllByLabelText('Path');
+      const lastPathInput = pathInputs[pathInputs.length - 1] as HTMLInputElement;
+      
+      fireEvent.change(lastPathInput, { target: { value: '/new-route' } });
+      expect(lastPathInput.value).toBe('/new-route');
+      
+      // Remove route
+      const removeButtons = screen.getAllByText('Remove');
+      fireEvent.click(removeButtons[removeButtons.length - 1]);
+      
+      expect(screen.queryByDisplayValue('/new-route')).not.toBeInTheDocument();
+    });
+
+    it('should add, update, and remove services', () => {
+      render(<ConfigBuilder />);
+      
+      // Switch to Services tab
+      fireEvent.click(screen.getByText('Services'));
+      
+      // Add service
+      fireEvent.click(screen.getByText('Add Service'));
+      
+      // Find name input for the new service
+      const nameInputs = screen.getAllByLabelText('Service Name');
+      const lastNameInput = nameInputs[nameInputs.length - 1] as HTMLInputElement;
+      
+      fireEvent.change(lastNameInput, { target: { value: 'New Service' } });
+      expect(lastNameInput.value).toBe('New Service');
+      
+      // Remove service
+      const removeButtons = screen.getAllByText('Remove');
+      fireEvent.click(removeButtons[removeButtons.length - 1]);
+      
+      expect(screen.queryByDisplayValue('New Service')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('AI Recommendations', () => {
+    it('should open AI recommendation modal and accept suggestions', async () => {
+      render(<ConfigBuilder />);
+      
+      // Switch to Routes tab and add a route
+      fireEvent.click(screen.getByText('Routes'));
+      fireEvent.click(screen.getByText('Add Route'));
+      
+      // Click Recommend button
+      const recommendButtons = screen.getAllByText('Recommend');
+      fireEvent.click(recommendButtons[0]);
+      
+      // Wait for modal
+      await waitFor(() => {
+        expect(screen.getByText('AI SEO Recommendations')).toBeInTheDocument();
+      });
+      
+      // Check suggestions are visible
+      expect(screen.getByText('AI Suggested Title')).toBeInTheDocument();
+      
+      // Accept suggestions
+      const checkboxes = screen.getAllByRole('checkbox');
+      fireEvent.click(checkboxes[0]); // Title
+      fireEvent.click(checkboxes[1]); // Keywords
+      fireEvent.click(checkboxes[2]); // Description
+      
+      fireEvent.click(screen.getByText('Accept Selected'));
+      
+      // Modal should be closed (display: none)
+      await waitFor(() => {
+        expect(screen.getByText('AI SEO Recommendations')).not.toBeVisible();
       });
     });
   });

@@ -1,105 +1,42 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { PageTitleHeader, PageSection, PageGridItem, PageSectionHeader } from "@pixelated-tech/components";
-import { GravatarCard } from '@pixelated-tech/components';
-import { getGravatarProfile, type GravatarProfile } from '@pixelated-tech/components';
-import { Carousel } from "@pixelated-tech/components";
+import React from "react";
+import { PageTitleHeader, PageSection, PageSectionHeader, Callout } from "@pixelated-tech/components";
 
 export default function About() {
-	const email1 = "brian@pixelated.tech"; 
-
-	const [ profile1, setProfile1 ] = useState<GravatarProfile | null>(null);
-
-	useEffect(() => {
-		getGravatarProfile(email1)
-			.then((data) => {
-				setProfile1(data);
-			})
-			.catch(() => {
-				// Silently handle CORS or network errors
-				setProfile1(null);
-			});
-	}, [ email1 ]); 
-
-	const mycards = [
-		{
-			headerText: "Awesome Job",
-			subHeaderText: "\"We recently hired this company to work for us, and their service exceeded our expectations!  I would highly recommend them to anyone looking for quality company with great customer service.\"",
-			bodyText: " - David Chen",
-			index: 0, cardIndex: 0, cardLength: 3, image: "",
-		} , {
-			headerText: "Top-Notch Service",
-			subHeaderText: "\"As someone who knows this industry, I can confidently say this company stands out for their professionalism and dedication. They followed through all the way to the end of the project and beyond to make sure i was satisfied.\"",
-			bodyText: " - Sarah Jenkins",
-			index: 1, cardIndex: 1, cardLength: 3, image: "",
-		} , {
-			headerText: "Reliable, Detail-Oriented & Friendly",
-			subHeaderText: "\"If you don't hire this company, you're already making a big mistake on your project.  Be sure to call them out, meet with you, and discuss how they can solve all your problems.  Their work is like magic!\"",
-			bodyText: " - Michael O'Connell",
-			index: 2, cardIndex: 2, cardLength: 3, image: "",
-		}];
-
+	
     
 	return (
 		<>
 
 			<PageTitleHeader title="About Simple Day Concierge" />
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="team-section">
-
-				<PageSectionHeader title="Our Team" />
-
-				<PageGridItem >
-					<GravatarCard 
-						profile={profile1}
-						layout="horizontal"
-						avatarSize={300}
-
-					/>
-				</PageGridItem>
-
+			<PageSectionHeader title="Our Team" />
+			<PageSection columns={2} maxWidth="1024px" padding="20px" id="team-section">
+				<Callout 
+					layout="vertical"
+					img="/images/placeholder.png"
+					title="Patti Jadevaia" 
+					subtitle="Co-Founder & CEO" 
+					content="With a rich background in corporate cybersecurity, Patti brings a strategic mindset and a passion for service to her role as CEO. Her commitment to excellence and personal care is the driving force behind Simple Day's mission to simplify our clients' lives with exceptional concierge services."
+				/>
+				<Callout 
+					layout="vertical"
+					img="/images/placeholder.png"
+					title="Joe Jadevaia" 
+					subtitle="Co-Founder & COO" 
+					content="Joe's extensive experience in the technology sector, particularly in cybersecurity, equips him with the organizational skills and attention to detail necessary to ensure seamless operations at Simple Day. As COO, he oversees the day-to-day management of our services, ensuring that every client receives the highest level of care and efficiency."
+				/>
 			</PageSection>
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="history-section">
 				
 				<PageSectionHeader title="Our History" />
 
-				<p>In the heart of the South Carolina Lowcountry, Simple Day Concierge began 
-					its journey with little more than an idea and a dedication 
-					to quality. Founded in 1492, the company built 
-					its reputation one project at a time. They focused on mastering the unique 
-					challenges of the Lowcountry, offering personalized services 
-					that transformed things that were not-so-good into things tat are spectacular.
-					Their hands-on approach and commitment to individual 
-					satisfaction quickly fostered a loyal clientele, establishing 
-					a strong foundation rooted in trust and meticulous attention to detail.</p>
-				
-				<p>As their reputation flourished through word-of-mouth, Simple Day Concierge 
-					strategically expanded its operations to meet the demands of the areas 
-					booming growth. The small, family-owned business gradually 
-					scaled up moving to more complex projects.  
-					Yet, despite taking on bigger challenges, 
-					the company remained true to its founding principles of reliability 
-					and aesthetic excellence, adapting its bespoke service model to 
-					suit its expanding clientele.</p>
-				
-				<p>At Simple Day Concierge, the philosophy remains simple: every project 
-					is a testament to the art of superior service. The goal is 
-					to exceed expectations not just through the beauty of the finished work, 
-					but through exceptional service and a profound respect for the 
-					region. We are dedicated to delivering unparalleled 
-					quality using sustainable practices that enhance the community 
-					of the Lowcountry, ensuring that every project we take on — whether 
-					a small fix or a major undertaking — flourishes in harmony 
-					with the community it serves. The commitment is unwavering: 
-					creating lasting beauty, one project at a time.</p>
+				<p>Simple Day Concierge Service was born from a desire to pivot away from the high-stress demands of the corporate world and invest deeply into local relationships. For many years, founders Patti and Joe Jadevaia operated at the cutting edge of the technology sector, successfully selling sophisticated cybersecurity products to large corporations across the country. While protecting enterprise networks was a fulfilling professional chapter, the couple frequently noticed that the most precious, poorly managed resource in modern society was not data, but time itself. After choosing to retire from the demanding tech industry, Patti and Joe realized that they were uniquely positioned to leverage their organizational strengths to solve this universal challenge. They envisioned a family-owned business that could dismantle daily chaos for individuals, transforming the complex logistical puzzles of everyday life into a seamless, orderly experience.</p>
 
-			</PageSection>
+				<p>Driven by an enduring commitment to give back, Patti and Joe founded Simple Day Concierge as a direct way to support and uplift their neighbors. They recognized that busy modern families, overwhelmed commuters, and aging seniors all shared a critical need for trustworthy, hands-on help inside their homes. Rather than stepping away from active work entirely during retirement, the Jadevaias channeled their passion for service into an agency built on absolute security, privacy, and personal care. Today, they proudly run Simple Day with the same rigorous standard of excellence they brought to the corporate tech sector, but with a deeply personal, compassionate touch. Every client they serve is treated like a member of their own extended family, receiving the reliable support necessary to reclaim their peace of mind and enjoy a simpler routine.</p>
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="feedback-section">
-				<PageSectionHeader title="Testimonials" />
-				<Carousel cards={mycards} />
 			</PageSection>
 
 		</>

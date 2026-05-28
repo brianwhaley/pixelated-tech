@@ -75,6 +75,35 @@ describe('LoremIpsum', () => {
     expect(screen.getByText('p2')).toBeInTheDocument();
   });
 
+  it('parses raw array response', async () => {
+    const payload = JSON.stringify(['item 1', 'item 2']);
+    // @ts-ignore
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
+
+    render(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText('item 1')).toBeInTheDocument());
+    expect(screen.getByText('item 2')).toBeInTheDocument();
+  });
+
+  it('handles plaintext response when JSON parsing fails', async () => {
+    const payload = 'This is raw plaintext\nwith multiple lines';
+    // @ts-ignore
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
+
+    render(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText('This is raw plaintext')).toBeInTheDocument());
+    expect(screen.getByText('with multiple lines')).toBeInTheDocument();
+  });
+
+  it('handles fallback stringification for other JSON types', async () => {
+    const payload = JSON.stringify(12345);
+    // @ts-ignore
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
+
+    render(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText('12345')).toBeInTheDocument());
+  });
+
   it('shows error state when both direct and proxied fetches fail', async () => {
     // @ts-ignore
     global.fetch = vi.fn().mockRejectedValue(new TypeError('Network error'));

@@ -28,12 +28,13 @@ export const alignItemsValues = ['start', 'center', 'end', 'stretch', 'baseline'
 /**
  * PageTitleHeader — Small H1 header used primarily for page titles.
  *
- * @param {string} [props.title] - Title text to display (required).
+ * @param {string} [props.title] - Title text to display.
  * @param {string} [props.url] - Optional URL; when present, the title will be rendered as a link.
+ * @param {node} [props.children] - Child nodes to render (used as title text if title prop is missing).
  */
 PageTitleHeader.propTypes = {
-/** Page title text (required) */
-	title: PropTypes.string.isRequired,
+/** Page title text */
+	title: PropTypes.string,
 	/** Optional URL to wrap the title with */
 	url: PropTypes.string,
 	/** Optional child nodes to render below the title */
@@ -224,13 +225,13 @@ export function PageSection({
 /**
  * PageSectionHeader — Small header used to label a `PageSection`.
  *
- * @param {string} [props.title] - Section title text (required).
+ * @param {string} [props.title] - Section title text.
  * @param {string} [props.url] - Optional URL to link the section title.
- * @param {node} [props.children] - Optional child nodes to render below the title.
+ * @param {node} [props.children] - Child nodes to render (used as title text if title prop is missing).
  */
 PageSectionHeader.propTypes = {
 /** Section title text */
-	title: PropTypes.string.isRequired,
+	title: PropTypes.string,
 	/** Optional URL to link the title */
 	url: PropTypes.string,
 	/** Optional child nodes */

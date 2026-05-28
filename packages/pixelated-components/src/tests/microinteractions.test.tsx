@@ -50,6 +50,18 @@ describe('MicroInteractions Component', () => {
       MicroInteractions({ simplemenubutton: true });
       expect(document.body.classList.contains('simplemenubutton')).toBe(true);
     });
+
+    it('should add glass class to elements when glassSelectors prop is provided', () => {
+      const element = document.createElement('div');
+      element.className = 'glass-item';
+      document.body.appendChild(element);
+
+      MicroInteractions({ glassSelectors: '.glass-item' });
+
+      expect(element.classList.contains('glass')).toBe(true);
+      document.body.removeChild(element);
+    });
+
   });
 
   describe('Class Removal', () => {
@@ -173,30 +185,30 @@ describe('MicroInteractions Component', () => {
     });
   });
 
-  describe('ScrollFadeElements', () => {
-    it('should accept scrollfadeElements string prop', () => {
+  describe('scrollfadeSelectors', () => {
+    it('should accept scrollfadeSelectors string prop', () => {
       const selector = '.fade-element';
       // This just tests that the prop is accepted without error
       expect(() => {
-        MicroInteractions({ scrollfadeElements: selector });
+        MicroInteractions({ scrollfadeSelectors: selector });
       }).not.toThrow();
     });
 
-    it('should handle scrollfadeElements with class selector', () => {
+    it('should handle scrollfadeSelectors with class selector', () => {
       expect(() => {
-        MicroInteractions({ scrollfadeElements: '.scroll-fade' });
+        MicroInteractions({ scrollfadeSelectors: '.scroll-fade' });
       }).not.toThrow();
     });
 
-    it('should handle scrollfadeElements with id selector', () => {
+    it('should handle scrollfadeSelectors with id selector', () => {
       expect(() => {
-        MicroInteractions({ scrollfadeElements: '#fade-container' });
+        MicroInteractions({ scrollfadeSelectors: '#fade-container' });
       }).not.toThrow();
     });
 
-    it('should handle empty scrollfadeElements string', () => {
+    it('should handle empty scrollfadeSelectors string', () => {
       expect(() => {
-        MicroInteractions({ scrollfadeElements: '' });
+        MicroInteractions({ scrollfadeSelectors: '' });
       }).not.toThrow();
     });
   });
@@ -274,7 +286,7 @@ describe('MicroInteractions Component', () => {
     it('should enable form animations with scroll fade', () => {
       MicroInteractions({
         formglow: true,
-        scrollfadeElements: '.form-section, .scroll-fade-element'
+        scrollfadeSelectors: '.form-section, .scroll-fade-element'
       });
       expect(document.body.classList.contains('formglow')).toBe(true);
     });
@@ -356,7 +368,7 @@ describe('MicroInteractions ScrollFade Functionality', () => {
     vi.clearAllMocks();
   });
 
-  it('should initialize ScrollFade when scrollfadeElements is provided', () => {
+  it('should initialize ScrollFade when scrollfadeSelectors is provided', () => {
     // Create test elements
     const testElement = document.createElement('div');
     testElement.className = 'test-element';
@@ -366,7 +378,7 @@ describe('MicroInteractions ScrollFade Functionality', () => {
     const querySelectorAllMock = vi.spyOn(document, 'querySelectorAll');
     querySelectorAllMock.mockReturnValue([testElement] as any);
 
-    MicroInteractions({ scrollfadeElements: '.test-element' });
+    MicroInteractions({ scrollfadeSelectors: '.test-element' });
 
     // Should create IntersectionObserver
     expect(global.IntersectionObserver).toHaveBeenCalledWith(expect.any(Function), {
@@ -391,7 +403,7 @@ describe('MicroInteractions ScrollFade Functionality', () => {
     const querySelectorAllMock = vi.spyOn(document, 'querySelectorAll');
     querySelectorAllMock.mockReturnValue([testElement] as any);
 
-    MicroInteractions({ scrollfadeElements: '.test-element' });
+    MicroInteractions({ scrollfadeSelectors: '.test-element' });
 
     // Get the callback function passed to IntersectionObserver
     const callback = (global.IntersectionObserver as any).mock.calls[0][0];
@@ -408,8 +420,8 @@ describe('MicroInteractions ScrollFade Functionality', () => {
     document.body.removeChild(testElement);
   });
 
-  it('should handle empty scrollfadeElements string', () => {
-    MicroInteractions({ scrollfadeElements: '' });
+  it('should handle empty scrollfadeSelectors string', () => {
+    MicroInteractions({ scrollfadeSelectors: '' });
 
     // Should not create IntersectionObserver for empty selector
     expect(global.IntersectionObserver).not.toHaveBeenCalled();
@@ -419,7 +431,7 @@ describe('MicroInteractions ScrollFade Functionality', () => {
     const querySelectorAllMock = vi.spyOn(document, 'querySelectorAll');
     querySelectorAllMock.mockReturnValue([] as any);
 
-    MicroInteractions({ scrollfadeElements: '.non-existent' });
+    MicroInteractions({ scrollfadeSelectors: '.non-existent' });
 
     expect(global.IntersectionObserver).not.toHaveBeenCalled();
     expect(observeMock).not.toHaveBeenCalled();

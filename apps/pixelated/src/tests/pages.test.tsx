@@ -30,7 +30,7 @@ import Home from '@/app/(pages)/(home)/page';
 import Blog from '@/app/(pages)/blog/page';
 import BlogCalendar from '@/app/(pages)/blogcalendar/page';
 import ByTheWay from '@/app/(pages)/bytheway/page';
-import Cost from '@/app/(pages)/cost/page';
+import Pricing from '@/app/(pages)/pricing/page';
 import Faqs from '@/app/(pages)/faqs/page';
 import Instagram from '@/app/(pages)/instagram/page';
 import Legal from '@/app/(pages)/legal/page';
@@ -72,7 +72,7 @@ describe('Pixelated page coverage', () => {
 			{ name: 'Blog', Component: Blog },
 			{ name: 'BlogCalendar', Component: BlogCalendar },
 			{ name: 'ByTheWay', Component: ByTheWay },
-			{ name: 'Cost', Component: Cost },
+			{ name: 'Pricing', Component: Pricing },
 			{ name: 'Faqs', Component: Faqs },
 			{ name: 'Instagram', Component: Instagram },
 			{ name: 'Legal', Component: Legal },

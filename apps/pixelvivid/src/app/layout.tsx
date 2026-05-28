@@ -4,6 +4,7 @@ import { PixelatedServerConfigProvider, type SiteInfo } from "@pixelated-tech/co
 import { descriptionToKeywords, getRouteByKey } from "@pixelated-tech/components/server";
 import { getEbayItem, getEbayProductSchema } from "@pixelated-tech/components/server";
 import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema, ProductSchema } from "@pixelated-tech/components";
+import { GoogleFonts } from "@pixelated-tech/components";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import Header from "@/app/elements/header";
 import HeaderNav from "./elements/headernav";
@@ -78,6 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<LocalBusinessSchema siteInfo={siteInfo} />
 				<ServicesSchema siteInfo={siteInfo} />
 				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
+				<GoogleFonts visualdesign={siteConfig.visualdesign} />
 			</head>
 
 			<body>
