@@ -1,6 +1,6 @@
 import React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { createPageComponentMocks, mockState, resetMockState, setFileDataState } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', async () => {
@@ -39,7 +39,11 @@ describe('ThreeMuses branch coverage', () => {
 	});
 
 	it('renders home page and includes mocked homepage content', async () => {
-		render(<Home />);
+		let element = null;
+		await act(async () => {
+			element = await Home();
+		});
+		render(element as any);
 		await waitFor(() => expect(screen.getAllByTestId(/mock-/).length).toBeGreaterThan(0));
 	});
 

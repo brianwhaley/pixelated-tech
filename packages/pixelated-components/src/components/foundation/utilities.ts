@@ -120,7 +120,20 @@ export function capitalizeWords(input: string): string {
 }
 
 export function sanitizeString(value: unknown) {
-	return value == null ? '' : String(value).replace(/\s+/g, ' ').trim();
+	if (typeof value === 'string') {
+		return String(value).replace(/\s+/g, ' ').trim();
+	}
+	if (typeof value === 'number') {
+		return String(value);
+	}
+	if (typeof value === 'boolean') {
+		return value ? 'true' : 'false';
+	}
+	return '';
+}
+
+export function normalizeEmail(value: unknown) {
+	return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
 
 /*
@@ -178,6 +191,7 @@ export function getDomain(url?: string): string {
 
 
 export function formatAsUSD(cost: number) {
+	if (!Number.isFinite(cost)) { return '$0.00'; }
 	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 

@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.17.0",
+	"version": "3.17.1",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -169,7 +169,7 @@
 		"@aws-sdk/client-route-53": "^3.1056.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
-		"googleapis": "^172.0.0",
+		"googleapis": "^173.0.0",
 		"md5": "^2.3.0",
 		"puppeteer": "^25.1.0",
 		"recharts": "^3.8.1"

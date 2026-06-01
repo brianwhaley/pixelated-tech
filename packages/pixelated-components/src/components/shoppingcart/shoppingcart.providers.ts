@@ -3,6 +3,7 @@ import type { CheckoutType } from './shoppingcart.functions';
 import { PayPalCheckout, renderPayPalThankYou } from './paypal.components';
 import { SquareCheckout, renderSquareThankYou } from './square.components';
 import { StripeCheckout, renderStripeThankYou } from './stripe.components';
+import { normalizeEmail } from '../foundation/utilities';
 
 export type PaymentProviderKey = 'paypal' | 'square' | 'stripe';
 
@@ -22,10 +23,6 @@ export interface PaymentProviderDefinition {
 	isConfigured: (config?: any) => boolean;
 	getProps: (config?: any, checkoutData?: CheckoutType, callbacks?: PaymentProviderCallbacks) => Record<string, any>;
 	renderThankYou: (orderData: any, config?: any) => ReactNode;
-}
-
-function normalizeEmail(value?: any) {
-	return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
 
 function getSquareCheckoutProps(config?: any, checkoutData?: CheckoutType) {

@@ -1,0 +1,2764 @@
+{
+    "items": [
+        {
+            "type": "ITEM",
+            "id": "SEWAUUROU72NIQCYXDRHKWWS",
+            "updated_at": "2026-05-23T20:45:34.208Z",
+            "created_at": "2025-12-16T18:46:13.219Z",
+            "version": 1779569134208,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Ballet Beauty Hair Bow",
+                "description": "Ballet Beauty Hair Bow",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "LIH7F5JXILGKA32Z363SI2KV",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T18:46:13.219Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "SEWAUUROU72NIQCYXDRHKWWS",
+                            "name": "Regular",
+                            "sku": "L118780",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 999,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 399,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "XOSVNSDITEL7VOD6MTFKBNZM"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "XOSVNSDITEL7VOD6MTFKBNZM",
+                                    "updated_at": "2025-12-16T18:46:13.166Z",
+                                    "created_at": "2025-12-16T18:46:13.219Z",
+                                    "version": 1765910773166,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 399,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "LIH7F5JXILGKA32Z363SI2KV"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799578804224
+                    }
+                ],
+                "description_html": "\u003cp\u003eBallet Beauty Hair Bow\u003c/p\u003e",
+                "description_plaintext": "Ballet Beauty Hair Bow",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799578804224
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "M427CDZRNIZHUJKVNMEHCFQS",
+            "updated_at": "2026-05-23T20:46:09.54Z",
+            "created_at": "2026-05-06T16:19:29.934Z",
+            "version": 1779569169540,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Ballet Typography Shirt",
+                "description": "Ballet Typography Shirt",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "7D2J2DOPEBUJUCK7N36374AZ",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - 2T",
+                            "sku": "T544573",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "NXT23P5BFAJIQ3RG2SMGEBFZ"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "NXT23P5BFAJIQ3RG2SMGEBFZ",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "7D2J2DOPEBUJUCK7N36374AZ"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "C3K2LFYLAR25QDOH75AG6L77",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - 3T",
+                            "sku": "625169V",
+                            "ordinal": 1,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "RYYMH4D7H2F6AOQMDSPSLRGR"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "RYYMH4D7H2F6AOQMDSPSLRGR",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "C3K2LFYLAR25QDOH75AG6L77"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "6YU2KPJ23JN2PK5AUNBTPUHT",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - 4T",
+                            "sku": "310536S",
+                            "ordinal": 2,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "CVGLKZ2UUI2RTUO2DPUHMRX7"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "CVGLKZ2UUI2RTUO2DPUHMRX7",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "6YU2KPJ23JN2PK5AUNBTPUHT"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "LYOCMWBSRWUCTYLIFL2EXIW4",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - 5T",
+                            "sku": "8695308",
+                            "ordinal": 3,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "AMEWKGKYFEEKU7I3EGZURCX5"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "AMEWKGKYFEEKU7I3EGZURCX5",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "LYOCMWBSRWUCTYLIFL2EXIW4"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "CIIBPS4PT4JO5J5NTCG34WKF",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Youth Small",
+                            "sku": "K077289",
+                            "ordinal": 4,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "SY7E3EO2K3UCXORDQ7CX2YUS"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "SY7E3EO2K3UCXORDQ7CX2YUS",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "CIIBPS4PT4JO5J5NTCG34WKF"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "X4L2ORSKZHRQWTA26AP6FQD6",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Youth Medium",
+                            "sku": "604661Q",
+                            "ordinal": 5,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "DEGLYMTS26LINSIMC5FQXRIN"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "DEGLYMTS26LINSIMC5FQXRIN",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "X4L2ORSKZHRQWTA26AP6FQD6"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "L45JJMGJCSXESTBKM7DNK66D",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Youth Large",
+                            "sku": "R304601",
+                            "ordinal": 6,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "QZ72IYFSM3J45MGHDQPG7QGT"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "QZ72IYFSM3J45MGHDQPG7QGT",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "L45JJMGJCSXESTBKM7DNK66D"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "IEUN3LQIGLOMD6BTGCO7DRUN",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Adult Small",
+                            "sku": "5869815",
+                            "ordinal": 7,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "DBT76TC2CJYUIPBSKEBB5J6V"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "DBT76TC2CJYUIPBSKEBB5J6V",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "IEUN3LQIGLOMD6BTGCO7DRUN"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "RAVDF4HO457L3YT3ZSQA6LTW",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Adult Medium",
+                            "sku": "G720448",
+                            "ordinal": 8,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "EQEC7H6C57AZNBSJ2LFNHUJ3"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "EQEC7H6C57AZNBSJ2LFNHUJ3",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "RAVDF4HO457L3YT3ZSQA6LTW"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "3S4TDLJ6CPKJ7SGDTX3Z5VSP",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Adult Large",
+                            "sku": "336629N",
+                            "ordinal": 9,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "PAIVOTX6E5VBM4JH7I3DBXHL"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "PAIVOTX6E5VBM4JH7I3DBXHL",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "3S4TDLJ6CPKJ7SGDTX3Z5VSP"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "3CB4N4SSTQNQNRZDBLEZMXJO",
+                        "updated_at": "2026-05-06T16:19:32.47Z",
+                        "created_at": "2026-05-06T16:19:29.934Z",
+                        "version": 1778084372470,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "M427CDZRNIZHUJKVNMEHCFQS",
+                            "name": "Heather Grey - Adult XLarge",
+                            "sku": "438977H",
+                            "ordinal": 10,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "PRYA7TEXEZMN2IV5NXVX6L64"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "PRYA7TEXEZMN2IV5NXVX6L64",
+                                    "updated_at": "2026-05-06T16:19:29.872Z",
+                                    "created_at": "2026-05-06T16:19:29.934Z",
+                                    "version": 1778084369872,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "3CB4N4SSTQNQNRZDBLEZMXJO"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799444586496
+                    }
+                ],
+                "description_html": "\u003cp\u003eBallet Typography Shirt \u003c/p\u003e",
+                "description_plaintext": "Ballet Typography Shirt",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799444586496
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "SP7AK7JHG3UT5PKWILQSCMBU",
+            "updated_at": "2026-05-23T20:45:34.827Z",
+            "created_at": "2025-12-16T18:49:28.604Z",
+            "version": 1779569134827,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Bows \u0026 Bling Headband",
+                "description": "Bows \u0026 Bling Headband",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "ZLMLKNGOTBUK35YW6YF2SGMZ",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T18:49:28.604Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "SP7AK7JHG3UT5PKWILQSCMBU",
+                            "name": "Regular",
+                            "sku": "Y838469",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 1500,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 650,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "RHQHO4PN72ORFJDKRCLAJFAP"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "RHQHO4PN72ORFJDKRCLAJFAP",
+                                    "updated_at": "2025-12-16T18:49:28.556Z",
+                                    "created_at": "2025-12-16T18:49:28.604Z",
+                                    "version": 1765910968556,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 650,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "ZLMLKNGOTBUK35YW6YF2SGMZ"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799595581440
+                    }
+                ],
+                "description_html": "\u003cp\u003eBows \u0026amp; Bling Headband\u003c/p\u003e",
+                "description_plaintext": "Bows \u0026 Bling Headband",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799595581440
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "X3LWGZXTLBKKUZTIMY3YNS6Q",
+            "updated_at": "2026-05-23T20:45:33.586Z",
+            "created_at": "2025-12-16T16:12:41.158Z",
+            "version": 1779569133586,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "ddc1b22a-a5d2-4038-bfe2-97a154c83c2f",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Dance Bracelet",
+                "abbreviation": "Da",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "EBLEMXT5OZKIJE6MVZM6KRJN",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T16:12:41.158Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "599f0b38-1ae5-400f-b272-4c57a79b21f8",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "X3LWGZXTLBKKUZTIMY3YNS6Q",
+                            "name": "Regular",
+                            "sku": "864589Q",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 1599,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "price_description": "",
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 725,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "VOR2CUMSLTNYR27P72ZML7ED"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "VOR2CUMSLTNYR27P72ZML7ED",
+                                    "updated_at": "2025-12-16T16:17:08.87Z",
+                                    "created_at": "2025-12-16T16:17:09.002Z",
+                                    "version": 1765901828870,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": false,
+                                    "present_at_location_ids": [
+                                        "LRVKTWBE34WHA"
+                                    ],
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 0,
+                                        "price_money": {
+                                            "amount": 725,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "EBLEMXT5OZKIJE6MVZM6KRJN"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799696244736
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799696244736
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "56IR5UJKRAAVRTUZ4EIKQX6J",
+            "updated_at": "2026-05-23T20:46:09.54Z",
+            "created_at": "2026-04-29T14:59:28.975Z",
+            "version": 1779569169540,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Dancer Greeting Card",
+                "description": "Dancer Greeting Card",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "6I7JDXYMJH7SJIDVP6CFIVY2",
+                        "updated_at": "2026-04-29T14:59:29.476Z",
+                        "created_at": "2026-04-29T14:59:28.975Z",
+                        "version": 1777474769476,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "56IR5UJKRAAVRTUZ4EIKQX6J",
+                            "name": "Regular",
+                            "sku": "298982K",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 600,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 275,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "67KOXZGQTGAL5XESJV3ZVBRJ"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "67KOXZGQTGAL5XESJV3ZVBRJ",
+                                    "updated_at": "2026-04-29T14:59:28.915Z",
+                                    "created_at": "2026-04-29T14:59:28.975Z",
+                                    "version": 1777474768915,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 275,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "6I7JDXYMJH7SJIDVP6CFIVY2"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799461363712
+                    }
+                ],
+                "description_html": "\u003cp\u003eDancer Greeting Card\u003c/p\u003e",
+                "description_plaintext": "Dancer Greeting Card",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799461363712
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "5WJTUAFI2TNF4D66ET5AR2PX",
+            "updated_at": "2026-05-23T20:45:34.827Z",
+            "created_at": "2025-12-16T18:51:07.979Z",
+            "version": 1779569134827,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "En Pointe Beaded Headband",
+                "description": "En Pointe Beaded Headband",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "IRUDRIMUXP3T5WOOFU7RCQ6E",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T18:51:07.979Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "5WJTUAFI2TNF4D66ET5AR2PX",
+                            "name": "Regular",
+                            "sku": "X480454",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1599,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "RLYBVWEOG6GCEWQ4JXLH7GBF"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "RLYBVWEOG6GCEWQ4JXLH7GBF",
+                                    "updated_at": "2025-12-16T18:51:07.934Z",
+                                    "created_at": "2025-12-16T18:51:07.979Z",
+                                    "version": 1765911067934,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1599,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "IRUDRIMUXP3T5WOOFU7RCQ6E"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799662690304
+                    }
+                ],
+                "description_html": "\u003cp\u003eEn Pointe Beaded Headband\u003c/p\u003e",
+                "description_plaintext": "En Pointe Beaded Headband",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799662690304
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "EGFBL7M7UFXFFGNMV3P6UFTG",
+            "updated_at": "2026-05-23T20:45:34.827Z",
+            "created_at": "2025-12-16T18:53:44.642Z",
+            "version": 1779569134827,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Everyone Needs a Little Jesus",
+                "description": "Everyone Needs a Little Jesus",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "4TMQFEENSHJQQXL4B4U5KYQJ",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T18:53:44.642Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "EGFBL7M7UFXFFGNMV3P6UFTG",
+                            "name": "Regular",
+                            "sku": "X455071",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 300,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 100,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "VZ4V3N4QWXNLCWO7MP5RPKOU"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "VZ4V3N4QWXNLCWO7MP5RPKOU",
+                                    "updated_at": "2025-12-16T18:53:44.59Z",
+                                    "created_at": "2025-12-16T18:53:44.642Z",
+                                    "version": 1765911224590,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 100,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "4TMQFEENSHJQQXL4B4U5KYQJ"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799713021952
+                    }
+                ],
+                "description_html": "\u003cp\u003eEveryone Needs a Little Jesus\u003c/p\u003e",
+                "description_plaintext": "Everyone Needs a Little Jesus",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799713021952
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "Z2EK7ME3AR746SIQZQMQLWFU",
+            "updated_at": "2026-05-23T20:45:27.487Z",
+            "created_at": "2024-02-08T21:53:03.485Z",
+            "version": 1779569127487,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "e24760e2-4262-4ac0-ba94-a0552bee87a9",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Hat Purple Size Small",
+                "abbreviation": "Ha",
+                "label_color": "ffa82ee5",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "YIJ2GSLB63OVSE3JA7775V7O",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-08T21:53:03.485Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "a36bd005-87d2-4089-bb7b-540e8173d38f",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "Z2EK7ME3AR746SIQZQMQLWFU",
+                            "name": "Regular",
+                            "sku": "B625618",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 1400,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799562027008
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799562027008
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "6AURPVKU7GWDIDXMXHBEHJI3",
+            "updated_at": "2026-05-23T20:45:28.16Z",
+            "created_at": "2024-02-10T00:36:06.823Z",
+            "version": 1779569128160,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "34198d07-b178-4d93-b494-cc11ed2e932b",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Kumihimo Beaded Bracelet",
+                "abbreviation": "Ku",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "3T65DY33HBGBBAURWVI6UTVA",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-10T00:36:06.823Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "189bbef8-4eea-4054-b9e7-86623e20e9bb",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "6AURPVKU7GWDIDXMXHBEHJI3",
+                            "name": "Regular",
+                            "sku": "628552W",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3000,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799796908032
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799796908032
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "ZMGV7TXFAZLDFGZQ2VXW225Q",
+            "updated_at": "2026-05-23T20:45:28.8Z",
+            "created_at": "2024-02-10T00:40:14.068Z",
+            "version": 1779569128800,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "03d4dea4-de31-4ce4-b90c-6c033287b423",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Kumihimo Beaded Necklace",
+                "abbreviation": "Ku",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "HHE7Z2M7G37WSXVCKRLBNMLI",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-10T00:40:14.068Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "57b2f463-149c-4234-b830-3527246003c8",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "ZMGV7TXFAZLDFGZQ2VXW225Q",
+                            "name": "Regular",
+                            "sku": "616987S",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 7000,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799612358656
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799612358656
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "QO4TYQKG54ZGXBT7QOARDZKI",
+            "updated_at": "2026-05-23T20:45:22.824Z",
+            "created_at": "2023-10-11T18:15:23.794Z",
+            "version": 1779569122824,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "1b0e84df-227f-4675-97bf-7975b52228ae",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Mug Mat",
+                "abbreviation": "Mu",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "KT2BZP4435IM57354PHKBAPQ",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2023-10-11T18:15:23.794Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "0a06f47d-7285-4ec7-9c3e-ce162e6b87eb",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "QO4TYQKG54ZGXBT7QOARDZKI",
+                            "name": "Regular",
+                            "sku": "M417291",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 599,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799494918144
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799494918144
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "527N4A6M4ENO6QJRV4FXD6JU",
+            "updated_at": "2026-05-23T20:45:34.827Z",
+            "created_at": "2025-12-16T18:47:56.955Z",
+            "version": 1779569134827,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Prima Ballerina Beaded Hair Bow",
+                "description": "Prima Ballerina Beaded Hair Bow",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "D2DC5VM6ZTTK3NMT5SLMOVAS",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T18:47:56.955Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "527N4A6M4ENO6QJRV4FXD6JU",
+                            "name": "Regular",
+                            "sku": "6572935",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3000,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 1299,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "IRJW2NSI66Z6WX7KYLQBVXLD"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "IRJW2NSI66Z6WX7KYLQBVXLD",
+                                    "updated_at": "2025-12-16T18:47:56.904Z",
+                                    "created_at": "2025-12-16T18:47:56.955Z",
+                                    "version": 1765910876904,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 1299,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "D2DC5VM6ZTTK3NMT5SLMOVAS"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799629135872
+                    }
+                ],
+                "description_html": "\u003cp\u003ePrima Ballerina Beaded Hair Bow\u003c/p\u003e",
+                "description_plaintext": "Prima Ballerina Beaded Hair Bow",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799629135872
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "YBH4O7KYSN7CGRRSFLQYFK2O",
+            "updated_at": "2026-05-23T20:45:28.16Z",
+            "created_at": "2024-02-08T21:55:41.12Z",
+            "version": 1779569128160,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "9072027f-a6ad-4bf8-ad6b-32693459f250",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Primitive Candle Mat",
+                "abbreviation": "Pr",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "2FPOO52PIIT3HI3BIUNB2JZX",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-08T21:55:41.12Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "49a36d4c-8fd5-403a-99e0-385ff16f24bf",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "YBH4O7KYSN7CGRRSFLQYFK2O",
+                            "name": "Regular",
+                            "sku": "1341638",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3500,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799729799168
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799729799168
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "TGJ4H65FVBDE5K2O4BTBSMS7",
+            "updated_at": "2026-05-23T20:45:26.823Z",
+            "created_at": "2024-02-01T22:23:07.553Z",
+            "version": 1779569126823,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "b9d66a7a-7668-4299-9e16-f8288c96669a",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Primitive Eggs",
+                "abbreviation": "Pr",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "FKGHS5F7KADDSZWJJP4FMOG6",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-01T22:23:07.553Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "c3cf19d9-c969-47f6-ae8c-a0a3a4be12a5",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "TGJ4H65FVBDE5K2O4BTBSMS7",
+                            "name": "Regular",
+                            "sku": "735403A",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 800,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799645913088
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799645913088
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "XSXA4KYL26XVEOVR4HLGYCHI",
+            "updated_at": "2026-05-23T20:45:34.827Z",
+            "created_at": "2025-12-16T18:54:26.602Z",
+            "version": 1779569134827,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Quacks of Kindness",
+                "description": "Quacks of Kindness",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "K5XTP7YLWMGKZ2LTUEN3IE2N",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-16T18:54:26.602Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "XSXA4KYL26XVEOVR4HLGYCHI",
+                            "name": "Regular",
+                            "sku": "557804Z",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 300,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 100,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "BG6GOTJEBKVRU54NH2MB75PD"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "BG6GOTJEBKVRU54NH2MB75PD",
+                                    "updated_at": "2025-12-16T18:54:26.561Z",
+                                    "created_at": "2025-12-16T18:54:26.602Z",
+                                    "version": 1765911266561,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 100,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "K5XTP7YLWMGKZ2LTUEN3IE2N"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799511695360
+                    }
+                ],
+                "description_html": "\u003cp\u003eQuacks of Kindness\u003c/p\u003e",
+                "description_plaintext": "Quacks of Kindness",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799511695360
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "STWSLV7R5OA6ND5T3RUZTZAG",
+            "updated_at": "2026-05-23T20:45:28.16Z",
+            "created_at": "2024-02-08T22:01:41.35Z",
+            "version": 1779569128160,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "ae67f8b0-db69-4960-988d-c7a48b5287df",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Quilted Christmas Table Mat",
+                "abbreviation": "Qu",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "HQS2ACZTWNJ2SLXWJ6ZBANPT",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-08T22:01:41.35Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "6830fc28-ddb4-430e-99e9-60ca3a0e4f2a",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "STWSLV7R5OA6ND5T3RUZTZAG",
+                            "name": "Regular",
+                            "sku": "X285401",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 4900,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799746576384
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799746576384
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "X5DBTV3RUYYIKA27HLW3UG2U",
+            "updated_at": "2026-05-23T20:45:28.8Z",
+            "created_at": "2024-02-11T16:08:15.67Z",
+            "version": 1779569128800,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "2b0f5c28-1125-4318-ac82-05c74c7b0891",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "ring dish",
+                "abbreviation": "ri",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "KXUSRNV7JCQKNP623OZOHVVQ",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-11T16:08:15.67Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "fccb5378-cd4a-4b6d-b55b-7eda98d196ca",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "X5DBTV3RUYYIKA27HLW3UG2U",
+                            "name": "Regular",
+                            "sku": "4878824",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 2450,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799763353600
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799763353600
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "DSBSBT4TCBRYIP7Q6BAPC6MQ",
+            "updated_at": "2026-05-23T20:45:47.027Z",
+            "created_at": "2025-12-26T19:06:54.728Z",
+            "version": 1779569147027,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "So Cutesy Headband Set",
+                "description": "So Cutesy Headband Set",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "MQSM3YMTJGKXRCTAVGOZVUEK",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2025-12-26T19:06:54.728Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "DSBSBT4TCBRYIP7Q6BAPC6MQ",
+                            "name": "Regular",
+                            "sku": "2662339",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 600,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 300,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "CIRLKMGCAD7GRFLGTFQJLWXU"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "CIRLKMGCAD7GRFLGTFQJLWXU",
+                                    "updated_at": "2025-12-26T19:06:54.687Z",
+                                    "created_at": "2025-12-26T19:06:54.728Z",
+                                    "version": 1766776014687,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "sku": "BH1732",
+                                        "price_money": {
+                                            "amount": 300,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "MQSM3YMTJGKXRCTAVGOZVUEK",
+                                        "vendor_id": "CGOZCK3ZJS6LPPJU"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799780130816
+                    }
+                ],
+                "description_html": "\u003cp\u003eSo Cutesy Headband Set\u003c/p\u003e",
+                "description_plaintext": "So Cutesy Headband Set",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799780130816
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "OQEYS6ESGSMNPTFSG5UCF2KP",
+            "updated_at": "2026-05-23T20:46:09.54Z",
+            "created_at": "2026-04-29T14:43:24.357Z",
+            "version": 1779569169540,
+            "is_deleted": false,
+            "present_at_all_locations": true,
+            "item_data": {
+                "name": "Squishy",
+                "description": "Squishy",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "5REZQCO77AVWOYSYIM3WF3S4",
+                        "updated_at": "2026-04-29T14:43:26.559Z",
+                        "created_at": "2026-04-29T14:43:24.357Z",
+                        "version": 1777473806559,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "OQEYS6ESGSMNPTFSG5UCF2KP",
+                            "name": "Ice Cube Squishy",
+                            "sku": "4982403",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 50,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "P2SPASH6CY6C4STT72YAXTEY"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "P2SPASH6CY6C4STT72YAXTEY",
+                                    "updated_at": "2026-04-29T14:43:24.298Z",
+                                    "created_at": "2026-04-29T14:43:24.357Z",
+                                    "version": 1777473804298,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 50,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "5REZQCO77AVWOYSYIM3WF3S4"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "DBBQOYIEN76MCLMLG6BDGFI5",
+                        "updated_at": "2026-04-29T14:43:26.559Z",
+                        "created_at": "2026-04-29T14:43:24.357Z",
+                        "version": 1777473806559,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "OQEYS6ESGSMNPTFSG5UCF2KP",
+                            "name": "Cute Little Ducky Squishy",
+                            "sku": "1229693",
+                            "ordinal": 1,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 200,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 50,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "PWAJJXC6EJWAQGJYRJRJQOAG"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "PWAJJXC6EJWAQGJYRJRJQOAG",
+                                    "updated_at": "2026-04-29T14:43:24.298Z",
+                                    "created_at": "2026-04-29T14:43:24.357Z",
+                                    "version": 1777473804298,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 50,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "DBBQOYIEN76MCLMLG6BDGFI5"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "54I5JN6FSGG6W3NYMVZ42SGV",
+                        "updated_at": "2026-04-29T14:43:26.559Z",
+                        "created_at": "2026-04-29T14:43:24.357Z",
+                        "version": 1777473806559,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "OQEYS6ESGSMNPTFSG5UCF2KP",
+                            "name": "Stress Cube Squishy",
+                            "sku": "6176492",
+                            "ordinal": 2,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 1000,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 499,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "MJDEVAEXX3XO6QSQKUTDV47O"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "MJDEVAEXX3XO6QSQKUTDV47O",
+                                    "updated_at": "2026-04-29T14:43:24.298Z",
+                                    "created_at": "2026-04-29T14:43:24.357Z",
+                                    "version": 1777473804298,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 499,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "54I5JN6FSGG6W3NYMVZ42SGV"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "WKB2O5MICRAATE5PWRG6W3HE",
+                        "updated_at": "2026-04-30T19:01:51.589Z",
+                        "created_at": "2026-04-29T14:43:24.357Z",
+                        "version": 1777575711589,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "OQEYS6ESGSMNPTFSG5UCF2KP",
+                            "name": "Chocolate Milk Stick",
+                            "sku": "572044V",
+                            "ordinal": 3,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 800,
+                                "currency": "USD"
+                            },
+                            "location_overrides": [
+                                {
+                                    "location_id": "LRVKTWBE34WHA",
+                                    "sold_out": true
+                                }
+                            ],
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 399,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "OZ5AP6EWPTQHYSA6TAZBWSUW"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "OZ5AP6EWPTQHYSA6TAZBWSUW",
+                                    "updated_at": "2026-04-29T14:43:24.298Z",
+                                    "created_at": "2026-04-29T14:43:24.357Z",
+                                    "version": 1777473804298,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 399,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "WKB2O5MICRAATE5PWRG6W3HE"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "KGKEVL4SM366SVO34X7U5D2T",
+                        "updated_at": "2026-05-08T16:07:46.241Z",
+                        "created_at": "2026-04-29T14:43:24.357Z",
+                        "version": 1778256466241,
+                        "is_deleted": false,
+                        "present_at_all_locations": true,
+                        "item_variation_data": {
+                            "item_id": "OQEYS6ESGSMNPTFSG5UCF2KP",
+                            "name": "Strawberry Milk Stick",
+                            "sku": "8829412",
+                            "ordinal": 4,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 800,
+                                "currency": "USD"
+                            },
+                            "location_overrides": [
+                                {
+                                    "location_id": "LRVKTWBE34WHA",
+                                    "sold_out": true
+                                }
+                            ],
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "default_unit_cost": {
+                                "amount": 399,
+                                "currency": "USD"
+                            },
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ],
+                            "item_variation_vendor_info_ids": [
+                                "MON7HNHSDCPAY52T2OXDWZQQ"
+                            ],
+                            "item_variation_vendor_infos": [
+                                {
+                                    "type": "ITEM_VARIATION_VENDOR_INFO",
+                                    "id": "MON7HNHSDCPAY52T2OXDWZQQ",
+                                    "updated_at": "2026-04-29T14:43:24.298Z",
+                                    "created_at": "2026-04-29T14:43:24.357Z",
+                                    "version": 1777473804298,
+                                    "is_deleted": false,
+                                    "present_at_all_locations": true,
+                                    "item_variation_vendor_info_data": {
+                                        "ordinal": 1,
+                                        "price_money": {
+                                            "amount": 399,
+                                            "currency": "USD"
+                                        },
+                                        "item_variation_id": "KGKEVL4SM366SVO34X7U5D2T"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "skip_modifier_screen": false,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799478140928
+                    },
+                    {
+                        "id": "V46AJGDZAUBRENHVF6N7U5IH",
+                        "ordinal": -2251456199524352
+                    }
+                ],
+                "description_html": "\u003cp\u003eSquishy\u003c/p\u003e",
+                "description_plaintext": "Squishy",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799478140928
+                },
+                "is_alcoholic": false
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "ZEXLU76FPS46D2BIO6SFQFMK",
+            "updated_at": "2026-05-23T20:45:26.823Z",
+            "created_at": "2024-02-01T21:15:21.979Z",
+            "version": 1779569126823,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "978dc4df-6ed6-4420-b4e3-d1f2dffa1a07",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Tooth Fairy Pocket",
+                "abbreviation": "To",
+                "label_color": "",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "ACHMQTSKD4DTJL5PKFQAXBB4",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2024-02-01T21:15:21.979Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "6ab6a3ec-f953-4708-b2b4-af9086c0400f",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "ZEXLU76FPS46D2BIO6SFQFMK",
+                            "name": "Regular",
+                            "sku": "K183988",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 500,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799528472576
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799528472576
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "F2MOZ2FYCYXFFKWN7SF37CWE",
+            "updated_at": "2026-05-23T20:45:21.531Z",
+            "created_at": "2023-10-10T20:51:43.368Z",
+            "version": 1779569121531,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "b29ba40d-a072-4a7d-ac61-37187614e1ec",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Tunic #132",
+                "abbreviation": "Tu",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "ZX5LAMO7DAEWFVXKO7RKGIDZ",
+                        "updated_at": "2026-04-22T16:06:26.728Z",
+                        "created_at": "2023-10-10T20:51:43.368Z",
+                        "version": 1776873986728,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "53bfc317-943e-494e-a9a9-b7d8fa3086e1",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "F2MOZ2FYCYXFFKWN7SF37CWE",
+                            "name": "Regular",
+                            "sku": "8178647",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 3400,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_available": true,
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799545249792
+                    }
+                ],
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799545249792
+                }
+            }
+        },
+        {
+            "type": "ITEM",
+            "id": "GCGJZG4PPJIS4YINVZHY2R6H",
+            "updated_at": "2026-05-23T20:45:53.036Z",
+            "created_at": "2026-01-03T17:55:58.173Z",
+            "version": 1779569153036,
+            "is_deleted": false,
+            "catalog_v1_ids": [
+                {
+                    "catalog_v1_id": "ec8f7103-10a6-4d5b-b932-6113d5ad865d",
+                    "location_id": "LRVKTWBE34WHA"
+                }
+            ],
+            "present_at_all_locations": false,
+            "present_at_location_ids": [
+                "LRVKTWBE34WHA"
+            ],
+            "item_data": {
+                "name": "Youth Sewing Class Age 13-17",
+                "description": "Youth Sewing Class Age 13-17",
+                "abbreviation": "Yo",
+                "is_taxable": true,
+                "tax_ids": [
+                    "OTZZ3XUNTOIDFYXAKNNYP2GU"
+                ],
+                "variations": [
+                    {
+                        "type": "ITEM_VARIATION",
+                        "id": "ZJ6WULG27I765NVPXJUGMOUN",
+                        "updated_at": "2026-01-03T23:55:57.827Z",
+                        "created_at": "2026-01-03T17:55:58.173Z",
+                        "version": 1767484557827,
+                        "is_deleted": false,
+                        "catalog_v1_ids": [
+                            {
+                                "catalog_v1_id": "aeb25984-1962-42da-8e87-05463dfcc86c",
+                                "location_id": "LRVKTWBE34WHA"
+                            }
+                        ],
+                        "present_at_all_locations": false,
+                        "present_at_location_ids": [
+                            "LRVKTWBE34WHA"
+                        ],
+                        "item_variation_data": {
+                            "item_id": "GCGJZG4PPJIS4YINVZHY2R6H",
+                            "name": "Regular",
+                            "sku": "A808588",
+                            "ordinal": 0,
+                            "pricing_type": "FIXED_PRICING",
+                            "price_money": {
+                                "amount": 50000,
+                                "currency": "USD"
+                            },
+                            "track_inventory": true,
+                            "sellable": true,
+                            "stockable": true,
+                            "channels": [
+                                "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                                "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                            ]
+                        }
+                    }
+                ],
+                "product_type": "REGULAR",
+                "ecom_visibility": "VISIBLE",
+                "categories": [
+                    {
+                        "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                        "ordinal": -2251799679467520
+                    }
+                ],
+                "description_html": "\u003cp\u003eYouth Sewing Class Age 13-17\u003c/p\u003e",
+                "description_plaintext": "Youth Sewing Class Age 13-17",
+                "channels": [
+                    "CH_Pb5gvJ1zD7lb6rcaHTUKuUZrG8eOhanwIjNOkUR29945o",
+                    "CH_YEMozB90oG6KpDAzBMTK1LGAqKcZQ94FiurfYRlQuYC"
+                ],
+                "is_archived": false,
+                "reporting_category": {
+                    "id": "GABLH2UNY32ZVCQIUL2HZWPL",
+                    "ordinal": -2251799679467520
+                }
+            }
+        }
+    ],
+    "cursor": "",
+    "matched_variation_ids": [
+        "LIH7F5JXILGKA32Z363SI2KV",
+        "7D2J2DOPEBUJUCK7N36374AZ",
+        "C3K2LFYLAR25QDOH75AG6L77",
+        "6YU2KPJ23JN2PK5AUNBTPUHT",
+        "LYOCMWBSRWUCTYLIFL2EXIW4",
+        "CIIBPS4PT4JO5J5NTCG34WKF",
+        "X4L2ORSKZHRQWTA26AP6FQD6",
+        "L45JJMGJCSXESTBKM7DNK66D",
+        "IEUN3LQIGLOMD6BTGCO7DRUN",
+        "RAVDF4HO457L3YT3ZSQA6LTW",
+        "3S4TDLJ6CPKJ7SGDTX3Z5VSP",
+        "3CB4N4SSTQNQNRZDBLEZMXJO",
+        "ZLMLKNGOTBUK35YW6YF2SGMZ",
+        "EBLEMXT5OZKIJE6MVZM6KRJN",
+        "6I7JDXYMJH7SJIDVP6CFIVY2",
+        "IRUDRIMUXP3T5WOOFU7RCQ6E",
+        "4TMQFEENSHJQQXL4B4U5KYQJ",
+        "YIJ2GSLB63OVSE3JA7775V7O",
+        "3T65DY33HBGBBAURWVI6UTVA",
+        "HHE7Z2M7G37WSXVCKRLBNMLI",
+        "KT2BZP4435IM57354PHKBAPQ",
+        "D2DC5VM6ZTTK3NMT5SLMOVAS",
+        "2FPOO52PIIT3HI3BIUNB2JZX",
+        "FKGHS5F7KADDSZWJJP4FMOG6",
+        "K5XTP7YLWMGKZ2LTUEN3IE2N",
+        "HQS2ACZTWNJ2SLXWJ6ZBANPT",
+        "KXUSRNV7JCQKNP623OZOHVVQ",
+        "MQSM3YMTJGKXRCTAVGOZVUEK",
+        "5REZQCO77AVWOYSYIM3WF3S4",
+        "DBBQOYIEN76MCLMLG6BDGFI5",
+        "54I5JN6FSGG6W3NYMVZ42SGV",
+        "WKB2O5MICRAATE5PWRG6W3HE",
+        "KGKEVL4SM366SVO34X7U5D2T",
+        "ACHMQTSKD4DTJL5PKFQAXBB4",
+        "ZX5LAMO7DAEWFVXKO7RKGIDZ",
+        "ZJ6WULG27I765NVPXJUGMOUN"
+    ]
+}

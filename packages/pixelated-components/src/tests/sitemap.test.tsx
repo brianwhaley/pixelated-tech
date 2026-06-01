@@ -7,9 +7,11 @@ import {
 	createContentfulURLs,
 	createContentfulAssetURLs,
 	createEbayItemURLs,
+	createSquareItemURLs,
 	generateSitemap,
 	buildSitemapConfig,
 	clearEbaySitemapCache,
+	clearSquareSitemapCache,
 	getOriginFromHeaders,
 	getRuntimeEnvFromHeaders,
 	getOriginFromNextHeaders,
@@ -40,6 +42,7 @@ vi.mock('../components/integrations/contentful.delivery', async () => {
 	};
 });
 vi.mock('../components/shoppingcart/ebay.functions');
+vi.mock('../components/shoppingcart/square');
 vi.mock('../components/config/config');
 vi.mock('../components/foundation/metadata.functions');
 vi.mock('next/headers', () => ({ headers: vi.fn() }));
@@ -49,6 +52,7 @@ import * as contentfulModule from '../components/integrations/contentful.deliver
 import * as ebayModule from '../components/shoppingcart/ebay.functions';
 import * as configModule from '../components/config/config';
 import * as metadataModule from '../components/foundation/metadata.functions';
+import * as squareModule from '../components/shoppingcart/square';
 import { realWordPressApiData, siteImagesData, realContentfulAssetsData } from '../test/test-data';
 import { mockContentfulImageAssets, mockContentfulImageAssetsWithEmptyUrls } from '../test/fixtures';
 
@@ -68,7 +72,8 @@ describe('Sitemap Helper Functions', () => {
 		// console.error = vi.fn();
 		// console.log = vi.fn();
 		// console.warn = vi.fn();
-			clearEbaySitemapCache();
+		clearEbaySitemapCache();
+		clearSquareSitemapCache();
 	});
 
 	afterEach(() => {
@@ -796,6 +801,18 @@ describe('Sitemap Helper Functions', () => {
 				});
 				expect(sitemapConfig.createContentfulURLs).toBe(true);
 			});
+
+			it('should enable Square sitemap generation when squareItemCategoryId is configured', () => {
+				const pixelatedConfig = {
+					square: {
+						squareItemCategoryId: 'test-category'
+					}
+				};
+
+				const sitemapConfig = buildSitemapConfig(pixelatedConfig, { routes: [] });
+
+				expect(sitemapConfig.createSquareItemURLs).toBe(true);
+			});
 		});
 
 		it('should create page builder URLs from Contentful field values', async () => {
@@ -1050,6 +1067,48 @@ describe('Sitemap Helper Functions', () => {
 
 			expect(result).toEqual([]);
 			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('createEbayItemURLs skipped; unable to fetch items'), expect.any(Error));
+		});
+	});
+
+	describe('createSquareItemURLs', () => {
+		it('should create sitemap entries for Square items', async () => {
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			const mockGetSquareStoreItems = vi.mocked(squareModule.getSquareStoreItems);
+
+			mockGetFullPixelatedConfig.mockReturnValue({
+				square: { squareItemCategoryId: 'test-category' }
+			});
+			mockGetSquareStoreItems.mockResolvedValue({
+				items: [
+				{
+					itemURL: '/store/test-item',
+					itemImageURLs: ['https://images.example.com/test-item-1.jpg'],
+				},
+				{ itemURL: 'https://external.com/product' }
+			]
+		});
+
+		const origin = 'https://example.com';
+		const result = await createSquareItemURLs(origin);
+
+		expect(result).toHaveLength(2);
+		expect(result[0]).toMatchObject({
+			url: 'https://example.com/store/test-item',
+			changeFrequency: 'hourly',
+			priority: 1,
+		});
+		expect(result[0].images).toEqual(['https://images.example.com/test-item-1.jpg']);
+			expect(result[0].lastModified).toBeInstanceOf(Date);
+		});
+
+		it('should return an empty sitemap when Square config is missing', async () => {
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({});
+
+			const origin = 'https://example.com';
+			const result = await createSquareItemURLs(origin);
+
+			expect(result).toEqual([]);
 		});
 	});
 

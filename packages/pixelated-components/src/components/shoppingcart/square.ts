@@ -1,8 +1,579 @@
+import type { SquareStoreItemShapeType } from './square.components';
 import { getFullPixelatedConfig } from '../config/config';
+import { CacheManager } from '../foundation/cache-manager';
 import { smartFetch } from '../foundation/smartfetch';
+import { sanitizeString, normalizeEmail } from '../foundation/utilities';
 import type { CheckoutType } from './shoppingcart.functions';
 
 const debug = false;
+
+export type SquareStoreFilterValue = { label: string; value: string };
+export type SquareStoreFilters = Array<{ name: string; values: SquareStoreFilterValue[] }>;
+
+export interface SquareStoreItemsResponse {
+	items: SquareStoreItemShapeType[];
+	filters: SquareStoreFilters;
+}
+
+export interface SquareStoreQueryOptions {
+	featuredOnly?: boolean;
+	propertyName?: string;
+	propertyValue?: string;
+}
+
+const squareStoreCache = new CacheManager({ mode: 'memory', domain: 'pixelated-components', namespace: 'square-store', ttl: 10 * 60 * 1000 });
+
+export function clearSquareStoreCache() {
+	squareStoreCache.clear();
+}
+
+function isSandboxSquareConfig(squareConfig: any) {
+	return squareConfig?.environment === 'sandbox';
+}
+
+function getSquareBaseUrl(squareConfig: any) {
+	return isSandboxSquareConfig(squareConfig)
+		? 'https://connect.squareupsandbox.com'
+		: 'https://connect.squareup.com';
+}
+
+function getSquareCatalogUrl() {
+	const params = new URLSearchParams({ types: 'ITEM,ITEM_VARIATION,IMAGE,CATEGORY' });
+	return `/v2/catalog/list?${params.toString()}`;
+}
+
+function getSquareInventoryUrl() {
+	return '/v2/inventory/batch-retrieve-counts';
+}
+
+function getPropertyValue(value: any) {
+	if (typeof value === 'string') return value;
+	if (typeof value === 'boolean') return value ? 'true' : 'false';
+	if (typeof value === 'number') return String(value);
+	return '';
+}
+
+function getCategoryPath(categoryMap: Map<string, any>, categoryId?: string) {
+	const path: string[] = [];
+	let currentId = categoryId;
+	while (currentId) {
+		const category = categoryMap.get(currentId);
+		if (!category || path.includes(currentId)) break;
+		path.unshift(currentId);
+		currentId = category.parent_category_id;
+	}
+	return path;
+}
+
+function getItemCategoryIds(itemData: any) {
+	const ids: string[] = [];
+	if (typeof itemData.category_id === 'string') ids.push(itemData.category_id);
+	if (Array.isArray(itemData.category_ids)) {
+		for (const id of itemData.category_ids) {
+			if (typeof id === 'string') ids.push(id);
+		}
+	}
+	if (Array.isArray(itemData.categories)) {
+		for (const category of itemData.categories) {
+			if (typeof category === 'string') {
+				ids.push(category);
+			} else if (category?.id) {
+				ids.push(category.id);
+			}
+		}
+	}
+	return ids;
+}
+
+function getItemProperties(itemData: any, variationObjects: any[] = []) {
+	const properties: Record<string, string> = {};
+	function collectAttributes(attributeSource: any) {
+		if (!Array.isArray(attributeSource)) {
+			return;
+		}
+		for (const attr of attributeSource) {
+			const name = attr?.name || attr?.custom_attribute_definition_id;
+			const value = attr?.string_value ?? attr?.boolean_value ?? attr?.number_value ?? attr?.type_annotation;
+			if (name && value !== undefined && value !== null) {
+				properties[name] = getPropertyValue(value);
+			}
+		}
+	}
+
+	collectAttributes(itemData?.custom_attribute_values);
+	for (const variationObject of variationObjects) {
+		collectAttributes(variationObject?.custom_attribute_values);
+		collectAttributes(variationObject?.item_variation_data?.custom_attribute_values);
+	}
+	return properties;
+}
+
+const squareStorePriceBuckets = [
+	{ min: 0, max: 25, label: 'Under $25' },
+	{ min: 25, max: 50, label: '$25 - $50' },
+	{ min: 50, max: 100, label: '$50 - $100' },
+	{ min: 100, max: 200, label: '$100 - $200' },
+	{ min: 200, max: 500, label: '$200 - $500' },
+	{ min: 500, max: 1000, label: '$500 - $1000' },
+	{ min: 1000, max: Infinity, label: '$1000+' },
+] as const;
+
+export function getSquareStorePriceRanges(items: SquareStoreItemShapeType[]) {
+	const prices = items
+		.map((item) => item.itemPrice)
+		.filter((price) => Number.isFinite(price));
+	if (prices.length === 0) return [];
+
+	return squareStorePriceBuckets
+		.filter((bucket) => prices.some((price) => bucket.max === Infinity ? price >= bucket.min : price >= bucket.min && price <= bucket.max))
+		.map((bucket) => bucket.label);
+}
+
+export function matchesSquareStorePriceRange(price: number, rangeLabel: string) {
+	if (!Number.isFinite(price)) return false;
+	const bucket = squareStorePriceBuckets.find((bucket) => bucket.label === rangeLabel);
+	if (!bucket) return false;
+	return bucket.max === Infinity ? price >= bucket.min : price >= bucket.min && price <= bucket.max;
+}
+
+export function buildSquareStoreFilters(items: SquareStoreItemShapeType[]) {
+	const gather: Record<string, Map<string, string>> = {};
+
+	function addFilter(name: string, value: string, label: string) {
+		if (!value || !label) return;
+		if (!gather[name]) gather[name] = new Map<string, string>();
+		gather[name].set(value, label);
+	}
+
+	for (const item of items) {
+		if (item.categories) {
+			for (const category of item.categories) {
+				if (!category?.id || !category?.name) continue;
+				addFilter('Category', category.id, category.name);
+			}
+		}
+
+		if (item.properties) {
+			for (const [key, value] of Object.entries(item.properties)) {
+				if (typeof value !== 'string' || value.trim() === '') continue;
+				addFilter(key, value, value);
+			}
+		}
+	}
+
+	for (const priceRange of getSquareStorePriceRanges(items)) {
+		addFilter('Price Range', priceRange, priceRange);
+	}
+
+	const orderedFilters = Object.entries(gather)
+		.sort(([a], [b]) => {
+			const order = ['Category', 'Price Range'];
+			const aIndex = order.indexOf(a);
+			const bIndex = order.indexOf(b);
+			if (aIndex !== -1 || bIndex !== -1) {
+				return (aIndex === -1 ? order.length : aIndex) - (bIndex === -1 ? order.length : bIndex);
+			}
+			return a.localeCompare(b);
+		})
+		.map(([name, values]) => ({
+			name,
+			values: Array.from(values.entries())
+				.map(([value, label]) => ({ value, label }))
+				.sort((a, b) => a.label.localeCompare(b.label)),
+		}));
+
+	return orderedFilters;
+}
+
+function filterSquareStoreItems(
+	items: SquareStoreItemShapeType[],
+	squareItemCategoryId?: string,
+	squareFeaturedCategoryId?: string,
+	options: SquareStoreQueryOptions = {}
+) {
+	return items.filter((item) => {
+		if (item.itemInventory <= 0) return false;
+		if (squareItemCategoryId && !(item.categoryPath || []).includes(squareItemCategoryId)) return false;
+		if (options.featuredOnly && squareFeaturedCategoryId && !(item.categoryPath || []).includes(squareFeaturedCategoryId)) return false;
+		if (options.propertyName && options.propertyValue) {
+			const actual = item.properties?.[options.propertyName];
+			if (sanitizeString(actual) !== sanitizeString(options.propertyValue)) return false;
+		}
+		return true;
+	});
+}
+
+function getUniqueImageIdsFromItemObjects(objects: any[]) {
+	const imageIds = new Set<string>();
+	for (const object of objects) {
+		if (object?.type !== 'ITEM') continue;
+		const itemData = object.item_data;
+		if (!itemData) continue;
+		const ids = Array.isArray(itemData.image_ids) ? itemData.image_ids : [];
+		for (const id of ids) {
+			if (typeof id === 'string' && id.trim()) {
+				imageIds.add(id);
+			}
+		}
+	}
+	return Array.from(imageIds);
+}
+
+async function fetchSquareCatalogImageObjects(squareConfig: any, imageIds: string[]) {
+	if (!imageIds?.length) return [];
+
+	const accessToken = squareConfig?.squareAccessToken || squareConfig?.sandboxSquareAccessToken;
+	if (!accessToken) {
+		throw new Error('Square access token is not configured.');
+	}
+
+	const url = `${getSquareBaseUrl(squareConfig)}/v2/catalog/batch-retrieve`;
+	const response = await smartFetch(url, {
+		responseType: 'json',
+		requestInit: {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+				'Square-Version': '2026-05-20',
+			},
+			body: JSON.stringify({
+				object_ids: imageIds,
+				include_related_objects: false,
+			}),
+		},
+	});
+
+	return Array.isArray(response?.objects) ? response.objects : [];
+}
+
+async function fetchSquareCatalogCategoryObjects(squareConfig: any, categoryIds: string[]) {
+	if (!categoryIds?.length) return [];
+
+	const accessToken = squareConfig?.squareAccessToken || squareConfig?.sandboxSquareAccessToken;
+	if (!accessToken) {
+		throw new Error('Square access token is not configured.');
+	}
+
+	const url = `${getSquareBaseUrl(squareConfig)}/v2/catalog/list?types=CATEGORY`;
+	const response = await smartFetch(url, {
+		responseType: 'json',
+		requestInit: {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+				'Square-Version': '2026-05-20',
+			},
+		},
+	});
+
+	const objects = Array.isArray(response?.objects) ? (response.objects as any[]) : [];
+	return objects.filter((object: any) => object?.type === 'CATEGORY' && categoryIds.includes(object.id));
+}
+
+async function fetchSquareCatalogObjects(squareConfig: any) {
+	const cacheKey = `catalog_${squareConfig?.squareItemCategoryId || 'all'}`;
+	const cached = squareStoreCache.get<any>(cacheKey);
+	if (cached) {
+		return cached;
+	}
+
+	const accessToken = squareConfig?.squareAccessToken || squareConfig?.sandboxSquareAccessToken;
+	if (!accessToken) {
+		throw new Error('Square access token is not configured.');
+	}
+
+	const categoryId = squareConfig?.squareItemCategoryId;
+	if (!categoryId) {
+		throw new Error('square.squareItemCategoryId is required to fetch Square boutique items.');
+	}
+
+	const url = `${getSquareBaseUrl(squareConfig)}/v2/catalog/search-catalog-items`;
+	const collectedObjects: any[] = [];
+	let cursor: string | undefined;
+
+	do {
+		const body: any = {
+			category_ids: [categoryId],
+			include_related_objects: true,
+		};
+		if (cursor) {
+			body.cursor = cursor;
+		}
+
+		const response = await smartFetch(url, {
+			responseType: 'json',
+			requestInit: {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					Authorization: `Bearer ${accessToken}`,
+					'Square-Version': '2026-05-20',
+				},
+				body: JSON.stringify(body),
+			},
+		});
+
+		const pageObjects = Array.isArray(response?.objects)
+			? response.objects
+			: [
+				...(Array.isArray(response?.items) ? response.items : []),
+				...(Array.isArray(response?.related_objects) ? response.related_objects : []),
+			];
+		collectedObjects.push(...pageObjects);
+		cursor = response?.cursor;
+	} while (cursor);
+
+	const referencedCategoryIds = new Set<string>();
+	for (const object of collectedObjects) {
+		if (object?.type !== 'ITEM') continue;
+		const itemData = object.item_data || {};
+		for (const categoryId of getItemCategoryIds(itemData)) {
+			referencedCategoryIds.add(categoryId);
+		}
+	}
+
+	const existingCategoryIds = new Set<string>(
+		collectedObjects
+			.filter((object) => object?.type === 'CATEGORY')
+			.map((object) => object?.id)
+			.filter((id): id is string => typeof id === 'string')
+	);
+
+	const missingCategoryIds = [...referencedCategoryIds].filter((id) => !existingCategoryIds.has(id));
+	if (missingCategoryIds.length > 0) {
+		const categoryObjects = await fetchSquareCatalogCategoryObjects(squareConfig, missingCategoryIds);
+		collectedObjects.push(...categoryObjects);
+	}
+
+	const existingImageIds = new Set(
+		collectedObjects
+			.filter((object) => object?.type === 'IMAGE')
+			.map((object) => object?.id)
+			.filter((id): id is string => typeof id === 'string')
+	);
+
+	const missingImageIds = getUniqueImageIdsFromItemObjects(collectedObjects).filter(
+		(id) => !existingImageIds.has(id)
+	);
+
+	if (missingImageIds.length > 0) {
+		const imageObjects = await fetchSquareCatalogImageObjects(squareConfig, missingImageIds);
+		collectedObjects.push(...imageObjects);
+	}
+
+	squareStoreCache.set(cacheKey, collectedObjects);
+	return collectedObjects;
+}
+
+async function fetchSquareInventoryCounts(squareConfig: any, variationIds: string[]) {
+	if (!variationIds?.length) return new Map<string, number>();
+	const accessToken = squareConfig?.squareAccessToken || squareConfig?.sandboxSquareAccessToken;
+	if (!accessToken) {
+		throw new Error('Square access token is not configured.');
+	}
+
+	const url = `${getSquareBaseUrl(squareConfig)}${getSquareInventoryUrl()}`;
+	const response = await smartFetch(url, {
+		responseType: 'json',
+		requestInit: {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+			body: JSON.stringify({ catalog_object_ids: variationIds }),
+		},
+	});
+
+	const counts = new Map<string, number>();
+	for (const count of response?.counts || []) {
+		const id = count?.catalog_object_id;
+		const quantity = Number(count?.quantity ?? '0');
+		if (typeof id === 'string' && Number.isFinite(quantity)) {
+			counts.set(id, quantity);
+		}
+	}
+	return counts;
+}
+
+function buildPriceFromVariations(variationObjects: any[]) {
+	if (!variationObjects || variationObjects.length === 0) return { amount: 0, currency: 'USD' };
+	const variation = variationObjects[0];
+	const money = variation?.item_variation_data?.price_money;
+	return {
+		amount: typeof money?.amount === 'number' ? money.amount / 100 : 0,
+		currency: money?.currency || 'USD',
+	};
+}
+
+function slugifyValue(value: string) {
+	return value
+		.toString()
+		.toLowerCase()
+		.trim()
+		.replace(/['’]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+}
+
+function buildSquareStoreItem(
+	itemObject: any,
+	variationMap: Map<string, any>,
+	albumImageMap: Map<string, string>,
+	countsMap: Map<string, number>,
+	categoryMap: Map<string, any>
+): SquareStoreItemShapeType {
+	const itemData = itemObject?.item_data || {};
+	const variationRefs = Array.isArray(itemData?.variations) ? itemData.variations : [];
+	const variationIds = variationRefs.map((ref: any) => ref?.id).filter(Boolean);
+	let variationObjects = variationIds.map((variationId: string) => variationMap.get(variationId)).filter(Boolean);
+	if (variationObjects.length === 0) {
+		variationObjects = variationRefs.filter((ref: any) => ref?.item_variation_data);
+	}
+	const { amount, currency } = buildPriceFromVariations(variationObjects);
+
+	const itemImageIds = Array.isArray(itemData?.image_ids) ? itemData.image_ids : [];
+	const itemImageURLs = itemImageIds.map((imageId: string) => albumImageMap.get(imageId)).filter(Boolean);
+	const primaryImageURL = itemImageURLs[0];
+
+	const categoryIds = getItemCategoryIds(itemData);
+	const categoryPathIds = new Set<string>();
+	for (const categoryId of categoryIds) {
+		const path = getCategoryPath(categoryMap, categoryId);
+		if (path.length > 0) {
+			for (const pathId of path) {
+				categoryPathIds.add(pathId);
+			}
+		} else if (categoryId) {
+			categoryPathIds.add(categoryId);
+		}
+	}
+	const categoryPath = Array.from(categoryPathIds);
+	const categories = Array.from(new Set(categoryIds))
+		.map((id) => {
+			const category = categoryMap.get(id);
+			if (!category?.name) return undefined;
+			return { id, name: category.name };
+		})
+		.filter((category): category is { id: string; name: string } => Boolean(category));
+
+	const properties = getItemProperties(itemData, variationObjects);
+	const itemInventory = variationIds.reduce((total: number, id: string) => total + (countsMap.get(id) ?? 0), 0);
+
+	const itemTitle = itemData?.name || 'Untitled Item';
+	const itemSlug = slugifyValue(itemTitle);
+	const itemId = itemObject?.id || '';
+	const variationWeight = variationObjects.length > 0 ? variationObjects[0]?.item_variation_data?.item_weight : undefined;
+	const variationWeightUnit = variationObjects.length > 0 ? variationObjects[0]?.item_variation_data?.item_weight_unit : undefined;
+	return {
+		itemID: itemId,
+		itemURL: `/store/${itemSlug}`,
+		itemTitle,
+		itemDescription: itemData?.description || '',
+		itemImageURL: primaryImageURL,
+		itemImageURLs: itemImageURLs.length ? itemImageURLs : undefined,
+		itemPrice: amount,
+		itemCurrency: currency,
+		itemInventory,
+		itemIsShippable: true,
+		itemWeightUnit: itemData?.item_weight_unit || variationWeightUnit || 'lb',
+		itemWeight:
+			typeof itemData?.item_weight === 'number'
+				? itemData.item_weight
+				: typeof variationWeight === 'number'
+					? variationWeight
+					: undefined,
+		properties: Object.keys(properties).length ? properties : undefined,
+		categories: categories.length ? categories : undefined,
+		categoryPath: categoryPath.length ? categoryPath : undefined,
+	};
+}
+
+async function normalizeSquareCatalogObjects(squareConfig: any) {
+	const objects = await fetchSquareCatalogObjects(squareConfig);
+	const categoryMap = new Map<string, any>();
+	const variationMap = new Map<string, any>();
+	const imageMap = new Map<string, string>();
+	const itemObjects: any[] = [];
+
+	for (const object of objects) {
+		if (object?.type === 'CATEGORY') {
+			categoryMap.set(object.id, object.category_data || {});
+			continue;
+		}
+		if (object?.type === 'ITEM_VARIATION') {
+			variationMap.set(object.id, object);
+			continue;
+		}
+		if (object?.type === 'IMAGE') {
+			imageMap.set(object.id, object.image_data?.url || '');
+			continue;
+		}
+		if (object?.type === 'ITEM') {
+			itemObjects.push(object);
+		}
+	}
+
+	const allVariationIds = itemObjects.flatMap((item) => {
+		const itemData = item?.item_data || {};
+		return Array.isArray(itemData?.variations) ? itemData.variations.map((ref: any) => ref?.id).filter(Boolean) : [];
+	});
+
+	const countsMap = await fetchSquareInventoryCounts(squareConfig, Array.from(new Set(allVariationIds)));
+
+	const items = itemObjects.map((item) => buildSquareStoreItem(item, variationMap, imageMap, countsMap, categoryMap));
+	return { items, categoryMap };
+}
+
+export async function getSquareStoreItems(options: SquareStoreQueryOptions = {}) {
+	const squareConfig = getFullPixelatedConfig()?.square;
+	if (!squareConfig) {
+		throw new Error('Square configuration is required for store items.');
+	}
+	const squareItemCategoryId = squareConfig.squareItemCategoryId;
+	if (!squareItemCategoryId) {
+		throw new Error('square.squareItemCategoryId is required to fetch Square boutique items.');
+	}
+	const squareFeaturedCategoryId = squareConfig.squareFeaturedCategoryId;
+
+	const cacheKey = `store_${squareItemCategoryId}_${squareFeaturedCategoryId || 'none'}_${options.featuredOnly ? 'featured' : 'all'}_${options.propertyName || ''}_${options.propertyValue || ''}`;
+	const cached = squareStoreCache.get<SquareStoreItemsResponse>(cacheKey);
+	if (cached) return cached;
+
+	const { items } = await normalizeSquareCatalogObjects(squareConfig);
+	const filtered = filterSquareStoreItems(items, squareItemCategoryId, squareFeaturedCategoryId, options);
+	const filters = buildSquareStoreFilters(filtered);
+	const response = { items: filtered, filters };
+	squareStoreCache.set(cacheKey, response);
+	return response;
+}
+
+export async function getSquareStoreItemById(itemId?: string) {
+	if (!itemId) { return undefined; }
+
+	const response = await getSquareStoreItems();
+	const directMatch = response.items.find((item) => item.itemID === itemId);
+	if (directMatch) {
+		return directMatch;
+	}
+
+	const slugMatch = response.items.find((item) => item.itemURL?.endsWith(`/${itemId}`));
+	if (slugMatch) {
+		return slugMatch;
+	}
+
+	const parsedId = itemId.split('-').pop();
+	if (parsedId && parsedId !== itemId) {
+		return response.items.find((item) => item.itemID === parsedId);
+	}
+
+	return undefined;
+}
 
 const DEFAULT_SQUARE_ORDERS_URL = 'https://connect.squareup.com/v2/orders';
 const DEFAULT_SQUARE_PAYMENTS_URL = 'https://connect.squareup.com/v2/payments';
@@ -51,10 +622,6 @@ export class SquarePaymentError extends Error {
 		this.userMessage = userMessage;
 		this.retryable = retryable;
 	}
-}
-
-function normalizeEmail(value?: any) {
-	return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
 
 function formatMoneyAmount(value: any) {

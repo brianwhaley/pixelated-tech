@@ -1,8 +1,25 @@
 import { getCartItemCount, getCartSubTotal, formatAsHundredths, type CartItemType } from "@pixelated-tech/components";
 
+function normalizeItemCategories(item: CartItemType) {
+	if (!item?.itemCategory) return [];
+	const categories = Array.isArray(item.itemCategory) ? item.itemCategory : [item.itemCategory];
+	return Array.from(
+		new Set(
+			categories
+				.filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+				.map((value) => value.toLowerCase().trim()),
+		),
+	);
+}
+
+function getEventItems(cart: CartItemType[]) {
+	return cart.filter((item) => normalizeItemCategories(item).includes('event'));
+}
+
 export function getThreeMusesQuantityDiscount(cart: CartItemType[]) {
-	const itemCount = getCartItemCount(cart);
-	const subtotal = getCartSubTotal(cart);
+	const eventItems = getEventItems(cart);
+	const itemCount = getCartItemCount(eventItems);
+	const subtotal = getCartSubTotal(eventItems);
 	let discountPercent = 0;
 
 	if (itemCount === 2) {
@@ -19,7 +36,8 @@ export function getThreeMusesQuantityDiscount(cart: CartItemType[]) {
 }
 
 export function getThreeMusesSiblingDiscount(cart: CartItemType[]) {
-	const hasSiblingDiscount = cart.some((item) => {
+	const eventItems = getEventItems(cart);
+	const hasSiblingDiscount = eventItems.some((item) => {
 		return typeof item === 'object' && item !== null && item.itemQuantity > 1;
 	});
 	return hasSiblingDiscount ? 25 : 0;

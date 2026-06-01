@@ -235,6 +235,7 @@ const defaultMocks: Record<string, any> = {
 	FormEngine: mockComponent('FormEngine'),
 	FormButton: mockComponent('FormButton'),
 	SquareCheckout: mockComponent('SquareCheckout'),
+	SquareFeaturedItems: mockComponent('SquareFeaturedItems'),
 	emailJSON: async () => ({}),
 	Carousel: mockComponent('Carousel'),
 	ReviewSchema: mockComponent('ReviewSchema'),

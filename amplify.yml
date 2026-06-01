@@ -385,3 +385,37 @@ applications:
           - .next/cache/**/*
           - .next/static/**/*
           - node_modules/**/*
+
+
+#========================================
+  - appRoot: apps/simple-day-concierge
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - |
+              echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              cd ../../ && pwd
+              npm install --force
+        build:
+          commands:
+            - |
+              echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              npm run build -w packages/pixelated-components
+              echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
+              npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
+        postBuild:
+          commands:
+            - |
+              echo "Calling Config Vault postbuild ..."
+              npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "Config postbuild decrypt failed" && exit 1)
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*

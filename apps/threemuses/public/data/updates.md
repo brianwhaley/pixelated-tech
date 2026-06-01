@@ -1,5 +1,19 @@
 # The Three Muses of Bluffton -- Updates
 
+## 2026-05-31 Updates
+* full integration into Square is complete
+* items, inventory, price, description, category retrieved from square
+* added all photos to square
+* items shown on the site are only ones in Boutique Items Category
+* items need to have Boutique Items selected, even if they are in a subcategory
+* item filtering works with categories and proce groupsings.  so categories and subcategories are a great way to do that.  
+* [  ] add "Featured" category to items to show up in Featured component (set to show 4 per row)
+* [  ] need to update descriptions to all items.  Used Kumihimo Beaded Necklace as an example.  
+* [  ] need to add Shipping weight to all items.  Shipping weight is not exposed via API.  we can create a custom attribute to do that, does that work for you?  
+* [  ] need to review all items that dont have photos - either remove from Boutique Items or get photos of those
+* [  ] need to resolve variations vs color differences etc. - Thought - 1) add a Notes field to capture color details, 2) add as separate items.  what do you think?
+* [  ] We can move Events into Square as items if you want.  Then you can control all the data and when and how it shows up on the site.  let me know what you think. 
+
 ## launch Day Activities
 
 * [ x ] dont forget to update pixelated.config.json shoppingcart props before launch
@@ -10,7 +24,6 @@
 * [ x ] publish new introductory blog post
 * [ x ] Create a dashbaord for event registrations for three muses
 * [ x ] add Individual classes to the Items array that is sent to Square
-
 
 ## 2026-05-04 Final Final To Do List
 * [ x ] Spelling Mistake - Boutique - updaet to update

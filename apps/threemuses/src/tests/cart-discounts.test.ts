@@ -6,6 +6,7 @@ const baseItem = {
 	itemTitle: 'Camp One',
 	itemCost: 100,
 	itemURL: 'https://example.com/camp-one',
+	itemCategory: ['Summer Camp', 'event'],
 };
 
 describe('Three Muses shopping cart discounts', () => {
@@ -56,6 +57,17 @@ describe('Three Muses shopping cart discounts', () => {
 	it('applies no discount when no cart items qualify for a quantity discount', () => {
 		const cart = [
 			{ ...baseItem, itemQuantity: 1 },
+		];
+
+		expect(getThreeMusesQuantityDiscount(cart)).toBe(0);
+		expect(getThreeMusesSiblingDiscount(cart)).toBe(0);
+		expect(getThreeMusesSubtotalDiscount(cart)).toBe(0);
+	});
+
+	it('applies no discount when the cart has no event items', () => {
+		const cart = [
+			{ ...baseItem, itemCategory: ['Adult'], itemQuantity: 2 },
+			{ ...baseItem, itemID: '2', itemCategory: ['Other'], itemQuantity: 3 },
 		];
 
 		expect(getThreeMusesQuantityDiscount(cart)).toBe(0);

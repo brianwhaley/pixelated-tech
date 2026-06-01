@@ -274,8 +274,8 @@ export async function getContentfulFieldValues(props: getContentfulFieldValuesTy
 
 /* ========== GET CONTENTFUL IMAGES FROM CARDS ========== */
 
-function normalizeContentfulAssetUrl(url: string): string {
-	if (!url) return url;
+export function normalizeContentfulAssetUrl(url: unknown): string | undefined {
+	if (!url || typeof url !== 'string') return undefined;
 	if (url.startsWith('//')) return `https:${url}`;
 	if (url.startsWith('/')) return `https://images.ctfassets.net${url}`;
 	return url;

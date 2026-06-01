@@ -65,7 +65,7 @@ function selectItems(items: any) {
 		id: item.id ?? item.itemID,
 		title: item.title ?? item.itemTitle,
 		quantity: item.quantity ?? item.itemQuantity,
-		category: item.category ?? item.itemCategory,
+		category: item.category ?? (Array.isArray(item.itemCategory) ? item.itemCategory.join(', ') : item.itemCategory),
 	});
 
 	if (Array.isArray(items)) {

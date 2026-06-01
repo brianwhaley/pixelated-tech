@@ -132,7 +132,10 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 										itemQuantity: 1,
 										itemInventory: Number(eventData.fields.maxSeats) || 1,
 										itemURL: `/events/${eventData.fields.id}`,
-										itemCategory: eventData.fields.category?.toString?.() ?? undefined,
+										itemCategory: [
+											...(eventData.fields.category?.toString?.() ? [eventData.fields.category.toString()] : []),
+											'event',
+										].filter(Boolean),
 										itemImageURL: eventData.fields.carouselImages?.[0]?.image ?? undefined,
 										itemIsShippable: eventData.fields.isShippable ?? false,
 										itemWeight: typeof eventData.fields.weight === 'number' ? eventData.fields.weight : Number(eventData.fields.weight ?? 0),

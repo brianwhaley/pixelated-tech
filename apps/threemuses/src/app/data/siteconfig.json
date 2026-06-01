@@ -27,13 +27,13 @@
 		},
 		"addressAdditionalInfo": "",
 		"openingHours": [
-			{ "day": "Mon", "closed": true },
-			{ "day": "Tue", "closed": true },
-			{ "day": "Wed", "open": "10:00", "close": "18:00" },
+			{ "day": "Mon", "open": "12:00", "close": "18:00" }, 
+			{ "day": "Tue", "open": "12:00", "close": "18:00" },
+			{ "day": "Wed", "open": "12:00", "close": "18:00" },
 			{ "day": "Thu", "open": "10:00", "close": "18:00" },
-			{ "day": "Fri", "open": "11:00", "close": "18:00" },
-			{ "day": "Sat", "open": "11:00", "close": "19:00" },
-			{ "day": "Sun", "open": "12:00", "close": "16:00" }
+			{ "day": "Fri", "open": "11:00", "close": "16:00" },
+			{ "day": "Sat", "closed": true },
+			{ "day": "Sun", "closed": true }
 		],
 		"openingHoursAdditionalInfo": "",
 		"priceRange": "$",
@@ -322,6 +322,13 @@
 					"title": "The Three Muses of Bluffton - Service Areas",
 					"description": "A list of regions and local markets where this company operates.",
 					"keywords": ["The Three Muses of Bluffton","service areas","locations", "Bluffton SC", "Hilton Head Island SC", "Savannah GA", "Beaufort SC", "Port Royal SC", "Lady's Island SC", "Hardeeville SC", "Ridgeland SC", "Jasper County SC"]
+				} , {
+					"name": "Store",
+					"path": "/store",
+					"hidden": true,
+					"title": "The Three Muses of Bluffton - Store",
+					"description": "The Three Muses of Bluffton Store page - where you can view and purchase our boutique products.",
+					"keywords": ["The Three Muses of Bluffton","store","boutique","products","Bluffton SC", "Hilton Head Island SC", "Savannah GA", "Beaufort SC", "Port Royal SC", "Lady's Island SC", "Hardeeville SC", "Ridgeland SC", "Jasper County SC"]
 				} , {
 					"name": "Updates", 
 					"path": "/updates", 

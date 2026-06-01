@@ -48,7 +48,7 @@ export type CartItemType = {
     itemWeight?: number,
     itemWeightUnit?: string,
     itemType?: string,
-    itemCategory?: string,
+    itemCategory?: string | string[],
 }
 
 /* Historical: legacy ShoppingCartItemType removed — use CartItemType as the canonical data type */
@@ -192,11 +192,16 @@ export function getCartSubTotal(cart: CartItemType[]) {
             Object.prototype.hasOwnProperty.call(item, 'itemQuantity') && 
             Object.prototype.hasOwnProperty.call(item, 'itemCost') ) {
 			cartSubTotal += (item.itemQuantity * item.itemCost);
-		} 
+		}
 	}
 	return formatAsHundredths(cartSubTotal);
 }
 
+function normalizeCartItemCost(item: any): number {
+	const value = item?.itemCost ?? item?.itemPrice ?? item?.unit_amount?.value;
+	const parsed = Number(value);
+	return Number.isFinite(parsed) ? parsed : 0;
+}
 
 export function addToShoppingCart(thisItem: CartItemType) {
 	let cart: CartItemType[] = getCart();
@@ -206,6 +211,9 @@ export function addToShoppingCart(thisItem: CartItemType) {
 		const index = getIndexInCart(cart, thisItem.itemID);
 		// Sync latest inventory from source
 		cart[index].itemInventory = inventoryLimit;
+		if (!Number.isFinite(cart[index].itemCost)) {
+			cart[index].itemCost = normalizeCartItemCost(thisItem);
+		}
 
 		if ( cart[index].itemQuantity < inventoryLimit) {
 			if (debug) console.log("Increasing quantity in cart");
@@ -218,6 +226,7 @@ export function addToShoppingCart(thisItem: CartItemType) {
 		// BE SURE TO ADD ONLY ONE TO THE CART
 		if (debug) console.log("Adding only one to the cart");
 		const cartItem = { ...thisItem };
+		cartItem.itemCost = normalizeCartItemCost(thisItem);
 		cartItem.itemQuantity = 1;
 		cartItem.itemInventory = inventoryLimit;
 		cart.push(cartItem);

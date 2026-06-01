@@ -6,6 +6,7 @@ import { getAllRoutes } from "./metadata.functions";
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
 import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
+import { getSquareStoreItems } from "../shoppingcart/square";
 import { getFullPixelatedConfig } from '../config/config';
 import { CacheManager } from '../foundation/cache-manager';
 import { getDomain } from './utilities';
@@ -37,6 +38,7 @@ export type SitemapConfig = {
 	createContentfulAssetURLs?: boolean;
 	createPageBuilderURLs?: boolean;
 	createEbayItemURLs?: boolean;
+	createSquareItemURLs?: boolean;
 	wordpress?: { site?: string };
 	imageJson?: { path?: string };
 	contentful?: any; // contentful api props object
@@ -109,6 +111,11 @@ export function buildSitemapConfig(
 	// eBay integration
 	if (pixelatedConfig.ebay?.appId) {
 		sitemapConfig.createEbayItemURLs = true;
+	}
+
+	// Square catalog sitemap integration
+	if (pixelatedConfig.square?.squareItemCategoryId) {
+		sitemapConfig.createSquareItemURLs = true;
 	}
 
 	return sitemapConfig;
@@ -208,6 +215,7 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 	const useContentfulAssets = cfg.createContentfulAssetURLs ?? false;
 	const usePageBuilder = cfg.createPageBuilderURLs ?? false;
 	const useEbay = cfg.createEbayItemURLs ?? false;
+	const useSquare = cfg.createSquareItemURLs ?? false;
 
 	// ORDER IS IMPORTANT - THIS IS THE ORDER THEY WILL APPEAR IN THE SITEMAP
 
@@ -229,6 +237,10 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 	// Ebay items
 	if (useEbay) {
 		sitemapEntries.push(...(await createEbayItemURLs(origin)));
+	}
+	// Square catalog items
+	if (useSquare) {
+		sitemapEntries.push(...(await createSquareItemURLs(origin)));
 	}
 	// Page Builder (existing helper in package not always present)
 	if (usePageBuilder && cfg.contentful) {
@@ -696,9 +708,77 @@ export async function createEbayItemURLs(origin: string) {
 	return sitemap;
 }
 
+export async function createSquareItemURLs(origin: string) {
+	const sitemap: SitemapEntry[] = [];
+	const config = getFullPixelatedConfig();
+	if (!config.square?.squareItemCategoryId) {
+		return sitemap;
+	}
+
+	const cacheTTL = SITEMAP_TTL;
+	let items;
+	try {
+		items = await fetchCachedSquareItems(cacheTTL);
+	} catch (error) {
+		if (typeof console !== 'undefined') console.warn('createSquareItemURLs skipped; unable to fetch items', error);
+		return sitemap;
+	}
+	if (!items || !items.length) {
+		return sitemap;
+	}
+	for (const item of items) {
+		if (!item?.itemURL) continue;
+
+		const imageUrls: string[] = [];
+		if (Array.isArray(item.itemImageURLs)) {
+			imageUrls.push(...item.itemImageURLs.filter((img: any) => typeof img === 'string' && img.trim().length > 0));
+		} else if (typeof item.itemImageURL === 'string' && item.itemImageURL.trim().length > 0) {
+			imageUrls.push(item.itemImageURL);
+		}
+
+		const normalizedImages = imageUrls
+			.map((img) => img.trim())
+			.filter(Boolean)
+			.map((img) => img.startsWith('http') ? img : `${origin}${img.startsWith('/') ? img : `/${img}`}`)
+			.map((img) => encode(img));
+
+		const entry: any = {
+			url: item.itemURL.startsWith('http') ? item.itemURL : `${origin}${item.itemURL}`,
+			lastModified: new Date(),
+			changeFrequency: 'hourly',
+			priority: 1.0,
+		};
+		if (normalizedImages.length > 0) {
+			entry.images = normalizedImages;
+		}
+		sitemap.push(entry);
+	}
+	return sitemap;
+}
+
+async function fetchCachedSquareItems(cacheTTL: number) {
+	const cached = squareSitemapCache.get<any[]>(SQUARE_SITE_SITEMAP_KEY);
+	if (cached) {
+		return cached;
+	}
+	try {
+		const response = await getSquareStoreItems();
+		const items = response?.items ?? [];
+		if (items.length) {
+			squareSitemapCache.set(SQUARE_SITE_SITEMAP_KEY, items, cacheTTL);
+		}
+		return items;
+	} catch (error) {
+		console.error('Error fetching Square items for sitemap:', error);
+		throw error;
+	}
+}
+
 const SITEMAP_TTL = 24 * 60 * 60 * 1000; // one day
 const EBAY_SITE_SITEMAP_KEY = 'ebay_sitemap_items';
 const ebaySitemapCache = new CacheManager({ mode: 'memory', domain: getDomain(), namespace: 'ebaySitemap', ttl: SITEMAP_TTL });
+const SQUARE_SITE_SITEMAP_KEY = 'square_sitemap_items';
+const squareSitemapCache = new CacheManager({ mode: 'memory', domain: getDomain(), namespace: 'squareSitemap', ttl: SITEMAP_TTL });
 
 function getEbayCacheTTL(configTTL?: number) {
 	if (typeof configTTL === 'number' && configTTL > 0) {
@@ -728,5 +808,9 @@ async function fetchCachedEbayItems(apiProps: any, cacheTTL: number) {
 
 export function clearEbaySitemapCache() {
 	ebaySitemapCache.clear();
+}
+
+export function clearSquareSitemapCache() {
+	squareSitemapCache.clear();
 }
 

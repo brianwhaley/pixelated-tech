@@ -1,6 +1,6 @@
 {
 	"name": "threemuses",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"private": true,
 	"description": "Pixelated starter template for Next.js, Typescript, and common configs",
 	"license": "MIT",
@@ -28,9 +28,16 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
+		"@aws-sdk/client-amplify": "^3.1057.0",
+		"@aws-sdk/client-cloudwatch": "^3.1057.0",
+		"@aws-sdk/client-dynamodb": "^3.1057.0",
+		"@aws-sdk/client-iam": "^3.1057.0",
+		"@aws-sdk/client-route-53": "^3.1057.0",
 		"@pixelated-tech/components": "*",
+		"date-fns": "^4.4.0",
 		"next": "^16.2.6",
-		"react": "^19.2.6"
+		"react": "^19.2.6",
+		"ts-loader": "^9.6.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "9.39.4",
@@ -44,11 +51,12 @@
 		"eslint-config-next": "^16.2.2",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"glob": "^13.0.6",
+		"googleapis": "^173.0.0",
+		"html-entities": "^2.3.3",
 		"jsdom": "^29.1.1",
 		"react-dom": "^19.2.6",
 		"typescript": "^6.0.2",
-		"vitest": "^4.1.7",
-		"html-entities": "^2.3.3"
+		"vitest": "^4.1.7"
 	},
 	"overrides": {}
 }

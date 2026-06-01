@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { createPageComponentMocks } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
@@ -25,7 +25,11 @@ describe('Threemuses page coverage', () => {
 	});
 
 	it('renders the boutique page title', async () => {
-		render(<BoutiquePage />);
+		let element = null;
+		await act(async () => {
+			element = await BoutiquePage();
+		});
+		render(element as any);
 		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain("Boutique"));
 	});
 

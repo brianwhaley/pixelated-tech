@@ -16,6 +16,9 @@ import wordpressFunctionsData from './data/wordpress-functions-data.json';
 import siteImagesData from './data/site-images.json';
 import realContentfulAssetsData from './data/real-contentful-assets.json';
 import googlePsiExampleCom from './data/google-psi-example-com.json';
+import squareCatalogResponseWithRelatedObjects from './data/square-catalog-response-with-related-objects.json';
+import squareCatalogResponseNoRelatedObjects from './data/square-catalog-response-no-related-objects.json';
+import squareCatalogResponseNestedVariation from './data/square-catalog-response-nested-variation.json';
 import pixelatedConfigJson from '@/config/pixelated.config.json';
 import type { PixelatedConfig } from '../components/config/config.types';
 import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
@@ -33,6 +36,9 @@ export {
 	siteImagesData,
 	realContentfulAssetsData,
 	googlePsiExampleCom,
+	squareCatalogResponseWithRelatedObjects,
+	squareCatalogResponseNoRelatedObjects,
+	squareCatalogResponseNestedVariation,
 };
 
 export const pixelatedConfig = pixelatedConfigJson as PixelatedConfig;
@@ -57,9 +63,6 @@ export const visualdesign = siteConfig.visualdesign || {};
 
 export const minimalRecipe = (recipes.items && recipes.items[0]) ? recipes.items[0] : { '@type': 'Recipe', name: 'Minimal' };
 export const minimalResume = (resume.items && resume.items[0]) ? { items: [resume.items[0]] } : { items: [] };
-
-
-
 
 // Backwards-compat shape used by many existing tests (keeps migration minimal)
 export default {

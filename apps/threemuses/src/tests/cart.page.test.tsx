@@ -36,8 +36,8 @@ describe('Cart page', () => {
 
 	it('includes adult and youth registration fields when the cart has those categories', async () => {
 		cartTestState.items = [
-			{ itemCategory: 'Adult' },
-			{ itemCategory: 'Summer Camp' },
+			{ itemCategory: ['Adult', 'event'] },
+			{ itemCategory: ['Summer Camp', 'event'] },
 		];
 
 		render(<CartPage />);
@@ -50,7 +50,7 @@ describe('Cart page', () => {
 
 	it('renders base registration fields when no adult or youth items are present', async () => {
 		cartTestState.items = [
-			{ itemCategory: 'Other' },
+			{ itemCategory: ['Other'] },
 		];
 
 		render(<CartPage />);

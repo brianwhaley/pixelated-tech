@@ -2,6 +2,7 @@ import React from 'react';
 import { addToShoppingCart, clearShoppingCart, setShippingInfo } from '@/components/shoppingcart/shoppingcart.functions';
 import { PixelatedClientConfigProvider } from '@/components/config/config.client';
 import { ShoppingCart } from '@/components/shoppingcart/shoppingcart.components';
+import { SquareStoreItems, SquareStoreItemDetail } from '@/components/shoppingcart/square.components';
 
 export default {
 	title: 'ShoppingCart/Shopping Cart',
@@ -32,6 +33,35 @@ const item3 = {
     itemCost: 159.00,
 	itemURL: "https://www.ebay.com",
 }; 
+
+const boutiqueItems = [
+	{
+		itemID: 'boutique-1',
+		itemTitle: 'Handmade Linen Scarf',
+		itemDescription: 'Soft artisan linen scarf with hand-stitched detail.',
+		itemImageURL: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
+		itemImageURLs: ['https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80'],
+		itemPrice: 62.5,
+		itemCurrency: 'USD',
+		itemInventory: 8,
+		itemIsShippable: true,
+		itemURL: '/store/boutique-1',
+		properties: { Color: 'Blue', Size: 'One Size' },
+	},
+	{
+		itemID: 'boutique-2',
+		itemTitle: 'Artisan Candle Trio',
+		itemDescription: 'Three scented candles crafted locally using soy wax.',
+		itemImageURL: 'https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=400&q=80',
+		itemImageURLs: ['https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=400&q=80'],
+		itemPrice: 38.0,
+		itemCurrency: 'USD',
+		itemInventory: 5,
+		itemIsShippable: true,
+		itemURL: '/store/boutique-2',
+		properties: { Scent: 'Lavender', Size: 'Small' },
+	},
+];
 
 // Parent Component
 const ParentShoppingCart = ({ siteInfo } = {}) => {
@@ -75,3 +105,18 @@ export const ShoppingCartWithUSPS = () => (
 	</PixelatedClientConfigProvider>
 );
 ShoppingCartWithUSPS.storyName = 'Shopping Cart with USPS';
+
+export const SquareStoreListing = () => (
+	<SquareStoreItems
+		items={boutiqueItems}
+		title="Curated Boutique Collection"
+		intro="Filter the collection by item detail and add boutique pieces to your shopping cart."
+	/>
+);
+
+export const SquareStoreItemDetailExample = () => (
+	<SquareStoreItemDetail item={boutiqueItems[0]} />
+);
+
+SquareStoreListing.storyName = 'Square Boutique Store Listing';
+SquareStoreItemDetailExample.storyName = 'Square Boutique Item Detail';

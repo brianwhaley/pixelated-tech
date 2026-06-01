@@ -1,11 +1,57 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import type { CheckoutType } from './shoppingcart.functions';
+import { addToShoppingCart } from './shoppingcart.functions';
+import { AddToCartButton, ViewItemDetails } from './shoppingcart.components';
 import { usePixelatedConfig } from '../config/config.client';
+import { Callout } from '../general/callout';
+import { PageSection, PageGridItem, PageTitleHeader, PageSectionHeader } from '../general/semantic';
+import { SmartImage } from '../general/smartimage';
+import { Carousel } from '../general/carousel';
+import { buildSquareStoreFilters, matchesSquareStorePriceRange } from './square';
 import { SquarePaymentError, getSquarePaymentErrorMessage } from './square';
+import { ProductSchema } from '../foundation/schema';
+import { normalizeEmail } from '../foundation/utilities';
 import "./square.css";
+
+export type SquareStoreFilterValue = {
+	label: string;
+	value: string;
+};
+
+export type SquareStoreFilter = {
+	name: string;
+	values: SquareStoreFilterValue[];
+};
+
+export type SquareFilterValues = {
+	propertyName: string;
+	propertyValue: string;
+};
+
+function buildSquareProductSchema(item: SquareStoreItemShapeType) {
+	const images = item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
+	const productImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : undefined;
+
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Product',
+		name: item.itemTitle,
+		description: item.itemDescription || item.itemTitle,
+		image: productImages,
+		url: item.itemURL,
+		sku: item.itemID,
+		offers: {
+			'@type': 'Offer',
+			url: item.itemURL,
+			priceCurrency: item.itemCurrency ?? 'USD',
+			price: item.itemPrice,
+			availability: item.itemInventory > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+		},
+	};
+}
 
 const SQUARE_PRODUCTION_SCRIPT_URL = 'https://web.squarecdn.com/v1/square.js';
 const SQUARE_SANDBOX_SCRIPT_URL = 'https://sandbox.web.squarecdn.com/v1/square.js';
@@ -18,10 +64,6 @@ function isScriptSrc(scriptSrc: string) {
 		}
 	}
 	return false;
-}
-
-function normalizeEmail(value?: any) {
-	return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
 
 function isSandboxSquare(squareConfig: any, checkoutData?: CheckoutType) {
@@ -199,10 +241,433 @@ export function SquareCheckout(props: SquareCheckoutType) {
 	);
 }
 
-export function renderSquareThankYou(orderData: any, config?: any) {
+
+
+/**
+ * SquareStoreListFilter component renders a filter form for the Square store item listing. It allows users to select a property and value to filter the displayed items. The component receives an array of filters (each with a name and possible values) and a callback function as props. When the user selects a property and value and clicks the filter button, the callback function is called with the selected filter values.
+ * 
+ * @param: filters - An array of filter objects, each containing a name and an array of possible values for that property.
+ * @param: callback - A function that will be called when the user applies a filter. It receives an object with the selected property name and value.
+ * @returns: A React component that renders the filter form and handles user input to apply filters to the Square store item listing.
+ * 
+ */
+/**
+ * 
+ * SquareStoreListFilter component renders a filter form for the Square store item listing. It allows users to select a property and value to filter the displayed items. The component receives an array of filters (each with a name and possible values) and a callback function as props. When the user selects a property and value and clicks the filter button, the callback function is called with the selected filter values.
+ * 
+ * @param: filters - An array of filter objects, each containing a name and an array of possible values for that property.
+ * @param: callback - A function that will be called when the user applies a filter. It receives an object with the selected property name and value.
+ * 
+ * @returns: A React component that renders the filter form and handles user input to apply filters to the Square store item listing.
+ * 
+ */
+SquareStoreListFilter.propTypes = {
+	filters: PropTypes.arrayOf(
+		PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			values: PropTypes.arrayOf(
+				PropTypes.shape({
+					label: PropTypes.string.isRequired,
+					value: PropTypes.string.isRequired,
+				})
+			).isRequired,
+		})
+	).isRequired,
+	callback: PropTypes.func.isRequired,
+};
+export type SquareStoreListFilterType = InferProps<typeof SquareStoreListFilter.propTypes>;
+export function SquareStoreListFilter(props: SquareStoreListFilterType) {
+	const [selectedProperty, setSelectedProperty] = useState('');
+	const [selectedValue, setSelectedValue] = useState('');
+	const [availableValues, setAvailableValues] = useState<SquareStoreFilterValue[]>([]);
+
+	useEffect(() => {
+		if (!selectedProperty) {
+			setAvailableValues([]);
+			setSelectedValue('');
+			return;
+		}
+		const selectedFilter = props.filters.find((filter): filter is SquareStoreFilter =>
+			Boolean(filter && filter.name === selectedProperty)
+		);
+		setAvailableValues(selectedFilter?.values || []);
+		setSelectedValue('');
+	}, [selectedProperty, props.filters]);
+
+	function handlePropertyChange(event: React.ChangeEvent<HTMLSelectElement>) {
+		setSelectedProperty(event.target.value);
+	}
+
+	function handleValueChange(event: React.ChangeEvent<HTMLSelectElement>) {
+		setSelectedValue(event.target.value);
+	}
+
+	function applyFilter() {
+		if (selectedProperty && selectedValue) {
+			props.callback({ propertyName: selectedProperty, propertyValue: selectedValue });
+		}
+	}
+
+	return (
+		<form className="square-store-filter" name="square-store-filter" id="square-store-filter" onSubmit={(e) => { e.preventDefault(); applyFilter(); }}>
+			<span className="filter-input">
+				<label htmlFor="square-property">Property</label>
+				<select id="square-property" value={selectedProperty} onChange={handlePropertyChange}>
+					<option value=""></option>
+					{props.filters.filter((filter): filter is SquareStoreFilter => Boolean(filter)).map((filter) => (
+						<option key={filter.name} value={filter.name}>{filter.name}</option>
+					))}
+				</select>
+			</span>
+			<span className="filter-input">
+				<label htmlFor="square-value">Value</label>
+				<select id="square-value" value={selectedValue} onChange={handleValueChange} disabled={!selectedProperty}>
+					<option value=""></option>
+					{availableValues.map((filterValue) => (
+						<option key={filterValue.value} value={filterValue.value}>{filterValue.label}</option>
+					))}
+				</select>
+			</span>
+			<span className="filter-input">
+				<button type="button" onClick={applyFilter} disabled={!selectedProperty || !selectedValue}>Filter</button>
+			</span>
+		</form>
+	);
+}
+
+
+
+
+
+export const SquareStoreItemShape = {
+	itemID: PropTypes.string.isRequired,
+	itemURL: PropTypes.string.isRequired,
+	itemTitle: PropTypes.string.isRequired,
+	itemDescription: PropTypes.string,
+	itemImageURL: PropTypes.string,
+	itemImageURLs: PropTypes.arrayOf(PropTypes.string),
+	itemPrice: PropTypes.number.isRequired,
+	itemCurrency: PropTypes.string.isRequired,
+	itemInventory: PropTypes.number.isRequired,
+	itemIsShippable: PropTypes.bool.isRequired,
+	itemWeight: PropTypes.number,
+	itemWeightUnit: PropTypes.string,
+	properties: PropTypes.objectOf(PropTypes.string),
+	categories: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+		})
+	),
+	categoryPath: PropTypes.arrayOf(PropTypes.string),
+};
+export type SquareStoreItemShapeType = InferProps<typeof SquareStoreItemShape>;
+
+
+
+
+
+/**
+ * SquareStoreItem component renders a single item in the Square store listing. It displays the item's image, title, price, inventory status, description, and properties. The component also includes buttons to view item details and add the item to the shopping cart. It receives an item object as a prop, which contains all the necessary information about the store item.
+ * @param: item - An object representing the Square store item, containing properties such as itemID, itemTitle, itemPrice, itemCurrency, itemInventory, itemDescription, itemImageURL, and any additional properties.
+ * @return: A React component that displays the store item information and provides actions for viewing details and adding to cart.
+ */
+SquareStoreItem.propTypes = {
+	item: PropTypes.shape(SquareStoreItemShape).isRequired,
+};
+export type SquareStoreItemType = InferProps<typeof SquareStoreItem.propTypes>;
+export function SquareStoreItem(props: SquareStoreItemType) {
+	return (
+		<div className="square-store-item-callout">
+			<Callout
+				variant="boxed"
+				layout="vertical"
+				direction="left"
+				img={props.item.itemImageURL ?? '/images/placeholder.png'}
+				imgAlt={props.item.itemTitle}
+				title={props.item.itemTitle}
+				url={props.item.itemURL}
+				// subtitle={`${props.item.itemCurrency ?? 'USD'} ${props.item.itemPrice.toFixed(2)} · In stock: ${props.item.itemInventory}`}
+				subtitle={`${props.item.itemCurrency ?? 'USD'} ${props.item.itemPrice.toFixed(2)}`}
+				content={props.item.itemDescription || 'No description available.'}
+			>
+				<div className="square-store-item-card-body">
+					{props.item.properties && Object.keys(props.item.properties).length > 0 && (
+						<div className="square-store-item-properties">
+							<h4>Details</h4>
+							<ul>
+								{Object.entries(props.item.properties).map(([key, value]) => (
+									<li key={key}><strong>{key}:</strong> {value}</li>
+								))}
+							</ul>
+						</div>
+					)}
+					<div className="square-store-item-actions">
+						<ViewItemDetails href={props.item.itemURL} itemID={props.item.itemID} />
+						<AddToCartButton handler={addToShoppingCart} item={{
+							...props.item,
+							itemQuantity: 1,
+						}} itemID={props.item.itemID} />
+					</div>
+				</div>
+			</Callout>
+		</div>
+	);
+}
+
+
+
+
+
+
+
+/**
+ * 
+ * SquareStoreItems component renders a list of items in the Square store with optional filtering. It displays a header with a title and introduction, a filter form if there are filterable properties, and a grid of SquareStoreItem components for each item in the list. The component receives an array of items, an optional title, and an optional introduction as props. It allows users to filter the displayed items based on their properties using the SquareStoreListFilter component.
+ * @param: items - An array of objects representing the Square store items to be displayed, each containing properties such as itemID, itemTitle, itemPrice, itemCurrency, itemInventory, itemDescription, itemImageURL, and any additional properties.
+ * @param: title - An optional string to be displayed as the header title for the store items section.
+ * @param: intro - An optional string to be displayed as an introduction or description below the header title.
+ * 
+ * @return: A React component that displays a list of Square store items with filtering options and actions for each item.
+ * 
+ */
+SquareStoreItems.propTypes = {
+	items: PropTypes.arrayOf(PropTypes.shape(SquareStoreItemShape).isRequired).isRequired, // Array of Square store items to render
+	filters: PropTypes.arrayOf(
+		PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			values: PropTypes.arrayOf(
+				PropTypes.shape({
+					label: PropTypes.string.isRequired,
+					value: PropTypes.string.isRequired,
+				})
+			).isRequired,
+		})
+	),
+	title: PropTypes.string, // Optional heading for the store listing
+	intro: PropTypes.string, // Optional introductory text below the heading
+};
+export type SquareStoreItemsType = InferProps<typeof SquareStoreItems.propTypes>;
+export function SquareStoreItems(props: SquareStoreItemsType) {
+	const [selectedFilter, setSelectedFilter] = useState<SquareFilterValues | null>(null);
+	const filters = useMemo(
+		() => props.filters || buildSquareStoreFilters(props.items),
+		[props.filters, props.items]
+	);
+
+	const filteredItems = useMemo(() => {
+		if (!selectedFilter || !selectedFilter.propertyName || !selectedFilter.propertyValue) {
+			return props.items;
+		}
+
+		return props.items.filter((item) => {
+			if (selectedFilter.propertyName === 'Category') {
+				return Boolean(item.categories?.some((category) => category?.id === selectedFilter.propertyValue));
+			}
+
+			if (selectedFilter.propertyName === 'Price Range') {
+				return matchesSquareStorePriceRange(item.itemPrice, selectedFilter.propertyValue);
+			}
+
+			return item.properties?.[selectedFilter.propertyName] === selectedFilter.propertyValue;
+		});
+	}, [props.items, selectedFilter]);
+
+	const totalItems = props.items.length;
+	const hasActiveFilter = Boolean(selectedFilter?.propertyName && selectedFilter?.propertyValue);
+
+	function handleFilter(select: SquareFilterValues) {
+		setSelectedFilter(select);
+	}
+
+	return (
+		<>
+			<PageGridItem columnStart={1} columnEnd={-1} id="square-store-header" className="square-store-header">
+				<PageSectionHeader>{props.title ?? 'Boutique Store Items'}</PageSectionHeader>
+				<div className="square-store-item-count">
+					Total items: {totalItems}
+					{hasActiveFilter ? ` · Filtered items: ${filteredItems.length}` : ''}
+				</div>
+				{props.intro ? <p>{props.intro}</p> : null}
+			</PageGridItem>
+
+			<PageGridItem columnStart={1} columnEnd={-1} id="square-store-filters" className="square-store-filters">
+				{filters.length > 0 ? (
+					<SquareStoreListFilter filters={filters} callback={handleFilter} />
+				) : (
+					<div className="square-store-filter-empty">No filterable product details are available for these items.</div>
+				)}
+			</PageGridItem>
+
+			{filteredItems.map((item) => (
+				<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item)} />
+			))}
+
+			{filteredItems.map((item) => (
+				<PageGridItem key={item.itemID}>
+					<SquareStoreItem item={item} />
+				</PageGridItem>
+			))}
+
+		</>
+	);
+}
+
+
+
+
+
+
+/**
+ * Props for the SquareFeaturedItems component.
+ * 
+ * @prop items - An array of Square store items to be featured, each containing properties such as itemID, itemTitle, itemPrice, itemCurrency, itemInventory, itemDescription, itemImageURL, and any additional properties.
+ * @prop title - An optional string to be displayed as the header title for the featured items section.
+ * @prop intro - An optional string to be displayed as an introduction or description below the header title for the featured items section.
+ * 
+ * @return A React component that displays a list of featured Square store items with a header and introduction.
+ * 
+ */
+SquareFeaturedItems.propTypes = {
+	items: PropTypes.arrayOf(PropTypes.shape(SquareStoreItemShape).isRequired).isRequired, // Array of featured Square store items
+	title: PropTypes.string, // Optional heading for the featured items section
+	intro: PropTypes.string, // Optional introductory text for featured items
+};
+export type SquareFeaturedItemsType = InferProps<typeof SquareFeaturedItems.propTypes>;
+export function SquareFeaturedItems(props: SquareFeaturedItemsType) {
+	return (
+		<>
+			<PageGridItem columnStart={1} columnEnd={-1} id="square-featured-items-header" className="square-featured-items-header">
+				<PageSectionHeader>{props.title ?? 'Featured Boutique Items'}</PageSectionHeader>
+				{props.intro ? <p>{props.intro}</p> : null}
+			</PageGridItem>
+
+			{props.items && props.items.length > 0 ? (
+				<>
+					{props.items.map((item) => (
+						<ProductSchema key={`featured-schema-${item.itemID}`} product={buildSquareProductSchema(item)} />
+					))}
+					{props.items.map((item) => (
+						<PageGridItem key={item.itemID}>
+							<SquareStoreItem key={item.itemID} item={item} />
+						</PageGridItem>
+					))}
+				</>
+			) : (
+				<div className="square-store-empty">No featured boutique items are available right now.</div>
+			)}
+
+		</>
+	);
+}
+
+
+
+
+
+
+/**
+ * 
+ * SquareStoreItemDetail component renders a detailed view of a single Square store item. It displays the item's images, title, price, inventory status, description, and properties in a more comprehensive layout. The component also includes an Add to Cart button to allow users to add the item to their shopping cart directly from the detail view. It receives an item object as a prop, which contains all the necessary information about the store item.
+ * 
+ * @param: item - An object representing the Square store item, containing properties such as itemID, itemTitle, itemPrice, itemCurrency, itemInventory, itemDescription, itemImageURL(s), and any additional properties.
+ * 
+ * @return: A React component that displays detailed information about a Square store item and provides an action to add the item to the shopping cart.
+ * 
+ */
+SquareStoreItemDetail.propTypes = {
+	item: PropTypes.shape(SquareStoreItemShape).isRequired, // Square item object with details for the item detail page
+};
+export type SquareStoreItemDetailType = InferProps<typeof SquareStoreItemDetail.propTypes>;
+export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
+	const itemImageURLs = props.item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
+	const imageCards = itemImageURLs.length > 1 ? itemImageURLs.map((image, index: number) => ({
+		index,
+		cardIndex: index,
+		cardLength: itemImageURLs.length,
+		image,
+		imageAlt: `${props.item.itemTitle} ${index + 1}`,
+		imgFit: 'contain' as const,
+	})) : [];
+
+	return (
+		<PageSection columns={1} id="square-store-item-detail" className="square-store-item-detail">
+
+			<ProductSchema product={buildSquareProductSchema(props.item)} />
+
+			<div className="square-store-item-detail">
+
+				<div className="square-store-item-detail-title">
+					<PageTitleHeader>{props.item.itemTitle}</PageTitleHeader>
+				</div>
+				
+				<div className="square-store-item-detail-image">
+					{imageCards.length > 1 ? (
+						<Carousel cards={imageCards} imgFit="contain" draggable={false} />
+					) : itemImageURLs.length === 1 ? (
+						<SmartImage aboveFold={true} src={itemImageURLs[0]} alt={props.item.itemTitle} />
+					) : props.item.itemImageURL ? (
+						<SmartImage aboveFold={true} src={props.item.itemImageURL} alt={props.item.itemTitle} />
+					) : (
+						<SmartImage aboveFold={true} src="/images/placeholder.png" alt={props.item.itemTitle} />
+					)}
+				</div>
+
+				<div className="square-store-item-detail-body">
+					<h3>Product Details</h3>
+					{props.item.itemDescription ? <p>{props.item.itemDescription}</p> : null}
+					<div className="square-store-item-detail-id">Item ID: {props.item.itemID}</div>
+					<div className="square-store-item-detail-inventory">In stock: {props.item.itemInventory}</div>
+					<div className="square-store-item-detail-shipping">{`Shippable: ${props.item.itemIsShippable ? 'Yes' : 'No'}${props.item.itemWeight != null ? ` · Weight: ${props.item.itemWeight.toFixed(2)} ${props.item.itemWeightUnit ?? ''}` : ''}`}</div>
+					{props.item.categories && props.item.categories.length > 0 ? (
+						<div className="square-store-item-detail-categories">Categories: {props.item.categories.filter((category): category is { id: string; name: string } => Boolean(category)).map((category) => category.name).join(', ')}</div>
+					) : null}
+					{props.item.properties && Object.keys(props.item.properties).length > 0 ? (
+						<div className="square-store-item-detail-properties">
+							<dl>
+								{Object.entries(props.item.properties).map(([key, value]) => (
+									<React.Fragment key={key}>
+										<dt>{key}</dt>
+										<dd>{value as string}</dd>
+									</React.Fragment>
+								))}
+							</dl>
+						</div>
+					) : null}
+					<div className="square-store-item-detail-price">{`${props.item.itemPrice.toFixed(2)} ${props.item.itemCurrency}`}</div>
+					<div className="square-store-item-detail-actions">
+						<AddToCartButton handler={addToShoppingCart} item={{
+							...props.item,
+							itemQuantity: 1,
+						}} itemID={props.item.itemID} />
+					</div>
+				</div>
+			</div>
+		</PageSection>
+	);
+}
+
+
+
+
+/**
+ * SquareThankYou component renders a thank you message and order details after a successful Square payment. It receives the order data and configuration as props, extracts relevant information such as the payment token, amount, and currency, and displays them in a user-friendly format. If the necessary information is not available, it will display the raw order data for debugging purposes.
+ * @param: orderData - An object containing the details of the completed order, including payment information and checkout data.
+ * @param: config - An optional configuration object that may contain settings related to the shopping cart and currency.
+ * @return: A React component that displays a thank you message and relevant order details after a successful Square payment.
+ * 
+ */
+renderSquareThankYou.propTypes = {
+	orderData: PropTypes.any.isRequired, // The order data object containing payment and checkout details
+	config: PropTypes.object, // Optional configuration object for additional settings
+};
+export type SquareThankYouType = InferProps<typeof renderSquareThankYou.propTypes>;
+export function renderSquareThankYou(props: SquareThankYouType) {
+	const orderData = props.orderData;
+	const config = props.config;
 	const sourceId = orderData?.data?.sourceId || orderData?.sourceId;
 	const amount = orderData?.data?.checkoutData?.total ?? orderData?.checkoutData?.total;
-	const currency = config?.shoppingcart?.currency || orderData?.data?.checkoutData?.currency || 'USD';
+	const currency = (config as any)?.shoppingcart?.currency || orderData?.data?.checkoutData?.currency || 'USD';
 
 	return (
 		<div>

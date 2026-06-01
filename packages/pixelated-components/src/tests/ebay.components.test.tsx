@@ -134,6 +134,34 @@ describe('EbayItems component', () => {
 		expect(getEbayItemsMock).toHaveBeenCalledTimes(1);
 	});
 
+	it('injects ProductSchema JSON-LD for displayed Ebay items', async () => {
+		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
+		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [mockItem], refinement: { aspectDistributions: [] } } as any);
+
+		render(
+			<EbayItems
+				apiProps={{
+					proxyURL: '',
+					baseTokenURL: '',
+					baseSearchURL: '',
+					qsSearchURL: '',
+					baseItemURL: '',
+					qsItemURL: '',
+					baseAnalyticsURL: '',
+					appId: '',
+					appCertId: '',
+					globalId: '',
+					itemCategory: 'electronics',
+				}}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"@type":"Product"'))).toBe(true);
+			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"name":"Mock Item"'))).toBe(true);
+		});
+	});
+
 	it('logs an error when getEbayItems rejects', async () => {
 		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
 		getEbayItemsMock.mockRejectedValueOnce(new Error('fetch failed'));
@@ -197,6 +225,44 @@ describe('EbayItems component', () => {
 
 		await waitFor(() => {
 			expect(screen.getByText('Detail Item')).toBeInTheDocument();
+		});
+	});
+
+	it('injects ProductSchema JSON-LD for the Ebay item detail', async () => {
+		const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
+		getEbayItemMock.mockResolvedValueOnce({
+			legacyItemId: 'ITEM-DETAIL',
+			title: 'Detail Item',
+			price: { value: '55.00', currency: 'USD' },
+			description: '<p>Detailed description</p>',
+			additionalImages: [{ imageUrl: 'https://example.com/detail.jpg' }],
+			categoryId: 'electronics',
+			itemPath: 'test',
+			itemWebUrl: 'https://example.com/item/ITEM-DETAIL',
+		});
+
+		render(
+			<EbayItemDetail
+				apiProps={{
+					proxyURL: '',
+					baseTokenURL: '',
+					baseSearchURL: '',
+					qsSearchURL: '',
+					baseItemURL: '',
+					qsItemURL: '',
+					baseAnalyticsURL: '',
+					appId: '',
+					appCertId: '',
+					globalId: '',
+					itemCategory: 'electronics',
+				}}
+			itemID="ITEM-DETAIL"
+			/>
+		);
+
+		await waitFor(() => {
+			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"@type":"Product"'))).toBe(true);
+			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"name":"Detail Item"'))).toBe(true);
 		});
 	});
 

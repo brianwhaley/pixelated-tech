@@ -1,30 +1,25 @@
-"use client"; 
-
-import React, { useState, useEffect } from 'react';
-import { PageSection, PageSectionHeader, PageTitleHeader } from '@pixelated-tech/components';
-import { PageGridItem } from '@pixelated-tech/components';
-import { Callout } from '@pixelated-tech/components';
-import { ToggleLoading } from '@pixelated-tech/components';
-import { getWordPressItems, getCachedWordPressItems, BlogPostList } from "@pixelated-tech/components";
+import { PageSection, PageSectionHeader, PageTitleHeader, PageGridItem, Callout, BlogPostList } from '@pixelated-tech/components';
+// import { SquareFeaturedItems } from '@pixelated-tech/components';
+// import { getSquareStoreItems } from '@pixelated-tech/components/server';
 import * as componentLibrary from '../../elements/componentlibrary';
 
-// const wpSite = "blog.thethreemusesofbluffton.com";
 const wpSite = "blog.thethreemusesofbluffton.com";
 
-export default function Home() {
 
-	const [ wpPosts, setWpPosts ] = useState<Awaited<ReturnType<typeof getCachedWordPressItems>>>([]);
-	useEffect(() => {
-		async function fetchPosts() {
-			ToggleLoading({show: true});
-			const posts = (await getWordPressItems({ site: wpSite, count: 1 })) ?? [];
-			if(posts) { 
-				setWpPosts(posts);
-				ToggleLoading({show: false});
-			}
-		}
-		fetchPosts();
-	}, []); 
+// This page is intentionally a server component so it can fetch featured boutique
+// items before render. BlogPostList remains a client component and will fetch
+// its WordPress content on the client using the configured `wordpress.site`
+// value from pixelated config if no explicit `posts` prop is supplied.
+
+
+export default async function Home() {
+	/* let featuredItems = [];
+	try {
+		const storeResponse = await getSquareStoreItems({ featuredOnly: true });
+		featuredItems = storeResponse?.items ?? [];
+	} catch (error: any) {
+		console.error('Unable to load featured boutique items:', error);
+	} */
 
 	return (
 		<>
@@ -84,6 +79,15 @@ export default function Home() {
 			</PageSection>
 
 
+			{ /* <PageSection columns={4} maxWidth="1024px" id="store-items-section">
+				<SquareFeaturedItems
+					items={featuredItems}
+					title="Featured Boutique Items"
+					intro="Discover a rotating selection of our favorite boutique pieces."
+				/>
+			</PageSection> */ }
+
+			
 
 			<PageSection columns={1} maxWidth="1024px" id="home-events-section">
 				<componentLibrary.UpcomingSewingEvents />
@@ -98,9 +102,10 @@ export default function Home() {
 
 			<PageSection id="social-section" columns={1} background="var(--accent1-color)" >
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList site={wpSite} posts={wpPosts} count={1} />
+				<BlogPostList site={wpSite} count={1} />
 			</PageSection>
-
 		</>
 	);
 }
+
+

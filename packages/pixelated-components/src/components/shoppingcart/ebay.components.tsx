@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { Carousel } from '../general/carousel';
 import { SmartImage } from "../general/smartimage";
+import { ProductSchema } from '../foundation/schema';
 import { addToShoppingCart } from "./shoppingcart.functions";
 import { AddToCartButton, /* GoToCartButton */ ViewItemDetails } from "./shoppingcart.components";
 import { getCloudinaryRemoteFetchURL as getImg } from "../integrations/cloudinary";
@@ -16,7 +17,7 @@ import { usePixelatedConfig } from "../config/config.client";
 import "../../css/pixelated.grid.scss";
 import "./ebay.css";
 
-import { type EbayApiType, getMergedEbayConfig, getEbayAppToken, getEbayRateLimits, getEbayItems, getEbayItem, getEbayShoppingCartItem } from "./ebay.functions";
+import { type EbayApiType, getMergedEbayConfig, getEbayAppToken, getEbayRateLimits, getEbayItems, getEbayItem, getEbayShoppingCartItem, getEbayProductSchema } from "./ebay.functions";
 
 const debug = false;
 
@@ -127,6 +128,11 @@ export function EbayItems(props: EbayItemsType) {
 					<EbayListFilter aspects={aspects} callback={fetchItems} />
 				</div>
 				<div id="ebay-items" className="ebay-items">
+					{items.map((item) => {
+						const productSchema = getEbayProductSchema({ item, brandName: 'eBay', siteUrl: item.itemWebUrl });
+						return productSchema ? <ProductSchema key={`ebay-schema-${item.legacyItemId}`} product={productSchema} /> : null;
+
+					})}
 					{paintItems({ items: items, cloudinaryProductEnv: props.cloudinaryProductEnv })}
 				</div>
 			</>
@@ -382,8 +388,10 @@ export function EbayItemDetail(props: EbayItemDetailType) {
 		const itemURLTarget = "_self"; /* "_blank" */
 		const shoppingCartItem = getEbayShoppingCartItem({ thisItem: thisItem, cloudinaryProductEnv: props.cloudinaryProductEnv, apiProps: apiProps });
 		shoppingCartItem.itemURL = itemURL;
+		const productSchema = getEbayProductSchema({ item: thisItem, brandName: 'eBay', siteUrl: thisItem.itemWebUrl });
 		return (
 			<>
+				{productSchema ? <ProductSchema product={productSchema} /> : null}
 				<div className="ebay-item row-12col">
 					<div className="ebay-item-header grid-s1-e13">
 						{itemURL

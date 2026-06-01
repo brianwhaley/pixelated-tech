@@ -195,6 +195,8 @@ export interface SquareConfig {
 	squareLocationId: string;
 	squareScriptUrl?: string;
 	squarePaymentsUrl?: string;
+	squareItemCategoryId?: string;
+	squareFeaturedCategoryId?: string;
 
 	sandboxSquareApplicationId: string;
 	sandboxSquareAccessToken: string;

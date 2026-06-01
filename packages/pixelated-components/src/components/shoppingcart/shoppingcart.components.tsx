@@ -721,11 +721,11 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 			</div>
 			<div className="grid-s11-e13">
 				<div className="pix-cart-item-price">
-					{ formatAsUSD(thisItem.itemCost * thisItem.itemQuantity) }
+					{ formatAsUSD((thisItem.itemCost ?? 0) * thisItem.itemQuantity) }
 				</div>
 				{ thisItem.itemQuantity > 1 && (
 					<div className="pix-cart-item-price-each">
-						{formatAsUSD(thisItem.itemCost)} ea.
+						{formatAsUSD(thisItem.itemCost ?? 0)} ea.
 					</div>
 				)}
 
@@ -953,11 +953,14 @@ ViewItemDetails.propTypes = {
 };
 export type ViewItemDetailsType = InferProps<typeof ViewItemDetails.propTypes>;
 export function ViewItemDetails(props: ViewItemDetailsType){
+	const encodedItemID = encodeURIComponent(props.itemID);
+	const isBaseStoreUrl = props.href === '/store' || props.href === '/store/';
+	const targetUrl = isBaseStoreUrl ? `${props.href.replace(/\/+$/, '')}/${encodedItemID}` : props.href;
 	return (
 		<div>
 			<FormButton className="pix-cart-button" type="button" 
 				id={`btn-item-${props.itemID}`} text="View Item Details"
-				onClick={()=>window.location.href = `${props.href}/${props.itemID}`} />
+				onClick={()=>window.location.href = targetUrl} />
 		</div>
 	);
 }

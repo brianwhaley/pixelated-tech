@@ -1,0 +1,33 @@
+{
+  "objects": [
+    {
+      "type": "CATEGORY",
+      "id": "cat-1",
+      "category_data": { "name": "Boutique" }
+    },
+    {
+      "type": "IMAGE",
+      "id": "img-1",
+      "image_data": { "url": "https://example.com/image.jpg" }
+    },
+    {
+      "type": "ITEM_VARIATION",
+      "id": "var-1",
+      "item_variation_data": { "price_money": { "amount": 4500, "currency": "USD" } }
+    },
+    {
+      "type": "ITEM",
+      "id": "item-1",
+      "item_data": {
+        "name": "Artisan Tray",
+        "description": "A handcrafted ceramic tray.",
+        "variations": [{ "id": "var-1" }],
+        "image_ids": ["img-1"],
+        "categories": [{ "id": "cat-1" }],
+        "custom_attribute_values": [
+          { "name": "Color", "string_value": "White" }
+        ]
+      }
+    }
+  ]
+}

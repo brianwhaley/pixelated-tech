@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "type": "ITEM",
+      "id": "item-2",
+      "item_data": {
+        "name": "Batch Image Item",
+        "description": "Item requires batch image fallback.",
+        "variations": [
+          {
+            "type": "ITEM_VARIATION",
+            "id": "var-2",
+            "item_variation_data": {
+              "price_money": { "amount": 2500, "currency": "USD" }
+            }
+          }
+        ],
+        "image_ids": ["img-2"],
+        "categories": [{ "id": "cat-1" }]
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "objects": [
+    {
+      "type": "CATEGORY",
+      "id": "cat-2",
+      "category_data": { "name": "Boutique" }
+    },
+    {
+      "type": "ITEM",
+      "id": "item-2",
+      "item_data": {
+        "name": "Nested Variation Item",
+        "description": "Item with nested variation data.",
+        "variations": [
+          {
+            "type": "ITEM_VARIATION",
+            "id": "var-2",
+            "item_variation_data": { "price_money": { "amount": 2500, "currency": "USD" } }
+          }
+        ],
+        "categories": [{ "id": "cat-2" }]
+      }
+    }
+  ]
+}

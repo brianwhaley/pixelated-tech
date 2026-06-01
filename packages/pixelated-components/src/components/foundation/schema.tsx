@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { contentfulValueToSlug } from '../integrations/contentful.delivery';
+import { contentfulValueToSlug, normalizeContentfulAssetUrl } from '../integrations/contentful.delivery';
 import type { SiteInfo } from '../config/siteconfig.types';
 import { getServicePathPrefix } from '../general/services.functions';
 
@@ -56,15 +56,10 @@ function toIsoDate(value: unknown) {
 	return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
 }
 
-function normalizeEventImageUrl(url: unknown) {
-	if (!url || typeof url !== 'string') return undefined;
-	return url.startsWith('//images.ctfassets.net') ? `https:${url}` : url;
-}
-
 function normalizeEventImages(images: unknown): string[] {
 	if (!Array.isArray(images)) return [];
 	return images
-		.map((image: any) => normalizeEventImageUrl(image?.image))
+		.map((image: any) => normalizeContentfulAssetUrl(image?.image))
 		.filter((url: string | undefined): url is string => Boolean(url));
 }
 

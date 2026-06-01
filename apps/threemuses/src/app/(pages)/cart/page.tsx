@@ -24,7 +24,13 @@ export default function CartPage() {
 	const additionalInfoForm = useMemo(() => {
 		const categories = new Set(
 			cart
-				.map((item) => item.itemCategory?.toString?.().toLowerCase?.()?.trim())
+				.flatMap((item) => {
+					const categories = item.itemCategory;
+					if (Array.isArray(categories)) return categories;
+					if (categories == null) return [];
+					return [categories];
+				})
+				.map((category) => category?.toString?.()?.toLowerCase?.()?.trim())
 				.filter(Boolean),
 		);
 
