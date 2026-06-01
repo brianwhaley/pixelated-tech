@@ -1,6 +1,6 @@
 {
 	"name": "simple-day-concierge",
-	"version": "0.2.0",
+	"version": "0.2.2",
 	"private": true,
 	"description": "Simple Day Concierge starter template for Next.js, Typescript, and common configs",
 	"license": "MIT",

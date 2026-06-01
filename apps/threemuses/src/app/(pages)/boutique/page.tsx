@@ -1,16 +1,17 @@
-import { PageSection, PageTitleHeader, SquareFeaturedItems } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
-import { getSquareStoreItems } from '@pixelated-tech/components/server';
+// import { SquareFeaturedItems } from '@pixelated-tech/components';
+// import { getSquareStoreItems } from '@pixelated-tech/components/server';
 import * as componentLibrary from "../../elements/componentlibrary";
 
 export default async function BoutiquePage() {
-	let featuredItems = [];
+	{ /* let featuredItems = [];
 	try {
 		const storeResponse = await getSquareStoreItems({ featuredOnly: true });
 		featuredItems = storeResponse?.items ?? [];
 	} catch (error: any) {
 		console.error('Unable to load featured boutique items:', error);
-	}
+	} */ }
 
 	return (
 		<>
@@ -56,13 +57,13 @@ export default async function BoutiquePage() {
 			</PageSection>
 
 
-			<PageSection columns={4} maxWidth="1024px" id="store-items-section">
+			{ /* <PageSection columns={4} maxWidth="1024px" id="store-items-section">
 				<SquareFeaturedItems
 					items={featuredItems}
 					title="Featured Boutique Items"
 					intro="Discover a rotating selection of our favorite boutique pieces."
 				/>
-			</PageSection>
+			</PageSection> */ }
 
 
 			<PageSection columns={1} maxWidth="1024px" id="boutique-consign-section">

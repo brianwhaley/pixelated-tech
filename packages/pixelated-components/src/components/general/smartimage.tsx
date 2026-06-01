@@ -190,8 +190,6 @@ export function SmartImage(props: SmartImageType) {
 					transforms: newProps.cloudinaryTransforms ?? undefined, 
 					cloudinaryDomain: newProps.cloudinaryDomain 
 				});
-			// newProps.sizes = `${newProps.width}px`;
-			if (!(newProps.sizes)) newProps.sizes = `${newProps.width}px`;
 		} else {
 			const breakpoints = [320, 640, 768, 1024, 1280, 1536];
 			newProps.srcSet = generateSrcSet(
@@ -202,12 +200,23 @@ export function SmartImage(props: SmartImageType) {
 					transforms: newProps.cloudinaryTransforms ?? undefined, 
 					cloudinaryDomain: newProps.cloudinaryDomain 
 				});
-			newProps.sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
 		}
 
 		newProps.unoptimized = true; // Opt out of Next.js Image optimization since Cloudinary is handling it
 	} 
 
+	// NEXT/IMAGE NEEDS SIZES TO GENERATE SRCSET
+	/* if (newProps.width) {
+		if (!(newProps.sizes)) newProps.sizes = `${newProps.width}px`;
+	} else {
+		newProps.sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
+	} */
+	if (!newProps.sizes) {
+		newProps.sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
+		// newProps.sizes = '(max-width: 768px) 100vw, 50vw';
+		// newProps.sizes = '100vw';
+	}
+	
 	/* ===== NEXTJS VARIANT ===== */
 	/* variant is not cloudinary and not img (ie nextjs)
 	or variant is cloudinary and no cloudinaryEnv */
