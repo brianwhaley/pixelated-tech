@@ -1,334 +1,538 @@
 {
-	"siteInfo": {
-		"name": "PixelVivid",
-		"author": "Brian Whaley",
-		"description": "PixelVivid - Custom Painted Sunglasses and Creative Services",
-		"keywords": "pixelvivid, custom painted sunglasses, creative services, upcycling",
-		"url": "https://www.pixelvivid.com",
-		"email": "info@pixelvivid.com",
-		"favicon": "/favicon.ico",
-		"favicon_sizes": "64x64 32x32 24x24 16x16",
-		"favicon_type": "image/x-icon",
-		"theme_color": "#ffffff",
-		"background_color": "#ffffff",
-		"default_locale": "en",
-		"display": "standalone",
-		"image": "/images/pixelvivid/pix-512.jpg",
-		"image_height": "512",
-		"image_width": "512",
-		"telephone": "(973) 710-8008",
-		"address": {
-			"streetAddress": "10 Jade Circle",
-			"addressLocality": "Denville",
-			"addressRegion": "NJ",
-			"postalCode": "07834",
-			"addressCountry": "US"
-		},
-		"addressAdditionalInfo": "",
-		"openingHours": [
-			{ "day": "Mon", "open": "09:00", "close": "17:00" },
-			{ "day": "Tue", "open": "09:00", "close": "17:00" },
-			{ "day": "Wed", "open": "09:00", "close": "17:00" },
-			{ "day": "Thu", "open": "09:00", "close": "17:00" },
-			{ "day": "Fri", "open": "09:00", "close": "17:00" },
-			{ "day": "Sat", "closed": true },
-			{ "day": "Sun", "closed": true }
-		],
-		"openingHoursAdditionalInfo": "",
-		"priceRange": "$",
-		"brand": {
-			"@type": "Brand",
-			"name": "PixelVivid"
-		},
-		"termsOfService": "/terms",
-		"audience": "Collectors of custom painted sunglasses, fans of upcycled fashion, and anyone looking for unique eyewear",
-		"offers": {
-			"@type": "Offer",
-			"priceCurrency": "USD",
-			"price": "0",
-			"url": "https://www.pixelvivid.com/",
-			"availability": "https://schema.org/InStock"
-		},
-		"availability": "https://schema.org/InStock",
-		"availableChannel": {
-			"@type": "ServiceChannel",
-			"serviceUrl": "https://www.pixelvivid.com/contact",
-			"availableLanguage": ["English"],
-			"servicePhone": "(973) 710-8008"
-		},
-		"services": [
-			{
-				"name": "Custom Upcycled Sunglasses",
-				"description": [
-					"PixelVivid sunglasses offer a wide variety of activewear sunglasses with color splashed, marbled, splattered, dripped and pixeled! Oakley frames are our favorite glasses to paint but we can paint on almost any brand.",
-					"Each pair of our creative upcycled sunglasses are carefully selected and prepared before beginning the design process. Once prepped to receive the paint, each pair of sunglasses are styled using high-end automotive paints from House of Kolor. Once all the colors are applied, each pair of sunglasses are sprayed with a two-stage gloss clear coat to protect them. Once hardened for 5 to 7 days, each creative upcycled sunglasses are fitted with new polarized lenses, ear socks, and any other rubber bits on the frame. The last step in the process is for the designer to sign their work. Each pair is unique, earth-friendly, and fun!",
-					"By purchasing PixelVivid custom painted sunglasses, you are supporting “creative upcycling”, a form of waste reduction that focuses on extending the life of materials by giving them a new purpose through artistic and innovative means. PixelVivid encourages a culture that reconnects and reuses a quality product with a new and artistic aesthetic applied. We are happy to creative-upcycle quality sunglass frames from Oakley, Ray Ban, Costa del Mar, and more. Many of the frames are vintage and are no longer manufactured, but brings back great times and great memories! Now, they are reborn at PixelVivid for you. Thank you for choosing a better product for our planet!"
-				],
-				"short_description": "PixelVivid sunglasses offer a wide variety of activewear sunglasses with color splashed, marbled, splattered, dripped and pixeled! Oakley frames are our favorite glasses to paint but we can paint on almost any brand.",
-				"image": "/images/customs/blue-splatter-3.jpg",
-				"category": "Custom Upcycled Sunglasses",
-				"serviceType": "Custom Upcycled Sunglasses",
-				"serviceOutput": "Unique, hand-painted sunglasses that stand out from the crowd.",
-				"audience": "Collectors of custom painted sunglasses, fans of upcycled fashion, and anyone looking for unique eyewear",
-				"termsOfService": "/returns",
-				"offers": ""
-			},
-			{
-				"name": "Stock Photography",
-				"description": [
-					"PixelVivid's stock photography collection features a wide variety of high-quality images across multiple categories, including nature, travel, lifestyle, and more. Each photo is carefully curated and professionally shot to provide vibrant, eye-catching visuals that can be used for websites, marketing materials, social media, and other creative projects. With a focus on authenticity and creativity, PixelVivid's stock photography offers unique perspectives and artistic compositions that help bring your projects to life. Whether you're looking for stunning landscapes, candid lifestyle shots, or vibrant close-ups, PixelVivid's stock photography collection has something for every creative need. By choosing PixelVivid's stock photos, you are supporting an independent artist and gaining access to a diverse range of images that can elevate your creative projects while promoting sustainability and artistic expression."
-				],
-				"short_description": "I have converted my passion of Landscape, Macro, and Travel Photography into a budding Stock Photography Portfolio. Check out my work on iStockPhoto or ShutterStock, or see my books on Blurb or Shutterfly.",
-				"image": "https://farm6.staticflickr.com/5682/21652998256_7c5d0ce495_b.jpg",
-				"category": "Stock Photography",
-				"serviceType": "Stock Photography",
-				"serviceOutput": "High-quality stock photos for various creative projects.",
-				"audience": "Creative professionals, marketers, bloggers, and anyone in need of high-quality stock photos for their projects.",
-				"termsOfService": "/",
-				"offers": ""
-			}
-		],
-		"serviceAreas": [
-			{
-				"name": "US Nationwide Shipping",
-				"description": "PixelVivid proudly offers premium nationwide shipping for our entire collection of hand-painted custom sunglasses across all fifty states. From coast to coast, our wearable art is securely packaged and tracked from our studio directly to your doorstep. Whether you are looking for vibrant statement eyewear in California, UV-protective polarized lenses in Florida, or a completely customized bespoke design in New York, our seamless online ordering process makes it effortless to elevate your style from anywhere in the country. We handle every step of the domestic logistics process with extreme care, ensuring your unique, hand-painted frames arrive in pristine condition and ready to turn heads. Experience high-end craftsmanship and exceptional customer support no matter where you are located in the US as we bring individualistic, vibrant artistic expression to communities nationwide.",
-				"short_description": "PixelVivid offers premium nationwide shipping across the United States, delivering hand-painted custom sunglasses and bespoke wearable art securely to your doorstep in all fifty states.",
-				"keywords": [
-				"custom painted sunglasses US",
-				"hand painted eyewear nationwide",
-				"wearable art sunglasses USA",
-				"custom sunglasses shipping United States",
-				"premium custom eyewear online",
-				"bespoke sunglasses delivery US",
-				"vibrant hand painted frames",
-				"polarized custom sunglasses USA",
-				"unique statement eyewear shipping",
-				"designer custom painted sunglasses"
-				],
-				"highlights": [
-				"Full nationwide shipping across all 50 US states",
-				"Secure, fully tracked domestic courier delivery",
-				"Insured packaging prevents damage during transit",
-				"Bespoke online custom design consultations available everywhere",
-				"100% UVA/UVB protection guaranteed on all US orders",
-				"Handcrafted by skilled independent artists in the USA",
-				"Seamless door-to-door fulfillment from our studio",
-				"Access to exclusive Signature Collections nationwide",
-				"Dedicated domestic customer support and service",
-				"Eco-friendly made-to-order production model"
-				],
-				"image": ""
-			}
-		],
-		"sameAs": [
-			"https://www.facebook.com/pixelvivid",
-			"https://www.facebook.com/profile.php?id=61577216017129",
-			"https://twitter.com/pixelvivid2025",
-			"https://www.linkedin.com/company/pixelvivid/",
-			"https://www.pinterest.com/pixelvivid/",
-			"https://www.ebay.com/str/pixelvivid",
-			"https://www.instagram.com/pixelvivid",
-			"https://www.reddit.com/user/pixelvivid2025/",
-			"https://share.google/JhXXmqpY4m1FEc6Y1",
-			"https://www.linkedin.com/company/106825397/",
-			"https://www.facebook.com/profile.php?id=61577216017129",
-			"https://www.instagram.com/pixelated.views/",
-			"https://500px.com/brianwhaley",
-			"http://www.flickr.com/photos/brianwhaley/",
-			"https://secure.istockphoto.com/portfolio/brianwhaley",
-			"http://www.shutterstock.com/g/brianwhaley",
-			"http://www.blurb.com/user/brianwhaley",
-			"http://brianwhaley.shutterfly.com",
-			"https://blog.pixelvivid.com",
-			"https://share.google/an1Yqe6CTFA946zZV"
-		]
-	},
-	"routes": [
-		{ 
-			"name": "Home", 
-			"path": "/", 
-			"title": "PixelVivid - Home",
-			"description": "PixelVivid offers a wide varity of products and services, including custom painted sunglasses, stock photography, touchup services, and more.",
-			"keywords": "PixelVivid, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"  
-		} , {
-			"name": "About Us", 
-			"path": "/about", 
-			"title": "PixelVivid - About us",
-			"description": "PixelVivid, born during the COVID Pandemic, gives old boring sunglasses a second life, with bold vivid colors and an array of styles unique to each customer.",
-			"keywords": "PixelVivid, about us, Brian Whaley, Mary Ann Sarao, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"  
-		} , { 
-			"name": "Store", 
-			"path": "/store", 
-			"title": "PixelVivid - Custom Sunglasses Store",
-			"description": "Check out my Custom Sunglasses store where I sell my custom painted sunglasses",
-			"keywords": "PixelVivid, online store, ecommerce, custom sunglasses" 
-		} , { 
-			"name": "Sunglasses", 
-			"path": "/customsunglasses", 
-			"title": "PixelVivid - Custom Sunglasses Overview",
-			"description": "A sampling of the custom sunglasses I paint in my spare time",
-			"keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, colors, styles, feedback, examples" 
-		}, { 
-			"name": "Gallery", 
-			"path": "/customsgallery", 
-			"title": "PixelVivid - Custom Sunglasses Gallery",
-			"description": "A sampling of the custom sunglasses I paint in my spare time",
-			"keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, gallery, carousel" 
-		} , { 
-			"name": "Requests", 
-			"path": "/requests", 
-			"title": "PixelVivid - Custom Sunglass Request",
-			"description": "Request some custom sunglass work for yourself.",
-			"keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, requests, form" 
-		} , { 
-			"name": "Subscribe", 
-			"path": "/subscribe", 
-			"title": "PixelVivid - Subscribe",
-			"description": "Subscribe to the PixelVivid newsletters, announcements, and updates.",
-			"keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, subscribe, subscription, newsletter, announcement, drop, update" 
-		} , { 
-			"name": "Return Policy", 
-			"path": "/returns", 
-			"title": "PixelVivid - Return Policy",
-			"description": "PixelVivid Return Policy",
-			"keywords": "PixelVivid, return policy"  
-		} , { 
-			"name": "Contact Us", 
-			"path": "/contact", 
-			"title": "PixelVivid - Contact Us",
-			"description": "PixelVivid Contact Us",
-			"keywords": "PixelVivid, contact us"  
-		} , {
-			"name": "Frequently Asked Questions",
-			"hidden": true,
-			"path": "/faqs",
-			"title": "PixelVivid - Frequently Asked Questions",
-			"description": "A comprehensive guide to ordering, customizing, and caring for hand-painted eyewear from PixelVivid.",
-			"keywords": ["PixelVivid", "FAQs", "frequently asked questions" ]
-		} , {
-			"name": "Photography", 
-			"hidden": true,
-			"path": "/photography", 
-			"title": "PixelVivid - Photography",
-			"description": "An overview of the PixelVivid photography portfolio.",
-			"keywords": "PixelVivid, photography, stock photography, overview, gallery, carousel, social media" 
-		} , { 
-			"name": "Preorder 2026 Collection",
-			"hidden": true,
-			"path": "/preorder-2026",
-			"title": "PixelVivid - Preorder 2026 Collection",
-			"description": "Preorder the exclusive 2026 collection of PixelVivid custom painted sunglasses.",
-			"keywords": ["PixelVivid", "preorder", "2026 collection", "custom sunglasses" ]
-		} , {
-			"name": "Services",
-			"path": "/services",
-			"hidden": true,
-			"title": "PixelVivid - Services",
-			"description": "A list of services offered by this company.",
-			"keywords": ["PixelVivid","services"]
-		} , {
-			"name": "Service Areas",
-			"path": "/service-areas",
-			"hidden": true,
-			"title": "PixelVivid - Service Areas",
-			"description": "A list of regions and local markets where we operate.",
-			"keywords": ["PixelVivid","service areas","locations"]
-		} , {
-			"name": "Style Guide",
-			"hidden": true,
-			"path": "/styleguide",
-			"title": "PixelVivid - Style Guide",
-			"description": "A full style guide for this website, including color palette, fonts, and information architecture. ",
-			"keywords": ["PixelVivid", "style guide" ]
-		} , {
-			"name": "Admin",
-			"hidden": true,
-			"routes": [ 
-				{ 
-					"name": "404", 
-					"path": "/404", 
-					"hidden": true,
-					"title": "PixelVivid - Page Not Found",
-					"description": "The page you are looking for could not be found.",
-					"keywords": ["PixelVivid", "404", "page not found"]  
-				} , { 
-					"name": "Sitemap", 
-					"path": "/sitemap.xml", 
-					"hidden": true,
-					"title": "PixelVivid - Sitemap",
-					"description": "PixelVivid sitemap.xml",
-					"keywords": ["PixelVivid", "sitemap.xml"]  
-				} , {
-					"name" : "Robots.txt",
-					"path" : "/robots.txt",
-					"hidden": true,
-					"title": "PixelVivid - Robots.txt",
-					"description": "PixelVivid robots.txt",
-					"keywords": ["PixelVivid", "robots.txt"]
-				} , {
-					"name": "Web Manifest",
-					"path": "/manifest.webmanifest",
-					"hidden": true,
-					"title": "PixelVivid - Web Manifest",
-					"description": "PixelVivid web manifest",
-					"keywords": ["PixelVivid", "manifest.webmanifest"]
-				} , { 
-					"name": "Humans Txt", 
-					"path": "/humans.txt", 
-					"hidden": true,
-					"title": "PixelVivid - Humans Txt",
-					"description": "Humans Txt",
-					"keywords": ["PixelVivid", "humans txt"] 
-				} , {
-					"name": "Security Txt",
-					"hidden": true,
-					"path": "/security.txt",
-					"title": "PixelVivid - Security Txt",
-					"description": "Security contact and vulnerability disclosure information.",
-					"keywords": ["PixelVivid","security txt","security"]				} 
-			]
-		}
-	],
-	"visualdesign": {
-		"primary-color": { "value": "#369", "type": "color", "group": "palette", "label": "Primary color" },
-		"secondary-color": { "value": "#BCD", "type": "color", "group": "palette", "label": "Secondary color" },
-		"accent1-color": { "value": "#CCC", "type": "color", "group": "palette", "label": "Accent color 1" },
-		"accent2-color": { "value": "#EEE", "type": "color", "group": "palette", "label": "Accent color 2" },
-		"bg-color": { "value": "#ffffff", "type": "color", "group": "palette", "label": "Background color" },
-		"text-color": { "value": "#000000", "type": "color", "group": "palette", "label": "Font color" },
-		"header-font": { 
-			"value": "\"Montserrat\", Verdana, sans-serif", 
-			"type": "font", 
-			"group": "typography", 
-			"label": "Header font",
-			"import_source": "google",
-			"import_family": "Montserrat",
-			"import_params": "ital,wght@0,100..900;1,100..900"
-		},
-		"body-font": { 
-			"value": "\"Roboto\", Arial, sans-serif", 
-			"type": "font", 
-			"group": "typography", 
-			"label": "Body font",
-			"import_source": "google",
-			"import_family": "Roboto"
-		},
-		"font-size1-min": { "value": "2.00rem", "type": "size", "group": "typography", "label": "Font size 1 min" },
-		"font-size1-max": { "value": "3.00rem", "type": "size", "group": "typography", "label": "Font size 1 max" },
-		"font-size2-min": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 2 min" },
-		"font-size2-max": { "value": "1.75rem", "type": "size", "group": "typography", "label": "Font size 2 max" },
-		"font-size3-min": { "value": "1.17rem", "type": "size", "group": "typography", "label": "Font size 3 min" },
-		"font-size3-max": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 3 max" },
-		"font-size4-min": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 4 min" },
-		"font-size4-max": { "value": "1.25rem", "type": "size", "group": "typography", "label": "Font size 4 max" },
-		"font-size5-min": { "value": "0.83rem", "type": "size", "group": "typography", "label": "Font size 5 min" },
-		"font-size5-max": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 5 max" },
-		"font-size6-min": { "value": "0.67rem", "type": "size", "group": "typography", "label": "Font size 6 min" },
-		"font-size6-max": { "value": "0.85rem", "type": "size", "group": "typography", "label": "Font size 6 max" },
-		"font-min-screen": { "value": "375px", "type": "size", "group": "typography", "label": "Font min screen" },
-		"font-max-screen": { "value": "1440px", "type": "size", "group": "typography", "label": "Font max screen" },
-		"border-radius": { "value": "0.5rem", "type": "size", "group": "layout", "label": "Border radius" },
-		"box-shadow": { "value": "0 2px 4px rgba(0,0,0,0.1)", "type": "shadow", "group": "layout", "label": "Box shadow" },
-		"transition": { "value": "all 0.3s ease", "type": "transition", "group": "layout", "label": "Transition" }
-	}
+  "siteInfo": {
+    "name": "PixelVivid",
+    "author": "Brian Whaley",
+    "description": "PixelVivid - Custom Painted Sunglasses and Creative Services",
+    "keywords": "pixelvivid, custom painted sunglasses, creative services, upcycling",
+    "url": "https://www.pixelvivid.com",
+    "email": "info@pixelvivid.com",
+    "favicon": "/favicon.ico",
+    "favicon_sizes": "64x64 32x32 24x24 16x16",
+    "favicon_type": "image/x-icon",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "default_locale": "en",
+    "display": "standalone",
+    "image": "/images/pixelvivid/pix-512.jpg",
+    "image_height": "512",
+    "image_width": "512",
+    "telephone": "(973) 710-8008",
+    "address": {
+      "streetAddress": "10 Jade Circle",
+      "addressLocality": "Denville",
+      "addressRegion": "NJ",
+      "postalCode": "07834",
+      "addressCountry": "US"
+    },
+    "addressAdditionalInfo": "",
+    "openingHours": [
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "17:00"
+      },
+      {
+        "day": "Sat",
+        "closed": true
+      },
+      {
+        "day": "Sun",
+        "closed": true
+      }
+    ],
+    "openingHoursAdditionalInfo": "",
+    "priceRange": "$",
+    "brand": {
+      "@type": "Brand",
+      "name": "PixelVivid"
+    },
+    "termsOfService": "/terms",
+    "audience": "Collectors of custom painted sunglasses, fans of upcycled fashion, and anyone looking for unique eyewear",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "0",
+      "url": "https://www.pixelvivid.com/",
+      "availability": "https://schema.org/InStock"
+    },
+    "availability": "https://schema.org/InStock",
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://www.pixelvivid.com/contact",
+      "availableLanguage": [
+        "English"
+      ],
+      "servicePhone": "(973) 710-8008"
+    },
+    "services": [
+      {
+        "name": "Custom Upcycled Sunglasses",
+        "description": [
+          "PixelVivid sunglasses offer a wide variety of activewear sunglasses with color splashed, marbled, splattered, dripped and pixeled! Oakley frames are our favorite glasses to paint but we can paint on almost any brand.",
+          "Each pair of our creative upcycled sunglasses are carefully selected and prepared before beginning the design process. Once prepped to receive the paint, each pair of sunglasses are styled using high-end automotive paints from House of Kolor. Once all the colors are applied, each pair of sunglasses are sprayed with a two-stage gloss clear coat to protect them. Once hardened for 5 to 7 days, each creative upcycled sunglasses are fitted with new polarized lenses, ear socks, and any other rubber bits on the frame. The last step in the process is for the designer to sign their work. Each pair is unique, earth-friendly, and fun!",
+          "By purchasing PixelVivid custom painted sunglasses, you are supporting “creative upcycling”, a form of waste reduction that focuses on extending the life of materials by giving them a new purpose through artistic and innovative means. PixelVivid encourages a culture that reconnects and reuses a quality product with a new and artistic aesthetic applied. We are happy to creative-upcycle quality sunglass frames from Oakley, Ray Ban, Costa del Mar, and more. Many of the frames are vintage and are no longer manufactured, but brings back great times and great memories! Now, they are reborn at PixelVivid for you. Thank you for choosing a better product for our planet!"
+        ],
+        "short_description": "PixelVivid sunglasses offer a wide variety of activewear sunglasses with color splashed, marbled, splattered, dripped and pixeled! Oakley frames are our favorite glasses to paint but we can paint on almost any brand.",
+        "image": "/images/customs/blue-splatter-3.jpg",
+        "category": "Custom Upcycled Sunglasses",
+        "serviceType": "Custom Upcycled Sunglasses",
+        "serviceOutput": "Unique, hand-painted sunglasses that stand out from the crowd.",
+        "audience": "Collectors of custom painted sunglasses, fans of upcycled fashion, and anyone looking for unique eyewear",
+        "termsOfService": "/returns",
+        "offers": ""
+      },
+      {
+        "name": "Stock Photography",
+        "description": [
+          "PixelVivid's stock photography collection features a wide variety of high-quality images across multiple categories, including nature, travel, lifestyle, and more. Each photo is carefully curated and professionally shot to provide vibrant, eye-catching visuals that can be used for websites, marketing materials, social media, and other creative projects. With a focus on authenticity and creativity, PixelVivid's stock photography offers unique perspectives and artistic compositions that help bring your projects to life. Whether you're looking for stunning landscapes, candid lifestyle shots, or vibrant close-ups, PixelVivid's stock photography collection has something for every creative need. By choosing PixelVivid's stock photos, you are supporting an independent artist and gaining access to a diverse range of images that can elevate your creative projects while promoting sustainability and artistic expression."
+        ],
+        "short_description": "I have converted my passion of Landscape, Macro, and Travel Photography into a budding Stock Photography Portfolio. Check out my work on iStockPhoto or ShutterStock, or see my books on Blurb or Shutterfly.",
+        "image": "https://farm6.staticflickr.com/5682/21652998256_7c5d0ce495_b.jpg",
+        "category": "Stock Photography",
+        "serviceType": "Stock Photography",
+        "serviceOutput": "High-quality stock photos for various creative projects.",
+        "audience": "Creative professionals, marketers, bloggers, and anyone in need of high-quality stock photos for their projects.",
+        "termsOfService": "/",
+        "offers": ""
+      }
+    ],
+    "serviceAreas": [
+      {
+        "name": "US Nationwide Shipping",
+        "description": "PixelVivid proudly offers premium nationwide shipping for our entire collection of hand-painted custom sunglasses across all fifty states. From coast to coast, our wearable art is securely packaged and tracked from our studio directly to your doorstep. Whether you are looking for vibrant statement eyewear in California, UV-protective polarized lenses in Florida, or a completely customized bespoke design in New York, our seamless online ordering process makes it effortless to elevate your style from anywhere in the country. We handle every step of the domestic logistics process with extreme care, ensuring your unique, hand-painted frames arrive in pristine condition and ready to turn heads. Experience high-end craftsmanship and exceptional customer support no matter where you are located in the US as we bring individualistic, vibrant artistic expression to communities nationwide.",
+        "short_description": "PixelVivid offers premium nationwide shipping across the United States, delivering hand-painted custom sunglasses and bespoke wearable art securely to your doorstep in all fifty states.",
+        "keywords": [
+          "custom painted sunglasses US",
+          "hand painted eyewear nationwide",
+          "wearable art sunglasses USA",
+          "custom sunglasses shipping United States",
+          "premium custom eyewear online",
+          "bespoke sunglasses delivery US",
+          "vibrant hand painted frames",
+          "polarized custom sunglasses USA",
+          "unique statement eyewear shipping",
+          "designer custom painted sunglasses"
+        ],
+        "highlights": [
+          "Full nationwide shipping across all 50 US states",
+          "Secure, fully tracked domestic courier delivery",
+          "Insured packaging prevents damage during transit",
+          "Bespoke online custom design consultations available everywhere",
+          "100% UVA/UVB protection guaranteed on all US orders",
+          "Handcrafted by skilled independent artists in the USA",
+          "Seamless door-to-door fulfillment from our studio",
+          "Access to exclusive Signature Collections nationwide",
+          "Dedicated domestic customer support and service",
+          "Eco-friendly made-to-order production model"
+        ],
+        "image": ""
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/pixelvivid",
+      "https://www.facebook.com/profile.php?id=61577216017129",
+      "https://twitter.com/pixelvivid2025",
+      "https://www.linkedin.com/company/pixelvivid/",
+      "https://www.pinterest.com/pixelvivid/",
+      "https://www.ebay.com/str/pixelvivid",
+      "https://www.instagram.com/pixelvivid",
+      "https://www.reddit.com/user/pixelvivid2025/",
+      "https://share.google/JhXXmqpY4m1FEc6Y1",
+      "https://www.linkedin.com/company/106825397/",
+      "https://www.facebook.com/profile.php?id=61577216017129",
+      "https://www.instagram.com/pixelated.views/",
+      "https://500px.com/brianwhaley",
+      "http://www.flickr.com/photos/brianwhaley/",
+      "https://secure.istockphoto.com/portfolio/brianwhaley",
+      "http://www.shutterstock.com/g/brianwhaley",
+      "http://www.blurb.com/user/brianwhaley",
+      "http://brianwhaley.shutterfly.com",
+      "https://blog.pixelvivid.com",
+      "https://share.google/an1Yqe6CTFA946zZV"
+    ]
+  },
+  "routes": [
+    {
+      "name": "Home",
+      "path": "/",
+      "title": "PixelVivid - Home",
+      "description": "PixelVivid offers a wide varity of products and services, including custom painted sunglasses, stock photography, touchup services, and more.",
+      "keywords": "PixelVivid, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"
+    },
+    {
+      "name": "About Us",
+      "path": "/about",
+      "title": "PixelVivid - About us",
+      "description": "PixelVivid, born during the COVID Pandemic, gives old boring sunglasses a second life, with bold vivid colors and an array of styles unique to each customer.",
+      "keywords": "PixelVivid, about us, Brian Whaley, Mary Ann Sarao, creative upcycling, sustainability, small business, stock photography, custom painted sunglasses"
+    },
+    {
+      "name": "Store",
+      "path": "/store",
+      "title": "PixelVivid - Custom Sunglasses Store",
+      "description": "Check out my Custom Sunglasses store where I sell my custom painted sunglasses",
+      "keywords": "PixelVivid, online store, ecommerce, custom sunglasses"
+    },
+    {
+      "name": "Sunglasses",
+      "path": "/customsunglasses",
+      "title": "PixelVivid - Custom Sunglasses Overview",
+      "description": "A sampling of the custom sunglasses I paint in my spare time",
+      "keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, colors, styles, feedback, examples"
+    },
+    {
+      "name": "Gallery",
+      "path": "/customsgallery",
+      "title": "PixelVivid - Custom Sunglasses Gallery",
+      "description": "A sampling of the custom sunglasses I paint in my spare time",
+      "keywords": "PixelVivid, custom painted sunglasses, oakley, refurbish, restore, custom paint, custom sunglasses, gallery, carousel"
+    },
+    {
+      "name": "Requests",
+      "path": "/requests",
+      "title": "PixelVivid - Custom Sunglass Request",
+      "description": "Request some custom sunglass work for yourself.",
+      "keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, requests, form"
+    },
+    {
+      "name": "Subscribe",
+      "path": "/subscribe",
+      "title": "PixelVivid - Subscribe",
+      "description": "Subscribe to the PixelVivid newsletters, announcements, and updates.",
+      "keywords": "PixelVivid, online store, ecommerce, ebay, custom sunglasses, subscribe, subscription, newsletter, announcement, drop, update"
+    },
+    {
+      "name": "Return Policy",
+      "path": "/returns",
+      "title": "PixelVivid - Return Policy",
+      "description": "PixelVivid Return Policy",
+      "keywords": "PixelVivid, return policy"
+    },
+    {
+      "name": "Contact Us",
+      "path": "/contact",
+      "title": "PixelVivid - Contact Us",
+      "description": "PixelVivid Contact Us",
+      "keywords": "PixelVivid, contact us"
+    },
+    {
+      "name": "Frequently Asked Questions",
+      "hidden": true,
+      "path": "/faqs",
+      "title": "PixelVivid - Frequently Asked Questions",
+      "description": "A comprehensive guide to ordering, customizing, and caring for hand-painted eyewear from PixelVivid.",
+      "keywords": [
+        "PixelVivid",
+        "FAQs",
+        "frequently asked questions"
+      ]
+    },
+    {
+      "name": "Photography",
+      "hidden": true,
+      "path": "/photography",
+      "title": "PixelVivid - Photography",
+      "description": "An overview of the PixelVivid photography portfolio.",
+      "keywords": "PixelVivid, photography, stock photography, overview, gallery, carousel, social media"
+    },
+    {
+      "name": "Preorder 2026 Collection",
+      "hidden": true,
+      "path": "/preorder-2026",
+      "title": "PixelVivid - Preorder 2026 Collection",
+      "description": "Preorder the exclusive 2026 collection of PixelVivid custom painted sunglasses.",
+      "keywords": [
+        "PixelVivid",
+        "preorder",
+        "2026 collection",
+        "custom sunglasses"
+      ]
+    },
+    {
+      "name": "Services",
+      "path": "/services",
+      "hidden": true,
+      "title": "PixelVivid - Services",
+      "description": "A list of services offered by this company.",
+      "keywords": [
+        "PixelVivid",
+        "services"
+      ]
+    },
+    {
+      "name": "Service Areas",
+      "path": "/service-areas",
+      "hidden": true,
+      "title": "PixelVivid - Service Areas",
+      "description": "A list of regions and local markets where we operate.",
+      "keywords": [
+        "PixelVivid",
+        "service areas",
+        "locations"
+      ]
+    },
+    {
+      "name": "Style Guide",
+      "hidden": true,
+      "path": "/styleguide",
+      "title": "PixelVivid - Style Guide",
+      "description": "A full style guide for this website, including color palette, fonts, and information architecture. ",
+      "keywords": [
+        "PixelVivid",
+        "style guide"
+      ]
+    },
+    {
+      "name": "Admin",
+      "hidden": true,
+      "routes": [
+        {
+          "name": "404",
+          "path": "/404",
+          "hidden": true,
+          "title": "PixelVivid - Page Not Found",
+          "description": "The page you are looking for could not be found.",
+          "keywords": [
+            "PixelVivid",
+            "404",
+            "page not found"
+          ]
+        },
+        {
+          "name": "Sitemap",
+          "path": "/sitemap.xml",
+          "hidden": true,
+          "title": "PixelVivid - Sitemap",
+          "description": "PixelVivid sitemap.xml",
+          "keywords": [
+            "PixelVivid",
+            "sitemap.xml"
+          ]
+        },
+        {
+          "name": "Robots.txt",
+          "path": "/robots.txt",
+          "hidden": true,
+          "title": "PixelVivid - Robots.txt",
+          "description": "PixelVivid robots.txt",
+          "keywords": [
+            "PixelVivid",
+            "robots.txt"
+          ]
+        },
+        {
+          "name": "Web Manifest",
+          "path": "/manifest.webmanifest",
+          "hidden": true,
+          "title": "PixelVivid - Web Manifest",
+          "description": "PixelVivid web manifest",
+          "keywords": [
+            "PixelVivid",
+            "manifest.webmanifest"
+          ]
+        },
+        {
+          "name": "Humans Txt",
+          "path": "/humans.txt",
+          "hidden": true,
+          "title": "PixelVivid - Humans Txt",
+          "description": "Humans Txt",
+          "keywords": [
+            "PixelVivid",
+            "humans txt"
+          ]
+        },
+        {
+          "name": "Security Txt",
+          "hidden": true,
+          "path": "/security.txt",
+          "title": "PixelVivid - Security Txt",
+          "description": "Security contact and vulnerability disclosure information.",
+          "keywords": [
+            "PixelVivid",
+            "security txt",
+            "security"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualdesign": {
+    "primary-color": {
+      "value": "#369",
+      "type": "color",
+      "group": "palette",
+      "label": "Primary color"
+    },
+    "secondary-color": {
+      "value": "#BCD",
+      "type": "color",
+      "group": "palette",
+      "label": "Secondary color"
+    },
+    "accent1-color": {
+      "value": "#CCC",
+      "type": "color",
+      "group": "palette",
+      "label": "Accent color 1"
+    },
+    "accent2-color": {
+      "value": "#EEE",
+      "type": "color",
+      "group": "palette",
+      "label": "Accent color 2"
+    },
+    "bg-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "group": "palette",
+      "label": "Background color"
+    },
+    "text-color": {
+      "value": "#000000",
+      "type": "color",
+      "group": "palette",
+      "label": "Font color"
+    },
+    "header-font": {
+      "value": "\"Montserrat\", Verdana, sans-serif",
+      "type": "font",
+      "group": "typography",
+      "label": "Header font",
+      "import_source": "google",
+      "import_family": "Montserrat",
+      "import_params": "ital,wght@0,100..900;1,100..900"
+    },
+    "body-font": {
+      "value": "\"Roboto\", Arial, sans-serif",
+      "type": "font",
+      "group": "typography",
+      "label": "Body font",
+      "import_source": "google",
+      "import_family": "Roboto"
+    },
+    "font-size1-min": {
+      "value": "2.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 1 min"
+    },
+    "font-size1-max": {
+      "value": "3.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 1 max"
+    },
+    "font-size2-min": {
+      "value": "1.35rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 2 min"
+    },
+    "font-size2-max": {
+      "value": "1.75rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 2 max"
+    },
+    "font-size3-min": {
+      "value": "1.17rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 3 min"
+    },
+    "font-size3-max": {
+      "value": "1.35rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 3 max"
+    },
+    "font-size4-min": {
+      "value": "1.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 4 min"
+    },
+    "font-size4-max": {
+      "value": "1.25rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 4 max"
+    },
+    "font-size5-min": {
+      "value": "0.83rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 5 min"
+    },
+    "font-size5-max": {
+      "value": "1.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 5 max"
+    },
+    "font-size6-min": {
+      "value": "0.67rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 6 min"
+    },
+    "font-size6-max": {
+      "value": "0.85rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 6 max"
+    },
+    "font-min-screen": {
+      "value": "375px",
+      "type": "size",
+      "group": "typography",
+      "label": "Font min screen"
+    },
+    "font-max-screen": {
+      "value": "1440px",
+      "type": "size",
+      "group": "typography",
+      "label": "Font max screen"
+    },
+    "border-radius": {
+      "value": "0.5rem",
+      "type": "size",
+      "group": "layout",
+      "label": "Border radius"
+    },
+    "box-shadow": {
+      "value": "0 2px 4px rgba(0,0,0,0.1)",
+      "type": "shadow",
+      "group": "layout",
+      "label": "Box shadow"
+    },
+    "transition": {
+      "value": "all 0.3s ease",
+      "type": "transition",
+      "group": "layout",
+      "label": "Transition"
+    }
+  },
+  "deployMarker": "2026-06-01T13:40:21.611Z"
 }

@@ -1,6 +1,6 @@
 {
 	"name": "threemuses",
-	"version": "0.3.3",
+	"version": "0.3.4",
 	"private": true,
 	"description": "Pixelated starter template for Next.js, Typescript, and common configs",
 	"license": "MIT",
@@ -56,7 +56,7 @@
 		"jsdom": "^29.1.1",
 		"react-dom": "^19.2.6",
 		"typescript": "^6.0.2",
-		"vitest": "^4.1.7"
+		"vitest": "^4.1.8"
 	},
 	"overrides": {}
 }

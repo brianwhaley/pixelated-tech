@@ -4,7 +4,12 @@ import { render, screen } from '@testing-library/react';
 vi.mock('@pixelated-tech/components', () => {
 	const React = require('react');
 	return {
+		__esModule: true,
 		PageSection: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-testid': 'page-section' }, children),
+		PageGridItem: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-testid': 'page-grid-item' }, children),
+		PageSectionHeader: ({ title }: { title?: string }) => React.createElement('div', { 'data-testid': 'page-section-header' }, title || null),
+		BusinessFooterAddress: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-testid': 'business-footer-address' }, children),
+		BusinessFooterMap: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-testid': 'business-footer-map' }, children),
 		GoogleAnalytics: () => React.createElement('div', { 'data-testid': 'google-analytics' }, null),
 		PixelatedFooter: () => React.createElement('div', { 'data-testid': 'pixelated-footer' }, 'Footer'),
 	};

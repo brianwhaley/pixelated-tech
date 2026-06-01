@@ -1,6 +1,6 @@
 {
 	"name": "jz-home-improvement",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"private": true,
 	"description": "JZ Home Improvement website built with the Pixelated template",
 	"license": "MIT",
@@ -46,14 +46,14 @@
 		"@typescript-eslint/parser": "^8.58.1",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.3",
-		"eslint-import-resolver-typescript": "^4.4.4",
+		"eslint-import-resolver-typescript": "^4.4.5",
 		"glob": "^13.0.6",
+		"html-entities": "^2.3.3",
 		"jsdom": "^29.1.1",
 		"react-dom": "^19.2.6",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.1",
-		"vitest": "^4.1.7",
-		"html-entities": "^2.3.3"
+		"vitest": "^4.1.8"
 	},
 	"overrides": {}
 }

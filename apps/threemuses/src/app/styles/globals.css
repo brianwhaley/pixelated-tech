@@ -60,6 +60,10 @@ section.page-section {
     }
 }
 
+.accordion-menu-wrapper {
+    background: var(--accent1-color);
+}
+
 
 
 /* ========================================

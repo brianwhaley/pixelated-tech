@@ -1,6 +1,6 @@
 {
 	"name": "informationfocus",
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -41,10 +41,10 @@
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",
+		"html-entities": "^2.3.3",
 		"react-dom": "^19.2.6",
 		"typescript": "^6.0.2",
-		"vitest": "^4.1.7",
-		"html-entities": "^2.3.3"
+		"vitest": "^4.1.8"
 	},
 	"overrides": {}
 }

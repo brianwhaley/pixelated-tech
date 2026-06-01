@@ -1,6 +1,6 @@
 {
     "name": "PixelVivid",
-    "version": "3.3.1",
+    "version": "3.3.2",
     "private": true,
     "author": {
         "name": "Pixelated Technologies",
@@ -56,7 +56,7 @@
         "style-loader": "^4.0.0",
         "typescript": "^6.0.2",
         "typescript-eslint": "^8.58.0",
-        "vitest": "^4.1.7"
+        "vitest": "^4.1.8"
     },
     "overrides": {}
 }

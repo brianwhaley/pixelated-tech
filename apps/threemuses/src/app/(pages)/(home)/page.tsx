@@ -102,7 +102,7 @@ export default async function Home() {
 
 			<PageSection id="social-section" columns={1} background="var(--accent1-color)" >
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList site={wpSite} count={1} />
+				<BlogPostList site={wpSite} count={1} showCategories={false} />
 			</PageSection>
 		</>
 	);

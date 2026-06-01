@@ -1,6 +1,6 @@
 {
 	"name": "palmetto-epoxy",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -51,14 +51,14 @@
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",
+		"html-entities": "^2.3.3",
 		"puppeteer": "^25.0.2",
 		"react-dom": "^19.2.6",
 		"sass": "^1.99.0",
 		"sass-loader": "^17.0.0",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.0",
-		"vitest": "^4.1.7",
-		"html-entities": "^2.3.3"
+		"vitest": "^4.1.8"
 	},
 	"overrides": {}
 }

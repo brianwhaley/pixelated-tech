@@ -25,10 +25,17 @@ describe('cloudinary utilities', () => {
 			});
 		});
 
-		it('should return original src during SSR (no window)', () => {
+		it('should return original src during SSR (no window) for relative src', () => {
+			vi.stubGlobal('window', undefined);
+			const result = cloudinaryModule.buildCloudinaryUrl({ src: '/images/photo.jpg', productEnv: 'test-env' });
+			expect(result).toBe('/images/photo.jpg');
+		});
+
+		it('should build cloudinary URL during SSR (no window) for absolute src', () => {
 			vi.stubGlobal('window', undefined);
 			const result = cloudinaryModule.buildCloudinaryUrl(baseParams);
-			expect(result).toBe(baseParams.src);
+			expect(result).toContain('res.cloudinary.com');
+			expect(result).toContain('test-env');
 		});
 
 		it('should return original src for localhost origin', () => {

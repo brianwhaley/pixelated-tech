@@ -1,714 +1,905 @@
 {
-	"siteInfo": {
-		"name": "Pixelated Technologies",
-		"author": "Brian Whaley",
-		"description": "Custom web development and digital design agency specializing in React, Next.js, and modern web technologies",
-		"keywords": "pixelated, pixelated technologies, denville new jersey, bluffton south carolina, web development, react, next.js, custom websites, digital design, small business",
-		"url": "https://pixelated.tech",
-		"servicesPathPrefix": "/services",
-		"email": "info@pixelated.tech",
-		"telephone": "(973) 710-8008",
-		"image": "https://pixelated.tech/images/pix/pix-bg-512.gif",
-		"image_height": "512",
-		"image_width": "512",
-		"favicon": "/images/favicon.ico",
-		"favicon_sizes": "64x64 32x32 24x24 16x16",
-		"favicon_type": "image/x-icon",
-		"theme_color": "#000000",
-		"background_color": "#ffffff",
-		"default_locale": "en",
-		"display": "standalone",
-		"address": {
-			"streetAddress": "10 Jade Circle",
-			"addressLocality": "Denville",
-			"addressRegion": "NJ",
-			"postalCode": "07834",
-			"addressCountry": "US"
-		},
-		"addressAdditionalInfo": "",
-		"openingHours": [
-			{ "day": "Mon", "open": "09:00", "close": "18:00" },
-			{ "day": "Tue", "open": "09:00", "close": "18:00" },
-			{ "day": "Wed", "open": "09:00", "close": "18:00" },
-			{ "day": "Thu", "open": "09:00", "close": "18:00" },
-			{ "day": "Fri", "open": "09:00", "close": "18:00" },
-			{ "day": "Sat", "closed": true },
-			{ "day": "Sun", "closed": true }
-		],
-		"openingHoursAdditionalInfo": "",
-		"priceRange": "$",
-		"copyrightYear": 2026,
-		"publisherType": "Organization",
-		"potentialAction": {
-			"@type": "SearchAction",
-			"target": "https://pixelated.tech/search?q={search_term_string}",
-			"query-input": "required name=search_term_string"
-		},
-		"brand": {
-			"@type": "Brand",
-			"name": "Pixelated Technologies"
-		},
-		"termsOfService": "/terms",
-		"audience": "Local service businesses, contractors, and small business owners",
-		"availability": "https://schema.org/InStock",
-		"availableChannel": {
-			"@type": "ServiceChannel",
-			"serviceUrl": "https://pixelated.tech/contact",
-			"availableLanguage": ["English"],
-			"servicePhone": "+1-973-710-8008"
-		},
-		"services": [
-			{
-				"name": "Web Development",
-				"description": "Is an outdated or rigid website throttling your company’s growth? At Pixelated Technologies, we serve as your elite Virtual Technology Department, engineering next-generation, high-performance websites and bespoke web applications. Moving far beyond cookie-cutter templates, we leverage cutting-edge frameworks like Next.js and robust cloud architectures to construct ultra-fast, mobile-first digital assets. Every line of clean code we write is optimized for maximum speed, bulletproof security, and seamless user experiences. We treat web engineering as a premium craft, blending technical innovation with a deep understanding of your business goals. By prioritizing flawless responsiveness and intuitive user journeys, we give your brand a decisive strategic advantage over your competitors. Partnering with us means you receive superior, dedicated customer service, allowing you to confidently offload your technical complexities while we build a scalable digital foundation that actively converts traffic into revenue.",
-				"short_description": "We engineer high-performance, custom websites and Next.js web applications. Our mobile-first, secure digital solutions are optimized for speed and conversion, providing a decisive strategic advantage over your competition.",
-				"category": "Web Development",
-				"serviceType": "Web Development",
-				"serviceOutput": "High-performance custom websites and Next.js web applications optimized for speed, conversion, and security.",
-				"audience": "Local service businesses, contractors, and small business owners",
-				"termsOfService": "/terms",
-				"offers": {
-					"@type": "Offer",
-					"priceCurrency": "USD",
-					"price": "3000",
-					"url": "https://pixelated.tech/services/web-development",
-					"availability": "https://schema.org/InStock",
-					"priceValidUntil": "2026-12-31",
-					"itemOffered": {
-						"@type": "Service",
-						"name": "Web Development"
-					}
-				},
-				"image": "https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg?fm=webp"
-			},
-			{
-				"name": "Social Media Marketing",
-				"description": "In a hyper-connected marketplace, simply having social media profiles isn't enough—you need an innovative, integrated digital ecosystem. Pixelated Technologies takes a cutting-edge, data-driven approach to social media marketing, transforming passive scrolling into active consumer acquisition. We design sophisticated multi-platform strategies that align directly with your revenue goals, weaving your brand seamlessly into the digital fabric of your community. Our team handles everything from advanced content production to multi-channel synchronization, ensuring your messaging remains fresh and compelling. Backed by superior customer service, we don't just post content; we meticulously analyze deep-funnel performance metrics to optimize your presence in real time. This continuous optimization gives your business a powerful strategic advantage, transforming your social channels into automated lead-generation machines that build authentic customer relationships and accelerate your brand's digital authority.",
-				"short_description": "Transform passive scrolling into active customer acquisition. We design data-driven multi-platform social strategies with integrated workflows and analytics, turning your channels into automated lead-generation machines.",
-				"category": "Social Media Marketing",
-				"serviceType": "Social Media Marketing",
-				"serviceOutput": "Integrated multi-platform social media campaigns that convert passive audiences into leads.",
-				"audience": "Business owners and marketing teams",
-				"termsOfService": "/terms",
-				"offers": "",
-				"image": "https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg?fm=webp"
-			},
-			{
-				"name": "Search Engine Optimization (SEO)",
-				"description": "If your business isn't dominating the first page of search results, you are conceding valuable market share to your competitors. Pixelated Technologies delivers a sophisticated, technical approach to Search Engine Optimization that goes far beyond basic keyword stuffing. We execute exhaustive, granular SEO audits and implement advanced on-page and off-page data strategies tailored to capture high-intent local and regional traffic. Utilizing modern analytics and keeping pace with changing search algorithms, we optimize your site's underlying architecture to ensure search engines rank you with absolute authority. Our commitment to superior customer service means you get transparent, line-item reporting and a long-term roadmap for sustainable growth. This technical precision grants you a major strategic advantage, shifting your website from an idle digital brochure into a highly visible, automated traffic engine that continuously captures leads while you focus on scaling operations.",
-				"short_description": "Dominate organic search and capture high-intent traffic. We use advanced technical SEO and site architecture optimization to shift your website from an idle brochure into a highly visible lead-generation engine.",
-				"category": "Search Engine Optimization (SEO)",
-				"serviceType": "Search Engine Optimization (SEO)",
-				"serviceOutput": "Technical SEO and content optimization for high-intent local and regional search visibility.",
-				"audience": "Business owners and marketing teams",
-				"termsOfService": "/terms",
-				"offers": "",
-				"image": "https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg?fm=webp"
-			},
-			{
-				"name": "Content Management",
-				"description": "True business agility requires the freedom to update your digital storefront instantly, without being held hostage by technical bottlenecks or expensive developer invoices. Pixelated Technologies implements cutting-edge, highly secure Content Management Systems (CMS) engineered for modern speed and absolute ease of use. We evaluate your operational needs to deliver the ideal decoupled or headless CMS infrastructure at the right cost, giving your team the power to publish content, update media, and pivot messaging effortlessly. Our relationship is defined by superior customer service; we provide comprehensive training and ongoing, proactive support to ensure your team is fully empowered. This technical modernization gives you an immediate strategic advantage, allowing your business to respond to market trends, launch promotions, and communicate with your audience in real time, keeping your digital footprint fresh and highly relevant to search engines.",
-				"short_description": "Take full control of your digital storefront with cutting-edge headless or decoupled CMS frameworks. Update content, manage assets, and pivot messaging instantly without technical dependencies or expensive developer overhead.",
-				"category": "Content Management",
-				"serviceType": "Content Management",
-				"serviceOutput": "Headless and CMS infrastructure enabling non-technical content updates and digital agility.",
-				"audience": "Businesses needing scalable content publishing systems",
-				"termsOfService": "/terms",
-				"offers": "",
-				"image": "https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg?fm=webp"
-			},
-			{
-				"name": "eCommerce Solutions",
-				"description": "Transitioning your business into the digital marketplace demands a secure, high-capacity, and completely frictionless transaction engine. Pixelated Technologies designs advanced, custom eCommerce solutions engineered to maximize conversions and deliver flawless customer experiences. We move your products and services online utilizing enterprise-grade architectures that integrate perfectly with your inventory, shipping, and accounting workflows. By eliminating checkout friction and implementing sophisticated security protocols, we protect your margins and safeguard sensitive customer data. Our superior customer service ensures your digital storefront receives proactive performance tuning, keeping your shopping cart fast and stable during peak traffic. This gives you an immense strategic advantage, expanding your market reach far beyond your physical location and transforming your business into a 24/7 revenue-generating asset that operates flawlessly around the clock.",
-				"short_description": "Expand your footprint with enterprise-grade eCommerce engines. We build zero-friction checkout pipelines integrated with your inventory and accounting systems, converting visitors into buyers around the clock safely.",
-				"category": "eCommerce Solutions",
-				"serviceType": "eCommerce Solutions",
-				"serviceOutput": "Secure, conversion-focused eCommerce platforms integrated with inventory, shipping, and checkout workflows.",
-				"audience": "Retailers and businesses selling products or services online",
-				"termsOfService": "/terms",
-				"offers": "",
-				"image": "https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg?fm=webp"
-			},
-			{
-				"name": "Small Business Modernization",
-				"description": "Disjointed software systems and manual workflows are invisible taxes on your profitability. Pixelated Technologies specializes in advanced Small Business Modernization, acting as the bridge between your website and your core business applications. We build custom integrations that connect your digital platforms with advanced marketing automation, automated billing, real-time scheduling, and inventory systems. By eliminating operational silos, we replace repetitive administrative tasks with automated, high-efficiency workflows. We take the time to deeply analyze your unique business processes, delivering a tailored software roadmap that scales with your growth. This innovative modernization provides an undeniable strategic advantage, dramatically reducing overhead costs, eliminating human error, and freeing your team to deliver the superior customer service your brand is known for.",
-				"short_description": "Eliminate manual operational drag and siloed applications. We build custom software integrations linking your website to billing, scheduling, inventory, and marketing automations to maximize efficiency and scale profit.",
-				"category": "Small Business Modernization",
-				"serviceType": "Small Business Modernization",
-				"serviceOutput": "Custom software integration workflows connecting website, billing, scheduling, and automation systems.",
-				"audience": "Small businesses seeking operational efficiency and automation",
-				"termsOfService": "/terms",
-				"offers": "",
-				"image": "https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg?fm=webp"
-			}
-		],
-		"serviceAreas": [
-			{
-				"name": "Denville NJ",
-				"description": "Empowering independent downtown retailers, local medical practices, and professional service providers within the historic 'Hub of Morris County.' At Pixelated Technologies, we replace slow, outdated websites with cutting-edge, mobile-first architectures optimized for immediate findability along the dense Route 53, Route 10, and Broadway commercial corridors. Moving far beyond generic templates, we engineer bespoke digital platforms that cleanly showcase your unique local differentiation. We understand that North Jersey consumers demand transparency and rapid validation before booking; our technical solutions directly simplify customer decision-making by embedding intuitive user journeys, fast-loading portfolios, and seamless scheduling tools. By pairing these high-performance sites with precision neighborhood SEO and hyper-local map pack dominance, we give your business a decisive strategic advantage over regional competitors. Backed by superior, dedicated customer service, we act as your local Virtual Technology Department, protecting your margins while transforming your digital storefront into an automated lead-generation engine built for sustained local growth.",
-				"short_description": "Dominate local maps and search packs along Broadway, Route 10, and Route 53. We equip Denville businesses with ultra-fast, mobile-first web designs and hyper-local SEO to simplify customer decisions.",
-				"keywords": [
-					"Denville NJ web development", 
-					"Denville downtown local SEO", 
-					"Morris County small business modernization", 
-					"independent retail digital marketing Denville",
-					"Route 53 commercial web design",
-					"Denville NJ business automation software"
-				],
-				"highlights": [
-					"Downtown retail local search dominance",
-					"Hyper-local map pack keyword optimization",
-					"Decoupled CMS for rapid inventory updates",
-					"Mobile-first responsive user experience mapping",
-					"Frictionless local appointment booking engines",
-					"Automated review collection loops for local trust",
-					"Structured schema markup for localized indexing",
-					"High-performance speed tuning for mobile networks",
-					"Advanced regional competitor data benchmarking",
-					"Superior high-touch technical client support"
-				]
-			},
-			{
-				"name": "Morristown NJ",
-				"description": "Delivering enterprise-grade web applications and high-authority search engine dominance for corporate firms, prestigious legal practices, and upscale commercial establishments surrounding the historic Morristown Green. In a hyper-competitive market where 'close enough' is never acceptable, Pixelated Technologies provides a distinct strategic advantage through cutting-edge technical execution. We construct secure, ultra-fast digital frameworks that build immediate technical authority and accelerate customer decision-making for high-value B2B and affluent B2C clients. Every line of clean code we deploy is architected to adhere to strict modern security, web speed, and accessibility standards, ensuring your brand stands completely distinct from uncertified independent operators. Our deep integration of hyper-local data targeting ensures maximum findability in the exact zip codes that drive your revenue. Partnering with us provides superior, personal accountability and deep-funnel analytics insights, enabling your firm to effortlessly capture, track, and convert premium regional leads into lifelong clients.",
-				"short_description": "Secure first-page authority engines around the Morristown Green. We deliver enterprise-grade web applications and high-security compliance for B2B firms, legal practices, and medical facilities.",
-				"keywords": [
-					"Morristown web application engineering", 
-					"Morristown professional services SEO", 
-					"B2B digital marketing Morristown", 
-					"high-performance website design NJ",
-					"Morristown Green business technology",
-					"corporate web compliance Morris County"
-				],
-				"highlights": [
-					"Corporate-grade technical site compliance",
-					"Advanced high-intent B2B lead capture funnels",
-					"First-page organic search engine authority",
-					"Hyper-secure client portal system integrations",
-					"Bespoke application development using Next.js",
-					"Detailed cross-device behavioral analytics tracking",
-					"Deep-funnel conversion rate optimization",
-					"High-end visual asset presentation engineering",
-					"Automated CRM and sales pipeline connectivity",
-					"Dedicated enterprise uptime and security monitoring"
-				]
-			},
-			{
-				"name": "Montclair NJ",
-				"description": "Fueling the creative, culinary, and design-forward entrepreneurial ecosystem of Essex County. Pixelated Technologies delivers bleeding-edge headless CMS platforms and highly innovative, synchronized multi-channel marketing campaigns tailored for the sophisticated expectations of the Montclair market. We recognize that differentiation from the competition requires a bold, highly visual digital presence that functions flawlessly under heavy traffic. Our cutting-edge web development solutions give local boutiques, upscale restaurants, and independent creative agencies an immediate strategic advantage by eliminating technical bottlenecks and accelerating content delivery. We simplify client decision-making by engineering elegant, zero-friction online reservations, direct messaging, and shopping experiences that turn casual browsers into brand advocates. Backed by our signature superior customer service, we manage your complex technical footprint so you can focus on creative execution, ensuring your brand achieves maximum digital findability and deep community connection across the region.",
-				"short_description": "Fuel your creative brand with design-forward headless CMS setups and synchronized social campaigns. We build elegant, zero-friction reservation and shopping experiences tailored for the sophisticated Montclair demographic.",
-				"keywords": [
-					"Montclair custom web development", 
-					"creative agency digital marketing Montclair", 
-					"headless CMS implementations Essex County", 
-					"social media customer acquisition NJ",
-					"Montclair boutique eCommerce systems",
-					"restaurant reservation web design Montclair"
-				],
-				"highlights": [
-					"Design-forward headless CMS architecture",
-					"Unified multi-platform brand positioning",
-					"Frictionless online booking and reservations",
-					"High-end interactive visual galleries",
-					"Data-driven social media target tracking",
-					"Decoupled frontend for instantaneous loading",
-					"Tailored localized audience personas",
-					"Automated email newsletter list building",
-					"Bespoke user interface UI customization",
-					"Proactive multi-channel performance monitoring"
-				]
-			},
-			{
-				"name": "Morris County NJ",
-				"description": "Driving comprehensive digital transformation, technical operations modernization, and regional marketplace authority for commercial contractors, heavy trades, and mid-sized enterprises across Northern New Jersey. Pixelated Technologies eliminates the invisible taxes on your profitability caused by disjointed software systems and manual workflows. We build cutting-edge custom integrations that seamlessly bridge your high-performance website with core billing, scheduling, marketing automation, and inventory tools. This technical modernization gives your business a powerful strategic advantage, dramatically reducing administrative overhead and human error while maximizing findability across multi-city search results. We assist your customers' decision-making by making your operational reliability, safety certifications, and project case studies instantly visible and transparent. Our commitment to superior customer service ensures a tailored, scalable software roadmap that adapts to your growth, freeing your team to deliver the field excellence your brand is known for.",
-				"short_description": "Accelerate regional B2B growth and modernize operational data structures. We specialize in software integrations and regional SEO mapping for commercial contractors, heavy trades, and service firms.",
-				"keywords": [
-					"Morris County industrial web services", 
-					"automated workflow systems NJ", 
-					"regional contractor local SEO", 
-					"small business modernization North Jersey",
-					"AISC compliance web design NJ",
-					"multi-city local search optimization"
-				],
-				"highlights": [
-					"Multi-city local search expansion mapping",
-					"Cross-platform automated workflow systems",
-					"Regional trade lead-generation pipelines",
-					"AISC and industrial safety code highlighting",
-					"Centralized database system software design",
-					"Automated invoicing and invoice tracking hooks",
-					"Real-time resource and scheduling sync",
-					"Robust digital asset management pipelines",
-					"Granular local market competitor analytics",
-					"Scalable multi-site architecture development"
-				]
-			},
-			{
-				"name": "Beaufort SC",
-				"description": "Preserving historic Lowcountry legacy while capturing modern digital market share north of the Broad River. Pixelated Technologies constructs lightning-fast, accessible web platforms and hyper-localized search engine strategies for maritime operators, hospitality groups, and professional practices across Beaufort. Moving away from rigid, cookie-cutter templates, we leverage cutting-edge technology to build custom solutions that reflect the meticulous craftsmanship of your brand. We prioritize absolute findability, placing your business directly in front of high-intent locals and incoming tourists. By implementing clear, intuitive navigation and upfront proof of expertise, we eliminate friction and accelerate customer decision-making at the critical moment of intent. Our core philosophy balances innovative technical precision with superior customer service, offering transparent, line-item reporting and proactive maintenance. We give your coastal business a permanent strategic advantage, ensuring your digital presence remains as stable, secure, and commanding as the historic Beaufort waterfront itself.",
-				"short_description": "Preserve historic local legacy while conquering modern search rankings. We deliver accessibility-first web architectures and localized tourism capture tools for maritime, legal, and hospitality operations.",
-				"keywords": [
-					"Beaufort SC local web design", 
-					"historic district business SEO", 
-					"maritime industry digital marketing Beaufort", 
-					"ADA compliant websites Lowcountry",
-					"Beaufort SC hospitality marketing",
-					"local search map pack optimization Beaufort"
-				],
-				"highlights": [
-					"ADA and accessibility-first source coding",
-					"Localized search optimization for historic zones",
-					"Seamless mobile user onboarding flows",
-					"High-performance cloud-backed hosting speeds",
-					"Custom interactive maps and local guides",
-					"Automated tourism lead-capture systems",
-					"Transparent local citation directory building",
-					"Tailored content blocks for coastal consumers",
-					"Continuous performance tuning for seasonal spikes",
-					"Comprehensive regional SEO audit analysis"
-				]
-			},
-			{
-				"name": "Bluffton SC",
-				"description": "Igniting explosive growth for the fastest-scaling commercial footprint in Beaufort County. From the artisan boutiques of Old Town to the rapidly expanding service, trade, and retail providers along Buckwalter Parkway and the Promenade, Pixelated Technologies builds high-capacity custom eCommerce and automated workflow engines. We give your business a decisive strategic advantage by replacing slow, broken templates with cutting-edge web architecture built for rapid scale and maximum local findability. We focus heavily on clear, conversion-optimized design that guides the consumer journey and simplifies customer decision-making, transforming your site into an active 24/7 sales engine. Our superior customer service means we act as your local technology partners, aligning your web engineering with your business operations. By eliminating administrative silos and dominating the local map pack, we ensure your business outpaces the competition and thrives in the booming Lowcountry economy.",
-				"short_description": "Ignite scaling engines for Old Town boutiques, trades, and service providers. We design high-conversion eCommerce platforms and local map pack dominance frameworks for the booming Lowcountry footprint.",
-				"keywords": [
-					"Bluffton SC custom eCommerce solutions", 
-					"Old Town Bluffton web development", 
-					"high-growth business modernization SC", 
-					"automated lead generation Bluffton",
-					"Promenade Bluffton digital marketing",
-					"Buckwalter area local SEO services"
-				],
-				"highlights": [
-					"Frictionless conversion-optimized checkout setups",
-					"Real-time inventory and POS sync hooks",
-					"Hyper-local map pack dominance strategies",
-					"Automated customer workflow integrations",
-					"Bespoke e-commerce landing page design",
-					"High-volume local lead generation funnels",
-					"Continuous automated database threat monitoring",
-					"Advanced mobile-first layout optimization",
-					"Strategic local partner cross-linking",
-					"On-demand local developer support access"
-				]
-			},
-			{
-				"name": "Hardeeville SC",
-				"description": "Fueling the massive industrial expansion, logistical real estate boom, and commercial trade surge along the rapidly growing I-95 corridor. As Hardeeville expands at an unprecedented rate, Pixelated Technologies supplies heavy contracting trades, logistics firms, and new consumer services with cutting-edge digital infrastructure. We construct ultra-fast, high-performance websites and automated business systems that grant an immediate strategic advantage in a crowded frontier. We optimize your platform for total findability, ensuring your services anchor the top of local search results when commercial managers demand instant, on-site solutions. Our customer-centric content directly supports swift customer decision-making by highlighting code compliance, capacity metrics, and rapid response capabilities clearly. Backed by superior customer service, we take care of the complex data pipelines, custom software integrations, and mobile optimization, enabling your team to confidently scale operations and capture high-value contracts.",
-				"short_description": "Capture commercial accounts along the booming I-95 corridor. We build heavy-duty lead funnels, custom application structures, and high-visibility local SEO mapping for fast-growing contracting and logistics firms.",
-				"keywords": [
-					"Hardeeville SC commercial web development", 
-					"contractor lead generation Hardeeville", 
-					"logistics business systems SC", 
-					"rapid scaling digital strategy Hardeeville",
-					"I-95 corridor business SEO",
-					"Hardeeville industrial web applications"
-				],
-				"highlights": [
-					"Heavy trade and industrial lead pipelines",
-					"Scalable cloud-hosted data structures",
-					"High-conversion local search indexing",
-					"Logistics and shipping tracking systems",
-					"B2B vendor quote generation software",
-					"Mobile field-ready responsive interfaces",
-					"OSHA and safety standard content highlighting",
-					"Hyper-targeted geographic search footprinting",
-					"Automated high-capacity form submission routing",
-					"Proactive core web vitals speed optimization"
-				]
-			},
-			{
-				"name": "Hilton Head SC",
-				"description": "Dominating the luxury hospitality, high-end residential construction, and seasonal resort markets of Hilton Head Island. Pixelated Technologies designs advanced, enterprise-grade eCommerce solutions and cutting-edge search strategies engineered to handle heavy seasonal traffic spikes while protecting affluent consumer data. We give your premium brand a powerful strategic advantage by replacing slow, generic layouts with bespoke, high-performance digital architectures that reflect elite craftsmanship. Our customer-centric design directly guides customer decision-making by eliminating online checkout friction and presenting your luxury services with stunning visual clarity. We maximize findability among wealthy vacationers and permanent residents alike through highly sophisticated, localized SEO. Our relationship is defined by superior customer service, offering proactive security monitoring and optimization to transform your digital platform into a highly stable, 24/7 revenue-generating asset.",
-				"short_description": "Command premium rates across the island's luxury hospitality, custom building, and rental markets. We build high-capacity eCommerce channels and advanced security protections for seasonal traffic surges.",
-				"keywords": [
-					"Hilton Head Island luxury eCommerce", 
-					"resort management digital systems HHI", 
-					"hospitality lead generation Hilton Head", 
-					"high-end builder web design SC",
-					"luxury resort local SEO Hilton Head",
-					"secure payment gateway integration HHI"
-				],
-				"highlights": [
-					"Enterprise-grade transaction security layers",
-					"High-volume seasonal performance auto-tuning",
-					"Data-driven luxury target audience mapping",
-					"Frictionless premium booking flow systems",
-					"Secure data encryption for customer vaults",
-					"Visual portfolio performance rendering engines",
-					"Localized tourism search capturing networks",
-					"Automated feedback and luxury review loops",
-					"Advanced multi-tiered discount rule engines",
-					"Continuous proactive malware defense loops"
-				]
-			},
-			{
-				"name": "Okatie SC",
-				"description": "Connecting medical practices, master-planned community service firms, and local commercial providers with the rapidly growing regional consumer base across Sun City and Riverbend. Pixelated Technologies engineers clean, highly accessible, mobile-first websites that simplify consumer navigation and remove operational friction. We facilitate efficient customer decision-making by integrating secure, real-time client scheduling, automated patient onboarding, and clear service transparency directly into your site. Our cutting-edge web infrastructure ensures maximum findability within local directory searches and map packs, giving your practice or business a distinct strategic advantage over slow-moving competitors. Every asset we deploy is backed by superior customer service and a commitment to data privacy, ensuring your digital systems operate smoothly. Let us manage your technical modernization, eliminating manual paperwork and transforming your website into a highly visible, automated coordination hub.",
-				"short_description": "Simplify scheduling and navigation across Sun City and Riverbend. We engineer clean, highly accessible mobile sites featuring integrated intake systems and local map pack routing.",
-				"keywords": [
-					"Okatie SC medical web design", 
-					"scheduling system integrations Okatie", 
-					"mobile-friendly web application SC", 
-					"local directory SEO Okatie",
-					"Sun City SC business digital marketing",
-					"patient onboarding software Lowcountry"
-				],
-				"highlights": [
-					"Real-time automated calendar sync tools",
-					"Mobile-first consumer flow engineering",
-					"Intuitive user accessibility compliance design",
-					"Secure data collection form development",
-					"Local community targeted directory sync",
-					"Streamlined service feature callout sections",
-					"Automated confirmation email text pipelines",
-					"Clean minimalist typography for readability",
-					"High-speed local network server response",
-					"Dedicated training for in-house administrators"
-				]
-			},
-			{
-				"name": "Savannah GA",
-				"description": "Anchoring the coastal regional economy with sophisticated digital infrastructure. Pixelated Technologies supplies Savannah's historic logistics firms, creative agencies, and the exploding startups of the Starland District with cutting-edge headless web applications and data-driven multi-channel customer acquisition funnels. To stand out from the dense local competition, your brand needs a distinct, ultra-fast digital presence that commands attention. We give you that precise strategic advantage by engineering bespoke platforms using modern tech stacks that rank with immense search engine authority. We streamline customer decision-making by eliminating interactive lag and presenting clean, clear, metrics-driven proof of capability. Backed by our signature superior customer service, we offer transparent analytics insights and continuous system refinement, transforming your digital footprint into an optimized lead-generation engine that scales seamlessly alongside your business ambitions.",
-				"short_description": "Command organic authority across the Starland and Historic Districts. We engineer ultra-fast headless web structures and data-driven customer acquisition funnels for creative agencies and logistics companies.",
-				"keywords": [
-					"Savannah GA headless web development", 
-					"Starland District creative SEO", 
-					"logistics company web engineering Savannah", 
-					"multi-channel marketing GA",
-					"Savannah historic district business marketing",
-					"conversion rate optimization Savannah"
-				],
-				"highlights": [
-					"Cutting-edge headless JavaScript frameworks",
-					"Automated multi-channel audience marketing funnels",
-					"Deep-funnel user conversion tracking insights",
-					"Industrial logistics software API sync",
-					"Bespoke user interface interactive elements",
-					"High-performance media compression pipelines",
-					"Hyper-targeted city center keyword mapping",
-					"Scalable localized landing page assets",
-					"Comprehensive cross-device usability profiling",
-					"Direct dedicated technical account consultations"
-				]
-			},
-			{
-				"name": "Tybee Island GA",
-				"description": "Optimizing coastal hospitality groups, seasonal vacation rentals, and maritime retail operations for zero-friction digital sales. Pixelated Technologies deploys high-availability, cloud-backed eCommerce solutions and real-time social engagement campaigns engineered to capture shifting tourist traffic and turn global visitors into lifelong brand loyalists. We maximize your online findability across competitive coastal tourism searches, giving your brand a critical strategic advantage during peak seasons. By deploying intuitive mobile checkout paths and instant booking verification, we directly accelerate consumer decision-making when booking delays mean lost revenue. Our relationship is anchored in superior customer service; we manage the complex data integrations, payment gateways, and performance tuning under the hood. Partner with us to secure a robust, high-performance digital presence that protects your margins and operates flawlessly through every wave of seasonal demand.",
-				"short_description": "Maximize seasonal tourist revenue with high-availability eCommerce platforms. We deliver fast, mobile-optimized checkout funnels and localized tourism SEO frameworks built to handle peak vacation traffic seamlessly.",
-				"keywords": [
-					"Tybee Island tourism eCommerce", 
-					"vacation rental digital strategy GA", 
-					"maritime retail web design Tybee", 
-					"coastal market social media marketing",
-					"mobile checkout optimization Tybee",
-					"seasonal traffic website tuning GA"
-				],
-				"highlights": [
-					"Zero-friction mobile-optimized cart flows",
-					"Localized tourism search query capturing",
-					"Automated social proof review integration",
-					"High-availability cloud backup storage systems",
-					"Real-time seasonal rate rules integration",
-					"Instant payment processing gateway setup",
-					"Interactive coastal maps and itineraries",
-					"Continuous security threat firewalls",
-					"Automated abandoned shopping cart recovery",
-					"Proactive mobile core web vitals auditing"
-				]
-			}
-		],
-		"sameAs": [
-			"https://blog.pixelated.tech",
-			"https://share.google/an1Yqe6CTFA946zZV",
-			"https://www.linkedin.com/company/106825397/",
-			"https://www.reddit.com/r/PixelatedTech/",
-			"https://www.facebook.com/profile.php?id=61577216017129",
-			"https://www.instagram.com/_pixelatedtech_",
-			"http://twitter.com/pixelatedviews",
-			"https://www.yelp.com/user_details?userid=SUFlzBCRMR0OIc3D3nN5pg",
-			"https://www.tumblr.com/pixelatedtech",
-			"https://patch.com/new-jersey/denville-nj/business/listing/558828/pixelated-technologies",
-			"https://www.eventbrite.com/o/brian-whaley-120645314676"
-		]
-	},
-	"routes": [
-		{ 
-			"name": "Home", 
-			"path": "/", 
-			"title": "Pixelated Technologies - Home",
-			"description": "Pixelated Technologies offers a wide varity of products and services, including custom web development for small businesses, stock photography, touchup services, home design and remodeling, and more.",
-			"keywords": "pixelated, web development, small business, stock photography, home redesign, remodeling, social media"  
-		} , { 
-			"name": "Schedule Assessment", 
-			"path": "/schedule", 
-			"title": "Pixelated Technologies - Schedule your free Digital Assessment",
-			"description": "Schedule a your free Digital Assessment with Pixelated Technologies and receive a full report of your digital presence and what you should do to improve - web development, social media marketing, search engine optimization, and small business modernization.",
-			"keywords": "pixelated, brian whaley, schedule an assessment, schedule a meeting, web development, search engine optimization, seo, social media marketing, small business modernization" 
-		} , { 
-			"name": "Services",
-			"path": "/services",
-			"title": "Pixelated Technologies - Services",
-			"description": "Explore the digital services offered by Pixelated Technologies, from web development and SEO to social media marketing and e-commerce solutions.",
-			"keywords": "pixelated, services, web development, seo, social media marketing, content management, ecommerce, business modernization"
-		} , { 
-			"name": "Portfolio", 
-			"path": "/portfolio", 
-			"title": "Pixelated Technologies - Portfolio",
-			"description": "Examples of web development and design work delivered by our team members over the years.  ",
-			"keywords": "pixelated, web development, design, small business, delivery, portfolio"  
-		} , { 
-			"name": "Blog", 
-			"path": "/blog", 
-			"title": "Pixelated Technologies - Blog Posts",
-			"description": "Read the latest blog posts from Pixelated Technologies.",
-			"keywords": "pixelated, blog, web development, small business"  
-		} , {
-			"name": "FAQs", 
-			"path": "/faqs", 
-			"title": "Pixelated Technologies - FAQs",
-			"description": "Frequently Asked Questions about Pixelated Technologies",
-			"keywords": "pixelated, faqs, frequently asked questions" 
-		} , { 
-			"name": "Samples", 
-			"path": "/samples", 
-			"title": "Pixelated Technologies - Samples",
-			"description": "Examples of web development and design work for different industries and styles.  ",
-			"keywords": "pixelated, web development, design, small business, delivery, samples, "  
-		} , {
-			"name": "Legal", 
-			"path": "/legal", 
-			"title": "Pixelated Technologies - Legal",
-			"description": "Pixelated Technologies Terms of Service and Privacy Policy",
-			"keywords": "pixelated, terms of service, privacy policy" 
-		} , {
-			"name": "Samples Pages",
-			"hidden": true,
-			"routes": [
-				{ 
-					"name": "Samples Home", 
-					"hidden": true,
-					"path": "/samples", 
-					"title": "Pixelated Technologies - Samples Home",
-					"description": "Pixelated Technologies - Samples Home",
-					"keywords": "pixelated technologies, web design samples home, samples, indistries" 
-				} , { 
-					"name": "Sample Page 1", 
-					"hidden": true,
-					"path": "/samples/page1", 
-					"title": "Pixelated Technologies - Sample Page 1",
-					"description": "Pixelated Technologies - Sample Page 1 - Professional Landscaping, Hardscaping & Masonry Services",
-					"keywords": "pixelated technologies, web design sample page 1, Professional Landscaping, Hardscaping & Masonry Services" 
-				} , { 
-					"name": "Sample Page 2", 
-					"hidden": true,
-					"path": "/samples/page2", 
-					"title": "Pixelated Technologies - Sample Page 2",
-					"description": "Pixelated Technologies - Sample Page 2 - Wedding Photography for the Artful Soul",
-					"keywords": "pixelated technologies, web design sample page 2, Wedding Photography for the Artful Soul" 
-				} , { 
-					"name": "Sample Page 3", 
-					"hidden": true,
-					"path": "/samples/page3", 
-					"title": "Pixelated Technologies - Sample Page 3",
-					"description": "Pixelated Technologies - Sample Page 3 - Farm to Table Modern European Cuisine",
-					"keywords": "pixelated technologies, web design sample page 3, Farm to Table, Modern European Cuisine" 
-				} , { 
-					"name": "Sample Page 4", 
-					"hidden": true,
-					"path": "/samples/page4", 
-					"title": "Pixelated Technologies - Sample Page 4",
-					"description": "Pixelated Technologies - Sample Page 4 - Passionate About Cycling and Community",
-					"keywords": "pixelated technologies, web design sample page 4, Passionate About Cycling and Community" 
-				} , { 
-					"name": "Sample Page 5", 
-					"hidden": true,
-					"path": "/samples/page5", 
-					"title": "Pixelated Technologies - Sample Page 5",
-					"description": "Pixelated Technologies - Sample Page 5 - Street Tacos - Fresh, Fast, Fantastic!",
-					"keywords": "pixelated technologies, web design sample page 5, Street Tacos, Fresh Fast Fantastic!" 
-				} , { 
-					"name": "Sample Page 6", 
-					"hidden": true,
-					"path": "/samples/page6", 
-					"title": "Pixelated Technologies - Sample Page 6",
-					"description": "Pixelated Technologies - Sample Page 6 - McKenzie & Brackman Law Firm",
-					"keywords": "pixelated technologies, web design sample page 6, McKenzie & Brackman Law Firm" 
-				} 
-			]
-		} , {
-			"name": "Hidden",
-			"hidden": true,
-			"routes": [
-				{
-					"name": "Blog Calendar", 
-					"path": "/blogcalendar", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Blog Calendar",
-					"description": "Blog Calendar",
-					"keywords": "pixelated technologies, blog calendar" 
-				} , {
-					"name": "By The Way Font", 
-					"path": "/bytheway", 
-					"hidden": true,
-					"title": "Pixelated Technologies - By The Way Font",
-					"description": "By The Way Font",
-					"keywords": "pixelated technologies, custom font, by the way, by the way font" 
-				} , { 
-					"name": "Pricing", 
-					"hidden": true,
-					"path": "/pricing", 
-					"title": "Pixelated Technologies - Pricing & Value Packages",
-					"description": "Pixelated Technologies Pricing & Value Packages",
-					"keywords": "pixelated technologies, pricing, value packages, web development, small business" 
-				} , { 
-					"name": "Instagram Feed", 
-					"path": "/instagram", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Instagram Feed",
-					"description": "Pixelated Technologies Instagram Feed",
-					"keywords": "pixelated technologies, instagram, feed"  
-				} , { 
-					"name": "NerdJokes", 
-					"path": "/nerdjokes", 
-					"hidden": true,
-					"title": "Pixelated Technologies - NerdJokes",
-					"description": "NerdJokes Slack Bot - How To, Customer Support, Terms, and Privacy Policy",
-					"keywords": "pixelated technologies, nerdjokes, slack bot, jokes, humor" 
-				} , { 
-					"name": "Our Process", 
-					"path": "/process", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Our Process",
-					"description": "Pixelated Technologies offers a proven process to get results for you and your customer gather information, develop a strategy, implement, measure outcomes, refine results, and support. ",
-					"keywords": "pixelated technologies, web development, small business, process, strategy, implement, measure, refine, support"  
-				} , { 
-					"name": "Partners", 
-					"path": "/partners", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Partners",
-					"description": "Partners",
-					"keywords": "pixelated technologies, partners" 
-				} , { 
-					"name": "Podcast", 
-					"path": "/podcast", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Podcast",
-					"description": "Pixelated Technologies Podcast",
-					"keywords": "pixelated technologies, podcast, spotify, episodes"  
-				} , { 
-					"name": "Privacy Policy", 
-					"hidden": true,
-					"path": "/privacy", 
-					"title": "Pixelated Technologies - Privacy Policy",
-					"description": "Pixelated Technologies Privacy Policy",
-					"keywords": "pixelated technologies, privacy policy, data retention"  
-				} , {
-					"name": "Service Areas",
-					"path": "/service-areas",
-					"hidden": true,
-					"title": "Pixelated Technologies - Service Areas",
-					"description": "Discover the service areas covered by Pixelated Technologies, including Northern New Jersey, Denville, and South Carolina.",
-					"keywords": "pixelated, service areas, New Jersey, South Carolina, local business marketing, web development service area"
-				} , { 
-					"name": "Stkr", 
-					"path": "/stkr", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Stkr",
-					"description": "Stkr Slack Bot - How To, Customer Support, Terms, and Privacy Policy",
-					"keywords": "pixelated technologies, stkr, slack bot, sticker bot, custom stickers" 
-
-				} , {
-					"name": "Style Guide", 
-					"path": "/styleguide", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Style Guide",
-					"description": "Style Guide",
-					"keywords": "pixelated technologies, style guide" 
-				} , { 
-					"name": "Terms", 
-					"hidden": true,
-					"path": "/terms", 
-					"title": "Pixelated Technologies - Terms of Service",
-					"description": "Pixelated Technologies Terms of Service",
-					"keywords": "pixelated technologies, terms of service" 
-				} 
-			]
-		} , {
-			"name": "Admin",
-			"hidden": true,
-			"routes": [ 
-				{ 
-					"name": "404", 
-					"path": "/404", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Page Not Found",
-					"description": "The page you requested could not be found.",
-					"keywords": "pixelated technologies, 404, page not found"  
-				} , { 
-					"name": "Sitemap", 
-					"path": "/sitemap.xml", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Sitemap",
-					"description": "Pixelated Technologies sitemap.xml",
-					"keywords": "pixelated technologies, sitemap.xml"  
-				} , {
-					"name" : "Robots.txt",
-					"path" : "/robots.txt",
-					"hidden": true,
-					"title": "Pixelated Technologies - Robots.txt",
-					"description": "Pixelated Technologies robots.txt",
-					"keywords": "pixelated technologies, robots.txt"
-				} , {
-					"name": "Web Manifest",
-					"path": "/manifest.webmanifest",
-					"hidden": true,
-					"title": "Pixelated Technologies - Web Manifest",
-					"description": "Pixelated Technologies web manifest",
-					"keywords": "pixelated technologies, web manifest"
-				} , { 
-					"name": "Humans Txt", 
-					"path": "/humans.txt", 
-					"hidden": true,
-					"title": "Pixelated Technologies - Humans Txt",
-					"description": "Humans Txt",
-					"keywords": "pixelated technologies, humans txt" 
-				} , {
-					"name": "Security Txt",
-					"hidden": true,
-					"path": "/security.txt",
-					"title": "Pixelated Technologies - Security Txt",
-					"description": "Security contact and vulnerability disclosure information.",
-					"keywords": ["pixelated technologies","security txt","security"]				} 
-			]
-		}
-	],
-	"visualdesign": {
-		"primary-color": { "value": "#369", "type": "color", "group": "palette", "label": "Primary color" },
-		"secondary-color": { "value": "#BCD", "type": "color", "group": "palette", "label": "Secondary color" },
-		"accent1-color": { "value": "#CCC", "type": "color", "group": "palette", "label": "Accent color 1" },
-		"accent2-color": { "value": "#EEE", "type": "color", "group": "palette", "label": "Accent color 2" },
-		"bg-color": { "value": "#ffffff", "type": "color", "group": "palette", "label": "Background color" },
-		"text-color": { "value": "#000000", "type": "color", "group": "palette", "label": "Font color" },
-		"header-font": { "value": "\"Montserrat\", Verdana, sans-serif", "type": "font", "group": "typography", "label": "Header font" },
-		"body-font": { "value": "\"Roboto\", Arial, sans-serif", "type": "font", "group": "typography", "label": "Body font" },
-		"font-size1-min": { "value": "2.00rem", "type": "size", "group": "typography", "label": "Font size 1 min" },
-		"font-size1-max": { "value": "3.00rem", "type": "size", "group": "typography", "label": "Font size 1 max" },
-		"font-size2-min": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 2 min" },
-		"font-size2-max": { "value": "1.75rem", "type": "size", "group": "typography", "label": "Font size 2 max" },
-		"font-size3-min": { "value": "1.17rem", "type": "size", "group": "typography", "label": "Font size 3 min" },
-		"font-size3-max": { "value": "1.35rem", "type": "size", "group": "typography", "label": "Font size 3 max" },
-		"font-size4-min": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 4 min" },
-		"font-size4-max": { "value": "1.25rem", "type": "size", "group": "typography", "label": "Font size 4 max" },
-		"font-size5-min": { "value": "0.83rem", "type": "size", "group": "typography", "label": "Font size 5 min" },
-		"font-size5-max": { "value": "1.00rem", "type": "size", "group": "typography", "label": "Font size 5 max" },
-		"font-size6-min": { "value": "0.67rem", "type": "size", "group": "typography", "label": "Font size 6 min" },
-		"font-size6-max": { "value": "0.85rem", "type": "size", "group": "typography", "label": "Font size 6 max" },
-		"font-min-screen": { "value": "375px", "type": "size", "group": "typography", "label": "Font min screen" },
-		"font-max-screen": { "value": "1440px", "type": "size", "group": "typography", "label": "Font max screen" },
-		"border-radius": { "value": "0.5rem", "type": "size", "group": "layout", "label": "Border radius" },
-		"box-shadow": { "value": "0 2px 4px rgba(0,0,0,0.1)", "type": "shadow", "group": "layout", "label": "Box shadow" },
-		"transition": { "value": "all 0.3s ease", "type": "transition", "group": "layout", "label": "Transition" }
-	}
+  "siteInfo": {
+    "name": "Pixelated Technologies",
+    "author": "Brian Whaley",
+    "description": "Custom web development and digital design agency specializing in React, Next.js, and modern web technologies",
+    "keywords": "pixelated, pixelated technologies, denville new jersey, bluffton south carolina, web development, react, next.js, custom websites, digital design, small business",
+    "url": "https://pixelated.tech",
+    "servicesPathPrefix": "/services",
+    "email": "info@pixelated.tech",
+    "telephone": "(973) 710-8008",
+    "image": "https://pixelated.tech/images/pix/pix-bg-512.gif",
+    "image_height": "512",
+    "image_width": "512",
+    "favicon": "/images/favicon.ico",
+    "favicon_sizes": "64x64 32x32 24x24 16x16",
+    "favicon_type": "image/x-icon",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "default_locale": "en",
+    "display": "standalone",
+    "address": {
+      "streetAddress": "10 Jade Circle",
+      "addressLocality": "Denville",
+      "addressRegion": "NJ",
+      "postalCode": "07834",
+      "addressCountry": "US"
+    },
+    "addressAdditionalInfo": "",
+    "openingHours": [
+      {
+        "day": "Mon",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Tue",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Wed",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Thu",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Fri",
+        "open": "09:00",
+        "close": "18:00"
+      },
+      {
+        "day": "Sat",
+        "closed": true
+      },
+      {
+        "day": "Sun",
+        "closed": true
+      }
+    ],
+    "openingHoursAdditionalInfo": "",
+    "priceRange": "$",
+    "copyrightYear": 2026,
+    "publisherType": "Organization",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://pixelated.tech/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "Pixelated Technologies"
+    },
+    "termsOfService": "/terms",
+    "audience": "Local service businesses, contractors, and small business owners",
+    "availability": "https://schema.org/InStock",
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://pixelated.tech/contact",
+      "availableLanguage": [
+        "English"
+      ],
+      "servicePhone": "+1-973-710-8008"
+    },
+    "services": [
+      {
+        "name": "Web Development",
+        "description": "Is an outdated or rigid website throttling your company’s growth? At Pixelated Technologies, we serve as your elite Virtual Technology Department, engineering next-generation, high-performance websites and bespoke web applications. Moving far beyond cookie-cutter templates, we leverage cutting-edge frameworks like Next.js and robust cloud architectures to construct ultra-fast, mobile-first digital assets. Every line of clean code we write is optimized for maximum speed, bulletproof security, and seamless user experiences. We treat web engineering as a premium craft, blending technical innovation with a deep understanding of your business goals. By prioritizing flawless responsiveness and intuitive user journeys, we give your brand a decisive strategic advantage over your competitors. Partnering with us means you receive superior, dedicated customer service, allowing you to confidently offload your technical complexities while we build a scalable digital foundation that actively converts traffic into revenue.",
+        "short_description": "We engineer high-performance, custom websites and Next.js web applications. Our mobile-first, secure digital solutions are optimized for speed and conversion, providing a decisive strategic advantage over your competition.",
+        "category": "Web Development",
+        "serviceType": "Web Development",
+        "serviceOutput": "High-performance custom websites and Next.js web applications optimized for speed, conversion, and security.",
+        "audience": "Local service businesses, contractors, and small business owners",
+        "termsOfService": "/terms",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "price": "3000",
+          "url": "https://pixelated.tech/services/web-development",
+          "availability": "https://schema.org/InStock",
+          "priceValidUntil": "2026-12-31",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Web Development"
+          }
+        },
+        "image": "https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg?fm=webp"
+      },
+      {
+        "name": "Social Media Marketing",
+        "description": "In a hyper-connected marketplace, simply having social media profiles isn't enough—you need an innovative, integrated digital ecosystem. Pixelated Technologies takes a cutting-edge, data-driven approach to social media marketing, transforming passive scrolling into active consumer acquisition. We design sophisticated multi-platform strategies that align directly with your revenue goals, weaving your brand seamlessly into the digital fabric of your community. Our team handles everything from advanced content production to multi-channel synchronization, ensuring your messaging remains fresh and compelling. Backed by superior customer service, we don't just post content; we meticulously analyze deep-funnel performance metrics to optimize your presence in real time. This continuous optimization gives your business a powerful strategic advantage, transforming your social channels into automated lead-generation machines that build authentic customer relationships and accelerate your brand's digital authority.",
+        "short_description": "Transform passive scrolling into active customer acquisition. We design data-driven multi-platform social strategies with integrated workflows and analytics, turning your channels into automated lead-generation machines.",
+        "category": "Social Media Marketing",
+        "serviceType": "Social Media Marketing",
+        "serviceOutput": "Integrated multi-platform social media campaigns that convert passive audiences into leads.",
+        "audience": "Business owners and marketing teams",
+        "termsOfService": "/terms",
+        "offers": "",
+        "image": "https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg?fm=webp"
+      },
+      {
+        "name": "Search Engine Optimization (SEO)",
+        "description": "If your business isn't dominating the first page of search results, you are conceding valuable market share to your competitors. Pixelated Technologies delivers a sophisticated, technical approach to Search Engine Optimization that goes far beyond basic keyword stuffing. We execute exhaustive, granular SEO audits and implement advanced on-page and off-page data strategies tailored to capture high-intent local and regional traffic. Utilizing modern analytics and keeping pace with changing search algorithms, we optimize your site's underlying architecture to ensure search engines rank you with absolute authority. Our commitment to superior customer service means you get transparent, line-item reporting and a long-term roadmap for sustainable growth. This technical precision grants you a major strategic advantage, shifting your website from an idle digital brochure into a highly visible, automated traffic engine that continuously captures leads while you focus on scaling operations.",
+        "short_description": "Dominate organic search and capture high-intent traffic. We use advanced technical SEO and site architecture optimization to shift your website from an idle brochure into a highly visible lead-generation engine.",
+        "category": "Search Engine Optimization (SEO)",
+        "serviceType": "Search Engine Optimization (SEO)",
+        "serviceOutput": "Technical SEO and content optimization for high-intent local and regional search visibility.",
+        "audience": "Business owners and marketing teams",
+        "termsOfService": "/terms",
+        "offers": "",
+        "image": "https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg?fm=webp"
+      },
+      {
+        "name": "Content Management",
+        "description": "True business agility requires the freedom to update your digital storefront instantly, without being held hostage by technical bottlenecks or expensive developer invoices. Pixelated Technologies implements cutting-edge, highly secure Content Management Systems (CMS) engineered for modern speed and absolute ease of use. We evaluate your operational needs to deliver the ideal decoupled or headless CMS infrastructure at the right cost, giving your team the power to publish content, update media, and pivot messaging effortlessly. Our relationship is defined by superior customer service; we provide comprehensive training and ongoing, proactive support to ensure your team is fully empowered. This technical modernization gives you an immediate strategic advantage, allowing your business to respond to market trends, launch promotions, and communicate with your audience in real time, keeping your digital footprint fresh and highly relevant to search engines.",
+        "short_description": "Take full control of your digital storefront with cutting-edge headless or decoupled CMS frameworks. Update content, manage assets, and pivot messaging instantly without technical dependencies or expensive developer overhead.",
+        "category": "Content Management",
+        "serviceType": "Content Management",
+        "serviceOutput": "Headless and CMS infrastructure enabling non-technical content updates and digital agility.",
+        "audience": "Businesses needing scalable content publishing systems",
+        "termsOfService": "/terms",
+        "offers": "",
+        "image": "https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg?fm=webp"
+      },
+      {
+        "name": "eCommerce Solutions",
+        "description": "Transitioning your business into the digital marketplace demands a secure, high-capacity, and completely frictionless transaction engine. Pixelated Technologies designs advanced, custom eCommerce solutions engineered to maximize conversions and deliver flawless customer experiences. We move your products and services online utilizing enterprise-grade architectures that integrate perfectly with your inventory, shipping, and accounting workflows. By eliminating checkout friction and implementing sophisticated security protocols, we protect your margins and safeguard sensitive customer data. Our superior customer service ensures your digital storefront receives proactive performance tuning, keeping your shopping cart fast and stable during peak traffic. This gives you an immense strategic advantage, expanding your market reach far beyond your physical location and transforming your business into a 24/7 revenue-generating asset that operates flawlessly around the clock.",
+        "short_description": "Expand your footprint with enterprise-grade eCommerce engines. We build zero-friction checkout pipelines integrated with your inventory and accounting systems, converting visitors into buyers around the clock safely.",
+        "category": "eCommerce Solutions",
+        "serviceType": "eCommerce Solutions",
+        "serviceOutput": "Secure, conversion-focused eCommerce platforms integrated with inventory, shipping, and checkout workflows.",
+        "audience": "Retailers and businesses selling products or services online",
+        "termsOfService": "/terms",
+        "offers": "",
+        "image": "https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg?fm=webp"
+      },
+      {
+        "name": "Small Business Modernization",
+        "description": "Disjointed software systems and manual workflows are invisible taxes on your profitability. Pixelated Technologies specializes in advanced Small Business Modernization, acting as the bridge between your website and your core business applications. We build custom integrations that connect your digital platforms with advanced marketing automation, automated billing, real-time scheduling, and inventory systems. By eliminating operational silos, we replace repetitive administrative tasks with automated, high-efficiency workflows. We take the time to deeply analyze your unique business processes, delivering a tailored software roadmap that scales with your growth. This innovative modernization provides an undeniable strategic advantage, dramatically reducing overhead costs, eliminating human error, and freeing your team to deliver the superior customer service your brand is known for.",
+        "short_description": "Eliminate manual operational drag and siloed applications. We build custom software integrations linking your website to billing, scheduling, inventory, and marketing automations to maximize efficiency and scale profit.",
+        "category": "Small Business Modernization",
+        "serviceType": "Small Business Modernization",
+        "serviceOutput": "Custom software integration workflows connecting website, billing, scheduling, and automation systems.",
+        "audience": "Small businesses seeking operational efficiency and automation",
+        "termsOfService": "/terms",
+        "offers": "",
+        "image": "https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg?fm=webp"
+      }
+    ],
+    "serviceAreas": [
+      {
+        "name": "Denville NJ",
+        "description": "Empowering independent downtown retailers, local medical practices, and professional service providers within the historic 'Hub of Morris County.' At Pixelated Technologies, we replace slow, outdated websites with cutting-edge, mobile-first architectures optimized for immediate findability along the dense Route 53, Route 10, and Broadway commercial corridors. Moving far beyond generic templates, we engineer bespoke digital platforms that cleanly showcase your unique local differentiation. We understand that North Jersey consumers demand transparency and rapid validation before booking; our technical solutions directly simplify customer decision-making by embedding intuitive user journeys, fast-loading portfolios, and seamless scheduling tools. By pairing these high-performance sites with precision neighborhood SEO and hyper-local map pack dominance, we give your business a decisive strategic advantage over regional competitors. Backed by superior, dedicated customer service, we act as your local Virtual Technology Department, protecting your margins while transforming your digital storefront into an automated lead-generation engine built for sustained local growth.",
+        "short_description": "Dominate local maps and search packs along Broadway, Route 10, and Route 53. We equip Denville businesses with ultra-fast, mobile-first web designs and hyper-local SEO to simplify customer decisions.",
+        "keywords": [
+          "Denville NJ web development",
+          "Denville downtown local SEO",
+          "Morris County small business modernization",
+          "independent retail digital marketing Denville",
+          "Route 53 commercial web design",
+          "Denville NJ business automation software"
+        ],
+        "highlights": [
+          "Downtown retail local search dominance",
+          "Hyper-local map pack keyword optimization",
+          "Decoupled CMS for rapid inventory updates",
+          "Mobile-first responsive user experience mapping",
+          "Frictionless local appointment booking engines",
+          "Automated review collection loops for local trust",
+          "Structured schema markup for localized indexing",
+          "High-performance speed tuning for mobile networks",
+          "Advanced regional competitor data benchmarking",
+          "Superior high-touch technical client support"
+        ]
+      },
+      {
+        "name": "Morristown NJ",
+        "description": "Delivering enterprise-grade web applications and high-authority search engine dominance for corporate firms, prestigious legal practices, and upscale commercial establishments surrounding the historic Morristown Green. In a hyper-competitive market where 'close enough' is never acceptable, Pixelated Technologies provides a distinct strategic advantage through cutting-edge technical execution. We construct secure, ultra-fast digital frameworks that build immediate technical authority and accelerate customer decision-making for high-value B2B and affluent B2C clients. Every line of clean code we deploy is architected to adhere to strict modern security, web speed, and accessibility standards, ensuring your brand stands completely distinct from uncertified independent operators. Our deep integration of hyper-local data targeting ensures maximum findability in the exact zip codes that drive your revenue. Partnering with us provides superior, personal accountability and deep-funnel analytics insights, enabling your firm to effortlessly capture, track, and convert premium regional leads into lifelong clients.",
+        "short_description": "Secure first-page authority engines around the Morristown Green. We deliver enterprise-grade web applications and high-security compliance for B2B firms, legal practices, and medical facilities.",
+        "keywords": [
+          "Morristown web application engineering",
+          "Morristown professional services SEO",
+          "B2B digital marketing Morristown",
+          "high-performance website design NJ",
+          "Morristown Green business technology",
+          "corporate web compliance Morris County"
+        ],
+        "highlights": [
+          "Corporate-grade technical site compliance",
+          "Advanced high-intent B2B lead capture funnels",
+          "First-page organic search engine authority",
+          "Hyper-secure client portal system integrations",
+          "Bespoke application development using Next.js",
+          "Detailed cross-device behavioral analytics tracking",
+          "Deep-funnel conversion rate optimization",
+          "High-end visual asset presentation engineering",
+          "Automated CRM and sales pipeline connectivity",
+          "Dedicated enterprise uptime and security monitoring"
+        ]
+      },
+      {
+        "name": "Montclair NJ",
+        "description": "Fueling the creative, culinary, and design-forward entrepreneurial ecosystem of Essex County. Pixelated Technologies delivers bleeding-edge headless CMS platforms and highly innovative, synchronized multi-channel marketing campaigns tailored for the sophisticated expectations of the Montclair market. We recognize that differentiation from the competition requires a bold, highly visual digital presence that functions flawlessly under heavy traffic. Our cutting-edge web development solutions give local boutiques, upscale restaurants, and independent creative agencies an immediate strategic advantage by eliminating technical bottlenecks and accelerating content delivery. We simplify client decision-making by engineering elegant, zero-friction online reservations, direct messaging, and shopping experiences that turn casual browsers into brand advocates. Backed by our signature superior customer service, we manage your complex technical footprint so you can focus on creative execution, ensuring your brand achieves maximum digital findability and deep community connection across the region.",
+        "short_description": "Fuel your creative brand with design-forward headless CMS setups and synchronized social campaigns. We build elegant, zero-friction reservation and shopping experiences tailored for the sophisticated Montclair demographic.",
+        "keywords": [
+          "Montclair custom web development",
+          "creative agency digital marketing Montclair",
+          "headless CMS implementations Essex County",
+          "social media customer acquisition NJ",
+          "Montclair boutique eCommerce systems",
+          "restaurant reservation web design Montclair"
+        ],
+        "highlights": [
+          "Design-forward headless CMS architecture",
+          "Unified multi-platform brand positioning",
+          "Frictionless online booking and reservations",
+          "High-end interactive visual galleries",
+          "Data-driven social media target tracking",
+          "Decoupled frontend for instantaneous loading",
+          "Tailored localized audience personas",
+          "Automated email newsletter list building",
+          "Bespoke user interface UI customization",
+          "Proactive multi-channel performance monitoring"
+        ]
+      },
+      {
+        "name": "Morris County NJ",
+        "description": "Driving comprehensive digital transformation, technical operations modernization, and regional marketplace authority for commercial contractors, heavy trades, and mid-sized enterprises across Northern New Jersey. Pixelated Technologies eliminates the invisible taxes on your profitability caused by disjointed software systems and manual workflows. We build cutting-edge custom integrations that seamlessly bridge your high-performance website with core billing, scheduling, marketing automation, and inventory tools. This technical modernization gives your business a powerful strategic advantage, dramatically reducing administrative overhead and human error while maximizing findability across multi-city search results. We assist your customers' decision-making by making your operational reliability, safety certifications, and project case studies instantly visible and transparent. Our commitment to superior customer service ensures a tailored, scalable software roadmap that adapts to your growth, freeing your team to deliver the field excellence your brand is known for.",
+        "short_description": "Accelerate regional B2B growth and modernize operational data structures. We specialize in software integrations and regional SEO mapping for commercial contractors, heavy trades, and service firms.",
+        "keywords": [
+          "Morris County industrial web services",
+          "automated workflow systems NJ",
+          "regional contractor local SEO",
+          "small business modernization North Jersey",
+          "AISC compliance web design NJ",
+          "multi-city local search optimization"
+        ],
+        "highlights": [
+          "Multi-city local search expansion mapping",
+          "Cross-platform automated workflow systems",
+          "Regional trade lead-generation pipelines",
+          "AISC and industrial safety code highlighting",
+          "Centralized database system software design",
+          "Automated invoicing and invoice tracking hooks",
+          "Real-time resource and scheduling sync",
+          "Robust digital asset management pipelines",
+          "Granular local market competitor analytics",
+          "Scalable multi-site architecture development"
+        ]
+      },
+      {
+        "name": "Beaufort SC",
+        "description": "Preserving historic Lowcountry legacy while capturing modern digital market share north of the Broad River. Pixelated Technologies constructs lightning-fast, accessible web platforms and hyper-localized search engine strategies for maritime operators, hospitality groups, and professional practices across Beaufort. Moving away from rigid, cookie-cutter templates, we leverage cutting-edge technology to build custom solutions that reflect the meticulous craftsmanship of your brand. We prioritize absolute findability, placing your business directly in front of high-intent locals and incoming tourists. By implementing clear, intuitive navigation and upfront proof of expertise, we eliminate friction and accelerate customer decision-making at the critical moment of intent. Our core philosophy balances innovative technical precision with superior customer service, offering transparent, line-item reporting and proactive maintenance. We give your coastal business a permanent strategic advantage, ensuring your digital presence remains as stable, secure, and commanding as the historic Beaufort waterfront itself.",
+        "short_description": "Preserve historic local legacy while conquering modern search rankings. We deliver accessibility-first web architectures and localized tourism capture tools for maritime, legal, and hospitality operations.",
+        "keywords": [
+          "Beaufort SC local web design",
+          "historic district business SEO",
+          "maritime industry digital marketing Beaufort",
+          "ADA compliant websites Lowcountry",
+          "Beaufort SC hospitality marketing",
+          "local search map pack optimization Beaufort"
+        ],
+        "highlights": [
+          "ADA and accessibility-first source coding",
+          "Localized search optimization for historic zones",
+          "Seamless mobile user onboarding flows",
+          "High-performance cloud-backed hosting speeds",
+          "Custom interactive maps and local guides",
+          "Automated tourism lead-capture systems",
+          "Transparent local citation directory building",
+          "Tailored content blocks for coastal consumers",
+          "Continuous performance tuning for seasonal spikes",
+          "Comprehensive regional SEO audit analysis"
+        ]
+      },
+      {
+        "name": "Bluffton SC",
+        "description": "Igniting explosive growth for the fastest-scaling commercial footprint in Beaufort County. From the artisan boutiques of Old Town to the rapidly expanding service, trade, and retail providers along Buckwalter Parkway and the Promenade, Pixelated Technologies builds high-capacity custom eCommerce and automated workflow engines. We give your business a decisive strategic advantage by replacing slow, broken templates with cutting-edge web architecture built for rapid scale and maximum local findability. We focus heavily on clear, conversion-optimized design that guides the consumer journey and simplifies customer decision-making, transforming your site into an active 24/7 sales engine. Our superior customer service means we act as your local technology partners, aligning your web engineering with your business operations. By eliminating administrative silos and dominating the local map pack, we ensure your business outpaces the competition and thrives in the booming Lowcountry economy.",
+        "short_description": "Ignite scaling engines for Old Town boutiques, trades, and service providers. We design high-conversion eCommerce platforms and local map pack dominance frameworks for the booming Lowcountry footprint.",
+        "keywords": [
+          "Bluffton SC custom eCommerce solutions",
+          "Old Town Bluffton web development",
+          "high-growth business modernization SC",
+          "automated lead generation Bluffton",
+          "Promenade Bluffton digital marketing",
+          "Buckwalter area local SEO services"
+        ],
+        "highlights": [
+          "Frictionless conversion-optimized checkout setups",
+          "Real-time inventory and POS sync hooks",
+          "Hyper-local map pack dominance strategies",
+          "Automated customer workflow integrations",
+          "Bespoke e-commerce landing page design",
+          "High-volume local lead generation funnels",
+          "Continuous automated database threat monitoring",
+          "Advanced mobile-first layout optimization",
+          "Strategic local partner cross-linking",
+          "On-demand local developer support access"
+        ]
+      },
+      {
+        "name": "Hardeeville SC",
+        "description": "Fueling the massive industrial expansion, logistical real estate boom, and commercial trade surge along the rapidly growing I-95 corridor. As Hardeeville expands at an unprecedented rate, Pixelated Technologies supplies heavy contracting trades, logistics firms, and new consumer services with cutting-edge digital infrastructure. We construct ultra-fast, high-performance websites and automated business systems that grant an immediate strategic advantage in a crowded frontier. We optimize your platform for total findability, ensuring your services anchor the top of local search results when commercial managers demand instant, on-site solutions. Our customer-centric content directly supports swift customer decision-making by highlighting code compliance, capacity metrics, and rapid response capabilities clearly. Backed by superior customer service, we take care of the complex data pipelines, custom software integrations, and mobile optimization, enabling your team to confidently scale operations and capture high-value contracts.",
+        "short_description": "Capture commercial accounts along the booming I-95 corridor. We build heavy-duty lead funnels, custom application structures, and high-visibility local SEO mapping for fast-growing contracting and logistics firms.",
+        "keywords": [
+          "Hardeeville SC commercial web development",
+          "contractor lead generation Hardeeville",
+          "logistics business systems SC",
+          "rapid scaling digital strategy Hardeeville",
+          "I-95 corridor business SEO",
+          "Hardeeville industrial web applications"
+        ],
+        "highlights": [
+          "Heavy trade and industrial lead pipelines",
+          "Scalable cloud-hosted data structures",
+          "High-conversion local search indexing",
+          "Logistics and shipping tracking systems",
+          "B2B vendor quote generation software",
+          "Mobile field-ready responsive interfaces",
+          "OSHA and safety standard content highlighting",
+          "Hyper-targeted geographic search footprinting",
+          "Automated high-capacity form submission routing",
+          "Proactive core web vitals speed optimization"
+        ]
+      },
+      {
+        "name": "Hilton Head SC",
+        "description": "Dominating the luxury hospitality, high-end residential construction, and seasonal resort markets of Hilton Head Island. Pixelated Technologies designs advanced, enterprise-grade eCommerce solutions and cutting-edge search strategies engineered to handle heavy seasonal traffic spikes while protecting affluent consumer data. We give your premium brand a powerful strategic advantage by replacing slow, generic layouts with bespoke, high-performance digital architectures that reflect elite craftsmanship. Our customer-centric design directly guides customer decision-making by eliminating online checkout friction and presenting your luxury services with stunning visual clarity. We maximize findability among wealthy vacationers and permanent residents alike through highly sophisticated, localized SEO. Our relationship is defined by superior customer service, offering proactive security monitoring and optimization to transform your digital platform into a highly stable, 24/7 revenue-generating asset.",
+        "short_description": "Command premium rates across the island's luxury hospitality, custom building, and rental markets. We build high-capacity eCommerce channels and advanced security protections for seasonal traffic surges.",
+        "keywords": [
+          "Hilton Head Island luxury eCommerce",
+          "resort management digital systems HHI",
+          "hospitality lead generation Hilton Head",
+          "high-end builder web design SC",
+          "luxury resort local SEO Hilton Head",
+          "secure payment gateway integration HHI"
+        ],
+        "highlights": [
+          "Enterprise-grade transaction security layers",
+          "High-volume seasonal performance auto-tuning",
+          "Data-driven luxury target audience mapping",
+          "Frictionless premium booking flow systems",
+          "Secure data encryption for customer vaults",
+          "Visual portfolio performance rendering engines",
+          "Localized tourism search capturing networks",
+          "Automated feedback and luxury review loops",
+          "Advanced multi-tiered discount rule engines",
+          "Continuous proactive malware defense loops"
+        ]
+      },
+      {
+        "name": "Okatie SC",
+        "description": "Connecting medical practices, master-planned community service firms, and local commercial providers with the rapidly growing regional consumer base across Sun City and Riverbend. Pixelated Technologies engineers clean, highly accessible, mobile-first websites that simplify consumer navigation and remove operational friction. We facilitate efficient customer decision-making by integrating secure, real-time client scheduling, automated patient onboarding, and clear service transparency directly into your site. Our cutting-edge web infrastructure ensures maximum findability within local directory searches and map packs, giving your practice or business a distinct strategic advantage over slow-moving competitors. Every asset we deploy is backed by superior customer service and a commitment to data privacy, ensuring your digital systems operate smoothly. Let us manage your technical modernization, eliminating manual paperwork and transforming your website into a highly visible, automated coordination hub.",
+        "short_description": "Simplify scheduling and navigation across Sun City and Riverbend. We engineer clean, highly accessible mobile sites featuring integrated intake systems and local map pack routing.",
+        "keywords": [
+          "Okatie SC medical web design",
+          "scheduling system integrations Okatie",
+          "mobile-friendly web application SC",
+          "local directory SEO Okatie",
+          "Sun City SC business digital marketing",
+          "patient onboarding software Lowcountry"
+        ],
+        "highlights": [
+          "Real-time automated calendar sync tools",
+          "Mobile-first consumer flow engineering",
+          "Intuitive user accessibility compliance design",
+          "Secure data collection form development",
+          "Local community targeted directory sync",
+          "Streamlined service feature callout sections",
+          "Automated confirmation email text pipelines",
+          "Clean minimalist typography for readability",
+          "High-speed local network server response",
+          "Dedicated training for in-house administrators"
+        ]
+      },
+      {
+        "name": "Savannah GA",
+        "description": "Anchoring the coastal regional economy with sophisticated digital infrastructure. Pixelated Technologies supplies Savannah's historic logistics firms, creative agencies, and the exploding startups of the Starland District with cutting-edge headless web applications and data-driven multi-channel customer acquisition funnels. To stand out from the dense local competition, your brand needs a distinct, ultra-fast digital presence that commands attention. We give you that precise strategic advantage by engineering bespoke platforms using modern tech stacks that rank with immense search engine authority. We streamline customer decision-making by eliminating interactive lag and presenting clean, clear, metrics-driven proof of capability. Backed by our signature superior customer service, we offer transparent analytics insights and continuous system refinement, transforming your digital footprint into an optimized lead-generation engine that scales seamlessly alongside your business ambitions.",
+        "short_description": "Command organic authority across the Starland and Historic Districts. We engineer ultra-fast headless web structures and data-driven customer acquisition funnels for creative agencies and logistics companies.",
+        "keywords": [
+          "Savannah GA headless web development",
+          "Starland District creative SEO",
+          "logistics company web engineering Savannah",
+          "multi-channel marketing GA",
+          "Savannah historic district business marketing",
+          "conversion rate optimization Savannah"
+        ],
+        "highlights": [
+          "Cutting-edge headless JavaScript frameworks",
+          "Automated multi-channel audience marketing funnels",
+          "Deep-funnel user conversion tracking insights",
+          "Industrial logistics software API sync",
+          "Bespoke user interface interactive elements",
+          "High-performance media compression pipelines",
+          "Hyper-targeted city center keyword mapping",
+          "Scalable localized landing page assets",
+          "Comprehensive cross-device usability profiling",
+          "Direct dedicated technical account consultations"
+        ]
+      },
+      {
+        "name": "Tybee Island GA",
+        "description": "Optimizing coastal hospitality groups, seasonal vacation rentals, and maritime retail operations for zero-friction digital sales. Pixelated Technologies deploys high-availability, cloud-backed eCommerce solutions and real-time social engagement campaigns engineered to capture shifting tourist traffic and turn global visitors into lifelong brand loyalists. We maximize your online findability across competitive coastal tourism searches, giving your brand a critical strategic advantage during peak seasons. By deploying intuitive mobile checkout paths and instant booking verification, we directly accelerate consumer decision-making when booking delays mean lost revenue. Our relationship is anchored in superior customer service; we manage the complex data integrations, payment gateways, and performance tuning under the hood. Partner with us to secure a robust, high-performance digital presence that protects your margins and operates flawlessly through every wave of seasonal demand.",
+        "short_description": "Maximize seasonal tourist revenue with high-availability eCommerce platforms. We deliver fast, mobile-optimized checkout funnels and localized tourism SEO frameworks built to handle peak vacation traffic seamlessly.",
+        "keywords": [
+          "Tybee Island tourism eCommerce",
+          "vacation rental digital strategy GA",
+          "maritime retail web design Tybee",
+          "coastal market social media marketing",
+          "mobile checkout optimization Tybee",
+          "seasonal traffic website tuning GA"
+        ],
+        "highlights": [
+          "Zero-friction mobile-optimized cart flows",
+          "Localized tourism search query capturing",
+          "Automated social proof review integration",
+          "High-availability cloud backup storage systems",
+          "Real-time seasonal rate rules integration",
+          "Instant payment processing gateway setup",
+          "Interactive coastal maps and itineraries",
+          "Continuous security threat firewalls",
+          "Automated abandoned shopping cart recovery",
+          "Proactive mobile core web vitals auditing"
+        ]
+      }
+    ],
+    "sameAs": [
+      "https://blog.pixelated.tech",
+      "https://share.google/an1Yqe6CTFA946zZV",
+      "https://www.linkedin.com/company/106825397/",
+      "https://www.reddit.com/r/PixelatedTech/",
+      "https://www.facebook.com/profile.php?id=61577216017129",
+      "https://www.instagram.com/_pixelatedtech_",
+      "http://twitter.com/pixelatedviews",
+      "https://www.yelp.com/user_details?userid=SUFlzBCRMR0OIc3D3nN5pg",
+      "https://www.tumblr.com/pixelatedtech",
+      "https://patch.com/new-jersey/denville-nj/business/listing/558828/pixelated-technologies",
+      "https://www.eventbrite.com/o/brian-whaley-120645314676"
+    ]
+  },
+  "routes": [
+    {
+      "name": "Home",
+      "path": "/",
+      "title": "Pixelated Technologies - Home",
+      "description": "Pixelated Technologies offers a wide varity of products and services, including custom web development for small businesses, stock photography, touchup services, home design and remodeling, and more.",
+      "keywords": "pixelated, web development, small business, stock photography, home redesign, remodeling, social media"
+    },
+    {
+      "name": "Schedule Assessment",
+      "path": "/schedule",
+      "title": "Pixelated Technologies - Schedule your free Digital Assessment",
+      "description": "Schedule a your free Digital Assessment with Pixelated Technologies and receive a full report of your digital presence and what you should do to improve - web development, social media marketing, search engine optimization, and small business modernization.",
+      "keywords": "pixelated, brian whaley, schedule an assessment, schedule a meeting, web development, search engine optimization, seo, social media marketing, small business modernization"
+    },
+    {
+      "name": "Services",
+      "path": "/services",
+      "title": "Pixelated Technologies - Services",
+      "description": "Explore the digital services offered by Pixelated Technologies, from web development and SEO to social media marketing and e-commerce solutions.",
+      "keywords": "pixelated, services, web development, seo, social media marketing, content management, ecommerce, business modernization"
+    },
+    {
+      "name": "Portfolio",
+      "path": "/portfolio",
+      "title": "Pixelated Technologies - Portfolio",
+      "description": "Examples of web development and design work delivered by our team members over the years.  ",
+      "keywords": "pixelated, web development, design, small business, delivery, portfolio"
+    },
+    {
+      "name": "Blog",
+      "path": "/blog",
+      "title": "Pixelated Technologies - Blog Posts",
+      "description": "Read the latest blog posts from Pixelated Technologies.",
+      "keywords": "pixelated, blog, web development, small business"
+    },
+    {
+      "name": "FAQs",
+      "path": "/faqs",
+      "title": "Pixelated Technologies - FAQs",
+      "description": "Frequently Asked Questions about Pixelated Technologies",
+      "keywords": "pixelated, faqs, frequently asked questions"
+    },
+    {
+      "name": "Samples",
+      "path": "/samples",
+      "title": "Pixelated Technologies - Samples",
+      "description": "Examples of web development and design work for different industries and styles.  ",
+      "keywords": "pixelated, web development, design, small business, delivery, samples, "
+    },
+    {
+      "name": "Legal",
+      "path": "/legal",
+      "title": "Pixelated Technologies - Legal",
+      "description": "Pixelated Technologies Terms of Service and Privacy Policy",
+      "keywords": "pixelated, terms of service, privacy policy"
+    },
+    {
+      "name": "Samples Pages",
+      "hidden": true,
+      "routes": [
+        {
+          "name": "Samples Home",
+          "hidden": true,
+          "path": "/samples",
+          "title": "Pixelated Technologies - Samples Home",
+          "description": "Pixelated Technologies - Samples Home",
+          "keywords": "pixelated technologies, web design samples home, samples, indistries"
+        },
+        {
+          "name": "Sample Page 1",
+          "hidden": true,
+          "path": "/samples/page1",
+          "title": "Pixelated Technologies - Sample Page 1",
+          "description": "Pixelated Technologies - Sample Page 1 - Professional Landscaping, Hardscaping & Masonry Services",
+          "keywords": "pixelated technologies, web design sample page 1, Professional Landscaping, Hardscaping & Masonry Services"
+        },
+        {
+          "name": "Sample Page 2",
+          "hidden": true,
+          "path": "/samples/page2",
+          "title": "Pixelated Technologies - Sample Page 2",
+          "description": "Pixelated Technologies - Sample Page 2 - Wedding Photography for the Artful Soul",
+          "keywords": "pixelated technologies, web design sample page 2, Wedding Photography for the Artful Soul"
+        },
+        {
+          "name": "Sample Page 3",
+          "hidden": true,
+          "path": "/samples/page3",
+          "title": "Pixelated Technologies - Sample Page 3",
+          "description": "Pixelated Technologies - Sample Page 3 - Farm to Table Modern European Cuisine",
+          "keywords": "pixelated technologies, web design sample page 3, Farm to Table, Modern European Cuisine"
+        },
+        {
+          "name": "Sample Page 4",
+          "hidden": true,
+          "path": "/samples/page4",
+          "title": "Pixelated Technologies - Sample Page 4",
+          "description": "Pixelated Technologies - Sample Page 4 - Passionate About Cycling and Community",
+          "keywords": "pixelated technologies, web design sample page 4, Passionate About Cycling and Community"
+        },
+        {
+          "name": "Sample Page 5",
+          "hidden": true,
+          "path": "/samples/page5",
+          "title": "Pixelated Technologies - Sample Page 5",
+          "description": "Pixelated Technologies - Sample Page 5 - Street Tacos - Fresh, Fast, Fantastic!",
+          "keywords": "pixelated technologies, web design sample page 5, Street Tacos, Fresh Fast Fantastic!"
+        },
+        {
+          "name": "Sample Page 6",
+          "hidden": true,
+          "path": "/samples/page6",
+          "title": "Pixelated Technologies - Sample Page 6",
+          "description": "Pixelated Technologies - Sample Page 6 - McKenzie & Brackman Law Firm",
+          "keywords": "pixelated technologies, web design sample page 6, McKenzie & Brackman Law Firm"
+        }
+      ]
+    },
+    {
+      "name": "Hidden",
+      "hidden": true,
+      "routes": [
+        {
+          "name": "Blog Calendar",
+          "path": "/blogcalendar",
+          "hidden": true,
+          "title": "Pixelated Technologies - Blog Calendar",
+          "description": "Blog Calendar",
+          "keywords": "pixelated technologies, blog calendar"
+        },
+        {
+          "name": "By The Way Font",
+          "path": "/bytheway",
+          "hidden": true,
+          "title": "Pixelated Technologies - By The Way Font",
+          "description": "By The Way Font",
+          "keywords": "pixelated technologies, custom font, by the way, by the way font"
+        },
+        {
+          "name": "Pricing",
+          "hidden": true,
+          "path": "/pricing",
+          "title": "Pixelated Technologies - Pricing & Value Packages",
+          "description": "Pixelated Technologies Pricing & Value Packages",
+          "keywords": "pixelated technologies, pricing, value packages, web development, small business"
+        },
+        {
+          "name": "Instagram Feed",
+          "path": "/instagram",
+          "hidden": true,
+          "title": "Pixelated Technologies - Instagram Feed",
+          "description": "Pixelated Technologies Instagram Feed",
+          "keywords": "pixelated technologies, instagram, feed"
+        },
+        {
+          "name": "NerdJokes",
+          "path": "/nerdjokes",
+          "hidden": true,
+          "title": "Pixelated Technologies - NerdJokes",
+          "description": "NerdJokes Slack Bot - How To, Customer Support, Terms, and Privacy Policy",
+          "keywords": "pixelated technologies, nerdjokes, slack bot, jokes, humor"
+        },
+        {
+          "name": "Our Process",
+          "path": "/process",
+          "hidden": true,
+          "title": "Pixelated Technologies - Our Process",
+          "description": "Pixelated Technologies offers a proven process to get results for you and your customer gather information, develop a strategy, implement, measure outcomes, refine results, and support. ",
+          "keywords": "pixelated technologies, web development, small business, process, strategy, implement, measure, refine, support"
+        },
+        {
+          "name": "Partners",
+          "path": "/partners",
+          "hidden": true,
+          "title": "Pixelated Technologies - Partners",
+          "description": "Partners",
+          "keywords": "pixelated technologies, partners"
+        },
+        {
+          "name": "Podcast",
+          "path": "/podcast",
+          "hidden": true,
+          "title": "Pixelated Technologies - Podcast",
+          "description": "Pixelated Technologies Podcast",
+          "keywords": "pixelated technologies, podcast, spotify, episodes"
+        },
+        {
+          "name": "Privacy Policy",
+          "hidden": true,
+          "path": "/privacy",
+          "title": "Pixelated Technologies - Privacy Policy",
+          "description": "Pixelated Technologies Privacy Policy",
+          "keywords": "pixelated technologies, privacy policy, data retention"
+        },
+        {
+          "name": "Service Areas",
+          "path": "/service-areas",
+          "hidden": true,
+          "title": "Pixelated Technologies - Service Areas",
+          "description": "Discover the service areas covered by Pixelated Technologies, including Northern New Jersey, Denville, and South Carolina.",
+          "keywords": "pixelated, service areas, New Jersey, South Carolina, local business marketing, web development service area"
+        },
+        {
+          "name": "Stkr",
+          "path": "/stkr",
+          "hidden": true,
+          "title": "Pixelated Technologies - Stkr",
+          "description": "Stkr Slack Bot - How To, Customer Support, Terms, and Privacy Policy",
+          "keywords": "pixelated technologies, stkr, slack bot, sticker bot, custom stickers"
+        },
+        {
+          "name": "Style Guide",
+          "path": "/styleguide",
+          "hidden": true,
+          "title": "Pixelated Technologies - Style Guide",
+          "description": "Style Guide",
+          "keywords": "pixelated technologies, style guide"
+        },
+        {
+          "name": "Terms",
+          "hidden": true,
+          "path": "/terms",
+          "title": "Pixelated Technologies - Terms of Service",
+          "description": "Pixelated Technologies Terms of Service",
+          "keywords": "pixelated technologies, terms of service"
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "hidden": true,
+      "routes": [
+        {
+          "name": "404",
+          "path": "/404",
+          "hidden": true,
+          "title": "Pixelated Technologies - Page Not Found",
+          "description": "The page you requested could not be found.",
+          "keywords": "pixelated technologies, 404, page not found"
+        },
+        {
+          "name": "Sitemap",
+          "path": "/sitemap.xml",
+          "hidden": true,
+          "title": "Pixelated Technologies - Sitemap",
+          "description": "Pixelated Technologies sitemap.xml",
+          "keywords": "pixelated technologies, sitemap.xml"
+        },
+        {
+          "name": "Robots.txt",
+          "path": "/robots.txt",
+          "hidden": true,
+          "title": "Pixelated Technologies - Robots.txt",
+          "description": "Pixelated Technologies robots.txt",
+          "keywords": "pixelated technologies, robots.txt"
+        },
+        {
+          "name": "Web Manifest",
+          "path": "/manifest.webmanifest",
+          "hidden": true,
+          "title": "Pixelated Technologies - Web Manifest",
+          "description": "Pixelated Technologies web manifest",
+          "keywords": "pixelated technologies, web manifest"
+        },
+        {
+          "name": "Humans Txt",
+          "path": "/humans.txt",
+          "hidden": true,
+          "title": "Pixelated Technologies - Humans Txt",
+          "description": "Humans Txt",
+          "keywords": "pixelated technologies, humans txt"
+        },
+        {
+          "name": "Security Txt",
+          "hidden": true,
+          "path": "/security.txt",
+          "title": "Pixelated Technologies - Security Txt",
+          "description": "Security contact and vulnerability disclosure information.",
+          "keywords": [
+            "pixelated technologies",
+            "security txt",
+            "security"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualdesign": {
+    "primary-color": {
+      "value": "#369",
+      "type": "color",
+      "group": "palette",
+      "label": "Primary color"
+    },
+    "secondary-color": {
+      "value": "#BCD",
+      "type": "color",
+      "group": "palette",
+      "label": "Secondary color"
+    },
+    "accent1-color": {
+      "value": "#CCC",
+      "type": "color",
+      "group": "palette",
+      "label": "Accent color 1"
+    },
+    "accent2-color": {
+      "value": "#EEE",
+      "type": "color",
+      "group": "palette",
+      "label": "Accent color 2"
+    },
+    "bg-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "group": "palette",
+      "label": "Background color"
+    },
+    "text-color": {
+      "value": "#000000",
+      "type": "color",
+      "group": "palette",
+      "label": "Font color"
+    },
+    "header-font": {
+      "value": "\"Montserrat\", Verdana, sans-serif",
+      "type": "font",
+      "group": "typography",
+      "label": "Header font"
+    },
+    "body-font": {
+      "value": "\"Roboto\", Arial, sans-serif",
+      "type": "font",
+      "group": "typography",
+      "label": "Body font"
+    },
+    "font-size1-min": {
+      "value": "2.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 1 min"
+    },
+    "font-size1-max": {
+      "value": "3.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 1 max"
+    },
+    "font-size2-min": {
+      "value": "1.35rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 2 min"
+    },
+    "font-size2-max": {
+      "value": "1.75rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 2 max"
+    },
+    "font-size3-min": {
+      "value": "1.17rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 3 min"
+    },
+    "font-size3-max": {
+      "value": "1.35rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 3 max"
+    },
+    "font-size4-min": {
+      "value": "1.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 4 min"
+    },
+    "font-size4-max": {
+      "value": "1.25rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 4 max"
+    },
+    "font-size5-min": {
+      "value": "0.83rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 5 min"
+    },
+    "font-size5-max": {
+      "value": "1.00rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 5 max"
+    },
+    "font-size6-min": {
+      "value": "0.67rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 6 min"
+    },
+    "font-size6-max": {
+      "value": "0.85rem",
+      "type": "size",
+      "group": "typography",
+      "label": "Font size 6 max"
+    },
+    "font-min-screen": {
+      "value": "375px",
+      "type": "size",
+      "group": "typography",
+      "label": "Font min screen"
+    },
+    "font-max-screen": {
+      "value": "1440px",
+      "type": "size",
+      "group": "typography",
+      "label": "Font max screen"
+    },
+    "border-radius": {
+      "value": "0.5rem",
+      "type": "size",
+      "group": "layout",
+      "label": "Border radius"
+    },
+    "box-shadow": {
+      "value": "0 2px 4px rgba(0,0,0,0.1)",
+      "type": "shadow",
+      "group": "layout",
+      "label": "Box shadow"
+    },
+    "transition": {
+      "value": "all 0.3s ease",
+      "type": "transition",
+      "group": "layout",
+      "label": "Transition"
+    }
+  },
+  "deployMarker": "2026-06-01T13:40:21.504Z"
 }

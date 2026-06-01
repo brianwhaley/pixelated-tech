@@ -172,37 +172,39 @@ export function SmartImage(props: SmartImageType) {
 
 	if (variant === 'cloudinary' && newProps.cloudinaryEnv) {
 
-		newProps.src = buildCloudinaryUrl({ 
+		const cloudinaryURL = buildCloudinaryUrl({ 
 			src: newProps.src, 
 			productEnv: newProps.cloudinaryEnv, 
 			cloudinaryDomain: newProps.cloudinaryDomain, 
 			quality: newProps.quality,
 			width: newProps.width ?? undefined, 
 			transforms: newProps.cloudinaryTransforms ?? undefined });
-
-		if (newProps.width) {
-			const widths = [Math.ceil(newProps.width * 0.5), newProps.width, Math.ceil(newProps.width * 1.5), Math.ceil(newProps.width * 2)];
-			newProps.srcSet = generateSrcSet(
-				newProps.src, 
-				newProps.cloudinaryEnv, 
-				widths, { 
-					quality: newProps.quality, 
-					transforms: newProps.cloudinaryTransforms ?? undefined, 
-					cloudinaryDomain: newProps.cloudinaryDomain 
-				});
-		} else {
-			const breakpoints = [320, 640, 768, 1024, 1280, 1536];
-			newProps.srcSet = generateSrcSet(
-				newProps.src, 
-				newProps.cloudinaryEnv, 
-				breakpoints, { 
-					quality: newProps.quality, 
-					transforms: newProps.cloudinaryTransforms ?? undefined, 
-					cloudinaryDomain: newProps.cloudinaryDomain 
-				});
+		
+		if (cloudinaryURL !== newProps.src){
+			newProps.src = cloudinaryURL;
+			newProps.unoptimized = true; // Opt out of Next.js Image optimization since Cloudinary is handling it
+			if (newProps.width) {
+				const widths = [Math.ceil(newProps.width * 0.5), newProps.width, Math.ceil(newProps.width * 1.5), Math.ceil(newProps.width * 2)];
+				newProps.srcSet = generateSrcSet(
+					newProps.src, 
+					newProps.cloudinaryEnv, 
+					widths, { 
+						quality: newProps.quality, 
+						transforms: newProps.cloudinaryTransforms ?? undefined, 
+						cloudinaryDomain: newProps.cloudinaryDomain 
+					});
+			} else {
+				const breakpoints = [320, 640, 768, 1024, 1280, 1536];
+				newProps.srcSet = generateSrcSet(
+					newProps.src, 
+					newProps.cloudinaryEnv, 
+					breakpoints, { 
+						quality: newProps.quality, 
+						transforms: newProps.cloudinaryTransforms ?? undefined, 
+						cloudinaryDomain: newProps.cloudinaryDomain 
+					});
+			}
 		}
-
-		newProps.unoptimized = true; // Opt out of Next.js Image optimization since Cloudinary is handling it
 	} 
 
 	// NEXT/IMAGE NEEDS SIZES TO GENERATE SRCSET

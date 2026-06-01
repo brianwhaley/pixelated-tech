@@ -17,19 +17,29 @@ function joinWithSlash(a: string, b: string) {
 
 export function buildCloudinaryUrl(params: { src: string; productEnv: string | null | undefined; cloudinaryDomain?: string; quality?: number | null; width?: number | null; transforms?: string | null; }) {
 	const { src, productEnv, cloudinaryDomain = cloudinary_domain, quality = 75, width, transforms } = params;
-	if (typeof window === 'undefined') return src; // SSR - leave as-is
-	const origin = window.location.origin;
-	// Don't fetch from cloudinary during local dev
-	if (origin.includes("localhost") || origin.includes("127.0.0.1") || origin.includes("192.168")) return src;
+
+	const isAbsoluteUrl = /^https?:\/\//i.test(src) || /^\/\//.test(src); // https:// or // 
+
 	// Must have cloudinary product env to build URL
 	if (!productEnv) return src;
-	// Resolve non-absolute src to absolute URL in client runtime. Leave alone during SSR.
+
+	// In SSR we can still build Cloudinary URLs for absolute remote sources.
+	// Relative sources need an origin to resolve.
+	if (typeof window === 'undefined' && !isAbsoluteUrl) return src;
+
+	const origin = typeof window !== 'undefined' ? window.location.origin : '';
+	if (!isAbsoluteUrl && !origin) return src;
+
+	// Don't fetch from cloudinary during local dev
+	if (origin.includes("localhost") || origin.includes("127.0.0.1") || origin.includes("192.168")) return src;
+
 	let url = src;
-	if (!/^https?:\/\//i.test(src)) {
+	if (!isAbsoluteUrl) {
 		url = src.startsWith('/') ? `${origin}${src}` : `${origin}/${src}`;
 	}
-	// Don't fetch from cloudinary during local dev
-	// if (url.includes('localhost') || url.includes('127.0.0.1') || url.includes('192.168')) return src;
+
+	if (/^\/\//.test(url)) { url = `https:${url}`; }
+
 	const q = typeof quality === 'number' ? quality : 75;
 	const parts: string[] = ['f_auto', 'c_limit', `q_${q}`, 'dpr_auto'];
 	if (typeof width === 'number' && Number.isFinite(width)) parts.push(`w_${width}`);

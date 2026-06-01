@@ -1,9 +1,18 @@
 "use client";
 
 import React from "react";
+import siteConfig from '@/app/data/siteconfig.json';
 import { PageSection, PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 
 export default function TermsPage() {
+	const siteInfo = (siteConfig as any).siteInfo ?? {};
+	const legalEntityName = siteInfo.name ?? 'Simple Day Concierge';
+	const primaryEmail = siteInfo.email ?? 'info@simpledayconcierge.com';
+	const corporateAddress = siteInfo.address
+		? `${siteInfo.address.streetAddress}, ${siteInfo.address.addressLocality}, ${siteInfo.address.addressRegion} ${siteInfo.address.postalCode}`
+		: 'Address not available';
+	const legalGoverningState = siteInfo.address?.addressRegion ?? 'State not available';
+
 	return (
 		<>
 			<PageTitleHeader>Terms & Privacy</PageTitleHeader>
@@ -16,7 +25,7 @@ export default function TermsPage() {
 					<h3>1. Scope of Services & Field Work</h3>
 					<p>These Terms govern the general use of our digital platforms and general inquiries.</p>
 					<h4>Field Services, Estimations, & Custom Work</h4>
-					<p>For field-based, physical, or custom projects (including but not limited to contracting, fabrication, installation, landscaping, custom software development, or specialized consulting):</p>
+					<p>For field-based, physical, or custom projects and services:</p>
 					<p>All project scopes, physical property access, timelines, and payment structures are strictly governed by individual, executed written estimates, contracts, or agreements ("Service Contracts").</p>
 					<p>In the event of a conflict between these general website Terms and a specific, signed Service Contract, the terms of the signed Service Contract shall take complete precedence.</p>
 
@@ -106,17 +115,14 @@ export default function TermsPage() {
 					<h3>Brand & Entity Contact Details</h3>
 					<p>To establish explicit context for this policy, please cross-reference the corresponding business details below for the brand you are interacting with:</p>
 
-					<p>Legal Entity Name: [Insert Legal Brand Name - e.g., Three Muses of Bluffton, LLC / JZ Home Improvement]</p>
-
-					<p>Primary Contact Email: [Insert Admin/Legal Email - e.g., info@brand.com]</p>
-
-					<p>Corporate / Yard Address: [Insert Physical Shop or Mailing Office Address]</p>
-
-					<p>Active Legal Governing State: [Insert State - e.g., South Carolina / New Jersey]</p>
+					<p>
+						Legal Entity Name: {legalEntityName}<br />
+						Primary Contact Email: {primaryEmail}<br />
+						Corporate / Yard Address: {corporateAddress}<br />
+						Active Legal Governing State: {legalGoverningState}
+					</p>
 				</div>
 			</PageSection>
 		</>
 	);
 }
-
-

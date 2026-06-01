@@ -46,6 +46,14 @@ describe('SmartImage unoptimized regression', () => {
 		expect(mockedNextImage.mock.calls[0][0].src).toBe('https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_75/https://example.com/test-image.jpg');
 	});
 
+	it('should not pass unoptimized when Cloudinary builder returns the original src', () => {
+		mockBuildCloudinaryUrl.mockReturnValue('https://example.com/test-image.jpg');
+		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
+		expect(mockedNextImage).toHaveBeenCalled();
+		expect(mockedNextImage.mock.calls[0][0]).not.toHaveProperty('unoptimized');
+		expect(mockedNextImage.mock.calls[0][0].src).toBe('https://example.com/test-image.jpg');
+	});
+
 	it('should not pass unoptimized to next/image for nextjs variant', () => {
 		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="nextjs" />);
 		expect(mockedNextImage).toHaveBeenCalled();

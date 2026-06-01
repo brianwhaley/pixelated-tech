@@ -4,8 +4,13 @@ import { render, screen } from '@testing-library/react';
 vi.mock('@pixelated-tech/components', () => {
 	const React = require('react');
 	return {
+		__esModule: true,
 		PageSection: ({ children }: { children?: React.ReactNode }) => React.createElement('section', { 'data-testid': 'page-section' }, children),
-		SmartImage: (props: any) => React.createElement('img', { 'data-testid': 'smart-image', ...props }),
+		SmartImage: (props: any) => {
+			const { aboveFold, ...rest } = props;
+			void aboveFold;
+			return React.createElement('img', { 'data-testid': 'smart-image', ...rest });
+		},
 		MenuAccordion: ({ menuItems }: { menuItems?: any[] }) => React.createElement('div', { 'data-testid': 'menu-accordion' }, `items:${menuItems?.length}`),
 		MenuAccordionButton: () => React.createElement('button', { 'data-testid': 'menu-accordion-button' }, 'Menu'),
 	};

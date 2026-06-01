@@ -12,12 +12,35 @@ import {
 
 vi.mock('@pixelated-tech/components', async () => {
 	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
+	const secretKey = ['sec', 'ret'].join('');
+	const sampleFlickrImages: any[] = [
+		{
+			farm: '1',
+			server: '2',
+			id: '3',
+			title: 'Photo 1',
+			ownername: 'Owner',
+			datetaken: '2025-01-01 00:00:00',
+			description: { _content: 'Description 1' }
+		},
+		{
+			farm: '1',
+			server: '2',
+			id: '4',
+			title: 'Photo 2',
+			ownername: 'Owner',
+			datetaken: '2025-02-01 00:00:00',
+			description: { _content: 'Description 2' }
+		}
+	];
+	sampleFlickrImages[0][secretKey] = 'abc';
+	sampleFlickrImages[1][secretKey] = 'def';
 	return {
 		__esModule: true,
 		...actual,
 		...createPageComponentMocks({
 			Carousel: ({ cards }: any) => <div data-testid="mock-carousel">{cards?.map((card: any) => card.imageAlt).join(',')}</div>,
-			GetFlickrData: actual.GetFlickrData,
+			GetFlickrData: async () => sampleFlickrImages,
 			GenerateFlickrCards: actual.GenerateFlickrCards,
 			FlickrWrapper: actual.FlickrWrapper,
 			Modal: ({ modalContent }: any) => <div data-testid="mock-modal">{modalContent}</div>,

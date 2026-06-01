@@ -3,8 +3,6 @@
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { PageSection, PageSectionHeader } from './semantic';
-import { normalizeOpeningHoursValue } from '../foundation/schema';
-import type { SiteInfo } from '../config/siteconfig.types';
 import './businessfooter.css';
 
 function buildAddressQuery(address?: {
@@ -90,11 +88,208 @@ function buildOpeningHoursDisplay(value: unknown) {
 	return [];
 }
 
+
+
+
+
+
 /**
- * BusinessFooter component displays business contact information, opening hours, and an embedded Google Map based on the provided siteInfo prop. It uses the PageSection component for layout and supports an optional Google Maps API key for enhanced map embedding. The component gracefully handles missing data and provides fallback content when necessary.
+ * BusinessFooterAddress
+ * Displays the business's address and contact information, with a link to Google Maps if an address is provided.
  * 
- * @param {BusinessFooterType} props - The props for the BusinessFooter component, including siteInfo and an optional googleMapsApiKey.
- * @returns {JSX.Element | null} The rendered BusinessFooter component or null if siteInfo is not provided.
+ * @param {Object} props
+ * @param {string} [props.name] - The name of the business or location.
+ * @param {Object} [props.address] - The structured address information.
+ * @param {string} [props.address.streetAddress] - The street address.
+ * @param {string} [props.address.addressLocality] - The city or locality.
+ * @param {string} [props.address.addressRegion] - The state or region.
+ * @param {string} [props.address.postalCode] - The postal code.
+ * @param {string} [props.address.addressCountry] - The country.
+ * @param {string} [props.addressAdditionalInfo] - Any additional information about the address (e.g. suite number, landmarks).
+ * @param {string} [props.telephone] - The business's telephone number.
+ * @param {string} [props.email] - The business's email address.
+ * 
+ * @returns {JSX.Element}
+ */
+BusinessFooterAddress.propTypes = {
+	name: PropTypes.string,
+	address: PropTypes.shape({
+		streetAddress: PropTypes.string,
+		addressLocality: PropTypes.string,
+		addressRegion: PropTypes.string,
+		postalCode: PropTypes.string,
+		addressCountry: PropTypes.string,
+	}),
+	addressAdditionalInfo: PropTypes.string,
+	telephone: PropTypes.string,
+	email: PropTypes.string,
+};
+export type BusinessFooterAddressType = InferProps<typeof BusinessFooterAddress.propTypes>;
+export function BusinessFooterAddress(props: BusinessFooterAddressType) {
+	const { name, address, addressAdditionalInfo, telephone, email } = props;
+	const addressQuery = buildAddressQuery(address ?? null);
+	const mapsUrl = addressQuery ? buildGoogleMapsUrl(addressQuery) : undefined;
+
+	return (
+		<>
+			<PageSectionHeader title={name || 'Business Info'} />
+			{address ? (
+				<>
+					{mapsUrl ? (
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="business-footer-address-link">
+							<div>{address.streetAddress}</div>
+							<div>
+								{address.addressLocality}, {address.addressRegion} {address.postalCode}
+							</div>
+						</a>
+					) : (
+						<>
+							<div>{address.streetAddress}</div>
+							<div>
+								{address.addressLocality}, {address.addressRegion} {address.postalCode}
+							</div>
+						</>
+					)}
+					{addressAdditionalInfo ? (
+						<div className="business-footer-address-note">{addressAdditionalInfo}</div>
+					) : null}
+				</>
+			) : null}
+			<PageSectionHeader title="Contact Us" />
+			{telephone ? (
+				<div><a href={`tel:${telephone}`}>{telephone}</a></div>
+			) : null}
+			{email ? (
+				<div><a href={`mailto:${email}`}>{email}</a></div>
+			) : null}
+		</>
+	);
+}
+
+
+
+
+
+
+/**
+ * BusinessFooterMap
+ * Displays a Google Maps iframe of the business's location if an address is provided.
+ * 
+ * @param {Object} props
+ * @param {Object} [props.address] - The structured address information.
+ * @param {string} [props.address.streetAddress] - The street address.
+ * @param {string} [props.address.addressLocality] - The city or locality.
+ * @param {string} [props.address.addressRegion] - The state or region.
+ * @param {string} [props.address.postalCode] - The postal code.
+ * @param {string} [props.address.addressCountry] - The country.
+ * @param {string} [props.googleMapsApiKey] - The Google Maps API key.
+ * 
+ * @returns {JSX.Element}
+ */
+BusinessFooterMap.propTypes = {
+	address: PropTypes.shape({
+		streetAddress: PropTypes.string,
+		addressLocality: PropTypes.string,
+		addressRegion: PropTypes.string,
+		postalCode: PropTypes.string,
+		addressCountry: PropTypes.string,
+	}),
+	googleMapsApiKey: PropTypes.string,
+};
+export type BusinessFooterMapType = InferProps<typeof BusinessFooterMap.propTypes>;
+export function BusinessFooterMap(props: BusinessFooterMapType) {
+	const { address, googleMapsApiKey } = props;
+	const addressQuery = buildAddressQuery(address ?? null);
+	const embedUrl = addressQuery ? buildGoogleMapsEmbedUrl(addressQuery, googleMapsApiKey ?? undefined) : undefined;
+
+	return embedUrl ? (
+		<iframe
+			title="Business location map"
+			src={embedUrl}
+			width="100%"
+			height="300"
+			style={{ border: 0 }}
+			allowFullScreen
+			loading="lazy"
+			referrerPolicy="no-referrer-when-downgrade"
+		/>
+	) : (
+		<div className="business-footer-map-placeholder">Map unavailable</div>
+	);
+}
+
+
+
+
+/**
+ * BusinessFooterHours
+ * Displays the business's opening hours in a user-friendly format.
+ * 
+ * @param {Object} props
+ * @param {string|Array} [props.openingHours] - The opening hours information, which can be a string, an array of strings, or an array of objects with detailed hours information.
+ * @param {string} [props.openingHoursAdditionalInfo] - Any additional information about the opening hours (e.g. holiday closures, seasonal variations).
+ * 
+ * @returns {JSX.Element}
+ */
+BusinessFooterHours.propTypes = {
+	openingHours: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.arrayOf(PropTypes.string),
+		PropTypes.arrayOf(
+			PropTypes.shape({
+				day: PropTypes.string.isRequired,
+				open: PropTypes.string,
+				close: PropTypes.string,
+				hours: PropTypes.string,
+				closed: PropTypes.bool,
+			})
+		),
+	]),
+	openingHoursAdditionalInfo: PropTypes.string,
+};
+export type BusinessFooterHoursType = InferProps<typeof BusinessFooterHours.propTypes>;
+export function BusinessFooterHours(props: BusinessFooterHoursType) {
+	const { openingHours, openingHoursAdditionalInfo } = props;
+	const hours = buildOpeningHoursDisplay(openingHours);
+	const hasHours = hours.length > 0;
+
+	return (
+		<>
+			<h3>Hours</h3>
+			{hasHours ? (
+				<>
+					<div className="business-footer-hours-list">
+						{hours.map((line, index) => (
+							<div key={index}>{line}</div>
+						))}
+					</div>
+					{openingHoursAdditionalInfo ? (
+						<div className="business-footer-hours-note">{openingHoursAdditionalInfo}</div>
+					) : null}
+				</>
+			) : (
+				<div>Hours not available</div>
+			)}
+		</>
+	);
+}
+
+
+
+
+
+
+/**
+ * BusinessFooter
+ * Displays business contact information, opening hours, and an embedded Google Map based on the provided siteInfo prop.
+ * It uses the PageSection component for layout and supports an optional Google Maps API key for enhanced map embedding.
+ * The component gracefully handles missing data and provides fallback content when necessary.
+ * 
+ * @param {Object} props
+ * @param {Object} [props.siteInfo] - The business's site information.
+ * @param {string} [props.googleMapsApiKey] - The Google Maps API key.
+ * 
+ * @returns {JSX.Element}
  */
 BusinessFooter.propTypes = {
 	siteInfo: PropTypes.shape({
@@ -132,80 +327,27 @@ export function BusinessFooter(props: BusinessFooterType) {
 	const { siteInfo, googleMapsApiKey } = props;
 	if (!siteInfo) return null;
 
-	const addressQuery = buildAddressQuery(siteInfo?.address ?? undefined);
-	const mapsUrl = addressQuery ? buildGoogleMapsUrl(addressQuery) : undefined;
-	const embedUrl = addressQuery ? buildGoogleMapsEmbedUrl(addressQuery, googleMapsApiKey ?? undefined) : undefined;
-	const hours = buildOpeningHoursDisplay(siteInfo.openingHours);
-	const hasHours = hours.length > 0;
-
 	return (
 		<PageSection className="business-footer-section" id="business-footer" layoutType="grid" columns={3} gap="24px" padding="40px 20px">
 			<div className="business-footer-column business-footer-summary">
-				<PageSectionHeader title={siteInfo.name || 'Business Info'} />
-				{siteInfo.address ? (
-					<>
-						{mapsUrl ? (
-							<a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="business-footer-address-link">
-								<div>{siteInfo.address.streetAddress}</div>
-								<div>
-									{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
-								</div>
-							</a>
-						) : (
-							<>
-								<div>{siteInfo.address.streetAddress}</div>
-								<div>
-									{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
-								</div>
-							</>
-						)}
-						{siteInfo.addressAdditionalInfo ? (
-							<div className="business-footer-address-note">{siteInfo.addressAdditionalInfo}</div>
-						) : null}
-					</>
-				) : null}
-				<PageSectionHeader title="Contact Us" />
-				{siteInfo.telephone ? (
-					<div><a href={`tel:${siteInfo.telephone}`}>{siteInfo.telephone}</a></div>
-				) : null}
-				{siteInfo.email ? (
-					<div><a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></div>
-				) : null}
+				<BusinessFooterAddress
+					name={siteInfo.name}
+					address={siteInfo.address}
+					addressAdditionalInfo={siteInfo.addressAdditionalInfo}
+					telephone={siteInfo.telephone}
+					email={siteInfo.email}
+				/>
 			</div>
 
 			<div className="business-footer-column business-footer-map">
-				{embedUrl ? (
-					<iframe
-						title="Business location map"
-						src={embedUrl}
-						width="100%"
-						height="300"
-						style={{ border: 0 }}
-						allowFullScreen
-						loading="lazy"
-						referrerPolicy="no-referrer-when-downgrade"
-					/>
-				) : (
-					<div className="business-footer-map-placeholder">Map unavailable</div>
-				)}
+				<BusinessFooterMap address={siteInfo.address} googleMapsApiKey={googleMapsApiKey} />
 			</div>
 
 			<div className="business-footer-column business-footer-hours">
-				<h3>Hours</h3>
-				{hasHours ? (
-					<>
-						<div className="business-footer-hours-list">
-							{hours.map((line, index) => (
-								<div key={index}>{line}</div>
-							))}
-						</div>
-						{siteInfo.openingHoursAdditionalInfo ? (
-							<div className="business-footer-hours-note">{siteInfo.openingHoursAdditionalInfo}</div>
-						) : null}
-					</>
-				) : (
-					<div>Hours not available</div>
-				)}
+				<BusinessFooterHours
+					openingHours={siteInfo.openingHours}
+					openingHoursAdditionalInfo={siteInfo.openingHoursAdditionalInfo}
+				/>
 			</div>
 		</PageSection>
 	);
