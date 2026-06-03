@@ -839,7 +839,20 @@ export function ServicesSchema(props: ServicesSchemaType) {
 	const sharedAudience = siteInfo?.audience;
 	const sharedBrand = siteInfo?.brand;
 	const sharedAvailability = siteInfo?.availability;
-	const sharedAvailableChannel = siteInfo?.availableChannel;
+	const sharedAvailableChannel = (() => {
+		const availableChannel = siteInfo?.availableChannel;
+		if (availableChannel?.servicePhone) {
+			return availableChannel;
+		}
+		if (!siteInfo?.telephone) {
+			return availableChannel;
+		}
+		return {
+			...availableChannel,
+			'@type': availableChannel?.['@type'] || 'ContactPoint',
+			servicePhone: siteInfo.telephone,
+		};
+	})();
 	const sharedOffers = siteInfo?.offers;
 	const sharedTermsOfService = siteInfo?.termsOfService;
 	const servicePathPrefix = getServicePathPrefix(siteInfo);

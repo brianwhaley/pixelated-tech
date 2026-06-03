@@ -90,6 +90,22 @@ describe('ServicesSchema', () => {
 		expect(firstService.provider.telephone).toBe('+1-555-0123');
 	});
 
+	it('should use siteInfo.telephone as availableChannel.servicePhone when availableChannel is omitted', () => {
+		const props: ServicesSchemaType = {
+			...defaultProps,
+			siteInfo: {
+				...defaultProps.siteInfo,
+				telephone: '+1-555-0123'
+			}
+		};
+		const { container } = render(<ServicesSchema {...props} />);
+		const scriptTag = container.querySelector('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTag?.textContent || '{}');
+
+		expect(service.availableChannel?.servicePhone).toBe('+1-555-0123');
+		expect(service.availableChannel?.['@type']).toBe('ContactPoint');
+	});
+
 	it('should include provider email when provided', () => {
 		const props: ServicesSchemaType = {
 			...defaultProps,

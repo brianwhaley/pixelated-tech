@@ -1,15 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { createPageComponentMocks } from '@/test/page-mocks';
 
-vi.mock('@pixelated-tech/components', () => {
-	const React = require('react');
-	return {
-		PageTitleHeader: ({ title }: { title: string }) => React.createElement('h1', { 'data-testid': 'page-title-header' }, title),
-		PageSection: ({ children }: { children?: React.ReactNode }) => React.createElement('section', { 'data-testid': 'page-section' }, children),
-		PageSectionHeader: ({ title }: { title: string }) => React.createElement('h2', { 'data-testid': 'page-section-header' }, title),
-		Callout: ({ title }: { title: string }) => React.createElement('div', { 'data-testid': 'callout' }, title),
-	};
-});
+vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 
 import About from '@/app/(pages)/about/page';
 

@@ -122,14 +122,13 @@ The repository defines shared standards for all customer sites and template apps
 ## Adoption Checklist
 
 ### Phase 1: Initial Setup
-- [  ] Run `node scripts/setup.js <project-name> <git-repo-url>` to initialize the project
 - [  ] Update `package.json` with project-specific details (name, description, repository)
 - [  ] Install dependencies with `npm install`
 - [  ] Start development server with `npm run dev` and verify basic functionality
 - [  ] Update `src/app/config/pixelated.config.json` with all config based keys and integration data
 
 ### Phase 2: Content Replacement
-- [  ] Update `src/app/data/routes.json`:
+- [  ] Update `src/app/data/siteconfig.json`:
   - Replace siteInfo with customer details (name, description, URL, contact info)
   - Update route titles, descriptions, and keywords for each page
   - Configure visualdesign section with customer's brand colors and fonts

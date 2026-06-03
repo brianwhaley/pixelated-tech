@@ -118,7 +118,17 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 			(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
 				undefined));
 
-	const props: any = { 'data-testid': testId ?? `mock-${name.toLowerCase()}` };
+	const props: any = { 'data-testid': testId ?? name.toLowerCase()
+		.replace(/([a-z])([A-Z])/g, '$1-$2')
+		.toLowerCase()
+		.replace('pagesection', 'page-section')
+		.replace('pagetitleheader', 'page-title-header')
+		.replace('pagesectionheader', 'page-section-header')
+		.replace('page-sectionheader', 'page-section-header')
+		.replace('page-titleheader', 'page-title-header')
+		.replace('pagegriditem', 'page-grid-item')
+		.replace('pageflexitem', 'page-flex-item')
+	};
 	if (className) props.className = className;
 	if (id) props.id = id;
 	if (style) props.style = style;
@@ -243,6 +253,10 @@ const defaultMocks: Record<string, any> = {
 	ServiceDetailPage: mockServiceDetailPage,
 	ServiceAreaDetailPage: mockServiceAreaDetailPage,
 	contentfulValueToSlug,
+	buildServiceUrl: (service: any, prefix?: string) => {
+		const slug = contentfulValueToSlug({ value: service?.name ?? '' });
+		return prefix ? `${prefix}/${slug}` : `/services/${slug}`;
+	},
 	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 	Markdown: mockComponent('Markdown', 'markdown'),

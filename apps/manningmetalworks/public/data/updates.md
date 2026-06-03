@@ -1,11 +1,24 @@
 # Manning Metalworks -- Updates
 
+## 2026-06-02
+* [ X ] Brian to Set up ImprovMX for manningmetalworks.com email addresses
+* [ x ] Services: https://www.manningmetalworks.com/services
+* [ x ] Service Areas: https://www.manningmetalworks.com/service-areas 
+* [ x ] Wordpress, Google Business profile, Instagram, Twitter and Yelp are set up.
+* [  ] LinkedIn
+* [  ] NextDoor
+* [  ] Facebook
+* [ x ] Add Dover, New Providence, and Wharton Service Areas
+* [  ] Add images to Instagram
+* [  ] Mailing list for commercial work
+
+
 
 ## 2026-05-09 Launch Activities
 * [ x ] Brian to Move domain from WordPress to AWS - Tim / Greg to share the Wordpress login / password, or need Greg / Tim to initiate the transfer out on Wordpress
-* [  ] Brian to Set up ImprovMX for manningmetalworks.com email addresses
+* [ X ] Brian to Set up ImprovMX for manningmetalworks.com email addresses
 create separate manningmetalworksinfo@gmail.com <-- info@manningmetalworks.com 
-* [  ] Brian to Set up Wordpress subdomain with AWS for blog 
+* [ X ] Brian to Set up Wordpress subdomain with AWS for blog 
 * [  ] Brian to Create Social Media Accounts - need either manningmetalworks gmail account, or need to set up a second account
 * [ x ] Brian to Set up Curator.io account to point to ManningMetalworks Instagram.  Tim / Greg to share instagram login / pw with Brian
 * [ x ] We advertise 24/7 but we're closed Saturday/Sunday. Can we reword that showing we are still open. 
@@ -49,13 +62,13 @@ create separate manningmetalworksinfo@gmail.com <-- info@manningmetalworks.com
 * [ x ] Curator.io - Instagram Gallery - Gallery Page
 * [ x ] VisualDesign section of routes.json - colors, fonts
 * [  ] X / Twitter Account
-* [  ] Yelp Account
+* [ x ] Yelp Account
 * [  ] Nextdoor Account
 * [  ] Reddit Account
-* [  ] Sign Up for Jetpack
+* [ x ] Sign Up for Jetpack
 * [ x ] Contentful
 * [ x ] Cloudinary
-* [  ] First 2 months of blog posts (2)
+* [ x ] First 2 months of blog posts (2)
 
 
 ## 2026-03-25 Update

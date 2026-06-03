@@ -38,6 +38,14 @@ describe('Pixelated Template branch coverage', () => {
 
 	it('renders home page and includes mock content', async () => {
 		render(<Home />);
-		await waitFor(() => expect(screen.getAllByTestId(/mock-/).length).toBeGreaterThan(0));
+		await waitFor(() => {
+			const elements = screen.getAllByTestId(/.+/);
+			const mockElements = elements.filter(el => 
+				el.getAttribute('data-testid')?.includes('callout') || 
+				el.getAttribute('data-testid')?.includes('page-section') ||
+				el.getAttribute('data-testid')?.includes('smart-image')
+			);
+			expect(mockElements.length).toBeGreaterThan(0);
+		});
 	});
 });

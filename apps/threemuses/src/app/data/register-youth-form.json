@@ -10,19 +10,19 @@
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
-				"label" : "Child's Name (required if under 16) : "
+				"label" : "Child's Name(s) (required if under 16) : "
 			}
 		},{
 			"component" : "FormInput",
 			"props" : {
-				"type" : "date",
+				"type" : "text",
 				"id" : "child_birthdate",
 				"name" : "child_birthdate",
 				"defaultValue" : null,
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
-				"label" : "Child's Birthdate (required if under 16) : "
+				"label" : "Child's Birthdate(s) (required if under 16) : "
 			}
 		}
 	]

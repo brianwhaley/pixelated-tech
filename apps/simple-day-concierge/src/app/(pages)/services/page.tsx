@@ -12,7 +12,7 @@ export default function ServicesPage() {
 			<PageTitleHeader title="Our Services" />
 			<PageSection columns={1} maxWidth="1024px" id="services-intro">
 				<p>
-					Simple Day Concierge provides a full suite of digital services for small businesses in New Jersey and South Carolina. Browse our service offerings and click through to learn how we can support your online growth.
+					Simple Day Concierge offers a wide range of services designed to make your life easier and more enjoyable. From personal errands and home management to event planning and travel arrangements, we are here to help you with the tasks that take up your valuable time. Our team of experienced professionals is dedicated to providing personalized service tailored to your unique needs and preferences. Whether you need assistance with daily chores, special occasions, or anything in between, we are committed to delivering exceptional service that exceeds your expectations.
 				</p>
 			</PageSection>
 

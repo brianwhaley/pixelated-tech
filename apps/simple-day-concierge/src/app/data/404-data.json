@@ -1,7 +1,7 @@
 {
     "images" : [
 
-		{   "img": "/images/placeholder.png", 
+		{   "img": "/images/1x1.png", 
 			"text": "Page Not Found.",
 			"description": "Page Not Found" 
         }

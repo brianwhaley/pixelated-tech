@@ -1,12 +1,26 @@
 {
   "metadata": {
-    "imageCount": 5
+    "imageCount": 19
   },
   "images": [
+    "images/1x1.png",
     "images/3d-style-flowing-white-golden-wavy-background.png",
+    "images/favicon/android-chrome-192x192.png",
+    "images/favicon/android-chrome-512x512.png",
+    "images/favicon/apple-touch-icon.png",
+    "images/favicon/favicon-16x16.png",
+    "images/favicon/favicon-32x32.png",
+    "images/favicon2/android-chrome-192x192.png",
+    "images/favicon2/android-chrome-512x512.png",
+    "images/favicon2/apple-touch-icon.png",
+    "images/favicon2/favicon-16x16.png",
+    "images/favicon2/favicon-32x32.png",
     "images/golden-halftone-pattern-texture-white-background.png",
     "images/pix-bg-512.jpg",
     "images/placeholder.png",
-    "images/simple-day-concierge-logo.png"
+    "images/simple-day-concierge-bell.jpg",
+    "images/simple-day-concierge-logo.png",
+    "images/simple-day-concierge-square.jpg",
+    "images/simple-day-concierge-square.png"
   ]
 }

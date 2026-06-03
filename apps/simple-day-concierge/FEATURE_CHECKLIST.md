@@ -122,33 +122,32 @@ The repository defines shared standards for all customer sites and template apps
 ## Adoption Checklist
 
 ### Phase 1: Initial Setup
-- [  ] Run `node scripts/setup.js <project-name> <git-repo-url>` to initialize the project
-- [  ] Update `package.json` with project-specific details (name, description, repository)
-- [  ] Install dependencies with `npm install`
-- [  ] Start development server with `npm run dev` and verify basic functionality
+- [ x ] Update `package.json` with project-specific details (name, description, repository)
+- [ x ] Install dependencies with `npm install`
+- [ x ] Start development server with `npm run dev` and verify basic functionality
 - [  ] Update `src/app/config/pixelated.config.json` with all config based keys and integration data
 
 ### Phase 2: Content Replacement
-- [  ] Update `src/app/data/routes.json`:
+- [ x ] Update `src/app/data/siteconfig.json`:
   - Replace siteInfo with customer details (name, description, URL, contact info)
   - Update route titles, descriptions, and keywords for each page
   - Configure visualdesign section with customer's brand colors and fonts
-- [  ] Replace placeholder content in page components:
+- [ x ] Replace placeholder content in page components:
   - Update header, navigation, and footer text
   - Add customer-specific copy and messaging
   - Replace default images with customer assets
   - **Verify loading & error pages:** confirm `src/app/loading.tsx` (loading skeleton) and `src/app/global-error.tsx` content/brand copy are updated or intentionally left as the canonical implementations
-- [  ] Update 404 page data in `src/app/data/404-data.json`:
+- [ x ] Update 404 page data in `src/app/data/404-data.json`:
   - Replace default images with customer-branded assets
   - Update error message text to match brand voice
-- [  ] Be sure to update Contact Us form with `src/app/data/contactform.json`
-- [  ] Update `src/app/data/faqs.json` with relevant FAQs
-- [  ] Set up Contentful for content management features
+- [ x ] Be sure to update Contact Us form with `src/app/data/contactform.json`
+- [ x ] Update `src/app/data/faqs.json` with relevant FAQs
+- [ x ] Set up Contentful for content management features
   - Common content types are Pages, Reviews, Items, PhotoAlbums, and Media (images, videos)
-- [  ] Create / Update Blog Schedule in `public/data/blogcalendar.md`
-- [  ] Set up Wordpress Jetpack to email subscribers and post on social media platforms for you
+- [ x ] Create / Update Blog Schedule in `public/data/blogcalendar.md`
+- [ x ] Set up Wordpress Jetpack to email subscribers and post on social media platforms for you
 - [  ] Create / Update `public/data/updates.md` wit meeting notes, to-dos, etc.
-- [  ] Build basic pages
+- [ x ] Build basic pages
   - Home Page
   - About Us
   - Blog , wordpress URL
@@ -157,31 +156,31 @@ The repository defines shared standards for all customer sites and template apps
   - Services 
 
 ### Phase 3: Branding & Styling
-- [  ] Customize visual design tokens in `routes.json`:
+- [ x ] Customize visual design tokens in `routes.json`:
   - Update primary/secondary colors to match brand
   - Configure typography (header/body fonts, sizes)
   - Adjust layout properties (border radius, shadows, transitions)
-- [  ] Update favicon and app icons in `public/` directory
-- [  ] Modify component styles in `src/app/styles/` if needed
-- [  ] Update Elements in `src/app/elements`
+- [ x ] Update favicon and app icons in `public/` directory
+- [ x ] Modify component styles in `src/app/styles/` if needed
+- [ x ] Update Elements in `src/app/elements`
   - Header
   - Footer
   - Nav
-- [  ] Test responsive design across different screen sizes
+- [ x ] Test responsive design across different screen sizes
 
 ### Phase 4: Functionality Customization
-- [  ] Add or modify routes in `routes.json` for customer-specific pages
-- [  ] Customize page components in `src/app/(pages)/` directory
-- [  ] Set up environment variables:
+- [ x ] Add or modify routes in `routes.json` for customer-specific pages
+- [ x ] Customize page components in `src/app/(pages)/` directory
+- [ x ] Set up environment variables:
   - Create `.env.local` file for local development
   - Configure production environment variables on hosting platform
   - Set up PIXELATED_CONFIG_JSON or PIXELATED_CONFIG_B64 for advanced configuration
-- [  ] Configure PixelatedServerConfigProvider:
+- [ x ] Configure PixelatedServerConfigProvider:
   - Update config provider in `src/app/layout.tsx` with customer-specific settings
   - Integrate third-party services (analytics, CMS, payment processors)
   - Set up API endpoints and external service connections
   - Configure proxy headers for SEO and routing (x-path, x-origin, x-url)
-- [  ] Set up Google Analytics:
+- [ x ] Set up Google Analytics:
   - Create Google Analytics account and property
   - Get tracking code (GA4 Measurement ID)
   - Add tracking code to footer component or config provider
@@ -191,11 +190,11 @@ The repository defines shared standards for all customer sites and template apps
   - Set up environment variables for Cloudinary configuration
   - Configure image optimization and CDN delivery
   - Update image references to use Cloudinary URLs for better performance
-- [  ] Integrate customer-specific features:
+- [ x ] Integrate customer-specific features:
   - Forms (contact, newsletter, etc.)
   - Third-party integrations (analytics, CRM, etc.)
   - Custom components from Pixelated Components library
-- [  ] Update SEO configuration (meta tags, schema markup)
+- [ x ] Update SEO configuration (meta tags, schema markup)
 
 ### Phase 5: Social Media
 - [  ] Add / Update `src/app/elements/socialtags.tsx` with links to social media accounts

@@ -1,785 +1,835 @@
 {
-  "siteInfo": {
-    "name": "Manning Metalworks",
-    "author": "Manning Metalworks",
-    "description": "Manning Metalworks - Custom metal fabrication and welding services in Morris Plains, NJ. We specialize in custom metal work for residential and commercial clients, including railings, gates, furniture, and more.",
-    "keywords": "Manning Metalworks, custom metal fabrication, welding services, Morris Plains NJ, railings, gates, furniture",
-    "url": "https://www.manningmetalworks.com",
-    "servicesPathPrefix": "/services",
-    "email": "manningmetalworks@gmail.com",
-    "favicon": "/favicon.ico",
-    "favicon_sizes": "64x64 32x32 24x24 16x16",
-    "favicon_type": "image/x-icon",
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "default_locale": "en",
-    "display": "standalone",
-    "image": "/images/logo/mm-logo-white-bg.webp",
-    "image_height": "512",
-    "image_width": "512",
-    "telephone": "(973) 906-0441",
-    "address": {
-      "streetAddress": "24 West Hanover Avenue",
-      "addressLocality": "Morris Plains",
-      "addressRegion": "NJ",
-      "postalCode": "07950",
-      "addressCountry": "US"
-    },
-    "addressAdditionalInfo": "By Appointment Only, Call or Text to Schedule",
-    "openingHours": [
-      {
-        "day": "Mon",
-        "open": "09:00",
-        "close": "17:00"
-      },
-      {
-        "day": "Tue",
-        "open": "09:00",
-        "close": "17:00"
-      },
-      {
-        "day": "Wed",
-        "open": "09:00",
-        "close": "17:00"
-      },
-      {
-        "day": "Thu",
-        "open": "09:00",
-        "close": "17:00"
-      },
-      {
-        "day": "Fri",
-        "open": "09:00",
-        "close": "17:00"
-      },
-      {
-        "day": "Sat",
-        "closed": true
-      },
-      {
-        "day": "Sun",
-        "closed": true
-      }
-    ],
-    "openingHoursAdditionalInfo": "Closed on weekends and major holidays.  Call for emergency availability.",
-    "priceRange": "$",
-    "brand": {
-      "@type": "Brand",
-      "name": "Manning Metalworks"
-    },
-    "termsOfService": "/",
-    "audience": "Local service businesses, contractors, and small business owners",
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "USD",
-      "price": "0",
-      "url": "https://www.manningmetalworks.com/services",
-      "availability": "https://schema.org/InStock"
-    },
-    "availability": "https://schema.org/InStock",
-    "availableChannel": {
-      "@type": "ServiceChannel",
-      "serviceUrl": "https://www.manningmetalworks.com/contact",
-      "availableLanguage": [
-        "English"
-      ],
-      "servicePhone": "+1-973-906-0441"
-    },
-    "services": [
-      {
-        "name": "Precision Metal Fabrication",
-        "short_description": "Manning Metalworks provides premier residential, commercial, and municipal metal fabrication across the region. We specialize in the complete project lifecycle, from CAD-assisted design and CNC plasma cutting to high-standard AWS certified assembly.",
-        "description": [
-          "Manning Metalworks provides premier residential, commercial, and municipal metal fabrication across the region. We specialize in the complete project lifecycle, from CAD-assisted design and CNC plasma cutting to high-standard AWS certified assembly.",
-          "Our shop is equipped to handle the rigorous demands of structural steel projects while maintaining the delicate touch required for high-end architectural features. Whether you are a general contractor needing safety bollards and HVAC dunnage for a commercial build, or a homeowner seeking a one-of-a-kind ornamental staircase, our team delivers results that meet the highest AWS (American Welding Society) standards.",
-          "Our competitive edge lies in our ability to work with a vast array of alloys. We offer expert-level fabrication in stainless steel, aluminum, and brass. This versatility is essential for clients in the food service industry requiring sanitary-grade kitchen equipment, as well as municipal departments needing corrosion-resistant infrastructure. Every project we undertake is a fusion of engineering integrity and aesthetic excellence, ensuring that your investment is not only structurally sound but also adds significant value to your property or facility."
-        ],
-        "serviceType": "Precision Metal Fabrication",
-        "category": "Precision Metal Fabrication",
-        "serviceOutput": "High-quality metal components and assemblies built to exact engineering standards.",
-        "audience": "Contractors, businesses, and property owners seeking custom metal fabrication",
-        "image": "https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp?fm=webp",
-        "offers": "",
-        "termsOfService": "/"
-      },
-      {
-        "name": "Expert Repairs and Custom Fabrication",
-        "description": [
-          "We offer bespoke metal solutions and restoration services that off-the-shelf products simply cannot provide. Our technicians utilize MIG, TIG, and Stick welding processes to deliver high-strength repairs for everything from heavy machinery to antique ironwork.",
-          "At Manning Metalworks, we believe that \"custom\" means more than just built-to-order; it means built to solve a specific problem. We understand that in the industrial and agricultural sectors, a cracked frame or a failed bracket can halt productivity. Our technicians provide repairs that often exceed the original manufacturer's specifications. From heavy equipment bucket teeth and trailer frames to delicate antique wrought iron restoration, we treat every repair with meticulous attention to detail.",
-          "Beyond simple fixes, our custom fabrication service allows you to bring unique visions to life. We work closely with architects and designers to create functional art, such as custom-fit handrails, security grilles, and specialized furniture. We don't just \"patch\" metal; we analyze why a failure occurred and offer reinforcements to prevent future downtime. This proactive approach to repair and the ability to engineer custom parts on demand makes us an invaluable partner for local businesses and homeowners alike. By choosing Manning Metalworks, you are opting for a level of craftsmanship that prioritizes longevity and precision over quick, temporary fixes."
-        ],
-        "short_description": "We offer bespoke metal solutions and restoration services that off-the-shelf products simply cannot provide. Our technicians utilize MIG, TIG, and Stick welding processes to deliver high-strength repairs for everything from heavy machinery to antique ironwork.",
-        "serviceType": "Expert Metal Repair",
-        "category": "Metal Repair and Fabrication",
-        "serviceOutput": "Durable custom metal repairs and fabricated parts tailored to your exact needs.",
-        "audience": "Customers needing precision metal repairs and restoration",
-        "image": "https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg?fm=webp",
-        "offers": "",
-        "termsOfService": "/"
-      },
-      {
-        "name": "24 x 7 Emergency Mobile Welding Services",
-        "description": [
-          "Our 24/7 emergency mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night.",
-          "In the world of construction, logistics, and property management, metal failures rarely happen during convenient business hours. Our mobile rigs are fully self-contained with high-output generators, wire feeders, and a suite of specialized tools. This allows us to perform industrial-grade welding in remote locations, on busy construction sites, or at residential properties in the middle of the night. When a security gate fails at 2:00 AM or a critical production line support snaps during a graveyard shift, our team is dispatched immediately to mitigate the hazard and restore functionality.",
-          "We understand that every emergency is unique and often brings a high level of stress to your day or night. Our team is genuinely ready to step in and help resolve your problem with the urgency and care it deserves. Whether you are dealing with a structural failure or a security risk, we want to provide the professional support needed to get things back on track. Please do not hesitate to reach out to us directly at (973) 906-0441 so we can discuss your specific situation immediately. Alternatively, you can provide us with the project details by filling out our contact us form, and we will get to work on your solution right away."
-        ],
-        "short_description": "Our 24/7 emergency mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night.",
-        "serviceType": "Emergency Mobile Welding",
-        "category": "Emergency Welding Services",
-        "serviceOutput": "On-site emergency welding solutions for urgent structural and equipment repairs.",
-        "audience": "Businesses and property owners needing emergency welding response",
-        "image": "https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg?fm=webp",
-        "offers": "",
-        "termsOfService": "/"
-      }
-    ],
-    "serviceAreas": [
-      {
-        "name": "Morris Plains NJ",
-        "description": "Manning Metalworks is proudly headquartered in Morris Plains, New Jersey, providing our immediate neighbors with premier residential, commercial, and municipal metal fabrication services. As a local, family-operated shop, we deliver artisan-grade craftsmanship backed by certified structural safety standards right here in our home community. From custom ornamental gates to urgent structural steel modifications, our localized presence ensures prompt project timelines and personal accountability.",
-        "short_description": "Headquartered in Morris Plains, Manning Metalworks provides certified local metal fabrication and custom ironwork with family-owned accountability.",
-        "keywords": [
-          "Morris Plains metal fabricator",
-          "welder in Morris Plains NJ",
-          "custom steel fabrication Morris Plains"
-        ],
-        "highlights": [
-          "Home base operations ensuring rapid local dispatch times",
-          "Deep familiarity with Morris Plains municipal building and safety codes",
-          "Strong relationships with local residential and commercial contractors"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Morristown NJ",
-        "description": "We offer comprehensive custom fabrication, historical ironwork restoration, and 24/7 mobile welding services throughout the historic Morristown area. Catering to busy commercial properties, retail storefronts, and historic residential estates, our team ensures every weld blends code-compliant strength with architectural beauty. Whether you require sanitary welding for a restaurant kitchen or emergency structural repairs overnight, we keep Morristown moving forward.",
-        "short_description": "Premium historical restoration, commercial kitchen welding, and 24/7 emergency mobile welding across Morristown, New Jersey.",
-        "keywords": [
-          "Morristown NJ welding shop",
-          "historical iron restoration Morristown",
-          "emergency welder Morristown"
-        ],
-        "highlights": [
-          "Specialized replication and restoration techniques for historical wrought iron",
-          "24/7 emergency response for high-traffic commercial and retail districts",
-          "Sanitary-grade stainless steel TIG welding for local hospitality businesses"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Denville NJ",
-        "description": "Manning Metalworks delivers expert on-site mobile welding, heavy equipment repairs, and custom residential metalwork across Denville, New Jersey. Known as the Hub of Morris County, Denville's bustling commercial corridors and lakeside residential communities rely on our rapid-response mobile rigs to solve critical structural failures. We bring an industrial-strength shop directly to your driveway, dock, or active construction site at any hour.",
-        "short_description": "Certified mobile welding and structural machinery repair services serving residential and commercial clients throughout Denville, NJ.",
-        "keywords": [
-          "mobile welding Denville NJ",
-          "heavy equipment repair Denville",
-          "custom handrails Denville"
-        ],
-        "highlights": [
-          "Lakeside marine aluminum welding and utility trailer repairs",
-          "Rapid dispatch along the Route 10, Route 46, and I-80 corridors",
-          "Certified structural steel reinforcement for local commercial builds"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Parsippany NJ",
-        "description": "As one of the largest commercial and corporate hubs in Morris County, Parsippany demands industrial-grade welding services that operate with strict safety protocols. Manning Metalworks specializes in commercial contract support, structural steel dunnage, HVAC frame fabrication, and 24/7 heavy machinery repairs for corporate parks and logistics centers. We are fully insured and OSHA-compliant, minimizing your operational downtime when structural emergencies strike.",
-        "short_description": "Industrial metal fabrication, corporate facility maintenance contracts, and certified OSHA-compliant welding in Parsippany, NJ.",
-        "keywords": [
-          "Parsippany NJ commercial welding",
-          "structural steel Parsippany",
-          "industrial fabricator Parsippany"
-        ],
-        "highlights": [
-          "Equipped for high-volume commercial and industrial corporate contracts",
-          "24/7 emergency repair units for warehousing facilities and logistics fleets",
-          "Full compliance with stringent commercial zoning and safety guidelines"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Randolph NJ",
-        "description": "Serving residential estates, commercial facilities, and municipal projects in Randolph, New Jersey, Manning Metalworks provides unrivaled custom metal solutions. We design, fabricate, and install premium architectural features, including modern minimalist handrails, secure property gates, and code-compliant municipal installations. Our father-and-son team treats every Randolph project with a meticulous 'measure twice, cut once' discipline.",
-        "short_description": "Custom architectural metalwork, residential ironwork, and municipal fabrication services across Randolph, NJ.",
-        "keywords": [
-          "Randolph NJ metal fabrication",
-          "custom gates Randolph",
-          "ornamental iron Randolph"
-        ],
-        "highlights": [
-          "Bespoke residential architectural fabrication tailored to custom home designs",
-          "AWS-certified structural welding for residential renovations and additions",
-          "Durable, climate-resistant powder coating finishes for all outdoor installations"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Hanover Township NJ",
-        "description": "Manning Metalworks offers comprehensive commercial fabrication, mobile fleet support, and emergency infrastructure welding throughout Hanover Township, including Whippany and Cedar Knolls. Our proximity allows us to respond immediately to local manufacturing facilities, retail centers, and residential neighborhoods. We specialize in high-strength repairs on thick-plate carbon steel and aluminum equipment, ensuring your operations face minimal interruption.",
-        "short_description": "Certified commercial welding, shop fabrication, and 24/7 mobile response serving Whippany, Cedar Knolls, and Hanover Township.",
-        "keywords": [
-          "Whippany NJ welders",
-          "Hanover Township metal fabrication",
-          "commercial welding Cedar Knolls"
-        ],
-        "highlights": [
-          "Immediate mobile deployment to local industrial parks and retail sectors",
-          "Expert aluminum and stainless steel fabrication for commercial fleets",
-          "Accurate non-destructive testing for structural municipal applications"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Mendham NJ",
-        "description": "For the pristine estates and historic properties of Mendham, Manning Metalworks provides elite, artisan-grade ornamental ironwork and custom fabrication. We recognize the importance of aesthetic harmony in the Mendhams, creating hand-forged gates, custom pool railings, and structural reinforcements that seamlessly blend with luxury architecture. Our premium finishes ensure your custom metal installations remain beautiful and rust-free for generations.",
-        "short_description": "Elite ornamental ironwork, premium residential estate gates, and precision metal restoration for Mendham, NJ.",
-        "keywords": [
-          "Mendham NJ custom metalwork",
-          "ornamental iron gates Mendham",
-          "residential welder Mendham"
-        ],
-        "highlights": [
-          "Artisan-level detail matching high-end residential architectural designs",
-          "Historical restoration methods for antique wrought iron features",
-          "Clean, non-disruptive residential on-site mobile welding execution"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Chatham NJ",
-        "description": "Manning Metalworks offers precision architectural fabrication, custom handrail installation, and emergency repair services to residents and business owners in Chatham, New Jersey. Whether addressing an ADA-compliant commercial ramp railing or repairing a damaged residential driveway gate, our team delivers flawless welds and structural strength. We prioritize clean workspaces and clear communication, treating your Chatham property with the utmost professionalism.",
-        "short_description": "Precision architectural metal fabrication, custom handrails, and residential gate repairs serving Chatham Borough and Township.",
-        "keywords": [
-          "Chatham NJ welder",
-          "custom handrails Chatham",
-          "gate repair Chatham NJ"
-        ],
-        "highlights": [
-          "Specialized in seamless, modern minimalist architectural metal features",
-          "Flawless code-compliant ADA handrail systems for commercial buildings",
-          "Prompt residential repair dispatch to safeguard home security boundaries"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Madison NJ",
-        "description": "Known as The Rose City, Madison features a beautiful mix of historic architecture, corporate facilities, and educational institutions that demand top-tier metalwork services. Manning Metalworks provides Madison, New Jersey with expert municipal contract support, institutional maintenance, and custom residential fabrication. We work closely with local facility managers and homeowners to provide structural integrity that stands up to heavy everyday use.",
-        "short_description": "Institutional metalwork maintenance, municipal fabrication, and custom residential welding services across Madison, NJ.",
-        "keywords": [
-          "Madison NJ metal fabricator",
-          "commercial welding Madison",
-          "structural steel Madison NJ"
-        ],
-        "highlights": [
-          "Proven capacity for institutional and educational facility structural support",
-          "Off-hours overnight scheduling to minimize municipal and retail disruptions",
-          "Premium material selection matching classic local architectural themes"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Roxbury Township NJ",
-        "description": "Manning Metalworks is the first choice for heavy equipment welding, commercial fabrication, and residential mobile repairs across Roxbury Township, including Succasunna and Ledgewood. Positioned near key transportation corridors, our 24/7 mobile welding rigs provide critical field service to construction yards, logistics fleets, and industrial parks. We handle heavy thick-plate welding, trailer structural repair, and bucket face hardfacing on-site to get your machines back to work.",
-        "short_description": "Heavy machinery repair, industrial welding, and 24/7 mobile emergency welding across Roxbury, Succasunna, and Ledgewood.",
-        "keywords": [
-          "Roxbury NJ mobile welding",
-          "heavy equipment repair Succasunna",
-          "welder Ledgewood NJ"
-        ],
-        "highlights": [
-          "24/7 emergency response for heavy industrial and highway construction machinery",
-          "High-output field equipment designed for thick structural steel plate welding",
-          "Expert aluminum utility trailer frame and ramp reconstruction"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Montville NJ",
-        "description": "From custom structural steel framing for luxury home construction to emergency commercial repairs, Manning Metalworks serves the Montville community with certified excellence. We provide local homeowners, residential builders, and commercial property groups with custom gates, structural steel beams, and on-site welding modifications. Our rigorous quality control systems ensure every project complies with structural engineering mandates.",
-        "short_description": "Structural steel framing components, custom metal gates, and premium certified welding services in Montville, NJ.",
-        "keywords": [
-          "Montville NJ structural steel",
-          "welding services Montville",
-          "custom fabricator Montville NJ"
-        ],
-        "highlights": [
-          "Expertise in custom structural beams and column modifications for new builds",
-          "High-durability powder-coated property boundary gates and fencing",
-          "Comprehensive code compliance alignment for municipal structures"
-        ],
-        "image": ""
-      },
-      {
-        "name": "East Hanover NJ",
-        "description": "Manning Metalworks delivers professional commercial kitchen welding, commercial facility upkeep, and precision custom fabrication across East Hanover, New Jersey. With its prominent retail centers and industrial presence, local businesses rely on our 24/7 technical availability to manage sudden infrastructure emergencies. We specialize in sanitary stainless steel applications, custom safety bollards, and strong structural repairs designed for high-use corporate environments.",
-        "short_description": "Commercial facility welding, stainless steel kitchen repairs, and safety bollard fabrication in East Hanover, NJ.",
-        "keywords": [
-          "East Hanover NJ welding",
-          "commercial kitchen welding East Hanover",
-          "safety bollards East Hanover"
-        ],
-        "highlights": [
-          "Sanitary-compliant TIG welding for local food processing and commercial kitchens",
-          "Custom vehicle safety bollard installation and facility guardrail repairs",
-          "Flexible off-peak scheduling tailored for uninterrupted commercial commerce"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Kinnelon NJ",
-        "description": "Serving the exclusive residential communities and public facilities of Kinnelon, New Jersey, Manning Metalworks offers elite architectural fabrication and custom mobile welding. We bring our self-contained, advanced mobile shop directly to your property to fix structural deck joints, repair private driveway gates, or reinforce residential utility gear. We execute clean, quiet, and exceptionally safe operations that respect local neighborhood guidelines.",
-        "short_description": "High-end residential gate fabrication, deck structural reinforcement, and mobile welding across Kinnelon, NJ.",
-        "keywords": [
-          "Kinnelon NJ welder",
-          "residential fabrication Kinnelon",
-          "gate repair Kinnelon"
-        ],
-        "highlights": [
-          "Quiet, ultra-clean mobile welding methods tailored for residential properties",
-          "Premium ornamental ironwork designed to withstand mountain environments",
-          "Emergency security restoration for properties with compromised gate lines"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Jefferson Township NJ",
-        "description": "Manning Metalworks provides expert marine aluminum fabrication, utility trailer reinforcement, and 24/7 mobile welding services across Jefferson Township and the Lake Hopatcong region. The seasonal and industrial demands of this lakeside community require specialized material knowledge, specifically high-grade aluminum TIG welding. We repair cracked pontoon hulls, boat trailers, and lakeside municipal structures, ensuring maximum structural safety on the water and road.",
-        "short_description": "Marine aluminum TIG welding, trailer repair, and 24/7 mobile emergency support for Jefferson Township, NJ.",
-        "keywords": [
-          "Jefferson Township NJ welding",
-          "Lake Hopatcong marine welding",
-          "trailer repair Jefferson NJ"
-        ],
-        "highlights": [
-          "Specialized marine-grade aluminum welding for watercraft and docks",
-          "On-site mobile deployment directly to local marinas and residential waterfronts",
-          "High-strength heavy frame repairs for regional snow plows and utility fleets"
-        ],
-        "image": ""
-      },
-      {
-        "name": "Rockaway Township NJ",
-        "description": "From commercial retail hubs to widespread residential zones, Manning Metalworks provides Rockaway Township with reliable, 24/7 certified welding solutions. We focus on heavy commercial equipment upkeep, municipal infrastructure repairs, and custom residential ironwork updates. Our mobile crews respond directly around the Rockaway Townsquare Mall region and local transit lines to handle critical structural safety needs at a moment's notice.",
-        "short_description": "Certified metal fabrication, commercial asset repair, and 24/7 mobile emergency welding in Rockaway Township, NJ.",
-        "keywords": [
-          "Rockaway NJ welding shop",
-          "mobile welder Rockaway Township",
-          "commercial fabrication Rockaway"
-        ],
-        "highlights": [
-          "24/7 commercial facility maintenance and asset restoration response",
-          "Certified AWS structural support for retail extensions and infrastructure",
-          "Local family-owned service delivery bringing reliable, expert care on-site"
-        ],
-        "image": ""
-      }
-    ],
-    "sameAs": [
-      "https://www.manningmetalworks.com",
-      "https://www.facebook.com/p/Manning-Metalworks-LLC-61572722814701/",
-      "https://www.instagram.com/manning.metalworks/",
-      "https://www.linkedin.com/in/tim-manning-89736430a/",
-      "https://www.linkedin.com/in/gregory-manning-62a75428/"
-    ]
-  },
-  "routes": [
-    {
-      "name": "Home",
-      "path": "/",
-      "title": "Manning Metalworks | Custom Metal Fabrication | Morris Plains, NJ",
-      "description": "Manning Metalworks offers expert custom metal fabrication and welding services in Morris Plains, NJ. Specializing in railings, gates, and furniture for homes & businesses.",
-      "keywords": [
-        "custom metal fabrication Morris Plains NJ",
-        "welding services Morris Plains NJ",
-        "metal railings Morris Plains NJ",
-        "metal gates Morris Plains NJ",
-        "metal furniture Morris Plains NJ",
-        "residential metalwork Morris Plains",
-        "commercial metalwork Morris Plains",
-        "metal fabricator Morris Plains NJ",
-        "custom metal work Northern NJ"
-      ]
-    },
-    {
-      "name": "About Us",
-      "path": "/about-us",
-      "title": "Manning Metalworks | Custom Metal Fabrication | Morris Plains, NJ",
-      "description": "Discover Manning Metalworks, offering custom metal fabrication, welding, railings, gates, & furniture in Morris Plains, NJ for residential & commercial needs.",
-      "keywords": [
-        "Manning Metalworks",
-        "custom metal fabrication Morris Plains NJ",
-        "welding services Morris Plains NJ",
-        "metal railings Morris Plains",
-        "metal gates Morris Plains",
-        "metal furniture Morris Plains",
-        "residential metalwork Morris Plains NJ",
-        "commercial metalwork Morris Plains NJ",
-        "metal fabricator Morris Plains",
-        "Morris Plains metal fabrication",
-        "Morris County metalwork"
-      ]
-    },
-    {
-      "name": "Service Areas",
-      "path": "/service-areas",
-      "hidden": true,
-      "title": "Manning Metalworks | Custom Metal Fabrication | Service Areas",
-      "description": "Explore the local service areas covered by Manning Metalworks' expert metal fabrication and welding services in Morris Plains, New Jersey.",
-      "keywords": [
-        "Manning Metalworks",
-        "metal fabrication",
-        "welding services",
-        "Morris Plains NJ"
-      ]
-    },
-    {
-      "name": "Services",
-      "path": "/services",
-      "title": "Manning Metalworks | Custom Metal Fabrication & Welding | Morris Plains, NJ",
-      "description": "Manning Metalworks: Custom metal fabrication & welding services in Morris Plains, NJ. We craft railings, gates, furniture for residential & commercial clients.",
-      "keywords": [
-        "custom metal fabrication Morris Plains NJ",
-        "welding services Morris Plains NJ",
-        "metalwork Morris Plains NJ",
-        "custom railings Morris Plains",
-        "metal gates Morris Plains",
-        "custom metal furniture NJ",
-        "residential metal fabrication",
-        "commercial welding services",
-        "metal fabricator New Jersey",
-        "Morris Plains NJ welding",
-        "metal fabrication Morris Plains",
-        "welding Morris Plains"
-      ]
-    },
-    {
-      "name": "Gallery",
-      "path": "/gallery",
-      "title": "Manning Metalworks | Custom Metal Fabrication Gallery | Morris Plains, NJ",
-      "description": "Explore Manning Metalworks' gallery of custom metal fabrication and welding projects in Morris Plains, NJ. See our craftsmanship in railings, gates, furniture, and more.",
-      "keywords": [
-        "custom metal fabrication gallery Morris Plains NJ",
-        "metal welding projects Morris Plains",
-        "custom railings portfolio",
-        "metal gates examples NJ",
-        "metal furniture designs",
-        "residential metalwork gallery",
-        "commercial metal fabrication projects"
-      ],
-      "hidden": ""
-    },
-    {
-      "name": "FAQs",
-      "path": "/faqs",
-      "title": "Manning Metalworks FAQs | Metal Fabrication | Morris Plains, NJ",
-      "description": "Have questions about custom metalwork? Get answers from Manning Metalworks, your Morris Plains, NJ experts for railings, gates & furniture.",
-      "keywords": [
-        "Manning Metalworks",
-        "metal fabrication Morris Plains NJ",
-        "welding services Morris Plains",
-        "custom metalwork Morris Plains",
-        "metal railings Morris Plains NJ",
-        "metal gates Morris Plains NJ",
-        "custom furniture fabrication NJ",
-        "residential metalwork FAQs",
-        "commercial welding FAQs",
-        "metal fabrication questions"
-      ],
-      "hidden": ""
-    },
-    {
-      "name": "Blog",
-      "path": "/blog",
-      "title": "Manning Metalworks Blog | Custom Metal Fabrication & Welding | Morris Plains, NJ",
-      "description": "Explore the Manning Metalworks blog for expert articles on custom metal fabrication, welding, railings, gates, and furniture. Serving Morris Plains, Morris Plains, NJ & beyond.",
-      "keywords": [
-        "custom metal fabrication",
-        "welding services",
-        "metal railings",
-        "metal gates",
-        "metal furniture",
-        "residential metalwork",
-        "commercial metalwork",
-        "Morris Plains NJ",
-        "Morris Plains NJ",
-        "metal fabrication blog"
-      ]
-    },
-    {
-      "name": "Contact Us",
-      "path": "/contact-us",
-      "title": "Contact Manning Metalworks | Metalwork | Morris Plains, NJ",
-      "description": "Contact Manning Metalworks for custom metal fabrication, welding, railings, and gates in Morris Plains, NJ. Get a free quote for your residential or commercial project today!",
-      "keywords": [
-        "Manning Metalworks",
-        "custom metal fabrication Morris Plains NJ",
-        "welding services Morris Plains NJ",
-        "metal railings Morris Plains",
-        "metal gates Morris Plains NJ",
-        "custom metalwork",
-        "residential metal fabrication",
-        "commercial metal fabrication",
-        "contact us",
-        "metal fabricator quote"
-      ]
-    },
-    {
-      "name": "Admin",
-      "hidden": true,
-      "routes": [
-        {
-          "name": "404",
-          "path": "/404",
-          "hidden": true,
-          "title": "Manning Metalworks - Page Not Found",
-          "description": "The page you are looking for could not be found.",
-          "keywords": [
-            "Manning Metalworks",
-            "404",
-            "page not found"
-          ]
-        },
-        {
-          "name": "Sitemap",
-          "path": "/sitemap.xml",
-          "hidden": true,
-          "title": "Manning Metalworks | Sitemap | Morris Plains, NJ",
-          "description": "Manning Metalworks sitemap.xml",
-          "keywords": [
-            "Manning Metalworks",
-            "sitemap.xml"
-          ]
-        },
-        {
-          "name": "Robots.txt",
-          "path": "/robots.txt",
-          "hidden": true,
-          "title": "Manning Metalworks | Robots.txt | Morris Plains, NJ",
-          "description": "Manning Metalworks robots.txt",
-          "keywords": [
-            "Manning Metalworks",
-            "robots.txt"
-          ]
-        },
-        {
-          "name": "Web Manifest",
-          "path": "/manifest.webmanifest",
-          "hidden": true,
-          "title": "Manning Metalworks | Web Manifest | Morris Plains, NJ",
-          "description": "Manning Metalworks web manifest",
-          "keywords": [
-            "Manning Metalworks",
-            "manifest.webmanifest"
-          ]
-        },
-        {
-          "name": "Humans Txt",
-          "path": "/humans.txt",
-          "hidden": true,
-          "title": "Manning Metalworks | Humans Txt | Morris Plains, NJ",
-          "description": "Humans Txt",
-          "keywords": [
-            "Manning Metalworks",
-            "humans txt"
-          ]
-        },
-        {
-          "name": "Security Txt",
-          "hidden": true,
-          "path": "/security.txt",
-          "title": "Manning Metalworks | Security Txt | Morris Plains, NJ",
-          "description": "Security contact and vulnerability disclosure information.",
-          "keywords": [
-            "Manning Metalworks",
-            "security txt",
-            "security"
-          ]
-        },
-        {
-          "name": "Style Guide",
-          "hidden": true,
-          "path": "/styleguide",
-          "title": "Manning Metalworks | Style Guide | Morris Plains, NJ",
-          "description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
-          "keywords": [
-            "Manning Metalworks",
-            "style guide"
-          ]
-        },
-        {
-          "name": "Blog Calendar",
-          "hidden": true,
-          "path": "/blogcalendar",
-          "title": "Manning Metalworks | Blog Calendar | Morris Plains, NJ",
-          "description": "",
-          "keywords": ""
-        },
-        {
-          "name": "Updates",
-          "hidden": true,
-          "path": "/updates",
-          "title": "Manning Metalworks | Updates | Morris Plains, NJ",
-          "description": "",
-          "keywords": ""
-        }
-      ],
-      "keywords": []
-    }
-  ],
-  "visualdesign": {
-    "primary-color": {
-      "value": "#369",
-      "type": "color",
-      "group": "palette",
-      "label": "Primary color"
-    },
-    "secondary-color": {
-      "value": "#BCD",
-      "type": "color",
-      "group": "palette",
-      "label": "Secondary color"
-    },
-    "accent1-color": {
-      "value": "#CCC",
-      "type": "color",
-      "group": "palette",
-      "label": "Accent color 1"
-    },
-    "accent2-color": {
-      "value": "#EEE",
-      "type": "color",
-      "group": "palette",
-      "label": "Accent color 2"
-    },
-    "bg-color": {
-      "value": "#ffffff",
-      "type": "color",
-      "group": "palette",
-      "label": "Background color"
-    },
-    "text-color": {
-      "value": "#000000",
-      "type": "color",
-      "group": "palette",
-      "label": "Font color"
-    },
-    "header-font": {
-      "value": "\"Montserrat\", Verdana, sans-serif",
-      "type": "font",
-      "group": "typography",
-      "label": "Header font"
-    },
-    "body-font": {
-      "value": "\"Roboto\", Arial, sans-serif",
-      "type": "font",
-      "group": "typography",
-      "label": "Body font"
-    },
-    "font-size1-min": {
-      "value": "2.00rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 1 min"
-    },
-    "font-size1-max": {
-      "value": "3.00rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 1 max"
-    },
-    "font-size2-min": {
-      "value": "1.35rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 2 min"
-    },
-    "font-size2-max": {
-      "value": "1.75rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 2 max"
-    },
-    "font-size3-min": {
-      "value": "1.17rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 3 min"
-    },
-    "font-size3-max": {
-      "value": "1.35rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 3 max"
-    },
-    "font-size4-min": {
-      "value": "1.00rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 4 min"
-    },
-    "font-size4-max": {
-      "value": "1.25rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 4 max"
-    },
-    "font-size5-min": {
-      "value": "0.83rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 5 min"
-    },
-    "font-size5-max": {
-      "value": "1.00rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 5 max"
-    },
-    "font-size6-min": {
-      "value": "0.67rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 6 min"
-    },
-    "font-size6-max": {
-      "value": "0.85rem",
-      "type": "size",
-      "group": "typography",
-      "label": "Font size 6 max"
-    },
-    "font-min-screen": {
-      "value": "375px",
-      "type": "size",
-      "group": "typography",
-      "label": "Font min screen"
-    },
-    "font-max-screen": {
-      "value": "1440px",
-      "type": "size",
-      "group": "typography",
-      "label": "Font max screen"
-    },
-    "border-radius": {
-      "value": "0.5rem",
-      "type": "size",
-      "group": "layout",
-      "label": "Border radius"
-    },
-    "box-shadow": {
-      "value": "0 2px 4px rgba(0,0,0,0.1)",
-      "type": "shadow",
-      "group": "layout",
-      "label": "Box shadow"
-    },
-    "transition": {
-      "value": "all 0.3s ease",
-      "type": "transition",
-      "group": "layout",
-      "label": "Transition"
-    }
-  },
-  "deployMarker": "2026-06-01T13:40:21.559Z"
+	"siteInfo": {
+		"name": "Manning Metalworks",
+		"author": "Manning Metalworks",
+		"description": "Manning Metalworks - Custom metal fabrication and welding services in Morris Plains, NJ. We specialize in custom metal work for residential and commercial clients, including railings, gates, furniture, and more.",
+		"keywords": "Manning Metalworks, custom metal fabrication, welding services, Morris Plains NJ, railings, gates, furniture",
+		"url": "https://www.manningmetalworks.com",
+		"servicesPathPrefix": "/services",
+		"email": "manningmetalworks@gmail.com",
+		"favicon": "/favicon.ico",
+		"favicon_sizes": "64x64 32x32 24x24 16x16",
+		"favicon_type": "image/x-icon",
+		"theme_color": "#ffffff",
+		"background_color": "#ffffff",
+		"default_locale": "en",
+		"display": "standalone",
+		"image": "/images/logo/mm-logo-white-bg.webp",
+		"image_height": "512",
+		"image_width": "512",
+		"telephone": "(973) 906-0441",
+		"address": {
+			"streetAddress": "24 West Hanover Avenue",
+			"addressLocality": "Morris Plains",
+			"addressRegion": "NJ",
+			"postalCode": "07950",
+			"addressCountry": "US"
+		},
+		"addressAdditionalInfo": "By Appointment Only, Call or Text to Schedule",
+		"openingHours": [
+			{
+				"day": "Mon",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Tue",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Wed",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Thu",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Fri",
+				"open": "09:00",
+				"close": "17:00"
+			},
+			{
+				"day": "Sat",
+				"closed": true
+			},
+			{
+				"day": "Sun",
+				"closed": true
+			}
+		],
+		"openingHoursAdditionalInfo": "Closed on weekends and major holidays.  Call for emergency availability.",
+		"priceRange": "$",
+		"brand": {
+			"@type": "Brand",
+			"name": "Manning Metalworks"
+		},
+		"termsOfService": "/",
+		"audience": "Local service businesses, contractors, and small business owners",
+		"offers": {
+			"@type": "Offer",
+			"priceCurrency": "USD",
+			"price": "0",
+			"url": "https://www.manningmetalworks.com/services",
+			"availability": "https://schema.org/InStock"
+		},
+		"availability": "https://schema.org/InStock",
+		"availableChannel": {
+			"@type": "ServiceChannel",
+			"serviceUrl": "https://www.manningmetalworks.com/contact",
+			"availableLanguage": [
+				"English"
+			],
+			"servicePhone": "+1-973-906-0441"
+		},
+		"services": [
+			{
+				"name": "Precision Metal Fabrication",
+				"short_description": "Manning Metalworks provides premier residential, commercial, and municipal metal fabrication across the region. We specialize in the complete project lifecycle, from CAD-assisted design and CNC plasma cutting to high-standard AWS certified assembly.",
+				"description": [
+					"Manning Metalworks provides premier residential, commercial, and municipal metal fabrication across the region. We specialize in the complete project lifecycle, from CAD-assisted design and CNC plasma cutting to high-standard AWS certified assembly.",
+					"Our shop is equipped to handle the rigorous demands of structural steel projects while maintaining the delicate touch required for high-end architectural features. Whether you are a general contractor needing safety bollards and HVAC dunnage for a commercial build, or a homeowner seeking a one-of-a-kind ornamental staircase, our team delivers results that meet the highest AWS (American Welding Society) standards.",
+					"Our competitive edge lies in our ability to work with a vast array of alloys. We offer expert-level fabrication in stainless steel, aluminum, and brass. This versatility is essential for clients in the food service industry requiring sanitary-grade kitchen equipment, as well as municipal departments needing corrosion-resistant infrastructure. Every project we undertake is a fusion of engineering integrity and aesthetic excellence, ensuring that your investment is not only structurally sound but also adds significant value to your property or facility."
+				],
+				"serviceType": "Precision Metal Fabrication",
+				"category": "Precision Metal Fabrication",
+				"serviceOutput": "High-quality metal components and assemblies built to exact engineering standards.",
+				"audience": "Contractors, businesses, and property owners seeking custom metal fabrication",
+				"image": "https://images.ctfassets.net/j4mgog9ij96e/3kYMY0QTmRH5Z80aeCb0Vj/b82537bb4539c269ded4f5ed2d9bed4a/steel-welding-2023-11-27-05-03-16-utc.jpg.webp?fm=webp",
+				"offers": "",
+				"termsOfService": "/"
+			},
+			{
+				"name": "Expert Repairs and Custom Fabrication",
+				"description": [
+					"We offer bespoke metal solutions and restoration services that off-the-shelf products simply cannot provide. Our technicians utilize MIG, TIG, and Stick welding processes to deliver high-strength repairs for everything from heavy machinery to antique ironwork.",
+					"At Manning Metalworks, we believe that \"custom\" means more than just built-to-order; it means built to solve a specific problem. We understand that in the industrial and agricultural sectors, a cracked frame or a failed bracket can halt productivity. Our technicians provide repairs that often exceed the original manufacturer's specifications. From heavy equipment bucket teeth and trailer frames to delicate antique wrought iron restoration, we treat every repair with meticulous attention to detail.",
+					"Beyond simple fixes, our custom fabrication service allows you to bring unique visions to life. We work closely with architects and designers to create functional art, such as custom-fit handrails, security grilles, and specialized furniture. We don't just \"patch\" metal; we analyze why a failure occurred and offer reinforcements to prevent future downtime. This proactive approach to repair and the ability to engineer custom parts on demand makes us an invaluable partner for local businesses and homeowners alike. By choosing Manning Metalworks, you are opting for a level of craftsmanship that prioritizes longevity and precision over quick, temporary fixes."
+				],
+				"short_description": "We offer bespoke metal solutions and restoration services that off-the-shelf products simply cannot provide. Our technicians utilize MIG, TIG, and Stick welding processes to deliver high-strength repairs for everything from heavy machinery to antique ironwork.",
+				"serviceType": "Expert Metal Repair",
+				"category": "Metal Repair and Fabrication",
+				"serviceOutput": "Durable custom metal repairs and fabricated parts tailored to your exact needs.",
+				"audience": "Customers needing precision metal repairs and restoration",
+				"image": "https://images.ctfassets.net/j4mgog9ij96e/72q7aF96JizutnU4rg5ypc/f0807c244e9ca3d63f9451c44fb0be84/manning-welding.jpg?fm=webp",
+				"offers": "",
+				"termsOfService": "/"
+			},
+			{
+				"name": "24 x 7 Emergency Mobile Welding Services",
+				"description": [
+					"Our 24/7 emergency mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night.",
+					"In the world of construction, logistics, and property management, metal failures rarely happen during convenient business hours. Our mobile rigs are fully self-contained with high-output generators, wire feeders, and a suite of specialized tools. This allows us to perform industrial-grade welding in remote locations, on busy construction sites, or at residential properties in the middle of the night. When a security gate fails at 2:00 AM or a critical production line support snaps during a graveyard shift, our team is dispatched immediately to mitigate the hazard and restore functionality.",
+					"We understand that every emergency is unique and often brings a high level of stress to your day or night. Our team is genuinely ready to step in and help resolve your problem with the urgency and care it deserves. Whether you are dealing with a structural failure or a security risk, we want to provide the professional support needed to get things back on track. Please do not hesitate to reach out to us directly at (973) 906-0441 so we can discuss your specific situation immediately. Alternatively, you can provide us with the project details by filling out our contact us form, and we will get to work on your solution right away."
+				],
+				"short_description": "Our 24/7 emergency mobile welding division serves as a rapid-response unit, bringing a 'shop on wheels' directly to your location. We provide emergency support for structural failures and machinery repairs at any hour of the day or night.",
+				"serviceType": "Emergency Mobile Welding",
+				"category": "Emergency Welding Services",
+				"serviceOutput": "On-site emergency welding solutions for urgent structural and equipment repairs.",
+				"audience": "Businesses and property owners needing emergency welding response",
+				"image": "https://images.ctfassets.net/j4mgog9ij96e/6cB07pwR2rPFsZ4ztIxXcy/f134c4fa44d3777c6a0c3e5822fa5a29/manning-truck.jpeg?fm=webp",
+				"offers": "",
+				"termsOfService": "/"
+			}
+		],
+		"serviceAreas": [
+			{
+				"name": "Dover, NJ",
+				"description": "Manning Metalworks provides certified commercial welding, structural asset repairs, and emergency off-hours support throughout the industrial corridors and busy commercial districts of Dover, New Jersey. Our mobile rigs are fully equipped to handle high-demand repairs for local manufacturing plants, transit support lines, and retail properties, ensuring that structural breakdowns face minimal downtime. We work hand-in-hand with facility managers to deliver strong, code-compliant solutions that maximize safety and operational longevity.",
+				"short_description": "Certified commercial welding, heavy machinery repairs, and emergency off-hours structural solutions serving Dover, NJ.",
+				"keywords": [
+					"Dover NJ commercial welding",
+					"industrial machinery repair Dover",
+					"metal fabricator Dover New Jersey"
+				],
+				"highlights": [
+					"Rapid response and evaluation for active commercial and retail emergencies",
+					"Heavy thick-plate structural steel repairs and reinforcement on site",
+					"Strict adherence to municipal building safety codes and AWS guidelines"
+				],
+				"image": "/images/service-areas/dover-commercial-welding.jpg"
+			},
+			{
+				"name": "Morris Plains NJ",
+				"description": "Manning Metalworks is proudly headquartered in Morris Plains, New Jersey, providing our immediate neighbors with premier residential, commercial, and municipal metal fabrication services. As a local, family-operated shop, we deliver artisan-grade craftsmanship backed by certified structural safety standards right here in our home community. From custom ornamental gates to urgent structural steel modifications, our localized presence ensures prompt project timelines and personal accountability.",
+				"short_description": "Headquartered in Morris Plains, Manning Metalworks provides certified local metal fabrication and custom ironwork with family-owned accountability.",
+				"keywords": [
+					"Morris Plains metal fabricator",
+					"welder in Morris Plains NJ",
+					"custom steel fabrication Morris Plains"
+				],
+				"highlights": [
+					"Home base operations ensuring rapid local dispatch times",
+					"Deep familiarity with Morris Plains municipal building and safety codes",
+					"Strong relationships with local residential and commercial contractors"
+				],
+				"image": ""
+			},
+			{
+				"name": "Morristown NJ",
+				"description": "We offer comprehensive custom fabrication, historical ironwork restoration, and 24/7 mobile welding services throughout the historic Morristown area. Catering to busy commercial properties, retail storefronts, and historic residential estates, our team ensures every weld blends code-compliant strength with architectural beauty. Whether you require sanitary welding for a restaurant kitchen or emergency structural repairs overnight, we keep Morristown moving forward.",
+				"short_description": "Premium historical restoration, commercial kitchen welding, and 24/7 emergency mobile welding across Morristown, New Jersey.",
+				"keywords": [
+					"Morristown NJ welding shop",
+					"historical iron restoration Morristown",
+					"emergency welder Morristown"
+				],
+				"highlights": [
+					"Specialized replication and restoration techniques for historical wrought iron",
+					"24/7 emergency response for high-traffic commercial and retail districts",
+					"Sanitary-grade stainless steel TIG welding for local hospitality businesses"
+				],
+				"image": ""
+			},
+			{
+				"name": "Denville NJ",
+				"description": "Manning Metalworks delivers expert on-site mobile welding, heavy equipment repairs, and custom residential metalwork across Denville, New Jersey. Known as the Hub of Morris County, Denville's bustling commercial corridors and lakeside residential communities rely on our rapid-response mobile rigs to solve critical structural failures. We bring an industrial-strength shop directly to your driveway, dock, or active construction site at any hour.",
+				"short_description": "Certified mobile welding and structural machinery repair services serving residential and commercial clients throughout Denville, NJ.",
+				"keywords": [
+					"mobile welding Denville NJ",
+					"heavy equipment repair Denville",
+					"custom handrails Denville"
+				],
+				"highlights": [
+					"Lakeside marine aluminum welding and utility trailer repairs",
+					"Rapid dispatch along the Route 10, Route 46, and I-80 corridors",
+					"Certified structural steel reinforcement for local commercial builds"
+				],
+				"image": ""
+			},
+			{
+				"name": "Parsippany NJ",
+				"description": "As one of the largest commercial and corporate hubs in Morris County, Parsippany demands industrial-grade welding services that operate with strict safety protocols. Manning Metalworks specializes in commercial contract support, structural steel dunnage, HVAC frame fabrication, and 24/7 heavy machinery repairs for corporate parks and logistics centers. We are fully insured and OSHA-compliant, minimizing your operational downtime when structural emergencies strike.",
+				"short_description": "Industrial metal fabrication, corporate facility maintenance contracts, and certified OSHA-compliant welding in Parsippany, NJ.",
+				"keywords": [
+					"Parsippany NJ commercial welding",
+					"structural steel Parsippany",
+					"industrial fabricator Parsippany"
+				],
+				"highlights": [
+					"Equipped for high-volume commercial and industrial corporate contracts",
+					"24/7 emergency repair units for warehousing facilities and logistics fleets",
+					"Full compliance with stringent commercial zoning and safety guidelines"
+				],
+				"image": ""
+			},
+			{
+				"name": "Randolph NJ",
+				"description": "Serving residential estates, commercial facilities, and municipal projects in Randolph, New Jersey, Manning Metalworks provides unrivaled custom metal solutions. We design, fabricate, and install premium architectural features, including modern minimalist handrails, secure property gates, and code-compliant municipal installations. Our father-and-son team treats every Randolph project with a meticulous 'measure twice, cut once' discipline.",
+				"short_description": "Custom architectural metalwork, residential ironwork, and municipal fabrication services across Randolph, NJ.",
+				"keywords": [
+					"Randolph NJ metal fabrication",
+					"custom gates Randolph",
+					"ornamental iron Randolph"
+				],
+				"highlights": [
+					"Bespoke residential architectural fabrication tailored to custom home designs",
+					"AWS-certified structural welding for residential renovations and additions",
+					"Durable, climate-resistant powder coating finishes for all outdoor installations"
+				],
+				"image": ""
+			},
+			{
+				"name": "Hanover Township NJ",
+				"description": "Manning Metalworks offers comprehensive commercial fabrication, mobile fleet support, and emergency infrastructure welding throughout Hanover Township, including Whippany and Cedar Knolls. Our proximity allows us to respond immediately to local manufacturing facilities, retail centers, and residential neighborhoods. We specialize in high-strength repairs on thick-plate carbon steel and aluminum equipment, ensuring your operations face minimal interruption.",
+				"short_description": "Certified commercial welding, shop fabrication, and 24/7 mobile response serving Whippany, Cedar Knolls, and Hanover Township.",
+				"keywords": [
+					"Whippany NJ welders",
+					"Hanover Township metal fabrication",
+					"commercial welding Cedar Knolls"
+				],
+				"highlights": [
+					"Immediate mobile deployment to local industrial parks and retail sectors",
+					"Expert aluminum and stainless steel fabrication for commercial fleets",
+					"Accurate non-destructive testing for structural municipal applications"
+				],
+				"image": ""
+			},
+			{
+				"name": "Mendham NJ",
+				"description": "For the pristine estates and historic properties of Mendham, Manning Metalworks provides elite, artisan-grade ornamental ironwork and custom fabrication. We recognize the importance of aesthetic harmony in the Mendhams, creating hand-forged gates, custom pool railings, and structural reinforcements that seamlessly blend with luxury architecture. Our premium finishes ensure your custom metal installations remain beautiful and rust-free for generations.",
+				"short_description": "Elite ornamental ironwork, premium residential estate gates, and precision metal restoration for Mendham, NJ.",
+				"keywords": [
+					"Mendham NJ custom metalwork",
+					"ornamental iron gates Mendham",
+					"residential welder Mendham"
+				],
+				"highlights": [
+					"Artisan-level detail matching high-end residential architectural designs",
+					"Historical restoration methods for antique wrought iron features",
+					"Clean, non-disruptive residential on-site mobile welding execution"
+				],
+				"image": ""
+			},
+			{
+				"name": "Chatham NJ",
+				"description": "Manning Metalworks offers precision architectural fabrication, custom handrail installation, and emergency repair services to residents and business owners in Chatham, New Jersey. Whether addressing an ADA-compliant commercial ramp railing or repairing a damaged residential driveway gate, our team delivers flawless welds and structural strength. We prioritize clean workspaces and clear communication, treating your Chatham property with the utmost professionalism.",
+				"short_description": "Precision architectural metal fabrication, custom handrails, and residential gate repairs serving Chatham Borough and Township.",
+				"keywords": [
+					"Chatham NJ welder",
+					"custom handrails Chatham",
+					"gate repair Chatham NJ"
+				],
+				"highlights": [
+					"Specialized in seamless, modern minimalist architectural metal features",
+					"Flawless code-compliant ADA handrail systems for commercial buildings",
+					"Prompt residential repair dispatch to safeguard home security boundaries"
+				],
+				"image": ""
+			},
+			{
+				"name": "Madison NJ",
+				"description": "Known as The Rose City, Madison features a beautiful mix of historic architecture, corporate facilities, and educational institutions that demand top-tier metalwork services. Manning Metalworks provides Madison, New Jersey with expert municipal contract support, institutional maintenance, and custom residential fabrication. We work closely with local facility managers and homeowners to provide structural integrity that stands up to heavy everyday use.",
+				"short_description": "Institutional metalwork maintenance, municipal fabrication, and custom residential welding services across Madison, NJ.",
+				"keywords": [
+					"Madison NJ metal fabricator",
+					"commercial welding Madison",
+					"structural steel Madison NJ"
+				],
+				"highlights": [
+					"Proven capacity for institutional and educational facility structural support",
+					"Off-hours overnight scheduling to minimize municipal and retail disruptions",
+					"Premium material selection matching classic local architectural themes"
+				],
+				"image": ""
+			},
+			{
+				"name": "Roxbury Township NJ",
+				"description": "Manning Metalworks is the first choice for heavy equipment welding, commercial fabrication, and residential mobile repairs across Roxbury Township, including Succasunna and Ledgewood. Positioned near key transportation corridors, our 24/7 mobile welding rigs provide critical field service to construction yards, logistics fleets, and industrial parks. We handle heavy thick-plate welding, trailer structural repair, and bucket face hardfacing on-site to get your machines back to work.",
+				"short_description": "Heavy machinery repair, industrial welding, and 24/7 mobile emergency welding across Roxbury, Succasunna, and Ledgewood.",
+				"keywords": [
+					"Roxbury NJ mobile welding",
+					"heavy equipment repair Succasunna",
+					"welder Ledgewood NJ"
+				],
+				"highlights": [
+					"24/7 emergency response for heavy industrial and highway construction machinery",
+					"High-output field equipment designed for thick structural steel plate welding",
+					"Expert aluminum utility trailer frame and ramp reconstruction"
+				],
+				"image": ""
+			},
+			{
+				"name": "Montville NJ",
+				"description": "From custom structural steel framing for luxury home construction to emergency commercial repairs, Manning Metalworks serves the Montville community with certified excellence. We provide local homeowners, residential builders, and commercial property groups with custom gates, structural steel beams, and on-site welding modifications. Our rigorous quality control systems ensure every project complies with structural engineering mandates.",
+				"short_description": "Structural steel framing components, custom metal gates, and premium certified welding services in Montville, NJ.",
+				"keywords": [
+					"Montville NJ structural steel",
+					"welding services Montville",
+					"custom fabricator Montville NJ"
+				],
+				"highlights": [
+					"Expertise in custom structural beams and column modifications for new builds",
+					"High-durability powder-coated property boundary gates and fencing",
+					"Comprehensive code compliance alignment for municipal structures"
+				],
+				"image": ""
+			},
+			{
+				"name": "East Hanover NJ",
+				"description": "Manning Metalworks delivers professional commercial kitchen welding, commercial facility upkeep, and precision custom fabrication across East Hanover, New Jersey. With its prominent retail centers and industrial presence, local businesses rely on our 24/7 technical availability to manage sudden infrastructure emergencies. We specialize in sanitary stainless steel applications, custom safety bollards, and strong structural repairs designed for high-use corporate environments.",
+				"short_description": "Commercial facility welding, stainless steel kitchen repairs, and safety bollard fabrication in East Hanover, NJ.",
+				"keywords": [
+					"East Hanover NJ welding",
+					"commercial kitchen welding East Hanover",
+					"safety bollards East Hanover"
+				],
+				"highlights": [
+					"Sanitary-compliant TIG welding for local food processing and commercial kitchens",
+					"Custom vehicle safety bollard installation and facility guardrail repairs",
+					"Flexible off-peak scheduling tailored for uninterrupted commercial commerce"
+				],
+				"image": ""
+			},
+			{
+				"name": "Kinnelon NJ",
+				"description": "Serving the exclusive residential communities and public facilities of Kinnelon, New Jersey, Manning Metalworks offers elite architectural fabrication and custom mobile welding. We bring our self-contained, advanced mobile shop directly to your property to fix structural deck joints, repair private driveway gates, or reinforce residential utility gear. We execute clean, quiet, and exceptionally safe operations that respect local neighborhood guidelines.",
+				"short_description": "High-end residential gate fabrication, deck structural reinforcement, and mobile welding across Kinnelon, NJ.",
+				"keywords": [
+					"Kinnelon NJ welder",
+					"residential fabrication Kinnelon",
+					"gate repair Kinnelon"
+				],
+				"highlights": [
+					"Quiet, ultra-clean mobile welding methods tailored for residential properties",
+					"Premium ornamental ironwork designed to withstand mountain environments",
+					"Emergency security restoration for properties with compromised gate lines"
+				],
+				"image": ""
+			},
+			{
+				"name": "Jefferson Township NJ",
+				"description": "Manning Metalworks provides expert marine aluminum fabrication, utility trailer reinforcement, and 24/7 mobile welding services across Jefferson Township and the Lake Hopatcong region. The seasonal and industrial demands of this lakeside community require specialized material knowledge, specifically high-grade aluminum TIG welding. We repair cracked pontoon hulls, boat trailers, and lakeside municipal structures, ensuring maximum structural safety on the water and road.",
+				"short_description": "Marine aluminum TIG welding, trailer repair, and 24/7 mobile emergency support for Jefferson Township, NJ.",
+				"keywords": [
+					"Jefferson Township NJ welding",
+					"Lake Hopatcong marine welding",
+					"trailer repair Jefferson NJ"
+				],
+				"highlights": [
+					"Specialized marine-grade aluminum welding for watercraft and docks",
+					"On-site mobile deployment directly to local marinas and residential waterfronts",
+					"High-strength heavy frame repairs for regional snow plows and utility fleets"
+				],
+				"image": ""
+			},
+			{
+				"name": "Rockaway Township NJ",
+				"description": "From commercial retail hubs to widespread residential zones, Manning Metalworks provides Rockaway Township with reliable, 24/7 certified welding solutions. We focus on heavy commercial equipment upkeep, municipal infrastructure repairs, and custom residential ironwork updates. Our mobile crews respond directly around the Rockaway Townsquare Mall region and local transit lines to handle critical structural safety needs at a moment's notice.",
+				"short_description": "Certified metal fabrication, commercial asset repair, and 24/7 mobile emergency welding in Rockaway Township, NJ.",
+				"keywords": [
+					"Rockaway NJ welding shop",
+					"mobile welder Rockaway Township",
+					"commercial fabrication Rockaway"
+				],
+				"highlights": [
+					"24/7 commercial facility maintenance and asset restoration response",
+					"Certified AWS structural support for retail extensions and infrastructure",
+					"Local family-owned service delivery bringing reliable, expert care on-site"
+				],
+				"image": ""
+			},
+			{
+				"name": "New Providence, NJ",
+				"slug": "new-providence-nj",
+				"description": "Serving the corporate parks, medical offices, and premier residential neighborhoods of New Providence, New Jersey, Manning Metalworks offers elite custom metal fabrication and facility maintenance support. Our unique team setup combines extensive elite fabrication experience with the intense situational safety awareness of fire service disciplines to execute flawless property updates. From custom modern interior handrails to durable facility protection barriers, we provide pristine, professional results that safeguard your investments.",
+				"short_description": "Elite architectural metal fabrication, custom handrails, and professional property maintenance for New Providence, NJ.",
+				"keywords": [
+					"New Providence NJ metal fabrication",
+					"custom handrails New Providence",
+					"commercial welder New Providence NJ"
+				],
+				"highlights": [
+					"Ultra-clean, safe on-site execution tailored for corporate and residential settings",
+					"Bespoke architectural detailing across a versatile range of structural materials",
+					"Comprehensive project estimates detailing code-compliance and safety alignments"
+				],
+				"image": ""
+			},
+			{
+				"name": "Wharton, NJ",
+				"slug": "wharton-nj",
+				"description": "Manning Metalworks is the first choice for dependable mobile welding services, contractor jobsite support, and heavy equipment repairs throughout Wharton, New Jersey. Positioned directly off major regional transit routes, our mobile welding setups act as a complete workshop on wheels, deploying straight to active construction sites, logistics yards, and municipal properties. We provide general contractors and fleet operators with the ultimate field versatility to handle any structural failure or design modification.",
+				"short_description": "Mobile contractor welding support, heavy equipment repair, and versatile field fabrication across Wharton, NJ.",
+				"keywords": [
+					"Wharton NJ mobile welding",
+					"heavy equipment repair Wharton",
+					"contractor welder Wharton NJ"
+				],
+				"highlights": [
+					"Complete field versatility to weld, repair, or modify any scale of metal asset",
+					"Emergency off-hours evaluation and coordination to handle sudden jobsite crises",
+					"Family-owned accountability providing clear, honest project pricing"
+				],
+				"image": ""
+			}
+		],
+		"sameAs": [
+			"https://www.manningmetalworks.com",
+			"https://www.facebook.com/p/Manning-Metalworks-LLC-61572722814701/",
+			"https://www.instagram.com/manning.metalworks/",
+			"https://www.linkedin.com/in/tim-manning-89736430a/",
+			"https://www.linkedin.com/in/gregory-manning-62a75428/"
+		]
+	},
+	"routes": [
+		{
+			"name": "Home",
+			"path": "/",
+			"title": "Manning Metalworks | Custom Metal Fabrication | Morris Plains, NJ",
+			"description": "Manning Metalworks offers expert custom metal fabrication and welding services in Morris Plains, NJ. Specializing in railings, gates, and furniture for homes & businesses.",
+			"keywords": [
+				"custom metal fabrication Morris Plains NJ",
+				"welding services Morris Plains NJ",
+				"metal railings Morris Plains NJ",
+				"metal gates Morris Plains NJ",
+				"metal furniture Morris Plains NJ",
+				"residential metalwork Morris Plains",
+				"commercial metalwork Morris Plains",
+				"metal fabricator Morris Plains NJ",
+				"custom metal work Northern NJ"
+			]
+		},
+		{
+			"name": "About Us",
+			"path": "/about-us",
+			"title": "Manning Metalworks | Custom Metal Fabrication | Morris Plains, NJ",
+			"description": "Discover Manning Metalworks, offering custom metal fabrication, welding, railings, gates, & furniture in Morris Plains, NJ for residential & commercial needs.",
+			"keywords": [
+				"Manning Metalworks",
+				"custom metal fabrication Morris Plains NJ",
+				"welding services Morris Plains NJ",
+				"metal railings Morris Plains",
+				"metal gates Morris Plains",
+				"metal furniture Morris Plains",
+				"residential metalwork Morris Plains NJ",
+				"commercial metalwork Morris Plains NJ",
+				"metal fabricator Morris Plains",
+				"Morris Plains metal fabrication",
+				"Morris County metalwork"
+			]
+		},
+		{
+			"name": "Service Areas",
+			"path": "/service-areas",
+			"hidden": true,
+			"title": "Manning Metalworks | Custom Metal Fabrication | Service Areas",
+			"description": "Explore the local service areas covered by Manning Metalworks' expert metal fabrication and welding services in Morris Plains, New Jersey.",
+			"keywords": [
+				"Manning Metalworks",
+				"metal fabrication",
+				"welding services",
+				"Morris Plains NJ"
+			]
+		},
+		{
+			"name": "Services",
+			"path": "/services",
+			"title": "Manning Metalworks | Custom Metal Fabrication & Welding | Morris Plains, NJ",
+			"description": "Manning Metalworks: Custom metal fabrication & welding services in Morris Plains, NJ. We craft railings, gates, furniture for residential & commercial clients.",
+			"keywords": [
+				"custom metal fabrication Morris Plains NJ",
+				"welding services Morris Plains NJ",
+				"metalwork Morris Plains NJ",
+				"custom railings Morris Plains",
+				"metal gates Morris Plains",
+				"custom metal furniture NJ",
+				"residential metal fabrication",
+				"commercial welding services",
+				"metal fabricator New Jersey",
+				"Morris Plains NJ welding",
+				"metal fabrication Morris Plains",
+				"welding Morris Plains"
+			]
+		},
+		{
+			"name": "Gallery",
+			"path": "/gallery",
+			"title": "Manning Metalworks | Custom Metal Fabrication Gallery | Morris Plains, NJ",
+			"description": "Explore Manning Metalworks' gallery of custom metal fabrication and welding projects in Morris Plains, NJ. See our craftsmanship in railings, gates, furniture, and more.",
+			"keywords": [
+				"custom metal fabrication gallery Morris Plains NJ",
+				"metal welding projects Morris Plains",
+				"custom railings portfolio",
+				"metal gates examples NJ",
+				"metal furniture designs",
+				"residential metalwork gallery",
+				"commercial metal fabrication projects"
+			],
+			"hidden": ""
+		},
+		{
+			"name": "FAQs",
+			"path": "/faqs",
+			"title": "Manning Metalworks FAQs | Metal Fabrication | Morris Plains, NJ",
+			"description": "Have questions about custom metalwork? Get answers from Manning Metalworks, your Morris Plains, NJ experts for railings, gates & furniture.",
+			"keywords": [
+				"Manning Metalworks",
+				"metal fabrication Morris Plains NJ",
+				"welding services Morris Plains",
+				"custom metalwork Morris Plains",
+				"metal railings Morris Plains NJ",
+				"metal gates Morris Plains NJ",
+				"custom furniture fabrication NJ",
+				"residential metalwork FAQs",
+				"commercial welding FAQs",
+				"metal fabrication questions"
+			],
+			"hidden": ""
+		},
+		{
+			"name": "Blog",
+			"path": "/blog",
+			"title": "Manning Metalworks Blog | Custom Metal Fabrication & Welding | Morris Plains, NJ",
+			"description": "Explore the Manning Metalworks blog for expert articles on custom metal fabrication, welding, railings, gates, and furniture. Serving Morris Plains, Morris Plains, NJ & beyond.",
+			"keywords": [
+				"custom metal fabrication",
+				"welding services",
+				"metal railings",
+				"metal gates",
+				"metal furniture",
+				"residential metalwork",
+				"commercial metalwork",
+				"Morris Plains NJ",
+				"Morris Plains NJ",
+				"metal fabrication blog"
+			]
+		},
+		{
+			"name": "Contact Us",
+			"path": "/contact-us",
+			"title": "Contact Manning Metalworks | Metalwork | Morris Plains, NJ",
+			"description": "Contact Manning Metalworks for custom metal fabrication, welding, railings, and gates in Morris Plains, NJ. Get a free quote for your residential or commercial project today!",
+			"keywords": [
+				"Manning Metalworks",
+				"custom metal fabrication Morris Plains NJ",
+				"welding services Morris Plains NJ",
+				"metal railings Morris Plains",
+				"metal gates Morris Plains NJ",
+				"custom metalwork",
+				"residential metal fabrication",
+				"commercial metal fabrication",
+				"contact us",
+				"metal fabricator quote"
+			]
+		},
+		{
+			"name": "Admin",
+			"hidden": true,
+			"routes": [
+				{
+					"name": "404",
+					"path": "/404",
+					"hidden": true,
+					"title": "Manning Metalworks - Page Not Found",
+					"description": "The page you are looking for could not be found.",
+					"keywords": [
+						"Manning Metalworks",
+						"404",
+						"page not found"
+					]
+				},
+				{
+					"name": "Sitemap",
+					"path": "/sitemap.xml",
+					"hidden": true,
+					"title": "Manning Metalworks | Sitemap | Morris Plains, NJ",
+					"description": "Manning Metalworks sitemap.xml",
+					"keywords": [
+						"Manning Metalworks",
+						"sitemap.xml"
+					]
+				},
+				{
+					"name": "Robots.txt",
+					"path": "/robots.txt",
+					"hidden": true,
+					"title": "Manning Metalworks | Robots.txt | Morris Plains, NJ",
+					"description": "Manning Metalworks robots.txt",
+					"keywords": [
+						"Manning Metalworks",
+						"robots.txt"
+					]
+				},
+				{
+					"name": "Web Manifest",
+					"path": "/manifest.webmanifest",
+					"hidden": true,
+					"title": "Manning Metalworks | Web Manifest | Morris Plains, NJ",
+					"description": "Manning Metalworks web manifest",
+					"keywords": [
+						"Manning Metalworks",
+						"manifest.webmanifest"
+					]
+				},
+				{
+					"name": "Humans Txt",
+					"path": "/humans.txt",
+					"hidden": true,
+					"title": "Manning Metalworks | Humans Txt | Morris Plains, NJ",
+					"description": "Humans Txt",
+					"keywords": [
+						"Manning Metalworks",
+						"humans txt"
+					]
+				},
+				{
+					"name": "Security Txt",
+					"hidden": true,
+					"path": "/security.txt",
+					"title": "Manning Metalworks | Security Txt | Morris Plains, NJ",
+					"description": "Security contact and vulnerability disclosure information.",
+					"keywords": [
+						"Manning Metalworks",
+						"security txt",
+						"security"
+					]
+				},
+				{
+					"name": "Style Guide",
+					"hidden": true,
+					"path": "/styleguide",
+					"title": "Manning Metalworks | Style Guide | Morris Plains, NJ",
+					"description": "A full style guide for this website, including color pallete, fonts, and information architecture. ",
+					"keywords": [
+						"Manning Metalworks",
+						"style guide"
+					]
+				},
+				{
+					"name": "Blog Calendar",
+					"hidden": true,
+					"path": "/blogcalendar",
+					"title": "Manning Metalworks | Blog Calendar | Morris Plains, NJ",
+					"description": "",
+					"keywords": ""
+				},
+				{
+					"name": "Updates",
+					"hidden": true,
+					"path": "/updates",
+					"title": "Manning Metalworks | Updates | Morris Plains, NJ",
+					"description": "",
+					"keywords": ""
+				}
+			],
+			"keywords": []
+		}
+	],
+	"visualdesign": {
+		"primary-color": {
+			"value": "#369",
+			"type": "color",
+			"group": "palette",
+			"label": "Primary color"
+		},
+		"secondary-color": {
+			"value": "#BCD",
+			"type": "color",
+			"group": "palette",
+			"label": "Secondary color"
+		},
+		"accent1-color": {
+			"value": "#CCC",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 1"
+		},
+		"accent2-color": {
+			"value": "#EEE",
+			"type": "color",
+			"group": "palette",
+			"label": "Accent color 2"
+		},
+		"bg-color": {
+			"value": "#ffffff",
+			"type": "color",
+			"group": "palette",
+			"label": "Background color"
+		},
+		"text-color": {
+			"value": "#000000",
+			"type": "color",
+			"group": "palette",
+			"label": "Font color"
+		},
+		"header-font": {
+			"value": "\"Montserrat\", Verdana, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Header font"
+		},
+		"body-font": {
+			"value": "\"Roboto\", Arial, sans-serif",
+			"type": "font",
+			"group": "typography",
+			"label": "Body font"
+		},
+		"font-size1-min": {
+			"value": "2.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 min"
+		},
+		"font-size1-max": {
+			"value": "3.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 1 max"
+		},
+		"font-size2-min": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 min"
+		},
+		"font-size2-max": {
+			"value": "1.75rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 2 max"
+		},
+		"font-size3-min": {
+			"value": "1.17rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 min"
+		},
+		"font-size3-max": {
+			"value": "1.35rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 3 max"
+		},
+		"font-size4-min": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 min"
+		},
+		"font-size4-max": {
+			"value": "1.25rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 4 max"
+		},
+		"font-size5-min": {
+			"value": "0.83rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 min"
+		},
+		"font-size5-max": {
+			"value": "1.00rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 5 max"
+		},
+		"font-size6-min": {
+			"value": "0.67rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 min"
+		},
+		"font-size6-max": {
+			"value": "0.85rem",
+			"type": "size",
+			"group": "typography",
+			"label": "Font size 6 max"
+		},
+		"font-min-screen": {
+			"value": "375px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font min screen"
+		},
+		"font-max-screen": {
+			"value": "1440px",
+			"type": "size",
+			"group": "typography",
+			"label": "Font max screen"
+		},
+		"border-radius": {
+			"value": "0.5rem",
+			"type": "size",
+			"group": "layout",
+			"label": "Border radius"
+		},
+		"box-shadow": {
+			"value": "0 2px 4px rgba(0,0,0,0.1)",
+			"type": "shadow",
+			"group": "layout",
+			"label": "Box shadow"
+		},
+		"transition": {
+			"value": "all 0.3s ease",
+			"type": "transition",
+			"group": "layout",
+			"label": "Transition"
+		}
+	},
+	"deployMarker": "2026-06-01T13:40:21.559Z"
 }

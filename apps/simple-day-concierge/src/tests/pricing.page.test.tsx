@@ -4,17 +4,16 @@ import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 
-import TermsPage from '@/app/(pages)/terms/page';
+import PricingPage from '@/app/(pages)/pricing/page';
 
-describe('Terms page', () => {
+describe('Pricing page', () => {
 	beforeEach(() => {
 		resetMockState();
 		vi.clearAllMocks();
 	});
 
-	it('renders the terms page with privacy and terms sections', () => {
-		render(<TermsPage />);
-		expect(screen.getByTestId('page-title-header')).toBeTruthy();
-		expect(screen.getAllByTestId('page-section-header').length).toBeGreaterThanOrEqual(2);
+	it('renders the pricing page title', () => {
+		render(<PricingPage />);
+		expect(screen.getByTestId('page-title-header')).toHaveTextContent('Simple Day Concierge Pricing');
 	});
 });

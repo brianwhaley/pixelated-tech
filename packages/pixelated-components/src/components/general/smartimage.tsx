@@ -44,7 +44,7 @@ type smartImageVariant = 'cloudinary' | 'nextjs' | 'img';
  * @param {number|string} [props.height] - Preferred height in pixels or CSS value.
  * @param {boolean} [props.aboveFold] - Hint that the image is above the fold and should be prioritized (eager loading / high fetch priority).
  * @param {oneOf} [props.loading] - Loading strategy: 'lazy' or 'eager'.
- * @param {boolean} [props.preload] - If true, suggests the image should be preloaded (best-effort).
+ * @param {boolean} [props.priority] - Marks the image as high priority for Next.js Image.
  * @param {oneOf} [props.decoding] - Decoding hint: 'async', 'auto' or 'sync'.
  * @param {oneOf} [props.fetchPriority] - Fetch priority: 'high', 'low', or 'auto'.
  * @param {string} [props.sizes] - Sizes attribute override for responsive images.
@@ -78,8 +78,8 @@ SmartImage.propTypes = {
 	aboveFold: PropTypes.bool,
 	/** Loading hint: 'lazy' or 'eager'. */
 	loading: PropTypes.oneOf(['lazy', 'eager']),
-	/** When true suggests the image should be preloaded. */
-	preload: PropTypes.bool,
+	/** Marks the image as high priority for Next.js Image. */
+	priority: PropTypes.bool,
 	/** Decoding hint for the browser. */
 	decoding: PropTypes.oneOf(['async', 'auto', 'sync']),
 	/** Fetch priority hint for modern browsers. */
@@ -109,6 +109,9 @@ SmartImage.propTypes = {
 };
 export type SmartImageType = InferProps<typeof SmartImage.propTypes> & React.ImgHTMLAttributes<HTMLImageElement>;
 export function SmartImage(props: SmartImageType) {
+
+	if (debug) console.debug('SmartImage props', { props });
+
 	const config = usePixelatedConfig();
 	const cloudCfg = config?.cloudinary;
 	
@@ -141,10 +144,10 @@ export function SmartImage(props: SmartImageType) {
 	newProps.cloudinaryEnv = safeString(props.cloudinaryEnv ?? cloudCfg?.product_env);
 	newProps.cloudinaryDomain = safeString(cloudCfg?.baseUrl ?? CLOUDINARY_DOMAIN);
 	newProps.cloudinaryTransforms = safeString(CLOUDINARY_TRANSFORMS ?? cloudCfg?.transforms);
-	newProps.fetchPriority = props.aboveFold ? 'high' : 'auto';
-	newProps.loading = props.aboveFold ? 'eager' : 'lazy';
-	newProps.decoding = props.aboveFold ? 'sync' : 'async';
-	newProps.preload = props.aboveFold ? true : undefined;
+	newProps.fetchPriority = props.fetchPriority ?? (props.aboveFold ? 'high' : 'auto');
+	newProps.loading = props.loading ?? (props.aboveFold ? 'eager' : 'lazy');
+	newProps.decoding = props.decoding ?? (props.aboveFold ? 'sync' : 'async');
+	newProps.priority = props.priority ?? (props.aboveFold ? true : undefined);
 	newProps.src = safeString(props.src) ?? (props.src as any) ?? undefined;
 	newProps.id = safeString(props.id);
 	newProps.name = safeString(props.name);
@@ -236,9 +239,14 @@ export function SmartImage(props: SmartImageType) {
 	delete newProps.cloudinaryTransforms;
 
 	if (variant !== 'img') {
+		if (debug) console.warn('SmartImage: rendering nextjs variant', { ...(newProps as any) });
+		// Force remount of next/image when the delivery variant changes after a fallback.
+		// Without a key change, React will reuse the same internal Image instance even if props differ.
+		const imageKey = `${variant}-${newProps.id ?? newProps.src}`;
 		try {
 			return (
 				<Image 
+					key={imageKey}
 					{ ...(newProps as any) }
 					src={newProps.src} // required
 					alt={newProps.alt} // required
@@ -254,6 +262,10 @@ export function SmartImage(props: SmartImageType) {
 	}
 
 	/* ===== IMG VARIANT ===== */
+
+	/* clean up props */
+	delete newProps.priority;
+	
 	return (
 		/* eslint-disable-next-line pixelated/no-raw-img */
 		<img 
