@@ -37,10 +37,10 @@ export default function Event({params}: { params: Promise<{ event: string }> }){
 	}
 
 	const apiProps = {
-		base_url: config?.contentful?.base_url ?? "",
-		space_id: config?.contentful?.space_id ?? "",
-		environment: config?.contentful?.environment ?? "",
-		delivery_access_token: config?.contentful?.delivery_access_token ?? "",
+		base_url: config?.integrations.contentful?.base_url ?? "",
+		space_id: config?.integrations.contentful?.space_id ?? "",
+		environment: config?.integrations.contentful?.environment ?? "",
+		delivery_access_token: config?.integrations.contentful?.delivery_access_token ?? "",
 	};
 
 	const [ eventData , setEventData ] = useState<EventCard | null>(null);

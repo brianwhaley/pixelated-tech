@@ -158,6 +158,8 @@ export function ShoppingCart(props: ShoppingCartType) {
 		]
 	};
 	const checkoutShippingWeight = checkoutDataForProvider.shippingWeight ?? 0;
+	// Optional PayPal client ID to enable the PayPal checkout button.
+	// This value is pulled from config.integrations.paypal.payPalApiKey or sandboxPayPalApiKey.
 	const paymentProviderProps = activeProvider ? {
 		...activeProvider.getProps(effectiveConfig, checkoutDataForProvider, {
 			onPaymentCapture: props.onPaymentCapture ?? undefined,
