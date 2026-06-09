@@ -1,22 +1,19 @@
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
-export const headers = () => [
-	{
-		key: 'Cache-Control',
-		value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
-	},
-	{
-		key: 'Pragma',
-		value: 'no-cache',
-	},
-	{
-		key: 'Expires',
-		value: '0',
-	},
-];
+export const headers = () => [{
+	key: 'Cache-Control',
+	value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+},{
+	key: 'Pragma',
+	value: 'no-cache',
+},{
+	key: 'Expires',
+	value: '0',
+}];
 
 import React from 'react';
+import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { PageSection, PageSectionHeader, PageTitleHeader, Table } from '@pixelated-tech/components';
 import {
@@ -129,8 +126,9 @@ export function buildEventGroups(rows: Array<Record<string, any>>) {
 		}));
 }
 
-export default async function EventReportPage() {
+export default async function EventReportPage({ searchParams }: { searchParams?: Promise<{ v?: string }> } = {}) {
 	noStore();
+	const resolvedSearchParams = await searchParams;
 
 	try {
 		const rows = await listPixelatedFormSubmissionReportRows({
@@ -140,6 +138,11 @@ export default async function EventReportPage() {
 		});
 		const reportRows = sortReportRows(rows);
 		const eventGroups = buildEventGroups(reportRows);
+		const requestedVersion = resolvedSearchParams?.v;
+		const currentVersion = `${eventGroups.reduce((sum, group) => sum + group.registrationCount, 0)}`;
+		if (requestedVersion !== currentVersion && process.env.NODE_ENV !== 'test') {
+			redirect(`/events/report?v=${currentVersion}`);
+		}
 		const eventReportRows = eventGroups.map((group) => ({
 			'Event ID + Event Name': `${group.eventId} - ${group.eventName}`,
 			'Registration Count': group.registrationCount,
@@ -190,6 +193,7 @@ export default async function EventReportPage() {
 			</>
 		);
 	} catch (error: any) {
+		if (error?.message === 'NEXT_REDIRECT') throw error;
 		return (
 			<>
 				<PageTitleHeader title="Three Muses Order Report" />
