@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Carousel } from "@/components/elements/carousel";
+import { Carousel } from "@/components/structure/carousel";
 import { getContentfulEntriesByType } from "@/components/integrations/contentful.delivery";
 import { usePixelatedConfig } from "@/components/config/config.client";
 import '@/css/pixelated.global.css';

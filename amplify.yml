@@ -18,8 +18,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -53,8 +54,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -88,8 +90,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -123,8 +126,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -158,8 +162,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -193,8 +198,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -231,8 +237,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -266,11 +273,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
-              # Decrypt after shared package build so @pixelated-tech/components/scripts/config-vault.js resolves correctly.
-              # This app still requires plaintext pixelated.config.json before the Next build.
-              if [ -n "$PIXELATED_CONFIG_KEY" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); else echo "PIXELATED_CONFIG_KEY not set; skipping config decrypt"; fi
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -343,8 +348,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -378,8 +384,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
@@ -413,8 +420,9 @@ applications:
             - |
               echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
               npm run build -w packages/pixelated-components
+              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
               echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT; fi
               npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
               npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
