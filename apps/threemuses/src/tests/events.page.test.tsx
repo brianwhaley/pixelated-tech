@@ -69,6 +69,7 @@ const exampleEvent1 = {
 		duration: 4,
 		maxSeats: 25,
 		carouselImages: [],
+		category: ['Adult'],
 	},
 	sys: {
 		contentType: { sys: { id: '75OqioFABdZZ1QaQChRGic' } },
@@ -163,6 +164,7 @@ describe('Events page', () => {
 		expect(mockAddToShoppingCart).toHaveBeenCalledWith(expect.objectContaining({
 			itemID: 'event-1',
 			itemTitle: 'Test Event One',
+			itemCategory: ['Adult', 'event'],
 			itemImageURL: '/images/event.jpg',
 		}));
 	});
