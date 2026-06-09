@@ -1,38 +1,39 @@
 {
-	"name": "leadscraper",
-	"version": "2.4.25",
-	"private": true,
-	"scripts": {
-		"dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
-		"build": "npm run clean && NODE_ENV=production next build --webpack",
-		"start": "npm run clean && next build --webpack && next start",
-		"lint": "eslint --fix",
-		"clean": "rm -rf .next && rm -rf out",
-		"json2csv": "node scripts/json-to-csv.js",
-		"config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
-		"config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
-		"config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
-		"release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
-		"release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
-		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
-	},
-	"dependencies": {
-		"@pixelated-tech/components": "*",
-		"next": "^16.2.4",
-		"puppeteer": "^25.0.2"
-	},
-	"devDependencies": {
-		"@eslint/eslintrc": "^3.3.5",
-		"@eslint/js": "9.39.4",
-		"@types/node": "^25.7.0",
-		"@types/react": "^19.2.14",
-		"@types/react-dom": "^19.2.3",
-		"eslint": "9.39.4",
-		"eslint-config-next": "^16.2.2",
-		"glob": "^13.0.6",
-		"react": "^19.2.6",
-		"react-dom": "^19.2.6",
-		"typescript": "^6.0.2"
-	},
-	"overrides": {}
+  "name": "leadscraper",
+  "version": "2.4.26",
+  "private": true,
+  "scripts": {
+    "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
+    "build": "npm run clean && NODE_ENV=production next build --webpack",
+    "start": "npm run clean && next build --webpack && next start",
+    "lint": "eslint --fix",
+    "clean": "rm -rf .next && rm -rf out",
+    "json2csv": "node scripts/json-to-csv.js",
+    "config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
+    "config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
+    "config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
+    "release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+    "release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+    "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
+  },
+  "dependencies": {
+    "@pixelated-tech/components": "*",
+    "next": "^16.2.4",
+    "puppeteer": "^25.0.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "9.39.4",
+    "@types/node": "^25.7.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "^16.2.2",
+    "glob": "^13.0.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "typescript": "^6.0.2"
+  },
+  "overrides": {},
+  "deployMarker": "2026-06-09T00:54:08.917Z"
 }
