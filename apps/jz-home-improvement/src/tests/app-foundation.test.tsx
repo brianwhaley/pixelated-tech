@@ -4,6 +4,17 @@ import { createPageComponentMocks } from '@/test/page-mocks';
 import { headers } from 'next/headers';
 import * as componentsServer from '@pixelated-tech/components/server';
 
+function findReactElementByTestId(node: any, testId: string): boolean {
+	if (node == null) return false;
+	const nodes = Array.isArray(node) ? node : [node];
+	for (const item of nodes) {
+		if (!item || typeof item !== 'object') continue;
+		if (item.props?.['data-testid'] === testId) return true;
+		if (findReactElementByTestId(item.props?.children, testId)) return true;
+	}
+	return false;
+}
+
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 vi.mock('@pixelated-tech/components/server', () => ({
 	getRouteByKey: vi.fn(() => ({ title: 'Home', description: 'desc', keywords: 'kw' })),
@@ -19,7 +30,7 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	buildSitemapConfig: () => ({}),
 	generateSitemap: async () => [],
 	createWellKnownResponse: (_type: string, _req: any, _props: any) => ({ ok: true }),
-	Manifest: ({ siteInfo }: any) => ({ siteInfo }),
+	Manifest: ({ siteInfo }: any = {}) => ({ siteInfo: siteInfo ?? {} }),
 }));
 vi.mock('next/headers', () => ({
 	headers: vi.fn(() => ({
@@ -106,7 +117,6 @@ describe('JZ app foundation', () => {
 		expect(layoutElement.type).toBe('html');
 		const head = Array.isArray(layoutElement.props.children) ? layoutElement.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
-		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'mock-meta')).toBe(true);
+		expect(findReactElementByTestId(head.props.children, 'mock-meta')).toBe(true);
 	});
 });

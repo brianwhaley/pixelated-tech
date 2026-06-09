@@ -7,11 +7,14 @@ one referral via contact us form
 * [ X ] 2 new contact us
 5/19/2026 - kspendi921@gmail.com
 5/18/2026 - klsbookkeeping22@gmail.com
-* [  ] Fifa Post
-* [  ] I am working on a post related to site safety, and plan on including info related to 2 day installs for summertime heat
+* [ x ] Fifa Post
+* [ x ] I am working on a post related to site safety, and plan on including info related to 2 day installs for summertime heat
 * [  ] Google Business Profile
 * [ X ] Advertising Plan
-how to take a 3 hour video to time lapse
+* [ x ] Business Cards with QR Code
+* [  ] Advertising campaign
+* [ x ] how to convert a 3 hour video to a time lapse video - iMovie or Garage Band
+* [  ] improve seo for "epoxy floors" , add in zip codes
 
 
 ## 2026-04-15 Update
@@ -35,17 +38,17 @@ how to take a 3 hour video to time lapse
 ## 2026-03-27 Update
 * Martha and Dennis - Details about staff for staff "project" & blog post
 * [ x ] Brian to send podcast to Martha
-	* https://open.spotify.com/show/68EPDLNTLd804NiOL6w6ot
+    * https://open.spotify.com/show/68EPDLNTLd804NiOL6w6ot
 * [ x ] Brian to send Martha info on women owned businesses and government opportunities
-	* https://advance.sc.gov/small-business-division
-	* https://www.wbcofsc.com/
+    * https://advance.sc.gov/small-business-division
+    * https://www.wbcofsc.com/
 * [ x ] Small Business Grants for Women
-	* https://ambergrantsforwomen.com/
-	* https://www.hersuitespot.com/herrise/ 
-	* https://www.visa.com/en-us/business/programs/shes-next
-	* https://www.toryburchfoundation.org/fellows/
-	* https://www.cartierwomensinitiative.com/
-	* http://yippitydoo.com/small-business-grant-optin/ 
+    * https://ambergrantsforwomen.com/
+    * https://www.hersuitespot.com/herrise/ 
+    * https://www.visa.com/en-us/business/programs/shes-next
+    * https://www.toryburchfoundation.org/fellows/
+    * https://www.cartierwomensinitiative.com/
+    * http://yippitydoo.com/small-business-grant-optin/ 
 * [ x ] Brian to do social posts about march madness post
 * [ x ] Brian to post Review & Referral Post
 * Martha and Dennis to think about Case Studies

@@ -6,7 +6,7 @@ import { GravatarCard } from '@pixelated-tech/components';
 import { getGravatarProfile, type GravatarProfile } from '@pixelated-tech/components';
 import { Carousel } from "@pixelated-tech/components";
 
-export default function About() {
+export default function AboutPage() {
 	const email1 = "brian@pixelated.tech"; 
 
 	const [ profile1, setProfile1 ] = useState<GravatarProfile | null>(null);

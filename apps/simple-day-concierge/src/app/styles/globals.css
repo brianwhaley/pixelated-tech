@@ -18,6 +18,11 @@ section.page-section#navigation-section{
   aspect-ratio: 1 / 1;
 }
 
+#team-section .callout img {
+  object-position: center;
+  opacity: 0.9;
+}
+
 #services-pricing-section ul li,
 #packages-pricing-section ul li {
   display: list-item !important;
@@ -43,6 +48,19 @@ body.buttonring .centered-button:hover {
   outline-offset: 3px !important;
   outline-width: 5px !important;
   border: 1px solid var(--primary-color) !important;
+}
+
+body.formglow {
+    form input:hover, select:hover, textarea:hover {
+        outline: 5px solid rgba(174, 140, 69, 0.2) !important;
+        outline-offset: 3px;
+    }
+}
+
+body.formglow {
+    form button:hover, input:focus, input:focus:hover, select:focus, select:focus:hover, textarea:focus, textarea:focus:hover {
+        outline: 5px solid var(--primary-color) !important;
+    }
 }
 
 /* ===== FAQS STYLES ===== */

@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PageSection, PageGridItem, CartButton } from "@pixelated-tech/components";
+import { PageSection, PageGridItem, CartButton, usePixelatedConfig } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
 import { Hero } from "@pixelated-tech/components";
 import { MenuAccordion, MenuAccordionButton } from "@pixelated-tech/components";
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
 
 export default function Header() {
+	const routes = usePixelatedConfig()?.routes ?? [];
 
 
 	const heroImages = [
@@ -35,7 +34,7 @@ export default function Header() {
 				<MenuAccordionButton />
 				<CartButton href="/cart" />
 			</div>
-			<MenuAccordion menuItems={allRoutes} />
+			<MenuAccordion menuItems={routes} />
 			<PageSection columns={1} maxWidth="100%"id="header-section">
 				<Hero 
 					variant="static"

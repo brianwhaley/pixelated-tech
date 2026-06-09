@@ -1,24 +1,25 @@
 "use client";
 
 import React from 'react';
-import siteConfig from '@/app/data/siteconfig.json';
-import { PageTitleHeader, PageSection, ServiceAreasList } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceAreas, usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function ServiceAreasPage() {
-	const siteInfo = (siteConfig as any).siteInfo;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const siteName = siteInfo?.name || "__SITE_NAME__";
 
 	return (
 		<>
-			<PageTitleHeader title="__SITE_NAME__ Service Areas" />
+			<PageTitleHeader title={`${siteName} Service Areas`} />
 			<PageSection columns={1} maxWidth="1024px" id="service-areas-intro">
 				<p>
 					This site serves targeted geographic areas with localized services and expertise. Explore the regions where we deliver dependable service and local support.
 				</p>
 			</PageSection>
 
-			<ServiceAreasList
+			<ServiceAreas
 				siteInfo={siteInfo}
-				title="__SITE_NAME__ Service Areas"
+				title={`${siteName} Service Areas`}
 				intro="Click a service area to read about the local coverage, specialties, and how we support businesses in that region."
 				serviceAreaPathPrefix="/service-areas"
 			/>

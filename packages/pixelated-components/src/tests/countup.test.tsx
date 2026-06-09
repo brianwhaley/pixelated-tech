@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { CountUp } from '../components/general/countup';
+import { CountUp } from '../components/elements/countup';
 
 // Mock useIntersectionObserver
 vi.mock('../components/foundation/intersection-observer', () => ({

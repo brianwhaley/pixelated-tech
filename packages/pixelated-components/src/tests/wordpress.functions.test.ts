@@ -21,6 +21,7 @@ const {
 describe('WordPress Functions', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    mockSmartFetch.mockResolvedValue({ posts: [] });
   });
 
   describe('photonToOriginalUrl', () => {
@@ -229,6 +230,7 @@ describe('WordPress Functions', () => {
 
     it('should return BlogPostType array', async () => {
       mockSmartFetch.mockResolvedValueOnce({ posts: [{ ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] }] });
+      mockSmartFetch.mockResolvedValueOnce({ posts: [] }); // Stop loop
       const result = await getWordPressItems({ site: 'example.com' });
       expect(Array.isArray(result) || result === undefined).toBe(true);
     });
@@ -236,6 +238,7 @@ describe('WordPress Functions', () => {
     it('should fetch posts from WordPress API', async () => {
       const mockPost = { ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] };
       mockSmartFetch.mockResolvedValueOnce({ posts: [mockPost] });
+      mockSmartFetch.mockResolvedValueOnce({ posts: [] }); // Stop loop
       await getWordPressItems({ site: 'example.com' });
       expect(mockSmartFetch).toHaveBeenCalled();
     });
@@ -271,7 +274,7 @@ describe('WordPress Functions', () => {
       mockSmartFetch.mockResolvedValueOnce({ posts: posts.slice(0, 100) });
       mockSmartFetch.mockResolvedValueOnce({ posts: posts.slice(100, 200) });
       mockSmartFetch.mockResolvedValueOnce({ posts: posts.slice(200) });
-      mockSmartFetch.mockResolvedValueOnce({ posts: [] });
+      mockSmartFetch.mockResolvedValueOnce({ posts: [] }); // Stop loop
 
       await getWordPressItems({ site: 'example.com', count: 250 });
       expect(mockSmartFetch.mock.calls.length).toBeGreaterThan(0);
@@ -280,7 +283,7 @@ describe('WordPress Functions', () => {
     it('should stop pagination when empty batch received', async () => {
       const mockPost = { ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] };
       mockSmartFetch.mockResolvedValueOnce({ posts: [mockPost] });
-      mockSmartFetch.mockResolvedValueOnce({ posts: [] });
+      mockSmartFetch.mockResolvedValueOnce({ posts: [] }); // Stop loop
 
       await getWordPressItems({ site: 'example.com' });
       expect(mockSmartFetch).toHaveBeenCalled();
@@ -351,7 +354,9 @@ describe('WordPress Functions', () => {
       const mockPost = { ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] };
       const post1 = { ...mockPost, ID: '1', date: '2024-01-01' };
       const post2 = { ...mockPost, ID: '2', date: '2024-01-02' };
-      mockSmartFetch.mockResolvedValueOnce({ posts: [post1, post2] });
+      mockSmartFetch
+        .mockResolvedValueOnce({ posts: [post1, post2] })
+        .mockResolvedValueOnce({ posts: [] });
 
       const result = await getWordPressItems({ site: 'example.com' });
       if (result && result.length > 1) {
@@ -362,7 +367,9 @@ describe('WordPress Functions', () => {
     it('should handle missing featured image', async () => {
       const mockPost = { ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] };
       const post = { ...mockPost, featured_image: undefined };
-      mockSmartFetch.mockResolvedValueOnce({ posts: [post] });
+      mockSmartFetch
+        .mockResolvedValueOnce({ posts: [post] })
+        .mockResolvedValueOnce({ posts: [] });
 
       const result = await getWordPressItems({ site: 'example.com' });
       expect(result === undefined || Array.isArray(result)).toBe(true);
@@ -371,7 +378,9 @@ describe('WordPress Functions', () => {
     it('should transform Photon URLs in featured images', async () => {
       const mockPost = { ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] };
       const post = { ...mockPost, featured_image: 'https://i.wordpress.com/image.jpg' };
-      mockSmartFetch.mockResolvedValueOnce({ posts: [post] });
+      mockSmartFetch
+        .mockResolvedValueOnce({ posts: [post] })
+        .mockResolvedValueOnce({ posts: [] });
 
       const result = await getWordPressItems({ site: 'example.com' });
       expect(result === undefined || Array.isArray(result)).toBe(true);
@@ -380,7 +389,9 @@ describe('WordPress Functions', () => {
     it('should handle posts with content', async () => {
       const mockPost = { ID: '123', title: 'Test Post', date: '2024-01-01', excerpt: 'Test excerpt', URL: 'https://example.com/test', categories: ['general'] };
       const post = { ...mockPost, content: '<p>Post content</p>' };
-      mockSmartFetch.mockResolvedValueOnce({ posts: [post] });
+      mockSmartFetch
+        .mockResolvedValueOnce({ posts: [post] })
+        .mockResolvedValueOnce({ posts: [] });
 
       const result = await getWordPressItems({ site: 'example.com' });
       expect(result === undefined || Array.isArray(result)).toBe(true);
@@ -404,7 +415,9 @@ describe('WordPress Functions', () => {
           ip_address: '127.0.0.1'
         }
       };
-      mockSmartFetch.mockResolvedValueOnce({ posts: [post] });
+      mockSmartFetch
+        .mockResolvedValueOnce({ posts: [post] })
+        .mockResolvedValueOnce({ posts: [] });
 
       const result = await getWordPressItems({ site: 'example.com' });
       expect(result === undefined || Array.isArray(result)).toBe(true);
@@ -425,13 +438,13 @@ describe('WordPress Functions', () => {
     });
 
     it('should accept different site identifiers', async () => {
-      mockSmartFetch.mockResolvedValueOnce({ posts: [] });
+      mockSmartFetch.mockResolvedValue({ posts: [] });
       await getWordPressItems({ site: 'my-site.wordpress.com' });
       expect(mockSmartFetch).toHaveBeenCalled();
     });
 
     it('should set caching headers for smartFetch', async () => {
-      mockSmartFetch.mockResolvedValueOnce({ posts: [] });
+      mockSmartFetch.mockResolvedValue({ posts: [] });
       await getWordPressItems({ site: 'example.com' });
       expect(mockSmartFetch).toHaveBeenCalledWith(
         expect.any(String),

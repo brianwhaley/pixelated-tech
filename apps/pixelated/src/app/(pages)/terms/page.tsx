@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 import { PageSection } from '@pixelated-tech/components';
 import Terms from "@/app/elements/terms";
 
-export default function TOS() {
+export default function TermsPage() {
 	return (
 		<Fragment>
 			

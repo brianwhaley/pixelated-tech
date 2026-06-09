@@ -21,7 +21,7 @@ afterAll(() => {
 });
 
 const googleMapsApiKeyKey = 'apiKey' as const;
-const mockGoogleMapsConfig = { googleMaps: { [googleMapsApiKeyKey]: 'test-google-key' } } as const;
+const mockGoogleMapsConfig = { integrations: { googleMaps: { [googleMapsApiKeyKey]: 'test-google-key' } } } as const;
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	FormButton: ({ onClick, text, ...props }: any) => (

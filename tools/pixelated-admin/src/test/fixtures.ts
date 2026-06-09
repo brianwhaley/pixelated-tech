@@ -9,22 +9,24 @@ export const TEST_CONFIG = {
 		secret: 'test-secret',
 		url: 'https://localhost:3006',
 	},
-	google: {
-		client_id: 'g-id',
-		client_secret: 'g-secret',
-	},
-	contentful: {
-		environment: 'test-env',
-	},
-	wordpress: {
-		site: 'brianwhaley',
-		siteUrl: 'https://www.brianwhaley.com',
+	integrations: {
+		google: {
+			client_id: 'g-id',
+			client_secret: 'g-secret',
+		},
+		contentful: {
+			environment: 'test-env',
+		},
+		wordpress: {
+			site: 'brianwhaley',
+			siteUrl: 'https://www.brianwhaley.com',
+		},
 	},
 };
 
 export const TEST_AXE_CORE_RESULT = {
-	site: TEST_CONFIG.wordpress.site,
-	url: TEST_CONFIG.wordpress.siteUrl,
+	site: TEST_CONFIG.integrations.wordpress.site,
+	url: TEST_CONFIG.integrations.wordpress.siteUrl,
 	result: {
 		violations: [],
 		passes: [],
@@ -34,7 +36,7 @@ export const TEST_AXE_CORE_RESULT = {
 		testRunner: { name: 'mock' },
 		testEnvironment: { userAgent: 'mock', windowWidth: 1280, windowHeight: 720 },
 		timestamp: new Date().toISOString(),
-		url: TEST_CONFIG.wordpress.siteUrl,
+		url: TEST_CONFIG.integrations.wordpress.siteUrl,
 	},
 	summary: { violations: 0, passes: 0, incomplete: 0, inapplicable: 0, critical: 0, serious: 0, moderate: 0, minor: 0 },
 	timestamp: new Date().toISOString(),

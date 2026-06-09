@@ -1,4 +1,4 @@
-import type { RouteType, SiteInfoType } from '../config/siteconfig.types';
+import type { RouteType, SiteInfoType } from '../config/config.types';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 import { getFullPixelatedConfig } from '../config/config';
@@ -53,7 +53,7 @@ export async function generateAiRecommendations(
 ): Promise<GeminiRecommendationResponse> {
 	try {
 		// Use provided API key or get from config
-		const finalApiKey = apiKey || getFullPixelatedConfig()?.googleGemini?.api_key;
+		const finalApiKey = apiKey || getFullPixelatedConfig()?.integrations?.googleGemini?.api_key;
 		if (!finalApiKey) {
 			throw new Error('Google Gemini API key not configured');
 		}

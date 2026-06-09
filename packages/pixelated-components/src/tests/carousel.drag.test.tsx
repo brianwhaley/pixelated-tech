@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { cleanup, render } from '@testing-library/react';
-import { DragHandler } from '../components/general/carousel.drag';
+import { DragHandler } from '../components/structure/carousel.drag';
 
 // Test DragHandler as class, not React component
 describe('carousel.drag - DragHandler class', () => {

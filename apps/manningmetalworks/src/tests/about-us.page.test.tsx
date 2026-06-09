@@ -1,16 +1,17 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { createPageComponentMocks } from '@/test/page-mocks';
-import pixelatedConfig from '@/app/config/pixelated.config.json';
+import { config as pixelatedConfig, createPageComponentMocks } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	usePixelatedConfig: () => ({
-		googlePlaces: {
-			placeId: pixelatedConfig.googlePlaces.placeId,
-			apiKey: pixelatedConfig.googlePlaces.apiKey,
+		integrations: {
+			googlePlaces: {
+				placeId: pixelatedConfig.integrations?.googlePlaces?.placeId,
+				apiKey: pixelatedConfig.integrations?.googlePlaces?.apiKey,
+			},
+			googleMaps: { apiKey: pixelatedConfig.integrations?.googleMaps?.apiKey },
+			global: { proxyUrl: pixelatedConfig.integrations?.global?.proxyUrl },
 		},
-		googleMaps: { apiKey: pixelatedConfig.googleMaps.apiKey },
-		global: { proxyUrl: pixelatedConfig.global.proxyUrl },
 	}),
 	getGoogleReviewsByPlaceId: async () => ({
 		reviews: [

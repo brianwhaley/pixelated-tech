@@ -1,11 +1,17 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render } from '@testing-library/react';
-import { DragHandler } from '../components/general/carousel.drag';
+import { fireEvent, render } from '@testing-library/react';
+import { DragHandler } from '../components/structure/carousel.drag';
 
 const TestDragHandler = (props: any) => {
 	return <>{DragHandler(props)}</>;
 };
+
+function createMouseEvent(type: string, pageX: number) {
+	const event = new MouseEvent(type, { bubbles: true, cancelable: true });
+	Object.defineProperty(event, 'pageX', { value: pageX, configurable: true });
+	return event;
+}
 
 describe('Carousel Drag Handler Advanced', () => {
 	const mockNextImage = vi.fn();
@@ -267,6 +273,119 @@ describe('Carousel Drag Handler Advanced', () => {
 			/>);
 
 			expect(mockNextImage).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('DragHandler Event Behavior', () => {
+		it('should call nextImage when dragging left far enough', () => {
+			document.body.innerHTML = '<div class="carousel-card-wrapper"><div class="carousel-card">Slide 1</div></div>';
+			const nextImage = vi.fn();
+			const previousImage = vi.fn();
+			render(<TestDragHandler
+				activeIndex={0}
+				targetDiv='carousel-card-wrapper'
+				nextImage={nextImage}
+				previousImage={previousImage}
+			/>);
+
+			const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+			expect(wrapper).toBeTruthy();
+
+			wrapper.dispatchEvent(createMouseEvent('mousedown', 100));
+			wrapper.dispatchEvent(createMouseEvent('mousemove', 0));
+			wrapper.dispatchEvent(createMouseEvent('mouseup', 0));
+
+			expect(nextImage).toHaveBeenCalled();
+			expect(previousImage).not.toHaveBeenCalled();
+		});
+
+		it('should call previousImage when dragging right far enough', () => {
+			document.body.innerHTML = '<div class="carousel-card-wrapper"><div class="carousel-card">Slide 1</div></div>';
+			const nextImage = vi.fn();
+			const previousImage = vi.fn();
+			render(<TestDragHandler
+				activeIndex={0}
+				targetDiv='carousel-card-wrapper'
+				nextImage={nextImage}
+				previousImage={previousImage}
+			/>);
+
+			const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+			wrapper.dispatchEvent(createMouseEvent('mousedown', 0));
+			wrapper.dispatchEvent(createMouseEvent('mousemove', 120));
+			wrapper.dispatchEvent(createMouseEvent('mouseup', 120));
+
+			expect(previousImage).toHaveBeenCalled();
+			expect(nextImage).not.toHaveBeenCalled();
+		});
+
+		it('should not call navigation callbacks for short drags', () => {
+			document.body.innerHTML = '<div class="carousel-card-wrapper"><div class="carousel-card">Slide 1</div></div>';
+			const nextImage = vi.fn();
+			const previousImage = vi.fn();
+			render(<TestDragHandler
+				activeIndex={0}
+				targetDiv='carousel-card-wrapper'
+				nextImage={nextImage}
+				previousImage={previousImage}
+			/>);
+
+			const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+			wrapper.dispatchEvent(createMouseEvent('mousedown', 100));
+			wrapper.dispatchEvent(createMouseEvent('mousemove', 120));
+			wrapper.dispatchEvent(createMouseEvent('mouseup', 120));
+
+			expect(nextImage).not.toHaveBeenCalled();
+			expect(previousImage).not.toHaveBeenCalled();
+		});
+
+		it('should reset wrapper left style on transitionend', () => {
+			document.body.innerHTML = '<div class="carousel-card-wrapper" style="left: 20px"></div>';
+			render(<TestDragHandler
+				activeIndex={0}
+				targetDiv='carousel-card-wrapper'
+				nextImage={vi.fn()}
+				previousImage={vi.fn()}
+			/>);
+
+			const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+			wrapper.style.left = '20px';
+			fireEvent.transitionEnd(wrapper);
+			expect(wrapper.style.left).toBe('0px');
+		});
+
+		it('should handle touch drag events through touchstart/move/end', () => {
+			document.body.innerHTML = '<div class="carousel-card-wrapper"><div class="carousel-card">Slide 1</div></div>';
+			const nextImage = vi.fn();
+			const previousImage = vi.fn();
+			render(<TestDragHandler
+				activeIndex={0}
+				targetDiv='carousel-card-wrapper'
+				nextImage={nextImage}
+				previousImage={previousImage}
+			/>);
+
+			const wrapper = document.querySelector('.carousel-card-wrapper') as HTMLElement;
+			fireEvent.touchStart(wrapper, { touches: [{ pageX: 100, identifier: 0 }] });
+			fireEvent.touchMove(wrapper, { touches: [{ pageX: 0, identifier: 0 }] });
+			fireEvent.touchEnd(wrapper, { changedTouches: [{ pageX: 0, identifier: 0 }] });
+
+			expect(nextImage).toHaveBeenCalled();
+			expect(previousImage).not.toHaveBeenCalled();
+		});
+
+		it('should cleanup document listeners on unmount', () => {
+			const removeSpy = vi.spyOn(document, 'removeEventListener');
+			const { unmount } = render(<TestDragHandler
+				activeIndex={0}
+				targetDiv='carousel-card-wrapper'
+				nextImage={vi.fn()}
+				previousImage={vi.fn()}
+			/>);
+
+			unmount();
+			expect(removeSpy).toHaveBeenCalled();
+			removeSpy.mockRestore();
 		});
 	});
 

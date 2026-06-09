@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { pixelatedConfig } from '../test/test-data';
 
 // Mock AWS SDK BEFORE importing the integration module
 vi.mock('@aws-sdk/client-cloudwatch', () => {
@@ -39,22 +40,22 @@ vi.mock('../components/foundation/utilities', () => ({
 	getDomain: vi.fn(() => 'example.com')
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({
-		aws: {
-			region: 'us-east-1',
-			access_key_id: 'test-key',
-			secret_access_key: 'test-secret'
-		}
-	}))
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn()
+	};
+});
 
 // Import AFTER mocks are defined
 import { getCloudwatchHealthCheckData, CloudwatchHealthCheckConfig } from '../components/admin/site-health/site-health-cloudwatch.integration';
+import { getFullPixelatedConfig } from '../components/config/config';
 
 describe('site-health-cloudwatch.integration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 	});
 
 	it('should fetch cloudwatch data and parse metric values', async () => {

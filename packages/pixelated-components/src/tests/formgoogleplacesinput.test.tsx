@@ -5,6 +5,7 @@ import { screen } from '@testing-library/react';
 import { FormGooglePlacesInput } from '../components/sitebuilder/form/formcomponents';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';
 import { GooglePlacesService } from '../components/integrations/googleplaces';
+import { pixelatedConfig } from '../test/test-data';
 
 vi.mock('../components/foundation/smartfetch');
 
@@ -12,15 +13,7 @@ const { smartFetch } = await import('../components/foundation/smartfetch');
 const mockSmartFetch = vi.mocked(smartFetch);
 
 describe('GooglePlacesService', () => {
-	const mockConfig = {
-		googlePlaces: {
-			apiKey: 'test-api-key',
-			language: 'en',
-			countryRestrictions: ['us'],
-			debounceDelay: 300,
-			cacheTTL: 3600000
-		}
-	};
+	const mockConfig = pixelatedConfig;
 
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -126,7 +119,7 @@ describe('GooglePlacesService', () => {
 			const callUrl = mockSmartFetch.mock.calls[0][0];
 			// buildUrl encodes the colon in country:us as %3A
 			expect(callUrl).toContain('components=country');
-			expect(callUrl).toContain('us');
+			expect(callUrl).toContain('US');
 		});
 	});
 
@@ -294,10 +287,12 @@ describe('GooglePlacesService', () => {
 
 describe('FormGooglePlacesInput Component', () => {
 	const mockConfig = {
-		googlePlaces: {
-			apiKey: 'test-api-key',
-			countryRestrictions: ['us'],
-			debounceDelay: 100
+		integrations: {
+			google: {
+				apiKey: 'test-api-key',
+				countryRestrictions: ['us'],
+				debounceDelay: 100
+			}
 		}
 	};
 

@@ -43,17 +43,17 @@ describe('Component Discovery', () => {
 			if (filePath.endsWith('/node_modules/@pixelated-tech/components')) {
 				return true;
 			}
-			return filePath.endsWith('/dist/index.js') || filePath.endsWith('/dist/index.adminclient.js') || filePath.endsWith('/dist/index.adminserver.js');
+			return filePath.endsWith('/dist/index.js') || filePath.endsWith('/dist/index.admin.js') || filePath.endsWith('/dist/index.admin.server.js') || filePath.includes('/dist/components/');
 		});
 
 		readSpy.mockImplementation((filePath: string) => {
 			if (filePath.endsWith('index.js')) {
-				return "export * from './components/general/modal';\nexport * from './components/sitebuilder/form';";
+				return "export * from './components/elements/modal';\nexport * from './components/sitebuilder/form/formcomponents';";
 			}
-			if (filePath.endsWith('index.adminclient.js')) {
+			if (filePath.endsWith('/dist/index.admin.js')) {
 				return "export * from './components/admin/dashboard';";
 			}
-			if (filePath.endsWith('index.adminserver.js')) {
+			if (filePath.endsWith('/dist/index.admin.server.js')) {
 				return "export * from './components/admin/server';";
 			}
 			return '';
@@ -61,7 +61,33 @@ describe('Component Discovery', () => {
 
 		const components = await discoverComponentsFromLibrary();
 
-		expect(components).toEqual(['admin/dashboard', 'admin/server', 'general/modal', 'sitebuilder/form']);
+		expect(components).toEqual(['admin/dashboard', 'admin/server', 'elements/modal', 'sitebuilder/form/formcomponents']);
+	});
+
+	it('should recurse through nested index exports', async () => {
+		existsSpy.mockImplementation((filePath: string) => {
+			if (filePath.endsWith('/node_modules/@pixelated-tech/components')) {
+				return true;
+			}
+			return filePath.endsWith('/dist/index.js') || filePath.endsWith('/dist/components/admin/index.admin.js') || filePath.endsWith('/dist/components/admin/dashboard.js');
+		});
+
+		readSpy.mockImplementation((filePath: string) => {
+			if (filePath.endsWith('/dist/index.js')) {
+				return "export * from './components/admin/index.admin.js';";
+			}
+			if (filePath.endsWith('/dist/components/admin/index.admin.js')) {
+				return "export * from './dashboard';";
+			}
+			if (filePath.endsWith('/dist/components/admin/dashboard.js')) {
+				return "export * from './components/elements/modal';";
+			}
+			return '';
+		});
+
+		const components = await discoverComponentsFromLibrary();
+
+		expect(components).toEqual(['admin/dashboard']);
 	});
 
 	it('should resolve only index.js when admin client/server files are missing', async () => {
@@ -69,41 +95,41 @@ describe('Component Discovery', () => {
 			if (filePath.endsWith('/node_modules/@pixelated-tech/components')) {
 				return true;
 			}
-			return filePath.endsWith('/dist/index.js');
+			return filePath.endsWith('/dist/index.js') || filePath.includes('/dist/components/');
 		});
 
 		readSpy.mockImplementation((filePath: string) => {
 			if (filePath.endsWith('index.js')) {
-				return "export * from './components/general/modal';";
+				return "export * from './components/elements/modal';";
 			}
 			return '';
 		});
 
 		const components = await discoverComponentsFromLibrary();
 
-		expect(components).toEqual(['general/modal']);
+		expect(components).toEqual(['elements/modal']);
 	});
 
 	it('should ignore invalid export lines and comments', async () => {
 		existsSpy.mockReturnValue(true);
 		readSpy.mockImplementation((filePath: string) => {
-			return "// export * from './components/ignored';\nexport * from './components/general/modal';\nconst foo = 'bar';\nexport * from './components/admin/dashboard';";
+			return "// export * from './components/ignored';\nexport * from './components/elements/modal';\nconst foo = 'bar';\nexport * from './components/admin/dashboard';";
 		});
 
 		const components = await discoverComponentsFromLibrary();
 
-		expect(components).toEqual(['admin/dashboard', 'general/modal']);
+		expect(components).toEqual(['admin/dashboard', 'elements/modal']);
 	});
 
 	it('should deduplicate duplicate export entries across index files', async () => {
 		existsSpy.mockReturnValue(true);
 		readSpy.mockImplementation((filePath: string) => {
-			return "export * from './components/general/modal';";
+			return "export * from './components/elements/modal';";
 		});
 
 		const components = await discoverComponentsFromLibrary();
 
-		expect(components).toEqual(['general/modal']);
+		expect(components).toEqual(['elements/modal']);
 	});
 
 	it('should fallback to require.resolve when package path does not exist', async () => {
@@ -115,16 +141,16 @@ describe('Component Discovery', () => {
 		});
 
 		if (requireResolveSpy) {
-			requireResolveSpy.mockReturnValue('/ROOT/node_modules/@pixelated-tech/components/package.json');
+			requireResolveSpy.mockReturnValue('/ROOT/node_modules/@pixelated-tech/components/dist/index.js');
 		}
 
 		readSpy.mockImplementation((filePath: string) => {
-			return "export * from './components/cms/form';";
+			return "export * from './components/integrations/calendly';";
 		});
 
 		const components = await discoverComponentsFromLibrary();
 
-		expect(components).toEqual(['cms/form']);
+		expect(components).toEqual(['integrations/calendly']);
 	});
 
 	it('should use require.resolve path when returned path does not start with /ROOT/', async () => {
@@ -136,16 +162,16 @@ describe('Component Discovery', () => {
 		});
 
 		if (requireResolveSpy) {
-			requireResolveSpy.mockReturnValue('/tmp/node_modules/@pixelated-tech/components/package.json');
+			requireResolveSpy.mockReturnValue('/tmp/node_modules/@pixelated-tech/components/dist/index.js');
 		}
 
 		readSpy.mockImplementation((filePath: string) => {
-			return "export * from './components/general/banner';";
+			return "export * from './components/elements/banner';";
 		});
 
 		const components = await discoverComponentsFromLibrary();
 
-		expect(components).toEqual(['general/banner']);
+		expect(components).toEqual(['elements/banner']);
 	});
 
 	it('should return empty array when discovery fails', async () => {
@@ -181,7 +207,7 @@ describe('Component Discovery', () => {
 			if (filePath.endsWith('/node_modules/@pixelated-tech/components')) {
 				return true;
 			}
-			return filePath.endsWith('/dist/index.js') || filePath.endsWith('/dist/index.adminclient.js') || filePath.endsWith('/dist/index.adminserver.js');
+			return filePath.endsWith('/dist/index.js') || filePath.endsWith('/dist/index.admin.js') || filePath.endsWith('/dist/index.admin.server.js');
 		});
 
 		readSpy.mockReturnValue('// no exports here');

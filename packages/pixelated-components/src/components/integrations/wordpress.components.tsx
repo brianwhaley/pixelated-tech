@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { usePixelatedConfig } from "../config/config.client";
-import { SmartImage } from '../general/smartimage';
-import { PageGridItem } from '../general/semantic';
+import { SmartImage } from '../elements/smartimage';
+import { PageGridItem } from '../structure/page-blocks';
 import type { BlogPostType } from './wordpress.functions';
 import { getWordPressItems, getWordPressLastModified } from './wordpress.functions';
 import { Loading, ToggleLoading } from '../foundation/loading';
@@ -38,27 +38,28 @@ const wpApiURL = "https://public-api.wordpress.com/rest/v1/sites/";
  */
 getCachedWordPressItems.propTypes = {
 /** WordPress site identifier (slug or domain) */
-	site: PropTypes.string.isRequired,
+	site: PropTypes.string,
 	/** Number of posts to fetch (optional) */
 	count: PropTypes.number,
 	/** Base URL for WordPress API (optional) */
 	baseURL: PropTypes.string,
 };
 export type getCachedWordPressItemsType = InferProps<typeof getCachedWordPressItems.propTypes>;
-export async function getCachedWordPressItems(props: { site: string, count?: number }) {
+export async function getCachedWordPressItems(props: { site?: string, count?: number, baseURL?: string } = {}) {
 	const site = props.site ?? '';
 	if (!site) return undefined;
-	const key = `posts-${site}`; 
+	const baseURL = props.baseURL ?? wpApiURL;
+	const key = `posts-${site}-${encodeURIComponent(baseURL)}`;
 	let posts = wpCache.get<BlogPostType[]>(key) || undefined;
 	
 	if (!posts) {
-		posts = await getWordPressItems({ site, baseURL: wpApiURL });
+		posts = await getWordPressItems({ site, baseURL });
 		if (posts) wpCache.set(key, posts);
 	}
 
 	// Check if cached data is stale and refresh if needed
 	if (posts && posts.length > 0 && posts[0].modified) {
-		const lastModified = await getWordPressLastModified({ site: props.site, baseURL: wpApiURL });
+		const lastModified = await getWordPressLastModified({ site, baseURL });
 		if (lastModified && lastModified !== posts[0].modified) {
 			// FIX - prevously was busting next/cache, now busting wpCache
 			// Cached response is stale - fetch fresh data and update localStorage immediately
@@ -78,17 +79,11 @@ export async function getCachedWordPressItems(props: { site: string, count?: num
 /**
  * BlogPostList — Render a list of WordPress posts. If `posts` are provided they are used directly; otherwise the component will fetch posts from the configured WordPress endpoint.
  *
- * @param {string} [props.site] - WordPress site identifier (overrides provider config).
- * @param {string} [props.baseURL] - Base URL for WordPress API if not using site config.
  * @param {number} [props.count] - Maximum number of posts to fetch/display.
  * @param {array} [props.posts] - Optional pre-fetched posts to render (bypasses remote fetch).
  * @param {boolean} [props.showCategories] - Whether to show category icons for each post.
  */
 BlogPostList.propTypes = {
-	/** WordPress site identifier */
-	site: PropTypes.string,
-	/** Optional WordPress base URL */
-	baseURL: PropTypes.string,
 	/** Max number of posts to fetch/display */
 	count: PropTypes.number,
 	/** Optional array of pre-fetched posts */
@@ -99,10 +94,10 @@ BlogPostList.propTypes = {
 export type BlogPostListType = InferProps<typeof BlogPostList.propTypes>;
 export function BlogPostList(props: BlogPostListType) {
 
-	const { site: propSite, baseURL: propBaseURL, count, posts: cachedPosts, showCategories = true } = props;
+	const { count, posts: cachedPosts, showCategories = true } = props;
 	const config = usePixelatedConfig();
-	const site = propSite ?? config?.wordpress?.site;
-	const baseURL = propBaseURL ?? config?.wordpress?.baseURL;
+	const site = config?.integrations?.wordpress?.site;
+	const baseURL = config?.integrations?.wordpress?.baseURL;
 	const [posts, setPosts] = useState<BlogPostType[]>(cachedPosts ?? []);
 
 	useEffect(() => {
@@ -205,9 +200,9 @@ export function BlogPostSummary(props: BlogPostSummaryType) {
 						<div className="article-featured-image grid-s1-e4">
 							<SmartImage className="u-photo" src={props.featured_image} alt={props.title ? decodeString(props.title) : ''} title={props.title ? decodeString(props.title) : ''}
 								style={{}}
-								cloudinaryEnv={config?.cloudinary?.product_env ?? undefined}
-								cloudinaryDomain={config?.cloudinary?.baseUrl ?? undefined}
-								cloudinaryTransforms={config?.cloudinary?.transforms ?? undefined} />
+								cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
+								cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
+								cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined} />
 						</div>
 						<div className="article-excerpt grid-s4-e13">
 							<div className="p-summary" dangerouslySetInnerHTML={{ __html: myExcerpt }} />
@@ -223,9 +218,9 @@ export function BlogPostSummary(props: BlogPostSummaryType) {
 						{myCategoryImages.map(([categoryImg, index]) => (
 							<span className="p-category" key={categoryImg + "-" + index}>
 								<SmartImage src={`/images/icons/${categoryImg}.png`} title={String(categoryImg)} alt={String(categoryImg)}
-									cloudinaryEnv={config?.cloudinary?.product_env ?? undefined}
-									cloudinaryDomain={config?.cloudinary?.baseUrl ?? undefined}
-									cloudinaryTransforms={config?.cloudinary?.transforms ?? undefined} />
+									cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
+									cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
+									cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined} />
 							</span>
 						))}
 					</div>
@@ -264,9 +259,9 @@ export function BlogPostCategories(props: BlogPostCategoriesType) {
 				categoryImg ? (
 					<span className="p-category" key={categoryImg + "-" + index}>
 						<SmartImage className="u-photo" src={`/images/icons/${categoryImg}.png`} title={String(categoryImg)} alt={String(categoryImg)}
-							cloudinaryEnv={config?.cloudinary?.product_env ?? undefined}
-							cloudinaryDomain={config?.cloudinary?.baseUrl ?? undefined}
-							cloudinaryTransforms={config?.cloudinary?.transforms ?? undefined} />
+							cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
+							cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
+							cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined} />
 					</span>
 				) : null
 			)}

@@ -1,5 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-
+import { describe, it, expect, vi, beforeEach } from 'vitest';import { TEST_CONFIG } from '@/test/fixtures';
 function stubNextAuthResponse(location: string) {
 	return {
 		default: (_opts: any) => {
@@ -28,6 +27,14 @@ function makeContext(nextauth: string[]) {
 
 describe('nextauth/[...nextauth] route', () => {
 	beforeEach(() => {
+		vi.doMock('@pixelated-tech/components/server', () => ({
+			getFullPixelatedConfig: () => ({
+				integrations: {
+					nextAuth: TEST_CONFIG.nextAuth,
+					google: TEST_CONFIG.integrations.google,
+				},
+			}),
+		}));
 		vi.resetModules();
 		delete process.env.NEXTAUTH_URL;
 	});

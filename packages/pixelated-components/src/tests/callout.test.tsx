@@ -10,7 +10,7 @@ import {
   shapes,
   layouts,
   directions
-} from '../components/general/callout';
+} from '../components/structure/callout';
 
 // Mock the SmartImage component before importing Callout
 vi.mock('../cms/smartimage', () => ({

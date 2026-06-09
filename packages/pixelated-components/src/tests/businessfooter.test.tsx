@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
-import { BusinessFooter } from '@/components/general/businessfooter';
-import type { SiteInfo } from '@/components/config/siteconfig.types';
+import { BusinessFooter } from '@/components/structure/businessfooter';
+import type { SiteInfo } from '@/components/config/config.types';
 
 const siteInfo: SiteInfo = {
   name: 'Manning Metalworks',

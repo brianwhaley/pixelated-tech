@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import config from '@/app/config/pixelated.config.json';
+import { config } from '@/test/page-mocks';
 import { createPageComponentMocks } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks({

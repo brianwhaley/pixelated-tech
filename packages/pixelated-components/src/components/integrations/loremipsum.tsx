@@ -13,26 +13,21 @@ const debug = false;
  *
  * @param {number} [props.paragraphs] - Number of paragraphs to fetch.
  * @param {string} [props.seed] - Optional seed to generate deterministic content.
- * @param {string} [props.proxyBase] - Optional proxy base URL to use when direct fetch fails due to CORS.
- * @param {string} [props.className] - CSS class name(s) applied to the wrapper element.
+* @param {string} [props.className] - CSS class name(s) applied to the wrapper element.
  */
 LoremIpsum.propTypes = {
 /** Paragraph count to request */
 	paragraphs: PropTypes.number,
 	/** Optional deterministic seed for content */
 	seed: PropTypes.string,
-	/** Proxy base URL used as a fallback */
-	proxyBase: PropTypes.string,
 	/** Wrapper CSS class name */
 	className: PropTypes.string,
 };
-export type LoremIpsumType = InferProps<typeof LoremIpsum.propTypes> & { proxyBase?: string };
-export function LoremIpsum({ paragraphs = 1, seed = '', proxyBase, className = '' }: LoremIpsumType) {
+export type LoremIpsumType = InferProps<typeof LoremIpsum.propTypes>;
+export function LoremIpsum({ paragraphs = 1, seed = '', className = '' }: LoremIpsumType) {
 	const config = usePixelatedConfig();
-	// Prefer the global proxy from the app/config provider when present —
-	// that ensures Storybook and in-browser environments use the site-wide proxy
-	// instead of a per-call `proxyBase` (per user request).
-	const resolvedProxy = config?.global?.proxyUrl || proxyBase || undefined;
+	// Prefer the global proxy from the app/config provider when present.
+	const resolvedProxy = config?.integrations?.global?.proxyUrl || undefined;
 
 	const [items, setItems] = useState<string[] | null>(null);
 	const [error, setError] = useState<string | null>(null);

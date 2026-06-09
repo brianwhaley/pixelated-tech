@@ -21,7 +21,7 @@ const downloadJsonFile = (data: any, filename: string) => {
 
 export default function ConfigBuilderPage() {
 	const handleSave = (config: any) => {
-		downloadJsonFile(config, 'siteconfig.json');
+		downloadJsonFile(config, 'pixelated.config.json');
 	};
 
 	return (

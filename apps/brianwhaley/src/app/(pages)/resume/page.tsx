@@ -10,7 +10,7 @@ import { ResumeName, ResumeContact, ResumeQualifications, ResumeSkills,
 import { Modal, handleModalOpen } from "@pixelated-tech/components";
 import ResumeData from "@/app/data/resume.json";
 
-export default function Resume() {
+export default function ResumePage() {
 	const [modalContent, setModalContent] = useState<React.JSX.Element | undefined>();
 	if (typeof window !== 'undefined') {
 		const images = document.querySelectorAll('.u-photo-icon');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { SmartImage } from '../components/general/smartimage';
+import { SmartImage } from '../components/elements/smartimage';
 
 describe('SmartImage Component', () => {
 	describe('Basic Rendering', () => {

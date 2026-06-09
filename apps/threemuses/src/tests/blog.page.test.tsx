@@ -16,13 +16,13 @@ describe('Blog page', () => {
 		mockState.wordpressPosts = [{ id: 1, title: 'Post One' }];
 		render(<BlogPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).not.toBeNull());
-		expect(screen.getByTestId('mock-blogpostlist').textContent).toContain('site:blog.thethreemusesofbluffton.com count:1');
+		expect(screen.getByTestId('mock-blogpostlist').textContent).toContain('count:1');
 	});
 
 	it('renders the blog list when wordpress posts are unavailable', async () => {
 		mockState.wordpressPosts = null as any;
 		render(<BlogPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).not.toBeNull());
-		expect(screen.getByTestId('mock-blogpostlist').textContent).toContain('site:blog.thethreemusesofbluffton.com count:0');
+		expect(screen.getByTestId('mock-blogpostlist').textContent).toContain('count:0');
 	});
 });

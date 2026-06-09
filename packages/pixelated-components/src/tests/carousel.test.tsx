@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Carousel, CarouselCardType } from '../components/general/carousel';
+import { Carousel, CarouselCardType } from '../components/structure/carousel';
 import {
   carouselMockCards,
   createManyCarouselCards,
@@ -10,19 +10,19 @@ import {
 } from '@/test/fixtures';
 
 // Mock SmartImage component
-vi.mock('../components/cms/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
 	SmartImage: ({ src, alt, className }: any) => (
 		<img src={src} alt={alt} className={className} />
 	),
 }));
 
 // Mock DragHandler
-vi.mock('../components/general/carousel.drag', () => ({
+vi.mock('../components/structure/carousel.drag', () => ({
 	DragHandler: vi.fn(),
 }));
 
 // Import the mocked DragHandler
-import { DragHandler } from '../components/general/carousel.drag';
+import { DragHandler } from '../components/structure/carousel.drag';
 
 const mockCards = carouselMockCards;
 

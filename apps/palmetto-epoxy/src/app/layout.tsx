@@ -8,7 +8,6 @@ import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import { LayoutClient } from "./elements/layoutclient";
 import Header from "@/app/elements/header";
 import Footer from "@/app/elements/footer";
-import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "@/app/styles/globals.css";
@@ -22,9 +21,9 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	let metadata: Metadata = getRouteByKey(siteConfig.routes, "path", pathname) ?? {};
-
-	const siteInfo = siteConfig.siteInfo;
+	const pixelatedConfig = getFullPixelatedConfig();
+	let metadata: Metadata = getRouteByKey(pixelatedConfig.routes, "path", pathname) ?? {};
+	const siteInfo = pixelatedConfig.siteInfo;
 
 	// If the route is /projects/:project, prefer the Contentful `carouselCard`
 	// metadata (server-side). Fall back to a humanized slug when Contentful
@@ -94,21 +93,23 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 			<LayoutClient />
 			<html lang="en">
 				<head>
-					{ generateMetaTags({
-						title: metadata?.title ?? "",
-						description: metadata?.description ?? "",
-						keywords: metadata?.keywords ?? "",
-						origin: origin ?? "",
-						url: url ?? "",
-						siteInfo: siteInfo as unknown as SiteInfo,
-					}) }
-					<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
-					<WebsiteSchema siteInfo={siteInfo as unknown as SiteInfo} />
-					<LocalBusinessSchema siteInfo={siteInfo} />
-					<ServicesSchema siteInfo={siteInfo} />
-					<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
-					<link rel="preload" fetchPriority="high" as="image" type="image/webp" 
-						href="https://www.palmetto-epoxy.com/images/logo/palmetto-epoxy-logo.jpg" ></link>
+					<PixelatedServerConfigProvider>
+						{ generateMetaTags({
+							title: metadata?.title ?? "",
+							description: metadata?.description ?? "",
+							keywords: metadata?.keywords ?? "",
+							origin: origin ?? "",
+							url: url ?? "",
+							siteInfo: siteInfo as unknown as SiteInfo,
+						}) }
+						<BreadcrumbListSchema currentPath={pathname} />
+						<WebsiteSchema />
+						<LocalBusinessSchema />
+						<ServicesSchema />
+						<VisualDesignStyles />
+						<link rel="preload" fetchPriority="high" as="image" type="image/webp" 
+							href="https://www.palmetto-epoxy.com/images/logo/palmetto-epoxy-logo.jpg" ></link>
+					</PixelatedServerConfigProvider>
 				</head>
 				<body>
 					<PixelatedServerConfigProvider>

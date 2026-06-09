@@ -10,12 +10,12 @@ import { MicroInteractions } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
 import { usePixelatedConfig } from '@pixelated-tech/components';
 
-export default function Portfolio() {
+export default function PortfolioPage() {
 	const [ flickrCards, setFlickrCards ] = useState<CarouselCardType[]>([]);
-	const config = usePixelatedConfig();
+	const pixelatedConfig = usePixelatedConfig();
 	const props = { 
-		api_key: config?.flickr?.urlProps.api_key,
-		user_id: config?.flickr?.urlProps.user_id,
+		api_key: pixelatedConfig?.integrations?.flickr?.urlProps.api_key,
+		user_id: pixelatedConfig?.integrations?.flickr?.urlProps.user_id,
 		tags: "", // "workportfolio"
 		method: "flickr.photosets.getPhotos", 
 		photoset_id: "72177720326903710",

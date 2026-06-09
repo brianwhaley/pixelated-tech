@@ -531,7 +531,7 @@ async function normalizeSquareCatalogObjects(squareConfig: any) {
 }
 
 export async function getSquareStoreItems(options: SquareStoreQueryOptions = {}) {
-	const squareConfig = getFullPixelatedConfig()?.square;
+	const squareConfig = getFullPixelatedConfig()?.integrations?.square;
 	if (!squareConfig) {
 		throw new Error('Square configuration is required for store items.');
 	}
@@ -699,7 +699,7 @@ function resolveSquareCredentials(squareConfig: any, checkoutData?: CheckoutType
 
 export function getSquareConfig(checkoutData?: CheckoutType): SelectedSquareCredentials | undefined {
 	const cfg = getFullPixelatedConfig();
-	return resolveSquareCredentials(cfg?.square, checkoutData);
+	return resolveSquareCredentials(cfg?.integrations?.square, checkoutData);
 }
 
 function requireSquareConfig(checkoutData?: CheckoutType): SelectedSquareCredentials {
@@ -800,7 +800,7 @@ function hasShippableItems(checkoutData: CheckoutType) {
 
 function buildSquareTaxes(checkoutData: CheckoutType) {
 	const config = getFullPixelatedConfig();
-	const taxRateValue = Number(config?.shoppingcart?.taxRate ?? 0);
+	const taxRateValue = Number(config?.integrations?.shoppingcart?.taxRate ?? 0);
 	if (!Number.isFinite(taxRateValue) || taxRateValue <= 0) {
 		return [];
 	}

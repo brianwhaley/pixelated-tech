@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { layoutComponents } from '../lib/componentMap';
+import { isLayoutComponent } from '../lib/componentMap';
 
 /**
  * ComponentTree - Displays hierarchical tree of components
@@ -50,7 +50,7 @@ export function ComponentTree({
 	editPath 
 }: ComponentTreeType) {
 	function renderTreeNode(component: any, index: number, path: string) {
-		const isLayout = layoutComponents.includes(component.component);
+		const isLayout = isLayoutComponent(component.component);
 		const currentPath = `${path}[${index}]`;
 		const isSelected = currentPath === selectedPath;
 		const isEditing = currentPath === editPath;

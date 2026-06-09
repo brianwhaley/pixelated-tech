@@ -3,12 +3,12 @@ import { getContentfulEntriesByType, getContentfulImagesFromEntries, ProjectsCli
 import { getFullPixelatedConfig } from "@pixelated-tech/components/server";
 
 export default async function ProjectsPage() {
-	const cfg = getFullPixelatedConfig();
+	const pixelatedConfig = getFullPixelatedConfig();
 	const apiProps = {
-		base_url: cfg.contentful?.base_url ?? "",
-		space_id: cfg.contentful?.space_id ?? "",
-		environment: cfg.contentful?.environment ?? "",
-		delivery_access_token: cfg.contentful?.delivery_access_token ?? "",
+		base_url: pixelatedConfig.integrations?.contentful?.base_url ?? "",
+		space_id: pixelatedConfig.integrations?.contentful?.space_id ?? "",
+		environment: pixelatedConfig.integrations?.contentful?.environment ?? "",
+		delivery_access_token: pixelatedConfig.integrations?.contentful?.delivery_access_token ?? "",
 	};
 
 	const contentType = "4upe5EGYMjJulOSqyXJsuw";

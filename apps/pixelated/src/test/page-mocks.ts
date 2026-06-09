@@ -4,6 +4,8 @@ import path from 'node:path';
 import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
+export { config };
+
 export interface FileDataState {
 	data: string | null;
 	loading: boolean;
@@ -12,14 +14,16 @@ export interface FileDataState {
 
 export interface PixelatedMockState {
 	fileData: FileDataState;
-	wordpressPosts: any[];
-	spotifySeries: any;
-	spotifyEpisodes: any[];
+	wordpressPosts: any[] | null;
+	wordpressCategories: string[] | null;
+	spotifySeries: any | null;
+	spotifyEpisodes: any[] | null;
 }
 
 export const mockState: PixelatedMockState = {
 	fileData: { data: 'markdown content', loading: false, error: null },
 	wordpressPosts: [{ id: 1, title: 'Test Post' }],
+	wordpressCategories: ['General'],
 	spotifySeries: { name: 'Test Series' },
 	spotifyEpisodes: [{ id: 1, pubDate: '2024-01-01' }],
 };
@@ -27,6 +31,7 @@ export const mockState: PixelatedMockState = {
 export const resetMockState = () => {
 	mockState.fileData = { data: 'markdown content', loading: false, error: null };
 	mockState.wordpressPosts = [{ id: 1, title: 'Test Post' }];
+	mockState.wordpressCategories = ['General'];
 	mockState.spotifySeries = { name: 'Test Series' };
 	mockState.spotifyEpisodes = [{ id: 1, pubDate: '2024-01-01' }];
 	resetFileDataState();
@@ -134,7 +139,7 @@ const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
 	const items = Array.isArray(services) && services.length ? services : siteInfo?.services ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceslist', id },
+		{ 'data-testid': 'mock-services', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((service: any, index: number) => React.createElement(
@@ -149,7 +154,7 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	const items = Array.isArray(serviceAreas) && serviceAreas.length ? serviceAreas : siteInfo?.serviceAreas ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceareaslist', id },
+		{ 'data-testid': 'mock-serviceareas', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((area: any, index: number) => React.createElement(
@@ -205,6 +210,7 @@ const defaultMocks: Record<string, any> = {
 	getWordPressItems: async () => mockState.wordpressPosts,
 	getSpotifySeries: async () => mockState.spotifySeries,
 	getSpotifyEpisodes: async () => mockState.spotifyEpisodes,
+	getWordPressCategories: async () => mockState.wordpressCategories,
 	mapWordPressToBlogPosting: (post: any) => post,
 	mapPodcastSeriesToSchema: (series: any) => series,
 	mapPodcastEpisodeToSchema: (episode: any) => episode,
@@ -245,7 +251,9 @@ const defaultMocks: Record<string, any> = {
 	Timeline: mockComponent('Timeline', 'timeline'),
 	Callout: mockComponent('Callout', 'callout'),
 	ServicesList: mockServicesList,
+	Services: mockServicesList,
 	ServiceAreasList: mockServiceAreasList,
+	ServiceAreas: mockServiceAreasList,
 	ServiceCard: mockComponent('ServiceCard'),
 	ServiceDetailPage: mockServiceDetailPage,
 	ServiceAreaDetailPage: mockServiceAreaDetailPage,

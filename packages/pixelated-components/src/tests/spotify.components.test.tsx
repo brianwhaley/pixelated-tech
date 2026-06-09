@@ -5,7 +5,7 @@ import { PodcastEpisodeList } from '../components/integrations/spotify.component
 import type { SpotifyPodcastEpisodeType } from '../components/integrations/spotify.functions';
 
 // Mock the component dependencies
-vi.mock('../components/general/semantic', () => ({
+vi.mock('../components/structure/page-blocks', () => ({
 	PageGridItem: ({ children }: any) => <div data-testid="grid-item">{children}</div>
 }));
 

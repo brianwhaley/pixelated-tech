@@ -1,12 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { listEntries, getEntryById, createEntry, updateEntry, deleteEntry, searchEntriesByField } from '../components/integrations/contentful.management';
+import { pixelatedConfig } from '../test/test-data';
 
 describe('Contentful Management', () => {
-	const mockConfig = {
-		space_id: 'test-space-id',
-		environment: 'master',
-		delivery_access_token: 'test-token',
-	};
+	const mockConfig = pixelatedConfig.integrations?.contentful;
 
 	beforeEach(() => {
 		vi.clearAllMocks();

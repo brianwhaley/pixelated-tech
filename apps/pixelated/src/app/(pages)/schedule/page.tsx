@@ -1,15 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
-import { PageSection, PageGridItem } from "@pixelated-tech/components";
-import { FormEngine } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSectionHeader, PageSection, PageGridItem, FormEngine, usePixelatedConfig } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
 import SocialTags from '@/app/elements/socialtags';
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
 
-export default function Schedule() {
+export default function SchedulePage() {
+	const pixelatedConfig = usePixelatedConfig();
+	const siteInfo = pixelatedConfig?.siteInfo ?? {};
     
 	const [bodyContent, setBodyContent] = useState<React.ReactNode>(null);
 

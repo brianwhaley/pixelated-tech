@@ -152,10 +152,10 @@ async function runAxeCoreAnalysis(url: string, runtime_env: 'auto' | 'local' | '
 			execPath = process.env.PUPPETEER_EXECUTABLE_PATH;
 		} else if (runtime_env === 'prod') {
 			// In production, prefer the build-time configured executable path, fall back to env
-			execPath = cfg?.puppeteer?.executable_path || process.env.PUPPETEER_EXECUTABLE_PATH;
+			execPath = cfg?.integrations?.puppeteer?.executable_path || process.env.PUPPETEER_EXECUTABLE_PATH;
 		} else {
 			// auto: prefer config if present, otherwise env
-			execPath = cfg?.puppeteer?.executable_path || process.env.PUPPETEER_EXECUTABLE_PATH;
+			execPath = cfg?.integrations?.puppeteer?.executable_path || process.env.PUPPETEER_EXECUTABLE_PATH;
 		}
 		// Build launch options for Puppeteer. Use conservative/sandboxed args in prod, but keep local runs lighter to avoid sandbox permission issues during local dev
 		const prodArgs = [

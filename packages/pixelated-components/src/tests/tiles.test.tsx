@@ -2,8 +2,8 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { Tiles, ProjectTiles, ProjectsClient } from '@/components/general/tiles';
-import type { CarouselCardType } from '@/components/general/carousel';
+import { Tiles, ProjectTiles, ProjectsClient } from '@/components/elements/tiles';
+import type { CarouselCardType } from '@/components/structure/carousel';
 import {
   tileCards,
   tileCardsWithoutLinks,
@@ -12,7 +12,7 @@ import {
 } from '@/test/fixtures';
 
 // Mock SmartImage component
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => React.createElement('img', {
     src: props.src,
     alt: props.alt,
@@ -23,8 +23,8 @@ vi.mock('@/components/general/smartimage', () => ({
 }));
 
 // Mock Loading component
-vi.mock('@/components/general/loading', () => ({
-  Loading: () => React.createElement('div', { 'data-testid': 'loading-spinner' }, 'Loading')
+vi.mock('@/components/foundation/loading', () => ({
+  Loading: () => React.createElement('div', { id: 'loadingSpinner' }, 'Loading')
 }));
 
 describe('Tiles Component', () => {
@@ -382,7 +382,7 @@ describe('Tiles Component', () => {
     });
 
     it('exports TilesVariants with expected values', async () => {
-      const mod = await import('@/components/general/tiles');
+      const mod = await import('@/components/elements/tiles');
       expect(Array.isArray(mod.TilesVariants)).toBe(true);
       expect(mod.TilesVariants).toEqual(expect.arrayContaining(['caption', 'overlay']));
     });

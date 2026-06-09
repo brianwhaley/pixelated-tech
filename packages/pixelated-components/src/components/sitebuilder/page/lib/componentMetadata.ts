@@ -7,7 +7,7 @@
  * runtime values for form generation.
  */
 
-import { variants, shapes, layouts, directions } from "../../../general/callout";
+import { variants, shapes, layouts, directions } from "../../../structure/callout";
 import { 
 	layoutTypes, 
 	autoFlowValues, 
@@ -15,7 +15,7 @@ import {
 	flexWraps, 
 	justifyContentValues, 
 	alignItemsValues 
-} from "../../../general/semantic";
+} from "../../../structure/page-blocks";
 
 export type PropMetadata = {
 	type: 'text' | 'number' | 'checkbox' | 'select' | 'object' | 'array' | 'function' | 'children';
@@ -78,7 +78,7 @@ export const componentMetadata: {[componentName: string]: ComponentMetadata} = {
 			type: 'text',
 		},
 	},
-	'Page Section': {
+	'PageSection': {
 		layoutType: {
 			type: 'select',
 			options: layoutTypes,
@@ -114,7 +114,7 @@ export const componentMetadata: {[componentName: string]: ComponentMetadata} = {
 			type: 'checkbox',
 		},
 	},
-	'Grid Item': {
+	'PageGridItem': {
 		columnSpan: {
 			type: 'number',
 		},
@@ -134,7 +134,7 @@ export const componentMetadata: {[componentName: string]: ComponentMetadata} = {
 			type: 'number',
 		},
 	},
-	'Flex Item': {
+	'PageFlexItem': {
 		flex: {
 			type: 'text',
 		},
@@ -146,7 +146,7 @@ export const componentMetadata: {[componentName: string]: ComponentMetadata} = {
 			options: ['auto', 'flex-start', 'flex-end', 'center', 'baseline', 'stretch'],
 		},
 	},
-	'Page Header': {
+	'PageTitleHeader': {
 		title: {
 			type: 'text',
 			required: true,
@@ -155,7 +155,7 @@ export const componentMetadata: {[componentName: string]: ComponentMetadata} = {
 			type: 'text',
 		},
 	},
-	'Page Section Header': {
+	'PageSectionHeader': {
 		title: {
 			type: 'text',
 			required: true,

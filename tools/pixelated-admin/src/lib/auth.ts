@@ -14,8 +14,8 @@ type GoogleConfig = {
 };
 
 const fullConfig = getFullPixelatedConfig();
-const nextAuthCfg = (fullConfig.nextAuth ?? {}) as NextAuthConfig;
-const googleCfg = (fullConfig.google ?? {}) as GoogleConfig;
+const nextAuthCfg = (fullConfig.integrations?.nextAuth ?? {}) as NextAuthConfig;
+const googleCfg = (fullConfig.integrations?.google ?? {}) as GoogleConfig;
 
 if (!nextAuthCfg.secret) {
 	throw new Error('nextAuth.secret not configured in pixelated.config.json');

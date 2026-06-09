@@ -403,22 +403,22 @@ Add layout components to the component map:
 
 ```typescript
 const componentMap = {
-  "Page Header": PageTitleHeader,
-  "Page Section Header": PageSectionHeader,
+  "PageHeader": PageTitleHeader,
+  "PageSectionHeader": PageSectionHeader,
   "Callout": Callout,
   "Section Container": SectionContainer,
   "Grid Section": GridSection,
   "Flex Section": FlexSection,
-  "Grid Item": PageGridItem,
-  "Flex Item": PageFlexItem,
+  "GridItem": PageGridItem,
+  "FlexItem": PageFlexItem,
 };
 
 const layoutComponents = [
   'Section Container', 
   'Grid Section', 
   'Flex Section', 
-  'Grid Item', 
-  'Flex Item'
+  'GridItem', 
+  'FlexItem'
 ];
 ```
 
@@ -577,12 +577,12 @@ return (
       "component": "Flex Section",
       "props": { "direction": "column" },
       "children": [
-        { "component": "Page Header", "props": {...} },
+        { "component": "PageHeader", "props": {...} },
         { "component": "Callout", "props": {...} }
       ]
     },
     {
-      "component": "Grid Item",
+      "component": "GridItem",
       "props": { "columnSpan": 1 },
       "children": [
         { "component": "Callout", "props": {...} }

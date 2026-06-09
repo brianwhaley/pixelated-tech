@@ -4,6 +4,8 @@ import path from 'node:path';
 import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
+export { config };
+
 export interface FileDataState {
 	data: string | null;
 	loading: boolean;
@@ -110,12 +112,14 @@ const readPublicData = (filePath: string): string | null => {
 	return fs.readFileSync(resolvedPath, 'utf-8');
 };
 
-const mockComponent = (name: string) => ({ children, title, site, posts, markdowndata, faqsData, className, id, style }: any) => {
+const mockComponent = (name: string) => ({ children, title, site, posts, count, markdowndata, faqsData, className, id, style }: any) => {
 	const textContent = title ??
 		(site && Array.isArray(posts) ? `site:${site} count:${posts.length}` :
-			markdowndata ??
-			(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
-				undefined));
+			Array.isArray(posts) ? `count:${posts.length}` :
+				count !== undefined ? `count:${count}` :
+					markdowndata ??
+		(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
+			undefined));
 
 	const props: any = { 'data-testid': `mock-${name.toLowerCase()}` };
 	if (className) props.className = className;
@@ -133,7 +137,7 @@ const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
 	const items = Array.isArray(services) && services.length ? services : siteInfo?.services ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceslist', id },
+		{ 'data-testid': 'mock-services', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((service: any, index: number) => React.createElement(
@@ -148,7 +152,7 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	const items = Array.isArray(serviceAreas) && serviceAreas.length ? serviceAreas : siteInfo?.serviceAreas ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceareaslist', id },
+		{ 'data-testid': 'mock-serviceareas', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((area: any, index: number) => React.createElement(
@@ -238,12 +242,15 @@ const defaultMocks: Record<string, any> = {
 	BusinessFooter: mockComponent('BusinessFooter'),
 	Callout: mockComponent('Callout'),
 	ServicesList: mockServicesList,
+	Services: mockServicesList,
 	ServiceAreasList: mockServiceAreasList,
+	ServiceAreas: mockServiceAreasList,
 	ServiceCard: mockComponent('ServiceCard'),
 	ServiceDetailPage: mockServiceDetailPage,
 	ServiceAreaDetailPage: mockServiceAreaDetailPage,
 	contentfulValueToSlug,
-	FAQAccordion: mockComponent('FAQAccordion'),
+	FAQAccordion: mockComponent('FAQ'),
+	FAQ: mockComponent('FAQ'),
 	SchemaFAQ: mockComponent('SchemaFAQ'),
 	Markdown: mockComponent('Markdown'),
 	BlogPostList: mockComponent('BlogPostList'),

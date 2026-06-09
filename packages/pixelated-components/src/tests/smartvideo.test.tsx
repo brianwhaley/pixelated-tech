@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '@/test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { SmartVideo } from '@/components/general/smartvideo';
+import { SmartVideo } from '@/components/elements/smartvideo';
 
 vi.mock('@/components/integrations/cloudinary', () => ({
 	buildCloudinaryUrl: vi.fn(),
@@ -12,10 +12,12 @@ import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
 const mockBuildCloudinaryUrl = vi.mocked(buildCloudinaryUrl);
 
 const cloudinaryConfig = {
-	cloudinary: {
-		product_env: 'test-env',
-		baseUrl: 'https://res.cloudinary.com/test/',
-		transforms: 'f_auto,c_limit,q_auto,dpr_auto',
+	integrations: {
+		cloudinary: {
+			product_env: 'test-env',
+			baseUrl: 'https://res.cloudinary.com/test/',
+			transforms: 'f_auto,c_limit,q_auto,dpr_auto',
+		},
 	},
 };
 
@@ -52,7 +54,7 @@ describe('SmartVideo Component', () => {
 	it('falls back to html variant when Cloudinary config is missing', () => {
 		const { container } = render(
 			<SmartVideo src="https://example.com/test-video.mp4" poster="https://example.com/poster.jpg" variant="cloudinary" />,
-			{ config: { ...cloudinaryConfig, cloudinary: undefined } }
+			{ config: { integrations: { cloudinary: undefined } } }
 		);
 		const video = container.querySelector('video');
 		expect(video).not.toBeNull();

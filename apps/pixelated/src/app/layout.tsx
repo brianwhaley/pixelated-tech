@@ -1,10 +1,10 @@
 
 import { headers } from "next/headers";
-import { getRouteByKey } from "@pixelated-tech/components/server";
+import { getRouteByKey, getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { generateMetaTags, PixelatedServerConfigProvider } from "@pixelated-tech/components/server";
 import { LocalBusinessSchema, WebsiteSchema, ServicesSchema, BreadcrumbListSchema } from "@pixelated-tech/components";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
-import type { /* BlogPostType, */ SiteInfo } from "@pixelated-tech/components";
+import type { SiteInfo } from "@pixelated-tech/components";
 import { LayoutClient } from "@/app/elements/layoutclient";
 import { ContentfulAlerts } from "@pixelated-tech/components";
 import Header from "@/app/elements/header";
@@ -13,7 +13,6 @@ import Nav from "@/app/elements/nav";
 import Search from '@/app/elements/search';
 import Footer from '@/app/elements/footer';
 // import { BlogPostsProvider } from "@/app/providers/blog-posts-provider";
-import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "@/app/styles/globals.css";
@@ -25,12 +24,11 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
+	const pixelatedConfig = getFullPixelatedConfig();
+	const metadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
 
-	// Extract siteinfo from siteconfig.json for schema components
-	const siteInfo = siteConfig.siteInfo;
+	const siteInfo = pixelatedConfig.siteInfo;
 		
-	// Minimal layout for /samples routes - no CSS, no header/nav/footer
 	const regexPattern = /^\/samples\/.+$/;
 	const samplesBody = <>{children}</>;
 	const pixelatedBody = (
@@ -68,32 +66,32 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 			<LayoutClient />
 			<html lang="en">
 				<head>
-
-					{ generateMetaTags({
-						title: metadata?.title ?? "",
-						description: metadata?.description ?? "",
-						keywords: metadata?.keywords ?? "",
-						origin: origin ?? "",
-						url: url ?? "",
-						siteInfo: siteInfo as SiteInfo,
-					}) }
-					<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
-					<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
-					<LocalBusinessSchema siteInfo={siteConfig.siteInfo} />
-					<ServicesSchema siteInfo={siteInfo} />
-					<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
-					<LocalBusinessSchema
-						siteInfo={siteInfo}
-						streetAddress="4 Raymond Court"
-						addressLocality="Bluffton"
-						addressRegion="SC"
-						postalCode="29909"
-						addressCountry="US"
-						telephone="+1-843-699-6611"
-					/>
-					<meta name="google-site-verification" content="t2yy9wL1bXPiPQjBqDee2BTgpiGQjwVldlfa4X5CQkU" />
-					<meta name="google-site-verification" content="l7D0Y_JsgtACBKNCeFAXPe-UWqo13fPTUCWhkmHStZ4" />
-					<meta name="blogarama-site-verification" content="blogarama-255c1bbf-7596-49bc-9d50-91af781055c2" />
+					<PixelatedServerConfigProvider>
+						{ generateMetaTags({
+							title: metadata?.title ?? "",
+							description: metadata?.description ?? "",
+							keywords: metadata?.keywords ?? "",
+							origin: origin ?? "",
+							url: url ?? "",
+							siteInfo: siteInfo as SiteInfo,
+						}) }
+						<BreadcrumbListSchema currentPath={pathname} />
+						<WebsiteSchema />
+						<LocalBusinessSchema />
+						<ServicesSchema />
+						<VisualDesignStyles />
+						<LocalBusinessSchema
+							streetAddress="4 Raymond Court"
+							addressLocality="Bluffton"
+							addressRegion="SC"
+							postalCode="29909"
+							addressCountry="US"
+							telephone="+1-843-699-6611"
+						/>
+						<meta name="google-site-verification" content="t2yy9wL1bXPiPQjBqDee2BTgpiGQjwVldlfa4X5CQkU" />
+						<meta name="google-site-verification" content="l7D0Y_JsgtACBKNCeFAXPe-UWqo13fPTUCWhkmHStZ4" />
+						<meta name="blogarama-site-verification" content="blogarama-255c1bbf-7596-49bc-9d50-91af781055c2" />
+					</PixelatedServerConfigProvider>
 				</head>
 				<body>
 					<PixelatedServerConfigProvider>

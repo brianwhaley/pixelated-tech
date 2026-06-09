@@ -65,15 +65,16 @@ const clientAndServerSafeComponents = nonAdminComponents.filter(comp => !comp.is
 // Read index files
 const indexServer = fs.readFileSync('src/index.server.js', 'utf8');
 const indexClient = fs.readFileSync('src/index.js', 'utf8');
-const indexAdminServer = fs.readFileSync('src/index.adminserver.js', 'utf8');
-const indexAdminClient = fs.readFileSync('src/index.adminclient.js', 'utf8');
+const indexAdminServer = fs.readFileSync('src/index.admin.server.js', 'utf8');
+const indexAdminClient = fs.readFileSync('src/index.admin.js', 'utf8');
 
-// Helper function to extract exports from index file
-function extractExports(content) {
+// Updated to handle recursive barrel files
+function extractExports(content, currentFilePath = 'src/index.js') {
 	// Remove comments
 	content = content.replace(/\/\*[\s\S]*?\*\//g, '');
 	content = content.replace(/\/\/.*$/gm, '');
 
+	const currentDir = currentFilePath.substring(0, currentFilePath.lastIndexOf('/') + 1);
 	const exports = [];
 
 	// Handle export * from './path' syntax
@@ -81,25 +82,40 @@ function extractExports(content) {
 	let match;
 
 	while ((match = exportAllRegex.exec(content)) !== null) {
-		exports.push(match[1]);
+		const exportPath = match[1];
+		
+		// Determine full path for file existence check
+		let fullPath = currentDir + exportPath.replace('./', '');
+		if (fs.existsSync(fullPath + '.js') || fs.existsSync(fullPath + '.ts') || fs.existsSync(fullPath + '.tsx')) {
+			if (exportPath.includes('index.')) {
+				// Barrel file, recurse
+				const barrelContent = fs.readFileSync(fullPath + '.js', 'utf8');
+				exports.push(...extractExports(barrelContent, fullPath + '.js'));
+			} else {
+				// Regular component, map to root-relative path formatted as ./components/...
+				const rootRelative = fullPath.replace('src/', './');
+				exports.push(rootRelative);
+			}
+		}
 	}
 
 	// Handle export { ... } from './path' syntax
 	const exportRegex = /export\s+{\s*([^}]+)\s*}\s+from\s+['"]([^'"]+)['"]/g;
 	while ((match = exportRegex.exec(content)) !== null) {
-		const exportList = match[1];
-		const exportItems = exportList.split(',').map(item => item.trim());
-		exports.push(...exportItems.map(item => match[2])); // Use the from path
+		const exportPath = match[2];
+		let fullPath = currentDir + exportPath.replace('./', '');
+		const rootRelative = fullPath.replace('src/', './');
+		exports.push(rootRelative);
 	}
 
 	return exports;
 }
 
 // Extract exports from all index files
-const serverExports = extractExports(indexServer);
-const clientExports = extractExports(indexClient);
-const adminServerExports = extractExports(indexAdminServer);
-const adminClientExports = extractExports(indexAdminClient);
+const serverExports = extractExports(indexServer, 'src/index.server.js');
+const clientExports = extractExports(indexClient, 'src/index.js');
+const adminServerExports = extractExports(indexAdminServer, 'src/index.admin.server.js');
+const adminClientExports = extractExports(indexAdminClient, 'src/index.admin.js');
 
 const missing = {
 	server: [],

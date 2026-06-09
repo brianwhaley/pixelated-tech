@@ -5,7 +5,7 @@ import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 import Terms from "@/app/elements/terms";
 import Privacy from "@/app/elements/privacy";
 
-export default function Legal() {
+export default function LegalPage() {
 	return (
 		<>
 			<PageTitleHeader title="Legal Information" />

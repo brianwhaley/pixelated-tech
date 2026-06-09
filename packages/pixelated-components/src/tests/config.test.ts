@@ -95,15 +95,17 @@ describe('config.ts', () => {
 		it('should strip secrets from config', () => {
 			const fullConfig = {
 				siteInfo: { name: 'Test' },
-				ebay: { appId: 'public', sbxAppId: 'secret' },
+				integrations: {
+					ebay: { appId: 'public', sbxAppId: 'secret' }
+				},
 				global: { someSecret: 'should stay if not in list' }
 			};
 
 			const clientConfig = getClientOnlyPixelatedConfig(fullConfig as any);
 			
 			expect(clientConfig.siteInfo.name).toBe('Test');
-			expect(clientConfig.ebay.appId).toBe('public');
-			expect((clientConfig.ebay as any).sbxAppId).toBeUndefined();
+			expect(clientConfig.integrations?.ebay?.appId).toBe('public');
+			expect((clientConfig.integrations?.ebay as any)?.sbxAppId).toBeUndefined();
 		});
 
 		it('should handle circular references', () => {

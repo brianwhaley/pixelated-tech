@@ -5,7 +5,7 @@ export async function POST(request: Request): Promise<Response> {
 		const body: GeminiRecommendationRequest = await request.json();
 		const config = getFullPixelatedConfig();
 		// Try multiple possible key locations
-		const apiKey = config?.google?.api_key;
+		const apiKey = config?.integrations?.google?.api_key;
 
 		if (!apiKey) {
 			return Response.json(

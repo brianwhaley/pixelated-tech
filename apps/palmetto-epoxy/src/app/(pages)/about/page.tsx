@@ -5,7 +5,7 @@ import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { Callout } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 
-export default function About() {
+export default function AboutPage() {
 	return (
 		<>
 			<CalloutLibrary.PageTitle title="About Us" />

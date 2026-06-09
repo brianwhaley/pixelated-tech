@@ -1,0 +1,29 @@
+[
+	{
+		"index": 0,
+		"cardIndex": 0,
+		"cardLength": 3,
+		"link": "/tile1",
+		"image": "https://example.com/image1.jpg",
+		"imageAlt": "Tile 1",
+		"bodyText": "First tile description"
+	},
+	{
+		"index": 1,
+		"cardIndex": 1,
+		"cardLength": 3,
+		"link": "/tile2",
+		"image": "https://example.com/image2.jpg",
+		"imageAlt": "Tile 2",
+		"bodyText": "Second tile description"
+	},
+	{
+		"index": 2,
+		"cardIndex": 2,
+		"cardLength": 3,
+		"link": "/tile3",
+		"image": "https://example.com/image3.jpg",
+		"imageAlt": "Tile 3",
+		"bodyText": "Third tile description"
+	}
+]

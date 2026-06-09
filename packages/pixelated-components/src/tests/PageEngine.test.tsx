@@ -9,9 +9,10 @@ vi.mock('../components/sitebuilder/page/lib/componentMap', () => ({
     LayoutWrapper: ({ label, children }: any) => <div>{label}{children}</div>,
   },
   layoutComponents: ['LayoutWrapper'],
+  isLayoutComponent: (name: string) => name === 'LayoutWrapper',
 }));
 
-import { PageEngine } from '../components/sitebuilder/page/components/PageEngine';
+import { PageEngine, PageDataProvider } from '../components/sitebuilder/page/components/PageEngine';
 
 describe('PageEngine', () => {
   it('renders a known component from componentMap', () => {
@@ -100,5 +101,43 @@ describe('PageEngine', () => {
 
     const selectedWrapper = document.querySelector('.pagebuilder-component-wrapper.selected');
     expect(selectedWrapper).toBeInTheDocument();
+  });
+
+  it('resolves exact token paths from page data context', () => {
+    render(
+      <PageDataProvider siteConfig={{ siteInfo: { name: 'Pixelated Inc.' } }}>
+        <PageEngine
+          pageData={{
+            components: [
+              {
+                component: 'TestComponent',
+                props: { label: '{{siteInfo.name}}' },
+              },
+            ],
+          }}
+        />
+      </PageDataProvider>
+    );
+
+    expect(screen.getByText('Pixelated Inc.')).toBeInTheDocument();
+  });
+
+  it('replaces missing token values with undefined placeholder text', () => {
+    render(
+      <PageDataProvider siteConfig={{ siteInfo: { name: 'Pixelated Inc.' } }}>
+        <PageEngine
+          pageData={{
+            components: [
+              {
+                component: 'TestComponent',
+                props: { label: 'Value: {{siteInfo.missing}}' },
+              },
+            ],
+          }}
+        />
+      </PageDataProvider>
+    );
+
+    expect(screen.getByText(/\[undefined: siteInfo\.missing\]/)).toBeInTheDocument();
   });
 });

@@ -16,14 +16,14 @@ vi.mock('../components/integrations/contentful.delivery', () => ({
 }));
 
 // Mock cache manager
-vi.mock('../components/general/cache-manager', () => ({
+vi.mock('../components/foundation/cache-manager', () => ({
 	CacheManager: class {
 		get() { return null; }
 		set() { }
 	}
 }));
 
-vi.mock('../components/general/utilities', () => ({
+vi.mock('../components/foundation/utilities', () => ({
 	getDomain: () => 'example.com'
 }));
 

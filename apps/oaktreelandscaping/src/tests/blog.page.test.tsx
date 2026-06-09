@@ -27,4 +27,10 @@ describe('Oaktree Landscaping blog page', () => {
 		render(<BlogPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).toBeTruthy());
 	});
+
+	it('renders without errors when cached WordPress posts are undefined', async () => {
+		mockGetCachedWordPressItems.mockResolvedValueOnce(undefined as any);
+		render(<BlogPage />);
+		await waitFor(() => expect(screen.getByTestId('mock-blogpostlist')).toBeTruthy());
+	});
 });

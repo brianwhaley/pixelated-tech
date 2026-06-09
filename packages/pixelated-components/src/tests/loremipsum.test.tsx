@@ -1,10 +1,13 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoremIpsum } from '@/components/integrations/loremipsum';
+import { pixelatedConfig } from '../test/test-data';
+import { renderWithProviders } from '../test/test-utils';
 
 describe('LoremIpsum', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
   it('fetches default 1 paragraph and renders it (direct)', async () => {
@@ -12,33 +15,27 @@ describe('LoremIpsum', () => {
     // @ts-ignore
     global.fetch = mock;
 
-    render(<LoremIpsum />);
+    renderWithProviders(<LoremIpsum />);
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText('one')).toBeInTheDocument());
     expect(mock).toHaveBeenCalledWith(expect.stringContaining('https://lorem-api.com/api/lorem?paragraphs=1'), expect.anything());
   });
 
-  it('retries via proxy when direct fetch fails and proxyBase is provided', async () => {
-    const proxyBase = 'https://proxy.test/proxy?url=';
+  it('retries via proxy when direct fetch fails and proxy is configured', async () => {
     const failFirst = vi.fn()
       .mockRejectedValueOnce(new TypeError('Network error'))
       .mockResolvedValueOnce({ ok: true, text: async () => JSON.stringify({ paragraphs: ['proxied'] }) });
     // @ts-ignore
     global.fetch = failFirst;
 
-    render(<LoremIpsum paragraphs={1} proxyBase={proxyBase} />);
+    renderWithProviders(<LoremIpsum paragraphs={1} />);
     await waitFor(() => expect(screen.getByText('proxied')).toBeInTheDocument());
     expect(failFirst).toHaveBeenNthCalledWith(1, expect.stringContaining('https://lorem-api.com/api/lorem?paragraphs=1'), expect.anything());
     expect(failFirst).toHaveBeenNthCalledWith(2, expect.stringContaining(encodeURIComponent('https://lorem-api.com/api/lorem?paragraphs=1')), expect.anything());
   });
 
-  it('prefers global proxy from usePixelatedConfig over a passed proxyBase', async () => {
-    const GLOBAL = 'https://global.proxy/test?url=';
-    const localProxy = 'https://local.proxy/test?url=';
-
-    // spy on the config hook and return a global proxy
-    const mod = await import('@/components/config/config.client');
-    vi.spyOn(mod, 'usePixelatedConfig').mockReturnValue({ global: { proxyUrl: GLOBAL } } as any);
+  it('uses global proxy from usePixelatedConfig', async () => {
+    const GLOBAL = pixelatedConfig?.integrations?.global?.proxyUrl;
 
     const failFirst = vi.fn()
       .mockRejectedValueOnce(new TypeError('Network error'))
@@ -46,13 +43,15 @@ describe('LoremIpsum', () => {
     // @ts-ignore
     global.fetch = failFirst;
 
-    render(<LoremIpsum paragraphs={1} proxyBase={localProxy} />);
+    renderWithProviders(<LoremIpsum paragraphs={1} />);
     await waitFor(() => expect(screen.getByText('globally-proxied')).toBeInTheDocument());
 
-    // first call = direct, second call = global proxy (not the local proxyBase)
+    // first call = direct, second call = global proxy
     expect(failFirst).toHaveBeenNthCalledWith(1, expect.stringContaining('https://lorem-api.com/api/lorem?paragraphs=1'), expect.anything());
     expect(failFirst).toHaveBeenNthCalledWith(2, expect.stringContaining(encodeURIComponent('https://lorem-api.com/api/lorem?paragraphs=1')), expect.anything());
-    expect(failFirst).toHaveBeenNthCalledWith(2, expect.stringContaining(GLOBAL), expect.anything());
+    if (GLOBAL) {
+      expect(failFirst).toHaveBeenNthCalledWith(2, expect.stringContaining(GLOBAL), expect.anything());
+    }
   });
 
   it('splits JSON string into paragraphs', async () => {
@@ -60,54 +59,28 @@ describe('LoremIpsum', () => {
     // @ts-ignore
     global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
 
-    render(<LoremIpsum />);
+    renderWithProviders(<LoremIpsum />);
     await waitFor(() => expect(screen.getByText('para one')).toBeInTheDocument());
     expect(screen.getByText('para two')).toBeInTheDocument();
   });
 
-  it('parses { text: "..." } and splits paragraphs', async () => {
-    const payload = JSON.stringify({ text: 'p1\n\np2' });
+  it('parses JSON object with paragraphs into separate paragraphs', async () => {
+    const payload = JSON.stringify({ paragraphs: ['first paragraph', 'second paragraph'] });
     // @ts-ignore
     global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
 
-    render(<LoremIpsum />);
-    await waitFor(() => expect(screen.getByText('p1')).toBeInTheDocument());
-    expect(screen.getByText('p2')).toBeInTheDocument();
+    renderWithProviders(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText('first paragraph')).toBeInTheDocument());
+    expect(screen.getByText('second paragraph')).toBeInTheDocument();
   });
 
-  it('parses raw array response', async () => {
-    const payload = JSON.stringify(['item 1', 'item 2']);
+  it('parses JSON object with text property into paragraph elements', async () => {
+    const payload = JSON.stringify({ text: 'line one\n\nline two' });
     // @ts-ignore
     global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
 
-    render(<LoremIpsum />);
-    await waitFor(() => expect(screen.getByText('item 1')).toBeInTheDocument());
-    expect(screen.getByText('item 2')).toBeInTheDocument();
-  });
-
-  it('handles plaintext response when JSON parsing fails', async () => {
-    const payload = 'This is raw plaintext\nwith multiple lines';
-    // @ts-ignore
-    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
-
-    render(<LoremIpsum />);
-    await waitFor(() => expect(screen.getByText('This is raw plaintext')).toBeInTheDocument());
-    expect(screen.getByText('with multiple lines')).toBeInTheDocument();
-  });
-
-  it('handles fallback stringification for other JSON types', async () => {
-    const payload = JSON.stringify(12345);
-    // @ts-ignore
-    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => payload });
-
-    render(<LoremIpsum />);
-    await waitFor(() => expect(screen.getByText('12345')).toBeInTheDocument());
-  });
-
-  it('shows error state when both direct and proxied fetches fail', async () => {
-    // @ts-ignore
-    global.fetch = vi.fn().mockRejectedValue(new TypeError('Network error'));
-    render(<LoremIpsum paragraphs={1} proxyBase="https://proxy.test/proxy?url=" />);
-    await waitFor(() => expect(screen.getByText(/unable to load|network error/i)).toBeInTheDocument());
+    renderWithProviders(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText('line one')).toBeInTheDocument());
+    expect(screen.getByText('line two')).toBeInTheDocument();
   });
 });

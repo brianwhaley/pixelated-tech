@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import siteConfig from "@/app/data/siteconfig.json";
-import { PageTitleHeader, PageSection, ShoppingCart, getCart, type CartItemType, smartFetch } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection, ShoppingCart, getCart, type CartItemType, smartFetch, usePixelatedConfig } from "@pixelated-tech/components";
 import { getThreeMusesSubtotalDiscount } from "../../lib/shoppingcart-discounts";
 import baseFormData from "@/app/data/register-base-form.json";
 import adultFormData from "@/app/data/register-adult-form.json";
@@ -20,37 +19,46 @@ export default function CartPage() {
 	}, []);
 
 	const subtotalDiscountCustom = getThreeMusesSubtotalDiscount(cart);
+	const siteInfo = usePixelatedConfig()?.siteInfo ?? {};
 
 	const additionalInfoForm = useMemo(() => {
-		const categories = new Set(
-			cart
-				.flatMap((item) => {
-					const categories = item.itemCategory;
-					if (Array.isArray(categories)) return categories;
-					if (categories == null) return [];
-					return [categories];
-				})
-				.map((category) => category?.toString?.()?.toLowerCase?.()?.trim())
-				.filter(Boolean),
+		const cartItemCategorySets = cart.map((item) => {
+			const categories = item.itemCategory;
+			const categoryArray = Array.isArray(categories) 
+				? categories 
+				: (categories == null ? [] : [categories]);
+			
+			return new Set(
+				categoryArray
+					.map((category) => category?.toString?.()?.toLowerCase?.()?.trim())
+					.filter(Boolean)
+			);
+		});
+
+		const hasEventCategory = cartItemCategorySets.some(s => s.has('event'));
+		
+		// If no event items, show nothing
+		if (!hasEventCategory) return null;
+
+		const hasEventAdult = cartItemCategorySets.some(s => s.has('event') && s.has('adult'));
+		const hasEventYouth = cartItemCategorySets.some(s => 
+			s.has('event') && (s.has('youth') || s.has('summer camp'))
 		);
 
-		const hasAdultCategory = categories.has('adult');
-		const hasYouthCategory = categories.has('youth') || categories.has('summer camp');
-
 		const fields = [
-			...(hasAdultCategory ? adultFormData.fields ?? [] : []),
-			...(hasYouthCategory ? youthFormData.fields ?? [] : []),
+			...(hasEventAdult ? adultFormData.fields ?? [] : []),
+			...(hasEventYouth ? youthFormData.fields ?? [] : []),
 			...(legalFormData.fields ?? []),
 			...(baseFormData.fields ?? []),
 		];
 
 		return {
 			properties: {
-				...(baseFormData.properties ?? {}),
+				...(baseFormData as any).properties ?? {},
 			},
 			fields,
 		};
-	}, [cart]);
+	}, [cart]) as any;
 
 	async function handlePaymentCapture(payload: { sourceId: string; checkoutData: any; card?: any }) {
 		return await smartFetch('/api/capture-payment', {
@@ -69,9 +77,9 @@ export default function CartPage() {
 			<PageSection columns={1} maxWidth="1024px" id="cart-page">
 				<ShoppingCart
 					subtotalDiscountCustom={subtotalDiscountCustom}
-					additionalInfoForm={additionalInfoForm}
+					additionalInfoForm={additionalInfoForm || undefined}
 					onPaymentCapture={handlePaymentCapture}
-					siteInfo={siteConfig.siteInfo}
+					siteInfo={siteInfo as any}
 					showDiscountForm={false}
 				/>
 			</PageSection>

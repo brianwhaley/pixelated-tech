@@ -1,6 +1,6 @@
 'use client';
 
-import type { RouteType, SiteInfo } from '../config/siteconfig.types';
+import type { RouteType, SiteInfo } from '../config/config.types';
 
 // Debug logging: set to true to inspect AI model responses locally
 const debug = false;

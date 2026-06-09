@@ -6,8 +6,10 @@ vi.unmock('@pixelated-tech/components/server');
 
 // Helper to mock the config module before importing auth module
 const fakeConfig = {
-	nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
-	google: { client_id: TEST_CONFIG.google.client_id, client_secret: TEST_CONFIG.google.client_secret },
+	integrations: {
+		nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
+		google: { client_id: TEST_CONFIG.integrations.google.client_id, client_secret: TEST_CONFIG.integrations.google.client_secret },
+	}
 };
 
 describe('NextAuth config (server)', () => {
@@ -33,7 +35,7 @@ describe('NextAuth config (server)', () => {
 	it('throws when required values are missing', async () => {
 		vi.resetModules();
 		vi.doUnmock('@pixelated-tech/components/server');
-		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({}) }));
+		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({ integrations: {} }) }));
 		await expect(import('@/lib/auth')).rejects.toThrow('nextAuth.secret not configured');
 	});
 });

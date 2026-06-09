@@ -1,0 +1,28 @@
+{
+  "analytics": {
+    "rows": [
+      { "dimensionValues": [{ "value": "20240101" }], "metricValues": [{ "value": "100" }] },
+      { "dimensionValues": [{ "value": "20240102" }], "metricValues": [{ "value": "150" }] },
+      { "dimensionValues": [{ "value": "20240103" }], "metricValues": [{ "value": "200" }] }
+    ]
+  },
+  "analyticsPrevious": {
+    "rows": [
+      { "dimensionValues": [{ "value": "20231219" }], "metricValues": [{ "value": "80" }] },
+      { "dimensionValues": [{ "value": "20231220" }], "metricValues": [{ "value": "120" }] },
+      { "dimensionValues": [{ "value": "20231221" }], "metricValues": [{ "value": "140" }] }
+    ]
+  },
+  "searchConsole": {
+    "rows": [
+      { "keys": ["2024-01-01"], "clicks": 10, "impressions": 100 },
+      { "keys": ["2024-01-02"], "clicks": 15, "impressions": 150 }
+    ]
+  },
+  "searchConsolePrevious": {
+    "rows": [
+      { "keys": ["2023-12-19"], "clicks": 8, "impressions": 80 },
+      { "keys": ["2023-12-20"], "clicks": 12, "impressions": 120 }
+    ]
+  }
+}

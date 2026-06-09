@@ -1,20 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { FourOhFour } from '../components/foundation/404';
-
-// Mock usePixelatedConfig
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: () => ({
-		cloudinary: {
-			product_env: 'test-env',
-			baseUrl: 'https://res.cloudinary.com',
-			transforms: {}
-		}
-	})
-}));
+import { pixelatedConfig } from '../test/test-data';
 
 // Mock SmartImage component
-vi.mock('../components/general/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
 	SmartImage: ({ src, alt, title }: any) => (
 		<img src={src} alt={alt} title={title} />
 	)

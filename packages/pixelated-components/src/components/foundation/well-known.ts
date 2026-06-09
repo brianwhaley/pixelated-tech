@@ -2,11 +2,11 @@ import PropTypes, { InferProps } from 'prop-types';
 import { readFile } from 'fs/promises';
 import crypto from 'crypto';
 import path from 'path';
-import { createRequire } from 'module';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { flattenRoutes } from './sitemap';
 import { sanitizeString } from './utilities';
+import { getFullPixelatedConfig } from '../config/config';
 import { pixelatedComponentsVersion as selfExportedPixelatedComponentsVersion } from '../../version';
 
 /**
@@ -38,12 +38,10 @@ export function createTextResponsePayload(body: string) {
 /* ========== HUMANS.TXT ========== */
 
 generateHumansTxt.propTypes = {
-	/** base directory to read package.json / siteconfig.json from (defaults to process.cwd()) */
+	/** base directory to read package.json from (defaults to process.cwd()) */
 	cwd: PropTypes.string,
 	/** optional package.json object (if provided, fs is not used) */
 	pkg: PropTypes.object,
-	/** optional siteconfig.json object (if provided, fs is not used) */
-	siteConfig: PropTypes.object,
 	/** limit how many routes to include (default 50) */
 	maxRoutes: PropTypes.number,
 };
@@ -55,16 +53,6 @@ function usesPixelatedComponents(pkg: any) {
 		pkg.peerDependencies?.['@pixelated-tech/components'] ||
 		pkg.optionalDependencies?.['@pixelated-tech/components']
 	);
-}
-
-const requireFromThisFile = createRequire(import.meta.url);
-
-function createRequireFromCwd(cwd: string) {
-	try {
-		return createRequire(path.join(cwd, 'package.json'));
-	} catch {
-		return null;
-	}
 }
 
 function getPackageJsonDependencyVersion(pkg: any) {
@@ -205,10 +193,10 @@ export async function getPixelatedComponentsPackageVersion(cwd: string) {
 export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};
-	// THIS DOES NOT WORK IN PROD, USE PASSED SITECONFIG INSTEAD
-	const data = opts.siteConfig ?? (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
-	const site = data.siteInfo ?? {};
-	const routes = Array.isArray(data.routes) ? data.routes : [];
+	const fullConfig = getFullPixelatedConfig();
+	const configData = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
+	const site = configData.siteInfo ?? {};
+	const routes = Array.isArray(configData.routes) ? configData.routes : [];
 	const pixelatedComponentsPackageVersion = selfExportedPixelatedComponentsVersion || 'N/A';
 
 	const lines: string[] = [
@@ -265,12 +253,11 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 
 /* ========== SECURITY.TXT ========== */
 
-generateSecurityTxt.propTypes = {
-	siteConfig: PropTypes.object,
-};
+generateSecurityTxt.propTypes = {};
 export type GenerateSecurityTxtType = InferProps<typeof generateSecurityTxt.propTypes>;
 export async function generateSecurityTxt(props: GenerateSecurityTxtType = {}) {
-	const data = props.siteConfig ?? (await safeJSON(process.cwd() + '/src/app/data/siteconfig.json')) ?? {};
+	const fullConfig = getFullPixelatedConfig();
+	const data = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(process.cwd() + '/src/app/data/siteconfig.json')) ?? {};
 	const siteInfo = data.siteInfo ?? {};
 
 	const lines: string[] = [

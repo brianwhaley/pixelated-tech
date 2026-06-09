@@ -9,10 +9,10 @@ import {
   RecipePickList,
   BackToTop,
   mapSchemaRecipeToDisplay,
-} from '@/components/general/recipe';
+} from '@/components/elements/recipe';
 
 // Mock the SmartImage component
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => {
     const { src, alt, title, className, onClick } = props;
     return React.createElement('img', {

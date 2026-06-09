@@ -394,7 +394,7 @@ export function FormGooglePlacesInput(props: FormGooglePlacesInputType) {
 		// Set new debounced fetch
 		debounceTimer.current = setTimeout(
 			() => fetchPredictions(value),
-			config?.googlePlaces?.debounceDelay || 300
+			config?.integrations?.googlePlaces?.debounceDelay || 300
 		);
 	};
 
@@ -408,7 +408,7 @@ export function FormGooglePlacesInput(props: FormGooglePlacesInputType) {
 			const service = getGooglePlacesService(config);
 			const details = await service.getPlaceDetails(prediction.placeId, config);
 
-			if (details && service.isValidCountry(details, config?.googlePlaces?.countryRestrictions)) {
+			if (details && service.isValidCountry(details, config?.integrations?.googlePlaces?.countryRestrictions)) {
 				// Auto-fill address components
 				if (props.onAddressParsed) {
 					props.onAddressParsed({

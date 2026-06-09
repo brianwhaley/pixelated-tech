@@ -2,13 +2,13 @@
 "use client";
 
 import React from "react";
-import { SmartImage } from "@pixelated-tech/components";
+import { SmartImage, usePixelatedConfig } from "@pixelated-tech/components";
 import Social from "@/app/elements/social";
 import Nav from "@/app/elements/nav";
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
 
 export default function Header() {
+	const pixelatedConfig = usePixelatedConfig();
+	const siteInfo = pixelatedConfig?.siteInfo;
 	return (
 		<div className="section-container">
 

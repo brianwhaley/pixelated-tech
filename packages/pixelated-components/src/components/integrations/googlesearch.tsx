@@ -1,50 +1,47 @@
-"use client";
+'use client';
 
-import React from "react";
-import PropTypes, { InferProps } from "prop-types";
+import React, { useEffect } from "react";
+import PropTypes, { InferProps } from 'prop-types';
+import { usePixelatedConfig } from "../config/config.client";
+import { SmartErrorBoundary } from "../foundation/smarterrorboundary";
 import "./googlesearch.css";
 
-/* 
-===== Google Programmable Search =====
-pixelated id = "009500278966481927899:bcssp73qony";
-pixelvivid id = "e336d1c9d0e5e48e5";
-
-https://programmablesearchengine.google.com/controlpanel/all 
-https://dev.to/mjoycemilburn/searching-pdf-files-coding-a-goggle-custom-search-engine-gcse-component-in-react-36fk
-https://stackoverflow.com/questions/15779036/auto-adding-gsc-tab-0-after-the-url 
-
-<script async src="https://cse.google.com/cse.js?cx=009500278966481927899:bcssp73qony" />
-<div className="gcse-search">
-
-===== Hydration Error =====
-https://www.reddit.com/r/nextjs/comments/1gabiqn/hydration_error_when_installing_nextjs_15/?rdt=34262
-https://nextjs.org/docs/messages/react-hydration-error
-*/
 
 
 /**
- * GoogleSearch — Embed a Google Programmable Search Engine (CSE) widget by id.
+ * GoogleSearch — Embed a Google Programmable Search box and results.
  *
- * @param {string} [props.id] - The CSE 'cx' id to initialize the Programmable Search Engine (required).
+ * @param {GoogleSearchType} props - Component properties.
  */
 GoogleSearch.propTypes = {
-/** CSE 'cx' id for the Google Programmable Search Engine */
-	id: PropTypes.string.isRequired,
+	/** no props */
 };
 export type GoogleSearchType = InferProps<typeof GoogleSearch.propTypes>;
 export function GoogleSearch(props: GoogleSearchType) {
-	if(typeof document !== 'undefined'){
-		 
-		const gsearch = (function () {
-			const gcse = document.createElement("script");
-			gcse.type = "text/javascript";
-			gcse.async = true;
-			gcse.src = (document.location.protocol === "https:" ? "https:" : "http:") + "//cse.google.com/cse.js?cx=" + props.id;
-			const s = document.getElementsByTagName("script")[0];
-			s.parentNode?.insertBefore(gcse, s);
-		})();
+	const config = usePixelatedConfig();
+	const id = config?.integrations?.googleSearch?.id || config?.integrations?.googleSearchConsole?.id;
+
+	useEffect(() => {
+		if (!id) return;
+		const head = document.querySelector("head");
+		const script = document.createElement("script");
+		script.setAttribute("src", "https://cse.google.com/cse.js?cx=" + id);
+		script.setAttribute("async", "true");
+		if (head) head.appendChild(script);
+	}, [id]);
+
+	if (!id) {
+		return (
+			<div className="smart-error-boundary-fallback">
+				<p>Sorry, something went wrong loading GoogleSearch.</p>
+			</div>
+		);
 	}
+
 	return (
-		<div className="gcse-search" suppressHydrationWarning />
+		<SmartErrorBoundary boundaryName="GoogleSearch">
+			<div className="gcse-search" suppressHydrationWarning={true}></div>
+		</SmartErrorBoundary>
 	);
 }
+

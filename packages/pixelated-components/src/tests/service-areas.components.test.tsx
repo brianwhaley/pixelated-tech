@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ServiceAreasList, ServiceAreaDetailPage } from '../components/general/service-areas.components';
+import { ServiceAreas as ServiceAreasList, ServiceAreaDetailPage } from '../components/elements/service-areas.components';
 
 const mockServiceAreas = [
 	{
@@ -41,5 +41,32 @@ describe('Service areas components', () => {
 		render(<ServiceAreaDetailPage serviceAreaSlug="downtown-service-area" serviceAreas={mockServiceAreas} />);
 
 		expect(screen.getByText('Urban garage and business floor solutions for downtown locations.')).toBeInTheDocument();
+	});
+
+	it('renders service areas from siteInfo when serviceAreas prop is missing', () => {
+		render(<ServiceAreasList siteInfo={{ serviceAreas: mockServiceAreas }} title="Service Areas" intro="We serve the following regions:" />);
+
+		expect(screen.getByRole('heading', { name: 'Service Areas' })).toBeInTheDocument();
+		expect(screen.getByText('Coastal Service Area')).toBeInTheDocument();
+	});
+
+	it('renders service area detail page with highlights and related service links', () => {
+		render(
+			<ServiceAreaDetailPage
+				serviceAreaSlug="coastal-service-area"
+				serviceAreas={[{
+					name: 'Coastal Service Area',
+					description: ['Serving coastal homes.', 'Expert exterior coatings.'],
+					short_description: 'Waterproof solutions.',
+					highlights: ['Marine-safe coatings', 'Salt-air protection'],
+					relatedServices: ['Exterior Coatings'],
+				}]}
+				siteInfo={{ services: [{ name: 'Exterior Coatings' }] }}
+			/>);
+
+		expect(screen.getByText('Highlights')).toBeInTheDocument();
+		expect(screen.getByText('Marine-safe coatings')).toBeInTheDocument();
+		expect(screen.getByText('Salt-air protection')).toBeInTheDocument();
+		expect(screen.getByText('Exterior Coatings')).toBeInTheDocument();
 	});
 });

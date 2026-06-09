@@ -1,0 +1,30 @@
+{
+	"mockContentfulEntry": {
+		"sys": { "id": "item-1", "type": "Entry" },
+		"fields": {
+			"title": "Detailed Product",
+			"price": 79.99,
+			"quantity": 2,
+			"id": "12345",
+			"brand": "Brand",
+			"model": "Model",
+			"date": "2026-01-01",
+			"description": "Live product description",
+			"images": [{ "sys": { "id": "asset-1" } }]
+		}
+	},
+	"mockContentfulEntries": {
+		"items": [],
+		"includes": {
+			"Asset": [
+				{
+					"sys": { "id": "asset-1" },
+					"fields": {
+						"file": { "url": "//example.com/asset1.jpg" },
+						"title": "Asset 1"
+					}
+				}
+			]
+		}
+	}
+}

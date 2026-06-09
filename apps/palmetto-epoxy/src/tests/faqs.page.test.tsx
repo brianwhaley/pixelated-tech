@@ -10,6 +10,6 @@ describe('Palmetto Epoxy FAQ page', () => {
 	it('renders the FAQ page and accordion component', () => {
 		render(<FaqsPage />);
 		expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Frequently Asked Questions');
-		expect(screen.getByTestId('mock-faqaccordion')).toBeTruthy();
+		expect(screen.getByTestId('mock-faq')).toBeTruthy();
 	});
 });

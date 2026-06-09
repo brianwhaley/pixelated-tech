@@ -3,6 +3,7 @@ import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { act, screen, fireEvent, waitFor } from '@testing-library/react';
 import { createMockConfig } from '../test/test-utils';
+import { pixelatedConfig } from '../test/test-data';
 import { ShoppingCart } from '../components/shoppingcart/shoppingcart.components';
 import { setCart, setShippingInfo, clearShoppingCart } from '../components/shoppingcart/shoppingcart.functions';
 
@@ -55,7 +56,14 @@ describe('ShoppingCart provider selection and approval integration', () => {
 	});
 
 	async function renderWithConfig(config: any) {
-		return render(<ShoppingCart />, { config: createMockConfig(config) });
+		const fullConfig = {
+			...pixelatedConfig,
+			integrations: {
+				...pixelatedConfig.integrations,
+				...config.integrations
+			}
+		};
+		return render(<ShoppingCart />, { config: fullConfig as any });
 	}
 
 	function setShoppingState() {
@@ -81,8 +89,10 @@ describe('ShoppingCart provider selection and approval integration', () => {
 		await act(async () => {
 			setShoppingState();
 			renderWithConfig({
-				shoppingcart: { provider: 'square' },
-				square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+				integrations: {
+					shoppingcart: { provider: 'square' },
+					square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+				}
 			});
 			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
@@ -94,8 +104,11 @@ describe('ShoppingCart provider selection and approval integration', () => {
 		await act(async () => {
 			setShoppingState();
 			renderWithConfig({
-				shoppingcart: { provider: 'paypal' },
-				square: { squareApplicationId: '', squareLocationId: '' },
+				integrations: {
+					shoppingcart: { provider: 'paypal' },
+					paypal: { payPalApiKey: 'test-client-id', payPalSecret: 'test-secret' },
+					square: { squareApplicationId: '', squareLocationId: '' },
+				}
 			});
 			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
@@ -107,8 +120,10 @@ describe('ShoppingCart provider selection and approval integration', () => {
 		await act(async () => {
 			setShoppingState();
 			renderWithConfig({
-				shoppingcart: { provider: 'square' },
-				square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+				integrations: {
+					shoppingcart: { provider: 'square' },
+					square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+				}
 			});
 			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
@@ -125,15 +140,17 @@ describe('ShoppingCart provider selection and approval integration', () => {
 		await act(async () => {
 			setShoppingState();
 			renderWithConfig({
-				shoppingcart: {
-					provider: 'square',
-					orderTo: 'orders@example.com',
-					orderFrom: 'noreply@example.com',
-					orderSubject: 'New Order',
-					orderFormName: 'Order Details',
-					orderDomain: 'example.com',
-				},
-				square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+				integrations: {
+					shoppingcart: {
+						provider: 'square',
+						orderTo: 'orders@example.com',
+						orderFrom: 'noreply@example.com',
+						orderSubject: 'New Order',
+						orderFormName: 'Order Details',
+						orderDomain: 'example.com',
+					},
+					square: { squareApplicationId: 'app-id', squareLocationId: 'location-id' },
+				}
 			});
 			await new Promise((resolve) => setTimeout(resolve, 0));
 		});

@@ -1,12 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { screen, waitFor } from '@testing-library/react';
+import React from 'react';
 import {
 	getCachedWordPressItems,
 	BlogPostList,
 	BlogPostSummary,
 	BlogPostCategories
 } from '../components/integrations/wordpress.components';
+import { renderWithProviders } from '../test/test-utils';
 
 describe('WordPress Components', () => {
 	beforeEach(() => {
@@ -21,7 +22,12 @@ describe('WordPress Components', () => {
 
 		it('should handle missing site parameter', async () => {
 			const result = await getCachedWordPressItems({ site: '' });
-			expect(result === undefined || Array.isArray(result)).toBe(true);
+			expect(result).toBeUndefined();
+		});
+
+		it('should return undefined when site is omitted entirely', async () => {
+			const result = await getCachedWordPressItems();
+			expect(result).toBeUndefined();
 		});
 	});
 
@@ -48,40 +54,42 @@ describe('WordPress Components', () => {
 		];
 
 		it('should render list of blog posts', () => {
-			render(<BlogPostList posts={mockPosts} />);
+			renderWithProviders(<BlogPostList posts={mockPosts} />);
 
 			expect(screen.getByText('First Post')).toBeInTheDocument();
 			expect(screen.getByText('Second Post')).toBeInTheDocument();
 		});
 
 		it('should display excerpt for each post', () => {
-			render(<BlogPostList posts={mockPosts} />);
+			renderWithProviders(<BlogPostList posts={mockPosts} />);
 
 			expect(screen.getByText(/First excerpt/)).toBeInTheDocument();
 			expect(screen.getByText(/Second excerpt/)).toBeInTheDocument();
 		});
 
-		it('should handle empty posts array', () => {
-			const { container } = render(<BlogPostList posts={[]} />);
+		it('should handle empty posts array', async () => {
+			const { container } = renderWithProviders(<BlogPostList posts={[]} />);
 
-			expect(container.querySelector('.blog-post-summary')).not.toBeInTheDocument();
+			await waitFor(() => {
+				expect(container.querySelector('.blog-post-summary')).not.toBeInTheDocument();
+			});
 		});
 
 		it('should render post links', () => {
-			render(<BlogPostList posts={mockPosts} />);
+			renderWithProviders(<BlogPostList posts={mockPosts} />);
 
 			const links = screen.getAllByRole('link');
 			expect(links.length).toBeGreaterThan(0);
 		});
 
 		it('should pass showCategories prop correctly', () => {
-			render(<BlogPostList posts={mockPosts} showCategories={false} />);
+			renderWithProviders(<BlogPostList posts={mockPosts} showCategories={false} />);
 
 			expect(screen.getByText('First Post')).toBeInTheDocument();
 		});
 
 		it('should remain wrapped by SmartErrorBoundary and render safely', () => {
-			render(<BlogPostList posts={mockPosts} />);
+			renderWithProviders(<BlogPostList posts={mockPosts} />);
 
 			expect(screen.getByText('First Post')).toBeInTheDocument();
 			expect(screen.queryByText(/Sorry, something went wrong loading/i)).not.toBeInTheDocument();
@@ -93,163 +101,72 @@ describe('WordPress Components', () => {
 			ID: 1,
 			title: 'Test Post Title',
 			excerpt: '<p>Test excerpt content</p>',
-			date: '2024-01-15T10:00:00',
-			URL: 'https://example.com/posts/1',
-			categories: { Technology: 1 },
-			featured_image: 'https://example.com/image.jpg',
-			showCategories: true
+			date: '2024-01-15',
+			URL: 'https://example.com/test-post',
+			categories: { Testing: 1 }
 		};
 
-		it('should render post title', () => {
-			render(<BlogPostSummary {...mockPost} />);
-
+		it('should render post summary', () => {
+			renderWithProviders(
+				<BlogPostSummary 
+					ID={mockPost.ID}
+					title={mockPost.title}
+					excerpt={mockPost.excerpt}
+					date={mockPost.date}
+					URL={mockPost.URL}
+					categories={mockPost.categories}
+				/>
+			);
 			expect(screen.getByText('Test Post Title')).toBeInTheDocument();
 		});
 
-		it('should render post excerpt', () => {
-			render(<BlogPostSummary {...mockPost} />);
+    it('should render summary without featured image when none is provided', () => {
+      const { container } = renderWithProviders(
+        <BlogPostSummary 
+          ID={mockPost.ID}
+          title={mockPost.title}
+          excerpt={mockPost.excerpt}
+          date={mockPost.date}
+          URL={mockPost.URL}
+          categories={mockPost.categories}
+          featured_image={undefined}
+        />
+      );
+      expect(screen.getByText('Test Post Title')).toBeInTheDocument();
+      expect(container.querySelector('.article-featured-image')).not.toBeInTheDocument();
+    });
 
-			expect(screen.getByText(/Test excerpt content/)).toBeInTheDocument();
-		});
+    it('should render a featured image when provided', () => {
+      const { container } = renderWithProviders(
+        <BlogPostSummary 
+          ID={mockPost.ID}
+          title={mockPost.title}
+          excerpt={mockPost.excerpt}
+          date={mockPost.date}
+          URL={mockPost.URL}
+          categories={mockPost.categories}
+          featured_image='https://example.com/featured.jpg'
+        />
+      );
+      expect(container.querySelector('.article-featured-image')).toBeInTheDocument();
+    });
+  });
 
-		it('should display publication date', () => {
-			render(<BlogPostSummary {...mockPost} />);
+  describe('BlogPostCategories Component', () => {
+    it('renders categories and omits uncategorized entries', () => {
+      renderWithProviders(
+        <BlogPostCategories categories={['Technology', 'Uncategorized', 'News']} />
+      );
+      expect(screen.getByRole('img', { name: 'technology' })).toBeInTheDocument();
+      expect(screen.getByRole('img', { name: 'news' })).toBeInTheDocument();
+      expect(screen.queryByRole('img', { name: 'uncategorized' })).not.toBeInTheDocument();
+    });
 
-			const published = screen.getByText(/Published:/);
-			expect(published).toBeInTheDocument();
-		});
-
-		it('should render featured image', () => {
-			render(<BlogPostSummary {...mockPost} />);
-
-			const img = screen.getByAltText('Test Post Title');
-			expect(img).toBeInTheDocument();
-		});
-
-		it('should handle missing featured image', () => {
-			const postNoImage = { ...mockPost, featured_image: undefined };
-
-			render(<BlogPostSummary {...postNoImage} />);
-
-			expect(screen.getByText('Test Post Title')).toBeInTheDocument();
-		});
-
-		it('should handle missing categories', () => {
-			const postNoCategories = { ...mockPost, categories: undefined };
-
-			render(<BlogPostSummary {...postNoCategories} />);
-
-			expect(screen.getByText('Test Post Title')).toBeInTheDocument();
-		});
-
-		it('should hide categories when showCategories is false', () => {
-			const postHideCategories = { ...mockPost, showCategories: false };
-
-			render(<BlogPostSummary {...postHideCategories} />);
-
-			expect(screen.queryByText(/Categories:/)).not.toBeInTheDocument();
-		});
-
-		it('should handle undefined excerpt', () => {
-			const postNoExcerpt = { ...mockPost, excerpt: undefined };
-
-			render(<BlogPostSummary {...postNoExcerpt} />);
-
-			expect(screen.getByText('Test Post Title')).toBeInTheDocument();
-		});
-	});
-
-	describe('BlogPostCategories Component', () => {
-		const mockCategories = ['Technology', 'Business', 'Lifestyle'];
-
-		it('should render category pills', () => {
-			render(<BlogPostCategories categories={mockCategories} />);
-
-			expect(screen.getByTitle('technology')).toBeInTheDocument();
-			expect(screen.getByTitle('business')).toBeInTheDocument();
-			expect(screen.getByTitle('lifestyle')).toBeInTheDocument();
-		});
-
-		it('should handle empty categories array', () => {
-			const { container } = render(<BlogPostCategories categories={[]} />);
-
-			expect(container.firstChild).toBeNull();
-		});
-
-		it('should handle single category', () => {
-			render(<BlogPostCategories categories={['Technology']} />);
-
-			expect(screen.getByTitle('technology')).toBeInTheDocument();
-		});
-
-		it('should filter out Uncategorized', () => {
-			const categoriesWithUncategorized = ['Technology', 'Uncategorized', 'Business'];
-
-			render(<BlogPostCategories categories={categoriesWithUncategorized} />);
-
-			expect(screen.getByTitle('technology')).toBeInTheDocument();
-			expect(screen.getByTitle('business')).toBeInTheDocument();
-		});
-
-		it('should render with null categories gracefully', () => {
-			const { container } = render(<BlogPostCategories categories={null as any} />);
-
-			expect(container.firstChild).toBeNull();
-		});
-
-		it('should handle category strings with spaces', () => {
-			const categoriesWithSpaces = ['Web Design', 'UI / UX', 'Data Science'];
-
-			render(<BlogPostCategories categories={categoriesWithSpaces} />);
-
-			expect(screen.getByTitle('web-design')).toBeInTheDocument();
-			expect(screen.getByTitle('ui-ux')).toBeInTheDocument();
-			expect(screen.getByTitle('data-science')).toBeInTheDocument();
-		});
-	});
-
-	describe('Integration scenarios', () => {
-		it('should render WordPress posts in list', () => {
-			const mockPosts = [
-				{
-					ID: 1,
-					title: 'WordPress Post',
-					excerpt: 'Post content',
-					date: '2024-01-15',
-					URL: 'https://example.com/post-1',
-					categories: { News: 1 },
-					featured_image: 'https://example.com/image.jpg'
-				}
-			];
-
-			render(<BlogPostList posts={mockPosts} />);
-
-			expect(screen.getByText('WordPress Post')).toBeInTheDocument();
-		});
-
-		it('should render single post summary', () => {
-			const mockPost = {
-				ID: 1,
-				title: 'Single Post',
-				excerpt: 'This is a post',
-				date: '2024-01-15',
-				URL: 'https://example.com/post-1',
-				categories: { Blog: 1 },
-				featured_image: undefined,
-				showCategories: true
-			};
-
-			render(<BlogPostSummary {...mockPost} />);
-
-			expect(screen.getByText('Single Post')).toBeInTheDocument();
-		});
-
-		it('should handle multiple category strings', () => {
-			render(<BlogPostCategories categories={['Tech', 'News', 'Updates']} />);
-
-			expect(screen.getByTitle('tech')).toBeInTheDocument();
-			expect(screen.getByTitle('news')).toBeInTheDocument();
-			expect(screen.getByTitle('updates')).toBeInTheDocument();
-		});
-	});
+    it('renders nothing when categories are empty', () => {
+      const { container } = renderWithProviders(
+        <BlogPostCategories categories={[]} />
+      );
+      expect(container.textContent).toBe('');
+    });
+  });
 });

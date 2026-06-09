@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { GoogleMaps } from '../components/integrations/googlemap';
-import { renderWithProviders } from '../test/test-utils';
-
+import React from 'react';
+import { GoogleMaps } from '../components/integrations/google.maps';
+import { GoogleMap } from '../components/integrations/google.map';
+import { renderWithProviders, render } from '../test/test-utils';
+import { pixelatedConfig, pixelatedConfigEmpty } from '../test/test-data';
 
 describe('Google Map Components', () => {
 	const defaultProps = {
@@ -15,26 +16,28 @@ describe('Google Map Components', () => {
 	});
 
 	describe('Map Initialization', () => {
-		it('should render map container', () => {
-			const { container } = renderWithProviders(
+		it('should render map container with gmap class', () => {
+			const { container } = render(
 				<GoogleMaps {...defaultProps} />
 			);
 
 			const mapDiv = container.querySelector('.gmap');
 			expect(mapDiv).toBeDefined();
+			expect(mapDiv).toBeInTheDocument();
 		});
 
 		it('should render Google Maps iframe', () => {
-			const { container } = renderWithProviders(
+			const { container } = render(
 				<GoogleMaps {...defaultProps} />
 			);
 
 			const iframe = container.querySelector('iframe');
 			expect(iframe).toBeDefined();
+			expect(iframe).toBeInTheDocument();
 		});
 
 		it('should load Google Maps embed API', () => {
-			const { container } = renderWithProviders(
+			const { container } = render(
 			<GoogleMaps {...defaultProps} />
 			);
 
@@ -44,7 +47,7 @@ describe('Google Map Components', () => {
 		});
 
 		it('should configure map embed mode', () => {
-			const { container } = renderWithProviders(
+			const { container } = render(
 				<GoogleMaps {...defaultProps} />
 			);
 
@@ -53,21 +56,73 @@ describe('Google Map Components', () => {
 			expect(src).toContain('place');
 		});
 
-		it('should include API key in embed URL', () => {
-			const { container } = renderWithProviders(
-				<GoogleMaps {...defaultProps} api_key="test-api-key-123" />
+		it('should include API key from config in embed URL', () => {
+			const { container } = render(
+				<GoogleMaps {...defaultProps} />
 			);
 
 			const iframe = container.querySelector('iframe');
 			const src = iframe?.getAttribute('src');
-			expect(src).toContain('key=test-api-key-123');
+			expect(src).toContain('key=AIzaSyACcYSG_w7Fy2jfC_yphe05vsWPW4TxOAE');
+		});
+
+		it('should use custom API key from provider config', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'test-api-key-prop' }
+				}
+			} as any;
+			const { container } = renderWithProviders(
+				<GoogleMaps {...defaultProps} />,
+				{ config: customConfig }
+			);
+
+			const iframe = container.querySelector('iframe');
+			const src = iframe?.getAttribute('src');
+			expect(src).toContain('key=test-api-key-prop');
+		});
+
+		it('should set iframe title from prop', () => {
+			const { container } = render(
+				<GoogleMaps {...defaultProps} title="My Cafe Location" />
+			);
+			
+			const iframe = container.querySelector('iframe');
+			expect(iframe?.getAttribute('title')).toBe('My Cafe Location');
+		});
+
+		it('should use default title when not provided', () => {
+			const { container } = render(
+				<GoogleMaps {...defaultProps} />
+			);
+			
+			const iframe = container.querySelector('iframe');
+			expect(iframe?.getAttribute('title')).toBe('Google Map');
+		});
+
+		it('should set iframe width from prop', () => {
+			const { container } = render(
+				<GoogleMaps {...defaultProps} width="800" />
+			);
+			
+			const iframe = container.querySelector('iframe');
+			expect(iframe?.getAttribute('width')).toBe('800');
+		});
+
+		it('should set iframe height from prop', () => {
+			const { container } = render(
+				<GoogleMaps {...defaultProps} height="500" />
+			);
+			
+			const iframe = container.querySelector('iframe');
+			expect(iframe?.getAttribute('height')).toBe('500');
 		});
 
 		it('should support different map modes', () => {
 			const modes = ['place', 'search', 'directions', 'streetview'];
 
 			modes.forEach(mode => {
-				const { container } = renderWithProviders(
+				const { container } = render(
 					<GoogleMaps {...defaultProps} map_mode={mode} />
 				);
 
@@ -75,6 +130,60 @@ describe('Google Map Components', () => {
 				const src = iframe?.getAttribute('src');
 				expect(src).toContain(mode);
 			});
+		});
+	});
+
+	describe('GoogleMap component', () => {
+		it('should render GoogleMap iframe with provider config apiKey and query', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'custom-key-123' }
+				}
+			} as any;
+			const { container } = renderWithProviders(
+				<GoogleMap q="Los Angeles, CA" />,
+				{ config: customConfig }
+			);
+
+			const iframe = container.querySelector('iframe');
+			expect(iframe).toBeDefined();
+			expect(iframe?.getAttribute('src')).toContain('key=custom-key-123');
+			expect(iframe?.getAttribute('src')).toContain('q=Los%20Angeles%2C%20CA');
+			expect(iframe?.getAttribute('title')).toBe('Google Map');
+		});
+
+		it('should render fallback when apiKey is missing from props and config', () => {
+			const { container } = renderWithProviders(
+				<GoogleMap q="Austin, TX" />,
+				{
+					config: {
+						integrations: {
+							google: { api_key: undefined },
+							googleMaps: { apiKey: undefined }
+						}
+					} as any
+				}
+			);
+
+			expect(container.textContent).toMatch(/Sorry, something went wrong loading GoogleMap/i);
+		});
+	});
+
+	describe('Error Handling', () => {
+		it('should render error message when apiKey is missing', () => {
+			const { container } = render(
+				<GoogleMaps {...defaultProps} />,
+				{ 
+					config: { 
+						integrations: { 
+							googleMaps: { apiKey: undefined } 
+						} 
+					} as any 
+				}
+			);
+
+			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
+			expect(container.textContent).toMatch(/GoogleMaps/i);
 		});
 	});
 
@@ -236,9 +345,15 @@ describe('Google Map Components', () => {
 	});
 
 	describe('API Key Configuration', () => {
-		it('should use provided API key', () => {
+		it('should use custom API key from provider config', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'custom-key-456' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps {...defaultProps} api_key="custom-key-456" />
+				<GoogleMaps {...defaultProps} />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');
@@ -246,13 +361,15 @@ describe('Google Map Components', () => {
 			expect(src).toContain('key=custom-key-456');
 		});
 
-		it('should fall back to config API key', () => {
+		it('should use specific config API key when provided', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'config-key-789' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps 
-					map_mode="place"
-					parameters="q=test"
-					api_key="config-key-789"
-				/>
+				<GoogleMaps map_mode="place" parameters="q=test" />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');
@@ -285,12 +402,14 @@ describe('Google Map Components', () => {
 
 	describe('Embed Modes', () => {
 		it('should support place embed mode', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'test-key' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps 
-					map_mode="place"
-					parameters="q=coffee+shops"
-					api_key="test-key"
-				/>
+				<GoogleMaps map_mode="place" parameters="q=coffee+shops" />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');
@@ -299,12 +418,14 @@ describe('Google Map Components', () => {
 		});
 
 		it('should support search embed mode', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'test-key' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps 
-					map_mode="search"
-					parameters="q=restaurants"
-					api_key="test-key"
-				/>
+				<GoogleMaps map_mode="search" parameters="q=restaurants" />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');
@@ -313,12 +434,14 @@ describe('Google Map Components', () => {
 		});
 
 		it('should support directions embed mode', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'test-key' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps 
-					map_mode="directions"
-					parameters="origin=New+York&destination=Boston"
-					api_key="test-key"
-				/>
+				<GoogleMaps map_mode="directions" parameters="origin=New+York&destination=Boston" />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');
@@ -327,12 +450,14 @@ describe('Google Map Components', () => {
 		});
 
 		it('should support streetview embed mode', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'test-key' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps 
-					map_mode="streetview"
-					parameters="location=40.7128,-74.006"
-					api_key="test-key"
-				/>
+				<GoogleMaps map_mode="streetview" parameters="location=40.7128,-74.006" />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');
@@ -356,12 +481,14 @@ describe('Google Map Components', () => {
 		});
 
 		it('should support multiple query parameters', () => {
+			const customConfig = {
+				integrations: {
+					googleMaps: { apiKey: 'test-key' }
+				}
+			} as any;
 			const { container } = renderWithProviders(
-				<GoogleMaps 
-					map_mode="place"
-					parameters="q=restaurants&zoom=15&type=dining"
-					api_key="test-key"
-				/>
+				<GoogleMaps map_mode="place" parameters="q=restaurants&zoom=15&type=dining" />,
+				{ config: customConfig }
 			);
 
 			const iframe = container.querySelector('iframe');

@@ -15,7 +15,7 @@ import type {
 } from './pageStorageTypes';
 
 import { getFullPixelatedConfig } from '../../../config/config';
-const PAGES_DIR = getFullPixelatedConfig()?.global?.pagesDir || 'public/data/pages';
+const PAGES_DIR = getFullPixelatedConfig()?.integrations?.global?.pagesDir || 'public/data/pages';
 
 /**
  * Get absolute path to pages directory

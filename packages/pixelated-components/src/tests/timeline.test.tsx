@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
-import { Timeline } from '@/components/general/timeline';
+import { Timeline } from '@/components/structure/timeline';
 
 // Mock SmartImage
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => {
     const { src, alt, title, className } = props;
     return React.createElement('img', {
@@ -18,14 +18,12 @@ vi.mock('@/components/general/smartimage', () => ({
   },
 }));
 
-import { mockCloudinary } from '../test/test-data';
+import { mockCloudinary, pixelatedConfig } from '../test/test-data';
 
-const mockConfig = {
-  cloudinary: mockCloudinary,
-};
+const mockTimelineConfig = pixelatedConfig;
 
-const renderWithConfig = (component: React.ReactElement, config = mockConfig) => {
-  return render(component, { config });
+const renderWithConfig = (component: React.ReactElement, config = mockTimelineConfig) => {
+  return render(component, { config: config as any });
 };
 
 const mockTimelineData = [
@@ -324,10 +322,12 @@ describe('Timeline Component', () => {
   describe('Timeline with Config', () => {
     it('should render with custom config', () => {
       const customConfig = {
-        cloudinary: {
-          product_env: 'custom-env',
-          baseUrl: 'https://custom.cloudinary.com',
-          transforms: 'custom-transforms',
+        integrations: {
+          cloudinary: {
+            product_env: 'custom-env',
+            baseUrl: 'https://custom.cloudinary.com',
+            transforms: 'custom-transforms',
+          },
         },
       };
       const { container } = renderWithConfig(
@@ -339,10 +339,12 @@ describe('Timeline Component', () => {
 
     it('should render with minimal config', () => {
       const minimalConfig = {
-        cloudinary: {
-          product_env: 'test',
-          baseUrl: 'test',
-          transforms: 'test',
+        integrations: {
+          cloudinary: {
+            product_env: 'test',
+            baseUrl: 'test',
+            transforms: 'test',
+          },
         },
       };
       const { container } = renderWithConfig(

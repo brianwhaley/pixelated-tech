@@ -19,17 +19,6 @@ import {
 	decreaseQuantityInCart,
 } from '../components/shoppingcart/shoppingcart.functions';
 
-vi.mock('../components/config/config.client', async (importOriginal) => {
-	const actual = await importOriginal<typeof import('../components/config/config.client')>();
-	return {
-		...actual,
-		usePixelatedConfig: vi.fn(() => ({
-			cloudinary: { product_env: 'prod', baseUrl: 'test', transforms: '' },
-			shoppingcart: { currency: 'USD' },
-		})),
-	};
-});
-
 vi.mock('../components/shoppingcart/shoppingcart.functions', async (importOriginal) => {
 	const actual = await importOriginal<typeof import('../components/shoppingcart/shoppingcart.functions')>();
 	return {
@@ -65,7 +54,7 @@ vi.mock('../components/sitebuilder/form/formengine', () => ({
 	),
 }));
 
-vi.mock('../components/general/table', () => ({
+vi.mock('../components/elements/table', () => ({
 	Table: ({ id, data }: any) => (
 		<div data-testid={id}>
 			{data?.map((row: any, index: number) => (
@@ -78,16 +67,16 @@ vi.mock('../components/general/table', () => ({
 	),
 }));
 
-vi.mock('../components/general/modal', () => ({
+vi.mock('../components/elements/modal', () => ({
 	Modal: ({ modalContent }: any) => <div>{modalContent}</div>,
 	handleModalOpen: vi.fn(),
 }));
 
-vi.mock('../components/general/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
 	SmartImage: ({ alt, src }: any) => <img alt={alt} src={src} />,
 }));
 
-vi.mock('../components/general/pageheader', () => ({
+vi.mock('../components/structure/page-blocks', () => ({
 	PageSectionHeader: ({ title }: any) => <h2>{title}</h2>,
 }));
 

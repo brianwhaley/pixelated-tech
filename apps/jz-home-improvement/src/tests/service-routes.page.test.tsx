@@ -22,7 +22,7 @@ describe('JZ Home Improvement service routes', () => {
 
 	it('renders the service areas index page', () => {
 		render(<ServiceAreasPage />);
-		expect(screen.getByTestId('mock-serviceareaslist')).toBeTruthy();
+		expect(screen.getByTestId('mock-serviceareas')).toBeTruthy();
 		expect(screen.getAllByTestId('mock-servicearea').length).toBeGreaterThan(0);
 	});
 

@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import siteConfig from '@/app/data/siteconfig.json';
-import { PageSection, PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
+import { PageSection, PageTitleHeader, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function TermsPage() {
-	const siteInfo = (siteConfig as any).siteInfo ?? {};
+	const siteInfo = usePixelatedConfig()?.siteInfo ?? {};
 	const legalEntityName = siteInfo.name ?? 'Simple Day Concierge';
 	const primaryEmail = siteInfo.email ?? 'info@simpledayconcierge.com';
 	const corporateAddress = siteInfo.address

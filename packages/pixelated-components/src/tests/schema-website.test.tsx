@@ -1,18 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import type { SiteInfo } from '@/components/config/siteconfig.types';
-import { WebsiteSchema, type WebsiteSchemaType } from '@/components/foundation/schema';
+import type { SiteInfo } from '@/components/config/config.types';
+import { WebsiteSchema } from '@/components/foundation/schema';
 import configData from '../test/test-data';
 
 describe('WebsiteSchema', () => {
 	const siteInfo: SiteInfo = configData.siteInfoFull as SiteInfo;
-	const defaultProps: WebsiteSchemaType = {
-		name: 'Test Website',
-		url: 'https://example.com'
-	};
 
-	const renderSchema = (props: Partial<WebsiteSchemaType> = {}, siteMeta?: SiteInfo) => {
-		return render(<WebsiteSchema {...defaultProps} {...props} siteInfo={siteMeta ?? siteInfo} />);
+	const renderSchema = (siteMeta?: SiteInfo) => {
+		return render(<WebsiteSchema />, { config: { siteInfo: siteMeta ?? siteInfo } });
 	};
 
 	it('should render script tag with application/ld+json type', () => {
@@ -35,25 +31,22 @@ describe('WebsiteSchema', () => {
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
-		expect(schemaData.name).toBe(defaultProps.name);
-		expect(schemaData.url).toBe(defaultProps.url);
+		expect(schemaData.name).toBe(siteInfo.name);
+		expect(schemaData.url).toBe(siteInfo.url);
 	});
 
 	it('should include description when provided', () => {
-		const props = {
-			...defaultProps,
-			description: 'A great website'
-		};
-		const { container } = renderSchema(props);
+		const siteMeta = { ...siteInfo, description: 'A great website' };
+		const { container } = renderSchema(siteMeta);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
-		expect(schemaData.description).toBe(props.description);
+		expect(schemaData.description).toBe('A great website');
 	});
 
 	it('should exclude description when not provided', () => {
 		const siteMeta = { ...siteInfo, description: '' };
-		const { container } = renderSchema({}, siteMeta);
+		const { container } = renderSchema(siteMeta);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
@@ -61,18 +54,15 @@ describe('WebsiteSchema', () => {
 	});
 
 	it('should include potentialAction for search when provided', () => {
-		const props: WebsiteSchemaType = {
-			...defaultProps,
+		const siteMeta = {
+			...siteInfo,
 			potentialAction: {
 				'@type': 'SearchAction',
-				target: {
-					'@type': 'EntryPoint',
-					urlTemplate: 'https://example.com/search?q={search_term}'
-				},
+				target: 'https://example.com/search?q={search_term}',
 				'query-input': 'required name=search_term'
 			}
 		};
-		const { container } = renderSchema(props);
+		const { container } = renderSchema(siteMeta);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
@@ -84,7 +74,7 @@ describe('WebsiteSchema', () => {
 	});
 
 	it('should use siteInfo props when publisher and potentialAction aren\'t provided', () => {
-		const { container } = renderSchema({}, siteInfo);
+		const { container } = renderSchema(siteInfo);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
@@ -106,7 +96,7 @@ describe('WebsiteSchema', () => {
 
 	it('should exclude potentialAction when not provided', () => {
 		const siteMeta = { ...siteInfo, potentialAction: undefined };
-		const { container } = renderSchema({}, siteMeta);
+		const { container } = renderSchema(siteMeta);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
@@ -123,22 +113,16 @@ describe('WebsiteSchema', () => {
 	});
 
 	it('should handle special characters in name', () => {
-		const props = {
-			...defaultProps,
-			name: "O'Brien's Technology & Design"
-		};
-		const { container } = renderSchema(props);
+		const siteMeta = { ...siteInfo, name: "O'Brien's Technology & Design" };
+		const { container } = renderSchema(siteMeta);
 		const schemaData = JSON.parse(container.querySelector('script[type="application/ld+json"]')?.textContent || '{}');
 
-		expect(schemaData.name).toBe(props.name);
+		expect(schemaData.name).toBe(siteMeta.name);
 	});
 
 	it('should handle HTTPS URLs', () => {
-		const props = {
-			...defaultProps,
-			url: 'https://secure.example.com'
-		};
-		const { container } = renderSchema(props);
+		const siteMeta = { ...siteInfo, url: 'https://secure.example.com' };
+		const { container } = renderSchema(siteMeta);
 		const schemaData = JSON.parse(container.querySelector('script[type="application/ld+json"]')?.textContent || '{}');
 
 		expect(schemaData.url).toBe('https://secure.example.com');

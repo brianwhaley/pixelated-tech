@@ -1,12 +1,20 @@
-import { describe, it, expect } from 'vitest';
-import { generateManifest, type ManifestOptions } from '@/components/foundation/manifest';
-import type { SiteInfo } from '@/components/config/siteconfig.types';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { generateManifest, Manifest, type ManifestOptions } from '@/components/foundation/manifest';
+import { getFullPixelatedConfig } from '@/components/config/config';
+import type { SiteInfo } from '@/components/config/config.types';
 import { siteInfoFull as mockSiteInfo } from '../test/test-data';
 
+vi.mock('@/components/config/config', () => ({
+	getFullPixelatedConfig: vi.fn(() => ({ siteInfo: mockSiteInfo }))
+}));
+
 describe('Manifest Component', () => {
-	it('should generate a complete manifest from siteinfo', () => {
-		const options: ManifestOptions = { siteInfo: mockSiteInfo as unknown as SiteInfo };
-		const manifest = generateManifest(options);
+	beforeEach(() => {
+		(vi.mocked(getFullPixelatedConfig) as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => ({ siteInfo: mockSiteInfo }));
+	});
+
+	it('should generate a complete manifest from config siteInfo', () => {
+		const manifest = generateManifest();
 
 		expect(manifest.name).toBe(mockSiteInfo.name);
 		expect(manifest.short_name).toBe(mockSiteInfo.name);
@@ -25,7 +33,6 @@ describe('Manifest Component', () => {
 
 	it('should merge custom properties with generated manifest', () => {
 		const options: ManifestOptions = {
-			siteInfo: mockSiteInfo as unknown as SiteInfo,
 			customProperties: {
 				orientation: "portrait",
 				categories: ["business", "productivity"],
@@ -42,7 +49,6 @@ describe('Manifest Component', () => {
 
 	it('should allow overriding generated properties with custom properties', () => {
 		const options: ManifestOptions = {
-			siteInfo: mockSiteInfo as unknown as SiteInfo,
 			customProperties: {
 				name: "Custom App Name",
 				display: "fullscreen" as const
@@ -55,15 +61,24 @@ describe('Manifest Component', () => {
 		expect(manifest.short_name).toBe(mockSiteInfo.name); // Not overridden (short_name uses original name)
 	});
 
+	it('should export the default Manifest wrapper function', () => {
+		const manifest = Manifest();
+		expect(manifest.name).toBe(mockSiteInfo.name);
+		expect(manifest.short_name).toBe(mockSiteInfo.name);
+	});
+
+	it('should throw when siteInfo is missing from config', () => {
+		(vi.mocked(getFullPixelatedConfig) as unknown as ReturnType<typeof vi.fn>).mockImplementationOnce(() => ({}));
+		expect(() => generateManifest()).toThrow('pixelated.config.json must include siteInfo to generate a manifest.');
+	});
+
 	it('should handle minimal siteinfo gracefully', () => {
 		const minimalSiteInfo: Partial<SiteInfo> = {
 			name: "Minimal App",
 			url: "https://minimal.com"
 		};
-
-		// This would normally cause TypeScript errors, but for testing we'll cast it
-		const options: ManifestOptions = { siteInfo: minimalSiteInfo as SiteInfo };
-		const manifest = generateManifest(options);
+		(vi.mocked(getFullPixelatedConfig) as unknown as ReturnType<typeof vi.fn>).mockImplementationOnce(() => ({ siteInfo: minimalSiteInfo as SiteInfo }));
+		const manifest = generateManifest();
 
 		expect(manifest.name).toBe("Minimal App");
 		// homepage_url is not a standard manifest property

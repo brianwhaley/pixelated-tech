@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { createAxeCoreLocalFallbackPageMock } from '../test/fixtures';
+import { pixelatedConfig } from '../test/test-data';
 
 // Mock setTimeout to resolve instantly for tests
 const originalSetTimeout = global.setTimeout;
@@ -49,15 +50,24 @@ vi.mock('fs', () => ({
 }));
 
 // Mock getFullPixelatedConfig
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn().mockReturnValue({ puppeteer: { executable_path: './chrome' } })
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
+
+import { getFullPixelatedConfig } from '../components/config/config';
+import fs from 'fs';
+import path from 'path';
 
 // Import module once to avoid repeated slow imports
 let performAxeCoreAnalysis: any;
 
 describe('site-health-axe-core.integration', () => {
 	beforeEach(async () => {
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 		// Only import once per test suite
 		if (!performAxeCoreAnalysis) {
 			const module = await import('../components/admin/site-health/site-health-axe-core.integration');
@@ -135,6 +145,96 @@ describe('site-health-axe-core.integration', () => {
 
 		it('should handle runtime_env: auto', async () => {
 			const result = await performAxeCoreAnalysis('http://example.com', 'auto');
+			expect(result.status).toBe('success');
+		});
+
+		it('should launch puppeteer with local args and env executable path for local runtime_env', async () => {
+			process.env.PUPPETEER_EXECUTABLE_PATH = '/tmp/chrome-local';
+			const puppeteerModule = await import('puppeteer');
+			const pageMock = {
+				setViewport: vi.fn().mockResolvedValue(undefined),
+				on: vi.fn().mockReturnValue(undefined),
+				setUserAgent: vi.fn().mockResolvedValue(undefined),
+				goto: vi.fn().mockResolvedValue(undefined),
+				addScriptTag: vi.fn().mockResolvedValue(undefined),
+				frames: vi.fn().mockReturnValue([{
+					evaluate: vi.fn().mockResolvedValue({
+						violations: [],
+						passes: [],
+						incomplete: [],
+						inapplicable: [],
+						testEngine: { name: 'axe-core', version: '4.0.0' },
+						testRunner: { name: 'mock' },
+						testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
+						timestamp: new Date().toISOString(),
+						url: 'http://example.com'
+					})
+				}]),
+				close: vi.fn().mockResolvedValue(undefined)
+			};
+
+			vi.mocked(puppeteerModule.default.launch as any).mockImplementationOnce((opts: any) => {
+				expect(opts.args).toEqual([
+					'--disable-accelerated-2d-canvas',
+					'--disable-gpu'
+				]);
+				expect(opts.executablePath).toBe('/tmp/chrome-local');
+				return Promise.resolve({ newPage: vi.fn().mockResolvedValue(pageMock), close: vi.fn().mockResolvedValue(undefined) } as any);
+			});
+
+			const result = await performAxeCoreAnalysis('http://example.com', 'local');
+			expect(result.status).toBe('success');
+			delete process.env.PUPPETEER_EXECUTABLE_PATH;
+		});
+
+		it('should launch puppeteer with prod args and config path for prod runtime_env', async () => {
+			const puppeteerModule = await import('puppeteer');
+			const pageMock = {
+				setViewport: vi.fn().mockResolvedValue(undefined),
+				on: vi.fn().mockReturnValue(undefined),
+				setUserAgent: vi.fn().mockResolvedValue(undefined),
+				goto: vi.fn().mockResolvedValue(undefined),
+				addScriptTag: vi.fn().mockResolvedValue(undefined),
+				frames: vi.fn().mockReturnValue([{
+					evaluate: vi.fn().mockResolvedValue({
+						violations: [],
+						passes: [],
+						incomplete: [],
+						inapplicable: [],
+						testEngine: { name: 'axe-core', version: '4.0.0' },
+						testRunner: { name: 'mock' },
+						testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
+						timestamp: new Date().toISOString(),
+						url: 'http://example.com'
+					})
+				}]),
+				close: vi.fn().mockResolvedValue(undefined)
+			};
+
+			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValueOnce({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					puppeteer: { executable_path: '/tmp/chrome-prod' }
+				}
+			});
+
+			vi.mocked(puppeteerModule.default.launch as any).mockImplementationOnce((opts: any) => {
+				expect(opts.args).toEqual([
+					'--no-sandbox',
+					'--disable-setuid-sandbox',
+					'--disable-dev-shm-usage',
+					'--disable-accelerated-2d-canvas',
+					'--no-first-run',
+					'--no-zygote',
+					'--single-process',
+					'--disable-gpu'
+				]);
+				expect(opts.executablePath).toBe('/tmp/chrome-prod');
+				return Promise.resolve({ newPage: vi.fn().mockResolvedValue(pageMock), close: vi.fn().mockResolvedValue(undefined) } as any);
+			});
+
+			const result = await performAxeCoreAnalysis('http://example.com', 'prod');
 			expect(result.status).toBe('success');
 		});
 

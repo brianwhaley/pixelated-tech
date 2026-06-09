@@ -1,0 +1,32 @@
+{
+  "apiProps": {
+    "sitemapContentType": "project",
+    "sitemapField": "title",
+    "sitemapRoutePrefix": "projects"
+  },
+  "entries": {
+    "items": [
+      { "fields": { "title": "Project One" } },
+      { "fields": { "title": "Project Two" } }
+    ],
+    "includes": { "Asset": [] }
+  },
+  "entriesWithImages": {
+    "items": [
+      {
+        "fields": {
+          "title": "Project with Image",
+          "images": [{ "sys": { "id": "asset1" } }]
+        }
+      }
+    ],
+    "includes": {
+      "Asset": [
+        {
+          "sys": { "id": "asset1" },
+          "fields": { "file": { "url": "//images.ctfassets.net/space/asset1.jpg" } }
+        }
+      ]
+    }
+  }
+}

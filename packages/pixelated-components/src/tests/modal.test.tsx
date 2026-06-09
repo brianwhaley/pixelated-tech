@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { Modal, handleModalOpen } from '../components/general/modal';
+import { Modal, handleModalOpen } from '../components/elements/modal';
 
 describe('Modal Component', () => {
   describe('Rendering', () => {

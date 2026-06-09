@@ -14,6 +14,6 @@ describe('FAQs page', () => {
 
 	it('renders the FAQ accordion', () => {
 		render(<FaqsPage />);
-		expect(screen.getByTestId('mock-faqaccordion')).toBeInTheDocument();
+		expect(screen.getByTestId('mock-faq')).toBeInTheDocument();
 	});
 });

@@ -1,0 +1,25 @@
+{
+  "ebayItems": {
+    "itemSummaries": [
+      {
+        "legacyItemId": "123456",
+        "itemCreationDate": "2024-01-01T10:00:00Z"
+      },
+      {
+        "legacyItemId": "789012",
+        "itemCreationDate": "2024-01-02T10:00:00Z"
+      }
+    ]
+  },
+  "squareItems": {
+    "items": [
+      {
+        "itemURL": "/store/test-item",
+        "itemImageURLs": ["https://images.example.com/test-item-1.jpg"]
+      },
+      {
+        "itemURL": "https://external.com/product"
+      }
+    ]
+  }
+}

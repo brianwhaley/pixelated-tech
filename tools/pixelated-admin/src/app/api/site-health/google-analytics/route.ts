@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { getGoogleAnalyticsData, GoogleAnalyticsConfig } from '@pixelated-tech/components/adminserver';
-import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
+import { getFullPixelatedConfig, getSiteConfig } from '@pixelated-tech/components/server';
 
 export async function GET(request: NextRequest) {
 	try {
@@ -15,23 +13,19 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ success: false, error: 'siteName required' }, { status: 400 });
 		}
 
-		// Load sites configuration
-		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
-		const sitesData = JSON.parse(fs.readFileSync(sitesPath, 'utf8'));
-		const site = sitesData.find((s: any) => s.name === siteName);
-
+		const site = await getSiteConfig(siteName);
 		if (!site) {
 			return NextResponse.json({ success: false, error: 'Site not found' }, { status: 404 });
 		}
 
-		// Build Google Analytics config from unified pixelated.config.json (no env fallback)
 		const fullConfig = getFullPixelatedConfig();
-		const googleCfg = (fullConfig.google || {}) as any;
-		const gaCfg = (fullConfig.googleAnalytics || {}) as any;
+		const integrations = (fullConfig.integrations || {}) as any;
+		const googleCfg = (integrations.google || {}) as any;
+		const gaCfg = (integrations.googleAnalytics || {}) as any;
 
 		const config: GoogleAnalyticsConfig = {
 			ga4PropertyId: site.ga4PropertyId,
-			serviceAccountKey: (gaCfg as any).serviceAccountKey || (googleCfg as any).serviceAccountKey,
+			serviceAccountKey: gaCfg.serviceAccountKey || googleCfg.serviceAccountKey,
 			clientId: googleCfg.client_id,
 			clientSecret: googleCfg.client_secret,
 			refreshToken: googleCfg.refresh_token,

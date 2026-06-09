@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { getUspsRates } from '../components/shoppingcart/usps.functions';
 import { smartFetch } from '../components/foundation/smartfetch';
+import { pixelatedConfig, mockUspsConfig } from '../test/test-data';
 
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn(),
@@ -12,9 +13,10 @@ afterEach(() => {
 
 describe('getUspsRates', () => {
 	it('fetches USPS rates with OAuth2 and parses total rates from Prices API v3', async () => {
+		const mockToken = pixelatedConfig.integrations?.usps?.access_token;
 		const mockSmartFetch = vi.mocked(smartFetch, true);
 		mockSmartFetch
-			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({ access_token: mockToken })
 			.mockResolvedValueOnce({
 				rateOptions: [
 					{
@@ -39,7 +41,7 @@ describe('getUspsRates', () => {
 			});
 
 		const rates = await getUspsRates({
-			config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
+			config: mockUspsConfig as any,
 			fromZip: '30301',
 			fromCountry: 'US',
 			toZip: '90210',
@@ -55,14 +57,14 @@ describe('getUspsRates', () => {
 		});
 		expect(mockSmartFetch.mock.calls[0][1]?.requestInit?.body).toBe(JSON.stringify({
 			grant_type: 'client_credentials',
-			client_id: 'TESTUSER',
-			client_secret: 'TESTSECRET',
+			client_id: mockUspsConfig?.consumerKey,
+			client_secret: mockUspsConfig?.consumerSecret,
 		}));
 		expect(mockSmartFetch.mock.calls[1][0]).toBe('https://apis.usps.com/prices/v3/total-rates/search');
 		expect(mockSmartFetch.mock.calls[1][1]?.requestInit?.headers).toMatchObject({
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
-			'Authorization': 'Bearer TEST_USPS_TOKEN',
+			'Authorization': `Bearer ${mockUspsConfig?.access_token}`,
 		});
 		const totalRatesRequestBody = JSON.parse(String(mockSmartFetch.mock.calls[1][1]?.requestInit?.body ?? '{}'));
 		expect(totalRatesRequestBody).toMatchObject({
@@ -85,14 +87,18 @@ describe('getUspsRates', () => {
 	});
 
 	it('throws when USPS Prices API returns an error payload', async () => {
+		const mockToken = pixelatedConfig.integrations?.usps?.access_token;
 		const mockSmartFetch = vi.mocked(smartFetch, true);
 		mockSmartFetch
-			.mockResolvedValueOnce({ access_token: 'TEST_USPS_TOKEN' })
+			.mockResolvedValueOnce({ access_token: mockToken })
 			.mockResolvedValueOnce({ errors: [{ title: 'Unauthorized', detail: 'Invalid credentials' }] });
 
 		await expect(
 			getUspsRates({
-				config: { consumerKey: 'TESTUSER', consumerSecret: 'TESTSECRET' },
+				config: {
+					consumerKey: pixelatedConfig.integrations?.usps?.consumerKey || '',
+					consumerSecret: pixelatedConfig.integrations?.usps?.consumerSecret || '',
+				},
 				fromZip: '30301',
 				fromCountry: 'US',
 				toZip: '90210',
@@ -105,7 +111,10 @@ describe('getUspsRates', () => {
 	it('throws when USPS consumerKey is missing', async () => {
 		await expect(
 			getUspsRates({
-				config: { consumerKey: '', consumerSecret: 'TESTSECRET' },
+				config: {
+					consumerKey: '',
+					consumerSecret: pixelatedConfig.integrations?.usps?.consumerSecret || '',
+				},
 				fromZip: '30301',
 				fromCountry: 'US',
 				toZip: '90210',
@@ -118,7 +127,10 @@ describe('getUspsRates', () => {
 	it('throws when USPS consumerSecret is missing', async () => {
 		await expect(
 			getUspsRates({
-				config: { consumerKey: 'TESTUSER', consumerSecret: '' },
+				config: {
+					consumerKey: pixelatedConfig.integrations?.usps?.consumerKey || '',
+					consumerSecret: '',
+				},
 				fromZip: '30301',
 				fromCountry: 'US',
 				toZip: '90210',

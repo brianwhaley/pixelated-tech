@@ -1,0 +1,23 @@
+import { PageTitleHeader, PageSectionHeader } from "@/components/structure/page-blocks";
+import '@/css/pixelated.global.css';
+
+export default {
+	title: 'General/Headers',
+	component: PageTitleHeader,
+};
+
+export const Page_Header = {
+	args: {
+		title: "Page Header Example",
+	},
+	title: 'General',
+	component: PageTitleHeader
+};
+
+export const Page_Section_Header = {
+	args: {
+		title: "Section Header Example",
+	},
+	title: 'General',
+	component: PageSectionHeader
+};

@@ -1,16 +1,19 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { validatePageName, listPages, loadPage } from '../components/sitebuilder/page/lib/pageStorageLocal';
+import { pixelatedConfig } from '../test/test-data';
 
 vi.mock('fs');
 vi.mock('path', () => ({
 	join: (...args: string[]) => args.join('/'),
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({
-		global: { pagesDir: 'public/data/pages' }
-	})),
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn().mockReturnValue({}),
+	};
+});
 
 describe('Page Storage', () => {
 	beforeEach(() => {

@@ -4,6 +4,8 @@ import path from 'node:path';
 import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
+export { config };
+
 export interface FileDataState {
 	data: string | null;
 	loading: boolean;
@@ -189,7 +191,8 @@ const defaultMocks: Record<string, any> = {
 	PageFlexItem: mockComponent('PageFlexItem'),
 	Callout: mockComponent('Callout'),
 	contentfulValueToSlug,
-	FAQAccordion: mockComponent('FAQAccordion'),
+	FAQAccordion: mockComponent('FAQ'),
+	FAQ: mockComponent('FAQ'),
 	SchemaFAQ: mockComponent('SchemaFAQ'),
 	Markdown: mockComponent('Markdown'),
 	BlogPostList: mockComponent('BlogPostList'),

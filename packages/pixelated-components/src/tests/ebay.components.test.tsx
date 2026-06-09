@@ -1,19 +1,15 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { cleanup, render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { EbayItems, EbayListFilter, EbayItemHeader, EbayListItem, EbayItemDetail } from '../components/shoppingcart/ebay.components';
-import { getEbayShoppingCartItem } from '../components/shoppingcart/ebay.functions';
+import { cleanup, waitFor, screen, fireEvent } from '@testing-library/react';
+import { EbayItems, EbayListFilter, EbayItemHeader, EbayListItem, EbayItemDetail, EbayRateLimitsVisualizer } from '../components/shoppingcart/ebay.components';
 import * as ebayFunctions from '../components/shoppingcart/ebay.functions';
-
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: vi.fn(() => ({
-		ebay: { maxResults: 10 },
-		cloudinary: { baseUrl: 'https://res.cloudinary.com', transforms: 'f_auto' },
-	})),
-}));
+import { pixelatedConfig, mockEbayItem as ebayItem } from '../test/test-data';
+import { renderWithProviders } from '../test/test-utils';
 
 vi.mock('../components/integrations/cloudinary', () => ({
 	getCloudinaryRemoteFetchURL: vi.fn(({ url }) => `https://cloudinary.com/${url}`),
+	buildCloudinaryUrl: vi.fn(({ src }) => `https://cloudinary.com/${src}`),
+	getCloudinaryRemoteFetchURLFromConfig: vi.fn(({ url }) => `https://cloudinary.com/${url}`),
 }));
 
 vi.mock('../components/shoppingcart/ebay.functions', async () => {
@@ -22,53 +18,51 @@ vi.mock('../components/shoppingcart/ebay.functions', async () => {
 		...actual,
 		getEbayItems: vi.fn(),
 		getEbayItem: vi.fn(),
+		getEbayAppToken: vi.fn(),
+		getEbayRateLimits: vi.fn(),
 	};
-});
-
-afterEach(() => {
-	cleanup();
 });
 
 describe('EbayItems component', () => {
-	const mockItem = {
-		legacyItemId: 'ITEM-1',
-		title: 'Mock Item',
-		price: { value: '25.00', currency: 'USD' },
-		thumbnailImages: [{ imageUrl: 'https://example.com/image.jpg' }],
-		categories: [{ categoryId: 'electronics' }],
-		categoryId: 'electronics',
-		condition: 'New',
-		seller: { username: 'seller1', feedbackScore: 100, feedbackPercentage: 99.9 },
-		buyingOptions: ['BuyItNow'],
-		itemLocation: { postalCode: '12345', country: 'US' },
-		itemCreationDate: '2025-01-01',
-		itemWebUrl: 'https://example.com/item/ITEM-1',
-	};
-
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
-	it('exports EbayItems as a function', () => {
-		expect(typeof EbayItems).toBe('function');
+	afterEach(() => {
+		cleanup();
+	});
+
+	it('should render EbayItems component with apiProps', async () => {
+		const { container } = renderWithProviders(
+			<EbayItems
+				apiProps={pixelatedConfig.integrations?.ebay}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(container).toBeDefined();
+		}, { timeout: 200 });
+	});
+
+	it('should fetch eBay items with provided apiProps', async () => {
+		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
+		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [ebayItem], refinement: { aspectDistributions: [] } } as any);
+
+		renderWithProviders(
+			<EbayItems
+				apiProps={pixelatedConfig.integrations?.ebay}
+			/>
+		);
+
+		await waitFor(() => {
+			expect(getEbayItemsMock).toHaveBeenCalledWith({ apiProps: pixelatedConfig.integrations?.ebay });
+		});
 	});
 
 	it('renders the loading container before items load', async () => {
-		const { container } = render(
+		const { container } = renderWithProviders(
 			<EbayItems
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
+				apiProps={pixelatedConfig.integrations?.ebay}
 			/>
 		);
 
@@ -81,21 +75,9 @@ describe('EbayItems component', () => {
 		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
 		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [], refinement: { aspectDistributions: [] } } as any);
 
-		const { container } = render(
+		const { container } = renderWithProviders(
 			<EbayItems
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
+				apiProps={pixelatedConfig.integrations?.ebay}
 			/>
 		);
 
@@ -107,413 +89,217 @@ describe('EbayItems component', () => {
 
 	it('loads and renders items when getEbayItems resolves', async () => {
 		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
-		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [mockItem], refinement: { aspectDistributions: [] } } as any);
-
-		render(
+		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [ebayItem], refinement: { aspectDistributions: [] } } as any);
+		
+		renderWithProviders(
 			<EbayItems
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
+				apiProps={pixelatedConfig.integrations.ebay}
 			/>
 		);
 
-		await waitFor(() => {
-			expect(screen.getByText('Item ID:')).toBeInTheDocument();
-		});
-
-		expect(getEbayItemsMock).toHaveBeenCalledTimes(1);
+		await screen.findByText(ebayItem.title);
+		expect(screen.getByText(ebayItem.title)).toBeInTheDocument();
 	});
 
-	it('injects ProductSchema JSON-LD for displayed Ebay items', async () => {
+	it('handles errors from getEbayItems without crashing', async () => {
 		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
-		getEbayItemsMock.mockResolvedValueOnce({ itemSummaries: [mockItem], refinement: { aspectDistributions: [] } } as any);
+		getEbayItemsMock.mockRejectedValueOnce(new Error('API failure'));
 
-		render(
+		renderWithProviders(
 			<EbayItems
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
+				apiProps={pixelatedConfig.integrations?.ebay}
 			/>
 		);
 
 		await waitFor(() => {
-			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"@type":"Product"'))).toBe(true);
-			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"name":"Mock Item"'))).toBe(true);
+			expect(getEbayItemsMock).toHaveBeenCalled();
 		});
+
+		expect(screen.queryByText('Store Items')).toBeNull();
 	});
 
-	it('logs an error when getEbayItems rejects', async () => {
-		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
-		getEbayItemsMock.mockRejectedValueOnce(new Error('fetch failed'));
-		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-		render(
-			<EbayItems
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
-			/>
-		);
-
-		await waitFor(() => {
-			expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('Error fetching eBay items:'), expect.any(Error));
-		});
-
-		expect(getEbayItemsMock).toHaveBeenCalledTimes(1);
-	});
-
-	it('renders EbayItemDetail when item data is loaded', async () => {
-		const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
-		getEbayItemMock.mockResolvedValueOnce({
-			legacyItemId: 'ITEM-DETAIL',
-			title: 'Detail Item',
-			price: { value: '55.00', currency: 'USD' },
-			description: '<p>Detailed description</p>',
-			additionalImages: [{ imageUrl: 'https://example.com/detail.jpg' }],
-			categoryId: 'electronics',
-			itemPath: 'test',
-		});
-
-		render(
-			<EbayItemDetail
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
-			itemID="ITEM-DETAIL"
-			/>
-		);
-
-		await waitFor(() => {
-			expect(screen.getByText('Detail Item')).toBeInTheDocument();
-		});
-	});
-
-	it('injects ProductSchema JSON-LD for the Ebay item detail', async () => {
-		const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
-		getEbayItemMock.mockResolvedValueOnce({
-			legacyItemId: 'ITEM-DETAIL',
-			title: 'Detail Item',
-			price: { value: '55.00', currency: 'USD' },
-			description: '<p>Detailed description</p>',
-			additionalImages: [{ imageUrl: 'https://example.com/detail.jpg' }],
-			categoryId: 'electronics',
-			itemPath: 'test',
-			itemWebUrl: 'https://example.com/item/ITEM-DETAIL',
-		});
-
-		render(
-			<EbayItemDetail
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
-			itemID="ITEM-DETAIL"
-			/>
-		);
-
-		await waitFor(() => {
-			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"@type":"Product"'))).toBe(true);
-			expect(Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((script) => script.textContent?.includes('"name":"Detail Item"'))).toBe(true);
-		});
-	});
-
-	it('renders EbayItemDetail loading fallback when getEbayItem rejects', async () => {
-		const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
-		getEbayItemMock.mockRejectedValueOnce(new Error('fetch failed'));
-		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-		render(
-			<EbayItemDetail
-				apiProps={{
-					proxyURL: '',
-					baseTokenURL: '',
-					baseSearchURL: '',
-					qsSearchURL: '',
-					baseItemURL: '',
-					qsItemURL: '',
-					baseAnalyticsURL: '',
-					appId: '',
-					appCertId: '',
-					globalId: '',
-					itemCategory: 'electronics',
-				}}
-			itemID="ITEM-ERROR"
-			/>
-		);
-
-		await waitFor(() => {
-			expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('Error fetching eBay items:'), expect.any(Error));
-			expect(screen.getByText('Loading...')).toBeInTheDocument();
-		});
-
-		consoleError.mockRestore();
-	});
-
-	it('passes aspect filters to fetchItems in EbayItems', async () => {
-		const getEbayItemsMock = vi.mocked(ebayFunctions.getEbayItems, true);
-		getEbayItemsMock.mockResolvedValue({ 
-			itemSummaries: [mockItem], 
-			refinement: { 
-				aspectDistributions: [{
+	describe('EbayListFilter component', () => {
+		it('renders filter options and calls callback when selection changes', async () => {
+			const aspectData = [
+				{
 					localizedAspectName: 'Color',
-					aspectValueDistributions: [{ localizedAspectValue: 'Red', count: 1 }]
-				}] 
-			} 
-		} as any);
+					aspectValueDistributions: [
+						{ localizedAspectValue: 'Red' },
+						{ localizedAspectValue: 'Blue' }
+					]
+				}
+			];
+			const callback = vi.fn();
 
-		render(
-			<EbayItems
-				apiProps={{
-					proxyURL: '', baseTokenURL: '', baseSearchURL: '',
-					qsSearchURL: '?base=1', baseItemURL: '', qsItemURL: '',
-					baseAnalyticsURL: '', appId: '', appCertId: '', globalId: '',
-					itemCategory: 'electronics',
-				}}
-			/>
-		);
+			const { container } = renderWithProviders(
+				<EbayListFilter aspects={aspectData as any} callback={callback} />
+			);
 
-		await waitFor(() => {
-			expect(screen.getByText('Filter')).toBeInTheDocument();
-		});
+			const aspectSelect = container.querySelector('#aspectName') as HTMLSelectElement;
+			const valueSelect = container.querySelector('#aspectValue') as HTMLSelectElement;
+			const filterButton = screen.getByRole('button', { name: /Filter/i });
 
-		// Trigger filter
-		fireEvent.change(screen.getByLabelText('Aspect:'), { target: { value: 'Color' } });
-		fireEvent.change(screen.getByLabelText('Value:'), { target: { value: 'Red' } });
-		fireEvent.click(screen.getByText('Filter'));
+			fireEvent.change(aspectSelect, { target: { value: 'Color' } });
+			await waitFor(() => expect(valueSelect.disabled).toBe(false));
 
-		await waitFor(() => {
-			expect(getEbayItemsMock).toHaveBeenCalledWith(expect.objectContaining({
-				apiProps: expect.objectContaining({
-					qsSearchURL: expect.stringContaining('aspect_filter=Color:{Red}')
-				})
-			}));
-		});
-	});
-});
+			fireEvent.change(valueSelect, { target: { value: 'Red' } });
+			fireEvent.click(filterButton);
 
-describe('ebay.components - helper list components', () => {
-	it('should render EbayListFilter and call callback when aspects are selected', async () => {
-		const callback = vi.fn();
-		const aspects = [
-			{
-				localizedAspectName: 'Color',
-				aspectValueDistributions: [
-					{ localizedAspectValue: 'Red' },
-					{ localizedAspectValue: 'Blue' }
-				]
-			},
-			{
-				localizedAspectName: 'Size',
-				aspectValueDistributions: [
-					{ localizedAspectValue: 'Small' },
-					{ localizedAspectValue: 'Large' }
-				]
-			}
-		];
-
-		render(<EbayListFilter aspects={aspects} callback={callback} />);
-
-		const aspectNameSelect = screen.getByLabelText('Aspect:') as HTMLSelectElement;
-		expect(aspectNameSelect).toBeTruthy();
-
-		fireEvent.change(aspectNameSelect, { target: { value: 'Size' } });
-		const aspectValueSelect = screen.getByLabelText('Value:') as HTMLSelectElement;
-		expect(aspectValueSelect.options.length).toBeGreaterThan(1);
-
-		fireEvent.change(aspectValueSelect, { target: { value: 'Small' } });
-		fireEvent.click(screen.getByText('Filter'));
-
-		await waitFor(() => {
-			expect(callback).toHaveBeenCalledWith({ aspectName: 'Size', aspectValue: 'Small' });
+			expect(callback).toHaveBeenCalledWith({ aspectName: 'Color', aspectValue: 'Red' });
 		});
 	});
 
-	it('should return null for EbayListFilter when aspects is not an array', () => {
-		render(<EbayListFilter aspects={undefined as any} callback={vi.fn()} />);
-		expect(screen.queryByRole('form')).toBeNull();
-	});
+	describe('EbayItemHeader component', () => {
+		it('renders a link when a url is provided', () => {
+			renderWithProviders(
+				<EbayItemHeader title="Test Product" url="https://example.com" target="_blank" />
+			);
 
-	it('should render EbayItemHeader title as a link when url is provided', () => {
-		render(<EbayItemHeader title="Item Title" url="https://example.com/item" target="_blank" />);
-
-		const link = screen.getByRole('link');
-		expect(link).toHaveAttribute('href', 'https://example.com/item');
-		expect(link).toHaveAttribute('target', '_blank');
-		expect(screen.getByText('Item Title')).toBeTruthy();
-	});
-
-	it('should render EbayItemHeader as plain text when no url is provided', () => {
-		render(<EbayItemHeader title="Item Title" />);
-
-		expect(screen.queryByRole('link')).toBeNull();
-		expect(screen.getByText('Item Title')).toBeTruthy();
-	});
-
-	it('should render EbayListItem with fallback content when no images are available', () => {
-		const item = {
-			legacyItemId: 'ITEM-123',
-			title: 'Test Item',
-			price: { value: '49.99', currency: 'USD' },
-			thumbnailImages: undefined,
-			image: undefined,
-			categories: [],
-			categoryId: '100',
-			condition: 'New',
-			seller: { username: 'seller1', feedbackScore: 100, feedbackPercentage: 99.9 },
-			buyingOptions: ['BuyItNow'],
-			itemLocation: { postalCode: '12345', country: 'US' },
-			itemCreationDate: '2025-01-01',
-		};
-
-		const { container } = render(<EbayListItem item={item as any} apiProps={{ itemCategory: 'other' }} />);
-
-		expect(container.querySelector('.ebay-item')).toBeInTheDocument();
-		expect(container.querySelector('.ebay-item-details')).toBeInTheDocument();
-		expect(container.textContent).toContain('Condition:');
-	});
-
-	it('should render fallback quantity of 10 when item category does not match apiProps.itemCategory', () => {
-		const item = {
-			legacyItemId: 'ITEM-2',
-			title: 'Fallback Quantity Item',
-			price: { value: '15.00', currency: 'USD' },
-			thumbnailImages: [{ imageUrl: 'https://example.com/image.jpg' }],
-			categories: [{ categoryId: 'tools' }],
-			categoryId: 'tools',
-			condition: 'Used',
-			seller: { username: 'seller2', feedbackScore: 50, feedbackPercentage: 95 },
-			buyingOptions: ['Auction'],
-			itemLocation: { postalCode: '54321', country: 'US' },
-			itemCreationDate: '2025-08-01',
-		};
-
-		const { container } = render(<EbayListItem item={item as any} apiProps={{ itemCategory: 'electronics' }} />);
-
-		expect(container.querySelector('.ebay-item-details')).toHaveTextContent('Quantity: 10');
-	});
-
-	it('should render EbayListItem and display item details', () => {
-		const item = {
-			legacyItemId: 'ITEM-123',
-			title: 'Test Item',
-			price: { value: '49.99', currency: 'USD' },
-			thumbnailImages: [{ imageUrl: 'https://example.com/image.jpg' }],
-			image: { imageUrl: 'https://example.com/image.jpg' },
-			categories: [{ categoryId: '100' }],
-			categoryId: '100',
-			condition: 'New',
-			seller: { username: 'seller1', feedbackScore: 100, feedbackPercentage: 99.9 },
-			buyingOptions: ['BuyItNow'],
-			itemLocation: { postalCode: '12345', country: 'US' },
-			itemCreationDate: '2025-01-01',
-		};
-
-		const { container } = render(<EbayListItem item={item as any} apiProps={{ itemCategory: '100' }} />);
-
-		expect(container.querySelector('.ebay-item')).toBeInTheDocument();
-		expect(screen.getByText('Item ID:')).toBeTruthy();
-		expect(screen.getByText('Quantity:')).toBeTruthy();
-		expect(screen.getByText(/Condition:/)).toBeTruthy();
-		expect(screen.getByText('Seller:')).toBeTruthy();
-		expect(screen.getByText('Location:')).toBeTruthy();
-		expect(screen.getByText('$49.99 USD')).toBeTruthy();
-	});
-
-	it('should return shopping cart item with cloudinary transform when env is provided', () => {
-		const item = {
-			legacyItemId: 'ITEM-789',
-			price: { value: '99.99', currency: 'USD' },
-			thumbnailImages: [{ imageUrl: 'https://example.com/image.jpg' }],
-			image: { imageUrl: 'https://example.com/fallback.jpg' },
-			itemWebUrl: 'https://example.com/product',
-			categories: [{ categoryId: 'electronics' }],
-			categoryId: 'electronics',
-			title: 'Ebay Product',
-			condition: 'New',
-			seller: { username: 'seller1', feedbackScore: 100, feedbackPercentage: 99.9 },
-		};
-
-		const cartItem = getEbayShoppingCartItem({
-			thisItem: item as any,
-			cloudinaryProductEnv: 'production',
-			apiProps: { itemCategory: 'electronics' },
+			expect(screen.getByRole('link')).toHaveAttribute('href', 'https://example.com');
+			expect(screen.getByText('Test Product')).toBeInTheDocument();
 		});
 
-		expect(cartItem.itemQuantity).toBe(1);
-		expect(cartItem.itemID).toBe('ITEM-789');
-		expect(cartItem.itemCost).toBe('99.99');
-		expect(cartItem.itemURL).toBe('https://example.com/product');
-		expect(cartItem.itemImageURL).toContain('cloudinary.com');
+		it('renders plain text when no url is provided', () => {
+			renderWithProviders(<EbayItemHeader title="Plain Title" />);
+			expect(screen.getByText('Plain Title')).toBeInTheDocument();
+		});
 	});
 
-	it('should return shopping cart item without cloudinary transform when env is not provided', () => {
-		const item = {
-			legacyItemId: 'ITEM-999',
-			price: { value: '19.95', currency: 'USD' },
-			thumbnailImages: [{ imageUrl: 'https://example.com/image.jpg' }],
-			image: { imageUrl: 'https://example.com/fallback.jpg' },
-			itemWebUrl: 'https://example.com/product',
-			categories: [{ categoryId: 'electronics' }],
-			categoryId: 'electronics',
-			title: 'No Transform Product',
-			condition: 'Used',
-			seller: { username: 'seller1', feedbackScore: 50, feedbackPercentage: 80 },
-		};
+	describe('EbayListItem component', () => {
+		it('renders item details and fallback quantity when categories do not match', () => {
+			const item = {
+				legacyItemId: '123',
+				title: 'Fallback Product',
+				thumbnailImages: [{ imageUrl: 'https://example.com/test.jpg' }],
+				price: { value: '24.00', currency: 'USD' },
+				condition: 'New',
+				seller: { username: 'seller123', feedbackScore: 10, feedbackPercentage: 95 },
+				buyingOptions: ['BUY_IT_NOW'],
+				itemLocation: { postalCode: '94016', country: 'US' },
+				itemCreationDate: '2024-01-01',
+				categories: [{ categoryId: 'other' }],
+				itemWebUrl: 'https://example.com/item',
+			};
 
-		const cartItem = getEbayShoppingCartItem({
-			thisItem: item as any,
-			apiProps: { itemCategory: 'electronics' },
+			renderWithProviders(
+				<EbayListItem apiProps={{ itemCategory: 'different' } as any} cloudinaryProductEnv={undefined} item={item as any} />
+			);
+
+			expect(screen.getByRole('img')).toBeInTheDocument();
+			expect(screen.getByText(/Item ID:/)).toBeInTheDocument();
 		});
 
-		expect(cartItem.itemImageURL).toBe('https://example.com/image.jpg');
+		it('renders quantity as 1 when item category matches apiProps.itemCategory', () => {
+			const item = {
+				legacyItemId: '456',
+				title: 'Matched Category Product',
+				thumbnailImages: [{ imageUrl: 'https://example.com/test2.jpg' }],
+				price: { value: '99.00', currency: 'USD' },
+				condition: 'New',
+				seller: { username: 'seller456', feedbackScore: 55, feedbackPercentage: 98 },
+				buyingOptions: ['BUY_IT_NOW'],
+				itemLocation: { postalCode: '94016', country: 'US' },
+				itemCreationDate: '2024-01-01',
+				categories: [{ categoryId: 'category-123' }],
+				itemWebUrl: 'https://example.com/item2',
+			};
+
+			renderWithProviders(
+				<EbayListItem apiProps={{ itemCategory: 'category-123' } as any} cloudinaryProductEnv={undefined} item={item as any} />
+			);
+
+			const quantityDiv = screen.getByText('Quantity:').closest('div');
+			expect(quantityDiv).toHaveTextContent('Quantity: 1');
+		});
+	});
+
+	describe('EbayItemDetail component', () => {
+		it('loads and renders ebay item details from getEbayItem', async () => {
+			const getEbayItemMock = vi.mocked(ebayFunctions.getEbayItem, true);
+			getEbayItemMock.mockResolvedValueOnce({
+				legacyItemId: 'detail-123',
+				title: 'Detail Product',
+				additionalImages: [{ imageUrl: 'https://example.com/detail.jpg' }],
+				description: '<p>Detailed description</p>',
+				categoryId: 'cat-001',
+				categoryPath: 'Category > Subcategory',
+				condition: 'Used',
+				seller: { username: 'sellerdetail', feedbackScore: 42, feedbackPercentage: 80 },
+				buyingOptions: ['AUCTION'],
+				itemLocation: { city: 'Austin', stateOrProvince: 'TX' },
+				itemCreationDate: '2024-02-02',
+				price: { value: '49.99', currency: 'USD' },
+				itemWebUrl: 'https://example.com/detail',
+			} as any);
+
+			renderWithProviders(
+				<EbayItemDetail apiProps={{ itemCategory: 'cat-001' } as any} itemID="detail-123" />
+			);
+
+			await screen.findByText('Detail Product');
+			expect(screen.getByText(/Item ID:/)).toBeInTheDocument();
+			expect(screen.getByText(/Category:/)).toBeInTheDocument();
+			expect(screen.getByText(/Location:/)).toBeInTheDocument();
+		});
+	});
+
+	describe('EbayRateLimitsVisualizer component', () => {
+		it('auto-fetches token and can display mock rate-limit data', async () => {
+			const getEbayAppTokenMock = vi.mocked(ebayFunctions.getEbayAppToken, true);
+			const getEbayRateLimitsMock = vi.mocked(ebayFunctions.getEbayRateLimits, true);
+			getEbayAppTokenMock.mockResolvedValueOnce('test-token-123');
+			getEbayRateLimitsMock.mockResolvedValueOnce({
+				rate_limit: {
+					apiContext: 'Buy',
+					apiName: 'Browse',
+					apiVersion: 'v1',
+					resources: [{
+						resourceName: 'item_summary',
+						methods: [{ methodName: 'search', quotaTotal: 5000, quotaRemaining: 4990, quotaResets: '2026-01-10T00:00:00.000Z' }]
+					}]
+				}
+			} as any);
+
+			renderWithProviders(
+				<EbayRateLimitsVisualizer apiProps={{ appId: 'app-id', appCertId: 'app-cert' } as any} />
+			);
+
+			await screen.findByDisplayValue('test-token-123');
+			const fetchButton = screen.getByRole('button', { name: /Fetch Rate Limits/i });
+			fireEvent.click(fetchButton);
+
+			await screen.findByText(/Response Data:/i);
+			expect(screen.getByText(/rate_limit/)).toBeInTheDocument();
+		});
+
+		it('shows error when fetch rate limits fails with invalid token', async () => {
+			const getEbayAppTokenMock = vi.mocked(ebayFunctions.getEbayAppToken, true);
+			const getEbayRateLimitsMock = vi.mocked(ebayFunctions.getEbayRateLimits, true);
+			getEbayAppTokenMock.mockResolvedValueOnce('bad-token');
+			getEbayRateLimitsMock.mockRejectedValueOnce(new Error('Invalid token'));
+
+			renderWithProviders(
+				<EbayRateLimitsVisualizer apiProps={{ appId: 'app-id', appCertId: 'app-cert' } as any} />
+			);
+
+			await screen.findByDisplayValue('bad-token');
+			const fetchButton = screen.getByRole('button', { name: /Fetch Rate Limits/i });
+			fireEvent.click(fetchButton);
+
+			await screen.findByText(/Error:/i);
+			expect(screen.getByText(/Invalid token/i)).toBeInTheDocument();
+		});
+
+		it('loads sample structure when button clicked', async () => {
+			renderWithProviders(
+				<EbayRateLimitsVisualizer apiProps={{ appId: 'app-id', appCertId: 'app-cert' } as any} />
+			);
+
+			const sampleButton = screen.getByRole('button', { name: /Load Sample Structure/i });
+			fireEvent.click(sampleButton);
+
+			await screen.findByText(/rate_limit/);
+			expect(screen.getByText(/user_rate_limit/)).toBeInTheDocument();
+		});
 	});
 });

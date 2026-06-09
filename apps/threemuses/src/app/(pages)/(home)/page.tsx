@@ -3,14 +3,10 @@ import { PageSection, PageSectionHeader, PageTitleHeader, PageGridItem, Callout,
 // import { getSquareStoreItems } from '@pixelated-tech/components/server';
 import * as componentLibrary from '../../elements/componentlibrary';
 
-const wpSite = "blog.thethreemusesofbluffton.com";
-
-
 // This page is intentionally a server component so it can fetch featured boutique
 // items before render. BlogPostList remains a client component and will fetch
 // its WordPress content on the client using the configured `wordpress.site`
 // value from pixelated config if no explicit `posts` prop is supplied.
-
 
 export default async function Home() {
 	/* let featuredItems = [];
@@ -31,8 +27,6 @@ export default async function Home() {
 					</p>
 				</div>
 			</PageSection>
-
-
 
 			<PageSectionHeader title="Our Services" />
 			<PageSection columns={3} maxWidth="100%" id="home-services-section">
@@ -78,7 +72,6 @@ export default async function Home() {
 
 			</PageSection>
 
-
 			{ /* <PageSection columns={4} maxWidth="1024px" id="store-items-section">
 				<SquareFeaturedItems
 					items={featuredItems}
@@ -99,13 +92,11 @@ export default async function Home() {
 				<componentLibrary.ConsignWithUs />
 			</PageSection>
 
-
 			<PageSection id="social-section" columns={1} background="var(--accent1-color)" >
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList site={wpSite} count={1} showCategories={false} />
+				<BlogPostList count={1} showCategories={false} />
 			</PageSection>
 		</>
 	);
 }
-
 

@@ -56,6 +56,15 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] Create a dedicated `SiteInfoProvider` / `useSiteConfig()` hook for site metadata.
 
+- remove config props from these components and retrieve the data direct from pixelated config providers:
+
+why would the props be optional, with a fallbeck to getting them direclty? that is the opposite of what i want to do . i ahve said this before already. today the page extracts the config values, passes them to the component, then the component uses it. why? there are almost no examples where there is override data. let the component get the data direclty from the config file, no middle man, no confusion. it is a bad DX, bad pattern, bharder to test, more code, more brittle, more plaeces to break, and makes pagebuilder more complex. it is an unneeded featre. i propose you get the data direct from the config file, and remove any other options, any other fallbacks. one way to get the data or throw an error. let the component do the work, keep the integration thin.
+
+- [  ] integrations - all of them retrieve config integration data from config integration section
+- [  ] admin: 
+- [  ] shopping cart - all of them
+- [  ] sitebuilder - contentful integration
+
 
 ### Platform Enhancements
 
@@ -90,6 +99,40 @@ This document outlines planned improvements and refactoring initiatives for the 
 - [  ] **Decentralize sites.json data**: split the sites.json data file and put the sections per site into routes.json.  
 
 - [  ] **Additional Entry points** - add new entry points for shoppingcart and sitebuilder
+
+To make your sites more configuration-driven and reduce the code footprint at the individual site level, I recommend moving toward a "Kernel" architecture.
+
+Currently, your sites have a lot of structural duplication (identical layout.tsx, not-found.tsx, and dozens of (pages) folders). You can "thin" these by centralizing the routing logic and using a JSON-driven page engine.
+
+- [  ] Implement a Catch-all Route Engine
+Instead of having a folder for every page (e.g., about/page.tsx, services/page.tsx), move to a dynamic catch-all route at the site level:
+Create: apps/*/src/app/[[...slug]]/page.tsx
+Logic: This page reads the current path, looks up the configuration in siteconfig.json, and passes the data to the PageEngine.
+Goal: This would allow you to delete almost all the folders in src/app/(pages) and manage the entire site structure via JSON.
+
+- [  ] Centralize Site Boilerplate (The "Kernel")
+You can move the standard Next.js files into a shared library or a site-level "Kernel" wrapper.
+Shared Layout: Create a SharedRootLayout in pixelated-components that handles the common metadata, schemas, and context providers I saw in your layout.tsx.
+Boilerplate Routes: Move robots.tsx, sitemap.tsx, manifest.tsx, and humans.txt to shared route handlers that generate their output dynamically from the site's pixelated.config.json.
+
+- [  ] Configuration-Driven Theming
+Your VisualDesign structure in siteconfig.types.ts is already excellent.
+Next Step: Ensure that all site-level CSS variables are strictly derived from this config.
+Tooling: We can create a script that validates pixelated.config.json against its TypeScript schema before build, ensuring that a "configuration-driven" site is also a "type-safe" site.
+
+- [  ]  Automated Asset Management
+Since you have a root-level site-images.json, we can improve DX by:
+Creating a CLI tool (e.g., npm run sync-assets) that scans your project and generates these manifests automatically.
+Ensuring SmartImage can resolve assets by a simple "Key" (like id="logo") instead of requiring full URLs in every component.
+Would you like to start by expanding the componentMap or should we try implementing a catch-all route for one of the sites to see it in action?
+
+
+
+- [ ] **Universal Page Blocks (MVP)**:
+  - [ ] **PageList**: A generic "Retailer" component that iterates over any data source (FAQs, Team, Projects) using a single JSON-defined layout. Eliminates the need for specialized `ServiceList` components.
+  - [ ] **PageItem**: A generic "Matcher" component for dynamic routes (`[slug]`). It automatically finds the correct data item (Service, Project, etc.) based on the URL and injects it into the page context.
+  - [ ] **Prop Tokenization**: Enable `{{token.path}}` resolution inside `PageEngine` to support truly dynamic, data-driven layouts without new React code.
+
 
 
 ### WORKSPACE Enhancements

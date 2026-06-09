@@ -1,20 +1,10 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ContentfulItems, ContentfulListItem } from '../components/integrations/contentful.items.components';
 import * as contentfulFunctions from '../components/integrations/contentful.delivery';
-import { mockContentfulItems, mockContentfulAssets } from '../test/fixtures';
-
-// Mock the config hook
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: vi.fn(() => ({
-		cloudinary: {
-			product_env: 'test-cloud',
-			baseUrl: 'cloudinary.com',
-			transforms: {}
-		}
-	}))
-}));
+import { pixelatedConfig, mockContentfulItems, mockContentfulAssets } from '../test/test-data';
 
 // Mock dependencies
 vi.mock('../components/integrations/contentful.delivery', () => ({
@@ -22,17 +12,17 @@ vi.mock('../components/integrations/contentful.delivery', () => ({
 	getContentfulEntryByEntryID: vi.fn()
 }));
 
-vi.mock('../components/general/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
 	SmartImage: ({ src, alt, title }: any) => (
 		<img src={src} alt={alt} title={title} data-testid="smart-image" />
 	)
 }));
 
-vi.mock('../components/general/carousel', () => ({
+vi.mock('../components/structure/carousel', () => ({
 	Carousel: ({ cards }: any) => <div data-testid="carousel">{cards.length} items</div>
 }));
 
-vi.mock('../components/general/semantic', () => ({
+vi.mock('../components/structure/page-blocks', () => ({
 	PageGridItem: ({ children }: any) => <div data-testid="grid-item">{children}</div>
 }));
 
@@ -54,11 +44,6 @@ vi.mock('../components/shoppingcart/shoppingcart.components', () => ({
 }));
 
 describe('ContentfulItems Component', () => {
-	const mockApiProps = {
-		space_id: 'test-space',
-		delivery_access_token: 'test-token'
-	};
-
 	const mockItems = mockContentfulItems;
 	const mockAssets = mockContentfulAssets;
 
@@ -72,7 +57,7 @@ describe('ContentfulItems Component', () => {
 			includes: { Asset: [] }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		// Should render empty contentful-items div
 		const container = document.getElementById('contentful-items');
@@ -81,16 +66,22 @@ describe('ContentfulItems Component', () => {
 
 	it('should fetch items on mount', async () => {
 		vi.mocked(contentfulFunctions.getContentfulEntriesByType).mockResolvedValue({
-			items: mockItems,
-			includes: { Asset: mockAssets }
+			items: mockItems as any,
+			includes: { Asset: mockAssets as any }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			expect(contentfulFunctions.getContentfulEntriesByType).toHaveBeenCalledWith(
 				expect.objectContaining({
-					apiProps: mockApiProps
+					apiProps: expect.objectContaining({
+						base_url: pixelatedConfig.integrations.contentful.base_url,
+						delivery_access_token: pixelatedConfig.integrations.contentful.delivery_access_token,
+						environment: pixelatedConfig.integrations.contentful.environment,
+						proxyURL: pixelatedConfig.integrations.contentful.proxyURL,
+						space_id: pixelatedConfig.integrations.contentful.space_id,
+					})
 				})
 			);
 		});
@@ -98,11 +89,11 @@ describe('ContentfulItems Component', () => {
 
 	it('should display featured items header for multiple items', async () => {
 		vi.mocked(contentfulFunctions.getContentfulEntriesByType).mockResolvedValue({
-			items: mockItems,
-			includes: { Asset: mockAssets }
+			items: mockItems as any,
+			includes: { Asset: mockAssets as any }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			expect(screen.getByText(/2 Featured Items/)).toBeInTheDocument();
@@ -115,7 +106,7 @@ describe('ContentfulItems Component', () => {
 			includes: { Asset: mockAssets }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			expect(screen.getByText(/1 Featured Item/)).toBeInTheDocument();
@@ -128,7 +119,7 @@ describe('ContentfulItems Component', () => {
 			includes: { Asset: mockAssets }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			const container = document.getElementById('contentful-items');
@@ -136,16 +127,15 @@ describe('ContentfulItems Component', () => {
 		});
 	});
 
-	it('should pass cloudinaryProductEnv to child components', async () => {
+	it('should render without cloudinaryProductEnv prop', async () => {
 		vi.mocked(contentfulFunctions.getContentfulEntriesByType).mockResolvedValue({
 			items: mockItems,
 			includes: { Asset: mockAssets }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} cloudinaryProductEnv="custom-cloud" />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
-			// Verify component renders without error
 			const container = document.getElementById('contentful-items');
 			expect(container).toBeInTheDocument();
 		});
@@ -158,7 +148,7 @@ describe('ContentfulItems Component', () => {
 		
 		const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			expect(consoleErrorSpy).toHaveBeenCalledWith(
@@ -170,17 +160,26 @@ describe('ContentfulItems Component', () => {
 		consoleErrorSpy.mockRestore();
 	});
 
-	it('should merge api props with provider config', async () => {
+	it('should fetch items using provider config', async () => {
 		const spy = vi.mocked(contentfulFunctions.getContentfulEntriesByType).mockResolvedValue({
 			items: [],
 			includes: { Asset: [] }
 		});
 		
-		const customApiProps = { space_id: 'custom-space' };
-		render(<ContentfulItems apiProps={customApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
-			expect(spy).toHaveBeenCalled();
+			expect(spy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					apiProps: expect.objectContaining({
+						base_url: pixelatedConfig.integrations.contentful.base_url,
+						delivery_access_token: pixelatedConfig.integrations.contentful.delivery_access_token,
+						environment: pixelatedConfig.integrations.contentful.environment,
+						proxyURL: pixelatedConfig.integrations.contentful.proxyURL,
+						space_id: pixelatedConfig.integrations.contentful.space_id,
+					})
+				})
+			);
 		});
 	});
 
@@ -201,7 +200,7 @@ describe('ContentfulItems Component', () => {
 			includes: { Asset: mockAssets }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			// Component should match assets to items
@@ -237,7 +236,7 @@ describe('ContentfulItems Component', () => {
 			includes: { Asset: multiAssets }
 		});
 		
-		render(<ContentfulItems apiProps={mockApiProps} />);
+		render(<ContentfulItems />);
 		
 		await waitFor(() => {
 			// Should use earliest (oldest) asset
@@ -294,8 +293,8 @@ describe('ContentfulListItem Component', () => {
 		expect(screen.getByTestId('add-to-cart')).toBeInTheDocument();
 	});
 
-	it('should use provided cloudinary env for images', () => {
-		render(<ContentfulListItem item={mockItem} cloudinaryProductEnv="my-cloud" />);
+	it('should render item image without cloudinaryProductEnv prop', () => {
+		render(<ContentfulListItem item={mockItem} />);
 		
 		const image = screen.getByTestId('smart-image');
 		expect(image).toBeInTheDocument();

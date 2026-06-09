@@ -354,6 +354,11 @@ applications:
       - pattern: "/videos/**/*"
         headers: *public_headers
 
+      - pattern: "/events/report*"
+        headers:
+          - key: "Cache-Control"
+            value: "no-store, no-cache, max-age=0, s-maxage=0, must-revalidate"
+
       # 3. Everything else (HTML, Pages, etc.)
       - pattern: "**/*"
         headers: &page_headers

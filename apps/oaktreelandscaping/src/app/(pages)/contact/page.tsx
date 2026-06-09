@@ -2,15 +2,12 @@
 "use client";
 
 import React from "react";
-import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
-import { FormEngine } from "@pixelated-tech/components";
-import { Calendly } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection, PageSectionHeader, FormEngine, Calendly, usePixelatedConfig } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
 
-export default function Contact() {
-
+export default function ContactPage() {
+	const pixelatedConfig = usePixelatedConfig();
+	const siteInfo = pixelatedConfig?.siteInfo;
 	return (
 		<>
 			<PageTitleHeader title="Contact Oaktree Landscaping" />
@@ -19,7 +16,7 @@ export default function Contact() {
 				<PageSectionHeader title="Schedule a Quote" />
 				<div suppressHydrationWarning={true}>
 					<Calendly 
-						url="https://calendly.com/oaktreelandscaper/30min?background_color=f4f3ef&primary_color=19471b" 
+
 						width="320px" 
 						height="800px" 
 					></Calendly>

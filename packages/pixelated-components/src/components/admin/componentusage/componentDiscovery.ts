@@ -22,20 +22,16 @@ function getPixelatedComponentsPath(): string {
 		if (fs.existsSync(packagePath)) {
 			return packagePath;
 		} else {
-			// Fallback to require.resolve but strip the /ROOT/ prefix if present
-			const resolvedPath = require.resolve('@pixelated-tech/components/package.json');
-      
+			// Fallback to require.resolve the package entrypoint rather than package.json.
+			// Some package export maps do not expose package.json.
+			let resolvedPath = require.resolve('@pixelated-tech/components');
 			if (resolvedPath.startsWith('/ROOT/')) {
-				// Remove the /ROOT/ prefix and use the actual filesystem path
-				const actualPath = resolvedPath.replace('/ROOT/', '/');
-				const packageDir = path.dirname(actualPath);
-				if (fs.existsSync(packageDir)) {
-					return packageDir;
-				}
+				resolvedPath = resolvedPath.replace('/ROOT/', '/');
 			}
-      
-			// Use the resolved path as-is
-			const packageDir = path.dirname(resolvedPath);
+			let packageDir = path.dirname(resolvedPath);
+			if (path.basename(packageDir) === 'dist') {
+				packageDir = path.dirname(packageDir);
+			}
 			return packageDir;
 		}
 	} catch (error) {
@@ -56,28 +52,30 @@ export async function discoverComponentsFromLibrary(): Promise<string[]> {
 	try {
 		// Get the pixelated-components package path
 		const pixelatedPath = getPixelatedComponentsPath();
-    
+
 		const componentNames: string[] = [];
-    
+		const distDir = path.join(pixelatedPath, 'dist');
+		const componentsRoot = path.join(distDir, 'components');
+
 		// Read from main index.js
-		const indexPath = path.join(pixelatedPath, 'dist', 'index.js');
+		const indexPath = path.join(distDir, 'index.js');
 		if (fs.existsSync(indexPath)) {
 			const indexContent = fs.readFileSync(indexPath, 'utf-8');
-			componentNames.push(...parseComponentExports(indexContent));
+			componentNames.push(...parseComponentExports(indexContent, path.dirname(indexPath), componentsRoot));
 		}
-    
-		// Read from adminclient index
-		const adminClientPath = path.join(pixelatedPath, 'dist', 'index.adminclient.js');
+
+		// Read from admin runtime index
+		const adminClientPath = path.join(distDir, 'index.admin.js');
 		if (fs.existsSync(adminClientPath)) {
 			const adminClientContent = fs.readFileSync(adminClientPath, 'utf-8');
-			componentNames.push(...parseComponentExports(adminClientContent));
+			componentNames.push(...parseComponentExports(adminClientContent, path.dirname(adminClientPath), componentsRoot));
 		}
-    
-		// Read from adminserver index
-		const adminServerPath = path.join(pixelatedPath, 'dist', 'index.adminserver.js');
+
+		// Read from admin server runtime index
+		const adminServerPath = path.join(distDir, 'index.admin.server.js');
 		if (fs.existsSync(adminServerPath)) {
 			const adminServerContent = fs.readFileSync(adminServerPath, 'utf-8');
-			componentNames.push(...parseComponentExports(adminServerContent));
+			componentNames.push(...parseComponentExports(adminServerContent, path.dirname(adminServerPath), componentsRoot));
 		}
 
 		return [...new Set(componentNames)].sort(); // Remove duplicates and sort alphabetically
@@ -92,7 +90,7 @@ export async function discoverComponentsFromLibrary(): Promise<string[]> {
  * Parse ALL export statements from index.js and format as folder/filename
  * No filtering - includes everything for maximum inclusivity
  */
-function parseComponentExports(content: string): string[] {
+function parseComponentExports(content: string, currentDir: string, componentsRoot: string, visited = new Set<string>()): string[] {
 	const componentNames: string[] = [];
 	const lines = content.split('\n');
 
@@ -104,15 +102,28 @@ function parseComponentExports(content: string): string[] {
 			continue;
 		}
 
-		// Match: export * from './components/folder/filename';
-		const match = trimmed.match(/export \* from '\.\/components\/([^']+)';/);
-		if (match) {
-			const componentPath = match[1];
+		const match = trimmed.match(/export \* from ['"](.+)['"];/);
+		if (!match) continue;
 
-			// Format as folder/filename (e.g., "cms/calendly", "general/modal")
-			componentNames.push(componentPath);
+		const exportPath = match[1];
+		if (!exportPath.startsWith('./')) continue;
+
+		const resolvedPath = path.join(currentDir, exportPath);
+		const resolvedJsPath = resolvedPath.endsWith('.js') ? resolvedPath : `${resolvedPath}.js`;
+		if (!fs.existsSync(resolvedJsPath)) continue;
+
+		const baseName = path.basename(resolvedJsPath);
+		if (baseName.startsWith('index.')) {
+			if (visited.has(resolvedJsPath)) continue;
+			visited.add(resolvedJsPath);
+			const nestedContent = fs.readFileSync(resolvedJsPath, 'utf-8');
+			componentNames.push(...parseComponentExports(nestedContent, path.dirname(resolvedJsPath), componentsRoot, visited));
+			continue;
 		}
+
+		const relativeName = path.relative(componentsRoot, resolvedJsPath).replace(/\\/g, '/').replace(/\.js$/, '');
+		componentNames.push(relativeName);
 	}
 
-	return [...new Set(componentNames)].sort(); // Remove duplicates and sort alphabetically
+	return [...new Set(componentNames)].sort();
 }

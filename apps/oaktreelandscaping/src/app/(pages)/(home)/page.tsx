@@ -3,32 +3,30 @@
 import React, { useState, useEffect } from 'react';
 import { PageSection, PageGridItem, PageSectionHeader, BusinessFooter, usePixelatedConfig } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import { BlogPostList , type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
+import { BlogPostList, type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
 import { ToggleLoading } from '@pixelated-tech/components';
 import { MicroInteractions } from '@pixelated-tech/components';
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
-
-const wpSite = "blog.oaktree-landscaping.com";
  
 export default function Home() {
-	const config = usePixelatedConfig();
-	const googleMapsApiKey = config?.googleMaps?.apiKey ?? undefined;
+	const pixelatedConfig = usePixelatedConfig();
+	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
+
+	const siteInfo = pixelatedConfig?.siteInfo;
+	const googleMapsApiKey = pixelatedConfig?.googleMaps?.apiKey ?? undefined;
 
 	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
 	useEffect(() => {
 		ToggleLoading({show: true});
 		(async () => {
-			const posts = await getCachedWordPressItems({ site: wpSite, count: 1 }); // 1 week
+			const posts = await getCachedWordPressItems({ site: wordpressSite, count: 1 }); // 1 week
 			setWpPosts(posts ?? []);
 			ToggleLoading({show: false});
 		})();
 	}, []);
 
-
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeSelectors: '.tile , .blog-post-summary, .scroll-fade-element',
+			scrollfadeSelectors: '.tile, .blog-post-summary, .scroll-fade-element',
 		});
 	}, []); 
 	
@@ -63,14 +61,10 @@ export default function Home() {
 				/>
 			</PageSection>
 
-
-
 			<PageSection id="social-section" columns={1} >
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList site={wpSite} posts={wpPosts} count={1} showCategories={false} />
+				<BlogPostList posts={wpPosts} count={1} showCategories={false} />
 			</PageSection>
-
-
 
 			<PageSection columns={3} id="services-section" 
 				maxWidth="100%" padding="5%" gap="5%" 

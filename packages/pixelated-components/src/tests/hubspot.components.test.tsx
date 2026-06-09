@@ -1,18 +1,9 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render, renderWithProviders } from '../test/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { HubSpotForm, HubspotTrackingCode, initializeHubSpotScript, getHubspotFormSubmissions } from '../components/integrations/hubspot.components';
-
-// Mock the config hook
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: vi.fn(() => ({
-		hubspot: {
-			region: 'na1',
-			portalId: '123456',
-			formId: 'form-guid-123'
-		}
-	}))
-}));
+import { pixelatedConfig } from '../test/test-data';
 
 describe('HubSpot Components', () => {
 	beforeEach(() => {
@@ -73,40 +64,32 @@ describe('HubSpot Components', () => {
 
 	describe('HubSpotForm', () => {
 		it('should render form frame div', () => {
-			render(<HubSpotForm region="na1" portalId="123456" formId="form-guid" />);
+			renderWithProviders(<HubSpotForm />);
 			
 			const frame = document.querySelector('.hs-form-frame');
 			expect(frame).toBeInTheDocument();
 		});
 
-		it('should set data attributes from props', () => {
-			render(<HubSpotForm region="na1" portalId="123456" formId="form-guid" />);
+		it('should set data attributes from config', () => {
+			renderWithProviders(<HubSpotForm />);
 			
 			const frame = document.querySelector('.hs-form-frame');
-			expect(frame?.getAttribute('data-region')).toBe('na1');
-			expect(frame?.getAttribute('data-portal-id')).toBe('123456');
-			expect(frame?.getAttribute('data-form-id')).toBe('form-guid');
-		});
-
-		it('should use config fallback for missing props', () => {
-			render(<HubSpotForm />);
-			
-			const frame = document.querySelector('.hs-form-frame');
-			expect(frame?.getAttribute('data-region')).toBe('na1');
-			expect(frame?.getAttribute('data-portal-id')).toBe('123456');
+			expect(frame?.getAttribute('data-region')).toBe(pixelatedConfig.integrations?.hubspot?.region || 'na1');
+			expect(frame?.getAttribute('data-portal-id')).toBe(pixelatedConfig.integrations?.hubspot?.portalId || '123456');
+			expect(frame?.getAttribute('data-form-id')).toBe(pixelatedConfig.integrations?.hubspot?.formId || 'form-guid');
 		});
 
 		it('should use provided containerId with default', () => {
-			render(<HubSpotForm region="na1" portalId="123456" formId="test" containerId="custom-container" />);
+			renderWithProviders(<HubSpotForm containerId="custom-container" />);
 			
 			const frame = document.querySelector('.hs-form-frame');
 			expect(frame).toBeInTheDocument();
 		});
 
 		it('should use target selector if provided', () => {
-			const { container } = render(<HubSpotForm region="na1" portalId="123456" formId="test" target="#custom-target" />);
+			renderWithProviders(<HubSpotForm target="#custom-target" />);
 			
-			expect(container.querySelector('.hs-form-frame')).toBeInTheDocument();
+			expect(document.querySelector('.hs-form-frame')).toBeInTheDocument();
 		});
 
 		it('should call hbspt.forms.create when script loads', async () => {
@@ -117,15 +100,15 @@ describe('HubSpot Components', () => {
 			};
 			(window as any).hbspt = hbsptMock;
 			
-			render(<HubSpotForm region="na1" portalId="123456" formId="form-guid" />);
+			renderWithProviders(<HubSpotForm />);
 			
 			await waitFor(() => {
 				expect(hbsptMock.forms.create).toHaveBeenCalledWith(
-					expect.objectContaining({
-						region: 'na1',
-						portalId: '123456',
-						formId: 'form-guid'
-					})
+				expect.objectContaining({
+					region: pixelatedConfig.integrations?.hubspot?.region || 'na1',
+					portalId: pixelatedConfig.integrations?.hubspot?.portalId || '123456',
+					formId: pixelatedConfig.integrations?.hubspot?.formId || 'form-guid'
+				})
 				);
 			});
 		});
@@ -134,29 +117,29 @@ describe('HubSpot Components', () => {
 			delete (window as any).hbspt;
 			
 			expect(() => {
-				render(<HubSpotForm region="na1" portalId="123456" formId="form-guid" />);
+				renderWithProviders(<HubSpotForm />);
 			}).not.toThrow();
 		});
 	});
 
 	describe('HubspotTrackingCode', () => {
 		it('should render script tag for tracking', () => {
-			const { container } = render(<HubspotTrackingCode hubID="123456" />);
+			const { container } = renderWithProviders(<HubspotTrackingCode />);
 			expect(container).toBeDefined();
 		});
 
 		it('should set correct tracking script src', () => {
-			const { container } = render(<HubspotTrackingCode hubID="999999" />);
+			const { container } = renderWithProviders(<HubspotTrackingCode />);
 			expect(container).toBeDefined();
 		});
 
 		it('should set async and defer attributes', () => {
-			const { container } = render(<HubspotTrackingCode hubID="123456" />);
+			const { container } = renderWithProviders(<HubspotTrackingCode />);
 			expect(container).toBeDefined();
 		});
 
 		it('should set script type to text/javascript', () => {
-			const { container } = render(<HubspotTrackingCode hubID="123456" />);
+			const { container } = renderWithProviders(<HubspotTrackingCode />);
 			expect(container).toBeDefined();
 		});
 	});
@@ -177,16 +160,19 @@ describe('HubSpot Components', () => {
 				} as Response)
 			);
 			
+			const globalConfig = pixelatedConfig.integrations?.global;
+			const hbsConfig = pixelatedConfig.integrations?.hubspot;
 			const result = await getHubspotFormSubmissions({
-				proxyURL: 'https://proxy.example.com/',
-				formGUID: 'form-guid-123',
-				apiToken: 'test-token'
-			});
+				proxyURL: globalConfig?.proxyUrl || 'https://proxy.example.com/',
+				formGUID: hbsConfig?.formId || 'form-guid-123',
+				apiToken: hbsConfig?.accessToken || 'test-token'
+			} as any);
 			
 			expect(result).toEqual(mockSubmissions);
 		});
 
 		it('should set correct authorization header', async () => {
+			const mockToken = pixelatedConfig.integrations?.hubspot?.accessToken;
 			global.fetch = vi.fn(() =>
 				Promise.resolve({
 					ok: true,
@@ -194,17 +180,19 @@ describe('HubSpot Components', () => {
 				} as Response)
 			);
 			
+			const globalConfig = pixelatedConfig.integrations?.global;
+			const hbsConfig = pixelatedConfig.integrations?.hubspot;
 			await getHubspotFormSubmissions({
-				proxyURL: 'https://proxy.example.com/',
-				formGUID: 'form-guid-123',
-				apiToken: 'my-secret-token'
-			});
+				proxyURL: globalConfig?.proxyUrl || 'https://proxy.example.com/',
+				formGUID: hbsConfig?.formId || 'form-guid-123',
+				apiToken: mockToken
+			} as any);
 			
 			expect(global.fetch).toHaveBeenCalledWith(
 				expect.any(String),
 				expect.objectContaining({
 					headers: expect.objectContaining({
-						Authorization: 'Bearer my-secret-token'
+						Authorization: `Bearer ${mockToken}`
 					})
 				})
 			);

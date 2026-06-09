@@ -2,9 +2,7 @@
 "use client";
 
 import React from "react";
-import { MenuSimple } from "@pixelated-tech/components";
-import siteConfig from '@/app/data/siteconfig.json';
-const allRoutes = siteConfig.routes;
+import { MenuSimple, usePixelatedConfig } from "@pixelated-tech/components";
 
 /* 
 const menuItems = allRoutes
@@ -32,10 +30,12 @@ const menuItems = allRoutes
 */
 
 export default function Nav() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes ?? [];
 	return (
 		<div className="section-container">
 			<hr />
-			<MenuSimple menuItems={allRoutes} />
+			<MenuSimple menuItems={routes} />
 			<hr />
 		</div>
 	);

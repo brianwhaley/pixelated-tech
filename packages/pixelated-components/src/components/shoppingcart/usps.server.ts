@@ -12,7 +12,7 @@ export type FetchUspsRatesParams = {
 };
 
 export async function fetchUspsRatesServer(params: FetchUspsRatesParams): Promise<UspsRateOption[]> {
-	const uspsConfig = getFullPixelatedConfig()?.usps;
+	const uspsConfig = getFullPixelatedConfig()?.integrations?.usps;
 	if (!uspsConfig || !uspsConfig.consumerKey || !uspsConfig.consumerSecret) {
 		throw new Error('USPS configuration is required on the server.');
 	}

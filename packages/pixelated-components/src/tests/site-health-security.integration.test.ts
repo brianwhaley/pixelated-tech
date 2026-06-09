@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { analyzeSecurityHealth } from '../components/admin/site-health/site-health-security.integration';
+import { describe, it, expect, vi } from 'vitest';
+import fs from 'fs';
+import path from 'path';
 
-// Mock child_process to simulate npm audit responses
-vi.mock('child_process', async () => {
-	const actual = await vi.importActual<typeof import('child_process')>('child_process');
+vi.mock('child_process', () => {
 	const mockExec = vi.fn((cmd: string, options: any, callback: (err: Error | null, stdout: string, stderr: string) => void) => {
 		callback(null, JSON.stringify({
 			auditReportVersion: 2,
@@ -39,8 +38,7 @@ vi.mock('child_process', async () => {
 		}), '');
 	});
 	return {
-		...actual,
-		default: actual,
+		default: { exec: mockExec },
 		exec: mockExec
 	};
 });
@@ -54,48 +52,7 @@ vi.mock('fs', async () => {
 	};
 });
 
-vi.mock('util', async () => {
-	const actual = await vi.importActual<typeof import('util')>('util');
-	return {
-		...actual,
-		default: actual,
-		promisify: vi.fn(() => vi.fn(async () => ({
-			stdout: JSON.stringify({
-				auditReportVersion: 2,
-				vulnerabilities: {
-					'test-package': {
-						name: 'test-package',
-						severity: 'moderate',
-						via: ['vulnerability-1'],
-						range: '<1.0.0',
-						nodes: ['node_modules/test-package'],
-						fixAvailable: true
-					}
-				},
-				metadata: {
-					auditReportVersion: 2,
-					vulnerabilities: {
-						info: 0,
-						low: 0,
-						moderate: 1,
-						high: 0,
-						critical: 0
-					},
-					dependencies: {
-						total: 150,
-						prod: 25,
-						dev: 125,
-						optional: 0,
-						peer: 0,
-						peerOptional: 0
-					},
-					totalDependencies: 150
-				}
-			}),
-			stderr: ''
-		})))
-	};
-});
+import { analyzeSecurityHealth } from '../components/admin/site-health/site-health-security.integration';
 
 describe('analyzeSecurityHealth', () => {
 	it('should return security scan result with expected structure', async () => {
@@ -133,6 +90,67 @@ describe('analyzeSecurityHealth', () => {
 		const result = await analyzeSecurityHealth('/test/path', 'test-site');
 		expect(result).toBeDefined();
 		expect(result.status).toBe('error');
+	});
+
+	it('should return No Dependencies when package.json is missing but site directory exists', async () => {
+		const fsModule = await import('fs');
+		const localPath = path.join(process.cwd(), 'test-site-no-pkg');
+		fsModule.mkdirSync(localPath, { recursive: true });
+		let result: any;
+		try {
+			result = await analyzeSecurityHealth(localPath, 'test-site-no-pkg');
+		} finally {
+			fsModule.rmSync(localPath, { recursive: true, force: true });
+		}
+
+		expect(result.status).toBe('success');
+		expect(result.data?.status).toBe('No Dependencies');
+		expect(result.data?.dependencies).toBe(0);
+		expect(result.status).toBe('success');
+		expect(result.data?.status).toBe('No Dependencies');
+		expect(result.data?.dependencies).toBe(0);
+	});
+
+	it('should use fallback path when local path is missing but siteName exists', async () => {
+		const fsModule = await import('fs');
+		const localPath = path.join(process.cwd(), 'missing-path');
+		const fallbackPath = path.join(process.cwd(), 'test-site');
+		const packageJsonPath = path.join(fallbackPath, 'package.json');
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath) {
+				return false;
+			}
+			if (candidatePath === fallbackPath) {
+				return true;
+			}
+			if (candidatePath === packageJsonPath) {
+				return true;
+			}
+			return false;
+		});
+
+		const result = await analyzeSecurityHealth(localPath, 'test-site');
+		expect(result.status).toBeDefined();
+		if (result.status === 'success' && result.data) {
+			expect(result.data.vulnerabilities).toBeDefined();
+		}
+	});
+
+	it('should return an error when npm audit stdout cannot be parsed after command failure', async () => {
+		const childProcess = await import('child_process');
+		const execSpy = vi.mocked(childProcess.exec);
+		const localPath = process.cwd();
+
+		const error = new Error('npm audit failed') as any;
+		error.stdout = 'not-json';
+		execSpy.mockImplementationOnce((cmd: string, options: any, callback: (err: Error | null, stdout: string, stderr: string) => void) => {
+			callback(error, error.stdout, '');
+		});
+
+		const result = await analyzeSecurityHealth(localPath, 'test-site');
+
+		expect(result.status).toBe('error');
+		expect(result.error).toContain('Failed to parse npm audit output');
 	});
 
 	it('should handle when no vulnerabilities exist', async () => {

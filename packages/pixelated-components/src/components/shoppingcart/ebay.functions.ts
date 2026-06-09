@@ -123,11 +123,11 @@ export function getMergedEbayConfig(providedApiProps: any): EbayApiType {
 		if (config) {
 			apiProps = {
 				...apiProps,
-				...(config.ebay || {}),
+				...(config.integrations?.ebay || {}),
 				...providedApiProps,
 			};
 			if (!apiProps.proxyURL) {
-				apiProps.proxyURL = config.global?.proxyUrl || '';
+				apiProps.proxyURL = config.integrations?.global?.proxyUrl || '';
 			}
 		}
 	} catch (e) {

@@ -1,18 +1,18 @@
 "use client"; 
 
 import React, { useState, useEffect } from "react";
-import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import { getWordPressItems, getCachedWordPressItems, BlogPostList } from "@pixelated-tech/components";
+import { getCachedWordPressItems, BlogPostList } from "@pixelated-tech/components";
 import SocialTags from "@/app/elements/socialtags";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { ToggleLoading } from "@pixelated-tech/components";
 import { Hero } from "@pixelated-tech/components";
- 
-const wpSite = "blog.pixelated.tech";
 
 export default function Home() {
+	const pixelatedConfig = usePixelatedConfig();
+	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
 
 	const videos = [
 		"https://videos.ctfassets.net/ank9sh265hdu/4rxGU5MYRZtZcfD0b7nq1j/1a4a9f7a7f8f4f5e6de7aae53796f024/0_Animation_Network_Connection.mp4",
@@ -26,19 +26,16 @@ export default function Home() {
 		setHeroVideo(videos[Math.floor(Math.random() * videos.length)]);
 	}, []);
 
-
 	const [ wpPosts, setWpPosts ] = useState<Awaited<ReturnType<typeof getCachedWordPressItems>>>([]);
 	useEffect(() => {
 		async function fetchPosts() {
 			ToggleLoading({show: true});
-			const posts = (await getWordPressItems({ site: wpSite, count: 1 })) ?? [];
-			if(posts) { 
-				setWpPosts(posts);
-				ToggleLoading({show: false});
-			}
+			const posts = (await getCachedWordPressItems({ site: wordpressSite, count: 1 })) ?? [];
+			setWpPosts(posts);
+			ToggleLoading({show: false});
 		}
 		fetchPosts();
-	}, []); 
+	}, []);
 
 	return (
 		<>
@@ -69,7 +66,6 @@ export default function Home() {
 				</PageGridItem>
 			</PageSection>
 
-
 			<PageSection columns={1} maxWidth="1024px" id="home-schedule-section" >
 				<PageGridItem>
 					<CalloutLibrary.scheduleAppointment 
@@ -78,7 +74,6 @@ export default function Home() {
 					/>
 				</PageGridItem>
 			</PageSection>
-
 
 			<PageSection columns={2} maxWidth="1024px"id="spotlight-section">
 
@@ -100,7 +95,6 @@ export default function Home() {
 							with tailored solutions that meet your unique needs.'/>
 				</PageGridItem>
 
-
 				<PageGridItem>
 					<Callout
 						layout='vertical'
@@ -117,15 +111,12 @@ export default function Home() {
 				</PageGridItem>
 			</PageSection>
 
-
 			
 			<PageSection id="social-section" columns={1} background="var(--secondary-color)" >
 				<SocialTags />
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList site={wpSite} posts={wpPosts} count={1} />
+				<BlogPostList posts={wpPosts} count={1} />
 			</PageSection>
-
-
 
 			<PageSectionHeader title="Our Value Proposition" />
 			<PageSection id="products-section" columns={1}>
@@ -232,8 +223,6 @@ export default function Home() {
 							identify areas for improvement, and develop custom software solutions that meet your specific needs.' />
 				</PageGridItem>
 			</PageSection>
-
-
 
 			<PageSection columns={1} maxWidth="768px" background="var(--accent1-color)" id="spotlight-section">
 				<PageGridItem>

@@ -1,11 +1,11 @@
 "use client";
 
 import React from 'react';
-import siteConfig from '@/app/data/siteconfig.json';
-import { PageTitleHeader, PageSection, ServicesList } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, Services, usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function ServicesPage() {
-	const siteInfo = (siteConfig as any).siteInfo;
+	const pixelatedConfig = usePixelatedConfig();
+	const siteInfo = pixelatedConfig?.siteInfo ?? {};
 
 	return (
 		<>
@@ -16,7 +16,7 @@ export default function ServicesPage() {
 				</p>
 			</PageSection>
 
-			<ServicesList
+			<Services
 				siteInfo={siteInfo}
 				title="Pixelated Technologies Services"
 				intro="Click a service to read more about how it works for your business."

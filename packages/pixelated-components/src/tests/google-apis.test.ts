@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { getGoogleReviewsByPlaceId } from '../components/integrations/google.reviews.functions';
 import { GooglePlacesService } from '../components/integrations/googleplaces';
+import { smartFetch } from '../components/foundation/smartfetch';
 
 // Mock smartFetch for all tests
 vi.mock('../components/foundation/smartfetch', () => ({
@@ -116,6 +117,58 @@ describe('Google APIs - URL Building with buildUrl', () => {
 
 			expect(url).toContain('fields=reviews%2Cname%2Cplace_id%2Cformatted_address');
 			expect(url).not.toContain('language=');
+		});
+
+		it('should return empty reviews when the details response status is not OK', async () => {
+			const mockSmartFetch = vi.mocked(smartFetch);
+			mockSmartFetch.mockResolvedValueOnce({ status: 'ERROR', result: null });
+
+			const result = await getGoogleReviewsByPlaceId({
+				placeId: 'place-123',
+				apiKey: 'test-key',
+			});
+
+			expect(result.reviews).toEqual([]);
+			expect(result.place).toBeUndefined();
+		});
+
+		it('should return empty reviews when no result object is available', async () => {
+			const mockSmartFetch = vi.mocked(smartFetch);
+			mockSmartFetch.mockResolvedValueOnce({ status: 'OK' });
+
+			const result = await getGoogleReviewsByPlaceId({
+				placeId: 'place-123',
+				apiKey: 'test-key',
+			});
+
+			expect(result.reviews).toEqual([]);
+			expect(result.place).toBeUndefined();
+		});
+
+		it('should respect maxReviews and proxyBase settings', async () => {
+			const mockSmartFetch = vi.mocked(smartFetch);
+			mockSmartFetch.mockResolvedValueOnce({
+				status: 'OK',
+				result: {
+					name: 'Test Place',
+					place_id: 'place-123',
+					formatted_address: '123 Test St',
+					reviews: [
+						{ author_name: 'John', rating: 5 },
+						{ author_name: 'Jane', rating: 4 }
+					]
+				}
+			});
+
+			const result = await getGoogleReviewsByPlaceId({
+				placeId: 'place-123',
+				apiKey: 'test-key',
+				proxyBase: 'https://proxy.example.com',
+				maxReviews: 1,
+			});
+
+			expect(result.reviews).toHaveLength(1);
+			expect(result.reviews[0].author_name).toBe('John');
 		});
 	});
 

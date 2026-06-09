@@ -1,18 +1,23 @@
 import type { MetadataRoute } from 'next';
-import type { SiteInfo } from '../config/siteconfig.types';
+import type { SiteInfo } from '../config/config.types';
+import { getFullPixelatedConfig } from '../config/config';
 
 export interface ManifestOptions {
-	siteInfo: SiteInfo;
 	customProperties?: Partial<MetadataRoute.Manifest>;
 }
 
 /**
- * Generates a PWA manifest from siteinfo configuration
- * @param options - Configuration options
+ * Generates a PWA manifest from pixelated.config.json siteInfo configuration
+ * @param options - Optional custom manifest properties to merge into the manifest
  * @returns Next.js manifest object
  */
-export function generateManifest(options: ManifestOptions): MetadataRoute.Manifest {
-	const { siteInfo, customProperties = {} } = options;
+export function generateManifest(options: ManifestOptions = {}): MetadataRoute.Manifest {
+	const { customProperties = {} } = options;
+	const pixelatedConfig = getFullPixelatedConfig();
+	const siteInfo = pixelatedConfig.siteInfo as SiteInfo | undefined;
+	if (!siteInfo) {
+		throw new Error('pixelated.config.json must include siteInfo to generate a manifest.');
+	}
 
 	const baseManifest: MetadataRoute.Manifest = {
 		// @ts-expect-error - 'author' is not in standard Manifest type but used by some PWA implementations

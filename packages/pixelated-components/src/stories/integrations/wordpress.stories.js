@@ -13,10 +13,6 @@ export default {
 			control: 'boolean',
 			description: 'Show or hide post categories',
 		},
-		site: {
-			control: 'text',
-			description: 'WordPress site URL (e.g., blog.pixelated.tech)',
-		},
 	},
 	args: {
 		count: 3,

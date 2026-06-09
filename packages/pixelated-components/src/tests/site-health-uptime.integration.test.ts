@@ -2,15 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { checkUptimeHealth, normalizeUptimeStatus } from '../components/admin/site-health/site-health-uptime.integration';
 import { Route53Client } from '@aws-sdk/client-route-53';
 import { getFullPixelatedConfig } from '../components/config/config';
+import { pixelatedConfig, mockAwsConfig } from '../test/test-data';
 
 const sendMock = vi.fn();
-const getFullPixelatedConfigMock = vi.fn(() => ({
-	aws: {
-		region: 'us-east-1',
-		access_key_id: 'test-key',
-		secret_access_key: 'test-secret'
-	}
-}));
 
 vi.mock('@aws-sdk/client-route-53', () => ({
 	Route53Client: vi.fn(function() {
@@ -22,20 +16,18 @@ vi.mock('@aws-sdk/client-route-53', () => ({
 	})
 }));
 
-vi.mock('../../config/config', () => ({
-	getFullPixelatedConfig: getFullPixelatedConfigMock
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 describe('checkUptimeHealth', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		getFullPixelatedConfigMock.mockImplementation(() => ({
-			aws: {
-				region: 'us-east-1',
-				access_key_id: 'test-key',
-				secret_access_key: 'test-secret'
-			}
-		}) as any);
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 	});
 
 	afterEach(() => {
@@ -266,7 +258,13 @@ describe('checkUptimeHealth', () => {
 		});
 
 		it('should support various AWS regions', async () => {
-			getFullPixelatedConfigMock.mockReturnValueOnce({ aws: { region: 'eu-west-1' } } as any);
+			vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					aws: { ...mockAwsConfig, region: 'eu-west-1' }
+				}
+			} as any);
 			sendMock.mockResolvedValueOnce({
 				HealthCheckObservations: [{ StatusReport: { Status: 'Failure' } }]
 			});
@@ -297,7 +295,7 @@ describe('checkUptimeHealth', () => {
 		});
 
 		it('should fall back to default region when no region is configured', async () => {
-			getFullPixelatedConfigMock.mockReturnValueOnce({} as any);
+			vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({} as any);
 			sendMock.mockResolvedValueOnce({ HealthCheckObservations: [{ StatusReport: { Status: 'Success' } }] });
 			const result = await checkUptimeHealth('health-check-id');
 			expect(result.data?.status).toBe('Healthy');

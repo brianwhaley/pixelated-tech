@@ -1,21 +1,33 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/integrations/google.fonts.server';
-import { generateGoogleFontsUrl, generateGoogleFontsLink } from '../components/integrations/google.fonts';
+import { generateGoogleFontsUrl, generateGoogleFontsLink, extractGoogleFonts, GoogleFonts, getFontOptionsClient } from '../components/integrations/google.fonts';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
 import { getFullPixelatedConfig } from '../components/config/config';
+import { pixelatedConfig } from '../test/test-data';
+import { render } from '../test/test-utils';
 
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn()
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 const mockApiKey = 'test-api-key-123';
 
 describe('google-fonts', () => {
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
+	});
 
 	// Section 1: buildUrl for Google Fonts API list fetch
 	describe('buildUrl Google Fonts API URL construction', () => {
@@ -157,6 +169,47 @@ describe('google-fonts', () => {
 		});
 	});
 
+	describe('Google font extraction and component rendering', () => {
+		it('should extract google fonts from visualdesign tokens with import_family and params', () => {
+			const visualdesign = {
+				'header-font': { value: 'Arial, sans-serif', type: 'string', group: 'font', label: 'Header Font' },
+				'body-font': { value: 'Times New Roman, serif', type: 'string', group: 'font', label: 'Body Font' },
+				'custom-font': { import_family: 'Open Sans', import_params: 'wght@400;700', type: 'string', group: 'font', label: 'Custom Font' }
+			};
+
+			const fonts = extractGoogleFonts(visualdesign as any);
+			expect(fonts).toContain('Open Sans:wght@400;700');
+			expect(fonts).not.toContain('Arial');
+		});
+
+		it('should return no links when visualdesign contains only websafe fonts', () => {
+			const visualdesign = {
+				'header-font': 'Arial, sans-serif',
+				'body-font': 'Times New Roman, serif'
+			};
+
+			const { container } = render(React.createElement(GoogleFonts, { visualdesign }));
+			expect(container.firstChild).toBeNull();
+		});
+
+		it('should render GoogleFonts links for extracted fonts', () => {
+			const visualdesign = {
+				'header-font': 'Lobster, cursive',
+				'body-font': 'Georgia, serif'
+			};
+
+			const { container } = render(React.createElement(GoogleFonts, { visualdesign }));
+			expect(container.querySelectorAll('link[rel="stylesheet"]').length).toBeGreaterThan(0);
+			expect(container.innerHTML).toContain('fonts.googleapis.com/css2');
+		});
+
+		it('should return fallback font options in the client helper', () => {
+			const options = getFontOptionsClient();
+			expect(Array.isArray(options)).toBe(true);
+			expect(options.some(option => option.value === 'Open Sans')).toBe(true);
+		});
+	});
+
 	describe('fetchGoogleFonts and getFontOptions', () => {
 		const mockSmartFetch = vi.mocked(smartFetch);
 		const mockConfig = vi.mocked(getFullPixelatedConfig);
@@ -167,11 +220,13 @@ describe('google-fonts', () => {
 		});
 
 		const createMockGoogleConfig = (apiKey?: string) => ({
-			google: {
-				client_id: '',
-				client_secret: '',
-				api_key: apiKey || '',
-				refresh_token: ''
+			integrations: {
+				google: {
+					client_id: '',
+					client_secret: '',
+					api_key: apiKey || '',
+					refresh_token: ''
+				}
 			}
 		} as any);
 

@@ -43,23 +43,6 @@ export function getFullPixelatedConfig(): PixelatedConfig {
 		}
 	}
 
-	// If not found, look for encrypted variants in the same locations (e.g., pixelated.config.json.enc)
-	const doIt = false;
-	if (!raw && doIt) {
-		for (const configPath of paths) {
-			const encPath = `${configPath}.enc`;
-			if (fs.existsSync(encPath)) {
-				try {
-					raw = fs.readFileSync(encPath, 'utf8');
-					source = encPath;
-					break;
-				} catch (err) {
-					console.error(`Failed to read encrypted config file at ${encPath}`, err);
-				}
-			}
-		}
-	}
-
 	if (!raw) {
 		console.error('pixelated.config.json not found. Searched in src/app/config/, src/config/, and root.');
 		return {} as PixelatedConfig;
@@ -138,7 +121,13 @@ export function getClientOnlyPixelatedConfig(full?: PixelatedConfig): PixelatedC
 
 		const out: any = {};
 		for (const k of Object.keys(obj)) {
-			const currentService = serviceName || k;
+			// If we are at the root and hit 'integrations', we want its children 
+			// to be treated as top-level service names for secret stripping.
+			let currentService = serviceName || k;
+			if (k === 'integrations' && !serviceName) {
+				currentService = ''; // Reset for integrations children
+			}
+
 			if (isSecretKey(k, serviceName)) continue;
 			out[k] = strip(obj[k], currentService);
 		}

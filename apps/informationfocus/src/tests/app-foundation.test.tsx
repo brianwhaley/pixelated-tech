@@ -50,7 +50,7 @@ import manifest from '@/app/manifest';
 import robots from '@/app/robots';
 import SiteMapXML from '@/app/sitemap';
 import NotFound from '@/app/not-found';
-import siteConfig from '@/app/data/siteconfig.json';
+import { config as pixelatedConfig } from '@/test/page-mocks';
 import LayoutClient from '@/app/elements/layoutclient';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
@@ -109,11 +109,11 @@ describe('App shell coverage', () => {
 		expect(screen.getByTestId('menu-simple')).not.toBeNull();
 	});
 
-	it('uses real siteconfig.json siteInfo and route data', () => {
-		expect(siteConfig.siteInfo).toBeDefined();
-		expect(typeof siteConfig.siteInfo.url).toBe('string');
-		expect(siteConfig.siteInfo.url).toContain('http');
-		expect(siteConfig.routes.some(route => route.path === '/')).toBe(true);
+	it('uses real pixelated.config.json siteInfo and route data', () => {
+		expect(pixelatedConfig.siteInfo).toBeDefined();
+		expect(typeof pixelatedConfig.siteInfo.url).toBe('string');
+		expect(pixelatedConfig.siteInfo.url).toContain('http');
+		expect(pixelatedConfig.routes.some(route => route.path === '/')).toBe(true);
 	});
 
 	it('renders root layout with metadata and children', async () => {

@@ -4,6 +4,8 @@ import path from 'node:path';
 import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
+export { config };
+
 export interface FileDataState {
 	data: string | null;
 	loading: boolean;

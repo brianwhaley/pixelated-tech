@@ -2,13 +2,13 @@
 "use client";
 
 import React from "react";
-import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
 
-export default function Contact() {
+export default function ContactPage() {
+	const pixelatedConfig = usePixelatedConfig();
+	const siteInfo = pixelatedConfig?.siteInfo ?? {};
 
 	return (
 		<>

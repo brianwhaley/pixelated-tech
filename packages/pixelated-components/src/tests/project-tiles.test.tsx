@@ -1,10 +1,10 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
-import { ProjectTiles } from '@/components/general/tiles';
+import { ProjectTiles } from '@/components/elements/tiles';
 
 // Mock SmartImage so rendering is deterministic and fast
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => React.createElement('img', { src: props.src, alt: props.alt, 'data-testid': 'smart-image' })
 }));
 

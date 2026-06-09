@@ -1,20 +1,9 @@
 "use client";
 
-// import React, { useEffect, useState } from "react";
-import { PageTitleHeader, PageSection, /* PageGridItem, */ PageSectionHeader } from "@pixelated-tech/components";
-// import { /* , getGravatarProfile, type GravatarProfile } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
 import { Carousel } from "@pixelated-tech/components";
 
 export default function AboutPage() {
-	/* const email1 = "brian@pixelated.tech"; 
-	const [ profile1, setProfile1 ] = useState<GravatarProfile | null>(null);
-	useEffect(() => {
-		if (email1) {
-			getGravatarProfile(email1).then((data) => {
-				setProfile1(data);
-			});
-		}
-	}, [ email1 ]); */
 
 	const mycards = [
 		{
@@ -39,21 +28,6 @@ export default function AboutPage() {
 		<>
 
 			<PageTitleHeader title="About JZ Home Improvement" />
-
-			{ /* <PageSection columns={1} maxWidth="1024px" padding="20px" id="team-section">
-
-				<PageSectionHeader title="Our Team" />
-
-				<PageGridItem >
-					<GravatarCard 
-						profile={profile1}
-						layout="horizontal"
-						avatarSize={300}
-
-					/>
-				</PageGridItem>
-
-			</PageSection> */ }
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="history-section">
 				

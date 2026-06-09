@@ -1,4 +1,4 @@
-import type { SiteInfo } from './siteconfig.types';
+import type { SiteInfo } from './config.types';
 
 /**
  * Assert that an object is a valid SiteInfo with required fields.

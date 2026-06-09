@@ -1,6 +1,6 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { act, render, screen } from '@testing-library/react';
-import { createPageComponentMocks } from '@/test/page-mocks';
+import { createPageComponentMocks, setPixelatedConfigOverride } from '@/test/page-mocks';
 
 const params: Record<string, string> = {};
 
@@ -9,23 +9,31 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
-vi.mock('@/app/data/siteconfig.json', () => ({
-	__esModule: true,
-	default: {
-		siteInfo: {
-			serviceAreas: [
-				{ name: 'Metro Service Area', slug: 'metro-service-area' },
-				{ name: 'Coastal Service Area', slug: 'coastal-service-area' },
-				{ name: 'Regional Service Area', slug: 'regional-service-area' },
-			],
-			services: [
-				{ name: 'Website Design and Development', slug: 'website-design-and-development' },
-				{ name: 'Local SEO and Marketing', slug: 'local-seo-and-marketing' },
-				{ name: 'Other Stuff and Things', slug: 'other-stuff-and-things' },
-			],
-		},
+
+const serviceRoutesConfig = {
+	siteInfo: {
+		serviceAreas: [
+			{ name: 'Metro Service Area', slug: 'metro-service-area' },
+			{ name: 'Coastal Service Area', slug: 'coastal-service-area' },
+			{ name: 'Regional Service Area', slug: 'regional-service-area' },
+		],
+		services: [
+			{ name: 'Website Design and Development', slug: 'website-design-and-development' },
+			{ name: 'Local SEO and Marketing', slug: 'local-seo-and-marketing' },
+			{ name: 'Other Stuff and Things', slug: 'other-stuff-and-things' },
+		],
 	},
-}));
+};
+
+beforeEach(() => {
+	params.serviceArea = 'metro-service-area';
+	params.service = 'website-design-and-development';
+	setPixelatedConfigOverride(serviceRoutesConfig);
+});
+
+afterEach(() => {
+	setPixelatedConfigOverride(undefined);
+});
 
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import ServiceAreaDetailRoute from '@/app/(pages)/service-areas/[serviceArea]/page';
@@ -39,7 +47,7 @@ describe('pixelated-template service routes', () => {
 
 	it('renders the service areas index page', () => {
 		render(<ServiceAreasPage />);
-		expect(screen.getByTestId('mock-serviceareaslist')).toBeTruthy();
+		expect(screen.getByTestId('mock-serviceareas')).toBeTruthy();
 		expect(screen.getAllByTestId('mock-servicearea').length).toBeGreaterThan(0);
 	});
 

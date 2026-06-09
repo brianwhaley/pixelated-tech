@@ -6,12 +6,10 @@ import { Callout } from "@pixelated-tech/components";
 import { CountUp } from '@pixelated-tech/components';
 import { FormButton } from '@pixelated-tech/components';
 import { Hero } from '@pixelated-tech/components';
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
- 
+
 export default function Home() {
-	const config = usePixelatedConfig();
-	const googleMapsApiKey = config?.googleMaps?.apiKey ?? undefined;
+	const pixelatedConfig = usePixelatedConfig();
+	const googleMapsApiKey = pixelatedConfig?.integrations?.googleMaps?.apiKey ?? undefined;
 
 	return (
 		<>
@@ -150,7 +148,7 @@ export default function Home() {
 
 
 			<PageSection maxWidth="1024px" id="service-area-section" columns={1}>
-				<BusinessFooter siteInfo={siteInfo} googleMapsApiKey={googleMapsApiKey} />
+				<BusinessFooter siteInfo={pixelatedConfig?.siteInfo} googleMapsApiKey={googleMapsApiKey} />
 			</PageSection>
 
 

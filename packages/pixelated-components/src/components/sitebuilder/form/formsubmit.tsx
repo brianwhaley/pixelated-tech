@@ -5,9 +5,9 @@ import type { FormEvent } from 'react';
 import { createContext, useContext } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { ToggleLoading } from '../../foundation/loading';
-import { handleModalOpen } from '../../general/modal';
+import { handleModalOpen } from '../../elements/modal';
 import { Loading } from '../../foundation/loading';
-import { Modal } from '../../general/modal';
+import { Modal } from '../../elements/modal';
 import { smartFetch } from '../../foundation/smartfetch';
 
 /* 

@@ -7,7 +7,7 @@ import { Callout } from "@pixelated-tech/components";
 import { usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function AboutUsPage() {
-	const config = usePixelatedConfig();    
+	const pixelatedConfig = usePixelatedConfig();    
 	return (
 		<>
 
@@ -44,12 +44,10 @@ export default function AboutUsPage() {
 
 			<PageSection columns={1} maxWidth="768px" padding="20px" id="reviews-section">
 				<PageSectionHeader title="Customer Reviews" />
-				{config?.googlePlaces?.placeId && (
+				{pixelatedConfig?.integrations?.googlePlaces?.placeId && (
 					<GoogleReviewsCarousel
-						placeId={config.googlePlaces.placeId}
-						apiKey={config?.googlePlaces?.apiKey || ''}
-						proxyBase={config?.global?.proxyUrl || ''}
-						maxReviews={10}
+						placeId={pixelatedConfig.integrations.googlePlaces.placeId}
+						apiKey={pixelatedConfig?.integrations?.googlePlaces?.apiKey || ''}
 						businessName="Manning Metalworks"
 					/>
 				)}

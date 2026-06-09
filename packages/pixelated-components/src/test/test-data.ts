@@ -1,5 +1,17 @@
-// Shared test fixtures (centralized source-of-truth for tests)
-// Location mandated by repo conventions: src/app/test
+// Shared test data barrel for the package.
+// This file aggregates raw JSON fixtures from src/test/data, derived fixture exports,
+// and shared test config values used across src/tests/*. It is not a place for
+// test utility functions.
+//
+// NOT for:
+// - test helpers or render wrappers (use src/test/test-utils.tsx)
+// - arbitrary application logic
+// - storing one-off test data that belongs directly in a specific test file
+//
+// Data files owned by this barrel:
+// - src/test/data/*.json for raw fixture payloads and API response bodies
+// - src/test/fixtures.ts for derived or reusable fixture objects
+// - src/test/test-utils.tsx for shared helper functions
 
 import siteConfig from '@/data/siteconfig.json';
 import recipes from '@/data/recipes.json';
@@ -19,10 +31,40 @@ import googlePsiExampleCom from './data/google-psi-example-com.json';
 import squareCatalogResponseWithRelatedObjects from './data/square-catalog-response-with-related-objects.json';
 import squareCatalogResponseNoRelatedObjects from './data/square-catalog-response-no-related-objects.json';
 import squareCatalogResponseNestedVariation from './data/square-catalog-response-nested-variation.json';
+import mockSitesConfig from './data/mock-sites-config.json';
+import mockSpotifyRss from './data/spotify-rss-mocks.json';
+import mockTileCards from './data/mock-tile-cards.json';
+import mockCarouselCards from './data/mock-carousel-cards.json';
+import mockSitemapConfigs from './data/mock-sitemap-configs.json';
+import mockSitemapItemsData from './data/mock-sitemap-items-data.json';
+import mockGoogleApiResponses from './data/mock-google-api-responses.json';
+import mockWordPressPosts from './data/mock-wordpress-posts.json';
+import mockContentfulItems from './data/mock-contentful-items.json';
+import mockContentfulAssets from './data/mock-contentful-assets.json';
+import mockContentfulTestProps from './data/mock-contentful-test-props.json';
+import contentfulItemsDetail from './data/contentful-items.json';
+import mockOrderCheckoutDataJson from './data/mock-order-checkout-data.json';
+import paypalCheckoutData from './data/paypal-checkout-data.json';
+import ebayApiResponse from './data/ebay-api-response.json';
+import mockEbayItem from './data/mock-ebay-item.json';
+import ebayListings from './data/ebay-listings.json';
+import mockGoogleAuth from './data/mock-google-auth.json';
+import mockInstagramMedia from './data/mock-instagram-media.json';
+import mockGoogleSearchConsoleData from './data/google-search-console.json';
 import pixelatedConfigJson from '@/config/pixelated.config.json';
-import type { PixelatedConfig } from '../components/config/config.types';
+import type { PixelatedConfig, ContentfulConfig, EbayConfig, SiteInfoType } from '../components/config/config.types';
 import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
 
+// --- MOCK CONFIG DATA ---
+export const pixelatedConfig = pixelatedConfigJson as PixelatedConfig;
+export const pixelatedConfigEmpty = {} as PixelatedConfig;
+export const mockCloudinary = pixelatedConfig.integrations?.cloudinary;
+export const mockUspsConfig = pixelatedConfig.integrations?.usps;
+export const mockSquareConfig = pixelatedConfig.integrations?.square;
+export const mockGoogleAnalyticsConfig = pixelatedConfig.integrations?.google?.analytics;
+export const mockEbayApiProps = pixelatedConfig.integrations?.ebay as any;
+
+// --- TEST FIXTURES ---
 export {
 	faqTestData,
 	ebayData,
@@ -39,30 +81,61 @@ export {
 	squareCatalogResponseWithRelatedObjects,
 	squareCatalogResponseNoRelatedObjects,
 	squareCatalogResponseNestedVariation,
+	mockSitesConfig,
+	mockSpotifyRss,
+	mockTileCards,
+	mockCarouselCards,
+	mockSitemapConfigs,
+	mockSitemapItemsData,
+	mockGoogleApiResponses,
+	mockWordPressPosts,
+	mockContentfulItems,
+	mockContentfulAssets,
+	mockContentfulTestProps,
+	mockEbayItem,
+	mockGoogleAuth,
+	mockInstagramMedia,
+	mockGoogleSearchConsoleData,
 };
 
-export const pixelatedConfig = pixelatedConfigJson as PixelatedConfig;
-export const mockCloudinary = pixelatedConfig.cloudinary;
+export const mockContentfulItemsDetail = contentfulItemsDetail;
+export const mockPaypalCheckoutData = paypalCheckoutData;
+export const mockEbayApiResponse = ebayApiResponse;
+export const mockEbayListings = ebayListings;
+export const mockOrderCheckoutData = mockOrderCheckoutDataJson;
+export const mockCards = mockTileCards;
+export const mockContentfulApiProps = mockContentfulTestProps;
+export const mockGAnalyticsResponse = mockGoogleApiResponses.analytics;
+export const mockGSearchConsoleResponse = mockGoogleApiResponses.searchConsole;
 
-export async function createSiteHealthResponse(siteName = 'test-site', url = 'https://www.example.com') {
-	return {
-		success: true,
-		data: [await processPSIData(googlePsiExampleCom, siteName, url)],
-	};
-}
+export {
+	realRecipes,
+	realResume,
+	siteInfo,
+	siteInfoFull,
+	visualdesign,
+	minimalRecipe,
+	minimalResume,
+	emptySiteInfo,
+	routes,
+	emptyRoutes,
+	malformedRoutes,
+	createSiteHealthResponse
+} from './fixtures';
 
-// Expose "real" integration-style fixtures
-export const realRoutes = siteConfig;
-export const realRecipes = recipes;
-export const realResume = resume;
-
-// Re-export commonly-used slices (keeps tests small & explicit)
-export const siteInfo = siteConfig.siteInfo;
-export const siteInfoFull = siteConfig.siteInfo;
-export const visualdesign = siteConfig.visualdesign || {};
-
-export const minimalRecipe = (recipes.items && recipes.items[0]) ? recipes.items[0] : { '@type': 'Recipe', name: 'Minimal' };
-export const minimalResume = (resume.items && resume.items[0]) ? { items: [resume.items[0]] } : { items: [] };
+import {
+	realRecipes,
+	realResume,
+	siteInfo,
+	siteInfoFull,
+	visualdesign,
+	emptySiteInfo,
+	routes,
+	emptyRoutes,
+	malformedRoutes,
+	createSiteHealthResponse,
+	mockGoogleDateRanges
+} from './fixtures';
 
 // Backwards-compat shape used by many existing tests (keeps migration minimal)
 export default {
@@ -81,10 +154,11 @@ export default {
 	realContentfulAssetsData,
 	wordpressFunctionsData,
 	mockCloudinary,
+	mockGoogleAnalyticsConfig,
 	pixelatedConfig,
 
-	emptySiteInfo: { name: '', author: '', description: '', url: '', email: '' },
-	routes: siteConfig.routes || [],
-	emptyRoutes: [],
-	malformedRoutes: [{ invalidField: 'value' }],
+	emptySiteInfo,
+	routes,
+	emptyRoutes,
+	malformedRoutes,
 };

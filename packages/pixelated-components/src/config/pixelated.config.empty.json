@@ -1,0 +1,16 @@
+{
+	"siteInfo": {
+		"name": "Empty Site",
+		"description": "Empty configuration",
+		"url": "https://empty.example.com"
+	},
+	"visualdesign": {},
+	"routes": [],
+	"integrations": {
+		"calendly": {},
+		"hubspot": {},
+		"instagram": {},
+		"wordpress": {},
+		"contentful": {}
+	}
+}

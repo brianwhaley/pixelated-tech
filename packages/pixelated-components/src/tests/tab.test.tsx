@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { Tab } from '../components/general/tab';
+import { Tab } from '../components/elements/tab';
 
 describe('Tab Component', () => {
   const mockTabs = [

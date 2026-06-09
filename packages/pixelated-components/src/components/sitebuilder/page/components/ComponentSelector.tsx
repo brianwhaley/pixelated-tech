@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 // import { FormEngine } from '../../form/pixelated.form';
-import { componentMap /* , componentTypes */ } from '../lib/componentMap';
+import { componentMap, componentCategories } from '../lib/componentMap';
 import { generateFieldJSON } from '../lib/componentGeneration';
 
 /**
@@ -68,11 +68,6 @@ export function ComponentSelector(props: ComponentSelectorType) {
 		}
 	}
 
-	const componentOptions = Object.keys(componentMap).map((name: string) => ({
-		value: name,
-		text: name
-	}));
-
 	return (
 		<div>
 			{parentPath && (
@@ -93,7 +88,6 @@ export function ComponentSelector(props: ComponentSelectorType) {
 			<label htmlFor="component-type-selector" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
 				Component Type:
 			</label>
-			{  }
 			<select 
 				id="component-type-selector"
 				onChange={handleComponentChange}
@@ -102,15 +96,31 @@ export function ComponentSelector(props: ComponentSelectorType) {
 					marginBottom: '1rem',
 					fontSize: '1rem',
 					border: '1px solid #ccc',
-					borderRadius: '4px'
+					borderRadius: '4px',
+					width: '100%',
+					padding: '8px'
 				}}
 			>
 				<option value="" disabled>Select a component...</option>
-				{componentOptions.map(option => (
-					<option key={option.value} value={option.value}>
-						{option.text}
-					</option>
+				{Object.entries(componentCategories).map(([category, components]) => (
+					<optgroup key={category} label={category}>
+						{components
+							.filter(name => Object.prototype.hasOwnProperty.call(componentMap, name))
+							.map(name => (
+								<option key={name} value={name}>{name}</option>
+							))
+						}
+					</optgroup>
 				))}
+				{/* Catch-all for components NOT in a category */}
+				<optgroup label="Other">
+					{Object.keys(componentMap)
+						.filter(name => !Object.values(componentCategories).flat().includes(name))
+						.map(name => (
+							<option key={name} value={name}>{name}</option>
+						))
+					}
+				</optgroup>
 			</select>
 		</div>
 	);

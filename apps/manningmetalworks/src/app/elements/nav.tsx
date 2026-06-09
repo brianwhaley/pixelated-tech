@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { MenuSimple } from "@pixelated-tech/components";
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
+import { MenuSimple, usePixelatedConfig } from "@pixelated-tech/components";
 
 // const menuItems = getAccordionMenuData(allRoutes);
 
 export default function Nav() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes ?? [];
 	return (
 		<>
-			<MenuSimple menuItems={allRoutes} />
+			<MenuSimple menuItems={routes} />
 		</>
 	);
 }

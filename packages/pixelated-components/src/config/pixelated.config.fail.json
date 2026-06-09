@@ -1,0 +1,46 @@
+{
+	"siteInfo": {
+		"name": "Test Site (Invalid)",
+		"description": "This config is designed to fail",
+		"url": "https://fail.example.com"
+	},
+	"visualdesign": {},
+	"routes": [],
+	"integrations": {
+		"global": { "proxyUrl": "https://invalid-proxy.example.com" },
+		"calendly": { "url": "" },
+		"square": {
+			"squareApplicationId": "INVALID_APP_ID",
+			"squareLocationId": "INVALID_LOCATION_ID",
+			"squareAccessToken": "INVALID_ACCESS_TOKEN"
+		},
+		"paypal": {
+			"payPalApiKey": "INVALID_KEY",
+			"payPalSecret": "INVALID_SECRET"
+		},
+		"ebay": {
+			"appId": "INVALID_APP_ID",
+			"appCertId": "INVALID_CERT_ID",
+			"sbxAppId": "INVALID_SBX_APP_ID",
+			"sbxAppCertId": "INVALID_SBX_CERT_ID",
+			"globalId": "EBAY-US"
+		},
+		"googleMaps": { "apiKey": "INVALID" },
+		"hubspot": {
+			"region": "invalid-region",
+			"portalId": "INVALID_PORTAL",
+			"formId": "INVALID_FORM"
+		},
+		"instagram": {
+			"accessToken": "INVALID_TOKEN",
+			"userId": "INVALID_USER"
+		},
+		"wordpress": {
+			"site": ""
+		},
+		"contentful": {
+			"space_id": "INVALID_SPACE",
+			"delivery_access_token": "INVALID_TOKEN"
+		}
+	}
+}

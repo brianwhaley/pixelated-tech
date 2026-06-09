@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { Carousel, type CarouselCardType } from '../general/carousel';
+import { Carousel, type CarouselCardType } from '../structure/carousel';
 import { ReviewSchema } from '../foundation/schema';
 import { getContentfulEntriesByType, getContentfulReviewsSchema } from './contentful.delivery';
 import { usePixelatedConfig } from '../config/config.client';
@@ -17,14 +17,6 @@ ContentfulReviewsCarousel.propTypes = {
 	itemType: PropTypes.string,
 	/** Publisher name for review schema. */
 	publisherName: PropTypes.string,
-	/** Contentful API config object. Falls back to usePixelatedConfig if omitted. */
-	apiProps: PropTypes.shape({
-		base_url: PropTypes.string.isRequired,
-		space_id: PropTypes.string.isRequired,
-		environment: PropTypes.string.isRequired,
-		delivery_access_token: PropTypes.string.isRequired,
-		proxyURL: PropTypes.string,
-	}),
 	/** Field name used to populate the card header text. */
 	headerField: PropTypes.string,
 	/** Field name used to populate the card body text. */
@@ -50,11 +42,13 @@ export function ContentfulReviewsCarousel(props: ContentfulReviewsCarouselType) 
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const apiProps = props.apiProps ?? {
-		base_url: config?.contentful?.base_url ?? '',
-		space_id: config?.contentful?.space_id ?? '',
-		environment: config?.contentful?.environment ?? '',
-		delivery_access_token: config?.contentful?.delivery_access_token ?? '',
+	const contentfulConfig = config?.integrations?.contentful;
+	const apiProps = {
+		proxyURL: contentfulConfig?.proxyURL ?? undefined,
+		base_url: contentfulConfig?.base_url ?? '',
+		space_id: contentfulConfig?.space_id ?? '',
+		environment: contentfulConfig?.environment ?? '',
+		delivery_access_token: contentfulConfig?.delivery_access_token ?? '',
 	};
 
 	const headerField = props.headerField || 'description';

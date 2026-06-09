@@ -8,7 +8,7 @@ import { preloadImages } from "@pixelated-tech/components";
 
 export default function LayoutClient() {
 
-	const config = usePixelatedConfig();
+	const integrationsConfig = usePixelatedConfig()?.integrations;
 
 	useEffect(() => {
 		MicroInteractions({ 
@@ -26,7 +26,7 @@ export default function LayoutClient() {
 		deferAllCSS();
 		loadAllImagesFromCloudinary({ 
 			origin: window.location.origin,
-			product_env: config?.cloudinary?.product_env ?? "dlbon7tpq"
+			product_env: integrationsConfig?.cloudinary?.product_env ?? "dlbon7tpq"
 		});
 	}, []);
 

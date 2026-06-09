@@ -1,26 +1,45 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import * as configModule from '../components/config/config';
+import { getFullPixelatedConfig } from '../components/config/config';
 import { analyzeGitHealth } from '../components/admin/site-health/site-health-github.integration';
 import { buildUrl } from '../components/foundation/urlbuilder';
+import { pixelatedConfig } from '../test/test-data';
 
-
-const mockToken = 'test-token-123';
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 describe('analyzeGitHealth (GitHub)', () => {
 	beforeEach(() => {
-		vi.restoreAllMocks();
+		vi.clearAllMocks();
+		vi.mocked(getFullPixelatedConfig).mockReturnValue(pixelatedConfig);
 	});
 
 	it('returns an error when github token is missing from config', async () => {
-		vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({} as any);
+		vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({} as any);
 		const res = await analyzeGitHealth({ name: 'foo', remote: 'owner/repo' });
 		expect(res.status).toBe('error');
 		expect(res.error).toMatch(/GitHub token not configured/);
 	});
 
-	it('fetches commits from GitHub and returns mapped commits (no version expected)', async () => {
-		vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken } } as any);
+	it('returns an error if repository owner or name cannot be derived', async () => {
+		vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({ integrations: { github: { token: 'ghp_test' } } } as any);
+		const res = await analyzeGitHealth({ name: 'foo' });
+		expect(res.status).toBe('error');
+		expect(res.error).toContain('Repository owner or name not provided');
+	});
 
+	it('returns an error when GitHub API responds with a non-ok status', async () => {
+		const localFetch = async () => ({ ok: false, status: 401, statusText: 'Unauthorized', text: async () => 'Bad token' } as any);
+		const res = await analyzeGitHealth({ name: 'foo', remote: 'owner/repo' }, undefined, undefined, localFetch);
+		expect(res.status).toBe('error');
+		expect(res.error).toContain('GitHub API returned 401');
+	});
+
+	it('fetches commits from GitHub and returns mapped commits (no version expected)', async () => {
 		const fakeCommits = [
 			{
 				sha: 'abcd',
@@ -46,8 +65,6 @@ describe('analyzeGitHealth (GitHub)', () => {
 	});
 
 	it('does not infer version from commit message (no version expected)', async () => {
-		vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken } } as any);
-
 		const fakeCommits = [
 			{
 				sha: 'zzzz',
@@ -76,7 +93,13 @@ describe('analyzeGitHealth (GitHub)', () => {
 
 
 	it('prefers explicit site.repo when provided and extracts version from message', async () => {
-		vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken, defaultOwner: 'ownerx' } } as any);
+		vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({
+			...pixelatedConfig,
+			integrations: {
+				...pixelatedConfig.integrations,
+				github: { ...pixelatedConfig.integrations?.github, defaultOwner: 'ownerx' }
+			}
+		} as any);
 
 		const fakeCommits = [
 			{
@@ -102,7 +125,13 @@ describe('analyzeGitHealth (GitHub)', () => {
 	});
 
 	it('derives repo from localPath when repo and remote missing and extracts version from message', async () => {
-		vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken, defaultOwner: 'ownerx' } } as any);
+		vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({
+			...pixelatedConfig,
+			integrations: {
+				...pixelatedConfig.integrations,
+				github: { ...pixelatedConfig.integrations?.github, defaultOwner: 'ownerx' }
+			}
+		} as any);
 
 		const fakeCommits = [
 			{
@@ -181,8 +210,6 @@ describe('analyzeGitHealth (GitHub)', () => {
 
 	describe('analyzeGitHealth integration with buildUrl', () => {
 		it('should pass proper since and until parameters in commit URL', async () => {
-			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken } } as any);
-
 			const fakeCommits = [
 				{
 					sha: 'abc123',
@@ -206,8 +233,6 @@ describe('analyzeGitHealth (GitHub)', () => {
 		});
 
 		it('should handle empty date range gracefully', async () => {
-			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken } } as any);
-
 			const fakeCommits: any[] = [];
 
 			const localFetch = async (input: RequestInfo, init?: RequestInit) => {
@@ -224,8 +249,6 @@ describe('analyzeGitHealth (GitHub)', () => {
 		});
 
 		it('should properly handle commits with minimal metadata', async () => {
-			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({ github: { token: mockToken } } as any);
-
 			const fakeCommits = [
 				{
 					sha: 'xyz789',

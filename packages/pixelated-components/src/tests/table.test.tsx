@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { Table } from '@/components/general/table';
+import { Table } from '@/components/elements/table';
 
 // Mock innerText for JSDOM
 Object.defineProperty(HTMLElement.prototype, 'innerText', {
@@ -12,7 +12,7 @@ Object.defineProperty(HTMLElement.prototype, 'innerText', {
 });
 
 // Mock SmartImage component
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => {
     const { src, alt, title } = props;
     return React.createElement('img', {

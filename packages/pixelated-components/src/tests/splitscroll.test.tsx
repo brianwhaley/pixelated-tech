@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
-import { SplitScroll, SplitScrollSection } from '../components/general/splitscroll';
+import { SplitScroll, SplitScrollSection } from '../components/structure/splitscroll';
 
 // Mock the SmartImage component
-vi.mock('../components/general/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
 	SmartImage: (props: any) => {
 		const { src, alt, title } = props;
 		return React.createElement('img', {
@@ -26,14 +26,12 @@ class MockIntersectionObserver {
 window.IntersectionObserver = MockIntersectionObserver as any;
 const mockIntersectionObserver = vi.spyOn(window, 'IntersectionObserver');
 
-import { mockCloudinary } from '../test/test-data';
+import { mockCloudinary, pixelatedConfig } from '../test/test-data';
 
-const mockConfig = {
-	cloudinary: mockCloudinary,
-};
+const mockConfig = pixelatedConfig;
 
 const renderWithConfig = (component: React.ReactElement) => {
-	return render(component, { config: mockConfig });
+	return render(component, { config: mockConfig as any });
 };
 
 describe('SplitScroll Component', () => {

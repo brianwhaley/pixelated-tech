@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes, { InferProps } from 'prop-types';
 // import { getCloudinaryRemoteFetchURL } from "../cms/cloudinary";
-import { SmartImage } from "../general/smartimage";
+import { SmartImage } from "../elements/smartimage";
 import { usePixelatedConfig } from "../config/config.client";
 import "./404.css";
 
@@ -49,9 +49,9 @@ export function FourOhFour (props: FourOhFourType) {
 							title={"Page Not Found - " + images[randomIndex].description} 
 							alt={"Page Not Found - " + images[randomIndex].description} 
 							variant="nextjs"
-							cloudinaryEnv={config?.cloudinary?.product_env ?? undefined}
-							cloudinaryDomain={config?.cloudinary?.baseUrl ?? undefined}
-							cloudinaryTransforms={config?.cloudinary?.transforms ?? undefined}
+							cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
+							cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
+							cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined}
 						/>
 					</div>
 				</div>

@@ -1,10 +1,13 @@
+"use server";
+
 // Server-side: Fetch Instagram media from Instagram Graph API
 // Requires: Instagram Business/Creator account, Facebook Page, OAuth access token
 // Returns: Array compatible with Tiles/Carousel components
 
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
-import type { CarouselCardType } from '../general/carousel';
+import type { CarouselCardType } from '../structure/carousel';
+import { getFullPixelatedConfig } from '../config/config';
 
 export type InstagramMedia = {
 	id: string;
@@ -42,9 +45,15 @@ export async function getInstagramMedia(params: {
 	limit?: number;
 	fields?: string;
 }): Promise<InstagramMedia[]> {
-	// TEMP: Hard-coded token for testing
-	const accessToken = params.accessToken || 'EAAtmg2zNJnABQCcGOWOUt7tR03RAF3dBZC2HFk9T0XZCvRaTddrUos8qV0UGSswVdc5d2N0o3ZAir5sEjyiglCkoffzvTwn068WTJUgSAdaRzfqRhE6Pb8D9u9wgjJuqIpDqQRIdFTlgsIVbKZBLBP2qPx72yjO3k6IuK2ksQZB4SqkyCr7ZBy7NaVXh9x2AZDZD';
-	const { userId = 'me', limit = 25, fields = 'id,media_type,media_url,thumbnail_url,permalink,caption,timestamp,username' } = params;
+	const pixelatedConfig = getFullPixelatedConfig();
+	const instagramConfig = pixelatedConfig.integrations?.instagram;
+	
+	const accessToken = params.accessToken || instagramConfig?.accessToken;
+	if (!accessToken) {
+		throw new Error('Instagram access token is required. Provide via params or pixelated.config.json');
+	}
+
+	const { userId = instagramConfig?.userId || 'me', limit = 25, fields = 'id,media_type,media_url,thumbnail_url,permalink,caption,timestamp,username' } = params;
 	
 	const url = buildUrl({
 		baseUrl: 'https://graph.instagram.com',
@@ -68,14 +77,14 @@ export async function getInstagramMedia(params: {
  * @param options - Transformation options
  * @returns Array of CarouselCardType for use in Tiles or Carousel
  */
-export function instagramMediaToTiles(
+export async function instagramMediaToTiles(
 	media: InstagramMedia[],
 	options?: {
 		useThumbnails?: boolean; // Use thumbnail_url for videos instead of media_url
 		includeVideos?: boolean; // Include VIDEO type items (default true)
 		includeCaptions?: boolean; // Use caption as bodyText (default true)
 	}
-): CarouselCardType[] {
+): Promise<CarouselCardType[]> {
 	const { useThumbnails = true, includeVideos = true, includeCaptions = true } = options ?? {};
 	
 	return media

@@ -5,7 +5,14 @@ import { createMockConfig, mockConfig } from '../test/test-utils';
 describe('ShoppingCart payment provider registry', () => {
   it('selects PayPal when provider is configured and requested', () => {
     const config = createMockConfig({
-      shoppingcart: { provider: 'paypal' },
+      integrations: {
+        shoppingcart: { provider: 'paypal' },
+        paypal: {
+          payPalApiKey: 'test-paypal-key',
+          payPalSecret: 'test-paypal-secret',
+          prodPayPalApiBaseUrl: 'https://api.paypal.com'
+        }
+      }
     } as any);
 
     const activeProvider = getActivePaymentProvider(config);
@@ -13,17 +20,19 @@ describe('ShoppingCart payment provider registry', () => {
     expect(activeProvider).toBeDefined();
     expect(activeProvider?.key).toBe('paypal');
     expect(activeProvider?.getProps(config)).toEqual({
-      payPalClientID: config.paypal!.payPalApiKey,
-      payPalSecret: config.paypal!.payPalSecret,
-      payPalApiBaseUrl: config.paypal!.prodPayPalApiBaseUrl || '',
+      payPalClientID: config.integrations!.paypal!.payPalApiKey,
+      payPalSecret: config.integrations!.paypal!.payPalSecret,
+      payPalApiBaseUrl: config.integrations!.paypal!.prodPayPalApiBaseUrl || '',
     });
   });
 
   it('selects Square by default when both Square and PayPal are configured', () => {
     const config = createMockConfig({
-      shoppingcart: {},
-      paypal: { payPalApiKey: 'test-paypal-key' },
-      square: { squareApplicationId: 'test-app-id', squareLocationId: 'test-location-id' },
+      integrations: {
+        shoppingcart: {},
+        paypal: { payPalApiKey: 'test-paypal-key' },
+        square: { squareApplicationId: 'test-app-id', squareLocationId: 'test-location-id' }
+      }
     } as any);
 
     const activeProvider = getActivePaymentProvider(config);
@@ -35,9 +44,11 @@ describe('ShoppingCart payment provider registry', () => {
 
   it('returns undefined when no payment provider is configured', () => {
     const config = {
-      shoppingcart: {},
-      paypal: {},
-      square: {},
+      integrations: {
+        shoppingcart: {},
+        paypal: {},
+        square: {}
+      }
     } as any;
 
     const activeProvider = getActivePaymentProvider(config);
@@ -47,12 +58,20 @@ describe('ShoppingCart payment provider registry', () => {
 
   it('uses sandbox PayPal credentials when checkout email is listed in sandboxPayPalEmails', () => {
     const config = createMockConfig({
-      shoppingcart: { provider: 'paypal' },
+      integrations: {
+        shoppingcart: { provider: 'paypal' },
+        paypal: {
+          sandboxPayPalEmails: ['pixelvivid@personal.example.com'],
+          sandboxPayPalApiKey: 'sandbox-key',
+          sandboxPayPalSecret: 'sandbox-secret',
+          sandboxPayPalApiBaseUrl: 'https://api.sandbox.paypal.com'
+        }
+      }
     } as any);
 
     const checkoutData = {
       shippingTo: {
-        email: config.paypal!.sandboxPayPalEmails?.[0] || 'pixelvivid@personal.example.com',
+        email: config.integrations!.paypal!.sandboxPayPalEmails?.[0] || 'pixelvivid@personal.example.com',
       },
     } as any;
 
@@ -61,15 +80,17 @@ describe('ShoppingCart payment provider registry', () => {
     expect(activeProvider).toBeDefined();
     expect(activeProvider?.key).toBe('paypal');
     expect(activeProvider?.getProps(config, checkoutData)).toEqual({
-      payPalClientID: config.paypal!.sandboxPayPalApiKey,
-      payPalSecret: config.paypal!.sandboxPayPalSecret,
-      payPalApiBaseUrl: config.paypal!.sandboxPayPalApiBaseUrl || '',
+      payPalClientID: config.integrations!.paypal!.sandboxPayPalApiKey,
+      payPalSecret: config.integrations!.paypal!.sandboxPayPalSecret,
+      payPalApiBaseUrl: config.integrations!.paypal!.sandboxPayPalApiBaseUrl || '',
     });
   });
 
   it('does not select Stripe when it is not configured', () => {
     const config = {
-      shoppingcart: { provider: 'stripe' },
+      integrations: {
+        shoppingcart: { provider: 'stripe' }
+      }
     } as any;
 
     const activeProvider = getActivePaymentProvider(config);

@@ -5,16 +5,6 @@ import PropTypes, { InferProps } from "prop-types";
 import { usePixelatedConfig } from "../config/config.client";
 import { SmartErrorBoundary } from "../foundation/smarterrorboundary";
 
-
-/* 
-// gtag("config", "UA-2370059-2"); // pixelatedviews.com
-// gtag("config", 'G-1J1W90VBE1'); // pixelated.tech
-// // gtag("config", 'AW-17721931789'); // pixelated.tech Google Ads
-// gtag("config", 'G-B1NZG3YT9Y'); // pixelvivid.com
-// gtag("config", 'G-K5QDEDTRB4'); // brianwhaley.com
-*/
-
-
 declare global {
 	interface Window {
 		dataLayer?: any[];
@@ -22,8 +12,8 @@ declare global {
 	}
 }
 
-
 function isGA() {
+	if (typeof window === 'undefined') return false;
 	const hasGtag = typeof window.gtag === 'function';
 	const hasDataLayer = typeof window.dataLayer !== 'undefined' && Array.isArray(window.dataLayer);
 	const hasGAScript = !!(document.querySelector('script[src*="googletagmanager.com/gtag/js"]'));
@@ -33,83 +23,85 @@ function isGA() {
 }
 
 
+
 /**
  * GoogleAnalytics — Inject Google Analytics gtag script and initialize with the given measurement id.
  *
- * @param {string} [props.id] - Google Analytics measurement ID (e.g., 'G-XXXX') or omitted to use provider config.
+ * @param {GoogleAnalyticsType} props - Component properties.
  */
 GoogleAnalytics.propTypes = {
-/** Google Analytics measurement ID */
-	id: PropTypes.string,
+	/** no props */
 };
 export type GoogleAnalyticsType = InferProps<typeof GoogleAnalytics.propTypes>;
 export function GoogleAnalytics( props: GoogleAnalyticsType ) {
 	const config = usePixelatedConfig();
-	const id = props.id || config?.googleAnalytics?.id;
-	const adId = config?.googleAnalytics?.adId;
+	const id = config?.integrations?.googleAnalytics?.id;
+	const adId = config?.integrations?.googleAnalytics?.adId;
 
-	function GoogleAnalyticsContent() {
-		if (!id) {
-			throw new Error('Google Analytics ID not provided. Set id prop or ensure PixelatedServerConfigProvider is configured with googleAnalytics.id.');
-		}
+	useEffect(() => {
+		if (!id) return;
+		if (typeof window === 'undefined') { return; }
+		if (typeof document === 'undefined') { return; }
+		if (isGA()) { return; }
 
-		useEffect(() => {
-			if (typeof window === 'undefined') { return; }
-			if (typeof document === 'undefined') { return; }
-			if (isGA()) { return; }
-
-			const gaSRC = "https://www.googletagmanager.com/gtag/js?id=" + id;
-			const gaInit = document.createElement("script");
-			gaInit.setAttribute("id", "ga-init");
-			gaInit.type = "text/javascript";
-			gaInit.text = `
+		const gaSRC = "https://www.googletagmanager.com/gtag/js?id=" + id;
+		const gaInit = document.createElement("script");
+		gaInit.setAttribute("id", "ga-init");
+		gaInit.type = "text/javascript";
+		gaInit.text = `
 window.dataLayer = window.dataLayer || [];
 window.gtag = function gtag(){ window.dataLayer.push(arguments); }
 window.gtag('js', new Date());
 window.gtag('config', '${id}');
 ${adId ? `window.gtag('config', '${adId}');` : ''}
 `;
-			document.head.appendChild(gaInit);
+		document.head.appendChild(gaInit);
 
-			const ga = document.createElement("script");
-			ga.setAttribute("id", "ga");
-			ga.type = "text/javascript";
-			ga.async = true;
-			ga.src = gaSRC;
-			document.head.appendChild(ga);
-		}, [id, adId]);
+		const ga = document.createElement("script");
+		ga.setAttribute("id", "ga");
+		ga.type = "text/javascript";
+		ga.setAttribute("async", "true");
+		ga.src = gaSRC;
+		document.head.appendChild(ga);
+	}, [id, adId]);
 
-		return <div className="ga" suppressHydrationWarning />;
+	if (!id) {
+		return (
+			<div className="smart-error-boundary-fallback">
+				<p>Sorry, something went wrong loading GoogleAnalytics.</p>
+			</div>
+		);
 	}
 
 	return (
 		<SmartErrorBoundary boundaryName="GoogleAnalytics">
-			<GoogleAnalyticsContent />
+			<div className="ga" suppressHydrationWarning />
 		</SmartErrorBoundary>
 	);
 }
+
+
+
+
 /**
  * GoogleAnalyticsEvent — Trigger a one-off Google Analytics event using gtag.
  *
- * @param {string} [props.event_name] - Event name to send to GA (required).
- * @param {object} [props.event_parameters] - Parameters associated with the event (required).
+ * @param {GoogleAnalyticsEventType} props - Component properties.
  */
 GoogleAnalyticsEvent.propTypes = {
-/** Event name for gtag */
+	/** Event name for gtag */
 	event_name: PropTypes.string.isRequired,
 	/** Event parameter object */
 	event_parameters: PropTypes.object.isRequired,
 };
 export type GoogleAnalyticsEventType = InferProps<typeof GoogleAnalyticsEvent.propTypes>;
-export function GoogleAnalyticsEvent( props: GoogleAnalyticsEventType ) {
+export function GoogleAnalyticsEvent({ event_name, event_parameters }: GoogleAnalyticsEventType) {
 	useEffect(() => {
-		if (typeof window === 'undefined') { return; }
-		if (typeof document === 'undefined') { return; }
-		const dataLayer = window.dataLayer || [];
-		window.dataLayer = dataLayer;
-		window.gtag = window.gtag || function gtag(){ dataLayer.push(arguments); };
-		window.gtag('event', props.event_name, props.event_parameters);
-	}, [props.event_name, JSON.stringify(props.event_parameters)]);
+		if (typeof window !== "undefined" && typeof window.gtag === "function") {
+			window.gtag("event", event_name, event_parameters);
+		}
+	}, [event_name, event_parameters]);
 
 	return null;
 }
+

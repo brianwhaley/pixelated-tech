@@ -3,22 +3,22 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { PageSectionHeader } from '../general/semantic';
+import { PageSectionHeader } from '../structure/page-blocks';
 import { FormEngine } from '../sitebuilder/form/formengine';
 import { FormButton } from '../sitebuilder/form/formcomponents';
 import { emailJSON } from "../sitebuilder/form/formsubmit";
 import '../sitebuilder/form/form.css';
 import { MicroInteractions } from '../foundation/microinteractions';
-import { Modal, handleModalOpen } from '../general/modal';
-import { Table } from "../general/table";
+import { Modal, handleModalOpen } from '../elements/modal';
+import { Table } from "../elements/table";
 import { getCart, getShippingInfo, setShippingInfo, setDiscountCodes, getRemoteDiscountCodes, getCheckoutData, removeFromShoppingCart, clearShoppingCart, getCartItemCount, getCartShippingWeight, getShippingCost, increaseQuantityInCart, decreaseQuantityInCart } from "./shoppingcart.functions";
 import { formatAsUSD, formatAsHundredths } from "../foundation/utilities";
 import type { CartItemType, CheckoutType, ShippingInfoType } from "./shoppingcart.functions";
 import { usePixelatedConfig } from '../config/config.client';
-import type { SiteInfo } from '../config/siteconfig.types';
+import type { SiteInfo } from '../config/config.types';
 import './usps.components';
 import type { UspsRateOption } from './usps.functions';
-import { SmartImage } from '../general/smartimage';
+import { SmartImage } from '../elements/smartimage';
 import { getActivePaymentProvider } from './shoppingcart.providers';
 import personalInfoData from "./checkout.personal.info.json";
 import discountInfoData from "./checkout.discount.info.json";
@@ -87,13 +87,13 @@ export function ShoppingCart(props: ShoppingCartType) {
 
 	const checkoutDiscountCustom = props.subtotalDiscountCustom ?? 0;
 
-	const checkoutDataForProvider = getCheckoutData(shippingDefaults, effectiveConfig?.shoppingcart, checkoutDiscountCustom);
+	const checkoutDataForProvider = getCheckoutData(shippingDefaults, effectiveConfig?.integrations?.shoppingcart, checkoutDiscountCustom);
 
 	const personalInfoFormData = props.personalInfoForm ?? personalInfoData;
 	const discountInfoFormData = props.discountInfoForm ?? discountInfoData;
 	const additionalInfoFormData = props.additionalInfoForm;
 	const showDiscount = props.showDiscountForm !== false;
-	const hasUSPSShipping = Boolean(effectiveConfig?.usps);
+	const hasUSPSShipping = Boolean(effectiveConfig?.integrations?.usps);
 	const [ shoppingCart, setShoppingCart ] = useState<CartItemType[]>([]);
 	const [ shippingData, setShippingData ] = useState<any>();
 	const [ orderData, setOrderData ] = useState<any>();
@@ -201,7 +201,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 	useEffect(() => {
 		// UPDATE DISCOUNT CODES ON EACH PAGE LOAD
 		(async () => {
-			const contentfulConfig = config?.contentful;
+			const contentfulConfig = config?.integrations?.contentful;
 			setDiscountCodes(await getRemoteDiscountCodes(contentfulConfig));
 		})();
 		// UPDATE SHOPPINGCART AND SHIPPINGDATA STATES IF LOCALSTORAGE CHANGES
@@ -254,7 +254,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 			return;
 		}
 
-		const cartConfig = config?.shoppingcart;
+		const cartConfig = config?.integrations?.shoppingcart;
 		const json = {
 			'to': cartConfig?.orderTo,
 			'from': cartConfig?.orderFrom,
@@ -669,16 +669,16 @@ export function ShoppingCartItem(props: ShoppingCartItemType) {
 				{ thisItem.itemURL && thisItem.itemImageURL
 					? <a href={thisItem.itemURL} target={thisItemTarget} rel="noopener noreferrer">
 						<SmartImage src={thisItem.itemImageURL} alt={thisItem.itemTitle} 
-							cloudinaryEnv={config?.cloudinary?.product_env}
-							cloudinaryDomain={config?.cloudinary?.baseUrl}
-							cloudinaryTransforms={config?.cloudinary?.transforms} />
+							cloudinaryEnv={config?.integrations?.cloudinary?.product_env}
+							cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl}
+							cloudinaryTransforms={config?.integrations?.cloudinary?.transforms} />
 					</a>
 					: thisItem.itemImageURL 
 						? (
 							<SmartImage src={thisItem.itemImageURL} title={thisItem.itemTitle} alt={thisItem.itemTitle} 
-								cloudinaryEnv={config?.cloudinary?.product_env}
-								cloudinaryDomain={config?.cloudinary?.baseUrl}
-								cloudinaryTransforms={config?.cloudinary?.transforms} />
+								cloudinaryEnv={config?.integrations?.cloudinary?.product_env}
+								cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl}
+								cloudinaryTransforms={config?.integrations?.cloudinary?.transforms} />
 						)
 						: <></>
 				}
@@ -922,9 +922,9 @@ export function CartButton(props: CartButtonType) {
 			<button className="pix-cart-button" type="button" id="pix-cart-button" 
 				onClick={()=>window.location.href=props.href} >
 				<SmartImage src="/images/icons/cart-icon.png" title="View Shopping Cart" alt="View Shopping Cart" 
-					cloudinaryEnv={config?.cloudinary?.product_env}
-					cloudinaryDomain={config?.cloudinary?.baseUrl}
-					cloudinaryTransforms={config?.cloudinary?.transforms} />
+					cloudinaryEnv={config?.integrations?.cloudinary?.product_env}
+					cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl}
+					cloudinaryTransforms={config?.integrations?.cloudinary?.transforms} />
 				<span>&nbsp;{`(${cartCount})`}</span>
 			</button>
 		</div>
@@ -1110,7 +1110,7 @@ export function buildReceiptData(orderData: any, config?: any): ReceiptData | nu
 	const dateTime = paymentCapture?.created_at || paymentCapture?.create_time || paymentCapture?.updated_at || payload?.create_time || payload?.updated_at;
 	const paymentStatus = paymentCapture?.status || payload?.status || 'Completed';
 	const paymentMethod = payload?.sourceId ? 'Square' : 'PayPal';
-	const currency = config?.shoppingcart?.currency || paymentCapture?.amount_money?.currency || paymentCapture?.amount?.currency_code || purchaseUnit?.amount?.currency_code || 'USD';
+	const currency = config?.integrations?.shoppingcart?.currency || paymentCapture?.amount_money?.currency || paymentCapture?.amount?.currency_code || purchaseUnit?.amount?.currency_code || 'USD';
 
 	const amountValue = parseMoney(checkoutData?.total)
 		?? parseMoney(purchaseUnit?.amount?.value)

@@ -2,16 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import PropTypes, { InferProps } from "prop-types";
-import { Carousel } from '../general/carousel';
-import type { CarouselCardType } from "../general/carousel";
+import { Carousel } from '../structure/carousel';
+import type { CarouselCardType } from "../structure/carousel";
 import { getContentfulEntriesByType, getContentfulEntryByEntryID } from "./contentful.delivery";
 import { usePixelatedConfig } from '../config/config.client';
 import { addToShoppingCart  } from "../shoppingcart/shoppingcart.functions";
 import { AddToCartButton, /* GoToCartButton */ ViewItemDetails } from "../shoppingcart/shoppingcart.components";
-import { getCloudinaryRemoteFetchURL as getImg} from "./cloudinary";
 import type { CartItemType } from "../shoppingcart/shoppingcart.functions";
-// import { Loading, ToggleLoading } from "../general/pixelated.loading";	
-import { SmartImage } from "../general/smartimage";
+// import { Loading, ToggleLoading } from "../foundation/loading";	
+import { SmartImage } from "../elements/smartimage";
 import "../../css/pixelated.grid.scss";
 import "./contentful.items.css";
 const debug = false;
@@ -24,48 +23,36 @@ const contentfulContentType: string = "item";
 /**
  * ContentfulItems — Fetch and render a list of Contentful items (carousel or list) using provided API configuration.
  *
- * @param {object} [props.apiProps] - Contentful API configuration (base_url, space_id, delivery_access_token, etc.).
- * @param {string} [props.cloudinaryProductEnv] - Optional Cloudinary cloud name used to build remote fetch URLs for images.
+ * @params - none
+ * @returns {JSX.Element} Rendered list of Contentful items or loading state.
  */
 ContentfulItems.propTypes = {
-/** Contentful API configuration object */
-	apiProps: PropTypes.object.isRequired,
-	/** Optional Cloudinary product environment (cloud name) for image transforms */
-	cloudinaryProductEnv: PropTypes.string,
+	/** no props */
 };
 export type ContentfulItemsType = InferProps<typeof ContentfulItems.propTypes>;
-export function ContentfulItems(props: ContentfulItemsType) {
+export function ContentfulItems() {
 	const [ items, setItems ] = useState<any[]>([]);
 	const [ assets, setAssets ] = useState<any[]>([]);
-
-	// Merge precedence: defaults < env vars < provider config < explicit props
-	// const providerContentful = usePixelatedConfig()?.contentful;
-	// const localContentfulApiProps = { ...ContentfulApiProps };
-	/* if (providerContentful) {
-		if (providerContentful.space_id) localContentfulApiProps.space_id = providerContentful.space_id;
-		if (providerContentful.delivery_access_token) localContentfulApiProps.delivery_access_token = providerContentful.delivery_access_token;
-		if (providerContentful.preview_access_token) localContentfulApiProps.preview_access_token = providerContentful.preview_access_token;
-		if (providerContentful.base_url) localContentfulApiProps.base_url = providerContentful.base_url;
-		if ((providerContentful as any).proxyURL) localContentfulApiProps.proxyURL = (providerContentful as any).proxyURL;
-	} */
-	const providerContentfulApiProps = usePixelatedConfig()?.contentful;
-	const mergedApiProps = { ...providerContentfulApiProps, ...props.apiProps } as any;
-	const [ apiProps ] = useState(mergedApiProps);
+	const config = usePixelatedConfig();
+	const apiProps = {
+		proxyURL: config?.integrations?.contentful?.proxyURL,
+		base_url: config?.integrations?.contentful?.base_url ?? '',
+		space_id: config?.integrations?.contentful?.space_id ?? '',
+		environment: config?.integrations?.contentful?.environment ?? '',
+		delivery_access_token: config?.integrations?.contentful?.delivery_access_token ?? '',
+	} as any;
 
 	/**
 	 * paintItems — Convert Contentful API items and assets into rendered list nodes.
 	 *
 	 * @param {array} [props.items] - Array of Contentful item entries.
  * @param {array} [props.assets] - Array of Contentful asset objects used for resolving images.
- * @param {string} [props.cloudinaryProductEnv] - Optional Cloudinary cloud name used to transform image URLs.
 	 */
 	paintItems.propTypes = {
 		/** Array of Contentful items */
 		items: PropTypes.array.isRequired,
 		/** Array of Contentful assets */
 		assets: PropTypes.array.isRequired,
-		/** Optional Cloudinary product environment */
-		cloudinaryProductEnv: PropTypes.string,
 	};
     type paintItemsType = InferProps<typeof paintItems.propTypes>;
     function paintItems(props: paintItemsType){
@@ -93,8 +80,7 @@ export function ContentfulItems(props: ContentfulItemsType) {
     				: imageUrl;
     			item.fields.imageAlt = itemImagesMatches[0].fields.title;
     		}
-    		const newItem = <ContentfulListItem item={item} key={item.sys.id} 
-    			cloudinaryProductEnv={props.cloudinaryProductEnv} />;
+    		const newItem = <ContentfulListItem item={item} key={item.sys.id} />;
     		newItems.push(newItem);
     	}
     	return newItems;
@@ -120,7 +106,12 @@ export function ContentfulItems(props: ContentfulItemsType) {
     	// ToggleLoading(true);
     	fetchItems();
     	// ToggleLoading(false);
-    }, []);
+    }, [
+    	apiProps.base_url,
+    	apiProps.space_id,
+    	apiProps.environment,
+    	apiProps.delivery_access_token,
+    ]);
 
     if (items.length > 0 ) {
     	return (
@@ -133,7 +124,7 @@ export function ContentfulItems(props: ContentfulItemsType) {
     				}
     			</div>
     			<div id="contentful-items" className="contentful-items">
-    				{ paintItems({ items: items, assets: assets, cloudinaryProductEnv: props.cloudinaryProductEnv }) }
+    				{ paintItems({ items: items, assets: assets }) }
     			</div>
     		</>
     	);
@@ -157,13 +148,10 @@ export function ContentfulItems(props: ContentfulItemsType) {
  * ContentfulListItem — Render a single Contentful item with image, title and add-to-cart actions.
  *
  * @param {any} [props.item] - Single Contentful item entry to render.
- * @param {string} [props.cloudinaryProductEnv] - Optional Cloudinary cloud name used to build image URLs.
  */
 ContentfulListItem.propTypes = {
 /** Contentful item entry object */
 	item: PropTypes.any.isRequired,
-	/** Optional Cloudinary product environment */
-	cloudinaryProductEnv: PropTypes.string,
 };
 export type ContentfulListItemType = InferProps<typeof ContentfulListItem.propTypes>;
 export function ContentfulListItem(props: ContentfulListItemType) {
@@ -187,16 +175,14 @@ export function ContentfulListItem(props: ContentfulListItemType) {
 		itemType: 'product',
 	};
 
-	const itemImage = (props.cloudinaryProductEnv) 
-		? getImg({url: thisItem.fields.imageUrl, product_env: props.cloudinaryProductEnv}) 
-		: thisItem.fields.imageUrl;
+	const itemImage = thisItem.fields.imageUrl;
 
 	const config = usePixelatedConfig();
 	const imgComponent = <SmartImage src={itemImage} title={thisItem.fields.title} alt={thisItem.fields.title} 
-		cloudinaryEnv={config?.cloudinary?.product_env ?? undefined}
-		cloudinaryDomain={config?.cloudinary?.baseUrl ?? undefined}
-		cloudinaryTransforms={config?.cloudinary?.transforms ?? undefined} />;
-	
+		cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
+		cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
+		cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined} />;
+
 	return (
 		<div className="contentful-item row-12col">
 			<div className="contentful-item-photo grid-s1-e5">
@@ -278,17 +264,11 @@ export function ContentfulItemHeader(props: ContentfulItemHeaderType) {
 /**
  * ContentfulItemDetail — Fetch and render a single Contentful item by entry ID.
  *
- * @param {object} [props.apiProps] - Contentful API configuration (base_url, space_id, delivery_access_token, etc.).
  * @param {string} [props.entry_id] - Entry ID of the specific Contentful item to fetch.
- * @param {string} [props.cloudinaryProductEnv] - Optional Cloudinary cloud name used to build image URLs.
  */
 ContentfulItemDetail.propTypes = {
-/** Contentful API configuration object */
-	apiProps: PropTypes.object.isRequired,
 	/** Entry ID of the item to fetch */
 	entry_id: PropTypes.string.isRequired,
-	/** Optional Cloudinary product env (cloud name) for image transforms */
-	cloudinaryProductEnv: PropTypes.string,
 };
 export type ContentfulItemDetailType = InferProps<typeof ContentfulItemDetail.propTypes>;
 export function ContentfulItemDetail(props: ContentfulItemDetailType)  {
@@ -296,9 +276,14 @@ export function ContentfulItemDetail(props: ContentfulItemDetailType)  {
 	 
 	const [ assets, setAssets ] = useState({});
 	const [ cards, setCards ] = useState<CarouselCardType[]>([]);
-
-	const providerContentfulApiProps = usePixelatedConfig()?.contentful;
-	const [ apiProps ] = useState({ ...providerContentfulApiProps, ...props.apiProps } as any);
+	const config = usePixelatedConfig();
+	const apiProps = {
+		proxyURL: config?.integrations?.contentful?.proxyURL,
+		base_url: config?.integrations?.contentful?.base_url ?? '',
+		space_id: config?.integrations?.contentful?.space_id ?? '',
+		environment: config?.integrations?.contentful?.environment ?? '',
+		delivery_access_token: config?.integrations?.contentful?.delivery_access_token ?? '',
+	} as any;
 
 	useEffect(() => {
 		if (debug) console.log("Running useEffect");
@@ -354,7 +339,13 @@ export function ContentfulItemDetail(props: ContentfulItemDetailType)  {
 			}
 		}
 		fetchStuff();
-	}, [props.entry_id, apiProps]);
+	}, [
+		props.entry_id,
+		apiProps.base_url,
+		apiProps.space_id,
+		apiProps.environment,
+		apiProps.delivery_access_token,
+	]);
 
 	if ( item && Object.keys(item) && Object.keys(item).length > 0 ) {
 		const thisItem = { ...item } as any;

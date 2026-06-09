@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as contentfulModule from '../components/integrations/contentful.delivery';
+import pixelatedConfigJson from '@/config/pixelated.config.json';
+
+const pixelatedConfig = pixelatedConfigJson as any;
+const mockContentfulApiProps = pixelatedConfig.integrations?.contentful;
 
 // Mock fetch globally
 global.fetch = vi.fn();
@@ -57,9 +61,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulEntries', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should fetch entries', async () => {
@@ -70,7 +74,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulEntries({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			expect(result).toEqual(mockData);
@@ -83,11 +87,11 @@ describe('Contentful Delivery API', () => {
 			});
 
 			await contentfulModule.getContentfulEntries({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			const callUrl = (global.fetch as any).mock.calls[0][0];
-			expect(callUrl).toContain('test-space');
+			expect(callUrl).toContain(mockContentfulApiProps.space_id);
 		});
 
 		it('should include delivery token in URL', async () => {
@@ -97,11 +101,11 @@ describe('Contentful Delivery API', () => {
 			});
 
 			await contentfulModule.getContentfulEntries({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			const callUrl = (global.fetch as any).mock.calls[0][0];
-			expect(callUrl).toContain('test-token');
+			expect(callUrl).toContain(mockContentfulApiProps.delivery_access_token);
 		});
 
 		it('should return null when required api props are missing', async () => {
@@ -121,9 +125,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulEntriesByType', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		const mockEntries = {
@@ -141,7 +145,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulEntriesByType({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'article'
 			});
 
@@ -155,7 +159,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulEntriesByType({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'nonexistent'
 			});
 
@@ -166,9 +170,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulContentType', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			access_token: 'test-token'
+			access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should fetch content type definition', async () => {
@@ -179,7 +183,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulContentType({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'article'
 			});
 
@@ -192,7 +196,7 @@ describe('Contentful Delivery API', () => {
 					base_url: '',
 					space_id: '',
 					environment: '',
-					access_token: 'test-token',
+					access_token: mockContentfulApiProps.delivery_access_token,
 				},
 				contentType: 'article',
 			} as any)).rejects.toThrow('Contentful API properties not configured: base_url, space_id, or environment');
@@ -202,9 +206,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulEntryByEntryID', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should fetch entry by ID', async () => {
@@ -215,7 +219,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulEntryByEntryID({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				entry_id: 'entry123'
 			});
 
@@ -228,7 +232,7 @@ describe('Contentful Delivery API', () => {
 					base_url: '',
 					space_id: '',
 					environment: '',
-					delivery_access_token: 'test-token',
+					delivery_access_token: mockContentfulApiProps.delivery_access_token,
 				},
 				entry_id: 'entry123',
 			} as any)).rejects.toThrow('Contentful API properties not configured: base_url, space_id, or environment');
@@ -241,7 +245,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			await contentfulModule.getContentfulEntryByEntryID({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				entry_id: 'entry456'
 			});
 
@@ -320,9 +324,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulFieldValues', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		const mockEntries = {
@@ -339,7 +343,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulFieldValues({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'article',
 				field: 'title'
 			});
@@ -351,9 +355,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulProductSchema', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should return null when product cannot be found', async () => {
@@ -364,7 +368,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulProductSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				productId: 'MISSING_ID'
 			});
 
@@ -395,7 +399,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulProductSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				productId: 'PRD-001',
 				siteUrl: 'https://example.com/product',
 				getAssetUrl: (id: string) => `https://assets.example.com/${id}`
@@ -430,7 +434,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulProductSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				productId: 'PRD-002',
 				siteUrl: 'https://example.com/product2'
 			});
@@ -523,9 +527,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulAssets', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			access_token: 'test-token'
+			access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should fetch assets', async () => {
@@ -536,7 +540,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulAssets({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			expect(result).toEqual(mockAssets);
@@ -549,7 +553,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			await contentfulModule.getContentfulAssets({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			const callUrl = (global.fetch as any).mock.calls[0][0];
@@ -560,9 +564,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulAssetURLs', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			access_token: 'test-token'
+			access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		const mockAssets = {
@@ -589,7 +593,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulAssetURLs({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			expect(Array.isArray(result)).toBe(true);
@@ -603,7 +607,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulAssetURLs({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			expect(result[0].image).toContain('fm=webp');
@@ -617,7 +621,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulAssetURLs({
-				apiProps: mockApiProps
+				apiProps: mockContentfulApiProps as any
 			});
 
 			expect(result[0].imageAlt).toBe('Asset 1');
@@ -628,16 +632,16 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulDiscountCodes', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should return empty array on error', async () => {
 			(global.fetch as any).mockRejectedValueOnce(new Error('API Error'));
 
 			const result = await contentfulModule.getContentfulDiscountCodes({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'all'
 			});
 
@@ -651,7 +655,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulDiscountCodes({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'all'
 			});
 
@@ -679,7 +683,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulDiscountCodes({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				contentType: 'discountCodes'
 			});
 
@@ -690,9 +694,9 @@ describe('Contentful Delivery API', () => {
 	describe('getContentfulReviewsSchema', () => {
 		const mockApiProps = {
 			base_url: 'https://api.contentful.com',
-			space_id: 'test-space',
+			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			delivery_access_token: 'test-token'
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should fetch reviews and convert to schema format', async () => {
@@ -717,7 +721,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Product',
 				publisherName: 'Test Publisher'
 			});
@@ -748,7 +752,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Service',
 				itemType: 'Service',
 				publisherName: 'Test Publisher'
@@ -781,7 +785,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item',
 				publisherName: 'Test Publisher'
 			});
@@ -811,7 +815,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -840,7 +844,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -869,7 +873,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -900,7 +904,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item',
 				publisherName: 'Amazing Publisher'
 			});
@@ -931,7 +935,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -942,7 +946,7 @@ describe('Contentful Delivery API', () => {
 			(global.fetch as any).mockRejectedValueOnce(new Error('API Error'));
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -960,7 +964,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -989,7 +993,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 
@@ -1018,7 +1022,7 @@ describe('Contentful Delivery API', () => {
 			});
 
 			const result = await contentfulModule.getContentfulReviewsSchema({
-				apiProps: mockApiProps,
+				apiProps: mockContentfulApiProps as any,
 				itemName: 'Test Item'
 			});
 

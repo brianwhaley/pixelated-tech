@@ -21,17 +21,15 @@ export default function Project(){
 		};
 	}
 
-	const config = usePixelatedConfig();
+	const pixelatedConfig = usePixelatedConfig();
 
-	if (!config) {
-		return <Loading />;
-	}
+	if (!pixelatedConfig) { return <Loading />; }
 
 	const apiProps = {
-		base_url: config?.contentful?.base_url ?? "",
-		space_id: config?.contentful?.space_id ?? "",
-		environment: config?.contentful?.environment ?? "",
-		delivery_access_token: config?.contentful?.delivery_access_token ?? "",
+		base_url: pixelatedConfig?.integrations?.contentful?.base_url ?? "",
+		space_id: pixelatedConfig?.integrations?.contentful?.space_id ?? "",
+		environment: pixelatedConfig?.integrations?.contentful?.environment ?? "",
+		delivery_access_token: pixelatedConfig?.integrations?.contentful?.delivery_access_token ?? "",
 	};
 
 	const [ card , setCard ] = useState<Card | null>(null);

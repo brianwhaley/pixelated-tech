@@ -8,6 +8,7 @@ vi.mock('@pixelated-tech/components', () => {
 		SmartImage: (props: any) => React.createElement('img', { 'data-testid': 'smart-image', ...props }),
 		MenuAccordion: ({ menuItems }: { menuItems?: any[] }) => React.createElement('div', { 'data-testid': 'menu-accordion' }, `items:${menuItems?.length}`),
 		MenuAccordionButton: () => React.createElement('button', { 'data-testid': 'menu-accordion-button' }, 'Menu'),
+		usePixelatedConfig: () => ({ siteInfo: { name: '__SITE_NAME__' }, routes: [] }),
 	};
 });
 

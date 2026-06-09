@@ -35,7 +35,7 @@ Component registry and helper functions.
 
 ```typescript
 export const componentMap = {
-  "Page Header": PageTitleHeader,
+  "PageHeader": PageTitleHeader,
   "Grid Section": GridSection,
   // ... more components
 };
@@ -295,14 +295,14 @@ import {
 
 ```typescript
 const componentMap = {
-	"Page Header": PageTitleHeader,
-	"Page Section Header": PageSectionHeader,
+	"PageHeader": PageTitleHeader,
+	"PageSectionHeader": PageSectionHeader,
 	"Callout": Callout,
 	"Section Container": SectionContainer,
 	"Grid Section": GridSection,
 	"Flex Section": FlexSection,
-	"Grid Item": PageGridItem,
-	"Flex Item": PageFlexItem,
+	"GridItem": PageGridItem,
+	"FlexItem": PageFlexItem,
 };
 
 // Track which components can have children
@@ -310,8 +310,8 @@ const layoutComponents = [
 	'Section Container', 
 	'Grid Section', 
 	'Flex Section', 
-	'Grid Item', 
-	'Flex Item'
+	'GridItem', 
+	'FlexItem'
 ];
 ```
 

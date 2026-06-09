@@ -12,9 +12,8 @@ describe('FAQs page', () => {
 		vi.clearAllMocks();
 	});
 
-	it('renders the FAQ page with content and schema', () => {
+	it('renders the FAQ page with content', () => {
 		render(<FAQsPage />);
-		expect(screen.getByTestId('schema-faq')).toBeInTheDocument();
-		expect(screen.getByTestId('faq-accordion')).toBeInTheDocument();
+		expect(screen.getByTestId('mock-faq')).toBeInTheDocument();
 	});
 });

@@ -1,6 +1,6 @@
 {
 	"name": "simple-day-concierge",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"private": true,
 	"description": "Simple Day Concierge - Where Simplicity Meets Exceptional Service",
 	"license": "MIT",
@@ -28,6 +28,11 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
+		"@aws-sdk/client-amplify": "^3.1064.0",
+		"@aws-sdk/client-cloudwatch": "^3.1064.0",
+		"@aws-sdk/client-dynamodb": "^3.1064.0",
+		"@aws-sdk/client-iam": "^3.1064.0",
+		"@aws-sdk/client-route-53": "^3.1064.0",
 		"@pixelated-tech/components": "*",
 		"next": "^16.2.6",
 		"react": "^19.2.6"

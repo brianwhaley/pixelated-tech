@@ -1,0 +1,15 @@
+import React from 'react';
+import { Markdown } from '@/components/elements/markdown';
+import markdowndata from '@/data/readme.md';
+import '@/css/pixelated.global.css';
+
+export default {
+	title: 'General/Markdown',
+	component: Markdown,
+};
+
+export const Markdown_ReadMe = {
+	args: {
+		markdowndata
+	}
+};

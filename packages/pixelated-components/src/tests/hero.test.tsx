@@ -5,7 +5,7 @@ vi.mock('@pixelated-tech/components', () => ({
 	SmartImage: (props: any) => <img {...props} />,
 }));
 import { render, screen } from '@testing-library/react';
-import { Hero } from '@/components/general/hero';
+import { Hero } from '@/components/structure/hero';
 
 describe('Hero (unit)', () => {
 	it('applies background image from `img` prop', () => {
@@ -77,6 +77,13 @@ describe('Hero (unit)', () => {
 		expect(screen.getByRole('img')).toBeInTheDocument();
 
 		window.IntersectionObserver = originalObserver;
+	});
+
+	it('renders anchored-div variant with background div', () => {
+		const { container } = render(<Hero img="/images/test.jpg" variant="anchored-div" />);
+		const bgDiv = container.querySelector('.hero-div-bg-img');
+		expect(bgDiv).toBeInTheDocument();
+		expect(bgDiv).toHaveStyle('background-image: url(/images/test.jpg)');
 	});
 
 	it('renders fallback hero container when no media is given', () => {

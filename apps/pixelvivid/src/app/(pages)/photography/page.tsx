@@ -6,7 +6,7 @@ import { Callout } from "@pixelated-tech/components";
 import { Carousel, FlickrWrapper, usePixelatedConfig } from "@pixelated-tech/components";
 import type { CarouselCardType } from "@pixelated-tech/components";
 
-export default function Photography() {
+export default function PhotographyPage() {
 	const pixelatedConfig = usePixelatedConfig();
 
 	if (!pixelatedConfig) {

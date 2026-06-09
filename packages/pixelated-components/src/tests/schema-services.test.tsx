@@ -1,33 +1,35 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import { ServicesSchema, type ServicesSchemaType } from '../components/foundation/schema';
+import { ServicesSchema } from '../components/foundation/schema';
 
 describe('ServicesSchema', () => {
-	const defaultProps: ServicesSchemaType = {
+	const defaultServices = [
+		{
+			name: 'Web Development',
+			description: 'Custom web development services'
+		},
+		{
+			name: 'UI Design',
+			description: 'User interface design services'
+		}
+	];
+
+	const defaultConfig = {
 		siteInfo: {
 			name: 'Test Agency',
 			url: 'https://testagency.com',
-			services: [
-				{
-					name: 'Web Development',
-					description: 'Custom web development services'
-				},
-				{
-					name: 'UI Design',
-					description: 'User interface design services'
-				}
-			]
+			services: defaultServices
 		}
 	};
 
 	it('should render script tags with application/ld+json type', () => {
-		const { container } = render(<ServicesSchema {...defaultProps} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		expect(scriptTags.length).toBe(2); // One for each service
 	});
 
 	it('should include schema.org context and Service type for each service', () => {
-		const { container } = render(<ServicesSchema {...defaultProps} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 
 		scriptTags.forEach(scriptTag => {
@@ -38,7 +40,7 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should include service name and description', () => {
-		const { container } = render(<ServicesSchema {...defaultProps} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
@@ -51,39 +53,37 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should include provider information', () => {
-		const { container } = render(<ServicesSchema {...defaultProps} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
 		expect(firstService.provider['@type']).toBe('LocalBusiness');
-		expect(firstService.provider.name).toBe(defaultProps.siteInfo?.name);
-		expect(firstService.provider.url).toBe(defaultProps.siteInfo?.url);
+		expect(firstService.provider.name).toBe(defaultConfig.siteInfo.name);
+		expect(firstService.provider.url).toBe(defaultConfig.siteInfo.url);
 	});
 
 	it('should include provider logo when provided', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
-			siteInfo: {
-				...defaultProps.siteInfo,
-				image: 'https://testagency.com/logo.png'
-			}
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			image: 'https://testagency.com/logo.png',
+			services: defaultServices
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(firstService.provider.logo).toBe(props.siteInfo?.image);
+		expect(firstService.provider.logo).toBe(siteInfo.image);
 	});
 
 	it('should include provider telephone when provided', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
-			siteInfo: {
-				...defaultProps.siteInfo,
-				telephone: '+1-555-0123'
-			}
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			telephone: '+1-555-0123',
+			services: defaultServices
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -91,14 +91,13 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should use siteInfo.telephone as availableChannel.servicePhone when availableChannel is omitted', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
-			siteInfo: {
-				...defaultProps.siteInfo,
-				telephone: '+1-555-0123'
-			}
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			telephone: '+1-555-0123',
+			services: defaultServices
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTag?.textContent || '{}');
 
@@ -107,23 +106,23 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should include provider email when provided', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
-			siteInfo: {
-				...defaultProps.siteInfo,
-				email: 'hello@testagency.com'
-			}
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			email: 'hello@testagency.com',
+			services: defaultServices
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
 		expect(firstService.provider.email).toBe('hello@testagency.com');
 	});
 
-	it('should generate service url from name when services override is provided', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
+	it('should generate service url from name when services have short_description', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
 			services: [
 				{
 					name: 'Web Development',
@@ -132,7 +131,7 @@ describe('ServicesSchema', () => {
 				}
 			]
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -140,8 +139,9 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should include service image when provided', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
 			services: [
 				{
 					name: 'Web Development',
@@ -150,7 +150,7 @@ describe('ServicesSchema', () => {
 				}
 			]
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -166,7 +166,7 @@ describe('ServicesSchema', () => {
 			]
 		};
 
-		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -183,7 +183,7 @@ describe('ServicesSchema', () => {
 			]
 		};
 
-		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -200,7 +200,7 @@ describe('ServicesSchema', () => {
 			]
 		};
 
-		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -220,7 +220,7 @@ describe('ServicesSchema', () => {
 			]
 		};
 
-		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -228,30 +228,28 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should include provider address, sameAs, and openingHours when provided', () => {
-		const props: ServicesSchemaType = {
-			siteInfo: {
-				name: 'Test Agency',
-				url: 'https://testagency.com',
-				logo: 'https://testagency.com/logo.png',
-				telephone: '+1-555-0123',
-				email: 'hello@testagency.com',
-				address: {
-					streetAddress: '123 Main St',
-					addressLocality: 'Anytown',
-					addressRegion: 'NY',
-					postalCode: '10001',
-					addressCountry: 'US'
-				},
-				sameAs: ['https://twitter.com/testagency'],
-				openingHours: [
-					{ day: 'Mon', open: '09:00', close: '17:00' }
-				],
-				services: [
-					{ name: 'Web Development', description: 'Custom web development services' }
-				]
-			}
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			logo: 'https://testagency.com/logo.png',
+			telephone: '+1-555-0123',
+			email: 'hello@testagency.com',
+			address: {
+				streetAddress: '123 Main St',
+				addressLocality: 'Anytown',
+				addressRegion: 'NY',
+				postalCode: '10001',
+				addressCountry: 'US'
+			},
+			sameAs: ['https://twitter.com/testagency'],
+			openingHours: [
+				{ day: 'Mon', open: '09:00', close: '17:00' }
+			],
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -262,8 +260,9 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should include termsOfService when provided for a service', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
 			services: [
 				{
 					name: 'Web Development',
@@ -272,7 +271,7 @@ describe('ServicesSchema', () => {
 				}
 			]
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -294,7 +293,7 @@ describe('ServicesSchema', () => {
 			]
 		};
 
-		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag!.textContent || '{}');
 
@@ -319,7 +318,7 @@ describe('ServicesSchema', () => {
 			]
 		};
 
-		const { container } = render(<ServicesSchema siteInfo={siteInfo} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		expect(scriptTags.length).toBe(2);
 		
@@ -331,16 +330,7 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should not include service areaServed when it is removed', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
-			services: [
-				{
-					name: 'Web Development',
-					description: 'Custom web development services'
-				}
-			]
-		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -348,16 +338,7 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should still produce valid service JSON when no areaServed is provided', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
-			services: [
-				{
-					name: 'Web Development',
-					description: 'Custom web development services'
-				}
-			]
-		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -365,22 +346,23 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should handle multiple services', () => {
-		const props: ServicesSchemaType = {
-			...defaultProps,
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
 			services: [
 				{ name: 'Service 1', description: 'Description 1' },
 				{ name: 'Service 2', description: 'Description 2' },
 				{ name: 'Service 3', description: 'Description 3' }
 			]
 		};
-		const { container } = render(<ServicesSchema {...props} />);
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 
 		expect(scriptTags.length).toBe(3);
 	});
 
 	it('should generate valid JSON for all services', () => {
-		const { container } = render(<ServicesSchema {...defaultProps} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 
 		expect(() => {
@@ -391,7 +373,7 @@ describe('ServicesSchema', () => {
 	});
 
 	it('should exclude optional fields that are not provided except generated url', () => {
-		const { container } = render(<ServicesSchema {...defaultProps} />);
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
@@ -401,7 +383,7 @@ describe('ServicesSchema', () => {
 
 	it('should render without crashing with minimal required props', () => {
 		expect(() => {
-			render(<ServicesSchema {...defaultProps} />);
+			render(<ServicesSchema />, { config: defaultConfig });
 		}).not.toThrow();
 	});
 });

@@ -1,17 +1,13 @@
 "use client";
 
 import React from "react";
-import { MenuAccordion } from "@pixelated-tech/components";
-// import { getAccordionMenuData } from "../components/metadata/pixelated.metadata";
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
-
-// const menuItems = getAccordionMenuData(allRoutes);
+import { MenuAccordion, usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function Nav() {
+	const routes = usePixelatedConfig()?.routes ?? [];
 	return (
 		<>
-			<MenuAccordion menuItems={allRoutes} />
+			<MenuAccordion menuItems={routes} />
 		</>
 	);
 }

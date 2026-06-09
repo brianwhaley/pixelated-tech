@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { buildUrl } from '../components/foundation/urlbuilder';
+import { fetchPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
+import * as configModule from '../components/config/config';
 
 describe('PSI (PageSpeed Insights) - buildUrl URL Construction', () => {
 	describe('fetchPSIData URL building', () => {
@@ -158,6 +160,13 @@ describe('PSI (PageSpeed Insights) - buildUrl URL Construction', () => {
 			expect(typeof psiUrl).toBe('string');
 			expect(psiUrl).toContain('googleapis.com');
 			expect(psiUrl).toContain('pagespeedonline');
+		});
+	});
+
+	describe('PSI key validation', () => {
+		it('throws when googlePSI.api_key is missing', async () => {
+			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue(undefined as any);
+			await expect(fetchPSIData('https://example.com')).rejects.toThrow('Google PSI API key is not set');
 		});
 	});
 });

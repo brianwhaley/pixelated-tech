@@ -19,18 +19,16 @@ describe('Square payment helper', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		clearSquareStoreCache();
-		const squareKey = ['s', 'q', 'u', 'a', 'r', 'e'].join('');
-		const applicationIdKey = ['square', 'Application', 'Id'].join('');
-		const locationIdKey = ['square', 'Location', 'Id'].join('');
-		const accessTokenKey = ['square', 'Access', 'Token'].join('');
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			[squareKey]: {
-				[applicationIdKey]: 'test-app-id',
-				[locationIdKey]: 'test-location-id',
-				[accessTokenKey]: 'test-access-token',
-			},
-			shoppingcart: {
-				taxRate: 0.06675,
+			integrations: {
+				square: {
+					squareApplicationId: 'test-app-id',
+					squareLocationId: 'test-location-id',
+					squareAccessToken: 'test-access-token',
+				},
+				shoppingcart: {
+					taxRate: 0.06675,
+				},
 			},
 		}));
 	});
@@ -192,16 +190,18 @@ describe('Square payment helper', () => {
 
 	it('selects sandbox credentials when checkout email matches sandboxSquareEmails', async () => {
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareApplicationId: 'prod-app-id',
-				squareLocationId: 'prod-location-id',
-				squareAccessToken: 'prod-access-token',
-				squareAppSecret: 'prod-app-secret',
-				sandboxSquareApplicationId: 'sandbox-app-id',
-				sandboxSquareLocationId: 'sandbox-location-id',
-				sandboxSquareAccessToken: 'sandbox-access-token',
-				sandboxSquareAppSecret: 'sandbox-app-secret',
-				sandboxSquareEmails: ['sandbox@example.com'],
+			integrations: {
+				square: {
+					squareApplicationId: 'prod-app-id',
+					squareLocationId: 'prod-location-id',
+					squareAccessToken: 'prod-access-token',
+					squareAppSecret: 'prod-app-secret',
+					sandboxSquareApplicationId: 'sandbox-app-id',
+					sandboxSquareLocationId: 'sandbox-location-id',
+					sandboxSquareAccessToken: 'sandbox-access-token',
+					sandboxSquareAppSecret: 'sandbox-app-secret',
+					sandboxSquareEmails: ['sandbox@example.com'],
+				},
 			},
 		}));
 
@@ -341,16 +341,18 @@ describe('Square payment helper', () => {
 
 	it('calls smartFetch with Square sandbox payments URL when sandbox credentials are selected', async () => {
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareApplicationId: 'prod-app-id',
-				squareLocationId: 'prod-location-id',
-				squareAccessToken: 'prod-access-token',
-				squareAppSecret: 'prod-app-secret',
-				sandboxSquareApplicationId: 'sandbox-app-id',
-				sandboxSquareLocationId: 'sandbox-location-id',
-				sandboxSquareAccessToken: 'sandbox-access-token',
-				sandboxSquareAppSecret: 'sandbox-app-secret',
-				sandboxSquareEmails: ['sandbox@example.com'],
+			integrations: {
+				square: {
+					squareApplicationId: 'prod-app-id',
+					squareLocationId: 'prod-location-id',
+					squareAccessToken: 'prod-access-token',
+					squareAppSecret: 'prod-app-secret',
+					sandboxSquareApplicationId: 'sandbox-app-id',
+					sandboxSquareLocationId: 'sandbox-location-id',
+					sandboxSquareAccessToken: 'sandbox-access-token',
+					sandboxSquareAppSecret: 'sandbox-app-secret',
+					sandboxSquareEmails: ['sandbox@example.com'],
+				},
 			},
 		}));
 
@@ -398,16 +400,18 @@ describe('Square payment helper', () => {
 
 	it('calls smartFetch with configured production payments URL when provided', async () => {
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareApplicationId: 'prod-app-id',
-				squareLocationId: 'prod-location-id',
-				squareAccessToken: 'prod-access-token',
-				squareAppSecret: 'prod-app-secret',
-				sandboxSquareApplicationId: 'sandbox-app-id',
-				sandboxSquareLocationId: 'sandbox-location-id',
-				sandboxSquareAccessToken: 'sandbox-access-token',
-				sandboxSquareAppSecret: 'sandbox-app-secret',
-				squarePaymentsUrl: 'https://custom.squareup.com/v2/payments',
+			integrations: {
+				square: {
+					squareApplicationId: 'prod-app-id',
+					squareLocationId: 'prod-location-id',
+					squareAccessToken: 'prod-access-token',
+					squareAppSecret: 'prod-app-secret',
+					sandboxSquareApplicationId: 'sandbox-app-id',
+					sandboxSquareLocationId: 'sandbox-location-id',
+					sandboxSquareAccessToken: 'sandbox-access-token',
+					sandboxSquareAppSecret: 'sandbox-app-secret',
+					squarePaymentsUrl: 'https://custom.squareup.com/v2/payments',
+				},
 			},
 		}));
 
@@ -441,17 +445,19 @@ describe('Square payment helper', () => {
 
 	it('calls smartFetch with configured sandbox payments URL when provided', async () => {
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareApplicationId: 'prod-app-id',
-				squareLocationId: 'prod-location-id',
-				squareAccessToken: 'prod-access-token',
-				squareAppSecret: 'prod-app-secret',
-				sandboxSquareApplicationId: 'sandbox-app-id',
-				sandboxSquareLocationId: 'sandbox-location-id',
-				sandboxSquareAccessToken: 'sandbox-access-token',
-				sandboxSquareAppSecret: 'sandbox-app-secret',
-				sandboxSquareEmails: ['sandbox@example.com'],
-				sandboxSquarePaymentsUrl: 'https://custom.sandbox.squareup.com/v2/payments',
+			integrations: {
+				square: {
+					squareApplicationId: 'prod-app-id',
+					squareLocationId: 'prod-location-id',
+					squareAccessToken: 'prod-access-token',
+					squareAppSecret: 'prod-app-secret',
+					sandboxSquareApplicationId: 'sandbox-app-id',
+					sandboxSquareLocationId: 'sandbox-location-id',
+					sandboxSquareAccessToken: 'sandbox-access-token',
+					sandboxSquareAppSecret: 'sandbox-app-secret',
+					sandboxSquareEmails: ['sandbox@example.com'],
+					sandboxSquarePaymentsUrl: 'https://custom.sandbox.squareup.com/v2/payments',
+				},
 			},
 		}));
 
@@ -552,8 +558,10 @@ describe('Square payment helper', () => {
 
 	it('throws when squareItemCategoryId is missing for store items', async () => {
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+				},
 			},
 		}));
 		await expect(getSquareStoreItems()).rejects.toThrow('square.squareItemCategoryId is required to fetch Square boutique items.');
@@ -568,10 +576,12 @@ describe('Square payment helper', () => {
 		};
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
-				squareItemCategoryId: 'cat-1',
-				squareFeaturedCategoryId: 'featured-cat',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+					squareItemCategoryId: 'cat-1',
+					squareFeaturedCategoryId: 'featured-cat',
+				},
 			},
 		}));
 
@@ -641,10 +651,12 @@ describe('Square payment helper', () => {
 		};
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
-				squareItemCategoryId: 'cat-1',
-				squareFeaturedCategoryId: 'cat-2',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+					squareItemCategoryId: 'cat-1',
+					squareFeaturedCategoryId: 'cat-2',
+				},
 			},
 		}));
 
@@ -700,10 +712,12 @@ describe('Square payment helper', () => {
 		};
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
-				squareItemCategoryId: 'cat-1',
-				squareFeaturedCategoryId: 'featured-cat',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+					squareItemCategoryId: 'cat-1',
+					squareFeaturedCategoryId: 'featured-cat',
+				},
 			},
 		}));
 
@@ -738,10 +752,12 @@ describe('Square payment helper', () => {
 		};
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
-				squareItemCategoryId: 'cat-1',
-				squareFeaturedCategoryId: 'featured-cat',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+					squareItemCategoryId: 'cat-1',
+					squareFeaturedCategoryId: 'featured-cat',
+				},
 			},
 		}));
 
@@ -776,10 +792,12 @@ describe('Square payment helper', () => {
 		};
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
-				squareItemCategoryId: 'cat-2',
-				squareFeaturedCategoryId: 'featured-cat',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+					squareItemCategoryId: 'cat-2',
+					squareFeaturedCategoryId: 'featured-cat',
+				},
 			},
 		}));
 
@@ -805,10 +823,12 @@ describe('Square payment helper', () => {
 		};
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({
-			square: {
-				squareAccessToken: 'test-access-token',
-				squareItemCategoryId: 'cat-1',
-				squareFeaturedCategoryId: 'featured-cat',
+			integrations: {
+				square: {
+					squareAccessToken: 'test-access-token',
+					squareItemCategoryId: 'cat-1',
+					squareFeaturedCategoryId: 'featured-cat',
+				},
 			},
 		}));
 

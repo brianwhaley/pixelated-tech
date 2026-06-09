@@ -4,6 +4,8 @@ import path from 'node:path';
 import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
+export { config };
+
 export interface FileDataState {
 	data: string | null;
 	loading: boolean;
@@ -134,7 +136,7 @@ const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
 	const items = Array.isArray(services) && services.length ? services : siteInfo?.services ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceslist', id },
+		{ 'data-testid': 'mock-services', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((service: any, index: number) => React.createElement(
@@ -210,6 +212,7 @@ const defaultMocks: Record<string, any> = {
 	LocalBusinessSchema: () => null,
 	ServicesSchema: () => null,
 	ServicesList: mockServicesList,
+	Services: mockServicesList,
 	ServiceCard: mockComponent('ServiceCard'),
 	ServiceDetailPage: mockServiceDetailPage,
 	contentfulValueToSlug,

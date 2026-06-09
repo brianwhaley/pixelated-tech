@@ -4,7 +4,9 @@ import path from 'path';
 import { pathToFileURL } from 'url';
 
 let currentSearchParams = new URLSearchParams('callbackUrl=/');
-const mockSmartFetch = vi.fn(async (url: unknown) => {
+let lastFetchOptions: any = undefined;
+const mockSmartFetch = vi.fn(async (url: unknown, options?: any) => {
+	lastFetchOptions = options;
 	const stringUrl = String(url);
 	if (stringUrl.includes('/api/sites')) {
 		return { ok: true, json: async () => [] };
@@ -74,6 +76,7 @@ vi.mock('@pixelated-tech/components', async () => {
 		StyleGuideUI: make('StyleGuideUI'),
 		FourOhFour: ({ images }: any) => <div>404 {images?.length ?? 0}</div>,
 		GlobalErrorUI: ({ error }: any) => <div>Error: {error?.message ?? 'unknown'}</div>,
+		usePixelatedConfig: () => ({ routes: [{ name: 'Home', path: '/' }, { name: 'Login', path: '/login' }], siteInfo: {} }),
 	};
 });
 
@@ -93,11 +96,12 @@ const pageComponents = [
 ];
 
 async function importModule(relPath: string) {
-	return import(pathToFileURL(path.join(process.cwd(), relPath)).href);
+	return import(pathToFileURL(path.resolve(__dirname, '../../', relPath)).href);
 }
 
 describe('pixelated-admin page components', () => {
 	afterEach(() => {
+		lastFetchOptions = undefined;
 		vi.clearAllMocks();
 	});
 
@@ -114,7 +118,17 @@ describe('pixelated-admin page components', () => {
 		});
 	}
 
-	it('downloads siteconfig.json from the config builder page', async () => {
+	it('uses an extended timeout when requesting component usage data', async () => {
+		lastFetchOptions = undefined;
+		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		await waitFor(() => expect(mockSmartFetch).toHaveBeenCalled());
+		expect(lastFetchOptions).toMatchObject({ responseType: 'ok', timeout: 0 });
+	});
+
+	it('downloads pixelated.config.json from the config builder page', async () => {
 		const createObjectURLSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob://123' as any);
 		const mod = await importModule('src/app/(pages)/configbuilder/page.tsx');
 		const Page = mod.default;

@@ -24,9 +24,11 @@ vi.mock('@/lib/auth', () => ({
 vi.mock('@pixelated-tech/components/server', () => ({
 	createWellKnownResponse: (type: string, _req: any) => new Response(`well-known ${type}`, { status: 200, headers: { 'Content-Type': 'text/plain' } }),
 	getFullPixelatedConfig: () => ({
-		nextAuth: { secret: 'test-secret' },
-		google: { client_id: 'g-id', client_secret: 'g-secret', api_key: 'gkey' },
-		googleAnalytics: { serviceAccountKey: 'key' },
+		integrations: {
+			nextAuth: { secret: 'test-secret' },
+			google: { client_id: 'g-id', client_secret: 'g-secret', api_key: 'gkey' },
+			googleAnalytics: { serviceAccountKey: 'key' },
+		},
 		contentful: { spaceId: 'space', environmentId: 'master', accessToken: 'token' },
 	}),
 	loadSitesConfig: async () => [{ name: 'test', url: 'https://example.com', localPath: '/site-a' }],
@@ -108,7 +110,7 @@ vi.mock('fs', async () => {
 });
 
 async function importModule(relPath: string) {
-	return import(pathToFileURL(path.join(process.cwd(), relPath)).href);
+	return import(pathToFileURL(path.resolve(__dirname, '../../', relPath)).href);
 }
 
 function makeRequest(body?: unknown, method = 'POST') {
@@ -155,7 +157,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns AI error when key missing', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: {} });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: {} } });
 		const route = await importModule('src/app/api/ai/recommendations/route.ts');
 		const response = await route.POST(makeRequest({ input: [] }));
 		expect(response.status).toBe(500);
@@ -165,7 +167,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns AI recommendations when key present', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { api_key: 'gkey' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { api_key: 'gkey' } } });
 		const route = await importModule('src/app/api/ai/recommendations/route.ts');
 		const response = await route.POST(makeRequest({ input: [] }));
 		expect(response.status).toBe(200);
@@ -335,7 +337,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns AI recommendations 500 when recommendation generation throws', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { api_key: 'gkey' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { api_key: 'gkey' } } });
 		const comps = await import('@pixelated-tech/components/server');
 		(vi.spyOn(comps as any, 'generateAiRecommendations') as any).mockRejectedValue(new Error('ai failure'));
 		const route = await importModule('src/app/api/ai/recommendations/route.ts');
@@ -389,10 +391,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google analytics data for valid siteName', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({
-			google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' },
-			googleAnalytics: { serviceAccountKey: 'key' }
-		});
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
@@ -401,10 +400,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google search console data for valid siteName', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({
-			google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' },
-			googleSearchConsole: { serviceAccountKey: 'key' }
-		});
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
@@ -416,6 +412,23 @@ describe('pixelated-admin API routes', () => {
 		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
 		expect(response.status).toBe(200);
 		expect(await response.json()).toBeTruthy();
+	});
+
+	it('returns core web vitals 404 when site is not found', async () => {
+		const route = await importModule('src/app/api/site-health/core-web-vitals/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'missing' }));
+		expect(response.status).toBe(404);
+		expect(await response.json()).toMatchObject({ success: false, error: 'Site not found' });
+	});
+
+	it('returns core web vitals 400 when site has no configured url', async () => {
+		const fs = await import('fs');
+		const readFileSpy = vi.spyOn(fs.promises, 'readFile').mockResolvedValueOnce(JSON.stringify([{ name: 'test', localPath: '/site-a' }]));
+		const route = await importModule('src/app/api/site-health/core-web-vitals/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		expect(response.status).toBe(400);
+		expect(await response.json()).toMatchObject({ success: false, error: 'Site has no configured url' });
+		readFileSpy.mockRestore();
 	});
 
 	it('returns github health data for valid siteName', async () => {
@@ -468,7 +481,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns AI recommendations error branch when integration returns an error', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { api_key: 'gkey' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { api_key: 'gkey' } } });
 		const comps = await import('@pixelated-tech/components/server');
 		(vi.spyOn(comps as any, 'generateAiRecommendations') as any).mockResolvedValue({ error: 'failed' });
 		const route = await importModule('src/app/api/ai/recommendations/route.ts');
@@ -556,7 +569,25 @@ describe('pixelated-admin API routes', () => {
 		expect(response.status).toBe(200);
 	});
 
+	it('returns humans.txt response when config is undefined', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue(undefined);
+		const route = await importModule('src/app/(pages)/humans.txt/route.ts');
+		const response = await route.GET(new Request('http://localhost/humans.txt', { method: 'GET' }));
+		expect(response).toBeInstanceOf(Response);
+		expect(response.status).toBe(200);
+	});
+
 	it('returns security.txt well-known response', async () => {
+		const route = await importModule('src/app/(pages)/security.txt/route.ts');
+		const response = await route.GET(new Request('http://localhost/security.txt', { method: 'GET' }));
+		expect(response).toBeInstanceOf(Response);
+		expect(response.status).toBe(200);
+	});
+
+	it('returns security.txt response when config is undefined', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue(undefined);
 		const route = await importModule('src/app/(pages)/security.txt/route.ts');
 		const response = await route.GET(new Request('http://localhost/security.txt', { method: 'GET' }));
 		expect(response).toBeInstanceOf(Response);
@@ -691,24 +722,41 @@ describe('pixelated-admin API routes', () => {
 	});
 
 	it('returns google analytics 404 when site not found', async () => {
-		const fs = await import('fs');
-		const readSpy = vi.spyOn(fs, 'readFileSync').mockReturnValueOnce('[]');
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue(null);
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'missing' }));
 		expect(response.status).toBe(404);
 		expect(await response.json()).toMatchObject({ success: false, error: 'Site not found' });
-		readSpy.mockRestore();
 	});
 
 	it('returns google analytics 500 when integration returns an error', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } } });
 		const admin = await import('@pixelated-tech/components/adminserver');
 		vi.spyOn(admin, 'getGoogleAnalyticsData').mockResolvedValue({ success: false, error: 'integration failed' });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(500);
 		expect(await response.json()).toMatchObject({ success: false, error: 'integration failed' });
+	});
+
+	it('returns google analytics success when google serviceAccountKey is configured through google object', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { serviceAccountKey: 'google-service-key' } } });
+		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
+		expect(response.status).toBe(200);
+		expect(await response.json()).toMatchObject({ success: true });
+	});
+
+	it('returns google analytics success when serviceAccountKey is configured through googleAnalytics object', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { googleAnalytics: { serviceAccountKey: 'ga-service-key' } } });
+		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
+		expect(response.status).toBe(200);
+		expect(await response.json()).toMatchObject({ success: true });
 	});
 
 	it('returns google search console 400 when siteName missing', async () => {
@@ -720,7 +768,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google search console 500 when integration returns a generic error', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
 		const admin = await import('@pixelated-tech/components/adminserver');
 		vi.spyOn(admin, 'getSearchConsoleData').mockResolvedValue({ success: false, error: 'generic failure' });
 		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
@@ -788,7 +836,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns site-health google analytics 500 when credentials are missing', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: {}, googleAnalytics: {} });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: {}, googleAnalytics: {} } });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(500);
@@ -797,7 +845,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google search console 403 when permission is insufficient', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
 		const admin = await import('@pixelated-tech/components/adminserver');
 		vi.spyOn(admin, 'getSearchConsoleData').mockResolvedValue({ success: false, error: 'insufficient_permission', details: 'no access', code: 403 });
 		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
@@ -836,12 +884,17 @@ describe('pixelated-admin API routes', () => {
 	});
 
 	it('returns security 500 when analysis returns an error status', async () => {
+		const fs = await import('fs');
+		const tempSecurityPath = path.resolve(__dirname, '../../tmp-site-security');
+		fs.mkdirSync(tempSecurityPath, { recursive: true });
+
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', localPath: '/site-a', repo: 'repo', url: 'https://example.com' } as any);
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', localPath: tempSecurityPath, repo: 'repo', url: 'https://example.com' } as any);
 		const admin = await import('@pixelated-tech/components/adminserver');
 		vi.spyOn(admin, 'analyzeSecurityHealth').mockResolvedValue({ status: 'error', error: 'scan failed' } as any);
 		const route = await importModule('src/app/api/site-health/security/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		fs.rmSync(tempSecurityPath, { recursive: true, force: true });
 		expect(response.status).toBe(500);
 		expect(await response.json()).toMatchObject({ success: false, error: 'scan failed' });
 	});
@@ -875,7 +928,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google analytics success branch with credentials', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
@@ -884,7 +937,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google search console success branch', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
@@ -926,8 +979,8 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google search console no site found 404 branch', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } });
-		vi.spyOn(server, 'loadSitesConfig').mockResolvedValue([] as any);
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue(null);
 		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'missing' }));
 		expect(response.status).toBe(404);
@@ -943,6 +996,15 @@ describe('pixelated-admin API routes', () => {
 		expect(await response.json()).toMatchObject({ success: false });
 	});
 
+	it('returns github 500 when analyzeGitHealth throws', async () => {
+		const admin = await import('@pixelated-tech/components/adminserver');
+		vi.spyOn(admin, 'analyzeGitHealth').mockRejectedValue(new Error('boom'));
+		const route = await importModule('src/app/api/site-health/github/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
+		expect(response.status).toBe(500);
+		expect(await response.json()).toMatchObject({ success: false, error: 'boom' });
+	});
+
 	it('returns on-site seo error branch when performOnSiteSEOAnalysis throws', async () => {
 		const server = await import('@pixelated-tech/components/server');
 		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
@@ -956,7 +1018,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google analytics route success branch with configured credentials', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
@@ -964,7 +1026,7 @@ describe('pixelated-admin API routes', () => {
 
 	it('returns google search console route success branch with configured credentials', async () => {
 		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } });
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
