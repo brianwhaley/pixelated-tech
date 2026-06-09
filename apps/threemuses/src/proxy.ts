@@ -18,11 +18,23 @@ export function proxy(req: NextRequest) {
 			301
 		);
 	}
-	return NextResponse.next({
+
+	const response = NextResponse.next({
 		request: {
 			headers,
 		},
 	});
+
+	if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')) {
+		response.headers.set(
+			'Cache-Control',
+			'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+		);
+		response.headers.set('Pragma', 'no-cache');
+		response.headers.set('Expires', '0');
+	}
+
+	return response;
 }
 
 // Limit middleware to page routes (avoid _next static, api, etc.)
