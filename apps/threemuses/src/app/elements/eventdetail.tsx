@@ -52,7 +52,11 @@ export default function EventDetail({ eventData, config }: EventDetailProps) {
 								itemInventory: Number(eventData.fields.maxSeats) || 1,
 								itemURL: `/events/${eventData.fields.id}`,
 								itemCategory: [
-									...(eventData.fields.category?.toString?.() ? [eventData.fields.category.toString()] : []),
+									...(Array.isArray(eventData.fields.category)
+										? eventData.fields.category
+										: eventData.fields.category
+											? [String(eventData.fields.category)]
+											: []),
 									'event',
 								].filter(Boolean),
 								itemImageURL: eventData.fields.carouselImages?.[0]?.image ?? undefined,
