@@ -1,0 +1,32 @@
+[
+	{
+		"index": 0,
+		"cardIndex": 0,
+		"cardLength": 3,
+		"image": "https://example.com/image1.jpg",
+		"imageAlt": "Image 1",
+		"headerText": "Card 1",
+		"subHeaderText": "Subheader 1",
+		"bodyText": "Body text 1"
+	},
+	{
+		"index": 1,
+		"cardIndex": 1,
+		"cardLength": 3,
+		"image": "https://example.com/image2.jpg",
+		"imageAlt": "Image 2",
+		"headerText": "Card 2",
+		"subHeaderText": "Subheader 2",
+		"bodyText": "Body text 2"
+	},
+	{
+		"index": 2,
+		"cardIndex": 2,
+		"cardLength": 3,
+		"image": "https://example.com/image3.jpg",
+		"imageAlt": "Image 3",
+		"headerText": "Card 3",
+		"link": "https://example.com/card3",
+		"linkTarget": "_blank"
+	}
+]

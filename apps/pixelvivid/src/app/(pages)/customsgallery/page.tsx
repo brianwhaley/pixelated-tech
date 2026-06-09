@@ -8,7 +8,7 @@ import type { CarouselCardType } from "@pixelated-tech/components";
 import { MicroInteractions } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
 
-export default function Portfolio() {
+export default function PortfolioPage() {
 	const pixelatedConfig = usePixelatedConfig();
 
 	if (!pixelatedConfig) {
@@ -17,8 +17,8 @@ export default function Portfolio() {
 
 	const [ flickrCards, setFlickrCards ] = useState<CarouselCardType[]>([]);
 	const props = { 
-		api_key: pixelatedConfig?.flickr?.urlProps.api_key || "",
-		user_id: pixelatedConfig?.flickr?.urlProps.user_id || "",
+		api_key: pixelatedConfig?.integrations.flickr?.urlProps.api_key || "",
+		user_id: pixelatedConfig?.integrations.flickr?.urlProps.user_id || "",
 		tags: "", // "customsunglasses"
 		method: "flickr.photosets.getPhotos", 
 		photoset_id: "72177720326925753",

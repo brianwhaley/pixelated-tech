@@ -76,7 +76,7 @@ export interface SmartFetchOptions {
 	/** Number of retries on failure. Default: 1 */
 	retries?: number;
 
-	/** Request timeout in milliseconds. Default: 10000 */
+	/** Request timeout in milliseconds. Default: 10000. Set 0 to disable timeout. */
 	timeout?: number;
 
 	/** Custom fetch RequestInit options (method, headers, body, etc.) merged into the fetch call */
@@ -182,7 +182,8 @@ export async function smartFetch(
 
 						// Set up timeout for this fetch attempt
 						const controller = new AbortController();
-						const timeoutId = setTimeout(() => controller.abort(), timeout);
+						const shouldTimeout = timeout > 0;
+						const timeoutId = shouldTimeout ? setTimeout(() => controller.abort(), timeout) : undefined;
 
 						// eslint-disable-next-line pixelated/no-direct-fetch
 						const response = await fetch(url, {
@@ -193,7 +194,7 @@ export async function smartFetch(
 								: {}),
 						});
 
-						clearTimeout(timeoutId);
+						if (timeoutId) clearTimeout(timeoutId);
 
 						if (!response.ok) {
 							const errorBody = typeof response.text === 'function' ? (await response.text()).trim() : '';
@@ -236,7 +237,8 @@ export async function smartFetch(
 
 					// Set up timeout for this fetch attempt
 					const controller = new AbortController();
-					const timeoutId = setTimeout(() => controller.abort(), timeout);
+					const shouldTimeout = timeout > 0;
+					const timeoutId = shouldTimeout ? setTimeout(() => controller.abort(), timeout) : undefined;
 
 					// eslint-disable-next-line pixelated/no-direct-fetch
 					const response = await fetch(fetchUrl, {
@@ -247,7 +249,7 @@ export async function smartFetch(
 							: {}),
 					});
 
-					clearTimeout(timeoutId);
+					if (timeoutId) clearTimeout(timeoutId);
 
 					if (!response.ok) {
 						const errorBody = typeof response.text === 'function' ? (await response.text()).trim() : '';

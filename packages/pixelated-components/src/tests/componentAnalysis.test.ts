@@ -11,7 +11,7 @@ describe('Component Analysis', () => {
 
 	describe('folderFilenameToExportName', () => {
 		it('should convert folder/filename to export name', () => {
-			const name = folderFilenameToExportName('general/modal');
+			const name = folderFilenameToExportName('elements/modal');
 			expect(name).toBe('Modal');
 		});
 
@@ -21,7 +21,7 @@ describe('Component Analysis', () => {
 		});
 
 		it('should strip schema prefix', () => {
-			const name = folderFilenameToExportName('general/schema-button');
+			const name = folderFilenameToExportName('elements/schema-button');
 			expect(name).toBe('Button');
 		});
 
@@ -36,17 +36,17 @@ describe('Component Analysis', () => {
 		});
 
 		it('should convert hyphenated names', () => {
-			const name = folderFilenameToExportName('general/page-title');
+			const name = folderFilenameToExportName('elements/page-title');
 			expect(name).toBe('PageTitle');
 		});
 
 		it('should convert dotted names', () => {
-			const name = folderFilenameToExportName('general/google.reviews.components');
+			const name = folderFilenameToExportName('elements/google.reviews.components');
 			expect(name).toBe('GoogleReviews');
 		});
 
 		it('should handle mixed hyphen and dot', () => {
-			const name = folderFilenameToExportName('general/form-validator.utils');
+			const name = folderFilenameToExportName('elements/form-validator.utils');
 			expect(name).toBe('FormValidatorUtils');
 		});
 
@@ -61,14 +61,14 @@ describe('Component Analysis', () => {
 		});
 
 		it('should handle empty components suffix', () => {
-			const name = folderFilenameToExportName('general/test.components.tsx');
+			const name = folderFilenameToExportName('elements/test.components.tsx');
 			// Note: function only takes filename part after last /, so this tests just 'test.components.tsx'
 			expect(name).toMatch(/Test/);
 		});
 
 		it('should result in PascalCase output', () => {
 			const inputs = [
-				'general/modal',
+				'elements/modal',
 				'integrations/google-places',
 				'sitebuilder/form/email-input',
 				'admin/site-health-checker',
@@ -85,7 +85,7 @@ describe('Component Analysis', () => {
 
 		it('should maintain word capitalization', () => {
 			const testCases = {
-				'general/modal': 'Modal',
+				'elements/modal': 'Modal',
 				'integrations/stripe': 'Stripe',
 				'form/email-input': 'EmailInput',
 				'google-analytics': 'GoogleAnalytics',
@@ -98,8 +98,8 @@ describe('Component Analysis', () => {
 
 		it('should handle schema prefix stripping consistently', () => {
 			const schemaTests = [
-				{ input: 'general/schema-button', expected: 'Button' },
-				{ input: 'general/button', expected: 'Button' },
+				{ input: 'elements/schema-button', expected: 'Button' },
+				{ input: 'elements/button', expected: 'Button' },
 				{ input: 'schema-modal', expected: 'Modal' },
 			];
 
@@ -109,7 +109,7 @@ describe('Component Analysis', () => {
 		});
 
 		it('should handle multiple dots and hyphens', () => {
-			const name = folderFilenameToExportName('general/multi-word.compound-name');
+			const name = folderFilenameToExportName('elements/multi-word.compound-name');
 			// Should convert to MultiWordCompoundName
 			expect(name).toMatch(/^[A-Z]/);
 			expect(name.length).toBeGreaterThan(0);
@@ -123,7 +123,7 @@ describe('Component Analysis', () => {
 		});
 
 		it('should handle numeric characters', () => {
-			const name = folderFilenameToExportName('general/form-2fa');
+			const name = folderFilenameToExportName('elements/form-2fa');
 			expect(name).toBeDefined();
 			expect(name.length).toBeGreaterThan(0);
 		});
@@ -132,7 +132,7 @@ describe('Component Analysis', () => {
 			const fixtures = [
 				'admin/modal',
 				'cms/plugin-manager',
-				'components/general/button',
+				'components/elements/button',
 				'integrations/stripe.functions',
 				'sitebuilder/form/address-input.components',
 				'schema-field',
@@ -159,7 +159,7 @@ describe('Component Analysis', () => {
 		});
 
 		it('should handle very long component names', () => {
-			const longName = 'general/' + 'very-long-component-name-that-is-quite-lengthy';
+			const longName = 'elements/' + 'very-long-component-name-that-is-quite-lengthy';
 			const result = folderFilenameToExportName(longName);
 			expect(result).toBeDefined();
 			expect(result.length).toBeGreaterThan(0);
@@ -169,7 +169,7 @@ describe('Component Analysis', () => {
 	describe('Component Analysis Integration', () => {
 		it('should convert folder structure to valid JavaScript identifiers', () => {
 			const testPaths = [
-				'components/general/button',
+				'components/elements/button',
 				'components/integrations/stripe',
 				'src/components/sitebuilder/form/email',
 			];
@@ -183,7 +183,7 @@ describe('Component Analysis', () => {
 
 		it('should handle real component paths from codebase', () => {
 			const realPaths = [
-				'general/modal',
+				'elements/modal',
 				'integrations/calendly.components',
 				'sitebuilder/form/formcomponents',
 				'admin/sitemap.components',
@@ -245,23 +245,25 @@ describe('Component Analysis', () => {
 
 	describe('checkComponentUsage', () => {
 		it('should return false for undefined sitePath', async () => {
-			const result = await checkComponentUsage(undefined, 'general/button');
+			const result = await checkComponentUsage(undefined, 'elements/button');
 			expect(result).toBe(false);
 		});
 
 		it('should detect semantic component usage in site files', async () => {
+			vi.spyOn(fs.promises, 'stat').mockResolvedValueOnce({ isDirectory: () => true } as any);
 			vi.spyOn(fs.promises, 'readdir').mockResolvedValueOnce([{ name: 'index.tsx', isDirectory: () => false, isFile: () => true }] as any);
 			vi.spyOn(fs.promises, 'readFile').mockResolvedValueOnce('import { PageTitleHeader } from "@pixelated-tech/components";');
 
-			const result = await checkComponentUsage('/site', 'general/semantic');
+			const result = await checkComponentUsage('/site', 'structure/page-blocks');
 			expect(result).toBe(true);
 		});
 
 		it('should detect regular component usage by export name', async () => {
+			vi.spyOn(fs.promises, 'stat').mockResolvedValueOnce({ isDirectory: () => true } as any);
 			vi.spyOn(fs.promises, 'readdir').mockResolvedValueOnce([{ name: 'index.tsx', isDirectory: () => false, isFile: () => true }] as any);
 			vi.spyOn(fs.promises, 'readFile').mockResolvedValueOnce('import { Modal } from "@pixelated-tech/components";');
 
-			const result = await checkComponentUsage('/site', 'general/modal');
+			const result = await checkComponentUsage('/site', 'elements/modal');
 			expect(result).toBe(true);
 		});
 	});
@@ -287,12 +289,12 @@ describe('Component Analysis', () => {
 		});
 
 		it('should handle semantic components specially', async () => {
-			const result = await checkComponentUsage('/nonexistent/path', 'general/semantic');
+			const result = await checkComponentUsage('/nonexistent/path', 'structure/page-blocks');
 			expect(typeof result).toBe('boolean');
 		});
 
 		it('should return boolean value', async () => {
-			const result = await checkComponentUsage('.', 'general/button');
+			const result = await checkComponentUsage('.', 'elements/button');
 			expect(typeof result).toBe('boolean');
 		});
 
@@ -308,7 +310,7 @@ describe('Component Analysis', () => {
 
 	describe('analyzeComponentUsage', () => {
 		it('should return ComponentUsageResult structure', async () => {
-			const result = await analyzeComponentUsage(['general/button'], []);
+			const result = await analyzeComponentUsage(['elements/button'], []);
 			expect(result).toHaveProperty('components');
 			expect(result).toHaveProperty('siteList');
 			expect(result).toHaveProperty('usageMatrix');

@@ -1,8 +1,7 @@
 import React from "react";
 import { headers } from 'next/headers';
-import { PixelatedServerConfigProvider, type SiteInfo } from "@pixelated-tech/components/server";
-import { descriptionToKeywords, getRouteByKey } from "@pixelated-tech/components/server";
-import { getEbayItem, getEbayProductSchema } from "@pixelated-tech/components/server";
+import { PixelatedServerConfigProvider, type SiteInfo, getRouteByKey, getFullPixelatedConfig } from "@pixelated-tech/components/server";
+import { descriptionToKeywords, getEbayItem, getEbayProductSchema } from "@pixelated-tech/components/server";
 import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema, ProductSchema } from "@pixelated-tech/components";
 import { GoogleFonts } from "@pixelated-tech/components";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
@@ -13,7 +12,6 @@ import Search from '@/app/elements/search';
 import Footer from '@/app/elements/footer';
 import Interactions from "@/app/elements/interactions";
 import LayoutClient from "./elements/layoutclient";
-import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "./styles/globals.css";
@@ -22,13 +20,14 @@ import { generateMetaTags } from "@pixelated-tech/components/server";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 
+	const pixelatedConfig = getFullPixelatedConfig();
 	const headersList = await headers();
 	const url = headersList.get("x-url") || "";
 	const origin = headersList.get("x-origin") || "";
 	const pathname = headersList.get("x-path") || "";
-	const siteInfo = siteConfig.siteInfo;
+	const siteInfo = pixelatedConfig.siteInfo;
 
-	let myMetadata = getRouteByKey(siteConfig.routes, "path", pathname);
+	let myMetadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
 	let productSchema = null;
 
 	if (!myMetadata && pathname.includes('/store/')) {
@@ -65,23 +64,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 	return (
 		<html lang="en">
 			<head>
-				{generateMetaTags({
-					title: myMetadata?.title ?? "",
-					description: myMetadata?.description ?? "",
-					keywords: myMetadata?.keywords ?? "",
-					origin: origin ?? "",
-					url: url ?? "",
-					siteInfo: siteInfo as SiteInfo,
-				})}
-				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
-				{productSchema && <ProductSchema product={productSchema} />}
-				<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
-				<LocalBusinessSchema siteInfo={siteInfo} />
-				<ServicesSchema siteInfo={siteInfo} />
-				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
-				<GoogleFonts visualdesign={siteConfig.visualdesign} />
+				<PixelatedServerConfigProvider>
+					{generateMetaTags({
+						title: myMetadata?.title ?? "",
+						description: myMetadata?.description ?? "",
+						keywords: myMetadata?.keywords ?? "",
+						origin: origin ?? "",
+						url: url ?? "",
+						siteInfo: siteInfo as SiteInfo,
+					})}
+					<BreadcrumbListSchema currentPath={pathname} />
+					{productSchema && <ProductSchema product={productSchema} />}
+					<WebsiteSchema />
+					<LocalBusinessSchema />
+					<ServicesSchema />
+					<VisualDesignStyles />
+					<GoogleFonts visualdesign={pixelatedConfig.visualdesign} />
+				</PixelatedServerConfigProvider>
 			</head>
-
 			<body>
 				<PixelatedServerConfigProvider>
 					<LayoutClient />

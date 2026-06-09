@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { PageGridItem } from '../../general/semantic';
+import { PageGridItem } from '../../structure/page-blocks';
 import { smartFetch } from '../../foundation/smartfetch';
 import "./site-health.css";
 import { useSiteHealthMockData } from './site-health-mock-context';

@@ -3,7 +3,7 @@
 import React from "react";
 import { PageTitleHeader, PageSection, PageSectionHeader, Callout } from "@pixelated-tech/components";
 
-export default function About() {
+export default function AboutPage() {
 	
     
 	return (
@@ -15,14 +15,18 @@ export default function About() {
 			<PageSection columns={2} maxWidth="1024px" padding="20px" id="team-section">
 				<Callout 
 					layout="vertical"
-					img="/images/placeholder.png"
+					img="/images/patricia-jadevaia.jpg"
+					imgAlt="Patti Jadevaia Co-Founder & CEO of Simple Day Concierge"
+					imgShape="bevel"
 					title="Patti Jadevaia" 
 					subtitle="Co-Founder & CEO" 
 					content="With a rich background in corporate cybersecurity, Patti brings a strategic mindset and a passion for service to her role as CEO. Her commitment to excellence and personal care is the driving force behind Simple Day's mission to simplify our clients' lives with exceptional concierge services."
 				/>
 				<Callout 
 					layout="vertical"
-					img="/images/placeholder.png"
+					img="/images/joe-jadevaia.jpg"
+					imgAlt="Joe Jadevaia Co-Founder of Simple Day Concierge"
+					imgShape="bevel"
 					title="Joe Jadevaia" 
 					subtitle="Co-Founder & COO" 
 					content="Joe's extensive experience in the technology sector, particularly in cybersecurity, equips him with the organizational skills and attention to detail necessary to ensure seamless operations at Simple Day. As COO, he oversees the day-to-day management of our services, ensuring that every client receives the highest level of care and efficiency."

@@ -7,7 +7,7 @@ import { PageTitleHeader } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import "./page.css";
 
-export default function ByTheWay() {
+export default function ByTheWayPage() {
 	
 	return ( 
 		<>

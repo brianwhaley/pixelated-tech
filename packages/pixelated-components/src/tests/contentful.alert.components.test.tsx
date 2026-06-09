@@ -1,20 +1,10 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { ContentfulAlerts } from '../components/integrations/contentful.alert.components';
-import { usePixelatedConfig } from '../components/config/config.client';
 import * as contentfulDelivery from '../components/integrations/contentful.delivery';
-
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: vi.fn(() => ({
-		contentful: {
-			base_url: 'https://example.contentful.com',
-			space_id: 'space-id',
-			environment: 'master',
-			delivery_access_token: 'token',
-		},
-	})),
-}));
+import { pixelatedConfig } from '../test/test-data';
 
 describe('ContentfulAlerts Component', () => {
 	beforeEach(() => {

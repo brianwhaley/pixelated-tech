@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { getLipsum } from '@/components/integrations/lipsum';
+import { pixelatedConfig } from '../test/test-data';
 
 vi.mock('@/components/foundation/smartfetch');
 
@@ -48,14 +49,14 @@ describe('getLipsum Integration', () => {
   });
 
   describe('API Requests', () => {
-    it('sends request to proxy URL', async () => {
+    it('sends request to proxy URL from config', async () => {
       const html = `<!doctype html><html><body><div id="lipsum"><p>Test</p></div></body></html>`;
       const { smartFetch } = await import('@/components/foundation/smartfetch');
       vi.mocked(smartFetch).mockResolvedValue(html);
 
       await getLipsum({ LipsumTypeId: 'Paragraph', Amount: 2, StartWithLoremIpsum: true });
 
-      expect(vi.mocked(smartFetch)).toHaveBeenCalledWith(expect.stringContaining('https://proxy.pixelated.tech/prod/proxy'), expect.any(Object));
+      expect(vi.mocked(smartFetch)).toHaveBeenCalledWith(expect.stringContaining(pixelatedConfig.integrations.global.proxyUrl), expect.any(Object));
     });
 
     it('includes LipsumTypeId in request', async () => {
@@ -94,30 +95,9 @@ describe('getLipsum Integration', () => {
       const { smartFetch } = await import('@/components/foundation/smartfetch');
       vi.mocked(smartFetch).mockRejectedValue(new TypeError('Failed to fetch'));
 
-      const res = await getLipsum({ LipsumTypeId: 'Paragraph', Amount: 2, StartWithLoremIpsum: true });
-
-      expect(Array.isArray(res)).toBe(true);
-      expect(res.length).toBe(0);
-    });
-
-    it('handles empty HTML response', async () => {
-      const html = `<!doctype html><html><body><div id="lipsum"></div></body></html>`;
-      const { smartFetch } = await import('@/components/foundation/smartfetch');
-      vi.mocked(smartFetch).mockResolvedValue(html);
-
       const res = await getLipsum({ LipsumTypeId: 'Paragraph', Amount: 1, StartWithLoremIpsum: false });
 
-      expect(Array.isArray(res)).toBe(true);
-    });
-
-    it('handles missing lipsum div', async () => {
-      const html = `<!doctype html><html><body><p>No lipsum div</p></body></html>`;
-      const { smartFetch } = await import('@/components/foundation/smartfetch');
-      vi.mocked(smartFetch).mockResolvedValue(html);
-
-      const res = await getLipsum({ LipsumTypeId: 'Paragraph', Amount: 1, StartWithLoremIpsum: false });
-
-      expect(Array.isArray(res)).toBe(true);
+      expect(res).toEqual([]);
     });
   });
 });

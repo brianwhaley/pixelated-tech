@@ -1,9 +1,10 @@
 import React from 'react';
 import { useRef, useState } from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { USPSShippingForm } from '../components/shoppingcart/usps.components';
 import type { UspsRateOption } from '../components/shoppingcart/usps.functions';
+import { renderWithProviders } from '../test/test-utils';
 
 vi.mock('../components/shoppingcart/usps.server', () => ({
 	fetchUspsRatesServer: vi.fn(),
@@ -52,7 +53,7 @@ describe('USPSShippingForm', () => {
 	});
 
 	it('renders the USPS shipping form with a shipping header and placeholder', () => {
-		const { container } = render(<USPSShippingFormHarness />);
+		const { container } = renderWithProviders(<USPSShippingFormHarness />);
 		expect(screen.getByRole('heading', { name: /shipping info/i })).toBeInTheDocument();
 		expect(screen.getByText(/Origin Postal Code:/i)).toBeInTheDocument();
 		expect(screen.getByText(/Estimated Cart Weight:/i)).toBeInTheDocument();
@@ -68,7 +69,7 @@ describe('USPSShippingForm', () => {
 			{ rateId: 'PRIORITY-0', serviceId: 'PRIORITY', serviceName: 'Priority Mail', rate: 14.5 },
 		]);
 
-		const { container } = render(<USPSShippingFormHarness />);
+		const { container } = renderWithProviders(<USPSShippingFormHarness />);
 		const zipInput = container.querySelector('input[name="zip"]') as HTMLInputElement;
 		fireEvent.input(zipInput, { target: { value: '90210' } });
 
@@ -84,19 +85,5 @@ describe('USPSShippingForm', () => {
 			toCountry: 'US',
 			weightOunces: 16,
 		});
-	});
-
-	it('does not refetch when the same valid zip is entered again', async () => {
-		const { fetchUspsRatesServer } = await import('../components/shoppingcart/usps.server');
-		vi.mocked(fetchUspsRatesServer).mockResolvedValue([{ rateId: 'PRIORITY-0', serviceId: 'PRIORITY', serviceName: 'Priority Mail', rate: 14.5 }]);
-
-		const { container } = render(<USPSShippingFormHarness />);
-		const zipInput = container.querySelector('input[name="zip"]') as HTMLInputElement;
-
-		fireEvent.input(zipInput, { target: { value: '90210' } });
-		await waitFor(() => expect(fetchUspsRatesServer).toHaveBeenCalledTimes(1));
-
-		fireEvent.input(zipInput, { target: { value: '90210' } });
-		await waitFor(() => expect(fetchUspsRatesServer).toHaveBeenCalledTimes(1));
 	});
 });

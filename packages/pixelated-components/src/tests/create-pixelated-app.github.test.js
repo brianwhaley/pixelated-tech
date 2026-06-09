@@ -69,7 +69,7 @@ it('creates an Amplify app when AWS SDK client is present and commands succeed',
 
 	// Mock reading components config to supply AWS creds and site .env.local
 	vi.spyOn(fs, 'readFile').mockImplementation(async (p) => {
-		if (p && p.toString().includes('src/config/pixelated.config.json')) return JSON.stringify({ aws: { access_key_id: 'AKIA_TEST', secret_access_key: 'SECRET_TEST', region: 'us-east-2' } });
+		if (p && p.toString().includes('src/config/pixelated.config.json')) return JSON.stringify({ integrations: { aws: { access_key_id: 'AKIA_TEST', secret_access_key: 'SECRET_TEST', region: 'us-east-2' } } });
 		if (p && p.toString().endsWith('.env.local')) return 'PIXELATED_CONFIG_KEY=TEST_KEY_VALUE\n';
 		return JSON.stringify({});
 	});

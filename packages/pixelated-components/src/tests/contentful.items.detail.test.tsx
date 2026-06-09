@@ -1,29 +1,21 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: vi.fn(() => ({
-		cloudinary: {
-			product_env: 'test-cloud',
-			baseUrl: 'cloudinary.com',
-			transforms: {}
-		}
-	}))
-}));
+import { pixelatedConfig, mockContentfulItemsDetail } from '../test/test-data';
 
 vi.mock('../components/integrations/contentful.delivery', () => ({
 	getContentfulEntriesByType: vi.fn(),
 	getContentfulEntryByEntryID: vi.fn()
 }));
 
-vi.mock('../components/general/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
 	SmartImage: ({ src, alt, title }: any) => (
 		<img src={src} alt={alt} title={title} data-testid="smart-image" />
 	)
 }));
 
-vi.mock('../components/general/carousel', () => ({
+vi.mock('../components/structure/carousel', () => ({
 	Carousel: ({ cards }: any) => <div data-testid="carousel">{cards.length} items</div>
 }));
 
@@ -33,11 +25,6 @@ vi.mock('../components/shoppingcart/shoppingcart.components', () => ({
 
 import { ContentfulItemHeader, ContentfulItemDetail } from '../components/integrations/contentful.items.components';
 import * as delivery from '../components/integrations/contentful.delivery';
-
-const mockApiProps = {
-	space_id: 'test-space',
-	delivery_access_token: 'test-token'
-};
 
 describe('Contentful item detail tests', () => {
 	beforeEach(() => {
@@ -60,39 +47,25 @@ describe('Contentful item detail tests', () => {
 	});
 
 	it('should fetch item detail and render carousel when entry exists', async () => {
-		vi.mocked(delivery.getContentfulEntryByEntryID).mockResolvedValueOnce({
-			sys: { id: 'item-1', type: 'Entry' },
-			fields: {
-				title: 'Detailed Product',
-				price: 79.99,
-				quantity: 2,
-				id: '12345',
-				brand: 'Brand',
-				model: 'Model',
-				date: '2026-01-01',
-				description: 'Live product description',
-				images: [{ sys: { id: 'asset-1' } }]
-			}
-		});
+		vi.mocked(delivery.getContentfulEntryByEntryID).mockResolvedValueOnce(mockContentfulItemsDetail.mockContentfulEntry);
 
-		vi.mocked(delivery.getContentfulEntriesByType).mockResolvedValueOnce({
-			items: [],
-			includes: {
-				Asset: [
-					{
-						sys: { id: 'asset-1' },
-						fields: {
-							file: { url: '//example.com/asset1.jpg' },
-							title: 'Asset 1'
-						}
-					}
-				]
-			}
-		});
+		vi.mocked(delivery.getContentfulEntriesByType).mockResolvedValueOnce(mockContentfulItemsDetail.mockContentfulEntries);
 
-		render(<ContentfulItemDetail apiProps={mockApiProps} entry_id="item-1" />);
+		render(<ContentfulItemDetail entry_id="item-1" />);
 
 		await waitFor(() => {
+			expect(delivery.getContentfulEntryByEntryID).toHaveBeenCalledWith(
+				expect.objectContaining({
+					apiProps: expect.objectContaining({
+						base_url: pixelatedConfig.integrations.contentful.base_url,
+						delivery_access_token: pixelatedConfig.integrations.contentful.delivery_access_token,
+						environment: pixelatedConfig.integrations.contentful.environment,
+						proxyURL: pixelatedConfig.integrations.contentful.proxyURL,
+						space_id: pixelatedConfig.integrations.contentful.space_id,
+					}),
+					entry_id: 'item-1',
+				})
+			);
 			expect(screen.getByTestId('carousel')).toBeInTheDocument();
 			expect(screen.getByText('Detailed Product')).toBeInTheDocument();
 			expect(screen.getByText(/\$79.99 USD/)).toBeInTheDocument();

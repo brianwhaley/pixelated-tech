@@ -2,17 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries } from "@pixelated-tech/components";
-import { SchemaEvent, buildEventSchema } from "@pixelated-tech/components";
-import { Callout } from "@pixelated-tech/components";
-import type { CalloutType } from "@pixelated-tech/components";
 import { Loading } from "@pixelated-tech/components";
 import { PageTitleHeader, PageSection } from "@pixelated-tech/components";
+import EventCallout from "../../elements/eventcallout";
 
+export default function EventsPage() {
 
-export default function Events() {
-
-	const [ events , setEvents ] = useState<CalloutType[]>([]);
-	const [ eventSchemas, setEventSchemas ] = useState<any>(null);
+	const [ events , setEvents ] = useState<{ event: any, calloutProps: any }[]>([]);
 
 	const config = usePixelatedConfig();
 
@@ -30,9 +26,8 @@ export default function Events() {
 	useEffect(() => {
 		async function getCarouselCards() {
 			const contentType = "75OqioFABdZZ1QaQChRGic"; 
-			const eventObjects: CalloutType[] = [];
+			const eventObjects: { event: any, calloutProps: any }[] = [];
 			const events = await getContentfulEntriesByType({ apiProps: apiProps, contentType });
-			const eventSchemasRaw: any[] = [];
 			const sortedItems = [...events.items].sort((a: any, b: any) => {
 				return new Date(a.fields.startDate).getTime() - new Date(b.fields.startDate).getTime();
 			});
@@ -44,39 +39,39 @@ export default function Events() {
 					}
 					const images = await getContentfulImagesFromEntries({ images: [event.fields.image], assets: events.includes.Asset });
 					eventObjects.push({
-						variant: "grid",
-						layout: "horizontal",
-						img: images[0]?.image,
-						imgAlt: event.fields.title,
-						title: event.fields.title,
-						subtitle: new Date(event.fields.startDate).toLocaleString('en-US', {
-							dateStyle: 'short', timeStyle: 'short'
-						}).replace(',', '') + " - " + new Date(event.fields.endDate).toLocaleString('en-US', {
-							dateStyle: 'short', timeStyle: 'short'
-						}).replace(',', ''),
-						content: event.fields.description,
-						url: "/events/" + event.fields.id,
-						urlTarget: "_self",
-						buttonText: "More Details"
+						event: event,
+						calloutProps: {
+							variant: "grid",
+							layout: "horizontal",
+							img: images[0]?.image,
+							imgAlt: event.fields.title,
+							title: event.fields.title,
+							subtitle: new Date(event.fields.startDate).toLocaleString('en-US', {
+								dateStyle: 'short', timeStyle: 'short'
+							}).replace(',', '') + " - " + new Date(event.fields.endDate).toLocaleString('en-US', {
+								dateStyle: 'short', timeStyle: 'short'
+							}).replace(',', ''),
+							content: event.fields.description,
+							url: "/events/" + event.fields.id,
+							urlTarget: "_self",
+							buttonText: "More Details"
+						}
 					});
-					eventSchemasRaw.push(buildEventSchema(event));
 				}
 			}
 
 			setEvents(eventObjects);
-			setEventSchemas(eventSchemasRaw.length > 0 ? { '@context': 'https://schema.org', '@graph': eventSchemasRaw } : null);
 		}
 		getCarouselCards();
 	}, []);
 
 	return (
 		<>
-			{eventSchemas && <SchemaEvent event={eventSchemas} />}
 			<PageTitleHeader title="Events" />
 			
 			<PageSection columns={1} className="" id="projects-section">
-				{ events.map((event, index) => (
-					<Callout {...event} key={index} />
+				{ events.map((eventObj, index) => (
+					<EventCallout key={index} event={eventObj.event} calloutProps={eventObj.calloutProps} siteInfo={config.siteInfo} />
 				))}
 			</PageSection>
 		</>

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render } from '@testing-library/react';
-import { createPageComponentMocks } from '@/test/page-mocks';
+import { createPageComponentMocks, setPixelatedConfigOverride } from '@/test/page-mocks';
 import BlogCalendar from '@/app/(pages)/blogcalendar/page';
 import RequestsPage from '@/app/(pages)/prospects/page';
 
@@ -40,7 +40,7 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	buildSitemapConfig: () => ({}),
 	generateSitemap: async () => [],
 	createWellKnownResponse: (_type: string, _req: any, _props: any) => ({ ok: true }),
-	Manifest: ({ siteInfo }: any) => ({ siteInfo }),
+	Manifest: ({ siteInfo }: any = {}) => ({ siteInfo: siteInfo ?? {} }),
 }));
 vi.mock('next/headers', () => ({
 	headers: () => ({
@@ -125,6 +125,15 @@ describe('Oaktree app foundation', () => {
 		fileDataState['/data/blogcalendar.md'] = { data: 'Markdown content', loading: false, error: null };
 		const contentElement = render(<BlogCalendar />);
 		expect(contentElement.getByTestId('mock-markdown').textContent).toContain('Markdown content');
+	});
+
+	it('renders Header and Nav when routes are missing from config', async () => {
+		setPixelatedConfigOverride({});
+		const headerRender = render(<Header />);
+		const navRender = render(<Nav />);
+		expect(headerRender.container).toBeTruthy();
+		expect(navRender.container).toBeTruthy();
+		setPixelatedConfigOverride(undefined);
 	});
 
 	it('renders the prospects page with table and fallback no-data state', async () => {

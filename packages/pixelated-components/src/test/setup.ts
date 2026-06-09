@@ -89,8 +89,29 @@ const defaultFetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestIn
 		return { ok: true, status: 200, json: async () => ({ itemSummaries: [] }), text: async () => '{}' };
 	}
 
+	// PayPal API (return mock token or simple success)
+	if (url.includes('paypal.com')) {
+		if (url.includes('/v1/oauth2/token')) {
+			return { ok: true, status: 200, json: async () => ({ access_token: 'mock-paypal-token', expires_in: 32400 }), text: async () => '{}' };
+		}
+		if (url.includes('/v2/checkout/orders')) {
+			return {
+				ok: true,
+				status: 201,
+				json: async () => ({
+					id: 'MOCK-ORDER-ID',
+					status: 'CREATED',
+					purchase_units: [{ payments: { captures: [{ status: 'COMPLETED' }] } }],
+				}),
+				text: async () => '{}',
+			};
+		}
+		return { ok: true, status: 200, json: async () => ({}), text: async () => '{}' };
+	}
+
 	// Fallback: if test code expects network failures they should stub/spy; otherwise
 	// return a neutral 200 + empty body so components that call fetch can proceed.
+	/* 
 	try {
 		// prefer to delegate to the real fetch if present for non-mocked hosts
 		if (realFetch && !/localhost|127\.0\.0\.1/.test(url)) {
@@ -99,6 +120,7 @@ const defaultFetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestIn
 	} catch (err) {
 		// swallow and fallthrough to neutral response
 	}
+	*/
 
 	return { ok: true, status: 200, json: async () => ({}), text: async () => '{}' };
 });

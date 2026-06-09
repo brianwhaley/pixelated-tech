@@ -48,7 +48,7 @@ describe('Pixelated service route coverage', () => {
 	it('renders the services list page and service content', async () => {
 		renderWithConfig(<ServicesPage />);
 
-		await waitFor(() => expect(screen.getByTestId('mock-serviceslist')).not.toBeNull());
+		await waitFor(() => expect(screen.getByTestId('mock-services')).not.toBeNull());
 		expect(screen.getByText(/Pixelated Technologies Services/)).not.toBeNull();
 		expect(screen.getByText(/Click a service to read more about how it works for your business./)).not.toBeNull();
 	});
@@ -56,7 +56,7 @@ describe('Pixelated service route coverage', () => {
 	it('renders the service areas list page and service area content', async () => {
 		renderWithConfig(<ServiceAreasPage />);
 
-		await waitFor(() => expect(screen.getByTestId('mock-serviceareaslist')).not.toBeNull());
+		await waitFor(() => expect(screen.getByTestId('mock-serviceareas')).not.toBeNull());
 		expect(screen.getByText(/Pixelated Technologies Service Areas/)).not.toBeNull();
 		expect(screen.getByText(/Click a service area to see the local coverage and specialties for that region./)).not.toBeNull();
 	});

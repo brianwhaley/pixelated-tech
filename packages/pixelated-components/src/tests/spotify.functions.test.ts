@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as spotifyModule from '../components/integrations/spotify.functions';
 import { getSpotifySeries, getSpotifyEpisodes, type SpotifyPodcastSeriesType, type SpotifyPodcastEpisodeType } from '../components/integrations/spotify.functions';
+import { mockSpotifyRss } from '../test/test-data';
 
 // Mock smartFetch module
 vi.mock('../components/foundation/smartfetch', () => ({
@@ -16,17 +17,7 @@ describe('Spotify Functions', () => {
 
 	describe('getSpotifySeries', () => {
 		it('should fetch podcast series from RSS feed', async () => {
-			const mockRSSData = `<?xml version="1.0" encoding="UTF-8"?>
-<rss>
-  <channel>
-    <title>Test Podcast</title>
-    <description>A test podcast</description>
-    <link>https://podcast.example.com</link>
-    <language>en-us</language>
-  </channel>
-</rss>`;
-
-			vi.mocked(smartFetch).mockResolvedValue(mockRSSData);
+			vi.mocked(smartFetch).mockResolvedValue(mockSpotifyRss.simplePodcast);
 
 			const series = await getSpotifySeries({ rssURL: 'https://example.com/rss' });
 			expect(series).toBeDefined();
@@ -41,18 +32,7 @@ describe('Spotify Functions', () => {
 		});
 
 		it('should extract all required fields from RSS', async () => {
-			const mockRSSData = `<?xml version="1.0" encoding="UTF-8"?>
-<rss>
-  <channel>
-    <title>My Podcast</title>
-    <description>Description here</description>
-    <link>https://podcast.example.com</link>
-    <copyright>© 2025</copyright>
-    <language>en</language>
-  </channel>
-</rss>`;
-
-			vi.mocked(smartFetch).mockResolvedValue(mockRSSData);
+			vi.mocked(smartFetch).mockResolvedValue(mockSpotifyRss.fullPodcast);
 
 			const series = await getSpotifySeries({ rssURL: 'https://example.com/rss' });
 			expect(series?.description).toBe('Description here');
@@ -80,25 +60,7 @@ describe('Spotify Functions', () => {
 
 	describe('getSpotifyEpisodes', () => {
 		it('should fetch podcast episodes from RSS feed', async () => {
-			const mockRSSData = `<?xml version="1.0" encoding="UTF-8"?>
-<rss>
-  <channel>
-    <item>
-      <title>Episode 1</title>
-      <description>First episode</description>
-      <link>https://example.com/ep1</link>
-      <pubDate>Mon, 01 Jan 2025 00:00:00 GMT</pubDate>
-    </item>
-    <item>
-      <title>Episode 2</title>
-      <description>Second episode</description>
-      <link>https://example.com/ep2</link>
-      <pubDate>Tue, 02 Jan 2025 00:00:00 GMT</pubDate>
-    </item>
-  </channel>
-</rss>`;
-
-			vi.mocked(smartFetch).mockResolvedValue(mockRSSData);
+			vi.mocked(smartFetch).mockResolvedValue(mockSpotifyRss.podcastEpisodes);
 
 			const episodes = await getSpotifyEpisodes({ rssURL: 'https://example.com/rss' });
 			expect(Array.isArray(episodes)).toBe(true);

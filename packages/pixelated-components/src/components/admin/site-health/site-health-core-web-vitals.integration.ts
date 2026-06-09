@@ -122,9 +122,9 @@ export async function performCoreWebVitalsAnalysis(
 
 export async function fetchPSIData(url: string): Promise<any> {
 	// Require the PSI API key from the unified pixelated.config.json. No environment fallback.
-	const apiKey = getFullPixelatedConfig()?.googlePSI?.api_key;
+	const apiKey = getFullPixelatedConfig()?.integrations?.googlePSI?.api_key;
 	if (!apiKey) {
-		throw new Error('Google PSI API key is not set; set googlePSI.api_key in pixelated.config.json');
+		throw new Error('Google PSI API key is not set; set integrations.googlePSI.api_key in pixelated.config.json');
 	}
 
 	const psiUrl = buildUrl({

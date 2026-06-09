@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, waitFor } from '@testing-library/react';
-import { Markdown, useFileData } from '../components/general/markdown';
+import { Markdown, useFileData } from '../components/elements/markdown';
 
 // Mock SmartImage component
-vi.mock('../components/cms/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
   SmartImage: (props: any) => React.createElement('img', {
     src: props.src,
     alt: props.alt,

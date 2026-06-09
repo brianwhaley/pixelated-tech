@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "component": "PageSection",
+      "props": {
+        "columns": 1,
+        "maxWidth": "1024px",
+        "id": "header-section"
+      },
+      "children": [
+        {
+          "component": "PageTitleHeader",
+          "props": {
+            "title": "Frequently Asked Questions",
+            "subtitle": "Find answers to common questions about our web design and development services"
+          }
+        },
+        {
+          "component": "PageHTML",
+          "props": {
+            "html": "<p>These frequently asked questions (FAQs) provide answers to common inquiries about our services and offerings. If you have any additional questions, feel free to reach out to our support team.</p>"
+          }
+        }
+      ]
+    },
+    {
+      "component": "PageSection",
+      "props": {
+        "columns": 1,
+        "maxWidth": "1024px",
+        "id": "faqs-section"
+      },
+      "children": [
+        {
+          "component": "FAQ",
+          "props": {
+            "faqsData": "{{faqsData}}"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -22,7 +22,7 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	getOriginFromNextHeaders: async () => 'https://palmetto-epoxy.com',
 	buildSitemapConfig: () => ({ siteUrl: 'https://palmetto-epoxy.com' }),
 	generateSitemap: async () => [{ url: 'https://palmetto-epoxy.com/sitemap.xml' }],
-	Manifest: ({ siteInfo }: any) => ({ siteInfo }),
+	Manifest: ({ siteInfo }: any = {}) => ({ siteInfo: siteInfo ?? {} }),
 	handlePixelatedProxy: (req: any) => {
 		const path = req.nextUrl.pathname + (req.nextUrl.search || '');
 		const origin = req.nextUrl?.origin ?? new URL(req.url).origin;

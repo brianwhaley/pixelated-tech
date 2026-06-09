@@ -9,7 +9,7 @@ import formData from "@/app/data/contactform.json";
 
 const calendarID = "1b783753ce78e200e6e505694b0610c48c8b5ca756f4d71986c4f7de97caaa13%40group.calendar.google.com";
 
-export default function Contact() {
+export default function ContactPage() {
 	
 	return (
 		<>

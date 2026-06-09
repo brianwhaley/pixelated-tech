@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import { mockSitesConfig } from '../test/test-data';
 import {
   loadSitesConfig,
   saveSitesConfig,
@@ -34,20 +35,7 @@ const mockFs = fs as any;
 const mockPath = path as any;
 
 describe('Sites Integration', () => {
-  const mockSites: SiteConfig[] = [
-    {
-      name: 'test-site-1',
-      localPath: '/path/to/site1',
-      remote: 'https://site1.com',
-      ga4PropertyId: '123456789',
-      searchConsoleUrl: 'https://search.google.com/search-console'
-    },
-    {
-      name: 'test-site-2',
-      localPath: '/path/to/site2',
-      ga4PropertyId: 'GA4_PROPERTY_ID_HERE'
-    }
-  ];
+  const mockSites: SiteConfig[] = mockSitesConfig as any;
 
   const mockSitesJson = JSON.stringify(mockSites, null, 2);
   const defaultConfigPath = '/mock/sites.json';

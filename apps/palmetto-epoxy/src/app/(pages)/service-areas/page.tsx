@@ -6,7 +6,7 @@ import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 
 
-export default function CommercialService() {	
+export default function ServiceAreasPage() {	
 	return (
 		<>
 			<CalloutLibrary.PageTitle title="Palmetto Epoxy - Service Areas" />

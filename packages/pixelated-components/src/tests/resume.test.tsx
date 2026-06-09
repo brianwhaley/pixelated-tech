@@ -13,10 +13,10 @@ import {
   ResumeReferences,
   ResumeReference,
   ResumeProjects,
-} from '../components/general/resume';
+} from '../components/structure/resume';
 
 // Mock SmartImage
-vi.mock('../components/cms/smartimage', () => ({
+vi.mock('../components/elements/smartimage', () => ({
   SmartImage: (props: any) => {
     const { src, alt, title, className, onClick } = props;
     return React.createElement('img', {

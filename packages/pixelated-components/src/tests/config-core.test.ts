@@ -110,35 +110,37 @@ describe('config core logic', () => {
 
 		it('should call getFullPixelatedConfig if no arg provided', () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
-			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ global: { proxyUrl: 'test' } }));
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ integrations: { global: { proxyUrl: 'test' } } }));
 			
 			const config = getClientOnlyPixelatedConfig();
-			expect(config.global?.proxyUrl).toBe('test');
+			expect(config.integrations?.global?.proxyUrl).toBe('test');
 		});
 
 		it('should strip secrets from provided config', () => {
 			const fullConfig = {
-				global: { proxyUrl: 'test' },
-				cloudinary: {
-					product_env: 'prod',
-					api_secret: 'top-secret'
-				},
-				paypal: {
-					sandboxPayPalApiKey: 'sandbox-client-id',
-					sandboxPayPalSecret: 'sandbox-secret',
-					payPalApiKey: 'prod-client-id',
-					payPalSecret: 'prod-secret'
+				integrations: {
+					global: { proxyUrl: 'test' },
+					cloudinary: {
+						product_env: 'prod',
+						api_secret: 'top-secret'
+					},
+					paypal: {
+						sandboxPayPalApiKey: 'sandbox-client-id',
+						sandboxPayPalSecret: 'sandbox-secret',
+						payPalApiKey: 'prod-client-id',
+						payPalSecret: 'prod-secret'
+					}
 				}
 			};
 			const client = getClientOnlyPixelatedConfig(fullConfig as any);
-			expect(client.global?.proxyUrl).toBe('test');
-			expect(client.cloudinary).toBeDefined();
-			expect((client.cloudinary as any).api_secret).toBeUndefined();
-			expect(client.paypal).toBeDefined();
-			expect((client.paypal as any).sandboxPayPalApiKey).toBe('sandbox-client-id');
-			expect((client.paypal as any).payPalApiKey).toBe('prod-client-id');
-			expect((client.paypal as any).sandboxPayPalSecret).toBeUndefined();
-			expect((client.paypal as any).payPalSecret).toBeUndefined();
+			expect(client.integrations?.global?.proxyUrl).toBe('test');
+			expect(client.integrations?.cloudinary).toBeDefined();
+			expect((client.integrations?.cloudinary as any).api_secret).toBeUndefined();
+			expect(client.integrations?.paypal).toBeDefined();
+			expect((client.integrations?.paypal as any).sandboxPayPalApiKey).toBe('sandbox-client-id');
+			expect((client.integrations?.paypal as any).payPalApiKey).toBe('prod-client-id');
+			expect((client.integrations?.paypal as any).sandboxPayPalSecret).toBeUndefined();
+			expect((client.integrations?.paypal as any).payPalSecret).toBeUndefined();
 		});
 	});
 });

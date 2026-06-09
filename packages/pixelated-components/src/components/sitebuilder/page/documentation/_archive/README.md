@@ -227,12 +227,12 @@ The refactored structure is **ready to use**:
       component: "Flex Section",  // Child layout
       props: { direction: "column" },
       children: [
-        { component: "Page Header", props: {...} },
+        { component: "PageHeader", props: {...} },
         { component: "Callout", props: {...} }
       ]
     },
     {
-      component: "Grid Item",  // Another child
+      component: "GridItem",  // Another child
       props: { columnSpan: 1 },
       children: [
         { component: "Callout", props: {...} }

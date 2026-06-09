@@ -9,7 +9,7 @@ import LayoutClient from '@/app/elements/layout-client';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
 import Footer from '@/app/elements/footer';
-import siteConfig from "@/app/data/siteconfig.json";
+import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import './styles/globals.css';
@@ -20,30 +20,33 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
+	const pixelatedConfig = getFullPixelatedConfig();
 	const reqHeaders: Headers = await (headers() as Promise<Headers>);
 	const path = reqHeaders.get("x-path") ?? "/";
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
+	const metadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
 
 	return (
 		<html lang="en">
 			<LayoutClient />
 			<head>
-				{ generateMetaTags({
-					title: metadata?.title ?? "",
-					description: metadata?.description ?? "",
-					keywords: metadata?.keywords ?? "",
-					origin: origin ?? "",
-					url: url ?? "",
-					siteInfo: siteConfig.siteInfo as SiteInfo,
-				}) }
-				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteConfig.siteInfo.url} />
-				<WebsiteSchema siteInfo={siteConfig.siteInfo as SiteInfo} />
-				<LocalBusinessSchema siteInfo={siteConfig.siteInfo} />
-				<ServicesSchema siteInfo={siteConfig.siteInfo} />
-				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
+				<PixelatedServerConfigProvider>
+					{ generateMetaTags({
+						title: metadata?.title ?? "",
+						description: metadata?.description ?? "",
+						keywords: metadata?.keywords ?? "",
+						origin: origin ?? "",
+						url: url ?? "",
+						siteInfo: pixelatedConfig.siteInfo as SiteInfo,
+					}) }
+					<BreadcrumbListSchema currentPath={pathname} />
+					<WebsiteSchema />
+					<LocalBusinessSchema />
+					<ServicesSchema />
+					<VisualDesignStyles />
+				</PixelatedServerConfigProvider>
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>

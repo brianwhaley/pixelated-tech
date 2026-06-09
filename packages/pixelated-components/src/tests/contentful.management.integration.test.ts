@@ -13,12 +13,9 @@ import {
 	deleteEntry,
 	searchEntriesByField
 } from '../components/integrations/contentful.management';
+import { pixelatedConfig } from '../test/test-data';
 
-const mockConfig = {
-	space_id: 'test-space-id',
-	management_access_token: 'test-token',
-	environment: 'master'
-};
+const mockConfig = pixelatedConfig.integrations?.contentful;
 
 describe('Contentful Management integration tests', () => {
 	beforeEach(() => {
@@ -36,8 +33,8 @@ describe('Contentful Management integration tests', () => {
 
 		expect(result.success).toBe(true);
 		expect(result.entries).toHaveLength(1);
-		expect((smartFetch as any).mock.calls[0][0]).toContain('/spaces/test-space-id/environments/master/entries');
-		expect((smartFetch as any).mock.calls[0][1].requestInit.headers.Authorization).toContain('Bearer test-token');
+		expect((smartFetch as any).mock.calls[0][0]).toContain(`/spaces/${mockConfig?.space_id}/environments/master/entries`);
+		expect((smartFetch as any).mock.calls[0][1].requestInit.headers.Authorization).toContain(`Bearer ${mockConfig?.management_access_token}`);
 	});
 
 	it('getEntryById should return entry data when found', async () => {

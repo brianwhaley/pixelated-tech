@@ -10,8 +10,7 @@ export default function Footer() {
 	return (
 		<PageSection id="footer-section" columns={1} padding="20px 0 0 0">
 			<div suppressHydrationWarning={true} >
-				<GoogleAnalytics id="G-1J1W90VBE1" />
-				<GoogleAnalytics id="AW-17721931789" />
+				<GoogleAnalytics />
 				<GoogleAnalyticsEvent event_name="conversion" 
 					event_parameters={{ 
 						send_to: "AW-17721931789/qOjmCM77-74bEI3wvIJC", 

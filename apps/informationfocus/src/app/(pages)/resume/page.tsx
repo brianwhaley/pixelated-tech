@@ -5,7 +5,7 @@ import { ResumeName, ResumeContact, ResumeEvents, ResumeSkills, ResumeSummary } 
 import { PageSection, PageGridItem } from '@pixelated-tech/components';
 import ResumeData from '@/app/data/resume.json';
 
-export default function Home() {
+export default function ResumePage() {
 
 	return (
 		<PageSection columns={12} className="p-resume" id="resume-section">

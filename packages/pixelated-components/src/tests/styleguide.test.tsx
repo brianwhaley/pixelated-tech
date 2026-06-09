@@ -1,5 +1,6 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render } from '../test/test-utils';
+import { render as baseRender } from '../test/test-utils';
 import { screen } from '@testing-library/react';
 
 // Stub package-level UI used by StyleGuideUI so tests don't resolve built `dist` assets
@@ -23,6 +24,13 @@ const nestedRoutes = [
   { name: 'About', path: '/about', routes: [{ name: 'Team', path: '/team' }, { name: 'History', path: '/history' }] },
   { name: 'Blog', path: '/blog' },
 ];
+
+function render(ui: React.ReactElement, options?: any) {
+  if (React.isValidElement(ui) && ui.type === StyleGuideUI && (ui.props as any).routes !== undefined) {
+    return baseRender(<StyleGuideUI />, { config: { routes: (ui.props as any).routes }, ...options });
+  }
+  return baseRender(ui, options);
+}
 
 const flatRoutes = [
   { name: 'Home', path: '/' },
@@ -179,7 +187,8 @@ describe('StyleGuideUI', () => {
   describe('Routes - Rendering', () => {
     it('renders flattened route list including nested routes (only leaf routes are shown)', () => {
       const { container } = render(<StyleGuideUI routes={nestedRoutes} />);
-      const ul = container.querySelector('#fonts-section + #fonts-section ul') || container.querySelector('section#fonts-section ul');
+      const routeSection = Array.from(container.querySelectorAll('section')).find(section => section.textContent?.includes('Information Architecture'));
+      const ul = routeSection?.querySelector('ul');
       const items = Array.from(ul?.querySelectorAll('li') || []).map(li => (li.textContent || '').replace(/\s+/g, ' ').trim());
 
       expect(items).toContain('Team - /team');

@@ -67,31 +67,15 @@ function selectItems(items: any) {
 		quantity: item.quantity ?? item.itemQuantity,
 		category: item.category ?? (Array.isArray(item.itemCategory) ? item.itemCategory.join(', ') : item.itemCategory),
 	});
-
-	if (Array.isArray(items)) {
-		return items.map((item) => normalizeItem(item || {}));
-	}
-
-	if (items && typeof items === 'object') {
-		return normalizeItem(items);
-	}
-
+	if (Array.isArray(items)) { return items.map((item) => normalizeItem(item || {}));}
+	if (items && typeof items === 'object') { return normalizeItem(items); }
 	return [];
 }
 
 function toPlainValue(value: any): any {
-	if (value === null || value === undefined) {
-		return value;
-	}
-
-	if (Array.isArray(value)) {
-		return value.map((item) => toPlainValue(item));
-	}
-
-	if (typeof value !== 'object') {
-		return value;
-	}
-
+	if (value === null || value === undefined) { return value; }
+	if (Array.isArray(value)) { return value.map((item) => toPlainValue(item)); }
+	if (typeof value !== 'object') { return value; }
 	const keys = Object.keys(value);
 	if (keys.length > 0 && keys.every((key) => dynamoAttributeKeys.has(key))) {
 		if ('S' in value) return value.S;
@@ -105,15 +89,11 @@ function toPlainValue(value: any): any {
 		if ('BS' in value) return [...(value.BS || [])];
 		if ('B' in value) return value.B;
 	}
-
 	return Object.fromEntries(Object.entries(value).map(([key, nestedValue]) => [key, toPlainValue(nestedValue)]));
 }
 
 function parsePossibleJson(value: any) {
-	if (typeof value !== 'string') {
-		return value;
-	}
-
+	if (typeof value !== 'string') { return value; }
 	try {
 		return JSON.parse(value);
 	} catch {
@@ -130,28 +110,22 @@ function normalizeDynamoItem(item: Record<string, any>) {
 	const shippingTo = checkoutData.shippingTo ?? {};
 	const registrationDataSource = shippingTo;
 	const createdAt = payment.created_at ? new Date(payment.created_at).toLocaleString() : '';
-
 	const row: PixelatedFormSubmissionReportRow = {
 		created_at: createdAt,
 		shipping_to: selectShippingTo(shippingTo),
 		registration_data: selectRegistrationData(registrationDataSource),
 		items: selectItems(checkoutData.items),
 	};
-
 	return row;
 }
 
 function getDynamoConfig() {
 	const config = getFullPixelatedConfig();
-	const aws = config.aws;
+	const aws = config?.integrations?.aws;
 	if (!aws?.region) {
 		throw new Error('AWS region is missing from pixelated.config.json.');
 	}
-
-	const clientConfig: Record<string, any> = {
-		region: aws.region,
-	};
-
+	const clientConfig: Record<string, any> = { region: aws.region };
 	if (aws.access_key_id && aws.secret_access_key) {
 		clientConfig.credentials = {
 			accessKeyId: aws.access_key_id,
@@ -159,7 +133,6 @@ function getDynamoConfig() {
 			sessionToken: aws.session_token,
 		};
 	}
-
 	return clientConfig;
 }
 
@@ -175,7 +148,6 @@ export async function listPixelatedFormSubmissionReportRows(options: PixelatedFo
 	const client = createDynamoClient();
 	const items: Array<Record<string, any>> = [];
 	let exclusiveStartKey: Record<string, any> | undefined;
-
 	do {
 		const response = await client.send(new ScanCommand({
 			TableName: options.tableName ?? DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
@@ -190,10 +162,8 @@ export async function listPixelatedFormSubmissionReportRows(options: PixelatedFo
 			},
 			ExclusiveStartKey: exclusiveStartKey,
 		}));
-
 		items.push(...((response.Items || []) as Array<Record<string, any>>));
 		exclusiveStartKey = response.LastEvaluatedKey;
 	} while (exclusiveStartKey);
-
 	return buildPixelatedFormSubmissionReportRows(items);
 }

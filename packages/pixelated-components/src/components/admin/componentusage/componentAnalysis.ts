@@ -11,6 +11,7 @@ export interface ComponentUsageResult {
   components: string[];
   siteList: SiteConfig[];
   usageMatrix: { [component: string]: { [site: string]: boolean } };
+  warnings?: string[];
 }
 
 /**
@@ -87,10 +88,20 @@ export async function getAllFiles(dirPath: string, extensions: string[] = []): P
 export async function checkComponentUsage(sitePath: string | undefined, componentName: string): Promise<boolean> {
 	try {
 		if (!sitePath) return false; // nothing to scan
+		try {
+			const stats = await fs.stat(sitePath);
+			if (!stats.isDirectory()) {
+				console.warn(`Component usage localPath is not a directory: ${sitePath}`);
+				return false;
+			}
+		} catch (error) {
+			console.warn(`Component usage localPath is invalid or inaccessible: ${sitePath}`, error);
+			return false;
+		}
 		const files = await getAllFiles(sitePath, ['.tsx', '.ts', '.jsx', '.js']);
 
 		// Special case for semantic components that export multiple functions
-		if (componentName === 'general/semantic') {
+		if (componentName === 'structure/page-blocks') {
 			const semanticExports = [
 				'PageTitleHeader', 'PageSection', 'PageSectionHeader', 'PageSectionBackgroundImage',
 				'PageGridItem', 'PageFlexItem', 'PageHeader', 'PageHero', 'PageMain', 'PageNav', 'PageFooter'
@@ -149,6 +160,7 @@ export async function analyzeComponentUsage(
 	components: string[],
 	sites: SiteConfig[]
 ): Promise<ComponentUsageResult> {
+	const warnings: string[] = [];
 	// Build usage matrix in parallel
 	const usageMatrix: { [component: string]: { [site: string]: boolean } } = {};
 
@@ -157,6 +169,21 @@ export async function analyzeComponentUsage(
 		usageMatrix[component] = {};
 		for (const site of sites) {
 			usageMatrix[component][site.name] = false; // default
+		}
+	}
+
+	for (const site of sites) {
+		if (!site.localPath) {
+			warnings.push(`Site ${site.name} has no localPath configured; component usage scan skipped.`);
+			continue;
+		}
+		try {
+			const stats = await fs.stat(site.localPath);
+			if (!stats.isDirectory()) {
+				warnings.push(`Site ${site.name} localPath is not a directory: ${site.localPath}`);
+			}
+		} catch (error) {
+			warnings.push(`Site ${site.name} localPath does not exist or is inaccessible: ${site.localPath}`);
 		}
 	}
 
@@ -187,6 +214,7 @@ export async function analyzeComponentUsage(
 	return {
 		components,
 		siteList: sites,
-		usageMatrix
+		usageMatrix,
+		warnings
 	};
 }

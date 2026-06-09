@@ -2,13 +2,12 @@
 "use client";
 
 import React from "react";
-import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
-import siteConfig from "@/app/data/siteconfig.json";
-const siteInfo = (siteConfig as any).siteInfo;
 
 export default function ContactPage() {
+	const pixelatedConfig = usePixelatedConfig();
 	return (
 		<>
 			<PageTitleHeader title="Contact JZ Home Improvement" />
@@ -37,13 +36,13 @@ export default function ContactPage() {
 					<h3>Address:</h3>
 					<p>
 						<a href="https://maps.app.goo.gl/2bD1zr43i5CmkfAk7" target="_blank" rel="noopener noreferrer">
-							{siteInfo.address.streetAddress}, {siteInfo.address.addressLocality}, {siteInfo.address.addressRegion}, {siteInfo.address.postalCode}
+							{pixelatedConfig.siteInfo.address.streetAddress}, {pixelatedConfig.siteInfo.address.addressLocality}, {pixelatedConfig.siteInfo.address.addressRegion}, {pixelatedConfig.siteInfo.address.postalCode}
 						</a>
 					</p>
 					<h3>Email:</h3>
-					<p><a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></p>
+					<p><a href={`mailto:${pixelatedConfig.siteInfo.email}`}>{pixelatedConfig.siteInfo.email}</a></p>
 					<h3>Phone:</h3>
-					<p><a href={`tel:${siteInfo.telephone}`}>{siteInfo.telephone}</a></p>
+					<p><a href={`tel:${pixelatedConfig.siteInfo.telephone}`}>{pixelatedConfig.siteInfo.telephone}</a></p>
 				</div>
 			</PageSection>
 

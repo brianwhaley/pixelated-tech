@@ -11,7 +11,7 @@ import { usePixelatedConfig } from "@pixelated-tech/components";
 // import GalleryWrapper from "@/app/elements/gallerywrapper";
 import { SmartImage } from "@pixelated-tech/components";
 
-export default function CustomSunglasses() {
+export default function CustomSunglassesPage() {
 	const pixelatedConfig = usePixelatedConfig();
 
 	if (!pixelatedConfig) {

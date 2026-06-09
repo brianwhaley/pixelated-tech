@@ -2,14 +2,10 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import { MenuAccordion } from "@pixelated-tech/components";
-// import { getAccordionMenuData } from "../components/metadata/pixelated.metadata";
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
-
-// const menuItems = getAccordionMenuData(allRoutes);
+import { MenuAccordion, usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function Nav() {
+	const routes = usePixelatedConfig()?.routes ?? [];
 	const searchParams = useSearchParams();
 	const fullMenuParam = searchParams.get('fullmenu');
 	const fullMenu = fullMenuParam !== null && fullMenuParam !== 'false';
@@ -28,12 +24,12 @@ export default function Nav() {
 	return fullMenu ? (
 		<div suppressHydrationWarning={true}>
 			<style dangerouslySetInnerHTML={{ __html: customCSS + fullMenuCSS }} />
-			<MenuAccordion menuItems={allRoutes} showHidden={fullMenu} />
+			<MenuAccordion menuItems={routes} showHidden={fullMenu} />
 		</div>
 	) : (
 		<div suppressHydrationWarning={true}>
 			<style dangerouslySetInnerHTML={{ __html: customCSS }} />
-			<MenuAccordion menuItems={allRoutes} />
+			<MenuAccordion menuItems={routes} />
 		</div>
 	);
 }

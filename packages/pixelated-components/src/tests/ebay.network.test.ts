@@ -10,7 +10,7 @@ vi.mock('../components/foundation/smartfetch', () => ({
 describe('eBay live network regression', () => {
 	it('reproduces proxy token acquisition using real pixelated.config.json', async () => {
 		const config = getFullPixelatedConfig();
-		const ebayConfig = config.ebay ?? {
+		const ebayConfig = config.integrations?.ebay ?? {
 			proxyURL: 'https://proxy.example.com/',
 			baseTokenURL: 'https://api.example.com/token',
 			tokenScope: 'https://api.ebay.com/oauth/api_scope',

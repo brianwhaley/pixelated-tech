@@ -1,0 +1,30 @@
+{
+  "basic": {
+    "siteInfo": {
+      "services": [
+        { "name": "Epoxy Floors", "url": "/services/epoxy-floors" }
+      ],
+      "serviceAreas": [
+        { "name": "Coastal Area", "path": "/service-areas/coastal-area" }
+      ]
+    }
+  },
+  "noPrefix": {
+    "siteInfo": {
+      "servicesPathPrefix": "",
+      "services": [
+        { "name": "Epoxy Floors" }
+      ],
+      "serviceAreas": []
+    }
+  },
+  "customPrefix": {
+    "siteInfo": {
+      "servicesPathPrefix": "/offerings",
+      "services": [
+        { "name": "Epoxy Floors" }
+      ],
+      "serviceAreas": []
+    }
+  }
+}

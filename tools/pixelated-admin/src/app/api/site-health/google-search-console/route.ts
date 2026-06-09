@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { getSearchConsoleData, SearchConsoleConfig } from '@pixelated-tech/components/adminserver';
-import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
+import { getFullPixelatedConfig, getSiteConfig } from '@pixelated-tech/components/server';
 
 export async function GET(request: NextRequest) {
 	try {
@@ -15,23 +13,19 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ success: false, error: 'siteName required' }, { status: 400 });
 		}
 
-		// Load sites configuration
-		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
-		const sitesData = JSON.parse(fs.readFileSync(sitesPath, 'utf8'));
-		const site = sitesData.find((s: any) => s.name === siteName);
-
+		const site = await getSiteConfig(siteName);
 		if (!site) {
 			return NextResponse.json({ success: false, error: 'Site not found' }, { status: 404 });
 		}
 
-		// Build Search Console config from unified pixelated.config.json (no env fallback)
 		const fullConfig = getFullPixelatedConfig();
-		const googleCfg = (fullConfig.google || {}) as any;
-		const gscCfg = (fullConfig.googleSearchConsole || {}) as any;
+		const integrations = (fullConfig.integrations || {}) as any;
+		const googleCfg = (integrations.google || {}) as any;
+		const gscCfg = (integrations.googleSearchConsole || {}) as any;
 
 		const config: SearchConsoleConfig = {
-			siteUrl: site.gscSiteUrl,
-			serviceAccountKey: (gscCfg as any).serviceAccountKey || (googleCfg as any).serviceAccountKey,
+			siteUrl: site.gscSiteUrl || site.searchConsoleUrl || '',
+			serviceAccountKey: gscCfg.serviceAccountKey || googleCfg.serviceAccountKey,
 			clientId: googleCfg.client_id,
 			clientSecret: googleCfg.client_secret,
 			refreshToken: googleCfg.refresh_token,

@@ -1,6 +1,22 @@
-import { render } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { describe, it, expect } from 'vitest';
 import { BreadcrumbListSchema } from '../components/foundation/schema';
+
+function renderBreadcrumbSchema(currentPath: string = '/', config: any = {}) {
+	return render(<BreadcrumbListSchema currentPath={currentPath} />, {
+		config: {
+			routes: [
+				{ name: 'Home', path: '/' },
+				{ name: 'Store', path: '/store' },
+				{ name: 'Gallery', path: '/gallery' },
+				{ name: 'About', path: '/about' },
+				{ name: 'Projects', path: '/projects' },
+			],
+			siteInfo: { url: 'https://example.com' },
+			...config,
+		},
+	});
+}
 
 describe('BreadcrumbListSchema', () => {
 	const mockRoutes = [
@@ -12,17 +28,13 @@ describe('BreadcrumbListSchema', () => {
 	];
 
 	it('renders a script tag with application/ld+json type', () => {
-		const { container } = render(
-			<BreadcrumbListSchema routes={mockRoutes} currentPath="/" />
-		);
+		const { container } = renderBreadcrumbSchema('/', { routes: mockRoutes });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		expect(script).toBeDefined();
 	});
 
 	it('generates BreadcrumbList for root path', () => {
-		const { container } = render(
-			<BreadcrumbListSchema routes={mockRoutes} currentPath="/" />
-		);
+		const { container } = renderBreadcrumbSchema('/', { routes: mockRoutes });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -34,9 +46,7 @@ describe('BreadcrumbListSchema', () => {
 	});
 
 	it('generates breadcrumbs for single-level path', () => {
-		const { container } = render(
-			<BreadcrumbListSchema routes={mockRoutes} currentPath="/store" />
-		);
+		const { container } = renderBreadcrumbSchema('/store', { routes: mockRoutes });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -56,9 +66,7 @@ describe('BreadcrumbListSchema', () => {
 	});
 
 	it('generates breadcrumbs for multi-level dynamic path', () => {
-		const { container } = render(
-			<BreadcrumbListSchema routes={mockRoutes} currentPath="/store/vintage-oakley" />
-		);
+		const { container } = renderBreadcrumbSchema('/store/vintage-oakley', { routes: mockRoutes });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -71,13 +79,7 @@ describe('BreadcrumbListSchema', () => {
 	});
 
 	it('uses custom siteUrl from props', () => {
-		const { container } = render(
-			<BreadcrumbListSchema
-				routes={mockRoutes}
-				currentPath="/store"
-				siteUrl="https://www.pixelvivid.com"
-			/>
-		);
+		const { container } = renderBreadcrumbSchema('/store', { routes: mockRoutes, siteInfo: { url: 'https://www.pixelvivid.com' } });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -86,13 +88,7 @@ describe('BreadcrumbListSchema', () => {
 	});
 
 	it('handles siteUrl with trailing slash correctly', () => {
-		const { container } = render(
-			<BreadcrumbListSchema
-				routes={mockRoutes}
-				currentPath="/projects"
-				siteUrl="https://www.palmetto-epoxy.com/"
-			/>
-		);
+		const { container } = renderBreadcrumbSchema('/projects', { routes: mockRoutes, siteInfo: { url: 'https://www.palmetto-epoxy.com/' } });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -101,7 +97,7 @@ describe('BreadcrumbListSchema', () => {
 	});
 
 	it('defaults to "/" path if currentPath not provided', () => {
-		const { container } = render(<BreadcrumbListSchema routes={mockRoutes} />);
+		const { container } = renderBreadcrumbSchema('/', { routes: mockRoutes });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -110,9 +106,7 @@ describe('BreadcrumbListSchema', () => {
 	});
 
 	it('defaults to https://example.com if siteUrl not provided', () => {
-		const { container } = render(
-			<BreadcrumbListSchema routes={mockRoutes} currentPath="/about" />
-		);
+		const { container } = renderBreadcrumbSchema('/about', { routes: mockRoutes, siteInfo: { url: 'https://example.com' } });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -125,9 +119,7 @@ describe('BreadcrumbListSchema', () => {
 			{ name: 'Home', path: '/' },
 			{ name: 'Products', path: '/products' },
 		];
-		const { container } = render(
-			<BreadcrumbListSchema routes={routes} currentPath="/products/awesome-product-name" />
-		);
+		const { container } = renderBreadcrumbSchema('/products/awesome-product-name', { routes, siteInfo: { url: 'https://example.com' } });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 
@@ -139,12 +131,7 @@ describe('BreadcrumbListSchema', () => {
 			{ name: 'Home', path: '/' },
 			{ name: 'Projects', path: '/projects' },
 		];
-		const { container } = render(
-			<BreadcrumbListSchema
-				routes={routes}
-				currentPath="/projects/2024/residential-kitchen"
-			/>
-		);
+		const { container } = renderBreadcrumbSchema('/projects/2024/residential-kitchen', { routes, siteInfo: { url: 'https://example.com' } });
 		const script = container.querySelector('script[type="application/ld+json"]');
 		const data = JSON.parse(script?.textContent || '{}');
 

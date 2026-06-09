@@ -1,8 +1,7 @@
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import appConfig from '@/app/config/pixelated.config.json';
-import { createPageComponentMocks, resetPixelatedConfigOverride, setGoogleReviewsResponse, setPixelatedConfigOverride } from '@/test/page-mocks';
+import { config as appConfig, createPageComponentMocks, resetPixelatedConfigOverride, setGoogleReviewsResponse, setPixelatedConfigOverride } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', () => {
 	const baseMocks = createPageComponentMocks({
@@ -11,22 +10,23 @@ vi.mock('@pixelated-tech/components', () => {
 	return baseMocks;
 });
 
-const googlePlacesKey = 'googlePlaces';
 const placeIdKey = 'placeId';
 const apiKeyKey = 'apiKey';
-const globalKey = 'global';
 const proxyUrlKey = 'proxyUrl';
 
 const createAboutUsConfig = (apiKey: string, placeId: string) => {
 	const configClone = structuredClone(appConfig) as any;
-	configClone[googlePlacesKey] = {
-		...configClone[googlePlacesKey],
-		[placeIdKey]: placeId,
-		[apiKeyKey]: apiKey,
-	};
-	configClone[globalKey] = {
-		...configClone[globalKey],
-		[proxyUrlKey]: '',
+	configClone.integrations = {
+		...configClone.integrations,
+		googlePlaces: {
+			...configClone.integrations?.googlePlaces,
+			[placeIdKey]: placeId,
+			[apiKeyKey]: apiKey,
+		},
+		global: {
+			...configClone.integrations?.global,
+			[proxyUrlKey]: '',
+		},
 	};
 	return configClone;
 };

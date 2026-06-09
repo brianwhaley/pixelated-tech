@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { mockUspsConfig, pixelatedConfig } from '../test/test-data';
 
 vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: vi.fn(),
@@ -29,10 +30,16 @@ describe('fetchUspsRatesServer', () => {
 	});
 
 	it('forwards config and parameters to getUspsRates', async () => {
-		const uspsConfig = { consumerKey: 'KEY', consumerSecret: 'SECRET' };
+		const uspsConfig = mockUspsConfig;
 		const { getFullPixelatedConfig } = await import('../components/config/config');
 		const { getUspsRates } = await import('../components/shoppingcart/usps.functions');
-		vi.mocked(getFullPixelatedConfig).mockReturnValue({ usps: uspsConfig } as any);
+		vi.mocked(getFullPixelatedConfig).mockReturnValue({
+			...pixelatedConfig,
+			integrations: {
+				...pixelatedConfig.integrations,
+				usps: uspsConfig
+			}
+		} as any);
 		vi.mocked(getUspsRates).mockResolvedValueOnce([{ rateId: 'PRIORITY-0', serviceId: 'PRIORITY', serviceName: 'Priority Mail', rate: 14.99 }]);
 
 		const { fetchUspsRatesServer } = await import('../components/shoppingcart/usps.server');

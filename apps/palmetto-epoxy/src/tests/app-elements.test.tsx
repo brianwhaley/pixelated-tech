@@ -8,11 +8,8 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	preloadImages: () => null,
 	Callout: ({ title }: any) => <div data-testid="mock-callout">{title}</div>,
 	SmartImage: () => <span data-testid="mock-smartimage" />,
-	MenuSimple: () => <div data-testid="mock-menu-simple" />,
-}));
-
-vi.mock('@next/third-parties/google', () => ({
 	GoogleAnalytics: () => <div data-testid="mock-google-analytics" />,
+	MenuSimple: () => <div data-testid="mock-menu-simple" />,
 }));
 
 import Footer from '@/app/elements/footer';

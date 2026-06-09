@@ -26,7 +26,7 @@ export interface PaymentProviderDefinition {
 }
 
 function getSquareCheckoutProps(config?: any, checkoutData?: CheckoutType) {
-	const square = config?.square || {};
+	const square = config?.integrations?.square || {};
 	const checkoutEmail = normalizeEmail(checkoutData?.shippingTo?.email);
 	const sandboxEmails = Array.isArray(square?.sandboxSquareEmails)
 		? square.sandboxSquareEmails.map((value: any) => normalizeEmail(value))
@@ -52,25 +52,26 @@ export const paymentProviders: Record<PaymentProviderKey, PaymentProviderDefinit
 		displayName: 'PayPal',
 		component: PayPalCheckout,
 		isConfigured: (config?: any) => Boolean(
-			config?.paypal?.payPalApiKey || config?.paypal?.sandboxPayPalApiKey
+			config?.integrations?.paypal?.payPalApiKey || config?.integrations?.paypal?.sandboxPayPalApiKey
 		),
 		getProps: (config?: any, checkoutData?: CheckoutType, callbacks?: PaymentProviderCallbacks) => {
+			const paypal = config?.integrations?.paypal;
 			const email = checkoutData?.shippingTo?.email?.toString().trim().toLowerCase();
-			const sandboxEmails = Array.isArray(config?.paypal?.sandboxPayPalEmails)
-				? config.paypal.sandboxPayPalEmails.map((value: string) => value.toString().trim().toLowerCase())
+			const sandboxEmails = Array.isArray(paypal?.sandboxPayPalEmails)
+				? paypal.sandboxPayPalEmails.map((value: string) => value.toString().trim().toLowerCase())
 				: [];
 			const useSandbox = Boolean(email && sandboxEmails.includes(email));
 
 			return {
 				payPalClientID: useSandbox
-					? config?.paypal?.sandboxPayPalApiKey || ''
-					: config?.paypal?.payPalApiKey || '',
+					? paypal?.sandboxPayPalApiKey || ''
+					: paypal?.payPalApiKey || '',
 				payPalSecret: useSandbox
-					? config?.paypal?.sandboxPayPalSecret || ''
-					: config?.paypal?.payPalSecret || '',
+					? paypal?.sandboxPayPalSecret || ''
+					: paypal?.payPalSecret || '',
 				payPalApiBaseUrl: useSandbox
-					? config?.paypal?.sandboxPayPalApiBaseUrl || ''
-					: config?.paypal?.prodPayPalApiBaseUrl || '',
+					? paypal?.sandboxPayPalApiBaseUrl || ''
+					: paypal?.prodPayPalApiBaseUrl || '',
 			};
 		},
 		renderThankYou: renderPayPalThankYou,
@@ -104,7 +105,7 @@ export const paymentProviders: Record<PaymentProviderKey, PaymentProviderDefinit
 };
 
 export function getActivePaymentProvider(config?: any) {
-	const requested = config?.shoppingcart?.provider?.toString().toLowerCase() as PaymentProviderKey | undefined;
+	const requested = config?.integrations?.shoppingcart?.provider?.toString().toLowerCase() as PaymentProviderKey | undefined;
 	const priority: PaymentProviderKey[] = ['square', 'paypal', 'stripe'];
 	const providerOrder = requested && priority.includes(requested)
 		? [requested, ...priority.filter((provider) => provider !== requested)]

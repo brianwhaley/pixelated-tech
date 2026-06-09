@@ -8,7 +8,7 @@ import {
   MenuAccordionItem,
   MenuAccordionButton,
   MenuItem 
-} from '../components/general/menu-accordion';
+} from '../components/elements/menu-accordion';
 
 describe('MenuAccordion Component', () => {
   const mockMenuData: MenuItem[] = [
@@ -286,6 +286,18 @@ describe('MenuAccordion Component', () => {
       fireEvent.click(homeLink);
       expect(homeLink).toBeInTheDocument();
     });
+
+    it('should toggle submenu visibility when clicking parent without href', () => {
+      const { container } = render(<MenuAccordion menuItems={mockMenuData} />);
+      const servicesLink = screen.getByText(/▶ Services/);
+      const submenu = servicesLink.parentElement?.nextElementSibling as HTMLElement | null;
+
+      expect(submenu).toBeInTheDocument();
+      expect(submenu).toHaveClass('menu-hide');
+
+      fireEvent.click(servicesLink);
+      expect(submenu).toHaveClass('menu-show');
+    });
   });
 
   describe('MenuAccordionButton Component', () => {
@@ -323,6 +335,20 @@ describe('MenuAccordion Component', () => {
       fireEvent.click(button);
 
       expect(moveMenuMock).toHaveBeenCalled();
+    });
+
+    it('should toggle accordion classes when window.moveMenu is called directly', () => {
+      const { container } = render(<MenuAccordion menuItems={mockMenuData} />);
+      const wrapper = container.querySelector('.accordion-menu-wrapper');
+
+      expect(wrapper).toHaveClass('accordion-up');
+      expect(typeof window.moveMenu).toBe('function');
+
+      window.moveMenu();
+      expect(wrapper).toHaveClass('accordion-down');
+
+      window.moveMenu();
+      expect(wrapper).toHaveClass('accordion-up');
     });
 
     it('should have text-outline class', () => {

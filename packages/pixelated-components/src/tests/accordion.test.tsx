@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { Accordion } from '../components/general/accordion';
+import { Accordion } from '../components/elements/accordion';
 
 describe('Accordion', () => {
   const mockItems = [

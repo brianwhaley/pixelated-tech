@@ -539,6 +539,23 @@ describe('smartFetch', () => {
 			// The fetch should have been called and would abort on timeout
 			expect((global.fetch as any).mock.calls.length).toBeGreaterThan(0);
 		});
+
+		it('should not abort request when timeout is disabled', async () => {
+			const fetchPromise = new Promise(resolve => {
+				// never resolves
+			});
+			global.fetch = vi.fn(() => fetchPromise) as any;
+
+			const promise = smartFetch('https://api.example.com/data', {
+				timeout: 0,
+				retries: 0,
+				responseType: 'json',
+			});
+
+			await new Promise(resolve => setTimeout(resolve, 100));
+			expect((global.fetch as any).mock.calls.length).toBe(1);
+			await expect(Promise.race([promise, Promise.resolve('ok')])).resolves.toBe('ok');
+		});
 	});
 
 	describe('next.js cache strategy', () => {

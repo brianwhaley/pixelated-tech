@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { getContentfulEntriesByType, type ContentfulApiType } from './contentful.delivery';
 import { usePixelatedConfig } from '../config/config.client';
-import { PageSection } from '../general/semantic';
+import { PageSection } from '../structure/page-blocks';
 import './contentful.alert.css';
 
 const debug = false;
@@ -17,14 +17,6 @@ const debug = false;
  * @returns {JSX.Element | null} The rendered component or null if no alerts are active.
  */
 ContentfulAlerts.propTypes = {
-	/** Contentful API configuration object. Falls back to usePixelatedConfig if omitted. */
-	apiProps: PropTypes.shape({
-		proxyURL: PropTypes.string,
-		base_url: PropTypes.string,
-		space_id: PropTypes.string,
-		environment: PropTypes.string,
-		delivery_access_token: PropTypes.string,
-	}),
 	/** Contentful content type ID to query. */
 	alertContentType: PropTypes.string,
 };
@@ -32,14 +24,14 @@ export type ContentfulAlertsType = InferProps<typeof ContentfulAlerts.propTypes>
 export function ContentfulAlerts(props: ContentfulAlertsType) {
 	const config = usePixelatedConfig();
 	const [alerts, setAlerts] = useState<any[]>([]);
+	const contentfulConfig = config?.integrations?.contentful;
 
 	const apiProps: ContentfulApiType = {
-		proxyURL: props.apiProps?.proxyURL ?? config?.contentful?.proxyURL ?? undefined,
-		base_url: props.apiProps?.base_url ?? config?.contentful?.base_url ?? '',
-		space_id: props.apiProps?.space_id ?? config?.contentful?.space_id ?? '',
-		environment: props.apiProps?.environment ?? config?.contentful?.environment ?? '',
-		delivery_access_token:
-			props.apiProps?.delivery_access_token ?? config?.contentful?.delivery_access_token ?? '',
+		proxyURL: contentfulConfig?.proxyURL,
+		base_url: contentfulConfig?.base_url ?? '',
+		space_id: contentfulConfig?.space_id ?? '',
+		environment: contentfulConfig?.environment ?? '',
+		delivery_access_token: contentfulConfig?.delivery_access_token ?? '',
 	};
 
 	const alertContentType = props.alertContentType ?? 'alert';

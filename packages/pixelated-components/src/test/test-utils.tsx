@@ -1,11 +1,21 @@
+// Shared test utility helpers used by src/tests/*. This file should contain only
+// reusable rendering helpers, custom assertions, and test support helpers. It
+// should not contain raw test data or fixture objects.
+//
+// NOT for:
+// - fixture objects or sample payloads (use src/test/fixtures.ts or src/test/data/*.json)
+// - shared test data exports/barrel exports (use src/test/test-data.ts)
+// - application code or component implementation
+
+
 import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { expect } from 'vitest';
 import { PixelatedClientConfigProvider } from '../components/config/config.client';
 import { PixelatedConfig } from '../components/config/config.types';
-import configJson from '../config/pixelated.config.json';
+import { pixelatedConfig } from './test-data';
 
-export const mockConfig = configJson as unknown as PixelatedConfig;
+export const mockConfig = pixelatedConfig;
 export const createMockConfig = (overrides: Partial<PixelatedConfig>): PixelatedConfig => ({
 	...mockConfig,
 	...overrides,
@@ -53,7 +63,7 @@ expect.extend({
 });
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  config?: Partial<PixelatedConfig>;
+  config?: Partial<PixelatedConfig> | null;
 }
 
 /**
@@ -63,11 +73,15 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 function renderWithProviders(
 	ui: ReactElement,
 	{
-		config = {},
+		config,
 		...renderOptions
 	}: ExtendedRenderOptions = {}
 ) {
-	const mergedConfig = { ...mockConfig, ...config };
+	const mergedConfig = config === undefined || config === null
+		? mockConfig
+		: Object.keys(config).length === 0
+			? config
+			: { ...mockConfig, ...config };
 
 	function Wrapper({ children }: { children: React.ReactNode }) {
 		return (

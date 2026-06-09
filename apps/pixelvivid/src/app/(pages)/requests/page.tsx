@@ -31,10 +31,10 @@ export default function Requests() {
 
 	const [ customRequests , setCustomRequests ] = useState<CustomRequestType[]>([]);
 	const apiProps = {
-		base_url: pixelatedConfig?.contentful?.base_url || "",
-		space_id: pixelatedConfig?.contentful?.space_id || "",
-		environment: pixelatedConfig?.contentful?.environment || "",
-		delivery_access_token: pixelatedConfig?.contentful?.delivery_access_token || "",
+		base_url: pixelatedConfig?.integrations?.contentful?.base_url || "",
+		space_id: pixelatedConfig?.integrations?.contentful?.space_id || "",
+		environment: pixelatedConfig?.integrations?.contentful?.environment || "",
+		delivery_access_token: pixelatedConfig?.integrations?.contentful?.delivery_access_token || "",
 	};
 	useEffect(() => {
 		async function getCustomRequests() {
@@ -65,7 +65,7 @@ export default function Requests() {
 		<>
 			<section id="custom-request-section">
 				<div className="section-container">
-					<HubspotTrackingCode hubID={"243048355"} />
+					<HubspotTrackingCode />
 					<PageTitleHeader title="Request Your Custom Sunglasses" />
 					<div className="new-request-form-wrapper">
 						<FormEngine formData={formData} />

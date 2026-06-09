@@ -2,8 +2,8 @@ import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render } from '@/test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { SmartImage } from '@/components/general/smartimage';
-import { mockCloudinary } from '@/test/test-data';
+import { SmartImage } from '@/components/elements/smartimage';
+import { mockCloudinary, pixelatedConfig } from '@/test/test-data';
 
 // Mock the buildCloudinaryUrl function
 vi.mock('@/components/integrations/cloudinary', () => ({
@@ -15,7 +15,7 @@ import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
 const mockBuildCloudinaryUrl = vi.mocked(buildCloudinaryUrl);
 
 const renderSmartImage = (ui: React.ReactElement, options = {}) => {
-	return render(ui, { config: { cloudinary: mockCloudinary }, ...options });
+	return render(ui, { config: pixelatedConfig as any, ...options });
 };
 
 describe('SmartImage Component', () => {
@@ -132,7 +132,15 @@ describe('SmartImage Component', () => {
 		});
 
 		it('should fall back to Next.js Image when Cloudinary config unavailable for cloudinary variant', () => {
-			render(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />, { config: { cloudinary: undefined } });
+			render(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />, {
+				config: {
+					...pixelatedConfig,
+					integrations: {
+						...pixelatedConfig.integrations,
+						cloudinary: undefined
+					}
+				} as any
+			});
 			const img = screen.getByAltText('Test image');
 			expect(img).toHaveAttribute('data-nimg');
 			expect(mockBuildCloudinaryUrl).not.toHaveBeenCalled();

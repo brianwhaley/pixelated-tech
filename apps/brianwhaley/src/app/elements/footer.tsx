@@ -10,7 +10,7 @@ export default function Footer() {
 	return (
 		<div className="section-container" suppressHydrationWarning={true} >
 			
-			<GoogleAnalytics id="G-K5QDEDTRB4" />
+			<GoogleAnalytics />
 			{ /* <GoogleAnalytics gaId="G-1J1W90VBE1" /> */ }
 			
 			<hr style={{ margin: "0 auto", width: "80%" }} />

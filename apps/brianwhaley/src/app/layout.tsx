@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { getRouteByKey, SiteInfo } from "@pixelated-tech/components/server";
+import { getRouteByKey, SiteInfo, getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { generateMetaTags } from "@pixelated-tech/components/server";
 import { BreadcrumbListSchema, WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
 import { GoogleFonts } from "@pixelated-tech/components";
@@ -11,7 +11,6 @@ import Hero from "./elements/hero";
 import Nav from "./elements/nav";
 import Search from './elements/search';
 import Footer from './elements/footer';
-import siteConfig from "@/app/data/siteconfig.json";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 // LOAD THIS AS LAST CSS FILE
@@ -24,30 +23,33 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 	const origin = reqHeaders.get("x-origin");
 	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(siteConfig.routes, "path", pathname);
+	const pixelatedConfig = getFullPixelatedConfig();
+	const metadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
 
-	const siteInfo = siteConfig.siteInfo;
+	const siteInfo = pixelatedConfig.siteInfo;
 
 	return (
 		<html lang="en">
 			<LayoutClient />
 			<head>
-				{ generateMetaTags({
-					title: metadata?.title ?? "",
-					description: metadata?.description ?? "",
-					keywords: metadata?.keywords ?? "",
-					origin: origin ?? "",
-					url: url ?? "",
-					siteInfo: siteInfo as SiteInfo,
-				}) }
-				<BreadcrumbListSchema routes={siteConfig.routes} currentPath={pathname} siteUrl={siteInfo.url} />
-				<WebsiteSchema siteInfo={siteInfo as SiteInfo} />
-				<LocalBusinessSchema siteInfo={siteInfo} />
-				<ServicesSchema siteInfo={siteInfo} />
-				<VisualDesignStyles visualdesign={siteConfig.visualdesign} />
-				<GoogleFonts visualdesign={siteConfig.visualdesign} />
-				<meta name="google-site-verification" content="t2yy9wL1bXPiPQjBqDee2BTgpiGQjwVldlfa4X5CQkU" />
-				<meta name="google-site-verification" content="l7D0Y_JsgtACBKNCeFAXPe-UWqo13fPTUCWhkmHStZ4" />
+				<PixelatedServerConfigProvider>
+					{ generateMetaTags({
+						title: metadata?.title ?? "",
+						description: metadata?.description ?? "",
+						keywords: metadata?.keywords ?? "",
+						origin: origin ?? "",
+						url: url ?? "",
+						siteInfo: siteInfo as SiteInfo,
+					}) }
+					<BreadcrumbListSchema currentPath={pathname} />
+					<WebsiteSchema />
+					<LocalBusinessSchema />
+					<ServicesSchema />
+					<VisualDesignStyles />
+					<GoogleFonts visualdesign={pixelatedConfig.visualdesign} />
+					<meta name="google-site-verification" content="t2yy9wL1bXPiPQjBqDee2BTgpiGQjwVldlfa4X5CQkU" />
+					<meta name="google-site-verification" content="l7D0Y_JsgtACBKNCeFAXPe-UWqo13fPTUCWhkmHStZ4" />
+				</PixelatedServerConfigProvider>
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>

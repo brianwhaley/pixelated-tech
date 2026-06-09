@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MenuSimple } from '../components/general/menu-simple';
+import { MenuSimple } from '../components/elements/menu-simple';
 
 describe('MenuSimple Component', () => {
 	const mockMenuItems = [

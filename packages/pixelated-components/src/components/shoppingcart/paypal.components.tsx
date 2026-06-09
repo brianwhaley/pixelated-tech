@@ -42,7 +42,7 @@ export function PayPalCheckout(props: PayPalCheckoutType) {
 
 export function renderPayPalThankYou(orderData: any, config?: any) {
 	const payment = orderData?.purchase_units?.[0]?.payments?.captures?.[0];
-	const currency = config?.shoppingcart?.currency || payment?.amount?.currency_code || 'USD';
+	const currency = config?.integrations?.shoppingcart?.currency || payment?.amount?.currency_code || 'USD';
 
 	if (!payment) {
 		const summary = JSON.stringify(orderData, null, 2);

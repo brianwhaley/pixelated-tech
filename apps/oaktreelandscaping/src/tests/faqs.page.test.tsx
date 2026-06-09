@@ -10,6 +10,6 @@ describe('Oaktree Landscaping FAQ page', () => {
 	it('renders the FAQ page title and FAQ accordion', () => {
 		render(<FaqsPage />);
 		expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Frequently Asked Questions');
-		expect(screen.getByTestId('mock-faqaccordion')).toBeTruthy();
+		expect(screen.getByTestId('mock-faq')).toBeTruthy();
 	});
 });

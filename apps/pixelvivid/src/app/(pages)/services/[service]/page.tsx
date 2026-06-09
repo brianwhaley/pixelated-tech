@@ -2,13 +2,13 @@
 
 import React, { useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import siteConfig from '@/app/data/siteconfig.json';
-import { PageTitleHeader, PageSection, ServiceDetailPage, contentfulValueToSlug } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceDetailPage, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function ServiceDetailRoute() {
 	const params = useParams();
 	const serviceSlug = typeof params?.service === 'string' ? params.service : '';
-	const siteInfo = (siteConfig as any).siteInfo;
+	const pixelatedConfig = usePixelatedConfig();
+	const siteInfo = pixelatedConfig?.siteInfo ?? {};
 
 	const activeService = useMemo(() => {
 		const services = siteInfo?.services || [];

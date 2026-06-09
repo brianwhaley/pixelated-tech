@@ -28,7 +28,7 @@ function UseQuery() {
 }
 
 
-export default function Stkr() {
+export default function StkrPage() {
 	return (
 		<>
 			<style>{`.bigpad { padding: 20px; }`}</style>

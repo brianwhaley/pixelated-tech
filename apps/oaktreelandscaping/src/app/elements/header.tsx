@@ -1,17 +1,15 @@
 "use client";
 
-import { PageSection } from "@pixelated-tech/components";
-import { SmartImage } from "@pixelated-tech/components";
-import { MenuAccordion, MenuAccordionButton } from "@pixelated-tech/components";
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
+import { PageSection, SmartImage, MenuAccordion, MenuAccordionButton, usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function Header() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes ?? [];
     
 	return (
 		<>
 			<MenuAccordionButton />
-			<MenuAccordion menuItems={allRoutes} />
+			<MenuAccordion menuItems={routes} />
 			<PageSection columns={1} id="header-section">
 				<SmartImage
 					id="logo"

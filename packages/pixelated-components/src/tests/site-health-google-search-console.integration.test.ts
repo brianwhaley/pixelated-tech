@@ -1,4 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import pixelatedConfigJson from '@/config/pixelated.config.json';
+import { mockGoogleSearchConsoleData } from '../test/test-data';
+
+const pixelatedConfig = pixelatedConfigJson as any;
 
 // Mock googleapis BEFORE importing integration module
 vi.mock('googleapis', () => ({
@@ -13,25 +17,14 @@ vi.mock('googleapis', () => ({
 		searchconsole: vi.fn(() => ({
 			searchanalytics: {
 				query: vi.fn().mockResolvedValue({
-					data: {
-						rows: [
-							{ keys: ['query1'], clicks: 150, impressions: 500, ctr: 0.3, position: 5.2 },
-							{ keys: ['query2'], clicks: 120, impressions: 450, ctr: 0.267, position: 8.5 },
-							{ keys: ['query3'], clicks: 90, impressions: 400, ctr: 0.225, position: 12.3 }
-						],
-						transformedData: [
-							{ query: 'query1', clicks: 150, impressions: 500, ctr: 0.3, position: 5.2 },
-							{ query: 'query2', clicks: 120, impressions: 450, ctr: 0.267, position: 8.5 },
-							{ query: 'query3', clicks: 90, impressions: 400, ctr: 0.225, position: 12.3 }
-						]
-					}
+					data: mockGoogleSearchConsoleData.mockResponse
 				})
 			}
 		}))
 	}
 }));
 
-vi.mock('../components/general/cache-manager', () => ({
+vi.mock('../components/foundation/cache-manager', () => ({
 	CacheManager: vi.fn(function(this: any) {
 		this.cache = new Map();
 		this.get = vi.fn((key) => this.cache.get(key));
@@ -40,13 +33,17 @@ vi.mock('../components/general/cache-manager', () => ({
 	})
 }));
 
-vi.mock('../components/general/utilities', () => ({
+vi.mock('../components/foundation/utilities', () => ({
 	getDomain: vi.fn(() => 'example.com')
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({}))
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 vi.mock('../components/admin/site-health/google.api.utils', () => ({
 	calculateDateRanges: vi.fn(() => ({
@@ -66,21 +63,18 @@ vi.mock('../components/admin/site-health/google.api.utils', () => ({
 
 // Import AFTER mocks are defined - Import from the integration file to generate coverage
 import { getSearchConsoleData, SearchConsoleConfig } from '../components/admin/site-health/google.api.integration';
+import { getFullPixelatedConfig } from '../components/config/config';
 
 describe('site-health-google-search-console.integration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 	});
 
 	it('should fetch Search Console data with valid service account', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: 'https://example.com',
-			serviceAccountKey: JSON.stringify({
-				type: 'service_account',
-				project_id: 'test-project',
-				private_key: 'test-key',
-				client_email: 'test@example.com'
-			})
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGoogleSearchConsoleData.mockConfig.siteUrl,
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGoogleSearchConsoleData.mockConfig.serviceAccountKey
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -91,13 +85,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should return queries with clicks, impressions, CTR, and position', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: 'https://example.com',
-			serviceAccountKey: JSON.stringify({
-				type: 'service_account',
-				project_id: 'test',
-				private_key: 'key',
-				client_email: 'test@test.com'
-			})
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGoogleSearchConsoleData.mockConfig.siteUrl,
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGoogleSearchConsoleData.mockConfig.serviceAccountKey
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -118,12 +107,7 @@ describe('site-health-google-search-console.integration', () => {
 	it('should handle missing site URL configuration', async () => {
 		const config: SearchConsoleConfig = {
 			siteUrl: '',
-			serviceAccountKey: JSON.stringify({
-				type: 'service_account',
-				project_id: 'test',
-				private_key: 'key',
-				client_email: 'test@test.com'
-			})
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || ''
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -142,15 +126,33 @@ describe('site-health-google-search-console.integration', () => {
 		expect(result.error).toBeDefined();
 	});
 
-	it('should use cache when available', async () => {
+	it('should return insufficient_permission when Search Console API denies access', async () => {
+		const googleApis = await import('googleapis');
+		vi.mocked(googleApis.google.searchconsole).mockImplementationOnce(() => ({
+			searchanalytics: {
+				query: vi.fn().mockRejectedValueOnce(Object.assign(new Error('User does not have sufficient permission'), { code: 403, statusCode: 403 }))
+			}
+		}) as any);
+
 		const config: SearchConsoleConfig = {
 			siteUrl: 'https://example.com',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
-				project_id: 'test',
-				private_key: 'key',
-				client_email: 'test@test.com'
+				project_id: 'test-project',
+				private_key: 'test-key',
+				client_email: 'test@example.com'
 			})
+		};
+
+		const result = await getSearchConsoleData(config, 'test-site');
+		expect(result.success).toBe(false);
+		expect(result.error).toBe('insufficient_permission');
+	});
+
+	it('should use cache when available', async () => {
+		const config: SearchConsoleConfig = {
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || 'https://example.com',
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || ''
 		};
 
 		const result1 = await getSearchConsoleData(config, 'test-site');
@@ -165,9 +167,9 @@ describe('site-health-google-search-console.integration', () => {
 			siteUrl: 'https://example.com',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
-				project_id: 'test',
-				private_key: 'key',
-				client_email: 'test@test.com'
+				project_id: 'test-project',
+				private_key: 'test-key',
+				client_email: 'test@example.com'
 			})
 		};
 
@@ -186,13 +188,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should work with different site names independently', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: 'https://example.com',
-			serviceAccountKey: JSON.stringify({
-				type: 'service_account',
-				project_id: 'test',
-				private_key: 'key',
-				client_email: 'test@test.com'
-			})
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGoogleSearchConsoleData.mockConfig.siteUrl,
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGoogleSearchConsoleData.mockConfig.serviceAccountKey
 		};
 
 		const result1 = await getSearchConsoleData(config, 'site-a');

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { PageSectionHeader } from '../../../general/semantic';
+import { PageSectionHeader } from '../../../structure/page-blocks';
 import { usePageBuilder } from '../lib/usePageBuilder';
 import { ComponentSelector } from '../components/ComponentSelector';
 import { ComponentPropertiesForm } from '../components/ComponentPropertiesForm';

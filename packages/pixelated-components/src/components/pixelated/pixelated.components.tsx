@@ -2,7 +2,7 @@
 
 import React, {  } from "react";
 import PropTypes, { InferProps } from 'prop-types';
-import { SmartImage } from "../general/smartimage";
+import { SmartImage } from "../elements/smartimage";
 
 /**
  * PixelatedFooter — Simple footer component for Pixelated sites. 

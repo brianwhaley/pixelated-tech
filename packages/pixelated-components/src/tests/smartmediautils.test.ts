@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseNumber, safeString, sanitizeMediaString, normalizeProtocolRelativeUrl, isVideoUrl, deriveMediaId } from '@/components/general/smartmediautils';
+import { parseNumber, safeString, sanitizeMediaString, normalizeProtocolRelativeUrl, isVideoUrl, deriveMediaId } from '@/components/elements/smartmediautils';
 
 describe('SmartMediaUtils', () => {
 	describe('parseNumber', () => {

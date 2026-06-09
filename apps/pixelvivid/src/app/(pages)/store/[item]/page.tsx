@@ -19,16 +19,6 @@ export function createEbayItemApiProps(pixelatedConfig: any, item: string) {
 	};
 }
 
-export function createContentfulItemApiProps(pixelatedConfig: any) {
-	return {
-		proxyURL: pixelatedConfig.contentful?.proxyURL || '',
-		base_url: pixelatedConfig.contentful?.base_url || "",
-		space_id: pixelatedConfig.contentful?.space_id || "",
-		environment: pixelatedConfig.contentful?.environment || "",
-		delivery_access_token: pixelatedConfig.contentful?.delivery_access_token || "",
-	};
-}
-
 export function createItemCloudinaryProductEnv(pixelatedConfig: any) {
 	return pixelatedConfig.cloudinary?.product_env || "";
 }
@@ -41,8 +31,7 @@ export default function EbayItem({params}: { params: Promise<{ item: string }> }
 	if (!pixelatedConfig) return null;
 
 	if (debug) console.log(item);
-	const ebayApiProps = createEbayItemApiProps(pixelatedConfig, item);
-	const contentfulApiProps = createContentfulItemApiProps(pixelatedConfig);
+	const ebayApiProps = createEbayItemApiProps(pixelatedConfig.integrations ?? {}, item);
 	const cloudinaryProductEnv = createItemCloudinaryProductEnv(pixelatedConfig); // Cloudinary environment for product images
 	
 	return (
@@ -55,11 +44,7 @@ export default function EbayItem({params}: { params: Promise<{ item: string }> }
 							itemID={item} 
 							cloudinaryProductEnv={cloudinaryProductEnv} 
 						/>
-						: <ContentfulItemDetail 
-							apiProps={contentfulApiProps} 
-							entry_id={item} 
-							cloudinaryProductEnv={cloudinaryProductEnv} 
-						/> 
+						: <ContentfulItemDetail entry_id={item} />
 					}
 				</div>
 			</section>

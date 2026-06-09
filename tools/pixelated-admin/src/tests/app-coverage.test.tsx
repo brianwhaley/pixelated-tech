@@ -72,6 +72,7 @@ vi.mock('@pixelated-tech/components', async () => {
 		WebsiteSchema: ({ children }: any) => <>{children}</>,
 		LocalBusinessSchema: ({ children }: any) => <>{children}</>,
 		ServicesSchema: ({ children }: any) => <>{children}</>,
+		usePixelatedConfig: () => ({ routes: [{ name: 'Home', path: '/' }, { name: 'Login', path: '/login' }], siteInfo: {} }),
 	};
 });
 
@@ -135,8 +136,10 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	VisualDesignStyles: ({ children }: any) => <>{children}</>,
 	PixelatedServerConfigProvider: ({ children }: any) => <>{children}</>,
 	getFullPixelatedConfig: () => ({
-		nextAuth: { secret: 'test-secret' },
-		google: { client_id: 'g-id', client_secret: 'g-secret' },
+		integrations: {
+			nextAuth: { secret: 'test-secret' },
+			google: { client_id: 'g-id', client_secret: 'g-secret' },
+		},
 	}),
 	generateAiRecommendations: async () => ({ success: true, data: {} }),
 	loadSitesConfig: async () => [{ name: 'test', url: 'https://example.com' }],
@@ -165,7 +168,7 @@ const appPages = [
 ];
 
 async function importModule(relPath: string) {
-	const filePath = pathToFileURL(path.join(process.cwd(), relPath)).href;
+	const filePath = pathToFileURL(path.resolve(__dirname, '../../', relPath)).href;
 	return import(filePath);
 }
 
@@ -211,7 +214,7 @@ describe('pixelated-admin API routes', () => {
 	});
 
 	it('returns AI recommendations when a valid API key is configured', async () => {
-		vi.spyOn(await import('@pixelated-tech/components/server'), 'getFullPixelatedConfig').mockReturnValue({ google: { api_key: 'gkey' } });
+		vi.spyOn(await import('@pixelated-tech/components/server'), 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { api_key: 'gkey' } } });
 		const route = await importModule('src/app/api/ai/recommendations/route.ts');
 		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({}) }));
 		expect(response.status).toBe(200);

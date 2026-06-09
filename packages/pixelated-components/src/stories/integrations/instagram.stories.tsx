@@ -49,8 +49,6 @@ export default {
 		includeVideos: { control: 'boolean' },
 		includeCaptions: { control: 'boolean' },
 		useThumbnails: { control: 'boolean' },
-		accessToken: { control: 'text' },
-		userId: { control: 'text' },
 	},
 	args: {
 		limit: 12,

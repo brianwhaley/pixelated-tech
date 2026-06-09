@@ -4,14 +4,12 @@ import React, { useState, useEffect } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { getInstagramTiles } from './instagram.functions';
 import { usePixelatedConfig } from "../config/config.client";
-import { Tiles } from '../general/tiles';
-import type { CarouselCardType } from '../general/carousel';
+import { Tiles } from '../elements/tiles';
+import type { CarouselCardType } from '../structure/carousel';
 
 /**
  * InstagramTiles — Fetch Instagram media and render as tiles.
  *
- * @param {string} [props.accessToken] - Instagram user access token with required permissions.
- * @param {string} [props.userId] - Instagram user ID to fetch media from.
  * @param {number} [props.limit] - Maximum number of media items to fetch (default: 12).
  * @param {number} [props.rowCount] - Number of columns/rows to use in the tiles layout.
  * @param {boolean} [props.useThumbnails] - Whether to prefer thumbnail images over full-size media.
@@ -19,11 +17,7 @@ import type { CarouselCardType } from '../general/carousel';
  * @param {boolean} [props.includeCaptions] - Include captions in the returned tile metadata.
  */
 InstagramTiles.propTypes = {
-/** Instagram access token */
-	accessToken: PropTypes.string,
-	/** Instagram user ID */
-	userId: PropTypes.string,
-	/** Max number of media items to fetch */
+/** Max number of media items to fetch */
 	limit: PropTypes.number,
 	/** Number of columns/rows used by Tiles layout */
 	rowCount: PropTypes.number,
@@ -41,8 +35,8 @@ export function InstagramTiles(props: InstagramTilesType) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const accessToken = props.accessToken ?? config?.instagram?.accessToken;
-	const userId = props.userId ?? config?.instagram?.userId;
+	const accessToken = config?.integrations?.instagram?.accessToken;
+	const userId = config?.integrations?.instagram?.userId;
 
 	useEffect(() => {
 		(async () => {

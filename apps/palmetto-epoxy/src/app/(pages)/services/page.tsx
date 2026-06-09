@@ -6,7 +6,7 @@ import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 
 
-export default function Services() {
+export default function ServicesPage() {
 	return (
 		<>
 			<CalloutLibrary.PageTitle title="Services" />

@@ -3,7 +3,7 @@
 import React from "react";
 import { PageSection, Markdown, useFileData } from "@pixelated-tech/components";
 
-export default function AdCalendar() {
+export default function AdCalendarPage() {
 	const { data: readmeText, loading, error } = useFileData('/data/adcalendar.md');
 	if (loading) return <PageSection columns={1} id="markdown-container"><div>Loading...</div></PageSection>;
 	if (error) return <PageSection columns={1} id="markdown-container"><div>Error: {error}</div></PageSection>;

@@ -14,15 +14,22 @@ vi.mock('@/components/integrations/cloudinary', () => ({
 }));
 
 import nextImage from 'next/image';
-import { SmartImage } from '@/components/general/smartimage';
+import { SmartImage } from '@/components/elements/smartimage';
 import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
-import { mockCloudinary } from '@/test/test-data';
+import { mockCloudinary, pixelatedConfig } from '@/test/test-data';
 
 const mockedNextImage = vi.mocked(nextImage);
 const mockBuildCloudinaryUrl = vi.mocked(buildCloudinaryUrl);
 
 const renderSmartImage = (ui: React.ReactElement, options = {}) => {
-	return render(ui, { config: { cloudinary: mockCloudinary }, ...options });
+	const config = {
+		...pixelatedConfig,
+		integrations: {
+			...pixelatedConfig.integrations,
+			cloudinary: mockCloudinary
+		}
+	};
+	return render(ui, { config: config as any, ...options });
 };
 
 describe('SmartImage unoptimized regression', () => {

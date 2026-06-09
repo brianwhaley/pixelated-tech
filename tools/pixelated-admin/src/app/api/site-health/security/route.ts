@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeSecurityHealth, CacheManager } from '@pixelated-tech/components/adminserver';
 import { getSiteConfig } from '@pixelated-tech/components/server';
@@ -45,6 +46,21 @@ export async function GET(request: NextRequest) {
 			}
 
 			return NextResponse.json(noConfigResponseData);
+		}
+
+		if (!fs.existsSync(site.localPath)) {
+			const invalidPathResponseData = {
+				success: true,
+				status: 'Unknown',
+				message: `Configured localPath does not exist or is inaccessible: ${site.localPath}`,
+				timestamp: new Date().toISOString(),
+				vulnerabilities: [],
+				summary: { info: 0, low: 0, moderate: 0, high: 0, critical: 0, total: 0 }
+			};
+			if (useCache) {
+				securityCache.set(`security-${siteName}`, invalidPathResponseData);
+			}
+			return NextResponse.json(invalidPathResponseData);
 		}
 
 		// Pass site name and repo to analyzer to allow fallback resolution (external volumes)

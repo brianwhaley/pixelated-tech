@@ -2,17 +2,17 @@
 
 import React, { useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import siteConfig from '@/app/data/siteconfig.json';
-import { PageTitleHeader, PageSection, ServiceAreaDetailPage, contentfulValueToSlug } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceAreaDetailPage, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function ServiceAreaDetailRoute() {
 	const params = useParams();
 	const serviceAreaSlug = typeof params?.serviceArea === 'string' ? params.serviceArea : '';
-	const siteInfo = (siteConfig as any).siteInfo;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
 
 	const activeServiceArea = useMemo(() => {
-		const serviceAreas = siteInfo?.serviceAreas || [];
-		return serviceAreas.find((area) => {
+		const serviceAreas = (siteInfo as any)?.serviceAreas || [];
+		return serviceAreas.find((area: any) => {
 			const slug = area.slug ? contentfulValueToSlug({ value: area.slug }) : contentfulValueToSlug({ value: area.name });
 			return slug === serviceAreaSlug;
 		});
@@ -25,7 +25,7 @@ export default function ServiceAreaDetailRoute() {
 				{activeServiceArea ? (
 					<ServiceAreaDetailPage
 						serviceArea={activeServiceArea}
-						siteInfo={siteInfo}
+						siteInfo={siteInfo as any}
 						serviceAreaPathPrefix="/service-areas"
 					/>
 				) : (

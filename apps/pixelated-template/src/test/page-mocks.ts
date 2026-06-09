@@ -4,6 +4,8 @@ import path from 'node:path';
 import { encode } from 'html-entities';
 import config from '@/app/config/pixelated.config.json';
 
+export { config };
+
 export interface FileDataState {
 	data: string | null;
 	loading: boolean;
@@ -110,13 +112,15 @@ const readPublicData = (filePath: string): string | null => {
 	return fs.readFileSync(resolvedPath, 'utf-8');
 };
 
-const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style }: any) => {
+const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style, series, postsData }: any) => {
 	const textContent = title ??
 		content ??
 		(site && Array.isArray(posts) ? `site:${site} count:${posts.length}` :
 			markdowndata ??
 			(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
-				undefined));
+				(series ? `series:${series.name}` :
+					(postsData ? `posts:${postsData.length}` :
+						undefined))));
 
 	const props: any = { 'data-testid': testId ?? `mock-${name.toLowerCase()}` };
 	if (className) props.className = className;
@@ -130,11 +134,38 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 	);
 };
 
+const mockFAQ = ({ faqsData }: { faqsData: any }) => {
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-faq-container' },
+		React.createElement('div', { 'data-testid': 'schema-faq' }, 'Schema'),
+		React.createElement('div', { 'data-testid': 'mock-faq' }, `faqs:${faqsData?.mainEntity?.length ?? 0}`),
+	);
+};
+
+const mockBlogPostList = ({ posts, site }: { posts: any[]; site?: string }) => {
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-blogpostlist' },
+		React.createElement('div', { 'data-testid': 'schema-blog-posting' }, 'Schema'),
+		React.createElement('div', { 'data-testid': 'blog-post-list' }, `site:${site} count:${posts?.length ?? 0}`),
+	);
+};
+
+const mockPodcastEpisodeList = ({ series, episodes }: { series: any; episodes: any[] }) => {
+	return React.createElement(
+		'div',
+		{ 'data-testid': 'mock-podcastepisodelist' },
+		series ? React.createElement('div', { 'data-testid': 'schema-podcast-series' }, 'Schema') : null,
+		React.createElement('div', { 'data-testid': 'podcast-episode-list' }, `series:${series?.name} count:${episodes?.length ?? 0}`),
+	);
+};
+
 const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
 	const items = Array.isArray(services) && services.length ? services : siteInfo?.services ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceslist', id },
+		{ 'data-testid': 'mock-services', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((service: any, index: number) => React.createElement(
@@ -149,7 +180,7 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	const items = Array.isArray(serviceAreas) && serviceAreas.length ? serviceAreas : siteInfo?.serviceAreas ?? [];
 	return React.createElement(
 		'div',
-		{ 'data-testid': 'mock-serviceareaslist', id },
+		{ 'data-testid': 'mock-serviceareas', id },
 		title ? React.createElement('h2', null, title) : null,
 		intro ? React.createElement('p', null, intro) : null,
 		items.map((area: any, index: number) => React.createElement(
@@ -238,15 +269,17 @@ const defaultMocks: Record<string, any> = {
 	PageFlexItem: mockComponent('PageFlexItem'),
 	Callout: mockComponent('Callout', 'callout'),
 	ServicesList: mockServicesList,
+	Services: mockServicesList,
 	ServiceAreasList: mockServiceAreasList,
+	ServiceAreas: mockServiceAreasList,
 	ServiceCard: mockComponent('ServiceCard'),
 	ServiceDetailPage: mockServiceDetailPage,
 	ServiceAreaDetailPage: mockServiceAreaDetailPage,
 	contentfulValueToSlug,
-	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
+	FAQ: mockFAQ,
 	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 	Markdown: mockComponent('Markdown', 'markdown'),
-	BlogPostList: mockComponent('BlogPostList', 'blog-post-list'),
+	BlogPostList: mockBlogPostList,
 	SchemaBlogPosting: mockComponent('SchemaBlogPosting', 'schema-blog-posting'),
 	StyleGuideUI: mockComponent('StyleGuideUI', 'styleguide-ui'),
 	Calendly: mockComponent('Calendly', 'calendly'),
@@ -254,7 +287,7 @@ const defaultMocks: Record<string, any> = {
 	Carousel: mockComponent('Carousel', 'carousel'),
 	ReviewSchema: mockComponent('ReviewSchema'),
 	GravatarCard: mockComponent('GravatarCard', 'gravatar-card'),
-	PodcastEpisodeList: mockComponent('PodcastEpisodeList', 'podcast-episode-list'),
+	PodcastEpisodeList: mockPodcastEpisodeList,
 	SchemaPodcastSeries: mockComponent('SchemaPodcastSeries', 'schema-podcast-series'),
 	SchemaPodcastEpisode: mockComponent('SchemaPodcastEpisode', 'schema-podcast-episode'),
 	Tiles: mockComponent('Tiles', 'tiles'),

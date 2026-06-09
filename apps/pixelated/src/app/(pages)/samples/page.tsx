@@ -45,7 +45,7 @@ const sampleTiles = [
 	}, 
 ];
 
-export default function Samples() {
+export default function SamplesPage() {
 	
 	return (
 		<>

@@ -42,7 +42,7 @@ describe('Threemuses page coverage', () => {
 	it('renders the FAQ page header and accordion', async () => {
 		render(<FAQsPage />);
 		await waitFor(() => expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Frequently Asked Questions'));
-		expect(screen.getByTestId('mock-faqaccordion')).toBeTruthy();
+		expect(screen.getByTestId('mock-faq')).toBeTruthy();
 	});
 
 	it('renders the style guide UI', () => {

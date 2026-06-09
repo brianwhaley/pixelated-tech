@@ -7,7 +7,7 @@ import { PixelatedFooter } from "@pixelated-tech/components";
 export default function Footer() {
 	return (
     	<>
-			<GoogleAnalytics id="G-0FNGDMEKMS" />
+			<GoogleAnalytics />
 			<hr style={{ margin: "0 auto", width: "80%" }} />
 		  	<br />
 		  	<div className="centered">

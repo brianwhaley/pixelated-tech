@@ -1,0 +1,9 @@
+[
+	{
+		"sys": { "id": "asset-1", "createdAt": "2024-01-01" },
+		"fields": {
+			"file": { "url": "https://example.com/asset1.jpg" },
+			"title": "Asset 1"
+		}
+	}
+]

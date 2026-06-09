@@ -18,9 +18,11 @@ const renderWithConfig = (ui: React.ReactElement) =>
 	);
 
 let mockSearch = '?installed=false';
+let mockParams: Record<string, string> = {};
 
 vi.mock('next/navigation', () => ({
 	useSearchParams: () => new URLSearchParams(mockSearch),
+	useParams: () => mockParams,
 }));
 
 vi.mock('@pixelated-tech/components', async () => {
@@ -38,12 +40,27 @@ vi.mock('@pixelated-tech/components', async () => {
 			Tiles: ({ cards }: any) => (
 				<div data-testid="mock-tiles">{Array.isArray(cards) ? cards.map((card: any) => card.imageAlt).join(',') : 'none'}</div>
 			),
+			PodcastEpisodeList: ({ episodes }: any) => (
+				<div data-testid="mock-podcast-episode-list">
+					<div data-testid="schema-podcast-series" />
+					{Array.isArray(episodes) ? episodes.map((_: any, index: number) => (
+						<div key={index} data-testid="schema-podcast-episode" />
+					)) : null}
+				</div>
+			),
 		}),
 	};
 });
 
+import Blog from '@/app/(pages)/blog/page';
 import BlogCalendar from '@/app/(pages)/blogcalendar/page';
 import Podcast from '@/app/(pages)/podcast/page';
+import Schedule from '@/app/(pages)/schedule/page';
+import ServicesPage from '@/app/(pages)/services/page';
+import ServiceAreasPage from '@/app/(pages)/service-areas/page';
+import ServiceDetailRoute from '@/app/(pages)/services/[service]/page';
+import ServiceAreaDetailRoute from '@/app/(pages)/service-areas/[serviceArea]/page';
+import StyleGuide from '@/app/(pages)/styleguide/page';
 import NerdJokes from '@/app/(pages)/nerdjokes/page';
 import Portfolio from '@/app/(pages)/portfolio/page';
 import Nav from '@/app/elements/nav';
@@ -90,10 +107,56 @@ describe('Pixelated branch coverage tests', () => {
 		await waitFor(() => expect(screen.getByTestId('markdown')).not.toBeNull());
 	});
 
+	it('renders blogcalendar loading branch', async () => {
+		setFileDataState({ data: null, loading: true, error: null });
+		renderWithConfig(<BlogCalendar />);
+		await waitFor(() => expect(screen.getByText('Loading...')).not.toBeNull());
+	});
+
 	it('renders blogcalendar error branch', async () => {
 		setFileDataState({ data: null, loading: false, error: 'Load failure' });
 		renderWithConfig(<BlogCalendar />);
 		await waitFor(() => expect(screen.getByText('Error: Load failure')).not.toBeNull());
+	});
+
+	it('renders the blog page when categories are unavailable', async () => {
+		mockState.wordpressCategories = null;
+		renderWithConfig(<Blog />);
+		await waitFor(() => expect(screen.getByTestId('blog-post-list')).not.toBeNull());
+	});
+
+	it('renders the podcast page when series and episodes are unavailable', async () => {
+		mockState.spotifySeries = null;
+		mockState.spotifyEpisodes = null;
+		renderWithConfig(<Podcast />);
+		await waitFor(() => expect(screen.getByTestId('mock-podcast-episode-list')).not.toBeNull());
+	});
+
+	it('renders services and related pages with configured siteInfo and routes', async () => {
+		const fullConfig = {
+			global: {},
+			siteInfo: {
+				email: 'contact@example.com',
+				telephone: '555-1212',
+				services: [{ name: 'Test Service', slug: 'test-service' }],
+				serviceAreas: [{ name: 'Test Area', slug: 'test-area' }],
+			},
+			routes: [{ title: 'Home', href: '/' }],
+		};
+		mockParams = { service: 'test-service', serviceArea: 'test-area' };
+		render(
+			<PixelatedClientConfigProvider config={fullConfig as any}>
+				<>
+					<ServicesPage />
+					<ServiceAreasPage />
+					<Schedule />
+					<StyleGuide />
+					<ServiceDetailRoute />
+					<ServiceAreaDetailRoute />
+				</>
+			</PixelatedClientConfigProvider>,
+		);
+		await waitFor(() => expect(screen.getAllByTestId('page-title-header').length).toBeGreaterThan(0));
 	});
 
 	it('renders nav and executes ref callback branch', () => {

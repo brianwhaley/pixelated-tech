@@ -1,0 +1,14 @@
+[
+  {
+    "name": "test-site-1",
+    "localPath": "/path/to/site1",
+    "remote": "https://site1.com",
+    "ga4PropertyId": "123456789",
+    "searchConsoleUrl": "https://search.google.com/search-console"
+  },
+  {
+    "name": "test-site-2",
+    "localPath": "/path/to/site2",
+    "ga4PropertyId": "GA4_PROPERTY_ID_HERE"
+  }
+]

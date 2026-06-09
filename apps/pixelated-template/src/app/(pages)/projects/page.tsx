@@ -3,7 +3,7 @@
 import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
 
-export default function About() {
+export default function AboutPage() {
 
 	const project1 = [
 		{

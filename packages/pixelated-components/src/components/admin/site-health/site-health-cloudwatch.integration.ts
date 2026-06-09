@@ -58,7 +58,7 @@ export async function getCloudwatchHealthCheckData(
 		// Use CloudWatch to get historical health check data
 		// Prefer credentials from unified config (pixelated.config.json) when present (avoids env vars)
 		const fullCfg = getFullPixelatedConfig();
-		const awsCfg = fullCfg?.aws;
+		const awsCfg = fullCfg?.integrations?.aws;
 		const cloudWatchClient = new CloudWatchClient({
 			region: config.region || awsCfg?.region || 'us-east-1',
 			credentials: (awsCfg?.access_key_id && awsCfg?.secret_access_key) ? {

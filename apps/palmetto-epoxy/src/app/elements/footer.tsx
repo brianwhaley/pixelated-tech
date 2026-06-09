@@ -2,9 +2,7 @@
 
 import React from "react";
 import Nav from "@/app/elements/nav";
-// import { Analytics } from "@pixelated-tech/components";
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { SmartImage } from "@pixelated-tech/components";
+import { GoogleAnalytics, SmartImage } from "@pixelated-tech/components";
 
 
 export default function Footer() {
@@ -13,10 +11,8 @@ export default function Footer() {
 			<div>
 				<Nav />
 				{ /* <Analytics id="G-X2R4REQ3NG" /> */ }
-				<GoogleAnalytics gaId="G-X2R4REQ3NG" />
+				<GoogleAnalytics />
 			</div>
-
-			<br />
 			<div className="centered">
 				<p className="footer-text">&copy; {new Date().getFullYear()} Palmetto Epoxy. All rights reserved.</p>
 

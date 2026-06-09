@@ -28,7 +28,7 @@ function UseQuery() {
 	return ( isInstalled && isInstalled === "true" ? yes : no );
 }
 
-export default function NerdJokes() {
+export default function NerdJokesPage() {
 	return (
 		<>
 			<style>{`.bigpad { padding: 20px; }`}</style>

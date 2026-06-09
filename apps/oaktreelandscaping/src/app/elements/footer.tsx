@@ -17,7 +17,7 @@ export default function Footer() {
 
 			<PageSection id="footer-section" columns={1} padding="20px 0 0 0">
 				<div suppressHydrationWarning={true} >
-					<GoogleAnalytics id="G-S4FFGHP3ZN" />
+					<GoogleAnalytics />
 					<hr style={{ margin: "0 auto", width: "80%" }} />
 					<br />
 					<div className="centered">

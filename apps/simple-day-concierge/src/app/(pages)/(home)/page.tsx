@@ -1,20 +1,18 @@
 "use client"; 
 
 import React from 'react';
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
-import { Callout } from '@pixelated-tech/components';
-import { SmartImage } from '@pixelated-tech/components';
-import { buildServiceUrl } from '@pixelated-tech/components';
-import siteConfig from '@/app/data/siteconfig.json';
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, Callout, SmartImage, buildServiceUrl, usePixelatedConfig } from '@pixelated-tech/components';
 
 const headers = [
-	"https://images.ctfassets.net/jc3fkpb2sdyr/1BnguPZQ497FdhDvo7XAsZ/d702761c01c20c69d83ca75a2f4474ac/phone-coffee.jpg",
-	"https://images.ctfassets.net/jc3fkpb2sdyr/1DP5suqBmGEeWpcpe3XRb2/091efa84476bd51ce016ffda6097ae74/smartphone-notebook-planning-affairs-lie-wooden-table.jpg",
-	"https://images.ctfassets.net/jc3fkpb2sdyr/2MOsQbltCoRHLOGgAVVp36/33870a3776a0887e3c120bdee4fb2bf3/coffee-cup-table.jpg",
-	"https://images.ctfassets.net/jc3fkpb2sdyr/6unIVGY5ojJjC3irKiPooA/893f64371f264069a0f3f378c6c3606e/high-angle-view-coffee-cup-table.jpg",
+	"https://images.ctfassets.net/jc3fkpb2sdyr/1BnguPZQ497FdhDvo7XAsZ/d702761c01c20c69d83ca75a2f4474ac/phone-coffee.jpg?fm=webp",
+	"https://images.ctfassets.net/jc3fkpb2sdyr/1DP5suqBmGEeWpcpe3XRb2/091efa84476bd51ce016ffda6097ae74/smartphone-notebook-planning-affairs-lie-wooden-table.jpg?fm=webp",
+	"https://images.ctfassets.net/jc3fkpb2sdyr/2MOsQbltCoRHLOGgAVVp36/33870a3776a0887e3c120bdee4fb2bf3/coffee-cup-table.jpg?fm=webp",
+	"https://images.ctfassets.net/jc3fkpb2sdyr/6unIVGY5ojJjC3irKiPooA/893f64371f264069a0f3f378c6c3606e/high-angle-view-coffee-cup-table.jpg?fm=webp",
 ];
 
 export default function Home() {
+	const pixelatedConfig = usePixelatedConfig();
+	const services = pixelatedConfig?.siteInfo?.services ?? [];
 	const headerImg = headers[Math.floor(Math.random() * headers.length)];
 	return (
 		<>
@@ -23,8 +21,8 @@ export default function Home() {
 				<SmartImage
 					src={headerImg}
 					alt="Simple Day Concierge Service - Where Simplicity Meets Exceptional Service"
-					width="100vw"
-					height="20vw"
+					width="2000"
+					height="200"
 					aboveFold
 					style={{ objectFit: 'cover', width: '100%', height: '20vh', opacity: 0.5 }}
 				/>
@@ -37,7 +35,7 @@ export default function Home() {
 
 				<p>We understand that your time is your most precious asset. Simple Day was founded with the single-minded goal of handling all of your logistics and planning, from daily errands to complex travel, with an unmatched level of attention and execution. Founded by Patti and Joe Jadevaia, our family business transforms daily chaos into a seamless experience of absolute peace of mind.</p>
 
-				<p>Rooted in our founders' corporate cybersecurity backgrounds, we protect your keys, alarm codes, and personal data with strict security and total discretion. We focus on building high-touch relationships, learning your exact tastes to manage your home quietly and efficiently in the background. Whether we are stocking your kitchen before you return from vacation or supervising a home repair, we treat your family like our own. We promise to lift the daily mental load entirely, giving you the freedom to finally enjoy your time.</p>
+				<p>Rooted in our founders' corporate cybersecurity backgrounds, we protect your personal information with strict security and total discretion. We focus on building high-touch relationships, learning your exact tastes to manage your home quietly and efficiently in the background. Whether we are stocking your kitchen before you return from vacation or supervising a home repair, we treat your family like our own. We promise to lift the daily mental load entirely, giving you the freedom to finally enjoy your time.</p>
 			</PageSection>
 
 			<PageSection columns={5} maxWidth="1024px" id="home-services-section">
@@ -45,10 +43,9 @@ export default function Home() {
 					<PageSectionHeader title="Our Services" />
 				</PageGridItem>
 				
-				{((siteConfig as any).siteInfo?.services ?? []).map((service: any, index: number) => (
+				{services.map((service: any, index: number) => (
 					<PageGridItem key={service.name ?? index}>
 						<Callout
-							layout="vertical"
 							layout="vertical"
 							subtitle={service.name}
 							img={service.image}
@@ -62,16 +59,19 @@ export default function Home() {
 
 			<PageSection columns={1} maxWidth="1024px" id="home-membership-section">
 				<PageSectionHeader title="Membership" />
-				<p>
+				<div style={{ overflow: 'auto' }}>
 					<SmartImage
 						src="https://images.ctfassets.net/jc3fkpb2sdyr/3MGsNU6jDZQKsOxbtti1VB/c9f9f06607050eb7551ac2f2eb4578f2/magnific__talk__30044.jpeg?fm=webp"
 						alt="Simple Day Concierge Service - Where Simplicity Meets Exceptional Service"
-						width="100vw"
-						height="15vw"
+						width="500"
+						height="500"
 						aboveFold
 						style={{ float: 'left', aspectRatio: "1/1", objectFit: 'cover', opacity: 0.7, width: '150px', height: '150px', marginRight: '20px', borderRadius: '8px' }}
 					/>
-				Becoming a monthly member of Simple Day Concierge unlocks an elite level of personalized lifestyle support for your household. As a dedicated subscriber, you receive guaranteed calendar placement and priority scheduling, ensuring our trusted team is available precisely when your schedule demands it. Membership delivers premium perks, including significant discounts on bulk hour pricing and early access to all our newly launched service offerings. Members also enjoy streamlined, direct communication for immediate checklist updates and last-minute errand adjustments. Check out our <a href="/pricing">flexible subscription options</a> on the pricing page to find the perfect tier for your home.</p>
+					<p>
+						Becoming a monthly member of Simple Day Concierge unlocks an elite level of personalized lifestyle support for your household. As a dedicated subscriber, you receive guaranteed calendar placement and priority scheduling, ensuring our trusted team is available precisely when your schedule demands it. Membership delivers premium perks, including significant discounts on bulk hour pricing and early access to all our newly launched service offerings. Members also enjoy streamlined, direct communication for immediate checklist updates and last-minute errand adjustments. Check out our <a href="/pricing">flexible subscription options</a> on the pricing page to find the perfect tier for your home.
+					</p>
+				</div>
 			</PageSection>
 
 			<PageSection columns={1} maxWidth="1024px" id="home-spacer-section">

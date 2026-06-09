@@ -5,6 +5,17 @@ import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 import { headers } from 'next/headers';
 import * as componentsServer from '@pixelated-tech/components/server';
 
+function findReactElementByTestId(node: any, testId: string): boolean {
+	if (node == null) return false;
+	const nodes = Array.isArray(node) ? node : [node];
+	for (const item of nodes) {
+		if (!item || typeof item !== 'object') continue;
+		if (item.props?.['data-testid'] === testId) return true;
+		if (findReactElementByTestId(item.props?.children, testId)) return true;
+	}
+	return false;
+}
+
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 vi.mock('@pixelated-tech/components/server', async () => {
 	const actual = await vi.importActual<typeof componentsServer>('@pixelated-tech/components/server');
@@ -43,7 +54,7 @@ import manifest from '@/app/manifest';
 import robots from '@/app/robots';
 import SiteMapXML from '@/app/sitemap';
 import NotFound from '@/app/not-found';
-import siteConfig from '@/app/data/siteconfig.json';
+import { config as pixelatedConfig } from '@/test/page-mocks';
 import LayoutClient from '@/app/elements/layout-client';
 import SocialTags from '@/app/elements/socialtags';
 import RootLayout from '@/app/layout';
@@ -96,10 +107,10 @@ describe('App shell coverage', () => {
 		expect(screen.getAllByTestId('callout').length).toBeGreaterThan(0);
 	});
 
-	it('uses real siteconfig.json siteInfo and route data', () => {
-		expect(siteConfig.siteInfo).toBeDefined();
-		expect(siteConfig.siteInfo.url).toContain('https://www.simpledayconcierge.com');
-		expect(siteConfig.routes.some(route => route.path === '/')).toBe(true);
+	it('uses real pixelated.config.json siteInfo and route data', () => {
+		expect(pixelatedConfig.siteInfo).toBeDefined();
+		expect(pixelatedConfig.siteInfo.url).toContain('https://www.simpledayconcierge.com');
+		expect(pixelatedConfig.routes.some(route => route.path === '/')).toBe(true);
 	});
 
 	it('renders root layout with metadata and children', async () => {
@@ -107,8 +118,7 @@ describe('App shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
-		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
 	});
 
 	it('renders root layout with trailing slash path and fallback metadata', async () => {
@@ -117,8 +127,7 @@ describe('App shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
-		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
 	});
 
 	it('renders root layout with x-url and missing origin fallback metadata', async () => {
@@ -127,8 +136,7 @@ describe('App shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
-		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
 	});
 
 	it('renders root layout with unknown path fallback metadata', async () => {
@@ -137,8 +145,7 @@ describe('App shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		const headChildren = Array.isArray(head.props.children) ? head.props.children : [head.props.children];
-		expect(headChildren.some((child: any) => child?.props?.['data-testid'] === 'meta-tags')).toBe(true);
+		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
 	});
 
 	it('proxies request headers correctly', () => {

@@ -1,0 +1,17 @@
+import { Table } from "@/components/elements/table";
+import requestData from "@/data/requests.json";
+import '@/css/pixelated.global.css';
+
+
+export default {
+	title: 'General/Table',
+	component: Table
+};
+
+export const Table_Requests = {
+	args: {
+		data: requestData,
+		id: "requestData",
+		sortable: true,
+	}
+};

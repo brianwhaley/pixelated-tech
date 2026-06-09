@@ -12,10 +12,11 @@
         "condition": "Good",
         "categories": [
           {
-            "categoryId": "12345",
+            "categoryId": "79720",
             "categoryName": "Electronics"
           }
         ],
+        "categoryId": "79720",
         "seller": {
           "username": "seller123",
           "sellerUserName": "seller123",
@@ -29,6 +30,7 @@
           "country": "US"
         },
         "itemCreationDate": "2024-01-01T00:00:00.000Z",
+        "itemWebUrl": "https://www.ebay.com/itm/item-123",
         "shippingOptions": [
           {
             "shippingCostType": "CALCULATED",

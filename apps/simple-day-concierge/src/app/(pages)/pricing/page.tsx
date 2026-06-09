@@ -4,7 +4,7 @@ import React from "react";
 import { PageTitleHeader, PageSection, PageSectionHeader, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 
-export default function Pricing() {
+export default function PricingPage() {
 	
     
 	return (
@@ -25,6 +25,7 @@ export default function Pricing() {
 					imgShape="bevel">
 					<p>Our Standard Services focus on the essential administrative, logistical, and daily tasks that keep your personal life moving smoothly. These tasks are typically transactional or task-oriented, relying on streamlined execution, scheduling, and standard routine management. They are priced competitively to offer everyday efficiency and time relief.</p>
 					<ul>
+						<li>Companion and Wellness Care</li>
 						<li>Errand Running and Logistics</li>
 						<li>Personal Shopping and Grocery Provisioning</li>
 						<li>Appointment Scheduling and Calendar Management</li>
@@ -41,14 +42,13 @@ export default function Pricing() {
 					imgShape="bevel">
 					<p>Our Premium Services involve a higher level of dedicated, on-site presence, specialized coordination, or prolonged estate-level oversight. These offerings are categorized as premium because they require extended time commitments, meticulous attention to high-value details, customized care, or the handling of complex residential systems (such as utilities and electronics) that demand the absolute highest trust.</p>
 					<ul>
-						<li>Companion and Wellness Care</li>
 						<li>Home Wait Services and Delivery Sitting</li>
 						<li>Meal Preparation and Kitchen Support</li>
 						<li>Home and Closet Organization</li>
 						<li>Vacation Return Provisioning & Prep</li>
 						<li>Private Event Planning & Administration</li>
 					</ul>
-					<PageSectionHeader>$85/hr</PageSectionHeader>
+					<PageSectionHeader>$75/hr</PageSectionHeader>
 					<p style={{fontSize: 'var(--font-size5)'}}>Our Premium Services require a 2 hour minimum.  Call us for a personalized quote.</p>
 				</Callout>
 			</PageSection>
@@ -76,7 +76,7 @@ export default function Pricing() {
 				<Callout
 					layout="vertical"
 					subtitle="Premium Package"
-					img="https://images.ctfassets.net/jc3fkpb2sdyr/2iXckSk4pYhwqbJrdqq2ze/f0e7054dd5c389061db83aaf6d6ede66/medium-shot-couple-clinking-glasses-toast.jpg?fm=webp"
+					img="https://images.ctfassets.net/jc3fkpb2sdyr/5tpEzcxrelrQs13KFwZdmK/7f9edaec71cf72bae10c57b706d329d6/medium-shot-woman-kid-cooking-together.jpg?fm=webp"
 					imgAlt="Simple Day Concierge Premium Package"
 					imgShape="bevel">
 					<p>Our Premium Package is tailored for clients who require a more comprehensive level of support and want to take full advantage of our Premium Services. This package offers a significant number of hours at a discounted rate, making it an excellent choice for those with ongoing needs or who want to ensure they have access to our most specialized offerings. With the Premium Package, you can enjoy the highest level of care and attention from our team while benefiting from cost savings on our premium service rates.</p>
@@ -85,7 +85,7 @@ export default function Pricing() {
 						<li>2 hours per week, or 4 hours every other week</li>
 						<li>Discounted rate for Premium Services</li>
 					</ul>
-					<PageSectionHeader>$649</PageSectionHeader>
+					<PageSectionHeader>$559</PageSectionHeader>
 					<p style={{fontSize: 'var(--font-size5)'}}>Call us for a personalized quote.</p>
 				</Callout>
 			</PageSection>
