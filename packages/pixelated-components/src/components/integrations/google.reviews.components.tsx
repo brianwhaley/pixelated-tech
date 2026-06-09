@@ -16,15 +16,12 @@ https://maps.googleapis.com/maps/api/place/textsearch/json?query=Manning+Metalwo
 
 
 /**
- * GoogleReviewsCard — Fetch and display Google Place reviews for a specific Place ID.
+ * GoogleReviewsCard — Fetch and display Google Place reviews configured via pixelated config.
  *
- * @param {string} [props.placeId] - Google Place ID to fetch reviews for (required).
  * @param {string} [props.language] - Optional language code to localize review text.
  * @param {number} [props.maxReviews] - Maximum number of reviews to display.
  */
 GoogleReviewsCard.propTypes = {
-/** Google Place ID (required) */
-	placeId: PropTypes.string.isRequired,
 	/** Language code for localization (optional) */
 	language: PropTypes.string,
 	/** Max number of reviews to display */
@@ -38,18 +35,25 @@ export function GoogleReviewsCard(props: GoogleReviewsCardType) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const apiKey = config?.integrations?.google?.api_key || '';
+	const placeId = config?.integrations?.googlePlaces?.placeId || '';
+	const apiKey = config?.integrations?.googlePlaces?.apiKey || '';
 	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
 
 	useEffect(() => {
+		if (!placeId) {
+			setError('Place ID is required.');
+			setLoading(false);
+			return;
+		}
+
 		(async () => {
 			try {
 				const result = await getGoogleReviewsByPlaceId({
-					placeId: props.placeId,
+					apiKey: apiKey,
+					placeId: placeId,
+					proxyBase: proxyBase,
 					language: props.language ?? undefined,
 					maxReviews: props.maxReviews ?? undefined,
-					proxyBase: proxyBase,
-					apiKey: apiKey,
 				});
 				setPlace(result.place);
 				setReviews(result.reviews);
@@ -65,7 +69,7 @@ export function GoogleReviewsCard(props: GoogleReviewsCardType) {
 				setLoading(false);
 			}
 		})();
-	}, [props.placeId, props.language, props.maxReviews, apiKey, proxyBase]);
+	}, [apiKey, placeId, proxyBase, props.language, props.maxReviews]);
 
 	if (loading) {
 		return (
@@ -133,9 +137,26 @@ export function GoogleReviewsCard(props: GoogleReviewsCardType) {
 		</div>
 	);
 }
+
+
+
+
+
+
+/**
+ * GoogleReviewsCarousel — Fetch and display Google Place reviews in a carousel or grid format.
+ *
+ * @param {string} [props.language] - Optional language code to localize review text.
+ * @param {number} [props.maxReviews] - Maximum number of reviews to display.
+ * @param {'carousel' | 'grid'} [props.displayMode] - Display mode: carousel or grid (default: carousel).
+ * @param {boolean} [props.draggable] - Enable swipe/drag interactions on touch devices (default: false).
+ * @param {'contain' | 'cover' | 'fill'} [props.imgFit] - Image fit mode for carousel cards (default: cover).
+ * @param {string} [props.businessName] - Business name for review schema itemReviewed (default: "Local Business").
+ * @param {boolean} [props.includeReviewSchema] - Include JSON-LD ReviewSchema for each loaded review (default: true).
+ * 
+ * @returns {JSX.Element} A card component displaying Google Place reviews in the specified format.
+ */
 GoogleReviewsCarousel.propTypes = {
-	/** Google Place ID (required) */
-	placeId: PropTypes.string.isRequired,
 	/** Language code for localization */
 	language: PropTypes.string,
 	/** Max number of reviews to display */
@@ -159,7 +180,8 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const apiKey = config?.integrations?.google?.api_key || '';
+	const apiKey = config?.integrations?.googlePlaces?.apiKey || '';
+	const placeId = config?.integrations?.googlePlaces?.placeId || '';
 	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
 	const displayMode = props.displayMode || 'carousel';
 	const imgFit = props.imgFit || 'cover';
@@ -167,7 +189,7 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 	const includeReviewSchema = props.includeReviewSchema !== false;
 
 	useEffect(() => {
-		if (!props.placeId) {
+		if (!placeId) {
 			setError('Place ID is required.');
 			setLoading(false);
 			return;
@@ -176,11 +198,11 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 		(async () => {
 			try {
 				const result = await getGoogleReviewsByPlaceId({
-					placeId: props.placeId,
+					apiKey: apiKey,
+					placeId: placeId,
+					proxyBase: proxyBase,
 					language: props.language ?? undefined,
 					maxReviews: props.maxReviews ?? undefined,
-					proxyBase: proxyBase,
-					apiKey: apiKey,
 				});
 				setPlace(result.place);
 				setReviews(result.reviews);
@@ -195,7 +217,7 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 				setLoading(false);
 			}
 		})();
-	}, [props.placeId, props.language, props.maxReviews, apiKey, proxyBase]);
+	}, [apiKey, placeId, proxyBase, props.language, props.maxReviews]);
 
 	if (loading) {
 		return (
