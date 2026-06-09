@@ -8,7 +8,7 @@ import type { CheckoutType } from './shoppingcart.functions';
 /**
  * PayPalCheckout component renders a PayPal payment button for the shopping cart. It requires the PayPal client ID, checkout data, and an onApprove callback function as props. The component will render the PayPal button and handle the payment process when the user clicks it.
  * 
- * @param: payPalClientID - The client ID for the PayPal application, used to authenticate API requests.
+ * @param: payPalClientID - Optional PayPal client ID to enable the PayPal checkout button.
  * @param: checkoutData - An object containing the details of the checkout, such as total amount, currency, and shipping information.
  * @param: onApprove - A callback function that will be called when the payment is approved by the user. It receives the payment details as an argument.
  * @returns: A React component that renders the PayPal payment button.

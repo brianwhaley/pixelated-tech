@@ -46,8 +46,6 @@ export default function AboutUsPage() {
 				<PageSectionHeader title="Customer Reviews" />
 				{pixelatedConfig?.integrations?.googlePlaces?.placeId && (
 					<GoogleReviewsCarousel
-						placeId={pixelatedConfig.integrations.googlePlaces.placeId}
-						apiKey={pixelatedConfig?.integrations?.googlePlaces?.apiKey || ''}
 						businessName="Manning Metalworks"
 					/>
 				)}

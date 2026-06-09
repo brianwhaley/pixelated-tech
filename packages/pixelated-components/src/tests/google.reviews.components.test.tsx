@@ -50,9 +50,15 @@ describe('Google Reviews Components', () => {
 			vi.spyOn(googleReviewsFunctions, 'getGoogleReviewsByPlaceId').mockImplementation(
 				() => new Promise(() => {})
 			);
-			
-			renderWithProviders(<GoogleReviewsCard placeId="place-123" />);
-			
+
+			renderWithProviders(<GoogleReviewsCard />, {
+				config: {
+					integrations: {
+						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
+					},
+				},
+			});
+
 			expect(screen.getByText('Loading reviews...')).toBeInTheDocument();
 		});
 
@@ -60,9 +66,15 @@ describe('Google Reviews Components', () => {
 			vi.spyOn(googleReviewsFunctions, 'getGoogleReviewsByPlaceId').mockRejectedValue(
 				new Error('API Error')
 			);
-			
-			renderWithProviders(<GoogleReviewsCard placeId="place-123" />);
-			
+
+			renderWithProviders(<GoogleReviewsCard />, {
+				config: {
+					integrations: {
+						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
+					},
+				},
+			});
+
 			await waitFor(() => {
 				expect(screen.getByText(/Error:/)).toBeInTheDocument();
 			});
@@ -72,9 +84,15 @@ describe('Google Reviews Components', () => {
 			vi.spyOn(googleReviewsFunctions, 'getGoogleReviewsByPlaceId').mockRejectedValue(
 				new Error('CORS error')
 			);
-			
-			renderWithProviders(<GoogleReviewsCard placeId="place-123" />);
-			
+
+			renderWithProviders(<GoogleReviewsCard />, {
+				config: {
+					integrations: {
+						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
+					},
+				},
+			});
+
 			await waitFor(() => {
 				expect(screen.getByText(/CORS restrictions/)).toBeInTheDocument();
 			});
@@ -85,9 +103,15 @@ describe('Google Reviews Components', () => {
 				place: mockPlace,
 				reviews: mockReviews
 			});
-			
-			renderWithProviders(<GoogleReviewsCard placeId="place-123" />);
-			
+
+			renderWithProviders(<GoogleReviewsCard />, {
+				config: {
+					integrations: {
+						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
+					},
+				},
+			});
+
 			await waitFor(() => {
 				expect(screen.getByText('Test Restaurant')).toBeInTheDocument();
 			});
@@ -99,15 +123,30 @@ describe('Google Reviews Components', () => {
 				reviews: []
 			});
 
-			renderWithProviders(<GoogleReviewsCard placeId="place-123" />);
+			renderWithProviders(<GoogleReviewsCard />, {
+				config: {
+					integrations: {
+						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
+					},
+				},
+			});
 
 			await waitFor(() => {
 				expect(screen.getByText('No reviews found.')).toBeInTheDocument();
 			});
 		});
+	});
 
-		it('should display error when GoogleReviewsCarousel is missing a placeId', async () => {
-			renderWithProviders(<GoogleReviewsCarousel placeId="" displayMode="grid" />);
+	describe('GoogleReviewsCarousel', () => {
+
+		it('should display error when GoogleReviewsCarousel config is missing a placeId', async () => {
+			renderWithProviders(<GoogleReviewsCarousel displayMode="grid" />, {
+				config: {
+					integrations: {
+						googlePlaces: {},
+					},
+				},
+			});
 
 			await waitFor(() => {
 				expect(screen.getByText(/Place ID is required/)).toBeInTheDocument();
@@ -121,7 +160,14 @@ describe('Google Reviews Components', () => {
 			});
 
 			renderWithProviders(
-				<GoogleReviewsCarousel placeId="place-123" displayMode="grid" includeReviewSchema={false} />
+				<GoogleReviewsCarousel displayMode="grid" includeReviewSchema={false} />,
+				{
+					config: {
+						integrations: {
+							googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
+						},
+					},
+				}
 			);
 
 			await waitFor(() => {

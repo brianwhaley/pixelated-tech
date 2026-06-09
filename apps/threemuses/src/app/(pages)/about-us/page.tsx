@@ -59,9 +59,6 @@ export default function AboutUsPage() {
 				<PageSectionHeader title="Customer Reviews" />
 				{pixelatedConfig?.integrations?.googlePlaces?.apiKey ? (
 					<GoogleReviewsCarousel
-						placeId={pixelatedConfig.integrations.googlePlaces.placeId ?? ''}
-						apiKey={pixelatedConfig.integrations.googlePlaces.apiKey}
-						proxyBase={pixelatedConfig?.global?.proxyUrl || ''}
 						businessName="The Three Muses of Bluffton"
 						draggable={true}
 						imgFit="contain"
