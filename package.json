@@ -23,7 +23,7 @@
     "extract:page": "npx tsx packages/pixelated-components/src/components/sitebuilder/page/page-extract-cli.mjs",
     "release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')",
-    "deploymarker:update": "find . -type f -path '*/siteconfig.json' -print0 | xargs -0 -I {} node -e \"const fs=require('fs'); const p=process.argv[1]; const json=JSON.parse(fs.readFileSync(p,'utf8')); json.deployMarker=new Date().toISOString(); fs.writeFileSync(p, JSON.stringify(json, null, 2) + '\\n');\" {}",
+    "deploymarker:update": "for p in package.json apps/*/package.json tools/*/package.json; do if [ -f \"$p\" ]; then node -e 'const fs=require(\"fs\"); const p=process.argv[1]; const json=JSON.parse(fs.readFileSync(p,\"utf8\")); json.deployMarker=new Date().toISOString(); fs.writeFileSync(p, JSON.stringify(json, null, 2) + \"\\n\");' \"$p\"; fi; done",
     "bump:patch:workspaces": "for dir in packages/* apps/* tools/* shared/*; do if [ -f \"$dir/package.json\" ]; then echo \"Bumping patch in $dir\"; (cd \"$dir\" && npm version patch --force --no-git-tag-version); fi; done"
   },
   "scripts-disabled": {
@@ -60,5 +60,6 @@
     "puppeteer": "^25.0.2",
     "vitest": "^4.1.7"
   },
-  "overrides": {}
+  "overrides": {},
+  "deployMarker": "2026-06-09T00:54:08.622Z"
 }
