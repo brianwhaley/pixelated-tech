@@ -1,9 +1,10 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from "prop-types";
-import { PageGridItem } from '../general/semantic';
-import { type SpotifyPodcastEpisodeType } from './spotify.functions';
+import { PageGridItem } from '../structure/page-blocks';
+import { type SpotifyPodcastEpisodeType, type SpotifyPodcastSeriesType, mapPodcastEpisodeToSchema, mapPodcastSeriesToSchema } from './spotify.functions';
 import { BlogPostSummary } from './wordpress.components';
+import { SchemaPodcastEpisode, SchemaPodcastSeries } from '../foundation/schema';
 
 
 
@@ -47,15 +48,18 @@ PodcastEpisodeList.propTypes = {
 			episode: PropTypes.string.isRequired,
 			episodeType: PropTypes.string.isRequired,
 		}).isRequired
-	).isRequired
+	).isRequired,
+	series: PropTypes.object,
 };
 export type PodcastEpisodeListType = InferProps<typeof PodcastEpisodeList.propTypes>;
 export function PodcastEpisodeList (props: PodcastEpisodeListType) {
-	const { episodes } = props;
+	const { episodes, series } = props;
 	return (
 		<>
+			{series && <SchemaPodcastSeries series={mapPodcastSeriesToSchema(series as SpotifyPodcastSeriesType)} />}
 			{episodes.map((episode: SpotifyPodcastEpisodeType) => (
 				<PageGridItem key={episode.guid}>
+					<SchemaPodcastEpisode key={episode.guid} episode={mapPodcastEpisodeToSchema(episode)} />
 					<BlogPostSummary
 						ID={episode.guid}
 						title={episode.title}

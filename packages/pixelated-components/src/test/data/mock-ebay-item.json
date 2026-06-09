@@ -1,0 +1,15 @@
+{
+	"legacyItemId": "123456",
+	"title": "Test Product",
+	"price": { "value": "29.99", "currency": "USD" },
+	"itemWebUrl": "https://ebay.com/itm/123456",
+	"thumbnailImages": [
+		{ "imageUrl": "https://pic.ebay.com/image.jpg" }
+	],
+	"categoryId": "electronics",
+	"categories": [
+		{ "categoryId": "electronics" }
+	],
+	"weight": 2,
+	"weightUnit": "lb"
+}

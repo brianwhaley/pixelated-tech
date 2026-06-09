@@ -6,8 +6,10 @@ import { CacheManager } from '../foundation/cache-manager';
 import { getDomain } from '../foundation/utilities';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
-import type { CarouselCardType } from '../general/carousel';
+import type { CarouselCardType } from '../structure/carousel';
 import type { FlickrConfig, GlobalConfig } from '../config/config.types';
+
+const debug = false;
 
 // Flickr API base URL - non-secret configuration
 const FLICKR_API_BASE_URL = 'https://api.flickr.com/services/rest/?';
@@ -33,12 +35,14 @@ const defaultFlickr: FlickrConfig = {
 
 
 // Utility to build the final Flickr API URL, using proxy if available
-function buildFlickrApiUrl(flickr: any) {
+function buildFlickrApiUrl(flickr: any, debug = false) {
+	if (debug) { console.log('[GetFlickrData] buildFlickrApiUrl input flickr:', flickr); }
 	// Use buildUrl to construct the Flickr REST API URL from parameters
 	const apiUrl = buildUrl({
 		baseUrl: flickr.baseURL,
 		params: flickr.urlProps,
 	});
+	if (debug) { console.log('[GetFlickrData] buildFlickrApiUrl apiUrl:', apiUrl); }
 	// Prefer flickr.proxyURL, then globalConfig.proxyUrl, else direct
 	if (flickr.proxyURL) {
 		return flickr.proxyURL + encodeURIComponent(apiUrl);
@@ -102,7 +106,9 @@ export function GetFlickrData(props: GetFlickrDataType) {
 	if (props.flickr) {
 		flickrConfig = mergeDeep(flickrConfig, props.flickr as FlickrConfig) as FlickrConfig;
 	}
-	const myURL = buildFlickrApiUrl(flickrConfig);
+	if (debug) { console.log('[GetFlickrData] merged flickrConfig:', flickrConfig); }
+	const myURL = buildFlickrApiUrl(flickrConfig, debug);
+	if (debug) { console.log('[GetFlickrData] final URL:', myURL); }
 
 	// CacheManager: localStorage, 1 week TTL, domain isolation, namespace 'flickr'
 	const flickrCache = new CacheManager({
@@ -231,6 +237,8 @@ export function FlickrWrapper(props: FlickrWrapperType) {
 			}
 		}
 	};
+
+	if (debug) {console.log('[FlickrWrapper] flickr payload:', flickr);}
 
 	async function getFlickrCards() {
 		const myPromise = GetFlickrData(flickr);

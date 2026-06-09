@@ -1,7 +1,7 @@
 import React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { createPageComponentMocks, mockState, resetMockState, setFileDataState } from '@/test/page-mocks';
+import { createPageComponentMocks, mockState, resetMockState, setFileDataState, setPixelatedConfigOverride } from '@/test/page-mocks';
 
 vi.mock('@pixelated-tech/components', async () => {
 	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
@@ -23,6 +23,13 @@ vi.mock('next/server', () => ({
 }));
 
 import Home from '@/app/(pages)/(home)/page';
+import ContactPage from '@/app/(pages)/contact/page';
+import ServicesPage from '@/app/(pages)/services/page';
+import StyleGuidePage from '@/app/(pages)/style-guide/page';
+import TermsPage from '@/app/(pages)/terms/page';
+import Footer from '@/app/elements/footer';
+import Nav from '@/app/elements/nav';
+
 
 describe('Pixelated Template branch coverage', () => {
 	beforeEach(() => {
@@ -46,6 +53,34 @@ describe('Pixelated Template branch coverage', () => {
 				el.getAttribute('data-testid')?.includes('smart-image')
 			);
 			expect(mockElements.length).toBeGreaterThan(0);
+		});
+	});
+
+	it('renders core pages and components with no site config to exercise alternate branches', async () => {
+		setPixelatedConfigOverride(null);
+		render(<Home />);
+		render(<ServicesPage />);
+		render(<StyleGuidePage />);
+		render(<TermsPage />);
+		render(<Footer />);
+		render(<Nav />);
+
+		setPixelatedConfigOverride({
+			siteInfo: {
+				address: {
+					streetAddress: '',
+					addressLocality: '',
+					addressRegion: '',
+					postalCode: '',
+				},
+				email: 'info@simpledayconcierge.com',
+				telephone: '(000) 000-0000',
+			},
+		});
+		render(<ContactPage />);
+
+		await waitFor(() => {
+			expect(screen.getAllByText(/Simple Day Concierge/).length).toBeGreaterThan(0);
 		});
 	});
 });

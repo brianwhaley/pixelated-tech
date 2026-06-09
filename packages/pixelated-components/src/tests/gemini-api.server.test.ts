@@ -1,36 +1,32 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { pixelatedConfig } from '../test/test-data';
 
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({}))
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 import { smartFetch } from '../components/foundation/smartfetch';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { generateAiRecommendations } from '../components/integrations/gemini-api.server';
 import { parsePaLMResponse, inferBusinessType, parseGeminiResponse } from '../components/integrations/gemini-api.functions';
 
-const mockSiteInfo: any = {
-	name: 'Test Site',
-	description: 'Test Description',
-	address: {
-		addressLocality: 'Austin',
-		addressRegion: 'TX',
-		postalCode: '78701'
-	}
-};
-
 const request = {
 	route: { name: 'Home', path: '/', title: 'Home', keywords: ['test'], description: 'Test page' },
-	siteInfo: mockSiteInfo
+	siteInfo: pixelatedConfig.siteInfo
 };
 
 describe('gemini-api.server', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 	});
 
 	it('should export generateAiRecommendations function', () => {

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes, { InferProps } from "prop-types";
 import { mergeDeep } from '../foundation/utilities';
-import { SmartImage } from '../general/smartimage';
+import { SmartImage } from '../elements/smartimage';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 import { usePixelatedConfig } from '../config/config.client';
@@ -51,7 +51,7 @@ export function SocialCards(props: SocialCardsType) {
 	const debug = false;
 	// Get config values from provider
 	const config = usePixelatedConfig();
-	const proxyURL = config?.global?.proxyUrl || 'https://proxy.pixelated.tech/prod/proxy';
+	const proxyURL = config?.integrations?.global?.proxyUrl || 'https://proxy.pixelated.tech/prod/proxy';
 
 	const [ state, setState ] = useState({
 		loading: true,
@@ -293,9 +293,9 @@ export function SocialCard(props: SocialCardType) {
 				<div className="card-title">
 					<a href={props.card.link} target="_blank" rel="noopener noreferrer">
 						<SmartImage className="card-icon" src={props.iconSrc} title={props.iconSrcAlt} alt={props.iconSrcAlt} 
-							cloudinaryEnv={config?.cloudinary?.product_env}
-							cloudinaryDomain={config?.cloudinary?.baseUrl}
-							cloudinaryTransforms={config?.cloudinary?.transforms}
+							cloudinaryEnv={config?.integrations?.cloudinary?.product_env}
+							cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl}
+							cloudinaryTransforms={config?.integrations?.cloudinary?.transforms}
 						/>
 						{props.card.title}
 					</a>

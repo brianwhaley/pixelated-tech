@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
+import { pixelatedConfig, mockGoogleAuth, mockGoogleApiResponses } from '../test/test-data';
+import { mockGoogleDateRanges } from '../test/fixtures';
 
 // Mock the cache and utils
 const mockCacheManagerInstance = {
@@ -6,7 +8,7 @@ const mockCacheManagerInstance = {
   set: vi.fn(),
 };
 
-vi.mock('../components/general/cache-manager', () => {
+vi.mock('../components/foundation/cache-manager', () => {
   const getMock = vi.fn();
   const setMock = vi.fn();
   class MockCacheManager {
@@ -62,7 +64,7 @@ import {
 } from '../components/admin/site-health/google.api.integration';
 
 describe('Google API Integration', () => {
-  let mockGoogleAuth: any;
+  let authClientInstance: any;
   let mockOAuth2: any;
   let mockAnalyticsData: any;
   let mockSearchConsole: any;
@@ -72,18 +74,8 @@ describe('Google API Integration', () => {
     // Reset all mocks
     vi.clearAllMocks();
 
-    // Setup Google API mocks
-    mockGoogleAuth = {
-      type: 'service_account',
-      project_id: 'test-project',
-      private_key_id: 'test-key-id',
-      private_key: '-----BEGIN PRIVATE KEY-----\ntest-key\n-----END PRIVATE KEY-----\n',
-      client_email: 'test@test-project.iam.gserviceaccount.com',
-      client_id: 'test-client-id',
-      auth_uri: 'https://accounts.google.com/o/oauth2/auth',
-      token_uri: 'https://oauth2.googleapis.com/token',
-      auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
-      client_x509_cert_url: 'https://www.googleapis.com/robot/v1/metadata/x509/test%40test-project.iam.gserviceaccount.com',
+    authClientInstance = {
+      // Mock methods if needed
     };
 
     mockOAuth2 = {
@@ -108,19 +100,19 @@ describe('Google API Integration', () => {
     };
 
     // Set global references for mocks
-    (globalThis as any).__mockGoogleAuth = mockGoogleAuth;
+    (globalThis as any).__mockGoogleAuth = authClientInstance;
     (globalThis as any).__mockOAuth2 = mockOAuth2;
     (globalThis as any).__mockAnalyticsData = mockAnalyticsData;
     (globalThis as any).__mockSearchConsole = mockSearchConsole;
 
     // Set up mock implementations
-    (google.auth.GoogleAuth as any).mockImplementation(function() { return mockGoogleAuth; });
+    (google.auth.GoogleAuth as any).mockImplementation(function() { return authClientInstance; });
     (google.auth.OAuth2 as any).mockImplementation(function() { return mockOAuth2; });
     (google.analyticsdata as any).mockImplementation(function() { return mockAnalyticsData; });
     (google.searchconsole as any).mockImplementation(function() { return mockSearchConsole; });
 
     // Mock the googleapis constructors are already set up in the module mock
-    // (google.auth.GoogleAuth as any).mockImplementation(() => mockGoogleAuth);
+    // (google.auth.GoogleAuth as any).mockImplementation(() => authClientInstance);
     // (google.auth.OAuth2 as any).mockImplementation(() => mockOAuth2);
     // (google.analyticsdata as any).mockImplementation(() => mockAnalyticsData);
     // (google.searchconsole as any).mockImplementation(() => mockSearchConsole);
@@ -128,16 +120,7 @@ describe('Google API Integration', () => {
     // CacheManager is already mocked at module level
 
     // Mock utility functions
-    (calculateDateRanges as Mock).mockReturnValue({
-      currentStart: new Date('2024-01-01'),
-      currentEnd: new Date('2024-01-15'),
-      previousStart: new Date('2023-12-18'),
-      previousEnd: new Date('2023-12-31'),
-      currentStartStr: '2024-01-01',
-      currentEndStr: '2024-01-15',
-      previousStartStr: '2023-12-18',
-      previousEndStr: '2023-12-31',
-    });
+    (calculateDateRanges as Mock).mockReturnValue(mockGoogleDateRanges);
 
     (formatChartDate as Mock).mockImplementation((date: Date) => {
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -156,21 +139,15 @@ describe('Google API Integration', () => {
 
     it('should create auth client with service account key', async () => {
       const config: GoogleAuthConfig = {
-        serviceAccountKey: JSON.stringify({
-          type: 'service_account',
-          project_id: 'test-project',
-        }),
+        serviceAccountKey: JSON.stringify(mockGoogleAuth),
       };
 
       const result = await createGoogleAuthClient(config, scopes);
 
       expect(result.success).toBe(true);
-      expect(result.auth).toBe(mockGoogleAuth);
+      expect(result.auth).toBe(authClientInstance);
       expect(google.auth.GoogleAuth).toHaveBeenCalledWith({
-        credentials: {
-          type: 'service_account',
-          project_id: 'test-project',
-        },
+        credentials: mockGoogleAuth,
         scopes,
       });
     });
@@ -223,10 +200,10 @@ describe('Google API Integration', () => {
 
       expect(result.success).toBe(true);
       expect(result.client).toBeDefined();
-      expect(result.auth).toBe(mockGoogleAuth);
+      expect(result.auth).toBe(authClientInstance);
       expect(google.analyticsdata).toHaveBeenCalledWith({
         version: 'v1beta',
-        auth: mockGoogleAuth,
+        auth: authClientInstance,
       });
     });
 
@@ -250,10 +227,10 @@ describe('Google API Integration', () => {
 
       expect(result.success).toBe(true);
       expect(result.client).toBeDefined();
-      expect(result.auth).toBe(mockGoogleAuth);
+      expect(result.auth).toBe(authClientInstance);
       expect(google.searchconsole).toHaveBeenCalledWith({
         version: 'v1',
-        auth: mockGoogleAuth,
+        auth: authClientInstance,
       });
     });
 
@@ -268,29 +245,19 @@ describe('Google API Integration', () => {
   });
 
   describe('getGoogleAnalyticsData', () => {
-    const validConfig: GoogleAnalyticsConfig = {
-      ga4PropertyId: '123456789',
-      serviceAccountKey: JSON.stringify({ type: 'service_account' }),
+    const validConfig = {
+      ...pixelatedConfig.integrations?.googleAnalytics,
+      serviceAccountKey: JSON.stringify(mockGoogleAuth)
     };
 
     beforeEach(() => {
       // Mock successful API responses
       mockAnalyticsData.properties.runReport
         .mockResolvedValueOnce({
-          data: {
-            rows: [
-              { dimensionValues: [{ value: '20240101' }], metricValues: [{ value: '100' }] },
-              { dimensionValues: [{ value: '20240102' }], metricValues: [{ value: '150' }] },
-            ],
-          },
+          data: mockGoogleApiResponses.analytics,
         })
         .mockResolvedValueOnce({
-          data: {
-            rows: [
-              { dimensionValues: [{ value: '20231219' }], metricValues: [{ value: '80' }] },
-              { dimensionValues: [{ value: '20231220' }], metricValues: [{ value: '120' }] },
-            ],
-          },
+          data: mockGoogleApiResponses.analyticsPrevious,
         });
     });
 
@@ -306,7 +273,7 @@ describe('Google API Integration', () => {
     });
 
     it('should fail when GA4 property ID is not configured', async () => {
-      const configWithoutProperty = { ...validConfig, ga4PropertyId: 'GA4_PROPERTY_ID_HERE' };
+      const configWithoutProperty = { ...validConfig, id: 'GA4_PROPERTY_ID_HERE' };
 
       const result = await getGoogleAnalyticsData(configWithoutProperty, 'test-site');
 
@@ -327,7 +294,7 @@ describe('Google API Integration', () => {
     });
 
     it('should handle authentication failures', async () => {
-      const invalidConfig = { ga4PropertyId: '123456789' }; // No credentials
+      const invalidConfig = { id: '123456789' }; // No credentials
 
       const result = await getGoogleAnalyticsData(invalidConfig, 'test-site');
 
@@ -346,20 +313,10 @@ describe('Google API Integration', () => {
       // Mock successful API responses
       mockSearchConsole.searchanalytics.query
         .mockResolvedValueOnce({
-          data: {
-            rows: [
-              { keys: ['2024-01-01'], clicks: 10, impressions: 100 },
-              { keys: ['2024-01-02'], clicks: 15, impressions: 150 },
-            ],
-          },
+          data: mockGoogleApiResponses.searchConsole,
         })
         .mockResolvedValueOnce({
-          data: {
-            rows: [
-              { keys: ['2023-12-19'], clicks: 8, impressions: 80 },
-              { keys: ['2023-12-20'], clicks: 12, impressions: 120 },
-            ],
-          },
+          data: mockGoogleApiResponses.searchConsolePrevious,
         });
     });
 

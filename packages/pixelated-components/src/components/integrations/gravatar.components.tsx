@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 // import { type GravatarProfile } from './gravatar.functions';
-import { SmartImage } from '../general/smartimage';
+import { SmartImage } from '../elements/smartimage';
 import { usePixelatedConfig } from '../config/config.client';
 import './gravatar.css';
 
@@ -195,9 +195,9 @@ export function GravatarCard(props: GravatarCardType) {
 				height={avatarSize ?? 120}
 				quality={100}
 				className="gravatar-avatar"
-				cloudinaryEnv={config?.cloudinary?.product_env}
-				cloudinaryDomain={config?.cloudinary?.baseUrl}
-				cloudinaryTransforms={config?.cloudinary?.transforms}
+				cloudinaryEnv={config?.integrations?.cloudinary?.product_env}
+				cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl}
+				cloudinaryTransforms={config?.integrations?.cloudinary?.transforms}
 			/>
 		</div>
 	);

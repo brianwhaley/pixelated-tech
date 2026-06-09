@@ -1,0 +1,15 @@
+import { MenuSimple } from '@/components/elements/menu-simple';
+import siteConfig from '@/data/routes2.json';
+const allRoutes = siteConfig.routes;
+import '@/css/pixelated.global.css';
+
+export default {
+	title: 'General/Menu Simple',
+	component: MenuSimple
+};
+
+export const Menu_Simple = {
+	args: {
+		menuItems: allRoutes
+	}
+};

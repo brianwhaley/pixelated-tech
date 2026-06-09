@@ -13,6 +13,7 @@ interface UsageData {
   components: string[];
   siteList: Site[];
   usageMatrix: { [component: string]: { [site: string]: boolean } };
+  warnings?: string[];
 }
 
 export default function ComponentUsagePage() {
@@ -24,7 +25,10 @@ export default function ComponentUsagePage() {
 		async function fetchData() {
 			try {
 				ToggleLoading({ show: true });
-				const response = await smartFetch('/api/component-usage', { responseType: 'ok' });
+				const response = await smartFetch('/api/component-usage', {
+					responseType: 'ok',
+					timeout: 0,
+				});
 				if (!response.ok) {
 					throw new Error('Failed to fetch component usage data');
 				}
@@ -115,6 +119,16 @@ export default function ComponentUsagePage() {
 				<div className="usage-page-container">
 					<h1 className="usage-page-title">Component Usage Analytics</h1>
           
+					{data.warnings && data.warnings.length > 0 && (
+						<div className="usage-warning-card">
+							<h3>Component scan warnings</h3>
+							<ul>
+								{data.warnings.map((warning, idx) => (
+									<li key={idx}>{warning}</li>
+								))}
+							</ul>
+						</div>
+					)}
 					<div className="usage-table-card">
 						<Table 
 							id="component-usage-table" 

@@ -2,10 +2,11 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
-import { PageTitleHeader, PageSection, PageNav, PageFooter, PageSectionHeader, PageSectionBackgroundImage, PageHeader, PageGridItem, PageFlexItem, PageMain } from '@/components/general/semantic';
+import { PageTitleHeader, PageSection, PageNav, PageFooter, PageSectionHeader, PageSectionBackgroundImage, PageHeader, PageGridItem, PageFlexItem, PageMain } from '@/components/structure/page-blocks';
+import { pixelatedConfig } from '../test/test-data';
 
 // Mock SmartImage component
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => React.createElement('img', {
     src: props.src,
     alt: props.alt,
@@ -17,17 +18,11 @@ vi.mock('@/components/general/smartimage', () => ({
   })
 }));
 
-vi.mock('@/components/config/config.client', async () => {
-  const actual = await vi.importActual<typeof import('@/components/config/config.client')>('@/components/config/config.client');
+vi.mock('@/components/config/config.client', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/components/config/config.client')>();
   return {
     ...actual,
-    usePixelatedConfig: vi.fn(() => ({
-      cloudinary: {
-        product_env: 'test-env',
-        baseUrl: 'https://res.cloudinary.com/test',
-        transforms: 'f_auto,q_auto',
-      },
-    })),
+    usePixelatedConfig: vi.fn(() => pixelatedConfig),
   };
 });
 

@@ -9,60 +9,24 @@ export * from './components/config/config';
 export * from './components/config/config.server';
 export * from './components/config/config.types';
 export * from './components/config/config.validators';
-export * from './components/config/siteconfig.types';
 export * from './components/config/crypto';
 
-export * from './components/foundation/manifest';
-export * from './components/foundation/metadata.functions';
-export * from './components/foundation/proxy-handler';
-export * from './components/foundation/sitemap';
-export * from './components/foundation/skeleton';
-export * from './components/foundation/smartfetch';
-export * from './components/foundation/urlbuilder';
-export * from './components/foundation/well-known';
-export * from './components/foundation/utilities';
+export * from './components/elements/index.elements.server';
+export * as ElementsComponents from './components/elements/index.elements.server';
 
-export * from './components/general/resume';
-export * from './components/general/services.functions';
-export * from './components/general/smartmediautils';
+export * from './components/foundation/index.foundation.server';
+export * as FoundationComponents from './components/foundation/index.foundation.server';
 
-export * from './components/integrations/aws.dynamo.integration';
-export * from './components/integrations/contentful.delivery';
-export * from './components/integrations/contentful.management';
-export * from './components/integrations/gemini-api.server';
-export * from './components/integrations/gemini-api.functions';
-export * from './components/integrations/googleplaces';
-export * from './components/integrations/googlemap';
-export * from './components/integrations/google.fonts.server';
-export * from './components/integrations/google.fonts';
-export * from './components/integrations/google.reviews.functions';
-export * from './components/integrations/gravatar.functions';
-export * from './components/integrations/instagram.functions';
-export * from './components/integrations/contentful.contenttypes';
-export * from './components/integrations/lipsum';
-export * from './components/integrations/spotify.components';
-export * from './components/integrations/spotify.functions';
-export * from './components/integrations/wordpress.functions';
+export * from './components/integrations/index.integrations.server';
+export * as IntegrationsComponents from './components/integrations/index.integrations.server';
 
-export * from './components/shoppingcart/ebay.functions';
-export * from './components/shoppingcart/shoppingcart.providers';
-export * from './components/shoppingcart/square';
-export * from './components/shoppingcart/usps.functions';
-export * from './components/shoppingcart/usps.server';
+export * from './components/shoppingcart/index.shoppingcart.server';
+export * as ShoppingCartComponents from './components/shoppingcart/index.shoppingcart.server';
 
-export * from './components/sitebuilder/config/ConfigEngine';
-export * from './components/sitebuilder/config/fonts';
+export * from './components/structure/index.structure.server';
+export * as StructureComponents from './components/structure/index.structure.server';
 
-export * from './components/sitebuilder/form/formtypes';
-export * from './components/sitebuilder/form/formengineutilities';
-
-export * from './components/sitebuilder/page/lib/componentGeneration';
-export * from './components/sitebuilder/page/lib/componentMap';
-export * from './components/sitebuilder/page/lib/componentMetadata';
-export * from './components/sitebuilder/page/lib/pageStorageContentful';
-export * from './components/sitebuilder/page/lib/pageStorageLocal'; // used for local storage
-export * from './components/sitebuilder/page/lib/pageStorageTypes';
-export * from './components/sitebuilder/page/lib/propTypeIntrospection';
-export * from './components/sitebuilder/page/lib/types';
+export * from './components/sitebuilder/index.sitebuilder.server';
+export * as SiteBuilderComponents from './components/sitebuilder/index.sitebuilder.server';
 
 export * from './version';

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-// import { PageSectionHeader } from '../../general/pixelated.headers';
+// import { PageSectionHeader } from '../../structure/page-blocks';
 import { FormEngine } from '../../form/formengine';
 
 /**

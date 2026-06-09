@@ -1,12 +1,16 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { pixelatedConfig } from '../test/test-data';
+import { getFullPixelatedConfig } from '../components/config/config';
+import { validatePageName, listPages, loadPage, savePage, deletePage } from '../components/sitebuilder/page/lib/pageStorageLocal';
+import fs from 'fs';
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: () => ({
-		global: {
-			pagesDir: 'test-pages'
-		}
-	})
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 vi.mock('fs', () => ({
 	default: {
@@ -19,13 +23,11 @@ vi.mock('fs', () => ({
 	}
 }));
 
-import { validatePageName, listPages, loadPage, savePage, deletePage } from '../components/sitebuilder/page/lib/pageStorageLocal';
-import fs from 'fs';
-
-describe('pageStorageLocal branches', () => {
-	beforeEach(() => {
-		vi.clearAllMocks();
-	});
+describe('Page Storage Local Branches', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        (vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
+    });
 
 	it('should validate page names correctly', () => {
 		expect(validatePageName('valid-name_123')).toBe(true);

@@ -1,13 +1,13 @@
 "use client";
 
-import { MenuSimple } from '@pixelated-tech/components';
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
+import { MenuSimple, usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function Nav() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes ?? [];
 	return (
 		<div>
-			<MenuSimple menuItems={allRoutes} ref={(myMenu) => { window.myMenu = myMenu; }} />
+			<MenuSimple menuItems={routes} ref={(myMenu) => { window.myMenu = myMenu; }} />
 		</div>
 	);
 }

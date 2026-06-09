@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { PageTitleHeader } from '@pixelated-tech/components';
+import { PageTitleHeader, usePixelatedConfig } from '@pixelated-tech/components';
 import { PageSection } from '@pixelated-tech/components';
 import { MicroInteractions } from "@pixelated-tech/components";
-import { BlogPostList , type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
+import { BlogPostList, type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
 import { ToggleLoading } from '@pixelated-tech/components';
 
-const wpSite = "blog.oaktree-landscaping.com";
-
-export default function Blog() {
+export default function BlogPage() {
+	const pixelatedConfig = usePixelatedConfig();
+	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
 
 	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
 
 	useEffect(() => {
 		ToggleLoading({show: true});
 		(async () => {
-			const posts = await getCachedWordPressItems({ site: wpSite }); // 1 week
+			const posts = await getCachedWordPressItems({ site: wordpressSite }); // 1 week
 			setWpPosts(posts ?? []);
 			ToggleLoading({show: false});
 		})();
@@ -25,7 +25,7 @@ export default function Blog() {
 
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeSelectors: '.tile , .blog-post-summary, .scroll-fade-element',
+			scrollfadeSelectors: '.tile, .blog-post-summary, .scroll-fade-element',
 		});
 	}, []); 
 
@@ -33,7 +33,7 @@ export default function Blog() {
 		<>
 			<PageTitleHeader title="Oaktree Landscaping Blog Posts" />
 			<PageSection columns={1} maxWidth="1024px" id="blog-section">
-				<BlogPostList site={wpSite} posts={wpPosts} showCategories={false} />
+				<BlogPostList posts={wpPosts} showCategories={false} />
 			</PageSection>
 		</>
 	);

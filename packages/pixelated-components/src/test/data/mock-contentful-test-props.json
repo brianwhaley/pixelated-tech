@@ -1,0 +1,7 @@
+{
+  "sitemapContentType": "project",
+  "sitemapField": "title",
+  "sitemapRoutePrefix": "projects",
+  "sitemapRouteTemplate": "",
+  "sitemapImageFields": ["image", "images", "carouselImages"]
+}

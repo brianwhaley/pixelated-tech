@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { SmartImage } from '../general/smartimage';
-import { Carousel } from '../general/carousel';
+import { SmartImage } from '../elements/smartimage';
+import { Carousel } from '../structure/carousel';
 import { ReviewSchema } from '../foundation/schema';
 import { getGoogleReviewsByPlaceId, GoogleReview, GooglePlaceSummary } from './google.reviews.functions';
 import { usePixelatedConfig } from '../config/config.client';
@@ -21,8 +21,6 @@ https://maps.googleapis.com/maps/api/place/textsearch/json?query=Manning+Metalwo
  * @param {string} [props.placeId] - Google Place ID to fetch reviews for (required).
  * @param {string} [props.language] - Optional language code to localize review text.
  * @param {number} [props.maxReviews] - Maximum number of reviews to display.
- * @param {string} [props.proxyBase] - Optional proxy base URL to avoid CORS restrictions.
- * @param {string} [props.apiKey] - Optional Google API key to use when fetching reviews.
  */
 GoogleReviewsCard.propTypes = {
 /** Google Place ID (required) */
@@ -31,10 +29,6 @@ GoogleReviewsCard.propTypes = {
 	language: PropTypes.string,
 	/** Max number of reviews to display */
 	maxReviews: PropTypes.number,
-	/** Optional proxy base URL to avoid CORS issues */
-	proxyBase: PropTypes.string,
-	/** Optional Google API key */
-	apiKey: PropTypes.string,
 };
 export type GoogleReviewsCardType = InferProps<typeof GoogleReviewsCard.propTypes>;
 export function GoogleReviewsCard(props: GoogleReviewsCardType) {
@@ -44,8 +38,8 @@ export function GoogleReviewsCard(props: GoogleReviewsCardType) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const apiKey = props.apiKey || config?.googleMaps?.apiKey || '';
-	const proxyBase = props.proxyBase || config?.global?.proxyUrl || undefined;
+	const apiKey = config?.integrations?.google?.api_key || '';
+	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
 
 	useEffect(() => {
 		(async () => {
@@ -71,7 +65,7 @@ export function GoogleReviewsCard(props: GoogleReviewsCardType) {
 				setLoading(false);
 			}
 		})();
-	}, [props.placeId, props.language, props.maxReviews, props.proxyBase]);
+	}, [props.placeId, props.language, props.maxReviews, apiKey, proxyBase]);
 
 	if (loading) {
 		return (
@@ -146,10 +140,6 @@ GoogleReviewsCarousel.propTypes = {
 	language: PropTypes.string,
 	/** Max number of reviews to display */
 	maxReviews: PropTypes.number,
-	/** Optional proxy base URL to avoid CORS issues */
-	proxyBase: PropTypes.string,
-	/** Optional Google API key */
-	apiKey: PropTypes.string,
 	/** Display mode: carousel or grid */
 	displayMode: PropTypes.oneOf(['carousel', 'grid']),
 	/** Enable swipe/drag interactions on touch devices */
@@ -169,8 +159,8 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const apiKey = props.apiKey || config?.googleMaps?.apiKey || '';
-	const proxyBase = props.proxyBase || config?.global?.proxyUrl || undefined;
+	const apiKey = config?.integrations?.google?.api_key || '';
+	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
 	const displayMode = props.displayMode || 'carousel';
 	const imgFit = props.imgFit || 'cover';
 	const businessName = props.businessName || 'Local Business';
@@ -205,7 +195,7 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 				setLoading(false);
 			}
 		})();
-	}, [props.placeId, props.language, props.maxReviews, props.proxyBase, props.apiKey]);
+	}, [props.placeId, props.language, props.maxReviews, apiKey, proxyBase]);
 
 	if (loading) {
 		return (

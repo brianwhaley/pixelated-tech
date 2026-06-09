@@ -10,6 +10,6 @@ describe('JZ Home Improvement FAQ page', () => {
 	it('renders the FAQ title and accordion component', () => {
 		render(<FaqsPage />);
 		expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('Frequently Asked Questions');
-		expect(screen.getByTestId('mock-faqaccordion')).toBeTruthy();
+		expect(screen.getByTestId('mock-faq')).toBeTruthy();
 	});
 });

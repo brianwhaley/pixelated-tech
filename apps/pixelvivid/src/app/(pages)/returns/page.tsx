@@ -3,7 +3,7 @@
 import React from "react";
 import { PageTitleHeader } from "@pixelated-tech/components";
 
-export default function Returns() {
+export default function ReturnsPage() {
 	return (
 		<>
 			<section id="returns-section">

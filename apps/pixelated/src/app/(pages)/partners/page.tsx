@@ -9,7 +9,7 @@ import { Callout } from '@pixelated-tech/components';
 
 import partnerData from '@/app/data/partners.json';
 
-export default function Partners() {
+export default function PartnersPage() {
 	const cssContent = `
 		.callout .callout-content {
     		margin: 0 auto;

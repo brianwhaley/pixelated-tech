@@ -8,28 +8,28 @@ import './hero.css';
 
 export default function Hero() {
 
-	const config = usePixelatedConfig();
+	const integrationsConfig = usePixelatedConfig()?.integrations;
 	const [flickrCards, setFlickrCards] = useState<CarouselCardType[]>([]);
 
 	useEffect(() => {
-		if (!config) return;
+		if (!integrationsConfig) return;
 		async function getFlickrCards() {
 			const myPromise = GetFlickrData({
 				flickr : {
-					baseURL: config?.flickr?.baseURL ?? 'https://api.flickr.com/services/rest/?',
+					baseURL: integrationsConfig?.flickr?.baseURL ?? 'https://api.flickr.com/services/rest/?',
 					urlProps: {
 						method: 'flickr.photos.search',
-						api_key: config?.flickr?.urlProps.api_key ?? "",
-						user_id: config?.flickr?.urlProps.user_id ?? "",
+						api_key: integrationsConfig?.flickr?.urlProps.api_key ?? "",
+						user_id: integrationsConfig?.flickr?.urlProps.user_id ?? "",
 						tags: 'pixelatedviewsgallery',
 						extras: 'date_taken,description,owner_name',
 						sort: 'date-taken-desc',
-						per_page: config?.flickr?.urlProps.per_page ?? 500,
-						format: config?.flickr?.urlProps.format ?? "json",
-						photoSize: config?.flickr?.urlProps.photoSize ?? "Large",
+						per_page: integrationsConfig?.flickr?.urlProps.per_page ?? 500,
+						format: integrationsConfig?.flickr?.urlProps.format ?? "json",
+						photoSize: integrationsConfig?.flickr?.urlProps.photoSize ?? "Large",
 						nojsoncallback: 'true',
 					}
-				} 
+				}
 			});
 			const myFlickrImages = await myPromise;
 			const myFlickrCards = GenerateFlickrCards({flickrImages: myFlickrImages, photoSize: 'Medium'});
@@ -49,7 +49,7 @@ export default function Hero() {
 			}
 		}
 		getFlickrCards();
-	}, [config]); // Run when config is available
+	}, [integrationsConfig]); // Run when config is available
 
 
 	return (

@@ -1,7 +1,7 @@
 [
 	{
 		"name": "brianwhaley",
-		"localPath": "/Volumes/btw_x10_pro/Git/brianwhaley",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/brianwhaley",
 		"localPort": "3000",
 		"remote": "brianwhaley",
 		"repo": "brianwhaley",
@@ -14,7 +14,7 @@
 	},
 	{
 		"name": "informationfocus",
-		"localPath": "/Volumes/btw_x10_pro/Git/informationfocus",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/informationfocus",
 		"localPort": "3001",
 		"remote": "informationfocus",
 		"repo": "informationfocus",
@@ -27,7 +27,7 @@
 	},
 	{
 		"name": "jz-home-improvement",
-		"localPath": "/Volumes/btw_x10_pro/Git/jz-home-improvement",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/jz-home-improvement",
 		"localPort": "3009",
 		"remote": "jz-home-improvement",
 		"repo": "jz-home-improvement",
@@ -40,7 +40,7 @@
 	},
 	{
 		"name": "leadscraper",
-		"localPath": "/Volumes/btw_x10_pro/Git/leadscraper",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/tools/leadscraper",
 		"localPort": "3002",
 		"remote": "leadscraper",
 		"repo": "leadscraper",
@@ -51,7 +51,7 @@
 	},
 	{
 		"name": "manningmetalworks",
-		"localPath": "/Volumes/btw_x10_pro/Git/manningmetalworks",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/manningmetalworks",
 		"localPort": "3010",
 		"remote": "manningmetalworks",
 		"repo": "manningmetalworks",
@@ -65,7 +65,7 @@
 	},
 	{
 		"name": "oaktreelandscaping",
-		"localPath": "/Volumes/btw_x10_pro/Git/oaktreelandscaping",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/oaktreelandscaping",
 		"localPort": "3007",
 		"remote": "oaktreelandscaping",
 		"repo": "oaktreelandscaping",
@@ -78,7 +78,7 @@
 	},
 	{
 		"name": "palmetto-epoxy",
-		"localPath": "/Volumes/btw_x10_pro/Git/palmetto-epoxy",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/palmetto-epoxy",
 		"localPort": "3003",
 		"remote": "palmetto-epoxy",
 		"repo": "palmetto-epoxy",
@@ -91,7 +91,7 @@
 	},
 	{
 		"name": "pixelated",
-		"localPath": "/Volumes/btw_x10_pro/Git/pixelated",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/pixelated",
 		"localPort": "3004",
 		"remote": "pixelated",
 		"repo": "pixelated",
@@ -104,7 +104,7 @@
 	},
 	{
 		"name": "pixelated-admin",
-		"localPath": "/Volumes/btw_x10_pro/Git/pixelated-admin",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/tools/pixelated-admin",
 		"localPort": "3006",
 		"remote": "pixelated-admin",
 		"repo": "pixelated-admin",
@@ -117,7 +117,7 @@
 	},
 	{
 		"name": "pixelated-components",
-		"localPath": "/Volumes/btw_x10_pro/Git/pixelated-components",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/packages/pixelated-components",
 		"localPort": "6006",
 		"remote": "pixelated-components",
 		"repo": "pixelated-components",
@@ -130,7 +130,7 @@
 	},
 	{
 		"name": "pixelated-template",
-		"localPath": "/Volumes/btw_x10_pro/Git/pixelated-template",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/pixelated-template",
 		"localPort": "3008",
 		"remote": "pixelated-template",
 		"repo": "pixelated-template",
@@ -141,7 +141,7 @@
 	},
 	{
 		"name": "pixelvivid",
-		"localPath": "/Volumes/btw_x10_pro/Git/pixelvivid",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/pixelvivid",
 		"localPort": "3005",
 		"remote": "pixelvivid",
 		"repo": "pixelvivid",
@@ -155,7 +155,7 @@
 	},
 	{
 		"name": "threemuses",
-		"localPath": "/Volumes/btw_x10_pro/Git/threemuses",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/threemuses",
 		"localPort": "3011",
 		"remote": "threemuses",
 		"repo": "threemuses",
@@ -169,7 +169,7 @@
 	},
 	{
 		"name": "simple-day-concierge",
-		"localPath": "/Volumes/btw_x10_pro/Git/simple-day-concierge",
+		"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/simple-day-concierge",
 		"localPort": "3012",
 		"remote": "simple-day-concierge",
 		"repo": "simple-day-concierge",

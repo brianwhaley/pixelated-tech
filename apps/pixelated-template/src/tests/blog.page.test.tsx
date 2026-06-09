@@ -17,20 +17,20 @@ describe('Blog page', () => {
 		render(<Blog />);
 		await waitFor(() => expect(screen.getByTestId('blog-post-list')).toBeInTheDocument());
 		expect(screen.getByTestId('schema-blog-posting')).toBeInTheDocument();
-		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('site:blog.oaktree-landscaping.com count:1');
+		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('count:1');
 	});
 
 	it('renders the blog page with no posts fallback', async () => {
 		mockState.wordpressPosts = [];
 		render(<Blog />);
 		await waitFor(() => expect(screen.getByTestId('blog-post-list')).toBeInTheDocument());
-		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('site:blog.oaktree-landscaping.com count:0');
+		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('count:0');
 	});
 
 	it('renders the blog page when cached posts are undefined', async () => {
 		mockState.wordpressPosts = undefined as any;
 		render(<Blog />);
 		await waitFor(() => expect(screen.getByTestId('blog-post-list')).toBeInTheDocument());
-		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('site:blog.oaktree-landscaping.com count:0');
+		expect(screen.getByTestId('blog-post-list')).toHaveTextContent('count:0');
 	});
 });

@@ -1,6 +1,6 @@
 {
 	"name": "palmetto-epoxy",
-	"version": "0.6.2",
+	"version": "0.7.0",
 	"private": true,
 	"author": {
 		"name": "Pixelated Technologies",
@@ -48,6 +48,7 @@
 		"@types/testing-library__react": "^10.0.1",
 		"@typescript-eslint/eslint-plugin": "^8.58.0",
 		"@typescript-eslint/parser": "^8.58.0",
+		"@vitest/coverage-v8": "^4.1.8",
 		"eslint": "9.39.4",
 		"eslint-config-next": "^16.2.2",
 		"glob": "^13.0.6",

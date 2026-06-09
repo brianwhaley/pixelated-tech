@@ -23,7 +23,7 @@ describe('fetchPSIData', () => {
 	});
 
 	it('uses API key from pixelated.config.json', async () => {
-		const apiKey = mockConfig?.googlePSI?.api_key;
+		const apiKey = mockConfig?.integrations?.googlePSI?.api_key;
 		expect(apiKey).toBeDefined();
 		const url = 'https://example.com';
 		await fetchPSIData(url);

@@ -753,7 +753,6 @@ Displays a list of WordPress blog posts with pagination support. Automatically c
 import { BlogPostList } from '@pixelated-tech/components';
 
 <BlogPostList
-  site="blog.pixelated.tech"
   count={10}
 />
 ```
@@ -762,7 +761,6 @@ import { BlogPostList } from '@pixelated-tech/components';
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `site` | `string` | - | WordPress site identifier (e.g., 'blog.pixelated.tech' or 'your-blog.wordpress.com') |
 | `count` | `number` | - | Number of posts to fetch (undefined = all) |
 | `posts` | `BlogPostType[]` | - | Pre-fetched posts array |
 | `showCategories` | `boolean` | `true` | Whether to display post categories |
@@ -920,32 +918,29 @@ import { Gravatar } from '@pixelated-tech/components';
 
 CRM integration for HubSpot forms and tracking.
 
-```tsx
-import { HubSpot } from '@pixelated-tech/components';
+Use `PixelatedClientConfigProvider` / `usePixelatedConfig()` to supply HubSpot configuration so components can render without explicit portal or form IDs.
 
-<HubSpot
-  portalId="1234567"
-  formId="abcd-1234-5678-efgh"
-/>
+```tsx
+import { HubSpotForm, HubspotTrackingCode } from '@pixelated-tech/components';
+
+<HubSpotForm />
+<HubspotTrackingCode />
 ```
 
 #### Props
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `portalId` | `string` | - | HubSpot portal ID |
-| `formId` | `string` | - | HubSpot form ID |
-| `onFormSubmit` | `function` | - | Form submission callback |
+| `target` | `string` | - | Optional CSS selector where the form will be injected |
+| `containerId` | `string` | `hubspot-form-container` | Optional DOM id for the HubSpot form container |
 
 ### Instagram
 
 Instagram feed integration for displaying posts.
 
 ```tsx
-import { Instagram } from '@pixelated-tech/components';
+import { InstagramTiles } from '@pixelated-tech/components';
 
-<Instagram
-  username="instagram"
-  accessToken="your-access-token"
+<InstagramTiles
   limit={6}
 />
 ```
@@ -953,9 +948,11 @@ import { Instagram } from '@pixelated-tech/components';
 #### Props
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `username` | `string` | - | Instagram username |
-| `accessToken` | `string` | - | Instagram API access token |
-| `limit` | `number` | `6` | Number of posts to display |
+| `limit` | `number` | `12` | Number of media items to fetch |
+| `rowCount` | `number` | - | Number of columns/rows in the tile layout |
+| `useThumbnails` | `boolean` | - | Prefer thumbnails for each tile |
+| `includeVideos` | `boolean` | - | Include video posts in results |
+| `includeCaptions` | `boolean` | - | Include captions in returned tile metadata |
 
 ---
 

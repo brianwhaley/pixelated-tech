@@ -24,11 +24,12 @@ export interface GitHealthResult {
 export async function analyzeGitHealth(siteConfig: SiteConfig, startDate?: string, endDate?: string, httpFetch?: (input: RequestInfo, init?: RequestInit) => Promise<any>): Promise<GitHealthResult> {
 	try {
 		const cfg = getFullPixelatedConfig();
-		const token = cfg?.github?.token;
-		const defaultOwner = cfg?.github?.defaultOwner;
+		const githubCfg = cfg?.integrations?.github;
+		const token = githubCfg?.token;
+		const defaultOwner = githubCfg?.defaultOwner;
 
 		if (!token) {
-			throw new Error('GitHub token not configured in pixelated.config.json under "github.token"');
+			throw new Error('GitHub token not configured in pixelated.config.json under "integrations.github.token"');
 		}
 
 		// Determine owner and repo

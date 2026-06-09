@@ -1,0 +1,34 @@
+{
+	"items": [
+		{
+			"id": "class-1",
+			"title": "Sewing Class",
+			"quantity": 2,
+			"category": "Adult"
+		}
+	],
+	"shippingTo": {
+		"name": "Test User",
+		"street1": "123 Main St",
+		"city": "Bluffton",
+		"state": "SC",
+		"zip": "29910",
+		"country": "US",
+		"phone": "1234567890",
+		"email": "test@example.com",
+		"child_name": "Grace Sturkie",
+		"child_birthdate": "2017-10-21",
+		"birthdate": "2026-05-01",
+		"emergency_contact_name": "Test User",
+		"emergency_contact_telephone": "1234567890",
+		"full_payment": "yes",
+		"cancellation_policy": "yes",
+		"photo_consent": "yes",
+		"closed_toe_shoes": "yes",
+		"class_materials": "yes",
+		"minimum_students": "yes",
+		"food_allergies": "cats",
+		"bleeding_disorder": "no",
+		"injury_liability": "Test Liability"
+	}
+}

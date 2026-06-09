@@ -42,7 +42,7 @@
         },
         "text": [ 
           "Simple Day Concierge is a premium, family-owned personal assistant and lifestyle management service dedicated to helping busy families, working professionals, and seniors clear out their daily to-do lists. We provide <a href='/services'>custom hands-on support</a> designed to handle the stressful tasks that take up your personal time, allowing you to establish a healthier work-life balance and enjoy your downtime without a growing list of chores hanging over your head. We pride ourselves on being a high-touch service, meaning we focus heavily on building deep, trusted relationships with our local clients so that we can learn their unique routines, household setups, and exact preferences.", 
-          "We act as your trusted local partner, handling time-consuming tasks so you can get your day back. From running everyday errands to supervising home repairs, we manage your domestic logistics quietly and efficiently in the background. Our services span a wide variety of daily operational needs, including personal grocery provisioning, closet reorganization, and tracking calendar details. Instead of dealing with multiple specialty businesses like a separate dog walker, cleaning service, or personal shopper, Simple Day serves as a single, fully integrated point of contact for your entire household, giving you an unparalleled level of daily consistency and personal peace of mind." 
+          "We act as your trusted local partner, handling time-consuming tasks so you can get your day back. From running everyday errands to supervising home repairs, we manage your domestic logistics quietly and efficiently in the background. Our services span a wide variety of daily operational needs, including personal grocery provisioning, closet reorganization, and tracking calendar details. Instead of dealing with multiple specialty businesses personal assistant, cleaning service, or personal shopper, Simple Day serves as a single, fully integrated point of contact for your entire household, giving you an unparalleled level of daily consistency and personal peace of mind." 
         ]
       }
     },
@@ -81,7 +81,7 @@
           "layout": "left"
         },
         "text": [ 
-          "We primarily <a href='/service-areas'>service the nearby communities in northwest Bergen County, New Jersey</a>, immediately surrounding our home base in Mahwah. Our day-to-day service footprint strictly covers Mahwah, Upper Saddle River, Saddle River, Franklin Lakes, Ramsey, and Allendale. We are intimately familiar with these specific neighborhoods, the local traffic patterns, the best boutique shops, and the preferred routes, which allows us to navigate the area with maximum efficiency. We know that convenience depends entirely on proximity, so we purposefully restricted our primary operating boundaries to the neighboring towns to ensure our team can fulfill local requests promptly without long transit delays.", 
+          "We primarily <a href='/service-areas'>service the nearby communities in Northern New Jersey</a>, immediately surrounding our home base in Mahwah. Our day-to-day service footprint primarily covers Mahwah, Upper Saddle River, Saddle River, Franklin Lakes, Ramsey, Allendale, Ho-Ho-Kus, Woodcliff Lake, Paramus and Ridgewood. We are intimately familiar with these specific neighborhoods, the local traffic patterns, the best boutique shops, and the preferred routes, which allows us to navigate the area with maximum efficiency. We know that convenience depends entirely on proximity, so we purposefully restricted our primary operating boundaries to the neighboring towns to ensure our team can fulfill local requests promptly without long transit delays.", 
           "By keeping our core service area highly concentrated, we ensure our lifestyle managers can remain incredibly responsive, prompt, and visible whenever our clients need us. Whether we are checking in on an estate in Rio Vista, picking up specialty items near the Ramsey train station, or dropping off packages in Allendale, we are always close by. This localized strategy allows us to maintain a reliable, high-touch presence and provide personalized care. While certain tasks like airport transportation or specialized retail sourcing may occasionally take us into New York City or surrounding counties, our operational focus remains fiercely dedicated to servicing clients close to home." 
         ]
       }
@@ -221,8 +221,8 @@
           "layout": "left"
         },
         "text": [ 
-          "With our corporate backgrounds in enterprise-level cybersecurity, privacy and trust are built into the very foundation of Simple Day. We enforce strict data handling and confidentiality protocols across our entire business operations, managing your personal information with the same rigor used to protect major corporate networks. We understand that welcoming an assistant into your private residence requires immense trust, which is why we implement strict internal security safeguards to protect your alarm codes, gate keys, passwords, and personal documents from unauthorized exposure.", 
-          "We never disclose client lists, personal schedules, or home locations, and our team operates under ironclad non-disclosure standards to protect your identity. Any keys, alarm codes, or personal preferences shared with us are securely managed using encrypted digital frameworks and physically locked key storage systems, ensuring your estate and identity remain completely secure. We treat your home as a private sanctuary, performing comprehensive background checks on our staff and ensuring that discretion guides every grocery run, home wait window, and calendar update we handle." 
+          "With our corporate backgrounds in enterprise-level cybersecurity, privacy and trust are built into the very foundation of Simple Day. We enforce strict data handling and confidentiality protocols across our entire business operations, managing your personal information with the same rigor used to protect major corporate networks. We understand that welcoming an assistant into your private residence requires immense trust, which is why we implement strict internal security safeguards to protect your alarm codes, gate keys, passwords, and any other personal information from unauthorized exposure.", 
+          "We never disclose client lists, personal schedules, or home locations, and our team operates under ironclad non-disclosure standards to protect your identity. Any information shared with us is securely managed, ensuring your estate and identity remain completely secure. We treat your home as a private sanctuary and ensure that discretion guides every grocery run, home wait window, and service that we provide for you." 
         ]
       }
     },
@@ -248,7 +248,7 @@
     },
     {
       "@type": "Question",
-      "name": "Do you travel outside your Bergen County service area?",
+      "name": "Do you travel outside your service area?",
       "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -261,8 +261,8 @@
           "layout": "left"
         },
         "text": [ 
-          "While our core home-based tasks and personal errands are concentrated in the Mahwah and Saddle River regions, we do step beyond our immediate borders for specific, travel-related logistics. We know that our clients' professional and social lives often require movement throughout the broader tri-state area, so we maintain a flexible operational framework that can accommodate regional transport and specialized off-site sourcing requests that originate from our core six communities in northwest Bergen County.", 
-          "This includes personal shopping trips to specialty NYC boutiques, coordinating airport drop-offs and pickups at major regional hubs like Newark or JFK, or managing long-distance item transport, though our marketing focus and primary client base remain rooted close to home in our six named communities. By anchoring our primary operations in Mahwah, Ramsey, Allendale, Upper Saddle River, Saddle River, and Franklin Lakes, we maintain an efficient route system that guarantees maximum reliability for your local household needs." 
+          "While our core home-based tasks and personal errands are concentrated in the northern New Jersey region, we do step beyond our immediate borders for specific, travel-related logistics. We know that our clients' professional and social lives often require movement throughout the broader tri-state area, so we maintain a flexible operational framework that can accommodate regional transport and specialized off-site sourcing requests that originate from our core communities in Northern New Jersey.", 
+          "This includes personal shopping trips to specialty boutiques, coordinating airport drop-offs and pickups at major regional hubs like Newark or JFK, or managing long-distance item transport, though our marketing focus and primary client base remain rooted close to home in our six named communities. By anchoring our primary operations in the broader Northern New Jersey area, we maintain an efficient service network that guarantees maximum reliability for your local household needs." 
         ]
       }
     },
@@ -321,7 +321,7 @@
           "layout": "left"
         },
         "text": [ 
-          "You can easily reach us through multiple convenient communication channels depending on your current needs. Our main office can be contacted via the secure contact form on our official website at <a href='/contact'>https://www.simpledayconcierge.com/contact</a>, which is fully monitored throughout the day by our management team. Our digital platform is built with modern web standard protocols, making it entirely secure and straightforward to submit your service inquiries, scheduling details, or consultation requests from any desktop or mobile device.", 
+          "You can easily reach us through multiple convenient communication channels depending on your current needs. Our main office can be contacted via <a href='/contact'>the secure contact form</a>, which is fully monitored throughout the day by our management team. Our digital platform is built with modern web standard protocols, making it entirely secure and straightforward to submit your service inquiries, scheduling details, or consultation requests from any desktop or mobile device.", 
           "For direct inquiries, feel free to email us at <a href='mailto:info@simpledayconcierge.com'>info@simpledayconcierge.com</a> or call our local Mahwah office line to speak with us directly. We respond to all digital inquiries and voicemail messages within one business day to ensure your household logistics are evaluated and handled promptly. Whether you are an existing member needing an adjustment to your weekly errand route or a local resident exploring our services for the first time, Patti, Joe, and the Simple Day team are here to help." 
         ]
       }

@@ -17,7 +17,9 @@ vi.mock('@pixelated-tech/components', () => {
 			Hero: ({ video, children }: any) => (
 				<div data-testid="mock-hero" data-video={video}>{children}</div>
 			),
-			PageSection: ({ children, ...props }: any) => <section id="mock-section" {...props}>{children}</section>,
+			PageSection: ({ children, className, style }: any) => (
+				<section id="mock-section" className={className} style={style}>{children}</section>
+			),
 			MenuAccordion: ({ menuItems, children }: any) => (
 				<div data-testid="mock-menuaccordion" data-menu={JSON.stringify(menuItems)}>{children}</div>
 			),

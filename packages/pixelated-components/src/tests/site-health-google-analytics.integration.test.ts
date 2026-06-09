@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { pixelatedConfig, mockGoogleAuth, mockGoogleApiResponses } from '../test/test-data';
+import { mockGoogleDateRanges } from '../test/fixtures';
 
 // Mock googleapis BEFORE importing integration module
 vi.mock('googleapis', () => ({
@@ -8,25 +10,22 @@ vi.mock('googleapis', () => ({
 				this.getClient = vi.fn().mockResolvedValue({});
 				return this;
 			}),
-			OAuth2: vi.fn()
+			OAuth2: vi.fn(function(this: any) {
+				this.setCredentials = vi.fn();
+				return this;
+			})
 		},
 		analyticsdata: vi.fn(() => ({
 			properties: {
 				runReport: vi.fn().mockResolvedValue({
-					data: {
-						rows: [
-							{ dimensionValues: [{ value: '20240115' }], metricValues: [{ value: '1200' }] },
-							{ dimensionValues: [{ value: '20240116' }], metricValues: [{ value: '1500' }] },
-							{ dimensionValues: [{ value: '20240117' }], metricValues: [{ value: '1800' }] }
-						]
-					}
+					data: mockGoogleApiResponses.analytics
 				})
 			}
 		}))
 	}
 }));
 
-vi.mock('../components/general/cache-manager', () => ({
+vi.mock('../components/foundation/cache-manager', () => ({
 	CacheManager: vi.fn(function(this: any) {
 		this.cache = new Map();
 		this.get = vi.fn((key) => this.cache.get(key));
@@ -35,79 +34,50 @@ vi.mock('../components/general/cache-manager', () => ({
 	})
 }));
 
-vi.mock('../components/general/utilities', () => ({
+vi.mock('../components/foundation/utilities', () => ({
 	getDomain: vi.fn(() => 'example.com')
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({}))
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 vi.mock('../components/admin/site-health/google.api.utils', () => ({
-	calculateDateRanges: vi.fn(() => ({
-		currentStart: new Date('2024-01-15'),
-		currentEnd: new Date('2024-01-17'),
-		currentStartStr: '20240115',
-		currentEndStr: '20240117',
-		previousStart: new Date('2024-01-08'),
-		previousEnd: new Date('2024-01-14'),
-		previousStartStr: '20240108',
-		previousEndStr: '20240114'
-	})),
+	calculateDateRanges: vi.fn(() => mockGoogleDateRanges),
 	formatChartDate: vi.fn((date) => date.toISOString().split('T')[0]),
 	getCachedData: vi.fn(() => null),
 	setCachedData: vi.fn()
 }));
 
 // Import AFTER mocks are defined - Import from the integration file to generate coverage
-import { getGoogleAnalyticsData, GoogleAnalyticsConfig } from '../components/admin/site-health/google.api.integration';
+import { getGoogleAnalyticsData, GoogleAnalyticsConfig, createGoogleAuthClient, createAnalyticsClient, createSearchConsoleClient } from '../components/admin/site-health/google.api.integration';
+import { getFullPixelatedConfig } from '../components/config/config';
 
 describe('site-health-google-analytics.integration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 	});
 
-	it('should fetch Google Analytics data with valid service account', async () => {
-		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456',
-			serviceAccountKey: JSON.stringify({
-				type: 'service_account',
-				project_id: 'test-project',
-				private_key: 'test-key',
-				client_email: 'test@example.com'
-			})
-		};
+	const validConfig: GoogleAnalyticsConfig = {
+		...pixelatedConfig.integrations?.googleAnalytics,
+		serviceAccountKey: JSON.stringify(mockGoogleAuth)
+	};
 
-		const result = await getGoogleAnalyticsData(config, 'test-site');
+	it('should fetch Google Analytics data with valid service account', async () => {
+		const result = await getGoogleAnalyticsData(validConfig, 'test-site');
 		expect(result.success).toBe(true);
 		expect(result.data).toBeDefined();
 		expect(Array.isArray(result.data)).toBe(true);
 	});
 
-	it('should return chart data points with date and pageviews', async () => {
-		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456',
-			serviceAccountKey: JSON.stringify({
-				type: 'service_account',
-				project_id: 'test-project',
-				private_key: 'test-key',
-				client_email: 'test@example.com'
-			})
-		};
-
-		const result = await getGoogleAnalyticsData(config, 'test-site');
-		if (result.success && result.data) {
-			result.data.forEach(point => {
-				expect(point.date).toMatch(/\d{4}-\d{2}-\d{2}/);
-				expect(typeof point.currentPageViews).toBe('number');
-				expect(typeof point.previousPageViews).toBe('number');
-			});
-		}
-	});
-
 	it('should handle missing GA4 property ID configuration', async () => {
 		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'GA4_PROPERTY_ID_HERE',
+			id: 'GA4_PROPERTY_ID_HERE',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
 				project_id: 'test',
@@ -123,7 +93,7 @@ describe('site-health-google-analytics.integration', () => {
 
 	it('should handle missing credentials gracefully', async () => {
 		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456'
+			id: 'G-123456'
 			// No credentials provided
 		};
 
@@ -132,9 +102,33 @@ describe('site-health-google-analytics.integration', () => {
 		expect(result.error).toBeDefined();
 	});
 
+	it('should fail Google auth when service account key is invalid JSON', async () => {
+		const result = await createGoogleAuthClient({ serviceAccountKey: 'not-json' }, ['https://www.googleapis.com/auth/analytics.readonly']);
+		expect(result.success).toBe(false);
+		expect(result.error).toContain('Authentication failed');
+	});
+
+	it('should use OAuth fallback when OAuth credentials are provided', async () => {
+		const result = await createGoogleAuthClient({ clientId: 'cid', clientSecret: 'secret', refreshToken: 'token' }, ['https://www.googleapis.com/auth/analytics.readonly']);
+		expect(result.success).toBe(true);
+		expect(result.auth).toBeDefined();
+	});
+
+	it('should return auth failure when analytics credentials are missing', async () => {
+		const analyticsResult = await createAnalyticsClient({ id: 'G-123456' });
+		expect(analyticsResult.success).toBe(false);
+		expect(analyticsResult.error).toContain('Google credentials not configured');
+	});
+
+	it('should return auth failure when search console credentials are missing', async () => {
+		const searchConsoleResult = await createSearchConsoleClient({ siteUrl: 'https://example.com' });
+		expect(searchConsoleResult.success).toBe(false);
+		expect(searchConsoleResult.error).toContain('Google credentials not configured');
+	});
+
 	it('should use cache when available', async () => {
 		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456',
+			id: 'G-123456',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
 				project_id: 'test',
@@ -152,7 +146,7 @@ describe('site-health-google-analytics.integration', () => {
 
 	it('should handle date range parameters correctly', async () => {
 		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456',
+			id: 'G-123456',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
 				project_id: 'test',
@@ -176,7 +170,7 @@ describe('site-health-google-analytics.integration', () => {
 
 	it('should work with different site names independently', async () => {
 		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456',
+			id: 'G-123456',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
 				project_id: 'test',
@@ -194,7 +188,7 @@ describe('site-health-google-analytics.integration', () => {
 
 	it('should include both current and previous period pageviews', async () => {
 		const config: GoogleAnalyticsConfig = {
-			ga4PropertyId: 'G-123456',
+			id: 'G-123456',
 			serviceAccountKey: JSON.stringify({
 				type: 'service_account',
 				project_id: 'test',

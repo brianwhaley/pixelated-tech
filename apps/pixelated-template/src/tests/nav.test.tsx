@@ -6,6 +6,7 @@ vi.mock('@pixelated-tech/components', () => {
 	return {
 		PageSection: ({ children }: { children?: React.ReactNode }) => React.createElement('section', { 'data-testid': 'page-section' }, children),
 		MenuSimple: ({ menuItems }: { menuItems?: any[] }) => React.createElement('div', { 'data-testid': 'menu-simple' }, `items:${menuItems?.length}`),
+		usePixelatedConfig: () => ({ routes: [] }),
 	};
 });
 

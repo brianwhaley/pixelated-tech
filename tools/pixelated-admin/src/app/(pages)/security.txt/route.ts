@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
-import { createWellKnownResponse } from '@pixelated-tech/components/server';
-import siteConfig from '../../data/siteconfig.json';
+import { createWellKnownResponse, getFullPixelatedConfig } from '@pixelated-tech/components/server';
 
 export async function GET(req: NextRequest) {
-	return createWellKnownResponse('security', req, { siteConfig });
+	const pixelatedConfig = getFullPixelatedConfig() || {};
+	return createWellKnownResponse('security', req, { siteConfig: pixelatedConfig });
 }

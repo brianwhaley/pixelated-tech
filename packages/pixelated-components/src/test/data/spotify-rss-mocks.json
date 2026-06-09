@@ -1,0 +1,5 @@
+{
+    "simplePodcast": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss>\n  <channel>\n    <title>Test Podcast</title>\n    <description>A test podcast</description>\n    <link>https://podcast.example.com</link>\n    <language>en-us</language>\n  </channel>\n</rss>",
+    "fullPodcast": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss>\n  <channel>\n    <title>My Podcast</title>\n    <description>Description here</description>\n    <link>https://podcast.example.com</link>\n    <copyright>© 2025</copyright>\n    <language>en</language>\n  </channel>\n</rss>",
+    "podcastEpisodes": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss>\n  <channel>\n    <item>\n      <title>Episode 1</title>\n      <description>First episode</description>\n      <link>https://example.com/ep1</link>\n      <pubDate>Mon, 01 Jan 2025 00:00:00 GMT</pubDate>\n    </item>\n    <item>\n      <title>Episode 2</title>\n      <description>Second episode</description>\n      <link>https://example.com/ep2</link>\n      <pubDate>Tue, 02 Jan 2025 00:00:00 GMT</pubDate>\n    </item>\n  </channel>\n</rss>"
+}

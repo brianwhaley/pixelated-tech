@@ -21,7 +21,7 @@
 				"type" : "hidden",
 				"id" : "to",
 				"name" : "to",
-				"value" : "info@simpledayconcierge.com"
+				"value" : "joe@simpledayconcierge.com, patti@simpledayconcierge.com"
 			}
 		},{
 			"component" : "FormInput",

@@ -30,15 +30,22 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ success: false, error: 'siteName required' }, { status: 400 });
 		}
 
-		// Filter sites if a specific site was requested - only sites with URLs are processed
-		const sitesToProcess = sites.filter(site => site.name === requestedSiteName && site.url);
+		const requestedSite = sites.find(site => site.name === requestedSiteName);
 
-		if (debug) console.info(`Core Web Vitals API called for siteName=${requestedSiteName} useCache=${useCache} totalSitesConfigured=${sites.length} sitesToProcess=${sitesToProcess.length}`);
+		if (!requestedSite) {
+			return NextResponse.json({ success: false, error: 'Site not found' }, { status: 404 });
+		}
+
+		if (!requestedSite.url) {
+			return NextResponse.json({ success: false, error: 'Site has no configured url' }, { status: 400 });
+		}
+
+		if (debug) console.info(`Core Web Vitals API called for siteName=${requestedSiteName} useCache=${useCache} totalSitesConfigured=${sites.length}`);
 
 		const results: CoreWebVitalsData[] = [];
 
-		// Process sites sequentially to avoid overwhelming the API
-		for (const site of sitesToProcess) {
+		// Process the selected site sequentially to avoid overwhelming the API
+		for (const site of [requestedSite]) {
 			try {
 				const start = Date.now();
 				if (debug) console.info(`Processing site ${site.name} url=${site.url}`);

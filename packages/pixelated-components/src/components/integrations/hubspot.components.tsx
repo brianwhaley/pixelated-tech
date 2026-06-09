@@ -23,36 +23,37 @@ export function initializeHubSpotScript(region: string, portalId: string) {
 /**
  * HubSpotForm — Embed a HubSpot form by injecting the HubSpot script and creating a form instance.
  *
- * @param {string} [props.region] - HubSpot region code (e.g., 'na1').
- * @param {string} [props.portalId] - HubSpot portal ID (account identifier).
- * @param {string} [props.formId] - HubSpot form GUID to render.
  * @param {string} [props.target] - CSS selector target for where the form will be injected (overrides containerId).
  * @param {string} [props.containerId] - ID of the container element to mount the form into (default: 'hubspot-form-container').
  */
 HubSpotForm.propTypes = {
-/** HubSpot region code */
-	region: PropTypes.string,
-	/** HubSpot portal/account ID */
-	portalId: PropTypes.string,
-	/** HubSpot form GUID */
-	formId: PropTypes.string,
 	/** CSS selector or target element for the form */
 	target: PropTypes.string,
 	/** DOM ID of the container element for the form */
 	containerId: PropTypes.string,
 };
 export type HubSpotFormType = InferProps<typeof HubSpotForm.propTypes>;
-export function HubSpotForm({
-	region, portalId, formId, target, containerId = 'hubspot-form-container'
-}: HubSpotFormType) {
+export function HubSpotForm({ target, containerId = 'hubspot-form-container' }: HubSpotFormType) {
 	const config = usePixelatedConfig();
-	
-	const finalRegion = region || config?.hubspot?.region || 'na1';
-	const finalPortalId = portalId || config?.hubspot?.portalId || '';
-	const finalFormId = formId || config?.hubspot?.formId || '';
-	
+
+	const finalRegion = config?.integrations?.hubspot?.region || 'na1';
+	const finalPortalId = config?.integrations?.hubspot?.portalId || '';
+	const finalFormId = config?.integrations?.hubspot?.formId || '';
 	const formTarget = target || `#${containerId}`;
+
+	if (!finalPortalId || !finalFormId) {
+		return (
+			<div className="smart-error-boundary-fallback">
+				<p>HubSpot form configuration is missing. Check your Pixelated config provider settings.</p>
+			</div>
+		);
+	}
+
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
+
+		initializeHubSpotScript(finalRegion, finalPortalId);
+
 		const createHubspotForm = () => {
 			const win = window as any;
 			if (win.hbspt && win.hbspt.forms) {
@@ -62,11 +63,18 @@ export function HubSpotForm({
 					formId: finalFormId,
 					target: formTarget
 				});
-			} else {
-				// no window object yet; this will rerun again
 			}
 		};
+
 		createHubspotForm();
+		const interval = window.setInterval(() => {
+			createHubspotForm();
+			if ((window as any).hbspt && (window as any).hbspt.forms) {
+				window.clearInterval(interval);
+			}
+		}, 500);
+
+		return () => window.clearInterval(interval);
 	}, [finalRegion, finalPortalId, finalFormId, formTarget]);
 
 	return <div 
@@ -83,18 +91,36 @@ export function HubSpotForm({
 /**
  * HubspotTrackingCode — Inject the HubSpot tracking script for the given portal ID.
  *
- * @param {string} [props.hubID] - HubSpot portal ID used to load the tracking script.
+ * @param - no params
+ * @returns {JSX.Element} The HubSpot tracking script element.
  */
 HubspotTrackingCode.propTypes = {
-/** HubSpot portal ID for tracking script injection */
-	hubID: PropTypes.string.isRequired,
+	/** No props */
 };
 export type HubspotTrackingCodeType = InferProps<typeof HubspotTrackingCode.propTypes>;
-export function HubspotTrackingCode(props: HubspotTrackingCodeType) {
+export function HubspotTrackingCode(_props: HubspotTrackingCodeType) {
+	const config = usePixelatedConfig();
+	const hubID = config?.integrations?.hubspot?.portalId;
+	const hubRegion = config?.integrations?.hubspot?.region || 'na2';
+
+	if (!hubID) {
+		return (
+			<div className="smart-error-boundary-fallback">
+				<p>Sorry, something went wrong loading HubspotTrackingCode.</p>
+			</div>
+		);
+	}
+
 	return (
 		<>
 			{ /* <!-- Start of HubSpot Embed Code --> */ }
-			<script type="text/javascript" id="hs-script-loader" async defer src={`//js-na2.hs-scripts.com/${props.hubID}.js`} />
+			<script
+				type="text/javascript"
+				id="hs-script-loader"
+				async
+				defer
+				src={`//js-${hubRegion}.hs-scripts.com/${hubID}.js`}
+			/>
 			{ /* <!-- End of HubSpot Embed Code -->*/ }
 		</>
 	);

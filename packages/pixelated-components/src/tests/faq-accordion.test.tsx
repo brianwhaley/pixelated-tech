@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { FAQAccordion } from '@/components/general/faq-accordion';
+import { FAQ as FAQAccordion } from '@/components/elements/faq';
 import { faqTestData as mockFaqsData } from '../test/test-data';
 
 describe('FAQAccordion Component', () => {

@@ -16,7 +16,7 @@ vi.mock('../components/foundation/loading', () => ({
 	Loading: () => <div data-testid="loading-spinner">Loading</div>
 }));
 
-vi.mock('../components/general/modal', () => ({
+vi.mock('../components/elements/modal', () => ({
 	handleModalOpen: vi.fn(),
 	Modal: ({ modalContent }: any) => (
 		<div data-testid="modal-component">
@@ -27,7 +27,7 @@ vi.mock('../components/general/modal', () => ({
 
 import { smartFetch } from '../components/foundation/smartfetch';
 import { ToggleLoading } from '../components/foundation/loading';
-import { handleModalOpen } from '../components/general/modal';
+import { handleModalOpen } from '../components/elements/modal';
 
 function TestForm({ options }: any) {
   const { handleSubmit, isSubmitting, submitError, modalContent } = useFormSubmit(options);

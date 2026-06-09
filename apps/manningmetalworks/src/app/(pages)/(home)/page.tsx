@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PageGridItem, PageSection, PageTitleHeader, PageSectionHeader } from '@pixelated-tech/components';
+import { PageGridItem, PageSection, PageTitleHeader, PageSectionHeader, usePixelatedConfig } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
 import { SmartImage } from '@pixelated-tech/components';
 import { BlogPostList, getCachedWordPressItems } from "@pixelated-tech/components";
 import { ToggleLoading } from "@pixelated-tech/components";
 import Script from "next/script";
-
-const wpSite = "blog.manningmetalworks.com";
 
 /* 
 Alternative Tag Lines
@@ -20,13 +18,14 @@ Alternative Tag Lines
 */
  
 export default function Home() {
-
+	const pixelatedConfig = usePixelatedConfig();
+	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
 
 	const [wpPosts, setWpPosts] = useState<Awaited<ReturnType<typeof getCachedWordPressItems>>>([]);
 	useEffect(() => {
 		async function fetchPosts() {
 			ToggleLoading({ show: true });
-			const posts = (await getCachedWordPressItems({ site: wpSite, count: 1 })) ?? [];
+			const posts = (await getCachedWordPressItems({ site: wordpressSite, count: 1 })) ?? [];
 			if (posts) {
 				setWpPosts(posts);
 				ToggleLoading({ show: false });
@@ -34,7 +33,6 @@ export default function Home() {
 		}
 		fetchPosts();
 	}, []);
-
 
 	return (
 		<>
@@ -55,8 +53,6 @@ export default function Home() {
 					</p>
 				</div>
 			</PageSection>
-
-
 
 			<PageSectionHeader title="Our Services" />
 			<PageSection columns={3} maxWidth="1024px" id="home-services-section">
@@ -114,14 +110,10 @@ export default function Home() {
 				</div>
 			</PageSection>
 
-
-
 			<PageSection columns={1} maxWidth="1024px" id="home-section">
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList site={wpSite} posts={wpPosts} showCategories={false} count={1} />
+				<BlogPostList posts={wpPosts} showCategories={false} count={1} />
 			</PageSection>
-
-
 
 			<PageSection columns={1} maxWidth="1024px" id="home-section">
 				<PageSectionHeader title="Recent Gallery Photos" />

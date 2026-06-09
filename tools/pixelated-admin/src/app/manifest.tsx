@@ -1,7 +1,6 @@
 
-import { Manifest, SiteInfo } from "@pixelated-tech/components/server";
-import siteConfig from "@/app/data/siteconfig.json";
+import { Manifest } from "@pixelated-tech/components/server";
 
 export default function manifest() {
-	return Manifest({ siteInfo: siteConfig.siteInfo as SiteInfo });
+	return Manifest();
 }

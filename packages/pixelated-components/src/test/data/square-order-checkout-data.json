@@ -18,6 +18,7 @@
 		"zip": "10001",
 		"country": "US",
 		"email": "test@example.com",
+		"phone": "9737108008",
 		"birthdate": "2026-05-01",
 		"emergency_contact_name": "Brian T Whaley",
 		"emergency_contact_telephone": "9737108008",

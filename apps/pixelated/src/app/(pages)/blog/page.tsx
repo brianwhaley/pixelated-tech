@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { PageTitleHeader } from '@pixelated-tech/components';
+import { PageTitleHeader, usePixelatedConfig } from '@pixelated-tech/components';
 import { PageSection, PageGridItem } from '@pixelated-tech/components';
 import { MicroInteractions } from "@pixelated-tech/components";
 import { BlogPostCategories, BlogPostList, type BlogPostType } from '@pixelated-tech/components';
@@ -9,9 +9,9 @@ import { getWordPressCategories } from '@pixelated-tech/components';
 import { ToggleLoading } from '@pixelated-tech/components';
 import { getCachedWordPressItems } from '@pixelated-tech/components';
 
-const wpSite = "blog.pixelated.tech";
-
-export default function Blog() {
+export default function BlogPage() {
+	const pixelatedConfig = usePixelatedConfig();
+	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
 
 	const [ wpCategories, setWpCategories ] = useState<string[]>([]);
 	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
@@ -19,18 +19,20 @@ export default function Blog() {
 	useEffect(() => {
 		ToggleLoading({show: true});
 		(async () => {
-			const posts = await getCachedWordPressItems({ site: wpSite }); // 1 week
-			setWpPosts(await posts ?? []);
+			const posts = await getCachedWordPressItems({ site: wordpressSite }); // 1 week
+			setWpPosts(posts ?? []);
 			ToggleLoading({show: false});
 		})();
-		getWordPressCategories({ site: wpSite }).then((categories) => {
-			setWpCategories(categories ?? []);
-		});
+		if (wordpressSite) {
+			getWordPressCategories({ site: wordpressSite }).then((categories) => {
+				setWpCategories(categories ?? []);
+			});
+		}
 	}, []);
 	
 	useEffect(() => {
 		MicroInteractions({ 
-			scrollfadeSelectors: '.tile , .blogPostSummary, .scroll-fade-element',
+			scrollfadeSelectors: '.tile, .blogPostSummary, .scroll-fade-element',
 		});
 	}, [wpPosts]); 
 
@@ -41,7 +43,7 @@ export default function Blog() {
 				<PageGridItem>
 					<BlogPostCategories categories={wpCategories} />
 				</PageGridItem>
-				<BlogPostList site={wpSite} posts={wpPosts} />
+				<BlogPostList posts={wpPosts} />
 			</PageSection>
 		</>
 	);

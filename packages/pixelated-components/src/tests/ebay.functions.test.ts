@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getMergedEbayConfig, getEbayShoppingCartItem, getEbayBrowseItem } from '../components/shoppingcart/ebay.functions';
+import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getEbayRateLimits, getMergedEbayConfig, getEbayShoppingCartItem, getEbayBrowseItem } from '../components/shoppingcart/ebay.functions';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
+import { pixelatedConfig, mockEbayItem, mockEbayApiProps } from '../test/test-data';
 
 // Mock dependencies
 vi.mock('../components/integrations/cloudinary', () => ({
@@ -26,56 +27,32 @@ vi.mock('../components/foundation/utilities', () => ({
 	getDomain: vi.fn(() => 'example.com')
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({}))
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
 }));
 
+
 describe('ebay.functions - Real Tests', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
     const cache = new CacheManager({} as any);
     (cache as any).clear?.();
 	});
 
-	const mockEbayItem = {
-		legacyItemId: '123456',
-		title: 'Test Product',
-		price: { value: '29.99', currency: 'USD' },
-		itemWebUrl: 'https://ebay.com/itm/123456',
-		thumbnailImages: [
-			{ imageUrl: 'https://pic.ebay.com/image.jpg' }
-		],
-		categoryId: 'electronics',
-		categories: [
-			{ categoryId: 'electronics' }
-		],
-			weight: 2,
-			weightUnit: 'lb'
-	};
-
-	const mockApiProps = {
-		proxyURL: 'https://proxy.example.com',
-		baseTokenURL: 'https://api.ebay.com/token',
-		baseSearchURL: 'https://api.ebay.com/search',
-		qsSearchURL: 'https://api.ebay.com/qs',
-		baseItemURL: 'https://api.ebay.com/item',
-		qsItemURL: 'https://api.ebay.com/item-qs',
-		baseAnalyticsURL: 'https://api.ebay.com/analytics',
-		appId: 'test-app-id',
-		appCertId: 'test-app-cert',
-		globalId: 'EBAY-US',
-		itemCategory: 'electronics'
-	};
-
 	describe('getEbayShoppingCartItem', () => {
 		it('should return CartItemType structure', () => {
 			const result = getEbayShoppingCartItem({
-				thisItem: mockEbayItem,
-				apiProps: mockApiProps
+				thisItem: mockEbayItem as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result).toHaveProperty('itemImageURL');
 			expect(result).toHaveProperty('itemID');
@@ -94,36 +71,36 @@ describe('ebay.functions - Real Tests', () => {
 		it('should handle image variants for itemImageURL', () => {
 			// Case 1: image.imageUrl
 			const res1 = getEbayShoppingCartItem({
-				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: { imageUrl: 'url1' } },
-				apiProps: mockApiProps
+				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: { imageUrl: 'url1' } } as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(res1.itemImageURL).toBe('url1');
 
 			// Case 2: image (as object with imageUrl)
 			const res2 = getEbayShoppingCartItem({
-				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: { imageUrl: 'url2' } },
-				apiProps: mockApiProps
+				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: { imageUrl: 'url2' } } as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(res2.itemImageURL).toBe('url2');
 
 			// Case 3: thumbnailImages[0].imageUrl (already tested but good to have)
 			const res3 = getEbayShoppingCartItem({
-				thisItem: { ...mockEbayItem, thumbnailImages: [{ imageUrl: 'url3' }] },
-				apiProps: mockApiProps
+				thisItem: { ...mockEbayItem, thumbnailImages: [{ imageUrl: 'url3' }] } as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(res3.itemImageURL).toBe('url3');
 
 			// Case 4: thumbnailImages[0] (as string)
 			const res4 = getEbayShoppingCartItem({
-				thisItem: { ...mockEbayItem, thumbnailImages: ['url4'] as any },
-				apiProps: mockApiProps
+				thisItem: { ...mockEbayItem, thumbnailImages: ['url4'] as any } as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(res4.itemImageURL).toBeUndefined();
 
 			// Case 5: fallbacks
 			const res5 = getEbayShoppingCartItem({
-				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: undefined },
-				apiProps: mockApiProps
+				thisItem: { ...mockEbayItem, thumbnailImages: undefined, image: undefined } as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(res5.itemImageURL).toBe('');
 		});
@@ -131,8 +108,8 @@ describe('ebay.functions - Real Tests', () => {
 	it('should handle missing categories', () => {
 		const item = { ...mockEbayItem, categories: undefined, categoryId: undefined };
 		const result = getEbayShoppingCartItem({
-			thisItem: item,
-			apiProps: mockApiProps
+			thisItem: item as any,
+			apiProps: mockEbayApiProps as any
 		});
 		expect(result.itemQuantity).toBe(10);
 	});
@@ -144,32 +121,32 @@ describe('ebay.functions - Real Tests', () => {
 				categories: undefined
 			};
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
+				thisItem: item as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemQuantity).toBe(10);
 		});
 
 		it('should extract item title', () => {
 			const result = getEbayShoppingCartItem({
-				thisItem: mockEbayItem,
-				apiProps: mockApiProps
+				thisItem: mockEbayItem as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemTitle).toBe('Test Product');
 		});
 
 		it('should extract item URL', () => {
 			const result = getEbayShoppingCartItem({
-				thisItem: mockEbayItem,
-				apiProps: mockApiProps
+				thisItem: mockEbayItem as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemURL).toBe('https://ebay.com/itm/123456');
 		});
 
 		it('should extract item cost and shipping metadata', () => {
 			const result = getEbayShoppingCartItem({
-				thisItem: mockEbayItem,
-				apiProps: mockApiProps
+				thisItem: mockEbayItem as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemCost).toBe('29.99');
 			expect(result.itemCurrency).toBe('USD');
@@ -186,17 +163,17 @@ describe('ebay.functions - Real Tests', () => {
 				image: { imageUrl: 'https://pic.ebay.com/alt.jpg' }
 			};
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
+				thisItem: item as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemImageURL).toBeDefined();
 		});
 
 		it('should use cloudinary when provided', () => {
 			const result = getEbayShoppingCartItem({
-				thisItem: mockEbayItem,
+				thisItem: mockEbayItem as any,
 				cloudinaryProductEnv: 'my-cloud',
-				apiProps: mockApiProps
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemImageURL).toBeDefined();
 		});
@@ -205,11 +182,11 @@ describe('ebay.functions - Real Tests', () => {
 			const item = {
 				...mockEbayItem,
 				categoryId: undefined,
-				categories: [{ categoryId: 'electronics' }]
+				categories: [{ categoryId: mockEbayApiProps?.itemCategory || 'jewelry' }]
 			};
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
+				thisItem: item as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemQuantity).toBe(1);
 		});
@@ -220,21 +197,18 @@ describe('ebay.functions - Real Tests', () => {
 				categoryId: 'different'
 			};
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: { ...mockApiProps, itemCategory: 'other' }
+				thisItem: item as any,
+				apiProps: { ...mockEbayApiProps, itemCategory: 'other' } as any
 			});
 			expect(result.itemQuantity).toBe(10);
 		});
 
 		it('should merge provided apiProps with config values from getFullPixelatedConfig', () => {
-			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValueOnce({
-				global: { proxyUrl: 'https://proxy-config.example.com' },
-				ebay: { baseSearchURL: 'https://config.ebay.com', itemCategory: 'electronics' }
-			});
+			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValueOnce(pixelatedConfig);
 
 			const merged = getMergedEbayConfig({ baseSearchURL: 'https://override.example.com', appId: 'override-id' });
 
-			expect(merged.proxyURL).toBe('https://proxy-config.example.com');
+		expect(merged.proxyURL).toBe(pixelatedConfig.integrations?.ebay?.proxyURL ?? '');
 			expect(merged.baseSearchURL).toBe('https://override.example.com');
 			expect(merged.appId).toBe('override-id');
 		});
@@ -252,20 +226,62 @@ describe('ebay.functions - Real Tests', () => {
 
 		it('getEbayAppToken should handle fetch errors', async () => {
 			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Fetch failed'));
-			const token = await getEbayAppToken({ apiProps: mockApiProps });
+			const token = await getEbayAppToken({ apiProps: mockEbayApiProps as any });
 			expect(token).toBeUndefined();
 		});
 
 		it('getEbayBrowseSearch should handle fetch errors', async () => {
 			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Search failed'));
-			const results = await getEbayBrowseSearch({ apiProps: mockApiProps, token: 'token' });
+			const results = await getEbayBrowseSearch({ apiProps: mockEbayApiProps as any, token: 'token' });
 			expect(results).toBeUndefined();
 		});
 
 		it('getEbayBrowseItem should handle fetch errors', async () => {
 			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Item fetch failed'));
-			const results = await getEbayBrowseItem({ apiProps: mockApiProps, itemId: '123', token: 'token' });
+			const results = await getEbayBrowseItem({ apiProps: mockEbayApiProps as any, itemId: '123', token: 'token' });
 			expect(results).toBeUndefined();
+		});
+
+		it('getEbayBrowseItem should return item data when fetch succeeds', async () => {
+			(vi.mocked(smartFetch) as any).mockResolvedValueOnce({ item: 'data' });
+			const results = await getEbayBrowseItem({ apiProps: mockEbayApiProps as any, itemId: '123', token: 'token' });
+			expect(results).toEqual({ item: 'data' });
+		});
+	});
+
+	describe('getEbayRateLimits', () => {
+		it('should return combined limit data when both responses are OK', async () => {
+			const firstResponse = { ok: true, status: 200, json: vi.fn().mockResolvedValue({ rate_limit: true }) };
+			const secondResponse = { ok: true, status: 200, json: vi.fn().mockResolvedValue({ user_rate_limit: true }) };
+			(vi.mocked(smartFetch) as any)
+				.mockResolvedValueOnce(firstResponse)
+				.mockResolvedValueOnce(secondResponse);
+
+			const result = await getEbayRateLimits({ apiProps: mockEbayApiProps as any, token: 'token' });
+
+			expect(result).toEqual({ rate_limit: { rate_limit: true }, user_rate_limit: { user_rate_limit: true } });
+		});
+	});
+
+	describe('getEbayItems', () => {
+		it('should return browse search results when token acquisition succeeds', async () => {
+			(vi.mocked(smartFetch) as any)
+				.mockResolvedValueOnce({ access_token: 'token-value' })
+				.mockResolvedValueOnce({ results: ['item-1'] });
+
+			const result = await getEbayItems({ apiProps: mockEbayApiProps as any });
+			expect(result).toEqual({ results: ['item-1'] });
+		});
+	});
+
+	describe('getEbayItem', () => {
+		it('should return item data when token acquisition succeeds', async () => {
+			(vi.mocked(smartFetch) as any)
+				.mockResolvedValueOnce({ access_token: 'token-value' })
+				.mockResolvedValueOnce({ item: 'data' });
+
+			const result = await getEbayItem({ apiProps: mockEbayApiProps as any });
+			expect(result).toEqual({ item: 'data' });
 		});
 	});
 
@@ -274,10 +290,10 @@ describe('ebay.functions - Real Tests', () => {
 			const mockFetch = vi.mocked(smartFetch);
 			mockFetch.mockResolvedValueOnce({ results: [{ id: '1' }] });
 
-			const firstResult = await getEbayBrowseSearch({ apiProps: mockApiProps, token: 'token-123' });
+			const firstResult = await getEbayBrowseSearch({ apiProps: mockEbayApiProps as any, token: 'token-123' });
 			expect(mockFetch).toHaveBeenCalledTimes(1);
 
-			const secondResult = await getEbayBrowseSearch({ apiProps: mockApiProps, token: 'token-123' });
+			const secondResult = await getEbayBrowseSearch({ apiProps: mockEbayApiProps as any, token: 'token-123' });
 			expect(mockFetch).toHaveBeenCalledTimes(1);
 			expect(secondResult).toEqual(firstResult);
 		});
@@ -289,9 +305,9 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should be async function that returns value or undefined', async () => {
-			const token = await getEbayAppToken({ apiProps: mockApiProps });
-			// Token may be undefined due to mock not providing response, that's OK
-			expect(token === undefined || typeof token === 'string').toBe(true);
+			vi.mocked(smartFetch).mockResolvedValueOnce({ access_token: 'test-token' });
+			const token = await getEbayAppToken({ apiProps: mockEbayApiProps as any });
+			expect(typeof token === 'string' || token === undefined).toBe(true);
 		});
 
 		it('should have propTypes defined', () => {
@@ -300,14 +316,14 @@ describe('ebay.functions - Real Tests', () => {
 
 		it('should proxy token request through configured proxy', async () => {
 			const mockFetch = vi.mocked(smartFetch);
-			mockFetch.mockResolvedValueOnce({ access_token: 'token-abc' });
+			mockFetch.mockResolvedValue({ access_token: 'token-abc' });
 
-			const token = await getEbayAppToken({ apiProps: mockApiProps });
+			const token = await getEbayAppToken({ apiProps: mockEbayApiProps as any });
 
 			expect(token).toBe('token-abc');
-			expect(mockFetch).toHaveBeenCalledWith('https://api.ebay.com/token', expect.objectContaining({
+			expect(mockFetch).toHaveBeenCalledWith('https://api.ebay.com/identity/v1/oauth2/token', expect.objectContaining({
 				proxy: {
-					url: 'https://proxy.example.com',
+					url: mockEbayApiProps.proxyURL,
 					forceProxy: true,
 					fallbackOnCors: true,
 				},
@@ -326,7 +342,7 @@ describe('ebay.functions - Real Tests', () => {
 			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
 			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-			const token = await getEbayAppToken({ apiProps: mockApiProps });
+			const token = await getEbayAppToken({ apiProps: mockEbayApiProps as any });
 			expect(token).toBeUndefined();
 			consoleError.mockRestore();
 		});
@@ -338,7 +354,7 @@ describe('ebay.functions - Real Tests', () => {
 			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
 			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-			const result = await getEbayItems({ apiProps: mockApiProps });
+			const result = await getEbayItems({ apiProps: mockEbayApiProps as any });
 
 			expect(result).toEqual({});
 			expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -353,7 +369,7 @@ describe('ebay.functions - Real Tests', () => {
 			mockFetch.mockRejectedValueOnce(new Error('Token fetch failed'));
 			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-			const result = await getEbayItem({ apiProps: mockApiProps });
+			const result = await getEbayItem({ apiProps: mockEbayApiProps as any });
 
 			expect(result).toEqual({});
 			expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -367,7 +383,7 @@ describe('ebay.functions - Real Tests', () => {
 			const mockFetch = vi.mocked(smartFetch);
 			mockFetch.mockResolvedValueOnce({ results: [{ id: '1' }] });
 
-			const result = await getEbayItemsSearch({ apiProps: mockApiProps, token: 'token' });
+			const result = await getEbayItemsSearch({ apiProps: mockEbayApiProps as any, token: 'token' });
 
 			expect(result).toEqual({ results: [{ id: '1' }] });
 		});
@@ -377,7 +393,7 @@ describe('ebay.functions - Real Tests', () => {
 			mockFetch.mockRejectedValueOnce(new Error('Network failure'));
 			const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-			const result = await getEbayItemsSearch({ apiProps: mockApiProps, token: 'token-abc' });
+			const result = await getEbayItemsSearch({ apiProps: mockEbayApiProps as any, token: 'token-abc' });
 
 			expect(result).toBeUndefined();
 			consoleError.mockRestore();
@@ -429,8 +445,8 @@ describe('ebay.functions - Real Tests', () => {
 		it('should handle missing price - provide default', () => {
 			const item = { ...mockEbayItem, price: { value: '0.00' } };
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
+				thisItem: item as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemCost).toBe('0.00');
 		});
@@ -438,8 +454,8 @@ describe('ebay.functions - Real Tests', () => {
 		it('should handle very large prices', () => {
 			const item = { ...mockEbayItem, price: { value: '999999.99' } };
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
+				thisItem: item as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemCost).toBe('999999.99');
 		});
@@ -447,8 +463,8 @@ describe('ebay.functions - Real Tests', () => {
 		it('should handle very small prices', () => {
 			const item = { ...mockEbayItem, price: { value: '0.01' } };
 			const result = getEbayShoppingCartItem({
-				thisItem: item,
-				apiProps: mockApiProps
+				thisItem: item as any,
+				apiProps: mockEbayApiProps as any
 			});
 			expect(result.itemCost).toBe('0.01');
 		});

@@ -7,17 +7,17 @@ import { Carousel, FlickrWrapper } from "@pixelated-tech/components";
 import type { CarouselCardType } from "@pixelated-tech/components";
 import { usePixelatedConfig } from '@pixelated-tech/components';
 
-export default function Gallery() {
+export default function PortfolioPage() {
 
-	const config = usePixelatedConfig();
+	const integrationsconfig = usePixelatedConfig()?.integrations;
 	const [ flickrCards, setFlickrCards ] = useState<CarouselCardType[]>([]);
 	const props = { 
-		api_key: config?.flickr?.urlProps.api_key ?? "",
-		user_id: config?.flickr?.urlProps.user_id ?? "",
+		api_key: integrationsconfig?.flickr?.urlProps.api_key ?? "",
+		user_id: integrationsconfig?.flickr?.urlProps.user_id ?? "",
 		tags: "", // "workportfolio"
-		method: config?.flickr?.urlProps.method ?? "flickr.photosets.getPhotos",
-		photoset_id: config?.flickr?.urlProps.photoset_id ?? "72177720326903710",
-		photoSize: config?.flickr?.urlProps.photoSize ?? "Large",
+		method: integrationsconfig?.flickr?.urlProps.method ?? "flickr.photosets.getPhotos",
+		photoset_id: integrationsconfig?.flickr?.urlProps.photoset_id ?? "72177720326903710",
+		photoSize: integrationsconfig?.flickr?.urlProps.photoSize ?? "Large",
 		callback: getFlickrCards
 	};
 	function getFlickrCards(cards: CarouselCardType[]) {

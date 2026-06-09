@@ -3,8 +3,9 @@
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { contentfulValueToSlug, normalizeContentfulAssetUrl } from '../integrations/contentful.delivery';
-import type { SiteInfo } from '../config/siteconfig.types';
-import { getServicePathPrefix } from '../general/services.functions';
+import type { SiteInfo } from '../config/config.types';
+import { usePixelatedConfig } from '../config/config.client';
+import { getServicePathPrefix } from '../elements/services.functions';
 
 
 
@@ -114,13 +115,15 @@ export function buildEventSchema(event: any, siteInfo?: SiteInfo | null) {
 
 SchemaEvent.propTypes = {
 	/** Structured Event JSON-LD object */
-	event: PropTypes.object.isRequired,
+	event: PropTypes.any.isRequired,
 };
 export type SchemaEventType = InferProps<typeof SchemaEvent.propTypes>;
 export function SchemaEvent(props: SchemaEventType) {
+	const config = usePixelatedConfig();
 	const { event } = props;
+	const schema = event?.['@type'] ? event : buildEventSchema(event, config?.siteInfo);
 	return (
-		<SchemaScript schema={event} />
+		<SchemaScript schema={schema} />
 	);
 }
 
@@ -190,37 +193,27 @@ function getSegmentName(routes: Route[], path: string, segment: string): string 
 ======================================== */
 
 /**
- * BreadcrumbListSchema — auto-generates a breadcrumb list as JSON-LD from siteconfig.json data.
- * Parses the current path, builds breadcrumb trail by matching path segments to routes array,
- * and embeds as schema.org/BreadcrumbList for SEO rich snippets.
- * Accepts flexible route objects from siteconfig.json with any additional properties.
+ * BreadcrumbListSchema — auto-generates a breadcrumb list as JSON-LD from config.
+ * Parses the current path, builds a breadcrumb trail from the app routes defined in config,
+ * and embeds it as schema.org/BreadcrumbList for SEO rich snippets.
  *
- * @param {array} [props.routes] - Routes array from siteconfig.json with name and optional path properties.
  * @param {string} [props.currentPath] - Current page path (e.g. "/store/vintage-oakley"). Defaults to "/" if not provided.
- * @param {string} [props.siteUrl] - Full domain URL from siteInfo.url. Defaults to https://example.com.
  */
 BreadcrumbListSchema.propTypes = {
-	/** Routes array from siteconfig.json. Accepts routes with any properties; only uses name and path. */
-	routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 	/** Current page path to generate breadcrumbs for (e.g. "/store/item-slug"). Defaults to "/". */
 	currentPath: PropTypes.string,
-	/** Site domain URL for constructing full breadcrumb URLs. Defaults to https://example.com. */
-	siteUrl: PropTypes.string,
 };
 export type BreadcrumbListSchemaType = InferProps<typeof BreadcrumbListSchema.propTypes>;
 export function BreadcrumbListSchema({
-	routes,
 	currentPath = '/',
-	siteUrl = 'https://example.com',
 }: BreadcrumbListSchemaType) {
-	// Type-safe conversion: routes prop is now flexible (accepts any object)
-	// Filter to ensure only valid Route objects with 'name' property
-	const validRoutes: Route[] = (Array.isArray(routes)
-		? routes.filter((r): r is Route => !!(r && typeof r === 'object' && 'name' in r))
-		: []) as Route[];
+	const config = usePixelatedConfig();
+	const finalRoutes: Route[] = Array.isArray(config?.routes)
+		? (config.routes as Route[])
+		: [];
 
 	const pathSegments = buildPathSegments(currentPath || '/');
-	const finalSiteUrl = siteUrl || 'https://example.com';
+	const finalSiteUrl = config?.siteInfo?.url || 'https://example.com';
 
 	const itemListElement: BreadcrumbListItem[] = pathSegments.map(
 		(path, index) => {
@@ -228,7 +221,7 @@ export function BreadcrumbListSchema({
 			return {
 				'@type': 'ListItem',
 				'position': index + 1,
-				'name': getSegmentName(validRoutes, path, segment),
+				'name': getSegmentName(finalRoutes, path, segment),
 				'item': `${finalSiteUrl.replace(/\/$/, '')}${path}`,
 			};
 		}
@@ -364,9 +357,9 @@ export function formatServiceDescription(description: unknown): string | undefin
  */
 
 /**
- * LocalBusinessSchema — generates JSON-LD for a LocalBusiness using provided props or a fallback `siteInfo`.
+ * LocalBusinessSchema — generates JSON-LD for a LocalBusiness using provided props and config.
  *
- * @param {string} [props.name] - Business name (overrides siteInfo.name).
+ * @param {string} [props.name] - Business name (overrides config siteInfo.name).
  * @param {object} [props.address] - Address object containing streetAddress, addressLocality, addressRegion, postalCode, and addressCountry.
  * @param {string} [props.streetAddress] - Street address line.
  * @param {string} [props.addressLocality] - City or locality.
@@ -382,10 +375,9 @@ export function formatServiceDescription(description: unknown): string | undefin
  * @param {string} [props.email] - Contact email address.
  * @param {string} [props.priceRange] - Price range (e.g. '$$', optional).
  * @param {arrayOf} [props.sameAs] - Array of social/profile URLs for schema 'sameAs'.
- * @param {object} [props.siteInfo] - Site-level fallback information object.
  */
 LocalBusinessSchema.propTypes = {
-/** Business name to include in schema (falls back to siteInfo.name). */
+/** Business name to include in schema (falls back to config siteInfo.name). */
 	name: PropTypes.string,
 	/** Address object for the business */
 	address: PropTypes.shape({
@@ -438,13 +430,11 @@ LocalBusinessSchema.propTypes = {
 	priceRange: PropTypes.string,
 	/** Array of profile/URL strings for sameAs (social links). */
 	sameAs: PropTypes.arrayOf(PropTypes.string), // Social media profiles
-	/** Site-level fallback information object (used when props omitted). */
-	siteInfo: PropTypes.object // Required siteinfo from parent component
 };
 export type LocalBusinessSchemaType = InferProps<typeof LocalBusinessSchema.propTypes>;
 export function LocalBusinessSchema (props: LocalBusinessSchemaType) {
-	// const config = usePixelatedConfig();
-	const siteInfo = props.siteInfo as SiteInfo | undefined;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
 
 	// Use props if provided, otherwise fall back to siteInfo
 	const name = props.name || siteInfo?.name;
@@ -737,88 +727,22 @@ export function ReviewSchema(props: ReviewSchemaType) {
  * Services Schema Component
  * Generates JSON-LD structured data for services
  * https://schema.org/Service
- */
-
-/**
- * ServicesSchema — Inject JSON-LD <script> tags for each service offered by the business, using schema.org/Service format.
  *
- * @param {object} [props.siteInfo] - Optional site information object containing business details and services array.
- * @param {array} [props.services] - Optional array of service objects to override siteInfo.services.
+ * This component reads service definitions from config.siteInfo.services.
+ * 
+ * @param {string} [] - Optional service name to override config data.
+ * @returns {JSX.Element|null} - Returns a SchemaScript component with the generated JSON-LD, or null if required data is missing.
  */
-ServicesSchema.propTypes = {
-	siteInfo: PropTypes.shape({
-		name: PropTypes.string,
-		url: PropTypes.string,
-		image: PropTypes.string,
-		logo: PropTypes.string,
-		telephone: PropTypes.string,
-		email: PropTypes.string,
-		address: PropTypes.shape({
-			streetAddress: PropTypes.string,
-			addressLocality: PropTypes.string,
-			addressRegion: PropTypes.string,
-			postalCode: PropTypes.string,
-			addressCountry: PropTypes.string,
-		}),
-		sameAs: PropTypes.arrayOf(PropTypes.string),
-		openingHours: PropTypes.arrayOf(PropTypes.shape({
-			day: PropTypes.string,
-			open: PropTypes.string,
-			close: PropTypes.string,
-			closed: PropTypes.bool,
-		})),
-		servicesPathPrefix: PropTypes.string,
-		services: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-			short_description: PropTypes.string,
-			image: PropTypes.string,
-			termsOfService: PropTypes.string,
-			serviceType: PropTypes.string,
-			serviceOutput: PropTypes.string,
-			category: PropTypes.string,
-			audience: PropTypes.string,
-			offers: PropTypes.any,
-		})),
-		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-		})),
-		brand: PropTypes.shape({
-			"@type": PropTypes.string,
-			name: PropTypes.string,
-		}),
-		audience: PropTypes.string,
-		offers: PropTypes.any,
-		availability: PropTypes.string,
-		availableChannel: PropTypes.shape({
-			"@type": PropTypes.string,
-			serviceUrl: PropTypes.string,
-			availableLanguage: PropTypes.arrayOf(PropTypes.string),
-			servicePhone: PropTypes.string,
-		}),
-		termsOfService: PropTypes.string,
-	}),
-	services: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		image: PropTypes.string,
-		termsOfService: PropTypes.string,
-		serviceType: PropTypes.string,
-		serviceOutput: PropTypes.string,
-		category: PropTypes.string,
-		audience: PropTypes.string,
-		offers: PropTypes.any,
-	})),
-};
+ServicesSchema.propTypes = {};
 export type ServicesSchemaType = InferProps<typeof ServicesSchema.propTypes>;
-export function ServicesSchema(props: ServicesSchemaType) {
-	const siteInfo = props.siteInfo;
-	const services = props.services || siteInfo?.services || [];
+export function ServicesSchema() {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const services = siteInfo?.services || [];
 	const provider = {
 		name: siteInfo?.name || '',
 		url: siteInfo?.url || '',
-		logo: siteInfo?.logo || siteInfo?.image,
+		logo: siteInfo?.image,
 		telephone: siteInfo?.telephone,
 		email: siteInfo?.email,
 		address: siteInfo?.address,
@@ -918,74 +842,31 @@ export function ServicesSchema(props: ServicesSchemaType) {
  * Website Schema Component
  * Generates JSON-LD structured data for websites
  * https://schema.org/WebSite
- */
-
-/**
- * WebsiteSchema — Inject a JSON-LD <script> tag containing a WebSite schema object, using provided props or siteInfo from config.
  *
- * @param {object} [props.siteInfo] - Optional site information object containing business details to populate the schema.
- * @param {string} [props.name] - Name of the website (overrides siteInfo.name).
- * @param {string} [props.url] - URL of the website (overrides siteInfo.url).
- * @param {string} [props.description] - Description of the website (overrides siteInfo.description).
- * @param {string} [props.keywords] - Comma-separated keywords for the website (overrides siteInfo.keywords).
- * @param {string} [props.inLanguage] - Language of the website content (overrides siteInfo.default_locale).
- * @param {array} [props.sameAs] - Array of URLs representing social profiles or related sites (overrides siteInfo.sameAs).
- * @param {object} [props.potentialAction] - Object defining a potentialAction for the website, such as a SearchAction (overrides siteInfo.potentialAction).
- * @param {object} [props.publisher] - Object defining the publisher of the website, including name, url, and logo (overrides siteInfo).
- * @param {number} [props.copyrightYear] - Year of copyright for the website (overrides siteInfo.copyrightYear).
- * @param {object} [props.copyrightHolder] - Object defining the copyright holder, including name and url (overrides siteInfo).
+ * This component reads website metadata from config.siteInfo.
+ * 
+ * @param {string} [] - Optional props can be added to override config data for name, url, description, keywords, inLanguage, sameAs, publisher, potentialAction, copyrightYear, and copyrightHolder.
+ * @returns {JSX.Element|null} - Returns a SchemaScript component with the generated JSON-LD, or null if required data is missing.
  */
-WebsiteSchema.propTypes = {
-	name: PropTypes.string,
-	url: PropTypes.string,
-	description: PropTypes.string,
-	keywords: PropTypes.string,
-	inLanguage: PropTypes.string,
-	sameAs: PropTypes.arrayOf(PropTypes.string),
-	potentialAction: PropTypes.shape({
-		'@type': PropTypes.string,
-		target: PropTypes.shape({
-			'@type': PropTypes.string,
-			urlTemplate: PropTypes.string
-		}).isRequired,
-		'query-input': PropTypes.string
-	}),
-	publisher: PropTypes.shape({
-		'@type': PropTypes.string,
-		name: PropTypes.string.isRequired,
-		url: PropTypes.string,
-		logo: PropTypes.shape({
-			'@type': PropTypes.string,
-			url: PropTypes.string.isRequired,
-			width: PropTypes.number,
-			height: PropTypes.number
-		})
-	}),
-	copyrightYear: PropTypes.number,
-	copyrightHolder: PropTypes.shape({
-		'@type': PropTypes.string,
-		name: PropTypes.string.isRequired,
-		url: PropTypes.string
-	}),
-	siteInfo: PropTypes.object
-};
+WebsiteSchema.propTypes = {};
 export type WebsiteSchemaType = InferProps<typeof WebsiteSchema.propTypes>;
-export function WebsiteSchema (props: WebsiteSchemaType) {
-	const siteInfo = props.siteInfo as SiteInfo | undefined;
-	const name = props.name || siteInfo?.name;
-	const url = props.url || siteInfo?.url;
+export function WebsiteSchema() {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const name = siteInfo?.name;
+	const url = siteInfo?.url;
 	if (!name || !url) {
 		return null;
 	}
 
-	const description = props.description || siteInfo?.description;
-	const keywords = props.keywords || siteInfo?.keywords;
-	const inLanguage = props.inLanguage || siteInfo?.default_locale;
-	const sameAs = props.sameAs || siteInfo?.sameAs;
-	const publisher = props.publisher || buildPublisher(siteInfo);
-	const potentialAction = props.potentialAction || buildPotentialAction(siteInfo?.potentialAction);
-	const copyrightYear = props.copyrightYear ?? siteInfo?.copyrightYear;
-	const copyrightHolder = props.copyrightHolder || buildCopyrightHolder(siteInfo);
+	const description = siteInfo?.description;
+	const keywords = siteInfo?.keywords;
+	const inLanguage = siteInfo?.default_locale;
+	const sameAs = siteInfo?.sameAs;
+	const publisher = buildPublisher(siteInfo);
+	const potentialAction = buildPotentialAction(siteInfo?.potentialAction);
+	const copyrightYear = siteInfo?.copyrightYear;
+	const copyrightHolder = buildCopyrightHolder(siteInfo);
 
 	const schemaData = {
 		'@context': 'https://schema.org',

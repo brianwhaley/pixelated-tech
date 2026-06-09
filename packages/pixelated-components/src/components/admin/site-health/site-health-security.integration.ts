@@ -68,11 +68,25 @@ export async function analyzeSecurityHealth(localPath: string, siteName?: string
 			// direct candidate
 			if (candidatePath && fs.existsSync(candidatePath)) return candidatePath;
 
-			// check obvious workspace parent (one level up from current package)
-			const workspaceParent = path.resolve(process.cwd(), '..');
 			const candidates: string[] = [];
-			if (siteName) candidates.push(path.join(workspaceParent, siteName));
-			if (repoName) candidates.push(path.join(workspaceParent, repoName));
+
+			// Try locating the site or repo under the current workspace hierarchy.
+			let currentDir = path.resolve(process.cwd());
+			while (true) {
+				if (siteName) candidates.push(path.join(currentDir, siteName));
+				if (repoName) candidates.push(path.join(currentDir, repoName));
+
+				const parentDir = path.dirname(currentDir);
+				if (parentDir === currentDir) break;
+				currentDir = parentDir;
+			}
+
+			for (const c of candidates) {
+				if (fs.existsSync(c)) {
+					console.info(`Security scan: using fallback path for site '${siteName}': ${c}`);
+					return c;
+				}
+			}
 
 			// also check common external volume used on this machine
 			const externalBase = path.join('/Volumes', 'btw_x10_pro', 'Git');

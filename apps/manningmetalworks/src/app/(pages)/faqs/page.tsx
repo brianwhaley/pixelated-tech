@@ -1,19 +1,16 @@
 "use client";
 
 import React from 'react';
-import { PageSection, PageTitleHeader, FAQAccordion } from '@pixelated-tech/components';
-import { SchemaFAQ } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, FAQ } from '@pixelated-tech/components';
 import faqsData from '@/app/data/faqs.json';
 
-export default function FaqsPage() {
+export default function FAQPage() {
 	const faqItems = {
 		...faqsData,
 		mainEntity: faqsData.mainEntity.map((faq) => ({ ...faq, category: "" }))
 	};
 	return (
 		<>
-			<SchemaFAQ faqsData={faqsData} />
-
 			<PageSection columns={1} maxWidth="1024px" id="header-section">
 				<PageTitleHeader
 					title="Frequently Asked Questions"
@@ -24,7 +21,7 @@ export default function FaqsPage() {
 			</PageSection>
 							
 			<PageSection columns={1} maxWidth="1024px" id="faqs-section">
-				<FAQAccordion faqsData={faqItems} />
+				<FAQ faqsData={faqItems} />
 			</PageSection>
 		</>
 	);

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MenuExpando, MenuExpandoButton } from '../components/general/menu-expando';
+import { MenuExpando, MenuExpandoButton } from '../components/elements/menu-expando';
 
 const mockMenuItems = [
 	{ name: 'Home', path: '/' },

@@ -7,7 +7,7 @@ import { GoogleReviewsCarousel } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 
 export default function AboutUsPage() {
-	const config = usePixelatedConfig();
+	const pixelatedConfig = usePixelatedConfig();
 
 	return (
 		<>
@@ -57,11 +57,11 @@ export default function AboutUsPage() {
 
 			<PageSection columns={1} maxWidth="768px" padding="20px" id="reviews-section">
 				<PageSectionHeader title="Customer Reviews" />
-				{config?.googlePlaces?.apiKey ? (
+				{pixelatedConfig?.integrations?.googlePlaces?.apiKey ? (
 					<GoogleReviewsCarousel
-						placeId={config.googlePlaces.placeId ?? ''}
-						apiKey={config.googlePlaces.apiKey}
-						proxyBase={config?.global?.proxyUrl || ''}
+						placeId={pixelatedConfig.integrations.googlePlaces.placeId ?? ''}
+						apiKey={pixelatedConfig.integrations.googlePlaces.apiKey}
+						proxyBase={pixelatedConfig?.global?.proxyUrl || ''}
 						businessName="The Three Muses of Bluffton"
 						draggable={true}
 						imgFit="contain"

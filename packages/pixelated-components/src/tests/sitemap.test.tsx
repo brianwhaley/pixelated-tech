@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import * as sitemapModule from '../components/foundation/sitemap';
 import {
 	createPageURLs,
 	createImageURLsFromJSON,
@@ -484,11 +485,13 @@ describe('Sitemap Helper Functions', () => {
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({
-				contentful: {
-					base_url: 'https://cdn.contentful.com',
-					space_id: 'provider-space',
-					environment: 'master',
-					delivery_access_token: 'provider-token'
+				integrations: {
+					contentful: {
+						base_url: 'https://cdn.contentful.com',
+						space_id: 'provider-space',
+						environment: 'master',
+						delivery_access_token: 'provider-token'
+					}
 				}
 			});
 
@@ -781,12 +784,14 @@ describe('Sitemap Helper Functions', () => {
 		describe('buildSitemapConfig', () => {
 			it('should support flattened Contentful sitemap fields', () => {
 				const pixelatedConfig = {
-					contentful: {
-						space_id: 'space-id',
-						delivery_access_token: 'token',
-						sitemapContentType: 'event',
-						sitemapField: 'id',
-						sitemapRoutePrefix: '/events'
+					integrations: {
+						contentful: {
+							space_id: 'space-id',
+							delivery_access_token: 'token',
+							sitemapContentType: 'event',
+							sitemapField: 'id',
+							sitemapRoutePrefix: '/events'
+						}
 					}
 				};
 
@@ -804,8 +809,10 @@ describe('Sitemap Helper Functions', () => {
 
 			it('should enable Square sitemap generation when squareItemCategoryId is configured', () => {
 				const pixelatedConfig = {
-					square: {
-						squareItemCategoryId: 'test-category'
+					integrations: {
+						square: {
+							squareItemCategoryId: 'test-category'
+						}
 					}
 				};
 
@@ -1076,7 +1083,9 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetSquareStoreItems = vi.mocked(squareModule.getSquareStoreItems);
 
 			mockGetFullPixelatedConfig.mockReturnValue({
-				square: { squareItemCategoryId: 'test-category' }
+				integrations: {
+					square: { squareItemCategoryId: 'test-category' }
+				}
 			});
 			mockGetSquareStoreItems.mockResolvedValue({
 				items: [
@@ -1117,9 +1126,10 @@ describe('Sitemap Helper Functions', () => {
 			const mockRoutes = [{ path: '/home' }];
 			const mockGetAllRoutes = vi.mocked(metadataModule.getAllRoutes);
 			mockGetAllRoutes.mockReturnValue(mockRoutes);
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({ routes: mockRoutes });
 
-			const config = { routes: mockRoutes };
-			const result = await generateSitemap(config, 'https://example.com');
+			const result = await generateSitemap('https://example.com');
 
 			expect(result.length).toBeGreaterThan(0);
 			expect(result.some((entry: SitemapEntry) => entry.url.includes('/home'))).toBe(true);
@@ -1131,11 +1141,12 @@ describe('Sitemap Helper Functions', () => {
 				json: async () => siteImagesData.images.slice(0, 1)
 			});
 
-			const config = {
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({
 				createImageURLsFromJSON: true,
 				imageJson: { path: 'public/site-images.json' }
-			};
-			const result = await generateSitemap(config, 'https://example.com');
+			});
+			const result = await generateSitemap('https://example.com');
 
 			expect(result.some((entry: SitemapEntry) => entry.url.includes('/images'))).toBe(true);
 		});
@@ -1145,11 +1156,13 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetWordPressItems = vi.mocked(wordpressModule.getWordPressItems);
 			mockGetWordPressItems.mockResolvedValue(mockPosts);
 
-			const config = {
-				createWordPressURLs: true,
-				wordpress: { site: 'example.wordpress.com' }
-			};
-			const result = await generateSitemap(config, 'https://example.com');
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({
+				integrations: {
+					wordpress: { site: 'example.wordpress.com' }
+				}
+			});
+			const result = await generateSitemap('https://example.com');
 
 			expect(result.some((entry: SitemapEntry) => entry.url.includes(mockPosts[0].URL))).toBe(true);
 		});
@@ -1166,14 +1179,15 @@ describe('Sitemap Helper Functions', () => {
 				json: async () => mockJson
 			});
 
-			const config = {
-				routes: mockRoutes,
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({
+				siteConfig: { routes: mockRoutes },
 				createImageURLs: true,
 				imageJson: { path: 'public/site-images.json' }
-			};
+			});
 
 			// Create a scenario where we might have duplicates
-			const result = await generateSitemap(config, 'https://example.com');
+			const result = await generateSitemap('https://example.com');
 
 			const urls = result.map((entry: SitemapEntry) => entry.url);
 			const uniqueUrls = new Set(urls);
@@ -1181,8 +1195,22 @@ describe('Sitemap Helper Functions', () => {
 		});
 
 		it('should handle empty config', async () => {
-			const result = await generateSitemap({}, 'https://example.com');
+			const mockBuildSitemapConfig = vi.spyOn(sitemapModule, 'buildSitemapConfig').mockReturnValue({});
+			const result = await generateSitemap('https://example.com');
 			expect(Array.isArray(result)).toBe(true);
+		});
+
+		it('should build sitemap config automatically when called without args', async () => {
+			const mockRoutes = [{ path: '/home' }];
+			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
+			mockGetFullPixelatedConfig.mockReturnValue({ routes: mockRoutes });
+			const mockGetAllRoutes = vi.mocked(metadataModule.getAllRoutes);
+			mockGetAllRoutes.mockReturnValue(mockRoutes);
+
+			const result = await generateSitemap();
+
+			expect(result.length).toBeGreaterThan(0);
+			expect(result.some((entry: SitemapEntry) => entry.url.includes('/home'))).toBe(true);
 		});
 	});
 });

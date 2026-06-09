@@ -24,7 +24,7 @@ export async function fetchGoogleFonts(): Promise<GoogleFont[]> {
 	let apiKey: string | undefined;
 	try {
 		const cfg = getFullPixelatedConfig();
-		apiKey = cfg?.google?.api_key;
+		apiKey = cfg?.integrations?.google?.api_key;
 	} catch (error) {
 		console.warn('Error retrieving Google Fonts config:', error);
 		return [];

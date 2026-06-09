@@ -5,16 +5,45 @@ import { TEST_CONFIG } from './fixtures';
 // Stub @pixelated-tech/components to avoid requiring deep optional modules
 vi.mock('@pixelated-tech/components/server', () => ({
 	getFullPixelatedConfig: () => ({
-		nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
-		google: { client_id: TEST_CONFIG.google.client_id, client_secret: TEST_CONFIG.google.client_secret },
+		integrations: {
+			nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
+			google: { client_id: (TEST_CONFIG.integrations as any).google.client_id, client_secret: (TEST_CONFIG.integrations as any).google.client_secret },
+		},
+		siteInfo: {
+			name: 'Pixelated Admin',
+			description: 'Admin interface',
+			url: 'https://admin.pixelated.tech',
+			email: 'brian@pixelated.tech',
+			favicon: '/favicon.ico',
+			favicon_sizes: '64x64 32x32 24x24 16x16',
+			favicon_type: 'image/x-icon',
+			theme_color: '#336699',
+			background_color: '#ffffff',
+			default_locale: 'en',
+			display: 'standalone',
+			image: '/pix-bg-512.gif',
+			address: {
+				streetAddress: '',
+				addressLocality: '',
+				addressRegion: '',
+				postalCode: '',
+				addressCountry: ''
+			}
+		},
+		routes: [
+			{ name: 'Home', path: '/' },
+			{ name: 'Login', path: '/login' }
+		],
 	}),
 }));
 
 vi.mock('@pixelated-tech/components', () => ({
 	server: {
 		getFullPixelatedConfig: () => ({
-			nextAuth: { secret: TEST_CONFIG.nextAuth.secret, url: TEST_CONFIG.nextAuth.url },
-			google: { client_id: TEST_CONFIG.google.client_id, client_secret: TEST_CONFIG.google.client_secret },
+			integrations: {
+				nextAuth: { secret: TEST_CONFIG.nextAuth.secret, url: TEST_CONFIG.nextAuth.url },
+				google: { client_id: (TEST_CONFIG.integrations as any).google.client_id, client_secret: (TEST_CONFIG.integrations as any).google.client_secret },
+			}
 		}),
 	},
 }));

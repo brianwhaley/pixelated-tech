@@ -15,7 +15,7 @@ import {
 } from '@/components/integrations/socialcard';
 
 // Mock SmartImage
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
   SmartImage: (props: any) => {
     const { src, alt, title, className, onClick } = props;
     return React.createElement('img', {

@@ -7,7 +7,7 @@ import { CalloutHeader } from "@pixelated-tech/components";
 import { BuzzwordBingo } from "@pixelated-tech/components";
 import { buzzwords } from "@/app/data/buzzwords";
 
-export default function BuzzWordBingo () {
+export default function BuzzWordBingoPage() {
 	return (
 		<PageSection columns={1}id="customs-section">
 			<PageTitleHeader title="Buzzword Bingo" />

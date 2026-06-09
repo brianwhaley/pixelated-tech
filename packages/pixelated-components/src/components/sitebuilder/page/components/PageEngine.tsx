@@ -1,9 +1,67 @@
+"use client";
 
-import React from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
+import { useParams } from 'next/navigation';
 import { generateKey } from '../../../foundation/utilities';
-import { componentMap, layoutComponents } from '../lib/componentMap';
+import { usePixelatedConfig } from '../../../config/config.client';
+import { componentMap, isLayoutComponent } from '../lib/componentMap';
 import './pagebuilder.scss';
+
+
+
+/* ========== PAGE DATA PROVIDER ========== */
+
+/**
+ * PageDataContext holds the dynamic state for the page, including siteConfig, 
+ * URL params, and any external data sources.
+ */
+const PageDataContext = createContext<any>(null);
+
+export function usePageData() {
+	return useContext(PageDataContext);
+}
+
+
+
+
+/**
+ * PageDataProvider — Wraps the PageEngine to provide a unified data context.
+ * 
+ * @param {object} [props.data] - Additional static data to inject.
+ * @param {object} [props.siteConfig] - The site-specific configuration (siteconfig.json).
+ */
+PageDataProvider.propTypes = {
+	siteConfig: PropTypes.object,
+	data: PropTypes.object,
+	children: PropTypes.node.isRequired,
+};
+export type PageDataProviderType = InferProps<typeof PageDataProvider.propTypes>;
+export function PageDataProvider(props: PageDataProviderType) {
+	const { children, siteConfig, data = {} } = props;
+	const params = useParams();
+	const pixelatedConfig = usePixelatedConfig();
+
+	// Merge all data sources into a single context
+	const contextValue = useMemo(() => {
+		const sc = siteConfig as any;
+		return {
+			siteInfo: sc?.siteInfo,
+			business: sc?.siteInfo?.business,
+			params: params || {},
+			technical: pixelatedConfig,
+			...data
+		};
+	}, [siteConfig, params, pixelatedConfig, data]);
+
+	return (
+		<PageDataContext.Provider value={contextValue}>
+			{children}
+		</PageDataContext.Provider>
+	);
+}
+
+
 
 /**
  * PageEngine - Renders components with optional inline editing
@@ -52,16 +110,68 @@ PageEngine.propTypes = {
 export type PageEngineType = InferProps<typeof PageEngine.propTypes>;
 export function PageEngine(props: PageEngineType) {
 	const { editMode = false, selectedPath, onEditComponent, onSelectComponent, onDeleteComponent, onMoveUp, onMoveDown } = props;
-	
+	const contextData = usePageData();
+
+	// Helper to resolve {{token}} strings in props
+	const resolveValue = (value: any): any => {
+		if (typeof value !== 'string') return value;
+		
+		// 1. If the value is EXACTLY a unique token like "{{some.path}}", 
+		// we return the raw object/value instead of stringifying it.
+		// This is critical for array/object props like faqsData.
+		const fullTokenMatch = value.match(/^\{\{([\w.]+)\}\}$/);
+		if (fullTokenMatch) {
+			const path = fullTokenMatch[1];
+			const parts = path.split('.');
+			let current = contextData;
+			for (const part of parts) {
+				if (current && typeof current === 'object') {
+					current = current[part];
+				} else {
+					return undefined;
+				}
+			}
+			return current;
+		}
+
+		// 2. Otherwise, perform string replacement for mixed content
+		const tokenRegex = /\{\{([\w.]+)\}\}/g;
+		if (!tokenRegex.test(value)) return value;
+
+		return value.replace(tokenRegex, (_, path) => {
+			const parts = path.split('.');
+			let current = contextData;
+			for (const part of parts) {
+				if (current && typeof current === 'object') {
+					current = current[part];
+				} else {
+					return `[undefined: ${path}]`;
+				}
+			}
+			// If we're inside a string, stringify objects or return the primitive
+			return current !== undefined 
+				? (typeof current === 'object' ? JSON.stringify(current) : current) 
+				: `[undefined: ${path}]`;
+		});
+	};
+
 	// Recursive function to render components with children
 	function renderComponent(componentData: any, index: number, path: string = 'root'): React.JSX.Element {
 		const componentName: string = componentData.component;
-		const componentProps: any = { ...componentData.props };
-		delete componentProps.type;
+		
+		// Create a shallow copy of props and resolve tokens
+		const rawProps = componentData.props || {};
+		const componentProps: any = {};
+		
+		Object.keys(rawProps).forEach(key => {
+			if (key !== 'type') {
+				componentProps[key] = resolveValue(rawProps[key]);
+			}
+		});
 		
 		const componentType = (componentMap as Record<string, React.ElementType>)[componentName];
 		const currentPath = `${path}[${index}]`;
-		const isLayout = layoutComponents.includes(componentName);
+		const isLayout = isLayoutComponent(componentName);
 		
 		if (!componentType) {
 			return <div key={index}>Unknown component: {componentName}</div>;
@@ -83,7 +193,7 @@ export function PageEngine(props: PageEngineType) {
 		
 		// If not in edit mode, return element directly without wrapper
 		if (!editMode) {
-			return <React.Fragment key={`fragment-${index}`}>{element}</React.Fragment>;
+			return element; // Removed React.Fragment wrapper as we have unique keys on the elements now
 		}
 		
 		// Edit mode: Wrap with hover effect and action buttons

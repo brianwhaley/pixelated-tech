@@ -5,6 +5,7 @@ vi.mock('@pixelated-tech/components', () => {
 	const React = require('react');
 	return {
 		__esModule: true,
+		usePixelatedConfig: () => ({ siteInfo: { name: 'Simple Day Concierge', telephone: '(000) 000-0000', email: 'info@simpledayconcierge.com', address: {} } }),
 		PageSection: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-testid': 'page-section' }, children),
 		PageGridItem: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-testid': 'page-grid-item' }, children),
 		PageSectionHeader: ({ title }: { title?: string }) => React.createElement('div', { 'data-testid': 'page-section-header' }, title || null),

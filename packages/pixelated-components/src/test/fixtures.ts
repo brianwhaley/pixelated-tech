@@ -1,6 +1,55 @@
+// Shared fixture objects and helper factories for tests.
+// Raw JSON data should live in src/test/data/*.json. This file creates reusable
+// fixture objects from those raw files and exports lightweight helpers.
+//
+// NOT for:
+// - raw JSON payloads (use src/test/data/*.json)
+// - test render helpers or utilities (use src/test/test-utils.tsx)
+// - application logic or production code
 
 import { vi } from 'vitest';
+import siteConfig from '@/data/siteconfig.json';
+import recipes from '@/data/recipes.json';
+import resume from '@/data/resume.json';
+import mockGoogleDateRangesJson from './data/mock-google-date-ranges.json';
 import type { CarouselCardType } from '@/components/general/carousel';
+import { mockWordPressPosts as mockWordPressPostsCentralized, mockCarouselCards as mockCarouselCardsCentralized, mockTileCards as mockTileCardsCentralized } from './test-data';
+
+export const mockGoogleDateRanges = {
+	currentStart: new Date(mockGoogleDateRangesJson.currentStart),
+	currentEnd: new Date(mockGoogleDateRangesJson.currentEnd),
+	currentStartStr: mockGoogleDateRangesJson.currentStartStr,
+	currentEndStr: mockGoogleDateRangesJson.currentEndStr,
+	previousStart: new Date(mockGoogleDateRangesJson.previousStart),
+	previousEnd: new Date(mockGoogleDateRangesJson.previousEnd),
+	previousStartStr: mockGoogleDateRangesJson.previousStartStr,
+	previousEndStr: mockGoogleDateRangesJson.previousEndStr,
+};
+
+export const emptySiteInfo = { name: '', author: '', description: '', url: '', email: '' };
+export const routes = siteConfig.routes || [];
+export const emptyRoutes: any[] = [];
+export const malformedRoutes = [{ invalidField: 'value' }];
+
+export const siteInfo = siteConfig.siteInfo;
+export const siteInfoFull = siteConfig.siteInfo;
+export const visualdesign = siteConfig.visualdesign || {};
+
+export const realRecipes = recipes;
+export const realResume = resume;
+export const minimalRecipe = (recipes.items && recipes.items[0]) ? recipes.items[0] : { '@type': 'Recipe', name: 'Minimal' };
+export const minimalResume = (resume.items && resume.items[0]) ? { items: [resume.items[0]] } : { items: [] };
+
+import siteHealthData from './data/site-health-data.json';
+import googlePsiExampleCom from './data/google-psi-example-com.json';
+import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
+
+export async function createSiteHealthResponse(siteName = 'test-site', url = 'https://www.example.com') {
+	return {
+		success: true,
+		data: [await processPSIData(googlePsiExampleCom, siteName, url)],
+	};
+}
 
 export const emptyFormData = { fields: [] };
 
@@ -93,38 +142,7 @@ export const minimalCarouselCard: CarouselCardType = {
 	imageAlt: 'Minimal card image',
 };
 
-export const carouselMockCards: CarouselCardType[] = [
-	{
-		index: 0,
-		cardIndex: 0,
-		cardLength: 3,
-		image: 'https://example.com/image1.jpg',
-		imageAlt: 'Image 1',
-		headerText: 'Card 1',
-		subHeaderText: 'Subheader 1',
-		bodyText: 'Body text 1',
-	},
-	{
-		index: 1,
-		cardIndex: 1,
-		cardLength: 3,
-		image: 'https://example.com/image2.jpg',
-		imageAlt: 'Image 2',
-		headerText: 'Card 2',
-		subHeaderText: 'Subheader 2',
-		bodyText: 'Body text 2',
-	},
-	{
-		index: 2,
-		cardIndex: 2,
-		cardLength: 3,
-		image: 'https://example.com/image3.jpg',
-		imageAlt: 'Image 3',
-		headerText: 'Card 3',
-		link: 'https://example.com/card3',
-		linkTarget: '_blank',
-	},
-];
+export const carouselMockCards: CarouselCardType[] = mockCarouselCardsCentralized;
 
 export function createManyCarouselCards(count: number): CarouselCardType[] {
 	return Array.from({ length: count }, (_, i) => ({
@@ -147,35 +165,7 @@ export const carouselMinimalCards: CarouselCardType[] = [
 	},
 ];
 
-export const tileCards: CarouselCardType[] = [
-	{
-		index: 0,
-		cardIndex: 0,
-		cardLength: 3,
-		link: '/tile1',
-		image: 'https://example.com/image1.jpg',
-		imageAlt: 'Tile 1',
-		bodyText: 'First tile description',
-	},
-	{
-		index: 1,
-		cardIndex: 1,
-		cardLength: 3,
-		link: '/tile2',
-		image: 'https://example.com/image2.jpg',
-		imageAlt: 'Tile 2',
-		bodyText: 'Second tile description',
-	},
-	{
-		index: 2,
-		cardIndex: 2,
-		cardLength: 3,
-		link: '/tile3',
-		image: 'https://example.com/image3.jpg',
-		imageAlt: 'Tile 3',
-		bodyText: 'Third tile description',
-	},
-];
+export const tileCards: CarouselCardType[] = mockTileCardsCentralized;
 
 export const tileCardsWithoutLinks: CarouselCardType[] = [
 	{
@@ -312,7 +302,7 @@ export const mockPageEngineData = {
 			children: []
 		},
 		{
-			component: 'Page Section',
+			component: 'PageSection',
 			props: {
 				items: []
 			},
@@ -463,41 +453,7 @@ export const mockContentfulVideoAssets = {
 	],
 };
 
-export const mockWordPressPosts = [
-	{
-		ID: 1,
-		title: 'Test Post 1',
-		featured_image: 'https://i0.wp.com/example.com/image1.jpg',
-		content: 'Test content 1',
-		excerpt: 'Excerpt 1',
-		date: '2024-01-01T00:00:00+00:00',
-		URL: 'https://example.com/post-1',
-		categories: [],
-		author: null,
-	},
-	{
-		ID: 2,
-		title: 'Test Post 2',
-		featured_image: 'https://example.com/image2.jpg',
-		content: 'Test content 2',
-		excerpt: 'Excerpt 2',
-		date: '2024-01-02T00:00:00+00:00',
-		URL: 'https://example.com/post-2',
-		categories: [],
-		author: null,
-	},
-	{
-		ID: 3,
-		title: 'Test Post 3',
-		featured_image: null,
-		content: 'Test content 3',
-		excerpt: 'Excerpt 3',
-		date: '2024-01-03T00:00:00+00:00',
-		URL: 'https://example.com/post-3',
-		categories: [],
-		author: null,
-	},
-];
+export const mockWordPressPosts = mockWordPressPostsCentralized;
 
 export const mockContentfulItems = [
 	{
@@ -613,3 +569,49 @@ export function createPayPalSandboxOrderPayload(sandboxEmail: string) {
 		},
 	};
 }
+
+export const mockPayPalCapture = {
+	id: 'ORDER-12345',
+	status: 'COMPLETED',
+	purchase_units: [
+		{
+			payments: {
+				captures: [
+					{
+						id: 'CAPTURE-12345',
+						status: 'COMPLETED',
+						amount: {
+							currency_code: 'USD',
+							value: '99.99',
+						},
+						create_time: new Date().toISOString(),
+					},
+				],
+			},
+		},
+	],
+};
+
+export const gravatarProfile = {
+	displayName: 'Jane Smith',
+	profileUrl: 'https://gravatar.com/janesmith',
+	thumbnailUrl: 'https://gravatar.com/avatar/abc123',
+	aboutMe: 'Software engineer and coffee enthusiast',
+	currentLocation: 'San Francisco, CA',
+	job_title: 'Senior Engineer',
+	company: 'Tech Corp',
+	pronouns: 'she/her',
+	accounts: [
+		{ shortname: 'github', url: 'https://github.com/janesmith' },
+		{ shortname: 'linkedin', url: 'https://linkedin.com/in/janesmith' },
+		{ shortname: 'twitter', url: 'https://twitter.com/janesmith' },
+	],
+};
+
+export const buzzwordBingoWords = [
+	"Synergy", "Low-hanging fruit", "Paradigm shift", "Deep dive", "Leverage",
+	"Action item", "Bandwidth", "Circle back", "Ecosystem", "Holistic",
+	"KPI", "Logistics", "Mindshare", "Optimize", "Proactive",
+	"Robust", "Scalable", "Thought leader", "Visibility", "Win-win",
+	"Value-add", "Empower", "Disrupt", "Game changer", "Alignment"
+];

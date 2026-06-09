@@ -354,7 +354,8 @@ export const TS_FILE_IGNORE_PATTERNS = [
 	'**/*.stories.ts',
 	'**/documentation/**',
 	'**/examples/**',
-	'**/*.example.*'
+	'**/*.example.*',
+	'**/*extractor.ts'
 ];
 
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
-import { ProjectsClient, ProjectsClientType } from '@/components/general/tiles';
+import { ProjectsClient, ProjectsClientType } from '@/components/elements/tiles';
 
 // Mock SmartImage
-vi.mock('@/components/general/smartimage', () => ({
+vi.mock('@/components/elements/smartimage', () => ({
 	SmartImage: (props: any) => {
 		const { src, alt, title, onClick } = props;
 		return React.createElement('img', {
@@ -19,7 +19,7 @@ vi.mock('@/components/general/smartimage', () => ({
 }));
 
 // Mock modal and PageSection/PageSectionHeader for testing
-vi.mock('@/components/general/modal', () => ({
+vi.mock('@/components/elements/modal', () => ({
 	Modal: (props: any) => React.createElement('div', {
 		'data-testid': 'modal',
 		'data-has-content': !!props.modalContent,
@@ -27,7 +27,7 @@ vi.mock('@/components/general/modal', () => ({
 	handleModalOpen: vi.fn(),
 }));
 
-vi.mock('@/components/general/semantic', () => ({
+vi.mock('@/components/structure/page-blocks', () => ({
 	PageSection: (props: any) => React.createElement('section', {
 		'data-testid': 'page-section',
 		'data-columns': props.columns,

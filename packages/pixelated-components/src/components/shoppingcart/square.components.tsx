@@ -6,10 +6,10 @@ import type { CheckoutType } from './shoppingcart.functions';
 import { addToShoppingCart } from './shoppingcart.functions';
 import { AddToCartButton, ViewItemDetails } from './shoppingcart.components';
 import { usePixelatedConfig } from '../config/config.client';
-import { Callout } from '../general/callout';
-import { PageSection, PageGridItem, PageTitleHeader, PageSectionHeader } from '../general/semantic';
-import { SmartImage } from '../general/smartimage';
-import { Carousel } from '../general/carousel';
+import { Callout } from '../structure/callout';
+import { PageSection, PageGridItem, PageTitleHeader, PageSectionHeader } from '../structure/page-blocks';
+import { SmartImage } from '../elements/smartimage';
+import { Carousel } from '../structure/carousel';
 import { buildSquareStoreFilters, matchesSquareStorePriceRange } from './square';
 import { SquarePaymentError, getSquarePaymentErrorMessage } from './square';
 import { ProductSchema } from '../foundation/schema';
@@ -128,7 +128,7 @@ SquareCheckout.propTypes = {
 export type SquareCheckoutType = InferProps<typeof SquareCheckout.propTypes> & { checkoutData: CheckoutType };
 export function SquareCheckout(props: SquareCheckoutType) {
 	const config = usePixelatedConfig();
-	const squareConfig = config?.square;
+	const squareConfig = config?.integrations?.square;
 	const [card, setCard] = useState<any>(null);
 	const [initialized, setInitialized] = useState(false);
 	const [isProcessing, setIsProcessing] = useState(false);
@@ -667,7 +667,7 @@ export function renderSquareThankYou(props: SquareThankYouType) {
 	const config = props.config;
 	const sourceId = orderData?.data?.sourceId || orderData?.sourceId;
 	const amount = orderData?.data?.checkoutData?.total ?? orderData?.checkoutData?.total;
-	const currency = (config as any)?.shoppingcart?.currency || orderData?.data?.checkoutData?.currency || 'USD';
+	const currency = (config as any)?.integrations?.shoppingcart?.currency || orderData?.data?.checkoutData?.currency || 'USD';
 
 	return (
 		<div>

@@ -1,3 +1,4 @@
+/** @vitest-environment jsdom */
 import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { render } from '../test/test-utils';

@@ -1,12 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { pixelatedConfig, mockOrderCheckoutData } from '../test/test-data';
 
 const mockSend = vi.hoisted(() => vi.fn());
 let lastClientConfig: any = null;
-let mockAwsConfig: any = {
-	region: 'us-east-1',
-	access_key_id: 'test-access-key',
-	secret_access_key: 'test-secret-key',
-};
+let mockAwsConfig: any = { ...pixelatedConfig.integrations?.aws };
 
 vi.mock('@aws-sdk/client-dynamodb', () => ({
 	DynamoDBClient: class {
@@ -28,69 +25,44 @@ vi.mock('@aws-sdk/client-dynamodb', () => ({
 	},
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: () => ({ aws: mockAwsConfig }),
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn(),
+	};
+});
 
 import {
 	buildPixelatedFormSubmissionReportRows,
 	listPixelatedFormSubmissionReportRows,
 } from '../components/integrations/aws.dynamo.integration';
+import { getFullPixelatedConfig } from '../components/config/config';
 
 describe('aws dynamo integration', () => {
 	beforeEach(() => {
 		mockSend.mockReset();
 		lastClientConfig = null;
-		mockAwsConfig = {
-			region: 'us-east-1',
-			access_key_id: 'test-access-key',
-			secret_access_key: 'test-secret-key',
-		};
+		mockAwsConfig = { ...pixelatedConfig.integrations?.aws };
+		vi.mocked(getFullPixelatedConfig).mockImplementation(() => ({
+			...pixelatedConfig,
+			integrations: {
+				...pixelatedConfig.integrations,
+				aws: mockAwsConfig
+			}
+		} as any));
 	});
 
 	it('flattens orderData into report row fields', () => {
 		const rows = buildPixelatedFormSubmissionReportRows([
 			{
 				orderData: JSON.stringify({
-					checkoutData: {
-							items: [
-								{
-									id: 'class-1',
-									title: 'Sewing Class',
-									quantity: 2,
-									category: 'Adult',
-								},
-							],
-							shippingTo: {
-								name: 'Test User',
-								street1: '123 Main St',
-								city: 'Bluffton',
-								state: 'SC',
-								zip: '29910',
-								country: 'US',
-								phone: '1234567890',
-								email: 'test@example.com',
-								child_name: 'Grace Sturkie',
-								child_birthdate: '2017-10-21',
-								birthdate: '2026-05-01',
-								emergency_contact_name: 'Test User',
-								emergency_contact_telephone: '1234567890',
-								full_payment: 'yes',
-								cancellation_policy: 'yes',
-								photo_consent: 'yes',
-								closed_toe_shoes: 'yes',
-								class_materials: 'yes',
-								minimum_students: 'yes',
-								food_allergies: 'cats',
-								bleeding_disorder: 'no',
-								injury_liability: 'Test Liability',
-							},
+					checkoutData: mockOrderCheckoutData,
+					captureResponse: {
+						payment: {
+							created_at: '2026-05-05T10:00:00.000Z',
 						},
-						captureResponse: {
-							payment: {
-								created_at: '2026-05-05T10:00:00.000Z',
-							},
-						},
+					},
 				}),
 			},
 		]);
@@ -266,5 +238,48 @@ describe('aws dynamo integration', () => {
 
 		expect(mockSend).toHaveBeenCalledTimes(2);
 		expect(rows).toHaveLength(2);
+	});
+
+	it('normalizes DynamoDB attribute values into plain JavaScript values', () => {
+		const rows = buildPixelatedFormSubmissionReportRows([
+			{
+				orderData: JSON.stringify({
+					checkoutData: {
+						items: [
+							{
+								itemID: 'legacy-1',
+								itemTitle: 'Legacy Class',
+								itemQuantity: 3,
+								itemCategory: 'Adult',
+							},
+						],
+						shippingTo: {
+							name: 'Test User',
+							street1: '123 Main St',
+							city: 'Test City',
+							state: 'SC',
+							zip: '12345',
+							country: 'US',
+							phone: '1234567890',
+							email: 'test@example.com',
+						},
+						captureResponse: {
+							payment: {
+								created_at: '2026-05-05T10:00:00.000Z',
+							},
+						},
+					},
+				}),
+				extra: { M: { nested: { S: 'value' } } },
+				flags: { BOOL: true },
+				list: { L: [{ S: 'a' }, { N: '2' }] },
+				textSet: { SS: ['a', 'b'] },
+				numSet: { NS: ['1', '2'] },
+				bytes: { B: 'abc' },
+			},
+		]);
+
+		expect(rows).toHaveLength(1);
+		expect(rows[0].shipping_to).toEqual(expect.objectContaining({ name: 'Test User' }));
 	});
 });

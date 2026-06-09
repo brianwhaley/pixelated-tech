@@ -1,4 +1,4 @@
-import type { RouteType, SiteInfo } from '../config/siteconfig.types';
+import type { RouteType, SiteInfo } from '../config/config.types';
 
 export interface GeminiRecommendationRequest {
   route: RouteType;

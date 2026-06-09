@@ -8,10 +8,11 @@ import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImag
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
 import { getSquareStoreItems } from "../shoppingcart/square";
 import { getFullPixelatedConfig } from '../config/config';
+import type { PixelatedConfig } from '../config/config.types';
 import { CacheManager } from '../foundation/cache-manager';
 import { getDomain } from './utilities';
 import { smartFetch } from './smartfetch';
-import { getServicePathPrefix } from '../general/services.functions';
+import { getServicePathPrefix } from '../elements/services.functions';
 
 const debug = false;
 
@@ -42,8 +43,7 @@ export type SitemapConfig = {
 	wordpress?: { site?: string };
 	imageJson?: { path?: string };
 	contentful?: any; // contentful api props object
-	routes?: any; // accept route data like siteConfig
-	siteConfig?: any; // optional siteconfig.json data for dynamic pages
+	siteConfig?: any; // Unified pixelated.config.json data
 };
 
 /**
@@ -51,32 +51,36 @@ export type SitemapConfig = {
  * Automatically enables features based on what's configured
  */
 export function buildSitemapConfig(
-	pixelatedConfig: any,
-	siteConfig: any
+	pixelatedConfig?: any,
+	overrides: any = {}
 ): SitemapConfig {
-	const routes = siteConfig?.routes;
+	const config = {
+		...(pixelatedConfig ?? getFullPixelatedConfig()),
+		...(typeof overrides === 'object' && overrides ? overrides : {}),
+	};
+	const integrations = config?.integrations || {};
 	const sitemapConfig: SitemapConfig = {
-		siteConfig,
-		routes,
+		siteConfig: config,
 		createPageURLs: true,
 		createImageURLsFromJSON: true,
 	};
 
 	// WordPress integration
-	if (pixelatedConfig.wordpress?.site) {
-		sitemapConfig.wordpress = { site: pixelatedConfig.wordpress.site };
+	const wordpress = integrations.wordpress;
+	if (wordpress?.site) {
+		sitemapConfig.wordpress = { site: wordpress.site };
 		sitemapConfig.createWordPressURLs = true;
 		sitemapConfig.createWordPressImageURLs = true;
 	}
 
 	// Contentful integration
-	if (pixelatedConfig.contentful?.space_id) {
-		const hasCompleteContentfulConfig = !!pixelatedConfig.contentful?.delivery_access_token;
+	const contentful = integrations.contentful;
+	if (contentful?.space_id) {
 		const contentfulConfig: any = {
-			base_url: pixelatedConfig.contentful.base_url ?? '',
-			space_id: pixelatedConfig.contentful.space_id ?? '',
-			environment: pixelatedConfig.contentful.environment ?? '',
-			access_token: pixelatedConfig.contentful.delivery_access_token ?? '',
+			base_url: contentful.base_url ?? '',
+			space_id: contentful.space_id ?? '',
+			environment: contentful.environment ?? '',
+			access_token: contentful.delivery_access_token ?? '',
 		};
 
 		const sitemapProps = [
@@ -86,35 +90,35 @@ export function buildSitemapConfig(
 			'sitemapRouteTemplate',
 		] as const;
 		for (const key of sitemapProps) {
-			const value = pixelatedConfig.contentful?.[key];
+			const value = contentful[key];
 			if (value) {
 				contentfulConfig[key] = value;
 			}
 		}
 
-		if (pixelatedConfig.contentful?.sitemap) {
+		if (contentful.sitemap) {
 			contentfulConfig.sitemap = {
-				...pixelatedConfig.contentful.sitemap,
-				...(pixelatedConfig.contentful.sitemap.imageFields ? { imageFields: [...pixelatedConfig.contentful.sitemap.imageFields] } : {}),
+				...contentful.sitemap,
+				...(contentful.sitemap.imageFields ? { imageFields: [...contentful.sitemap.imageFields] } : {}),
 			};
 		}
 
-		if (pixelatedConfig.contentful?.sitemapImageFields) {
-			contentfulConfig.sitemapImageFields = [...pixelatedConfig.contentful.sitemapImageFields];
+		if (contentful.sitemapImageFields) {
+			contentfulConfig.sitemapImageFields = [...contentful.sitemapImageFields];
 		}
 
 		sitemapConfig.contentful = contentfulConfig;
-		sitemapConfig.createContentfulURLs = !!(pixelatedConfig.contentful?.sitemap || pixelatedConfig.contentful?.sitemapContentType);
-		sitemapConfig.createContentfulAssetURLs = hasCompleteContentfulConfig;
+		sitemapConfig.createContentfulURLs = !!(contentful.sitemap || contentful.sitemapContentType);
+		sitemapConfig.createContentfulAssetURLs = !!(contentful.space_id && contentful.delivery_access_token);
 	}
 
 	// eBay integration
-	if (pixelatedConfig.ebay?.appId) {
+	if (integrations.ebay?.appId) {
 		sitemapConfig.createEbayItemURLs = true;
 	}
 
 	// Square catalog sitemap integration
-	if (pixelatedConfig.square?.squareItemCategoryId) {
+	if (integrations.square?.squareItemCategoryId) {
 		sitemapConfig.createSquareItemURLs = true;
 	}
 
@@ -202,37 +206,39 @@ export function jsonToSitemapEntries(entries: SitemapEntry[]){
  * generateSitemap: compose the individual create* functions based on toggles in SitemapConfig.
  * - Keep this minimal for the MVP: no retries/caching here. Add TODOs for later.
  */
-export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: string): Promise<MetadataRoute.Sitemap> {
-	const origin = originInput ?? 'http://localhost:3000';
+export async function generateSitemap(originInput?: string): Promise<MetadataRoute.Sitemap> {
+	const resolvedConfig = buildSitemapConfig();
+	const origin = originInput ?? await getOriginFromNextHeaders();
 	const sitemapEntries: any[] = [];
 
 	// Defaults: pages true, image json true, others false
-	const usePages = cfg.createPageURLs ?? true;
-	const useWP = cfg.createWordPressURLs ?? false;
-	const useWPImages = cfg.createWordPressImageURLs ?? false;
-	const useImageJSON = cfg.createImageURLsFromJSON ?? true;
-	const useContentful = cfg.createContentfulURLs ?? false;
-	const useContentfulAssets = cfg.createContentfulAssetURLs ?? false;
-	const usePageBuilder = cfg.createPageBuilderURLs ?? false;
-	const useEbay = cfg.createEbayItemURLs ?? false;
-	const useSquare = cfg.createSquareItemURLs ?? false;
+	const usePages = resolvedConfig.createPageURLs ?? true;
+	const useWP = resolvedConfig.createWordPressURLs ?? false;
+	const useWPImages = resolvedConfig.createWordPressImageURLs ?? false;
+	const useImageJSON = resolvedConfig.createImageURLsFromJSON ?? true;
+	const useContentful = resolvedConfig.createContentfulURLs ?? false;
+	const useContentfulAssets = resolvedConfig.createContentfulAssetURLs ?? false;
+	const usePageBuilder = resolvedConfig.createPageBuilderURLs ?? false;
+	const useEbay = resolvedConfig.createEbayItemURLs ?? false;
+	const useSquare = resolvedConfig.createSquareItemURLs ?? false;
 
 	// ORDER IS IMPORTANT - THIS IS THE ORDER THEY WILL APPEAR IN THE SITEMAP
 
 	// Pages
 	if (usePages) {
-		if (cfg.routes) {
-			const flat = flattenRoutes(cfg.routes);
+		const routes = resolvedConfig.siteConfig?.routes;
+		if (routes) {
+			const flat = flattenRoutes(routes);
 			sitemapEntries.push(...(await createPageURLs(flat, origin)));
 		}
 	}
 	// Dynamic service and service-area pages from optional siteconfig.json data
-	if (cfg.siteConfig) {
-		sitemapEntries.push(...(await createSiteConfigURLs(cfg.siteConfig, origin)));
+	if (resolvedConfig.siteConfig) {
+		sitemapEntries.push(...(await createSiteConfigURLs(resolvedConfig.siteConfig, origin)));
 	}
 	// Contentful (pages)
-	if (useContentful && cfg.contentful) {
-		sitemapEntries.push(...(await createContentfulURLs({ apiProps: cfg.contentful, origin })));
+	if (useContentful && resolvedConfig.contentful) {
+		sitemapEntries.push(...(await createContentfulURLs({ apiProps: resolvedConfig.contentful, origin })));
 	}
 	// Ebay items
 	if (useEbay) {
@@ -243,20 +249,20 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 		sitemapEntries.push(...(await createSquareItemURLs(origin)));
 	}
 	// Page Builder (existing helper in package not always present)
-	if (usePageBuilder && cfg.contentful) {
+	if (usePageBuilder && resolvedConfig.contentful) {
 		// TODO: wire createContentfulPageBuilderURLs if needed; skipping for MVP
 	}
 	// WordPress
-	if (useWP && cfg.wordpress?.site) {
-		sitemapEntries.push(...(await createWordPressURLs({ site: cfg.wordpress.site, includeImages: useWPImages })));
+	if (useWP && resolvedConfig.wordpress?.site) {
+		sitemapEntries.push(...(await createWordPressURLs({ site: resolvedConfig.wordpress.site, includeImages: useWPImages })));
 	}
 	// Image JSON
 	if (useImageJSON) {
-		sitemapEntries.push(...(await createImageURLsFromJSON(origin, cfg.imageJson?.path ?? 'public/site-images.json')));
+		sitemapEntries.push(...(await createImageURLsFromJSON(origin, resolvedConfig.imageJson?.path ?? 'public/site-images.json')));
 	}
 	// Contentful assets (images and videos)
-	if (useContentfulAssets && cfg.contentful) {
-		sitemapEntries.push(...(await createContentfulAssetURLs({ apiProps: cfg.contentful, origin })));
+	if (useContentfulAssets && resolvedConfig.contentful) {
+		sitemapEntries.push(...(await createContentfulAssetURLs({ apiProps: resolvedConfig.contentful, origin })));
 	}
 	// Deduplicate by URL and properly merge images arrays if present
 	const map = new Map<string, any>();
@@ -285,10 +291,10 @@ export async function generateSitemap(cfg: SitemapConfig = {}, originInput?: str
 
 
 
-export async function createPageURLs(siteConfig: { path: string }[], origin: string) {
+export async function createPageURLs(routes: { path: string }[], origin: string) {
 	const sitemap: SitemapEntry[] = [];
 	// const origin = await getOrigin();
-	const allRoutes = getAllRoutes(siteConfig, "routes");
+	const allRoutes = getAllRoutes(routes, "routes");
 	for ( const route of allRoutes ){
 		if(route.path.substring(0, 4).toLowerCase() !== 'http') {
 			sitemap.push({
@@ -454,7 +460,8 @@ createContentfulURLs.propTypes = {
 export type createContentfulURLsType = InferProps<typeof createContentfulURLs.propTypes>;
 export async function createContentfulURLs(props: createContentfulURLsType){
 	const sitemap: SitemapEntry[] = [];
-	const providerContentfulApiProps = getFullPixelatedConfig()?.contentful;
+	const config = getFullPixelatedConfig() as PixelatedConfig;
+	const providerContentfulApiProps = config?.integrations?.contentful;
 	const mergedApiProps = { ...props.apiProps, ...providerContentfulApiProps };
 	const sitemapConfig = props.apiProps || {} as any;
 
@@ -598,7 +605,8 @@ createContentfulAssetURLs.propTypes = {
 export type createContentfulAssetURLsType = InferProps<typeof createContentfulAssetURLs.propTypes>;
 export async function createContentfulAssetURLs(props: createContentfulAssetURLsType): Promise<SitemapEntry[]> {
 	const sitemap: SitemapEntry[] = [];
-	const providerContentfulApiProps = getFullPixelatedConfig()?.contentful;
+	const config = getFullPixelatedConfig() as PixelatedConfig;
+	const providerContentfulApiProps = config?.integrations?.contentful;
 	// Changed order: provider config overrides apiProps for security (tokens)
 	const mergedApiProps = { ...props.apiProps, ...providerContentfulApiProps };
 	try {
@@ -678,15 +686,16 @@ export async function createEbayItemURLs(origin: string) {
 	const sitemap: SitemapEntry[] = [];
 
 	// Load configuration
-	const config = getFullPixelatedConfig();
-	const globalProxy = config.global?.proxyUrl;
+	const config = getFullPixelatedConfig() as PixelatedConfig;
+	const globalProxy = config.integrations?.global?.proxyUrl;
+	const ebay = config?.integrations?.ebay;
 
 	const ebayProps = { 
 		...(globalProxy ? { proxyURL: globalProxy } : {}),
-		...config.ebay 
+		...ebay 
 	};
 
-	const cacheTTL = getEbayCacheTTL(config.ebay?.cacheTTL);
+	const cacheTTL = getEbayCacheTTL(ebay?.cacheTTL);
 	let items;
 	try {
 		items = await fetchCachedEbayItems(ebayProps, cacheTTL);
@@ -710,8 +719,8 @@ export async function createEbayItemURLs(origin: string) {
 
 export async function createSquareItemURLs(origin: string) {
 	const sitemap: SitemapEntry[] = [];
-	const config = getFullPixelatedConfig();
-	if (!config.square?.squareItemCategoryId) {
+	const config = getFullPixelatedConfig() as PixelatedConfig;
+	if (!config?.integrations?.square?.squareItemCategoryId) {
 		return sitemap;
 	}
 

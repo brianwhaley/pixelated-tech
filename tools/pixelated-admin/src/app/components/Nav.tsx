@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { SidePanel, MenuAccordion } from '@pixelated-tech/components';
 import { useSession, signOut } from 'next-auth/react';
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
+import { usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function Nav() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes ?? [];
+
 	const [isOpen, setIsOpen] = useState(false);
 	const { data: session, status } = useSession();
 
@@ -25,7 +27,7 @@ export default function Nav() {
 			showTab={true}
 			tabIcon="☰"
 		>
-			<MenuAccordion menuItems={allRoutes} />
+			<MenuAccordion menuItems={routes} />
 			<div className="nav-user-section">
 				{status === 'loading' ? (
 					<div className="nav-loading-text">Loading...</div>

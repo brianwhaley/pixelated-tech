@@ -108,7 +108,9 @@ export async function createSearchConsoleClient(config: GoogleAuthConfig): Promi
 
 
 export interface GoogleAnalyticsConfig {
-  ga4PropertyId: string;
+  id: string;
+  ga4PropertyId?: string;
+  adId?: string;
   serviceAccountKey?: string;
   clientId?: string;
   clientSecret?: string;
@@ -149,7 +151,8 @@ export async function getGoogleAnalyticsData(
 		}
 		if (debug) console.debug('[site-health][analytics] cache MISS', cacheKey);
 
-		if (!config.ga4PropertyId || config.ga4PropertyId === 'GA4_PROPERTY_ID_HERE') {
+		const propertyId = config.id ?? config.ga4PropertyId;
+		if (!propertyId || propertyId === 'GA4_PROPERTY_ID_HERE') {
 			return {
 				success: false,
 				error: 'GA4 Property ID not configured for this site'
@@ -170,7 +173,7 @@ export async function getGoogleAnalyticsData(
 
 		// Fetch current period data
 		const currentResponse = await analyticsData.properties.runReport({
-			property: `properties/${config.ga4PropertyId}`,
+			property: `properties/${propertyId}`,
 			requestBody: {
 				dateRanges: [{ startDate: dateRange.currentStartStr, endDate: dateRange.currentEndStr }],
 				dimensions: [{ name: 'date' }],
@@ -181,7 +184,7 @@ export async function getGoogleAnalyticsData(
 
 		// Fetch previous period data
 		const previousResponse = await analyticsData.properties.runReport({
-			property: `properties/${config.ga4PropertyId}`,
+			property: `properties/${propertyId}`,
 			requestBody: {
 				dateRanges: [{ startDate: dateRange.previousStartStr, endDate: dateRange.previousEndStr }],
 				dimensions: [{ name: 'date' }],

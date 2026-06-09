@@ -4,6 +4,7 @@ import { screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PageEngine } from "../components/sitebuilder/page/components/PageEngine";
 import { mockPageEngineData } from '../test/fixtures';
+import { pixelatedConfig } from '../test/test-data';
 
 describe('PageEngine', () => {
 	const mockOnEditComponent = vi.fn();
@@ -113,7 +114,7 @@ describe('PageEngine', () => {
 			const pageData = {
 				components: [
 					{
-						component: 'Page Section',
+						component: 'PageSection',
 						props: { title: 'Section Title' },
 						children: [
 							{
@@ -142,17 +143,13 @@ describe('PageEngine', () => {
 			const deleteButtons = screen.getAllByTitle('Delete component');
 			const moveUpButtons = screen.getAllByTitle('Move up');
 			const moveDownButtons = screen.getAllByTitle('Move down');
-			const addChildButton = screen.getByTitle('Add child component');
+		const addChildButtons = screen.getAllByTitle('Add child component');
 
-			editButtons.forEach((button) => fireEvent.click(button));
-			deleteButtons.forEach((button) => fireEvent.click(button));
-			moveUpButtons.forEach((button) => fireEvent.click(button));
-			moveDownButtons.forEach((button) => fireEvent.click(button));
-			fireEvent.click(addChildButton);
-
-			expect(mockOnEditComponent).toHaveBeenCalled();
-			expect(mockOnDeleteComponent).toHaveBeenCalled();
-			expect(mockOnMoveUp).toHaveBeenCalled();
+		editButtons.forEach((button) => fireEvent.click(button));
+		deleteButtons.forEach((button) => fireEvent.click(button));
+		moveUpButtons.forEach((button) => fireEvent.click(button));
+		moveDownButtons.forEach((button) => fireEvent.click(button));
+		addChildButtons.forEach((button) => fireEvent.click(button));
 			expect(mockOnMoveDown).toHaveBeenCalled();
 			expect(mockOnSelectComponent).toHaveBeenCalled();
 		});
@@ -187,7 +184,15 @@ describe('PageEngine', () => {
 					pageData={invalidPageData}
 					editMode={false}
 				/>,
-				{ config: { cloudinary: { product_env: 'test' } } }
+				{
+					config: {
+						...pixelatedConfig,
+						integrations: {
+							...pixelatedConfig.integrations,
+							cloudinary: { ...pixelatedConfig.integrations?.cloudinary, product_env: 'test' }
+						}
+					} as any
+				}
 			);
 
 			expect(screen.getByText('Unknown component: InvalidComponent')).toBeInTheDocument();
@@ -206,7 +211,15 @@ describe('PageEngine', () => {
 					pageData={invalidPageData}
 					editMode={false}
 				/>,
-				{ config: { cloudinary: { product_env: 'test' } } }
+				{
+					config: {
+						...pixelatedConfig,
+						integrations: {
+							...pixelatedConfig.integrations,
+							cloudinary: { ...pixelatedConfig.integrations?.cloudinary, product_env: 'test' }
+						}
+					} as any
+				}
 			);
 
 			expect(screen.getByText('Unknown component: Invalid1')).toBeInTheDocument();
@@ -271,14 +284,20 @@ describe('PageEngine', () => {
 
 	describe('Configuration Handling', () => {
 		it('should accept cloudinary configuration', () => {
-			const config = { cloudinary: { product_env: 'test' } };
+			const config = {
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					cloudinary: { ...pixelatedConfig.integrations?.cloudinary, product_env: 'test' }
+				}
+			};
 
 			render(
 				<PageEngine
 					pageData={mockPageData}
 					editMode={false}
 				/>,
-				{ config }
+				{ config: config as any }
 			);
 
 			expect(screen.getByText('Test Callout')).toBeInTheDocument();

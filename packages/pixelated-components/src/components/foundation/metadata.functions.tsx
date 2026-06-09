@@ -129,7 +129,7 @@ export function getAccordionMenuData(siteConfig: Route) {
 }
 
 import { assertSiteInfo, assertRoutes } from '../config/config.validators';
-import type { SiteInfo } from '../config/siteconfig.types';
+import type { SiteInfo } from '../config/config.types';
 
 export type GenerateMetaTagsProps = {
 	title: string;

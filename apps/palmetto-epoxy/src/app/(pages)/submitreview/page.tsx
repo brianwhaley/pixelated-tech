@@ -6,7 +6,7 @@ import { FormEngine } from "@pixelated-tech/components";
 import formData from "@/app/data/submitreviewform.json";
 import { PageSection } from "@pixelated-tech/components";
 
-export default function SubmitReview() {
+export default function SubmitReviewPage() {
 
 	useEffect(() => {
 		const form = document.getElementById("submitReviewForm") as HTMLFormElement;

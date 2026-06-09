@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PageSection } from "@pixelated-tech/components";
-import { Hero } from "@pixelated-tech/components";
-import { SmartImage } from "@pixelated-tech/components";
-import { MenuAccordion, MenuAccordionButton } from "@pixelated-tech/components";
+import { PageSection, Hero, SmartImage, MenuAccordion, MenuAccordionButton, usePixelatedConfig } from "@pixelated-tech/components";
 import Nav from "./nav";
-import siteConfig from '../data/siteconfig.json';
-const allRoutes = siteConfig.routes;
 
 export default function Header() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes ?? [];
 
 	const videos = [
 		"https://videos.ctfassets.net/j4mgog9ij96e/5SrvQuZYq2bXRjEEtzNyYK/9d23f764e350ff8b9e1972a0b4b914b1/Welding_Metal_1920x1080.mp4",
@@ -22,7 +19,7 @@ export default function Header() {
 	return (
 		<>
 
-			<MenuAccordion menuItems={allRoutes} />
+			<MenuAccordion menuItems={routes} />
 			<PageSection columns={1} maxWidth="100%" id="hero-section" >
 
 				<Hero 

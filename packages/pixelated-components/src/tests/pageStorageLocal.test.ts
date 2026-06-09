@@ -7,6 +7,7 @@ import {
 	deletePage
 } from '../components/sitebuilder/page/lib/pageStorageLocal';
 import type { PageData } from '../components/sitebuilder/page/lib/types';
+import { pixelatedConfig } from '../test/test-data';
 
 // Mock fs module
 vi.mock('fs', () => ({
@@ -26,11 +27,13 @@ vi.mock('path', () => ({
 	}
 }));
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: () => ({
-		global: { pagesDir: 'public/data/pages' }
-	})
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn().mockReturnValue({}),
+	};
+});
 
 // Import mocked modules
 import fs from 'fs';

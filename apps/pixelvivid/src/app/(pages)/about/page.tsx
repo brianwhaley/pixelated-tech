@@ -5,7 +5,7 @@ import { PageTitleHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 
-export default function About() {
+export default function AboutPage() {
 	return (
 		<>
 			<section id="aboutus-section">

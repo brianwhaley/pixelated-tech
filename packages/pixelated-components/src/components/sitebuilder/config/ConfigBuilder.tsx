@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { Modal } from '../../general/modal';
-import { Tab } from '../../general/tab';
-import { Accordion } from '../../general/accordion';
+import { Modal } from '../../elements/modal';
+import { Tab } from '../../elements/tab';
+import { Accordion } from '../../elements/accordion';
 import { createGeminiApiService, GeminiRecommendationResponse } from '../../integrations/gemini-api.client';
 import { FormEngine } from '../form/formengine';
 import { FormValidationProvider } from '../form/formvalidator';
 import * as FC from '../form/formcomponents';
-import type { RouteType, SiteConfigType, SiteInfoType, VisualDesignType } from '../../config/siteconfig.types';
+import type { RouteType, SiteConfigType, SiteInfoType, VisualDesignType } from '../../config/config.types';
 import siteInfoForm from './siteinfo-form.json';
 import visualDesignForm from './visualdesignform.json';
 import routesForm from './routes-form.json';

@@ -1,0 +1,35 @@
+[
+	{
+		"ID": 1,
+		"title": "Test Post 1",
+		"featured_image": "https://i0.wp.com/example.com/image1.jpg",
+		"content": "Test content 1",
+		"excerpt": "Excerpt 1",
+		"date": "2024-01-01T00:00:00+00:00",
+		"URL": "https://example.com/post-1",
+		"categories": [],
+		"author": null
+	},
+	{
+		"ID": 2,
+		"title": "Test Post 2",
+		"featured_image": "https://example.com/image2.jpg",
+		"content": "Test content 2",
+		"excerpt": "Excerpt 2",
+		"date": "2024-01-02T00:00:00+00:00",
+		"URL": "https://example.com/post-2",
+		"categories": [],
+		"author": null
+	},
+	{
+		"ID": 3,
+		"title": "Test Post 3",
+		"featured_image": null,
+		"content": "Test content 3",
+		"excerpt": "Excerpt 3",
+		"date": "2024-01-03T00:00:00+00:00",
+		"URL": "https://example.com/post-3",
+		"categories": [],
+		"author": null
+	}
+]

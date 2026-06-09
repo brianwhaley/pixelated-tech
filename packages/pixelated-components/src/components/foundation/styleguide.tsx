@@ -2,24 +2,23 @@
 
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
-import { PageTitleHeader, PageSection } from "../general/semantic";
+import { PageTitleHeader, PageSection } from "../structure/page-blocks";
 import { flattenRoutes } from "./sitemap";
-import siteConfig from '../../data/siteconfig.json';
-const routes = siteConfig.routes;
+import { usePixelatedConfig } from "../config/config.client";
 
 /**
  * StyleGuideUI — developer style guide and design tokens viewer (colors, fonts, IA routes).
  *
- * @param {array} [props.routes] - Route definitions used to display site information and navigation structure.
+ * @param {}
+ * @returns {JSX.Element} The StyleGuideUI component.
  */
 StyleGuideUI.propTypes = {
-/** Array of route objects used to build example navigation and IA references. */
-	routes: PropTypes.array,
+/** No Props */
 };
 export type StyleGuideUIType = InferProps<typeof StyleGuideUI.propTypes>;
-export function StyleGuideUI(props: StyleGuideUIType) {
-
-	const { routes } = props;
+export function StyleGuideUI() {
+	const pixelatedConfig = usePixelatedConfig();
+	const routes = pixelatedConfig?.routes || [];
 
 	let primaryHeaderFont = "N/A";
 	let primaryBodyFont = "N/A";

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import siteConfig from '@/app/data/siteconfig.json';
+import { config as siteConfig } from '@/test/page-mocks';
 
 vi.mock('next/server', () => ({
 	NextResponse: {
@@ -9,7 +9,7 @@ vi.mock('next/server', () => ({
 
 import { proxy } from '@/proxy';
 
-describe('pixelated-template route data', () => {
+describe('Simple Day Concierge route data', () => {
 	it('defines a valid siteInfo block', () => {
 		expect(siteConfig.siteInfo).toBeDefined();
 		expect(siteConfig.siteInfo.name).toContain('Simple Day Concierge');

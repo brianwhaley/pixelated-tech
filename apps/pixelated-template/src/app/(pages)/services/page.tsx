@@ -1,24 +1,25 @@
 "use client";
 
 import React from 'react';
-import siteConfig from '@/app/data/siteconfig.json';
-import { PageTitleHeader, PageSection, ServicesList } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, Services, usePixelatedConfig } from '@pixelated-tech/components';
 
 export default function ServicesPage() {
-	const siteInfo = (siteConfig as any).siteInfo;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const siteName = siteInfo?.name || "__SITE_NAME__";
 
 	return (
 		<>
 			<PageTitleHeader title="Services" />
 			<PageSection columns={1} maxWidth="1024px" id="services-intro">
 				<p>
-					__SITE_NAME__ provides a full suite of digital services for small businesses in New Jersey and South Carolina. Browse our service offerings and click through to learn how we can support your online growth.
+					{siteName} provides a full suite of digital services for small businesses. Browse our service offerings and click through to learn how we can support your online growth.
 				</p>
 			</PageSection>
 
-			<ServicesList
+			<Services
 				siteInfo={siteInfo}
-				title="__SITE_NAME__ Services"
+				title={`${siteName} Services`}
 				intro="Click a service to read more about how it works for your business."
 				servicePathPrefix="/services"
 			/>

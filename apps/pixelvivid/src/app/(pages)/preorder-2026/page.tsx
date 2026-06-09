@@ -6,7 +6,7 @@ import { FormEngine, Loading, Modal } from "@pixelated-tech/components";
 
 import formData from "@/app/data/preorder2026form.json";
 
-export default function Preorder2026() {
+export default function Preorder2026Page() {
 	const [modalContent, setModalContent] = useState<React.JSX.Element | null>(null);
 
 	const handleSubmit = (event: any) => {

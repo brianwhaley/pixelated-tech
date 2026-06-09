@@ -33,10 +33,10 @@ export async function checkUptimeHealth(healthCheckId: string): Promise<UptimeCh
 	try {
 		// Simple Route 53 call (global service). Prefer credentials from pixelated.config.json when present
 		const fullCfg = getFullPixelatedConfig();
-		const awsCfg = fullCfg?.aws;
+		const awsCfg = fullCfg?.integrations?.aws;
 		if (debug) {
 			if (awsCfg?.access_key_id && awsCfg?.secret_access_key) {
-				console.log('Uptime check: using AWS credentials from pixelated.config.json (aws block).');
+				console.log('Uptime check: using AWS credentials from pixelated.config.json (integrations.aws block).');
 			} else {
 				console.log('Uptime check: no explicit AWS credentials in pixelated.config.json; using default credential provider chain.');
 			}

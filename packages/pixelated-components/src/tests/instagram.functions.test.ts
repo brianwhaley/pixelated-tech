@@ -6,15 +6,22 @@ import {
 	type InstagramMedia
 } from '../components/integrations/instagram.functions';
 import { buildUrl } from '../components/foundation/urlbuilder';
+import { pixelatedConfig, mockInstagramMedia } from '../test/test-data';
 
 vi.mock('../components/foundation/smartfetch');
+vi.mock('../components/config/config', () => ({
+	getFullPixelatedConfig: vi.fn(() => pixelatedConfig),
+}));
 
 const { smartFetch } = await import('../components/foundation/smartfetch');
+const { getFullPixelatedConfig } = await import('../components/config/config');
 const mockSmartFetch = vi.mocked(smartFetch);
+const mockGetFullPixelatedConfig = vi.mocked(getFullPixelatedConfig);
 
 describe('Instagram Functions', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockGetFullPixelatedConfig.mockReturnValue(pixelatedConfig);
 	});
 
 	describe('getInstagramMedia', () => {
@@ -96,94 +103,75 @@ describe('Instagram Functions', () => {
 	});
 
 	describe('instagramMediaToTiles', () => {
-		const mockMedia: InstagramMedia[] = [
-			{
-				id: '1',
-				media_type: 'IMAGE',
-				media_url: 'https://example.com/image.jpg',
-				permalink: 'https://instagram.com/p/abc123',
-				caption: 'Test image',
-				timestamp: '2025-01-01T00:00:00+0000',
-				username: 'testuser'
-			},
-			{
-				id: '2',
-				media_type: 'VIDEO',
-				media_url: 'https://example.com/video.mp4',
-				thumbnail_url: 'https://example.com/thumb.jpg',
-				permalink: 'https://instagram.com/p/vid123',
-				caption: 'Test video',
-				timestamp: '2025-01-02T00:00:00+0000'
-			}
-		];
+		const mockMedia = mockInstagramMedia as InstagramMedia[];
 
-		it('should convert Instagram media to carousel tiles', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should convert Instagram media to carousel tiles', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			expect(tiles).toHaveLength(2);
 			expect(tiles[0].image).toBe('https://example.com/image.jpg');
 		});
 
-		it('should use thumbnail for videos by default', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should use thumbnail for videos by default', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			expect(tiles[1].image).toBe('https://example.com/thumb.jpg');
 		});
 
-		it('should use media_url for videos when useThumbnails=false', () => {
-			const tiles = instagramMediaToTiles(mockMedia, { useThumbnails: false });
+		it('should use media_url for videos when useThumbnails=false', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia, { useThumbnails: false });
 			expect(tiles[1].image).toBe('https://example.com/video.mp4');
 		});
 
-		it('should filter out videos when includeVideos=false', () => {
-			const tiles = instagramMediaToTiles(mockMedia, { includeVideos: false });
+		it('should filter out videos when includeVideos=false', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia, { includeVideos: false });
 			expect(tiles).toHaveLength(1);
 			expect(tiles[0].index).toBe(0);
 		});
 
-		it('should include captions by default', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should include captions by default', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			expect(tiles[0].bodyText).toBe('Test image');
 		});
 
-		it('should exclude captions when includeCaptions=false', () => {
-			const tiles = instagramMediaToTiles(mockMedia, { includeCaptions: false });
+		it('should exclude captions when includeCaptions=false', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia, { includeCaptions: false });
 			expect(tiles[0].bodyText).toBeUndefined();
 		});
 
-		it('should set proper link and target', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should set proper link and target', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			expect(tiles[0].link).toBe('https://instagram.com/p/abc123');
 			expect(tiles[0].linkTarget).toBe('_blank');
 		});
 
-		it('should set imageAlt from username', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should set imageAlt from username', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			expect(tiles[0].imageAlt).toBe('@testuser on Instagram');
 		});
 
-		it('should handle missing username in alt text', () => {
+		it('should handle missing username in alt text', async () => {
 			const mediaNoUsername = [{
 				...mockMedia[0],
 				username: undefined
 			}];
-			const tiles = instagramMediaToTiles(mediaNoUsername);
+			const tiles = await instagramMediaToTiles(mediaNoUsername);
 			expect(tiles[0].imageAlt).toBe('Instagram post');
 		});
 
-		it('should assign sequential indices', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should assign sequential indices', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			expect(tiles[0].index).toBe(0);
 			expect(tiles[1].index).toBe(1);
 		});
 
-		it('should set cardLength correctly', () => {
-			const tiles = instagramMediaToTiles(mockMedia);
+		it('should set cardLength correctly', async () => {
+			const tiles = await instagramMediaToTiles(mockMedia);
 			tiles.forEach(tile => {
 				expect(tile.cardLength).toBe(2);
 			});
 		});
 
-		it('should handle empty media array', () => {
-			const tiles = instagramMediaToTiles([]);
+		it('should handle empty media array', async () => {
+			const tiles = await instagramMediaToTiles([]);
 			expect(tiles).toHaveLength(0);
 		});
 	});

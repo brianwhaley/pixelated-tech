@@ -75,14 +75,14 @@ export class GooglePlacesService {
 		if (cached) return cached;
 
 		try {
-			const apiKey = config?.googlePlaces?.apiKey || this.apiKey;
+			const apiKey = config?.integrations?.googlePlaces?.apiKey || this.apiKey;
 			
 			if (!apiKey) {
 				console.error('Google Places API key not configured');
 				return [];
 			}
 
-			const restrictions = config?.googlePlaces?.countryRestrictions || ['us'];
+			const restrictions = config?.integrations?.googlePlaces?.countryRestrictions || ['us'];
 			const params: Record<string, any> = {
 				input: input,
 				key: apiKey,
@@ -94,7 +94,7 @@ export class GooglePlacesService {
 			}
 
 			// Use global proxy to avoid CORS issues
-			const proxyURL = config?.global?.proxyUrl || '';
+			const proxyURL = config?.integrations?.global?.proxyUrl || '';
 
 			if (debug) {
 				console.log('[GooglePlacesService] getPlacePredictions start', {
@@ -164,14 +164,14 @@ export class GooglePlacesService {
 	 */
 	async getPlaceDetails(placeId: string, config?: any): Promise<PlaceDetails | null> {
 		try {
-			const apiKey = config?.googlePlaces?.apiKey || this.apiKey;
+			const apiKey = config?.integrations?.googlePlaces?.apiKey || this.apiKey;
 			if (!apiKey) {
 				console.error('Google Places API key not configured');
 				return null;
 			}
 
 			// Use global proxy to avoid CORS issues
-			const proxyURL = config?.global?.proxyUrl || '';
+			const proxyURL = config?.integrations?.global?.proxyUrl || '';
 
 			if (debug) {
 				console.log('[GooglePlacesService] getPlaceDetails start', {

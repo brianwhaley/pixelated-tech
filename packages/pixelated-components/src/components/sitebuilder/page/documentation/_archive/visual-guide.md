@@ -191,7 +191,7 @@ FINAL RESULT: Preview
 {
   "components": [
     {
-      "component": "Page Header",
+      "component": "PageHeader",
       "props": { "title": "My Page" }
     },
     {
@@ -218,7 +218,7 @@ No relationship between callouts!
 {
   "components": [
     {
-      "component": "Page Header",
+      "component": "PageHeader",
       "props": { "title": "My Page" },
       "children": []
     },
@@ -462,7 +462,7 @@ JSON STRUCTURE:
   "props": { "direction": "column" },
   "children": [
     {
-      "component": "Page Header",
+      "component": "PageHeader",
       "props": {...}
     },
     {
@@ -479,12 +479,12 @@ JSON STRUCTURE:
       "props": { "columns": 3 },
       "children": [
         {
-          "component": "Grid Item",
+          "component": "GridItem",
           "props": { "columnSpan": 2 },
           "children": [...]
         },
         {
-          "component": "Grid Item",
+          "component": "GridItem",
           "props": { "columnSpan": 1 },
           "children": [...]
         }

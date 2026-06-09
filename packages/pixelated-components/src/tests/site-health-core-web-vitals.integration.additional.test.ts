@@ -1,11 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { googlePsiExampleCom } from '../test/test-data';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { googlePsiExampleCom, pixelatedConfig } from '../test/test-data';
+import { getFullPixelatedConfig } from '../components/config/config';
 
-vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({
-		googlePSI: { api_key: 'test-psi-key' }
-	}))
-}));
+vi.mock('../components/config/config', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('../components/config/config')>();
+	return {
+		...actual,
+		getFullPixelatedConfig: vi.fn()
+	};
+});
 
 import * as siteHealthModule from '../components/admin/site-health/site-health-core-web-vitals.integration';
 
@@ -17,6 +20,7 @@ describe('Site health core web vitals integration', () => {
 	beforeEach(() => {
 		originalFetch = globalThis.fetch;
 		vi.clearAllMocks();
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
 	});
 
 	afterEach(() => {

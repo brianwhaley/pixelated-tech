@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import PropTypes, { InferProps } from "prop-types";
-import { Carousel } from '../general/carousel';
-import { SmartImage } from "../general/smartimage";
+import { Carousel } from '../structure/carousel';
+import { SmartImage } from "../elements/smartimage";
 import { ProductSchema } from '../foundation/schema';
 import { addToShoppingCart } from "./shoppingcart.functions";
 import { AddToCartButton, /* GoToCartButton */ ViewItemDetails } from "./shoppingcart.components";
@@ -45,7 +45,7 @@ export function EbayItems(props: EbayItemsType) {
 	const config = usePixelatedConfig();
 	const [items, setItems] = useState<any[]>([]);
 	const [aspects, setAspects] = useState<any[]>([]);
-	const apiProps = { ...(config?.ebay || {}), ...props.apiProps };
+	const apiProps = { ...(config?.integrations?.ebay || {}), ...props.apiProps };
 
 	/**
 	* paintItems — Map raw eBay item data into rendered `EbayListItem` elements.
@@ -265,8 +265,8 @@ export function EbayListItem(props: EbayListItemType) {
 	const config = usePixelatedConfig();
 	const itemImageComponent = <SmartImage src={itemImage} title={thisItem.title} alt={thisItem.title}
 		cloudinaryEnv={props.cloudinaryProductEnv ?? undefined}
-		cloudinaryDomain={config?.cloudinary?.baseUrl ?? undefined}
-		cloudinaryTransforms={config?.cloudinary?.transforms ?? undefined} />;
+		cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
+		cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined} />;
 	return (
 		<div className="ebay-item row-12col">
 			<div className="ebay-item-photo grid-s1-e5">
@@ -360,7 +360,7 @@ export type EbayItemDetailType = InferProps<typeof EbayItemDetail.propTypes>;
 export function EbayItemDetail(props: EbayItemDetailType) {
 	const config = usePixelatedConfig();
 	const [item, setItem] = useState({});
-	const apiProps = { ...(config?.ebay || {}), ...props.apiProps };
+	const apiProps = { ...(config?.integrations?.ebay || {}), ...props.apiProps };
 	useEffect(() => {
 		if (debug) console.log("Running useEffect");
 		async function fetchItem() {
@@ -469,7 +469,7 @@ export type EbayRateLimitsVisualizerType = InferProps<typeof EbayRateLimitsVisua
 export function EbayRateLimitsVisualizer(props: EbayRateLimitsVisualizerType) {
 	const config = usePixelatedConfig();
 	const apiProps = {
-		...(config?.ebay || {}),
+		...(config?.integrations?.ebay || {}),
 		...props.apiProps
 	};
 

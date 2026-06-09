@@ -1,18 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { GoogleAnalytics, GoogleAnalyticsEvent } from '../components/integrations/googleanalytics';
-
-// Mock usePixelatedConfig
-const pixelatedConfigStub: { googleAnalytics?: { id: string; adId: string } } = {
-	googleAnalytics: {
-		id: 'G-TEST123',
-		adId: 'AW-TEST456'
-	}
-};
-vi.mock('../components/config/config.client', () => ({
-	usePixelatedConfig: () => pixelatedConfigStub
-}));
+import { pixelatedConfig, pixelatedConfigEmpty } from '../test/test-data';
+import { renderWithProviders } from '../test/test-utils';
 
 describe('Google Analytics Components', () => {
 	beforeEach(() => {
@@ -27,10 +18,26 @@ describe('Google Analytics Components', () => {
 	});
 
 	describe('GoogleAnalytics Component', () => {
+		const customGoogleAnalyticsConfig = {
+			integrations: {
+				googleAnalytics: {
+					id: 'G-TEST123',
+					adId: 'G-ADID123'
+				}
+			}
+		} as any;
+
+		const customGoogleAnalyticsIdConfig = {
+			integrations: {
+				googleAnalytics: {
+					id: 'G-CUSTOM123'
+				}
+			}
+		} as any;
+
 		it('should create and inject GA initialization script', () => {
-			render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			
-			// Check that init script was created
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+
 			const initScript = document.querySelector('script#ga-init');
 			expect(initScript).toBeDefined();
 			expect(initScript?.textContent).toContain('dataLayer');
@@ -38,77 +45,91 @@ describe('Google Analytics Components', () => {
 		});
 
 		it('should inject GA measurement script', () => {
-			render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			
-			// Check that GA script was created or component rendered without error
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+
 			const gaScript = document.querySelector('script[src*="googletagmanager"]');
 			expect(gaScript || document.body).toBeDefined();
 		});
 
-		it('should use config prop ID when provided', () => {
-			render(React.createElement(GoogleAnalytics, { id: 'G-CUSTOM123' }));
-			
+		it('should use config ID when provided', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsIdConfig });
+
 			const initScript = document.querySelector('script#ga-init');
 			expect(initScript?.textContent).toContain('G-CUSTOM123');
 		});
 
 		it('should render fallback when no ID provided and config missing', () => {
-			const originalGoogleAnalytics = pixelatedConfigStub.googleAnalytics;
-			pixelatedConfigStub.googleAnalytics = undefined;
-
-			const { container } = render(React.createElement(GoogleAnalytics, {}));
+			const { container } = renderWithProviders(<GoogleAnalytics />, { config: pixelatedConfigEmpty });
 
 			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
 			expect(container.textContent).toMatch(/GoogleAnalytics/i);
-
-			pixelatedConfigStub.googleAnalytics = originalGoogleAnalytics;
 		});
 
-		it('should include ad ID config when available', () => {
-			render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			
+		it('should have correct script source with id', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsIdConfig });
+			const gaScript = document.querySelector('script#ga') as HTMLScriptElement;
+			expect(gaScript?.src).toContain('id=G-CUSTOM123');
+		});
+
+		it('should use config ID when prop not provided', () => {
+			renderWithProviders(<GoogleAnalytics />);
 			const initScript = document.querySelector('script#ga-init');
-		expect(initScript?.textContent).toContain('G-TEST123');
+			const configId = pixelatedConfig.integrations?.googleAnalytics?.id;
+			expect(initScript?.textContent).toContain(configId);
 		});
 
-		it('should not re-inject if GA already loaded', () => {
-			// First render injects
-			const { unmount } = render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			const initScript1 = document.querySelector('script#ga-init');
-			unmount();
-			
-			// Second render should detect existing GA
-			render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			const initScript2 = document.querySelector('script#ga-init');
-			
-			// Should still exist from first render (not duplicated)
-			expect(initScript1?.textContent).toBe(initScript2?.textContent);
+		it('should include ad ID when available in config', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+			const initScript = document.querySelector('script#ga-init');
+			expect(initScript?.textContent).toContain('G-ADID123');
+		});
+
+		it('should set script type to text/javascript', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+			const gaScript = document.querySelector('script#ga');
+			expect(gaScript?.getAttribute('type')).toBe('text/javascript');
+		});
+
+		it('should set script async attribute', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+			const gaScript = document.querySelector('script#ga');
+			expect(gaScript).toHaveAttribute('async');
+		});
+
+		it('should include measurement ID in gtag config', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+			const initScript = document.querySelector('script#ga-init');
+			expect(initScript?.textContent).toContain("gtag('config', 'G-TEST123')");
 		});
 
 		it('should render fallback when GoogleAnalytics throws', () => {
-			const originalGoogleAnalytics = pixelatedConfigStub.googleAnalytics;
-			pixelatedConfigStub.googleAnalytics = undefined;
-
-			const { container } = render(React.createElement(GoogleAnalytics, {}));
+			const { container } = renderWithProviders(<GoogleAnalytics />, { config: pixelatedConfigEmpty });
 
 			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
 			expect(container.textContent).toMatch(/GoogleAnalytics/i);
-
-			pixelatedConfigStub.googleAnalytics = originalGoogleAnalytics;
 		});
 
-		it('should initialize window.dataLayer', () => {
-			render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			
-			const initScript = document.querySelector('script#ga-init');
-			expect(initScript?.textContent).toContain('window.dataLayer');
+		it('should not inject GA when analytics is already initialized', () => {
+			window.gtag = vi.fn();
+			window.dataLayer = [];
+			const existingScript = document.createElement('script');
+			existingScript.id = 'ga';
+			document.head.appendChild(existingScript);
+
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+
+			const gaInitScript = document.querySelector('script#ga-init');
+			expect(gaInitScript).toBeNull();
 		});
 
-		it('should setup window.gtag function', () => {
-			render(React.createElement(GoogleAnalytics, { id: 'G-TEST123' }));
-			
-			const initScript = document.querySelector('script#ga-init');
-			expect(initScript?.textContent).toContain('window.gtag');
+		it('should trigger GoogleAnalyticsEvent gtag event when gtag exists', async () => {
+			const gtagMock = vi.fn();
+			window.gtag = gtagMock;
+
+			renderWithProviders(<GoogleAnalyticsEvent event_name="test_event" event_parameters={{ test: 'value' }} />);
+
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(gtagMock).toHaveBeenCalledWith('event', 'test_event', { test: 'value' });
 		});
 	});
 });

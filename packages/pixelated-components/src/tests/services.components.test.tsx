@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ServicesList, ServiceDetailPage } from '../components/general/services.components';
+import { Services as ServicesList, ServiceDetailPage } from '../components/elements/services.components';
 
 const mockServices = [
 	{
