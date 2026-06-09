@@ -25,7 +25,7 @@ export function proxy(req: NextRequest) {
 		},
 	});
 
-	if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')) {
+	if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')){
 		response.headers.set(
 			'Cache-Control',
 			'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
