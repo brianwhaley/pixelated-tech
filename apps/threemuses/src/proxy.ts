@@ -12,6 +12,7 @@ export function proxy(req: NextRequest) {
 	headers.set("x-path", path);
 	headers.set("x-origin", String(origin));
 	headers.set("x-url", String(url));
+	
 	if (hostName && hostName.endsWith('amplifyapp.com')) {
 		return NextResponse.redirect(
 			`https://www.thethreemusesofbluffton.com${path}`,
