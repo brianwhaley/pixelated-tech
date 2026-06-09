@@ -1,6 +1,21 @@
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
+export const headers = () => [
+	{
+		key: 'Cache-Control',
+		value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+	},
+	{
+		key: 'Pragma',
+		value: 'no-cache',
+	},
+	{
+		key: 'Expires',
+		value: '0',
+	},
+];
+
 import React from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
 import { PageSection, PageSectionHeader, PageTitleHeader, Table } from '@pixelated-tech/components';
