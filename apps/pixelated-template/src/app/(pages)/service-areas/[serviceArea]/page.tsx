@@ -2,9 +2,9 @@
 
 import React, { useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import { PageTitleHeader, PageSection, ServiceAreaDetailPage, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceAreaDetail, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
 
-export default function ServiceAreaDetailRoute() {
+export default function ServiceAreaDetailPage() {
 	const params = useParams();
 	const serviceAreaSlug = typeof params?.serviceArea === 'string' ? params.serviceArea : '';
 	const config = usePixelatedConfig();
@@ -23,8 +23,8 @@ export default function ServiceAreaDetailRoute() {
 			<PageTitleHeader title={activeServiceArea?.name ? `${activeServiceArea.name}` : 'Service Area'} />
 			<PageSection columns={1} maxWidth="1024px" id="service-area-detail-wrapper">
 				{activeServiceArea ? (
-					<ServiceAreaDetailPage
-						serviceArea={activeServiceArea}
+					<ServiceAreaDetail
+						serviceAreaSlug={serviceAreaSlug}
 						siteInfo={siteInfo as any}
 						serviceAreaPathPrefix="/service-areas"
 					/>

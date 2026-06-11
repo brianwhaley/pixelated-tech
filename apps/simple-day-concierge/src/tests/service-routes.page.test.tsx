@@ -11,8 +11,8 @@ vi.mock('next/navigation', () => ({
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
-import ServiceAreaDetailRoute from '@/app/(pages)/service-areas/[serviceArea]/page';
-import ServiceDetailRoute from '@/app/(pages)/services/[service]/page';
+import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
+import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
 
 describe('pixelated-template service routes', () => {
 	beforeEach(() => {
@@ -46,7 +46,7 @@ describe('pixelated-template service routes', () => {
 
 	it('renders a service area detail route when slug exists', async () => {
 		await act(async () => {
-			render(<ServiceAreaDetailRoute />);
+			render(<ServiceAreaDetailPage />);
 		});
 		expect(screen.getByTestId('mock-serviceareadetailpage')).toBeTruthy();
 	});
@@ -54,14 +54,14 @@ describe('pixelated-template service routes', () => {
 	it('renders a not found message when service area slug does not exist', async () => {
 		params.serviceArea = 'unknown-area';
 		await act(async () => {
-			render(<ServiceAreaDetailRoute />);
+			render(<ServiceAreaDetailPage />);
 		});
 		expect(screen.getByText('Service area not found. Please return to the service areas list and choose another region.')).toBeTruthy();
 	});
 
 	it('renders a service detail route when slug exists', async () => {
 		await act(async () => {
-			render(<ServiceDetailRoute />);
+			render(<ServiceDetailPage />);
 		});
 		expect(screen.getByTestId('mock-servicedetailpage')).toBeTruthy();
 	});
@@ -69,7 +69,7 @@ describe('pixelated-template service routes', () => {
 	it('renders a not found message when service slug does not exist', async () => {
 		params.service = 'unknown-service';
 		await act(async () => {
-			render(<ServiceDetailRoute />);
+			render(<ServiceDetailPage />);
 		});
 		expect(screen.getByText('Service not found. Please return to the services list and choose another option.')).toBeTruthy();
 	});

@@ -11,9 +11,6 @@ export default function Home() {
 	const pixelatedConfig = usePixelatedConfig();
 	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
 
-	const siteInfo = pixelatedConfig?.siteInfo;
-	const googleMapsApiKey = pixelatedConfig?.googleMaps?.apiKey ?? undefined;
-
 	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
 	useEffect(() => {
 		ToggleLoading({show: true});
@@ -137,7 +134,7 @@ export default function Home() {
 			</PageSection>
 
 			<PageSection maxWidth="1024px" id="service-area-section" columns={1}>
-				<BusinessFooter siteInfo={siteInfo} googleMapsApiKey={googleMapsApiKey} />
+				<BusinessFooter />
 			</PageSection>
 		</>
 	);

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ServicesList, ServiceDetailPage } from '@/components/elements/services.components';
+import { PixelatedClientConfigProvider } from '@/components/config/config.client';
+import { ServicesList, ServiceDetail } from '@/components/elements/services.components';
 import '@/css/pixelated.grid.scss';
 
 export default {
@@ -24,19 +25,21 @@ const services = [
 
 export const ServicesListStory = {
 	render: () => (
-		<ServicesList
-			services={services}
-			title="Our Service Catalog"
-			intro="Browse our main services and learn more about each project type."
-		/>
+		<PixelatedClientConfigProvider config={{ siteInfo: { services } }}>
+			<ServicesList
+				title="Our Service Catalog"
+				intro="Browse our main services and learn more about each project type."
+			/>
+		</PixelatedClientConfigProvider>
 	),
 };
 
-export const ServiceDetailPageStory = {
+export const ServiceDetailStory = {
 	render: () => (
-		<ServiceDetailPage
-			services={services}
-			serviceSlug="interior-epoxy-floors"
-		/>
+		<PixelatedClientConfigProvider config={{ siteInfo: { services } }}>
+			<ServiceDetail
+				serviceSlug="interior-epoxy-floors"
+			/>
+		</PixelatedClientConfigProvider>
 	),
 };

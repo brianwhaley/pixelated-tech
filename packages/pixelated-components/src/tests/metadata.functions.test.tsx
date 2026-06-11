@@ -1,14 +1,17 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+vi.mock('next/headers', () => ({ headers: vi.fn() }));
+import { headers } from 'next/headers';
 import {
 	descriptionToKeywords,
 	getRouteByKey,
 	getAllRoutes,
 	getMetadata,
 	getAccordionMenuData,
-	generateMetaTags,
 	type Route
 } from '../components/foundation/metadata.functions';
+import { generateMetaTags } from '../components/foundation/metadata.server';
 import type { SiteInfo } from '../components/config/config.types';
+import * as configModule from '../components/config/config';
 
 describe('Metadata Functions', () => {
 	describe('descriptionToKeywords', () => {
@@ -243,92 +246,67 @@ describe('Metadata Functions', () => {
 	});
 
 	describe('generateMetaTags', () => {
-		it('should generate meta tag JSX', () => {
-			const props = {
-				title: 'Test Page',
-				description: 'A test page',
-				keywords: 'test, page',
-				origin: 'https://example.com',
-				url: 'https://example.com/test',
-				site_name: 'Example Site',
-				email: 'info@example.com',
-				image: 'https://example.com/image.png',
-				siteInfo: {
-					name: 'Example',
-					description: 'Example site description',
-					url: 'https://example.com',
-					email: 'test@example.com',
-					image: 'https://example.com/logo.png'
-				}
-			};
+		const mockSiteInfo: SiteInfo = {
+			name: 'Example',
+			description: 'Example site description',
+			url: 'https://example.com',
+			email: 'test@example.com',
+			image: 'https://example.com/logo.png',
+			image_height: 600,
+			image_width: 800,
+			favicon: '/favicon.ico',
+		};
+		const mockGetFullPixelatedConfig = vi.spyOn(configModule, 'getFullPixelatedConfig');
 
-			const result = generateMetaTags(props);
+		beforeEach(() => {
+			mockGetFullPixelatedConfig.mockReturnValue({ siteInfo: mockSiteInfo } as any);
+		});
+
+		const setupHeaders = (path = '/test', origin = 'https://example.com', url = 'https://example.com/test') => {
+			vi.mocked(headers).mockReturnValue(new Headers([
+				['x-path', path],
+				['x-origin', origin],
+				['x-url', url],
+			]));
+		};
+
+		afterEach(() => {
+			mockGetFullPixelatedConfig.mockReset();
+			vi.mocked(headers).mockReset();
+		});
+
+		it('should generate meta tag JSX', () => {
+			setupHeaders();
+
+			const result = generateMetaTags();
 			expect(result).toBeDefined();
 		});
 
 		it('should handle missing optional props', () => {
-			const props = {
-				title: 'Test',
-				description: 'Test description',
-				keywords: 'test',
-				origin: 'https://example.com',
-				url: 'https://example.com/',
-				siteInfo: { name: 'Test', description: 'Test site', url: 'https://example.com' }
-			};
+			setupHeaders('/test', 'https://example.com', 'https://example.com/');
 
-			const result = generateMetaTags(props);
+			const result = generateMetaTags();
 			expect(result).toBeDefined();
 		});
 
 		it('should extract hostname from origin URL', () => {
-			const props = {
-				title: 'Test',
-				description: 'Test',
-				keywords: 'test',
-				origin: 'https://subdomain.example.com:8080/path',
-				url: 'https://example.com/',
-				siteInfo: { name: 'Test', description: 'Test site', url: 'https://example.com' }
-			};
+			setupHeaders('/test', 'https://subdomain.example.com:8080/path', 'https://example.com/');
 
-			const result = generateMetaTags(props);
+			const result = generateMetaTags();
 			expect(result).toBeDefined();
 		});
 
 		it('should handle invalid origin URL gracefully', () => {
-			const props = {
-				title: 'Test',
-				description: 'Test',
-				keywords: 'test',
-				origin: 'not-a-url',
-				url: 'https://example.com/',
-				siteInfo: { name: 'Test', description: 'Test site', url: 'https://example.com' }
-			};
+			setupHeaders('/test', 'not-a-url', 'https://example.com/');
 
-			const result = generateMetaTags(props);
+			const result = generateMetaTags();
 			expect(result).toBeDefined();
 		});
 
-		it('should prioritize prop values over siteInfo', () => {
-			const props = {
-				title: 'Test',
-				description: 'Test',
-				keywords: 'test',
-				origin: 'https://example.com',
-				url: 'https://example.com/',
-				site_name: 'Override Name',
-				email: 'override@example.com',
-				image: 'https://example.com/override.png',
-				siteInfo: {
-					name: 'Original',
-					description: 'Original description',
-					url: 'https://original.com',
-					email: 'original@example.com',
-					image: 'https://example.com/original.png'
-				}
-			};
+		it('should use config-provided site metadata values', () => {
+			setupHeaders('/test', 'https://example.com', 'https://example.com/');
 
-			const result = generateMetaTags(props);
+			const result = generateMetaTags();
 			expect(result).toBeDefined();
 		});
-	});
-});
+	});});

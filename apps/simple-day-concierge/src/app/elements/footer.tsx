@@ -1,29 +1,21 @@
 "use client";
 
 import React from "react";
-import { PageSection, PageGridItem, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
+import { PageSection, PageGridItem, PageSectionHeader } from "@pixelated-tech/components";
 import { GoogleAnalytics } from "@pixelated-tech/components";
 import { PixelatedFooter } from "@pixelated-tech/components";
 import { BusinessFooterAddress, BusinessFooterMap } from "@pixelated-tech/components";
 
 export default function Footer() {
-	const pixelatedConfig = usePixelatedConfig();
-	const siteInfo = pixelatedConfig?.siteInfo ?? {};
 	return (
 		<>
 			<PageSection id="footer" columns={3} maxWidth="1024px" padding="20px">
 				<PageGridItem>
-					<BusinessFooterAddress
-						name={siteInfo.name}
-						address={siteInfo.address}
-						addressAdditionalInfo={siteInfo.addressAdditionalInfo}
-						telephone={siteInfo.telephone}
-						email={siteInfo.email}
-					/>
+					<BusinessFooterAddress />
 				</PageGridItem>
 
 				<PageGridItem>
-					<BusinessFooterMap address={siteInfo.address} />
+					<BusinessFooterMap />
 				</PageGridItem>
 
 				<PageGridItem>
@@ -41,7 +33,7 @@ export default function Footer() {
 				</PageGridItem>
 			</PageSection>
 
-			<PageSection id="footer" columns={1} maxWidth="1024px" padding="20px 0 0 0">
+			<PageSection id="footer" columns={1} maxWidth="1024px" padding="20px 20px 0 20px">
 				<div suppressHydrationWarning={true} >
 					<GoogleAnalytics />
 					<hr style={{ margin: "0 auto", width: "80%" }} />

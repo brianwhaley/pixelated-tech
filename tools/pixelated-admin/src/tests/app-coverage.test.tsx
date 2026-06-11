@@ -130,6 +130,7 @@ vi.mock('@/lib/auth', () => ({
 vi.mock('@pixelated-tech/components/server', () => ({
 	getRouteByKey: () => ({ title: 'Test', description: 'Desc', keywords: ['a'] }),
 	generateMetaTags: () => <meta />, 
+	PageMetaTags: () => <meta data-testid="mock-page-meta-tags" />,
 	WebsiteSchema: ({ children }: any) => <>{children}</>,
 	LocalBusinessSchema: ({ children }: any) => <>{children}</>,
 	ServicesSchema: ({ children }: any) => <>{children}</>,

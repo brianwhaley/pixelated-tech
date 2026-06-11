@@ -5,7 +5,7 @@ import PropTypes, { InferProps } from 'prop-types';
 import { PageSection, PageSectionHeader, PageGridItem } from '../structure/page-blocks';
 import { Callout } from '../structure/callout';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
-import type { SiteInfoType } from '../config/config.types';
+import { usePixelatedConfig } from '../config/config.client';
 
 
 const defaultServiceAreaPathPrefix = '/service-areas';
@@ -15,16 +15,9 @@ export function buildServiceAreaUrl(item: { name: string }, prefix = defaultServ
 	return slug ? `${prefix}/${slug}` : prefix;
 }
 
-function resolveServiceAreas(props: any) {
-	return props.serviceAreas && props.serviceAreas.length
-		? props.serviceAreas
-		: props.siteInfo?.serviceAreas || [];
-}
-
-function findServiceAreaBySlug(props: any) {
-	const items = props.serviceAreas?.length ? props.serviceAreas : props.siteInfo?.serviceAreas || [];
-	if (props.serviceArea) return props.serviceArea;
-	const slug = props.serviceAreaSlug || '';
+function findServiceAreaBySlug(siteInfo: any, serviceAreaSlug: string) {
+	const items = siteInfo?.serviceAreas || [];
+	const slug = serviceAreaSlug || '';
 	return items.find((item: any) => {
 		const itemSlug = contentfulValueToSlug({ value: item.name });
 		return itemSlug === slug;
@@ -49,25 +42,9 @@ function renderServiceAreaDescription(description: string | Array<string | null 
 
 /**
  * ServiceAreas propTypes define the list data shape for rendering a grid of service area cards.
+ * The component uses the config provider's `siteInfo.serviceAreas` data internally.
  */
 ServiceAreas.propTypes = {
-	/** Optional service area list to render. */
-	serviceAreas: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		highlights: PropTypes.arrayOf(PropTypes.string),
-		relatedServices: PropTypes.arrayOf(PropTypes.string),
-	})),
-	siteInfo: PropTypes.shape({
-		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-			short_description: PropTypes.string,
-			highlights: PropTypes.arrayOf(PropTypes.string),
-			relatedServices: PropTypes.arrayOf(PropTypes.string),
-		})),
-	}),
 	/** Section title to display above the list. */
 	title: PropTypes.string,
 	/** Introductory text shown under the title. */
@@ -78,8 +55,10 @@ ServiceAreas.propTypes = {
 	id: PropTypes.string,
 };
 export type ServiceAreasType = InferProps<typeof ServiceAreas.propTypes>;
-export function ServiceAreas({ serviceAreas, siteInfo, title = 'Service Areas', intro, serviceAreaPathPrefix = defaultServiceAreaPathPrefix, id }: ServiceAreasType) {
-	const items = resolveServiceAreas({ serviceAreas, siteInfo, title, intro, serviceAreaPathPrefix, id });
+export function ServiceAreas({ title = 'Service Areas', intro, serviceAreaPathPrefix = defaultServiceAreaPathPrefix, id }: ServiceAreasType) {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const items = siteInfo?.serviceAreas || [];
 	if (!items?.length) {
 		return null;
 	}
@@ -148,41 +127,14 @@ export function ServiceAreaCard({ serviceArea, serviceAreaPathPrefix = defaultSe
 
 
 /**
- * ServiceAreaDetailPage propTypes define the incoming service area detail lookup data shape.
+ * ServiceAreaDetail propTypes define the incoming service area detail lookup data shape.
+ * The component resolves the active service area from `siteInfo.serviceAreas` in the config provider.
  * 
- * @param {ServiceAreaDetailPageType} props - The properties for the ServiceAreaDetailPage component, including the service area data, lookup lists, slug for resolution, and display options.
+ * @param {ServiceAreaDetailType} props - The properties for the ServiceAreaDetail component, including the slug used to resolve the service area, title override, URL prefix, and display options.
  * @return A detailed page section for the active service area, including the name, description, highlights, related services, and a link to the service area page.
  */
-ServiceAreaDetailPage.propTypes = {
-	/** Active service area object to render. */
-	serviceArea: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		highlights: PropTypes.arrayOf(PropTypes.string),
-		relatedServices: PropTypes.arrayOf(PropTypes.string),
-	}),
-	/** Optional list of service areas for lookup. */
-	serviceAreas: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		highlights: PropTypes.arrayOf(PropTypes.string),
-		relatedServices: PropTypes.arrayOf(PropTypes.string),
-	})),
-	siteInfo: PropTypes.shape({
-		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-			short_description: PropTypes.string,
-			highlights: PropTypes.arrayOf(PropTypes.string),
-			relatedServices: PropTypes.arrayOf(PropTypes.string),
-		})),
-		services: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-		})),
-	}),
-	/** Slug used to resolve the active service area. */
+ServiceAreaDetail.propTypes = {
+	/** Slug used to resolve the active service area from config. */
 	serviceAreaSlug: PropTypes.string,
 	/** Page title override. */
 	title: PropTypes.string,
@@ -191,9 +143,11 @@ ServiceAreaDetailPage.propTypes = {
 	/** HTML id attribute for the detail section. */
 	id: PropTypes.string,
 };
-export type ServiceAreaDetailPageType = InferProps<typeof ServiceAreaDetailPage.propTypes>;
-export function ServiceAreaDetailPage({ serviceArea, serviceAreas, siteInfo, serviceAreaSlug, title, serviceAreaPathPrefix = defaultServiceAreaPathPrefix, id }: ServiceAreaDetailPageType) {
-	const activeArea = findServiceAreaBySlug({ serviceArea, serviceAreas, siteInfo, serviceAreaSlug, title, serviceAreaPathPrefix, id });
+export type ServiceAreaDetailType = InferProps<typeof ServiceAreaDetail.propTypes>;
+export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefix = defaultServiceAreaPathPrefix, id }: ServiceAreaDetailType) {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const activeArea = findServiceAreaBySlug(siteInfo, serviceAreaSlug ?? '');
 	if (!activeArea) {
 		return null;
 	}

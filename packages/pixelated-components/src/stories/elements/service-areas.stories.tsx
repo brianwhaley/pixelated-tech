@@ -1,5 +1,6 @@
 import React from 'react';
-import { ServiceAreasList, ServiceAreaDetailPage } from '@/components/elements/service-areas.components';
+import { PixelatedClientConfigProvider } from '@/components/config/config.client';
+import { ServiceAreasList, ServiceAreaDetail } from '@/components/elements/service-areas.components';
 import '@/css/pixelated.grid.scss';
 
 export default {
@@ -26,19 +27,21 @@ const serviceAreas = [
 
 export const ServiceAreasListStory = {
 	render: () => (
-		<ServiceAreasList
-			serviceAreas={serviceAreas}
-			title="Service Areas"
-			intro="Find the communities where we deliver trusted local service."
-		/>
+		<PixelatedClientConfigProvider config={{ siteInfo: { serviceAreas } }}>
+			<ServiceAreasList
+				title="Service Areas"
+				intro="Find the communities where we deliver trusted local service."
+			/>
+		</PixelatedClientConfigProvider>
 	),
 };
 
 export const ServiceAreaDetailStory = {
 	render: () => (
-		<ServiceAreaDetailPage
-			serviceAreas={serviceAreas}
-			serviceAreaSlug="downtown-districts"
-		/>
+		<PixelatedClientConfigProvider config={{ siteInfo: { serviceAreas } }}>
+			<ServiceAreaDetail
+				serviceAreaSlug="downtown-districts"
+			/>
+		</PixelatedClientConfigProvider>
 	),
 };

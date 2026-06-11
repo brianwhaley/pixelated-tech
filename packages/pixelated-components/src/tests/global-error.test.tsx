@@ -9,7 +9,7 @@ describe('GlobalError', () => {
   it('renders message and calls reset when Try again clicked', async () => {
     const reset = vi.fn();
     const err = new Error('boom');
-    const { container } = render(<GlobalErrorUI error={err} reset={reset} siteInfo={{ email: 'a@x.com' }} />);
+    const { container } = render(<GlobalErrorUI error={err} reset={reset} />, { config: { siteInfo: { email: 'a@x.com' } } });
     expect(container.querySelector('.ge-title')?.textContent).toMatch(/something went wrong/i);
     const btn = container.querySelector('.ge-btn-primary') as HTMLButtonElement;
     await userEvent.click(btn);
@@ -27,10 +27,10 @@ describe('GlobalError', () => {
   });
 
   it('uses email when provided and shows unavailable when none provided', () => {
-    const { container: c1 } = render(<GlobalErrorUI error={new Error('x')} siteInfo={{ email: 'a@x.com' }} />);
+    const { container: c1 } = render(<GlobalErrorUI error={new Error('x')} />, { config: { siteInfo: { email: 'a@x.com' } } });
     expect(c1.querySelector('.ge-link')?.getAttribute('href')).toBe('mailto:a@x.com');
 
-    const { container: c2 } = render(<GlobalErrorUI error={new Error('x')} siteInfo={{}} />);
+    const { container: c2 } = render(<GlobalErrorUI error={new Error('x')} />, { config: { siteInfo: {} } });
     expect(c2.querySelector('.ge-unavailable')).toBeInTheDocument();
   });
 

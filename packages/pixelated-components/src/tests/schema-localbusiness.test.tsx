@@ -1,27 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
 import type { SiteInfo } from '@/components/config/config.types';
-import { LocalBusinessSchema, type LocalBusinessSchemaType } from '@/components/foundation/schema';
+import { LocalBusinessSchema } from '@/components/foundation/schema';
 import configData from '../test/test-data';
 
 const siteInfo: SiteInfo = configData.siteInfoFull as SiteInfo;
 
-const defaultProps: LocalBusinessSchemaType = {
-	name: 'Test Business',
-	streetAddress: '123 Main St',
-	addressLocality: 'Springfield',
-	addressRegion: 'IL',
-	postalCode: '62701',
-	addressCountry: 'United States',
-	telephone: '+1-217-555-0123',
-	url: 'https://testbusiness.com'
-};
-
-const renderSchema = (
-	props: Partial<LocalBusinessSchemaType> = {},
-	siteMeta: SiteInfo = siteInfo
-) => {
-	return render(<LocalBusinessSchema {...defaultProps} {...props} />, { config: { siteInfo: siteMeta } });
+const renderSchema = (siteMeta: SiteInfo = siteInfo) => {
+	return render(<LocalBusinessSchema />, { config: { siteInfo: siteMeta } });
 };
 
 const getSchema = (container: Element | null) => {
@@ -38,15 +24,15 @@ describe('LocalBusinessSchema', () => {
 		expect(schema['@type']).toBe('LocalBusiness');
 	});
 
-	it('falls back to siteInfo values when props omit them', () => {
-		const { container } = renderSchema({ telephone: undefined });
+	it('falls back to siteInfo values from config', () => {
+		const { container } = renderSchema();
 		const schema = getSchema(container);
 		expect(schema.telephone).toBe(siteInfo.telephone);
-		expect(schema.name).toBe(defaultProps.name);
+		expect(schema.name).toBe(siteInfo.name);
 	});
 
-	it('renders address from siteInfo when props do not override it', () => {
-		const { container } = renderSchema({ addressRegion: undefined });
+	it('renders address from siteInfo', () => {
+		const { container } = renderSchema();
 		const schema = getSchema(container);
 		const normalize = (s: any) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 		const expectedCountry = normalize(siteInfo.address?.addressCountry);
@@ -69,20 +55,20 @@ describe('LocalBusinessSchema', () => {
 		expect(schema.sameAs).toEqual(siteInfo.sameAs);
 	});
 
-	it('uses siteInfo openingHours when props do not provide openingHours', () => {
+	it('uses siteInfo openingHours from config', () => {
 		const openingHours = [
 			{ day: 'Mon', open: '09:00', close: '17:00' },
 			{ day: 'Tue', open: '09:00', close: '17:00' },
 		];
 		const siteMeta = { ...siteInfo, openingHours };
-		const { container } = renderSchema({ openingHours: undefined }, siteMeta as any);
+		const { container } = renderSchema(siteMeta as any);
 		const schema = getSchema(container);
 		expect(schema.openingHours).toEqual(['Mon 09:00-17:00', 'Tue 09:00-17:00']);
 	});
 
-	it('renders additional fields passed via props', () => {
-		const { container } = renderSchema({ description: 'Great service' });
+	it('renders description from config siteInfo', () => {
+		const { container } = renderSchema();
 		const schema = getSchema(container);
-		expect(schema.description).toBe('Great service');
+		expect(schema.description).toBe(siteInfo.description);
 	});
 });

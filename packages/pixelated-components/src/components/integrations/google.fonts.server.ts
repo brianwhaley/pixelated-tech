@@ -3,7 +3,7 @@
 import { getFullPixelatedConfig } from '../config/config';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
-import { FALLBACK_GOOGLE_FONTS, type GoogleFont, type GoogleFontsResponse } from './google.fonts';
+import { FALLBACK_GOOGLE_FONTS, type GoogleFont, type GoogleFontsResponse } from './google.fonts.functions';
 
 // Cache for Google Fonts data
 let fontsCache: GoogleFont[] | null = null;

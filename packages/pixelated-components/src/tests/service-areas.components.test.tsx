@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ServiceAreas as ServiceAreasList, ServiceAreaDetailPage } from '../components/elements/service-areas.components';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
+import { ServiceAreas as ServiceAreasList, ServiceAreaDetail } from '../components/elements/service-areas.components';
 
 const mockServiceAreas = [
 	{
@@ -20,8 +21,8 @@ const mockServiceAreas = [
 ];
 
 describe('Service areas components', () => {
-	it('renders a list of service areas with direct serviceAreas props', () => {
-		render(<ServiceAreasList serviceAreas={mockServiceAreas} title="Service Areas" intro="We serve the following regions:" />);
+	it('renders a list of service areas using config-provided serviceAreas', () => {
+		render(<ServiceAreasList title="Service Areas" intro="We serve the following regions:" />, { config: { siteInfo: { serviceAreas: mockServiceAreas } } });
 
 		expect(screen.getByRole('heading', { name: 'Service Areas' })).toBeInTheDocument();
 		expect(screen.getByText('We serve the following regions:')).toBeInTheDocument();
@@ -30,21 +31,19 @@ describe('Service areas components', () => {
 	});
 
 	it('uses the generated slug for service area URLs even when path is provided', () => {
-		render(<ServiceAreasList serviceAreas={[
-			{ name: 'Coastal Service Area', description: 'Serving coastal homes.', short_description: 'Waterproof service area solutions.', path: '/service-areas/wrong-path' }
-		]} title="Service Areas" intro="We serve the following regions:" />);
+		render(<ServiceAreasList title="Service Areas" intro="We serve the following regions:" />, { config: { siteInfo: { serviceAreas: [{ name: 'Coastal Service Area', description: 'Serving coastal homes.', short_description: 'Waterproof service area solutions.', path: '/service-areas/wrong-path' }] } } });
 
 		expect(screen.getByRole('link', { name: /Coastal Service Area/i })).toHaveAttribute('href', '/service-areas/coastal-service-area');
 	});
 
-	it('renders service area detail page by slug using fallback list', () => {
-		render(<ServiceAreaDetailPage serviceAreaSlug="downtown-service-area" serviceAreas={mockServiceAreas} />);
+	it('renders service area detail page by slug using config-provided serviceAreas', () => {
+		render(<ServiceAreaDetail serviceAreaSlug="downtown-service-area" />, { config: { siteInfo: { serviceAreas: mockServiceAreas } } });
 
 		expect(screen.getByText('Urban garage and business floor solutions for downtown locations.')).toBeInTheDocument();
 	});
 
-	it('renders service areas from siteInfo when serviceAreas prop is missing', () => {
-		render(<ServiceAreasList siteInfo={{ serviceAreas: mockServiceAreas }} title="Service Areas" intro="We serve the following regions:" />);
+	it('renders service areas from config-provided siteInfo', () => {
+		render(<ServiceAreasList title="Service Areas" intro="We serve the following regions:" />, { config: { siteInfo: { serviceAreas: mockServiceAreas } } });
 
 		expect(screen.getByRole('heading', { name: 'Service Areas' })).toBeInTheDocument();
 		expect(screen.getByText('Coastal Service Area')).toBeInTheDocument();
@@ -52,17 +51,16 @@ describe('Service areas components', () => {
 
 	it('renders service area detail page with highlights and related service links', () => {
 		render(
-			<ServiceAreaDetailPage
+			<ServiceAreaDetail
 				serviceAreaSlug="coastal-service-area"
-				serviceAreas={[{
-					name: 'Coastal Service Area',
-					description: ['Serving coastal homes.', 'Expert exterior coatings.'],
-					short_description: 'Waterproof solutions.',
-					highlights: ['Marine-safe coatings', 'Salt-air protection'],
-					relatedServices: ['Exterior Coatings'],
-				}]}
-				siteInfo={{ services: [{ name: 'Exterior Coatings' }] }}
-			/>);
+			/>
+		, { config: { siteInfo: { serviceAreas: [{
+				name: 'Coastal Service Area',
+				description: ['Serving coastal homes.', 'Expert exterior coatings.'],
+				short_description: 'Waterproof solutions.',
+				highlights: ['Marine-safe coatings', 'Salt-air protection'],
+				relatedServices: ['Exterior Coatings'],
+			}], services: [{ name: 'Exterior Coatings' }] } } });
 
 		expect(screen.getByText('Highlights')).toBeInTheDocument();
 		expect(screen.getByText('Marine-safe coatings')).toBeInTheDocument();

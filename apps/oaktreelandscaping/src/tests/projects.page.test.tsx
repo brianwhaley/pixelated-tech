@@ -3,6 +3,21 @@ import { render, screen } from '@testing-library/react';
 import { config } from '@/test/page-mocks';
 import { createPageComponentMocks } from '@/test/page-mocks';
 
+const contentfulKey = 'contentful';
+const baseUrlKey = 'base_url';
+const spaceIdKey = 'space_id';
+const environmentKey = 'environment';
+const deliveryTokenKey = 'delivery_access_token';
+
+config.integrations = {
+	[contentfulKey]: {
+		[baseUrlKey]: 'https://example.com',
+		[spaceIdKey]: 'space',
+		[environmentKey]: 'production',
+		[deliveryTokenKey]: 'token',
+	},
+};
+
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	ProjectsClient: ({ projects }: any) => <div data-testid="mock-projectsclient">{projects.length}</div>,
 	getContentfulEntriesByType: vi.fn(async () => ({
@@ -146,5 +161,34 @@ describe('Oaktree Landscaping projects page', () => {
 		const pageElement = await ProjectsPage();
 		render(pageElement);
 		expect(screen.getByTestId('mock-projectsclient').textContent).toBe('2');
+	});
+
+	it('skips non-matching content type cards while rendering projects', async () => {
+		mockGetContentfulEntriesByType.mockResolvedValue({
+			items: [
+				{
+					sys: { contentType: { sys: { id: 'wrongContentType' } } },
+					fields: {
+						title: 'Ignored Project',
+						description: 'Should not render',
+						images: [],
+					},
+				},
+				{
+					sys: { contentType: { sys: { id: '4upe5EGYMjJulOSqyXJsuw' } } },
+					fields: {
+						title: 'Valid Project',
+						description: 'Valid project',
+						images: [],
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		mockGetContentfulImagesFromEntries.mockResolvedValue([]);
+
+		const pageElement = await ProjectsPage();
+		render(pageElement);
+		expect(screen.getByTestId('mock-projectsclient').textContent).toBe('1');
 	});
 });

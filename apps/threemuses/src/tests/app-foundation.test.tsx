@@ -5,13 +5,15 @@ import { createPageComponentMocks, resetMockState, setPixelatedConfigOverride } 
 import { headers } from 'next/headers';
 import * as componentsServer from '@pixelated-tech/components/server';
 
-function findReactElementByTestId(node: any, testId: string): boolean {
+function findReactElementByTypeName(node: any, typeName: string): boolean {
 	if (node == null) return false;
 	const nodes = Array.isArray(node) ? node : [node];
 	for (const item of nodes) {
 		if (!item || typeof item !== 'object') continue;
-		if (item.props?.['data-testid'] === testId) return true;
-		if (findReactElementByTestId(item.props?.children, testId)) return true;
+		const itemType = item.type;
+		const actualType = typeof itemType === 'function' ? itemType.name : itemType;
+		if (actualType === typeName) return true;
+		if (findReactElementByTypeName(item.props?.children, typeName)) return true;
 	}
 	return false;
 }
@@ -19,11 +21,13 @@ function findReactElementByTestId(node: any, testId: string): boolean {
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 vi.mock('@pixelated-tech/components/server', async () => {
 	const actual = await vi.importActual<typeof componentsServer>('@pixelated-tech/components/server');
+	const generateMetaTags = vi.fn(async () => React.createElement('meta', { 'data-testid': 'meta-tags' }, null));
 	return {
 		__esModule: true,
 		...actual,
 		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
-		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
+		generateMetaTags,
+		PageMetaTags: function PageMetaTags() { return React.createElement('meta', { 'data-testid': 'meta-tags' }, null); },
 		WebsiteSchema: () => null,
 		LocalBusinessSchema: () => null,
 		ServicesSchema: () => null,
@@ -145,7 +149,7 @@ describe('Threemuses app shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
+		expect(findReactElementByTypeName(head.props.children, 'PageMetaTags')).toBe(true);
 	});
 
 	it('renders root layout with trailing slash path and fallback metadata', async () => {
@@ -154,7 +158,7 @@ describe('Threemuses app shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
+		expect(findReactElementByTypeName(head.props.children, 'PageMetaTags')).toBe(true);
 	});
 
 	it('renders root layout with x-url fallback when x-url is missing', async () => {

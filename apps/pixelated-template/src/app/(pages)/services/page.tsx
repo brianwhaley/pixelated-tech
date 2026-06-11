@@ -18,10 +18,10 @@ export default function ServicesPage() {
 			</PageSection>
 
 			<Services
-				siteInfo={siteInfo}
+				
 				title={`${siteName} Services`}
 				intro="Click a service to read more about how it works for your business."
-				servicePathPrefix="/services"
+				
 			/>
 
 			<PageSection columns={1} maxWidth="1024px" id="service-areas-link-section">
