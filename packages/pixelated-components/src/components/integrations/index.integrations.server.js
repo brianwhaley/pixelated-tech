@@ -7,6 +7,7 @@ export * from './googleplaces';
 export * from './google.maps';
 export * from './google.fonts.server';
 export * from './google.fonts';
+export * from './google.fonts.functions';
 export * from './google.reviews.functions';
 export * from './gravatar.functions';
 export * from './instagram.functions';

@@ -2,17 +2,17 @@
 
 import React, { useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import { PageTitleHeader, PageSection, ServiceAreaDetailPage, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceAreaDetail, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
 
-export default function ServiceAreaDetailRoute() {
+export default function ServiceAreaDetailPage() {
 	const params = useParams();
 	const serviceAreaSlug = typeof params?.serviceArea === 'string' ? params.serviceArea : '';
-	const pixelatedConfig = usePixelatedConfig();
-	const siteInfo = pixelatedConfig?.siteInfo;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
 
 	const activeServiceArea = useMemo(() => {
-		const serviceAreas = siteInfo?.serviceAreas || [];
-		return serviceAreas.find((area) => {
+		const serviceAreas = siteInfo?.serviceAreas ?? [];
+		return serviceAreas.find((area: any) => {
 			const slug = area.slug ? contentfulValueToSlug({ value: area.slug }) : contentfulValueToSlug({ value: area.name });
 			return slug === serviceAreaSlug;
 		});
@@ -20,14 +20,10 @@ export default function ServiceAreaDetailRoute() {
 
 	return (
 		<>
-			<PageTitleHeader title={activeServiceArea?.name ? `${activeServiceArea.name}` : 'Service Area'} />
+			<PageTitleHeader title={serviceAreaSlug ? `Service Area - ${serviceAreaSlug.replace(/-/g, ' ')}` : 'Service Area'} />
 			<PageSection columns={1} maxWidth="1024px" id="service-area-detail-wrapper">
 				{activeServiceArea ? (
-					<ServiceAreaDetailPage
-						serviceArea={activeServiceArea}
-						siteInfo={siteInfo}
-						serviceAreaPathPrefix="/service-areas"
-					/>
+					<ServiceAreaDetail serviceAreaSlug={serviceAreaSlug} />
 				) : (
 					<p>Service area not found. Please return to the service areas list and choose another region.</p>
 				)}

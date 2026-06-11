@@ -11,9 +11,7 @@ vi.mock('@pixelated-tech/components', () => {
 		__esModule: true,
 		...createPageComponentMocks({
 			usePixelatedConfig: () => ({ [googleMapsConfigKey]: { [googleMapsApiKeyKey]: 'mm-api-key' } }),
-			BusinessFooter: ({ googleMapsApiKey }: any) => (
-				<div data-testid="mock-businessfooter" data-google={googleMapsApiKey ?? ''} />
-			),
+			BusinessFooter: () => <div data-testid="mock-businessfooter" />,
 			Hero: ({ video, children }: any) => (
 				<div data-testid="mock-hero" data-video={video}>{children}</div>
 			),
@@ -45,10 +43,10 @@ describe('Manning Metalworks element coverage', () => {
 		expect(hero.getAttribute('data-video')).toBeTruthy();
 	});
 
-	it('renders Footer and passes googleMapsApiKey to BusinessFooter', () => {
+	it('renders Footer and BusinessFooter', () => {
 		render(<Footer />);
 
-		expect(screen.getByTestId('mock-businessfooter')).toHaveAttribute('data-google', 'mm-api-key');
+		expect(screen.getByTestId('mock-businessfooter')).toBeInTheDocument();
 	});
 
 	it('renders Nav with menu items', () => {

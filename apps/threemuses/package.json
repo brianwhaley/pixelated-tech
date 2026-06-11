@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@pixelated-tech/components": "*",
-    "next": "^16.2.6",
+    "next": "^16.2.9",
     "react": "^19.2.6"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.0.6",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.2",
+    "eslint-config-next": "^16.2.9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "glob": "^13.0.6",
     "googleapis": "^173.0.0",

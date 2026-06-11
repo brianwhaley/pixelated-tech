@@ -54,9 +54,6 @@ export type DirectionType = typeof directions[number];
  * @param {node} [props.children] - React children to render in the content area (takes precedence over content).
  * @param {string} [props.buttonText] - Button/CTA text to display when `url` is provided.
  * @param {boolean} [props.aboveFold] - Hint to prioritize image loading (above-the-fold) for performance.
- * @param {string} [props.cloudinaryEnv] - Cloudinary environment key (internal use for SmartImage).
- * @param {string} [props.cloudinaryDomain] - Cloudinary domain to use for image hosts.
- * @param {string} [props.cloudinaryTransforms] - Optional Cloudinary transform presets.
  */
 Callout.propTypes = {
 	/** Visual variant selector (e.g., 'default', 'boxed', 'grid', 'full'). */
@@ -97,9 +94,6 @@ Callout.propTypes = {
 	// SmartImage props
 	/** Hint to prioritize image loading (treat as above-the-fold). */
 	aboveFold: PropTypes.bool,
-/* cloudinaryEnv: PropTypes.string,
-	cloudinaryDomain: PropTypes.string,
-	cloudinaryTransforms: PropTypes.string, */
 };
 export type CalloutType = InferProps<typeof Callout.propTypes>;
 export function Callout({
@@ -113,9 +107,7 @@ export function Callout({
 	imgClick, 
 	title, subtitle, content, children, buttonText,
 	aboveFold,
-	/* cloudinaryEnv,
-	cloudinaryDomain,
-	cloudinaryTransforms */ }: CalloutType) {
+}: CalloutType) {
 
 	const target = url && url.substring(0, 4).toLowerCase() === 'http' ? '_blank' : '_self';
 

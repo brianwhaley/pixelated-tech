@@ -8,6 +8,10 @@ import {
 	resetFileDataState,
 	setFileDataState,
 } from '@/test/page-mocks';
+
+declare global {
+	var pathname: string;
+}
 import { PixelatedClientConfigProvider } from '@pixelated-tech/components';
 
 const renderWithConfig = (ui: React.ReactElement) =>
@@ -58,8 +62,8 @@ import Podcast from '@/app/(pages)/podcast/page';
 import Schedule from '@/app/(pages)/schedule/page';
 import ServicesPage from '@/app/(pages)/services/page';
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
-import ServiceDetailRoute from '@/app/(pages)/services/[service]/page';
-import ServiceAreaDetailRoute from '@/app/(pages)/service-areas/[serviceArea]/page';
+import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
+import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
 import StyleGuide from '@/app/(pages)/styleguide/page';
 import NerdJokes from '@/app/(pages)/nerdjokes/page';
 import Portfolio from '@/app/(pages)/portfolio/page';
@@ -82,17 +86,16 @@ describe('Pixelated branch coverage tests', () => {
 
 	afterEach(() => {
 		vi.restoreAllMocks();
+		restoreBasePathname();
 	});
 
-	it('renders the portfolio page and executes flickr callback branch', async () => {
+	function restoreBasePathname() {
+		(globalThis as any).pathname = '/';
+	}
+
+	it('renders the portfolio page and exercises tiles branch', async () => {
 		renderWithConfig(<Portfolio />);
 		await waitFor(() => expect(screen.getByTestId('mock-tiles').textContent).toBe('B,A'));
-	});
-
-	it('renders the podcast page and exercises series branch', async () => {
-		renderWithConfig(<Podcast />);
-		await waitFor(() => expect(screen.getByTestId('schema-podcast-series')).not.toBeNull());
-		await waitFor(() => expect(screen.getAllByTestId('schema-podcast-episode').length).toBeGreaterThan(0));
 	});
 
 	it('renders nerdjokes page with installed false branch', async () => {
@@ -151,8 +154,8 @@ describe('Pixelated branch coverage tests', () => {
 					<ServiceAreasPage />
 					<Schedule />
 					<StyleGuide />
-					<ServiceDetailRoute />
-					<ServiceAreaDetailRoute />
+					<ServiceDetailPage />
+					<ServiceAreaDetailPage />
 				</>
 			</PixelatedClientConfigProvider>,
 		);

@@ -5,6 +5,25 @@ import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 import { headers } from 'next/headers';
 import * as componentsServer from '@pixelated-tech/components/server';
 
+function findReactElementByTypeName(children: any, typeName: string) {
+	if (!children) return false;
+	const items = Array.isArray(children) ? children : [children];
+	for (const item of items) {
+		if (!item) continue;
+		const itemType = item.type;
+		const actualType = typeof itemType === 'function' ? itemType.name : itemType;
+		if (actualType === typeName) {
+			return true;
+		}
+		if (item.props && item.props.children) {
+			if (findReactElementByTypeName(item.props.children, typeName)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 vi.mock('@pixelated-tech/components', async () => {
 	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
 	return {
@@ -15,11 +34,13 @@ vi.mock('@pixelated-tech/components', async () => {
 });
 vi.mock('@pixelated-tech/components/server', async () => {
 	const actual = await vi.importActual<typeof componentsServer>('@pixelated-tech/components/server');
+	const generateMetaTags = vi.fn(async () => React.createElement('meta', { 'data-testid': 'meta-tags' }, null));
 	return {
 		__esModule: true,
 		...actual,
 		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
-		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
+		generateMetaTags,
+		PageMetaTags: async function PageMetaTags() { return await generateMetaTags(); },
 		WebsiteSchema: () => null,
 		LocalBusinessSchema: () => null,
 		ServicesSchema: () => null,
@@ -63,7 +84,7 @@ import Privacy from '@/app/elements/privacy';
 import Search from '@/app/elements/search';
 import SocialTags from '@/app/elements/socialtags';
 import Terms from '@/app/elements/terms';
-import RootLayout from '@/app/layout';
+let RootLayout: any;
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
@@ -72,6 +93,11 @@ describe('App shell coverage', () => {
 	beforeEach(() => {
 		resetMockState();
 		vi.clearAllMocks();
+	});
+
+	beforeAll(async () => {
+		globalThis.PageMetaTags = componentsServer.PageMetaTags as any;
+		RootLayout = (await import('@/app/layout')).default;
 	});
 
 	it('renders the global error UI', () => {
@@ -163,11 +189,11 @@ describe('App shell coverage', () => {
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
 		expect(root).toBeDefined();
 		expect(root.props?.children).toBeTruthy();
-		expect(vi.mocked(componentsServer.generateMetaTags)).toHaveBeenCalledWith(expect.objectContaining({
-			title: expect.stringContaining('PixelVivid - Item 123456789012'),
-			origin: 'https://example.com',
-			url: 'https://example.com/store/123456789012',
-		}));
+		const head = Array.isArray(root.props.children)
+			? root.props.children.find((child: any) => child.type === 'head')
+			: root.props.children;
+		expect(head).toBeDefined();
+		expect(findReactElementByTypeName(head.props.children, 'PageMetaTags')).toBe(true);
 	});
 
 	it('proxies request headers correctly', () => {

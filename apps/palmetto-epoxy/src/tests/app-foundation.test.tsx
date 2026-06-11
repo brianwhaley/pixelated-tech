@@ -6,12 +6,14 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	GlobalErrorUI: ({ error }: any) => <div data-testid="global-error-ui">{error?.message}</div>,
 	SkeletonLoading: () => <div data-testid="mock-loading" />,
 	FourOhFour: () => <div data-testid="mock-404" />,
+	PageMetaTags: () => <meta data-testid="mock-page-meta-tags" />,
 	capitalizeWords: (str: string) => str.replace(/\b\w/g, char => char.toUpperCase()),
 }));
 
 vi.mock('@pixelated-tech/components/server', () => ({
 	getRouteByKey: () => ({ title: 'Home', description: 'desc', keywords: 'kw' }),
 	generateMetaTags: () => <meta data-testid="mock-meta" />,
+	PageMetaTags: () => <meta data-testid="mock-page-meta-tags" />,
 	WebsiteSchema: () => <div data-testid="mock-websiteschema" />,
 	LocalBusinessSchema: () => <div data-testid="mock-businessschema" />,
 	ServicesSchema: () => <div data-testid="mock-servicesschema" />,
@@ -35,6 +37,8 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	},
 	createWellKnownResponse: (type: string, req: any) => ({ type, url: req.url }),
 }));
+
+vi.stubGlobal('PageMetaTags', () => <meta data-testid="mock-page-meta-tags" />);
 
 let currentPath = '/';
 const currentOrigin = 'https://palmetto-epoxy.com';

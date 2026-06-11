@@ -48,6 +48,12 @@ describe('Oak Tree Landscaping branch coverage', () => {
 		await waitFor(() => expect(screen.getAllByTestId(/mock-/).length).toBeGreaterThan(0));
 	});
 
+	it('renders blogcalendar loading branch', async () => {
+		setFileDataState({ data: null, loading: true, error: null });
+		render(<BlogCalendar />);
+		await waitFor(() => expect(screen.getByText('Loading...')).not.toBeNull());
+	});
+
 	it('renders blogcalendar success and error branches', async () => {
 		setFileDataState({ data: 'calendar content', loading: false, error: null });
 		render(<BlogCalendar />);

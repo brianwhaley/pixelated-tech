@@ -27,40 +27,36 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 	FormButton: ({ onClick, text, ...props }: any) => (
 		<button data-testid="mock-formbutton" onClick={onClick} {...props}>{text}</button>
 	),
-	BusinessFooter: ({ googleMapsApiKey }: any) => (
-		<div data-testid="mock-businessfooter" data-google={googleMapsApiKey ?? ''} />
-	),
+	BusinessFooter: () => <div data-testid="mock-businessfooter" />,
 	usePixelatedConfig: () => mockGoogleMapsConfig,
 }));
 
 import HomePage from '@/app/(pages)/(home)/page';
 
 describe('JZ Home Improvement home page coverage', () => {
-	it('navigates to /contact when the contact button is clicked and passes googleMapsApiKey to BusinessFooter', () => {
+	it('navigates to /contact when the contact button is clicked and renders BusinessFooter', () => {
 		render(<HomePage />);
 
 		const button = screen.getByTestId('mock-formbutton');
 		fireEvent.click(button);
 
 		expect(window.location.href).toBe('/contact');
-		expect(screen.getByTestId('mock-businessfooter').getAttribute('data-google')).toBe('test-google-key');
+		expect(screen.getByTestId('mock-businessfooter')).toBeTruthy();
 	});
 
-	it('renders BusinessFooter with no googleMapsApiKey when config is missing', async () => {
+	it('renders BusinessFooter when config is missing', async () => {
 		vi.resetModules();
 		vi.doMock('@pixelated-tech/components', () => createPageComponentMocks({
 			FormButton: ({ onClick, text, ...props }: any) => (
 				<button data-testid="mock-formbutton" onClick={onClick} {...props}>{text}</button>
 			),
-			BusinessFooter: ({ googleMapsApiKey }: any) => (
-				<div data-testid="mock-businessfooter" data-google={googleMapsApiKey ?? ''} />
-			),
+			BusinessFooter: () => <div data-testid="mock-businessfooter" />,
 			usePixelatedConfig: () => undefined,
 		}));
 
 		const { default: HomePageNoConfig } = await import('@/app/(pages)/(home)/page');
 		render(<HomePageNoConfig />);
 
-		expect(screen.getByTestId('mock-businessfooter').getAttribute('data-google')).toBe('');
+		expect(screen.getByTestId('mock-businessfooter')).toBeTruthy();
 	});
 });

@@ -20,6 +20,7 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		...actual,
 		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
 		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
+		PageMetaTags: () => React.createElement('meta', { 'data-testid': 'mock-page-meta-tags' }, null),
 		WebsiteSchema: () => null,
 		LocalBusinessSchema: () => null,
 		ServicesSchema: () => null,
@@ -68,6 +69,7 @@ describe('App shell coverage', () => {
 	beforeEach(() => {
 		resetMockState();
 		vi.clearAllMocks();
+		(globalThis as any).pathname = '/';
 	});
 
 	it('renders the global error UI', () => {
