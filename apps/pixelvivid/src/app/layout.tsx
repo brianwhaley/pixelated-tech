@@ -1,10 +1,12 @@
 import React from "react";
 import { headers } from 'next/headers';
-import { PixelatedServerConfigProvider, type SiteInfo, getRouteByKey, getFullPixelatedConfig } from "@pixelated-tech/components/server";
+import { PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { descriptionToKeywords, getEbayItem, getEbayProductSchema } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema, ProductSchema } from "@pixelated-tech/components";
-import { GoogleFonts } from "@pixelated-tech/components";
+import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, ProductSchema } from "@pixelated-tech/components";
+import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
+import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
+import { PageMetaTags } from "@pixelated-tech/components/server";
 import Header from "@/app/elements/header";
 import HeaderNav from "./elements/headernav";
 import Nav from "@/app/elements/nav";
@@ -16,17 +18,12 @@ import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "./styles/globals.css";
 
-import { generateMetaTags } from "@pixelated-tech/components/server";
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 
 	const pixelatedConfig = getFullPixelatedConfig();
-	const headersList = await headers();
-	const url = headersList.get("x-url") || "";
+	const headersList: Headers = await (headers() as Promise<Headers>);
 	const origin = headersList.get("x-origin") || "";
 	const pathname = headersList.get("x-path") || "";
-	const siteInfo = pixelatedConfig.siteInfo;
-
 	let myMetadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
 	let productSchema = null;
 
@@ -65,21 +62,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 		<html lang="en">
 			<head>
 				<PixelatedServerConfigProvider>
-					{generateMetaTags({
-						title: myMetadata?.title ?? "",
-						description: myMetadata?.description ?? "",
-						keywords: myMetadata?.keywords ?? "",
-						origin: origin ?? "",
-						url: url ?? "",
-						siteInfo: siteInfo as SiteInfo,
-					})}
-					<BreadcrumbListSchema currentPath={pathname} />
+					<PageMetaTags />
+					<BreadcrumbListSchema />
 					{productSchema && <ProductSchema product={productSchema} />}
 					<WebsiteSchema />
 					<LocalBusinessSchema />
 					<ServicesSchema />
 					<VisualDesignStyles />
-					<GoogleFonts visualdesign={pixelatedConfig.visualdesign} />
+					<GoogleFonts />
 				</PixelatedServerConfigProvider>
 			</head>
 			<body>

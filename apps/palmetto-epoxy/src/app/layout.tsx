@@ -1,7 +1,8 @@
 import { headers } from "next/headers";
-import { getRouteByKey, type Metadata, type SiteInfo, getFullPixelatedConfig } from "@pixelated-tech/components/server";
-import { generateMetaTags } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema } from "@pixelated-tech/components";
+import { getRouteByKey, type Metadata, getFullPixelatedConfig } from "@pixelated-tech/components/server";
+import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
+import { PageMetaTags } from "@pixelated-tech/components/server";
 import { PixelatedServerConfigProvider } from "@pixelated-tech/components/server";
 import { getContentfulEntriesByType, getContentfulEntryByField } from "@pixelated-tech/components";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
@@ -18,12 +19,9 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 	
 	const reqHeaders: Headers = await (headers() as Promise<Headers>);
 	const path = reqHeaders.get("x-path") ?? "/";
-	const origin = reqHeaders.get("x-origin");
-	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
 	const pixelatedConfig = getFullPixelatedConfig();
 	let metadata: Metadata = getRouteByKey(pixelatedConfig.routes, "path", pathname) ?? {};
-	const siteInfo = pixelatedConfig.siteInfo;
 
 	// If the route is /projects/:project, prefer the Contentful `carouselCard`
 	// metadata (server-side). Fall back to a humanized slug when Contentful
@@ -94,15 +92,8 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 			<html lang="en">
 				<head>
 					<PixelatedServerConfigProvider>
-						{ generateMetaTags({
-							title: metadata?.title ?? "",
-							description: metadata?.description ?? "",
-							keywords: metadata?.keywords ?? "",
-							origin: origin ?? "",
-							url: url ?? "",
-							siteInfo: siteInfo as unknown as SiteInfo,
-						}) }
-						<BreadcrumbListSchema currentPath={pathname} />
+						<PageMetaTags />
+						<BreadcrumbListSchema />
 						<WebsiteSchema />
 						<LocalBusinessSchema />
 						<ServicesSchema />

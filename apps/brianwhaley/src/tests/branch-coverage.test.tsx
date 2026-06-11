@@ -42,7 +42,21 @@ vi.mock('@pixelated-tech/components', async () => {
 			Carousel: ({ cards }: any) => <div data-testid="mock-carousel">{cards?.map((card: any) => card.imageAlt).join(',')}</div>,
 			GetFlickrData: async () => sampleFlickrImages,
 			GenerateFlickrCards: actual.GenerateFlickrCards,
-			FlickrWrapper: actual.FlickrWrapper,
+			FlickrWrapper: async (props: any) => {
+				const myFlickrCards = actual.GenerateFlickrCards({ flickrImages: sampleFlickrImages, photoSize: props.photoSize || 'Large' });
+				if (myFlickrCards) {
+					const scrubbed = myFlickrCards.map((obj: any, index: number) => ({
+						index,
+						cardIndex: index,
+						cardLength: myFlickrCards.length,
+						image: obj.image,
+						imageAlt: obj.imageAlt,
+						subHeaderText: obj.subHeaderText,
+					}));
+					props.callback(scrubbed);
+					return scrubbed;
+				}
+			},
 			Modal: ({ modalContent }: any) => <div data-testid="mock-modal">{modalContent}</div>,
 		}),
 	};

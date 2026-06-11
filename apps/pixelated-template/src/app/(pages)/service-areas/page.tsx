@@ -18,7 +18,7 @@ export default function ServiceAreasPage() {
 			</PageSection>
 
 			<ServiceAreas
-				siteInfo={siteInfo}
+				
 				title={`${siteName} Service Areas`}
 				intro="Click a service area to read about the local coverage, specialties, and how we support businesses in that region."
 				serviceAreaPathPrefix="/service-areas"

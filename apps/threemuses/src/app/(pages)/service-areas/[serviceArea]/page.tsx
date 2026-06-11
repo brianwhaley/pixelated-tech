@@ -2,9 +2,9 @@
 
 import React, { useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import { PageTitleHeader, PageSection, ServiceAreaDetailPage, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceAreaDetail, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
 
-export default function ServiceAreaDetailRoute() {
+export default function ServiceAreaDetailPage() {
 	const pixelatedConfig = usePixelatedConfig();
 	const params = useParams();
 	const serviceAreaSlug = typeof params?.serviceArea === 'string' ? params.serviceArea : '';
@@ -23,9 +23,9 @@ export default function ServiceAreaDetailRoute() {
 			<PageTitleHeader title={`The Three Muses of Bluffton - ${activeServiceArea?.name ? `${activeServiceArea.name}` : 'Service Area'}`} />
 			<PageSection columns={1} maxWidth="1024px" id="service-area-detail-wrapper">
 				{activeServiceArea ? (
-					<ServiceAreaDetailPage
-						serviceArea={activeServiceArea}
-						siteInfo={siteInfo}
+					<ServiceAreaDetail
+						serviceAreaSlug={serviceAreaSlug}
+						
 						serviceAreaPathPrefix="/service-areas"
 					/>
 				) : (

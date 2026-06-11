@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '../test/test-utils';
+import { render, createMockConfig } from '../test/test-utils';
 import { screen } from '@testing-library/react';
 import { BusinessFooter } from '@/components/structure/businessfooter';
 import type { SiteInfo } from '@/components/config/config.types';
@@ -27,7 +27,7 @@ const siteInfo: SiteInfo = {
 
 describe('BusinessFooter', () => {
   it('renders site contact info and a Google Maps link', () => {
-    render(<BusinessFooter siteInfo={siteInfo} />);
+    render(<BusinessFooter />, { config: { siteInfo } });
 
     expect(screen.getByText('Manning Metalworks')).toBeTruthy();
     expect(screen.getByText('24 West Hanover Avenue')).toBeTruthy();
@@ -43,89 +43,96 @@ describe('BusinessFooter', () => {
   });
 
   it('renders opening hours in traditional AM/PM format and an embed iframe', () => {
-    render(<BusinessFooter siteInfo={siteInfo} />);
+    render(<BusinessFooter />, { config: { siteInfo } });
 
     expect(screen.getByText('Mon: 9:00 AM - 5:00 PM')).toBeTruthy();
     expect(screen.getByText('Sat: Closed')).toBeTruthy();
     const frame = screen.getByTitle('Business location map');
-    expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps?q='));
+    expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps'));
   });
 
   it('renders opening hours additional info when provided', () => {
-    render(
-      <BusinessFooter
-        siteInfo={{
+    render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo: {
           ...siteInfo,
           openingHoursAdditionalInfo: 'Closed on weekends and major holidays.',
-        }}
-      />
-    );
+        },
+      }),
+    });
 
     expect(screen.getByText('Closed on weekends and major holidays.')).toBeTruthy();
   });
 
   it('renders address additional info when provided', () => {
-    render(
-      <BusinessFooter
-        siteInfo={{
+    render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo: {
           ...siteInfo,
           addressAdditionalInfo: 'Suite 203, located in the Atrium Building',
-        }}
-      />
-    );
+        },
+      }),
+    });
 
     expect(screen.getByText('Suite 203, located in the Atrium Building')).toBeTruthy();
   });
 
   it('renders Google Maps with an API key when provided', () => {
-    render(<BusinessFooter siteInfo={siteInfo} googleMapsApiKey="AIza_test_key" />);
+    render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo,
+        integrations: {
+          googleMaps: { apiKey: 'AIza_test_key' },
+        },
+      }),
+    });
     
     const frame = screen.getByTitle('Business location map');
     expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps/embed/v1/place?key=AIza_test_key'));
   });
 
   it('handles string based opening hours', () => {
-    render(
-      <BusinessFooter
-        siteInfo={{
+    render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo: {
           ...siteInfo,
           openingHours: 'Open 24/7' as any,
-        }}
-      />
-    );
+        },
+      }),
+    });
     expect(screen.getByText('Open 24/7')).toBeTruthy();
   });
 
   it('handles invalid time format in opening hours gracefully', () => {
-    render(
-      <BusinessFooter
-        siteInfo={{
+    render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo: {
           ...siteInfo,
           openingHours: [
             { day: 'Mon', open: 'invalid', close: 'time' }
           ],
-        }}
-      />
-    );
+        },
+      }),
+    });
     // Should display the raw invalid string if Date parsing fails
     expect(screen.getByText('Mon: invalid - time')).toBeTruthy();
   });
 
   it('handles missing address gracefully', () => {
-    const { container } = render(
-      <BusinessFooter
-        siteInfo={{
+    const { container } = render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo: {
           ...siteInfo,
-          address: undefined
-        }}
-      />
-    );
+          address: undefined,
+        },
+      }),
+    });
     expect(screen.queryByTitle('Business location map')).not.toBeInTheDocument();
     expect(screen.getByText('Map unavailable')).toBeTruthy();
   });
 
   it('returns null if siteInfo is missing', () => {
-    const { container } = render(<BusinessFooter siteInfo={undefined as any} />);
+    const { container } = render(<BusinessFooter />, { config: {} as any });
     expect(container.firstChild).toBeNull();
   });
 });

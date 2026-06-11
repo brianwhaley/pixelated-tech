@@ -31,6 +31,7 @@ function SchemaScript({ schema }: { schema: any }) {
  * SchemaBlogPosting — Inject a JSON-LD <script> tag containing a BlogPosting schema object.
  *
  * @param {object} [props.post] - Structured JSON-LD object representing a blog post (BlogPosting schema).
+ * @returns {JSX.Element} A script tag with the BlogPosting JSON-LD data.
  */
 SchemaBlogPosting.propTypes = {
 /** Structured BlogPosting JSON-LD object */
@@ -131,116 +132,15 @@ export function SchemaEvent(props: SchemaEventType) {
 
 
 
-/* ========================================
-	BREADCRUMB SCHEMA COMPONENTS
-======================================== */
-
-import type { Route } from './metadata.functions';
-
-interface BreadcrumbListItem {
-	'@type': string;
-	'position': number;
-	'name': string;
-	'item': string;
-}
-
-interface BreadcrumbListJsonLD {
-	'@context': string;
-	'@type': string;
-	'itemListElement': BreadcrumbListItem[];
-}
-
-/**
- * Build breadcrumb trail from root to current path.
- * e.g., "/store/item-slug" produces ["/", "/store", "/store/item-slug"]
- */
-function buildPathSegments(currentPath: string): string[] {
-	const segments = ['/'];
-	if (currentPath === '/') return segments;
-
-	const parts = currentPath.split('/').filter(Boolean);
-	let accumulated = '';
-
-	for (const part of parts) {
-		accumulated += '/' + part;
-		segments.push(accumulated);
-	}
-
-	return segments;
-}
-
-/**
- * Determine breadcrumb name for a path segment.
- * Uses route name if exact match found, otherwise uses humanized path segment.
- */
-function getSegmentName(routes: Route[], path: string, segment: string): string {
-	if (path === '/') return 'Home';
-
-	// Only use exact route matches with valid paths to avoid duplicating parent breadcrumb names
-	const route = routes.find((r) => r.path && r.path === path);
-	if (route) return route.name || segment;
-
-	// Fallback: humanize the path segment
-	return segment
-		.split('-')
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-		.join(' ');
-}
 
 
 /* ========================================
 	BREADCRUMB SCHEMA COMPONENTS
 ======================================== */
 
-/**
- * BreadcrumbListSchema — auto-generates a breadcrumb list as JSON-LD from config.
- * Parses the current path, builds a breadcrumb trail from the app routes defined in config,
- * and embeds it as schema.org/BreadcrumbList for SEO rich snippets.
- *
- * @param {string} [props.currentPath] - Current page path (e.g. "/store/vintage-oakley"). Defaults to "/" if not provided.
- */
-BreadcrumbListSchema.propTypes = {
-	/** Current page path to generate breadcrumbs for (e.g. "/store/item-slug"). Defaults to "/". */
-	currentPath: PropTypes.string,
-};
-export type BreadcrumbListSchemaType = InferProps<typeof BreadcrumbListSchema.propTypes>;
-export function BreadcrumbListSchema({
-	currentPath = '/',
-}: BreadcrumbListSchemaType) {
-	const config = usePixelatedConfig();
-	const finalRoutes: Route[] = Array.isArray(config?.routes)
-		? (config.routes as Route[])
-		: [];
-
-	const pathSegments = buildPathSegments(currentPath || '/');
-	const finalSiteUrl = config?.siteInfo?.url || 'https://example.com';
-
-	const itemListElement: BreadcrumbListItem[] = pathSegments.map(
-		(path, index) => {
-			const segment = path.split('/').filter(Boolean).pop() || 'Home';
-			return {
-				'@type': 'ListItem',
-				'position': index + 1,
-				'name': getSegmentName(finalRoutes, path, segment),
-				'item': `${finalSiteUrl.replace(/\/$/, '')}${path}`,
-			};
-		}
-	);
-
-	const jsonLD: BreadcrumbListJsonLD = {
-		'@context': 'https://schema.org',
-		'@type': 'BreadcrumbList',
-		'itemListElement': itemListElement,
-	};
-
-	return (
-		<SchemaScript schema={jsonLD} />
-	);
-}
-
-
-
-
+/* The server-only breadcrumb schema implementation lives in schema.server.tsx.
+   This client module no longer exports the breadcrumb JSON-LD component.
+*/
 
 /* ========================================
 	FAQ SCHEMA COMPONENTS
@@ -352,107 +252,33 @@ export function formatServiceDescription(description: unknown): string | undefin
  * Generates JSON-LD structured data for SEO
  * https://schema.org/LocalBusiness
  * 
- * This component uses siteInfo passed as props to generate schema data.
- * It does not use client-side hooks and can be rendered on the server.
+ * @param no params
+ * @return A SchemaScript component embedding LocalBusiness JSON-LD, or null if required data is missing.
+ * 
+ * This component uses siteInfo from the config provider to generate schema data.
  */
-
-/**
- * LocalBusinessSchema — generates JSON-LD for a LocalBusiness using provided props and config.
- *
- * @param {string} [props.name] - Business name (overrides config siteInfo.name).
- * @param {object} [props.address] - Address object containing streetAddress, addressLocality, addressRegion, postalCode, and addressCountry.
- * @param {string} [props.streetAddress] - Street address line.
- * @param {string} [props.addressLocality] - City or locality.
- * @param {string} [props.addressRegion] - State, region or province.
- * @param {string} [props.postalCode] - Postal/ZIP code.
- * @param {string} [props.addressCountry] - Country (defaults to 'United States' when missing).
- * @param {string} [props.telephone] - Contact phone number.
- * @param {string} [props.url] - Canonical website URL.
- * @param {string} [props.logo] - Logo image URL.
- * @param {string} [props.image] - Representative image URL.
- * @param {oneOfType} [props.openingHours] - Opening hours string, array of strings, or array of day objects in schema.org format.
- * @param {string} [props.description] - Short business description.
- * @param {string} [props.email] - Contact email address.
- * @param {string} [props.priceRange] - Price range (e.g. '$$', optional).
- * @param {arrayOf} [props.sameAs] - Array of social/profile URLs for schema 'sameAs'.
- */
-LocalBusinessSchema.propTypes = {
-/** Business name to include in schema (falls back to config siteInfo.name). */
-	name: PropTypes.string,
-	/** Address object for the business */
-	address: PropTypes.shape({
-		/** Street address for the business. */
-		streetAddress: PropTypes.string,
-		/** City or locality for the business address. */
-		addressLocality: PropTypes.string,
-		/** State/region for the business address. */
-		addressRegion: PropTypes.string,
-		/** Postal or ZIP code for the address. */
-		postalCode: PropTypes.string,
-		/** Country for the address (defaults to United States when absent). */
-		addressCountry: PropTypes.string,
-	}),
-	/** Street address for the business. */
-	streetAddress: PropTypes.string,
-	/** City or locality for the business address. */
-	addressLocality: PropTypes.string,
-	/** State/region for the business address. */
-	addressRegion: PropTypes.string,
-	/** Postal or ZIP code for the address. */
-	postalCode: PropTypes.string,
-	/** Country for the address (defaults to United States when absent). */
-	addressCountry: PropTypes.string,
-	/** Contact telephone number. */
-	telephone: PropTypes.string,
-	/** Canonical website URL. */
-	url: PropTypes.string,
-	/** Logo image URL for schema/logo property. */
-	logo: PropTypes.string,
-	/** Representative image URL. */
-	image: PropTypes.string,
-	/** Opening hours as a string, array of strings, or array of day objects in schema.org format. */
-	openingHours: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.arrayOf(PropTypes.string),
-		PropTypes.arrayOf(PropTypes.shape({
-			day: PropTypes.string.isRequired,
-			open: PropTypes.string,
-			close: PropTypes.string,
-			hours: PropTypes.string,
-			closed: PropTypes.bool,
-		})),
-	]),
-	/** Short description for schema. */
-	description: PropTypes.string,
-	/** Contact email address. */
-	email: PropTypes.string,
-	/** Price range string (e.g. '$$'). */
-	priceRange: PropTypes.string,
-	/** Array of profile/URL strings for sameAs (social links). */
-	sameAs: PropTypes.arrayOf(PropTypes.string), // Social media profiles
-};
+LocalBusinessSchema.propTypes = { /** no props */ };
 export type LocalBusinessSchemaType = InferProps<typeof LocalBusinessSchema.propTypes>;
-export function LocalBusinessSchema (props: LocalBusinessSchemaType) {
+export function LocalBusinessSchema() {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
 
-	// Use props if provided, otherwise fall back to siteInfo
-	const name = props.name || siteInfo?.name;
-	const address = props.address || siteInfo?.address;
-	const streetAddress = props.streetAddress || siteInfo?.address?.streetAddress;
-	const addressLocality = props.addressLocality || siteInfo?.address?.addressLocality;
-	const addressRegion = props.addressRegion || siteInfo?.address?.addressRegion;
-	const postalCode = props.postalCode || siteInfo?.address?.postalCode;
-	const addressCountry = props.addressCountry || siteInfo?.address?.addressCountry || 'United States';
-	const telephone = props.telephone || siteInfo?.telephone;
-	const url = props.url || siteInfo?.url;
-	const logo = props.logo || siteInfo?.image;
-	const image = props.image || siteInfo?.image || logo;
-	const openingHours = props.openingHours || normalizeOpeningHoursValue(siteInfo?.openingHours);
-	const description = props.description || siteInfo?.description;
-	const email = props.email || siteInfo?.email;
-	const priceRange = props.priceRange || siteInfo?.priceRange;
-	const sameAs = props.sameAs || siteInfo?.sameAs;
+	const name = siteInfo?.name;
+	const address = siteInfo?.address;
+	const streetAddress = siteInfo?.address?.streetAddress;
+	const addressLocality = siteInfo?.address?.addressLocality;
+	const addressRegion = siteInfo?.address?.addressRegion;
+	const postalCode = siteInfo?.address?.postalCode;
+	const addressCountry = siteInfo?.address?.addressCountry || 'United States';
+	const telephone = siteInfo?.telephone;
+	const url = siteInfo?.url;
+	const logo = siteInfo?.image;
+	const image = siteInfo?.image || logo;
+	const openingHours = normalizeOpeningHoursValue(siteInfo?.openingHours);
+	const description = siteInfo?.description;
+	const email = siteInfo?.email;
+	const priceRange = siteInfo?.priceRange;
+	const sameAs = siteInfo?.sameAs;
 	const schemaData = {
 		'@context': 'https://schema.org',
 		'@type': 'LocalBusiness',

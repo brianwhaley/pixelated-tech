@@ -1,11 +1,9 @@
 "use client";
 
 import React from 'react';
-import { PageTitleHeader, PageSection, ServiceAreas, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, ServiceAreas } from '@pixelated-tech/components';
 
 export default function ServiceAreasPage() {
-	const siteInfo = usePixelatedConfig()?.siteInfo ?? {};
-
 	return (
 		<>
 			<PageTitleHeader title="The Three Muses of Bluffton Service Areas" />
@@ -16,7 +14,6 @@ export default function ServiceAreasPage() {
 			</PageSection>
 
 			<ServiceAreas
-				siteInfo={siteInfo}
 				title="Our Service Areas"
 				intro="Click a service area to read about the local coverage, specialties, and how we support businesses in that region."
 				serviceAreaPathPrefix="/service-areas"

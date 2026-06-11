@@ -23,8 +23,8 @@ vi.mock('@pixelated-tech/components', async () => {
 
 import ServicesPage from '@/app/(pages)/services/page';
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
-import ServiceDetailRoute from '@/app/(pages)/services/[service]/page';
-import ServiceAreaDetailRoute from '@/app/(pages)/service-areas/[serviceArea]/page';
+import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
+import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
 import EbayItem from '@/app/(pages)/store/[item]/page';
 
 describe('PixelVivid service and store route coverage', () => {
@@ -54,7 +54,7 @@ describe('PixelVivid service and store route coverage', () => {
 
 	it('renders a known service detail route', async () => {
 		mockParams = { service: 'custom-upcycled-sunglasses' };
-		render(<ServiceDetailRoute />);
+		render(<ServiceDetailPage />);
 
 		await waitFor(() => expect(screen.getByTestId('mock-servicedetailpage')).not.toBeNull());
 		expect(screen.getByTestId('page-title-header').textContent).toContain('Custom Upcycled Sunglasses');
@@ -62,14 +62,14 @@ describe('PixelVivid service and store route coverage', () => {
 
 	it('renders a service detail fallback for an unknown slug', async () => {
 		mockParams = { service: 'missing-service' };
-		render(<ServiceDetailRoute />);
+		render(<ServiceDetailPage />);
 
 		await waitFor(() => expect(screen.getByText(/Service not found/)).not.toBeNull());
 	});
 
 	it('renders a known service area detail route', async () => {
 		mockParams = { serviceArea: 'us-nationwide-shipping' };
-		render(<ServiceAreaDetailRoute />);
+		render(<ServiceAreaDetailPage />);
 
 		await waitFor(() => expect(screen.getByTestId('mock-serviceareadetailpage')).not.toBeNull());
 		expect(screen.getByTestId('page-title-header').textContent).toContain('US Nationwide Shipping');
@@ -77,7 +77,7 @@ describe('PixelVivid service and store route coverage', () => {
 
 	it('renders a service area detail fallback for an unknown slug', async () => {
 		mockParams = { serviceArea: 'missing-area' };
-		render(<ServiceAreaDetailRoute />);
+		render(<ServiceAreaDetailPage />);
 
 		await waitFor(() => expect(screen.getByText(/Service area not found/)).not.toBeNull());
 	});

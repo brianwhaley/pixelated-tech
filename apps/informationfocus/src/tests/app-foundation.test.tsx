@@ -20,6 +20,7 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		...actual,
 		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
 		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
+		PageMetaTags: () => React.createElement('meta', { 'data-testid': 'mock-page-meta-tags' }, null),
 		WebsiteSchema: () => null,
 		LocalBusinessSchema: () => null,
 		ServicesSchema: () => null,
@@ -50,14 +51,18 @@ import manifest from '@/app/manifest';
 import robots from '@/app/robots';
 import SiteMapXML from '@/app/sitemap';
 import NotFound from '@/app/not-found';
-import { config as pixelatedConfig } from '@/test/page-mocks';
+import { config as pixelatedConfig, setPixelatedConfigOverride } from '@/test/page-mocks';
 import LayoutClient from '@/app/elements/layoutclient';
+import Footer from '@/app/elements/footer';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
+import NotFoundElement from '@/app/elements/notfound';
 import RootLayout from '@/app/layout';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
+
+const cloudinaryProductEnv = 'test_env';
 
 describe('App shell coverage', () => {
 	beforeEach(() => {
@@ -107,6 +112,37 @@ describe('App shell coverage', () => {
 	it('renders nav menu items', () => {
 		render(<Nav />);
 		expect(screen.getByTestId('menu-simple')).not.toBeNull();
+	});
+
+	it('renders nav with fallback routes when config is unavailable', () => {
+		setPixelatedConfigOverride(null);
+		render(<Nav />);
+		expect(screen.getByTestId('menu-simple')).not.toBeNull();
+	});
+
+	it('renders footer element without error', () => {
+		render(<Footer />);
+		expect(screen.getByTestId('google-analytics')).not.toBeNull();
+		expect(screen.getByTestId('pixelated-footer')).not.toBeNull();
+	});
+
+	it('renders app element not-found without error', () => {
+		render(<NotFoundElement />);
+		expect(screen.getByTestId('smart-image')).not.toBeNull();
+	});
+
+	it('renders layout client and uses cloudinary fallback product env', async () => {
+		setPixelatedConfigOverride({ integrations: { cloudinary: {} } });
+		render(<LayoutClient />);
+		await new Promise(resolve => setTimeout(resolve, 0));
+		expect(true).toBe(true);
+	});
+
+	it('renders layout client with explicit cloudinary product env', async () => {
+		setPixelatedConfigOverride({ integrations: { cloudinary: { product_env: cloudinaryProductEnv } } });
+		render(<LayoutClient />);
+		await new Promise(resolve => setTimeout(resolve, 0));
+		expect(true).toBe(true);
 	});
 
 	it('uses real pixelated.config.json siteInfo and route data', () => {

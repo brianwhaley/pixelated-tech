@@ -162,7 +162,7 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	);
 };
 
-const mockServiceDetailPage = ({ service, title, id }: any) => {
+const mockServiceDetail = ({ service, title, id }: any) => {
 	return React.createElement(
 		'div',
 		{ 'data-testid': 'mock-servicedetailpage', id },
@@ -170,7 +170,7 @@ const mockServiceDetailPage = ({ service, title, id }: any) => {
 	);
 };
 
-const mockServiceAreaDetailPage = ({ serviceArea, title, id }: any) => {
+const mockServiceAreaDetail = ({ serviceArea, title, id }: any) => {
 	return React.createElement(
 		'div',
 		{ 'data-testid': 'mock-serviceareadetailpage', id },
@@ -249,8 +249,8 @@ const defaultMocks: Record<string, any> = {
 	Services: mockServicesList,
 	ServiceAreasList: mockServiceAreasList,
 	ServiceAreas: mockServiceAreasList,
-	ServiceDetailPage: mockServiceDetailPage,
-	ServiceAreaDetailPage: mockServiceAreaDetailPage,
+	ServiceDetail: mockServiceDetail,
+	ServiceAreaDetail: mockServiceAreaDetail,
 	EbayItemDetail: mockComponent('EbayItemDetail', 'mock-ebayitemdetail'),
 	ContentfulItemDetail: mockComponent('ContentfulItemDetail', 'mock-contentfulitemdetail'),
 	ContentfulItems: mockComponent('ContentfulItems', 'mock-contentfulitems'),

@@ -8,8 +8,7 @@ import { FormButton } from '@pixelated-tech/components';
 import { Hero } from '@pixelated-tech/components';
 
 export default function Home() {
-	const pixelatedConfig = usePixelatedConfig();
-	const googleMapsApiKey = pixelatedConfig?.integrations?.googleMaps?.apiKey ?? undefined;
+	usePixelatedConfig();
 
 	return (
 		<>
@@ -148,7 +147,7 @@ export default function Home() {
 
 
 			<PageSection maxWidth="1024px" id="service-area-section" columns={1}>
-				<BusinessFooter siteInfo={pixelatedConfig?.siteInfo} googleMapsApiKey={googleMapsApiKey} />
+				<BusinessFooter />
 			</PageSection>
 
 

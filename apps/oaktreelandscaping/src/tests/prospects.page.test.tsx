@@ -40,4 +40,26 @@ describe('Oaktree Landscaping prospects page', () => {
 		render(<Requests />);
 		await waitFor(() => expect(screen.getByTestId('mock-table')).toBeTruthy());
 	});
+
+	it('renders a table when prospects fields are missing and still transforms data', async () => {
+		setFileDataState({
+			data: [
+				{
+					company: null,
+					'first name': null,
+					'last name': null,
+					'street address': null,
+					city: 'Orlando',
+					state: 'FL',
+					zip: '32801',
+					emails: ['jane@example.com'],
+				},
+			],
+			loading: false,
+			error: null,
+		});
+
+		render(<Requests />);
+		await waitFor(() => expect(screen.getByTestId('mock-table')).toBeTruthy());
+	});
 });

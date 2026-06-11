@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { getFontOptionsClient } from '../../integrations/google.fonts';
+import { getFontOptionsClient } from '../../integrations/google.fonts.functions';
 import { WEB_SAFE_FONTS, GENERIC_FAMILIES, type FontOption } from './fonts';
 import './FontSelector.css';
 

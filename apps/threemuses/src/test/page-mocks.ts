@@ -147,7 +147,7 @@ const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
 	);
 };
 
-const mockServiceDetailPage = ({ service, title, id }: any) => {
+const mockServiceDetail = ({ service, title, id }: any) => {
 	return React.createElement(
 		'div',
 		{ 'data-testid': 'mock-servicedetailpage', id },
@@ -223,7 +223,7 @@ const defaultMocks: Record<string, any> = {
 	ServicesList: mockServicesList,
 	Services: mockServicesList,
 	ServiceCard: mockComponent('ServiceCard'),
-	ServiceDetailPage: mockServiceDetailPage,
+	ServiceDetail: mockServiceDetail,
 	Tiles: mockComponent('Tiles', 'tiles'),
 	contentfulValueToSlug,
 	ContentfulAlert: mockComponent('ContentfulAlert'),

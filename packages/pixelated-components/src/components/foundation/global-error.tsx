@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import type { SiteInfo } from '../config/config.types';
+import { usePixelatedConfig } from '../config/config.client';
 import './global-error.css';
 
 /**
@@ -10,7 +10,6 @@ import './global-error.css';
  *
  * @param {any} [props.error] - Error object; may include message and stack for diagnostics.
  * @param {function} [props.reset] - Optional retry/reset callback to attempt the failed action again.
- * @param {object} [props.siteInfo] - Site-level information (used to render contact email/link when available).
  * @param {string} [props.className] - Additional CSS class(es) to apply to the root element.
  */
 GlobalErrorUI.propTypes = {
@@ -18,18 +17,17 @@ GlobalErrorUI.propTypes = {
 	error: PropTypes.any,
 	/** Optional retry/reset function called when the user clicks 'Try again'. */
 	reset: PropTypes.func,
-	/** Optional site information (used to build a contact mailto link when an email is available). */
-	siteInfo: PropTypes.object,
 	/** Additional class names to apply to the component root. */
 	className: PropTypes.string,
 };
 export type GlobalErrorUIType = InferProps<typeof GlobalErrorUI.propTypes>;
-export function GlobalErrorUI({ error = null, reset, siteInfo, className = '' } : GlobalErrorUIType) {
+export function GlobalErrorUI({ error = null, reset, className = '' } : GlobalErrorUIType) {
 	const [showDetails, setShowDetails] = useState(false);
-	const si = siteInfo as SiteInfo | undefined;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
 	const contactHref: string | undefined =
-		typeof (si as any)?.email === 'string'
-			? `mailto:${(si as any).email}`
+		typeof siteInfo?.email === 'string'
+			? `mailto:${siteInfo.email}`
 			: undefined;
 	return (
 		<main role="alert" aria-live="polite" className={`global-error ${className}`}>

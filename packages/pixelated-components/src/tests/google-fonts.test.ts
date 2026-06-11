@@ -1,7 +1,8 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/integrations/google.fonts.server';
-import { generateGoogleFontsUrl, generateGoogleFontsLink, extractGoogleFonts, GoogleFonts, getFontOptionsClient } from '../components/integrations/google.fonts';
+import { generateGoogleFontsUrl, generateGoogleFontsLink, extractGoogleFonts, getFontOptionsClient } from '../components/integrations/google.fonts.functions';
+import { GoogleFonts } from '../components/integrations/google.fonts';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
 import { getFullPixelatedConfig } from '../components/config/config';
@@ -182,23 +183,32 @@ describe('google-fonts', () => {
 			expect(fonts).not.toContain('Arial');
 		});
 
-		it('should return no links when visualdesign contains only websafe fonts', () => {
+		it('should return no links when config contains only websafe fonts', () => {
 			const visualdesign = {
 				'header-font': 'Arial, sans-serif',
 				'body-font': 'Times New Roman, serif'
 			};
 
-			const { container } = render(React.createElement(GoogleFonts, { visualdesign }));
+			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign });
+			const { container } = render(React.createElement(GoogleFonts));
 			expect(container.firstChild).toBeNull();
 		});
 
-		it('should render GoogleFonts links for extracted fonts', () => {
+		it('should render GoogleFonts links for extracted fonts from config', () => {
 			const visualdesign = {
 				'header-font': 'Lobster, cursive',
 				'body-font': 'Georgia, serif'
 			};
 
-			const { container } = render(React.createElement(GoogleFonts, { visualdesign }));
+			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign });
+			const { container } = render(React.createElement(GoogleFonts));
+			expect(container.querySelectorAll('link[rel="stylesheet"]').length).toBeGreaterThan(0);
+			expect(container.innerHTML).toContain('fonts.googleapis.com/css2');
+		});
+
+		it('should render GoogleFonts links using config fallback when visualdesign prop is absent', () => {
+			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign: { 'header-font': 'Lobster, cursive' } });
+			const { container } = render(React.createElement(GoogleFonts, {} as any));
 			expect(container.querySelectorAll('link[rel="stylesheet"]').length).toBeGreaterThan(0);
 			expect(container.innerHTML).toContain('fonts.googleapis.com/css2');
 		});

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
+import { usePixelatedConfig } from '../config/config.client';
 import { PageSection, PageSectionHeader } from './page-blocks';
 import './businessfooter.css';
 
@@ -96,37 +97,19 @@ function buildOpeningHoursDisplay(value: unknown) {
 /**
  * BusinessFooterAddress
  * Displays the business's address and contact information, with a link to Google Maps if an address is provided.
- * 
- * @param {Object} props
- * @param {string} [props.name] - The name of the business or location.
- * @param {Object} [props.address] - The structured address information.
- * @param {string} [props.address.streetAddress] - The street address.
- * @param {string} [props.address.addressLocality] - The city or locality.
- * @param {string} [props.address.addressRegion] - The state or region.
- * @param {string} [props.address.postalCode] - The postal code.
- * @param {string} [props.address.addressCountry] - The country.
- * @param {string} [props.addressAdditionalInfo] - Any additional information about the address (e.g. suite number, landmarks).
- * @param {string} [props.telephone] - The business's telephone number.
- * @param {string} [props.email] - The business's email address.
- * 
- * @returns {JSX.Element}
+ * @param no props
+ * @returns {JSX.Element} 
  */
-BusinessFooterAddress.propTypes = {
-	name: PropTypes.string,
-	address: PropTypes.shape({
-		streetAddress: PropTypes.string,
-		addressLocality: PropTypes.string,
-		addressRegion: PropTypes.string,
-		postalCode: PropTypes.string,
-		addressCountry: PropTypes.string,
-	}),
-	addressAdditionalInfo: PropTypes.string,
-	telephone: PropTypes.string,
-	email: PropTypes.string,
-};
+BusinessFooterAddress.propTypes = { /** no props */ };
 export type BusinessFooterAddressType = InferProps<typeof BusinessFooterAddress.propTypes>;
 export function BusinessFooterAddress(props: BusinessFooterAddressType) {
-	const { name, address, addressAdditionalInfo, telephone, email } = props;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const name = siteInfo?.name;
+	const address = siteInfo?.address;
+	const addressAdditionalInfo = siteInfo?.addressAdditionalInfo;
+	const telephone = siteInfo?.telephone;
+	const email = siteInfo?.email;
 	const addressQuery = buildAddressQuery(address ?? null);
 	const mapsUrl = addressQuery ? buildGoogleMapsUrl(addressQuery) : undefined;
 
@@ -174,34 +157,18 @@ export function BusinessFooterAddress(props: BusinessFooterAddressType) {
 /**
  * BusinessFooterMap
  * Displays a Google Maps iframe of the business's location if an address is provided.
- * 
- * @param {Object} props
- * @param {Object} [props.address] - The structured address information.
- * @param {string} [props.address.streetAddress] - The street address.
- * @param {string} [props.address.addressLocality] - The city or locality.
- * @param {string} [props.address.addressRegion] - The state or region.
- * @param {string} [props.address.postalCode] - The postal code.
- * @param {string} [props.address.addressCountry] - The country.
- * @param {string} [props.googleMapsApiKey] - The Google Maps API key.
- * 
+ * @param no props
  * @returns {JSX.Element}
  */
-BusinessFooterMap.propTypes = {
-	address: PropTypes.shape({
-		streetAddress: PropTypes.string,
-		addressLocality: PropTypes.string,
-		addressRegion: PropTypes.string,
-		postalCode: PropTypes.string,
-		addressCountry: PropTypes.string,
-	}),
-	googleMapsApiKey: PropTypes.string,
-};
+BusinessFooterMap.propTypes = { /** no props */ };
 export type BusinessFooterMapType = InferProps<typeof BusinessFooterMap.propTypes>;
 export function BusinessFooterMap(props: BusinessFooterMapType) {
-	const { address, googleMapsApiKey } = props;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const address = siteInfo?.address;
+	const googleMapsApiKey = config?.integrations?.googleMaps?.apiKey || config?.integrations?.google?.api_key;
 	const addressQuery = buildAddressQuery(address ?? null);
-	const embedUrl = addressQuery ? buildGoogleMapsEmbedUrl(addressQuery, googleMapsApiKey ?? undefined) : undefined;
-
+	const embedUrl = addressQuery ? buildGoogleMapsEmbedUrl(addressQuery, googleMapsApiKey) : undefined;
 	return embedUrl ? (
 		<iframe
 			title="Business location map"
@@ -224,35 +191,18 @@ export function BusinessFooterMap(props: BusinessFooterMapType) {
 /**
  * BusinessFooterHours
  * Displays the business's opening hours in a user-friendly format.
- * 
- * @param {Object} props
- * @param {string|Array} [props.openingHours] - The opening hours information, which can be a string, an array of strings, or an array of objects with detailed hours information.
- * @param {string} [props.openingHoursAdditionalInfo] - Any additional information about the opening hours (e.g. holiday closures, seasonal variations).
- * 
+ * @param no props
  * @returns {JSX.Element}
  */
-BusinessFooterHours.propTypes = {
-	openingHours: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.arrayOf(PropTypes.string),
-		PropTypes.arrayOf(
-			PropTypes.shape({
-				day: PropTypes.string.isRequired,
-				open: PropTypes.string,
-				close: PropTypes.string,
-				hours: PropTypes.string,
-				closed: PropTypes.bool,
-			})
-		),
-	]),
-	openingHoursAdditionalInfo: PropTypes.string,
-};
+BusinessFooterHours.propTypes = { /** no props */ };
 export type BusinessFooterHoursType = InferProps<typeof BusinessFooterHours.propTypes>;
 export function BusinessFooterHours(props: BusinessFooterHoursType) {
-	const { openingHours, openingHoursAdditionalInfo } = props;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const openingHours = siteInfo?.openingHours;
+	const openingHoursAdditionalInfo = siteInfo?.openingHoursAdditionalInfo;
 	const hours = buildOpeningHoursDisplay(openingHours);
 	const hasHours = hours.length > 0;
-
 	return (
 		<>
 			<h3>Hours</h3>
@@ -281,73 +231,32 @@ export function BusinessFooterHours(props: BusinessFooterHoursType) {
 
 /**
  * BusinessFooter
- * Displays business contact information, opening hours, and an embedded Google Map based on the provided siteInfo prop.
- * It uses the PageSection component for layout and supports an optional Google Maps API key for enhanced map embedding.
+ * Displays business contact information, opening hours, and an embedded Google Map.
+ * It uses the PageSection component for layout and reads the Google Maps API key from the Pixelated config provider.
  * The component gracefully handles missing data and provides fallback content when necessary.
  * 
- * @param {Object} props
- * @param {Object} [props.siteInfo] - The business's site information.
- * @param {string} [props.googleMapsApiKey] - The Google Maps API key.
- * 
+ * @param no props
  * @returns {JSX.Element}
  */
-BusinessFooter.propTypes = {
-	siteInfo: PropTypes.shape({
-		name: PropTypes.string,
-		email: PropTypes.string,
-		telephone: PropTypes.string,
-		url: PropTypes.string,
-		address: PropTypes.shape({
-			streetAddress: PropTypes.string,
-			addressLocality: PropTypes.string,
-			addressRegion: PropTypes.string,
-			postalCode: PropTypes.string,
-			addressCountry: PropTypes.string,
-		}),
-		openingHours: PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.arrayOf(PropTypes.string),
-			PropTypes.arrayOf(
-				PropTypes.shape({
-					day: PropTypes.string.isRequired,
-					open: PropTypes.string,
-					close: PropTypes.string,
-					hours: PropTypes.string,
-					closed: PropTypes.bool,
-				})
-			),
-		]),
-		openingHoursAdditionalInfo: PropTypes.string,
-		addressAdditionalInfo: PropTypes.string,
-	}),
-	googleMapsApiKey: PropTypes.string,
-};
+BusinessFooter.propTypes = { /** no props */ };
 export type BusinessFooterType = InferProps<typeof BusinessFooter.propTypes>;
-export function BusinessFooter(props: BusinessFooterType) {
-	const { siteInfo, googleMapsApiKey } = props;
-	if (!siteInfo) return null;
+export function BusinessFooter() {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	if (!siteInfo) { return null; }
 
 	return (
 		<PageSection className="business-footer-section" id="business-footer" layoutType="grid" columns={3} gap="24px" padding="40px 20px">
 			<div className="business-footer-column business-footer-summary">
-				<BusinessFooterAddress
-					name={siteInfo.name}
-					address={siteInfo.address}
-					addressAdditionalInfo={siteInfo.addressAdditionalInfo}
-					telephone={siteInfo.telephone}
-					email={siteInfo.email}
-				/>
+				<BusinessFooterAddress />
 			</div>
 
 			<div className="business-footer-column business-footer-map">
-				<BusinessFooterMap address={siteInfo.address} googleMapsApiKey={googleMapsApiKey} />
+				<BusinessFooterMap />
 			</div>
 
 			<div className="business-footer-column business-footer-hours">
-				<BusinessFooterHours
-					openingHours={siteInfo.openingHours}
-					openingHoursAdditionalInfo={siteInfo.openingHoursAdditionalInfo}
-				/>
+				<BusinessFooterHours />
 			</div>
 		</PageSection>
 	);

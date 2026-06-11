@@ -1,11 +1,9 @@
 "use client";
 
 import React from 'react';
-import { PageTitleHeader, PageSection, Services, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageTitleHeader, PageSection, Services } from '@pixelated-tech/components';
 
 export default function ServicesPage() {
-	const pixelatedConfig = usePixelatedConfig();
-
 	return (
 		<>
 			<PageTitleHeader title="JZ Home Improvement Services" />
@@ -15,10 +13,7 @@ export default function ServicesPage() {
 				</p>
 			</PageSection>
 
-			<Services
-				siteInfo={pixelatedConfig.siteInfo}
-				servicePathPrefix="/services"
-			/>
+			<Services />
 
 			<PageSection columns={1} maxWidth="1024px" id="service-areas-link-section">
 				<p>

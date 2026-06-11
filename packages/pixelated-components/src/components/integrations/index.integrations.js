@@ -8,7 +8,7 @@ export * from './contentful.management';
 export * from './flickr';
 export * from './gemini-api.client';
 export * from './gemini-api.functions';
-export * from './google.fonts';
+export * from './google.fonts.functions';
 export * from './google.map';
 export * from './google.maps';
 export * from './google.reviews.components';

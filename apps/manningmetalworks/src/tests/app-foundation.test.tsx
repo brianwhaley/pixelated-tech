@@ -5,13 +5,13 @@ import { createPageComponentMocks, resetMockState } from '@/test/page-mocks';
 import { headers } from 'next/headers';
 import * as componentsServer from '@pixelated-tech/components/server';
 
-function findReactElementByTestId(node: any, testId: string): boolean {
+function findReactElementByType(node: any, typeName: string): boolean {
 	if (node == null) return false;
 	const nodes = Array.isArray(node) ? node : [node];
 	for (const item of nodes) {
 		if (!item || typeof item !== 'object') continue;
-		if (item.props?.['data-testid'] === testId) return true;
-		if (findReactElementByTestId(item.props?.children, testId)) return true;
+		if (item.type?.name === typeName) return true;
+		if (findReactElementByType(item.props?.children, typeName)) return true;
 	}
 	return false;
 }
@@ -24,6 +24,7 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		...actual,
 		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
 		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
+		PageMetaTags: () => React.createElement('meta', { 'data-testid': 'mock-page-meta-tags' }, null),
 		WebsiteSchema: () => null,
 		LocalBusinessSchema: () => null,
 		ServicesSchema: () => null,
@@ -118,7 +119,7 @@ describe('App shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
+		expect(findReactElementByType(head.props.children, 'PageMetaTags')).toBe(true);
 	});
 
 	it('renders root layout with trailing slash path and fallback metadata', async () => {
@@ -127,7 +128,7 @@ describe('App shell coverage', () => {
 		expect(root.type).toBe('html');
 		const head = Array.isArray(root.props.children) ? root.props.children[1] : undefined;
 		expect(head).toBeDefined();
-		expect(findReactElementByTestId(head.props.children, 'meta-tags')).toBe(true);
+		expect(findReactElementByType(head.props.children, 'PageMetaTags')).toBe(true);
 	});
 
 	it('proxies request headers correctly', () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { GlobalErrorUI } from '../components/foundation/global-error';
 
@@ -152,20 +153,20 @@ describe('GlobalErrorUI - Extended Coverage', () => {
     });
 
     it('should render with empty siteInfo', () => {
-      render(<GlobalErrorUI error={new Error('Test')} siteInfo={{} as any} />);
+      render(<GlobalErrorUI error={new Error('Test')} />, { config: { siteInfo: {} } });
       expect(screen.getByRole('alert')).toBeInTheDocument();
     });
 
     it('should show contact info when available', () => {
       const siteInfo = {
-        adminEmail: 'admin@example.com',
+        email: 'admin@example.com',
       } as any;
       
       render(
         <GlobalErrorUI 
           error={new Error('Test')} 
-          siteInfo={siteInfo}
-        />
+        />, 
+        { config: { siteInfo } }
       );
       
       expect(screen.getByRole('alert')).toBeInTheDocument();

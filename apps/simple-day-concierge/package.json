@@ -1,6 +1,6 @@
 {
   "name": "simple-day-concierge",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": true,
   "description": "Simple Day Concierge - Where Simplicity Meets Exceptional Service",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "@aws-sdk/client-iam": "^3.1064.0",
     "@aws-sdk/client-route-53": "^3.1064.0",
     "@pixelated-tech/components": "*",
-    "next": "^16.2.6",
+    "next": "^16.2.9",
     "react": "^19.2.6"
   },
   "devDependencies": {
@@ -44,7 +44,7 @@
     "@types/node": "^25.7.0",
     "@types/react": "^19.2.14",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.2",
+    "eslint-config-next": "^16.2.9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",

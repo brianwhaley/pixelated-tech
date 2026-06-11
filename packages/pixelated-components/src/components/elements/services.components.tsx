@@ -7,7 +7,7 @@ import { Callout, variants, shapes, layouts, directions } from '../structure/cal
 import { buildServiceAreaUrl } from './service-areas.components';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import { formatServiceDescription } from '../foundation/schema';
-import type { SiteInfoType } from '../config/config.types';
+import { usePixelatedConfig } from '../config/config.client';
 import { SmartImage } from './smartimage';
 import { defaultServicePathPrefix, getServicePathPrefix, buildServiceUrl, resolveServices, findServiceBySlug } from './services.functions';
 
@@ -27,30 +27,12 @@ function renderServiceDescription(description: string | Array<string | null | un
 
 
 /**
- * Services renders a list of services offered by the business, using either a provided array of services or falling back to the siteInfo.services data. Each service is displayed as a Callout card with its name, description, area served, and an optional link to learn more. The component also supports an optional title and introductory text for the section.
+ * Services renders a list of services offered by the business using the config provider's `siteInfo.services` data. Each service is displayed as a Callout card with its name, description, area served, and an optional link to learn more. The component also supports an optional title and introductory text for the section.
  * 
- * @param {ServiceListProps} props - The properties for the Services component, including an optional array of services, site information for fallback, section title, introductory text, URL prefix for service links, and an HTML id attribute.
+ * @param {ServiceListProps} props - The properties for the Services component, including the section title, introductory text, and HTML id attribute.
  * @return A PageSection containing a list of services, or null if no services are available.
- * 
  */
 Services.propTypes = {
-	services: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		image: PropTypes.string,
-		url: PropTypes.string,
-		slug: PropTypes.string,
-	})),
-	siteInfo: PropTypes.shape({
-		services: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-			short_description: PropTypes.string,
-			url: PropTypes.string,
-			slug: PropTypes.string,
-		})),
-	}),
 	variant: PropTypes.oneOf([...variants]),
 	boxShape: PropTypes.oneOf([...shapes]),
 	layout: PropTypes.oneOf([...layouts]),
@@ -62,13 +44,14 @@ Services.propTypes = {
 	imgShape: PropTypes.oneOf([...shapes]),
 	title: PropTypes.string,
 	intro: PropTypes.string,
-	servicePathPrefix: PropTypes.string,
 	id: PropTypes.string,
 };
 export type ServicesType = InferProps<typeof Services.propTypes>;
-export function Services({ services, siteInfo, title = 'Our Services', intro, servicePathPrefix, id = 'services-list', variant, boxShape, layout, direction, gridColumns, imgShape }: ServicesType) {
-	const resolvedPrefix = getServicePathPrefix(siteInfo, servicePathPrefix ?? null);
-	const items = resolveServices({ services, siteInfo });
+export function Services({ title = 'Our Services', intro, id = 'services-list', variant, boxShape, layout, direction, gridColumns, imgShape }: ServicesType) {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const resolvedPrefix = getServicePathPrefix(siteInfo);
+	const items = resolveServices({ siteInfo });
 	if (!items?.length) {
 		return null;
 	}
@@ -163,52 +146,24 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 
 
 /**
- * ServiceDetailPage propTypes enforce the shape of the service detail data used by the component.
- * Each service may include a name, description, url, slug property.
- * ServiceDetailPage propTypes enforce the shape of the service detail data used by the component.
- * Each service may include a name, description, url, slug property.
+ * ServiceDetail propTypes enforce the shape of the service detail data used by the component.
+ * Each service may include a name, description, url, and slug property.
+ * The component resolves service details from `siteInfo.services` only and does not accept service data overrides.
  * 
- * @param {ServiceDetailType} props - The properties for the ServiceDetailPage component, including the service data, an optional array of services for lookup, site information for fallback, the slug to identify the service, section title, URL prefix for service links, and an HTML id attribute.
+ * @param {ServiceDetailType} props - The properties for the ServiceDetail component, including the slug to identify the service, an optional section title, and an HTML id attribute.
  * @returns A PageSection containing the details of the specified service, or null if the service cannot be found.
  */
-ServiceDetailPage.propTypes = {
-	service: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		image: PropTypes.string,
-		termsOfService: PropTypes.string,
-	}),
-	services: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-		short_description: PropTypes.string,
-		image: PropTypes.string,
-		termsOfService: PropTypes.string,
-	})),
-	siteInfo: PropTypes.shape({
-		services: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-			short_description: PropTypes.string,
-		})),
-		image: PropTypes.string,
-		serviceAreas: PropTypes.arrayOf(PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			description: PropTypes.string,
-			short_description: PropTypes.string,
-		})),
-	}),
+ServiceDetail.propTypes = {
 	serviceSlug: PropTypes.string,
 	title: PropTypes.string,
-	servicePathPrefix: PropTypes.string,
 	id: PropTypes.string,
 };
-export type ServiceDetailPageType = InferProps<typeof ServiceDetailPage.propTypes>;
-export function ServiceDetailPage({ service, services, siteInfo, serviceSlug, title, servicePathPrefix, id }: ServiceDetailPageType) {
-	const resolvedPrefix = getServicePathPrefix(siteInfo, servicePathPrefix ?? null);
-	const lookupSource = services?.length ? { ...(siteInfo ?? {}), services } : siteInfo;
-	const activeService = service ?? findServiceBySlug(serviceSlug ?? '', lookupSource);
+export type ServiceDetailType = InferProps<typeof ServiceDetail.propTypes>;
+export function ServiceDetail({ serviceSlug, title, id }: ServiceDetailType) {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const resolvedPrefix = getServicePathPrefix(siteInfo);
+	const activeService = findServiceBySlug(serviceSlug ?? '', siteInfo);
 	if (!activeService) {
 		return null;
 	}

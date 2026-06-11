@@ -15,8 +15,8 @@ export default function PhotographyPage() {
 
 	const [ flickrCards, setFlickrCards ] = useState<CarouselCardType[]>([]);
 	const props = { 
-		api_key: pixelatedConfig?.flickr?.urlProps.api_key || "",
-		user_id: pixelatedConfig?.flickr?.urlProps.user_id || "",
+		api_key: pixelatedConfig?.integrations?.flickr?.urlProps.api_key || "",
+		user_id: pixelatedConfig?.integrations?.flickr?.urlProps.user_id || "",
 		tags: "", // "pixelatedviewsgallery"
 		method: "flickr.photosets.getPhotos", 
 		photoset_id: "72157712416706518",

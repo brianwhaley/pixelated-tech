@@ -10,6 +10,6 @@ describe('JZ Home Improvement services page', () => {
 	it('renders the JZ Home Improvement Services title and service callouts', () => {
 		render(<ServicesPage />);
 		expect(screen.getByTestId('mock-pagetitleheader').textContent).toContain('JZ Home Improvement Services');
-		expect(screen.getAllByTestId('mock-callout').length).toBeGreaterThan(0);
+		expect(screen.getByTestId('mock-services')).toBeTruthy();
 	});
 });

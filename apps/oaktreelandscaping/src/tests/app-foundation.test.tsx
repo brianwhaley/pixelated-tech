@@ -10,6 +10,10 @@ let headerOverrides: Record<string, string | null | undefined> = {
 	'x-origin': 'http://localhost',
 	'x-url': 'http://localhost/',
 };
+
+;(globalThis as any).headers = async () => ({
+	get: (key: string) => headerOverrides[key] ?? null,
+});
 let routeMetadata: { title: string; description: string; keywords: string } | undefined = {
 	title: 'Home',
 	description: 'desc',
@@ -29,6 +33,7 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 vi.mock('@pixelated-tech/components/server', () => ({
 	getRouteByKey: () => routeMetadata,
 	generateMetaTags: () => <meta data-testid="mock-meta" />,
+	PageMetaTags: () => <meta data-testid="mock-page-meta-tags" />,
 	WebsiteSchema: () => <div data-testid="mock-websiteschema" />,
 	LocalBusinessSchema: () => <div data-testid="mock-businessschema" />,
 	ServicesSchema: () => <div data-testid="mock-servicesschema" />,

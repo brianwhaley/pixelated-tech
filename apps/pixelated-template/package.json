@@ -1,6 +1,6 @@
 {
   "name": "pixelated-template",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -35,7 +35,7 @@
     "@aws-sdk/client-route-53": "^3.1062.0",
     "@pixelated-tech/components": "*",
     "happy-dom": "^20.10.1",
-    "next": "^16.2.6",
+    "next": "^16.2.9",
     "react": "^19.2.6"
   },
   "devDependencies": {
@@ -46,7 +46,7 @@
     "@types/react": "^19.2.14",
     "@vitest/coverage-v8": "^4.1.8",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.2",
+    "eslint-config-next": "^16.2.9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",

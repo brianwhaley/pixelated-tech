@@ -1,9 +1,8 @@
 import { headers } from 'next/headers';
-import { getRouteByKey, getFullPixelatedConfig } from '@pixelated-tech/components/server';
-import { generateMetaTags } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, BreadcrumbListSchema } from "@pixelated-tech/components";
-import { GoogleFonts } from "@pixelated-tech/components";
-import { PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
+import { PageMetaTags, PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
+import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
+import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import LayoutClient from '@/app/elements/layout-client';
 import { PageBg } from '@pixelated-tech/components';
@@ -19,36 +18,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-	const pixelatedConfig = getFullPixelatedConfig();
-	const reqHeaders: Headers = await (headers() as Promise<Headers>);
-	const path = reqHeaders.get("x-path") ?? "/";
-	const origin = reqHeaders.get("x-origin");
-	const url = reqHeaders.get("x-url") ?? `${origin}${path}`;
-	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
-
-	const siteInfo = pixelatedConfig.siteInfo;
+	await headers();
 
 	return (
 		<html lang="en">
 			<LayoutClient />
 			<head>
 				<PixelatedServerConfigProvider>
-					{ generateMetaTags({
-						title: metadata?.title ?? "",
-						description: metadata?.description ?? "",
-						keywords: metadata?.keywords ?? "",
-						origin: origin ?? "",
-						url: url ?? "",
-						siteInfo: siteInfo as any,
-					}) }
-					<BreadcrumbListSchema currentPath={pathname} />
+					<PageMetaTags />
+					<BreadcrumbListSchema />
 					<WebsiteSchema />
 					<LocalBusinessSchema />
 					<ServicesSchema />
 					<VisualDesignStyles />
-					<GoogleFonts visualdesign={pixelatedConfig.visualdesign} />
+					<GoogleFonts />
 				</PixelatedServerConfigProvider>
 			</head>
 			<body>

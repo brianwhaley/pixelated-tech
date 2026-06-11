@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { Services as ServicesList, ServiceDetailPage } from '../components/elements/services.components';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
+import { Services as ServicesList, ServiceDetail } from '../components/elements/services.components';
 
 const mockServices = [
 	{
@@ -20,8 +21,8 @@ const mockServices = [
 ];
 
 describe('Services components', () => {
-	it('renders a list of services using direct services props', () => {
-		render(<ServicesList services={mockServices} title="Our Work" intro="Choose a service" />);
+	it('renders a list of services using config-provided services', () => {
+		render(<ServicesList title="Our Work" intro="Choose a service" />, { config: { siteInfo: { services: mockServices } } });
 
 		expect(screen.getByRole('heading', { name: 'Our Work' })).toBeInTheDocument();
 		expect(screen.getByText('Choose a service')).toBeInTheDocument();
@@ -33,14 +34,13 @@ describe('Services components', () => {
 	it('forwards callout layout props to service callout cards', () => {
 		const { container } = render(
 			<ServicesList
-				services={mockServices}
 				title="Our Work"
 				intro="Choose a service"
 				variant="full"
 				layout="vertical"
 				imgShape="round"
 			/>
-		);
+		, { config: { siteInfo: { services: mockServices } } });
 
 		expect(container.querySelector('.callout.full')).toBeInTheDocument();
 		expect(container.querySelector('.callout.vertical')).toBeInTheDocument();
@@ -48,15 +48,13 @@ describe('Services components', () => {
 	});
 
 	it('uses the generated slug for service URLs even when url is provided', () => {
-		render(<ServicesList services={[
-			{ name: 'Floor Coating', description: 'Professional epoxy floor coating.', short_description: 'Protect floors with epoxy.', url: '/services/wrong-path', slug: 'floor-coating' }
-		]} title="Our Work" intro="Choose a service" />);
+		render(<ServicesList title="Our Work" intro="Choose a service" />, { config: { siteInfo: { services: [{ name: 'Floor Coating', description: 'Professional epoxy floor coating.', short_description: 'Protect floors with epoxy.', url: '/services/wrong-path', slug: 'floor-coating' }] } } });
 
 		expect(screen.getByRole('link', { name: /Floor Coating/i })).toHaveAttribute('href', '/services/floor-coating');
 	});
 
-	it('renders service detail from slug using service list fallback', () => {
-		render(<ServiceDetailPage serviceSlug="garage-floor-repair" services={mockServices} />);
+	it('renders service detail from slug using config-provided services', () => {
+		render(<ServiceDetail serviceSlug="garage-floor-repair" />, { config: { siteInfo: { services: mockServices } } });
 
 		expect(screen.getByText('Fast garage floor repair with concrete resurfacing and sealing.')).toBeInTheDocument();
 	});

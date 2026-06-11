@@ -34,6 +34,12 @@ export function handlePixelatedProxy(req: NextRequest) {
 		},
 	});
 
+	if (!(response as any).request) {
+		(response as any).request = {
+			headers: requestHeaders,
+		};
+	}
+
 	// --- Security Headers ---
 
 	// HSTS: Force HTTPS for 1 year
