@@ -1,6 +1,6 @@
 {
   "name": "simple-day-concierge",
-  "version": "0.4.3",
+  "version": "1.0.1",
   "private": true,
   "description": "Simple Day Concierge - Where Simplicity Meets Exceptional Service",
   "license": "MIT",
@@ -28,14 +28,20 @@
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
   },
   "dependencies": {
-    "@aws-sdk/client-amplify": "^3.1064.0",
-    "@aws-sdk/client-cloudwatch": "^3.1064.0",
-    "@aws-sdk/client-dynamodb": "^3.1064.0",
-    "@aws-sdk/client-iam": "^3.1064.0",
-    "@aws-sdk/client-route-53": "^3.1064.0",
+    "@aws-sdk/client-amplify": "^3.1067.0",
+    "@aws-sdk/client-cloudwatch": "^3.1067.0",
+    "@aws-sdk/client-dynamodb": "^3.1067.0",
+    "@aws-sdk/client-iam": "^3.1067.0",
+    "@aws-sdk/client-route-53": "^3.1067.0",
     "@pixelated-tech/components": "*",
+    "@storybook/addon-a11y": "^10.4.4",
+    "@storybook/addon-docs": "^10.4.4",
+    "@storybook/react-dom-shim": "^10.4.4",
+    "@storybook/react-webpack5": "^10.4.4",
     "next": "^16.2.9",
-    "react": "^19.2.6"
+    "react": "^19.2.6",
+    "sass": "^1.101.0",
+    "storybook": "^10.4.4"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",

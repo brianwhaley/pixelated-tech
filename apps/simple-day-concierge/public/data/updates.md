@@ -1,5 +1,20 @@
 # SIMPLE DAY CONCIERGE -- Updates
 
+
+## 2026-06-11 Second set of changes
+* [ x ] Sitewide - logo is not the right size
+* [ x ] FAQ - What is Simple Day - take out cleaning service
+* [ x ] FAQ - Which Towns - Add that services are not limited to these towns
+* [ x ] FAQ - remove DOES airport transportation, can ARRANGE
+* [ x ] FAQ - boutique reference - can ARRANGE transport
+* [ x ] FAQ - Do you do Medical Service - remove take to local senior centers etc - can ARRANGE
+* [ x ] FAQ - Do you work outside service area - cant drive, can ARRANGE
+* [ x ] Pricing - Package 1 - 10 hrs $539 - 54/hr
+* [ x ] Pricing - Package 2 - 1039 52/hr
+* [ x ] Package 3 - 1999 50/hr
+* [ x ] Service Areas - Add Wycoff and Montvale to service areas
+
+
 ## 2026-06-08 First Set of Content Changes
 * [ x ] Home Page - "protect your keys" - make more generic about privacy
 * [ x ] Services - Move Companion & Wellness to $55/hr

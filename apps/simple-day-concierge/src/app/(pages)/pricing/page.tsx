@@ -108,8 +108,8 @@ export default function PricingPage() {
 					img="https://images.ctfassets.net/jc3fkpb2sdyr/6INOdbNGSacFzQz2CU2cQQ/c18d9924a57d603700ba4bbcafd66722/young-woman-buys-groceries-supermarket-with-phone-her-hands.jpg?fm=webp"
 					imgAlt="Simple Day Concierge Premium Package"
 				>
-					<p>Best For Commuters, busy couples, or independent seniors who need consistent, light lifestyle maintenance to keep their weeks on track. This tier provides for a weekly 1.5-hour grocery provisioning trip, plus a few hours left over for calendar management or dry-cleaning errands.  The blended rate drops to $50/hour - a savings of up to $350 compared to à la carte premium rates.</p>
-					<PageSectionHeader>10 Hours - $499/month</PageSectionHeader>
+					<p>Best For Commuters, busy couples, or independent seniors who need consistent, light lifestyle maintenance to keep their weeks on track. This tier provides for a weekly 1.5-hour grocery provisioning trip, plus a few hours left over for calendar management or dry-cleaning errands.  The blended rate drops to $54/hour - a savings of over $200 compared to à la carte premium rates.</p>
+					<PageSectionHeader>10 Hours - $539/month</PageSectionHeader>
 				</Callout>
 
 				<Callout
@@ -121,8 +121,8 @@ export default function PricingPage() {
 					img="https://images.ctfassets.net/jc3fkpb2sdyr/39jOf3QhCL5Jcj2tHqFaq3/1f36f146ef47c8747bedc4d668a87d3e/young-caucasian-woman-signing-document-while-middle-aged-caucasian-man-observing.jpg?fm=webp"
 					imgAlt="Simple Day Concierge Premium Package"
 				>
-					<p>Designed for active families managing chaotic school, sports, and home repair schedules simultaneously. Typical Monthly Use includes hours a week of family helper/playroom organizing support, a monthly 4-hour contractor home-wait window, and weekly meal-prep support. The blended rate drops to $45/hour, a savings of up to $800 compared to à la carte premium rates.</p>
-					<PageSectionHeader>20 Hours - $899/month</PageSectionHeader>
+					<p>Designed for active families managing chaotic school, sports, and home repair schedules simultaneously. Typical Monthly Use includes hours a week of family helper/playroom organizing support, a monthly 4-hour contractor home-wait window, and weekly meal-prep support. The blended rate drops to $52/hour, a savings of over $450 compared to à la carte premium rates.</p>
+					<PageSectionHeader>20 Hours - $1,039/month</PageSectionHeader>
 				</Callout>
 
 				<Callout
@@ -134,8 +134,8 @@ export default function PricingPage() {
 					img="https://images.ctfassets.net/jc3fkpb2sdyr/57IkyE1RS9JucjVbteOoJe/14f3dad033769f6af6dce9c603a11080/table-with-white-tablecloth-candles.jpg?fm=webp"
 					imgAlt="Simple Day Concierge Premium Package"
 				>
-					<p>Targeting career oriented individuals, busy executives, or large properties requiring an ongoing, highly active local proxy.  Typical services include daily errand running, comprehensive digital or closet organization projects, vacation return prep, and private event administrative oversight.  The blended rate drops to $40/hour, providing a savings of up to $1,800 compared to à la carte premium rates.</p>
-					<PageSectionHeader>40 Hours - $1,599/month</PageSectionHeader>
+					<p>Targeting career oriented individuals, busy executives, or large properties requiring an ongoing, highly active local proxy.  Typical services include daily errand running, comprehensive digital or closet organization projects, vacation return prep, and private event administrative oversight.  The blended rate drops to $50/hour, providing a savings of $1,000 compared to à la carte premium rates.</p>
+					<PageSectionHeader>40 Hours - $1,999/month</PageSectionHeader>
 				</Callout>
 
 				<p style={{fontSize: 'var(--font-size5)'}}>Membership Tiers require a minimum commitment of 3 months. Call us for a personalized quote.</p>

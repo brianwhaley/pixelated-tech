@@ -10,12 +10,24 @@ section.page-section#navigation-section{
   padding: 10px 0;
 }
 
-#home-services-section .callout .callout-subtitle h3 {
-  font-size: var(--font-size4);
+#home-services-section {
+  .callout .callout-subtitle h3 {
+    font-size: var(--font-size4);
+  }
 }
 
-#services-list-section .callout img {
-  aspect-ratio: 1 / 1;
+#services-list-section {
+  .callout .callout-title {
+    text-align: left;
+  }
+  @media screen and (max-width: 480px) {
+    .callout .callout-title {
+      text-align: center;
+    }
+  }
+  .callout img {
+    aspect-ratio: 1 / 1;
+  }
 }
 
 #team-section .callout img {
