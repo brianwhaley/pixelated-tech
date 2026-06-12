@@ -36,7 +36,7 @@ export default async function RootLayout({
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>
-					<PageBg image="/images/3d-style-flowing-white-golden-wavy-background.png" />
+					<PageBg image="https://images.ctfassets.net/jc3fkpb2sdyr/11MVQ8Zj5NhXk0QiD9AeT4/bc7d6f9a74621137880a2036f1c0508f/3d-style-flowing-white-golden-wavy-background.png?fm=webp" />
 					<nav><Nav /></nav>
 					<header><Header /></header>
 					<main>{children}</main>
