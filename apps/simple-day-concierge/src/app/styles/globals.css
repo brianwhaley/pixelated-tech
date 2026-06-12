@@ -30,6 +30,10 @@ section.page-section#navigation-section{
   }
 }
 
+#service-detail-wrapper img {
+  opacity: 0.7;
+}
+
 #team-section .callout img {
   object-position: center;
   opacity: 0.9;
