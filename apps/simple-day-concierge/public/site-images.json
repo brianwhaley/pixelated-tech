@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 21
+    "imageCount": 22
   },
   "images": [
     "images/1x1.png",
@@ -23,6 +23,7 @@
     "images/simple-day-concierge-bell.jpg",
     "images/simple-day-concierge-logo.png",
     "images/simple-day-concierge-square.jpg",
-    "images/simple-day-concierge-square.png"
+    "images/simple-day-concierge-square.png",
+    "images/simple-day-logo-bg.webp"
   ]
 }

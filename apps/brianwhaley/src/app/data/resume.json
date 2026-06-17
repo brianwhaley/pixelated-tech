@@ -1278,11 +1278,20 @@
 							{
 								"type": [ "h-card" ],
 								"properties": {
+									"name": [ "Simple Day Concierge Web Site" ],
+									"url": [ "https://www.simpledayconcierge.com/" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/55340622856_204c7fd58d_b.jpg" ],
+									"note": [  ],
+									"x-note": [ "June 11, 2026" ]
+								}
+							},{
+								"type": [ "h-card" ],
+								"properties": {
 									"name": [ "Manning Metalworks Web Site" ],
 									"url": [ "https://www.manningmetalworks.com/" ],
 									"photo": [ "https://farm66.static.flickr.com/65535/55264773028_c02a11e374_b.jpg" ],
 									"note": [  ],
-									"x-note": [ "May 11, 2025" ]
+									"x-note": [ "May 11, 2026" ]
 								}
 							},
 							{
