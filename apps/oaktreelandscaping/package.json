@@ -1,6 +1,6 @@
 {
   "name": "oaktreelandscaping",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3007 --experimental-https",
@@ -43,5 +43,5 @@
     "typescript": "^6.0.2",
     "vitest": "^4.1.9"
   },
-  "deployMarker": "2026-06-09T00:54:08.747Z"
+  "deployMarker": "2026-06-19T23:17:15.791Z"
 }

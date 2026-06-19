@@ -1,6 +1,6 @@
 {
   "name": "PixelVivid",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -60,5 +60,5 @@
     "vitest": "^4.1.9"
   },
   "overrides": {},
-  "deployMarker": "2026-06-09T00:54:08.848Z"
+  "deployMarker": "2026-06-19T23:17:15.910Z"
 }

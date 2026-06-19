@@ -60,8 +60,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 why would the props be optional, with a fallbeck to getting them direclty? that is the opposite of what i want to do . i ahve said this before already. today the page extracts the config values, passes them to the component, then the component uses it. why? there are almost no examples where there is override data. let the component get the data direclty from the config file, no middle man, no confusion. it is a bad DX, bad pattern, bharder to test, more code, more brittle, more plaeces to break, and makes pagebuilder more complex. it is an unneeded featre. i propose you get the data direct from the config file, and remove any other options, any other fallbacks. one way to get the data or throw an error. let the component do the work, keep the integration thin.
 
-- [  ] integrations - all of them retrieve config integration data from config integration section
-- [  ] admin: 
 - [  ] shopping cart - all of them
 - [  ] sitebuilder - contentful integration
 
@@ -94,9 +92,7 @@ why would the props be optional, with a fallbeck to getting them direclty? that 
 
 - [  ] **Type-Safe Configuration**: Implement strict TypeScript interfaces with runtime validation for configuration objects.
 
-- [  ] **CMS API Client**: Create standardized CMS API clients (`ContentfulClient.ts`, `WordPressClient.ts`) with base `ApiClient.ts` for consistent error handling.
-
-- [  ] **Decentralize sites.json data**: split the sites.json data file and put the sections per site into routes.json.  
+- [  ] **CMS API Client**: Create standardized CMS API clients (`ContentfulClient.ts`, `WordPressClient.ts`) with base `ApiClient.ts` for consistent error handling. 
 
 - [  ] **Additional Entry points** - add new entry points for shoppingcart and sitebuilder
 
@@ -140,10 +136,6 @@ Would you like to start by expanding the componentMap or should we try implement
 - [  ] **Standardize app scripts** - Move repeated script definitions into shared tooling if possible. Example: config:encrypt, config:decrypt, generate-site-images, update. With workspaces, apps can run shared scripts from the component package without repeating them.
 
 - [  ] **Selective Amplify deployment support** - Add a release helper or workflow that extracts a single `appRoot` section from the monorepo `amplify.yml` so only the target app is deployed, while preserving the full multi-app YAML in source control.
-
-### Shopping Cart Enhancements
-
-- [  ] Pull out registration as an item from pixelated components and move to in three muses and allow custom item injection into the shopping cart
 
 #### SCALING BLOCKERS
 

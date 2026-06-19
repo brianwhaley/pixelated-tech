@@ -1,6 +1,6 @@
 {
   "name": "palmetto-epoxy",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -62,5 +62,5 @@
     "vitest": "^4.1.9"
   },
   "overrides": {},
-  "deployMarker": "2026-06-09T00:54:08.770Z"
+  "deployMarker": "2026-06-19T23:17:15.820Z"
 }

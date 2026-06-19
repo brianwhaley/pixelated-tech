@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -52,5 +52,5 @@
     "vitest": "^4.1.9"
   },
   "overrides": {},
-  "deployMarker": "2026-06-11-23-05"
+  "deployMarker": "2026-06-19T23:17:15.966Z"
 }
