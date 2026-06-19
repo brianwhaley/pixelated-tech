@@ -1,0 +1,21 @@
+{
+  "authorizedUsers": {
+    "brian@pixelated.tech": {
+      "routes": [
+        "/",
+        "/billing",
+        "/component-usage",
+        "/configbuilder",
+        "/contentful-migrate",
+        "/formbuilder",
+        "/humans.txt",
+        "/login",
+        "/newdeployment",
+        "/pagebuilder",
+        "/security.txt",
+        "/site-health",
+        "/styleguide"
+      ]
+    }
+  }
+}

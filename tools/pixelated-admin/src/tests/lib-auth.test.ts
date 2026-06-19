@@ -2,37 +2,35 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TEST_CONFIG } from '@/test/fixtures';
 
-vi.unmock('@pixelated-tech/components/server');
-
-// Helper to mock the config module before importing auth module
-const fakeConfig = {
-	integrations: {
-		nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
-		google: { client_id: TEST_CONFIG.integrations.google.client_id, client_secret: TEST_CONFIG.integrations.google.client_secret },
-	}
-};
+const createDefaultAdminserverMock = () => ({
+	performAxeCoreAnalysis: vi.fn(),
+	getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
+	getGoogleOAuthCredentials: () => ({
+		clientId: (TEST_CONFIG.integrations as any).google.client_id,
+		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+	}),
+});
 
 describe('NextAuth config', () => {
 	beforeEach(() => {
 		vi.resetModules();
-		vi.doMock('@pixelated-tech/components/server', () => ({
-			getFullPixelatedConfig: () => fakeConfig,
-		}));
+		vi.doMock('@pixelated-tech/components/adminserver', createDefaultAdminserverMock);
 	});
 
 	afterEach(() => {
+		vi.resetModules();
 		vi.clearAllMocks();
 	});
 
 	it('exposes authOptions with Google values from pixelated config', async () => {
-		const mod = await import('@/lib/auth');
+		const mod = await import('@/lib/authentication');
 		const { authOptions } = mod as any;
 		expect(authOptions.providers[0].clientId).toBe('g-id');
 		expect(authOptions.providers[0].clientSecret).toBe('g-secret');
 	});
 
 	it('calls auth callback functions correctly', async () => {
-		const mod = await import('@/lib/auth');
+		const mod = await import('@/lib/authentication');
 		const { authOptions } = mod as any;
 
 		const jwtResult = await authOptions.callbacks.jwt({ token: { sub: 'user' }, account: { access_token: 'token-123' } });
@@ -50,14 +48,16 @@ describe('NextAuth config', () => {
 
 	it('throws when google config is missing', async () => {
 		vi.resetModules();
-		vi.doUnmock('@pixelated-tech/components/server');
-		// Provide nextAuth.secret but omit google settings
-		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({ integrations: { nextAuth: { secret: TEST_CONFIG.nextAuth.secret } } }) }));
-		await expect(import('@/lib/auth')).rejects.toThrow('Google OAuth credentials not configured');
+		vi.doMock('@pixelated-tech/components/adminserver', () => ({
+			performAxeCoreAnalysis: vi.fn(),
+			getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
+			getGoogleOAuthCredentials: () => { throw new Error('Google OAuth credentials not configured in pixelated.config.json'); },
+		}));
+		await expect(import('@/lib/authentication')).rejects.toThrow('Google OAuth credentials not configured');
 	});
 
 	it('does not add accessToken when no account access_token is present', async () => {
-		const mod = await import('@/lib/auth');
+		const mod = await import('@/lib/authentication');
 		const { authOptions } = mod as any;
 
 		const jwtResult = await authOptions.callbacks.jwt({ token: { sub: 'user' }, account: {} });
@@ -70,7 +70,7 @@ describe('NextAuth config', () => {
 	});
 
 	it('returns baseUrl for external redirect URLs', async () => {
-		const mod = await import('@/lib/auth');
+		const mod = await import('@/lib/authentication');
 		const { authOptions } = mod as any;
 
 		const redirectResult = await authOptions.callbacks.redirect({ url: 'https://example.com/other', baseUrl: 'https://admin.pixelated.tech' });

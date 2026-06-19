@@ -4,10 +4,8 @@ import path from 'path';
 import { pathToFileURL } from 'url';
 
 let currentSearchParams = new URLSearchParams('callbackUrl=/');
-let lastFetchOptions: any = undefined;
-const mockSmartFetch = vi.fn(async (url: unknown, options?: any) => {
-	lastFetchOptions = options;
-	const stringUrl = String(url);
+const mockSmartFetch = vi.fn(async (...args: any[]) => {
+	const stringUrl = String(args[0]);
 	if (stringUrl.includes('/api/sites')) {
 		return { ok: true, json: async () => [] };
 	}
@@ -101,7 +99,6 @@ async function importModule(relPath: string) {
 
 describe('pixelated-admin page components', () => {
 	afterEach(() => {
-		lastFetchOptions = undefined;
 		vi.clearAllMocks();
 	});
 
@@ -118,14 +115,53 @@ describe('pixelated-admin page components', () => {
 		});
 	}
 
+	it('shows an error when component usage fetch returns non-ok', async () => {
+		mockSmartFetch.mockImplementation(async (url: unknown) => {
+			if (String(url).includes('/api/component-usage')) {
+				return { ok: false, json: async () => ({ message: 'bad request' }) };
+			}
+			return { ok: true, json: async () => ({}) };
+		});
+
+		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		await waitFor(() => expect(screen.getAllByText(/Error:/i).length).toBeGreaterThan(0));
+	});
+
+	it('renders warnings when component usage data contains warnings', async () => {
+		mockSmartFetch.mockImplementation(async (url: unknown) => {
+			if (String(url).includes('/api/component-usage')) {
+				return {
+					ok: true,
+					json: async () => ({
+						components: ['component-a'],
+						siteList: [{ name: 'site-a', localPath: '/site-a' }],
+						usageMatrix: { 'component-a': { 'site-a': true } },
+						warnings: ['warning-1'],
+					}),
+				};
+			}
+			return { ok: true, json: async () => ({}) };
+		});
+
+		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		await waitFor(() => expect(screen.getByText(/Component scan warnings/i)).toBeTruthy());
+		expect(screen.getByText('warning-1')).toBeTruthy();
+	});
+
 	it('uses an extended timeout when requesting component usage data', async () => {
-		lastFetchOptions = undefined;
 		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
 		const Page = mod.default;
 		render(<Page />);
 
 		await waitFor(() => expect(mockSmartFetch).toHaveBeenCalled());
-		expect(lastFetchOptions).toMatchObject({ responseType: 'ok', timeout: 0 });
+		expect(mockSmartFetch.mock.calls[0][0]).toBe('/api/component-usage');
+		expect(mockSmartFetch.mock.calls[0][1]).toMatchObject({ responseType: 'ok', timeout: 0 });
 	});
 
 	it('downloads pixelated.config.json from the config builder page', async () => {

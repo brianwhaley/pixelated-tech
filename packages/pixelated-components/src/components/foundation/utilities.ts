@@ -119,6 +119,8 @@ export function capitalizeWords(input: string): string {
 	);
 }
 
+
+
 export function sanitizeString(value: unknown) {
 	if (typeof value === 'string') {
 		return String(value).replace(/\s+/g, ' ').trim();
@@ -131,6 +133,17 @@ export function sanitizeString(value: unknown) {
 	}
 	return '';
 }
+
+
+
+export function normalizePath(path: string | undefined | null): string {
+	if (!path) return '/';
+	const trimmed = path.split('?')[0].split('#')[0].trim();
+	if (trimmed === '' || trimmed === '/') return '/';
+	return trimmed.replace(/\/+$|\s+/g, '');
+}
+
+
 
 export function normalizeEmail(value: unknown) {
 	return typeof value === 'string' ? value.trim().toLowerCase() : '';

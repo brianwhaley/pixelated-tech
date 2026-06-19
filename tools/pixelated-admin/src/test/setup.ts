@@ -52,4 +52,11 @@ vi.mock('@pixelated-tech/components', () => ({
 // `performAxeCoreAnalysis` without pulling in optional heavy modules from the real package.
 vi.mock('@pixelated-tech/components/adminserver', () => ({
 	performAxeCoreAnalysis: vi.fn(),
+	getNextAuthCredentials: () => ({
+		secret: TEST_CONFIG.nextAuth.secret,
+	}),
+	getGoogleOAuthCredentials: () => ({
+		clientId: (TEST_CONFIG.integrations as any).google.client_id,
+		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+	}),
 }));

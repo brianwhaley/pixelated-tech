@@ -21,12 +21,12 @@ export * from './gravatar.functions';
 export * from './hubspot.components';
 export * from './contentful.contenttypes';
 export * from './instagram.components';
-
 export * from './lipsum';
 export * from './loremipsum';
 export * from './socialcard';
 export * from './spotify.components';
 export * from './spotify.functions';
+export * from "./wikipedia.functions";
 export * from './wordpress.components';
 export * from './wordpress.functions';
 export * from './yelp';

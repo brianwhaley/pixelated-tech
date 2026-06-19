@@ -3,7 +3,7 @@ import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { buildUrl, getDomain, getFullPixelatedConfig, smartFetch } from '@pixelated-tech/components/server';
 
-const DEFAULT_FILE_NAME = 'companies-googleplaces-20260413.json';
+const DEFAULT_FILE_NAME = 'companies-googleplaces-20260619.json';
 const DEFAULT_START = 0;
 const DEFAULT_BATCH_SIZE = 10;
 const DEFAULT_MAX_CALLS = 0;
@@ -332,7 +332,7 @@ export async function GET(req: NextRequest) {
 	}
 
 	const config = getFullPixelatedConfig();
-	const apiKey = config?.googleGemini?.api_key || config?.google?.api_key;
+	const apiKey = config?.integrations?.googleGemini?.api_key || config?.integrations?.google?.api_key;
 	if (!apiKey) {
 		return NextResponse.json({ error: 'Google Gemini API key not configured' }, { status: 500 });
 	}

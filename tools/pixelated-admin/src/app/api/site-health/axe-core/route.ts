@@ -43,7 +43,8 @@ export async function GET(request: NextRequest) {
 		// Read sites configuration
 		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
 		const sitesData = await fs.promises.readFile(sitesPath, 'utf-8');
-		const sites: Site[] = JSON.parse(sitesData);
+		const parsed = JSON.parse(sitesData);
+		const sites: Site[] = Array.isArray(parsed) ? parsed : (parsed.sites || []);
 
 		// Query params
 		const { searchParams } = new URL(request.url);

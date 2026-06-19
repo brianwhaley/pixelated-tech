@@ -183,7 +183,7 @@ export function ServiceDetail({ serviceSlug, title, id }: ServiceDetailType) {
 						<ul>
 							{serviceAreaItems.map((area, index) => (
 								<li key={index}>
-									<a href={buildServiceAreaUrl(area)}>{area.name}</a>
+									<a href={buildServiceAreaUrl(area)}>{activeService.name} in {area.name}</a>
 								</li>
 							))}
 						</ul>

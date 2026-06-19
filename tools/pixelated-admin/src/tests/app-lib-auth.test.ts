@@ -1,31 +1,27 @@
  
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { TEST_CONFIG } from '@/test/fixtures';
 
-vi.unmock('@pixelated-tech/components/server');
-
-// Helper to mock the config module before importing auth module
-const fakeConfig = {
-	integrations: {
-		nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
-		google: { client_id: TEST_CONFIG.integrations.google.client_id, client_secret: TEST_CONFIG.integrations.google.client_secret },
-	}
-};
+const createDefaultAdminserverMock = () => ({
+	performAxeCoreAnalysis: vi.fn(),
+	getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
+	getGoogleOAuthCredentials: () => ({
+		clientId: (TEST_CONFIG.integrations as any).google.client_id,
+		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+	}),
+});
 
 describe('NextAuth config (server)', () => {
-	beforeEach(() => {
-		vi.resetModules();
-		vi.doMock('@pixelated-tech/components/server', () => ({
-			getFullPixelatedConfig: () => fakeConfig,
-		}));
-	});
-
 	afterEach(() => {
+		vi.resetModules();
 		vi.clearAllMocks();
 	});
 
 	it('exposes authOptions with values from pixelated config', async () => {
-		const mod = await import('@/lib/auth');
+		vi.resetModules();
+		vi.doMock('@pixelated-tech/components/adminserver', createDefaultAdminserverMock);
+
+		const mod = await import('@/lib/authentication');
 		const { authOptions } = mod as any;
 		expect(authOptions.secret).toBe('test-secret');
 		expect(authOptions.providers[0].clientId).toBe('g-id');
@@ -34,8 +30,15 @@ describe('NextAuth config (server)', () => {
 
 	it('throws when required values are missing', async () => {
 		vi.resetModules();
-		vi.doUnmock('@pixelated-tech/components/server');
-		vi.doMock('@pixelated-tech/components/server', () => ({ getFullPixelatedConfig: () => ({ integrations: {} }) }));
-		await expect(import('@/lib/auth')).rejects.toThrow('nextAuth.secret not configured');
+		vi.doMock('@pixelated-tech/components/adminserver', () => ({
+			performAxeCoreAnalysis: vi.fn(),
+			getNextAuthCredentials: () => { throw new Error('nextAuth.secret not configured in pixelated.config.json'); },
+			getGoogleOAuthCredentials: () => ({
+				clientId: (TEST_CONFIG.integrations as any).google.client_id,
+				clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+			}),
+		}));
+
+		await expect(import('@/lib/authentication')).rejects.toThrow('nextAuth.secret not configured');
 	});
 });
