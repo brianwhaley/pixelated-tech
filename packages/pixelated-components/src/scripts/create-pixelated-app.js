@@ -69,6 +69,19 @@ async function exists(p) {
 	}
 }
 
+export async function findPixelatedConfigJsonFile(rootDir) {
+	const candidates = [
+		path.join(rootDir, 'src', 'app', 'config', 'pixelated.config.json'),
+		path.join(rootDir, 'src', 'config', 'pixelated.config.json'),
+		path.join(rootDir, 'src', 'pixelated.config.json'),
+		path.join(rootDir, 'pixelated.config.json')
+	];
+	for (const candidate of candidates) {
+		if (await exists(candidate)) return candidate;
+	}
+	return null;
+}
+
 // Template manifest utilities
 export async function loadManifest(baseDir = path.resolve(__dirname)) {
 	const manifestPath = path.resolve(baseDir, 'create-pixelated-app.json');
@@ -655,20 +668,25 @@ async function main() {
 
 			const proceedPages = (await rl.question('Proceed with these pages? (Y/n): ')) || 'y';
 			if (proceedPages.toLowerCase() === 'y' || proceedPages.toLowerCase() === 'yes') {
-				const siteRoutesFile = path.join(destPath, 'src', 'app', 'data', 'siteconfig.json');
-				let siteConfig = null;
-				
-				try {
-					siteConfig = JSON.parse(await fs.readFile(siteRoutesFile, 'utf8'));
-					siteConfig.siteInfo = siteConfig.siteInfo || {};
-					siteConfig.siteInfo.name = rootDisplayName;
-					siteConfig.siteInfo.termsOfService = siteConfig.siteInfo.termsOfService || '/terms';
-				} catch (e) {
-					console.error('❌ Failed to read siteconfig.json:', e?.message || e);
+					const pixelatedConfigFile = await findPixelatedConfigJsonFile(destPath);
+					if (!pixelatedConfigFile) {
+						console.error('❌ Failed to locate pixelated.config.json in the new site. Expected one of src/app/config/, src/config/, src/, or root.');
+						process.exit(1);
+					}
+					let pixelatedConfig = null;
+					
+					try {
+						pixelatedConfig = JSON.parse(await fs.readFile(pixelatedConfigFile, 'utf8'));
+						pixelatedConfig.siteInfo = pixelatedConfig.siteInfo || {};
+						pixelatedConfig.siteInfo.name = rootDisplayName;
+						pixelatedConfig.siteInfo.termsOfService = pixelatedConfig.siteInfo.termsOfService || '/terms';
+						if (!Array.isArray(pixelatedConfig.routes)) {
+							throw new Error('pixelated.config.json must include a routes array');
+						}
+					} catch (e) {
+						console.error('❌ Failed to read pixelated.config.json:', e?.message || e);
 					process.exit(1);
 				}
-
-				const templatePagesHome = path.join(templatePath, 'src', 'app', '(pages)', '(home)');
 				const pagesDir = path.join(destPath, 'src', 'app', '(pages)');
 				const wantedSlugs = new Set(wantedPages.map(p => p.slug));
 
@@ -694,8 +712,8 @@ async function main() {
 								await fs.writeFile(pageFile, content, 'utf8');
 								console.log(` - Updated component name to ${compName}`);
 								
-								// Update route path in siteconfig.json
-								const route = siteConfig.routes.find(r => r.path === `/${templateFolderName}`);
+								// Update route path in pixelated.config.json
+								const route = pixelatedConfig.routes.find(r => r.path === `/${templateFolderName}`);
 								if (route) {
 									route.path = `/${p.slug}`;
 									route.name = p.displayName.split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -729,7 +747,7 @@ async function main() {
 								"description": "",
 								"keywords": ""
 							};
-							siteConfig.routes.push(newRoute);
+							pixelatedConfig.routes.push(newRoute);
 							console.log(` - Added route /${p.slug}`);
 						} catch (e) {
 							console.error(`❌ Failed to create custom page ${p.slug}:`, e?.message || e);
@@ -762,8 +780,8 @@ async function main() {
 							await fs.rm(folderPath, { recursive: true });
 							console.log(`Deleted template page ${folderName}`);
 							
-							// Remove the corresponding route from siteconfig.json
-							siteConfig.routes = siteConfig.routes.filter(r => r.path !== `/${folderName}`);
+							// Remove the corresponding route from pixelated.config.json
+							pixelatedConfig.routes = pixelatedConfig.routes.filter(r => r.path !== `/${folderName}`);
 						} catch (e) {
 							console.warn(`⚠️  Failed to delete ${folderName}:`, e?.message || e);
 						}
@@ -773,12 +791,12 @@ async function main() {
 					console.warn(`⚠️  Could not read pages directory for cleanup:`, e?.message || e);
 				}
 
-				// Write final siteconfig.json
+				// Write final pixelated.config.json
 				try {
-					await fs.writeFile(siteRoutesFile, JSON.stringify(siteConfig, null, '\t'), 'utf8');
-					console.log('✅ siteconfig.json updated.');
+					await fs.writeFile(pixelatedConfigFile, JSON.stringify(pixelatedConfig, null, '\t'), 'utf8');
+					console.log('✅ pixelated.config.json updated.');
 				} catch (e) {
-					console.error('❌ Failed to write siteconfig.json:', e?.message || e);
+					console.error('❌ Failed to write pixelated.config.json:', e?.message || e);
 					process.exit(1);
 				}
 			} else {

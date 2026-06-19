@@ -15,4 +15,6 @@ export * from './contentful.contenttypes';
 export * from './lipsum';
 export * from './spotify.components';
 export * from './spotify.functions';
+export * from "./wikipedia.functions";
 export * from './wordpress.functions';
+export * from './wordpress.jetpack.server';

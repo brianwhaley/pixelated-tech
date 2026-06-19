@@ -9,7 +9,7 @@ import { SmartImage } from "@pixelated-tech/components";
 
 import formData from "@/app/data/contactform.json";
 
-const calendarID = "1b783753ce78e200e6e505694b0610c48c8b5ca756f4d71986c4f7de97caaa13%40group.calendar.google.com";
+// const calendarID = "1b783753ce78e200e6e505694b0610c48c8b5ca756f4d71986c4f7de97caaa13%40group.calendar.google.com";
 
 export default function ContactPage() {
 	
@@ -26,6 +26,7 @@ export default function ContactPage() {
 				'https://connect.facebook.net/en_US/fbevents.js');
 				fbq('init', '2272268106901362');
 				fbq('track', 'PageView');
+				fbq('track', 'Schedule');
 			`}</Script>
 			<noscript>
 				<SmartImage height={1} width={1} style={{ display: "none" }}
@@ -35,7 +36,7 @@ export default function ContactPage() {
 			</noscript>
 
 			<CalloutLibrary.PageTitle title="Contact Us" />
-			<PageSection columns={2} className="" id="contactus-section">
+			<PageSection columns={1} className="" maxWidth="768" id="contactus-section">
 				<PageGridItem>
 					<div>
 						Please fill out the form below. 
@@ -46,9 +47,9 @@ export default function ContactPage() {
 					</div>
 					<FormEngine formData={formData} />
 				</PageGridItem>
-				<PageGridItem>
+				{ /* <PageGridItem>
 					<iframe src={`https://calendar.google.com/calendar/embed?src=${calendarID}&mode=WEEK`} style={{ border: 0 }} width="100%" height="600px" frameBorder="0" scrolling="no"></iframe>
-				</PageGridItem>
+				</PageGridItem> */ }
 			</PageSection>
 		</>
 	);

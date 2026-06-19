@@ -6,6 +6,7 @@ import { PageSection, PageSectionHeader, PageGridItem } from '../structure/page-
 import { Callout } from '../structure/callout';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import { usePixelatedConfig } from '../config/config.client';
+import { SchemaWebPage } from '../foundation/schema';
 
 
 const defaultServiceAreaPathPrefix = '/service-areas';
@@ -159,6 +160,7 @@ export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefi
 	});
 	return (
 		<PageSection id={id} className="service-area-detail-page" layoutType="none" gap="20px">
+			<SchemaWebPage serviceAreaSlug={serviceAreaSlug ?? ''} serviceAreaPathPrefix={serviceAreaPathPrefix} />
 			<PageSectionHeader title={title ?? activeArea.name} />
 			<div className="service-area-detail-copy">
 				{renderServiceAreaDescription(activeArea.description)}
@@ -176,7 +178,7 @@ export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefi
 						<ul>
 							{serviceLinks.map((service, idx: number) => (
 								<li key={idx}>
-									<a href={service.href}>{service.name}</a>
+									<a href={service.href}>{service.name} in {activeArea.name}</a>
 								</li>
 							))}
 						</ul>

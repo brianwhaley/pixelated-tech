@@ -6,12 +6,12 @@ import { getFullPixelatedConfig, smartFetch, buildUrl } from '@pixelated-tech/co
 import { locations } from '../../data/locations';
 import { categories } from '../../data/business-categories';
 
-// eslint-disable-next-line pixelated/no-debug-true
-const debug = true;
+ 
+const debug = false;
 
 // --- CONFIGURATION ---
 const PIXELATED_CONFIG = getFullPixelatedConfig();
-const API_KEY = PIXELATED_CONFIG?.google?.api_key ?? '';
+const API_KEY = PIXELATED_CONFIG?.integrations?.google?.api_key ?? '';
 
 const queries: string[] = categories.flatMap((category) =>
 	locations.map((location) => `${category} near ${location}`)
@@ -81,7 +81,7 @@ export async function GET(_req: NextRequest) {
 	// const query = searchParams.get('q') ?? 'epoxy flooring companies in New Jersey';
 
 	if (!API_KEY) {
-		return NextResponse.json({ error: 'Missing Google API key', message: 'No Google API key found. Add google.api_key to pixelated.config.json or set GOOGLE_MAPS_API_KEY env var.' }, { status: 500 });
+		return NextResponse.json({ error: 'Missing Google API key', message: 'No Google API key found. Add google.api_key to pixelated.config.json.' }, { status: 500 });
 	}
 
 	try {
@@ -191,7 +191,7 @@ export async function GET(_req: NextRequest) {
 			totalPlaces += queryPlaces.length;
 			totalLeads += filteredLeads.length;
 			appendQueryResultToReport(query, queryPlaces, filteredLeads, pagesFetched);
-			if (debug) console.debug('DEBUG: finished query', queryCount, 'places', queryPlaces.length, 'leads', filteredLeads.length, 'pagesFetched', pagesFetched);
+			console.debug('UPDATE: finished query', queryCount, 'places', queryPlaces.length, 'leads', filteredLeads.length, 'pagesFetched', pagesFetched);
 		}
 
 		if (debug) console.debug('DEBUG: total completed queries', queryCount, 'totalPlaces', totalPlaces, 'totalLeads', totalLeads, 'report', REPORT_FILE_NAME);

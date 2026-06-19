@@ -65,8 +65,8 @@ const clientAndServerSafeComponents = nonAdminComponents.filter(comp => !comp.is
 // Read index files
 const indexServer = fs.readFileSync('src/index.server.js', 'utf8');
 const indexClient = fs.readFileSync('src/index.js', 'utf8');
-const indexAdminServer = fs.readFileSync('src/index.admin.server.js', 'utf8');
-const indexAdminClient = fs.readFileSync('src/index.admin.js', 'utf8');
+const indexAdminServer = fs.readFileSync('src/components/admin/index.admin.server.js', 'utf8');
+const indexAdminClient = fs.readFileSync('src/components/admin/index.admin.js', 'utf8');
 
 // Updated to handle recursive barrel files
 function extractExports(content, currentFilePath = 'src/index.js') {
@@ -114,8 +114,8 @@ function extractExports(content, currentFilePath = 'src/index.js') {
 // Extract exports from all index files
 const serverExports = extractExports(indexServer, 'src/index.server.js');
 const clientExports = extractExports(indexClient, 'src/index.js');
-const adminServerExports = extractExports(indexAdminServer, 'src/index.admin.server.js');
-const adminClientExports = extractExports(indexAdminClient, 'src/index.admin.js');
+const adminServerExports = extractExports(indexAdminServer, 'src/components/admin/index.admin.server.js');
+const adminClientExports = extractExports(indexAdminClient, 'src/components/admin/index.admin.js');
 
 const missing = {
 	server: [],

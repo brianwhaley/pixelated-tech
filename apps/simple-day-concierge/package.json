@@ -1,6 +1,6 @@
 {
   "name": "simple-day-concierge",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "private": true,
   "description": "Simple Day Concierge - Where Simplicity Meets Exceptional Service",
   "license": "MIT",
@@ -47,7 +47,7 @@
     "@eslint/js": "9.39.4",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^25.7.0",
+    "@types/node": "^26.0.0",
     "@types/react": "^19.2.14",
     "eslint": "9.39.4",
     "eslint-config-next": "^16.2.9",
@@ -56,7 +56,7 @@
     "html-entities": "^2.3.3",
     "react-dom": "^19.2.6",
     "typescript": "^6.0.2",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   },
   "overrides": {},
   "deployMarker": "2026-06-09T00:54:08.871Z"

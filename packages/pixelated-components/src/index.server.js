@@ -5,6 +5,8 @@
 
 export * from './components/admin/sites/sites.integration';
 
+// Billing server integrations (pure functions only, types can be loaded here but are client safe)
+
 export * from './components/config/config';
 export * from './components/config/config.server';
 export * from './components/config/config.types';

@@ -1,0 +1,49 @@
+{
+  "results": [
+    {
+      "index": 190,
+      "id": "ChIJ2Sn1ECp5_IgREaEvV4KN-DQ",
+      "company": "Gullah Geechie Gals’ Catering",
+      "phone": "(843) 949-7149",
+      "address": "840 William Hilton Pkwy, Hilton Head Island, SC 29928, USA",
+      "website": [],
+      "leadType": "No Website",
+      "category": "catering_service",
+      "rating": "",
+      "rating count": "",
+      "emails": [
+        "gullahgeechiegals@gmail.com"
+      ]
+    },
+    {
+      "index": 193,
+      "id": "ChIJm26i3viR-4gR8-mHqPTj2tA",
+      "company": "CaterR'Us Unique Occasions",
+      "phone": "(843) 227-1421",
+      "address": "315 Gate 315, Hardeeville, SC 29927, USA",
+      "website": [],
+      "leadType": "No Website",
+      "category": "food",
+      "rating": "",
+      "rating count": "",
+      "emails": [
+        "caterrusuniqueoccasions@gmail.com"
+      ]
+    },
+    {
+      "index": 199,
+      "id": "ChIJj_vtvMh7_ogRUb7Fz6R9-KA",
+      "company": "B’s Soul Creations Breakfast Brunch Catering",
+      "phone": "(843) 568-7457",
+      "address": "2332 Meeting Street Rd, Charleston, SC 29405, USA",
+      "website": [],
+      "leadType": "No Website",
+      "category": "breakfast_restaurant",
+      "rating": "5",
+      "rating count": "80",
+      "emails": [
+        "bsoulcreations@gmail.com"
+      ]
+    }
+  ]
+}

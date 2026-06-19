@@ -3,6 +3,11 @@ import PropTypes, { InferProps } from "prop-types";
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 import { decode } from 'html-entities';
+
+export interface RelatedServiceReference {
+	name: string;
+	url: string;
+}
 const wpApiURL = "https://public-api.wordpress.com/rest/v1/sites/";
 const wpCategoriesPath = "/categories";
 
@@ -14,6 +19,7 @@ export type BlogPostType = {
     title: string;
     date: string;
     modified?: string;
+    publicize_URLs?: string[];
     author?: {
 		"ID": number;
 		"login": string;
@@ -61,6 +67,8 @@ export interface BlogPostingSchema {
 	articleSection?: string;
 	keywords?: string[];
 	wordCount?: number;
+	about?: Array<{ '@type': string; '@id': string; url: string; name: string }>;
+	mentions?: Array<{ '@type': string; '@id': string; url: string; name: string }>;
 }
 
 
@@ -72,7 +80,8 @@ export interface BlogPostingSchema {
  */
 export function mapWordPressToBlogPosting(
 	post: BlogPostType,
-	includeFullContent: boolean = false
+	includeFullContent: boolean = false,
+	relatedServices: RelatedServiceReference[] = []
 ): BlogPostingSchema {
 	const cleanContent = (content: string): string => {
 		if (!content) return '';
@@ -104,6 +113,17 @@ export function mapWordPressToBlogPosting(
 			name: post.author.name,
 			url: `https://${new URL(post.URL).hostname}/author/${post.author.login}`,
 		};
+	}
+	const serviceAbout = relatedServices
+		.filter((service) => Boolean(service?.url))
+		.map((service) => ({
+			'@type': 'WebPage',
+			'@id': service.url,
+			url: service.url,
+			name: service.name,
+		}));
+	if (serviceAbout.length > 0) {
+		schema.about = serviceAbout;
 	}
 	return schema;
 }

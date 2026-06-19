@@ -65,6 +65,6 @@ describe('Service areas components', () => {
 		expect(screen.getByText('Highlights')).toBeInTheDocument();
 		expect(screen.getByText('Marine-safe coatings')).toBeInTheDocument();
 		expect(screen.getByText('Salt-air protection')).toBeInTheDocument();
-		expect(screen.getByText('Exterior Coatings')).toBeInTheDocument();
+		expect(screen.getByText(/Exterior Coatings/)).toBeInTheDocument();
 	});
 });

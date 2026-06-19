@@ -64,18 +64,18 @@ export async function discoverComponentsFromLibrary(): Promise<string[]> {
 			componentNames.push(...parseComponentExports(indexContent, path.dirname(indexPath), componentsRoot));
 		}
 
-		// Read from admin runtime index
-		const adminClientPath = path.join(distDir, 'index.admin.js');
-		if (fs.existsSync(adminClientPath)) {
-			const adminClientContent = fs.readFileSync(adminClientPath, 'utf-8');
-			componentNames.push(...parseComponentExports(adminClientContent, path.dirname(adminClientPath), componentsRoot));
+		// Read from admin runtime index (nested admin location)
+		const adminClientNestedPath = path.join(distDir, 'components', 'admin', 'index.admin.js');
+		if (fs.existsSync(adminClientNestedPath)) {
+			const adminClientContent = fs.readFileSync(adminClientNestedPath, 'utf-8');
+			componentNames.push(...parseComponentExports(adminClientContent, path.dirname(adminClientNestedPath), componentsRoot));
 		}
 
-		// Read from admin server runtime index
-		const adminServerPath = path.join(distDir, 'index.admin.server.js');
-		if (fs.existsSync(adminServerPath)) {
-			const adminServerContent = fs.readFileSync(adminServerPath, 'utf-8');
-			componentNames.push(...parseComponentExports(adminServerContent, path.dirname(adminServerPath), componentsRoot));
+		// Read from admin server runtime index (nested admin location)
+		const adminServerNestedPath = path.join(distDir, 'components', 'admin', 'index.admin.server.js');
+		if (fs.existsSync(adminServerNestedPath)) {
+			const adminServerContent = fs.readFileSync(adminServerNestedPath, 'utf-8');
+			componentNames.push(...parseComponentExports(adminServerContent, path.dirname(adminServerNestedPath), componentsRoot));
 		}
 
 		return [...new Set(componentNames)].sort(); // Remove duplicates and sort alphabetically
@@ -109,7 +109,14 @@ function parseComponentExports(content: string, currentDir: string, componentsRo
 		if (!exportPath.startsWith('./')) continue;
 
 		const resolvedPath = path.join(currentDir, exportPath);
-		const resolvedJsPath = resolvedPath.endsWith('.js') ? resolvedPath : `${resolvedPath}.js`;
+		let resolvedJsPath = resolvedPath.endsWith('.js') ? resolvedPath : `${resolvedPath}.js`;
+		if (!fs.existsSync(resolvedJsPath) && exportPath.startsWith('./components/')) {
+			const altPath = path.join(componentsRoot, exportPath.replace('./components/', ''));
+			const altJsPath = altPath.endsWith('.js') ? altPath : `${altPath}.js`;
+			if (fs.existsSync(altJsPath)) {
+				resolvedJsPath = altJsPath;
+			}
+		}
 		if (!fs.existsSync(resolvedJsPath)) continue;
 
 		const baseName = path.basename(resolvedJsPath);
@@ -121,7 +128,10 @@ function parseComponentExports(content: string, currentDir: string, componentsRo
 			continue;
 		}
 
-		const relativeName = path.relative(componentsRoot, resolvedJsPath).replace(/\\/g, '/').replace(/\.js$/, '');
+		let relativeName = path.relative(componentsRoot, resolvedJsPath).replace(/\\/g, '/').replace(/\.js$/, '');
+		if (relativeName.startsWith('admin/components/')) {
+			relativeName = relativeName.replace(/^admin\/components\//, 'admin/');
+		}
 		componentNames.push(relativeName);
 	}
 

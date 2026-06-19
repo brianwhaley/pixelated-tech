@@ -6,6 +6,9 @@ import { usePixelatedConfig } from "../config/config.client";
 import { SmartImage } from '../elements/smartimage';
 import { PageGridItem } from '../structure/page-blocks';
 import type { BlogPostType } from './wordpress.functions';
+import type { SiteInfo } from '../config/config.types';
+import { contentfulValueToSlug } from '../integrations/contentful.delivery';
+import { getServicePathPrefix } from '../elements/services.functions';
 import { getWordPressItems, getWordPressLastModified } from './wordpress.functions';
 import { Loading, ToggleLoading } from '../foundation/loading';
 import { CacheManager, type CacheMode } from "../foundation/cache-manager";
@@ -76,6 +79,61 @@ export async function getCachedWordPressItems(props: { site?: string, count?: nu
 
 
 
+export function buildRelatedServiceReferences(post: BlogPostType, siteInfo?: SiteInfo | null) {
+	if (!siteInfo?.services || !Array.isArray(siteInfo.services) || !siteInfo.url) {
+		return [];
+	}
+
+	const baseUrl = siteInfo.url.replace(/\/$/, '');
+	const prefix = getServicePathPrefix(siteInfo);
+	const haystack = [
+		post.title,
+		post.excerpt,
+		post.content,
+		...(Array.isArray(post.categories) ? post.categories : []),
+	].join(' ').toLowerCase();
+
+	const matched = siteInfo.services
+		.filter((service): service is NonNullable<typeof service> => service != null && typeof service.name === 'string')
+		.map((service) => {
+			const serviceName = String(service.name).trim();
+			if (!serviceName) return null;
+			const serviceSlug = contentfulValueToSlug({ value: serviceName });
+			const serviceUrl = service.url
+				? String(service.url)
+				: serviceSlug
+					? `${baseUrl}${prefix}/${serviceSlug}`
+					: undefined;
+			if (!serviceUrl) return null;
+			if (haystack.includes(serviceName.toLowerCase())) {
+				return { name: serviceName, url: serviceUrl };
+			}
+			return null;
+		})
+		.filter((item): item is { name: string; url: string } => Boolean(item));
+
+	if (matched.length === 0) {
+		return siteInfo.services
+			.filter((service): service is NonNullable<typeof service> => service != null && typeof service.name === 'string')
+			.map((service) => {
+				const serviceName = String(service.name).trim();
+				const serviceSlug = contentfulValueToSlug({ value: serviceName });
+				const serviceUrl = service.url
+					? String(service.url)
+					: serviceSlug
+						? `${baseUrl}${prefix}/${serviceSlug}`
+						: undefined;
+				return { name: serviceName, url: serviceUrl || '' };
+			})
+			.filter((item) => Boolean(item.url));
+	}
+
+	return matched;
+}
+
+
+
+
 /**
  * BlogPostList — Render a list of WordPress posts. If `posts` are provided they are used directly; otherwise the component will fetch posts from the configured WordPress endpoint.
  *
@@ -132,7 +190,10 @@ export function BlogPostList(props: BlogPostListType) {
 			<Loading key="loading" />
 			{posts.map((post: BlogPostType) => (
 				<PageGridItem key={post.ID}>
-					<SchemaBlogPosting key={post.ID} post={mapWordPressToBlogPosting(post, false)} />
+					<SchemaBlogPosting
+						key={post.ID}
+						post={mapWordPressToBlogPosting(post, false, buildRelatedServiceReferences(post, config?.siteInfo))}
+					/>
 					<BlogPostSummary
 						ID={post.ID}
 						title={post.title}
@@ -148,6 +209,8 @@ export function BlogPostList(props: BlogPostListType) {
 		</SmartErrorBoundary>
 	);
 }
+
+
 
 /**
  * BlogPostSummary — Render a compact summary card for a single WordPress post.

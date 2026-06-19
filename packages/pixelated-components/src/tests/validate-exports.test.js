@@ -20,10 +20,13 @@ describe('validate-exports script', () => {
 		// Create minimal structure: src/components/foo.tsx and index files
 		await fs.mkdir(path.join(tmp, 'src', 'components'), { recursive: true });
 		await fs.writeFile(path.join(tmp, 'src', 'components', 'foo.tsx'), 'export const Foo = () => null;');
-		const indexes = ['index.js', 'index.server.js', 'index.adminclient.js', 'index.adminserver.js'];
+		const indexes = ['index.js', 'index.server.js'];
 		for (const i of indexes) {
 			await fs.writeFile(path.join(tmp, i), "export * from './src/components/foo';\n");
 		}
+		await fs.mkdir(path.join(tmp, 'src', 'components', 'admin'), { recursive: true });
+		await fs.writeFile(path.join(tmp, 'src', 'components', 'admin', 'index.admin.js'), "export * from '../foo';\n");
+		await fs.writeFile(path.join(tmp, 'src', 'components', 'admin', 'index.admin.server.js'), "export * from '../foo';\n");
 
 		const script = path.resolve('src/scripts/validate-exports.js');
 		const res = await runScript(script, tmp);
@@ -35,10 +38,13 @@ describe('validate-exports script', () => {
 		const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-validate-'));
 		await fs.mkdir(path.join(tmp, 'src', 'components'), { recursive: true });
 		// Create index that exports a non-existent component
-		const indexes = ['index.js', 'index.server.js', 'index.adminclient.js', 'index.adminserver.js'];
+		const indexes = ['index.js', 'index.server.js'];
 		for (const i of indexes) {
 			await fs.writeFile(path.join(tmp, i), "export * from './src/components/missing';\n");
 		}
+		await fs.mkdir(path.join(tmp, 'src', 'components', 'admin'), { recursive: true });
+		await fs.writeFile(path.join(tmp, 'src', 'components', 'admin', 'index.admin.js'), "export * from '../missing';\n");
+		await fs.writeFile(path.join(tmp, 'src', 'components', 'admin', 'index.admin.server.js'), "export * from '../missing';\n");
 		const script = path.resolve('src/scripts/validate-exports.js');
 		const res = await runScript(script, tmp);
 		expect(res.code).toBe(1);

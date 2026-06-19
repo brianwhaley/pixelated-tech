@@ -78,8 +78,19 @@ vi.mock('@pixelated-tech/components', async () => {
 
 vi.mock('@pixelated-tech/components/adminclient', async () => {
 	const make = (name: string) => ({ _children }: any) => <div data-testid={name}>{_children}</div>;
+	const normalizeRoutePath = (value: string | undefined | null) => {
+		const path = String(value ?? '/').trim();
+		return path === '' ? '/' : path.replace(/\/+/g, '/');
+	};
+	const getAllowedAdminRoutes = (_email: string | undefined | null, routes: any[] = []) => {
+		return routes.filter(route => typeof route?.path === 'string' && normalizeRoutePath(route.path) !== '/login');
+	};
+	const isRouteAllowedForID = (_email: string | undefined | null, _path: string, _config: any) => true;
 	return {
 		__esModule: true,
+		BillingDashboard: make('BillingDashboard'),
+		InvoiceView: make('InvoiceView'),
+		Unauthorized: make('Unauthorized'),
 		SiteHealthGit: make('SiteHealthGit'),
 		SiteHealthUptime: make('SiteHealthUptime'),
 		SiteHealthSecurity: make('SiteHealthSecurity'),
@@ -93,6 +104,9 @@ vi.mock('@pixelated-tech/components/adminclient', async () => {
 		SiteHealthGoogleSearchConsole: make('SiteHealthGoogleSearchConsole'),
 		SiteHealthOnSiteSEO: make('SiteHealthOnSiteSEO'),
 		SiteHealthCloudwatch: make('SiteHealthCloudwatch'),
+		normalizeRoutePath,
+		getAllowedAdminRoutes,
+		isRouteAllowedForID,
 	};
 });
 
@@ -108,6 +122,19 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 	discoverComponentsFromLibrary: async () => [],
 	analyzeComponentUsage: async () => ({ components: [] }),
 	executeDeployment: async () => ({ success: true }),
+	loadBillingData: () => ({
+		sites: [{ name: 'site-a', billing: true, blogRss: 'https://example.com/feed' }],
+		subscriptions: [{ plan: 'basic' }],
+		paymentInfo: { card: '****' },
+	}),
+	compileInvoiceData: (_site: any, _billingCycle: string, _subscriptions: any, _paymentInfo: any, _posts: any, _socialReferrers: any) => ({ id: 'invoice-1', total: 100 }),
+	getLiveBillingStats: async () => ({ posts: [], socialReferrers: [] }),
+	dispatchInvoiceEmails: async (invoices: any[]) => [{ invoice: invoices[0].invoice, status: 'sent' }],
+	generateInvoicePdfsForSites: async (targetSites: any[], billingMonth: string, previewOnly: boolean) => ({
+		results: targetSites.map((site: any) => ({ site, billingMonth, previewOnly, success: true })),
+	}),
+	getNextAuthCredentials: () => ({ secret: 'test-secret' }),
+	getGoogleOAuthCredentials: () => ({ clientId: 'g-id', clientSecret: 'g-secret' }),
 }));
 
 vi.mock('next-auth/react', () => ({
@@ -123,7 +150,7 @@ vi.mock('next-auth', () => ({
 	getServerSession: () => mockGetServerSession(),
 }));
 
-vi.mock('@/lib/auth', () => ({
+vi.mock('@/lib/authentication', () => ({
 	authOptions: {},
 }));
 
@@ -142,6 +169,14 @@ vi.mock('@pixelated-tech/components/server', () => ({
 			google: { client_id: 'g-id', client_secret: 'g-secret' },
 		},
 	}),
+	Manifest: () => ({ name: 'Pixelated Admin', short_name: 'Admin' }),
+	generateMetaTags: () => <meta />, 
+	PageMetaTags: () => <meta data-testid="mock-page-meta-tags" />,
+	WebsiteSchema: ({ children }: any) => <>{children}</>,
+	LocalBusinessSchema: ({ children }: any) => <>{children}</>,
+	ServicesSchema: ({ children }: any) => <>{children}</>,
+	VisualDesignStyles: ({ children }: any) => <>{children}</>,
+	generateSitemap: async () => [{ url: 'https://admin.pixelated.tech/sitemap.xml' }],
 	generateAiRecommendations: async () => ({ success: true, data: {} }),
 	loadSitesConfig: async () => [{ name: 'test', url: 'https://example.com' }],
 	listContentfulPages: async () => [{ id: 'page-1' }],
@@ -161,6 +196,7 @@ const appPages = [
 	['newdeployment', 'src/app/(pages)/newdeployment/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
 	['component-usage', 'src/app/(pages)/component-usage/page.tsx'],
+	['billing', 'src/app/(pages)/billing/page.tsx'],
 	['site-health', 'src/app/(pages)/site-health/page.tsx'],
 	['styleguide', 'src/app/(pages)/styleguide/page.tsx'],
 	['loading', 'src/app/loading.tsx'],
@@ -362,5 +398,81 @@ describe('pixelated-admin extra coverage', () => {
 		const Layout = mod.default;
 		await Layout({ children: <div /> });
 		expect(mockRedirect).toHaveBeenCalledWith('/login');
+	});
+
+	it('renders billing page without errors', async () => {
+		const mod = await importModule('src/app/(pages)/billing/page.tsx');
+		const BillingPage = mod.default;
+		render(<BillingPage />);
+		expect(screen.getByTestId('BillingDashboard')).toBeTruthy();
+	});
+
+	it('renders the invoice print page with billing data', async () => {
+		const mod = await importModule('src/app/(pages)/billing/invoice/[siteName]/[billingCycle]/page.tsx');
+		const PrintInvoicePage = mod.default;
+		const element = await PrintInvoicePage({ params: Promise.resolve({ siteName: 'site-a', billingCycle: '2026-06' }) });
+		expect(element).toBeTruthy();
+	});
+
+	it('renders unauthorized page without errors', async () => {
+		const mod = await importModule('src/app/unauthorized/page.tsx');
+		const UnauthorizedPage = mod.default;
+		render(<UnauthorizedPage />);
+		expect(screen.getByTestId('Unauthorized')).toBeTruthy();
+	});
+
+	it('returns manifest JSON object', async () => {
+		const mod = await importModule('src/app/manifest.tsx');
+		const manifest = mod.default();
+		expect(manifest).toHaveProperty('name');
+	});
+
+	it('returns robots metadata', async () => {
+		const mod = await importModule('src/app/robots.tsx');
+		const robots = mod.default();
+		expect(robots).toHaveProperty('rules');
+		expect(robots.rules).toHaveProperty('userAgent');
+	});
+
+	it('returns sitemap object', async () => {
+		const mod = await importModule('src/app/sitemap.tsx');
+		const sitemap = await mod.default();
+		expect(Array.isArray(sitemap)).toBe(true);
+	});
+
+	it('returns billing config JSON from route', async () => {
+		const route = await importModule('src/app/api/billing/config/route.ts');
+		const response = await route.GET();
+		expect(response.status).toBe(200);
+		expect(await response.json()).toHaveProperty('sites');
+	});
+
+	it('validates payload for email invoice route', async () => {
+		const route = await importModule('src/app/api/billing/email/route.ts');
+		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({}) }));
+		expect(response.status).toBe(400);
+		expect(await response.json()).toEqual({ success: false, message: 'invoices array is required' });
+	});
+
+	it('emails invoices successfully', async () => {
+		const route = await importModule('src/app/api/billing/email/route.ts');
+		const invoices = [{ siteName: 'site-a', pdfPath: '/tmp/invoice.pdf', email: 'test@example.com', invoice: 'inv-1' }];
+		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({ invoices }) }));
+		expect(response.status).toBe(200);
+		expect(await response.json()).toEqual({ success: true, logs: [{ invoice: 'inv-1', status: 'sent' }] });
+	});
+
+	it('validates payload for generate invoice PDFs route', async () => {
+		const route = await importModule('src/app/api/billing/generate/route.ts');
+		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({}) }));
+		expect(response.status).toBe(400);
+		expect(await response.json()).toEqual({ success: false, message: 'sites array and billingMonth are required' });
+	});
+
+	it('generates invoice PDFs successfully', async () => {
+		const route = await importModule('src/app/api/billing/generate/route.ts');
+		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({ sites: [{ name: 'site-a' }], billingMonth: '2026-06', previewOnly: true }) }));
+		expect(response.status).toBe(200);
+		expect(await response.json()).toHaveProperty('results');
 	});
 });

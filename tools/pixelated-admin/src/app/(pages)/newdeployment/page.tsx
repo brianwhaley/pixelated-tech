@@ -113,9 +113,10 @@ export default function DeployPage() {
 
 			// Handle different field types with their specific props
 			if (field.props.id === 'sites') {
+				const siteList = Array.isArray(sites) ? sites : ((sites as any).sites || []);
 				(baseField.props as CheckboxFieldProps) = {
 					...field.props,
-					options: sites.map(site => ({ value: site.name, text: site.name })),
+					options: siteList.map((site: any) => ({ value: site.name, text: site.name })),
 					checked: selectedSites,
 					onChange: (values: string[]) => setSelectedSites(values)
 				};

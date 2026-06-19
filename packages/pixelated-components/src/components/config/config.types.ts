@@ -312,6 +312,8 @@ export interface PaypalConfig {
 export interface PuppeteerConfig {
 	executable_path?: string;
 	cache_dir?: string;
+	/** Internal auth token for Puppeteer invoice rendering */
+	internalToken?: string;
 }
 
 export interface ShoppingCartConfig {
@@ -339,6 +341,14 @@ export interface ShoppingCartConfig {
 	handlingFeeAmount?: number;
 	/** Currency code used for handling fee configuration */
 	handlingFeeCurrency?: string;
+}
+
+export interface SmtpConfig {
+	smtpHost: string;
+	smtpPort?: number;
+	smtpSecure?: boolean;
+	smtpUser: string;
+	smtpPass: string;
 }
 
 export interface SquareConfig {
@@ -380,6 +390,13 @@ export interface USPSConfig {
 export interface WordpressConfig {
 	baseURL: string; // REST API base URL, e.g. 'https://public-api.wordpress.com/rest/v1/sites/'
 	site: string; // WordPress site identifier (e.g., 'pixelatedviews.wordpress.com')
+	clientId?: string;
+	clientSecret?: string;
+	apiToken?: string;
+	redirectURL?: string;
+	tokenURL?: string;
+	authorizeURL?: string;
+	authenticateURL?: string;
 }
 
 /**
@@ -405,9 +422,11 @@ export interface IntegrationsConfig {
 	googleSearchConsole?: GoogleSearchConsoleConfig;
 	hubspot?: HubspotConfig;
 	instagram?: InstagramConfig;
+	nextAuth?: NextAuthConfig;
 	paypal?: PaypalConfig;
 	puppeteer?: PuppeteerConfig;
 	shoppingcart?: ShoppingCartConfig;
+	smtp?: SmtpConfig;
 	square?: SquareConfig;
 	usps?: USPSConfig;
 	wordpress?: WordpressConfig;
@@ -458,15 +477,25 @@ export const SECRET_CONFIG_KEYS = {
 		instagram: [
 			'accessToken'
 		],
+		puppeteer: [
+			'internalToken'
+		],
 		paypal: [
 			'sandboxPayPalSecret',
 			'payPalSecret'
+		],
+		smtp: [
+			'smtpPass'
 		],
 		square: [
 			'accessToken'
 		],
 		usps: [
 			'consumerSecret'
+		],
+		wordpress: [
+			'clientSecret',
+			'apiToken'
 		]
 	}
 };

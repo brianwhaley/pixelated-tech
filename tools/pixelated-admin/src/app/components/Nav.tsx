@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { SidePanel, MenuAccordion } from '@pixelated-tech/components';
 import { useSession, signOut } from 'next-auth/react';
 import { usePixelatedConfig } from '@pixelated-tech/components';
+import { getAllowedAdminRoutes } from '@pixelated-tech/components/adminclient';
+import authorizationConfig from '../data/authorization.json';
 
 export default function Nav() {
 	const pixelatedConfig = usePixelatedConfig();
@@ -11,6 +13,11 @@ export default function Nav() {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const { data: session, status } = useSession();
+
+	const allowedRoutes = useMemo(() => {
+		const email = session?.user?.email;
+		return getAllowedAdminRoutes(email, routes, authorizationConfig as any);
+	}, [routes, session]);
 
 	const handleSignOut = () => {
 		signOut({ callbackUrl: '/login' });
@@ -27,7 +34,7 @@ export default function Nav() {
 			showTab={true}
 			tabIcon="☰"
 		>
-			<MenuAccordion menuItems={routes} />
+			<MenuAccordion menuItems={allowedRoutes} />
 			<div className="nav-user-section">
 				{status === 'loading' ? (
 					<div className="nav-loading-text">Loading...</div>

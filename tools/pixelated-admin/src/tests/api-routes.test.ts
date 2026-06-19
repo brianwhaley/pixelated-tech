@@ -17,7 +17,7 @@ vi.mock('next-auth', () => ({
 	default: () => mockNextAuthHandler,
 }));
 
-vi.mock('@/lib/auth', () => ({
+vi.mock('@/lib/authentication', () => ({
 	authOptions: {},
 }));
 
