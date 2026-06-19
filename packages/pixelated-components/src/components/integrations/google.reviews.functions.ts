@@ -1,5 +1,5 @@
 // Server-side: Fetch Google reviews by place_id
-// Requires: GOOGLE_MAPS_API_KEY or hard-coded key
+// Requires:  key
 // Flow: Place Details (reviews)
 //
 // Conversation summary:

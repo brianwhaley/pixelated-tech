@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.5.14",
+  "version": "0.6.0",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -36,7 +36,7 @@
     "@eslint/js": "9.39.4",
     "@testing-library/react": "^16.3.2",
     "@types/md5": "^2.3.6",
-    "@types/node": "^25.7.0",
+    "@types/node": "^26.0.0",
     "@types/prop-types": "^15.7.15",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.0.6",
@@ -49,7 +49,7 @@
     "jsdom": "^29.1.1",
     "react-dom": "^19.2.6",
     "typescript": "^6.0.2",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   },
   "overrides": {},
   "deployMarker": "2026-06-11-23-05"

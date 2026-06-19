@@ -2,6 +2,21 @@
 const fs = require('fs');
 const path = require('path');
 
+
+/* 
+
+USAGE EXAMPLE: 
+
+cd /Volumes/btw_x10pro/Git/pixelated-tech/tools/leadscraper
+node scripts/search-public.js \
+  --filter "emails:exists" \
+  --filter "website:blank" \
+  --filePattern public/data/companies-googleplaces-20260619-hydrated.json \
+  --output public/reports/companies-with-emails-no-website-20260619.json \
+  --format records
+
+  */
+
 function parseArgs(argv) {
 	const args = { filters: [], filePattern: 'public/data/*.json', limit: 0, output: null, format: 'matches' };
 	for (let i = 0; i < argv.length; i++) {

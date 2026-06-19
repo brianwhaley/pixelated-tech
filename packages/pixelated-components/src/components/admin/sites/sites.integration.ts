@@ -33,9 +33,9 @@ export async function loadSitesConfig(configPath?: string): Promise<SiteConfig[]
 		}
 
 		const sitesData = fs.readFileSync(sitesPath, 'utf8');
-		const sites = JSON.parse(sitesData);
+		const parsed = JSON.parse(sitesData);
 
-		return sites;
+		return Array.isArray(parsed) ? parsed : (parsed.sites || []);
 	} catch (error) {
 		console.error('Error loading sites:', error);
 		throw new Error('Failed to load sites configuration', { cause: error });
@@ -55,7 +55,21 @@ export async function saveSitesConfig(sites: SiteConfig[], configPath?: string):
 			fs.mkdirSync(dir, { recursive: true });
 		}
 
-		fs.writeFileSync(sitesPath, JSON.stringify(sites, null, 2), 'utf8');
+		let fileData: any = sites;
+		if (fs.existsSync(sitesPath)) {
+			try {
+				const existingData = fs.readFileSync(sitesPath, 'utf8');
+				const parsed = JSON.parse(existingData);
+				if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+					parsed.sites = sites;
+					fileData = parsed;
+				}
+			} catch (e) {
+				// Fallback if existing file is unparseable
+			}
+		}
+
+		fs.writeFileSync(sitesPath, JSON.stringify(fileData, null, 2), 'utf8');
 	} catch (error) {
 		console.error('Error saving sites:', error);
 		throw new Error('Failed to save sites configuration', { cause: error });

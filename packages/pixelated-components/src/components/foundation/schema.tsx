@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { contentfulValueToSlug, normalizeContentfulAssetUrl } from '../integrations/contentful.delivery';
 import type { SiteInfo } from '../config/config.types';
 import { usePixelatedConfig } from '../config/config.client';
 import { getServicePathPrefix } from '../elements/services.functions';
+import { getGoogleReviewsByPlaceId, type GoogleReview } from '../integrations/google.reviews.functions';
+import { getWikipediaCityObject } from '../integrations/wikipedia.functions';
 
 
 
@@ -273,6 +275,25 @@ export function LocalBusinessSchema() {
 	const telephone = siteInfo?.telephone;
 	const url = siteInfo?.url;
 	const logo = siteInfo?.image;
+	const services = siteInfo?.services || [];
+	const servicePathPrefix = getServicePathPrefix(siteInfo);
+	const serviceCatalogItems = services
+		.filter((service): service is NonNullable<typeof service> => service != null && typeof service.name === 'string')
+		.map((service) => {
+			const serviceName = service.name;
+			const serviceSlug = contentfulValueToSlug({ value: serviceName });
+			const serviceUrl = service.url
+				|| (url && serviceSlug ? `${url.replace(/\/$/, '')}${servicePathPrefix}/${serviceSlug}` : undefined);
+			return {
+				'@type': 'Offer',
+				itemOffered: {
+					'@type': 'Service',
+					name: serviceName,
+					...(service.description && { description: formatServiceDescription(service.description) }),
+					...(serviceUrl && { url: serviceUrl }),
+				}
+			};
+		});
 	const image = siteInfo?.image || logo;
 	const openingHours = normalizeOpeningHoursValue(siteInfo?.openingHours);
 	const description = siteInfo?.description;
@@ -296,6 +317,13 @@ export function LocalBusinessSchema() {
 		telephone,
 		url,
 		...(logo && { logo }),
+		...(serviceCatalogItems.length > 0 && {
+			hasOfferCatalog: {
+				'@type': 'OfferCatalog',
+				name: 'Services',
+				itemListElement: serviceCatalogItems,
+			}
+		}),
 		...(image && { image }),
 		...(openingHours && { openingHours }),
 		...(description && { description }),
@@ -578,9 +606,45 @@ export function ServicesSchema() {
 
 	const baseUrl = siteInfo?.url?.replace(/\/$/, '') || provider.url?.replace(/\/$/, '') || '';
 	const serviceAreas = siteInfo?.serviceAreas || [];
+
 	const areaServedValues = serviceAreas
-		.map(area => area?.name)
-		.filter((name): name is string => typeof name === 'string' && name.trim() !== '');
+		.map(area => getWikipediaCityObject(area?.name))
+		.filter((item): item is NonNullable<typeof item> => item !== null);
+
+	const googlePlacesPlaceId = config?.integrations?.googlePlaces?.placeId || '';
+	const googlePlacesApiKey = config?.integrations?.googlePlaces?.apiKey || '';
+	const googlePlacesLanguage = config?.integrations?.googlePlaces?.language;
+	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
+	const [googleReviews, setGoogleReviews] = useState<GoogleReview[]>([]);
+	const shouldLoadGoogleReviews = Boolean(googlePlacesPlaceId && googlePlacesApiKey);
+
+	useEffect(() => {
+		if (!shouldLoadGoogleReviews) {
+			return;
+		}
+
+		let didCancel = false;
+		(async () => {
+			try {
+				const result = await getGoogleReviewsByPlaceId({
+					apiKey: googlePlacesApiKey,
+					placeId: googlePlacesPlaceId,
+					proxyBase,
+					language: googlePlacesLanguage ?? undefined,
+					maxReviews: 5,
+				});
+				if (!didCancel && Array.isArray(result.reviews)) {
+					setGoogleReviews(result.reviews);
+				}
+			} catch {
+				// Silently ignore review fetch failures and continue rendering service schema without reviews.
+			}
+		})();
+
+		return () => {
+			didCancel = true;
+		};
+	}, [googlePlacesApiKey, googlePlacesLanguage, googlePlacesPlaceId, proxyBase, shouldLoadGoogleReviews]);
 
 	if (!services.length || !provider.name) {
 		return null;
@@ -616,6 +680,39 @@ export function ServicesSchema() {
 		const audience = service.audience || sharedAudience;
 		const offers = service.offers || sharedOffers;
 		const termsOfService = service.termsOfService || sharedTermsOfService;
+		const googleReviewSchemas = googleReviews.map((review) => ({
+			'@context': 'https://schema.org',
+			'@type': 'Review',
+			name: review.text ? review.text.substring(0, 110) : `${review.author_name} review`,
+			reviewBody: review.text || undefined,
+			datePublished: review.time ? new Date(review.time * 1000).toISOString() : undefined,
+			author: {
+				'@type': 'Person',
+				name: review.author_name,
+			},
+			itemReviewed: {
+				'@type': 'LocalBusiness',
+				name: provider.name,
+				...(provider.url && { url: provider.url }),
+			},
+			reviewRating: {
+				'@type': 'Rating',
+				ratingValue: review.rating.toString(),
+				bestRating: '5',
+				worstRating: '1',
+			},
+		}));
+
+		const googleAggregateRating = googleReviews.length > 0 ? {
+			'@type': 'AggregateRating',
+			ratingValue: (
+				googleReviews.reduce((sum, review) => sum + review.rating, 0) / googleReviews.length
+			).toFixed(1),
+			reviewCount: googleReviews.length.toString(),
+			bestRating: '5',
+			worstRating: '1',
+		} : undefined;
+
 		return {
 			'@type': 'Service',
 			name: service.name,
@@ -632,6 +729,8 @@ export function ServicesSchema() {
 			...(sharedAvailability && { availability: sharedAvailability }),
 			...(sharedAvailableChannel && { availableChannel: sharedAvailableChannel }),
 			...(areaServedValues.length > 0 && { areaServed: areaServedValues }),
+			...(googleAggregateRating && { aggregateRating: googleAggregateRating }),
+			...(googleReviewSchemas.length > 0 && { review: googleReviewSchemas }),
 			provider: {
 				'@type': 'LocalBusiness',
 				name: provider.name,
@@ -657,6 +756,70 @@ export function ServicesSchema() {
 		</>
 	);
 }
+
+
+
+
+
+/* ========================================
+	WEBPAGE SCHEMA COMPONENTS
+======================================== */
+
+/**
+ * SchemaWebPage — embeds a WebPage as JSON-LD for geographic landing pages.
+ */
+SchemaWebPage.propTypes = {
+	/** Slug of the active service area */
+	serviceAreaSlug: PropTypes.string.isRequired,
+	/** Optional path prefix for service area URLs */
+	serviceAreaPathPrefix: PropTypes.string,
+};
+export type SchemaWebPageType = InferProps<typeof SchemaWebPage.propTypes>;
+export function SchemaWebPage({ serviceAreaSlug, serviceAreaPathPrefix = '/service-areas' }: SchemaWebPageType) {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const activeArea = siteInfo?.serviceAreas?.find((area: any) => {
+		const itemSlug = contentfulValueToSlug({ value: area?.name || '' });
+		return itemSlug === serviceAreaSlug;
+	});
+
+	if (!activeArea) {
+		return null;
+	}
+
+	const baseUrl = siteInfo?.url?.replace(/\/$/, '') || '';
+	const servicePathPrefix = getServicePathPrefix(siteInfo);
+	const services = siteInfo?.services || [];
+
+	const aboutServices = services
+		.filter((service): service is NonNullable<typeof service> => service != null && typeof service.name === 'string')
+		.map((service) => {
+			const serviceName = service.name;
+			const serviceSlug = contentfulValueToSlug({ value: serviceName });
+			const serviceUrl = service.url || (baseUrl ? `${baseUrl}${servicePathPrefix}/${serviceSlug}` : undefined);
+			return {
+				'@type': 'Service',
+				name: serviceName,
+				...(serviceUrl && { url: serviceUrl }),
+			};
+		});
+
+	const url = `${baseUrl}${serviceAreaPathPrefix}/${serviceAreaSlug}`;
+	const formattedAreaName = activeArea.name.trim().replace(/\s+([A-Z]{2})$/i, ', $1');
+	const schemaData = {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': url,
+		url,
+		name: `Digital Services and Web Design in ${formattedAreaName}`,
+		...(aboutServices.length > 0 && { about: aboutServices }),
+	};
+
+	return (
+		<SchemaScript schema={schemaData} />
+	);
+}
+
 
 
 

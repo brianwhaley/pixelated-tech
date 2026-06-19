@@ -1,8 +1,9 @@
 {
   "metadata": {
-    "imageCount": 1
+    "imageCount": 2
   },
   "images": [
+    "images/pixelated-logo-v2.png",
     "pix-bg-512.jpg"
   ]
 }

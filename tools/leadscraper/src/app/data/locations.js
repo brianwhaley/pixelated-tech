@@ -1,12 +1,31 @@
 
 export const locations = [
 	'Denville, New Jersey',
+	'Rockaway, New Jersey',
+	'Boonton, New Jersey',
+	'Hackettstown, New Jersey',
+	'Morristown, New Jersey',
+	'Dover, New Jersey',
+	'Parsippany, New Jersey',
+	'Short Hills, New Jersey',
 	'New Brunswick, New Jersey',
+	'Piscataway, New Jersey',
+	'Princeton, New Jersey',
 	'Hopewell, New Jersey',
 	'Point Pleasant, New Jersey',
 	'Vineland, New Jersey',
+
 	'Hilton Head Island, South Carolina',
+	'Beaufort, South Carolina',
+	'Port Royal, South Carolina',
+	'Okatie, South Carolina',
+	'Hardeeville, South Carolina',
 	'Bluffton, South Carolina',
+	'Mount Pleasant, South Carolina',
+	'Summerville, South Carolina',
 	'Charleston, South Carolina',
 	'Savannah, Georgia',
+	'Pooler, Georgia',
+	'Richmond Hill, Georgia',
+	'Tybee Island, Georgia'
 ];

@@ -2,35 +2,18 @@ import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
+import { getGoogleOAuthCredentials, getNextAuthCredentials } from '@pixelated-tech/components/adminserver';
 
-type NextAuthConfig = {
-	secret?: string;
-};
-
-type GoogleConfig = {
-	client_id?: string;
-	client_secret?: string;
-};
-
-const fullConfig = getFullPixelatedConfig();
-const nextAuthCfg = (fullConfig.integrations?.nextAuth ?? {}) as NextAuthConfig;
-const googleCfg = (fullConfig.integrations?.google ?? {}) as GoogleConfig;
-
-if (!nextAuthCfg.secret) {
-	throw new Error('nextAuth.secret not configured in pixelated.config.json');
-}
-if (!googleCfg.client_id || !googleCfg.client_secret) {
-	throw new Error('Google OAuth credentials not configured in pixelated.config.json');
-}
+const nextAuthCfg = getNextAuthCredentials();
+const googleCfg = getGoogleOAuthCredentials();
 
 const googleProvider = GoogleProvider({
-	clientId: googleCfg.client_id,
-	clientSecret: googleCfg.client_secret,
+	clientId: googleCfg.clientId,
+	clientSecret: googleCfg.clientSecret,
 	authorization: { params: { scope: 'openid email profile' } },
 });
-(googleProvider as any).clientId = googleCfg.client_id;
-(googleProvider as any).clientSecret = googleCfg.client_secret;
+(googleProvider as any).clientId = googleCfg.clientId;
+(googleProvider as any).clientSecret = googleCfg.clientSecret;
 
 export const authOptions: NextAuthOptions = {
 	secret: nextAuthCfg.secret,

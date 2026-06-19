@@ -1,6 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
+import { waitFor } from '@testing-library/react';
+import * as googleReviewsFunctions from '../components/integrations/google.reviews.functions';
 import { ServicesSchema } from '../components/foundation/schema';
+
+vi.mock('../components/integrations/google.reviews.functions', () => ({
+	getGoogleReviewsByPlaceId: vi.fn(),
+}));
 
 describe('ServicesSchema', () => {
 	const defaultServices = [
@@ -224,7 +230,47 @@ describe('ServicesSchema', () => {
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const service = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(service.areaServed).toEqual(['Metro Area', 'Coastal Area']);
+		expect(service.areaServed).toEqual([
+			{ '@type': 'City', name: 'Metro Area' },
+			{ '@type': 'City', name: 'Coastal Area' }
+		]);
+	});
+
+	it('should generate structured areaServed objects with Wikipedia sameAs links', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			serviceAreas: [
+				{ name: 'Denville NJ' },
+				{ name: 'Morristown NJ' },
+				{ name: 'Savannah GA' }
+			],
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
+		};
+
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.areaServed).toEqual([
+			{
+				'@type': 'City',
+				name: 'Denville',
+				sameAs: 'https://en.wikipedia.org/wiki/Denville_Township,_New_Jersey'
+			},
+			{
+				'@type': 'City',
+				name: 'Morristown',
+				sameAs: 'https://en.wikipedia.org/wiki/Morristown,_New_Jersey'
+			},
+			{
+				'@type': 'City',
+				name: 'Savannah',
+				sameAs: 'https://en.wikipedia.org/wiki/Savannah,_Georgia'
+			}
+		]);
 	});
 
 	it('should include provider address, sameAs, and openingHours when provided', () => {
@@ -370,6 +416,52 @@ describe('ServicesSchema', () => {
 				JSON.parse(scriptTag.textContent || '{}');
 			});
 		}).not.toThrow();
+	});
+
+	it('should include review and aggregateRating when googlePlaces placeId exists', async () => {
+		vi.spyOn(googleReviewsFunctions, 'getGoogleReviewsByPlaceId').mockResolvedValue({
+			place: {
+				name: 'Test Place',
+				place_id: 'ChIJ1234567890',
+				formatted_address: '123 Test St',
+			},
+			reviews: [
+				{
+					author_name: 'John Doe',
+					rating: 5,
+					text: 'Great service!',
+					time: 1680000000,
+				},
+			],
+		});
+
+		const { container } = render(<ServicesSchema />, {
+			config: {
+				siteInfo: {
+					name: 'Test Agency',
+					url: 'https://testagency.com',
+					services: defaultServices,
+				},
+				integrations: {
+					googlePlaces: {
+						placeId: 'ChIJ1234567890',
+						apiKey: 'test-api-key',
+					},
+				},
+			},
+		});
+
+		await waitFor(() => {
+			const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+			expect(scriptTags.length).toBe(2);
+			const schemaData = JSON.parse(scriptTags[0].textContent || '{}');
+			expect(schemaData.aggregateRating).toBeDefined();
+			expect(schemaData.aggregateRating.ratingValue).toBe('5.0');
+			expect(schemaData.aggregateRating.reviewCount).toBe('1');
+			expect(schemaData.review).toBeDefined();
+			expect(Array.isArray(schemaData.review)).toBe(true);
+			expect(schemaData.review[0].reviewRating.ratingValue).toBe('5');
+		});
 	});
 
 	it('should exclude optional fields that are not provided except generated url', () => {

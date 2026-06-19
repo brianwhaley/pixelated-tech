@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { loadManifest, findTemplateForSlug, addRouteEntry } from '../scripts/create-pixelated-app.js';
+import fs from 'fs/promises';
+import os from 'os';
 import path from 'path';
+import { loadManifest, findTemplateForSlug, findPixelatedConfigJsonFile, addRouteEntry } from '../scripts/create-pixelated-app.js';
 
 interface Route {
   name: string;
@@ -27,29 +29,56 @@ describe('create-pixelated-app template mapping', () => {
       const loadedManifest = await loadManifest(path.resolve(__dirname, '..', 'scripts'));
       expect(loadedManifest).toBeTruthy();
       expect(typeof loadedManifest).toBe('object');
-    });
-
-    it('manifest contains templates array', async () => {
-      const loadedManifest = await loadManifest(path.resolve(__dirname, '..', 'scripts'));
-      expect(Array.isArray(loadedManifest.templates) || Array.isArray(loadedManifest)).toBe(true);
+      expect(Array.isArray((loadedManifest as any).templates)).toBe(true);
     });
 
     it('manifest templates have required properties', async () => {
       const loadedManifest = await loadManifest(path.resolve(__dirname, '..', 'scripts'));
-      const templates = Array.isArray(loadedManifest.templates) ? loadedManifest.templates : loadedManifest;
+      expect(Array.isArray((loadedManifest as any).templates)).toBe(true);
+      const templates = (loadedManifest as any).templates;
       if (templates.length > 0) {
         expect(templates[0]).toHaveProperty('name');
       }
     });
 
     it('handles missing manifest gracefully', async () => {
-      try {
-        const result = await loadManifest('/nonexistent/path');
-        // May throw or return null/empty
-      } catch (e) {
-        // Expected error for missing path
-        expect(e).toBeDefined();
-      }
+      const result = await loadManifest('/nonexistent/path');
+      expect(result).toBeNull();
+    });
+
+    it('handles manifest file read errors gracefully', async () => {
+      const result = await loadManifest(path.resolve(__dirname, '..', 'scripts', 'nonexistent-folder'));
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('findPixelatedConfigJsonFile', () => {
+    it('locates pixelated.config.json in src/app/config', async () => {
+      const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-test-'));
+      const configDir = path.join(tmp, 'src', 'app', 'config');
+      await fs.mkdir(configDir, { recursive: true });
+      const configPath = path.join(configDir, 'pixelated.config.json');
+      await fs.writeFile(configPath, JSON.stringify({ routes: [] }), 'utf8');
+
+      const found = await findPixelatedConfigJsonFile(tmp);
+      expect(found).toBe(configPath);
+    });
+
+    it('locates pixelated.config.json in src/config when src/app/config is absent', async () => {
+      const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-test-'));
+      const configDir = path.join(tmp, 'src', 'config');
+      await fs.mkdir(configDir, { recursive: true });
+      const configPath = path.join(configDir, 'pixelated.config.json');
+      await fs.writeFile(configPath, JSON.stringify({ routes: [] }), 'utf8');
+
+      const found = await findPixelatedConfigJsonFile(tmp);
+      expect(found).toBe(configPath);
+    });
+
+    it('returns null when pixelated.config.json does not exist', async () => {
+      const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-test-'));
+      const found = await findPixelatedConfigJsonFile(tmp);
+      expect(found).toBeNull();
     });
   });
 

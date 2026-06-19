@@ -25,7 +25,8 @@ export async function GET(request: NextRequest) {
 
 		// Load sites configuration
 		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
-		const sites: Site[] = JSON.parse(fs.readFileSync(sitesPath, 'utf-8'));
+		const parsed = JSON.parse(fs.readFileSync(sitesPath, 'utf-8'));
+		const sites: Site[] = Array.isArray(parsed) ? parsed : (parsed.sites || []);
 		const site = sites.find(s => s.name === siteName);
 
 		if (!site) {
