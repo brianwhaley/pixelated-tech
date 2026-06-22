@@ -159,7 +159,7 @@ export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefi
 		return { name: service.name, href };
 	});
 	return (
-		<PageSection id={id} className="service-area-detail-page" layoutType="none" gap="20px">
+		<PageSection id={id} className="serviceareadetailpage" layoutType="none" gap="20px">
 			<SchemaWebPage serviceAreaSlug={serviceAreaSlug ?? ''} serviceAreaPathPrefix={serviceAreaPathPrefix} />
 			<PageSectionHeader title={title ?? activeArea.name} />
 			<div className="service-area-detail-copy">

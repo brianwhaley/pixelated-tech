@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { GET } from '@/app/api/site-health/axe-core/route';
 import * as integrationModule from '@pixelated-tech/components/adminserver';
-import { TEST_AXE_CORE_RESULT } from '@/test/fixtures';
+import { TEST_AXE_CORE_RESULT } from '@/tests/fixtures';
 
 // Note: Using a simple object for the NextRequest (only url is read in the handler).
 

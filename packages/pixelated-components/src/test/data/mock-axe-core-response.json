@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "data": [
+    {
+      "site": "test-site",
+      "url": "https://test-site.com",
+      "status": "success",
+      "timestamp": "2024-01-01T00:00:00Z",
+      "result": {
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Elements must have sufficient color contrast",
+            "help": "Ensure sufficient color contrast",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.4/color-contrast",
+            "nodes": [
+              {
+                "target": [".button"],
+                "html": "<button>Click me</button>",
+                "failureSummary": "Fix the color contrast"
+              }
+            ],
+            "tags": ["cat.color", "wcag2aa", "wcag143"]
+          }
+        ],
+        "passes": [],
+        "incomplete": [],
+        "inapplicable": [],
+        "testEngine": {
+          "name": "axe-core",
+          "version": "4.4.0"
+        },
+        "testRunner": {
+          "name": "axe"
+        },
+        "testEnvironment": {
+          "userAgent": "Mozilla/5.0...",
+          "windowWidth": 1200,
+          "windowHeight": 800
+        },
+        "timestamp": "2024-01-01T00:00:00Z",
+        "url": "https://test-site.com"
+      },
+      "summary": {
+        "violations": 1,
+        "passes": 0,
+        "incomplete": 0,
+        "inapplicable": 0,
+        "critical": 0,
+        "serious": 1,
+        "moderate": 0,
+        "minor": 0
+      }
+    }
+  ]
+}

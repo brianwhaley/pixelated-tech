@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '../test/test-utils';
 import React from 'react';
 import { SiteHealthDependencyVulnerabilities } from '../components/admin/site-health/site-health-dependency-vulnerabilities';
 import { siteHealthData } from '../test/test-data';

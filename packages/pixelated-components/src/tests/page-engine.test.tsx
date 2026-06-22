@@ -3,7 +3,7 @@ import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PageEngine } from "../components/sitebuilder/page/components/PageEngine";
-import { mockPageEngineData } from '../test/fixtures';
+import { mockPageEngineData, mockDeepPageEngineData } from '../test/fixtures';
 import { pixelatedConfig } from '../test/test-data';
 
 describe('PageEngine', () => {
@@ -376,31 +376,9 @@ describe('PageEngine', () => {
 		});
 
 		it('should handle deeply nested components', () => {
-			const deepData = {
-				components: [
-					{
-						component: 'PageSection',
-						props: {},
-						children: [
-							{
-								component: 'Callout',
-								props: { title: 'Level 2' },
-								children: [
-									{
-										component: 'Callout',
-										props: { title: 'Level 3' },
-										children: []
-									}
-								]
-							}
-						]
-					}
-				]
-			};
-
 			render(
 				<PageEngine
-					pageData={deepData}
+					pageData={mockDeepPageEngineData}
 					editMode={false}
 				/>
 			);

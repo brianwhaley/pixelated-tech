@@ -16,7 +16,13 @@ import {
   rowsStringFormData,
   nullMaxLengthFormData,
   emptyStringMaxLengthFormData,
+  formCheckboxSubmitRequiredData,
+  formRadioSubmitRequiredData,
+  formCompleteMultipleFieldTypesData,
+  createShippingMethodRadioFormData,
+  createUncontrolledRadioDefaultCheckedData,
 } from '@/test/fixtures';
+import { formDefinition } from '@/test/test-data';
 
 describe('Form Component', () => {
   const mockOnSubmitHandler = vi.fn();
@@ -435,24 +441,8 @@ describe('Form Component', () => {
     it('should block submit when required checkbox is unchecked', () => {
       const formData = {
         fields: [
-          {
-            component: 'FormCheckbox',
-            props: {
-              id: 'agree',
-              name: 'agree',
-              label: 'Agreement',
-              display: 'vertical',
-              required: 'required',
-              validate: 'isOneChecked',
-              options: [
-                { value: 'yes', text: 'I agree' }
-              ]
-            }
-          },
-          {
-            component: 'FormButton',
-            props: { type: 'submit', label: 'Submit' }
-          }
+          { component: 'FormCheckbox', props: { name: 'agree', label: 'Agree', validate: 'isOneChecked', required: true, options: [{ value: 'yes', text: 'Yes' }] } },
+          { component: 'FormButton', props: { type: 'submit', text: 'Submit' } }
         ]
       };
       const submitHandler = vi.fn();
@@ -465,25 +455,8 @@ describe('Form Component', () => {
     it('should block submit when required radio group has no selection', () => {
       const formData = {
         fields: [
-          {
-            component: 'FormRadio',
-            props: {
-              id: 'choice',
-              name: 'choice',
-              label: 'Choose',
-              display: 'vertical',
-              required: 'required',
-              validate: 'isOneRadioSelected',
-              options: [
-                { value: 'one', text: 'One' },
-                { value: 'two', text: 'Two' }
-              ]
-            }
-          },
-          {
-            component: 'FormButton',
-            props: { type: 'submit', label: 'Submit' }
-          }
+          { component: 'FormRadio', props: { name: 'choice', label: 'Choose', validate: 'isOneRadioSelected', required: true, options: [{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }] } },
+          { component: 'FormButton', props: { type: 'submit', text: 'Submit' } }
         ]
       };
       const submitHandler = vi.fn();
@@ -553,24 +526,8 @@ describe('Form Component', () => {
     it('should block submit when required checkbox is unchecked', () => {
       const formData = {
         fields: [
-          {
-            component: 'FormCheckbox',
-            props: {
-              id: 'agree',
-              name: 'agree',
-              label: 'Agreement',
-              display: 'vertical',
-              required: 'required',
-              validate: 'isOneChecked',
-              options: [
-                { value: 'yes', text: 'I agree' }
-              ]
-            }
-          },
-          {
-            component: 'FormButton',
-            props: { type: 'submit', label: 'Submit' }
-          }
+          { component: 'FormCheckbox', props: { name: 'agree', label: 'Agree', validate: 'isOneChecked', required: true, options: [{ value: 'yes', text: 'Yes' }] } },
+          { component: 'FormButton', props: { type: 'submit', text: 'Submit' } }
         ]
       };
       const submitHandler = vi.fn();
@@ -583,25 +540,8 @@ describe('Form Component', () => {
     it('should block submit when required radio group has no selection', () => {
       const formData = {
         fields: [
-          {
-            component: 'FormRadio',
-            props: {
-              id: 'choice',
-              name: 'choice',
-              label: 'Choose',
-              display: 'vertical',
-              required: 'required',
-              validate: 'isOneRadioSelected',
-              options: [
-                { value: 'one', text: 'One' },
-                { value: 'two', text: 'Two' }
-              ]
-            }
-          },
-          {
-            component: 'FormButton',
-            props: { type: 'submit', label: 'Submit' }
-          }
+          { component: 'FormRadio', props: { name: 'choice', label: 'Choose', validate: 'isOneRadioSelected', required: true, options: [{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }] } },
+          { component: 'FormButton', props: { type: 'submit', text: 'Submit' } }
         ]
       };
       const submitHandler = vi.fn();
@@ -758,22 +698,10 @@ describe('Form Component', () => {
     it('should render complete form with multiple field types', () => {
       const formData = {
         fields: [
-          {
-            component: 'FormInput',
-            props: { type: 'text', name: 'username' }
-          },
-          {
-            component: 'FormInput',
-            props: { type: 'email', name: 'email' }
-          },
-          {
-            component: 'FormTextarea',
-            props: { name: 'message' }
-          },
-          {
-            component: 'FormButton',
-            props: { type: 'submit', label: 'Submit' }
-          }
+          { component: 'FormInput', props: { type: 'text', name: 'username' } },
+          { component: 'FormInput', props: { type: 'email', name: 'email' } },
+          { component: 'FormTextarea', props: { name: 'message' } },
+          { component: 'FormButton', props: { type: 'submit', text: 'Send' } }
         ]
       };
       const { container } = render(
@@ -824,25 +752,10 @@ describe('Form Component', () => {
 
     it('shipping-method radio rendered by FormEngine invokes parent onChange when clicked (regression)', () => {
       const onChange = vi.fn();
-      const formData = {
-        fields: [
-          {
-            component: 'FormRadio',
-            props: {
-              id: 'shippingMethod',
-              name: 'shippingMethod',
-              label: 'Shipping Method',
-              display: 'vertical',
-              // provide a consumer onChange handler (how JSON-authoring can wire behavior)
-              onChange,
-              options: [
-                { value: 'USPS-GA', text: 'USPS Ground Advantage ( 2 - 5 days ) $9.99' },
-                { value: 'USPS-PM', text: 'USPS Priority Mail ( 2 - 3 days ) $14.99' }
-              ]
-            }
-          }
-        ]
-      };
+      const formData = JSON.parse(JSON.stringify(formDefinition));
+      formData.fields = [
+        { component: 'FormRadio', props: { id: 'shippingMethod', name: 'shippingMethod', label: 'Shipping Method', options: [ { value: 'USPS-GA', text: 'USPS-GA' }, { value: 'GROUND-STD', text: 'GROUND-STD' } ], onChange } }
+      ];
       const { container } = render(<FormEngine formData={formData as any} />);
       const radio = container.querySelector('input[type="radio"][name="shippingMethod"][value="USPS-GA"]') as HTMLInputElement;
       expect(radio).toBeInTheDocument();
@@ -852,25 +765,10 @@ describe('Form Component', () => {
     });
 
     it('renders uncontrolled radio when JSON provides checked but no updater (defaultChecked)', () => {
-      const formData = {
-        fields: [
-          {
-            component: 'FormRadio',
-            props: {
-              id: 'group1',
-              name: 'group1',
-              label: 'Group1',
-              display: 'vertical',
-              // JSON supplies a checked default but no onChange (consumer did not wire)
-              checked: 'opt1',
-              options: [
-                { value: 'opt1', text: 'Option 1' },
-                { value: 'opt2', text: 'Option 2' }
-              ]
-            }
-          }
-        ]
-      };
+      const formData = JSON.parse(JSON.stringify(formDefinition));
+      formData.fields = [
+        { component: 'FormRadio', props: { name: 'group1', options: [{ value: 'opt1', text: 'opt1', defaultChecked: true }, { value: 'opt2', text: 'opt2' }] } }
+      ];
       const { container } = render(<FormEngine formData={formData as any} />);
       const r1 = container.querySelector('input[type="radio"][name="group1"][value="opt1"]') as HTMLInputElement;
       const r2 = container.querySelector('input[type="radio"][name="group1"][value="opt2"]') as HTMLInputElement;

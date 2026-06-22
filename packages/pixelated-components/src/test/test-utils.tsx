@@ -8,15 +8,16 @@
 // - application code or component implementation
 
 
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { expect } from 'vitest';
+import React, { ComponentType, ReactElement } from 'react';
+import { render, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, test } from 'vitest';
 import { PixelatedClientConfigProvider } from '../components/config/config.client';
-import { PixelatedConfig } from '../components/config/config.types';
-import { pixelatedConfig } from './test-data';
+import type { GoogleAnalyticsConfig, GoogleMapsConfig, GoogleSearchConfig, GooglePlacesConfig, PixelatedConfig } from '../components/config/config.types';
+import { pixelatedConfig, mockContentfulItems, mockContentfulAssets, formDefinition, mockPlaceReviews, mockContentfulItem } from './test-data';
 
 export const mockConfig = pixelatedConfig;
-export const createMockConfig = (overrides: Partial<PixelatedConfig>): PixelatedConfig => ({
+export const createMockConfig = (overrides: Partial<PixelatedConfig> = {}): PixelatedConfig => ({
 	...mockConfig,
 	...overrides,
 });
@@ -70,7 +71,7 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
  * Custom render function that wraps components in the necessary providers.
  * Defaults to using the mock version of the global pixelated.config.json.
  */
-function renderWithProviders(
+export function renderWithProviders(
 	ui: ReactElement,
 	{
 		config,
@@ -97,5 +98,102 @@ function renderWithProviders(
 	};
 }
 
-export { renderWithProviders as render };
-export { renderWithProviders };
+export function renderWithConfig(
+	ui: ReactElement,
+	config: Partial<PixelatedConfig> | null = null,
+	renderOptions: Omit<ExtendedRenderOptions, 'config'> = {}
+) {
+	return renderWithProviders(ui, { config, ...renderOptions });
+}
+
+export function renderWithoutProviders(
+	ui: ReactElement,
+	renderOptions: Omit<RenderOptions, 'queries'> = {}
+) {
+	return render(ui, renderOptions);
+}
+
+export function createConfig(overrides: Partial<PixelatedConfig> = {}) {
+	return {
+		...mockConfig,
+		...overrides,
+	};
+}
+
+export function expectScriptInjected(scriptId: string) {
+	return expect(document.getElementById(scriptId)).not.toBeNull();
+}
+
+export function expectErrorFallback(container: HTMLElement) {
+	return expect(container.textContent).toMatch(/something went wrong|error/i);
+}
+
+export function expectJsonLdSchema(container: HTMLElement) {
+	return expect(
+		container.querySelector('script[type="application/ld+json"]')
+	).not.toBeNull();
+}
+
+export function expectRenderSuccess(container: HTMLElement) {
+	return expect(container).toBeInTheDocument();
+}
+
+export function runScenarioTable(
+	Component: ComponentType<any>,
+	scenarios: Array<{ name: string; props: Record<string, any> }>
+) {
+	scenarios.forEach(({ name, props }) => {
+		test(name, () => {
+			const { container } = renderWithProviders(<Component {...props} />);
+			expectRenderSuccess(container);
+		});
+	});
+}
+
+export function runConfigScenarioTests(
+	name: string,
+	Component: ComponentType<any>,
+	scenarios: Array<{ name: string; config?: Partial<PixelatedConfig>; props?: Record<string, any> }>
+) {
+	describe(name, () => {
+		scenarios.forEach(({ name: scenarioName, config, props }) => {
+			test(scenarioName, () => {
+				const { container } = renderWithConfig(
+					<Component {...props} />,
+					config ?? null
+				);
+				expectRenderSuccess(container);
+			});
+		});
+	});
+}
+
+export function runSmokeTest(
+	Component: ComponentType<any>,
+	props: Record<string, any> = {}
+) {
+	test('renders without crashing', () => {
+		const { container } = renderWithProviders(<Component {...props} />);
+		expectRenderSuccess(container);
+	});
+}
+
+export function runErrorStateTest(
+	Component: ComponentType<any>,
+	props: Record<string, any> = {},
+	errorText = /error/i
+) {
+	test('renders error state', async () => {
+		const { container } = renderWithProviders(<Component {...props} />);
+		await waitFor(() => {
+			expect(container.textContent).toMatch(errorText);
+		});
+	});
+}
+
+export {
+	renderWithProviders as render,
+	renderWithProviders as renderComponentWithProviders,
+	renderWithConfig as renderComponentWithConfig,
+	screen, fireEvent, waitFor, userEvent 
+};

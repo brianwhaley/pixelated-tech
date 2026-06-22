@@ -1,17 +1,30 @@
 // Shared test data barrel for the package.
-// This file aggregates raw JSON fixtures from src/test/data, derived fixture exports,
-// and shared test config values used across src/tests/*. It is not a place for
-// test utility functions.
+// This file aggregates raw JSON data files from src/test/data
+// and shared test config files used across src/tests/*. 
 //
 // NOT for:
-// - test helpers or render wrappers (use src/test/test-utils.tsx)
+// - test helpers, test functions, or render wrappers (use src/test/test-utils.tsx)
 // - arbitrary application logic
 // - storing one-off test data that belongs directly in a specific test file
+// - direct, raw JSON data or JSON configuration objects
 //
 // Data files owned by this barrel:
 // - src/test/data/*.json for raw fixture payloads and API response bodies
 // - src/test/fixtures.ts for derived or reusable fixture objects
-// - src/test/test-utils.tsx for shared helper functions
+// 
+// Use src/test/test-utils.tsx for shared helper functions
+// 
+// if you need raw request or response data for a test, add it as a JSON file in src/test/data 
+// and import / export it here
+// IF YOU NEED SPECIFIC CUSTOM DATA FOR A TEST SCENARIO, IE A FAILING TEST FOR ONE FIELD CHANGE
+// YOU SHOULD IMPORT THE DATA FROM OBJECTS IN test-data.ts AND THEN MODIFY THAT OBJECT IN YOUR TEST FILE
+// IF YOU NEED SPECIFIC CUSTOM CONFIG DATA FOR A TEST SCENARIO, IE A FAILING TEST FOR ONE FIELD CHANGE
+// YOU SHOULD IMPORT THE DATA FROM OBJECTS IN test-data.ts AND THEN MODIFY THAT OBJECT IN YOUR TEST FILE
+// if you need snapshot test data, it should be placed into a json file and imported here
+// large binary or encoded payloads should be placed into files in /data and imported here
+// if you need dynamic data you should use existing functions provided by the component library to derive them, do not create new ones. 
+
+
 
 import siteConfig from '@/data/siteconfig.json';
 import recipes from '@/data/recipes.json';
@@ -35,6 +48,8 @@ import mockSitesConfig from './data/mock-sites-config.json';
 import mockSpotifyRss from './data/spotify-rss-mocks.json';
 import mockTileCards from './data/mock-tile-cards.json';
 import mockCarouselCards from './data/mock-carousel-cards.json';
+import mockPlaceReviews from './data/mock-place-reviews.json';
+import mockContentfulItem from './data/mock-contentful-item.json';
 import mockSitemapConfigs from './data/mock-sitemap-configs.json';
 import mockSitemapItemsData from './data/mock-sitemap-items-data.json';
 import mockGoogleApiResponses from './data/mock-google-api-responses.json';
@@ -51,6 +66,10 @@ import ebayListings from './data/ebay-listings.json';
 import mockGoogleAuth from './data/mock-google-auth.json';
 import mockInstagramMedia from './data/mock-instagram-media.json';
 import mockGoogleSearchConsoleData from './data/google-search-console.json';
+import mockGoogleAnalyticsData from './data/mock-google-analytics-data.json';
+import mockAxeCoreResponse from './data/mock-axe-core-response.json';
+import mockCloudwatchData from './data/mock-cloudwatch-data.json';
+import formDefinition from './data/form-definition.json';
 import pixelatedConfigJson from '@/config/pixelated.config.json';
 import type { PixelatedConfig, ContentfulConfig, EbayConfig, SiteInfoType } from '../components/config/config.types';
 import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
@@ -91,11 +110,17 @@ export {
 	mockWordPressPosts,
 	mockContentfulItems,
 	mockContentfulAssets,
+	mockPlaceReviews,
+	mockContentfulItem,
 	mockContentfulTestProps,
 	mockEbayItem,
 	mockGoogleAuth,
 	mockInstagramMedia,
 	mockGoogleSearchConsoleData,
+	mockGoogleAnalyticsData,
+	mockAxeCoreResponse,
+	mockCloudwatchData,
+	formDefinition,
 };
 
 export const mockContentfulItemsDetail = contentfulItemsDetail;
@@ -107,6 +132,8 @@ export const mockCards = mockTileCards;
 export const mockContentfulApiProps = mockContentfulTestProps;
 export const mockGAnalyticsResponse = mockGoogleApiResponses.analytics;
 export const mockGSearchConsoleResponse = mockGoogleApiResponses.searchConsole;
+export const mockAxeCoreData = (mockAxeCoreResponse as any).data?.[0];
+export const mockAxeCoreViolation = (mockAxeCoreData as any)?.result?.violations?.[0];
 
 export {
 	realRecipes,

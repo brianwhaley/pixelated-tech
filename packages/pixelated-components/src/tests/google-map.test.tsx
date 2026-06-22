@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import React from 'react';
 import { GoogleMaps } from '../components/integrations/google.maps';
 import { GoogleMap } from '../components/integrations/google.map';
-import { renderWithProviders, render } from '../test/test-utils';
-import { pixelatedConfig, pixelatedConfigEmpty } from '../test/test-data';
+import { createConfig, expectErrorFallback, renderWithProviders, render } from '../test/test-utils';
+import { pixelatedConfig } from '../test/test-data';
 
 describe('Google Map Components', () => {
 	const defaultProps = {
@@ -67,11 +67,7 @@ describe('Google Map Components', () => {
 		});
 
 		it('should use custom API key from provider config', () => {
-			const customConfig = {
-				integrations: {
-					googleMaps: { apiKey: 'test-api-key-prop' }
-				}
-			} as any;
+			const customConfig = { integrations: { googleMaps: { apiKey: 'test-api-key-prop' } } } as any;
 			const { container } = renderWithProviders(
 				<GoogleMaps {...defaultProps} />,
 				{ config: customConfig }

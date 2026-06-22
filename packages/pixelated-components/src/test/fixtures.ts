@@ -1,18 +1,23 @@
-// Shared fixture objects and helper factories for tests.
-// Raw JSON data should live in src/test/data/*.json. This file creates reusable
-// fixture objects from those raw files and exports lightweight helpers.
-//
-// NOT for:
-// - raw JSON payloads (use src/test/data/*.json)
-// - test render helpers or utilities (use src/test/test-utils.tsx)
-// - application logic or production code
+
+// THIS FILE IS DEPRECATED AND SHOULD NOT BE CHANGED.  
+// It is being left in place for now to avoid breaking existing tests that rely on its exports, 
+// but no new exports should be added to it.
+// YOU SHOULD USE EXISTING EXPORTS FROM test-data.ts OR CREATE NEW ONES
+// THIS INCLUDES CONFIGURATION DATA, RAW SUBMIT DATA, AND RAW RESPONSE DATA
+// IF YOU NEED SPECIFIC CUSTOM DATA FOR A TEST SCENARIO, IE A FAILING TEST FOR ONE FIELD CHANGE
+// YOU SHOULD IMPORT THE DATA FROM OBJECTS IN test-data.ts AND THEN MODIFY THAT OBJECT IN YOUR TEST FILE
+// IF YOU NEED SPECIFIC CUSTOM CONFIG DATA FOR A TEST SCENARIO, IE A FAILING TEST FOR ONE FIELD CHANGE
+// YOU SHOULD IMPORT THE DATA FROM OBJECTS IN test-data.ts AND THEN MODIFY THAT OBJECT IN YOUR TEST FILE
+
 
 import { vi } from 'vitest';
 import siteConfig from '@/data/siteconfig.json';
 import recipes from '@/data/recipes.json';
 import resume from '@/data/resume.json';
+import faqTestData from './data/faq-test-data.json';
 import mockGoogleDateRangesJson from './data/mock-google-date-ranges.json';
 import type { CarouselCardType } from '@/components/general/carousel';
+import type { GeminiRecommendationRequest } from '../components/integrations/gemini-api.server';
 import { mockWordPressPosts as mockWordPressPostsCentralized, mockCarouselCards as mockCarouselCardsCentralized, mockTileCards as mockTileCardsCentralized } from './test-data';
 
 export const mockGoogleDateRanges = {
@@ -52,6 +57,36 @@ export async function createSiteHealthResponse(siteName = 'test-site', url = 'ht
 }
 
 export const emptyFormData = { fields: [] };
+
+export function createFormInputField(props: Record<string, any>) {
+	return { component: 'FormInput', props };
+}
+
+export function createFormTextareaField(props: Record<string, any>) {
+	return { component: 'FormTextarea', props };
+}
+
+export function createFormCheckboxField(props: Record<string, any>) {
+	return { component: 'FormCheckbox', props };
+}
+
+export function createFormRadioField(props: Record<string, any>) {
+	return { component: 'FormRadio', props };
+}
+
+export function createFormButtonField(props: Record<string, any>) {
+	return { component: 'FormButton', props };
+}
+
+export function createFormSectionHeader(title: string, text: string) {
+	return {
+		component: 'FormSectionHeader',
+		props: {
+			title,
+			text,
+		},
+	};
+}
 
 export const singleTextInputFormData = {
 	fields: [
@@ -133,6 +168,211 @@ export const emptyStringMaxLengthFormData = {
 		},
 	],
 };
+
+export const mockComponentWithTextField = {
+	component: 'TestComponent',
+	fields: [
+		{
+			component: 'FormInput',
+			name: 'title',
+			label: 'Title',
+			props: {
+				type: 'text',
+				placeholder: 'Enter title'
+			}
+		}
+	]
+};
+
+export const mockComponentWithSubmitField = {
+	component: 'TestComponent',
+	fields: [
+		{
+			component: 'FormInput',
+			name: 'title',
+			label: 'Title',
+			props: {
+				type: 'text',
+				placeholder: 'Enter title'
+			}
+		},
+		{
+			component: 'FormButton',
+			name: 'submit',
+			props: {
+				type: 'submit',
+				text: 'Save'
+			}
+		}
+	]
+};
+
+export const mockComponentTreeData = [
+	{
+		component: 'Callout',
+		props: { title: 'Test Callout' },
+		children: []
+	},
+	{
+		component: 'PageSection',
+		props: { items: [] },
+		children: [
+			{
+				component: 'Callout',
+				props: { title: 'Child Callout' },
+				children: []
+			}
+		]
+	}
+];
+
+export const mockDeepPageEngineData = {
+	components: [
+		{
+			component: 'PageSection',
+			props: {},
+			children: [
+				{
+					component: 'Callout',
+					props: { title: 'Level 2' },
+					children: [
+						{
+							component: 'Callout',
+							props: { title: 'Level 3' },
+							children: []
+						}
+					]
+				}
+			]
+		}
+	]
+};
+
+export const mockGooglePlacesPredictions = {
+	predictions: [
+		{
+			place_id: 'place1',
+			description: '123 Main St, Springfield, IL',
+			structured_formatting: {
+				main_text: '123 Main St',
+				secondary_text: 'Springfield, IL'
+			}
+		},
+		{
+			place_id: 'place2',
+			description: '456 Oak Ave, Springfield, IL',
+			structured_formatting: {
+				main_text: '456 Oak Ave',
+				secondary_text: 'Springfield, IL'
+			}
+		}
+	]
+};
+
+export const mockGooglePlacesDetailsUS = {
+	result: {
+		formatted_address: '123 Main St, Springfield, IL 62701, USA',
+		address_components: [
+			{ long_name: '123', short_name: '123', types: ['street_number'] },
+			{ long_name: 'Main Street', short_name: 'Main St', types: ['route'] },
+			{ long_name: 'Springfield', short_name: 'Springfield', types: ['locality'] },
+			{ long_name: 'Illinois', short_name: 'IL', types: ['administrative_area_level_1'] },
+			{ long_name: '62701', short_name: '62701', types: ['postal_code'] },
+			{ long_name: 'United States', short_name: 'US', types: ['country'] }
+		]
+	}
+};
+
+export const mockGooglePlacesDetailsCA = {
+	result: {
+		formatted_address: '111 Richmond St W, Toronto, ON M5H 2G4, Canada',
+		address_components: [
+			{ long_name: '111', short_name: '111', types: ['street_number'] },
+			{ long_name: 'Richmond St W', short_name: 'Richmond St W', types: ['route'] },
+			{ long_name: 'Toronto', short_name: 'Toronto', types: ['locality'] },
+			{ long_name: 'Ontario', short_name: 'ON', types: ['administrative_area_level_1'] },
+			{ long_name: 'M5H 2G4', short_name: 'M5H 2G4', types: ['postal_code'] },
+			{ long_name: 'Canada', short_name: 'CA', types: ['country'] }
+		]
+	}
+};
+
+export const mockGooglePlacesDetailsInvalidCountry = {
+	result: {
+		formatted_address: 'Some address in Mexico',
+		address_components: [
+			{ long_name: 'Mexico', short_name: 'MX', types: ['country'] }
+		]
+	}
+};
+
+export const mockGooglePlacesDetailsNoCountry = {
+	result: {
+		formatted_address: 'Unknown location',
+		address_components: []
+	}
+};
+
+export const faqWithImage = {
+	...faqTestData,
+	mainEntity: [{
+		'@type': 'Question',
+		name: 'Image FAQ',
+		category: 'Services',
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: 'Answer with image',
+			image: {
+				'@type': 'ImageObject',
+				contentUrl: '/images/test.jpg',
+				name: 'Test image',
+				width: 100,
+				height: 100,
+				layout: 'right'
+			}
+		}
+	}]
+};
+
+export const faqWithHtml = {
+	...faqTestData,
+	mainEntity: [{
+		'@type': 'Question',
+		name: 'HTML Test',
+		category: 'Technical Details',
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: 'This has <strong>bold</strong> and <em>italic</em> text.'
+		}
+	}]
+};
+
+export function createResumeWithAdditionalReferences(resumeData: any) {
+	return {
+		...resumeData,
+		items: [{
+			...resumeData.items[0],
+			properties: {
+				...resumeData.items[0].properties,
+				references: [
+					...(resumeData.items[0].properties.references || []),
+					{
+						properties: {
+							name: ['John Manager'],
+							url: ['https://johnmanager.com'],
+							locality: ['Springfield'],
+							region: ['IL'],
+							'job-title': 'Manager',
+							org: 'Previous Corp',
+							email: ['john@corp.com'],
+							tel: ['555-9999']
+						}
+					}
+				]
+			}
+		}]
+	};
+}
 
 export const minimalCarouselCard: CarouselCardType = {
 	index: 0,

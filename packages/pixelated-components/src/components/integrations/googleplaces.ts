@@ -43,8 +43,8 @@ export class GooglePlacesService {
 
 	constructor(config?: any) {
 		if (config) {
-			this.apiKey = config.apiKey || null;
-			this.cacheTTL = config.cacheTTL || 3600000;
+			this.apiKey = config.apiKey || config.integrations?.googlePlaces?.apiKey || config.integrations?.google?.api_key || null;
+			this.cacheTTL = config.cacheTTL || config.integrations?.googlePlaces?.cacheTTL || 3600000;
 		}
 		this.sessionToken = this.generateSessionToken();
 		if (debug) {
@@ -75,7 +75,7 @@ export class GooglePlacesService {
 		if (cached) return cached;
 
 		try {
-			const apiKey = config?.integrations?.googlePlaces?.apiKey || this.apiKey;
+			const apiKey = config?.integrations?.googlePlaces?.apiKey || config?.apiKey || config?.integrations?.google?.api_key || this.apiKey;
 			
 			if (!apiKey) {
 				console.error('Google Places API key not configured');
@@ -164,7 +164,7 @@ export class GooglePlacesService {
 	 */
 	async getPlaceDetails(placeId: string, config?: any): Promise<PlaceDetails | null> {
 		try {
-			const apiKey = config?.integrations?.googlePlaces?.apiKey || this.apiKey;
+			const apiKey = config?.integrations?.googlePlaces?.apiKey || config?.apiKey || config?.integrations?.google?.api_key || this.apiKey;
 			if (!apiKey) {
 				console.error('Google Places API key not configured');
 				return null;

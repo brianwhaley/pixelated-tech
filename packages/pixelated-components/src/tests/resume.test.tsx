@@ -31,6 +31,7 @@ vi.mock('../components/elements/smartimage', () => ({
 }));
 
 import { realRecipes, realResume as sampleResumeData } from '../test/test-data';
+import { createResumeWithAdditionalReferences } from '../test/fixtures';
 
 // use `realRecipes` later in recipe-specific tests; `sampleResumeData` is available for resume tests
 
@@ -732,30 +733,7 @@ describe('Resume Components', () => {
     });
 
     it('should handle multiple references', () => {
-      const dataWithMultipleReferences = {
-        ...sampleResumeData,
-        items: [{
-          ...sampleResumeData.items[0],
-          properties: {
-            ...sampleResumeData.items[0].properties,
-            references: [
-              ...sampleResumeData.items[0].properties.references,
-              {
-                properties: {
-                  name: ['John Manager'],
-                  url: ['https://johnmanager.com'],
-                  locality: ['Springfield'],
-                  region: ['IL'],
-                  'job-title': 'Manager',
-                  org: 'Previous Corp',
-                  email: ['john@corp.com'],
-                  tel: ['555-9999']
-                }
-              }
-            ]
-          }
-        }]
-      };
+      const dataWithMultipleReferences = createResumeWithAdditionalReferences(sampleResumeData);
       const { container: refsContainer } = render(
         <ResumeReferences 
           title="References"
