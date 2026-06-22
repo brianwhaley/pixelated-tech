@@ -1,6 +1,6 @@
 /* eslint-disable pixelated/no-hardcoded-config-keys */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { TEST_CONFIG } from '@/test/fixtures';
+import { TEST_CONFIG } from '@/tests/fixtures';
 
 const createDefaultAdminserverMock = () => ({
 	performAxeCoreAnalysis: vi.fn(),

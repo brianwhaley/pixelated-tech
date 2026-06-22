@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '../test/test-utils';
 import { DragHandler } from '../components/structure/carousel.drag';
 
 const TestDragHandler = (props: any) => {

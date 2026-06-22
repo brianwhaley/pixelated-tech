@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { renderWithConfig, createMockConfig } from '../test/test-utils';
 import { SiteHealthGoogleAnalytics } from '../components/admin/site-health/site-health-google-analytics';
+import { mockGoogleAnalyticsData } from '../test/test-data';
 
 // Mock the SiteHealthTemplate component
 vi.mock('../components/admin/site-health/site-health-template', () => ({
@@ -11,21 +13,11 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 
 		React.useEffect(() => {
 			// Simulate API response with analytics data
-			const mockSiteData = {
-				site: 'test-site',
-				status: 'success',
-				currentPageViews: 1200,
-				previousPageViews: 1000,
-				traffic: [
-					{ date: '2024-01-15', pageViews: 1200 },
-					{ date: '2024-01-16', pageViews: 1500 },
-					{ date: '2024-01-17', pageViews: 1350 }
-				]
-			};
+			const baseResponse = { success: true, data: mockGoogleAnalyticsData };
 
 			let transformedData = endpoint?.responseTransformer
-				? endpoint.responseTransformer(mockSiteData)
-				: mockSiteData;
+				? endpoint.responseTransformer(baseResponse)
+				: baseResponse;
 
 			if (siteName === 'empty') {
 				transformedData = [];
@@ -134,6 +126,25 @@ describe('SiteHealthGoogleAnalytics Component', () => {
 		render(<SiteHealthGoogleAnalytics siteName="invalid" />);
 		await waitFor(() => {
 			expect(screen.getByText('Invalid data format received from Google Analytics API.')).toBeInTheDocument();
+		});
+	});
+
+	it('should render with shared config factory helper', async () => {
+		renderWithConfig(
+			<SiteHealthGoogleAnalytics {...defaultProps} />,
+			createMockConfig({
+				integrations: {
+					google: {
+						analytics: {
+							trackingId: 'UA-TEST'
+						}
+					}
+				}
+			})
+		);
+
+		await waitFor(() => {
+			expect(screen.getByText('Google Analytics')).toBeDefined();
 		});
 	});
 

@@ -6,7 +6,7 @@ export default defineConfig({
 	...rootConfig,
 	test: {
 		...rootConfig.test,
-		setupFiles: ['./src/test/setup.ts'],
+		setupFiles: ['./src/tests/setup.ts'],
 		globals: true,
 	},
 	resolve: {

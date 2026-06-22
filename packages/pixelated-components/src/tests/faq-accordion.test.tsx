@@ -2,7 +2,26 @@ import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { FAQ as FAQAccordion } from '@/components/elements/faq';
-import { faqTestData as mockFaqsData } from '../test/test-data';
+import { faqTestData as canonicalFaqs } from '../test/test-data';
+
+const cloneFaqs = (src: any) => JSON.parse(JSON.stringify(src));
+const mockFaqsData = cloneFaqs(canonicalFaqs);
+
+// Reference the specific entries from the canonical data by name
+const faqWithImage = (() => {
+	const data = cloneFaqs(canonicalFaqs);
+	data.mainEntity = data.mainEntity.filter((e: any) => e.name === 'Image FAQ');
+	return data;
+})();
+
+const faqWithHtml = (() => {
+	const data = cloneFaqs(canonicalFaqs);
+	data.mainEntity = data.mainEntity.filter((e: any) => e.name === 'HTML Test');
+	return data;
+})();
+
+
+// `mockFaqsData` is a direct clone of the canonical data in `canonicalFaqs`.
 
 describe('FAQAccordion Component', () => {
 	describe('Basic Rendering', () => {
@@ -142,19 +161,6 @@ describe('FAQAccordion Component', () => {
 		});
 
 		it('renders HTML content in answers', () => {
-			const faqWithHtml = {
-				...mockFaqsData,
-				mainEntity: [{
-					"@type": "Question",
-					"name": "HTML Test",
-					"category": "Technical Details",
-					"acceptedAnswer": {
-						"@type": "Answer",
-						"text": "This has <strong>bold</strong> and <em>italic</em> text."
-					}
-				}]
-			};
-
 			render(<FAQAccordion faqsData={faqWithHtml} />);
 
 			expect(screen.getByText('bold')).toBeInTheDocument();
@@ -162,27 +168,6 @@ describe('FAQAccordion Component', () => {
 		});
 
 		it('renders FAQ images as SmartImage with inline float and size styles', () => {
-			const faqWithImage = {
-				...mockFaqsData,
-				mainEntity: [{
-					"@type": "Question",
-					"name": "Image FAQ",
-					"category": "Services",
-					"acceptedAnswer": {
-						"@type": "Answer",
-						"text": "Answer with image",
-						"image": {
-							"@type": "ImageObject",
-							"contentUrl": "/images/test.jpg",
-							"name": "Test image",
-							"width": 100,
-							"height": 100,
-							"layout": "right"
-						}
-					}
-				}]
-			};
-
 			render(<FAQAccordion faqsData={faqWithImage} />);
 
 			const image = screen.getByAltText('Test image');

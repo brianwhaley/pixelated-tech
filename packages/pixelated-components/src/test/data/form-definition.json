@@ -1,0 +1,92 @@
+{
+  "properties": {
+    "name": "canonical-form",
+    "id": "canonical-form",
+    "toggleLoading": true,
+    "openModal": false,
+    "resetForm": false
+  },
+  "fields": [
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "firstname",
+        "name": "firstname",
+        "defaultValue": null,
+        "autoComplete": "given-name",
+        "size": "40",
+        "display": "horizontal",
+        "required": true,
+        "label": "First Name : "
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "lastname",
+        "name": "lastname",
+        "defaultValue": null,
+        "autoComplete": "family-name",
+        "size": "40",
+        "display": "horizontal",
+        "required": true,
+        "label": "Last Name : "
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "email",
+        "id": "email",
+        "name": "email",
+        "defaultValue": null,
+        "autoComplete": "email",
+        "size": "40",
+        "display": "horizontal",
+        "required": true,
+        "label": "Email Address : ",
+        "validate": "isValidEmailAddress"
+      }
+    },
+    {
+      "component": "FormRadio",
+      "props": {
+        "id": "gender",
+        "name": "gender",
+        "label": "Gender : ",
+        "display": "horizontal",
+        "required": true,
+        "validate": "isOneRadioSelected",
+        "options": [
+          { "value": "male", "text": "Male" },
+          { "value": "female", "text": "Female" }
+        ]
+      }
+    },
+    {
+      "component": "FormCheckbox",
+      "props": {
+        "id": "children",
+        "name": "children",
+        "label": "Children : ",
+        "display": "horizontal",
+        "tooltip": "Please select if you have children",
+        "validate": "isOneChecked",
+        "options": [
+          { "value": "y", "text": "Yes" },
+          { "value": "n", "text": "No" }
+        ]
+      }
+    },
+    {
+      "component": "FormButton",
+      "props": {
+        "type": "submit",
+        "id": "submit",
+        "text": "Submit"
+      }
+    }
+  ]
+}

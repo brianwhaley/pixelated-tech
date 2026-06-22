@@ -1,6 +1,6 @@
 {
   "name": "oaktreelandscaping",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3007 --experimental-https",
@@ -24,10 +24,11 @@
   "dependencies": {
     "@pixelated-tech/components": "*",
     "next": "^16.2.9",
-    "react": "^19.2.6"
+    "react": "^19.2.7"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
+    "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.0.0",
     "@types/prop-types": "^15.7.15",

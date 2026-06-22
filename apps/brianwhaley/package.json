@@ -1,6 +1,6 @@
 {
   "name": "brianwhaley",
-  "version": "2.12.1",
+  "version": "2.13.0",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -34,7 +34,7 @@
     "@pixelated-tech/components": "*",
     "next": "^16.2.9",
     "prop-types": "^15.8.1",
-    "react": "^19.2.6"
+    "react": "^19.2.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

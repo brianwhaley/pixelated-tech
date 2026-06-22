@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, renderWithoutProviders, screen } from '../test/test-utils';
 import { PixelatedClientConfigProvider, usePixelatedConfig } from '../components/config/config.client';
 import { getFullPixelatedConfig, getClientOnlyPixelatedConfig } from '../components/config/config';
 
@@ -114,7 +114,7 @@ describe('PixelatedClientConfigProvider & usePixelatedConfig', () => {
       // In development mode without provider, usePixelatedConfig should log warning and return null
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-      render(<TestComponent />);
+      renderWithoutProviders(<TestComponent />);
 
       expect(consoleSpy).toHaveBeenCalledWith('PixelatedClientConfigProvider not found when called by testcomponent. Some components may not work as expected. Wrap your app with PixelatedClientConfigProvider for full functionality.');
       expect(screen.getByTestId('config-check')).toHaveTextContent('no-config');

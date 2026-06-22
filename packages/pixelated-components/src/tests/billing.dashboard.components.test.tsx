@@ -10,8 +10,8 @@ vi.mock('../components/foundation/smartfetch', () => ({
 
 vi.mock('../components/admin/billing/billing.invoice.components', () => ({
 	default: ({ onBack }: { onBack: () => void }) => (
-		<div data-testid="mock-invoice-view">
-			<button data-testid="mock-back-btn" onClick={onBack}>Back</button>
+		<div data-testid="invoice-view">
+			<button data-testid="back-btn" onClick={onBack}>Back</button>
 		</div>
 	)
 }));
@@ -110,14 +110,14 @@ describe('BillingDashboard Component', () => {
 		fireEvent.click(previewBtns[0]);
 
 		await waitFor(() => {
-			expect(screen.getByTestId('mock-invoice-view')).toBeInTheDocument();
+			expect(screen.getByTestId('invoice-view')).toBeInTheDocument();
 		});
 
 		// Click back
-		fireEvent.click(screen.getByTestId('mock-back-btn'));
+		fireEvent.click(screen.getByTestId('back-btn'));
 
 		await waitFor(() => {
-			expect(screen.queryByTestId('mock-invoice-view')).not.toBeInTheDocument();
+			expect(screen.queryByTestId('invoice-view')).not.toBeInTheDocument();
 		});
 	});
 

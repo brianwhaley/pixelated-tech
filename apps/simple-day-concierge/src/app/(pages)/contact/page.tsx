@@ -9,6 +9,9 @@ import formData from "@/app/data/contactform.json";
 export default function ContactPage() {
 	const pixelatedConfig = usePixelatedConfig();
 	const siteInfo = pixelatedConfig?.siteInfo ?? {};
+	const address = siteInfo.address;
+	const email = siteInfo.email;
+	const telephone = siteInfo.telephone;
 
 	return (
 		<>
@@ -25,15 +28,17 @@ export default function ContactPage() {
 				<PageSectionHeader title="Contact Information" />
 				<div style={{ margin: '0 auto' }}>
 					<h3>Address:</h3>
-					<p>
-						<a href="https://maps.app.goo.gl/2bD1zr43i5CmkfAk7" target="_blank" rel="noopener noreferrer">
-							{siteInfo.address.streetAddress}, {siteInfo.address.addressLocality}, {siteInfo.address.addressRegion} {siteInfo.address.postalCode}
-						</a>
-					</p>
+					{address ? (
+						<p>
+							<a href="https://maps.app.goo.gl/2bD1zr43i5CmkfAk7" target="_blank" rel="noopener noreferrer">
+								{address.streetAddress}, {address.addressLocality}, {address.addressRegion} {address.postalCode}
+							</a>
+						</p>
+					) : null}
 					<h3>Email:</h3>
-					<p><a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a></p>
+					{email ? <p><a href={`mailto:${email}`}>{email}</a></p> : null}
 					<h3>Phone:</h3>
-					<p><a href={`tel:${siteInfo.telephone}`}>{siteInfo.telephone}</a></p>
+					{telephone ? <p><a href={`tel:${telephone}`}>{telephone}</a></p> : null}
 				</div>
 			</PageSection>
 

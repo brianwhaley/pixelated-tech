@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
-import { renderWithProviders } from '../test/test-utils';
+import { createConfig, expectErrorFallback, renderWithProviders } from '../test/test-utils';
+import { pixelatedConfig } from '../test/test-data';
 import { GoogleSearch } from '@/components/integrations/googlesearch';
-import { pixelatedConfig, pixelatedConfigEmpty } from '../test/test-data';
 
 describe('GoogleSearch Component', () => {
 	beforeEach(() => {
@@ -23,21 +23,19 @@ describe('GoogleSearch Component', () => {
 	});
 
 	describe('Component rendering', () => {
-		const customSearchConfig = {
-			integrations: {
-				googleSearch: {
-					id: '009500278966481927899:bcssp73qony'
-				}
-			}
-		} as any;
+		const customSearchConfig = JSON.parse(JSON.stringify(pixelatedConfig));
+		customSearchConfig.integrations = customSearchConfig.integrations || {};
+		customSearchConfig.integrations.googleSearch = {
+			...(customSearchConfig.integrations?.googleSearch || {}),
+			id: '009500278966481927899:bcssp73qony',
+		};
 
-		const customPixelVividSearchConfig = {
-			integrations: {
-				googleSearch: {
-					id: 'e336d1c9d0e5e48e5'
-				}
-			}
-		} as any;
+		const customPixelVividSearchConfig = JSON.parse(JSON.stringify(pixelatedConfig));
+		customPixelVividSearchConfig.integrations = customPixelVividSearchConfig.integrations || {};
+		customPixelVividSearchConfig.integrations.googleSearch = {
+			...(customPixelVividSearchConfig.integrations?.googleSearch || {}),
+			id: 'e336d1c9d0e5e48e5',
+		};
 
 		it('should render without crashing', () => {
 			const { container } = renderWithProviders(<GoogleSearch />);
@@ -52,15 +50,14 @@ describe('GoogleSearch Component', () => {
 
 		it('should render error message when ID is missing', () => {
 			const { container } = renderWithProviders(<GoogleSearch />, {
-				config: {
+				config: createConfig({
 					integrations: {
 						googleSearch: { id: undefined },
 						googleSearchConsole: { id: undefined }
 					}
-				} as any
+				})
 			});
-			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
-			expect(container.textContent).toMatch(/GoogleSearch/i);
+			expectErrorFallback(container);
 		});
 
 		it('should render div with gcse-search class', () => {
@@ -87,15 +84,15 @@ describe('GoogleSearch Component', () => {
 
 		it('should handle empty ID string from config by rendering error', () => {
 			const { container } = renderWithProviders(<GoogleSearch />, {
-				config: {
+				config: createConfig({
 					integrations: {
 						googleSearch: { id: '' },
 						googleSearchConsole: { id: undefined }
 					}
-				} as any
+				})
 			});
 			expect(container.querySelector('.gcse-search')).toBeNull();
-			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
+			expectErrorFallback(container);
 		});
 
 		it('should handle long ID values from config', () => {

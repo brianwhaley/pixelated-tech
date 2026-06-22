@@ -1,9 +1,9 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GoogleReviewsCard, GoogleReviewsCarousel } from '../components/integrations/google.reviews.components';
 import * as googleReviewsFunctions from '../components/integrations/google.reviews.functions';
-import { renderWithProviders } from '../test/test-utils';
+import { renderWithProviders, screen, waitFor } from '../test/test-utils';
+import { pixelatedConfig, mockPlaceReviews as canonicalMockPlaceReviews } from '../test/test-data';
 
 // Mock SmartImage
 vi.mock('../components/elements/smartimage', () => ({
@@ -16,30 +16,16 @@ vi.mock('../components/structure/carousel', () => ({
 }));
 
 describe('Google Reviews Components', () => {
-	const mockPlace = {
-		name: 'Test Restaurant',
-		place_id: 'place-123',
-		formatted_address: '123 Main St, City, State'
-	};
+	const mockPlaceReviews = JSON.parse(JSON.stringify(canonicalMockPlaceReviews));
+	const { place: mockPlace, reviews: mockReviews } = mockPlaceReviews;
 
-	const mockReviews = [
-		{
-			author_name: 'John Doe',
-			rating: 5,
-			text: 'Excellent service!',
-			profile_photo_url: 'https://example.com/photo1.jpg',
-			time: 1234567890,
-			relative_time_description: '2 weeks ago'
-		},
-		{
-			author_name: 'Jane Smith',
-			rating: 4,
-			text: 'Good food, friendly staff',
-			profile_photo_url: 'https://example.com/photo2.jpg',
-			time: 1234567880,
-			relative_time_description: '3 weeks ago'
-		}
-	];
+	const googlePlacesTestConfig = JSON.parse(JSON.stringify(pixelatedConfig));
+	googlePlacesTestConfig.integrations = googlePlacesTestConfig.integrations || {};
+	googlePlacesTestConfig.integrations.googlePlaces = {
+		...(googlePlacesTestConfig.integrations?.googlePlaces || {}),
+		placeId: 'place-123',
+		apiKey: 'test-api-key',
+	};
 
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -52,11 +38,7 @@ describe('Google Reviews Components', () => {
 			);
 
 			renderWithProviders(<GoogleReviewsCard />, {
-				config: {
-					integrations: {
-						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
-					},
-				},
+				config: googlePlacesTestConfig,
 			});
 
 			expect(screen.getByText('Loading reviews...')).toBeInTheDocument();
@@ -68,11 +50,7 @@ describe('Google Reviews Components', () => {
 			);
 
 			renderWithProviders(<GoogleReviewsCard />, {
-				config: {
-					integrations: {
-						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
-					},
-				},
+				config: googlePlacesTestConfig,
 			});
 
 			await waitFor(() => {
@@ -86,11 +64,7 @@ describe('Google Reviews Components', () => {
 			);
 
 			renderWithProviders(<GoogleReviewsCard />, {
-				config: {
-					integrations: {
-						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
-					},
-				},
+				config: googlePlacesTestConfig,
 			});
 
 			await waitFor(() => {
@@ -105,11 +79,7 @@ describe('Google Reviews Components', () => {
 			});
 
 			renderWithProviders(<GoogleReviewsCard />, {
-				config: {
-					integrations: {
-						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
-					},
-				},
+				config: googlePlacesTestConfig,
 			});
 
 			await waitFor(() => {
@@ -124,11 +94,7 @@ describe('Google Reviews Components', () => {
 			});
 
 			renderWithProviders(<GoogleReviewsCard />, {
-				config: {
-					integrations: {
-						googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
-					},
-				},
+				config: googlePlacesTestConfig,
 			});
 
 			await waitFor(() => {
@@ -162,11 +128,7 @@ describe('Google Reviews Components', () => {
 			renderWithProviders(
 				<GoogleReviewsCarousel displayMode="grid" includeReviewSchema={false} />,
 				{
-					config: {
-						integrations: {
-							googlePlaces: { placeId: 'place-123', apiKey: 'test-api-key' },
-						},
-					},
+					config: googlePlacesTestConfig,
 				}
 			);
 

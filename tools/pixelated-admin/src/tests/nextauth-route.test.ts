@@ -1,4 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';import { TEST_CONFIG } from '@/test/fixtures';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { TEST_CONFIG } from '@/tests/fixtures';
 function stubNextAuthResponse(location: string) {
 	return {
 		default: (_opts: any) => {

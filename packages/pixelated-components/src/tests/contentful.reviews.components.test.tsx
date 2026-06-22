@@ -7,14 +7,14 @@ import { renderWithProviders } from '../test/test-utils';
 
 vi.mock('../components/structure/carousel', () => ({
 	Carousel: ({ cards, draggable, imgFit }: any) => (
-		<div data-testid="mock-carousel" data-draggable={String(draggable)} data-imgfit={imgFit}>
+		<div data-testid="carousel" data-draggable={String(draggable)} data-imgfit={imgFit}>
 			{cards.map((card: any) => card.headerText).join('|')}
 		</div>
 	),
 }));
 
 vi.mock('../components/foundation/schema', () => ({
-	ReviewSchema: ({ review }: any) => <div data-testid="mock-reviewschema">{review?.name ?? 'schema'}</div>,
+	ReviewSchema: ({ review }: any) => <div data-testid="reviewschema">{review?.name ?? 'schema'}</div>,
 }));
 
 describe('ContentfulReviewsCarousel Component', () => {
@@ -64,9 +64,9 @@ describe('ContentfulReviewsCarousel Component', () => {
 		renderWithProviders(<ContentfulReviewsCarousel reviewContentType="feedback" itemName="PixelVivid Custom Sunglasses" />);
 
 		await waitFor(() => {
-			expect(screen.getByTestId('mock-carousel')).toBeInTheDocument();
-			expect(screen.getByTestId('mock-reviewschema')).toBeInTheDocument();
-			expect(screen.getByTestId('mock-carousel').textContent).toContain('Excellent glass');
+			expect(screen.getByTestId('carousel')).toBeInTheDocument();
+			expect(screen.getByTestId('reviewschema')).toBeInTheDocument();
+			expect(screen.getByTestId('carousel').textContent).toContain('Excellent glass');
 		});
 	});
 
@@ -99,8 +99,8 @@ describe('ContentfulReviewsCarousel Component', () => {
 		);
 
 		await waitFor(() => {
-			expect(screen.getByTestId('mock-carousel').textContent).toContain('Review One');
-			expect(screen.getByTestId('mock-carousel').textContent).not.toContain('Review Two');
+			expect(screen.getByTestId('carousel').textContent).toContain('Review One');
+			expect(screen.getByTestId('carousel').textContent).not.toContain('Review Two');
 		});
 	});
 });

@@ -193,7 +193,7 @@ export default async function EventReportPage({ searchParams }: { searchParams?:
 			</>
 		);
 	} catch (error: any) {
-		if (error?.message === 'NEXT_REDIRECT') throw error;
+		if (typeof error?.message === 'string' && error.message.startsWith('NEXT_REDIRECT')) throw error;
 		return (
 			<>
 				<PageTitleHeader title="Three Muses Order Report" />

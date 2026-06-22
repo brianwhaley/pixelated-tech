@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { renderWithConfig, createMockConfig } from '../test/test-utils';
 import { SiteHealthGoogleSearchConsole } from '../components/admin/site-health/site-health-google-search-console';
+import { mockGoogleSearchConsoleData } from '../test/test-data';
 
 // Mock the SiteHealthTemplate component with real behavior simulation
 vi.mock('../components/admin/site-health/site-health-template', () => ({
@@ -11,22 +13,7 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 
 		React.useEffect(() => {
 			// Simulate API response with data transformation
-			const mockData = [
-				{
-					date: '2024-01-15',
-					currentImpressions: 1200,
-					currentClicks: 50,
-					previousImpressions: 1000,
-					previousClicks: 40
-				},
-				{
-					date: '2024-01-16',
-					currentImpressions: 1500,
-					currentClicks: 62,
-					previousImpressions: 1200,
-					previousClicks: 50
-				}
-			];
+			const mockData = mockGoogleSearchConsoleData;
 
 			let transformedData: any;
 			if (siteName === 'invalid') {
@@ -231,4 +218,23 @@ describe('SiteHealthGoogleSearchConsole Component', () => {
 		await waitFor(() => {
 			expect(screen.getByText('Invalid data format received from Google Search Console API.')).toBeInTheDocument();
 		});
-	});});
+	});
+
+	it('should render using shared config factory helper', async () => {
+		renderWithConfig(
+			<SiteHealthGoogleSearchConsole {...defaultProps} />,
+			createMockConfig({
+				integrations: {
+					googleSearchConsole: {
+						siteUrl: 'https://example.com',
+						serviceAccountKey: 'test-key'
+					}
+				}
+			})
+		);
+
+		await waitFor(() => {
+			expect(screen.getByText('Google Search Console')).toBeDefined();
+		});
+	});
+});

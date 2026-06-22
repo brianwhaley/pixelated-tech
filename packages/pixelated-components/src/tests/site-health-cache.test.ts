@@ -1,6 +1,7 @@
 /// <reference types="vitest/globals" />
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CacheManager } from '../components/foundation/cache-manager';
+import { mockConfig } from '../test/test-utils';
 
 describe('CacheManager (site-health compatibility)', () => {
   let cache: any;

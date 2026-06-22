@@ -2,6 +2,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import pixelatedConfigJson from '@/config/pixelated.config.json';
 import { mockGoogleSearchConsoleData } from '../test/test-data';
 
+// Support either the legacy adapter shape { mockResponse, mockConfig }
+// or the canonical raw array stored in src/test/data/google-search-console.json
+const _mockGSC = mockGoogleSearchConsoleData as any;
+const mockGscResponse = _mockGSC?.mockResponse ?? _mockGSC;
+const mockGscConfig = _mockGSC?.mockConfig ?? {};
+
 const pixelatedConfig = pixelatedConfigJson as any;
 
 // Mock googleapis BEFORE importing integration module
@@ -17,7 +23,11 @@ vi.mock('googleapis', () => ({
 		searchconsole: vi.fn(() => ({
 			searchanalytics: {
 				query: vi.fn().mockResolvedValue({
-					data: mockGoogleSearchConsoleData.mockResponse
+					data: {
+						rows: Array.isArray(mockGscResponse)
+							? mockGscResponse.map((r: any) => ({ keys: [r.date], clicks: r.currentClicks, impressions: r.currentImpressions }))
+							: mockGscResponse.rows
+					}
 				})
 			}
 		}))
@@ -73,11 +83,12 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should fetch Search Console data with valid service account', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGoogleSearchConsoleData.mockConfig.siteUrl,
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGoogleSearchConsoleData.mockConfig.serviceAccountKey
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
+		if (!result.success) console.error('Search Console result error:', result.error, result);
 		expect(result.success).toBe(true);
 		expect(result.data).toBeDefined();
 		expect(Array.isArray(result.data)).toBe(true);
@@ -85,8 +96,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should return queries with clicks, impressions, CTR, and position', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGoogleSearchConsoleData.mockConfig.siteUrl,
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGoogleSearchConsoleData.mockConfig.serviceAccountKey
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -188,8 +199,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should work with different site names independently', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGoogleSearchConsoleData.mockConfig.siteUrl,
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGoogleSearchConsoleData.mockConfig.serviceAccountKey
+			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
+			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
 		};
 
 		const result1 = await getSearchConsoleData(config, 'site-a');

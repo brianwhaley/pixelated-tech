@@ -415,7 +415,7 @@ describe('pixelated-admin extra coverage', () => {
 	});
 
 	it('renders unauthorized page without errors', async () => {
-		const mod = await importModule('src/app/unauthorized/page.tsx');
+		const mod = await importModule('src/app/(pages)/unauthorized/page.tsx');
 		const UnauthorizedPage = mod.default;
 		render(<UnauthorizedPage />);
 		expect(screen.getByTestId('Unauthorized')).toBeTruthy();

@@ -171,7 +171,7 @@ export function ServiceDetail({ serviceSlug, title, id }: ServiceDetailType) {
 	const serviceAreaItems = (siteInfo?.serviceAreas ?? []) as Array<{ name: string }>;
 	const serviceImage = activeService.image || siteInfo?.image;
 	return (
-		<PageSection id={id} className="service-detail-page" layoutType="none" gap="20px">
+		<PageSection id={id} className="servicedetailpage" layoutType="none" gap="20px">
 			{serviceImage ? (
 				<SmartImage src={serviceImage} alt={activeService.name} style={{ width: '100%', height: '300px', objectFit: 'cover', margin: '20px 0px' }} />
 			) : null}

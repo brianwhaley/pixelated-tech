@@ -8,43 +8,22 @@ vi.mock('../components/foundation/smartfetch', () => ({
 
 import { smartFetch } from '../components/foundation/smartfetch';
 
-describe('Gemini API Server Integration', () => {
-	const mockSiteInfo = {
-		name: 'Tech Product Store',
-		url: 'https://techstore.example.com',
-		description: 'Premium technology products',
-		author: 'Tech Store Team',
-		display: 'Tech Store',
-		email: 'contact@techstore.com',
-		phone: '555-0100',
-		address: {
-			streetAddress: '123 Tech Street',
-			addressLocality: 'Silicon Valley',
-			addressRegion: 'CA',
-			postalCode: '94025',
-			addressCountry: 'US'
-		},
-		favicon: '/favicon.ico',
-		favicon_sizes: '32x32',
-		favicon_type: 'image/x-icon',
-		theme_color: '#000000',
-		background_color: '#FFFFFF',
-		default_locale: 'en-US',
-		social: {},
-		services: []
-	};
+// Local minimal Gemini request used for tests — explicit and self-contained
+const mockGeminiSiteInfo = {
+	name: 'Test Business',
+	url: 'https://example.com',
+	description: 'Test business description',
+	address: { addressLocality: 'Springfield', addressRegion: 'IL', postalCode: '62701' }
+};
 
-	const mockGeminiRequest: GeminiRecommendationRequest = {
-		route: {
-			name: 'laptop-product',
-			path: '/products/laptop',
-			title: 'High-Performance Laptop',
-			description: 'Latest gaming laptop with RTX 4090',
-			keywords: ['laptop', 'gaming', 'high-performance'],
-		},
-		siteInfo: mockSiteInfo,
-		baseUrl: 'https://api.example.com',
-	};
+const sharedMockGeminiRequest = {
+	route: { name: 'Test Route', path: '/test-route', title: 'Test Title', description: 'Test description', keywords: ['test', 'sample'] },
+	siteInfo: mockGeminiSiteInfo
+};
+
+describe('Gemini API Server Integration', () => {
+	const mockSiteInfo = mockGeminiSiteInfo;
+	const mockGeminiRequest: GeminiRecommendationRequest = sharedMockGeminiRequest;
 
 
 	beforeEach(() => {

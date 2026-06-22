@@ -1,9 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
-import { screen } from '@testing-library/react';
 import { GoogleAnalytics, GoogleAnalyticsEvent } from '../components/integrations/googleanalytics';
-import { pixelatedConfig, pixelatedConfigEmpty } from '../test/test-data';
-import { renderWithProviders } from '../test/test-utils';
+import { renderWithProviders, screen, expectErrorFallback } from '../test/test-utils';
+import { pixelatedConfigEmpty, pixelatedConfig as basePixelatedConfig } from '../test/test-data';
 
 describe('Google Analytics Components', () => {
 	beforeEach(() => {
@@ -18,22 +17,28 @@ describe('Google Analytics Components', () => {
 	});
 
 	describe('GoogleAnalytics Component', () => {
-		const customGoogleAnalyticsConfig = {
-			integrations: {
-				googleAnalytics: {
-					id: 'G-TEST123',
-					adId: 'G-ADID123'
-				}
-			}
-		} as any;
+const customGoogleAnalyticsConfig = {
+	...basePixelatedConfig,
+	integrations: {
+		...basePixelatedConfig.integrations,
+		googleAnalytics: {
+			...basePixelatedConfig.integrations?.googleAnalytics,
+			id: 'G-TEST123',
+			adId: 'G-ADID123',
+		}
+	}
+};
 
-		const customGoogleAnalyticsIdConfig = {
-			integrations: {
-				googleAnalytics: {
-					id: 'G-CUSTOM123'
-				}
+	const customGoogleAnalyticsIdConfig = {
+		...basePixelatedConfig,
+		integrations: {
+			...basePixelatedConfig.integrations,
+			googleAnalytics: {
+				...basePixelatedConfig.integrations?.googleAnalytics,
+				id: 'G-CUSTOM123'
 			}
-		} as any;
+		}
+	};
 
 		it('should create and inject GA initialization script', () => {
 			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
@@ -59,7 +64,7 @@ describe('Google Analytics Components', () => {
 		});
 
 		it('should render fallback when no ID provided and config missing', () => {
-			const { container } = renderWithProviders(<GoogleAnalytics />, { config: pixelatedConfigEmpty });
+			const { container } = renderWithProviders(<GoogleAnalytics />, { config: {} });
 
 			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
 			expect(container.textContent).toMatch(/GoogleAnalytics/i);
@@ -72,9 +77,9 @@ describe('Google Analytics Components', () => {
 		});
 
 		it('should use config ID when prop not provided', () => {
-			renderWithProviders(<GoogleAnalytics />);
+			const { config } = renderWithProviders(<GoogleAnalytics />);
 			const initScript = document.querySelector('script#ga-init');
-			const configId = pixelatedConfig.integrations?.googleAnalytics?.id;
+			const configId = config.integrations?.googleAnalytics?.id;
 			expect(initScript?.textContent).toContain(configId);
 		});
 

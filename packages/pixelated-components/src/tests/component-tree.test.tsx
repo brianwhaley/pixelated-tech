@@ -3,6 +3,7 @@ import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ComponentTree } from "../components/sitebuilder/page/components/ComponentTree";
+import { mockComponentTreeData } from '../test/fixtures';
 
 describe('ComponentTree', () => {
 	const mockOnSelectComponent = vi.fn();
@@ -11,24 +12,7 @@ describe('ComponentTree', () => {
 	const mockOnMoveUp = vi.fn();
 	const mockOnMoveDown = vi.fn();
 
-	const mockComponents = [
-		{
-			component: 'Callout',
-			props: { title: 'Test Callout' },
-			children: []
-		},
-		{
-			component: 'PageSection',
-			props: { items: [] },
-			children: [
-				{
-					component: 'Callout',
-					props: { title: 'Child Callout' },
-					children: []
-				}
-			]
-		}
-	];
+	const mockComponents = mockComponentTreeData;
 
 	beforeEach(() => {
 		vi.clearAllMocks();
