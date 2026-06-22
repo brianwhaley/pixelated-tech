@@ -84,7 +84,7 @@ const defaultFetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestIn
 	// eBay token / browse APIs (return simple successful token or empty results)
 	if (url.includes('ebay.com') || url.includes('api.ebay')) {
 		if (url.includes('/identity/v1/oauth2/token')) {
-			return { ok: true, status: 200, json: async () => ({ access_token: 'test-ebay-token', expires_in: 7200 }), text: async () => '{}' };
+			return { ok: true, status: 200, json: async () => ({ access_token: 'ebay-token', expires_in: 7200 }), text: async () => '{}' };
 		}
 		return { ok: true, status: 200, json: async () => ({ itemSummaries: [] }), text: async () => '{}' };
 	}
@@ -92,7 +92,7 @@ const defaultFetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestIn
 	// PayPal API (return mock token or simple success)
 	if (url.includes('paypal.com')) {
 		if (url.includes('/v1/oauth2/token')) {
-			return { ok: true, status: 200, json: async () => ({ access_token: 'mock-paypal-token', expires_in: 32400 }), text: async () => '{}' };
+			return { ok: true, status: 200, json: async () => ({ access_token: 'paypal-token', expires_in: 32400 }), text: async () => '{}' };
 		}
 		if (url.includes('/v2/checkout/orders')) {
 			return {

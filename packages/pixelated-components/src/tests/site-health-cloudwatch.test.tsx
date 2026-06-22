@@ -4,6 +4,7 @@ import { render } from '../test/test-utils';
 import { screen, waitFor } from '@testing-library/react';
 import React, { useState, useEffect } from 'react';
 import { SiteHealthCloudwatch } from '../components/admin/site-health/site-health-cloudwatch';
+import { mockCloudwatchData } from '../test/test-data';
 
 // Mock fetch
 const mockFetch = vi.fn();
@@ -70,30 +71,6 @@ describe('SiteHealthCloudwatch', () => {
   beforeEach(() => {
     mockFetch.mockClear();
   });
-
-  const mockCloudwatchData = [
-    {
-      date: '2024-01-01',
-      successCount: 95,
-      failureCount: 5,
-      totalChecks: 100,
-      successRate: 0.95
-    },
-    {
-      date: '2024-01-02',
-      successCount: 98,
-      failureCount: 2,
-      totalChecks: 100,
-      successRate: 0.98
-    },
-    {
-      date: '2024-01-03',
-      successCount: 97,
-      failureCount: 3,
-      totalChecks: 100,
-      successRate: 0.97
-    }
-  ];
 
   const mockResponse = {
     success: true,

@@ -5,6 +5,7 @@ import { screen, waitFor } from '@testing-library/react';
 import React, { useState, useEffect } from 'react';
 import { SiteHealthAxeCore } from '../components/admin/site-health/site-health-axe-core';
 import type { AxeCoreResponse, AxeCoreData } from '../components/admin/site-health/site-health-types';
+import { mockAxeCoreResponse, mockAxeCoreData, mockAxeCoreViolation } from '../test/test-data';
 
 // Mock fetch
 const mockFetch = vi.fn();
@@ -57,61 +58,9 @@ describe('SiteHealthAxeCore', () => {
     mockFetch.mockClear();
   });
 
-  const mockViolation: any = {
-    id: 'color-contrast',
-    impact: 'serious',
-    description: 'Elements must have sufficient color contrast',
-    help: 'Ensure sufficient color contrast',
-    helpUrl: 'https://dequeuniversity.com/rules/axe/4.4/color-contrast',
-    nodes: [{
-      target: ['.button'],
-      html: '<button>Click me</button>',
-      failureSummary: 'Fix the color contrast'
-    }],
-    tags: ['cat.color', 'wcag2aa', 'wcag143']
-  };
-
-  const mockData: AxeCoreData = {
-    site: 'test-site',
-    url: 'https://test-site.com',
-    status: 'success',
-    timestamp: '2024-01-01T00:00:00Z',
-    result: {
-      violations: [mockViolation],
-      passes: [],
-      incomplete: [],
-      inapplicable: [],
-      testEngine: {
-        name: 'axe-core',
-        version: '4.4.0'
-      },
-      testRunner: {
-        name: 'axe'
-      },
-      testEnvironment: {
-        userAgent: 'Mozilla/5.0...',
-        windowWidth: 1200,
-        windowHeight: 800
-      },
-      timestamp: '2024-01-01T00:00:00Z',
-      url: 'https://test-site.com'
-    },
-    summary: {
-      violations: 1,
-      passes: 0,
-      incomplete: 0,
-      inapplicable: 0,
-      critical: 0,
-      serious: 1,
-      moderate: 0,
-      minor: 0
-    }
-  };
-
-  const mockResponse: AxeCoreResponse = {
-    success: true,
-    data: [mockData]
-  };
+  const mockResponse: AxeCoreResponse = mockAxeCoreResponse;
+  const mockData: AxeCoreData = mockAxeCoreData;
+  const mockViolation = mockAxeCoreViolation;
 
   it('renders nothing when no siteName is provided', () => {
     const { container } = render(<SiteHealthAxeCore siteName="" />);

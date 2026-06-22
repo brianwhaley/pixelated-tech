@@ -1,0 +1,15 @@
+{
+  "sys": { "id": "item-1", "createdAt": "2024-01-01T00:00:00Z" },
+  "fields": {
+    "title": "Product 1",
+    "images": [],
+    "imageUrl": "https://example.com/image1.jpg",
+    "imageAlt": "Product 1",
+    "price": 99.99,
+    "priceCurrency": "USD",
+    "quantity": 1,
+    "weight": 1,
+    "weightUnit": "lb",
+    "isShippable": true
+  }
+}

@@ -1,13 +1,5 @@
-{
-	"mockResponse": {
-		"rows": [
-			{ "keys": ["query1"], "clicks": 150, "impressions": 500, "ctr": 0.3, "position": 5.2 },
-			{ "keys": ["query2"], "clicks": 120, "impressions": 450, "ctr": 0.267, "position": 8.5 },
-			{ "keys": ["query3"], "clicks": 90, "impressions": 400, "ctr": 0.225, "position": 12.3 }
-		]
-	},
-	"mockConfig": {
-		"siteUrl": "https://example.com",
-		"serviceAccountKey": "{\"type\":\"service_account\",\"project_id\":\"test-project\",\"private_key\":\"test-key\",\"client_email\":\"test@example.com\"}"
-	}
-}
+[
+  { "date": "2025-12-30", "currentImpressions": 45213, "currentClicks": 1345, "previousImpressions": 39801, "previousClicks": 1204 },
+  { "date": "2025-12-31", "currentImpressions": 46890, "currentClicks": 1420, "previousImpressions": 41012, "previousClicks": 1281 },
+  { "date": "2026-01-01", "currentImpressions": 48310, "currentClicks": 1510, "previousImpressions": 42210, "previousClicks": 1325 }
+]

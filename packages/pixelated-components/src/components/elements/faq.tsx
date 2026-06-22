@@ -60,22 +60,22 @@ FAQ.propTypes = {
 };
 export type FAQType = InferProps<typeof FAQ.propTypes>;
 export function FAQ({ faqsData }: FAQType) {
+	const safeFaqsData = faqsData || { mainEntity: [] };
+	const faqEntities = safeFaqsData.mainEntity || [];
 	const [searchTerm, setSearchTerm] = useState('');
-	const [expandedStates, setExpandedStates] = useState<boolean[]>(
-		faqsData.mainEntity?.map(() => false) || []
-	);
+	const [expandedStates, setExpandedStates] = useState<boolean[]>(faqEntities.map(() => false));
 
 	const filteredFaqs = useMemo(() => {
-		if (!faqsData.mainEntity) return [];
-		if (!searchTerm) return faqsData.mainEntity;
-		return faqsData.mainEntity.filter((faq: any) => {
-			const answerText = Array.isArray(faq.acceptedAnswer.text) 
+		if (!faqEntities) return [];
+		if (!searchTerm) return faqEntities;
+		return faqEntities.filter((faq: any) => {
+			const answerText = Array.isArray(faq.acceptedAnswer?.text) 
 				? faq.acceptedAnswer.text.join(' ') 
-				: faq.acceptedAnswer.text;
+				: faq.acceptedAnswer?.text || '';
 			return faq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				answerText.toLowerCase().includes(searchTerm.toLowerCase());
 		});
-	}, [faqsData.mainEntity, searchTerm]);
+	}, [faqEntities, searchTerm]);
 
 	const expandAll = () => {
 		setExpandedStates(expandedStates.map(() => true));

@@ -3066,8 +3066,8 @@
         "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn more about the Largest Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
         "score": 1,
         "scoreDisplayMode": "numeric",
-        "displayValue": "0.8 s",
-        "numericValue": 756,
+        "displayValue": "2.5 s",
+        "numericValue": 2500,
         "numericUnit": "millisecond"
       },
       "aria-deprecated-role": {
@@ -3081,7 +3081,7 @@
         "id": "target-size",
         "title": "Touch targets have sufficient size and spacing.",
         "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.11/target-size).",
-        "score": 1,
+        "score": 0.92,
         "scoreDisplayMode": "binary",
         "details": {
           "items": [],

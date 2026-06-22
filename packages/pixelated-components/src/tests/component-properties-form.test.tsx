@@ -3,6 +3,7 @@ import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ComponentPropertiesForm } from "../components/sitebuilder/page/components/ComponentPropertiesForm";
+import { mockComponentWithTextField, mockComponentWithSubmitField } from '../test/fixtures';
 
 describe('ComponentPropertiesForm', () => {
 	it('should render placeholder text when no editableComponent is provided', () => {
@@ -28,24 +29,9 @@ describe('ComponentPropertiesForm', () => {
 	});
 
 	it('should render FormEngine when editableComponent has fields', () => {
-		const mockComponent = {
-			component: 'TestComponent',
-			fields: [
-				{
-					component: 'FormInput',
-					name: 'title',
-					label: 'Title',
-					props: {
-						type: 'text',
-						placeholder: 'Enter title'
-					}
-				}
-			]
-		};
-
 		render(
 			<ComponentPropertiesForm
-				editableComponent={mockComponent}
+				editableComponent={mockComponentWithTextField}
 				onSubmit={() => {}}
 			/>
 		);
@@ -56,36 +42,14 @@ describe('ComponentPropertiesForm', () => {
 
 	it('should call onSubmit when form is submitted', async () => {
 		const mockOnSubmit = vi.fn();
-		const mockComponent = {
-			component: 'TestComponent',
-			fields: [
-				{
-					component: 'FormInput',
-					name: 'title',
-					label: 'Title',
-					props: {
-						type: 'text',
-						placeholder: 'Enter title'
-					}
-				},
-				{
-					component: 'FormButton',
-					name: 'submit',
-					props: {
-						type: 'submit',
-						text: 'Save'
-					}
-				}
-			]
-		};
-
-		const user = userEvent.setup();
 		render(
 			<ComponentPropertiesForm
-				editableComponent={mockComponent}
+				editableComponent={mockComponentWithSubmitField}
 				onSubmit={mockOnSubmit}
 			/>
 		);
+
+		const user = userEvent.setup();
 
 		// Find and click the submit button
 		const submitButton = screen.getByRole('button', { name: /save/i });

@@ -1,0 +1,25 @@
+{
+  "place": {
+    "name": "Test Restaurant",
+    "place_id": "place-123",
+    "formatted_address": "123 Main St, City, State"
+  },
+  "reviews": [
+    {
+      "author_name": "John Doe",
+      "rating": 5,
+      "text": "Excellent service!",
+      "profile_photo_url": "https://example.com/photo1.jpg",
+      "time": 1234567890,
+      "relative_time_description": "2 weeks ago"
+    },
+    {
+      "author_name": "Jane Smith",
+      "rating": 4,
+      "text": "Good food, friendly staff",
+      "profile_photo_url": "https://example.com/photo2.jpg",
+      "time": 1234567880,
+      "relative_time_description": "3 weeks ago"
+    }
+  ]
+}

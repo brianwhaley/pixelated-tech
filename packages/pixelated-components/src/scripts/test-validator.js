@@ -5,10 +5,24 @@ const root = path.resolve(process.cwd());
 const testsDir = path.join(root, 'src', 'tests');
 const sharedDir = path.join(root, 'src', 'test');
 const failures = [];
-const MAX_INLINE_DATA_LINES = 28;
+const MAX_INLINE_DATA_LINES = 24;
 const MAX_INLINE_DATA_CHARS = 1200;
 const DUPLICATE_MIN_LINES = 4;
 const DUPLICATE_MIN_CHARS = 120;
+
+const THRESHOLDS = {
+  sharedTestUtilsImport: 0.40,
+  sharedRenderHarnessUsage: 0.39,
+  sharedConfigFactoryUsage: 0.02,
+  sharedTestDataImport: 0.31,
+  sharedFixtureImportUsage: 0.31,
+  sharedDataFactoryUsage: 0.26,
+  sharedAssertionUsage: 0.01,
+  noDirectJsonImport: 1.0,
+  inlineRenderConfigUsage: 0.98,
+  largeInlineData: 1.0,
+  duplicateInlineData: 1.0,
+};
 
 async function readFiles(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -265,6 +279,187 @@ function validateDuplicateTestData(testFilesContents) {
   }
 }
 
+function getSharedTestUtilsImportMetric(testFilesContents) {
+  const pattern = /from\s+['"](?:\.\.\/test\/test-utils|@\/test\/test-utils)['"]/;
+  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getSharedRenderHarnessUsageMetric(testFilesContents) {
+  const importPattern = /from\s+['"](?:\.\.\/test\/test-utils|@\/test\/test-utils)['"]/;
+  const renderPattern = /(?:renderWithProviders|renderWithConfig|renderWithoutProviders|render)\s*\(/;
+  const count = testFilesContents.filter(({ contents }) => importPattern.test(contents) && renderPattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getSharedTestDataImportMetric(testFilesContents) {
+  const pattern = /from\s+['"](?:\.\.\/test\/(?:test-data|fixtures)|@\/test\/(?:test-data|fixtures))['"]/;
+  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getSharedDataFactoryUsageMetric(testFilesContents) {
+  const pattern = /from\s+['"](?:\.\.\/test\/test-data|@\/test\/test-data)['"]/;
+  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getSharedConfigFactoryUsageMetric(testFilesContents) {
+  const pattern = /\bcreate[A-Z][A-Za-z0-9]*Config\b/;
+  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getSharedFixtureImportUsageMetric(testFilesContents) {
+  const pattern = /from\s+['"](?:\.\.\/test\/(?:test-data|fixtures)|@\/test\/(?:test-data|fixtures))['"]/;
+  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getSharedAssertionUsageMetric(testFilesContents) {
+  const pattern = /\b(?:expectErrorFallback|expectJsonLdSchema|expectRenderSuccess|runScenarioTable|runConfigScenarioTests|runSmokeTest|runErrorStateTest)\b/;
+  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getNoDirectJsonImportMetric(testFilesContents) {
+  const directJsonImportPattern = /(?:import\s+.*\s+from\s+['"](?:\.\.\/test\/(?:data\/)?[^'"\\]+\.json|@\/test\/(?:data\/)?[^'"\\]+\.json)['"])|(?:require\(['"](?:\.\.\/test\/(?:data\/)?[^'"\\]+\.json|@\/test\/(?:data\/)?[^'"\\]+\.json)['"]\))/;
+  const count = testFilesContents.filter(({ contents }) => !directJsonImportPattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getInlineRenderConfigMetric(testFilesContents) {
+  const pattern = /(?:renderWithProviders|renderWithConfig)\s*\([\s\S]*?\bconfig\s*:\s*\{/;
+  const count = testFilesContents.filter(({ contents }) => !pattern.test(contents)).length;
+  return count / testFilesContents.length;
+}
+
+function getLargeInlineDataMetric(testFilesContents) {
+  const failingFiles = testFilesContents.filter(({ contents }) => {
+    const blocks = findLiteralBlocks(contents);
+    return blocks.some((block) => block.lines >= MAX_INLINE_DATA_LINES || block.chars >= MAX_INLINE_DATA_CHARS);
+  });
+  return 1 - (failingFiles.length / testFilesContents.length);
+}
+
+function getDuplicateInlineDataMetric(testFilesContents) {
+  const seen = new Map();
+
+  for (const { file, contents } of testFilesContents) {
+    const blocks = findLiteralBlocks(contents);
+    for (const block of blocks) {
+      if (block.lines < DUPLICATE_MIN_LINES || block.chars < DUPLICATE_MIN_CHARS) {
+        continue;
+      }
+      const normalized = normalizeLiteral(block.content);
+      if (!normalized) {
+        continue;
+      }
+      const previous = seen.get(normalized) || [];
+      previous.push(file);
+      seen.set(normalized, previous);
+    }
+  }
+
+  const duplicateFiles = new Set();
+  for (const files of seen.values()) {
+    const uniqueFiles = new Set(files);
+    if (uniqueFiles.size > 1) {
+      for (const file of uniqueFiles) {
+        duplicateFiles.add(file);
+      }
+    }
+  }
+
+  return 1 - (duplicateFiles.size / testFilesContents.length);
+}
+
+function validateThresholds(testFilesContents) {
+  const metrics = [
+    {
+      name: 'shared test utils import',
+      ratio: getSharedTestUtilsImportMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedTestUtilsImport,
+      message: 'Only a fraction of test files import shared src/test/test-utils; increase shared harness adoption.',
+    },
+    {
+      name: 'shared render harness usage',
+      ratio: getSharedRenderHarnessUsageMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedRenderHarnessUsage,
+      message: 'Not enough test files use shared render harness helpers from src/test/test-utils.',
+    },
+    {
+      name: 'shared test data import',
+      ratio: getSharedTestDataImportMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedTestDataImport,
+      message: 'Not enough test files import shared fixture data from src/test/test-data.ts or src/test/fixtures.ts.',
+    },
+    {
+      name: 'shared fixture import usage',
+      ratio: getSharedFixtureImportUsageMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedFixtureImportUsage,
+      message: 'Not enough test files import shared fixtures from src/test/test-data.ts or src/test/fixtures.ts.',
+    },
+    {
+      name: 'shared configuration factory usage',
+      ratio: getSharedConfigFactoryUsageMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedConfigFactoryUsage,
+      message: 'Not enough test files use shared config factory helpers from src/test/test-utils.tsx.',
+    },
+    {
+      name: 'shared assertion usage',
+      ratio: getSharedAssertionUsageMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedAssertionUsage,
+      message: 'Not enough test files use shared assertion helpers from src/test/test-utils.tsx.',
+    },
+    {
+      name: 'no direct JSON imports',
+      ratio: getNoDirectJsonImportMetric(testFilesContents),
+      threshold: THRESHOLDS.noDirectJsonImport,
+      message: 'Tests should not import raw JSON fixtures directly from src/test/data; use src/test/test-data.ts instead.',
+    },
+    {
+      name: 'inline render config usage',
+      ratio: getInlineRenderConfigMetric(testFilesContents),
+      threshold: THRESHOLDS.inlineRenderConfigUsage,
+      message: 'Tests should avoid inline config literals in renderWithProviders/renderWithConfig; use shared config factories or shared fixture objects.',
+    },
+    {
+      name: 'shared data factory usage',
+      ratio: getSharedDataFactoryUsageMetric(testFilesContents),
+      threshold: THRESHOLDS.sharedDataFactoryUsage,
+      message: 'Not enough test files use the shared data factory barrel at src/test/test-data.ts.',
+    },
+    {
+      name: 'large inline data',
+      ratio: getLargeInlineDataMetric(testFilesContents),
+      threshold: THRESHOLDS.largeInlineData,
+      message: 'Large inline data literals should be moved to shared fixture files in src/test/fixtures.ts or src/test/test-data.ts.',
+    },
+    {
+      name: 'duplicate inline data',
+      ratio: getDuplicateInlineDataMetric(testFilesContents),
+      threshold: THRESHOLDS.duplicateInlineData,
+      message: 'Duplicate inline test data should be refactored into shared fixtures in src/test.',
+    },
+  ];
+
+  console.log('Test validator metrics:');
+  for (const metric of metrics) {
+    const percent = (metric.ratio * 100).toFixed(2);
+    const thresholdPercent = (metric.threshold * 100).toFixed(2);
+    const passed = metric.ratio >= metric.threshold;
+    const icon = passed ? '✅' : '❌';
+    console.log(` ${icon} ${metric.name}: ${percent}% (threshold ${thresholdPercent}%)`);
+    if (!passed) {
+      failures.push(
+        `${metric.name} adoption is ${percent}%, below threshold ${thresholdPercent}%: ${metric.message}`
+      );
+    }
+  }
+  console.log('');
+}
+
 async function validate() {
   const testFiles = await readFiles(testsDir);
   const testFilesContents = [];
@@ -279,6 +474,7 @@ async function validate() {
   }
 
   validateDuplicateTestData(testFilesContents);
+  validateThresholds(testFilesContents);
 
   try {
     await fs.access(path.join(testsDir, 'test-utils.tsx'));
@@ -299,9 +495,9 @@ async function validate() {
     for (const failure of failures) {
       console.error(` - ${failure}`);
     }
+    console.log('');
     process.exit(1);
   }
-
   console.log('✅ Test validator passed.');
 }
 
