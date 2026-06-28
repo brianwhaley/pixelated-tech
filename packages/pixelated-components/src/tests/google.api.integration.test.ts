@@ -1,6 +1,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
-import { pixelatedConfig, mockGoogleAuth, mockGoogleApiResponses } from '../test/test-data';
-import { mockGoogleDateRanges } from '../test/fixtures';
+import { pixelatedConfig, mockGoogleAuth, mockGoogleApiResponses, mockGoogleDateRanges as googleDateRanges } from '../test/test-data';
+
+const mockGoogleDateRanges = googleDateRanges ? {
+  currentStart: new Date(googleDateRanges.currentStart),
+  currentEnd: new Date(googleDateRanges.currentEnd),
+  currentStartStr: googleDateRanges.currentStartStr,
+  currentEndStr: googleDateRanges.currentEndStr,
+  previousStart: new Date(googleDateRanges.previousStart),
+  previousEnd: new Date(googleDateRanges.previousEnd),
+  previousStartStr: googleDateRanges.previousStartStr,
+  previousEndStr: googleDateRanges.previousEndStr,
+} : undefined;
 
 // Mock the cache and utils
 const mockCacheManagerInstance = {

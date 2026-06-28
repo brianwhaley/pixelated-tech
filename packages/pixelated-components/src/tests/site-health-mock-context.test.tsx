@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { SiteHealthMockProvider, useSiteHealthMockData } from '../components/admin/site-health/site-health-mock-context';
 
 const TestComponent = () => {

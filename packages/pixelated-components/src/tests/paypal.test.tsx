@@ -3,7 +3,7 @@ import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import { PayPal, initPayPalButton } from '../components/shoppingcart/paypal';
 import { pixelatedConfig, mockPaypalCheckoutData } from '../test/test-data';
-import { mockPayPalCapture } from '../test/fixtures';
+import { mockPayPalCapture } from '../test/test-data';
 import { renderWithProviders } from '../test/test-utils';
 
 // Mock window.paypal

@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { PageBg, PageTitleHeader, PageSectionHeader, PageSection } from '@/components/structure/page-blocks';
 
 // Mock SmartImage to avoid loading real images or complex element logic

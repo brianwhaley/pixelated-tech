@@ -1,68 +1,113 @@
 import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/authentication';
 import { NextRequest } from 'next/server';
+import { getOriginFromHeaders } from '@pixelated-tech/components/server';
+
+// Toggle debug logging for this route. Follow repo convention: set to `true` to enable.
+const debug = true;
 
 type AuthRouteContext = { params: Promise<{ nextauth: string[] }> };
 
 const handler = NextAuth(authOptions);
 
 async function authHandler(req: NextRequest, context: AuthRouteContext) {
-	const callbackUrl = canonicalCallback(req);
-	// Debug: log the computed callback URL to help diagnose redirect_uri_mismatch errors in dev
+	// Sanitize any incoming callbackUrl values (cookie or query) to avoid honoring
+	// absolute URLs provided by clients or proxies. Only allow relative paths.
+	const sanitizedUrl = new URL(req.url);
+	const params = sanitizedUrl.searchParams;
+	const incomingCallback = params.get('callbackUrl');
+	if (incomingCallback) {
+		try {
+			new URL(incomingCallback);
+			params.set('callbackUrl', '/');
+		} catch {
+			// not an absolute URL, leave as-is
+		}
+	}
+
+	const clonedHeaders = new Headers(req.headers as any);
+	const cookie = clonedHeaders.get('cookie') || '';
+	if (cookie.includes('next-auth.callback-url')) {
+		const newCookie = cookie
+			.split(';')
+			.map(c => c.trim())
+			.filter(c => !c.startsWith('next-auth.callback-url='))
+			.join('; ');
+		if (newCookie) clonedHeaders.set('cookie', newCookie);
+		else clonedHeaders.delete('cookie');
+	}
+
+	const sanitizedRequest = new Request(sanitizedUrl.toString(), {
+		method: req.method,
+		headers: clonedHeaders,
+		body: req.body as any,
+	});
+
+	const callbackUrl = canonicalCallback(sanitizedRequest as any);
 	try {
-		if (callbackUrl && process.env.NODE_ENV !== 'production') {
-			console.warn('[auth] computed callbackUrl:', callbackUrl);
+		const dbgParam = req.nextUrl?.searchParams.get('debug_nextauth') || req.url?.includes('debug_nextauth=1');
+		if (debug && dbgParam) {
+			const headers = {
+				x_origin: req.headers.get('x-origin'),
+				origin: req.headers.get('origin'),
+				x_forwarded_host: req.headers.get('x-forwarded-host'),
+				host: req.headers.get('host'),
+				x_forwarded_proto: req.headers.get('x-forwarded-proto'),
+			};
+			console.warn('[auth:debug] computed callbackUrl:', callbackUrl);
+			console.warn('[auth:debug] request headers:', headers);
 		}
 	} catch {
 		// ignore logging errors
 	}
-	const response = await handler(req as any, context as any);
+
+	const response = await handler(sanitizedRequest as any, context as any);
+	try {
+		const dbgParam = req.nextUrl?.searchParams.get('debug_nextauth') || req.url?.includes('debug_nextauth=1');
+		if (debug && dbgParam) {
+			const rawLocation = response.headers.get('location') ?? response.headers.get('Location');
+			console.warn('[auth:debug] NextAuth raw Location header:', rawLocation);
+		}
+	} catch {
+		/* ignore */
+	}
+
+	function stripCallbackCookie(response: Response) {
+		const headers = new Headers();
+		for (const [name, value] of response.headers.entries()) {
+			if (name.toLowerCase() === 'set-cookie' && value.includes('next-auth.callback-url')) {
+				continue;
+			}
+			headers.append(name, value);
+		}
+		return new Response(response.body, {
+			status: response.status,
+			statusText: response.statusText,
+			headers,
+		});
+	}
+
+	const cleanedResponse = stripCallbackCookie(response);
 	if (callbackUrl) {
-		const rewritten = rewriteRedirectLocation(response, callbackUrl);
+		const rewritten = rewriteRedirectLocation(cleanedResponse, callbackUrl);
 		if (rewritten) return rewritten;
 	}
-	return response;
-}
 
-function getRequestOrigin(req: Request): string | undefined {
-	const candidate = req.headers.get('x-origin') ?? req.headers.get('origin') ?? req.headers.get('x-url');
-	if (candidate) {
-		try {
-			return new URL(candidate).origin;
-		} catch {
-			try {
-				const fallback = candidate.split('?')[0].split('#')[0];
-				if (/^[a-z]+:\/\//i.test(fallback)) {
-					return new URL(fallback).origin;
-				}
-			} catch {
-				/* ignore */
-			}
-		}
-	}
-	const hostHeader = req.headers.get('x-forwarded-host') ?? req.headers.get('host');
-	if (hostHeader) {
-		const first = hostHeader.split(',')[0].trim();
-		if (first) {
-			const hostname = first.split(':')[0];
-			if (hostname) {
-				const proto = req.headers.get('x-forwarded-proto') ?? 'https';
-				return `${proto}://${hostname}`;
-			}
-		}
-	}
-	return undefined;
+	return cleanedResponse;
 }
 
 function normalizeUrl(value?: string): string | undefined {
 	if (!value) return undefined;
 	return value.replace(/\/$/, '');
 }
+
 function canonicalCallback(req: Request): string | undefined {
 	const base = normalizeUrl(process.env.NEXTAUTH_URL);
 	if (base) return `${base}/api/auth/callback/google`;
-	const origin = getRequestOrigin(req);
+
+	const origin = getOriginFromHeaders(req.headers);
 	if (!origin) return undefined;
+	if (process.env.NODE_ENV === 'production' && origin.includes('localhost')) return undefined;
 	return `${normalizeUrl(origin)}/api/auth/callback/google`;
 }
 

@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "fields": {
+        "file": {
+          "contentType": "image/jpeg",
+          "url": "/uploads/image1.jpg"
+        }
+      },
+      "sys": { "createdAt": "2024-01-01T10:00:00Z" }
+    },
+    {
+      "fields": {
+        "file": {
+          "contentType": "image/png",
+          "url": "//example.com/image2.png"
+        }
+      },
+      "sys": { "createdAt": "2024-01-02T10:00:00Z" }
+    },
+    {
+      "fields": {
+        "file": {
+          "contentType": "image/webp",
+          "url": "https://cdn.example.com/image3.webp"
+        }
+      },
+      "sys": { "createdAt": "2024-01-03T10:00:00Z" }
+    }
+  ]
+}

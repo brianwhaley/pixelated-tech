@@ -54,8 +54,7 @@ import * as ebayModule from '../components/shoppingcart/ebay.functions';
 import * as configModule from '../components/config/config';
 import * as metadataModule from '../components/foundation/metadata.functions';
 import * as squareModule from '../components/shoppingcart/square';
-import { realWordPressApiData, siteImagesData, realContentfulAssetsData } from '../test/test-data';
-import { mockContentfulImageAssets, mockContentfulImageAssetsWithEmptyUrls } from '../test/fixtures';
+import { realWordPressApiData, siteImagesData, realContentfulAssetsData, mockContentfulImageAssets } from '../test/test-data';
 
 // Mock fetch globally
 global.fetch = vi.fn();
@@ -198,22 +197,26 @@ describe('Sitemap Helper Functions', () => {
 				get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'example.com'
 			};
 
-			expect(getOriginFromHeaders(headers as any, 'http://fallback')).toBe('https://example.com');
+			expect(getOriginFromHeaders(headers as any)).toBe('https://example.com');
 		});
 
-		it('should return fallback origin when headers throw', () => {
+		it('should return undefined when headers throw', () => {
 			const headers = {
 				get: () => { throw new Error('bad headers'); }
 			};
 
-			expect(getOriginFromHeaders(headers as any, 'https://fallback.com')).toBe('https://fallback.com');
+			expect(getOriginFromHeaders(headers as any)).toBeUndefined();
 		});
 	});
 
 	describe('getRuntimeEnvFromHeaders', () => {
 		it('should return local for localhost origins', () => {
 			const headers = {
-				get: (key: string) => key === 'host' ? 'localhost:3000' : 'https'
+				get: (key: string) => {
+					if (key === 'host') return 'localhost:3000';
+					if (key === 'x-forwarded-proto') return 'https';
+					return undefined;
+				}
 			};
 
 			expect(getRuntimeEnvFromHeaders(headers as any)).toBe('local');
@@ -228,17 +231,17 @@ describe('Sitemap Helper Functions', () => {
 		});
 
 		it('should return auto when origin cannot be determined', () => {
-			expect(getRuntimeEnvFromHeaders(undefined, '')).toBe('auto');
+			expect(getRuntimeEnvFromHeaders(undefined)).toBe('auto');
 		});
 	});
 
 	describe('getOriginFromNextHeaders', () => {
-		it('should return fallback origin when next headers are unavailable', async () => {
+		it('should return undefined when next headers are unavailable', async () => {
 			const nextHeadersModule = await import('next/headers');
 			vi.mocked(nextHeadersModule.headers).mockRejectedValue(new Error('not available'));
 
-			const origin = await getOriginFromNextHeaders('https://fallback.com');
-			expect(origin).toBe('https://fallback.com');
+			const origin = await getOriginFromNextHeaders();
+			expect(origin).toBeUndefined();
 		});
 
 		it('should return origin from next headers when available', async () => {
@@ -250,7 +253,7 @@ describe('Sitemap Helper Functions', () => {
 				])
 			);
 
-			const origin = await getOriginFromNextHeaders('https://fallback.com');
+			const origin = await getOriginFromNextHeaders();
 			expect(origin).toBe('https://example.com');
 		});
 	});
@@ -956,7 +959,21 @@ describe('Sitemap Helper Functions', () => {
 		});
 
 		it('should filter out empty image URLs', async () => {
-			const mockAssets = mockContentfulImageAssetsWithEmptyUrls;
+			const mockAssets = {
+				items: mockContentfulImageAssets.items.map((it: any, idx: number) => {
+					if (idx === 0) {
+						return { ...it, fields: { ...it.fields, file: { ...it.fields.file, url: '/valid.jpg' } } };
+					}
+					if (idx === 1) {
+						// simulate an empty URL on the second item
+						return { ...it, fields: { ...it.fields, file: { ...it.fields.file, url: '' } } };
+					}
+					if (idx === 2) {
+						return { ...it, fields: { ...it.fields, file: { ...it.fields.file, url: 'another-valid.jpg' } } };
+					}
+					return it;
+				})
+			};
 
 			const mockGetContentfulAssets = vi.mocked(contentfulModule.getContentfulAssets);
 			mockGetContentfulAssets.mockResolvedValue(mockAssets);
@@ -1086,16 +1103,16 @@ describe('Sitemap Helper Functions', () => {
 				integrations: {
 					square: { squareItemCategoryId: 'test-category' }
 				}
-			});
+			} as any);
 			mockGetSquareStoreItems.mockResolvedValue({
 				items: [
 				{
 					itemURL: '/store/test-item',
 					itemImageURLs: ['https://images.example.com/test-item-1.jpg'],
-				},
-				{ itemURL: 'https://external.com/product' }
+				} as any,
+				{ itemURL: 'https://external.com/product' } as any
 			]
-		});
+		} as any);
 
 		const origin = 'https://example.com';
 		const result = await createSquareItemURLs(origin);
@@ -1145,7 +1162,7 @@ describe('Sitemap Helper Functions', () => {
 			mockGetFullPixelatedConfig.mockReturnValue({
 				createImageURLsFromJSON: true,
 				imageJson: { path: 'public/site-images.json' }
-			});
+			} as any);
 			const result = await generateSitemap('https://example.com');
 
 			expect(result.some((entry: SitemapEntry) => entry.url.includes('/images'))).toBe(true);
@@ -1159,9 +1176,9 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({
 				integrations: {
-					wordpress: { site: 'example.wordpress.com' }
+					wordpress: { baseURL: 'https://public-api.wordpress.com/rest/v1/sites/', site: 'example.wordpress.com' }
 				}
-			});
+			} as any);
 			const result = await generateSitemap('https://example.com');
 
 			expect(result.some((entry: SitemapEntry) => entry.url.includes(mockPosts[0].URL))).toBe(true);
@@ -1184,7 +1201,7 @@ describe('Sitemap Helper Functions', () => {
 				siteConfig: { routes: mockRoutes },
 				createImageURLs: true,
 				imageJson: { path: 'public/site-images.json' }
-			});
+			} as any);
 
 			// Create a scenario where we might have duplicates
 			const result = await generateSitemap('https://example.com');

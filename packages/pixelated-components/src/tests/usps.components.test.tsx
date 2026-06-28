@@ -2,6 +2,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { USPSShippingForm } from '../components/shoppingcart/usps.components';
 import type { UspsRateOption } from '../components/shoppingcart/usps.functions';
 import { renderWithProviders } from '../test/test-utils';

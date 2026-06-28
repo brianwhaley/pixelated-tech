@@ -1,0 +1,42 @@
+{
+  "US": {
+    "result": {
+      "formatted_address": "123 Main St, Springfield, IL 62701, USA",
+      "address_components": [
+        { "long_name": "123", "short_name": "123", "types": ["street_number"] },
+        { "long_name": "Main Street", "short_name": "Main St", "types": ["route"] },
+        { "long_name": "Springfield", "short_name": "Springfield", "types": ["locality"] },
+        { "long_name": "Illinois", "short_name": "IL", "types": ["administrative_area_level_1"] },
+        { "long_name": "62701", "short_name": "62701", "types": ["postal_code"] },
+        { "long_name": "United States", "short_name": "US", "types": ["country"] }
+      ]
+    }
+  },
+  "CA": {
+    "result": {
+      "formatted_address": "111 Richmond St W, Toronto, ON M5H 2G4, Canada",
+      "address_components": [
+        { "long_name": "111", "short_name": "111", "types": ["street_number"] },
+        { "long_name": "Richmond St W", "short_name": "Richmond St W", "types": ["route"] },
+        { "long_name": "Toronto", "short_name": "Toronto", "types": ["locality"] },
+        { "long_name": "Ontario", "short_name": "ON", "types": ["administrative_area_level_1"] },
+        { "long_name": "M5H 2G4", "short_name": "M5H 2G4", "types": ["postal_code"] },
+        { "long_name": "Canada", "short_name": "CA", "types": ["country"] }
+      ]
+    }
+  },
+  "INVALID": {
+    "result": {
+      "formatted_address": "Some address in Mexico",
+      "address_components": [
+        { "long_name": "Mexico", "short_name": "MX", "types": ["country"] }
+      ]
+    }
+  },
+  "NO_COUNTRY": {
+    "result": {
+      "formatted_address": "Unknown location",
+      "address_components": []
+    }
+  }
+}

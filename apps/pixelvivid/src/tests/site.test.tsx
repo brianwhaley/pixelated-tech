@@ -16,6 +16,7 @@ import React from 'react';
 import * as serverComponents from '@pixelated-tech/components/server';
 import {
 	config as pixelatedConfig,
+	mockState,
 	setPixelatedConfigOverride,
 	resetPixelatedConfigOverride,
 	resetMockState,
@@ -24,6 +25,7 @@ import {
 	createPageComponentMocks,
 } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
+import BlogPage from '@/app/(pages)/blog/page';
 
 vi.mock('next/headers', () => ({
 	headers: vi.fn(async () => new Headers({ 'host': 'www.pixelated.tech', 'x-path': '/', 'x-origin': 'https://www.pixelated.tech', 'x-url': 'https://www.pixelated.tech/' })),
@@ -211,6 +213,24 @@ describe('PixelVivid coverage', () => {
 		it('renders search element', () => {
 			render(<Search />);
 			expect(screen.getByTestId('google-search')).not.toBeNull();
+		});
+
+		it('renders Blog page with posts', async () => {
+			render(React.createElement(BlogPage));
+			expect(await screen.findByTestId('blog-post-list')).not.toBeNull();
+		});
+
+		it('renders Blog page when WordPress configuration is missing', async () => {
+			setPixelatedConfigOverride({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					wordpress: undefined,
+				},
+			});
+			mockState.wordpressPosts = null;
+			render(React.createElement(BlogPage));
+			expect(await screen.findByTestId('blog-post-list')).not.toBeNull();
 		});
 
 		it('renders privacy page content', () => {

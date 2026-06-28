@@ -3,7 +3,7 @@ import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ComponentTree } from "../components/sitebuilder/page/components/ComponentTree";
-import { mockComponentTreeData } from '../test/fixtures';
+import { mockComponentTreeData } from '../test/test-data';
 
 describe('ComponentTree', () => {
 	const mockOnSelectComponent = vi.fn();

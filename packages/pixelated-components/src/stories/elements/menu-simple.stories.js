@@ -1,6 +1,6 @@
 import { MenuSimple } from '@/components/elements/menu-simple';
-import siteConfig from '@/data/routes2.json';
-const allRoutes = siteConfig.routes;
+import pixelatedConfig from '@/config/pixelated.config.json';
+const allRoutes = pixelatedConfig.routes;
 import '@/css/pixelated.global.css';
 
 export default {

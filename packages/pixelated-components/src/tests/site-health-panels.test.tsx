@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { SiteHealthPerformance, type SiteHealthPerformanceType } from '../components/admin/site-health/site-health-performance';
 import { SiteHealthSEO, type SiteHealthSEOType } from '../components/admin/site-health/site-health-seo';
 import { siteHealthData } from '../test/test-data';

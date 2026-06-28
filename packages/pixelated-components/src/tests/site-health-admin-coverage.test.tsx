@@ -1,7 +1,8 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { mockSiteHealthPSIData } from '../test/fixtures';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
+import { mockSiteHealthPSIData } from '../test/test-data';
 import { googlePsiExampleCom } from '../test/test-data';
 
 vi.mock('../components/admin/site-health/site-health-template', async () => {

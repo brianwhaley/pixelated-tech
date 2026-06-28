@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import React from 'react';
 import { SiteHealthAccessibility } from '../components/admin/site-health/site-health-accessibility';
 import { 
