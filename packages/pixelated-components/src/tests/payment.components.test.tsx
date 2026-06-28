@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('../components/shoppingcart/paypal', () => ({

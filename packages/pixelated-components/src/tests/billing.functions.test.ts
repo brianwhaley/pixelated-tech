@@ -32,6 +32,7 @@ vi.mock('next/headers', () => ({
 	headers: vi.fn().mockResolvedValue({
 		get: (key: string) => {
 			if (key === 'host') return 'localhost:3000';
+			if (key === 'x-forwarded-proto') return 'https';
 			return undefined;
 		}
 	})

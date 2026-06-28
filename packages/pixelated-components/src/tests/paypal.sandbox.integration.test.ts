@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import configJson from '@/config/pixelated.config.json';
+import { pixelatedConfig } from '../test/test-data';
 import { createPayPalSandboxOrderPayload } from '../test/fixtures';
 
 async function getFetch() {
@@ -13,7 +13,7 @@ async function getFetch() {
 
 describe('PayPal Sandbox Live Transaction', () => {
 	it('creates and captures a real PayPal sandbox order using pixelated.config.json', async () => {
-		const payPalConfig = (configJson as any).integrations?.paypal || {};
+		const payPalConfig = pixelatedConfig.integrations?.paypal || {};
 		const clientId = payPalConfig.sandboxPayPalApiKey;
 		const secret = payPalConfig.sandboxPayPalSecret;
 		const baseUrl = payPalConfig.sandboxPayPalApiBaseUrl;

@@ -42,6 +42,8 @@ generateHumansTxt.propTypes = {
 	cwd: PropTypes.string,
 	/** optional package.json object (if provided, fs is not used) */
 	pkg: PropTypes.object,
+	/** optional site config object to use instead of resolving from disk */
+	siteConfig: PropTypes.any,
 	/** limit how many routes to include (default 50) */
 	maxRoutes: PropTypes.number,
 };
@@ -194,7 +196,8 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};
 	const fullConfig = getFullPixelatedConfig();
-	const configData = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
+	const interimConfig = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
+	const configData = opts.siteConfig ?? interimConfig;
 	const site = configData.siteInfo ?? {};
 	const routes = Array.isArray(configData.routes) ? configData.routes : [];
 	const pixelatedComponentsPackageVersion = selfExportedPixelatedComponentsVersion || 'N/A';

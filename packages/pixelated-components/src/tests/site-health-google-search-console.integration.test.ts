@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import pixelatedConfigJson from '@/config/pixelated.config.json';
+import { pixelatedConfig } from '../test/test-data';
 import { mockGoogleSearchConsoleData } from '../test/test-data';
 
 // Support either the legacy adapter shape { mockResponse, mockConfig }
@@ -8,7 +8,7 @@ const _mockGSC = mockGoogleSearchConsoleData as any;
 const mockGscResponse = _mockGSC?.mockResponse ?? _mockGSC;
 const mockGscConfig = _mockGSC?.mockConfig ?? {};
 
-const pixelatedConfig = pixelatedConfigJson as any;
+// pixelatedConfig imported from test-data
 
 // Mock googleapis BEFORE importing integration module
 vi.mock('googleapis', () => ({

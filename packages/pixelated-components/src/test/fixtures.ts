@@ -11,42 +11,15 @@
 
 
 import { vi } from 'vitest';
-import siteConfig from '@/data/siteconfig.json';
-import recipes from '@/data/recipes.json';
-import resume from '@/data/resume.json';
-import faqTestData from './data/faq-test-data.json';
-import mockGoogleDateRangesJson from './data/mock-google-date-ranges.json';
 import type { CarouselCardType } from '@/components/general/carousel';
 import type { GeminiRecommendationRequest } from '../components/integrations/gemini-api.server';
-import { mockWordPressPosts as mockWordPressPostsCentralized, mockCarouselCards as mockCarouselCardsCentralized, mockTileCards as mockTileCardsCentralized } from './test-data';
-
-export const mockGoogleDateRanges = {
-	currentStart: new Date(mockGoogleDateRangesJson.currentStart),
-	currentEnd: new Date(mockGoogleDateRangesJson.currentEnd),
-	currentStartStr: mockGoogleDateRangesJson.currentStartStr,
-	currentEndStr: mockGoogleDateRangesJson.currentEndStr,
-	previousStart: new Date(mockGoogleDateRangesJson.previousStart),
-	previousEnd: new Date(mockGoogleDateRangesJson.previousEnd),
-	previousStartStr: mockGoogleDateRangesJson.previousStartStr,
-	previousEndStr: mockGoogleDateRangesJson.previousEndStr,
-};
 
 export const emptySiteInfo = { name: '', author: '', description: '', url: '', email: '' };
-export const routes = siteConfig.routes || [];
 export const emptyRoutes: any[] = [];
 export const malformedRoutes = [{ invalidField: 'value' }];
 
-export const siteInfo = siteConfig.siteInfo;
-export const siteInfoFull = siteConfig.siteInfo;
-export const visualdesign = siteConfig.visualdesign || {};
 
-export const realRecipes = recipes;
-export const realResume = resume;
-export const minimalRecipe = (recipes.items && recipes.items[0]) ? recipes.items[0] : { '@type': 'Recipe', name: 'Minimal' };
-export const minimalResume = (resume.items && resume.items[0]) ? { items: [resume.items[0]] } : { items: [] };
-
-import siteHealthData from './data/site-health-data.json';
-import googlePsiExampleCom from './data/google-psi-example-com.json';
+import { siteHealthData, googlePsiExampleCom, mockCarouselCards as mockCarouselCardsCentralized, mockGoogleDateRangesJson } from './test-data';
 import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
 
 export async function createSiteHealthResponse(siteName = 'test-site', url = 'https://www.example.com') {
@@ -56,156 +29,6 @@ export async function createSiteHealthResponse(siteName = 'test-site', url = 'ht
 	};
 }
 
-export const emptyFormData = { fields: [] };
-
-export function createFormInputField(props: Record<string, any>) {
-	return { component: 'FormInput', props };
-}
-
-export function createFormTextareaField(props: Record<string, any>) {
-	return { component: 'FormTextarea', props };
-}
-
-export function createFormCheckboxField(props: Record<string, any>) {
-	return { component: 'FormCheckbox', props };
-}
-
-export function createFormRadioField(props: Record<string, any>) {
-	return { component: 'FormRadio', props };
-}
-
-export function createFormButtonField(props: Record<string, any>) {
-	return { component: 'FormButton', props };
-}
-
-export function createFormSectionHeader(title: string, text: string) {
-	return {
-		component: 'FormSectionHeader',
-		props: {
-			title,
-			text,
-		},
-	};
-}
-
-export const singleTextInputFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: {
-				type: 'text',
-				id: 'username',
-				name: 'username',
-				placeholder: 'Enter username',
-			},
-		},
-	],
-};
-
-export const multipleTextInputsFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: { type: 'text', id: 'name', name: 'name' },
-		},
-		{
-			component: 'FormInput',
-			props: { type: 'email', id: 'email', name: 'email' },
-		},
-	],
-};
-
-export const stringNumericMaxLengthFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: { type: 'text', name: 'test', maxLength: '100' },
-		},
-	],
-};
-
-export const numericMaxLengthFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: { type: 'number', name: 'number', maxLength: 25 },
-		},
-	],
-};
-
-export const minLengthStringFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: { type: 'text', name: 'text', minLength: '5' },
-		},
-	],
-};
-
-export const rowsStringFormData = {
-	fields: [
-		{
-			component: 'FormTextarea',
-			props: { name: 'message', rows: '10' },
-		},
-	],
-};
-
-export const nullMaxLengthFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: { type: 'text', name: 'text', maxLength: null },
-		},
-	],
-};
-
-export const emptyStringMaxLengthFormData = {
-	fields: [
-		{
-			component: 'FormInput',
-			props: { type: 'text', name: 'text', maxLength: '' },
-		},
-	],
-};
-
-export const mockComponentWithTextField = {
-	component: 'TestComponent',
-	fields: [
-		{
-			component: 'FormInput',
-			name: 'title',
-			label: 'Title',
-			props: {
-				type: 'text',
-				placeholder: 'Enter title'
-			}
-		}
-	]
-};
-
-export const mockComponentWithSubmitField = {
-	component: 'TestComponent',
-	fields: [
-		{
-			component: 'FormInput',
-			name: 'title',
-			label: 'Title',
-			props: {
-				type: 'text',
-				placeholder: 'Enter title'
-			}
-		},
-		{
-			component: 'FormButton',
-			name: 'submit',
-			props: {
-				type: 'submit',
-				text: 'Save'
-			}
-		}
-	]
-};
 
 export const mockComponentTreeData = [
 	{
@@ -248,104 +71,18 @@ export const mockDeepPageEngineData = {
 	]
 };
 
-export const mockGooglePlacesPredictions = {
-	predictions: [
-		{
-			place_id: 'place1',
-			description: '123 Main St, Springfield, IL',
-			structured_formatting: {
-				main_text: '123 Main St',
-				secondary_text: 'Springfield, IL'
-			}
-		},
-		{
-			place_id: 'place2',
-			description: '456 Oak Ave, Springfield, IL',
-			structured_formatting: {
-				main_text: '456 Oak Ave',
-				secondary_text: 'Springfield, IL'
-			}
-		}
-	]
+// Provide mockGoogleDateRanges in test fixtures (Date objects + string forms)
+export const mockGoogleDateRanges = {
+	currentStart: new Date(mockGoogleDateRangesJson.currentStart),
+	currentEnd: new Date(mockGoogleDateRangesJson.currentEnd),
+	currentStartStr: mockGoogleDateRangesJson.currentStartStr,
+	currentEndStr: mockGoogleDateRangesJson.currentEndStr,
+	previousStart: new Date(mockGoogleDateRangesJson.previousStart),
+	previousEnd: new Date(mockGoogleDateRangesJson.previousEnd),
+	previousStartStr: mockGoogleDateRangesJson.previousStartStr,
+	previousEndStr: mockGoogleDateRangesJson.previousEndStr,
 };
 
-export const mockGooglePlacesDetailsUS = {
-	result: {
-		formatted_address: '123 Main St, Springfield, IL 62701, USA',
-		address_components: [
-			{ long_name: '123', short_name: '123', types: ['street_number'] },
-			{ long_name: 'Main Street', short_name: 'Main St', types: ['route'] },
-			{ long_name: 'Springfield', short_name: 'Springfield', types: ['locality'] },
-			{ long_name: 'Illinois', short_name: 'IL', types: ['administrative_area_level_1'] },
-			{ long_name: '62701', short_name: '62701', types: ['postal_code'] },
-			{ long_name: 'United States', short_name: 'US', types: ['country'] }
-		]
-	}
-};
-
-export const mockGooglePlacesDetailsCA = {
-	result: {
-		formatted_address: '111 Richmond St W, Toronto, ON M5H 2G4, Canada',
-		address_components: [
-			{ long_name: '111', short_name: '111', types: ['street_number'] },
-			{ long_name: 'Richmond St W', short_name: 'Richmond St W', types: ['route'] },
-			{ long_name: 'Toronto', short_name: 'Toronto', types: ['locality'] },
-			{ long_name: 'Ontario', short_name: 'ON', types: ['administrative_area_level_1'] },
-			{ long_name: 'M5H 2G4', short_name: 'M5H 2G4', types: ['postal_code'] },
-			{ long_name: 'Canada', short_name: 'CA', types: ['country'] }
-		]
-	}
-};
-
-export const mockGooglePlacesDetailsInvalidCountry = {
-	result: {
-		formatted_address: 'Some address in Mexico',
-		address_components: [
-			{ long_name: 'Mexico', short_name: 'MX', types: ['country'] }
-		]
-	}
-};
-
-export const mockGooglePlacesDetailsNoCountry = {
-	result: {
-		formatted_address: 'Unknown location',
-		address_components: []
-	}
-};
-
-export const faqWithImage = {
-	...faqTestData,
-	mainEntity: [{
-		'@type': 'Question',
-		name: 'Image FAQ',
-		category: 'Services',
-		acceptedAnswer: {
-			'@type': 'Answer',
-			text: 'Answer with image',
-			image: {
-				'@type': 'ImageObject',
-				contentUrl: '/images/test.jpg',
-				name: 'Test image',
-				width: 100,
-				height: 100,
-				layout: 'right'
-			}
-		}
-	}]
-};
-
-export const faqWithHtml = {
-	...faqTestData,
-	mainEntity: [{
-		'@type': 'Question',
-		name: 'HTML Test',
-		category: 'Technical Details',
-		acceptedAnswer: {
-			'@type': 'Answer',
-			text: 'This has <strong>bold</strong> and <em>italic</em> text.'
-		}
-	}]
-};
 
 export function createResumeWithAdditionalReferences(resumeData: any) {
 	return {
@@ -384,16 +121,6 @@ export const minimalCarouselCard: CarouselCardType = {
 
 export const carouselMockCards: CarouselCardType[] = mockCarouselCardsCentralized;
 
-export function createManyCarouselCards(count: number): CarouselCardType[] {
-	return Array.from({ length: count }, (_, i) => ({
-		...carouselMockCards[0],
-		index: i,
-		cardIndex: i,
-		cardLength: count,
-		headerText: `Card ${i + 1}`,
-		image: `https://example.com/image${i + 1}.jpg`,
-	}));
-}
 
 export const carouselMinimalCards: CarouselCardType[] = [
 	{
@@ -405,7 +132,6 @@ export const carouselMinimalCards: CarouselCardType[] = [
 	},
 ];
 
-export const tileCards: CarouselCardType[] = mockTileCardsCentralized;
 
 export const tileCardsWithoutLinks: CarouselCardType[] = [
 	{
@@ -436,36 +162,6 @@ export const tileCardsWithoutBody: CarouselCardType[] = [
 		imageAlt: 'Title',
 	},
 ];
-
-export function createAxeCoreLocalFallbackPageMock(): any {
-	return {
-		setViewport: vi.fn().mockResolvedValue(undefined),
-		on: vi.fn().mockReturnValue(undefined),
-		setUserAgent: vi.fn().mockResolvedValue(undefined),
-		goto: vi.fn().mockResolvedValue(undefined),
-		addScriptTag: vi.fn()
-			.mockRejectedValueOnce(new Error('CDN blocked'))
-			.mockResolvedValue(undefined),
-		frames: vi.fn().mockReturnValue([
-			{
-				evaluate: vi.fn()
-					.mockResolvedValueOnce(false)
-					.mockResolvedValueOnce({
-						violations: [],
-						passes: [],
-						incomplete: [],
-						inapplicable: [],
-						testEngine: { name: 'axe-core', version: '4.0.0' },
-						testRunner: { name: 'mock' },
-						testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
-						timestamp: new Date().toISOString(),
-						url: 'http://example.com'
-					}),
-			},
-		]),
-		close: vi.fn().mockResolvedValue(undefined),
-	};
-}
 
 export const mockBlogPost = {
 	id: 123,
@@ -602,69 +298,10 @@ export const mockPayPalOrder = {
 	},
 };
 
-export const mockContentfulImageAssets = {
-	items: [
-		{
-			fields: {
-				file: {
-					contentType: 'image/jpeg',
-					url: '/uploads/image1.jpg',
-				},
-			},
-			sys: { createdAt: '2024-01-01T10:00:00Z' },
-		},
-		{
-			fields: {
-				file: {
-					contentType: 'image/png',
-					url: '//example.com/image2.png',
-				},
-			},
-			sys: { createdAt: '2024-01-02T10:00:00Z' },
-		},
-		{
-			fields: {
-				file: {
-					contentType: 'image/webp',
-					url: 'https://cdn.example.com/image3.webp',
-				},
-			},
-			sys: { createdAt: '2024-01-03T10:00:00Z' },
-		},
-	],
-};
-
-export const mockContentfulImageAssetsWithEmptyUrls = {
-	items: [
-		{
-			fields: {
-				file: {
-					contentType: 'image/jpeg',
-					url: '/valid.jpg',
-				},
-			},
-			sys: { createdAt: '2024-01-01T10:00:00Z' },
-		},
-		{
-			fields: {
-				file: {
-					contentType: 'image/png',
-					url: '',
-				},
-			},
-			sys: { createdAt: '2024-01-02T10:00:00Z' },
-		},
-		{
-			fields: {
-				file: {
-					contentType: 'image/webp',
-					url: 'another-valid.jpg',
-				},
-			},
-			sys: { createdAt: '2024-01-03T10:00:00Z' },
-		},
-	],
-};
+// Contentful image assets are centralized in test-data
+export const mockContentfulImageAssets = undefined as any;
+// Contentful image assets with empty URLs are centralized in test-data
+export const mockContentfulImageAssetsWithEmptyUrls = undefined as any;
 
 export const mockContentfulVideoAssets = {
 	items: [
@@ -693,46 +330,9 @@ export const mockContentfulVideoAssets = {
 	],
 };
 
-export const mockWordPressPosts = mockWordPressPostsCentralized;
 
-export const mockContentfulItems = [
-	{
-		sys: { id: 'item-1', createdAt: '2024-01-01' },
-		fields: {
-			title: 'Product 1',
-			images: [],
-			imageUrl: 'https://example.com/image1.jpg',
-			imageAlt: 'Product 1',
-			price: 99.99,
-			priceCurrency: 'USD',
-			quantity: 1,
-			weight: 1,
-			weightUnit: 'lb',
-			isShippable: true,
-		},
-	},
-	{
-		sys: { id: 'item-2', createdAt: '2024-01-02' },
-		fields: {
-			title: 'Product 2',
-			images: [],
-			imageUrl: 'https://example.com/image2.jpg',
-			imageAlt: 'Product 2',
-			price: 149.99,
-			quantity: 1,
-		},
-	},
-];
 
-export const mockContentfulAssets = [
-	{
-		sys: { id: 'asset-1', createdAt: '2024-01-01' },
-		fields: {
-			file: { url: 'https://example.com/asset1.jpg' },
-			title: 'Asset 1',
-		},
-	},
-];
+export const mockContentfulAssets = undefined as any;
 
 export function createPayPalSandboxOrderPayload(sandboxEmail: string) {
 	return {
@@ -847,11 +447,3 @@ export const gravatarProfile = {
 		{ shortname: 'twitter', url: 'https://twitter.com/janesmith' },
 	],
 };
-
-export const buzzwordBingoWords = [
-	"Synergy", "Low-hanging fruit", "Paradigm shift", "Deep dive", "Leverage",
-	"Action item", "Bandwidth", "Circle back", "Ecosystem", "Holistic",
-	"KPI", "Logistics", "Mindshare", "Optimize", "Proactive",
-	"Robust", "Scalable", "Thought leader", "Visibility", "Win-win",
-	"Value-add", "Empower", "Disrupt", "Game changer", "Alignment"
-];

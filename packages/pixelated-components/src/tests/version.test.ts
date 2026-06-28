@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
-import pkg from '../../package.json' assert { type: 'json' };
+import { packageJson } from '../test/test-data';
 import { pixelatedComponentsVersion } from '../version';
 
 describe('version export', () => {
   it('matches the package.json version', () => {
-    expect(pixelatedComponentsVersion).toBe(pkg.version);
+    expect(pixelatedComponentsVersion).toBe(packageJson.version);
   });
 
   it('returns an empty string when package.json version is missing', async () => {

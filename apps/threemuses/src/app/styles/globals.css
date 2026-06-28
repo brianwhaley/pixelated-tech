@@ -168,3 +168,30 @@ table#three-muses-order-report.pix-table {
 	    vertical-align: top;
     }
 }
+
+
+
+
+
+.coupon-section .page-section-content {
+	border: 5px dashed var(--primary-color);
+	background-color: var(--accent3-color);
+    padding: 0 20px 20px  !important;
+}
+.coupon-section .callout {
+	align-items: start;
+}
+.coupon-section .callout .callout-image.round {
+	width: 90%;
+	height: auto;
+}
+.coupon-section img {
+	aspect-ratio: 1/1;
+}
+.coupon-section li {
+  display: list-item !important;
+  list-style-type: disc !important;
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+}

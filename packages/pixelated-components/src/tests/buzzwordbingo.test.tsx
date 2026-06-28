@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
 import { BuzzwordBingo } from '../components/elements/buzzwordbingo';
 import { buzzwords as defaultBuzzwords } from '../components/elements/buzzwordbingo.words';
-import { buzzwordBingoWords } from '../test/fixtures';
+import { buzzwordBingoWords } from '../test/test-data';
 import { renderWithProviders } from '../test/test-utils';
 
 describe('BuzzwordBingo Component', () => {

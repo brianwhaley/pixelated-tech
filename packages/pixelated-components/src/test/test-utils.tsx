@@ -1,4 +1,5 @@
 // Shared test utility helpers used by src/tests/*. This file should contain only
+/* global vi */
 // reusable rendering helpers, custom assertions, and test support helpers. It
 // should not contain raw test data or fixture objects.
 //
@@ -14,9 +15,22 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 import { PixelatedClientConfigProvider } from '../components/config/config.client';
 import type { GoogleAnalyticsConfig, GoogleMapsConfig, GoogleSearchConfig, GooglePlacesConfig, PixelatedConfig } from '../components/config/config.types';
-import { pixelatedConfig, mockContentfulItems, mockContentfulAssets, formDefinition, mockPlaceReviews, mockContentfulItem } from './test-data';
+import { pixelatedConfig, mockContentfulItems, mockContentfulAssets, formDefinition, mockPlaceReviews, mockContentfulItem, squareOrderCheckoutData } from './test-data';
 
 export const mockConfig = pixelatedConfig;
+
+// Always override `global.fetch` in tests with a safe mock to ensure consistent behavior
+// across different Node/runner environments. Individual tests can still `vi.spyOn` or
+// `vi.mock` `global.fetch` to provide specific responses when needed.
+(globalThis as any).fetch = vi.fn().mockResolvedValue({
+	ok: true,
+	status: 200,
+	statusText: 'OK',
+	json: async () => ({}),
+	text: async () => '',
+	blob: async () => new Blob([]),
+});
+
 export const createMockConfig = (overrides: Partial<PixelatedConfig> = {}): PixelatedConfig => ({
 	...mockConfig,
 	...overrides,
@@ -193,7 +207,12 @@ export function runErrorStateTest(
 
 export {
 	renderWithProviders as render,
-	renderWithProviders as renderComponentWithProviders,
-	renderWithConfig as renderComponentWithConfig,
 	screen, fireEvent, waitFor, userEvent 
 };
+
+export function deepClone<T>(obj: T): T {
+	if ((globalThis as any)?.structuredClone) {
+		return (globalThis as any).structuredClone(obj);
+	}
+	return JSON.parse(JSON.stringify(obj));
+}

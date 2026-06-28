@@ -5,8 +5,7 @@ import { screen } from '@testing-library/react';
 import { FormGooglePlacesInput } from '../components/sitebuilder/form/formcomponents';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';
 import { GooglePlacesService } from '../components/integrations/googleplaces';
-import { mockGooglePlacesPredictions, mockGooglePlacesDetailsUS, mockGooglePlacesDetailsCA, mockGooglePlacesDetailsInvalidCountry, mockGooglePlacesDetailsNoCountry } from '../test/fixtures';
-import { pixelatedConfig } from '../test/test-data';
+import { mockGooglePlacesPredictions, mockGooglePlacesDetails, pixelatedConfig } from '../test/test-data';
 
 vi.mock('../components/foundation/smartfetch');
 
@@ -43,7 +42,7 @@ describe('GooglePlacesService', () => {
 		});
 
 		it('should fetch predictions from API', async () => {
-			mockSmartFetch.mockResolvedValueOnce(mockGooglePlacesPredictions);
+			mockSmartFetch.mockResolvedValueOnce(JSON.parse(JSON.stringify(mockGooglePlacesPredictions)));
 
 			const service = new GooglePlacesService(mockConfig);
 			const results = await service.getPlacePredictions('123 main', mockConfig);
@@ -118,7 +117,7 @@ describe('GooglePlacesService', () => {
 		});
 
 		it('should parse address components correctly', async () => {
-			mockSmartFetch.mockResolvedValueOnce(mockGooglePlacesDetailsUS);
+			mockSmartFetch.mockResolvedValueOnce(JSON.parse(JSON.stringify(mockGooglePlacesDetails.US)));
 
 			const service = new GooglePlacesService(mockConfig);
 			const result = await service.getPlaceDetails('place1', mockConfig);
@@ -132,7 +131,7 @@ describe('GooglePlacesService', () => {
 		});
 
 		it('should handle missing address components gracefully', async () => {
-			mockSmartFetch.mockResolvedValueOnce(mockGooglePlacesDetailsNoCountry);
+			mockSmartFetch.mockResolvedValueOnce(JSON.parse(JSON.stringify(mockGooglePlacesDetails.NO_COUNTRY)));
 
 			const service = new GooglePlacesService(mockConfig);
 			const result = await service.getPlaceDetails('place1', mockConfig);

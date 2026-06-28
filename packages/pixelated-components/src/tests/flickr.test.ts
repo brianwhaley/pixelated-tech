@@ -10,6 +10,12 @@ describe('flickr - GetFlickrData', () => {
 		if (typeof window !== 'undefined' && window.localStorage) {
 			window.localStorage.clear();
 		}
+
+		// Default safe fetch implementation for tests that don't mock fetch explicitly
+		vi.mocked(global.fetch).mockResolvedValue({
+			ok: true,
+			json: () => Promise.resolve({ photos: { photo: [] }, stat: 'ok' })
+		} as any);
 	});
 
 	it('should return async function that fetches Flickr photos', async () => {

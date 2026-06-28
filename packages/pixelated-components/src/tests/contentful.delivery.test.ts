@@ -1,8 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as contentfulModule from '../components/integrations/contentful.delivery';
-import pixelatedConfigJson from '@/config/pixelated.config.json';
+import { pixelatedConfig } from '../test/test-data';
 
-const pixelatedConfig = pixelatedConfigJson as any;
 const mockContentfulApiProps = pixelatedConfig.integrations?.contentful;
 
 // Mock fetch globally

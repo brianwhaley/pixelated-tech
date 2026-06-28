@@ -7,22 +7,37 @@ import { FormBuilder, FormBuild } from '../components/sitebuilder/form/formbuild
 import { FormExtractor } from '../components/sitebuilder/form/formextractor';
 import { FormSectionHeader } from '../components/sitebuilder/form/formcomponents';
 import {
-  emptyFormData,
-  singleTextInputFormData,
-  multipleTextInputsFormData,
-  stringNumericMaxLengthFormData,
-  numericMaxLengthFormData,
-  minLengthStringFormData,
-  rowsStringFormData,
-  nullMaxLengthFormData,
-  emptyStringMaxLengthFormData,
   formCheckboxSubmitRequiredData,
   formRadioSubmitRequiredData,
   formCompleteMultipleFieldTypesData,
   createShippingMethodRadioFormData,
   createUncontrolledRadioDefaultCheckedData,
-} from '@/test/fixtures';
+} from '@/test/test-data';
 import { formDefinition } from '@/test/test-data';
+
+const emptyFormData = { fields: [] };
+
+// derive test fixtures from canonical `formDefinition.fields` and deep-clone per-test
+const fdFields = (formDefinition as any).fields || [];
+const findBy = (pred: (f: any) => boolean) => {
+  const found = fdFields.find(pred);
+  return found ? JSON.parse(JSON.stringify({ fields: [found] })) : undefined;
+};
+const filterBy = (pred: (f: any) => boolean) => {
+  const found = fdFields.filter(pred);
+  return found.length ? JSON.parse(JSON.stringify({ fields: found })) : undefined;
+};
+
+const singleTextInputFormData = findBy((f: any) => f.props?.id === 'username' || f.props?.name === 'username');
+const multipleTextInputsFormData = filterBy((f: any) => ['name', 'email'].includes(f.props?.id) || ['name', 'email'].includes(f.props?.name));
+const stringNumericMaxLengthFormData = findBy((f: any) => f.props?.name === 'test');
+const numericMaxLengthFormData = findBy((f: any) => f.props?.name === 'number');
+const minLengthStringFormData = findBy((f: any) => f.props?.minLength !== undefined);
+const rowsStringFormData = findBy((f: any) => f.component === 'FormTextarea' || f.props?.name === 'message');
+const nullMaxLengthFormData = findBy((f: any) => f.props?.maxLength === null);
+const emptyStringMaxLengthFormData = findBy((f: any) => f.props?.maxLength === '');
+const mockComponentWithTextField = findBy((f: any) => f.component === 'TestComponent' && f.fields?.some((c: any) => c.component === 'FormInput'));
+const mockComponentWithSubmitField = findBy((f: any) => f.component === 'TestComponent' && f.fields?.some((c: any) => c.component === 'FormButton'));
 
 describe('Form Component', () => {
   const mockOnSubmitHandler = vi.fn();

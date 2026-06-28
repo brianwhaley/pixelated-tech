@@ -128,32 +128,50 @@ export function buildSitemapConfig(
 
 
 
-/**
- * Helper to construct an origin string from a Next-like headers() object or plain values.
- * Accepts an object with `get(key)` method, or `undefined` and falls back to localhost origin.
- */
-export function getOriginFromHeaders(headersLike?: { get: (k: string) => string | null } | undefined, fallbackOrigin = 'http://localhost:3000') {
+export function getOriginFromHeaders(headersProp?: { get: (k: string) => string | null } | undefined): string | undefined {
 	try {
-		if (!headersLike) return fallbackOrigin;
-		const proto = headersLike.get('x-forwarded-proto') || 'http';
-		const host = headersLike.get('host') || 'localhost:3000';
-		return `${proto}://${host}`;
+		if (!headersProp) return undefined;
+
+		// Prefer explicit origin sources when present
+		const candKeys = ['x-origin', 'origin', 'x-url'];
+		for (const k of candKeys) {
+			try {
+				const v = headersProp.get(k);
+				if (v) {
+					try {
+						return new URL(String(v)).origin;
+					} catch {
+						// ignore parse error and continue
+					}
+				}
+			} catch {
+				// ignore header access errors
+			}
+		}
+
+		const hostHeader = headersProp.get('x-forwarded-host') || headersProp.get('host') || undefined;
+		if (hostHeader) {
+			const first = String(hostHeader).split(',')[0].trim();
+			if (first) {
+				const hostname = first.split(':')[0];
+				if (hostname) {
+					const proto = headersProp.get('x-forwarded-proto') || 'https';
+					return `${proto}://${hostname}`;
+				}
+			}
+		}
+
+		return undefined;
 	} catch (e) {
-		console.log("Error getting origin from headers:", e);
-		return fallbackOrigin;
+		console.log('Error getting origin from headers:', e);
+		return undefined;
 	}
 }
 
 export type RuntimeEnv = 'auto' | 'local' | 'prod';
 
-/**
- * Infer a runtime environment from headers/origin.
- * - 'local' when origin indicates localhost/127.0.0.1
- * - 'prod' for any other host
- * - 'auto' when no origin could be determined
- */
-export function getRuntimeEnvFromHeaders(headersLike?: { get: (k: string) => string | null } | undefined, fallbackOrigin?: string): RuntimeEnv {
-	const origin = getOriginFromHeaders(headersLike, fallbackOrigin ?? '');
+export function getRuntimeEnvFromHeaders(headersProp?: { get: (k: string) => string | null } | undefined): RuntimeEnv {
+	const origin = getOriginFromHeaders(headersProp);
 	if (!origin) return 'auto';
 	if (origin.includes('localhost') || origin.includes('127.0.0.1')) return 'local';
 	return 'prod';
@@ -164,19 +182,19 @@ export function getRuntimeEnvFromHeaders(headersLike?: { get: (k: string) => str
  * - Convenience wrapper that dynamically imports `next/headers` and calls our `getOriginFromHeaders` function
  * - Falls back to `fallbackOrigin` if `next/headers` not available or on error
  */
-export async function getOriginFromNextHeaders(fallbackOrigin = 'http://localhost:3000') {
+export async function getOriginFromNextHeaders() {
 	try {
 		// dynamic import ensures we don't require 'next/headers' in non-Next environments
 		const mod = await import('next/headers');
 		if (mod && typeof mod.headers === 'function') {
 			const hdrs = await mod.headers();
-			return getOriginFromHeaders(hdrs, fallbackOrigin);
+			return getOriginFromHeaders(hdrs);
 		}
 	} catch (e) {
 		console.log("Error getting origin from Next headers:", e);
 		// Not in a Next environment or module not found; return fallback
 	}
-	return fallbackOrigin;
+	return undefined;
 }
 
 
@@ -291,14 +309,15 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 
 
 
-export async function createPageURLs(routes: { path: string }[], origin: string) {
+export async function createPageURLs(routes: { path: string }[], origin?: string) {
 	const sitemap: SitemapEntry[] = [];
-	// const origin = await getOrigin();
 	const allRoutes = getAllRoutes(routes, "routes");
 	for ( const route of allRoutes ){
 		if(route.path.substring(0, 4).toLowerCase() !== 'http') {
+			const base = origin ? `${origin}` : '';
+			const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
 			sitemap.push({
-				url: `${origin}${route.path}` ,
+				url: `${base}${path}` ,
 				lastModified: new Date(),
 				changeFrequency: "hourly",
 				priority: 1.0,
@@ -312,7 +331,7 @@ export async function createPageURLs(routes: { path: string }[], origin: string)
 
 
 
-export async function createSiteConfigURLs(siteConfig: any, origin: string): Promise<SitemapEntry[]> {
+export async function createSiteConfigURLs(siteConfig: any, origin?: string): Promise<SitemapEntry[]> {
 	const sitemap: SitemapEntry[] = [];
 	if (!siteConfig || typeof siteConfig !== 'object' || !siteConfig.siteInfo) {
 		return sitemap;
@@ -324,7 +343,8 @@ export async function createSiteConfigURLs(siteConfig: any, origin: string): Pro
 	const servicePathPrefix = getServicePathPrefix(siteConfig?.siteInfo);
 	for (const service of services) {
 		const rawPath = `${servicePathPrefix}/${contentfulValueToSlug({ value: service.slug ?? service.name })}`;
-		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin}${rawPath.startsWith('/') ? rawPath : `/${rawPath}`}`;
+		const path = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin ? origin : ''}${path}`;
 		if (url) {
 			sitemap.push({
 				url,
@@ -337,7 +357,8 @@ export async function createSiteConfigURLs(siteConfig: any, origin: string): Pro
 
 	for (const serviceArea of serviceAreas) {
 		const rawPath = serviceArea.url || serviceArea.path || `/service-areas/${contentfulValueToSlug({ value: serviceArea.slug ?? serviceArea.name })}`;
-		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin}${rawPath.startsWith('/') ? rawPath : `/${rawPath}`}`;
+		const path = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin ? origin : ''}${path}`;
 		if (url) {
 			sitemap.push({
 				url,
@@ -351,13 +372,14 @@ export async function createSiteConfigURLs(siteConfig: any, origin: string): Pro
 	return sitemap;
 }
 
-export async function createImageURLsFromJSON(origin: string, jsonPath = 'public/site-images.json'): Promise<SitemapEntry[]>{
+export async function createImageURLsFromJSON(origin?: string, jsonPath = 'public/site-images.json'): Promise<SitemapEntry[]>{
 	const sitemap: any[] = [];
 	try {
 		let urlPath = jsonPath;
 		if (urlPath.startsWith('public/')) urlPath = urlPath.slice('public/'.length);
 		if (!urlPath.startsWith('/')) urlPath = `/${urlPath}`;
-		const json = await smartFetch(`${origin}${urlPath}`);
+		const base = origin ? origin : '';
+		const json = await smartFetch(`${base}${urlPath}`);
 		let imgs: string[] = [];
 		if (Array.isArray(json)) {
 			imgs = json;
@@ -373,7 +395,7 @@ export async function createImageURLsFromJSON(origin: string, jsonPath = 'public
 			return encode(`${origin}${rel}`);
 		});
 		sitemap.push({
-			url: `${origin}/images`,
+			url: `${origin ? origin : ''}/images`,
 			images: newImages,
 		});
 	} catch /* (e) */ {
@@ -445,7 +467,7 @@ createContentfulURLs.propTypes = {
 		sitemapImageFields: PropTypes.arrayOf(PropTypes.string),
 	}).isRequired,
 	/** Origin used to build absolute URLs */
-	origin: PropTypes.string.isRequired,
+	origin: PropTypes.string,
 	/** Optional override for Contentful content type */
 	contentType: PropTypes.string,
 	/** Optional override for field used to generate page slugs */
@@ -510,8 +532,9 @@ export async function createContentfulURLs(props: createContentfulURLsType){
 			.map((image: any) => image.image ? encode(image.image) : image.image)
 			.filter(Boolean);
 
+		const base = props.origin ? props.origin : '';
 		const sitemapEntry: any = {
-			url: `${props.origin}${normalizedPath}` ,
+			url: `${base}${normalizedPath}` ,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
 			priority: 1.0,
@@ -549,7 +572,7 @@ createContentfulPageBuilderURLs.propTypes = {
 		delivery_access_token: PropTypes.string.isRequired,
 	}).isRequired,
 	/** Origin used to build absolute URLs */
-	origin: PropTypes.string.isRequired,
+	origin: PropTypes.string,
 };
 export type createContentfulPageBuilderURLsType = InferProps<typeof createContentfulPageBuilderURLs.propTypes>;
 export async function createContentfulPageBuilderURLs(props: createContentfulPageBuilderURLsType){
@@ -560,8 +583,9 @@ export async function createContentfulPageBuilderURLs(props: createContentfulPag
 		apiProps: props.apiProps, contentType: contentType, field: field
 	});
 	for ( const pageName of pageNames ){
+		const base = props.origin ? props.origin : '';
 		sitemap.push({
-			url: `${props.origin}/${encodeURIComponent(pageName)}` ,
+			url: `${base}/${encodeURIComponent(pageName)}` ,
 			lastModified: new Date(),
 			changeFrequency: "hourly",
 			priority: 1.0,
@@ -600,7 +624,7 @@ createContentfulAssetURLs.propTypes = {
 		access_token: PropTypes.string.isRequired,
 	}).isRequired,
 	/** Origin used to convert relative URLs to absolute */
-	origin: PropTypes.string.isRequired,
+	origin: PropTypes.string,
 };
 export type createContentfulAssetURLsType = InferProps<typeof createContentfulAssetURLs.propTypes>;
 export async function createContentfulAssetURLs(props: createContentfulAssetURLsType): Promise<SitemapEntry[]> {
@@ -625,13 +649,16 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 				let url = a.fields?.file?.url || '';
 				if (!url) return '';
 				if (url.startsWith('//')) url = `https:${url}`;
-				else if (url.startsWith('/')) url = `${props.origin}${url}`;
-				else if (!url.startsWith('http://') && !url.startsWith('https://')) url = `${props.origin}/${url}`;
+				else {
+					const base = props.origin ? props.origin : '';
+					if (url.startsWith('/')) url = `${base}${url}`;
+					else if (!url.startsWith('http://') && !url.startsWith('https://')) url = `${base}/${url}`;
+				}
 				return encode(url);
 			}).filter(Boolean);
 			if (imageURLs.length > 0) {
 				sitemap.push({
-					url: `${props.origin}/images`,
+					url: `${props.origin ? props.origin : ''}/images`,
 					lastModified: new Date(),
 					changeFrequency: 'always',
 					priority: 1.0,
@@ -658,11 +685,14 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 					let url = a.fields?.file?.url || '';
 					if (!url) return null;
 					if (url.startsWith('//')) url = `https:${url}`;
-					else if (url.startsWith('/')) url = `${props.origin}${url}`;
-					else if (!url.startsWith('http://') && !url.startsWith('https://')) url = `${props.origin}/${url}`;
+					else {
+						const base = props.origin ? props.origin : '';
+						if (url.startsWith('/')) url = `${base}${url}`;
+						else if (!url.startsWith('http://') && !url.startsWith('https://')) url = `${base}/${url}`;
+					}
 					return { 
 						title: a.fields?.title || 'Untitled Video',
-						thumbnail_loc: `${props.origin}/images/placeholder.png`,
+						thumbnail_loc: `${props.origin ? props.origin : ''}/images/placeholder.png`,
 						description: a.fields?.description || 'No description available',
 						publication_date: a.sys?.createdAt || new Date().toISOString(),
 						content_loc: encode(url),
@@ -682,7 +712,7 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 
 
 
-export async function createEbayItemURLs(origin: string) {
+export async function createEbayItemURLs(origin?: string) {
 	const sitemap: SitemapEntry[] = [];
 
 	// Load configuration
@@ -706,9 +736,10 @@ export async function createEbayItemURLs(origin: string) {
 	if (!items || !items.length) {
 		return sitemap;
 	}
+	const base = origin ? origin : '';
 	for (const item of items) {
 		sitemap.push({
-			url: `${origin}/store/${item.legacyItemId}` ,
+			url: `${base}/store/${item.legacyItemId}` ,
 			lastModified: item.itemCreationDate ? new Date(item.itemCreationDate) : new Date(),
 			changeFrequency: "hourly",
 			priority: 1.0,
@@ -717,7 +748,7 @@ export async function createEbayItemURLs(origin: string) {
 	return sitemap;
 }
 
-export async function createSquareItemURLs(origin: string) {
+export async function createSquareItemURLs(origin?: string) {
 	const sitemap: SitemapEntry[] = [];
 	const config = getFullPixelatedConfig() as PixelatedConfig;
 	if (!config?.integrations?.square?.squareItemCategoryId) {
@@ -745,14 +776,15 @@ export async function createSquareItemURLs(origin: string) {
 			imageUrls.push(item.itemImageURL);
 		}
 
+		const base = origin ? origin : '';
 		const normalizedImages = imageUrls
 			.map((img) => img.trim())
 			.filter(Boolean)
-			.map((img) => img.startsWith('http') ? img : `${origin}${img.startsWith('/') ? img : `/${img}`}`)
+			.map((img) => img.startsWith('http') ? img : `${base}${img.startsWith('/') ? img : `/${img}`}`)
 			.map((img) => encode(img));
 
 		const entry: any = {
-			url: item.itemURL.startsWith('http') ? item.itemURL : `${origin}${item.itemURL}`,
+			url: item.itemURL.startsWith('http') ? item.itemURL : `${base}${item.itemURL}`,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
 			priority: 1.0,

@@ -21,7 +21,9 @@ export interface SiteBillingConfig {
 	email: string;
 	companyName: string;
 	address: string;
-	note?: string; // Optional custom note per invoice
+	note?: string; // Optional legacy single-note
+	// `notes` keyed by billing cycle (YYYY-MM) for historical notes per month
+	notes?: Record<string, string>;
 }
 
 export interface SiteConfig {

@@ -50,7 +50,7 @@ export default function DancewearPage() {
 				</PageGridItem>
 
 				<PageGridItem columnSpan={2}>
-					<PageSectionHeader columnSpan={2} title="Jazz Stage Ready Packages" />
+					<PageSectionHeader title="Jazz Stage Ready Packages" />
 				</PageGridItem>
 				<PageGridItem>
 					<Callout

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { buildUrl } from '../components/foundation/urlbuilder';
-import { mockWordPressPosts } from '../test/fixtures';
+import { mockWordPressPosts } from '../test/test-data';
 
 vi.mock('../components/foundation/smartfetch', () => ({
   smartFetch: vi.fn()

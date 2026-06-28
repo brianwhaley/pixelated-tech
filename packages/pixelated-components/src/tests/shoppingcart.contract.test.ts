@@ -17,9 +17,7 @@ import {
 type ShoppingCartType = CartItemType;
 
 // Use on-disk fixtures where available to keep tests 'real'
-import personalInfoData from '../components/shoppingcart/checkout.personal.info.json';
-import discountInfoData from '../components/shoppingcart/checkout.discount.info.json';
-import shippingInfoData from '../components/shoppingcart/usps.generic.shipping.info.json';
+import { checkoutPersonalInfo as personalInfoData, checkoutDiscountInfo as discountInfoData, uspsGenericShippingInfo as shippingInfoData } from '../test/test-data';
 
 describe('ShoppingCart — observable contract (storage keys & shapes)', () => {
   beforeEach(() => {

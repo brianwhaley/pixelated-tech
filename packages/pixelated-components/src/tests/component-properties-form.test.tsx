@@ -3,7 +3,21 @@ import { render } from '../test/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ComponentPropertiesForm } from "../components/sitebuilder/page/components/ComponentPropertiesForm";
-import { mockComponentWithTextField, mockComponentWithSubmitField } from '../test/fixtures';
+import { formDefinition } from '../test/test-data';
+
+const fdFields = (formDefinition as any).fields || [];
+const findBy = (pred: (f: any) => boolean) => {
+	const found = fdFields.find(pred);
+	if (!found) return undefined;
+	// If the found item is a wrapper component with its own fields (e.g., TestComponent),
+	// return an object where `fields` is the inner fields array so FormEngine will render them.
+	if (Array.isArray(found.fields)) {
+		return JSON.parse(JSON.stringify({ fields: found.fields }));
+	}
+	return JSON.parse(JSON.stringify({ fields: [found] }));
+};
+const mockComponentWithTextField = findBy((f: any) => f.component === 'TestComponent' && f.fields?.some((c: any) => c.component === 'FormInput'));
+const mockComponentWithSubmitField = findBy((f: any) => f.component === 'TestComponent' && f.fields?.some((c: any) => c.component === 'FormButton'));
 
 describe('ComponentPropertiesForm', () => {
 	it('should render placeholder text when no editableComponent is provided', () => {

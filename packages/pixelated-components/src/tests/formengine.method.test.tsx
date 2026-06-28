@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 import { FormEngine } from '../components/sitebuilder/form/formengine';
 

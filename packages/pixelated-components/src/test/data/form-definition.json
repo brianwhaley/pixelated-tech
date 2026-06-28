@@ -88,5 +88,50 @@
         "text": "Submit"
       }
     }
-  ]
+    ,
+    {
+      "component": "FormInput",
+      "props": { "type": "text", "id": "username", "name": "username", "placeholder": "Enter username" }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "text", "id": "name", "name": "name" }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "email", "id": "email", "name": "email" }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "text", "name": "test", "maxLength": "100" }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "number", "name": "number", "maxLength": 25 }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "text", "name": "text", "minLength": "5" }
+    },
+    {
+      "component": "FormTextarea",
+      "props": { "name": "message", "rows": "10" }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "text", "name": "text", "maxLength": null }
+    },
+    {
+      "component": "FormInput",
+      "props": { "type": "text", "name": "text", "maxLength": "" }
+    },
+    {
+      "component": "TestComponent",
+      "fields": [ { "component": "FormInput", "name": "title", "label": "Title", "props": { "type": "text", "placeholder": "Enter title" } } ]
+    },
+    {
+      "component": "TestComponent",
+      "fields": [ { "component": "FormInput", "name": "title", "label": "Title", "props": { "type": "text", "placeholder": "Enter title" } }, { "component": "FormButton", "name": "submit", "props": { "type": "submit", "text": "Save" } } ]
+    }
+    ]
 }

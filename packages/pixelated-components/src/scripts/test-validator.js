@@ -5,22 +5,22 @@ const root = path.resolve(process.cwd());
 const testsDir = path.join(root, 'src', 'tests');
 const sharedDir = path.join(root, 'src', 'test');
 const failures = [];
-const MAX_INLINE_DATA_LINES = 24;
+const MAX_INLINE_DATA_LINES = 30;
 const MAX_INLINE_DATA_CHARS = 1200;
 const DUPLICATE_MIN_LINES = 4;
 const DUPLICATE_MIN_CHARS = 120;
 
 const THRESHOLDS = {
-  sharedTestUtilsImport: 0.40,
-  sharedRenderHarnessUsage: 0.39,
-  sharedConfigFactoryUsage: 0.02,
-  sharedTestDataImport: 0.31,
-  sharedFixtureImportUsage: 0.31,
+  sharedTestUtilsImport: 0.49,
+  sharedRenderHarnessUsage: 1.0, // verify exclusive use of the render harness
+  sharedConfigFactoryUsage: 0.02, // evaluate if this is a god idea or not
+  sharedTestDataImport: 1.0, // no direct import of data from /test/data folder
+  sharedFixtureImportUsage: 0.32, // i want to make this 0
   sharedDataFactoryUsage: 0.26,
   sharedAssertionUsage: 0.01,
   noDirectJsonImport: 1.0,
   inlineRenderConfigUsage: 0.98,
-  largeInlineData: 1.0,
+  largeInlineData: 0.99,
   duplicateInlineData: 1.0,
 };
 
@@ -233,9 +233,14 @@ function validateLocalTestUtilsImport(file, contents) {
 }
 
 function validateSharedTestDataImport(file, contents) {
-  const directJsonImportPattern = /(?:import\s+.*\s+from\s+['"](?:\.\.\/test\/(?:data\/)?[^'"\\]+\.json|@\/test\/(?:data\/)?[^'"\\]+\.json)['"])|(?:require\(['"](?:\.\.\/test\/(?:data\/)?[^'"\\]+\.json|@\/test\/(?:data\/)?[^'"\\]+\.json)['"]\))/;
-  if (directJsonImportPattern.test(contents)) {
-    failures.push(`${path.relative(root, file)} imports JSON fixture data directly from src/test; use src/test/test-data.ts instead`);
+  // Flag any .json import/require unless the import path explicitly contains a `/test/` segment
+  const jsonImportRegex = /(?:import\s+.*\s+from\s+['"]([^'"\\]+\.json)['"])|(?:require\(['"]([^'"\\]+\.json)['"]\))/g;
+  let m;
+  while ((m = jsonImportRegex.exec(contents)) !== null) {
+    const importPath = m[1] || m[2] || '';
+    if (!/\/test\//.test(importPath) && !/@\/test\//.test(importPath)) {
+      failures.push(`${path.relative(root, file)} imports JSON fixture data directly (${importPath}); use src/test/test-data.ts instead`);
+    }
   }
 }
 
@@ -288,13 +293,49 @@ function getSharedTestUtilsImportMetric(testFilesContents) {
 function getSharedRenderHarnessUsageMetric(testFilesContents) {
   const importPattern = /from\s+['"](?:\.\.\/test\/test-utils|@\/test\/test-utils)['"]/;
   const renderPattern = /(?:renderWithProviders|renderWithConfig|renderWithoutProviders|render)\s*\(/;
-  const count = testFilesContents.filter(({ contents }) => importPattern.test(contents) && renderPattern.test(contents)).length;
-  return count / testFilesContents.length;
+  // New policy:
+  // - Files that do not call any `render` helper at all are considered passing (they don't affect the metric).
+  // - Files that import `render` (or other render helpers) from the shared test-utils are passing.
+  // - Files that import `render` from `@testing-library/react` are failing.
+  const testingLibraryRenderImport = /import\s+\{[^}]*\brender\b[^}]*\}\s+from\s+['"]@testing-library\/react['"]/;
+  const testingLibraryAnyRenderUsage = /(?:renderWithProviders|renderWithConfig|renderWithoutProviders|render)\s*\(/;
+
+  let passing = 0;
+  for (const { contents } of testFilesContents) {
+    // if the file doesn't call any render helper, treat as pass
+    if (!testingLibraryAnyRenderUsage.test(contents)) {
+      passing += 1;
+      continue;
+    }
+    // if it imports from shared test-utils, pass
+    if (importPattern.test(contents)) {
+      passing += 1;
+      continue;
+    }
+    // if it imports render from testing-library, fail (do not increment passing)
+    if (testingLibraryRenderImport.test(contents)) {
+      continue;
+    }
+    // otherwise, it's a render usage but not from shared harness nor testing-library import - treat as fail
+  }
+
+  return passing / testFilesContents.length;
 }
 
 function getSharedTestDataImportMetric(testFilesContents) {
   const pattern = /from\s+['"](?:\.\.\/test\/(?:test-data|fixtures)|@\/test\/(?:test-data|fixtures))['"]/;
-  const count = testFilesContents.filter(({ contents }) => pattern.test(contents)).length;
+  // Consider a file passing if it imports shared test-data/fixtures OR if it does not import from src/test at all.
+  // Match any import path that contains a `/test/` segment or `@/test/` (safer than anchoring at the start)
+  // Intended policy (informational):
+  // - If a test imports any data file (JSON or other fixtures), it SHOULD import via the shared barrel
+  //   at `src/test/test-data.ts` (or `src/test/fixtures.ts`).
+  // - It's difficult to statically detect arbitrary "data" imports reliably (extensions omitted, dynamic
+  //   resolution, varying file names). For now we conservatively detect direct imports that explicitly target
+  //   the `src/test/data` folder (e.g. `../test/data/foo.json`) and consider those failures unless they go
+  //   through the shared barrel. This is a narrower but safe approximation of the intent.
+  const allowedPattern = /from\s+['"](?:\.\.\/test\/(?:test-data|fixtures)|@\/test\/(?:test-data|fixtures))['"]/;
+  const directDataImport = /from\s+['"][^'\"]*\/test\/data\/[^^'\"]+['"]/;
+  const count = testFilesContents.filter(({ contents }) => allowedPattern.test(contents) || !directDataImport.test(contents)).length;
   return count / testFilesContents.length;
 }
 

@@ -1,0 +1,20 @@
+{
+  "predictions": [
+    {
+      "place_id": "place1",
+      "description": "123 Main St, Springfield, IL",
+      "structured_formatting": {
+        "main_text": "123 Main St",
+        "secondary_text": "Springfield, IL"
+      }
+    },
+    {
+      "place_id": "place2",
+      "description": "456 Oak Ave, Springfield, IL",
+      "structured_formatting": {
+        "main_text": "456 Oak Ave",
+        "secondary_text": "Springfield, IL"
+      }
+    }
+  ]
+}

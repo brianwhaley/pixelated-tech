@@ -1,4 +1,5 @@
 import React from 'react';
+import { pixelatedConfig } from '../test/test-data';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';

@@ -1,15 +1,52 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generateManifest, Manifest, type ManifestOptions } from '@/components/foundation/manifest';
-import { getFullPixelatedConfig } from '@/components/config/config';
 import type { SiteInfo } from '@/components/config/config.types';
-import { siteInfoFull as mockSiteInfo } from '../test/test-data';
+import type { ManifestOptions } from '@/components/foundation/manifest';
+
+// Provide the canonical mock data before any module imports so module-level
+// initializers that read `pixelatedConfig` get the mocked value.
+const mockSiteInfo: SiteInfo = {
+	title: 'Mock Site',
+	description: 'Mock description',
+	author: 'Tester',
+	baseUrl: 'https://example.test',
+	favicon: '/favicon.ico',
+	favicon_sizes: '64x64 32x32 24x24 16x16',
+	favicon_type: 'image/x-icon'
+};
 
 vi.mock('@/components/config/config', () => ({
-	getFullPixelatedConfig: vi.fn(() => ({ siteInfo: mockSiteInfo }))
+	pixelatedConfig: { siteInfo: {
+		title: 'Mock Site',
+		description: 'Mock description',
+		author: 'Tester',
+		baseUrl: 'https://example.test',
+		favicon: '/favicon.ico',
+		favicon_sizes: '64x64 32x32 24x24 16x16',
+		favicon_type: 'image/x-icon'
+	} },
+	getFullPixelatedConfig: vi.fn(() => ({ siteInfo: {
+		title: 'Mock Site',
+		description: 'Mock description',
+		author: 'Tester',
+		baseUrl: 'https://example.test',
+		favicon: '/favicon.ico',
+		favicon_sizes: '64x64 32x32 24x24 16x16',
+		favicon_type: 'image/x-icon'
+	} })),
 }));
 
+import { getFullPixelatedConfig } from '@/components/config/config';
+
 describe('Manifest Component', () => {
-	beforeEach(() => {
+	let generateManifest: (options?: any) => any;
+	let Manifest: (options?: any) => any;
+
+	beforeEach(async () => {
+		const mod = await import('@/components/foundation/manifest');
+		generateManifest = mod.generateManifest;
+		Manifest = mod.Manifest;
+
+		// Ensure the mocked config provider returns the expected siteInfo for each test
 		(vi.mocked(getFullPixelatedConfig) as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => ({ siteInfo: mockSiteInfo }));
 	});
 

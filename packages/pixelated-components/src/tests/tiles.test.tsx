@@ -4,12 +4,8 @@ import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
 import { Tiles, ProjectTiles, ProjectsClient } from '@/components/elements/tiles';
 import type { CarouselCardType } from '@/components/structure/carousel';
-import {
-  tileCards,
-  tileCardsWithoutLinks,
-  tileCardsWithoutAlt,
-  tileCardsWithoutBody,
-} from '@/test/fixtures';
+import { mockCards as mockTileCards } from '@/test/test-data';
+import { tileCardsWithoutLinks, tileCardsWithoutAlt, tileCardsWithoutBody } from '@/test/fixtures';
 
 // Mock SmartImage component
 vi.mock('@/components/elements/smartimage', () => ({
@@ -28,7 +24,7 @@ vi.mock('@/components/foundation/loading', () => ({
 }));
 
 describe('Tiles Component', () => {
-  const mockCards = tileCards;
+  const mockCards = mockTileCards;
 
   describe('Basic Rendering', () => {
     it('should render tiles container', () => {

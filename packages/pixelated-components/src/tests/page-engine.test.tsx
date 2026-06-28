@@ -3,7 +3,7 @@ import { render } from '../test/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PageEngine } from "../components/sitebuilder/page/components/PageEngine";
-import { mockPageEngineData, mockDeepPageEngineData } from '../test/fixtures';
+import { mockPageEngineData, mockDeepPageEngineData } from '../test/test-data';
 import { pixelatedConfig } from '../test/test-data';
 
 describe('PageEngine', () => {

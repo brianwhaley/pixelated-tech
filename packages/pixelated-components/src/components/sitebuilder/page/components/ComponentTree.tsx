@@ -40,7 +40,7 @@ ComponentTree.propTypes = {
 };
 export type ComponentTreeType = InferProps<typeof ComponentTree.propTypes>;
 export function ComponentTree({ 
-	components, 
+	components = [], 
 	onSelectComponent, 
 	onEditComponent, 
 	onDeleteComponent,

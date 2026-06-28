@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { SchemaFAQ } from '@/components/foundation/schema';
 
 describe('SchemaFAQ normalization', () => {

@@ -4,10 +4,8 @@ import { screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Carousel, CarouselCardType } from '../components/structure/carousel';
 import {
-  carouselMockCards,
-  createManyCarouselCards,
-  carouselMinimalCards,
-} from '@/test/fixtures';
+		mockCarouselCards as carouselMockCards,
+} from '@/test/test-data';
 
 // Mock SmartImage component
 vi.mock('../components/elements/smartimage', () => ({

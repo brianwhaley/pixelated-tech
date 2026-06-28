@@ -21,35 +21,39 @@ vi.mock('@/lib/authentication', () => ({
 	authOptions: {},
 }));
 
-vi.mock('@pixelated-tech/components/server', () => ({
-	createWellKnownResponse: (type: string, _req: any) => new Response(`well-known ${type}`, { status: 200, headers: { 'Content-Type': 'text/plain' } }),
-	getFullPixelatedConfig: () => ({
-		integrations: {
-			nextAuth: { secret: 'test-secret' },
-			google: { client_id: 'g-id', client_secret: 'g-secret', api_key: 'gkey' },
-			googleAnalytics: { serviceAccountKey: 'key' },
-		},
-		contentful: { spaceId: 'space', environmentId: 'master', accessToken: 'token' },
-	}),
-	loadSitesConfig: async () => [{ name: 'test', url: 'https://example.com', localPath: '/site-a' }],
-	listContentfulPages: async () => [{ id: 'page-1' }],
-	generateAiRecommendations: async () => ({ results: ['yes'] }),
-	deleteContentfulPage: async () => ({ success: true }),
-	loadContentfulPage: async () => ({ id: 'page-1', content: 'ok' }),
-	saveContentfulPage: async () => ({ success: true }),
-	getSiteConfig: async () => ({
-		name: 'test',
-		siteName: 'test',
-		url: 'https://example.com',
-		localPath: '/site-a',
-		healthCheckId: 'hc-123',
-		region: 'us-east-1',
-		repo: 'repo',
-		ga4PropertyId: 'ga4-123',
-		gscSiteUrl: 'https://example.com',
-	}),
-	getRuntimeEnvFromHeaders: () => 'local',
-}));
+vi.mock('@pixelated-tech/components/server', async () => {
+	const actual = await vi.importActual<typeof import('@pixelated-tech/components/server')>('@pixelated-tech/components/server');
+	return {
+		__esModule: true,
+		...actual,
+		createWellKnownResponse: (type: string, _req: any) => new Response(`well-known ${type}`, { status: 200, headers: { 'Content-Type': 'text/plain' } }),
+		getFullPixelatedConfig: () => ({
+			integrations: {
+				nextAuth: { secret: 'test-secret' },
+				google: { client_id: 'g-id', client_secret: 'g-secret', api_key: 'gkey' },
+				googleAnalytics: { serviceAccountKey: 'key' },
+			},
+			contentful: { spaceId: 'space', environmentId: 'master', accessToken: 'token' },
+		}),
+		loadSitesConfig: async () => [{ name: 'test', url: 'https://example.com', localPath: '/site-a' }],
+		listContentfulPages: async () => [{ id: 'page-1' }],
+		generateAiRecommendations: async () => ({ results: ['yes'] }),
+		deleteContentfulPage: async () => ({ success: true }),
+		loadContentfulPage: async () => ({ id: 'page-1', content: 'ok' }),
+		saveContentfulPage: async () => ({ success: true }),
+		getSiteConfig: async () => ({
+			name: 'test',
+			siteName: 'test',
+			url: 'https://example.com',
+			localPath: '/site-a',
+			healthCheckId: 'hc-123',
+			region: 'us-east-1',
+			repo: 'repo',
+			ga4PropertyId: 'ga4-123',
+			gscSiteUrl: 'https://example.com',
+		}),
+	};
+});
 
 vi.mock('@pixelated-tech/components', () => ({
 	getContentTypes: async () => [{ id: 'type-1', name: 'Type 1' }],
