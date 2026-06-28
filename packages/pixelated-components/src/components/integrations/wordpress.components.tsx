@@ -9,10 +9,8 @@ import type { BlogPostType } from './wordpress.functions';
 import type { SiteInfo } from '../config/config.types';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import { getServicePathPrefix } from '../elements/services.functions';
-import { getWordPressItems, getWordPressLastModified } from './wordpress.functions';
+import { getCachedWordPressItems, getWordPressCategories } from './wordpress.functions';
 import { Loading, ToggleLoading } from '../foundation/loading';
-import { CacheManager, type CacheMode } from "../foundation/cache-manager";
-import { getDomain } from '../foundation/utilities';
 import "./wordpress.css";
 import { SchemaBlogPosting } from '../foundation/schema';
 import { mapWordPressToBlogPosting } from '../integrations/wordpress.functions';
@@ -29,53 +27,6 @@ function decodeString(str: string) {
 
 
 
-
-const wpCacheTTL = 1000 * 60 * 60 * 24 * 7; // 1 week
-const wpCache = new CacheManager({ mode: 'local', ttl: wpCacheTTL, domain: getDomain(), namespace: 'wp' });
-const wpApiURL = "https://public-api.wordpress.com/rest/v1/sites/";
-/**
- * getCachedWordPressItems — Fetch posts from the WordPress REST API with caching. Checks local cache first and returns cached posts if available and not expired; otherwise fetches from the API, stores in cache, and returns the fresh data.
- *
- * @param {string} [props.site] - WordPress site identifier (site slug or domain).
- * @returns {array|undefined} Array of blog posts if successful, or undefined if site is not provided.
- */
-getCachedWordPressItems.propTypes = {
-/** WordPress site identifier (slug or domain) */
-	site: PropTypes.string,
-	/** Number of posts to fetch (optional) */
-	count: PropTypes.number,
-	/** Base URL for WordPress API (optional) */
-	baseURL: PropTypes.string,
-};
-export type getCachedWordPressItemsType = InferProps<typeof getCachedWordPressItems.propTypes>;
-export async function getCachedWordPressItems(props: { site?: string, count?: number, baseURL?: string } = {}) {
-	const site = props.site ?? '';
-	if (!site) return undefined;
-	const baseURL = props.baseURL ?? wpApiURL;
-	const key = `posts-${site}-${encodeURIComponent(baseURL)}`;
-	let posts = wpCache.get<BlogPostType[]>(key) || undefined;
-	
-	if (!posts) {
-		posts = await getWordPressItems({ site, baseURL });
-		if (posts) wpCache.set(key, posts);
-	}
-
-	// Check if cached data is stale and refresh if needed
-	if (posts && posts.length > 0 && posts[0].modified) {
-		const lastModified = await getWordPressLastModified({ site, baseURL });
-		if (lastModified && lastModified !== posts[0].modified) {
-			// FIX - prevously was busting next/cache, now busting wpCache
-			// Cached response is stale - fetch fresh data and update localStorage immediately
-			const freshPosts = await getWordPressItems({ site, baseURL: wpApiURL });
-			if (freshPosts && freshPosts.length > 0) {
-				wpCache.set(key, freshPosts);
-				posts = freshPosts;
-			}
-		}
-	}
-
-	return posts?.slice(0, props.count ?? posts.length);
-}
 
 
 
@@ -135,55 +86,45 @@ export function buildRelatedServiceReferences(post: BlogPostType, siteInfo?: Sit
 
 
 /**
- * BlogPostList — Render a list of WordPress posts. If `posts` are provided they are used directly; otherwise the component will fetch posts from the configured WordPress endpoint.
+ * BlogPostList — Render a list of WordPress posts by fetching from the configured WordPress endpoint.
  *
  * @param {number} [props.count] - Maximum number of posts to fetch/display.
- * @param {array} [props.posts] - Optional pre-fetched posts to render (bypasses remote fetch).
  * @param {boolean} [props.showCategories] - Whether to show category icons for each post.
  */
 BlogPostList.propTypes = {
 	/** Max number of posts to fetch/display */
 	count: PropTypes.number,
-	/** Optional array of pre-fetched posts */
-	posts: PropTypes.array,
 	/** Show category icons next to posts */
 	showCategories: PropTypes.bool,
 };
 export type BlogPostListType = InferProps<typeof BlogPostList.propTypes>;
 export function BlogPostList(props: BlogPostListType) {
 
-	const { count, posts: cachedPosts, showCategories = true } = props;
+	const { count, showCategories = true } = props;
 	const config = usePixelatedConfig();
 	const site = config?.integrations?.wordpress?.site;
 	const baseURL = config?.integrations?.wordpress?.baseURL;
-	const [posts, setPosts] = useState<BlogPostType[]>(cachedPosts ?? []);
+	const [posts, setPosts] = useState<BlogPostType[]>([]);
 
 	useEffect(() => {
-		// If posts are provided, use them directly without fetching
-		if (cachedPosts && cachedPosts.length > 0) {
-			const sorted = cachedPosts.sort((a: BlogPostType, b: BlogPostType) => ((a.date ?? '') < (b.date ?? '')) ? 1 : -1);
-			setPosts(sorted);
-			return;
-		}
-
 		// If no site is configured, don't fetch
 		if (!site) {
-			console.warn('WordPress site not configured. Provide site prop or wordpress.site in config.');
+			console.warn('WordPress site not configured. Provide wordpress.site in config.');
 			return;
 		}
 
-		// Otherwise, fetch from WordPress
+		// Fetch posts from WordPress using the cached helper
 		ToggleLoading({ show: true });
 		(async () => {
 			const params: { site: string; count?: number; baseURL?: string } = { site };
 			if (count !== null && count !== undefined) params.count = count;
 			if (baseURL !== null && baseURL !== undefined) params.baseURL = baseURL;
-			const data = (await getWordPressItems(params)) ?? [];
+			const data = (await getCachedWordPressItems(params)) ?? [];
 			const sorted = data.sort((a: BlogPostType, b: BlogPostType) => ((a.date ?? '') < (b.date ?? '')) ? 1 : -1);
 			setPosts(sorted);
 			ToggleLoading({ show: false });
 		})();
-	}, [site, baseURL, count, cachedPosts]);
+	}, [site, baseURL, count]);
 
 	return (
 		<SmartErrorBoundary boundaryName="BlogPostList">
@@ -298,23 +239,48 @@ export function BlogPostSummary(props: BlogPostSummaryType) {
 /**
  * BlogPostCategories — Render a compact list of category names or icons for a post.
  *
- * @param {arrayOf} [props.categories] - Array of category strings to render.
+ * @param no props
  */
 BlogPostCategories.propTypes = {
-	/** Array of category names */
-	categories: PropTypes.arrayOf(PropTypes.string),
+	/** no props */
 };
 export type BlogPostCategoriesType = InferProps<typeof BlogPostCategories.propTypes>;
 export function BlogPostCategories(props: BlogPostCategoriesType) {
-	if (!props.categories || props.categories.length === 0) {
+	const config = usePixelatedConfig();
+	const site = config?.integrations?.wordpress?.site;
+	const baseURL = config?.integrations?.wordpress?.baseURL;
+	const [categories, setCategories] = useState<string[]>([]);
+
+	useEffect(() => {
+		if (!site) { return; }
+
+		let mounted = true;
+		getWordPressCategories({ site, baseURL })
+			.then((fetched) => {
+				if (!mounted || !Array.isArray(fetched)) {
+					return;
+				}
+				setCategories(fetched);
+			})
+			.catch((error) => {
+				console.warn('BlogPostCategories could not fetch categories:', error);
+			});
+
+		return () => {
+			mounted = false;
+		};
+	}, [site, baseURL]);
+
+	if (!categories || categories.length === 0) {
 		return null;
 	}
-	const myCategoryImages = props.categories.map(
+
+	const myCategoryImages = categories.map(
 		(category) => (category && category !== "Uncategorized")
 			? category.trim().toLowerCase().replace(/[ /]+/g, '-')
 			: undefined
 	).filter(Boolean).sort();
-	const config = usePixelatedConfig();
+
 	return (
 		<div className="blog-post-categories">
 			<div>Categories: </div>

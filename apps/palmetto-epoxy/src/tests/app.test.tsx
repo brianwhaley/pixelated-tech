@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import React from 'react';
 import { createPageComponentMocks, resetMockState, setContentfulEntriesResponse, setContentfulEntryResponse } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
+import * as components from '@pixelated-tech/components';
 import * as componentsServer from '@pixelated-tech/components/server';
 
 function findReactElementByTypeName(node: any, typeName: string): boolean {
@@ -166,6 +167,14 @@ describe('Palmetto Epoxy app coverage', () => {
 			includes: { Asset: [] },
 		});
 		setContentfulEntryResponse(null);
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/projects/test-project', 'x-origin': 'https://example.com' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		const content = root.props?.children ?? root;
+		expect(findReactElementByTypeName(content, 'PageMetaTags')).toBe(true);
+	});
+
+	it('renders root layout fallback metadata when Contentful lookup throws', async () => {
+		vi.spyOn(components, 'getContentfulEntriesByType').mockRejectedValueOnce(new Error('Contentful failure'));
 		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/projects/test-project', 'x-origin': 'https://example.com' }));
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
 		const content = root.props?.children ?? root;

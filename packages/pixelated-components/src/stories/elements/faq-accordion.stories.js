@@ -1,5 +1,5 @@
 import React from 'react';
-import { FAQAccordion } from '@/components/elements/faq';
+import { FAQ } from '@/components/elements/faq';
 
 const mockFaqsData = {
 	"@context": "https://schema.org",
@@ -43,7 +43,7 @@ const mockFaqsData = {
 
 export default {
 	title: 'General/FAQ Accordion',
-	component: FAQAccordion,
+	component: FAQ,
 	parameters: {
 		layout: 'padded',
 		docs: {

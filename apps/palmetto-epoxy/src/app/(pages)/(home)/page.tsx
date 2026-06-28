@@ -1,32 +1,13 @@
  
 "use client"; 
 
-import React, { useState, useEffect } from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { usePixelatedConfig } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { ContentfulReviewsCarousel } from "@pixelated-tech/components";
 import { PageSection, PageSectionHeader, PageGridItem } from "@pixelated-tech/components";
-import { BlogPostList, type BlogPostType, getCachedWordPressItems } from '@pixelated-tech/components';
-import { Loading, ToggleLoading } from '@pixelated-tech/components';
+import { BlogPostList } from '@pixelated-tech/components';
 
 export default function Home() {
-
-	const pixelatedConfig = usePixelatedConfig();
-	const wordpressSite = pixelatedConfig?.integrations?.wordpress?.site ?? '';
-
-	if (!pixelatedConfig) {
-		return <Loading />;
-	}
-	const [ wpPosts, setWpPosts ] = useState<BlogPostType[]>([]);
-	useEffect(() => {
-		ToggleLoading({show: true});
-		(async () => {
-			const posts = await getCachedWordPressItems({ site: wordpressSite, count: 1 }); // 1 week
-			setWpPosts(posts ?? []);
-			ToggleLoading({show: false});
-		})();
-	}, []);
 	
 	return (
 		<>
@@ -72,7 +53,7 @@ export default function Home() {
 
 			<PageSection id="social-section" columns={1} >
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
-				<BlogPostList posts={wpPosts} count={1} showCategories={false} />
+				<BlogPostList count={1} showCategories={false} />
 			</PageSection>
 
 			<PageSection columns={1} id="home-reviews-section">
