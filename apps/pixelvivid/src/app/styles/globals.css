@@ -173,3 +173,12 @@ header .section-container {
         top: 60px;
     } */
 }
+
+
+
+#recent-blog-section {
+    background-color: white !important;
+    .page-section-header {
+        margin: 20px 20px 0 20px;
+    }
+}

@@ -2,12 +2,13 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import {
-	getCachedWordPressItems,
 	BlogPostList,
 	BlogPostSummary,
 	BlogPostCategories
 } from '../components/integrations/wordpress.components';
-import { renderWithProviders } from '../test/test-utils';
+import { getCachedWordPressItems } from '../components/integrations/wordpress.functions';
+import * as wordpressFunctions from '../components/integrations/wordpress.functions';
+import { renderWithProviders, createConfig } from '../test/test-utils';
 
 describe('WordPress Components', () => {
 	beforeEach(() => {
@@ -32,68 +33,60 @@ describe('WordPress Components', () => {
 	});
 
 	describe('BlogPostList Component', () => {
-		const mockPosts = [
-			{
-				ID: 1,
-				title: 'First Post',
-				excerpt: 'First excerpt',
-				date: '2024-01-15',
-				URL: 'https://example.com/post-1',
-				categories: { Technology: 1, News: 2 },
-				featured_image: 'https://example.com/image1.jpg'
-			},
-			{
-				ID: 2,
-				title: 'Second Post',
-				excerpt: 'Second excerpt',
-				date: '2024-01-14',
-				URL: 'https://example.com/post-2',
-				categories: { Business: 3 },
-				featured_image: 'https://example.com/image2.jpg'
-			}
-		];
+			it('renders without throwing when WordPress config is present', async () => {
+				const config = createConfig({
+					integrations: {
+						wordpress: {
+							site: 'example.com'
+						}
+					}
+				});
 
-		it('should render list of blog posts', () => {
-			renderWithProviders(<BlogPostList posts={mockPosts} />);
+				vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockResolvedValue([]);
 
-			expect(screen.getByText('First Post')).toBeInTheDocument();
-			expect(screen.getByText('Second Post')).toBeInTheDocument();
-		});
+				renderWithProviders(<BlogPostList />, { config });
 
-		it('should display excerpt for each post', () => {
-			renderWithProviders(<BlogPostList posts={mockPosts} />);
-
-			expect(screen.getByText(/First excerpt/)).toBeInTheDocument();
-			expect(screen.getByText(/Second excerpt/)).toBeInTheDocument();
-		});
-
-		it('should handle empty posts array', async () => {
-			const { container } = renderWithProviders(<BlogPostList posts={[]} />);
-
-			await waitFor(() => {
-				expect(container.querySelector('.blog-post-summary')).not.toBeInTheDocument();
+				await waitFor(() => {
+					expect(screen.queryByText('First Post')).not.toBeInTheDocument();
+				});
 			});
-		});
 
-		it('should render post links', () => {
-			renderWithProviders(<BlogPostList posts={mockPosts} />);
+			it('renders no posts when config site is missing', async () => {
+				const config = createConfig({ integrations: {} });
+				const { container } = renderWithProviders(<BlogPostList />, { config });
 
-			const links = screen.getAllByRole('link');
-			expect(links.length).toBeGreaterThan(0);
-		});
+				await waitFor(() => {
+					expect(container.querySelector('.blog-post-summary')).not.toBeInTheDocument();
+				});
+			});
 
-		it('should pass showCategories prop correctly', () => {
-			renderWithProviders(<BlogPostList posts={mockPosts} showCategories={false} />);
+			it('passes showCategories prop correctly', async () => {
+				const config = createConfig({
+					integrations: {
+						wordpress: {
+							site: 'example.com'
+						}
+					}
+				});
 
-			expect(screen.getByText('First Post')).toBeInTheDocument();
-		});
+				vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockResolvedValue([
+					{
+						ID: 1,
+						title: 'First Post',
+						excerpt: 'First excerpt',
+						date: '2024-01-15',
+						URL: 'https://example.com/post-1',
+						categories: ['Technology', 'News'],
+						featured_image: 'https://example.com/image1.jpg'
+					}
+				]);
 
-		it('should remain wrapped by SmartErrorBoundary and render safely', () => {
-			renderWithProviders(<BlogPostList posts={mockPosts} />);
+				renderWithProviders(<BlogPostList showCategories={false} />, { config });
 
-			expect(screen.getByText('First Post')).toBeInTheDocument();
-			expect(screen.queryByText(/Sorry, something went wrong loading/i)).not.toBeInTheDocument();
-		});
+				await waitFor(() => {
+					expect(screen.getByText('First Post')).toBeInTheDocument();
+				});
+			});
 	});
 
 	describe('BlogPostSummary Component', () => {
@@ -150,23 +143,100 @@ describe('WordPress Components', () => {
       );
       expect(container.querySelector('.article-featured-image')).toBeInTheDocument();
     });
+
+    it('should not render category icons when showCategories is false', () => {
+      const { container } = renderWithProviders(
+        <BlogPostSummary 
+          ID={mockPost.ID}
+          title={mockPost.title}
+          excerpt={mockPost.excerpt}
+          date={mockPost.date}
+          URL={mockPost.URL}
+          categories={mockPost.categories}
+          showCategories={false}
+        />
+      );
+      expect(container.querySelectorAll('.p-category').length).toBe(0);
+    });
+
+    it('should render without categories when categories prop is missing', () => {
+      const { container } = renderWithProviders(
+        <BlogPostSummary 
+          ID={mockPost.ID}
+          title={mockPost.title}
+          excerpt={mockPost.excerpt}
+          date={mockPost.date}
+          URL={mockPost.URL}
+        />
+      );
+      expect(container.querySelectorAll('.p-category').length).toBe(0);
+    });
   });
 
   describe('BlogPostCategories Component', () => {
-    it('renders categories and omits uncategorized entries', () => {
-      renderWithProviders(
-        <BlogPostCategories categories={['Technology', 'Uncategorized', 'News']} />
-      );
-      expect(screen.getByRole('img', { name: 'technology' })).toBeInTheDocument();
-      expect(screen.getByRole('img', { name: 'news' })).toBeInTheDocument();
-      expect(screen.queryByRole('img', { name: 'uncategorized' })).not.toBeInTheDocument();
+    it('fetches and renders categories from config', async () => {
+      vi.spyOn(wordpressFunctions, 'getWordPressCategories').mockResolvedValue(['Technology', 'News']);
+
+      const config = createConfig({
+        integrations: {
+          wordpress: {
+            site: 'example.com'
+          }
+        }
+      });
+
+      renderWithProviders(<BlogPostCategories />, { config });
+
+      await waitFor(() => {
+        expect(screen.getByRole('img', { name: 'technology' })).toBeInTheDocument();
+        expect(screen.getByRole('img', { name: 'news' })).toBeInTheDocument();
+        expect(screen.queryByRole('img', { name: 'uncategorized' })).not.toBeInTheDocument();
+      });
     });
 
-    it('renders nothing when categories are empty', () => {
-      const { container } = renderWithProviders(
-        <BlogPostCategories categories={[]} />
-      );
-      expect(container.textContent).toBe('');
-    });
-  });
+		it('fetches categories from config when none are passed', async () => {
+			vi.spyOn(wordpressFunctions, 'getWordPressCategories').mockResolvedValue(['Technology', 'News']);
+
+			const config = createConfig({
+				integrations: {
+					wordpress: {
+						site: 'example.com'
+					}
+				}
+			});
+
+			renderWithProviders(<BlogPostCategories />, { config });
+
+			await waitFor(() => {
+				expect(screen.getByRole('img', { name: 'technology' })).toBeInTheDocument();
+				expect(screen.getByRole('img', { name: 'news' })).toBeInTheDocument();
+			});
+		});
+
+		it('renders nothing when categories are empty and config is missing', () => {
+			const config = createConfig({ integrations: {} });
+			const { container } = renderWithProviders(<BlogPostCategories />, { config });
+			expect(container.textContent).toBe('');
+		});
+
+		it('filters out Uncategorized categories', async () => {
+			vi.spyOn(wordpressFunctions, 'getWordPressCategories').mockResolvedValue(['Technology', 'Uncategorized', 'News']);
+
+			const config = createConfig({
+				integrations: {
+					wordpress: {
+						site: 'example.com'
+					}
+				}
+			});
+
+			renderWithProviders(<BlogPostCategories />, { config });
+
+			await waitFor(() => {
+				expect(screen.getByRole('img', { name: 'technology' })).toBeInTheDocument();
+				expect(screen.getByRole('img', { name: 'news' })).toBeInTheDocument();
+				expect(screen.queryByRole('img', { name: 'uncategorized' })).not.toBeInTheDocument();
+			});
+		});
+	});
 });

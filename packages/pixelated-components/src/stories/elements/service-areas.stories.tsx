@@ -1,11 +1,11 @@
 import React from 'react';
 import { PixelatedClientConfigProvider } from '@/components/config/config.client';
-import { ServiceAreasList, ServiceAreaDetail } from '@/components/elements/service-areas.components';
+import { ServiceAreas, ServiceAreaDetail } from '@/components/elements/service-areas.components';
 import '@/css/pixelated.grid.scss';
 
 export default {
 	title: 'General/Service Areas',
-	component: ServiceAreasList,
+	component: ServiceAreas,
 };
 
 const serviceAreas = [

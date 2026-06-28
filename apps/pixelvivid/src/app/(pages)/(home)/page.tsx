@@ -1,13 +1,14 @@
 "use client"; 
 
 import React from "react";
-import { PageTitleHeader } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import SocialTags from "@/app/elements/socialtags";
 import { ContentfulReviewsCarousel } from "@pixelated-tech/components";
 import { Loading } from '@pixelated-tech/components';
 import { usePixelatedConfig } from "@pixelated-tech/components";
+import { BlogPostList } from "@pixelated-tech/components";
 
 export default function Home() {
 
@@ -36,6 +37,13 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
+
+
+			<PageSection id="recent-blog-section" columns={1} background="var(--secondary-color)" >
+				<PageSectionHeader title="Read Our Most Recent Blog Post" />
+				<BlogPostList count={1} showCategories={false}  />
+			</PageSection>
+
 
 			<section style={{backgroundColor: "var(--accent1-color)"}} id="social-section">
 				<div className="section-container">

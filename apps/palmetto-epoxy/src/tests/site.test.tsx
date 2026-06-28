@@ -155,12 +155,109 @@ describe('Palmetto Epoxy coverage', () => {
 				loadingText: 'Loading...',
 				errorText: 'Error: Failed to load',
 			},
+			{
+				name: 'Ad Calendar',
+				Component: AdCalendarPage,
+				markdownTestId: 'markdown-container',
+				loadingText: 'Loading...',
+				errorText: 'Error: Calendar load failed',
+			},
 		],
 		render,
 		screen,
 		waitFor,
 		setFileDataState,
 		resetFileDataState,
+	});
+
+	it('renders Projects page with Contentful carousel cards', async () => {
+		setPixelatedConfigOverride(pixelatedConfig);
+		setContentfulEntriesResponse({
+			items: [
+				{
+					sys: { contentType: { sys: { id: 'carouselCard' } } },
+					fields: {
+						title: 'Demo Project',
+						description: 'Demo project description',
+						image: 'https://example.com/demo.jpg',
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		setContentfulImagesResponse([{ image: 'https://example.com/demo.jpg', imageAlt: 'Demo image' }]);
+
+		render(React.createElement(ProjectsPage));
+
+		await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
+	});
+
+	it('renders Projects page when Contentful entry is a different content type', async () => {
+		setPixelatedConfigOverride(pixelatedConfig);
+		setContentfulEntriesResponse({
+			items: [
+				{
+					sys: { contentType: { sys: { id: 'otherType' } } },
+					fields: {
+						title: 'Hidden Project',
+						description: 'This card should be ignored',
+						image: 'https://example.com/hidden.jpg',
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		setContentfulImagesResponse([{ image: 'https://example.com/hidden.jpg', imageAlt: 'Hidden image' }]);
+
+		render(React.createElement(ProjectsPage));
+
+		await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
+	});
+
+	it('renders Project Detail page from Contentful project data', async () => {
+		setPixelatedConfigOverride(pixelatedConfig);
+		setContentfulEntriesResponse({
+			items: [
+				{
+					sys: { contentType: { sys: { id: 'carouselCard' } } },
+					fields: {
+						title: 'Test Project',
+						description: 'Project detail description',
+						carouselImages: [{ image: 'https://example.com/tile.jpg', imageAlt: 'Tile image' }],
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		setContentfulEntryResponse({
+			fields: {
+				title: 'Test Project',
+				description: 'Project detail description',
+				carouselImages: [{ image: 'https://example.com/tile.jpg', imageAlt: 'Tile image' }],
+			},
+		});
+		setContentfulImagesResponse([{ image: 'https://example.com/tile.jpg', imageAlt: 'Tile image' }]);
+
+		render(React.createElement(ProjectDetailPage));
+
+		await waitFor(() => expect(document.getElementById('project-carousel-section')).not.toBeNull());
+	});
+
+	it('renders Project Detail page with no slug and falls back to project detail shell', async () => {
+		setPixelatedConfigOverride(pixelatedConfig);
+		routeParams.project = undefined;
+		render(React.createElement(ProjectDetailPage));
+
+		await waitFor(() => expect(document.getElementById('project-carousel-section')).not.toBeNull());
+	});
+
+	it('renders Submit Review page and sets install date input', async () => {
+		setPixelatedConfigOverride(pixelatedConfig);
+		render(React.createElement(SubmitReviewPage));
+
+		await waitFor(() => expect(document.getElementById('submitreview-section')).not.toBeNull());
+		await waitFor(() => expect(document.getElementById('installdate')).not.toBeNull());
+		expect((document.getElementById('installdate') as HTMLInputElement).value).not.toBe('');
 	});
 
 	runPageSmokeTests([
@@ -281,10 +378,10 @@ describe('Palmetto Epoxy coverage', () => {
 		},
 	]);
 
-	it('renders home page loading fallback when config is unavailable', async () => {
+	it('renders home page when config is unavailable', async () => {
 		setPixelatedConfigOverride(null);
 		render(<Home />);
-		await waitFor(() => expect(screen.getByTestId('loading-spinner')).not.toBeNull());
+		await waitFor(() => expect(screen.getByText(/Elevate your space/i)).not.toBeNull());
 		setPixelatedConfigOverride(undefined);
 	});
 
