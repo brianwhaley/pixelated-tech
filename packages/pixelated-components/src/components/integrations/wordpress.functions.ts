@@ -3,6 +3,8 @@ import PropTypes, { InferProps } from "prop-types";
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 import { decode } from 'html-entities';
+import { CacheManager, type CacheMode } from '../foundation/cache-manager';
+import { getDomain } from '../foundation/utilities';
 
 export interface RelatedServiceReference {
 	name: string;
@@ -10,6 +12,8 @@ export interface RelatedServiceReference {
 }
 const wpApiURL = "https://public-api.wordpress.com/rest/v1/sites/";
 const wpCategoriesPath = "/categories";
+const wpCacheTTL = 1000 * 60 * 60 * 24 * 7; // 1 week
+const wpCache = new CacheManager({ mode: 'local', ttl: wpCacheTTL, domain: getDomain(), namespace: 'wp' });
 
 
 
@@ -205,6 +209,41 @@ export async function getWordPressItems(props: { site: string; count?: number; b
 	return posts;
 }
 
+
+getCachedWordPressItems.propTypes = {
+/** WordPress site identifier (slug or domain) */
+	site: PropTypes.string,
+	/** Number of posts to fetch (optional) */
+	count: PropTypes.number,
+	/** Base URL for WordPress API (optional) */
+	baseURL: PropTypes.string,
+};
+export type getCachedWordPressItemsType = InferProps<typeof getCachedWordPressItems.propTypes>;
+export async function getCachedWordPressItems(props: { site?: string, count?: number, baseURL?: string } = {}) {
+	const site = props.site ?? '';
+	if (!site) return undefined;
+	const baseURL = props.baseURL ?? wpApiURL;
+	const key = `posts-${site}-${encodeURIComponent(baseURL)}`;
+	let posts = wpCache.get<BlogPostType[]>(key) || undefined;
+	
+	if (!posts) {
+		posts = await getWordPressItems({ site, baseURL });
+		if (posts) wpCache.set(key, posts);
+	}
+
+	if (posts && posts.length > 0 && posts[0].modified) {
+		const lastModified = await getWordPressLastModified({ site, baseURL });
+		if (lastModified && lastModified !== posts[0].modified) {
+			const freshPosts = await getWordPressItems({ site, baseURL: wpApiURL });
+			if (freshPosts && freshPosts.length > 0) {
+				wpCache.set(key, freshPosts);
+				posts = freshPosts;
+			}
+		}
+	}
+
+	return posts?.slice(0, props.count ?? posts.length);
+}
 
 
 
