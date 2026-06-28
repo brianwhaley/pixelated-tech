@@ -3,7 +3,7 @@ import { render } from '../test/test-utils';
 import { fireEvent, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { FormEngine } from '../components/sitebuilder/form/formengine';
-import formJSON from '../data/requestform.json';
+import { requestForm } from '../test/test-data';
 import { emailFormData } from '../components/sitebuilder/form/formsubmit';
 
 // Integration: ensure FormEngine + emailFormData reliably drop honeypot values

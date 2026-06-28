@@ -1,5 +1,4 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { createAxeCoreLocalFallbackPageMock } from '../test/fixtures';
 import { pixelatedConfig } from '../test/test-data';
 
 // Mock setTimeout to resolve instantly for tests
@@ -262,25 +261,34 @@ describe('site-health-axe-core.integration', () => {
 
 		it('should fall back to local inline injection when CDN injection fails', async () => {
 			const puppeteerModule = await import('puppeteer');
-			const pageMock = createAxeCoreLocalFallbackPageMock();
-			pageMock.frames.mockReturnValue([
-				{
-					evaluate: vi.fn()
-						.mockResolvedValueOnce(false)
-						.mockResolvedValueOnce(true)
-						.mockResolvedValueOnce({
-							violations: [],
-							passes: [],
-							incomplete: [],
-							inapplicable: [],
-							testEngine: { name: 'axe-core', version: '4.0.0' },
-							testRunner: { name: 'mock' },
-							testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
-							timestamp: new Date().toISOString(),
-							url: 'http://example.com'
-						})
-				}
-			]);
+			const pageMock = {
+				setViewport: vi.fn().mockResolvedValue(undefined),
+				on: vi.fn().mockReturnValue(undefined),
+				setUserAgent: vi.fn().mockResolvedValue(undefined),
+				goto: vi.fn().mockResolvedValue(undefined),
+				addScriptTag: vi.fn()
+					.mockRejectedValueOnce(new Error('CDN blocked'))
+					.mockResolvedValue(undefined),
+				frames: vi.fn().mockReturnValue([
+					{
+						evaluate: vi.fn()
+							.mockResolvedValueOnce(false)
+							.mockResolvedValueOnce(true)
+							.mockResolvedValueOnce({
+								violations: [],
+								passes: [],
+								incomplete: [],
+								inapplicable: [],
+								testEngine: { name: 'axe-core', version: '4.0.0' },
+								testRunner: { name: 'mock' },
+								testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
+								timestamp: new Date().toISOString(),
+								url: 'http://example.com'
+							}),
+					},
+				]),
+				close: vi.fn().mockResolvedValue(undefined),
+			} as any;
 
 			vi.mocked(puppeteerModule.default.launch as any).mockResolvedValueOnce({
 				newPage: vi.fn().mockResolvedValue(pageMock),

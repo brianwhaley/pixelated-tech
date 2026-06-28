@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { ConfigBuilder } from '../components/sitebuilder/config/ConfigBuilder';
-import siteConfig from '../data/siteconfig.json';
 import testConfigData from '../test/test-data';
 
 vi.mock('../components/integrations/gemini-api.client', () => ({
@@ -35,14 +34,15 @@ describe('ConfigBuilder Component', () => {
     it('should render with initial config', async () => {
       const initialConfig = {
         siteInfo: testConfigData.siteInfo,
-        routes: testConfigData.routes,
+        routes: testConfigData.routes ?? [{ path: '/' }],
         visualdesign: testConfigData.visualdesign
       };
       render(<ConfigBuilder initialConfig={initialConfig as any} />);
       
       // Wait for form to render and check that the config preview shows the canonical site name
+      const expectedSiteName = testConfigData.siteInfo?.name || 'Pixelated Technologies';
       await waitFor(() => {
-        const preElement = screen.getByText((content) => content.includes(testConfigData.siteInfo.name));
+        const preElement = screen.getByText((content) => content.includes(expectedSiteName));
         expect(preElement).toBeInTheDocument();
       });
       
@@ -71,7 +71,7 @@ describe('ConfigBuilder Component', () => {
     it('should render visual design form with initial config', () => {
       const initialConfig = {
         siteInfo: { 
-          ...siteConfig.siteInfo,
+          ...testConfigData.siteInfo,
           name: 'Test Site', 
           author: 'Test Author',
           description: 'A test site', 
@@ -85,7 +85,7 @@ describe('ConfigBuilder Component', () => {
           default_locale: 'en'
         },
         routes: [],
-        visualdesign: siteConfig.visualdesign
+        visualdesign: testConfigData.visualdesign
       };
       render(<ConfigBuilder initialConfig={initialConfig as any} />);
       
@@ -214,14 +214,14 @@ describe('ConfigBuilder Component', () => {
     it('should render address fields with initial values', async () => {
       const initialConfig = {
         siteInfo: testConfigData.siteInfo,
-        routes: testConfigData.emptyRoutes,
+        routes: testConfigData.emptyRoutes ?? [],
         visualdesign: testConfigData.visualdesign
       };
 
       render(<ConfigBuilder initialConfig={initialConfig as any} />);
 
       // derive expected address fields from the canonical fixture so tests remain data-driven
-      const addr = testConfigData.siteInfo.address || {};
+      const addr = testConfigData.siteInfo?.address || {};
       await waitFor(() => {
         if (addr.streetAddress) expect(screen.getByDisplayValue(String(addr.streetAddress))).toBeInTheDocument();
         if (addr.addressLocality) expect(screen.getByDisplayValue(String(addr.addressLocality))).toBeInTheDocument();
@@ -277,7 +277,7 @@ describe('ConfigBuilder Component', () => {
 
       render(<ConfigBuilder initialConfig={initialConfig as any} />);
 
-      const sameAs = testConfigData.siteInfo.sameAs || [];
+      const sameAs = testConfigData.siteInfo?.sameAs || [];
       // assert that at least the canonical social URLs appear in the rendered form
       sameAs.slice(0, 3).forEach(url => {
         if (url) expect(screen.getByDisplayValue(new RegExp(url))).toBeInTheDocument();

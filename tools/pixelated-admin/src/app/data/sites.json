@@ -132,11 +132,14 @@
 			"blogRss": "https://blog.manningmetalworks.com/feed/",
 			"billing": {
 				"tier": "growth",
-				"price": 0.00,
+				"price": 150.00,
 				"email": "greg@manningmetalworks.com",
 				"companyName": "Manning Metal Works, LLC",
 				"address": "24 West Hanover Avenue, Morris Plains, NJ 07950",
-				"note": "Since Manning Metalworks was launched in May, billing for maintenance will begin starting in June, and will be billed $150 monthly at the end of each month.  Thank you!"
+				"notes": {
+					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
+					"2026-05": "Since Manning Metalworks was launched in May, billing for maintenance will begin starting in June, and will be billed $150 monthly at the end of each month.  Thank you!"
+				}
 			}
 		},
 		{
@@ -159,7 +162,10 @@
 				"email": "cwoods@live.com",
 				"companyName": "Oaktree Landscaping, LLC",
 				"address": "26504 Whyte Hardee Boulevard, Hardeeville, SC 29927",
-				"note": "Thank you for your scheduled payment!"
+				"notes": {
+					"2026-06": "Thank you for your scheduled payment!",
+					"2026-05": "Thank you for your scheduled payment!"
+				}
 			}
 		},
 		{
@@ -273,7 +279,10 @@
 				"email": "patti@simpledayconcierge.com, joe@simpledayconcierge.com",
 				"companyName": "Simple Day Concierge",
 				"address": "124 McIntosh Drive, Mahwah, NJ 07430",
-				"note": "Since Simple Day Concierge was launched in June, billing for maintenance will begin starting in July, and will be billed $100 monthly at the end of each month.  Thank you!"
+				"notes": {
+					"2026-06": "Since Simple Day Concierge was launched in June, billing for maintenance will begin starting in July, and will be billed $100 monthly at the end of each month.  Thank you!",
+					"2026-05": "Since Simple Day Concierge was launched in June, billing for maintenance will begin starting in July, and will be billed $100 monthly at the end of each month.  Thank you!"
+				}
 			}
 		},
 		{
@@ -293,11 +302,14 @@
 			"blogRss": "https://blog.thethreemusesofbluffton.com/feed/",
 			"billing": {
 				"tier": "premier",
-				"price": 0.00,
+				"price": 250.00,
 				"email": "info@thethreemusesofbluffton.com",
 				"companyName": "The Three Muses of Bluffton",
 				"address": "1460 Fording Island Road, Bluffton, SC 29910",
-				"note": "Since The Three Muses of Bluffton was launched in May, billing for maintenance will begin starting in June, and will be billed $250 monthly at the end of each month.  Thank you!"
+				"notes": {
+					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
+					"2026-05": "Since The Three Muses of Bluffton was launched in May, billing for maintenance will begin starting in June, and will be billed $250 monthly at the end of each month.  Thank you!"
+				}
 			}
 		}
 	]

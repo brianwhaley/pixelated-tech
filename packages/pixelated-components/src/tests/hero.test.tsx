@@ -4,7 +4,8 @@ import React from 'react';
 vi.mock('@pixelated-tech/components', () => ({
 	SmartImage: (props: any) => <img {...props} />,
 }));
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 import { Hero } from '@/components/structure/hero';
 
 describe('Hero (unit)', () => {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
+import { render, renderWithProviders } from '../test/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoremIpsum } from '@/components/integrations/loremipsum';
 import { pixelatedConfig } from '../test/test-data';
-import { renderWithProviders } from '../test/test-utils';
 
 describe('LoremIpsum', () => {
   beforeEach(() => {

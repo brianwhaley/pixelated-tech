@@ -174,7 +174,19 @@ export function PageEngine(props: PageEngineType) {
 		const isLayout = isLayoutComponent(componentName);
 		
 		if (!componentType) {
-			return <div key={index}>Unknown component: {componentName}</div>;
+			// If the component type is missing, still render its children so nested
+			// components are visible in the page preview/tests. Also show a clear
+			// unknown-component message for debugging.
+			return (
+				<div key={index}>
+					<div>Unknown component: {componentName}</div>
+					{componentData.children && componentData.children.length > 0 && (
+						<div>
+							{componentData.children.map((child: any, childIndex: number) => renderComponent(child, childIndex, `${currentPath}.children`))}
+						</div>
+					)}
+				</div>
+			);
 		}
 		
 		// If component has children, recursively render them

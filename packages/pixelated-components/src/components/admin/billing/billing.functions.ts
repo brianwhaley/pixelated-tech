@@ -14,6 +14,7 @@ import {
 } from './billing.types';
 import { getFullPixelatedConfig } from '../../config/config';
 import { getLiveBillingStats } from '../../integrations/wordpress.jetpack.server';
+import { getOriginFromHeaders } from '../../foundation/sitemap';
 
 /**
  * Loads standard site data and structured billing configurations
@@ -138,8 +139,25 @@ export function compileInvoiceData(
 		paymentInfo,
 		posts,
 		socialReferrers,
-		note: site.billing.note
+		note: getBillingNote(site, billingMonth)
 	};
+}
+
+/**
+ * Helper to retrieve a billing note for a given billing month (YYYY-MM).
+ * Strict behavior: `billingMonth` must be provided. If `site.billing.notes` exists
+ * return the matching note string or empty string when missing. Do not fallback.
+ */
+export function getBillingNote(site: SiteConfig, billingMonth: string): string {
+	if (!billingMonth) {
+		throw new Error('billingMonth is required to retrieve billing note');
+	}
+
+	const notes = site?.billing?.notes;
+	if (!notes || typeof notes !== 'object') return '';
+
+	const val = (notes as Record<string, string>)[billingMonth];
+	return typeof val === 'string' ? val : '';
 }
 
 /**
@@ -223,15 +241,17 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 				const page = await browser!.newPage();
 				
 				const headersList = await headers();
-				const origin = headersList.get('x-origin') || headersList.get('origin');
-				const host = headersList.get('host') || 'localhost:3000';
-				const protocol = headersList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
-				const baseUrl = origin || `${protocol}://${host}`;
+				const origin = headersList.get('x-origin') || headersList.get('origin') || undefined;
+				const host = headersList.get('host');
+				const protocol = headersList.get('x-forwarded-proto') || undefined;
+				const baseUrl = origin ?? (host && protocol ? `${protocol}://${host}` : undefined);
 
 				const internalToken = config?.integrations?.puppeteer?.internalToken;
 				if (!internalToken) {
 					throw new Error('Missing internal Puppeteer token in pixelated.config.json');
 				}
+
+				if (!baseUrl) throw new Error('Unable to determine base URL for puppeteer invoice generation');
 
 				const localUrl = `${baseUrl}/billing/invoice/${siteName}/${billingMonth}?token=${encodeURIComponent(internalToken)}`;
 				

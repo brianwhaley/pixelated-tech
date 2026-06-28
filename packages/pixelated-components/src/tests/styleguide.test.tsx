@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render as baseRender } from '../test/test-utils';
 import { screen } from '@testing-library/react';
+import { render } from '../test/test-utils';
 
 // Stub package-level UI used by StyleGuideUI so tests don't resolve built `dist` assets
 vi.mock('@pixelated-tech/components', () => {

@@ -1,5 +1,18 @@
 # The Three Muses of Bluffton -- Updates
 
+## 2026-06-24 Updaes
+* [  ] Create a new category in Square - Boutique Unfinished - move items that need help there
+* [  ] Add Consignment items to shopping cart
+* [  ] Katie to have team update descriptions, photos, etc. 
+* [  ] Add Shipping weight custom field to all items
+* [  ] Add Events to Square, have Events page show items from Square
+* [ x ] Add Gallery page to site, either show contentful images or Instagram images
+* [ x ] Build "Studio Package Specials" page for Dance Studios
+* [  ] Build 4.25 * 5.5 cards that advertise Studio Package Specials with QR Code
+* [ x ] Holding for approx. 3 months for Bookkeeping company site
+* [  ] Katie - Any referrals or recommendations for Pixelated Technologies?
+
+
 ## 2026-05-31 Updates
 * full integration into Square is complete
 * items, inventory, price, description, category retrieved from square
@@ -11,7 +24,9 @@
 * [  ] need to update descriptions to all items.  Used Kumihimo Beaded Necklace as an example.  
 * [  ] need to add Shipping weight to all items.  Shipping weight is not exposed via API.  we can create a custom attribute to do that, does that work for you?  
 * [  ] need to review all items that dont have photos - either remove from Boutique Items or get photos of those
-* [  ] need to resolve variations vs color differences etc. - Thought - 1) add a Notes field to capture color details, 2) add as separate items.  what do you think?
+* [  ] need to resolve variations vs color differences etc. Thought - 
+    1) add a Notes field to capture color details, 
+    2) add as separate items.  what do you think?
 * [  ] We can move Events into Square as items if you want.  Then you can control all the data and when and how it shows up on the site.  let me know what you think. 
 
 ## launch Day Activities

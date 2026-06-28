@@ -26,10 +26,10 @@
 
 
 
-import siteConfig from '@/data/siteconfig.json';
 import recipes from '@/data/recipes.json';
 import resume from '@/data/resume.json';
 import faqTestData from './data/faq-test-data.json';
+import mockGoogleDateRangesJson from './data/mock-google-date-ranges.json';
 import ebayData from './data/ebay-data.json';
 import pageEngineData from './data/page-engine-data.json';
 import paypalOrder from './data/paypal-order.json';
@@ -53,9 +53,12 @@ import mockContentfulItem from './data/mock-contentful-item.json';
 import mockSitemapConfigs from './data/mock-sitemap-configs.json';
 import mockSitemapItemsData from './data/mock-sitemap-items-data.json';
 import mockGoogleApiResponses from './data/mock-google-api-responses.json';
+import mockGooglePlacesPredictions from './data/google-places-predictions.json';
+import mockGooglePlacesDetails from './data/google-places-details.json';
 import mockWordPressPosts from './data/mock-wordpress-posts.json';
 import mockContentfulItems from './data/mock-contentful-items.json';
 import mockContentfulAssets from './data/mock-contentful-assets.json';
+import mockContentfulImageAssets from './data/mock-contentful-image-assets.json';
 import mockContentfulTestProps from './data/mock-contentful-test-props.json';
 import contentfulItemsDetail from './data/contentful-items.json';
 import mockOrderCheckoutDataJson from './data/mock-order-checkout-data.json';
@@ -70,12 +73,19 @@ import mockGoogleAnalyticsData from './data/mock-google-analytics-data.json';
 import mockAxeCoreResponse from './data/mock-axe-core-response.json';
 import mockCloudwatchData from './data/mock-cloudwatch-data.json';
 import formDefinition from './data/form-definition.json';
+import checkoutPersonalInfo from '../components/shoppingcart/checkout.personal.info.json';
+import checkoutDiscountInfo from '../components/shoppingcart/checkout.discount.info.json';
+import uspsGenericShippingInfo from '../components/shoppingcart/usps.generic.shipping.info.json';
 import pixelatedConfigJson from '@/config/pixelated.config.json';
+import pkg from '../../package.json';
+import { buzzwords as buzzwordBingoWords } from '@/components/elements/buzzwordbingo.words';
+import visualdesignformJson from '@/components/sitebuilder/config/visualdesignform.json';
 import type { PixelatedConfig, ContentfulConfig, EbayConfig, SiteInfoType } from '../components/config/config.types';
 import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';
 
 // --- MOCK CONFIG DATA ---
 export const pixelatedConfig = pixelatedConfigJson as PixelatedConfig;
+export const packageJson = pkg as any;
 export const pixelatedConfigEmpty = {} as PixelatedConfig;
 export const mockCloudinary = pixelatedConfig.integrations?.cloudinary;
 export const mockUspsConfig = pixelatedConfig.integrations?.usps;
@@ -86,6 +96,9 @@ export const mockEbayApiProps = pixelatedConfig.integrations?.ebay as any;
 // --- TEST FIXTURES ---
 export {
 	faqTestData,
+	recipes,
+	resume,
+	mockGoogleDateRangesJson,
 	ebayData,
 	pageEngineData,
 	paypalOrder,
@@ -110,7 +123,11 @@ export {
 	mockWordPressPosts,
 	mockContentfulItems,
 	mockContentfulAssets,
+	mockContentfulImageAssets,
 	mockPlaceReviews,
+	mockGooglePlacesPredictions,
+	mockGooglePlacesDetails,
+	buzzwordBingoWords,
 	mockContentfulItem,
 	mockContentfulTestProps,
 	mockEbayItem,
@@ -121,6 +138,11 @@ export {
 	mockAxeCoreResponse,
 	mockCloudwatchData,
 	formDefinition,
+	checkoutPersonalInfo,
+	checkoutDiscountInfo,
+	uspsGenericShippingInfo,
+	mockComponentTreeData,
+	visualdesignformJson as visualdesignForm,
 };
 
 export const mockContentfulItemsDetail = contentfulItemsDetail;
@@ -134,6 +156,10 @@ export const mockGAnalyticsResponse = mockGoogleApiResponses.analytics;
 export const mockGSearchConsoleResponse = mockGoogleApiResponses.searchConsole;
 export const mockAxeCoreData = (mockAxeCoreResponse as any).data?.[0];
 export const mockAxeCoreViolation = (mockAxeCoreData as any)?.result?.violations?.[0];
+
+// Expose page engine fixtures directly from JSON to avoid circular imports with fixtures.ts
+export const mockPageEngineData = pageEngineData as any;
+export const mockDeepPageEngineData = { components: (pageEngineData as any).components || [] } as any;
 
 export {
 	realRecipes,
@@ -161,8 +187,12 @@ import {
 	emptyRoutes,
 	malformedRoutes,
 	createSiteHealthResponse,
-	mockGoogleDateRanges
+	mockGoogleDateRanges,
+	mockComponentTreeData
 } from './fixtures';
+
+// Re-export fixture objects needed by tests (including mockGoogleDateRanges)
+export { mockGoogleDateRanges };
 
 // Backwards-compat shape used by many existing tests (keeps migration minimal)
 export default {

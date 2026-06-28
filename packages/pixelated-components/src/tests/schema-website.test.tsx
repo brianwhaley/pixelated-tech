@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
 import type { SiteInfo } from '@/components/config/config.types';
 import { WebsiteSchema } from '@/components/foundation/schema';
-import configData from '../test/test-data';
+import { pixelatedConfig } from '../test/test-data';
 
 describe('WebsiteSchema', () => {
-	const siteInfo: SiteInfo = configData.siteInfoFull as SiteInfo;
+	const siteInfo: SiteInfo = (pixelatedConfig.siteInfoFull || pixelatedConfig.siteInfo) as SiteInfo;
 
 	const renderSchema = (siteMeta?: SiteInfo) => {
 		return render(<WebsiteSchema />, { config: { siteInfo: siteMeta ?? siteInfo } });
