@@ -1,6 +1,6 @@
 {
   "name": "pixelated-template",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -55,5 +55,5 @@
     "vitest": "^4.1.9"
   },
   "overrides": {},
-  "deployMarker": "2026-06-19T23:17:15.851Z"
+  "deployMarker": "2026-07-04T00:48:09.208Z"
 }
