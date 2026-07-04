@@ -132,7 +132,19 @@ export function getOriginFromHeaders(headersProp?: { get: (k: string) => string 
 	try {
 		if (!headersProp) return undefined;
 
-		// Prefer explicit origin sources when present
+		const hostHeader = headersProp.get('x-forwarded-host') || headersProp.get('host');
+		if (hostHeader) {
+			const first = String(hostHeader).split(',')[0].trim();
+			if (first) {
+				const hostname = first.split(':')[0];
+				if (hostname) {
+					const proto = headersProp.get('x-forwarded-proto') || 'https';
+					return `${proto}://${hostname}`;
+				}
+			}
+		}
+
+		// Prefer explicit origin sources when host headers are unavailable
 		const candKeys = ['x-origin', 'origin', 'x-url'];
 		for (const k of candKeys) {
 			try {
@@ -146,18 +158,6 @@ export function getOriginFromHeaders(headersProp?: { get: (k: string) => string 
 				}
 			} catch {
 				// ignore header access errors
-			}
-		}
-
-		const hostHeader = headersProp.get('x-forwarded-host') || headersProp.get('host') || undefined;
-		if (hostHeader) {
-			const first = String(hostHeader).split(',')[0].trim();
-			if (first) {
-				const hostname = first.split(':')[0];
-				if (hostname) {
-					const proto = headersProp.get('x-forwarded-proto') || 'https';
-					return `${proto}://${hostname}`;
-				}
 			}
 		}
 
