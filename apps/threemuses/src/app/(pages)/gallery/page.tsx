@@ -11,7 +11,7 @@ const galleryImages = [
 	},
 	{
 		image: 'https://images.ctfassets.net/luf8eony1687/2JAytZ9bA6pRjxhHbSok6u/f2f2e0a7e1d878e21304730836a8c1d9/ThreeMusesFinal-6131.jpg',
-		imageAlt: 'Kathie Nolan, co-owner of The Three Muse of Bluffton',
+		imageAlt: 'Kathie Nolte, co-owner of The Three Muse of Bluffton',
 	},
 	{
 		image: 'https://images.ctfassets.net/luf8eony1687/1FUEGZHHgfRdEhpdbRwiBA/522b17e2e1bb7f40a9456850307ab2b3/ThreeMusesFinal--19.jpg',
