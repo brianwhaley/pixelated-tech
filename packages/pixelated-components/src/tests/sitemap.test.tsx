@@ -192,7 +192,20 @@ describe('Sitemap Helper Functions', () => {
 	});
 
 	describe('getOriginFromHeaders', () => {
-		it('should build origin from valid headers', () => {
+		it('should prefer x-forwarded-host and x-forwarded-proto over x-origin', () => {
+			const headers = {
+				get: (key: string) => {
+					if (key === 'x-forwarded-host') return 'example.com';
+					if (key === 'x-forwarded-proto') return 'https';
+					if (key === 'x-origin') return 'http://localhost:3000';
+					return null;
+				}
+			};
+
+			expect(getOriginFromHeaders(headers as any)).toBe('https://example.com');
+		});
+
+		it('should build origin from valid headers when x-forwarded-host is present', () => {
 			const headers = {
 				get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'example.com'
 			};

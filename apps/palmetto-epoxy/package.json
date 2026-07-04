@@ -1,6 +1,6 @@
 {
   "name": "palmetto-epoxy",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -64,5 +64,5 @@
     "webpack-dev-server": "^6.0.0"
   },
   "overrides": {},
-  "deployMarker": "2026-06-19T23:17:15.820Z"
+  "deployMarker": "2026-07-04T00:48:09.184Z"
 }
