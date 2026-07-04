@@ -50,7 +50,7 @@ export default function GalleryPage() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="gallery-section">
-				<PageTitleHeader title="Gallery" />
+				<PageTitleHeader title="The Three Muses of Bluffton Gallery" />
 			</PageSection>
 
 

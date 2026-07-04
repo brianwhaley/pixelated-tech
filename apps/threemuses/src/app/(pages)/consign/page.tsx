@@ -8,7 +8,7 @@ export default function ConsignPage() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="consign-section">
-				<PageTitleHeader title="Consign with Three Muses" />
+				<PageTitleHeader title="Consign with The Three Muses of Bluffton" />
 				<PageSectionHeader title="Turn your gently loved costumes & formal dresses into something beautiful" />
 				<div>
 					<p>

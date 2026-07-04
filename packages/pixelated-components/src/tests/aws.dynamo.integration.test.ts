@@ -126,9 +126,13 @@ describe('aws dynamo integration', () => {
 		expect(rows).toHaveLength(1);
 		expect(rows[0].items).toEqual({
 			id: 'solo-1',
+			itemID: 'solo-1',
 			title: 'Solo Class',
+			itemTitle: 'Solo Class',
 			quantity: 1,
+			itemQuantity: 1,
 			category: 'Adult',
+			itemCategory: 'Adult',
 		});
 	});
 
@@ -154,9 +158,13 @@ describe('aws dynamo integration', () => {
 		expect(rows[0].items).toEqual([
 			{
 				id: 'legacy-1',
+				itemID: 'legacy-1',
 				title: 'Legacy Class',
+				itemTitle: 'Legacy Class',
 				quantity: 3,
+				itemQuantity: 3,
 				category: 'Adult',
+				itemCategory: 'Adult',
 			},
 		]);
 	});

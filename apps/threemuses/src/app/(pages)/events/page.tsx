@@ -8,7 +8,6 @@ export default async function EventsPage({
 } = {}) {
 	const resolvedSearchParams = await searchParams;
 	const eventCategoryId = 'LBM6V34W6PZZCLX2OOM4LWEI';
-	//const eventCategoryId = 'Events';
 	const prefilter = {
 		featuredOnly: resolvedSearchParams?.featuredOnly === 'true',
 		propertyName: 'Category',
@@ -23,7 +22,7 @@ export default async function EventsPage({
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="events-page-header">
-				<PageTitleHeader title="Events" />
+				<PageTitleHeader title="The Three Muses of Bluffton Events" />
 				<p>
 					Explore our upcoming events, classes, workshops, and summer camps. Filter by event details to find the perfect activity for you.
 				</p>
@@ -35,6 +34,7 @@ export default async function EventsPage({
 					initialFilter={initialFilter}
 					showFilters={false}
 					itemSize="large"
+					itemURLPrefix="/events"
 					title="Events"
 					intro="Browse our upcoming events, classes, workshops, and summer camps."
 					emptyMessage="Please check back soon for new events."
