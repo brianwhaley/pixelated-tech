@@ -3,6 +3,7 @@
 import React from 'react';
 import { PageTitleHeader, PageSection, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
 import *  as componentLibrary from '../../elements/componentlibrary';
+import { Callout } from '@pixelated-tech/components';
 
 export default function SewingPage() {
 	return (
@@ -20,16 +21,32 @@ export default function SewingPage() {
 			</PageSection>
 
 
-
 			<PageSection columns={1} maxWidth="1024px" id="events-section">
-
 				<PageGridItem columnSpan={3}>
 					<PageSectionHeader title="Our Upcoming Events" />
 				</PageGridItem>
-
 				<componentLibrary.UpcomingSewingEvents />
-
 			</PageSection>
+
+
+			<PageSection columns={1} maxWidth="1024px" id="events-section">
+				<PageGridItem columnSpan={3}>
+					<PageSectionHeader title="FLASH SALE" />
+				</PageGridItem>
+				
+				<Callout    
+					variant="boxed grid"
+					layout="horizontal"
+					direction="left"
+					gridColumns={{ left: 1, right: 3 }}
+					img="https://images.ctfassets.net/luf8eony1687/15pvidpP6Jw3bbpvbD5uIB/f33972e0a6f4acff439c3cda70119318/bernette_b38_front_yaya_han_dd9fa5d7-919b-4639-baad-420adaaba4fa.webp"
+					url="/events"
+					title="Bernette b38 Yaya Han Special Edition Sewing Machines"
+					content="This limited-edition machine, a collaboration between Bernette and legendary cosplayer Yaya Han, was designed as the ultimate enabling partner, balancing functional power with high-end creative inspiration. Each of these nine (9) lightly-used machines arrives packed with its core premium features, including Premium Stitches, Automatic Conveniences, and Essential Accessories.  These machines are available for a limited time only, and we expect them to sell out quickly."
+					buttonText="Shop Now"
+				/>
+			</PageSection>
+
 		</>
 	);
 }

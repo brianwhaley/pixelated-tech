@@ -21,6 +21,12 @@ function SchemaScript({ schema }: { schema: any }) {
 	return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
+function addSameAs(entity: any, sameAs?: string[] | null) {
+	if (!sameAs?.length || !entity) { return entity; }
+	if (entity.sameAs) { return entity; }
+	return { ...entity, sameAs };
+}
+
 
 
 
@@ -41,9 +47,16 @@ SchemaBlogPosting.propTypes = {
 };
 export type SchemaBlogPostingType = InferProps<typeof SchemaBlogPosting.propTypes>;
 export function SchemaBlogPosting(props: SchemaBlogPostingType) {
+	const config = usePixelatedConfig();
+	const sameAs = config?.siteInfo?.sameAs;
 	const { post } = props;
+	const schema = sameAs?.length ? {
+		...post,
+		author: addSameAs((post as any)?.author, sameAs),
+		publisher: addSameAs((post as any)?.publisher, sameAs),
+	} : post;
 	return (
-		<SchemaScript schema={post} />
+		<SchemaScript schema={schema} />
 	);
 }
 
@@ -68,54 +81,10 @@ function normalizeEventImages(images: unknown): string[] {
 }
 
 /**
- * Build an Event JSON-LD object from raw event data and optional site info.
- *
- * @param {object} event - Contentful event entry payload.
- * @param {object} [siteInfo] - Site metadata used for canonical URL, location, and organizer details.
+ * SchemaEvent — Inject a JSON-LD <script> tag containing an Event schema object.
+ * @param {object} [props.event] - Structured JSON-LD object representing an event (Event schema).
+ * @returns {JSX.Element} A script tag with the Event JSON-LD data.
  */
-export function buildEventSchema(event: any, siteInfo?: SiteInfo | null) {
-	const baseUrl = siteInfo?.url?.replace(/\/$/, '') ?? '';
-	const eventUrl = baseUrl ? `${baseUrl}/events/${event.fields.id}` : `/events/${event.fields.id}`;
-	const images = normalizeEventImages(event.fields.carouselImages);
-
-	return {
-		'@context': 'https://schema.org',
-		'@type': 'Event',
-		name: event.fields.title,
-		startDate: toIsoDate(event.fields.startDate),
-		endDate: toIsoDate(event.fields.endDate),
-		eventStatus: 'https://schema.org/EventScheduled',
-		location: {
-			'@type': 'Place',
-			name: siteInfo?.name,
-			address: {
-				'@type': 'PostalAddress',
-				streetAddress: siteInfo?.address?.streetAddress,
-				addressLocality: siteInfo?.address?.addressLocality,
-				postalCode: siteInfo?.address?.postalCode,
-				addressRegion: siteInfo?.address?.addressRegion,
-				addressCountry: siteInfo?.address?.addressCountry,
-			},
-		},
-		image: images.length ? images : undefined,
-		description: event.fields.description,
-		url: eventUrl,
-		offers: event.fields.price != null ? {
-			'@type': 'Offer',
-			url: eventUrl,
-			price: event.fields.price,
-			priceCurrency: 'USD',
-			availability: event.fields.maxSeats > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
-			validFrom: toIsoDate(event.fields.startDate),
-		} : undefined,
-		organizer: {
-			'@type': 'Organization',
-			name: siteInfo?.name,
-			url: siteInfo?.url,
-		},
-	};
-}
-
 SchemaEvent.propTypes = {
 	/** Structured Event JSON-LD object */
 	event: PropTypes.any.isRequired,
@@ -124,7 +93,49 @@ export type SchemaEventType = InferProps<typeof SchemaEvent.propTypes>;
 export function SchemaEvent(props: SchemaEventType) {
 	const config = usePixelatedConfig();
 	const { event } = props;
-	const schema = event?.['@type'] ? event : buildEventSchema(event, config?.siteInfo);
+	const siteInfo = config?.siteInfo;
+
+	const schema = event?.['@type'] ? event : (() => {
+		const baseUrl = siteInfo?.url?.replace(/\/$/, '') ?? '';
+		const eventUrl = baseUrl ? `${baseUrl}/events/${event.fields.id}` : `/events/${event.fields.id}`;
+		const images = normalizeEventImages(event.fields.carouselImages);
+		return {
+			'@context': 'https://schema.org',
+			'@type': 'Event',
+			name: event.fields.title,
+			startDate: toIsoDate(event.fields.startDate),
+			endDate: toIsoDate(event.fields.endDate),
+			eventStatus: 'https://schema.org/EventScheduled',
+			location: {
+				'@type': 'Place',
+				name: siteInfo?.name,
+				address: {
+					'@type': 'PostalAddress',
+					streetAddress: siteInfo?.address?.streetAddress,
+					addressLocality: siteInfo?.address?.addressLocality,
+					postalCode: siteInfo?.address?.postalCode,
+					addressRegion: siteInfo?.address?.addressRegion,
+					addressCountry: siteInfo?.address?.addressCountry,
+				},
+			},
+			image: images.length ? images : undefined,
+			description: event.fields.description,
+			url: eventUrl,
+			offers: event.fields.price != null ? {
+				'@type': 'Offer',
+				url: eventUrl,
+				price: event.fields.price,
+				priceCurrency: 'USD',
+				availability: event.fields.maxSeats > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+				validFrom: toIsoDate(event.fields.startDate),
+			} : undefined,
+			organizer: addSameAs({
+				'@type': 'Organization',
+				name: siteInfo?.name,
+				url: siteInfo?.url,
+			}, siteInfo?.sameAs),
+		};
+	})();
 	return (
 		<SchemaScript schema={schema} />
 	);
@@ -143,6 +154,11 @@ export function SchemaEvent(props: SchemaEventType) {
 /* The server-only breadcrumb schema implementation lives in schema.server.tsx.
    This client module no longer exports the breadcrumb JSON-LD component.
 */
+
+
+
+
+
 
 /* ========================================
 	FAQ SCHEMA COMPONENTS
@@ -433,9 +449,15 @@ ProductSchema.propTypes = {
 };
 export type ProductSchemaType = InferProps<typeof ProductSchema.propTypes>;
 export function ProductSchema(props: ProductSchemaType) {
+	const config = usePixelatedConfig();
+	const sameAs = config?.siteInfo?.sameAs;
 	const { product } = props;
+	const schema = sameAs?.length && product?.brand ? {
+		...product,
+		brand: addSameAs(product.brand, sameAs),
+	} : product;
 	return (
-		<SchemaScript schema={product} />
+		<SchemaScript schema={schema} />
 	);
 }
 
@@ -502,9 +524,16 @@ RecipeSchema.propTypes = {
 };
 export type RecipeSchemaType = InferProps<typeof RecipeSchema.propTypes>;
 export function RecipeSchema(props: RecipeSchemaType) {
+	const config = usePixelatedConfig();
+	const sameAs = config?.siteInfo?.sameAs;
 	const { recipe } = props;
+	const schema = sameAs?.length ? {
+		...recipe,
+		author: addSameAs((recipe as any)?.author, sameAs),
+		publisher: addSameAs((recipe as any)?.publisher, sameAs),
+	} : recipe;
 	return (
-		<SchemaScript schema={recipe} />
+		<SchemaScript schema={schema} />
 	);
 }
 
@@ -555,14 +584,22 @@ ReviewSchema.propTypes = {
 		publisher: PropTypes.shape({
 			'@type': PropTypes.string.isRequired,
 			name: PropTypes.string,
+			sameAs: PropTypes.arrayOf(PropTypes.string),
 		}),
 	}).isRequired,
 };
 export type ReviewSchemaType = InferProps<typeof ReviewSchema.propTypes>;
 export function ReviewSchema(props: ReviewSchemaType) {
+	const config = usePixelatedConfig();
+	const sameAs = config?.siteInfo?.sameAs;
 	const { review } = props;
+	const schema = sameAs?.length ? {
+		...review,
+		author: addSameAs((review as any)?.author, sameAs),
+		publisher: addSameAs((review as any)?.publisher, sameAs),
+	} : review;
 	return (
-		<SchemaScript schema={review} />
+		<SchemaScript schema={schema} />
 	);
 }
 

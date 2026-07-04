@@ -2,6 +2,7 @@ export * from './ebay.components';
 export * from './paypal';
 export * from './paypal.components';
 export * from './shoppingcart.providers';
+export * from './square';
 export * from './square.components';
 export * from './shoppingcart.components';
 export * from './shoppingcart.functions';

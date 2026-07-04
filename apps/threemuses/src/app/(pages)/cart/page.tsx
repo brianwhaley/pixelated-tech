@@ -35,14 +35,19 @@ export default function CartPage() {
 			);
 		});
 
-		const hasEventCategory = cartItemCategorySets.some(s => s.has('event'));
+		const hasEventCategoryFromSet = (categorySet: Set<string>) =>
+			categorySet.has('event') || categorySet.has('events');
+
+		const hasEventCategory = cartItemCategorySets.some(hasEventCategoryFromSet);
 		
 		// If no event items, show nothing
 		if (!hasEventCategory) return null;
 
-		const hasEventAdult = cartItemCategorySets.some(s => s.has('event') && s.has('adult'));
-		const hasEventYouth = cartItemCategorySets.some(s => 
-			s.has('event') && (s.has('youth') || s.has('summer camp'))
+		const hasEventAdult = cartItemCategorySets.some(
+			(s) => hasEventCategoryFromSet(s) && s.has('adult')
+		);
+		const hasEventYouth = cartItemCategorySets.some(
+			(s) => hasEventCategoryFromSet(s) && (s.has('youth') || s.has('summer camp'))
 		);
 
 		const fields = [

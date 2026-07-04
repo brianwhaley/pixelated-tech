@@ -128,8 +128,8 @@ export async function analyzeSecurityHealth(localPath: string, siteName?: string
 			};
 		}
 
-		// Run npm audit
-		const auditResult = await runNpmAudit(localPath);
+		// Run npm audit against the resolved site path
+		const auditResult = await runNpmAudit(resolvedPath);
 
 		// Process vulnerabilities
 		const vulnerabilities: Vulnerability[] = [];
@@ -192,10 +192,17 @@ export async function analyzeSecurityHealth(localPath: string, siteName?: string
 
 async function runNpmAudit(localPath: string): Promise<NpmAuditResult> {
 	try {
-		const { stdout } = await execAsync('npm audit --json', {
+		const execResult = await execAsync('npm audit --json', {
 			cwd: localPath,
 			timeout: 120000 // 2 minute timeout (audits can take longer)
 		});
+
+		const stdout =
+			typeof execResult === 'string'
+				? execResult
+				: typeof (execResult as any)?.stdout === 'string'
+					? (execResult as any).stdout
+					: '';
 
 		return JSON.parse(stdout);
 	} catch (error: unknown) {
