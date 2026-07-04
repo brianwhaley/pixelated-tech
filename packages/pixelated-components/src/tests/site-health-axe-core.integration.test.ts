@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import * as fs from 'fs';
 import { pixelatedConfig } from '../test/test-data';
 
 // Mock setTimeout to resolve instantly for tests
@@ -39,14 +40,19 @@ vi.mock('puppeteer', () => ({
 }));
 
 // Mock fs at module level
-vi.mock('fs', () => ({
-	default: {
-		existsSync: vi.fn().mockReturnValue(true),
-		readFileSync: vi.fn().mockReturnValue('/* axe */')
-	},
-	existsSync: vi.fn().mockReturnValue(true),
-	readFileSync: vi.fn().mockReturnValue('/* axe */')
-}));
+vi.mock('fs', () => {
+	const existsSyncMock = vi.fn().mockReturnValue(true);
+	const readFileSyncMock = vi.fn().mockReturnValue('/* axe */');
+	return {
+		default: {
+			...vi.importActual<typeof import('fs')>('fs'),
+			existsSync: existsSyncMock,
+			readFileSync: readFileSyncMock,
+		},
+		existsSync: existsSyncMock,
+		readFileSync: readFileSyncMock,
+	};
+});
 
 // Mock getFullPixelatedConfig
 vi.mock('../components/config/config', async (importOriginal) => {
@@ -58,7 +64,6 @@ vi.mock('../components/config/config', async (importOriginal) => {
 });
 
 import { getFullPixelatedConfig } from '../components/config/config';
-import fs from 'fs';
 import path from 'path';
 
 // Import module once to avoid repeated slow imports
@@ -96,6 +101,25 @@ describe('site-health-axe-core.integration', () => {
 			const result3 = await performAxeCoreAnalysis('http://example.com', 'prod');
 			expect(result3).toBeDefined();
 		}, 15000);
+
+		it('should return an error when axe-core never loads in any frame', async () => {
+			const puppeteerModule = await import('puppeteer');
+			const pageMock = {
+				setViewport: vi.fn().mockResolvedValue(undefined),
+				on: vi.fn().mockReturnValue(undefined),
+				setUserAgent: vi.fn().mockResolvedValue(undefined),
+				goto: vi.fn().mockResolvedValue(undefined),
+				addScriptTag: vi.fn().mockResolvedValue(undefined),
+				frames: vi.fn().mockReturnValue([{ evaluate: vi.fn().mockResolvedValue(false) }]),
+				close: vi.fn().mockResolvedValue(undefined),
+			};
+
+			vi.mocked(puppeteerModule.default.launch as any).mockResolvedValueOnce({ newPage: vi.fn().mockResolvedValue(pageMock), close: vi.fn().mockResolvedValue(undefined) } as any);
+
+			const result = await performAxeCoreAnalysis('http://example.com');
+			expect(result.status).toBe('error');
+			expect(result.error).toContain('axe-core not loaded');
+		}, 20000);
 
 		it('should calculate summary with violation counts including moderate and minor', async () => {
 			const puppeteerModule = await import('puppeteer');
@@ -300,6 +324,86 @@ describe('site-health-axe-core.integration', () => {
 			expect(result.status).toBe('success');
 			expect(result.injectionSource).toBe('local-inline');
 			expect(pageMock.addScriptTag).toHaveBeenCalledTimes(2);
+		});
+
+		it('should fall back to require.resolve injection when CDN and local inline injection fail', async () => {
+			const puppeteerModule = await import('puppeteer');
+			const pageMock = {
+				setViewport: vi.fn().mockResolvedValue(undefined),
+				on: vi.fn().mockReturnValue(undefined),
+				setUserAgent: vi.fn().mockResolvedValue(undefined),
+				goto: vi.fn().mockResolvedValue(undefined),
+				addScriptTag: vi.fn()
+					.mockRejectedValueOnce(new Error('CDN blocked'))
+					.mockResolvedValue(undefined),
+				frames: vi.fn().mockReturnValue([
+					{
+						evaluate: vi.fn()
+							.mockResolvedValueOnce(false)
+							.mockResolvedValueOnce(true)
+							.mockResolvedValueOnce({
+								violations: [],
+								passes: [],
+								incomplete: [],
+								inapplicable: [],
+								testEngine: { name: 'axe-core', version: '4.0.0' },
+								testRunner: { name: 'mock' },
+								testEnvironment: { userAgent: 'test', windowWidth: 1280, windowHeight: 720 },
+								timestamp: new Date().toISOString(),
+								url: 'http://example.com'
+							}),
+					},
+				]),
+				close: vi.fn().mockResolvedValue(undefined),
+			} as any;
+
+			vi.mocked(puppeteerModule.default.launch as any).mockResolvedValueOnce({ newPage: vi.fn().mockResolvedValue(pageMock), close: vi.fn().mockResolvedValue(undefined) } as any);
+
+			const fsModule = await import('fs');
+			vi.mocked(fsModule.existsSync).mockImplementation(() => false);
+			vi.mocked(fsModule.readFileSync).mockImplementation((candidatePath: string) => {
+				if (candidatePath === '/mock/axe.min.js') return '/* axe */';
+				throw new Error(`Unexpected fs.readFileSync path: ${candidatePath}`);
+			});
+			const requireStub = { resolve: vi.fn().mockReturnValue('/mock/axe.min.js') };
+			vi.stubGlobal('require', requireStub as any);
+
+			try {
+				const result = await performAxeCoreAnalysis('http://example.com');
+				expect(result.status).toBe('success');
+				expect(result.injectionSource).toBe('require-resolve');
+				expect(pageMock.addScriptTag).toHaveBeenCalledTimes(2);
+				expect(fsModule.readFileSync).toHaveBeenCalledWith('/mock/axe.min.js', 'utf8');
+				expect(requireStub.resolve).toHaveBeenCalledWith('axe-core/axe.min.js');
+			} finally {
+				vi.unstubAllGlobals();
+			}
+		});
+
+		it('should throw an error when axe-core cannot load from CDN or local inline injection', async () => {
+			const puppeteerModule = await import('puppeteer');
+			const pageMock = {
+				setViewport: vi.fn().mockResolvedValue(undefined),
+				on: vi.fn().mockReturnValue(undefined),
+				setUserAgent: vi.fn().mockResolvedValue(undefined),
+				goto: vi.fn().mockResolvedValue(undefined),
+				addScriptTag: vi.fn().mockRejectedValue(new Error('CDN blocked')),
+				frames: vi.fn().mockReturnValue([{ evaluate: vi.fn().mockResolvedValue(false) }]),
+				close: vi.fn().mockResolvedValue(undefined),
+			} as any;
+
+			vi.mocked(puppeteerModule.default.launch as any).mockResolvedValueOnce({ newPage: vi.fn().mockResolvedValue(pageMock), close: vi.fn().mockResolvedValue(undefined) } as any);
+
+			const fsModule = await import('fs');
+			vi.mocked(fsModule.existsSync).mockReturnValue(false);
+			const originalRequire = (global as any).require;
+			( global as any).require = { resolve: vi.fn().mockImplementation(() => { throw new Error('not found'); }) };
+
+			try {
+				await expect(performAxeCoreAnalysis('http://example.com')).resolves.toMatchObject({ status: 'error' });
+			} finally {
+				( global as any).require = originalRequire;
+			}
 		});
 
 		it('should handle errors and return error status', async () => {

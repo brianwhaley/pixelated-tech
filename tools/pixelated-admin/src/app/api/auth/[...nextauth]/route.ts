@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { getOriginFromHeaders } from '@pixelated-tech/components/server';
 
 // Toggle debug logging for this route. Follow repo convention: set to `true` to enable.
-const debug = true;
+const debug = false;
 
 type AuthRouteContext = { params: Promise<{ nextauth: string[] }> };
 
@@ -37,7 +37,7 @@ async function authHandler(req: NextRequest, context: AuthRouteContext) {
 		else clonedHeaders.delete('cookie');
 	}
 
-	const sanitizedRequest = new Request(sanitizedUrl.toString(), {
+	const sanitizedRequest = new NextRequest(sanitizedUrl.toString(), {
 		method: req.method,
 		headers: clonedHeaders,
 		body: req.body as any,
@@ -45,8 +45,7 @@ async function authHandler(req: NextRequest, context: AuthRouteContext) {
 
 	const callbackUrl = canonicalCallback(sanitizedRequest as any);
 	try {
-		const dbgParam = req.nextUrl?.searchParams.get('debug_nextauth') || req.url?.includes('debug_nextauth=1');
-		if (debug && dbgParam) {
+		if (debug) {
 			const headers = {
 				x_origin: req.headers.get('x-origin'),
 				origin: req.headers.get('origin'),
@@ -63,8 +62,7 @@ async function authHandler(req: NextRequest, context: AuthRouteContext) {
 
 	const response = await handler(sanitizedRequest as any, context as any);
 	try {
-		const dbgParam = req.nextUrl?.searchParams.get('debug_nextauth') || req.url?.includes('debug_nextauth=1');
-		if (debug && dbgParam) {
+		if (debug) {
 			const rawLocation = response.headers.get('location') ?? response.headers.get('Location');
 			console.warn('[auth:debug] NextAuth raw Location header:', rawLocation);
 		}

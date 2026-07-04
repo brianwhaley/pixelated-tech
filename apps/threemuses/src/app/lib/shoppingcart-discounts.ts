@@ -12,8 +12,13 @@ function normalizeItemCategories(item: CartItemType) {
 	);
 }
 
+function hasEventCategory(item: CartItemType) {
+	const categories = normalizeItemCategories(item);
+	return categories.includes('event') || categories.includes('events');
+}
+
 function getEventItems(cart: CartItemType[]) {
-	return cart.filter((item) => normalizeItemCategories(item).includes('event'));
+	return cart.filter((item) => hasEventCategory(item));
 }
 
 export function getThreeMusesQuantityDiscount(cart: CartItemType[]) {

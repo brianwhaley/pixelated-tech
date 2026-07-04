@@ -6,7 +6,7 @@ import { getAllRoutes } from "./metadata.functions";
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
 import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
-import { getSquareStoreItems } from "../shoppingcart/square";
+import { getSquareStoreItems } from "../shoppingcart/square.server";
 import { getFullPixelatedConfig } from '../config/config';
 import type { PixelatedConfig } from '../config/config.types';
 import { CacheManager } from '../foundation/cache-manager';

@@ -31,6 +31,18 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] New Callout Variant based on https://onthespothome.com/services
 
+- [  ] Enforce Server-Side Rendering (SSR) or Static Site Generation (SSG) for SEO / AEO / GEO
+
+- [  ] Implement Strict Pronoun Resolution Rules
+LLM struggles to mathematically tie "exceptional service," "They," and "this" back to the actual brand name
+Run an editorial rule or an LLM-pre-processor pipeline across your content creation scripts to ensure nouns are explicitly stated.
+
+- [  ] Information Gain - rewarding pages that introduce new data, unique local insights, or highly specific first-hand experience that isn't found anywhere else in their training data.
+
+- [  ] A deeply structured /about page that links directly to official state business registration registries via sameAs.
+An explicit Editorial Policy or Service Standards node in your footer.
+Author bio blocks on every single blog post that explicitly link back to the author's personal professional profiles (like LinkedIn or a master corporate profile).
+
 
 ### Component Improvements
 

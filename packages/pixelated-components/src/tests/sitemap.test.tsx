@@ -43,7 +43,7 @@ vi.mock('../components/integrations/contentful.delivery', async () => {
 	};
 });
 vi.mock('../components/shoppingcart/ebay.functions');
-vi.mock('../components/shoppingcart/square');
+vi.mock('../components/shoppingcart/square.server');
 vi.mock('../components/config/config');
 vi.mock('../components/foundation/metadata.functions');
 vi.mock('next/headers', () => ({ headers: vi.fn() }));
@@ -53,7 +53,7 @@ import * as contentfulModule from '../components/integrations/contentful.deliver
 import * as ebayModule from '../components/shoppingcart/ebay.functions';
 import * as configModule from '../components/config/config';
 import * as metadataModule from '../components/foundation/metadata.functions';
-import * as squareModule from '../components/shoppingcart/square';
+import * as squareModule from '../components/shoppingcart/square.server';
 import { realWordPressApiData, siteImagesData, realContentfulAssetsData, mockContentfulImageAssets } from '../test/test-data';
 
 // Mock fetch globally

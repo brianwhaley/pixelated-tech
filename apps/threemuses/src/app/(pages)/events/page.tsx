@@ -1,78 +1,45 @@
-"use client";
+import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
+import { SquareStoreItemsWrapper } from '@pixelated-tech/components/server';
 
-import React, { useState, useEffect } from "react";
-import { usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries } from "@pixelated-tech/components";
-import { Loading } from "@pixelated-tech/components";
-import { PageTitleHeader, PageSection } from "@pixelated-tech/components";
-import EventCallout from "../../elements/eventcallout";
-
-export default function EventsPage() {
-
-	const [ events , setEvents ] = useState<{ event: any, calloutProps: any }[]>([]);
-
-	const config = usePixelatedConfig();
-
-	if (!config) {
-		return <Loading />;
-	}
-
-	const apiProps = {
-		base_url: config?.integrations.contentful?.base_url ?? "",
-		space_id: config?.integrations.contentful?.space_id ?? "",
-		environment: config?.integrations.contentful?.environment ?? "",
-		delivery_access_token: config?.integrations.contentful?.delivery_access_token ?? "",
+export default async function EventsPage({
+	searchParams,
+}: {
+	searchParams?: Promise<Record<string, string | string[] | undefined>>;
+} = {}) {
+	const resolvedSearchParams = await searchParams;
+	const eventCategoryId = 'LBM6V34W6PZZCLX2OOM4LWEI';
+	//const eventCategoryId = 'Events';
+	const prefilter = {
+		featuredOnly: resolvedSearchParams?.featuredOnly === 'true',
+		propertyName: 'Category',
+		propertyValue: eventCategoryId,
 	};
 
-	useEffect(() => {
-		async function getCarouselCards() {
-			const contentType = "75OqioFABdZZ1QaQChRGic"; 
-			const eventObjects: { event: any, calloutProps: any }[] = [];
-			const events = await getContentfulEntriesByType({ apiProps: apiProps, contentType });
-			const sortedItems = [...events.items].sort((a: any, b: any) => {
-				return new Date(a.fields.startDate).getTime() - new Date(b.fields.startDate).getTime();
-			});
-			for (const event of sortedItems) {
-				if ( event.sys.contentType.sys.id == contentType ) {
-					const status = event.fields.status?.toString?.().toLowerCase?.();
-					if (status === 'archived') {
-						continue;
-					}
-					const images = await getContentfulImagesFromEntries({ images: [event.fields.image], assets: events.includes.Asset });
-					eventObjects.push({
-						event: event,
-						calloutProps: {
-							variant: "grid",
-							layout: "horizontal",
-							img: images[0]?.image,
-							imgAlt: event.fields.title,
-							title: event.fields.title,
-							subtitle: new Date(event.fields.startDate).toLocaleString('en-US', {
-								dateStyle: 'short', timeStyle: 'short'
-							}).replace(',', '') + " - " + new Date(event.fields.endDate).toLocaleString('en-US', {
-								dateStyle: 'short', timeStyle: 'short'
-							}).replace(',', ''),
-							content: event.fields.description,
-							url: "/events/" + event.fields.id,
-							urlTarget: "_self",
-							buttonText: "More Details"
-						}
-					});
-				}
-			}
-
-			setEvents(eventObjects);
-		}
-		getCarouselCards();
-	}, []);
+	const initialFilter = prefilter.propertyName && prefilter.propertyValue ? {
+		propertyName: prefilter.propertyName,
+		propertyValue: prefilter.propertyValue,
+	} : undefined;
 
 	return (
 		<>
-			<PageTitleHeader title="Events" />
-			
-			<PageSection columns={1} className="" id="projects-section">
-				{ events.map((eventObj, index) => (
-					<EventCallout key={index} event={eventObj.event} calloutProps={eventObj.calloutProps} siteInfo={config.siteInfo} />
-				))}
+			<PageSection columns={1} maxWidth="100%" id="events-page-header">
+				<PageTitleHeader title="Events" />
+				<p>
+					Explore our upcoming events, classes, workshops, and summer camps. Filter by event details to find the perfect activity for you.
+				</p>
+			</PageSection>
+
+			<PageSection columns={4} maxWidth="1200px" id="events-section">
+				<SquareStoreItemsWrapper
+					prefilter={prefilter}
+					initialFilter={initialFilter}
+					showFilters={false}
+					itemSize="large"
+					title="Events"
+					intro="Browse our upcoming events, classes, workshops, and summer camps."
+					emptyMessage="Please check back soon for new events."
+					errorMessage="Unable to load events at this time."
+				/>
 			</PageSection>
 		</>
 	);

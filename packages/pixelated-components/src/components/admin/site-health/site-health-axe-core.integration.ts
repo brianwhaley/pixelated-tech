@@ -272,14 +272,21 @@ async function runAxeCoreAnalysis(url: string, runtime_env: 'auto' | 'local' | '
 				}
 			}
 
-			// Last resort: require.resolve
+			// Last resort: require.resolve (support both commonjs and global require fallbacks)
 			if (!injected) {
 				try {
-					const axePath = require.resolve('axe-core/axe.min.js');
-					const axeSrc = fs.readFileSync(axePath, 'utf8');
-					await page.addScriptTag({ content: axeSrc });
-					injected = true;
-					injectionSource = 'require-resolve';
+					const requireResolve = typeof (globalThis as any)?.require?.resolve === 'function'
+						? (globalThis as any).require.resolve.bind((globalThis as any).require)
+						: typeof require === 'function'
+							? require.resolve.bind(require)
+							: undefined;
+					if (requireResolve) {
+						const axePath = requireResolve('axe-core/axe.min.js');
+						const axeSrc = fs.readFileSync(axePath, 'utf8');
+						await page.addScriptTag({ content: axeSrc });
+						injected = true;
+						injectionSource = 'require-resolve';
+					}
 				} catch (e) {
 					// ignore
 				}

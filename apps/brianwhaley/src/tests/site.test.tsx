@@ -26,6 +26,7 @@ import ReadmePage from '@/app/(pages)/readme/page';
 import RecipesPage from '@/app/(pages)/recipes/page';
 import Resume from '@/app/(pages)/resume/page';
 import WorkPortfolio from '@/app/(pages)/workportfolio/page';
+import SupermarketShenanigansPage from '@/app/(pages)/supermarketshenanigans/page';
 import Hero from '@/app/elements/hero';
 import Privacy from '@/app/elements/privacy';
 import Search from '@/app/elements/search';
@@ -210,6 +211,12 @@ describe('Brian Whaley coverage', () => {
 		it('renders Terms element content', () => {
 			render(<Terms />);
 			expect(screen.getByText('Terms of Service')).not.toBeNull();
+		});
+
+		it('renders Supermarket Shenanigans page without throwing', () => {
+			render(<SupermarketShenanigansPage />);
+			const section = document.getElementById('supermarket-shenanigans-container');
+			expect(section).not.toBeNull();
 		});
 	});
 });

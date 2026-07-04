@@ -2,8 +2,8 @@ import React from 'react';
 import { MenuAccordionButton, MenuAccordion } from '@/components/elements/menu-accordion';
 import { getAccordionMenuData } from "@/components/foundation/metadata.functions";
 import '@/css/pixelated.global.css';
-import pixelatedConfig from '@/config/pixelated.config.json';
-const allRoutes = pixelatedConfig.routes;
+
+const allRoutes = [];
 
 // const menuItems = getAccordionMenuData(allRoutes);
 

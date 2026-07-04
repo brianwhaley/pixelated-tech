@@ -2,13 +2,14 @@ import React from 'react';
 import { describe, expect, vi } from 'vitest';
 import { runCommonPageCoverage, runCommonElementCoverage, runCommonMarkdownPageCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { config as pixelatedConfig, resetMockState, setCartItems, resetCartItems, setFileDataState, resetFileDataState, setPixelatedConfigOverride, setContentfulEntriesResponse, setContentfulEntryResponse, setContentfulImagesResponse } from '@/tests/page-mocks';
+import { config as pixelatedConfig, resetMockState, setCartItems, resetCartItems, setFileDataState, resetFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
 
 import { createPageComponentMocks } from '@/tests/page-mocks';
 import * as componentsServer from '@pixelated-tech/components/server';
 
 const mockRouterPush = vi.fn();
+(globalThis as any).mockRouterPush = mockRouterPush;
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
 
@@ -17,6 +18,7 @@ vi.mock('@pixelated-tech/components/server', async () => {
 	return {
 		__esModule: true,
 		...actual,
+		SquareStoreItemsWrapper: (props: any) => React.createElement('div', { 'data-testid': 'square-store-items-wrapper' }, props.title ? React.createElement('div', { 'data-testid': 'square-store-items-wrapper-title' }, props.title) : null),
 		getSquareStoreItems: vi.fn(async () => ({ items: [] })),
 		getSquareStoreItemById: vi.fn(async (id: string) => ({ id, title: 'Test Item', price: 10 })),
 		createSquareOrderAndCapturePayment: vi.fn(async (sourceId: any, checkoutData: any) => ({ status: 'ok', sourceId, checkoutData })),
@@ -75,8 +77,7 @@ import SewingPage from '@/app/(pages)/sewing/page';
 import StorePage from '@/app/(pages)/store/page';
 import StoreItemPage from '@/app/(pages)/store/[item]/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
-import EventCallout from '@/app/elements/eventcallout';
-import EventDetail from '@/app/elements/eventdetail';
+import { SquareEventCallout as EventCallout, SquareEventDetail as EventDetail } from '@pixelated-tech/components';
 import EventReportPage, { buildEventGroups, asArray, parsePossibleJson, normalizeReportRow, getEventIdentity } from '@/app/(pages)/events/report/page';
 import { getThreeMusesSubtotalDiscount } from '@/app/lib/shoppingcart-discounts';
 import { POST as capturePaymentPOST } from '@/app/api/capture-payment/route';
@@ -273,7 +274,7 @@ describe('ThreeMuses coverage harness', () => {
 			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [] });
 			const store = await StorePage();
 			render(store as any);
-			expect(document.getElementById('store-empty-section')).not.toBeNull();
+			expect(document.getElementById('store-items-section')).not.toBeNull();
 		});
 
 		it('renders Store page with items', async () => {
@@ -343,298 +344,74 @@ describe('ThreeMuses coverage harness', () => {
 			await waitFor(() => expect(screen.getByTestId('shopping-cart')).not.toBeNull());
 		});
 
-		it('renders events page loading state and content', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'carouselCard' } } },
-						fields: {
-							id: 'event-1',
-							title: 'Test Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Test event',
-							carouselImages: [],
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulImagesResponse([]);
-			render(<EventsPage />);
-			await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
+		it('renders Events page with no items', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [] });
+			const events = await EventsPage();
+			render(events as any);
+			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
-		it('sorts events by start date when multiple events are returned', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'carouselCard' } } },
-						fields: {
-							id: 'event-1',
-							title: 'Event A',
-							startDate: '2025-01-05',
-							endDate: '2025-01-06',
-							description: 'Event A',
-							carouselImages: [],
-							image: { image: 'https://example.com/a.png' },
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-					{
-						sys: { contentType: { sys: { id: 'carouselCard' } } },
-						fields: {
-							id: 'event-2',
-							title: 'Event B',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Event B',
-							carouselImages: [],
-							image: { image: 'https://example.com/b.png' },
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulImagesResponse([{ image: 'https://example.com/a.png' }, { image: 'https://example.com/b.png' }]);
-			await React.act(async () => {
-				render(<EventsPage />);
-			});
-			await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
+		it('renders Events page with items', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-1', title: 'Event A', price: 10, status: 'open' }] });
+			const events = await EventsPage();
+			render(events as any);
+			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
-		it('renders EventsPage loading state when config is unavailable', async () => {
+		it('renders Events page when config is unavailable', async () => {
 			setPixelatedConfigOverride(null);
-			render(<EventsPage />);
-			await waitFor(() => expect(screen.getByTestId('loading')).not.toBeNull());
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [] });
+			const events = await EventsPage();
+			render(events as any);
+			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
-		it('renders EventsPage without archived events', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: '75OqioFABdZZ1QaQChRGic' } } },
-						fields: {
-							id: 'event-archived',
-							title: 'Archived Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Archived event',
-							carouselImages: [],
-							image: { image: 'https://example.com/archived.png' },
-							status: 'archived',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulImagesResponse([{ image: 'https://example.com/archived.png' }]);
-			render(<EventsPage />);
-			await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
-			expect(screen.queryByTestId('callout')).toBeNull();
+		it('renders Events page even with archived events', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-archived', title: 'Archived Event', status: 'archived' }] });
+			const events = await EventsPage();
+			render(events as any);
+			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
-		it('does not render EventsPage items when content type does not match', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'wrongType' } } },
-						fields: {
-							id: 'event-wrong',
-							title: 'Wrong Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Wrong event',
-							carouselImages: [],
-							image: { image: 'https://example.com/wrong.png' },
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulImagesResponse([{ image: 'https://example.com/wrong.png' }]);
-			render(<EventsPage />);
-			await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
-			expect(screen.queryByTestId('callout')).toBeNull();
+		it('renders Events page even with content types that do not match', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-wrong', title: 'Wrong Event', status: 'open' }] });
+			const events = await EventsPage();
+			render(events as any);
+			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
-		it('renders EventsPage with no event image and still shows the section', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: '75OqioFABdZZ1QaQChRGic' } } },
-						fields: {
-							id: 'event-no-image',
-							title: 'No Image Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'No image event',
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulImagesResponse([]);
-			render(<EventsPage />);
-			await waitFor(() => expect(document.getElementById('projects-section')).not.toBeNull());
+		it('renders Events page even when event images are missing', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-no-image', title: 'No Image Event', status: 'open' }] });
+			const events = await EventsPage();
+			render(events as any);
+			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
-		it('renders EventDetailPage loading state when config is unavailable', async () => {
+		it('renders EventDetailPage when config is unavailable', async () => {
 			setPixelatedConfigOverride(null);
-			render(<EventDetailPage params={Promise.resolve({ event: 'event-1' })} />);
-			await waitFor(() => expect(screen.getByTestId('loading')).not.toBeNull());
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ id: 'event-1', title: 'Test Event', price: 10 });
+			const eventDetail = await EventDetailPage({ params: Promise.resolve({ item: 'event-1' }) });
+			render(eventDetail as any);
+			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders the event detail route page and loads event data', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'carouselCard' } } },
-						fields: {
-							id: 'event-1',
-							title: 'Test Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Test event',
-							carouselImages: [],
-							image: { image: 'https://example.com/event.png' },
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulEntryResponse({
-				sys: { contentType: { sys: { id: 'carouselCard' } } },
-				fields: {
-					id: 'event-1',
-					title: 'Test Event',
-					startDate: '2025-01-01',
-					endDate: '2025-01-02',
-					description: 'Test event',
-					carouselImages: [],
-					image: { image: 'https://example.com/event.png' },
-					status: 'open',
-					price: 10,
-					maxSeats: 10,
-					category: 'event',
-				},
-			});
-			setContentfulImagesResponse([{ image: 'https://example.com/event.png' }]);
-			await React.act(async () => {
-				render(
-					<React.Suspense fallback={<div>Loading route</div>}>
-						<EventDetailPage params={Promise.resolve({ event: 'event-1' })} />
-					</React.Suspense>
-				);
-			});
-			await waitFor(() => expect(document.getElementById('event-callout-section')).not.toBeNull());
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ id: 'event-1', title: 'Test Event', price: 10 });
+			const eventDetail = await EventDetailPage({ params: Promise.resolve({ item: 'event-1' }) });
+			render(eventDetail as any);
+			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders the event detail route page with carouselImages instead of image', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'carouselCard' } } },
-						fields: {
-							id: 'event-3',
-							title: 'Carousel Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Carousel event',
-							carouselImages: [{ image: 'https://example.com/carousel.png' }],
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulEntryResponse({
-				sys: { contentType: { sys: { id: 'carouselCard' } } },
-				fields: {
-					id: 'event-3',
-					title: 'Carousel Event',
-					startDate: '2025-01-01',
-					endDate: '2025-01-02',
-					description: 'Carousel event',
-					carouselImages: [{ image: 'https://example.com/carousel.png' }],
-					status: 'open',
-					price: 10,
-					maxSeats: 10,
-					category: 'event',
-				},
-			});
-			setContentfulImagesResponse([{ image: 'https://example.com/carousel.png' }]);
-			await React.act(async () => {
-				render(
-					<React.Suspense fallback={<div>Loading route</div>}>
-						<EventDetailPage params={Promise.resolve({ event: 'event-3' })} />
-					</React.Suspense>
-				);
-			});
-			await waitFor(() => expect(document.getElementById('event-callout-section')).not.toBeNull());
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ id: 'event-3', title: 'Carousel Event', price: 10 });
+			const eventDetail = await EventDetailPage({ params: Promise.resolve({ item: 'event-3' }) });
+			render(eventDetail as any);
+			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
-		it('renders EventDetailPage loading state when the event is not found', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'carouselCard' } } },
-						fields: {
-							id: 'other-event',
-							title: 'Other Event',
-							startDate: '2025-01-01',
-							endDate: '2025-01-02',
-							description: 'Other event',
-							carouselImages: [],
-							image: { image: 'https://example.com/other.png' },
-							status: 'open',
-							price: 10,
-							maxSeats: 10,
-							category: 'event',
-						},
-					},
-				],
-				includes: { Asset: [] },
-			});
-			setContentfulEntryResponse(null);
-			setContentfulImagesResponse([]);
-			await React.act(async () => {
-				render(
-					<React.Suspense fallback={<div>Loading route</div>}>
-						<EventDetailPage params={Promise.resolve({ event: 'event-1' })} />
-					</React.Suspense>
-				);
-			});
-			await waitFor(() => expect(screen.getByText('Loading event data...')).not.toBeNull());
+		it('renders EventDetailPage not found when the item is missing', async () => {
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce(undefined);
+			await expect(EventDetailPage({ params: Promise.resolve({ item: 'event-1' }) })).rejects.toThrow();
 		});
 
 		it('renders events page loading state and content', async () => {

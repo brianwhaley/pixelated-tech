@@ -100,6 +100,73 @@ describe('pixelated-eslint-plugin', () => {
 		expect(messages.some(m => m.ruleId === 'pixelated/require-contentful-image-webp')).toBe(true);
 	});
 
+	it('warns when editorial strings contain ambiguous pronouns in JSX text', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<div>We are proud of our exceptional service.</div>); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/strict-pronoun-resolution': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/strict-pronoun-resolution')).toBe(true);
+	});
+
+	it('does not warn when editorial strings are explicit and pronoun-free', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<div>Pixelated provides exceptional service.</div>); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/strict-pronoun-resolution': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/strict-pronoun-resolution')).toBe(false);
+	});
+
+	it('warns when JSX attribute strings contain ambiguous pronouns', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<div title="It is important">Hello</div>); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/strict-pronoun-resolution': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/strict-pronoun-resolution')).toBe(true);
+	});
+
+	it('warns when JSON string values contain ambiguous pronouns', async () => {
+		const plugin = await import('../scripts/pixelated-eslint-plugin.js');
+		const jsonPlugin = await import('@eslint/json');
+		const { Linter } = await import('eslint');
+		const linter = new Linter({ configType: 'flat' });
+		const code = '{"title":"We are proud of our service","description":"Pixelated provides exceptional service."}';
+		const messages = linter.verify(code, {
+			language: 'json/jsonc',
+			plugins: { json: jsonPlugin.default, pixelated: plugin.default },
+			rules: { 'pixelated/strict-pronoun-resolution': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/strict-pronoun-resolution')).toBe(true);
+	});
+
+	it('does not warn when JSON string values are explicit', async () => {
+		const plugin = await import('../scripts/pixelated-eslint-plugin.js');
+		const jsonPlugin = await import('@eslint/json');
+		const { Linter } = await import('eslint');
+		const linter = new Linter({ configType: 'flat' });
+		const code = '{"title":"Pixelated provides exceptional service","description":"Pixelated remains the best."}';
+		const messages = linter.verify(code, {
+			language: 'json/jsonc',
+			plugins: { json: jsonPlugin.default, pixelated: plugin.default },
+			rules: { 'pixelated/strict-pronoun-resolution': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/strict-pronoun-resolution')).toBe(false);
+	});
+
 	it('does not warn when a contentful image URL includes ?fm=webp', async () => {
 		const mod = await import('../scripts/pixelated-eslint-plugin.js');
 		const linter = new (await import('eslint')).Linter();

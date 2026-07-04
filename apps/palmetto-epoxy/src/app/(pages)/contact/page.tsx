@@ -36,7 +36,7 @@ export default function ContactPage() {
 			</noscript>
 
 			<CalloutLibrary.PageTitle title="Contact Us" />
-			<PageSection columns={1} className="" maxWidth="768" id="contactus-section">
+			<PageSection columns={1} className="" maxWidth="768px" id="contactus-section">
 				<PageGridItem>
 					<div>
 						Please fill out the form below. 

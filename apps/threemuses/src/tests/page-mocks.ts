@@ -188,6 +188,30 @@ const mockServiceAreaDetail = ({ serviceArea, id }: any) => {
 	);
 };
 
+const mockSquareEventDetail = ({ eventData, ...props }: any) => {
+	const isOpen = String(eventData?.fields?.status ?? '').toLowerCase() === 'open';
+	return React.createElement(
+		'div',
+		{ ...props, 'data-testid': 'squareeventdetail', id: 'event-callout-section' },
+		isOpen ? React.createElement('button', {
+			id: 'add-to-cart-button',
+			onClick: () => {
+				const fn = (globalThis as any).mockRouterPush;
+				if (typeof fn === 'function') fn('/cart');
+			},
+		}, 'Add to cart') : null,
+	);
+};
+
+const mockSquareEventCallout = ({ ...props }: any) => {
+	return React.createElement(
+		'div',
+		{ ...props, 'data-testid': 'squareeventcallout' },
+		React.createElement('div', { 'data-testid': 'schemaevent' }),
+		React.createElement('div', { 'data-testid': 'callout' }),
+	);
+};
+
 const contentfulValueToSlug = ({ value }: any) =>
 	encode(
 		String(value ?? '')
@@ -270,6 +294,8 @@ const defaultMocks: Record<string, any> = {
 	SquareStoreItemDetail: mockComponent('SquareStoreItemDetail'),
 	Table: mockComponent('Table'),
 	Tiles: mockComponent('Tiles', 'tiles'),
+	SquareEventDetail: mockSquareEventDetail,
+	SquareEventCallout: mockSquareEventCallout,
 	addToShoppingCart: () => null,
 	getCart: () => cartItems,
 	getCartItemCount: (items: any[]) => Array.isArray(items) ? items.reduce((sum, item) => sum + (Number(item?.itemQuantity) || 0), 0) : 0,

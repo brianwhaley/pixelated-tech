@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import { SchemaEvent, buildEventSchema } from '@/components/foundation/schema';
+import { SchemaEvent } from '@/components/foundation/schema';
 
 describe('SchemaEvent Component', () => {
 	describe('Rendering', () => {
@@ -21,7 +21,7 @@ describe('SchemaEvent Component', () => {
 	});
 });
 
-describe('buildEventSchema helper', () => {
+describe('SchemaEvent component schema generation', () => {
 	const siteInfo = {
 		name: 'Three Muses',
 		url: 'https://threemuses.example',
@@ -33,6 +33,12 @@ describe('buildEventSchema helper', () => {
 			addressCountry: 'USA',
 		},
 	};
+
+	function parseJsonLd(container: HTMLElement) {
+		const scriptTag = container.querySelector('script[type="application/ld+json"]');
+		expect(scriptTag).toBeTruthy();
+		return JSON.parse(scriptTag!.textContent ?? '{}');
+	}
 
 	it('builds a valid Event schema object with offer and normalized images', () => {
 		const eventData = {
@@ -50,7 +56,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema['@context']).toBe('https://schema.org');
 		expect(schema['@type']).toBe('Event');
@@ -88,7 +95,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema.offers).toBeUndefined();
 		expect(schema.image).toBeUndefined();
@@ -112,7 +120,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema.image).toEqual(['https://images.ctfassets.net/abc/2.jpg']);
 	});
@@ -131,7 +140,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData as any, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema.image).toBeUndefined();
 	});
@@ -152,7 +162,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData as any, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema.image).toEqual(['https://example.com/image.jpg']);
 	});
@@ -171,7 +182,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData as any, null);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: {} });
+		const schema = parseJsonLd(container);
 
 		expect(schema.url).toBe('/events/event-7');
 	});
@@ -190,7 +202,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData as any, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema.offers?.availability).toBe('https://schema.org/SoldOut');
 	});
@@ -209,7 +222,8 @@ describe('buildEventSchema helper', () => {
 			},
 		};
 
-		const schema = buildEventSchema(eventData, siteInfo as any);
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
 
 		expect(schema.startDate).toBeUndefined();
 		expect(schema.endDate).toBeUndefined();

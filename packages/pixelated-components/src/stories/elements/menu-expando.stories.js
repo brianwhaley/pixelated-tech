@@ -1,8 +1,8 @@
 import React from 'react';
 import { MenuExpando } from '@/components/elements/menu-expando';
 import '@/css/pixelated.global.css';
-import pixelatedConfig from '@/config/pixelated.config.json';
-const allRoutes = pixelatedConfig.routes;
+
+const allRoutes = [];
 
 export default {
 	title: 'General/Menu Expando',

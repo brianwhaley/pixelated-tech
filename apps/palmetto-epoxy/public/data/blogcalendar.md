@@ -9,12 +9,12 @@ Designed to demonstrate broad subject matter expertise and long-term SEO authori
 ---
 
 ## Criteria for each individual Blog Post:
-* Each post must have 1500 words, with an intro, at lest 3 paragraphs of content, and conclusion / wrap up. Each paragraph must be a minimum of 5 sentences
+* Each post must have  a minimum of 1000 words, with an intro, at lest 3 paragraphs of content, and conclusion / wrap up. Each paragraph must be a minimum of 5 sentences
 * After the conclusion of each post, add a call to action to sign up for a free estimate with a link to the url https://www.palmetto-epoxy.com/contact
 * Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..
-* Add links to other blog posts or other content on palmetto-epoxy.com, particularly other blog posts on https://blog.palmetto-epoxy.com 
-* Use a tone of confidence, customer focus, and quality , an expert in the field, and straightforward language
-* target content relevant to both residential and commercial customers
+* Add links to other blog posts or other content on palmetto-epoxy.com, particularly other blog posts on https://blog.palmetto-epoxy.com .  You can get a listing of blog posts and URLs here : https://blog.palmetto-epoxy.com/feed/ 
+* Use a tone of straightforward, simple language, with confidence, customer focus, and quality , an expert in the field, and straightforward language
+* target content relevant to both residential and commercial customers, customers between the age of 35 and 75, with a high school education
 
 --- 
 
@@ -54,18 +54,18 @@ Designed to demonstrate broad subject matter expertise and long-term SEO authori
 
 ## Quarter 3: Maintenance, Repairs & Long-Term Performance
 
-* [  ] Week 25 -- How to Maintain Epoxy Floors in Humid Climates
+* [ x ] Week 25 -- How to Maintain Epoxy Floors in Humid Climates
 * [ X ] Week 26 -- Signs Your Epoxy Floor Needs Repair or Recoating
-* [  ] Week 27 -- Maintaining Polished Concrete: Cleaning, Burnishing &    Resealing
-* [  ] Week 28 -- How Salt Air Affects Concrete, Pavers & Coatings
-* [  ] Week 29 -- Preventing Hot Tire Pickup in Garage Floors
-* [  ] Week 30 -- Common Failures in Driveway Coatings & How to Prevent Them
-* [  ] Week 31 -- How Often Should Pavers Be Resealed in the Lowcountry?
-* [  ] Week 32 -- Extending the Life of Commercial Floors in High-Traffic Buildings
-* [  ] Week 33 -- Moisture Testing: The Hidden Step Most Contractors Skip
-* [  ] Week 34 -- Recoating vs. Full Removal: Cost & Performance Comparison
-* [  ] Week 35 -- Seasonal Maintenance Checklist for Exterior Surfaces
-* [  ] Week 36 -- Long-Term Maintenance Plans for Commercial Clients
+* [ x ] Week 27 -- Maintaining Polished Concrete: Cleaning, Burnishing & Resealing
+* [ x ] Week 28 -- How Salt Air Affects Concrete, Pavers & Coatings
+* [ x ] Week 29 -- Preventing Hot Tire Pickup in Garage Floors
+* [ x ] Week 30 -- Common Failures in Driveway Coatings & How to Prevent Them
+* [ x ] Week 31 -- How Often Should Pavers Be Resealed in the Lowcountry?
+* [ x ] Week 32 -- Extending the Life of Commercial Floors in High-Traffic Buildings
+* [ x ] Week 33 -- Moisture Testing: The Hidden Step Most Contractors Skip
+* [ x ] Week 34 -- Recoating vs. Full Removal: Cost & Performance Comparison
+* [ x ] Week 35 -- Seasonal Maintenance Checklist for Exterior Surfaces
+* [ x ] Week 36 -- Long-Term Maintenance Plans for Commercial Clients
 
 ---   
 

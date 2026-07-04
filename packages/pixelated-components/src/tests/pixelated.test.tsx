@@ -277,5 +277,65 @@ describe('Pixelated Components', () => {
 			);
 			expect(container.querySelector('.page-wrapper')).toBeTruthy();
 		});
+
+		it('should map blog paths to the Pixelated blog URL', () => {
+			window.history.pushState({}, '', '/blog/article-1');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/blog');
+		});
+
+		it('should fallback to the home URL for unknown paths', () => {
+			window.history.pushState({}, '', '/unknown-path');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech');
+		});
+
+		it('should map service paths to the Pixelated services URL', () => {
+			window.history.pushState({}, '', '/services/web-design');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/services');
+		});
+
+		it('should map service-areas paths to the Pixelated service-areas URL', () => {
+			window.history.pushState({}, '', '/service-areas/landscaping');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/service-areas');
+		});
+
+		it('should map about paths to the Pixelated about URL', () => {
+			window.history.pushState({}, '', '/about/team');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/about');
+		});
+
+		it('should map contact paths to the Pixelated contact URL', () => {
+			window.history.pushState({}, '', '/contact/support');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/contact');
+		});
+
+		it('should map podcast paths to the Pixelated podcast URL', () => {
+			window.history.pushState({}, '', '/podcast/episode-1');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/podcast');
+		});
+
+		it('should map faqs paths to the Pixelated faqs URL', () => {
+			window.history.pushState({}, '', '/faqs/questions');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/faqs');
+		});
+
+		it('should map projects paths to the Pixelated portfolio URL', () => {
+			window.history.pushState({}, '', '/projects/new-site');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/portfolio');
+		});
+
+		it('should map portfolio paths to the Pixelated portfolio URL', () => {
+			window.history.pushState({}, '', '/portfolio/gallery');
+			const { container } = render(<PixelatedFooter />);
+			expect(container.querySelector('a')?.getAttribute('href')).toBe('https://www.pixelated.tech/portfolio');
+		});
 	});
 });

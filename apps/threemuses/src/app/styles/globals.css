@@ -195,3 +195,8 @@ table#three-muses-order-report.pix-table {
   margin: 0;
   padding: 0;
 }
+
+#events-section .square-store-item-callout {
+	max-width: 1024px;
+    margin: 0 auto;
+}

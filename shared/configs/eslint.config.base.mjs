@@ -3,6 +3,7 @@ import eslint from "@eslint/js";
 import pluginNext from "@next/eslint-plugin-next";
 import tseslint from "typescript-eslint";
 import parser from "@typescript-eslint/parser";
+import jsonPlugin from "@eslint/json";
 import pixelatedPlugin from "@pixelated-tech/components/scripts/pixelated-eslint-plugin.js";
 
 /**
@@ -14,6 +15,8 @@ export function getBaseESLintConfig(__dirname) {
 		{
 			ignores: [
 				".next/**",
+				"**/.next/**",
+				"**/package-lock.json",
 				"build/**",
 				"certificates/",
 				"coverage/**",
@@ -59,6 +62,18 @@ export function getBaseESLintConfig(__dirname) {
 				...pixelatedPlugin.configs.recommended.rules,
 				"pixelated/prop-types-inferprops": "warn",
 				"pixelated/required-faq": "off",
+			},
+		},
+		{
+			files: ["**/*.json"],
+			language: "json/jsonc",
+			plugins: {
+				json: jsonPlugin,
+				pixelated: pixelatedPlugin,
+			},
+			rules: {
+				...jsonPlugin.configs.recommended.rules,
+				'pixelated/strict-pronoun-resolution': 'warn',
 			},
 		},
 		{
