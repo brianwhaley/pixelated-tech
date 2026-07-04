@@ -386,21 +386,20 @@ function getSquareEventImageUrls(itemData: any, albumImageMap: Map<string, strin
 		.filter((url): url is string => Boolean(url));
 }
 
-function buildSquareEventSchedule(startDate?: string, endDate?: string) {
-	if (!startDate || !endDate) return undefined;
+function formatSquareEventDate(dateString: string, options: Intl.DateTimeFormatOptions, timeZone?: string) {
 	try {
-		const start = new Date(startDate).toLocaleString('en-US', {
-			dateStyle: 'short',
-			timeStyle: 'short',
-		}).replace(',', '');
-		const end = new Date(endDate).toLocaleString('en-US', {
-			dateStyle: 'short',
-			timeStyle: 'short',
-		}).replace(',', '');
-		return `${start} - ${end}`;
+		return new Date(dateString).toLocaleString('en-US', { ...options, timeZone }).replace(',', '');
 	} catch {
 		return undefined;
 	}
+}
+
+function buildSquareEventSchedule(startDate?: string, endDate?: string, timeZone?: string) {
+	if (!startDate || !endDate) return undefined;
+	const start = formatSquareEventDate(startDate, { dateStyle: 'short', timeStyle: 'short' }, timeZone);
+	const end = formatSquareEventDate(endDate, { dateStyle: 'short', timeStyle: 'short' }, timeZone);
+	if (!start || !end) return undefined;
+	return `${start} - ${end}`;
 }
 
 function isSquareEventComplete(startDate?: string, endDate?: string) {
@@ -460,6 +459,7 @@ function buildSquareEventItem(
 	const carouselImages = imageUrls.length ? imageUrls.map((image) => ({ image })) : undefined;
 	const startDate = itemData?.event?.start_at;
 	const endDate = itemData?.event?.end_at;
+	const eventTimeZone = itemData?.event?.event_location_time_zone;
 	if (isSquareEventComplete(startDate, endDate)) {
 		return undefined;
 	}
@@ -480,7 +480,7 @@ function buildSquareEventItem(
 			status: buildSquareEventStatus(startDate, endDate, itemInventory),
 			carouselImages,
 			category: ['event'],
-			schedule: buildSquareEventSchedule(startDate, endDate),
+			schedule: buildSquareEventSchedule(startDate, endDate, eventTimeZone),
 			isShippable: isTruthySquareProperty(itemData?.is_shippable, selectionLabelMap)
 				|| isTruthySquareProperty(properties?.isShippable, selectionLabelMap)
 				|| isTruthySquareProperty(properties?.is_shippable, selectionLabelMap),
@@ -806,10 +806,11 @@ function buildSquareStoreItem(
 	const itemInventory = variationIds.reduce((total: number, id: string) => total + (countsMap.get(id) ?? 0), 0);
 	const itemAvailableSeats = itemData?.product_type === 'EVENT' ? itemInventory : undefined;
 	const itemMaxSeats = itemData?.product_type === 'EVENT' ? itemInventory : undefined;
-	const itemStartDate = eventStartDate ? new Date(eventStartDate).toLocaleDateString('en-US', { dateStyle: 'short' }) : undefined;
-	const itemStartTime = eventStartDate ? new Date(eventStartDate).toLocaleTimeString('en-US', { timeStyle: 'short' }) : undefined;
-	const itemEndDate = eventEndDate ? new Date(eventEndDate).toLocaleDateString('en-US', { dateStyle: 'short' }) : undefined;
-	const itemEndTime = eventEndDate ? new Date(eventEndDate).toLocaleTimeString('en-US', { timeStyle: 'short' }) : undefined;
+	const itemTimeZone = itemData?.event?.event_location_time_zone;
+	const itemStartDate = eventStartDate ? new Date(eventStartDate).toLocaleDateString('en-US', { dateStyle: 'short', timeZone: itemTimeZone }) : undefined;
+	const itemStartTime = eventStartDate ? new Date(eventStartDate).toLocaleTimeString('en-US', { timeStyle: 'short', timeZone: itemTimeZone }) : undefined;
+	const itemEndDate = eventEndDate ? new Date(eventEndDate).toLocaleDateString('en-US', { dateStyle: 'short', timeZone: itemTimeZone }) : undefined;
+	const itemEndTime = eventEndDate ? new Date(eventEndDate).toLocaleTimeString('en-US', { timeStyle: 'short', timeZone: itemTimeZone }) : undefined;
 	const itemDurationHours = eventStartDate && eventEndDate ? getSquareEventDurationHours(eventStartDate, eventEndDate) : undefined;
 
 	const itemTitle = itemData?.name || 'Untitled Item';

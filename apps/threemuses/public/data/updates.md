@@ -1,5 +1,7 @@
 # The Three Muses of Bluffton -- Updates
 
+* [  ] consider adding an event calendar page to the site
+
 ## 2026-07-02 Updates
 * [ x ] Create a new category in Square - Boutique In Progress - move items that need help there
 * [ x ] Add Consignment items to shopping cart
