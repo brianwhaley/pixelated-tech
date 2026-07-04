@@ -1,11 +1,31 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { captureSquarePayment, buildSquareOrderBody, buildSquarePaymentBody, createSquareOrder, SquarePaymentError, getSquareStoreItems, getSquareStoreItemById, clearSquareStoreCache } from '../components/shoppingcart/square';
+import { captureSquarePayment, buildSquareOrderBody, buildSquarePaymentBody, buildSquarePaymentBodyWithOrder, createSquareOrder, createSquareOrderAndCapturePayment, getSquareConfig, getSquareStoreItems, getSquareStoreItemById, clearSquareStoreCache } from '../components/shoppingcart/square.server';
+import { SquarePaymentError, getSquarePaymentErrorMessage, getSquareStorePriceRanges, matchesSquareStorePriceRange, buildSquareStoreFilters } from '../components/shoppingcart/square';
 import type { CheckoutType } from '../components/shoppingcart/shoppingcart.functions';
 import { createMockConfig, deepClone, makeCheckoutData } from '../test/test-utils';
-import { squareOrderCheckoutData, squareCatalogResponseWithRelatedObjects, squareCatalogResponseNoRelatedObjects, squareCatalogResponseNestedVariation, pixelatedConfig } from '../test/test-data';
+import { squareOrderCheckoutData, squareCatalogResponseWithRelatedObjects, squareCatalogResponseNoRelatedObjects, squareCatalogResponseNestedVariation, squareCatalogResponseById, pixelatedConfig } from '../test/test-data';
 
 const mockGetFullPixelatedConfig = vi.fn();
 const mockSmartFetch = vi.fn();
+
+const squareAttributeDefinitionsResponse = {
+	objects: [
+		{
+			type: 'CUSTOM_ATTRIBUTE_DEFINITION',
+			id: '2WLTHCMSPDG36KKBW4V6JNWS',
+			custom_attribute_definition_data: {
+				name: 'isShippable',
+				type: 'SELECTION',
+				selection_config: {
+					allowed_selections: [
+						{ uid: 'LWSS2L5WIQFZE3SVNEYZQGWP', name: 'False' },
+						{ uid: 'E43GQBXQMATRUT5RGHHACITB', name: 'True' },
+					],
+				},
+			},
+		},
+	],
+};
 
 vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: () => mockGetFullPixelatedConfig(),
@@ -323,6 +343,275 @@ describe('Square payment helper', () => {
 		});
 	});
 
+	it('returns undefined for incomplete Square credentials', () => {
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: { squareApplicationId: 'app', squareLocationId: 'loc' } } }));
+		const credentials = getSquareConfig();
+		expect(credentials).toBeUndefined();
+	});
+
+	it('selects sandbox credentials when square.environment is sandbox', () => {
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: {
+			environment: 'sandbox',
+			sandboxSquareApplicationId: 'sandbox-app',
+			sandboxSquareLocationId: 'sandbox-loc',
+			sandboxSquareAccessToken: 'sandbox-token',
+			sandboxSquarePaymentsUrl: 'https://custom.sandbox.squareup.com/v2/payments',
+			squareApplicationId: 'prod-app',
+			squareLocationId: 'prod-loc',
+			squareAccessToken: 'prod-token',
+		} } }));
+
+		const credentials = getSquareConfig();
+
+		expect(credentials).toMatchObject({
+			applicationId: 'sandbox-app',
+			locationId: 'sandbox-loc',
+			accessToken: 'sandbox-token',
+			paymentsUrl: 'https://custom.sandbox.squareup.com/v2/payments',
+		});
+	});
+
+	it('builds a payment body without buyer email or phone when contact info is blank', () => {
+		const checkoutData = makeCheckoutData({
+			shippingTo: { name: 'Test User', street1: '123 Test Lane', city: 'Testville', state: 'NY', zip: '10001', country: 'US', email: '', phone: '' },
+		});
+
+		const body = buildSquarePaymentBodyWithOrder('source-no-contact', checkoutData, 'idem-no-contact');
+
+		expect(body).not.toHaveProperty('buyer_email_address');
+		expect(body).not.toHaveProperty('buyer_phone_number');
+	});
+
+	it('omits registration line item when no registration data exists', () => {
+		const checkoutData = makeCheckoutData({
+			subtotal_discount: 0,
+			shippingTo: { name: 'Test User', street1: '123 Test Lane', city: 'Testville', state: 'NY', zip: '10001', country: 'US', email: 'test@example.com', phone: '1234567890' },
+		});
+
+		delete (checkoutData as any).shippingTo.child_name;
+		delete (checkoutData as any).shippingTo.child_birthdate;
+
+		const body = buildSquareOrderBody(checkoutData, 'order-no-registration');
+		expect(body.order.line_items).toHaveLength((checkoutData.items || []).length);
+		expect(body.order.line_items.some((item: any) => item.name === 'registration-data')).toBe(false);
+	});
+
+	it('omits service charges, taxes, and fulfillment when shipping and tax are disabled', () => {
+		const cfg = deepClone(pixelatedConfig.integrations.square);
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg, shoppingcart: { taxRate: 0 } } }));
+
+		const checkoutData = makeCheckoutData({
+			shippingCost: 0,
+			handlingFee: 0,
+			subtotal_discount: 0,
+			items: (squareOrderCheckoutData as CheckoutType).items.map((item: any) => ({ ...item, itemIsShippable: false })),
+		});
+
+		const body = buildSquareOrderBody(checkoutData, 'order-no-shipping');
+		expect(body.order.service_charges).toBeUndefined();
+		expect(body.order.taxes).toBeUndefined();
+		expect(body.order.fulfillments).toBeUndefined();
+	});
+
+	it('creates a generic SquarePaymentError when response body JSON is malformed', async () => {
+		const checkoutData = squareOrderCheckoutData as CheckoutType;
+		mockSmartFetch.mockRejectedValue(new Error('[smartFetch] connect.squareup.com: HTTP 500 Internal Server Error: {invalid json'));
+
+		await expect(captureSquarePayment('source-malformed', checkoutData, 'idem-malformed')).rejects.toMatchObject({
+			name: 'SquarePaymentError',
+			code: 'SQUARE_PAYMENT_FAILED',
+			userMessage: 'Your payment could not be processed. Please try again.',
+		});
+	});
+
+	it('creates an order and captures payment using the Square order id and total_money amount from the order response', async () => {
+		const checkoutData = squareOrderCheckoutData as CheckoutType;
+		const orderResponse = {
+			order: {
+				id: 'order-123',
+				total_money: { amount: 12345 },
+			},
+		};
+		const captureResponse = { payment: { id: 'sq-captured' } };
+
+		mockSmartFetch.mockResolvedValueOnce(orderResponse);
+		mockSmartFetch.mockResolvedValueOnce(captureResponse);
+
+		const result = await createSquareOrderAndCapturePayment('source-captured', checkoutData);
+
+		expect(mockSmartFetch).toHaveBeenNthCalledWith(1, expect.stringContaining('/v2/orders'), expect.any(Object));
+		expect(mockSmartFetch).toHaveBeenNthCalledWith(2, expect.stringContaining('/v2/payments'), expect.objectContaining({
+			requestInit: expect.objectContaining({
+				body: expect.stringContaining('"order_id":"order-123"'),
+			}),
+		}));
+		expect(result.orderResponse).toEqual(orderResponse);
+		expect(result.payment).toEqual(captureResponse.payment);
+	});
+
+	it('creates an order and falls back to order_id when the order.id field is absent', async () => {
+		const checkoutData = makeCheckoutData({ total: 42 });
+		const orderResponse = {
+			order_id: 'fallback-order-123',
+		};
+		const captureResponse = { payment: { id: 'sq-fallback' } };
+
+		mockSmartFetch.mockResolvedValueOnce(orderResponse);
+		mockSmartFetch.mockResolvedValueOnce(captureResponse);
+
+		const result = await createSquareOrderAndCapturePayment('source-fallback', checkoutData);
+
+		expect(mockSmartFetch).toHaveBeenNthCalledWith(2, expect.stringContaining('/v2/payments'), expect.objectContaining({
+			requestInit: expect.objectContaining({
+				body: expect.stringContaining('"order_id":"fallback-order-123"'),
+				body: expect.stringContaining('"amount":4200'),
+			}),
+		}));
+		expect(result.orderResponse).toEqual(orderResponse);
+	});
+
+	it('creates an order and falls back to order id from response.id when order_id and order.id are unavailable', async () => {
+		const checkoutData = makeCheckoutData({ total: 53 });
+		const orderResponse = {
+			id: 'legacy-order-id',
+		};
+		const captureResponse = { payment: { id: 'sq-legacy' } };
+
+		mockSmartFetch.mockResolvedValueOnce(orderResponse);
+		mockSmartFetch.mockResolvedValueOnce(captureResponse);
+
+		const result = await createSquareOrderAndCapturePayment('source-legacy', checkoutData);
+
+		expect(mockSmartFetch).toHaveBeenNthCalledWith(2, expect.stringContaining('/v2/payments'), expect.objectContaining({
+			requestInit: expect.objectContaining({
+				body: expect.stringContaining('"order_id":"legacy-order-id"'),
+				body: expect.stringContaining('"amount":5300'),
+			}),
+		}));
+		expect(result.orderResponse).toEqual(orderResponse);
+	});
+
+	it('returns correct Square store price range labels and ignores invalid prices', () => {
+		const items = [
+			{ itemPrice: 10 },
+			{ itemPrice: 25 },
+			{ itemPrice: 1200 },
+			{ itemPrice: NaN },
+		] as any[];
+
+		expect(getSquareStorePriceRanges(items)).toEqual(['Under $25', '$25 - $50', '$1000+']);
+		expect(matchesSquareStorePriceRange(25, 'Under $25')).toBe(true);
+		expect(matchesSquareStorePriceRange(NaN, 'Under $25')).toBe(false);
+		expect(matchesSquareStorePriceRange(1000, '$1000+')).toBe(true);
+		expect(matchesSquareStorePriceRange(1000, 'Invalid Range')).toBe(false);
+	});
+
+	it('builds square store filters from item categories only and ignores property filters', () => {
+		const items = [
+			{
+				itemPrice: 25,
+				categories: [{ id: 'cat-1', name: 'Boutique' }],
+				properties: { Color: 'Blue', Empty: '' },
+			},
+			{
+				itemPrice: 10,
+				properties: { Material: 'Wool' },
+			},
+		] as any[];
+
+		const filters = buildSquareStoreFilters(items);
+		expect(filters).toEqual(expect.arrayContaining([
+			{ name: 'Category', values: [{ value: 'cat-1', label: 'Boutique' }] },
+		]));
+		expect(filters.some((filter) => filter.name === 'Color')).toBe(false);
+		expect(filters.some((filter) => filter.name === 'Material')).toBe(false);
+
+		const priceRange = filters.find((filter) => filter.name === 'Price Range');
+		expect(priceRange).toBeDefined();
+		expect(priceRange?.values).toEqual(expect.arrayContaining([
+			{ value: 'Under $25', label: 'Under $25' },
+			{ value: '$25 - $50', label: '$25 - $50' },
+		]));
+	});
+
+	it('returns empty price ranges when there are no valid item prices', () => {
+		expect(getSquareStorePriceRanges([{ itemPrice: NaN }, { itemPrice: undefined } as any])).toEqual([]);
+		expect(matchesSquareStorePriceRange(NaN, 'Under $25')).toBe(false);
+		expect(matchesSquareStorePriceRange(1200, '$1000+')).toBe(true);
+		expect(matchesSquareStorePriceRange(50, 'Invalid Range')).toBe(false);
+	});
+
+	it('builds no filters for blank categories and property values', () => {
+		const items = [
+			{
+				itemPrice: 30,
+				categories: [{ id: '', name: 'Boutique' }, { id: 'cat-2', name: '' }],
+				properties: { Color: '', Material: '  ' },
+			},
+		] as any[];
+
+		const filters = buildSquareStoreFilters(items);
+		expect(filters).toEqual([{ name: 'Price Range', values: [{ value: '$25 - $50', label: '$25 - $50' }] }]);
+	});
+
+	it('creates a SquarePaymentError when Square returns a CARD_TOKEN_USED or GENERIC_DECLINE response', async () => {
+		const checkoutData = squareOrderCheckoutData as CheckoutType;
+
+		mockSmartFetch.mockRejectedValueOnce(new Error('[smartFetch] connect.squareup.com: HTTP 400 Bad Request: {"errors":[{"code":"CARD_TOKEN_USED","detail":"Authorization error: \'CARD_TOKEN_USED\'","category":"PAYMENT_METHOD_ERROR"}]}'));
+		await expect(captureSquarePayment('source-card-used', checkoutData, 'idem-card-used')).rejects.toMatchObject({
+			name: 'SquarePaymentError',
+			code: 'CARD_TOKEN_USED',
+			userMessage: 'Please re-enter your card details and try again.',
+		});
+
+		mockSmartFetch.mockRejectedValueOnce(new Error('[smartFetch] connect.squareup.com: HTTP 400 Bad Request: {"errors":[{"code":"GENERIC_DECLINE","detail":"Decline error","category":"PAYMENT_METHOD_ERROR"}]}'));
+		await expect(captureSquarePayment('source-decline', checkoutData, 'idem-decline')).rejects.toMatchObject({
+			name: 'SquarePaymentError',
+			code: 'GENERIC_DECLINE',
+			userMessage: 'Your card was declined. Please try a different card or contact your bank.',
+		});
+	});
+
+	it('returns user-friendly Square error messages from SquarePaymentError and payload error fields', () => {
+		expect(getSquarePaymentErrorMessage(new SquarePaymentError('X', 'User error message'))).toBe('User error message');
+		expect(getSquarePaymentErrorMessage(new Error('[smartFetch] unknown: HTTP 500 Internal Server Error: {"error":"Please retry again."}'))).toBe('Please retry again.');
+	});
+
+	it('returns store items by direct ID, slug, and parsed id fallback', async () => {
+		const cfg = deepClone(pixelatedConfig.integrations.square);
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg } }));
+
+		const squareCatalogResponse = squareCatalogResponseById;
+
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-123', quantity: '2' },
+				{ catalog_object_id: 'var-456', quantity: '5' },
+			],
+		};
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+		const direct = await getSquareStoreItemById('item-123');
+		const slug = await getSquareStoreItemById('test-item');
+		const parsed = await getSquareStoreItemById('test-123');
+
+		expect(response.items).toHaveLength(2);
+		expect(direct?.itemID).toBe('item-123');
+		expect(slug?.itemURL).toContain('/test-item');
+		expect(parsed?.itemID).toBe('123');
+	});
+
+	it('creates an order and captures payment using the Square order id and total_money amount from the order response', async () => {
+		expect(getSquarePaymentErrorMessage(new SquarePaymentError('X', 'User error message'))).toBe('User error message');
+		expect(getSquarePaymentErrorMessage(new Error('[smartFetch] error: {"error":"Please re-enter your card details and try again."}'))).toBe('Please re-enter your card details and try again.');
+		expect(getSquarePaymentErrorMessage(new Error('Card verification failed. Please check the CVV and try again.'))).toBe('Card verification failed. Please check the CVV and try again.');
+		expect(getSquarePaymentErrorMessage(new Error('Some other issue occurred'))).toBeUndefined();
+	});
+
 	it('throws when Square store configuration is missing', async () => {
 		mockGetFullPixelatedConfig.mockReturnValue({});
 		await expect(getSquareStoreItems()).rejects.toThrow('Square configuration is required for store items.');
@@ -345,13 +634,14 @@ describe('Square payment helper', () => {
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
 
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
 		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
 		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
 
 		const response = await getSquareStoreItems();
 
-		expect(mockSmartFetch.mock.calls[0][0]).toContain('/v2/catalog/search-catalog-items');
-		expect(mockSmartFetch.mock.calls[0][1]).toEqual(expect.objectContaining({
+		expect(mockSmartFetch.mock.calls[1][0]).toContain('/v2/catalog/search-catalog-items');
+		expect(mockSmartFetch.mock.calls[1][1]).toEqual(expect.objectContaining({
 			responseType: 'json',
 			requestInit: expect.objectContaining({
 				method: 'POST',
@@ -376,8 +666,144 @@ describe('Square payment helper', () => {
 		expect(response.filters).toEqual(expect.arrayContaining([
 			{ name: 'Category', values: [{ value: 'cat-1', label: 'Boutique' }] },
 			{ name: 'Price Range', values: [{ value: '$25 - $50', label: '$25 - $50' }] },
-			{ name: 'Color', values: [{ value: 'White', label: 'White' }] },
 		]));
+		expect(response.filters.some((filter) => filter.name === 'Color')).toBe(false);
+	});
+
+	it('resolves raw Square selection UID values for isShippable as true', async () => {
+		const squareCatalogResponse = deepClone(squareCatalogResponseWithRelatedObjects);
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-1', quantity: '3' },
+			],
+		};
+
+		const attributeDefinitionsResponse = {
+			objects: [
+				{
+					type: 'CUSTOM_ATTRIBUTE_DEFINITION',
+					id: '2WLTHCMSPDG36KKBW4V6JNWS',
+					custom_attribute_definition_data: {
+						name: 'isShippable',
+						type: 'SELECTION',
+						selection_config: {
+							allowed_selections: [
+								{ uid: 'LWSS2L5WIQFZE3SVNEYZQGWP', name: 'False' },
+								{ uid: 'E43GQBXQMATRUT5RGHHACITB', name: 'True' },
+							],
+						},
+					},
+				},
+			],
+		};
+
+		const itemObject = (squareCatalogResponse.objects || []).find((o: any) => o.type === 'ITEM' && o.id === 'item-1');
+		if (itemObject?.item_data) {
+			itemObject.item_data.custom_attribute_values = [
+				{ name: 'isShippable', selection_uid_values: ['E43GQBXQMATRUT5RGHHACITB'] },
+			];
+		}
+
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
+
+		mockSmartFetch.mockResolvedValueOnce(attributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+
+		expect(response.items).toHaveLength(1);
+		expect(response.items[0].itemIsShippable).toBe(true);
+	});
+
+	it('parses Square item weight from string values and keeps unit only when weight exists', async () => {
+		const squareCatalogResponse = deepClone(squareCatalogResponseWithRelatedObjects);
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-1', quantity: '3' },
+			],
+		};
+
+		const variationObject = (squareCatalogResponse.objects || []).find((o: any) => o.type === 'ITEM_VARIATION' && o.id === 'var-1');
+		if (variationObject?.item_variation_data) {
+			variationObject.item_variation_data.item_weight = '1.25';
+			variationObject.item_variation_data.item_weight_unit = 'lb';
+		}
+
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+
+		expect(response.items).toHaveLength(1);
+		expect(response.items[0].itemWeight).toBe(1.25);
+		expect(response.items[0].itemWeightUnit).toBe('lb');
+	});
+
+	it('maps Square custom property weight into itemWeight and unit', async () => {
+		const squareCatalogResponse = deepClone(squareCatalogResponseWithRelatedObjects);
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-1', quantity: '3' },
+			],
+		};
+
+		const itemObject = (squareCatalogResponse.objects || []).find((o: any) => o.type === 'ITEM' && o.id === 'item-1');
+		if (itemObject?.item_data) {
+			itemObject.item_data.custom_attribute_values = [
+				{ name: 'Shippable Weight', string_value: '1.0' },
+				{ name: 'Weight Unit', string_value: 'lb' },
+			];
+		}
+
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+
+		expect(response.items).toHaveLength(1);
+		expect(response.items[0].itemWeight).toBe(1);
+		expect(response.items[0].itemWeightUnit).toBe('lb');
+	});
+
+	it('supports multiple squareItemCategoryId values and requests all configured categories', async () => {
+		const squareCatalogResponse = squareCatalogResponseWithRelatedObjects;
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-1', quantity: '3' },
+			],
+		};
+
+		const cfg = deepClone(pixelatedConfig.integrations.square);
+		cfg.squareItemCategoryId = ['cat-1', 'cat-2'];
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg } }));
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+
+		expect(mockSmartFetch.mock.calls[1][0]).toContain('/v2/catalog/search-catalog-items');
+		expect(mockSmartFetch.mock.calls[1][1]).toEqual(expect.objectContaining({
+			responseType: 'json',
+			requestInit: expect.objectContaining({
+				method: 'POST',
+				headers: expect.objectContaining({
+					Authorization: 'Bearer test-access-token',
+					'Square-Version': '2026-05-20',
+				}),
+				body: JSON.stringify({ category_ids: ['cat-1', 'cat-2'], include_related_objects: true }),
+			}),
+		}));
+
+		expect(response.items).toHaveLength(1);
 	});
 
 	it('collects all assigned categories for boutique items and builds multiple category filters', async () => {
@@ -392,6 +818,7 @@ describe('Square payment helper', () => {
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
 
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
 		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
 		mockSmartFetch.mockResolvedValueOnce(categoryListResponse);
 		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
@@ -464,6 +891,7 @@ describe('Square payment helper', () => {
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
 
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
 		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
 		mockSmartFetch.mockResolvedValueOnce(categoryListResponse);
 		mockSmartFetch.mockResolvedValueOnce(imageBatchResponse);
@@ -498,6 +926,7 @@ describe('Square payment helper', () => {
 		cfg2.squareItemCategoryId = 'cat-2';
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg2 } }));
 
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
 		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
 		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
 
@@ -518,6 +947,7 @@ describe('Square payment helper', () => {
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
 
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
 		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
 		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
 

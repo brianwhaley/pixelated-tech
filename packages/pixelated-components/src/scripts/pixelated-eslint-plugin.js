@@ -535,6 +535,84 @@ const packageJsonWrongDependencyTypeRule = {
 	},
 };
 
+function escapeRegExp(value) {
+	return value.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&");
+}
+
+const ambiguousPronouns = [
+	'it',
+	'its',
+	'this',
+	'that',
+	'these',
+	'those',
+	'they',
+	'them',
+	'their',
+	'theirs',
+	'we',
+	'us',
+	'our',
+	'my',
+	'me',
+	'I',
+	'mine',
+];
+const ambiguousPronounPattern = new RegExp(`\\b(?:${ambiguousPronouns.map(escapeRegExp).join('|')})\\b`, 'gi');
+
+const strictPronounResolutionRule = {
+	meta: {
+		type: 'suggestion',
+		docs: {
+			description: 'Warn when ambiguous pronouns appear in editorial copy so brand references remain explicit.',
+			category: 'Best Practices',
+			recommended: true,
+		},
+		messages: {
+			ambiguousPronoun: 'Avoid ambiguous pronoun "{{pronoun}}" in editorial copy; use an explicit noun or brand reference instead.',
+		},
+		schema: [],
+	},
+	create(context) {
+		function reportText(node, text) {
+			if (typeof text !== 'string' || text.trim().length === 0) return;
+			const match = text.match(ambiguousPronounPattern);
+			if (!match) return;
+			context.report({ node, messageId: 'ambiguousPronoun', data: { pronoun: match[0] } });
+		}
+
+		function getTemplateText(node) {
+			return node.quasis.map(quasi => quasi.value.cooked || '').join(' ');
+		}
+
+		return {
+			JSXText(node) {
+				reportText(node, node.value);
+			},
+			Literal(node) {
+				if (typeof node.value === 'string') {
+					reportText(node, node.value);
+				}
+			},
+			TemplateLiteral(node) {
+				reportText(node, getTemplateText(node));
+			},
+			Member(node) {
+				const value = node.value;
+				if (value?.type === 'String' && typeof value.value === 'string') {
+					reportText(value, value.value);
+				}
+			},
+			Element(node) {
+				const value = node.value;
+				if (value?.type === 'String' && typeof value.value === 'string') {
+					reportText(value, value.value);
+				}
+			},
+		};
+	},
+};
+
 const propTypesInferPropsRule = {
 	meta: {
 		type: 'problem',
@@ -1962,6 +2040,7 @@ export default {
 		'package-json-wrong-dependency-type': packageJsonWrongDependencyTypeRule,
 		'package-json-no-unused-dependency': packageJsonNoUnusedDependencyRule,
 		'no-direct-fetch': noDirectFetchRule,
+		'strict-pronoun-resolution': strictPronounResolutionRule,
 	},
 	configs: {
 		recommended: {
@@ -1987,6 +2066,7 @@ export default {
 			'pixelated/package-json-wrong-dependency-type': 'warn',
 			'pixelated/package-json-no-unused-dependency': 'warn',
 			'pixelated/no-direct-fetch': 'error',
+			'pixelated/strict-pronoun-resolution': 'warn',
 			},
 		},
 	},

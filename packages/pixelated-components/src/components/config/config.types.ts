@@ -360,7 +360,7 @@ export interface SquareConfig {
 	squareLocationId: string;
 	squareScriptUrl?: string;
 	squarePaymentsUrl?: string;
-	squareItemCategoryId?: string;
+	squareItemCategoryId?: string | string[];
 	squareFeaturedCategoryId?: string;
 
 	sandboxSquareApplicationId: string;

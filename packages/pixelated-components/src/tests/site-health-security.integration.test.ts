@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import fs from 'fs';
+import * as fs from 'fs';
 import path from 'path';
 
 vi.mock('child_process', () => {
@@ -45,10 +45,17 @@ vi.mock('child_process', () => {
 
 vi.mock('fs', async () => {
 	const actual = await vi.importActual<typeof import('fs')>('fs');
+	const existsSyncMock = vi.fn(actual.existsSync);
+	const readFileSyncMock = vi.fn(actual.readFileSync);
 	return {
 		...actual,
-		default: actual,
-		existsSync: vi.fn(actual.existsSync),
+		default: {
+			...actual,
+			existsSync: existsSyncMock,
+			readFileSync: readFileSyncMock,
+		},
+		existsSync: existsSyncMock,
+		readFileSync: readFileSyncMock,
 	};
 });
 
@@ -83,29 +90,21 @@ describe('analyzeSecurityHealth', () => {
 		}
 	});
 
-	it('should handle missing package.json gracefully', async () => {
-		const fs = await import('fs');
-		vi.mocked(fs.existsSync).mockReturnValueOnce(false);
-
-		const result = await analyzeSecurityHealth('/test/path', 'test-site');
-		expect(result).toBeDefined();
-		expect(result.status).toBe('error');
-	});
-
 	it('should return No Dependencies when package.json is missing but site directory exists', async () => {
 		const fsModule = await import('fs');
 		const localPath = path.join(process.cwd(), 'test-site-no-pkg');
+		const packageJsonPath = path.join(localPath, 'package.json');
 		fsModule.mkdirSync(localPath, { recursive: true });
-		let result: any;
-		try {
-			result = await analyzeSecurityHealth(localPath, 'test-site-no-pkg');
-		} finally {
-			fsModule.rmSync(localPath, { recursive: true, force: true });
-		}
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath) return true;
+			if (candidatePath === packageJsonPath) return false;
+			return false;
+		});
 
-		expect(result.status).toBe('success');
-		expect(result.data?.status).toBe('No Dependencies');
-		expect(result.data?.dependencies).toBe(0);
+		const result = await analyzeSecurityHealth(localPath, 'test-site-no-pkg');
+
+		fsModule.rmSync(localPath, { recursive: true, force: true });
+
 		expect(result.status).toBe('success');
 		expect(result.data?.status).toBe('No Dependencies');
 		expect(result.data?.dependencies).toBe(0);
@@ -136,10 +135,145 @@ describe('analyzeSecurityHealth', () => {
 		}
 	});
 
-	it('should return an error when npm audit stdout cannot be parsed after command failure', async () => {
+	it('should use repoName fallback when local path is missing', async () => {
+		const fsModule = await import('fs');
+		const localPath = '/missing/path';
+		const repoPath = path.join(process.cwd(), 'repo-fallback');
+		const packageJsonPath = path.join(repoPath, 'package.json');
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath) return false;
+			if (candidatePath === repoPath) return true;
+			if (candidatePath === packageJsonPath) return true;
+			return false;
+		});
+
+		const result = await analyzeSecurityHealth(localPath, undefined, 'repo-fallback');
+		expect(result.status).toBeDefined();
+		if (result.status === 'success' && result.data) {
+			expect(result.data.vulnerabilities).toBeDefined();
+		}
+	});
+
+	it('should return error when the site directory cannot be found', async () => {
+		const fsModule = await import('fs');
+		vi.mocked(fsModule.existsSync).mockReturnValue(false);
+
+		const result = await analyzeSecurityHealth('/missing/path', 'test-site');
+
+		expect(result.status).toBe('error');
+		expect(result.error).toContain('Site directory not found');
+	});
+
+	it('should use external volume fallback when the workspace path is not available', async () => {
+		const fsModule = await import('fs');
+		const localPath = '/missing/path';
+		const externalPath = path.join('/Volumes', 'btw_x10_pro', 'Git', 'test-site');
+		const packageJsonPath = path.join(externalPath, 'package.json');
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath) return false;
+			if (candidatePath === externalPath) return true;
+			if (candidatePath === packageJsonPath) return true;
+			return false;
+		});
+
+		const result = await analyzeSecurityHealth(localPath, 'test-site');
+
+		expect(result.status).toBe('success');
+		expect(result.data?.status).toBeDefined();
+	});
+
+	it('should return an error when npm audit fails without stdout', async () => {
+		const fsModule = await import('fs');
 		const childProcess = await import('child_process');
 		const execSpy = vi.mocked(childProcess.exec);
-		const localPath = process.cwd();
+		const localPath = path.join(process.cwd(), 'test-site-audit-error');
+		const packageJsonPath = path.join(localPath, 'package.json');
+
+		fsModule.mkdirSync(localPath, { recursive: true });
+		fsModule.writeFileSync(packageJsonPath, '{}');
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath || candidatePath === packageJsonPath) return true;
+			return false;
+		});
+
+		const error = new Error('npm audit failed');
+		execSpy.mockImplementationOnce((cmd: string, options: any, callback: (err: Error | null, stdout: string, stderr: string) => void) => {
+			callback(error, '', '');
+		});
+
+		const result = await analyzeSecurityHealth(localPath, 'test-site');
+
+		fsModule.rmSync(localPath, { recursive: true, force: true });
+
+		expect(result.status).toBe('error');
+		expect(result.error).toContain('npm audit failed');
+	});
+
+	it('should return Critical status when critical vulnerabilities are present', async () => {
+		const fsModule = await import('fs');
+		const childProcess = await import('child_process');
+		const execSpy = vi.mocked(childProcess.exec);
+		const localPath = path.join(process.cwd(), 'test-site-critical');
+		const packageJsonPath = path.join(localPath, 'package.json');
+
+		fsModule.mkdirSync(localPath, { recursive: true });
+		fsModule.writeFileSync(packageJsonPath, '{}');
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath || candidatePath === packageJsonPath) return true;
+			return false;
+		});
+
+		execSpy.mockImplementationOnce((cmd: string, options: any, callback: (err: Error | null, stdout: string, stderr: string) => void) => {
+			callback(null, JSON.stringify({
+				auditReportVersion: 2,
+				vulnerabilities: {
+					'test-package': {
+						name: 'test-package',
+						severity: 'critical',
+						via: ['vulnerability-1'],
+						range: '<1.0.0',
+						nodes: ['node_modules/test-package'],
+						fixAvailable: true
+					}
+				},
+				metadata: {
+					auditReportVersion: 2,
+					vulnerabilities: {
+						info: 0,
+						low: 0,
+						moderate: 0,
+						high: 0,
+						critical: 1
+					},
+					dependencies: {
+						total: 1,
+					},
+					totalDependencies: 1
+				}
+			}), '');
+		});
+
+		const result = await analyzeSecurityHealth(localPath, 'test-site');
+
+		fsModule.rmSync(localPath, { recursive: true, force: true });
+
+		expect(result.status).toBe('success');
+		expect(result.data?.status).toBe('Critical');
+	});
+
+	it('should return an error when npm audit stdout cannot be parsed after command failure', async () => {
+		const fsModule = await import('fs');
+		const childProcess = await import('child_process');
+		const execSpy = vi.mocked(childProcess.exec);
+		const localPath = path.join(process.cwd(), 'test-site-json-error');
+		const packageJsonPath = path.join(localPath, 'package.json');
+
+		fsModule.mkdirSync(localPath, { recursive: true });
+		fsModule.writeFileSync(packageJsonPath, '{}');
+		vi.mocked(fsModule.existsSync).mockImplementation((candidatePath: string) => {
+			if (candidatePath === localPath || candidatePath === packageJsonPath) return true;
+			return false;
+		});
 
 		const error = new Error('npm audit failed') as any;
 		error.stdout = 'not-json';
@@ -148,6 +282,8 @@ describe('analyzeSecurityHealth', () => {
 		});
 
 		const result = await analyzeSecurityHealth(localPath, 'test-site');
+
+		fsModule.rmSync(localPath, { recursive: true, force: true });
 
 		expect(result.status).toBe('error');
 		expect(result.error).toContain('Failed to parse npm audit output');

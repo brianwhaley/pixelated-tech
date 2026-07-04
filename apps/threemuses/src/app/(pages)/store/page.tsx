@@ -1,18 +1,22 @@
-import React from 'react';
-import { Callout, PageSection, PageTitleHeader } from '@pixelated-tech/components';
-import { SquareStoreItems } from '@pixelated-tech/components';
-import { getSquareStoreItems } from '@pixelated-tech/components/server';
+import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
+import { SquareStoreItemsWrapper } from '@pixelated-tech/components/server';
 
-export default async function StorePage() {
-	let boutiqueItems: Awaited<ReturnType<typeof getSquareStoreItems>>['items'] = [];
-	let errorMessage: string | null = null;
+export default async function StorePage({
+	searchParams,
+}: {
+	searchParams?: Promise<Record<string, string | string[] | undefined>>;
+} = {}) {
+	const resolvedSearchParams = await searchParams;
+	const prefilter = {
+		featuredOnly: resolvedSearchParams?.featuredOnly === 'true',
+		propertyName: typeof resolvedSearchParams?.propertyName === 'string' ? resolvedSearchParams.propertyName : undefined,
+		propertyValue: typeof resolvedSearchParams?.propertyValue === 'string' ? resolvedSearchParams.propertyValue : undefined,
+	};
 
-	try {
-		const storeResponse = await getSquareStoreItems();
-		boutiqueItems = storeResponse?.items ?? [];
-	} catch (error: any) {
-		errorMessage = error?.message || 'Unable to load boutique items at this time.';
-	}
+	const initialFilter = prefilter.propertyName && prefilter.propertyValue ? {
+		propertyName: prefilter.propertyName,
+		propertyValue: prefilter.propertyValue,
+	} : undefined;
 
 	return (
 		<>
@@ -23,31 +27,16 @@ export default async function StorePage() {
 				</p>
 			</PageSection>
 
-			{errorMessage ? (
-				<PageSection columns={1} maxWidth="1024px" id="store-error-section">
-					<Callout
-						variant="boxed"
-						title="Store loading error"
-						subtitle={errorMessage}
-					/>
-				</PageSection>
-			) : boutiqueItems.length === 0 ? (
-				<PageSection columns={1} maxWidth="1024px" id="store-empty-section">
-					<Callout
-						variant="boxed"
-						title="No boutique items available"
-						subtitle="Please check back soon for new curated merchandise."
-					/>
-				</PageSection>
-			) : (
-				<PageSection columns={4} maxWidth="1200px" id="store-items-section">
-					<SquareStoreItems
-						items={boutiqueItems}
-						title="Boutique Collection"
-						intro="Browse our latest handcrafted and locally made items."
-					/>
-				</PageSection>
-			)}
+			<PageSection columns={4} maxWidth="1200px" id="store-items-section">
+				<SquareStoreItemsWrapper
+					prefilter={prefilter}
+					initialFilter={initialFilter}
+					title="Boutique Collection"
+					intro="Browse our latest handcrafted and locally made items."
+					emptyMessage="Please check back soon for new curated merchandise."
+					errorMessage="Unable to load boutique items at this time."
+				/>
+			</PageSection>
 		</>
 	);
 }

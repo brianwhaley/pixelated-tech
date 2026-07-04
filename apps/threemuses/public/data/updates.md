@@ -1,15 +1,26 @@
 # The Three Muses of Bluffton -- Updates
 
-## 2026-06-24 Updaes
-* [  ] Create a new category in Square - Boutique Unfinished - move items that need help there
-* [  ] Add Consignment items to shopping cart
-* [  ] Katie to have team update descriptions, photos, etc. 
-* [  ] Add Shipping weight custom field to all items
-* [  ] Add Events to Square, have Events page show items from Square
+## 2026-07-02 Updates
+* [ x ] Create a new category in Square - Boutique In Progress - move items that need help there
+* [ x ] Add Consignment items to shopping cart
+* [ x ] Add Shipping weight custom field to all items
+* [ x ] added descriptions to all boutique items
+* [ x ] add 3 new workshops to Events in Square
+* [ x ] add 3 new adult / youth classes to Events in Square 
+* [ x ] write new descriptions for 3 new classes
+* [ x ] add new sewing machine as item and category under boutique items
+* [ x ] added sewing machine callout on sewing page
+* [ x ] create Featued Items on Home Page and Boutique page
+* [ x ] update Boutique apge with a callout that points to Store page
+* [ x ] Add Events to Square, have Events page show items from Square
 * [ x ] Add Gallery page to site, either show contentful images or Instagram images
-* [ x ] Build "Studio Package Specials" page for Dance Studios
-* [  ] Build 4.25 * 5.5 cards that advertise Studio Package Specials with QR Code
+* [ x ] added new gallery page in anticipation for more photos from summer camps, classes, workshops.  hard coded to an array of images, not dynamic
+* [ x ] Build "Studio Package Specials" page to advertise 5 new specials for Dance Studios
+* [ x ] added blog post for sewing machine - going out 7/7
+* [ x ] added new blog post for 6 new classes, going out 7/9
 * [ x ] Holding for approx. 3 months for Bookkeeping company site
+* [  ] Build 4.25 * 5.5 cards that advertise Studio Package Specials with QR Code
+* [  ] Katie to review all items in Boutique In Progress. 
 * [  ] Katie - Any referrals or recommendations for Pixelated Technologies?
 
 
@@ -20,14 +31,14 @@
 * items shown on the site are only ones in Boutique Items Category
 * items need to have Boutique Items selected, even if they are in a subcategory
 * item filtering works with categories and proce groupsings.  so categories and subcategories are a great way to do that.  
-* [  ] add "Featured" category to items to show up in Featured component (set to show 4 per row)
+* [ x ] add "Featured" category to items to show up in Featured component (set to show 4 per row)
 * [  ] need to update descriptions to all items.  Used Kumihimo Beaded Necklace as an example.  
 * [  ] need to add Shipping weight to all items.  Shipping weight is not exposed via API.  we can create a custom attribute to do that, does that work for you?  
 * [  ] need to review all items that dont have photos - either remove from Boutique Items or get photos of those
 * [  ] need to resolve variations vs color differences etc. Thought - 
     1) add a Notes field to capture color details, 
     2) add as separate items.  what do you think?
-* [  ] We can move Events into Square as items if you want.  Then you can control all the data and when and how it shows up on the site.  let me know what you think. 
+* [ x ] We can move Events into Square as items if you want.  Then you can control all the data and when and how it shows up on the site.  let me know what you think. 
 
 ## launch Day Activities
 
