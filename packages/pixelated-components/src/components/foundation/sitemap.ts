@@ -6,7 +6,7 @@ import { getAllRoutes } from "./metadata.functions";
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
 import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
-import { getSquareStoreItems } from "../shoppingcart/square.server";
+import { getSquareEventItems, getSquareStoreItems } from "../shoppingcart/square.server";
 import { getFullPixelatedConfig } from '../config/config';
 import type { PixelatedConfig } from '../config/config.types';
 import { CacheManager } from '../foundation/cache-manager';
@@ -40,6 +40,7 @@ export type SitemapConfig = {
 	createPageBuilderURLs?: boolean;
 	createEbayItemURLs?: boolean;
 	createSquareItemURLs?: boolean;
+	createSquareEventURLs?: boolean;
 	wordpress?: { site?: string };
 	imageJson?: { path?: string };
 	contentful?: any; // contentful api props object
@@ -120,6 +121,7 @@ export function buildSitemapConfig(
 	// Square catalog sitemap integration
 	if (integrations.square?.squareItemCategoryId) {
 		sitemapConfig.createSquareItemURLs = true;
+		sitemapConfig.createSquareEventURLs = true;
 	}
 
 	return sitemapConfig;
@@ -238,7 +240,8 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 	const useContentfulAssets = resolvedConfig.createContentfulAssetURLs ?? false;
 	const usePageBuilder = resolvedConfig.createPageBuilderURLs ?? false;
 	const useEbay = resolvedConfig.createEbayItemURLs ?? false;
-	const useSquare = resolvedConfig.createSquareItemURLs ?? false;
+	const useSquareEvents = resolvedConfig.createSquareEventURLs ?? false;
+	const useSquareItems = resolvedConfig.createSquareItemURLs ?? false;
 
 	// ORDER IS IMPORTANT - THIS IS THE ORDER THEY WILL APPEAR IN THE SITEMAP
 
@@ -263,8 +266,12 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 		sitemapEntries.push(...(await createEbayItemURLs(origin)));
 	}
 	// Square catalog items
-	if (useSquare) {
+	if (useSquareItems) {
 		sitemapEntries.push(...(await createSquareItemURLs(origin)));
+	}
+	// Square event items
+	if (useSquareEvents) {
+		sitemapEntries.push(...(await createSquareEventURLs(origin)));
 	}
 	// Page Builder (existing helper in package not always present)
 	if (usePageBuilder && resolvedConfig.contentful) {
@@ -785,6 +792,60 @@ export async function createSquareItemURLs(origin?: string) {
 
 		const entry: any = {
 			url: item.itemURL.startsWith('http') ? item.itemURL : `${base}${item.itemURL}`,
+			lastModified: new Date(),
+			changeFrequency: 'hourly',
+			priority: 1.0,
+		};
+		if (normalizedImages.length > 0) {
+			entry.images = normalizedImages;
+		}
+		sitemap.push(entry);
+	}
+	return sitemap;
+}
+
+export async function createSquareEventURLs(origin?: string) {
+	const sitemap: SitemapEntry[] = [];
+	const config = getFullPixelatedConfig() as PixelatedConfig;
+	if (!config?.integrations?.square?.squareItemCategoryId) {
+		return sitemap;
+	}
+
+	let items;
+	try {
+		items = await getSquareEventItems();
+	} catch (error) {
+		if (typeof console !== 'undefined') console.warn('createSquareEventURLs skipped; unable to fetch event items', error);
+		return sitemap;
+	}
+	if (!items || !items.length) {
+		return sitemap;
+	}
+
+	for (const item of items) {
+		const title = item?.fields?.title;
+		if (!title || typeof title !== 'string') continue;
+
+		const itemSlug = contentfulValueToSlug({ value: title });
+		if (!itemSlug) continue;
+
+		const imageUrls: string[] = [];
+		if (Array.isArray(item.fields.carouselImages)) {
+			imageUrls.push(...item.fields.carouselImages
+				.map((image: any) => image?.image)
+				.filter((img: any) => typeof img === 'string' && img.trim().length > 0));
+		}
+
+		const base = origin ? origin : '';
+		const normalizedImages = imageUrls
+			.map((img) => img.trim())
+			.filter(Boolean)
+			.map((img) => img.startsWith('http') ? img : `${base}${img.startsWith('/') ? img : `/${img}`}`)
+			.map((img) => encode(img));
+
+		const url = `${base}/events/${itemSlug}`;
+		const entry: any = {
+			url,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
 			priority: 1.0,
