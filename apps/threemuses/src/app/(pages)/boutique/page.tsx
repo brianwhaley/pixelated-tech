@@ -16,7 +16,7 @@ export default async function BoutiquePage() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="boutique-section">
-				<PageTitleHeader title="Boutique" />
+				<PageTitleHeader title="The Three Muses of Bluffton Boutique" />
 				<div>
 					<p>
 					Our Boutique, presided over by the Muse of Celebration, is a curated treasure trove bringing the Lowcountry's artistic spirit to life through high-end, handcrafted goods. We showcase exceptional local and regional artisans specializing in one-of-a-kind accessories, home decor, and bespoke gifts. Every item, from hand-stitched scarves to artisanal jewelry, is selected for superior craftsmanship and lasting beauty. By focusing on small-batch production, we offer truly original pieces that reflect your personal aesthetic.

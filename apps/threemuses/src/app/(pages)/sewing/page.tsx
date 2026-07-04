@@ -9,7 +9,7 @@ export default function SewingPage() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="sewing-section">
-				<PageTitleHeader title="Sewing Studio" />
+				<PageTitleHeader title="The Three Muses of Bluffton Sewing Studio" />
 				<div>
 					<p>
 						Our Sewing Studio is a vibrant creative hub where the foundational art of needlework is passed to a new generation. Our professional classroom is equipped with high-quality machines and tools to transform fabric into wearable art. We offer a diverse calendar of events for all skill levels, from absolute beginners to advanced sewists. Students can progress at their own pace under expert guidance through workshops focused on practical skills, upcycling, and home decor. More than just a place of instruction, our studio is a community space where the rhythmic hum of the machine inspires confidence and a lifelong passion for sewing.

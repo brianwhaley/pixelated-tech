@@ -9,7 +9,7 @@ export default function DancewearPage() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="dancewear-section">
-				<PageTitleHeader title="Dancewear" />
+				<PageTitleHeader title="The Three Muses of Bluffton Dancewear" />
 				<div>
 					<p>
 						Dancewear is the Lowcountry's premier destination for high-performance apparel and footwear. Our Bluffton boutique features a curated inventory of industry-leading brands like Bloch, Capezio, Jo+Jax, and Mirella. We stock professional-grade leotards, durable tights, and sleek unitards from celebrated designers such as Eurotard, Suffolk, and Body Wrappers. Whether you need the technical precision of Gaynor Minden or the style of Ainsliewear, our collection ensures every dancer finds their perfect silhouette. Shopping in-person allows you to experience high-quality fabrics and vibrant palettes firsthand, ensuring your gear is both stunning and functional.

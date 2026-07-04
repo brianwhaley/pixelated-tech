@@ -12,7 +12,7 @@ export default function AboutUsPage() {
 	return (
 		<>
 
-			<PageTitleHeader title="About Three Muses" />
+			<PageTitleHeader title="About The Three Muses of Bluffton" />
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="history-section">
 				

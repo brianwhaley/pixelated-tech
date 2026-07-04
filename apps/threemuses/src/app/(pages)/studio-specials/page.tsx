@@ -9,7 +9,7 @@ export default function StudioSpecialsPage() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="studio-specials-section">
-				<PageTitleHeader title="Studio Specials" />
+				<PageTitleHeader title="The Three Muses of Bluffton Studio Specials" />
 			</PageSection>
 
 			<Coupon title="Tiny Toes 2 - 3-Year-Old Class"

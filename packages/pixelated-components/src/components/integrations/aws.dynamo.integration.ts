@@ -62,10 +62,16 @@ function selectShippingTo(source: Record<string, any>) {
 
 function selectItems(items: any) {
 	const normalizeItem = (item: Record<string, any>) => ({
-		id: item.id ?? item.itemID,
+		id: item.id ?? item.itemID ?? item.sku ?? item.itemSKU,
+		itemID: item.itemID ?? item.id,
 		title: item.title ?? item.itemTitle,
+		itemTitle: item.itemTitle ?? item.title,
 		quantity: item.quantity ?? item.itemQuantity,
+		itemQuantity: item.itemQuantity ?? item.quantity,
+		sku: item.sku ?? item.itemSKU,
+		itemSKU: item.itemSKU ?? item.sku,
 		category: item.category ?? (Array.isArray(item.itemCategory) ? item.itemCategory.join(', ') : item.itemCategory),
+		itemCategory: item.itemCategory ?? item.category,
 	});
 	if (Array.isArray(items)) { return items.map((item) => normalizeItem(item || {}));}
 	if (items && typeof items === 'object') { return normalizeItem(items); }
