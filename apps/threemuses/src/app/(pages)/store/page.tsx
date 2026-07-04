@@ -21,7 +21,7 @@ export default async function StorePage({
 	return (
 		<>
 			<PageSection columns={1} maxWidth="100%" id="store-page-header">
-				<PageTitleHeader title="Boutique Store" />
+				<PageTitleHeader title="The Three Muses of Bluffton Boutique Store" />
 				<p>
 					Shop our curated collection of boutique pieces available for purchase online. Filter by product details to find the perfect handcrafted item.
 				</p>

@@ -4,9 +4,9 @@ import { PageSection } from '@pixelated-tech/components';
 import { SquareStoreItemDetail } from '@pixelated-tech/components';
 import { getSquareStoreItemById } from '@pixelated-tech/components/server';
 
-export default async function EventPage({ params }: { params: Promise<{ item: string }> }) {
+export default async function EventPage({ params }: { params: Promise<{ event: string }> }) {
 	const resolvedParams = await params;
-	const item = await getSquareStoreItemById(resolvedParams?.item);
+	const item = await getSquareStoreItemById(resolvedParams?.event);
 	if (!item) { notFound(); }
 	return (
 		<>

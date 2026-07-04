@@ -579,6 +579,18 @@ describe('ThreeMuses coverage harness', () => {
 			expect(getEventIdentity(normalized.items[0]).eventId).toBe('2');
 		});
 
+		it('uses Square itemSKU as the canonical event identifier when present', () => {
+			const normalized = normalizeReportRow({
+				submissionData: JSON.stringify({
+					items: [{ itemID: 'new-guid-123', itemSKU: 'old-legacy-2', title: 'B' }],
+					shippingTo: { name: 'Jane' },
+				}),
+				created_at: '2024-01-02',
+			});
+			expect(normalized.items[0].itemID).toBe('new-guid-123');
+			expect(getEventIdentity(normalized.items[0]).eventId).toBe('old-legacy-2');
+		});
+
 		it('returns Unknown event identity when item has no id or itemID', () => {
 			expect(getEventIdentity({}).eventId).toBe('Unknown');
 		});

@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.21.5",
+	"version": "3.21.6",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -174,6 +174,6 @@
 		"googleapis": "^173.0.0",
 		"md5": "^2.3.0",
 		"puppeteer": "^25.3.0",
-		"recharts": "^3.9.1"
+		"recharts": "^3.9.2"
 	}
 }

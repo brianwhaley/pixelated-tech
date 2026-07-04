@@ -66,6 +66,7 @@ export type SquareStoreItemsWrapperProps = {
 	errorMessage?: string;
 	showFilters?: boolean;
 	itemSize?: 'small' | 'large';
+	itemURLPrefix?: string;
 };
 
 export type SquareEventWrapperProps = {
@@ -74,7 +75,7 @@ export type SquareEventWrapperProps = {
 };
 
 export async function SquareStoreItemsWrapper(props: SquareStoreItemsWrapperProps) {
-	const { prefilter, initialFilter, title, intro, emptyMessage, errorMessage, showFilters = true, itemSize = 'small' } = props;
+	const { prefilter, initialFilter, title, intro, emptyMessage, errorMessage, showFilters = true, itemSize = 'small', itemURLPrefix = '/store' } = props;
 	try {
 		const response = await getSquareStoreItems(prefilter ?? {});
 		return (
@@ -88,6 +89,7 @@ export async function SquareStoreItemsWrapper(props: SquareStoreItemsWrapperProp
 				errorMessage={errorMessage}
 				showFilters={showFilters}
 				itemSize={itemSize}
+				itemURLPrefix={itemURLPrefix}
 			/>
 		);
 	} catch (error: any) {

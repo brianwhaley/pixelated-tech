@@ -9,7 +9,7 @@ export default function FAQPage() {
 		<>
 			<PageSection columns={1} maxWidth="1024px" id="faq-header-section">
 				<PageTitleHeader
-					title="Frequently Asked Questions"
+					title="The Three Muses of Bluffton Frequently Asked Questions"
 					subtitle="Find answers to common questions about our web design and development services"
 				/>
 				<p>These frequently asked questions (FAQs) provide answers to common inquiries about 

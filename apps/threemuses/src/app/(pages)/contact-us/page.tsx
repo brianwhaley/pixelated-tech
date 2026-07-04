@@ -9,7 +9,7 @@ export default function ContactUsPage() {
 	const siteInfo = usePixelatedConfig()?.siteInfo ?? {};
 	return (
 		<>
-			<PageTitleHeader title="Contact Three Muses" />
+			<PageTitleHeader title="Contact The Three Muses of Bluffton" />
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-info-section">
 				<PageSectionHeader title="Contact Information" />

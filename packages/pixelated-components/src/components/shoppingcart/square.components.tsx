@@ -340,9 +340,13 @@ export function SquareStoreListFilter(props: SquareStoreListFilterType) {
  */
 SquareStoreItemSmall.propTypes = {
 	item: PropTypes.shape(SquareStoreItemShape).isRequired,
+	itemURLPrefix: PropTypes.string,
 };
 export type SquareStoreItemSmallType = InferProps<typeof SquareStoreItemSmall.propTypes>;
 export function SquareStoreItemSmall(props: SquareStoreItemSmallType) {
+	const itemURL = props.itemURLPrefix && props.item.itemURL?.startsWith('/store/')
+		? `${props.itemURLPrefix.replace(/\/$/, '')}/${props.item.itemURL.replace(/^\/store\//, '')}`
+		: props.item.itemURL;
 	return (
 		<div className="square-store-item-callout">
 			<Callout
@@ -352,7 +356,7 @@ export function SquareStoreItemSmall(props: SquareStoreItemSmallType) {
 				img={props.item.itemImageURL ?? '/images/placeholder.png'}
 				imgAlt={props.item.itemTitle}
 				title={props.item.itemTitle}
-				url={props.item.itemURL}
+				url={itemURL}
 				// subtitle={`${props.item.itemCurrency ?? 'USD'} ${props.item.itemPrice.toFixed(2)} · In stock: ${props.item.itemInventory}`}
 				subtitle={`${props.item.itemCurrency ?? 'USD'} ${props.item.itemPrice.toFixed(2)}`}
 				content={props.item.itemDescription || 'No description available.'}
@@ -369,7 +373,7 @@ export function SquareStoreItemSmall(props: SquareStoreItemSmallType) {
 						</div>
 					) */ }
 					<div className="square-store-item-actions">
-						<ViewItemDetails href={props.item.itemURL} itemID={props.item.itemID} />
+						<ViewItemDetails href={itemURL} itemID={props.item.itemID} />
 						<AddToCartButton handler={addToShoppingCart} item={{
 							...props.item,
 							itemQuantity: 1,
@@ -395,9 +399,13 @@ export function SquareStoreItemSmall(props: SquareStoreItemSmallType) {
  */
 SquareStoreItemLarge.propTypes = {
 	item: PropTypes.shape(SquareStoreItemShape).isRequired,
+	itemURLPrefix: PropTypes.string,
 };
 export type SquareStoreItemLargeType = InferProps<typeof SquareStoreItemLarge.propTypes>;
 export function SquareStoreItemLarge(props: SquareStoreItemLargeType) {
+	const itemURL = props.itemURLPrefix && props.item.itemURL?.startsWith('/store/')
+		? `${props.itemURLPrefix.replace(/\/$/, '')}/${props.item.itemURL.replace(/^\/store\//, '')}`
+		: props.item.itemURL;
 	return (
 		<div className="square-store-item-callout">
 			<Callout
@@ -407,7 +415,7 @@ export function SquareStoreItemLarge(props: SquareStoreItemLargeType) {
 				img={props.item.itemImageURL ?? '/images/placeholder.png'}
 				imgAlt={props.item.itemTitle}
 				title={props.item.itemTitle}
-				url={props.item.itemURL}
+				url={itemURL}
 				subtitle={`${props.item.itemStartDate} ${props.item.itemStartTime} - ${props.item.itemEndDate} ${props.item.itemEndTime}`}
 				content={props.item.itemDescription || 'No description available.'}
 				buttonText="More Details"
@@ -417,7 +425,7 @@ export function SquareStoreItemLarge(props: SquareStoreItemLargeType) {
 						{props.item.itemDescription || 'No description available.'}
 					</div>
 					<div className="square-store-item-actions">
-						<ViewItemDetails href={props.item.itemURL} itemID={props.item.itemID} />
+						<ViewItemDetails href={itemURL} itemID={props.item.itemID} />
 						<AddToCartButton handler={addToShoppingCart} item={{
 							...props.item,
 							itemQuantity: 1,
@@ -468,6 +476,7 @@ SquareStoreItems.propTypes = {
 	}),
 	showFilters: PropTypes.bool,
 	itemSize: PropTypes.oneOf(['small', 'large']),
+	itemURLPrefix: PropTypes.string,
 };
 export type SquareStoreItemsType = InferProps<typeof SquareStoreItems.propTypes>;
 export function SquareStoreItems(props: SquareStoreItemsType) {
@@ -530,11 +539,11 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 			{filteredItems.map((item) => (
 				itemSize === 'large' ? (
 					<PageGridItem columnStart={1} columnEnd={-1} key={item.itemID}>
-						<SquareStoreItemLarge key={item.itemID} item={item} />
+						<SquareStoreItemLarge key={item.itemID} item={item} itemURLPrefix={props.itemURLPrefix} />
 					</PageGridItem>
 				) : (
 					<PageGridItem key={item.itemID}>
-						<SquareStoreItemSmall key={item.itemID} item={item} />
+						<SquareStoreItemSmall key={item.itemID} item={item} itemURLPrefix={props.itemURLPrefix} />
 					</PageGridItem>
 				)
 			))}

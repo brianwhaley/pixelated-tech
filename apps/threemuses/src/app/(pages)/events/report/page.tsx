@@ -77,8 +77,8 @@ export function normalizeReportRow(row: Record<string, any>) {
 
 export function getEventIdentity(item: Record<string, any>) {
 	return {
-		eventId: item.id ?? item.itemID ?? 'Unknown',
-		eventName: item.title ?? item.itemTitle ?? 'Unknown',
+		eventId: item.sku ?? item.itemSKU ?? item.id ?? item.itemID ?? 'Unknown',
+		eventName: item.title ?? item.itemTitle ?? item.name ?? item.sku ?? item.itemSKU ?? 'Unknown',
 		quantity: Number(item.quantity ?? item.itemQuantity ?? 1) || 1,
 	};
 }
@@ -154,7 +154,7 @@ export default async function EventReportPage({ searchParams }: { searchParams?:
 
 		return (
 			<>
-				<PageTitleHeader title="Three Muses Order Report" />
+				<PageTitleHeader title="The Three Muses of Bluffton Order Report" />
 
 				<br /><br />
 				<PageSectionHeader title="Registrants Per Class" />
