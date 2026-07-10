@@ -9,22 +9,22 @@ applications:
       phases:
         preBuild:
           commands:
-            - echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."
-            - cd ../../ && pwd
-            - npm install --force
+            - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'cd ../../ && pwd'
+            - 'npm install --force'
         build:
           commands:
-            - echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
-            - npm run build -w packages/pixelated-components
-            - echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
-            - npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT
-            - echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-            - NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
-            - npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
+            - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'npm run build -w packages/pixelated-components'
+            - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
-            - echo "Calling Config Vault postbuild ..."
-            - npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT
+            - 'echo "Calling Config Vault postbuild ..."'
+            - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
         baseDirectory: .next
         files:
@@ -69,7 +69,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/jz-home-improvement
     frontend:
       phases:
@@ -102,7 +102,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/manningmetalworks
     frontend:
       phases:
@@ -135,7 +135,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/oaktreelandscaping
     frontend:
       phases:
@@ -168,7 +168,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/palmetto-epoxy
     frontend:
       phases:
@@ -201,7 +201,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/pixelated
     frontend:
       phases:
@@ -234,7 +234,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: tools/pixelated-admin
     frontend:
       phases:
@@ -267,7 +267,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: packages/pixelated-components
     frontend:
       phases:
@@ -304,7 +304,7 @@ applications:
 
 
 
-#========================================
+  #========================================
   - appRoot: apps/pixelvivid
     frontend:
       phases:
@@ -337,7 +337,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/threemuses
     frontend:
       phases:
@@ -370,7 +370,7 @@ applications:
           - node_modules/**/*
 
 
-#========================================
+  #========================================
   - appRoot: apps/simple-day-concierge
     frontend:
       phases:
