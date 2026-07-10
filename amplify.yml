@@ -9,25 +9,22 @@ applications:
       phases:
         preBuild:
           commands:
-            - |
-              echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              cd ../../ && pwd
-              npm install --force
+            - echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."
+            - cd ../../ && pwd
+            - npm install --force
         build:
           commands:
-            - |
-              echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              npm run build -w packages/pixelated-components
-              echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
-              echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
-              npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
-              npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
+            - echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."
+            - npm run build -w packages/pixelated-components
+            - echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."
+            - if [ -f "$AMPLIFY_MONOREPO_APP_ROOT/src/app/config/pixelated.config.json.enc" ]; then npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "pixelated.config.json decrypt failed" && exit 1); fi
+            - echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."
+            - npm run build -w $AMPLIFY_MONOREPO_APP_ROOT
+            - npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
         postBuild:
           commands:
-            - |
-              echo "Calling Config Vault postbuild ..."
-              npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "Config postbuild decrypt failed" && exit 1)
+            - echo "Calling Config Vault postbuild ..."
+            - npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT || (echo "Config postbuild decrypt failed" && exit 1)
       artifacts:
         baseDirectory: .next
         files:
