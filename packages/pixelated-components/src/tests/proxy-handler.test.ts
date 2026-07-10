@@ -58,4 +58,19 @@ describe('handlePixelatedProxy', () => {
         // Ensure syndicated search is allowed in frame-src
         expect(csp).toMatch(/frame-src[^;]*https:\/\/syndicatedsearch\.goog/);
     });
+
+	it('falls back to req.url when nextUrl origin and href are unavailable', () => {
+		const req = {
+			nextUrl: { pathname: '/fallback', search: '?q=1' },
+			headers: new Headers(),
+			url: 'https://fallback.example.com/fallback?q=1',
+		} as any as NextRequest;
+
+		const response = handlePixelatedProxy(req);
+
+		expect((response as any).request.headers.get('x-origin')).toBe('https://fallback.example.com');
+		expect((response as any).request.headers.get('x-url')).toBe('https://fallback.example.com/fallback?q=1');
+		expect((response as any).request.headers.get('x-path')).toBe('/fallback?q=1');
+		expect(response.headers.get('Content-Security-Policy')).toContain("default-src 'self'");
+	});
 });

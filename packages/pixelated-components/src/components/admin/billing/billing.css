@@ -447,6 +447,16 @@
 	margin-bottom: 4px;
 }
 
+.invoice-enhancements-list {
+	margin: 0 0 16px 0;
+	font-size: var(--font-size5);
+}
+
+.invoice-enhancements-list li {
+	/* margin-bottom: 6px; */
+	--do-nothing: true;
+}
+
 /* Sections for Content & Jetpack Social referrers */
 .invoice-addon-section {
 	margin-top: 30px;

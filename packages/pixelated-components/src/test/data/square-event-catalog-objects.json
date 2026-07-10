@@ -1,0 +1,33 @@
+[
+  {
+    "type": "ITEM",
+    "id": "item-1",
+    "item_data": {
+      "product_type": "EVENT",
+      "name": "Test Event",
+      "description": "A sample event",
+      "event": {
+        "start_at": "2030-01-01T10:00:00Z",
+        "end_at": "2030-01-01T12:00:00Z",
+        "event_location_time_zone": "UTC"
+      },
+      "variations": [{ "id": "var-1" }],
+      "image_ids": ["img-1"]
+    }
+  },
+  {
+    "type": "ITEM_VARIATION",
+    "id": "var-1",
+    "item_variation_data": {
+      "price_money": { "amount": 5000, "currency": "USD" },
+      "sku": "EVENT-1",
+      "item_weight": "1.0",
+      "item_weight_unit": "lb"
+    }
+  },
+  {
+    "type": "IMAGE",
+    "id": "img-1",
+    "image_data": { "url": "https://example.com/event.jpg" }
+  }
+]

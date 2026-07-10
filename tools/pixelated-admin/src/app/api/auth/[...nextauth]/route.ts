@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { authOptions } from '@/lib/authentication';
+import { authOptions } from '../../../../lib/authentication';
 import { NextRequest } from 'next/server';
 import { getOriginFromHeaders } from '@pixelated-tech/components/server';
 

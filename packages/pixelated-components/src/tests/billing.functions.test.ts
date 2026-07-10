@@ -1,11 +1,33 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { loadBillingData, compileInvoiceData } from '../components/admin/billing/billing.functions';
 import fs from 'fs';
-import { generateInvoicePdfsForSites, dispatchInvoiceEmails } from '../components/admin/billing/billing.functions';
+import { generateInvoicePdfsForSites, dispatchInvoiceEmails, loadBillingConfigData } from '../components/admin/billing/billing.server';
 import puppeteer from 'puppeteer';
 import nodemailer from 'nodemailer';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { getLiveBillingStats } from '../components/integrations/wordpress.jetpack.server';
+import * as dynamoIntegration from '../components/integrations/aws.dynamo.integration';
+
+const mockSend = vi.hoisted(() => vi.fn());
+
+vi.mock('@aws-sdk/client-dynamodb', () => ({
+	DynamoDBClient: class {
+		config: any;
+
+		constructor(config: any) {
+			this.config = config;
+		}
+
+		send = mockSend;
+	},
+	ScanCommand: class {
+		input: any;
+
+		constructor(input: any) {
+			this.input = input;
+		}
+	},
+}));
 
 vi.mock('fs', () => ({
 	default: {
@@ -42,6 +64,11 @@ vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: vi.fn()
 }));
 
+vi.mock('../components/integrations/aws.dynamo.integration', () => ({
+	listPixelatedFormSubmissionReportRows: vi.fn(),
+	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE: 'PixelatedFormSubmissionsTable'
+}));
+
 vi.mock('../components/integrations/wordpress.jetpack.server', () => ({
 	getLiveBillingStats: vi.fn()
 }));
@@ -49,6 +76,12 @@ vi.mock('../components/integrations/wordpress.jetpack.server', () => ({
 describe('Billing Functions', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		vi.mocked(getFullPixelatedConfig).mockReturnValue({
+			integrations: {
+				aws: { region: 'us-east-1' }
+			}
+		} as any);
+		vi.mocked(dynamoIntegration.listPixelatedFormSubmissionReportRows).mockResolvedValue([]);
 	});
 
 	describe('loadBillingData', () => {
@@ -70,6 +103,37 @@ describe('Billing Functions', () => {
 		it('throws an error if configuration file is missing', () => {
 			vi.mocked(fs.existsSync).mockReturnValue(false);
 			expect(() => loadBillingData('/fake/path.json')).toThrow('Failed to load billing configuration');
+		});
+
+		it('loads site-specific form completions by domain without filtering by form name', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+				subscriptions: {},
+				paymentInfo: { method: '', details: '', terms: '' },
+				sites: [
+					{
+						name: 'palmetto-epoxy',
+						url: 'https://www.palmetto-epoxy.com',
+						billing: { tier: 'premium', email: 'x@y.com', companyName: 'Palmetto Epoxy', address: '116 Beckenridge Circle' }
+					}
+				]
+			}));
+			vi.mocked(dynamoIntegration.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{
+					created_at: '2026-06-15T12:00:00.000Z',
+					formName: 'Palmetto Epoxy Order Form',
+					shipping_to: { email: 'test@palmetto-epoxy.com' }
+				}
+			]);
+
+			const result = await loadBillingConfigData('2026-06', 'palmetto-epoxy');
+
+			expect(dynamoIntegration.listPixelatedFormSubmissionReportRows).toHaveBeenCalledWith({
+				tableName: 'PixelatedFormSubmissionsTable',
+				domain: 'palmetto-epoxy.com'
+			});
+			expect(result.formCompletions).toHaveLength(1);
+			expect(result.formCompletions[0].formName).toBe('Palmetto Epoxy Order Form');
 		});
 	});
 
@@ -100,8 +164,34 @@ describe('Billing Functions', () => {
 				billing: { tier: 'premium', priceOverride: 150, email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 			};
 
-			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], []);
+			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], [], [], { '2026-06': ['Added website accessibility enhancements', 'Updated local SEO schema'] });
 			expect(data.totalOwed).toBe(150);
+			expect(data.enhancements).toEqual(['Added website accessibility enhancements', 'Updated local SEO schema']);
+		});
+
+		it('includes additional invoice items before the subscription line and totals them correctly', () => {
+			const site = {
+				name: 'testsite',
+				url: 'https://testsite.com',
+				billing: {
+					tier: 'premier',
+					price: 250,
+					email: 'test@test.com',
+					companyName: 'Test Inc',
+					address: '123 Test St',
+					additionalInvoiceItems: {
+						'2026-07': {
+							amount: 500,
+							description: 'Payment #4 for Initial Build'
+						}
+					}
+				}
+			};
+
+			const data = compileInvoiceData(site, '2026-07', mockSubscriptions, mockPayment, [], []);
+			expect(data.items[0].description).toContain('Payment #4 for Initial Build');
+
+			expect(data.totalOwed).toBe(750);
 		});
 
 		it('normalizes tier names properly', () => {
@@ -212,7 +302,11 @@ describe('Billing Functions', () => {
 					billing: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
-			vi.mocked(getFullPixelatedConfig).mockReturnValue({} as any);
+			vi.mocked(getFullPixelatedConfig).mockReturnValue({
+				integrations: {
+					aws: { region: 'us-east-1' }
+				}
+			} as any);
 			vi.mocked(getLiveBillingStats).mockResolvedValue({ posts: [], socialReferrers: [], simulated: false });
 
 			const results = await generateInvoicePdfsForSites(['testsite'], '2026-06', true);

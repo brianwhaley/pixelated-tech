@@ -144,8 +144,9 @@ export default function SiteHealthPage() {
 					{/* Dependency Vulnerability Card */}
 					<SiteHealthDependencyVulnerabilities siteName={selectedSite} />
 
-					{/* Site Overview Card */}
-					<SiteHealthOverview siteName={selectedSite} />
+					{/* Site Overview Cards */}
+					<SiteHealthOverview key={`overview-mobile-${selectedSite}`} siteName={selectedSite} strategy="mobile" />
+					<SiteHealthOverview key={`overview-desktop-${selectedSite}`} siteName={selectedSite} strategy="desktop" />
 
 					{/* Performance Card */}
 					<SiteHealthPerformance siteName={selectedSite} />

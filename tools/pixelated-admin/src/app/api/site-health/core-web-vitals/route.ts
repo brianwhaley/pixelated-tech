@@ -43,6 +43,9 @@ export async function GET(request: NextRequest) {
 
 		if (debug) console.info(`Core Web Vitals API called for siteName=${requestedSiteName} useCache=${useCache} totalSitesConfigured=${sites.length}`);
 
+		const strategyParam = searchParams.get('strategy');
+		const strategy = strategyParam === 'desktop' ? 'desktop' : 'mobile';
+
 		const results: CoreWebVitalsData[] = [];
 
 		// Process the selected site sequentially to avoid overwhelming the API
@@ -55,7 +58,7 @@ export async function GET(request: NextRequest) {
 				const url = site.url!;
 
 				// Perform Core Web Vitals analysis using the integration
-				const result = await performCoreWebVitalsAnalysis(url, site.name, useCache);
+				const result = await performCoreWebVitalsAnalysis(url, site.name, useCache, strategy);
 				results.push(result);
 
 				if (debug) console.info(`Processed site ${site.name} status=${result.status} elapsed_ms=${Date.now()-start}`);

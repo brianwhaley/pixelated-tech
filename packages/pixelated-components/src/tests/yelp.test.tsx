@@ -62,6 +62,20 @@ describe('YelpReviews Component', () => {
 		expect(screen.queryByText(/loading/i)).toBeTruthy();
 	});
 
+	it('should display an error message when smartFetch fails', async () => {
+		vi.mocked(smartFetch).mockRejectedValueOnce(new Error('Network failure'));
+
+		let container: HTMLElement;
+		await act(async () => {
+			const result = renderWithProviders(<YelpReviews businessID="biz-123" />);
+			container = result.container;
+		});
+
+		await waitFor(() => {
+			expect(container.textContent).toContain('Error: Network failure');
+		});
+	});
+
 	it('should display Yelp Reviews heading', async () => {
 		vi.mocked(smartFetch).mockResolvedValueOnce({ reviews: [] });
 

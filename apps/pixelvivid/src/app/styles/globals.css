@@ -176,6 +176,15 @@ header .section-container {
 
 
 
+
+
+@media screen and (max-width: 768px) {
+    #social-section .section-container {
+        max-width: 70%;
+        margin: 0 auto;
+    }
+}
+
 #recent-blog-section {
     background-color: white !important;
     .page-section-header {

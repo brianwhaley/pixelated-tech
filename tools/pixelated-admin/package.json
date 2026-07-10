@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -52,15 +52,15 @@
     "@types/react-dom": "^19",
     "@types/ssh2": "^1.15.5",
     "@vitejs/plugin-react": "^6.0.3",
-    "@vitest/coverage-v8": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "9.39.4",
     "eslint-config-next": "^16.2.2",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "glob": "^13.0.6",
     "jsdom": "^29.1.1",
     "react-dom": "^19.2.6",
-    "typescript": "^6.0.2",
-    "vitest": "^4.1.9"
+    "typescript": "7.0.2",
+    "vitest": "^4.1.10"
   },
   "overrides": {},
   "deployMarker": "2026-07-04T00:48:09.339Z"

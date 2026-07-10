@@ -248,6 +248,7 @@ const defaultMocks: Record<string, any> = {
 	getContentfulEntriesByType: async () => contentfulEntriesResponse,
 	getContentfulEntryByField: async () => contentfulEntryResponse,
 	getContentfulImagesFromEntries: async () => contentfulImagesResponse,
+	getContentfulAssetURLs: async () => [],
 	buildEventSchema: (event: any) => buildEventSchemaImpl(event),
 	getGravatarProfile: async () => null,
 	ToggleLoading: () => null, GoogleFonts: () => null,

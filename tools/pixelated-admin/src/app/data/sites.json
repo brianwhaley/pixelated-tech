@@ -54,6 +54,17 @@
 			]
 		}
 	},
+	"enhancements": {
+		"2026-07": [
+			"Added new LLMS.txt feature to the site to improve search engine indexing and visibility.",
+			"Added integration WebMCP integration into all forms to improve form validation and submission handling with AI models.",
+			"Added new Google Analytics Page Views to Invoice",
+			"Added new CloudWatch Uptime Report to Invoice"
+		],
+		"2026-06": [
+			"Added Published Content Report to Invoice"
+		]
+	},
 	"paymentInfo": {
 		"method": "Zelle is the preferred method of payment.",
 		"details": "Please send Zelle payments to brian@pixelated.tech or to (973) 710-8008.",
@@ -109,6 +120,7 @@
 			"localPort": "3002",
 			"remote": "leadscraper",
 			"repo": "leadscraper",
+			"healthCheckId": "",
 			"rte53HostedZoneID": "",
 			"amplifyAppId": "",
 			"cloudfronturl": "",
@@ -126,7 +138,7 @@
 			"amplifyAppId": "d3jndv57oz5non",
 			"cloudfronturl": "",
 			"url": "https://www.manningmetalworks.com",
-			"ga4PropertyId": "",
+			"ga4PropertyId": "530408436",
 			"gscSiteUrl": "",
 			"googleMapsPlaceId": "ChIJ66eRE3qnw4kRD79U7II0QoQ",
 			"blogRss": "https://blog.manningmetalworks.com/feed/",
@@ -187,7 +199,13 @@
 				"price": 200.00,
 				"email": "palmettoepoxy@gmail.com, marthaaberle21@gmail.com",
 				"companyName": "Palmetto Epoxy",
-				"address": "116 Beckenridge Circle, Bluffton, SC 29909"
+				"address": "116 Beckenridge Circle, Bluffton, SC 29909",
+				"additionalInvoiceItems": {
+					"2026-07": {
+						"amount": 150.00,
+						"description": "Reimbursement for Facebook Advertising for July 2026, as requested."
+					}
+				}	
 			}
 		},
 		{
@@ -241,7 +259,7 @@
 			"rte53HostedZoneID": "",
 			"amplifyAppId": "",
 			"cloudfronturl": "",
-			"ga4PropertyId": "GA4_PROPERTY_ID_HERE",
+			"ga4PropertyId": "",
 			"gscSiteUrl": "sc-domain:pixelatedtemplate.com"
 		},
 		{
@@ -265,17 +283,17 @@
 			"localPort": "3012",
 			"remote": "simple-day-concierge",
 			"repo": "simple-day-concierge",
-			"healthCheckId": "",
+			"healthCheckId": "f71e431c-e9f4-427e-8ff5-ce3fc2b7f59e",
 			"rte53HostedZoneID": "Z098617323RPXCPUAD61D",
 			"amplifyAppId": "",
 			"cloudfronturl": "",
 			"url": "https://www.simpledayconcierge.com",
-			"ga4PropertyId": "",
+			"ga4PropertyId": "539271804",
 			"gscSiteUrl": "https://www.simpledayconcierge.com",
 			"googleMapsPlaceId": "",
 			"billing": {
 				"tier": "essential",
-				"price": 0.00,
+				"price": 100.00,
 				"email": "patti@simpledayconcierge.com, joe@simpledayconcierge.com",
 				"companyName": "Simple Day Concierge",
 				"address": "124 McIntosh Drive, Mahwah, NJ 07430",
@@ -291,25 +309,50 @@
 			"localPort": "3011",
 			"remote": "threemuses",
 			"repo": "threemuses",
-			"healthCheckId": "f033cb9f-b1f6-4e9c-a130-613e0630e309",
+			"healthCheckId": "5e6f1102-3d36-4420-9bbd-8c828380c372",
 			"rte53HostedZoneID": "Z01806161NC27N7UELUD2",
 			"amplifyAppId": "d17pj30yytnnjd",
 			"cloudfronturl": "",
 			"url": "https://www.thethreemusesofbluffton.com",
-			"ga4PropertyId": "",
+			"ga4PropertyId": "530365008",
 			"gscSiteUrl": "https://www.thethreemusesofbluffton.com",
 			"googleMapsPlaceId": "",
 			"blogRss": "https://blog.thethreemusesofbluffton.com/feed/",
 			"billing": {
-				"tier": "premier",
-				"price": 250.00,
 				"email": "info@thethreemusesofbluffton.com",
 				"companyName": "The Three Muses of Bluffton",
 				"address": "1460 Fording Island Road, Bluffton, SC 29910",
+				"tier": "premier",
+				"price": 250.00,
 				"notes": {
+					"2026-07": [ 
+						"Added Boutique Store and Shopping Cart Integraation",
+						"Added Featured Items to Home Page an Boutique Page",
+						"Added Sewing Machine advertiting to Sewing page",
+						"Added Gallery page, integrates with Contentful Images", 
+						"Added Studio Specials Page with 5 studio specials"
+					],
 					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
 					"2026-05": "Since The Three Muses of Bluffton was launched in May, billing for maintenance will begin starting in June, and will be billed $250 monthly at the end of each month.  Thank you!"
-				}
+				},
+				"additionalInvoiceItems": {
+					"2026-05": {
+						"amount": 1000.00,
+						"description": "Payment #1 and #2 for Initial Build of The Three Muses of Bluffton website"
+					},
+					"2026-06": {
+						"amount": 500.00,
+						"description": "Payment #3 for Initial Build of The Three Muses of Bluffton website"
+					},
+					"2026-07": {
+						"amount": 500.00,
+						"description": "Payment #4 for Initial Build of The Three Muses of Bluffton website"
+					},
+					"2026-08": {
+						"amount": 500.00,
+						"description": "Payment #5 for Initial Build of The Three Muses of Bluffton website"
+					}
+				}	
 			}
 		}
 	]
