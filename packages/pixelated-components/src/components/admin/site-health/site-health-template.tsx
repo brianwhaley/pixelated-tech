@@ -81,7 +81,8 @@ export function SiteHealthTemplate<T>(
 		if (!typedProps.endpoint) {
 			throw new Error('Endpoint is not configured for SiteHealthTemplate');
 		}
-		const { endpoint: endpointUrl, method = 'GET', headers = {}, params = {}, body, responseTransformer } = typedProps.endpoint;
+		const { endpoint: endpointUrl, method = 'GET', headers = {}, body, responseTransformer } = typedProps.endpoint;
+		const params: Record<string, string> = typedProps.endpoint.params ?? {};
 
 		// Build URL with siteName parameter
 		const url = new URL(endpointUrl, window.location.origin);
