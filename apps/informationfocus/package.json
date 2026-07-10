@@ -1,6 +1,6 @@
 {
   "name": "informationfocus",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -48,5 +48,5 @@
     "vitest": "^4.1.10"
   },
   "overrides": {},
-  "deployMarker": "2026-07-10T03:58:28.241Z"
+  "deployMarker": "2026-07-10T04:36:49.870Z"
 }
