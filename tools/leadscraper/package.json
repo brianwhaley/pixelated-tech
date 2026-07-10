@@ -1,6 +1,6 @@
 {
   "name": "leadscraper",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
@@ -35,5 +35,5 @@
     "typescript": "7.0.2"
   },
   "overrides": {},
-  "deployMarker": "2026-07-04T00:48:09.318Z"
+  "deployMarker": "2026-07-10T03:58:28.481Z"
 }
