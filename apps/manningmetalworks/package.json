@@ -1,6 +1,6 @@
 {
   "name": "manningmetalworks",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "private": true,
   "description": "Manning Metalworks - A custom metal fabrication company specializing in high-quality craftsmanship and personalized service.",
   "license": "MIT",
@@ -52,5 +52,5 @@
     "vitest": "^4.1.10"
   },
   "overrides": {},
-  "deployMarker": "2026-07-10T03:58:28.283Z"
+  "deployMarker": "2026-07-10T04:36:49.911Z"
 }
