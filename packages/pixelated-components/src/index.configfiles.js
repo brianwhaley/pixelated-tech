@@ -7,4 +7,4 @@
 
 export { default as eslintConfig } from './eslint.config.mjs';
 export { default as vitestConfig } from './vitest.config.ts';
-export { default as tsconfigBase } from './tsconfig.json' assert { type: 'json' };
+export { default as tsconfigBase } from './tsconfig.json' with { type: 'json' };
