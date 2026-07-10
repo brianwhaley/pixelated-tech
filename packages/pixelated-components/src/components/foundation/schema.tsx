@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { contentfulValueToSlug, normalizeContentfulAssetUrl } from '../integrations/contentful.delivery';
 import type { SiteInfo } from '../config/config.types';
@@ -8,6 +8,7 @@ import { usePixelatedConfig } from '../config/config.client';
 import { getServicePathPrefix } from '../elements/services.functions';
 import { getGoogleReviewsByPlaceId, type GoogleReview } from '../integrations/google.reviews.functions';
 import { getWikipediaCityObject } from '../integrations/wikipedia.functions';
+import { sanitizeString, toBoolean } from '../foundation/utilities';
 
 
 
@@ -59,6 +60,209 @@ export function SchemaBlogPosting(props: SchemaBlogPostingType) {
 		<SchemaScript schema={schema} />
 	);
 }
+
+
+
+
+
+
+/* ========================================
+	BOOK SCHEMA COMPONENTS
+======================================== */
+
+function normalizeBookEntity(entity: unknown, fallbackName?: string, defaultType: 'Person' | 'Organization' = 'Person'): any | undefined {
+	if (entity && typeof entity === 'object') {
+		return {
+			'@type': sanitizeString((entity as any)['@type']) || defaultType,
+			...entity,
+		};
+	}
+	if (typeof entity === 'string' && entity.trim()) {
+		return {
+			'@type': defaultType,
+			name: entity.trim(),
+		};
+	}
+	if (fallbackName && typeof fallbackName === 'string' && fallbackName.trim()) {
+		return {
+			'@type': defaultType,
+			name: fallbackName.trim(),
+		};
+	}
+	return undefined;
+}
+
+function buildBookUrl(bookUrl: unknown, pageUrl: unknown, siteUrl: unknown): string | undefined {
+	const normalizedBookUrl = sanitizeString(bookUrl);
+	if (normalizedBookUrl) {
+		return normalizedBookUrl;
+	}
+	const normalizedPageUrl = sanitizeString(pageUrl);
+	if (!normalizedPageUrl) {
+		return undefined;
+	}
+	if (/^https?:\/\//i.test(normalizedPageUrl)) {
+		return normalizedPageUrl;
+	}
+	const normalizedSiteUrl = sanitizeString(siteUrl);
+	if (normalizedSiteUrl) {
+		return `${normalizedSiteUrl.replace(/\/$/, '')}/${normalizedPageUrl.replace(/^\//, '')}`;
+	}
+	return undefined;
+}
+
+function normalizeBookFormat(value: unknown): string | undefined {
+	const format = sanitizeString(value);
+	if (!format) {
+		return undefined;
+	}
+	const normalized = format.toLowerCase().replace(/\s+/g, '');
+	const mapping: Record<string, string> = {
+		hardcover: 'https://schema.org/Hardcover',
+		paperback: 'https://schema.org/Paperback',
+		ebook: 'https://schema.org/EBook',
+		audiobook: 'https://schema.org/Audiobook',
+		largeprint: 'https://schema.org/LargePrint',
+		massmarketpaperback: 'https://schema.org/MassMarketPaperback',
+		tradepaperback: 'https://schema.org/TradePaperback',
+	};
+	return mapping[normalized] || format;
+}
+
+function buildBookOffer(variant: any): any | undefined {
+	const url = sanitizeString(variant?.offerURL || variant?.offerUrl || variant?.url);
+	if (!url) {
+		return undefined;
+	}
+	const price = variant?.price != null ? sanitizeString(variant.price) : undefined;
+	const priceCurrency = sanitizeString(variant?.priceCurrency) || 'USD';
+	const availability = sanitizeString(variant?.availability) || 'https://schema.org/InStock';
+	return {
+		'@type': 'Offer',
+		url,
+		...(price && { price }),
+		priceCurrency,
+		availability,
+	};
+}
+
+function buildBookVariant(variant: any): any | undefined {
+	if (!variant || typeof variant !== 'object') {
+		return undefined;
+	}
+
+	const bookFormat = normalizeBookFormat(variant?.bookFormat || variant?.name || variant?.['@type']);
+	const isbn = sanitizeString(variant?.isbn);
+	const numberOfPages = variant?.numberOfPages != null ? Number(variant.numberOfPages) : undefined;
+	const offer = buildBookOffer(variant);
+
+	const variantSchema: any = {
+		'@type': 'Book',
+		...(bookFormat && { bookFormat }),
+		...(isbn && { isbn }),
+		...(numberOfPages ? { numberOfPages } : {}),
+		...(offer && { offers: offer }),
+	};
+
+	return Object.keys(variantSchema).length > 1 ? variantSchema : undefined;
+}
+
+
+/**
+ * SchemaBook — embeds a book as JSON-LD for SEO (schema.org/Book).
+ * @param {shape} [props.book] - Book object conforming to schema.org/Book; will be serialized as JSON-LD.
+ * @returns {JSX.Element} A script tag with the Book JSON-LD data.
+ */
+SchemaBook.propTypes = {
+	book: PropTypes.shape({
+		'@context': PropTypes.string,
+		'@type': PropTypes.string,
+		name: PropTypes.string.isRequired,
+		description: PropTypes.string,
+		image: PropTypes.string,
+		datePublished: PropTypes.string,
+		genre: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+		inLanguage: PropTypes.string,
+		isFamilyFriendly: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+		pageUrl: PropTypes.string,
+		url: PropTypes.string,
+		copyrightYear: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		author: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.shape({
+				'@type': PropTypes.string,
+				name: PropTypes.string,
+			}),
+		]),
+		publisher: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.shape({
+				'@type': PropTypes.string,
+				name: PropTypes.string,
+			}),
+		]),
+		variants: PropTypes.arrayOf(
+			PropTypes.shape({
+				bookFormat: PropTypes.string,
+				name: PropTypes.string,
+				'@type': PropTypes.string,
+				isbn: PropTypes.string,
+				numberOfPages: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+				offerURL: PropTypes.string,
+				offerUrl: PropTypes.string,
+				url: PropTypes.string,
+				price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+				priceCurrency: PropTypes.string,
+				availability: PropTypes.string,
+			})
+		),
+	}).isRequired,
+};
+export type SchemaBookType = InferProps<typeof SchemaBook.propTypes>;
+export function SchemaBook(props: SchemaBookType) {
+	const config = usePixelatedConfig();
+	const { book } = props;
+	const siteInfo = config?.siteInfo;
+
+	const author = normalizeBookEntity(book.author || siteInfo?.author, siteInfo?.name, 'Person');
+	const publisher = normalizeBookEntity(book.publisher, undefined, 'Organization') || author;
+	const variantSchemas = Array.isArray(book.variants)
+		? book.variants.map(buildBookVariant).filter(Boolean)
+		: [];
+	const schema = {
+		'@context': 'https://schema.org',
+		'@type': 'Book',
+		name: book.name,
+		...(book.description && { description: book.description }),
+		...(book.datePublished && { datePublished: book.datePublished }),
+		...(book.image ? { image: book.image } : siteInfo?.image ? { image: siteInfo.image } : {}),
+		...(book.genre && { genre: book.genre }),
+		...(book.inLanguage && { inLanguage: book.inLanguage }),
+		...(toBoolean(book.isFamilyFriendly) != null && { isFamilyFriendly: toBoolean(book.isFamilyFriendly) }),
+		...(author && { author: addSameAs(author, siteInfo?.sameAs) }),
+		...(publisher && { publisher: addSameAs(publisher, siteInfo?.sameAs) }),
+		...(buildBookUrl(book.url, book.pageUrl, siteInfo?.url) && { url: buildBookUrl(book.url, book.pageUrl, siteInfo?.url) }),
+		...(book.copyrightYear && { copyrightYear: Number(book.copyrightYear) }),
+		...(variantSchemas.length > 0 && { workExample: variantSchemas }),
+	};
+
+	return (
+		<SchemaScript schema={schema} />
+	);
+}
+
+
+
+
+
+
+/* ========================================
+	BREADCRUMB SCHEMA COMPONENTS
+======================================== */
+
+/* The server-only breadcrumb schema implementation lives in schema.server.tsx.
+   This client module no longer exports the breadcrumb JSON-LD component.
+*/
 
 
 
@@ -118,7 +322,12 @@ export function SchemaEvent(props: SchemaEventType) {
 					addressCountry: siteInfo?.address?.addressCountry,
 				},
 			},
-			image: images.length ? images : undefined,
+			image: images.length ? images : siteInfo?.image ? [siteInfo.image] : undefined,
+			performer: addSameAs({
+				'@type': 'Organization',
+				name: siteInfo?.name,
+				url: siteInfo?.url,
+			}, siteInfo?.sameAs),
 			description: event.fields.description,
 			url: eventUrl,
 			offers: event.fields.price != null ? {
@@ -140,20 +349,6 @@ export function SchemaEvent(props: SchemaEventType) {
 		<SchemaScript schema={schema} />
 	);
 }
-
-
-
-
-
-
-
-/* ========================================
-	BREADCRUMB SCHEMA COMPONENTS
-======================================== */
-
-/* The server-only breadcrumb schema implementation lives in schema.server.tsx.
-   This client module no longer exports the breadcrumb JSON-LD component.
-*/
 
 
 
@@ -440,6 +635,7 @@ ProductSchema.propTypes = {
 				})
 			)
 		]),
+		review: PropTypes.arrayOf(PropTypes.object),
 		aggregateRating: PropTypes.shape({
 			'@type': PropTypes.string,
 			ratingValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -452,14 +648,21 @@ export function ProductSchema(props: ProductSchemaType) {
 	const config = usePixelatedConfig();
 	const sameAs = config?.siteInfo?.sameAs;
 	const { product } = props;
-	const schema = sameAs?.length && product?.brand ? {
+	const baseProduct = sameAs?.length && product?.brand ? {
 		...product,
 		brand: addSameAs(product.brand, sameAs),
 	} : product;
+	const schema = {
+		...baseProduct,
+		review: baseProduct.review ?? [],
+		aggregateRating: baseProduct.aggregateRating ?? { '@type': 'AggregateRating' },
+	};
 	return (
 		<SchemaScript schema={schema} />
 	);
 }
+
+
 
 
 
@@ -648,40 +851,6 @@ export function ServicesSchema() {
 		.map(area => getWikipediaCityObject(area?.name))
 		.filter((item): item is NonNullable<typeof item> => item !== null);
 
-	const googlePlacesPlaceId = config?.integrations?.googlePlaces?.placeId || '';
-	const googlePlacesApiKey = config?.integrations?.googlePlaces?.apiKey || '';
-	const googlePlacesLanguage = config?.integrations?.googlePlaces?.language;
-	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
-	const [googleReviews, setGoogleReviews] = useState<GoogleReview[]>([]);
-	const shouldLoadGoogleReviews = Boolean(googlePlacesPlaceId && googlePlacesApiKey);
-
-	useEffect(() => {
-		if (!shouldLoadGoogleReviews) {
-			return;
-		}
-
-		let didCancel = false;
-		(async () => {
-			try {
-				const result = await getGoogleReviewsByPlaceId({
-					apiKey: googlePlacesApiKey,
-					placeId: googlePlacesPlaceId,
-					proxyBase,
-					language: googlePlacesLanguage ?? undefined,
-					maxReviews: 5,
-				});
-				if (!didCancel && Array.isArray(result.reviews)) {
-					setGoogleReviews(result.reviews);
-				}
-			} catch {
-				// Silently ignore review fetch failures and continue rendering service schema without reviews.
-			}
-		})();
-
-		return () => {
-			didCancel = true;
-		};
-	}, [googlePlacesApiKey, googlePlacesLanguage, googlePlacesPlaceId, proxyBase, shouldLoadGoogleReviews]);
 
 	if (!services.length || !provider.name) {
 		return null;
@@ -717,38 +886,6 @@ export function ServicesSchema() {
 		const audience = service.audience || sharedAudience;
 		const offers = service.offers || sharedOffers;
 		const termsOfService = service.termsOfService || sharedTermsOfService;
-		const googleReviewSchemas = googleReviews.map((review) => ({
-			'@context': 'https://schema.org',
-			'@type': 'Review',
-			name: review.text ? review.text.substring(0, 110) : `${review.author_name} review`,
-			reviewBody: review.text || undefined,
-			datePublished: review.time ? new Date(review.time * 1000).toISOString() : undefined,
-			author: {
-				'@type': 'Person',
-				name: review.author_name,
-			},
-			itemReviewed: {
-				'@type': 'LocalBusiness',
-				name: provider.name,
-				...(provider.url && { url: provider.url }),
-			},
-			reviewRating: {
-				'@type': 'Rating',
-				ratingValue: review.rating.toString(),
-				bestRating: '5',
-				worstRating: '1',
-			},
-		}));
-
-		const googleAggregateRating = googleReviews.length > 0 ? {
-			'@type': 'AggregateRating',
-			ratingValue: (
-				googleReviews.reduce((sum, review) => sum + review.rating, 0) / googleReviews.length
-			).toFixed(1),
-			reviewCount: googleReviews.length.toString(),
-			bestRating: '5',
-			worstRating: '1',
-		} : undefined;
 
 		return {
 			'@type': 'Service',
@@ -766,8 +903,6 @@ export function ServicesSchema() {
 			...(sharedAvailability && { availability: sharedAvailability }),
 			...(sharedAvailableChannel && { availableChannel: sharedAvailableChannel }),
 			...(areaServedValues.length > 0 && { areaServed: areaServedValues }),
-			...(googleAggregateRating && { aggregateRating: googleAggregateRating }),
-			...(googleReviewSchemas.length > 0 && { review: googleReviewSchemas }),
 			provider: {
 				'@type': 'LocalBusiness',
 				name: provider.name,
@@ -856,7 +991,70 @@ export function SchemaWebPage({ serviceAreaSlug, serviceAreaPathPrefix = '/servi
 		<SchemaScript schema={schemaData} />
 	);
 }
+export async function fetchGoogleReviewsFromConfig(config: any, maxReviews = 5): Promise<GoogleReview[]> {
+	const placeId = config?.integrations?.googlePlaces?.placeId;
+	const apiKey = config?.integrations?.googlePlaces?.apiKey;
+	const language = config?.integrations?.googlePlaces?.language;
+	const proxyBase = config?.integrations?.global?.proxyUrl || undefined;
 
+	if (!placeId || !apiKey) {
+		return [];
+	}
+
+	try {
+		const result = await getGoogleReviewsByPlaceId({
+			apiKey,
+			placeId,
+			proxyBase,
+			language: language ?? undefined,
+			maxReviews,
+		});
+		return Array.isArray(result.reviews) ? result.reviews : [];
+	} catch {
+		return [];
+	}
+}
+
+export function buildGoogleReviewSchemas(googleReviews: GoogleReview[], provider: { name: string; url?: string }) {
+	return googleReviews.map((review) => ({
+		'@context': 'https://schema.org',
+		'@type': 'Review',
+		name: review.text ? review.text.substring(0, 110) : `${review.author_name} review`,
+		reviewBody: review.text || undefined,
+		datePublished: review.time ? new Date(review.time * 1000).toISOString() : undefined,
+		author: {
+			'@type': 'Person',
+			name: review.author_name,
+		},
+		itemReviewed: {
+			'@type': 'LocalBusiness',
+			name: provider.name,
+			...(provider.url && { url: provider.url }),
+		},
+		reviewRating: {
+			'@type': 'Rating',
+			ratingValue: review.rating.toString(),
+			bestRating: '5',
+			worstRating: '1',
+		},
+	}));
+}
+
+export function buildGoogleAggregateRating(googleReviews: GoogleReview[]) {
+	if (!googleReviews.length) {
+		return undefined;
+	}
+
+	return {
+		'@type': 'AggregateRating',
+		ratingValue: (
+			googleReviews.reduce((sum, review) => sum + review.rating, 0) / googleReviews.length
+		).toFixed(1),
+		reviewCount: googleReviews.length.toString(),
+		bestRating: '5',
+		worstRating: '1',
+	};
+}
 
 
 

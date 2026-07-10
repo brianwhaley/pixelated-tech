@@ -48,6 +48,7 @@ const commonElementPaths = {
 	Proxy: 'src/proxy',
 	HumansRoute: 'src/app/humans.txt/route',
 	SecurityRoute: 'src/app/security.txt/route',
+	LLMSRoute: 'src/app/llms.txt/route',
 	PageMocks: ['src/test/page-mocks', 'src/tests/page-mocks'],
 };
 
@@ -341,6 +342,18 @@ export function runCommonPageCoverage({
 					expect(await response.text()).toContain('security');
 				} else {
 					expect(response).toEqual({ type: 'security', url: 'https://example.com/security.txt' });
+				}
+			});
+
+			it('returns llms well-known response', async () => {
+				const filePath = findAppModule(appRoot, commonElementPaths.LLMSRoute);
+				expect(filePath).not.toBeNull();
+				const importedModule = await importModule(filePath!);
+				const response = await importedModule.GET({ url: 'https://example.com/llms.txt' } as any);
+				if (typeof Response !== 'undefined' && response instanceof Response) {
+					expect(await response.text()).toContain('AI / LLM Usage Policy');
+				} else {
+					expect(response).toEqual(expect.any(Object));
 				}
 			});
 		}

@@ -4,9 +4,14 @@ import { render } from '../test/test-utils';
 import React from 'react';
 import { BillingDashboard } from '../components/admin/billing/billing.dashboard.components';
 import { smartFetch } from '../components/foundation/smartfetch';
+import { loadBillingConfigData } from '../components/admin/billing/billing.server';
 
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
+}));
+
+vi.mock('../components/admin/billing/billing.server', () => ({
+	loadBillingConfigData: vi.fn()
 }));
 
 vi.mock('../components/admin/billing/billing.invoice.components', () => ({
@@ -21,18 +26,19 @@ describe('BillingDashboard Component', () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
 		
-		// Mock default site config fetch
-		vi.mocked(smartFetch).mockResolvedValue({
+		// Mock default billing config fetch
+		vi.mocked(loadBillingConfigData).mockResolvedValue({
 			sites: [
-				{ name: 'billable1', url: 'https://b1.com', billing: { tier: 'standard', email: 'b1@test.com' } },
-				{ name: 'billable2', url: 'https://b2.com', billing: { tier: 'premium', email: 'b2@test.com', priceOverride: 500 } },
+				{ name: 'billable1', url: 'https://b1.com', billing: { tier: 'standard', email: 'b1@test.com', companyName: 'Billable One', address: '123 Test Ln' } },
+				{ name: 'billable2', url: 'https://b2.com', billing: { tier: 'premium', email: 'b2@test.com', priceOverride: 500, companyName: 'Billable Two', address: '456 Test Ave' } },
 				{ name: 'non-billable', url: 'https://nobill.com' }
 			],
 			subscriptions: {
 				standard: { price: 200, services: [] },
 				premium: { price: 400, services: [] }
 			},
-			paymentInfo: { method: 'Cash', details: '', terms: '' }
+			paymentInfo: { method: 'Cash', details: '', terms: '' },
+			formCompletions: []
 		});
 	});
 
@@ -153,8 +159,8 @@ describe('BillingDashboard Component', () => {
 	});
 
 	it('handles load errors correctly', async () => {
-		// Mock call failing entirely
-		vi.mocked(smartFetch).mockRejectedValueOnce(new Error('fail'));
+		// Mock the billing config loader failing entirely
+		vi.mocked(loadBillingConfigData).mockRejectedValueOnce(new Error('fail'));
 
 		render(<BillingDashboard />);
 		await waitFor(() => expect(screen.queryByText('Loading billing metadata details...')).not.toBeInTheDocument());

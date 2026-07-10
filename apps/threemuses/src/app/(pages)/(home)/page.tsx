@@ -9,7 +9,7 @@ import * as componentLibrary from '../../elements/componentlibrary';
 // value from pixelated config if no explicit `posts` prop is supplied.
 
 export default async function Home() {
-	let featuredItems = [];
+	let featuredItems: any[] = [];
 	try {
 		const storeResponse = await getSquareStoreItems({ featuredOnly: true });
 		featuredItems = storeResponse?.items ?? [];

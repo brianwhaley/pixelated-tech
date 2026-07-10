@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { captureSquarePayment, buildSquareOrderBody, buildSquarePaymentBody, buildSquarePaymentBodyWithOrder, createSquareOrder, createSquareOrderAndCapturePayment, getSquareConfig, getSquareStoreItems, getSquareStoreItemById, clearSquareStoreCache } from '../components/shoppingcart/square.server';
+import { captureSquarePayment, buildSquareOrderBody, buildSquarePaymentBody, buildSquarePaymentBodyWithOrder, createSquareOrder, createSquareOrderAndCapturePayment, getSquareConfig, getSquareStoreItems, getSquareStoreItemById, getSquareEventItems, getSquareEventItemById, SquareEventWrapper, clearSquareStoreCache } from '../components/shoppingcart/square.server';
 import { SquarePaymentError, getSquarePaymentErrorMessage, getSquareStorePriceRanges, matchesSquareStorePriceRange, buildSquareStoreFilters } from '../components/shoppingcart/square';
 import type { CheckoutType } from '../components/shoppingcart/shoppingcart.functions';
 import { createMockConfig, deepClone, makeCheckoutData } from '../test/test-utils';
-import { squareOrderCheckoutData, squareCatalogResponseWithRelatedObjects, squareCatalogResponseNoRelatedObjects, squareCatalogResponseNestedVariation, squareCatalogResponseById, pixelatedConfig } from '../test/test-data';
+import { squareOrderCheckoutData, squareCatalogResponseWithRelatedObjects, squareCatalogResponseNoRelatedObjects, squareCatalogResponseNestedVariation, squareCatalogResponseById, squareEventCatalogObjects, pixelatedConfig } from '../test/test-data';
 
 const mockGetFullPixelatedConfig = vi.fn();
 const mockSmartFetch = vi.fn();
@@ -699,14 +699,63 @@ describe('Square payment helper', () => {
 
 		const itemObject = (squareCatalogResponse.objects || []).find((o: any) => o.type === 'ITEM' && o.id === 'item-1');
 		if (itemObject?.item_data) {
-			itemObject.item_data.custom_attribute_values = [
-				{ name: 'isShippable', selection_uid_values: ['E43GQBXQMATRUT5RGHHACITB'] },
-			];
+			itemObject.item_data.is_shippable = 'E43GQBXQMATRUT5RGHHACITB';
 		}
 
 		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
 
 		mockSmartFetch.mockResolvedValueOnce(attributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+
+		expect(response.items).toHaveLength(1);
+		expect(response.items[0].itemIsShippable).toBe(true);
+	});
+
+	it('defaults itemIsShippable to false when no shippable flags are present', async () => {
+		const squareCatalogResponse = deepClone(squareCatalogResponseWithRelatedObjects);
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-1', quantity: '3' },
+			],
+		};
+
+		const itemObject = (squareCatalogResponse.objects || []).find((o: any) => o.type === 'ITEM' && o.id === 'item-1');
+		if (itemObject?.item_data) {
+			itemObject.item_data.is_shippable = undefined;
+			itemObject.item_data.custom_attribute_values = [];
+		}
+
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
+		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
+
+		const response = await getSquareStoreItems();
+
+		expect(response.items).toHaveLength(1);
+		expect(response.items[0].itemIsShippable).toBe(false);
+	});
+
+	it('resolves string values for isShippable to true', async () => {
+		const squareCatalogResponse = deepClone(squareCatalogResponseWithRelatedObjects);
+		const inventoryResponse = {
+			counts: [
+				{ catalog_object_id: 'var-1', quantity: '3' },
+			],
+		};
+
+		const itemObject = (squareCatalogResponse.objects || []).find((o: any) => o.type === 'ITEM' && o.id === 'item-1');
+		if (itemObject?.item_data) {
+			itemObject.item_data.is_shippable = 'yes';
+		}
+
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: pixelatedConfig.integrations.square } }));
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
 		mockSmartFetch.mockResolvedValueOnce(squareCatalogResponse);
 		mockSmartFetch.mockResolvedValueOnce(inventoryResponse);
 
@@ -961,5 +1010,51 @@ describe('Square payment helper', () => {
 		expect(slugItem).toBeDefined();
 		expect(slugItem?.itemID).toBe('item-1');
 		expect(slugItem?.itemURL).toBe('/store/artisan-tray');
+	});
+
+	it('should fetch square event items and resolve event IDs and slugs', async () => {
+		const cfg = deepClone(pixelatedConfig.integrations.square);
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg } }));
+
+		const eventObjects = squareEventCatalogObjects;
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce({ objects: eventObjects, cursor: undefined });
+		mockSmartFetch.mockResolvedValueOnce({ counts: [{ catalog_object_id: 'var-1', quantity: '2' }] });
+
+		const response = await getSquareEventItems();
+		expect(response).toHaveLength(1);
+		expect(response[0].fields.id).toBe('item-1');
+		expect(response[0].fields.status).toBe('open');
+		expect(response[0].fields.carouselImages).toEqual([{ image: 'https://example.com/event.jpg' }]);
+
+		const direct = await getSquareEventItemById('item-1');
+		expect(direct).toBeDefined();
+		expect(direct?.fields.title).toBe('Test Event');
+
+		const slug = await getSquareEventItemById('test-event');
+		expect(slug).toBeDefined();
+		expect(slug?.fields.id).toBe('item-1');
+	});
+
+	it('should support SquareEventWrapper list and detail modes', async () => {
+		const cfg = deepClone(pixelatedConfig.integrations.square);
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg } }));
+
+		const eventObjects = squareEventCatalogObjects;
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce({ objects: eventObjects, cursor: undefined });
+		mockSmartFetch.mockResolvedValueOnce({ counts: [{ catalog_object_id: 'var-1', quantity: '2' }] });
+
+		const listResult = await SquareEventWrapper({ type: 'list' });
+		expect(Array.isArray(listResult)).toBe(true);
+		expect((listResult as any[])[0].fields.id).toBe('item-1');
+
+		const detailResult = await SquareEventWrapper({ type: 'detail', eventId: 'item-1' });
+		expect((detailResult as any)?.fields?.id).toBe('item-1');
+
+		const missingResult = await SquareEventWrapper({ type: 'detail', eventId: 'missing-id' });
+		expect(missingResult).toBeNull();
 	});
 });

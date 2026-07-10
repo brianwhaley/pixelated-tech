@@ -1,0 +1,30 @@
+[
+  {
+    "itemID": "item-1",
+    "itemTitle": "Large Item",
+    "itemDescription": "A large boutique event",
+    "itemPrice": 40,
+    "itemCurrency": "USD",
+    "itemInventory": 2,
+    "itemImageURL": "https://example.com/img1.png",
+    "itemURL": "/store/large-item",
+    "itemType": "EVENT",
+    "itemStartDate": "2026-08-01",
+    "itemStartTime": "10:00 AM",
+    "itemEndDate": "2026-08-01",
+    "itemEndTime": "12:00 PM",
+    "categories": [{ "id": "cat-1", "name": "Boutique" }],
+    "properties": { "Color": "Red" }
+  },
+  {
+    "itemID": "item-2",
+    "itemTitle": "Other Item",
+    "itemPrice": 10,
+    "itemCurrency": "USD",
+    "itemInventory": 1,
+    "itemImageURL": "https://example.com/img2.png",
+    "itemURL": "/store/other-item",
+    "categories": [{ "id": "cat-2", "name": "Seasonal" }],
+    "properties": { "Color": "Blue" }
+  }
+]

@@ -14,6 +14,8 @@ export const SquareStoreItemShape = {
 	itemIsShippable: PropTypes.bool.isRequired,
 	itemWeight: PropTypes.number,
 	itemWeightUnit: PropTypes.string,
+	itemType: PropTypes.string,
+	itemTimeZone: PropTypes.string,
 	// itemType = "product" from Contentful Item Component
 	itemSKU: PropTypes.string,
 	itemDurationHours: PropTypes.number,

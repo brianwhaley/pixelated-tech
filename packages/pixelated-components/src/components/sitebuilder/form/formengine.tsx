@@ -2,9 +2,10 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { generateKey } from '../../foundation/utilities';
 import { FormValidationProvider, useFormValidation } from './formvalidator';
 import { FormSubmitWrapper, useFormSubmitContext } from './formsubmit';
+import { usePixelatedConfig } from '../../config/config.client';
+import { getWebMcpFieldType, applyWebMcpFormAttributes, applyWebMcpFieldAttributes } from '../../foundation/webmcp.utils';
 
 import * as FC from './formcomponents';
 import { CompoundFontSelector } from '../config/CompoundFontSelector';
@@ -18,6 +19,7 @@ export const COMPONENTS: Record<string, React.ElementType> = {
 };
 
 const debug = false;
+
 
 /* ===== FORM ENGINE =====
 Generate all the elements to display a form */
@@ -99,6 +101,7 @@ type FormEngineInnerType = InferProps<typeof FormEngineInner.propTypes>;
 function FormEngineInner(props: FormEngineInnerType) {
 	const { validateAllFields } = useFormValidation();
 	const { formRef } = props as any;
+	const siteName = usePixelatedConfig()?.siteInfo?.name;
 
 	// Try to get handleSubmit from FormSubmitWrapper context
 	let contextSubmitHandler: ((event: React.FormEvent<HTMLFormElement>) => Promise<void>) | undefined;
@@ -125,6 +128,7 @@ function FormEngineInner(props: FormEngineInnerType) {
 		
 		// Safety: default to POST to avoid accidental GET navigation (prevents query leakage)
 		if (!formProps.method) formProps.method = 'post';
+		applyWebMcpFormAttributes(formProps, formData, siteName);
 		return formProps;
 	}
 
@@ -151,6 +155,7 @@ function FormEngineInner(props: FormEngineInnerType) {
 				// Shallow clone props to preserve function handlers (JSON stringify drops functions)
 				const newProps: any = { ...thisField.props };
 				newProps.key = `${thisField.component}-${field}`;
+				applyWebMcpFieldAttributes(newProps, thisField, field, props.formData);
 				if (props.onFieldChange) {
 					newProps.parent = {
 						...(newProps.parent ?? {}),

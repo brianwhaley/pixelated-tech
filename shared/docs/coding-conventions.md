@@ -76,6 +76,12 @@ export function Component(props: ComponentType) { ... }
 - Place CSS files alongside components: `component-name.css`
 - Use index files for clean imports
 
+### File Naming and Usage
+- `*.components.tsx`: front-end UI components
+- `*.functions.ts`: shared helper functions usable by both front-end and server
+- `*.server.ts` / `*.server.tsx`: server-only modules and actions
+- `*.integration.ts`: legacy integration files that should be treated as server-only
+
 ## APIs & Services
 
 ### API Service Structure

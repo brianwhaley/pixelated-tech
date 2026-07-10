@@ -16,3 +16,4 @@ export * from './smartfetch';
 export * from './styleguide';
 export * from './urlbuilder';
 export * from './utilities';
+export * from './webmcp.utils';

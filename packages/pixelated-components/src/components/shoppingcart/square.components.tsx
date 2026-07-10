@@ -40,6 +40,40 @@ function buildSquareProductSchema(item: SquareStoreItemShapeType) {
 	};
 }
 
+function buildSquareEventSchema(item: SquareStoreItemShapeType, config: any) {
+	const images = item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
+	const eventImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : undefined;
+	const startDate = item.itemStartDate && item.itemStartTime ? buildSquareEventIsoDate(`${item.itemStartDate} ${item.itemStartTime}`) : undefined;
+	const endDate = item.itemEndDate && item.itemEndTime ? buildSquareEventIsoDate(`${item.itemEndDate} ${item.itemEndTime}`) : undefined;
+	const eventStatus = startDate ? 'https://schema.org/EventScheduled' : undefined;
+	const organizer = config?.siteInfo ? {
+		'@type': 'Organization',
+		name: config.siteInfo.name,
+		url: config.siteInfo.url,
+	} : undefined;
+	const performer = organizer;
+
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Event',
+		name: item.itemTitle,
+		description: item.itemDescription || item.itemTitle,
+		image: eventImages,
+		url: item.itemURL,
+		startDate,
+		endDate,
+		eventStatus,
+		offers: item.itemPrice != null ? {
+			'@type': 'Offer',
+			url: item.itemURL,
+			priceCurrency: item.itemCurrency ?? 'USD',
+			price: item.itemPrice,
+			availability: item.itemInventory > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+		} : undefined,
+		performer,
+	};
+}
+
 const SQUARE_PRODUCTION_SCRIPT_URL = 'https://web.squarecdn.com/v1/square.js';
 const SQUARE_SANDBOX_SCRIPT_URL = 'https://sandbox.web.squarecdn.com/v1/square.js';
 
@@ -73,6 +107,11 @@ function getSquareScriptUrl(applicationId?: string, squareConfig?: any, checkout
 	return applicationId?.startsWith('sandbox-')
 		? SQUARE_SANDBOX_SCRIPT_URL
 		: SQUARE_PRODUCTION_SCRIPT_URL;
+}
+
+function buildSquareEventIsoDate(value: string) {
+	const parsed = new Date(value);
+	return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
 }
 
 function loadSquareScript(src: string) {
@@ -617,6 +656,7 @@ SquareStoreItemDetail.propTypes = {
 };
 export type SquareStoreItemDetailType = InferProps<typeof SquareStoreItemDetail.propTypes>;
 export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
+	const config = usePixelatedConfig();
 	const itemImageURLs = props.item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
 	const imageCards = itemImageURLs.length > 1 ? itemImageURLs.map((image, index: number) => ({
 		index,
@@ -630,8 +670,12 @@ export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
 	return (
 		<PageSection columns={1} id="square-store-item-detail" className="square-store-item-detail">
 
-			<ProductSchema product={buildSquareProductSchema(props.item)} />
-
+			{props.item.itemType?.toUpperCase() === 'EVENT' ? (
+				<SchemaEvent event={buildSquareEventSchema(props.item, config)} />
+			) : (
+				<ProductSchema product={buildSquareProductSchema(props.item)} />
+			)}
+			
 			<div className="square-store-item-detail">
 
 				<div className="square-store-item-detail-title">

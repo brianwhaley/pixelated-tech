@@ -2,13 +2,11 @@ import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { getFullPixelatedConfig } from '../config/config';
 
 export const DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE = 'PixelatedFormSubmissionsTable';
-export const DEFAULT_PIXELATED_FORM_SUBMISSION_DOMAIN = 'thethreemusesofbluffton.com';
-export const DEFAULT_PIXELATED_FORM_NAME = 'The Three Muses of Bluffton Order Form';
 
 export interface PixelatedFormSubmissionQueryOptions {
 	tableName?: string;
-	domain: string;
-	formName: string;
+	domain?: string;
+	formName?: string;
 }
 
 export interface PixelatedFormSubmissionReportRow {
@@ -17,66 +15,6 @@ export interface PixelatedFormSubmissionReportRow {
 
 const dynamoAttributeKeys = new Set(['S', 'N', 'BOOL', 'NULL', 'M', 'L', 'SS', 'NS', 'BS', 'B']);
 
-export const PIXELATED_FORM_SUBMISSION_REPORT_FIELDS = [
-	'created_at',
-	'shipping_to',
-	'registration_data',
-	'items',
-] as const;
-
-function asArray(value: any) {
-	return Array.isArray(value) ? value : [];
-}
-
-function selectObjectFields(source: Record<string, any>, fields: Array<string>) {
-	return fields.reduce((result, field) => {
-		if (source[field] !== undefined) {
-			result[field] = source[field];
-		}
-		return result;
-	}, {} as Record<string, any>);
-}
-
-function selectRegistrationData(source: Record<string, any>) {
-	return selectObjectFields(source, [
-		'child_name',
-		'child_birthdate',
-		'birthdate',
-		'emergency_contact_name',
-		'emergency_contact_telephone',
-		'full_payment',
-		'cancellation_policy',
-		'photo_consent',
-		'closed_toe_shoes',
-		'class_materials',
-		'minimum_students',
-		'food_allergies',
-		'bleeding_disorder',
-		'injury_liability',
-	]);
-}
-
-function selectShippingTo(source: Record<string, any>) {
-	return selectObjectFields(source, ['name', 'street1', 'city', 'state', 'zip', 'country', 'phone', 'email']);
-}
-
-function selectItems(items: any) {
-	const normalizeItem = (item: Record<string, any>) => ({
-		id: item.id ?? item.itemID ?? item.sku ?? item.itemSKU,
-		itemID: item.itemID ?? item.id,
-		title: item.title ?? item.itemTitle,
-		itemTitle: item.itemTitle ?? item.title,
-		quantity: item.quantity ?? item.itemQuantity,
-		itemQuantity: item.itemQuantity ?? item.quantity,
-		sku: item.sku ?? item.itemSKU,
-		itemSKU: item.itemSKU ?? item.sku,
-		category: item.category ?? (Array.isArray(item.itemCategory) ? item.itemCategory.join(', ') : item.itemCategory),
-		itemCategory: item.itemCategory ?? item.category,
-	});
-	if (Array.isArray(items)) { return items.map((item) => normalizeItem(item || {}));}
-	if (items && typeof items === 'object') { return normalizeItem(items); }
-	return [];
-}
 
 function toPlainValue(value: any): any {
 	if (value === null || value === undefined) { return value; }
@@ -98,32 +36,107 @@ function toPlainValue(value: any): any {
 	return Object.fromEntries(Object.entries(value).map(([key, nestedValue]) => [key, toPlainValue(nestedValue)]));
 }
 
-function parsePossibleJson(value: any) {
-	if (typeof value !== 'string') { return value; }
-	try {
-		return JSON.parse(value);
-	} catch {
-		return value;
-	}
-}
-
 function normalizeDynamoItem(item: Record<string, any>) {
 	const normalized = Object.fromEntries(Object.entries(item || {}).map(([key, value]) => [key, toPlainValue(value)]));
-	const orderData = parsePossibleJson(normalized.orderData ?? normalized.order_data ?? normalized.data ?? normalized.payload ?? normalized.submissionData);
+	const orderDataValue = normalized.orderData ?? normalized.order_data ?? normalized.data ?? normalized.payload ?? normalized.submissionData;
+	const orderData = (() => {
+		if (typeof orderDataValue !== 'string') { return orderDataValue; }
+		try {
+			return JSON.parse(orderDataValue);
+		} catch {
+			return orderDataValue;
+		}
+	})();
 	const reportSource = orderData && typeof orderData === 'object' ? orderData : {};
 	const checkoutData = reportSource.checkoutData ?? reportSource;
 	const payment = reportSource.captureResponse?.payment ?? reportSource.payment ?? {};
 	const shippingTo = checkoutData.shippingTo ?? {};
-	const registrationDataSource = shippingTo;
-	const createdAt = payment.created_at ? new Date(payment.created_at).toLocaleString() : '';
+	const createdAtValue = normalized.timestamp ?? '';
+	const createdAt = (() => {
+		if (createdAtValue === undefined || createdAtValue === null || createdAtValue === '') {
+			return '';
+		}
+		const raw = String(createdAtValue).trim();
+		const parsed = new Date(raw);
+		return Number.isNaN(parsed.getTime()) ? raw : parsed.toISOString();
+	})();
+	const contactEmail =
+		normalized.email || normalized.from || normalized.to ||
+		reportSource.email || reportSource.from || reportSource.to ||
+		checkoutData.email || checkoutData.from || checkoutData.to ||
+		'';
+
+	const shippingToData = (() => {
+		const source = shippingTo as Record<string, any>;
+		const fields = ['name', 'street1', 'city', 'state', 'zip', 'country', 'phone', 'email'];
+		const base = fields.reduce((result, field) => {
+			if (source[field] !== undefined) {
+				result[field] = source[field];
+			}
+			return result;
+		}, {} as Record<string, any>);
+		if (!base.email && contactEmail) {
+			base.email = contactEmail;
+		}
+		return base;
+	})();
+	const registrationData = (() => {
+		const source = shippingTo as Record<string, any>;
+		const fields = [
+			'child_name',
+			'child_birthdate',
+			'birthdate',
+			'emergency_contact_name',
+			'emergency_contact_telephone',
+			'full_payment',
+			'cancellation_policy',
+			'photo_consent',
+			'closed_toe_shoes',
+			'class_materials',
+			'minimum_students',
+			'food_allergies',
+			'bleeding_disorder',
+			'injury_liability',
+		];
+		return fields.reduce((result, field) => {
+			if (source[field] !== undefined) {
+				result[field] = source[field];
+			}
+			return result;
+		}, {} as Record<string, any>);
+	})();
+	const itemsData = (() => {
+		const normalizeItem = (item: Record<string, any>) => ({
+			itemID: item.itemID ?? item.id ?? item.sku ?? item.itemSKU ?? '',
+			itemTitle: item.itemTitle ?? item.title ?? '',
+			itemQuantity: item.itemQuantity ?? item.quantity ?? 0,
+			itemSKU: item.itemSKU ?? item.sku ?? undefined,
+			itemCategory: item.itemCategory ?? item.category ?? undefined,
+		});
+		const items = checkoutData.items;
+		if (Array.isArray(items)) {
+			return items.map((item) => normalizeItem(item || {}));
+		}
+		if (items && typeof items === 'object') {
+			return normalizeItem(items as Record<string, any>);
+		}
+		return [];
+	})();
+	if (!registrationData.email && contactEmail) {
+		registrationData.email = contactEmail;
+	}
+
 	const row: PixelatedFormSubmissionReportRow = {
 		created_at: createdAt,
-		shipping_to: selectShippingTo(shippingTo),
-		registration_data: selectRegistrationData(registrationDataSource),
-		items: selectItems(checkoutData.items),
+		domain: normalized.domain || checkoutData.domain || reportSource.domain || '',
+		formName: normalized.formName || reportSource.formName || reportSource.form_name || checkoutData.formName || checkoutData.form_name || normalized.form_name || '',
+		shipping_to: shippingToData,
+		registration_data: registrationData,
+		items: itemsData,
 	};
 	return row;
 }
+
 
 function getDynamoConfig() {
 	const config = getFullPixelatedConfig();
@@ -142,34 +155,27 @@ function getDynamoConfig() {
 	return clientConfig;
 }
 
-function createDynamoClient() {
-	return new DynamoDBClient(getDynamoConfig());
-}
-
-export function buildPixelatedFormSubmissionReportRows(items: Array<Record<string, any>>) {
-	return items.map((item) => normalizeDynamoItem(item));
-}
-
 export async function listPixelatedFormSubmissionReportRows(options: PixelatedFormSubmissionQueryOptions) {
-	const client = createDynamoClient();
+	const client = new DynamoDBClient(getDynamoConfig());
 	const items: Array<Record<string, any>> = [];
 	let exclusiveStartKey: Record<string, any> | undefined;
 	do {
 		const response = await client.send(new ScanCommand({
 			TableName: options.tableName ?? DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
-			FilterExpression: '#domain = :domain AND #formName = :formName',
-			ExpressionAttributeNames: {
-				'#domain': 'domain',
-				'#formName': 'formName',
-			},
-			ExpressionAttributeValues: {
-				':domain': { S: options.domain },
-				':formName': { S: options.formName },
-			},
 			ExclusiveStartKey: exclusiveStartKey,
 		}));
 		items.push(...((response.Items || []) as Array<Record<string, any>>));
 		exclusiveStartKey = response.LastEvaluatedKey;
 	} while (exclusiveStartKey);
-	return buildPixelatedFormSubmissionReportRows(items);
+
+	const normalizedRows = items.map((item) => normalizeDynamoItem(item));
+	return normalizedRows.filter((row) => {
+		if (options.domain && String(row.domain || '').trim() !== String(options.domain || '').trim()) {
+			return false;
+		}
+		if (options.formName && String(row.formName || '').trim() !== String(options.formName || '').trim()) {
+			return false;
+		}
+		return true;
+	});
 }

@@ -384,7 +384,7 @@ export async function getContentfulAssetURLs(props: getContentfulAssetURLsType) 
 	for (const asset of assets.items) {
 		assetURLs.push({
 			image: asset.fields.file.url + ctfQSParams,
-			imageAlt: asset.fields.description,
+			imageAlt: asset.fields.description || asset.fields.title || '',
 		});
 	}
 	if (debug) console.log("Asset URLs: ", assetURLs);

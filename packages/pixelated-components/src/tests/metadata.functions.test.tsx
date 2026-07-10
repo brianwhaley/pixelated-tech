@@ -1,3 +1,5 @@
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 vi.mock('next/headers', () => ({ headers: vi.fn() }));
 import { headers } from 'next/headers';
@@ -259,7 +261,12 @@ describe('Metadata Functions', () => {
 		const mockGetFullPixelatedConfig = vi.spyOn(configModule, 'getFullPixelatedConfig');
 
 		beforeEach(() => {
-			mockGetFullPixelatedConfig.mockReturnValue({ siteInfo: mockSiteInfo } as any);
+			mockGetFullPixelatedConfig.mockReturnValue({
+				siteInfo: mockSiteInfo,
+				routes: [
+					{ path: '/test', title: 'Test Page', description: 'A test page', keywords: 'test, example' }
+				]
+			} as any);
 		});
 
 		const setupHeaders = (path = '/test', origin = 'https://example.com', url = 'https://example.com/test') => {
@@ -275,18 +282,23 @@ describe('Metadata Functions', () => {
 			vi.mocked(headers).mockReset();
 		});
 
-		it('should generate meta tag JSX', () => {
-			setupHeaders();
+		it('should generate meta tag JSX for a route that exists', async () => {
+			setupHeaders('/test', 'https://example.com', 'https://example.com/test');
 
-			const result = generateMetaTags();
-			expect(result).toBeDefined();
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('<title>Test Page</title>');
+			expect(result).toContain('name="description" content="A test page"');
+			expect(result).toContain('name="keywords" content="test, example"');
+			expect(result).toContain('property="og:url" content="https://example.com/test"');
 		});
 
-		it('should handle missing optional props', () => {
-			setupHeaders('/test', 'https://example.com', 'https://example.com/');
+		it('should handle missing optional props for an unknown path', async () => {
+			setupHeaders('/unknown', 'https://example.com', 'https://example.com/unknown');
 
-			const result = generateMetaTags();
-			expect(result).toBeDefined();
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('<title></title>');
+			expect(result).toContain('name="description" content=""');
+			expect(result).toContain('name="keywords" content=""');
 		});
 
 		it('should extract hostname from origin URL', () => {
@@ -296,17 +308,20 @@ describe('Metadata Functions', () => {
 			expect(result).toBeDefined();
 		});
 
-		it('should handle invalid origin URL gracefully', () => {
+		it('should handle invalid origin URL gracefully', async () => {
 			setupHeaders('/test', 'not-a-url', 'https://example.com/');
 
-			const result = generateMetaTags();
-			expect(result).toBeDefined();
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('property="twitter:url" content="https://example.com/"');
+			expect(result).toContain('property="twitter:domain"');
+			expect(result).toContain('content="https://example.com/"');
 		});
 
-		it('should use config-provided site metadata values', () => {
+		it('should use config-provided site metadata values', async () => {
 			setupHeaders('/test', 'https://example.com', 'https://example.com/');
 
-			const result = generateMetaTags();
-			expect(result).toBeDefined();
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('name="application-name" content="Example"');
+			expect(result).toContain('name="author" content="Example, test@example.com"');
 		});
 	});});

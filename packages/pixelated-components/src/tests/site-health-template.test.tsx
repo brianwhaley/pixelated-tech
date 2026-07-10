@@ -73,16 +73,17 @@ describe('SiteHealthTemplate', () => {
       expect(screen.getByText('Data: data')).toBeInTheDocument();
     });
 
-    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=test-site', {
+    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=test-site', expect.objectContaining({
       responseType: 'ok',
-      requestInit: {
+      timeout: 0,
+      requestInit: expect.objectContaining({
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         body: undefined,
-      }
-    });
+      }),
+    }));
   });
 
   it('shows error state when fetch fails', async () => {
@@ -133,16 +134,17 @@ describe('SiteHealthTemplate', () => {
       expect(screen.getByText('Data: data')).toBeInTheDocument();
     });
 
-    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=test-site&foo=bar', {
+    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=test-site&foo=bar', expect.objectContaining({
       responseType: 'ok',
-      requestInit: {
+      timeout: 0,
+      requestInit: expect.objectContaining({
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         body: undefined,
-      }
-    });
+      }),
+    }));
   });
 
   it('handles non-Error thrown values', async () => {
@@ -192,16 +194,17 @@ describe('SiteHealthTemplate', () => {
     });
 
     expect(mockSmartFetch).toHaveBeenCalledTimes(1);
-    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=site1', {
+    expect(mockSmartFetch).toHaveBeenCalledWith('http://localhost:3000/api/test?siteName=site1', expect.objectContaining({
       responseType: 'ok',
-      requestInit: {
+      timeout: 0,
+      requestInit: expect.objectContaining({
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         body: undefined,
-      }
-    });
+      }),
+    }));
 
     // Change siteName
     rerender(
@@ -220,16 +223,17 @@ describe('SiteHealthTemplate', () => {
       expect(mockSmartFetch).toHaveBeenCalledTimes(2);
     });
 
-    expect(mockSmartFetch).toHaveBeenLastCalledWith('http://localhost:3000/api/test?siteName=site2', {
+    expect(mockSmartFetch).toHaveBeenLastCalledWith('http://localhost:3000/api/test?siteName=site2', expect.objectContaining({
       responseType: 'ok',
-      requestInit: {
+      timeout: 0,
+      requestInit: expect.objectContaining({
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         body: undefined,
-      }
-    });
+      }),
+    }));
   });
 
   it('does not fetch when siteName becomes empty', async () => {

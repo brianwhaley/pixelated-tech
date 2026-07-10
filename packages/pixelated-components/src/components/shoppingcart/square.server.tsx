@@ -6,7 +6,7 @@ import { buildSquareStoreFilters, squareStorePriceBuckets, getSquareStorePriceRa
 import { getFullPixelatedConfig } from '../config/config';
 import { CacheManager } from '../foundation/cache-manager';
 import { smartFetch } from '../foundation/smartfetch';
-import { sanitizeString, normalizeEmail } from '../foundation/utilities';
+import { sanitizeString, toBoolean, normalizeEmail } from '../foundation/utilities';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import type { CheckoutType } from './shoppingcart.functions';
 
@@ -230,25 +230,6 @@ function getSquareItemWeight(
 		? itemData?.item_weight_unit || propertyWeightUnit || variationWeightUnit || 'lb'
 		: undefined;
 	return { itemWeight, itemWeightUnit };
-}
-
-function isTruthySquareProperty(value: any, selectionLabelMap?: Map<string, string>) {
-	const normalized = sanitizeString(getPropertyValue(value));
-	const lowerNormalized = normalized.toLowerCase();
-	if (lowerNormalized === 'true' || lowerNormalized === 'yes' || lowerNormalized === '1') return true;
-	if (lowerNormalized === 'false' || lowerNormalized === 'no' || lowerNormalized === '0') return false;
-	const uids = normalized.split(',').map((uid) => uid.trim()).filter(Boolean);
-	if (selectionLabelMap) {
-		for (const uid of uids) {
-			const label = selectionLabelMap.get(uid.toLowerCase());
-			if (typeof label === 'string') {
-				const normalizedLabel = sanitizeString(label).toLowerCase();
-				if (normalizedLabel === 'true' || normalizedLabel === 'yes' || normalizedLabel === '1') return true;
-				if (normalizedLabel === 'false' || normalizedLabel === 'no' || normalizedLabel === '0') return false;
-			}
-		}
-	}
-	return false;
 }
 
 function getCategoryPath(categoryMap: Map<string, any>, categoryId?: string) {
@@ -481,9 +462,17 @@ function buildSquareEventItem(
 			carouselImages,
 			category: ['event'],
 			schedule: buildSquareEventSchedule(startDate, endDate, eventTimeZone),
-			isShippable: isTruthySquareProperty(itemData?.is_shippable, selectionLabelMap)
-				|| isTruthySquareProperty(properties?.isShippable, selectionLabelMap)
-				|| isTruthySquareProperty(properties?.is_shippable, selectionLabelMap),
+			isShippable: toBoolean(getPropertyValue(itemData?.is_shippable))
+				?? (selectionLabelMap
+					? sanitizeString(getPropertyValue(itemData?.is_shippable))
+						.split(',')
+						.map((uid) => uid.trim())
+						.filter(Boolean)
+						.map((uid) => toBoolean(selectionLabelMap.get(uid.toLowerCase())))
+						.find((value) => value !== undefined)
+					: undefined)
+					?? toBoolean(getPropertyValue(properties?.isShippable))
+					?? toBoolean(getPropertyValue(properties?.is_shippable)),
 			weight: itemData?.item_weight,
 			weightUnit: itemData?.item_weight_unit || variationData?.item_weight_unit || 'lb',
 		},
@@ -812,6 +801,7 @@ function buildSquareStoreItem(
 	const itemEndDate = eventEndDate ? new Date(eventEndDate).toLocaleDateString('en-US', { dateStyle: 'short', timeZone: itemTimeZone }) : undefined;
 	const itemEndTime = eventEndDate ? new Date(eventEndDate).toLocaleTimeString('en-US', { timeStyle: 'short', timeZone: itemTimeZone }) : undefined;
 	const itemDurationHours = eventStartDate && eventEndDate ? getSquareEventDurationHours(eventStartDate, eventEndDate) : undefined;
+	const itemType = itemData?.product_type ?? 'PRODUCT';
 
 	const itemTitle = itemData?.name || 'Untitled Item';
 	const itemSlug = slugifyValue(itemTitle);
@@ -830,10 +820,21 @@ function buildSquareStoreItem(
 		itemPrice: amount,
 		itemCurrency: currency,
 		itemInventory,
-		itemIsShippable: isTruthySquareProperty(itemData?.is_shippable, selectionLabelMap)
-			|| isTruthySquareProperty(properties?.isShippable, selectionLabelMap)
-			|| isTruthySquareProperty(properties?.is_shippable, selectionLabelMap),
+		itemIsShippable: toBoolean(getPropertyValue(itemData?.is_shippable))
+			?? (selectionLabelMap
+				? sanitizeString(getPropertyValue(itemData?.is_shippable))
+					.split(',')
+					.map((uid) => uid.trim())
+					.filter(Boolean)
+					.map((uid) => toBoolean(selectionLabelMap.get(uid.toLowerCase())))
+					.find((value) => value !== undefined)
+				: undefined)
+				?? toBoolean(getPropertyValue(properties?.isShippable))
+				?? toBoolean(getPropertyValue(properties?.is_shippable))
+				?? false,
 		itemSKU,
+		itemType,
+		itemTimeZone,
 		itemDurationHours,
 		itemWeightUnit,
 		itemWeight,

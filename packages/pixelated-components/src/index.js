@@ -1,3 +1,10 @@
+// File naming conventions for this component library:
+// - *.components.tsx: client-side UI components
+// - *.functions.ts: shared helper functions usable by both frontend and server
+// - *.server.ts / *.server.tsx: server-only modules
+// - *.integration.ts: legacy server-side integration modules (treated as server-only)
+
+
 // sorted alphabetically and grouped by folder for easier reading
 
 export * from './components/config/config.client';

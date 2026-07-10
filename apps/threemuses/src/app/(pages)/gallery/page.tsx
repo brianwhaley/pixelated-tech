@@ -1,9 +1,7 @@
-"use client";
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, Tiles, getContentfulAssetURLs } from '@pixelated-tech/components';
+import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 
-import React from 'react';
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
-import { Tiles } from '@pixelated-tech/components';
-
+/*
 const galleryImages = [
 	{
 		image: 'https://images.ctfassets.net/luf8eony1687/50ro5lPQGPM0PN2TReAtLw/c00cd08f9926753352dacf8190eac4c7/ThreeMusesFinal-6047.jpg',
@@ -38,13 +36,49 @@ const galleryImages = [
 		imageAlt: 'Katie, Kathie, and team standing outside the Three Muses of Bluffton storefront with festive balloons',
 	},
 ];
+*/
 
-export default function GalleryPage() {
 
-	const updatedGalleryImages = galleryImages.map((image, index) => ({
+const excludedGalleryTitles = [
+	'bernette b38 front yaya han dd9fa5d7-919b-4639-baad-420adaaba4fa',
+	// STOCK PHOTOGRAPHY
+	'dress-from-collection-museum-fine-arts',
+	'currency-chronicles-dollar-bills-photography-collection',
+	'working-with-team-about-new-dress',
+	'little-girl-trying-make-dress-her-doll-with-her-teacher',
+	'novice-tailor-learning-make-template',
+	'lot-party-dresses-hanging-hangers-market'
+];
+
+function getGalleryTitleFromUrl(url?: string) {
+	if (!url) return '';
+	const lastSegment = String(url).split('/').pop() || '';
+	const withoutQuery = lastSegment.split('?')[0];
+	const withoutExtension = withoutQuery.replace(/\.[^.]+$/, '');
+	return withoutExtension.replace(/_/g, ' ').trim().toLowerCase();
+}
+
+async function fetchGalleryImages() {
+	const pixelatedConfig = getFullPixelatedConfig();
+	const apiProps = {
+		base_url: pixelatedConfig.integrations?.contentful?.base_url ?? '',
+		space_id: pixelatedConfig.integrations?.contentful?.space_id ?? '',
+		environment: pixelatedConfig.integrations?.contentful?.environment ?? '',
+		access_token: pixelatedConfig.integrations?.contentful?.delivery_access_token ?? '',
+	};
+	return await getContentfulAssetURLs({ apiProps });
+}
+
+export default async function GalleryPage() {
+	const galleryImages = await fetchGalleryImages();
+	const filteredGalleryImages = galleryImages.filter((image) => {
+		const title = getGalleryTitleFromUrl(image.image);
+		return !excludedGalleryTitles.includes(title);
+	});
+	const updatedGalleryImages = filteredGalleryImages.map((image, index) => ({
 		...image,
 		index: index,
-		cardLength: galleryImages.length,
+		cardLength: filteredGalleryImages.length,
 	}));
 
 	return (
@@ -53,15 +87,12 @@ export default function GalleryPage() {
 				<PageTitleHeader title="The Three Muses of Bluffton Gallery" />
 			</PageSection>
 
-
 			<PageSection columns={1} maxWidth="1024px" id="gallery-items-section">
 				<PageGridItem>
 					<PageSectionHeader title="Photo Gallery" />
 				</PageGridItem>
 				<Tiles cards={updatedGalleryImages} rowCount={3} variant="overlay" showOverlay={false} />
 			</PageSection>
-
-
 		</>
 	);
 }

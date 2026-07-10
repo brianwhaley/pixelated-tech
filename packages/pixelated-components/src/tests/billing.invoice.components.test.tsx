@@ -1,6 +1,19 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '../test/test-utils';
 import React from 'react';
+
+vi.mock('../components/admin/site-health/site-health-google-analytics', () => ({
+	SiteHealthGoogleAnalytics: ({ siteName }: { siteName: string }) => (
+		<div data-testid="ga-card">Google Analytics for {siteName}</div>
+	),
+}));
+
+vi.mock('../components/admin/site-health/site-health-cloudwatch', () => ({
+	SiteHealthCloudwatch: ({ siteName }: { siteName: string }) => (
+		<div data-testid="cloudwatch-card">CloudWatch Uptime for {siteName}</div>
+	),
+}));
+
 import { InvoiceView } from '../components/admin/billing/billing.invoice.components';
 
 describe('InvoiceView Component', () => {
@@ -39,7 +52,7 @@ describe('InvoiceView Component', () => {
 		render(<InvoiceView invoice={invoiceWithoutExtras as any} html="<h1>Mock HTML</h1>" />);
 
 		expect(screen.getByTestId('invoice-preview-container')).toBeInTheDocument();
-		expect(screen.queryByText('Published Content & Analytics Overview')).not.toBeInTheDocument();
+		expect(screen.queryByText('Published Content')).not.toBeInTheDocument();
 		expect(screen.queryByText('NOTE:')).not.toBeInTheDocument();
 	});
 
@@ -69,12 +82,77 @@ describe('InvoiceView Component', () => {
 			],
 		};
 
-		render(<InvoiceView invoice={invoiceWithPosts} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceView invoice={invoiceWithPosts as any} html="<h1>Mock HTML</h1>" />);
 
-		expect(screen.getByText('Published Content & Analytics Overview')).toBeInTheDocument();
+		expect(screen.getByText('Published Content')).toBeInTheDocument();
 		expect(screen.getByText('Post One')).toBeInTheDocument();
 		expect(screen.getByText('Thank you for your business.')).toBeInTheDocument();
 		expect(screen.getByText('https://twitter.com/test')).toBeInTheDocument();
+	});
+
+	it('renders a note list when invoice.note is an array', () => {
+		const invoiceWithNoteList = {
+			...mockInvoice,
+			note: ['First note line.', 'Second note line.', 'Third note line.'],
+		};
+
+		render(<InvoiceView invoice={invoiceWithNoteList as any} html="<h1>Mock HTML</h1>" />);
+
+		expect(screen.getByText('NOTE:')).toBeInTheDocument();
+		expect(screen.getByText('First note line.')).toBeInTheDocument();
+		expect(screen.getByText('Second note line.')).toBeInTheDocument();
+		expect(screen.getByText('Third note line.')).toBeInTheDocument();
+		expect(screen.getAllByRole('listitem')).toHaveLength(3);
+	});
+
+	it('renders enhancements section when invoice includes enhancements', () => {
+		const invoiceWithEnhancements = {
+			...mockInvoice,
+			enhancements: ['Added schema markup', 'Published press release'],
+		};
+
+		render(<InvoiceView invoice={invoiceWithEnhancements as any} html="<h1>Mock HTML</h1>" />);
+
+		expect(screen.getByText('Enhancements')).toBeInTheDocument();
+		expect(screen.getByText('Added schema markup')).toBeInTheDocument();
+		expect(screen.getByText('Published press release')).toBeInTheDocument();
+	});
+
+	it('does not render enhancements section when there are no enhancements', () => {
+		render(<InvoiceView invoice={mockInvoice} html="<h1>Mock HTML</h1>" />);
+		expect(screen.queryByText('Enhancements')).not.toBeInTheDocument();
+	});
+
+	it('renders analytics and uptime cards when GA4 property ID is configured', () => {
+		const invoiceWithAnalytics = {
+			...mockInvoice,
+			ga4PropertyId: '123456789',
+		};
+
+		render(<InvoiceView invoice={invoiceWithAnalytics as any} html="<h1>Mock HTML</h1>" />);
+		expect(screen.getByTestId('ga-card')).toBeInTheDocument();
+		expect(screen.getByTestId('cloudwatch-card')).toBeInTheDocument();
+	});
+
+	it('does not render analytics card when GA4 property ID is missing or placeholder', () => {
+		const invoiceWithoutAnalytics = {
+			...mockInvoice,
+			ga4PropertyId: undefined,
+		};
+
+		render(<InvoiceView invoice={invoiceWithoutAnalytics as any} html="<h1>Mock HTML</h1>" />);
+		expect(screen.queryByTestId('ga-card')).not.toBeInTheDocument();
+	});
+
+	it('still renders CloudWatch card when the GA4 key is missing or placeholder', () => {
+		const invoiceWithoutAnalytics = {
+			...mockInvoice,
+			ga4PropertyId: undefined,
+		};
+
+		render(<InvoiceView invoice={invoiceWithoutAnalytics as any} html="<h1>Mock HTML</h1>" />);
+		expect(screen.queryByTestId('ga-card')).not.toBeInTheDocument();
+		expect(screen.getByTestId('cloudwatch-card')).toBeInTheDocument();
 	});
 
 	it('renders error if invoice is missing', () => {

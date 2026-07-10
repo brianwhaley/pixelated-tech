@@ -11,7 +11,8 @@ import {
   stringTo1337_v1,
   logAllChange,
   extractDomainName,
-  getDomain
+  getDomain,
+  toBoolean,
 } from '../components/foundation/utilities';
 
 describe('Utility Functions', () => {
@@ -221,6 +222,35 @@ describe('Utility Functions', () => {
       const result = mergeDeep(obj1, obj2);
 
       expect(result).toEqual({ a: 1, b: 2, c: 30, d: 40, e: 5, f: 6 });
+    });
+  });
+
+  describe('toBoolean', () => {
+    it('returns true for boolean true and false for boolean false', () => {
+      expect(toBoolean(true)).toBe(true);
+      expect(toBoolean(false)).toBe(false);
+    });
+
+    it('returns true for numeric 1 and false for numeric 0', () => {
+      expect(toBoolean(1)).toBe(true);
+      expect(toBoolean(0)).toBe(false);
+    });
+
+    it('normalizes string truthy and falsy values', () => {
+      expect(toBoolean('true')).toBe(true);
+      expect(toBoolean('yes')).toBe(true);
+      expect(toBoolean('1')).toBe(true);
+      expect(toBoolean('false')).toBe(false);
+      expect(toBoolean('no')).toBe(false);
+      expect(toBoolean('0')).toBe(false);
+    });
+
+    it('returns undefined for invalid values', () => {
+      expect(toBoolean('maybe')).toBeUndefined();
+      expect(toBoolean('')).toBeUndefined();
+      expect(toBoolean(null)).toBeUndefined();
+      expect(toBoolean(undefined)).toBeUndefined();
+      expect(toBoolean(2)).toBeUndefined();
     });
   });
 

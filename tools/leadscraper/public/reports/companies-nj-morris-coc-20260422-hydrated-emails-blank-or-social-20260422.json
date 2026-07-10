@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "index": 128,
+      "company": "Fred Bachmann, CPA",
+      "emails": [
+        "bhendrickson@optonline.net",
+        "fred.bachmann@gcfl-cpa.com"
+      ],
+      "full name": "Fred Bachmann",
+      "first name": "Fred",
+      "last name": "Bachmann",
+      "street address": "P.O. Box 282",
+      "city": "Florham Park",
+      "state": "NJ",
+      "zip": "07932  0282",
+      "phone": "973-295-6088",
+      "website": "https://www.linkedin.com/in/bachmanncpa/",
+      "customer": "x",
+      "partner": "",
+      "email domain": "optonline.net",
+      "web domain": "linkedin.com",
+      "different domains": "x",
+      "first group": "x",
+      "address": "P.O. Box 282, Florham Park, NJ, 07932  0282"
+    },
+    {
+      "index": 373,
+      "company": "Simon Property Group (Rockaway Townsquare)",
+      "emails": [
+        "jen.rabulanbertram@simon.com",
+        "pcrociat@simon.com"
+      ],
+      "full name": "Jen Rabulanbertram",
+      "first name": "Jen",
+      "last name": "Rabulanbertram",
+      "street address": "301 Mount Hope Ave.",
+      "city": "Rockaway",
+      "state": "NJ",
+      "zip": "07866",
+      "phone": "973-361-4071",
+      "website": "https://www.simon.com/mall/rockaway-townsquare",
+      "customer": "",
+      "partner": "",
+      "email domain": "simon.com",
+      "web domain": "simon.com",
+      "different domains": "",
+      "first group": "",
+      "address": "301 Mount Hope Ave., Rockaway, NJ, 07866"
+    }
+  ]
+}

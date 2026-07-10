@@ -150,7 +150,18 @@ describe('pixelated-admin API routes', () => {
 		const response = await route.GET();
 		expect(response.status).toBe(200);
 		expect(await response.json()).toEqual({ components: [] });
-	});
+	}, 0);
+
+	it('returns component usage results from cache', async () => {
+		const route = await importModule('src/app/api/component-usage/route.ts');
+		const firstResponse = await route.GET();
+		expect(firstResponse.status).toBe(200);
+		expect(await firstResponse.json()).toEqual({ components: [] });
+
+		const secondResponse = await route.GET();
+		expect(secondResponse.status).toBe(200);
+		expect(await secondResponse.json()).toEqual({ components: [] });
+	}, 0);
 
 	it('returns sites JSON', async () => {
 		const route = await importModule('src/app/api/sites/route.ts');

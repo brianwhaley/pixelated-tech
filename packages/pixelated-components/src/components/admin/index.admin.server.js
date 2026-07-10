@@ -20,8 +20,10 @@ export * from './site-health/site-health-utils';
 export * from './sites/sites.integration';
 
 // Billing server integrations
-export * from './billing/billing.types';
 export * from './billing/billing.functions';
+export * from './billing/billing.invoicebuilder';
+export * from './billing/billing.server';
+export * from './billing/billing.types';
 
 export * from './auth/authentication';
 export * from './auth/auth-functions';

@@ -42,11 +42,12 @@ setInterval(() => {
 export async function performCoreWebVitalsAnalysis(
 	url: string,
 	siteName: string,
-	useCache: boolean = true
+	useCache: boolean = true,
+	strategy: 'mobile' | 'desktop' = 'mobile'
 ): Promise<CoreWebVitalsData> {
 	try {
 		// Check cache first (if caching is enabled)
-		const cacheKey = `${siteName}:${url}`;
+		const cacheKey = `${siteName}:${url}:${strategy}`;
 		if (useCache) {
 			const cached = psiCache.get(cacheKey);
 			if (cached) {
@@ -58,7 +59,7 @@ export async function performCoreWebVitalsAnalysis(
 		}
 
 		// Fetch PSI data
-		const psiData = await fetchPSIData(url);
+		const psiData = await fetchPSIData(url, strategy);
 
 		// Process the PSI data
 		const resultData = await processPSIData(psiData, siteName, url);
@@ -120,7 +121,7 @@ export async function performCoreWebVitalsAnalysis(
 	}
 }
 
-export async function fetchPSIData(url: string): Promise<any> {
+export async function fetchPSIData(url: string, strategy: 'mobile' | 'desktop' = 'mobile'): Promise<any> {
 	// Require the PSI API key from the unified pixelated.config.json. No environment fallback.
 	const apiKey = getFullPixelatedConfig()?.integrations?.googlePSI?.api_key;
 	if (!apiKey) {
@@ -132,7 +133,7 @@ export async function fetchPSIData(url: string): Promise<any> {
 		params: {
 			url,
 			key: apiKey,
-			strategy: 'mobile',
+			strategy,
 			category: ['performance', 'accessibility', 'best-practices', 'seo']
 		}
 	});

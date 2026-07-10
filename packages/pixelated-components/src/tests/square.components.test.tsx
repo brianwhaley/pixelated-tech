@@ -1,9 +1,9 @@
 import React from 'react';
 import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import { screen, waitFor, fireEvent } from '@testing-library/react';
-import { SquareCheckout, SquareStoreItemDetail, SquareStoreListFilter, renderSquareThankYou } from '../components/shoppingcart/square.components';
+import { SquareCheckout, SquareStoreItemDetail, SquareStoreItems, SquareStoreItemSmall, SquareStoreItemLarge, SquareStoreListFilter, SquareFeaturedItems, renderSquareThankYou } from '../components/shoppingcart/square.components';
 import { SquarePaymentError } from '../components/shoppingcart/square';
-import { squareOrderCheckoutData, pixelatedConfig } from '../test/test-data';
+import { squareOrderCheckoutData, squareLargeStoreItems, pixelatedConfig } from '../test/test-data';
 import { createMockConfig, renderWithProviders } from '../test/test-utils';
 
 const squareScriptUrl = 'https://web.squarecdn.com/v1/square.js';
@@ -526,6 +526,97 @@ describe('SquareCheckout component', () => {
 			renderWithProviders(<div>{renderSquareThankYou({ orderData: orderData as any, config } as any)}</div>);
 
 			expect(screen.getByText(/"foo": "bar"/)).toBeInTheDocument();
+		});
+
+		it('renders large square store items with a category filter and hides filters when showFilters is false', () => {
+const items = squareLargeStoreItems;
+
+			renderWithProviders(
+				<SquareStoreItems
+					items={items as any}
+					itemSize="large"
+					showFilters={false}
+					title="Featured Boutique"
+					intro="Shop the latest items"
+					initialFilter={{ propertyName: 'Category', propertyValue: 'cat-1' }}
+				/>
+			);
+
+			expect(screen.getByText(/Featured Boutique/)).toBeInTheDocument();
+			expect(screen.getByText(/Shop the latest items/)).toBeInTheDocument();
+			expect(screen.getByText('Total items: 2 · Filtered items: 1')).toBeInTheDocument();
+			expect(screen.getByText(/More Details/)).toBeInTheDocument();
+			expect(screen.queryByText(/No filterable product details are available for these items/)).toBeNull();
+		});
+
+		it('renders no filter placeholder when there are no filterable product details', () => {
+			const items = [
+				{
+					itemID: 'item-3',
+					itemTitle: 'Filterless Item',
+					itemPrice: NaN,
+					itemCurrency: 'USD',
+					itemInventory: 0,
+					itemImageURL: 'https://example.com/filterless.png',
+					itemURL: '/store/filterless-item',
+					categories: [{ id: '', name: '' }],
+					properties: { Color: '' },
+				},
+			];
+
+			renderWithProviders(<SquareStoreItems items={items as any} />);
+
+			expect(screen.getByText('No filterable product details are available for these items.')).toBeInTheDocument();
+		});
+
+		it('rewrites /store/ item URLs when itemURLPrefix is provided in SquareStoreItemSmall', () => {
+			const item = {
+				itemID: 'item-4',
+				itemTitle: 'Small Item',
+				itemPrice: 20,
+				itemCurrency: 'USD',
+				itemInventory: 5,
+				itemImageURL: 'https://example.com/small.png',
+				itemURL: '/store/small-item',
+			};
+
+			renderWithProviders(<SquareStoreItemSmall item={item as any} itemURLPrefix="/shop" />);
+
+			expect(document.querySelector('a[href="/shop/small-item"]')).toBeInTheDocument();
+		});
+
+		it('renders event item details with carousel and event timing in SquareStoreItemDetail', () => {
+			const item = {
+				itemID: 'item-5',
+				itemTitle: 'Event Item',
+				itemDescription: 'Event description',
+				itemPrice: 50,
+				itemCurrency: 'USD',
+				itemInventory: 10,
+				itemImageURLs: ['https://example.com/event1.png', 'https://example.com/event2.png'],
+				itemURL: '/store/event-item',
+				itemType: 'EVENT',
+				itemStartDate: '2026-09-01',
+				itemStartTime: '09:00 AM',
+				itemEndDate: '2026-09-01',
+				itemEndTime: '11:00 AM',
+				itemDurationHours: 2,
+				itemAvailableSeats: 5,
+				itemMaxSeats: 10,
+				itemIsShippable: false,
+			};
+
+			renderWithProviders(<SquareStoreItemDetail item={item as any} />);
+
+			expect(screen.getByText('Start: 2026-09-01 at 09:00 AM')).toBeInTheDocument();
+			expect(screen.getByText('End: 2026-09-01 at 11:00 AM')).toBeInTheDocument();
+			expect(screen.getByText('Duration: 2 hours')).toBeInTheDocument();
+			expect(screen.getAllByRole('img').length).toBeGreaterThanOrEqual(1);
+		});
+
+		it('renders empty featured items fallback when there are no featured products', () => {
+			renderWithProviders(<SquareFeaturedItems items={[]} title="Featured" intro="Browse now" />);
+			expect(screen.getByText('No featured boutique items are available right now.')).toBeInTheDocument();
 		});
 	});
 });

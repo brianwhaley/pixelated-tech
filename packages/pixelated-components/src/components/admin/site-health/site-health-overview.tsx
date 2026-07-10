@@ -15,15 +15,19 @@ import { formatScore, getScoreColor } from './site-health-utils';
 SiteHealthOverview.propTypes = {
 /** Site identifier used to build the overview */
 	siteName: PropTypes.string.isRequired,
+	/** Strategy for the PageSpeed Insights request */
+	strategy: PropTypes.oneOf(['mobile', 'desktop']),
 };
 export type SiteHealthOverviewType = InferProps<typeof SiteHealthOverview.propTypes>;
-export function SiteHealthOverview({ siteName }: SiteHealthOverviewType) {
+export function SiteHealthOverview({ siteName, strategy = 'mobile' }: SiteHealthOverviewType) {
+	const displayStrategy = strategy === 'desktop' ? 'Desktop' : 'Mobile';
 	return (
 		<SiteHealthTemplate<CoreWebVitalsResponse>
 			siteName={siteName}
-			title="PageSpeed - Site Overview"
+			title={`PageSpeed - Site Overview - ${displayStrategy}`}
 			endpoint={{
 				endpoint: '/api/site-health/core-web-vitals',
+				params: { strategy },
 				responseTransformer: (result) => result, // Result is already in the correct format
 			}}
 		>

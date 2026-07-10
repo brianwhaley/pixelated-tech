@@ -44,59 +44,12 @@ import googlePsiExampleCom from './data/google-psi-example-com.json';
 import squareCatalogResponseWithRelatedObjects from './data/square-catalog-response-with-related-objects.json';
 import squareCatalogResponseNoRelatedObjects from './data/square-catalog-response-no-related-objects.json';
 import squareCatalogResponseNestedVariation from './data/square-catalog-response-nested-variation.json';
+import squareCatalogResponseById from './data/square-catalog-response-by-id.json';
+import squareEventCatalogObjects from './data/square-event-catalog-objects.json';
+import squareLargeStoreItems from './data/square-large-store-items.json';
 import mockSitesConfig from './data/mock-sites-config.json';
 import mockSpotifyRss from './data/spotify-rss-mocks.json';
 
-export const squareCatalogResponseById = {
-	objects: [
-		{
-			type: 'ITEM',
-			id: 'item-123',
-			item_data: {
-				name: 'Test Item',
-				description: 'Test description',
-				variations: [{ id: 'var-123' }],
-				image_ids: ['img-123'],
-				categories: [{ id: 'cat-1' }],
-			},
-		},
-		{
-			type: 'ITEM',
-			id: '123',
-			item_data: {
-				name: 'Fallback Item',
-				variations: [{ id: 'var-456' }],
-				image_ids: ['img-456'],
-				categories: [{ id: 'cat-1' }],
-			},
-		},
-		{
-			type: 'ITEM_VARIATION',
-			id: 'var-123',
-			item_variation_data: { price_money: { amount: 2500, currency: 'USD' }, sku: 'VAR-123' },
-		},
-		{
-			type: 'ITEM_VARIATION',
-			id: 'var-456',
-			item_variation_data: { price_money: { amount: 1000, currency: 'USD' }, sku: 'VAR-456' },
-		},
-		{
-			type: 'CATEGORY',
-			id: 'cat-1',
-			category_data: { name: 'Boutique' },
-		},
-		{
-			type: 'IMAGE',
-			id: 'img-123',
-			image_data: { url: 'https://example.com/img-123.jpg' },
-		},
-		{
-			type: 'IMAGE',
-			id: 'img-456',
-			image_data: { url: 'https://example.com/img-456.jpg' },
-		},
-	],
-};
 import mockTileCards from './data/mock-tile-cards.json';
 import mockCarouselCards from './data/mock-carousel-cards.json';
 import mockPlaceReviews from './data/mock-place-reviews.json';
@@ -164,6 +117,9 @@ export {
 	squareCatalogResponseWithRelatedObjects,
 	squareCatalogResponseNoRelatedObjects,
 	squareCatalogResponseNestedVariation,
+	squareCatalogResponseById,
+	squareEventCatalogObjects,
+	squareLargeStoreItems,
 	mockSitesConfig,
 	mockSpotifyRss,
 	mockTileCards,
@@ -264,6 +220,8 @@ export default {
 	mockCloudinary,
 	mockGoogleAnalyticsConfig,
 	pixelatedConfig,
+	squareEventCatalogObjects,
+	squareLargeStoreItems,
 
 	emptySiteInfo,
 	routes,

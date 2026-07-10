@@ -2,11 +2,14 @@
 # The Three Muses of Bluffton: 52 Week Blog Content Calendar
 
 ## Criteria for each individual Blog Post:
-* Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
-* After the conclusion of each post, add a call to action to check out the events on the /events page, review the packages on /dancewear page, or sign up for our blog newsletter, or to stop by our store. 
+* Each post must have between 800 and 1000 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
+* After the conclusion of each post, add a call to action to visit the store on the /store page, check out the events on the /events page, review the packages on /dancewear page, sign up for our blog newsletter, or to stop by our store. 
 * Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..  
 * Add links to other blog posts or other content on thethreemusesofbluffton web site
-* Use a tone of empthy, understanding as a small business owner, and a sense of community
+* do not use md tables, md formatting, or html tables
+* format the title properly, including proper punctuation and capitalization
+* uses blog section subtitles as appropriate
+* Use a tone of empthy, understanding as a small business owner, and a sense of community.  Target those of all ages, with a high school education. 
 
 ## The Editorial Rotation
 
@@ -40,15 +43,15 @@ Focus: Recitals, prom alterations, and Mother’s Day.
 14. [  ] Dancewear: The Stage Makeup Kit: Essentials for every young dancer.
 15. [  ] Sewing: Prom & Gala Season: When to book your alterations (The 4-week rule).
 16. [  ] Boutique: Spring Arrivals: Floral prints and custom boutique accessories.
-17. [  ] Studio: How to measure yourself correctly for custom orders.
-18. [  ] Dancewear: Pointe Shoe Ribbon Styles: How to sew them like a pro.
-19. [  ] Sewing: Upcycling 101: Turning an old dress into a new favorite.
+17. [ x ] Studio: How to measure yourself correctly for custom orders.
+18. [ x ] Dancewear: Pointe Shoe Ribbon Styles: How to sew them like a pro.
+19. [ x ] Sewing: Upcycling 101: Turning an old dress into a new favorite.
 20. [  ] Boutique: The Mother’s Day Gift Guide: Hand-stitched elegance.
 21. [  ] Studio: A Day in the Life: Behind the scenes at The Three Muses.
 22. [ x ] Dancewear: Transitioning to Pointe: Is your dancer ready?
 23. [ x ] Sewing: The Art of the Hem: Why professional tailoring beats DIY.
 24. [  ] Boutique: Graduation Gifts: Unique keepsakes for the Class of 2026.
-25. [  ] Studio: Summer Class Schedule Release! (What’s coming up).
+25. [ x ] Studio: Summer Class Schedule Release! (What’s coming up).
 26. [ x ] Dancewear: Summer Intensive Essentials: Packing your dance bag.
 
 ## Quarter 3: Creative Camps & Back-to-School
@@ -60,14 +63,14 @@ Focus: Summer sewing camps, new dance season registration, and teacher gifts.
 29. [ x ] Studio: Organizing your craft space: Tips from Sewing’s corner.
 30. [ x ] Dancewear: Back-to-Dance: The 2026 Dress Code Guide for local studios.
 31. [ x ] Sewing: Alterations for Kids: Saving money on school uniforms.
-32. [  ] Boutique: Personalized "Teacher Treats" for the first week of school.
-33. [  ] Studio: How we choose our Boutique brands: Quality over quantity.
-34. [  ] Dancewear: Breaking in your new shoes: Tips for a pain-free start.
-35. [  ] Sewing: Advanced Sewing: Introduction to working with delicate fabrics.
-36. [  ] Boutique: Labor Day Weekend: Transitioning your boutique finds to Fall.
-37. [  ] Studio: FAQ: "Can this be fixed?" — A guide to garment repair.
-38. [  ] Dancewear: Nutcracker Audition Season: Standing out in the crowd.
-39. [  ] Sewing: Custom Halloween Costumes: Starting your project early.
+32. [ x ] Boutique: Personalized "Teacher Treats" for the first week of school.
+33. [ x ] Studio: How we choose our Boutique brands: Quality over quantity.
+34. [ x ] Dancewear: Breaking in your new shoes: Tips for a pain-free start.
+35. [ x ] Sewing: Advanced Sewing: Introduction to working with delicate fabrics.
+36. [ x ] Boutique: Labor Day Weekend: Transitioning your boutique finds to Fall.
+37. [ x ] Studio: FAQ: "Can this be fixed?" — A guide to garment repair.
+38. [ x ] Dancewear: Nutcracker Audition Season: Standing out in the crowd.
+39. [ x ] Sewing: Custom Halloween Costumes: Starting your project early.
 
 ## Quarter 4: The Season of Giving & Gratefulness
 

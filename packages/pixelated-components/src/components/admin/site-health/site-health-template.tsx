@@ -100,6 +100,7 @@ export function SiteHealthTemplate<T>(
 
 		const response = await smartFetch(url.toString(), {
 			responseType: 'ok',
+			timeout: 0,
 			requestInit: {
 				method,
 				headers: {

@@ -1,0 +1,188 @@
+{
+  "results": [
+    {
+      "index": 128,
+      "company": "Fred Bachmann, CPA",
+      "emails": [
+        "fred.bachmann@gcfl-cpa.com"
+      ],
+      "full name": "Fred Bachmann",
+      "first name": "Fred",
+      "last name": "Bachmann",
+      "street address": "P.O. Box 282",
+      "city": "Florham Park",
+      "state": "NJ",
+      "zip": "07932  0282",
+      "phone": "973-295-6088",
+      "website": "https://www.linkedin.com/in/bachmanncpa/",
+      "customer": "x",
+      "partner": "",
+      "email domain": "optonline.net",
+      "web domain": "linkedin.com",
+      "different domains": "x",
+      "first group": "x"
+    },
+    {
+      "index": 227,
+      "company": "Melaleuca, Inc.",
+      "emails": [
+        "bdinfo@melaleuca.com",
+        "info@melaleuca.com",
+        "myaccount@melaleuca.com",
+        "privacy@melaleuca.com",
+        "websupport@melaleuca.com"
+      ],
+      "full name": "",
+      "first name": "",
+      "last name": "",
+      "street address": "205 Old Wood Lane",
+      "city": "Boonton Township",
+      "state": "NJ",
+      "zip": "07005",
+      "phone": "",
+      "website": "",
+      "customer": "x",
+      "partner": "",
+      "email domain": "melaleuca.com",
+      "web domain": "",
+      "different domains": "x",
+      "first group": "x"
+    },
+    {
+      "index": 245,
+      "company": "Morris County Chamber of Commerce",
+      "emails": [
+        "chamberworks@morrischamber.org",
+        "events@morrischamber.org",
+        "mike@morrischamber.org"
+      ],
+      "full name": "",
+      "first name": "",
+      "last name": "",
+      "street address": "325 Columbia Turnpike",
+      "city": "Florham Park",
+      "state": "NJ",
+      "zip": "07932",
+      "phone": "",
+      "website": "",
+      "customer": "",
+      "partner": "",
+      "email domain": "morrischamber.org",
+      "web domain": "",
+      "different domains": "x",
+      "first group": ""
+    },
+    {
+      "index": 264,
+      "company": "navitend",
+      "emails": [
+        "info@navitend.com",
+        "support@navitend.com"
+      ],
+      "full name": "",
+      "first name": "",
+      "last name": "",
+      "street address": "23 US-206",
+      "city": "Stanhope",
+      "state": "NJ",
+      "zip": "07874",
+      "phone": "",
+      "website": "",
+      "customer": "x",
+      "partner": "",
+      "email domain": "navitend.com",
+      "web domain": "",
+      "different domains": "x",
+      "first group": "x"
+    },
+    {
+      "index": 373,
+      "company": "Simon Property Group (Rockaway Townsquare)",
+      "emails": [
+        "jen.rabulanbertram@simon.com",
+        "pcrociat@simon.com"
+      ],
+      "full name": "Jen Rabulanbertram",
+      "first name": "Jen",
+      "last name": "Rabulanbertram",
+      "street address": "301 Mount Hope Ave.",
+      "city": "Rockaway",
+      "state": "NJ",
+      "zip": "07866",
+      "phone": "973-361-4071",
+      "website": "https://www.simon.com/mall/rockaway-townsquare",
+      "customer": "",
+      "partner": "",
+      "email domain": "simon.com",
+      "web domain": "simon.com",
+      "different domains": "",
+      "first group": ""
+    },
+    {
+      "index": 589,
+      "company": "CBRE - Tom Mallaney",
+      "emails": [
+        "thomas.mallaney@cbre.com"
+      ],
+      "full name": "Thomas M Mallaney",
+      "first name": "Thomas",
+      "last name": "M Mallaney",
+      "street address": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "phone": "",
+      "website": "",
+      "customer": "",
+      "partner": "",
+      "email domain": "cbre.com",
+      "web domain": "",
+      "different domains": "x",
+      "first group": ""
+    },
+    {
+      "index": 599,
+      "company": "DWS Landscaping, LLC",
+      "emails": [
+        "info@dwslandscaping.com"
+      ],
+      "full name": "",
+      "first name": "",
+      "last name": "",
+      "street address": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "phone": "",
+      "website": "",
+      "customer": "x",
+      "partner": "",
+      "email domain": "dwslandscaping.com",
+      "web domain": "",
+      "different domains": "x",
+      "first group": "x"
+    },
+    {
+      "index": 628,
+      "company": "Sustain Exchange",
+      "emails": [
+        "membership@sustainexchange.com"
+      ],
+      "full name": "Steven Feldman",
+      "first name": "Steven",
+      "last name": "Feldman",
+      "street address": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "phone": "203-561-8318",
+      "website": "",
+      "customer": "x",
+      "partner": "",
+      "email domain": "sustainexchange.com",
+      "web domain": "",
+      "different domains": "x",
+      "first group": "x"
+    }
+  ]
+}

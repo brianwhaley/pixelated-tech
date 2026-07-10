@@ -77,6 +77,8 @@ import SewingPage from '@/app/(pages)/sewing/page';
 import StorePage from '@/app/(pages)/store/page';
 import StoreItemPage from '@/app/(pages)/store/[item]/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
+import GalleryPage from '@/app/(pages)/gallery/page';
+import StudioSpecialsPage from '@/app/(pages)/studio-specials/page';
 import { SquareEventCallout as EventCallout, SquareEventDetail as EventDetail } from '@pixelated-tech/components';
 import EventReportPage, { buildEventGroups, asArray, parsePossibleJson, normalizeReportRow, getEventIdentity } from '@/app/(pages)/events/report/page';
 import { getThreeMusesSubtotalDiscount } from '@/app/lib/shoppingcart-discounts';
@@ -645,6 +647,20 @@ describe('ThreeMuses coverage harness', () => {
 			const json = await response.json();
 			expect(response.status).toBe(500);
 			expect(json).toHaveProperty('error');
+		});
+
+		it('renders studio specials page content', () => {
+			render(<StudioSpecialsPage />);
+			expect(document.getElementById('studio-specials-section')).not.toBeNull();
+			expect(document.querySelector('[id="coupon-section"]')).not.toBeNull();
+		});
+
+		it('renders gallery page with filtered images', async () => {
+			const page = await GalleryPage();
+			render(page as any);
+			expect(document.getElementById('gallery-section')).not.toBeNull();
+			expect(document.getElementById('gallery-items-section')).not.toBeNull();
+			expect(screen.getByTestId('tiles')).not.toBeNull();
 		});
 	});
 });

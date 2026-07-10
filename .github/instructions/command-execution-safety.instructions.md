@@ -55,6 +55,13 @@ Before any implementation, refactoring, or feature work:
 - Apply discovered conventions to all work in the project
 - If instructions conflict with user requests, clarify before proceeding
 
+## File Naming Conventions for Component Library
+- `*.components.tsx`: front-end UI components
+- `*.functions.ts`: shared helper functions usable by both front-end and server
+- `*.server.ts` / `*.server.tsx`: server-only modules
+- `*.integration.ts`: legacy integration files; treat as server-only
+- Use these conventions when deciding where logic belongs and whether a file is client-safe or server-only
+
 ## Violations
 
 Each violation of these rules represents a failure to follow documented requirements. Repeated violations should result in:

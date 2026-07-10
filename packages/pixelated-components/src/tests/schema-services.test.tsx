@@ -418,7 +418,7 @@ describe('ServicesSchema', () => {
 		}).not.toThrow();
 	});
 
-	it('should include review and aggregateRating when googlePlaces placeId exists', async () => {
+	it('should not include review or aggregateRating even when googlePlaces placeId exists', async () => {
 		vi.spyOn(googleReviewsFunctions, 'getGoogleReviewsByPlaceId').mockResolvedValue({
 			place: {
 				name: 'Test Place',
@@ -455,12 +455,8 @@ describe('ServicesSchema', () => {
 			const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 			expect(scriptTags.length).toBe(2);
 			const schemaData = JSON.parse(scriptTags[0].textContent || '{}');
-			expect(schemaData.aggregateRating).toBeDefined();
-			expect(schemaData.aggregateRating.ratingValue).toBe('5.0');
-			expect(schemaData.aggregateRating.reviewCount).toBe('1');
-			expect(schemaData.review).toBeDefined();
-			expect(Array.isArray(schemaData.review)).toBe(true);
-			expect(schemaData.review[0].reviewRating.ratingValue).toBe('5');
+			expect(schemaData.aggregateRating).toBeUndefined();
+			expect(schemaData.review).toBeUndefined();
 		});
 	});
 

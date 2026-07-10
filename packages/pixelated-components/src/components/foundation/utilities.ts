@@ -134,6 +134,20 @@ export function sanitizeString(value: unknown) {
 	return '';
 }
 
+export function toBoolean(value: unknown): boolean | undefined {
+	if (typeof value === 'boolean') {
+		return value;
+	}
+	if (typeof value === 'number') {
+		if (value === 1) return true;
+		if (value === 0) return false;
+		return undefined;
+	}
+	const normalized = sanitizeString(value).toLowerCase();
+	if (normalized === 'true' || normalized === 'yes' || normalized === '1') return true;
+	if (normalized === 'false' || normalized === 'no' || normalized === '0') return false;
+	return undefined;
+}
 
 
 export function normalizePath(path: string | undefined | null): string {
