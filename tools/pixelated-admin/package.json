@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.9.7",
+  "version": "1.9.8",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -63,5 +63,5 @@
     "vitest": "^4.1.10"
   },
   "overrides": {},
-  "deployMarker": "2026-07-10T04:36:50.108Z"
+  "deployMarker": "2026-07-10T05:06:45.093Z"
 }
