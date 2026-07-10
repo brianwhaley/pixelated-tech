@@ -1,6 +1,6 @@
 {
   "name": "informationfocus",
-  "version": "2.9.7",
+  "version": "2.9.8",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -44,7 +44,7 @@
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",
     "react-dom": "^19.2.6",
-    "typescript": "7.0.2",
+    "typescript": "6.0.2",
     "vitest": "^4.1.10"
   },
   "overrides": {},

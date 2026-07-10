@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.9.10",
+  "version": "1.9.11",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -59,7 +59,7 @@
     "glob": "^13.0.6",
     "jsdom": "^29.1.1",
     "react-dom": "^19.2.6",
-    "typescript": "7.0.2",
+    "typescript": "6.0.2",
     "vitest": "^4.1.10"
   },
   "overrides": {},
