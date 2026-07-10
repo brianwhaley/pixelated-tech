@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.7.14",
+  "version": "0.7.15",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -60,7 +60,7 @@
     "puppeteer": "^25.3.0",
     "react-dom": "^19.2.6",
     "recharts": "^3.9.1",
-    "typescript": "7.0.2",
+    "typescript": "6.0.2",
     "vitest": "^4.1.10",
     "webpack": "^5.108.3",
     "webpack-dev-server": "^6.0.0"
