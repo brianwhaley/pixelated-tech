@@ -18,6 +18,12 @@
 - "Add functionality to..."
 - "Build a solution for..."
 
+**File Naming Conventions for Component Library:**
+- `*.components.tsx`: front-end UI components
+- `*.functions.ts`: shared helper functions usable by both frontend and server
+- `*.server.ts` / `*.server.tsx`: server-only modules
+- `*.integration.ts`: legacy server-side integration files; treat as server-only
+
 **Response Patterns:**
 - For questions about existing code: Reference specific files/lines, explain logic flows.  Do not implement a solution until discussed and agreed upon before writing any code into the project files.   
 - For questions about architecture: Describe patterns, cite examples from codebase.  Do not implement a solution until discussed and agreed upon before writing any code into the project files.  

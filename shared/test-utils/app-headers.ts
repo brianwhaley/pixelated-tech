@@ -16,9 +16,31 @@ export function createNextHeadersMock() {
 }
 
 export function createNextServerMock() {
+	class NextResponse extends Response {
+		constructor(body?: BodyInit | null, init?: ResponseInit) {
+			super(body, init);
+		}
+
+		static next(options: any) {
+			const response = new NextResponse(null, { status: 200, headers: new Headers(), ...options });
+			if (options?.request) {
+				(response as any).request = options.request;
+			}
+			return response;
+		}
+
+		static redirect(url: string, status: number = 307) {
+			const response = new NextResponse(null, { status, headers: new Headers({ location: url }) });
+			(response as any).request = { headers: new Headers() };
+			return response;
+		}
+
+		static json(body: any, init?: ResponseInit) {
+			return new NextResponse(JSON.stringify(body), { ...init, headers: init?.headers ?? new Headers({ 'Content-Type': 'application/json' }), status: init?.status ?? 200 });
+		}
+	}
+
 	return {
-		NextResponse: {
-			next: (options: any) => ({ ...options, headers: new Headers() }),
-		},
+		NextResponse,
 	};
 }

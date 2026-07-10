@@ -297,6 +297,62 @@ describe('Form Component', () => {
       const form = container.querySelector('form');
       expect(form?.getAttribute('onSubmitHandler')).toBeNull();
     });
+
+    it('should annotate form and fields by default using form name and site name', () => {
+      const formData = {
+        properties: {
+          name: 'contact-form',
+        },
+        fields: [
+          {
+            component: 'FormInput',
+            props: { type: 'email', name: 'email', label: 'Email address', required: true }
+          }
+        ]
+      };
+
+      const { container } = render(
+        <FormEngine formData={formData as any} />,
+        { config: { siteInfo: { name: 'Example Site' } } }
+      );
+      const form = container.querySelector('form');
+      expect(form).toHaveAttribute('data-webmcp-enabled', 'true');
+      expect(form).toHaveAttribute('data-webmcp-tool', 'contact-form');
+      expect(form).toHaveAttribute('data-webmcp-tool-description', 'contact-form for Example Site');
+      const input = container.querySelector('input[name="email"]');
+      expect(input).toHaveAttribute('data-webmcp-field-name', 'email');
+      expect(input).toHaveAttribute('data-webmcp-field-type', 'text');
+      expect(input).toHaveAttribute('data-webmcp-field-label', 'Email address');
+      expect(input).toHaveAttribute('data-webmcp-field-required', 'true');
+    });
+
+    it('should annotate form and fields by default without a tool description when no site name exists', () => {
+      const formData = {
+        properties: {
+          name: 'contact-form',
+        },
+        fields: [
+          {
+            component: 'FormInput',
+            props: { type: 'email', name: 'email', label: 'Email address', required: true }
+          }
+        ]
+      };
+
+      const { container } = render(
+        <FormEngine formData={formData as any} />,
+        { config: {} }
+      );
+      const form = container.querySelector('form');
+      expect(form).toHaveAttribute('data-webmcp-enabled', 'true');
+      expect(form).toHaveAttribute('data-webmcp-tool', 'contact-form');
+      expect(form).not.toHaveAttribute('data-webmcp-tool-description');
+      const input = container.querySelector('input[name="email"]');
+      expect(input).toHaveAttribute('data-webmcp-field-name', 'email');
+      expect(input).toHaveAttribute('data-webmcp-field-type', 'text');
+      expect(input).toHaveAttribute('data-webmcp-field-label', 'Email address');
+      expect(input).toHaveAttribute('data-webmcp-field-required', 'true');
+    });
   });
 
   describe('FormEngine Input Types', () => {

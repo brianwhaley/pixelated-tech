@@ -3,6 +3,8 @@
 import React from 'react';
 import { InvoiceData } from './billing.types';
 import { SmartImage } from "../../elements/smartimage";
+import { SiteHealthGoogleAnalytics } from '../site-health/site-health-google-analytics';
+import { SiteHealthCloudwatch } from '../site-health/site-health-cloudwatch';
 import './billing.css';
 
 interface InvoiceViewProps {
@@ -13,6 +15,14 @@ interface InvoiceViewProps {
 export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => {
 	// Guard against completely empty or broken invoices
 	if (!invoice) return <div data-testid="invoice-error">Invoice data missing</div>;
+
+	const formCompletions = invoice.formCompletions ?? [];
+	const shouldRenderAnalytics = !!invoice.ga4PropertyId && invoice.ga4PropertyId !== 'GA4_PROPERTY_ID_HERE';
+	const shouldRenderCloudwatch = !!invoice.siteName;
+	const invoiceEndDate = (() => {
+		const [year, month] = invoice.billingMonth.split('-').map((value) => Number(value));
+		return new Date(Date.UTC(year, month, 0)).toISOString().split('T')[0];
+	})();
 
 	return (
 		<div className="invoice-preview-container" data-testid="invoice-preview-container">
@@ -79,15 +89,43 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 						</tr>
 						{invoice.note && (
 							<tr className="invoice-note-row">
-								<td colSpan={2}><strong>NOTE:</strong> {invoice.note}</td>
+								<td colSpan={2}>
+									<strong>NOTE:</strong>
+									{typeof invoice.note === 'string' ? (
+										` ${invoice.note}`
+									) : (
+										<ul className="invoice-note-list" style={{ margin: '8px 0 0 12px', paddingLeft: '18px' }}>
+											{invoice.note.map((noteItem, noteIndex) => (
+												<li key={noteIndex}>{noteItem}</li>
+											))}
+										</ul>
+									)}
+								</td>
 							</tr>
 						)}
 					</tbody>
 				</table>
 
+				<div className="invoice-bottom-payment">
+					<h4>How To Pay:</h4>
+					<p className="payment-details-box">{invoice.paymentInfo.details}</p>
+					<p className="payment-terms-italic">{invoice.paymentInfo.terms}</p>
+				</div>
+
+				{invoice.enhancements && invoice.enhancements.length > 0 && (
+					<div className="invoice-addon-section">
+						<h3>Enhancements</h3>
+						<ul className="invoice-enhancements-list" style={{ margin: '0 0 16px 0', paddingLeft: '20px', color: '#333' }}>
+							{invoice.enhancements.map((enhancement, idx) => (
+								<li key={idx} style={{ marginBottom: '6px' }}>{enhancement}</li>
+							))}
+						</ul>
+					</div>
+				)}
+
 				{invoice.posts.length > 0 && (
 					<div className="invoice-addon-section">
-						<h3>Published Content & Analytics Overview</h3>
+						<h3>Published Content</h3>
 						<table className="invoice-addon-table">
 							<thead>
 								<tr>
@@ -118,11 +156,52 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 					</div>
 				)}
 
-				<div className="invoice-bottom-payment">
-					<h4>How To Pay:</h4>
-					<p className="payment-details-box">{invoice.paymentInfo.details}</p>
-					<p className="payment-terms-italic">{invoice.paymentInfo.terms}</p>
-				</div>
+				{formCompletions.length > 0 && (
+					<div className="invoice-addon-section">
+						<h3>Form Completions</h3>
+						<table className="invoice-addon-table">
+							<thead>
+								<tr>
+									<th>Submit Date</th>
+									<th>Form Name</th>
+									<th>Email</th>
+								</tr>
+							</thead>
+							<tbody>
+								{formCompletions.map((row, idx) => (
+									<tr key={idx}>
+										<td>{new Date(row.submitAt).toLocaleString()}</td>
+										<td>{row.formName}</td>
+										<td>{row.email}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
+
+				{shouldRenderAnalytics && invoice.siteName && (
+					<div className="invoice-addon-section">
+						<SiteHealthGoogleAnalytics
+							siteName={invoice.siteName}
+							startDate={`${invoice.billingMonth}-01`}
+							endDate={(() => {
+								const [year, month] = invoice.billingMonth.split('-').map((value) => Number(value));
+								return new Date(Date.UTC(year, month, 0)).toISOString().split('T')[0];
+							})()}
+						/>
+					</div>
+				)}
+
+				{shouldRenderCloudwatch && (
+					<div className="invoice-addon-section">
+						<SiteHealthCloudwatch
+							siteName={invoice.siteName}
+							startDate={`${invoice.billingMonth}-01`}
+							endDate={invoiceEndDate}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	);

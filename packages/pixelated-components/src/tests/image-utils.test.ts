@@ -108,6 +108,60 @@ describe('Image Utilities', () => {
 			mockQuerySelectorAll.mockRestore();
 		});
 
+		it('should set high fetch priority when image is partially in viewport', () => {
+			const appended: any[] = [];
+			const appendSpy = vi.spyOn(document.head, 'appendChild').mockImplementation((element: any) => {
+				appended.push(element);
+				return element;
+			});
+
+			const image = {
+				src: 'viewport.jpg',
+				getBoundingClientRect: () => ({ top: 0, left: 0, bottom: 50, right: 50 }),
+				setAttribute: vi.fn(),
+			};
+
+			const mockQuerySelectorAll = vi.spyOn(document, 'querySelectorAll').mockReturnValue({
+				forEach: (cb: any) => cb(image),
+				length: 1
+			} as any);
+
+			preloadImages();
+
+			expect(appended[0]?.fetchPriority).toBe('high');
+			expect(image.setAttribute).toHaveBeenCalledWith('fetchpriority', 'high');
+
+			appendSpy.mockRestore();
+			mockQuerySelectorAll.mockRestore();
+		});
+
+		it('should not set fetch priority when image is outside viewport', () => {
+			const appended: any[] = [];
+			const appendSpy = vi.spyOn(document.head, 'appendChild').mockImplementation((element: any) => {
+				appended.push(element);
+				return element;
+			});
+
+			const image = {
+				src: 'offscreen.jpg',
+				getBoundingClientRect: () => ({ top: 2000, left: 2000, bottom: 2050, right: 2050 }),
+				setAttribute: vi.fn(),
+			};
+
+			const mockQuerySelectorAll = vi.spyOn(document, 'querySelectorAll').mockReturnValue({
+				forEach: (cb: any) => cb(image),
+				length: 1
+			} as any);
+
+			preloadImages();
+
+			expect(appended[0]?.fetchPriority).toBeUndefined();
+			expect(image.setAttribute).not.toHaveBeenCalled();
+
+			appendSpy.mockRestore();
+			mockQuerySelectorAll.mockRestore();
+		});
+
 		it('should work with data-* attributes', () => {
 			const mockElement = {
 				'data-src': 'deferred.jpg',
@@ -180,7 +234,6 @@ describe('Image Utilities', () => {
 		it('should process valid image sources', () => {
 			const processedImages: any[] = [];
 			const forEachMock = vi.fn((cb: any) => {
-				// Mock processing of valid images
 				cb({ src: 'valid1.jpg', dataset: { src: 'lazy1.jpg' } });
 				cb({ src: 'valid2.jpg', dataset: { src: 'lazy2.jpg' } });
 				processedImages.push(
@@ -194,9 +247,37 @@ describe('Image Utilities', () => {
 				length: 2
 			} as any);
 
+			const imgSpy = vi.spyOn(window as any, 'Image').mockImplementation(function(this: any) {
+				this.src = '';
+			} as any);
+
 			preloadImages_v2();
 			expect(processedImages.length).toBe(2);
+			expect(imgSpy).toHaveBeenCalledTimes(2);
 
+			imgSpy.mockRestore();
+			mockQuerySelectorAll.mockRestore();
+		});
+
+		it('should skip duplicate image sources in preloadImages_v2', () => {
+			const forEachMock = vi.fn((cb: any) => {
+				cb({ src: 'duplicate.jpg' });
+				cb({ src: 'duplicate.jpg' });
+			});
+
+			const mockQuerySelectorAll = vi.spyOn(document, 'querySelectorAll').mockReturnValue({
+				forEach: forEachMock,
+				length: 2
+			} as any);
+
+			const imgSpy = vi.spyOn(window as any, 'Image').mockImplementation(function(this: any) {
+				this.src = '';
+			} as any);
+
+			preloadImages_v2();
+			expect(imgSpy).toHaveBeenCalledTimes(1);
+
+			imgSpy.mockRestore();
 			mockQuerySelectorAll.mockRestore();
 		});
 

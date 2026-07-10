@@ -17,8 +17,6 @@ import { redirect } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { PageSection, PageSectionHeader, PageTitleHeader, Table } from '@pixelated-tech/components';
 import {
-	DEFAULT_PIXELATED_FORM_NAME,
-	DEFAULT_PIXELATED_FORM_SUBMISSION_DOMAIN,
 	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
 	listPixelatedFormSubmissionReportRows,
 } from '@pixelated-tech/components/server';
@@ -133,8 +131,6 @@ export default async function EventReportPage({ searchParams }: { searchParams?:
 	try {
 		const rows = await listPixelatedFormSubmissionReportRows({
 			tableName: DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
-			domain: DEFAULT_PIXELATED_FORM_SUBMISSION_DOMAIN,
-			formName: DEFAULT_PIXELATED_FORM_NAME,
 		});
 		const reportRows = sortReportRows(rows);
 		const eventGroups = buildEventGroups(reportRows);

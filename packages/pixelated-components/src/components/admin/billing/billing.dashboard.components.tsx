@@ -5,6 +5,7 @@ import { SiteConfig, Subscriptions, PaymentInfo, InvoiceData, GeneratedInvoiceRe
 import { smartFetch } from '../../foundation/smartfetch';
 import { ToggleLoading } from '../../foundation/loading';
 import InvoiceView from './billing.invoice.components';
+import { loadBillingConfigData } from './billing.server';
 import './billing.css';
 
 export const BillingDashboard: React.FC = () => {
@@ -27,45 +28,30 @@ export const BillingDashboard: React.FC = () => {
 	const [selectedForEmail, setSelectedForEmail] = useState<{ [siteName: string]: boolean }>({});
 	const [emailing, setEmailing] = useState(false);
 	const [emailLogs, setEmailLogs] = useState<string[]>([]);
+	const [formCompletions, setFormCompletions] = useState<Array<{ submitAt: string; formName: string; email: string }>>([]);
 
 	// Preview state
 	const [previewInvoice, setPreviewInvoice] = useState<{ data: InvoiceData } | null>(null);
 
 	// Load data on mount
+	const monthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
+
 	useEffect(() => {
 		async function fetchSites() {
+			setLoading(true);
 			try {
-				// Query the new dedicated billing config API endpoint
-				const response = await smartFetch('/api/billing/config');
-				if (response && response.sites) {
-					setSites(response.sites);
-					setSubscriptions(response.subscriptions || {});
-					setPaymentInfo(response.paymentInfo || { method: '', details: '', terms: '' });
-					
-					// Pre-select all billable sites by default
-					const billableSites = (response.sites as SiteConfig[]).filter(site => !!site.billing);
-					const preselected: { [name: string]: boolean } = {};
-					billableSites.forEach(s => {
-						preselected[s.name] = true;
-					});
-					setSelectedSites(preselected);
-				} else {
-					// Fallback to unified API config route directly
-					const responseRaw = await smartFetch(`${window.location.origin}/api/billing/config`, { responseType: 'ok' });
-					if (responseRaw.ok) {
-						const res = await responseRaw.json();
-						setSites(res.sites || []);
-						setSubscriptions(res.subscriptions || {});
-						setPaymentInfo(res.paymentInfo || { method: '', details: '', terms: '' });
+				const response = await loadBillingConfigData(monthStr);
+				setSites(response.sites || []);
+				setSubscriptions(response.subscriptions || {});
+				setPaymentInfo(response.paymentInfo || { method: '', details: '', terms: '' });
+				setFormCompletions(response.formCompletions || []);
 
-						const billableSites = (res.sites as SiteConfig[]).filter(site => !!site.billing);
-						const preselected: { [name: string]: boolean } = {};
-						billableSites.forEach(s => {
-							preselected[s.name] = true;
-						});
-						setSelectedSites(preselected);
-					}
-				}
+				const billableSites = (response.sites as SiteConfig[]).filter(site => !!site.billing);
+				const preselected: { [name: string]: boolean } = {};
+				billableSites.forEach(s => {
+					preselected[s.name] = true;
+				});
+				setSelectedSites(preselected);
 			} catch (error) {
 				console.error('Failed to load billable configuration metadata:', error);
 			} finally {
@@ -73,7 +59,7 @@ export const BillingDashboard: React.FC = () => {
 			}
 		}
 		fetchSites();
-	}, []);
+	}, [monthStr]);
 
 	const billableSites = sites.filter(site => !!site.billing);
 

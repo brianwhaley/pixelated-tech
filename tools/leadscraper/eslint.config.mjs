@@ -12,5 +12,11 @@ export default [
 			"pixelated/required-schemas": "off",
 		},
 	},
+	{
+		files: ["**/*.json"],
+		rules: {
+			"pixelated/strict-pronoun-resolution": "off",
+		},
+	},
 ];
 

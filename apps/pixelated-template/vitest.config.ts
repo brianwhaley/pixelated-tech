@@ -7,7 +7,7 @@ export default defineConfig({
 	...rootConfig,
 	test: {
 		...rootConfig.test,
-		include: ['./src/tests/site.test.tsx'],
+		include: ['./src/tests/**/*.test.tsx'],
 		setupFiles: ['./src/tests/setup.ts'],
 		globals: true,
 	},

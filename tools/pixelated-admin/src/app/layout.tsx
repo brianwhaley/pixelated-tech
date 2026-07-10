@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
 import { PageMetaTags, VisualDesignStyles, PixelatedServerConfigProvider, getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/authentication";
+import { authOptions } from "../lib/authentication";
 import { getServerSession } from "next-auth";
 import { isRouteAllowedForID, normalizeRoutePath } from '@pixelated-tech/components/adminclient';
 import authorizationConfig from './data/authorization.json';

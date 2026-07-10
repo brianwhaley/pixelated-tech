@@ -21,9 +21,14 @@ export interface SiteBillingConfig {
 	email: string;
 	companyName: string;
 	address: string;
-	note?: string; // Optional legacy single-note
 	// `notes` keyed by billing cycle (YYYY-MM) for historical notes per month
-	notes?: Record<string, string>;
+	notes?: Record<string, string | string[]>;
+	additionalInvoiceItems?: Record<string, AdditionalInvoiceItem | AdditionalInvoiceItem[]>;
+}
+
+export interface AdditionalInvoiceItem {
+	amount: number;
+	description: string;
 }
 
 export interface SiteConfig {
@@ -38,6 +43,7 @@ export interface SitesJsonData {
 	subscriptions: Subscriptions;
 	paymentInfo: PaymentInfo;
 	sites: SiteConfig[];
+	enhancements?: Record<string, string[]>;
 }
 
 export interface BlogPostBilling {
@@ -51,6 +57,12 @@ export interface BlogPostBilling {
 export interface SocialReferrerBilling {
 	source: string;
 	clicks: number;
+}
+
+export interface FormCompletion {
+	submitAt: string;
+	formName: string;
+	email: string;
 }
 
 export interface InvoiceItem {
@@ -68,13 +80,16 @@ export interface InvoiceData {
 	email: string;
 	siteName: string;
 	siteUrl: string;
+	ga4PropertyId?: string;
 	tier: string;
 	items: InvoiceItem[];
 	totalOwed: number;
 	paymentInfo: PaymentInfo;
 	posts: BlogPostBilling[];
 	socialReferrers: SocialReferrerBilling[];
-	note?: string; // Optional custom note field passed down from site config
+	formCompletions?: FormCompletion[];
+	enhancements?: string[];
+	note?: string | string[]; // Optional custom note field passed down from site config
 }
 
 export interface GeneratedInvoiceResult {

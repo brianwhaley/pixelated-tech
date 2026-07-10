@@ -133,21 +133,21 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 	generateInvoicePdfsForSites: async (targetSites: any[], billingMonth: string, previewOnly: boolean) => ({
 		results: targetSites.map((site: any) => ({ site, billingMonth, previewOnly, success: true })),
 	}),
-	getNextAuthCredentials: () => ({ secret: 'test-secret' }),
-	getGoogleOAuthCredentials: () => ({ clientId: 'g-id', clientSecret: 'g-secret' }),
-}));
-
-vi.mock('next-auth/react', () => ({
-	useSession: () => mockUseSession(),
-	signIn: mockSignIn,
-	signOut: mockSignOut,
-	SessionProvider: ({ children }: any) => <>{children}</>,
+	InvoiceBuilder: ({ siteName, billingCycle }: any) => <div data-testid="InvoiceBuilder" data-site={siteName} data-cycle={billingCycle} />,
 }));
 
 const mockGetServerSession = vi.fn(async () => null);
 
 vi.mock('next-auth', () => ({
 	getServerSession: () => mockGetServerSession(),
+}));
+
+vi.mock('next-auth/react', () => ({
+	__esModule: true,
+	useSession: () => mockUseSession(),
+	signIn: (...args: any[]) => mockSignIn(...args),
+	signOut: (...args: any[]) => mockSignOut(...args),
+	SessionProvider: ({ children }: any) => <>{children}</>,
 }));
 
 vi.mock('@/lib/authentication', () => ({
@@ -438,13 +438,6 @@ describe('pixelated-admin extra coverage', () => {
 		const mod = await importModule('src/app/sitemap.tsx');
 		const sitemap = await mod.default();
 		expect(Array.isArray(sitemap)).toBe(true);
-	});
-
-	it('returns billing config JSON from route', async () => {
-		const route = await importModule('src/app/api/billing/config/route.ts');
-		const response = await route.GET();
-		expect(response.status).toBe(200);
-		expect(await response.json()).toHaveProperty('sites');
 	});
 
 	it('validates payload for email invoice route', async () => {

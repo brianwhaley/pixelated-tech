@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { FormEngine, Loading, ToggleLoading, PageSection, smartFetch } from '@pixelated-tech/components';
-import sites from '@/app/data/sites.json';
-import formData from '@/app/data/deployform.json';
+import sites from '../../data/sites.json';
+import formData from '../../data/deployform.json';
 import './deployment.css';
 
 interface DeploymentResult {
