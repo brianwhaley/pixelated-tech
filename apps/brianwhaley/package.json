@@ -1,6 +1,6 @@
 {
   "name": "brianwhaley",
-  "version": "2.13.3",
+  "version": "2.13.4",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -63,5 +63,5 @@
     "typescript-eslint": "^8.63.0",
     "vitest": "^4.1.10"
   },
-  "deployMarker": "2026-07-04T00:48:09.074Z"
+  "deployMarker": "2026-07-10T03:58:28.219Z"
 }
