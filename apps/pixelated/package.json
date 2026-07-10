@@ -1,6 +1,6 @@
 {
   "name": "pixelatedtech",
-  "version": "4.11.8",
+  "version": "4.11.9",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -60,7 +60,7 @@
     "sass": "^1.99.0",
     "sass-loader": "^17.0.0",
     "style-loader": "^4.0.0",
-    "typescript": "7.0.2",
+    "typescript": "6.0.2",
     "typescript-eslint": "^8.62.0",
     "vitest": "^4.1.10",
     "webpack-dev-server": "^6.0.0"
