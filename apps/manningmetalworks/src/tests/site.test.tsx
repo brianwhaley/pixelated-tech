@@ -143,7 +143,7 @@ describe('Manning Metalworks coverage', () => {
 			name: 'Style Guide',
 			Component: StyleGuidePage,
 			assertion: async () => {
-				await waitFor(() => expect(screen.getByTestId('styleguide-ui')).toBeTruthy());
+				await waitFor(() => expect(document.getElementById('colors-section')).not.toBeNull());
 			},
 		},
 	]);

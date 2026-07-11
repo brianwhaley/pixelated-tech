@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { POST } from '../components/sitebuilder/page/documentation/api-examples/save-route-example';
+import { POST } from '../test/test-data';
 
 let savePageMock = vi.fn().mockResolvedValue({ success: true, filePath: '/test/path' });
 

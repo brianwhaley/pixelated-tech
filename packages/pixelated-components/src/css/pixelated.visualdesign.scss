@@ -86,3 +86,15 @@ $maxScreen: var(--font-max-screen);
 @for $i from 1 through 6 {
    	h#{$i} { font-size: var(--font-size#{$i}); }
 }
+
+:export {
+	headerFont: var(--header-font);
+	bodyFont: var(--body-font);
+  primaryColor: var(--primary-color);
+  secondaryColor: var(--secondary-color);
+  accent1Color: var(--accent1-color);
+  accent2Color: var(--accent2-color);	
+  bgColor: var(--bg-color);
+  textColor: var(--text-color);
+
+}

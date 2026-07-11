@@ -1,22 +1,22 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { contentfulValueToSlug } from '../integrations/contentful.delivery';
-import { getServicePathPrefix } from '../elements/services.functions';
-import type { SiteInfoType, Route } from '../config/config.types';
+import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs } from './sitemap';
+import type { SiteInfoType } from '../config/config.types';
 import { getFullPixelatedConfig } from '../config/config';
 import { sanitizeString } from './utilities';
 import PropTypes, { InferProps } from 'prop-types';
 
-import { buildUrl } from './urlbuilder';
-
 
 const excludedRoutePatterns = [
+	/404/i,
 	/admin/i,
 	/api/i,
 	/blogcalendar/i,
 	/dashboard/i,
 	/humans/i,
 	/legal/i,
+	/manifest/i,
+	/not-found/i,
 	/preview/i,
 	/privacy/i,
 	/robots/i,
@@ -42,46 +42,36 @@ LLMSTxt.propTypes = {
 	/** no props */
 };
 export type LLMSTxtType= InferProps<typeof LLMSTxt.propTypes>;
-export function LLMSTxt(props: LLMSTxtType): NextResponse {
+export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 
 	const config = getFullPixelatedConfig();
 	const siteInfo = config.siteInfo as SiteInfoType;
 	const routes = Array.isArray(config.routes) ? config.routes : [];
 	const baseUrl = sanitizeString(siteInfo.url ?? '').replace(/\/$/, '');
 
-	const servicePathPrefix = getServicePathPrefix(siteInfo);
-	const services = Array.isArray(siteInfo.services) ? siteInfo.services : [];
-	const serviceAreas = Array.isArray(siteInfo.serviceAreas) ? siteInfo.serviceAreas : [];
+	const serviceEntries = await createSiteConfigServiceURLs(config, baseUrl);
+	const serviceUrls = serviceEntries.map((entry) => entry.url).filter(Boolean) as string[];
 
-	const serviceUrls = services
-		.map((service) => {
-			const slug = contentfulValueToSlug({ value: service.slug ?? service.name });
-			const rawPath = `${servicePathPrefix}/${slug}`;
-			return buildUrl({ baseUrl: baseUrl, pathSegments: [rawPath] });
-		})
-		.filter(Boolean) as string[];
+	const serviceAreaEntries = await createSiteConfigServiceAreaURLs(config, baseUrl);
+	const serviceAreaUrls = serviceAreaEntries.map((entry) => entry.url).filter(Boolean) as string[];
 
-	const serviceAreaUrls = serviceAreas
-		.map((serviceArea) => {
-			const rawPath =
-				serviceArea.url ||
-				serviceArea.path ||
-				`/service-areas/${contentfulValueToSlug({ value: serviceArea.slug ?? serviceArea.name })}`;
-			return buildUrl({ baseUrl: baseUrl, pathSegments: [rawPath] });
-		})
-		.filter(Boolean) as string[];
-
-	const otherRouteUrls = routes
-		.map((route) => {
-			const rawPath = route.path ?? route.pathname ?? route.url;
-			return rawPath ? buildUrl({ baseUrl: baseUrl, pathSegments: [rawPath] }) : undefined;
-		})
-		.filter((path): path is string => !!path)
+	const pageRouteUrls = (await createPageURLs(routes, baseUrl))
+		.map((entry) => entry.url)
+		.filter((url) => typeof url === 'string')
 		.filter((url) => !excludedRoutePatterns.some((pattern) => pattern.test(url)))
-		.filter((url) => !serviceUrls.includes(url) && !serviceAreaUrls.includes(url));
+		.filter((url) => !serviceUrls.includes(url) && !serviceAreaUrls.includes(url)) as string[];
 
 	const lines: string[] = [];
 	lines.push(`# ${sanitizeString(siteInfo.name ?? 'Site Name')}`);
+	lines.push('');
+
+
+	lines.push('## Page Links');
+	if (pageRouteUrls.length) {
+		pageRouteUrls.forEach((url) => lines.push(`- ${url}`));
+	} else {
+		lines.push('- none');
+	}
 	lines.push('');
 
 	lines.push('## Services');
@@ -100,13 +90,6 @@ export function LLMSTxt(props: LLMSTxtType): NextResponse {
 	}
 	lines.push('');
 
-	lines.push('## Other Links');
-	if (otherRouteUrls.length) {
-		otherRouteUrls.forEach((url) => lines.push(`- ${url}`));
-	} else {
-		lines.push('- none');
-	}
-	lines.push('');
 
 	lines.push('## AI / LLM Usage Policy');
 	lines.push('Training: yes');

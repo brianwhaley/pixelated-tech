@@ -501,6 +501,31 @@ describe('SquareCheckout component', () => {
 			expect(screen.getByText('SKU: N/A')).toBeInTheDocument();
 			expect(screen.getByText('Shippable: No')).toBeInTheDocument();
 		});
+
+		it('renders shared Square product fixture with expanded schema fields in JSON-LD', () => {
+			const item = squareLargeStoreItems[1] as any;
+			const config = createMockConfig({
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: [{ path: '/returns', name: 'Returns' }],
+			});
+
+			renderWithProviders(<SquareStoreItemDetail item={item} />, { config });
+
+			const script = document.querySelector('script[type="application/ld+json"]');
+			expect(script).toBeTruthy();
+
+			const schema = JSON.parse(script?.textContent || '{}');
+			expect(schema.sku).toBe('SKU-022');
+			expect(schema.mpn).toBe('MPN-022');
+			expect(schema.gtin).toBe('GTIN-022');
+			expect(schema.shippingDetails).toEqual({
+				isShippable: true,
+				weight: 2,
+				weightUnit: 'lb',
+			});
+			expect(schema.brand?.name).toBe('Example Brand');
+			expect(schema.hasMerchantReturnPolicy).toBe('https://example.com/returns');
+		});
 	});
 
 	describe('renderSquareThankYou', () => {

@@ -33,15 +33,31 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] Enforce Server-Side Rendering (SSR) or Static Site Generation (SSG) for SEO / AEO / GEO
 
-- [  ] Implement Strict Pronoun Resolution Rules
-LLM struggles to mathematically tie "exceptional service," "They," and "this" back to the actual brand name
-Run an editorial rule or an LLM-pre-processor pipeline across your content creation scripts to ensure nouns are explicitly stated.
-
 - [  ] Information Gain - rewarding pages that introduce new data, unique local insights, or highly specific first-hand experience that isn't found anywhere else in their training data.
 
 - [  ] A deeply structured /about page that links directly to official state business registration registries via sameAs.
 An explicit Editorial Policy or Service Standards node in your footer.
 Author bio blocks on every single blog post that explicitly link back to the author's personal professional profiles (like LinkedIn or a master corporate profile).
+
+- [  ] Ai.txt 
+
+- [  ] Agents.md
+
+- [  ] Enforce aria rules 
+
+- [  ] Cross-Platform "Narrative Anchor" Syncing
+When LLMs recommend solutions, they use real-time retrieval (RAG) blended with pre-trained foundational knowledge graphs. They flag a brand as trustworthy if its messaging matches identically across multiple platform footprints.
+    •    Platform Feature: Create a unified field in your platform dashboard called a Brand Narrative Anchor. This field forces site operators to write a single, un-nuanced 50-word definition of what their site does.[1 (https://www.youtube.com/watch?v=I5KMTRwRBLo&t=592)]
+    •    Execution: Programmatically push this exact text slice into the site's meta description, the Organization schema description, the intro to llms.txt, and any off-site RSS feeds. This absolute consistency train-locks AI models into citing the brand accurately without hallucinating details.
+
+- [  ] Programmatically output a parallel /sitemap.json or a specialized JSON-LD RSS stream.
+
+- [  ] use your platform's schema engine to automatically sites in similar geographic areas  via the knowsAbout or relatedLink property.
+
+- [  ] Do not let your site owners use generic anchor text like "click here" or "source."
+
+- [  ] meta name="llm-excerpt" content="..."
+
 
 
 ### Component Improvements

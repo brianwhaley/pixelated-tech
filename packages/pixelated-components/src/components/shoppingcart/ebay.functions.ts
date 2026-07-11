@@ -6,6 +6,7 @@ import { getDomain } from "../foundation/utilities";
 import { smartFetch } from "../foundation/smartfetch";
 import { buildUrl } from "../foundation/urlbuilder";
 import { getCloudinaryRemoteFetchURL as getImg } from "../integrations/cloudinary";
+import { getPolicyRouteUrl } from "../foundation/schema.functions";
 
 const debug = false;
 
@@ -470,8 +471,11 @@ getEbayProductSchema.propTypes = {
 export type getEbayProductSchemaType = InferProps<typeof getEbayProductSchema.propTypes>;
 export function getEbayProductSchema(props: getEbayProductSchemaType) {
 	const item: any = props.item;
-	const brandName = props.brandName || 'eBay';
+	const config = getFullPixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const brandName = props.brandName || item.brand?.name || siteInfo?.brand?.name || siteInfo?.name || 'eBay';
 	const siteUrl = props.siteUrl || item.itemWebUrl || '';
+	const policyUrl = getPolicyRouteUrl(config?.routes, siteInfo);
 
 	if (!item || !item.title || !item.price) {
 		return null;
@@ -495,6 +499,9 @@ export function getEbayProductSchema(props: getEbayProductSchemaType) {
 		}
 	}
 
+	const sku = item.legacyItemId || item.itemId || '';
+	const mpn = item.mpn || sku || undefined;
+	const gtin = item.gtin || sku || undefined;
 	const priceValue = item.price?.value ?? item.price?.__value__ ?? item.buyingOptions?.[0]?.price?.value ?? '';
 	const currency = item.price?.currency || item.price?.currencyCode || 'USD';
 
@@ -504,11 +511,21 @@ export function getEbayProductSchema(props: getEbayProductSchemaType) {
 		'name': item.title,
 		'image': images,
 		'description': item.description || '',
-		'sku': item.legacyItemId || item.itemId || '',
+		'sku': sku || item.itemId,
 		'brand': {
 			'@type': 'Brand',
 			'name': brandName,
 		},
+		mpn,
+		gtin,
+		shippingDetails: {
+			isShippable: Boolean(item.shippingOptions?.length || item.shipping || item.weight || item.weightUnit),
+			shippingOptions: item.shippingOptions,
+			shipping: item.shipping,
+			weight: item.weight,
+			weightUnit: item.weightUnit,
+		},
+		...(policyUrl ? { hasMerchantReturnPolicy: policyUrl } : {}),
 		'offers': {
 			'@type': 'Offer',
 			'url': siteUrl,
