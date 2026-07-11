@@ -11,6 +11,7 @@ export function createServerMocks() {
 		ServicesSchema: () => null,
 		BreadcrumbListSchema: () => null,
 		VisualDesignStyles: () => null,
+		StyleGuideUI: () => React.createElement('div', { id: 'colors-section' }, 'Style Guide UI'),
 		PixelatedServerConfigProvider: ({ children }: any) => React.createElement('div', { 'data-testid': 'server-config-provider' }, children),
 		getFullPixelatedConfig: () => ({}),
 		buildSitemapConfig: () => ({ sitemap: true }),

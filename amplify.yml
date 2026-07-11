@@ -19,7 +19,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'export NODE_OPTIONS="--max-old-space-size=4096" && NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -52,7 +52,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -85,7 +85,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -118,7 +118,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -151,7 +151,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -184,7 +184,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -217,7 +217,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -250,7 +250,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -283,7 +283,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - # npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
             - # BUILD STORYBOOK WITH EXTRA MEMORY TO AVOID CI OOM
             - 'echo "Building Storybook with extra memory to avoid CI OOM ..."'
@@ -319,7 +319,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -352,7 +352,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
@@ -385,7 +385,7 @@ applications:
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'NEXT_DEBUG_BUILD=1 npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:

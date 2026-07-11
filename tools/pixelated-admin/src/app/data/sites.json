@@ -56,8 +56,9 @@
 	},
 	"enhancements": {
 		"2026-07": [
-			"Added new LLMS.txt feature to the site to improve search engine indexing and visibility.",
-			"Added integration WebMCP integration into all forms to improve form validation and submission handling with AI models.",
+			"Added new LLMS.txt feature to the site to improve search engine indexing and visibility to Large Language AI Models.",
+			"Added new WebMCP integration into all forms to improve form validation and submission handling with AI models.",
+			"Enhanced BlogPost, Book, Event, LocalBusiness, Organization, Product, Recipe, Review, Service schemas for improved SEO and AEO (Answer Engine Optimization) visibility.",
 			"Added new Google Analytics Page Views to Invoice",
 			"Added new CloudWatch Uptime Report to Invoice"
 		],

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as contentfulModule from '../components/integrations/contentful.delivery';
+import * as configModule from '../components/config/config';
 import { pixelatedConfig } from '../test/test-data';
 
 const mockContentfulApiProps = pixelatedConfig.integrations?.contentful;
@@ -407,6 +408,54 @@ describe('Contentful Delivery API', () => {
 			expect(result).not.toBeNull();
 			expect(result?.offers?.availability).toBe('https://schema.org/OutOfStock');
 			expect(result?.image?.[0]).toBe('https://assets.example.com/img1');
+		});
+
+		it('should include sku, mpn, gtin, shippingDetails, and policy URL when available', async () => {
+			const mockResponse = {
+				items: [
+					{
+						sys: { contentType: { sys: { id: 'item' } } },
+						fields: {
+							id: 'PRD-003',
+							title: 'Product 3',
+							description: 'Shippable product',
+							brand: 'BrandZ',
+							price: 49.99,
+							quantity: 3,
+							sku: 'SKU-123',
+							mpn: 'MPN-123',
+							gtin: 'GTIN-123',
+							weight: 2.5,
+							weightUnit: 'lb',
+							images: []
+						}
+					}
+				]
+			};
+
+			vi.spyOn(configModule, 'getClientOnlyPixelatedConfig').mockReturnValue({
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: [{ path: '/returns', name: 'Returns' }]
+			} as any);
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockResponse
+			});
+
+			const result = await contentfulModule.getContentfulProductSchema({
+				apiProps: mockContentfulApiProps as any,
+				productId: 'PRD-003',
+				siteUrl: 'https://example.com/product3'
+			});
+
+			expect(result).not.toBeNull();
+			expect(result?.sku).toBe('SKU-123');
+			expect(result?.mpn).toBe('MPN-123');
+			expect(result?.gtin).toBe('GTIN-123');
+			expect(result?.brand?.name).toBe('BrandZ');
+			expect(result?.shippingDetails).toEqual({ isShippable: true, weight: 2.5, weightUnit: 'lb' });
+			expect(result?.hasMerchantReturnPolicy).toBe('https://example.com/returns');
 		});
 
 		it('should return product schema with in-stock availability when quantity is greater than zero', async () => {

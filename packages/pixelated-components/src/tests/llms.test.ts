@@ -33,7 +33,7 @@ describe('LLMSTxt', () => {
 		fakeConfig = createFakeConfig();
 	});
 	it('generates markdown with services, service areas, other links, contact, and generated metadata', async () => {
-		const output = LLMSTxt({});
+		const output = await LLMSTxt({});
 		const text = await output.text();
 
 		expect(text).toContain('# Test Site');
@@ -41,7 +41,7 @@ describe('LLMSTxt', () => {
 		expect(text).toContain('- https://example.com/services/web-design');
 		expect(text).toContain('## Service Areas');
 		expect(text).toContain('- https://example.com/service-areas/metro');
-		expect(text).toContain('## Other Links');
+		expect(text).toContain('## Page Links');
 		expect(text).toContain('- https://example.com/about');
 		expect(text).toContain('- https://example.com/faq');
 		expect(text).not.toContain('styleguide');
@@ -52,7 +52,7 @@ describe('LLMSTxt', () => {
 	});
 
 	it('normalizes relative route paths', async () => {
-		const output = LLMSTxt({});
+		const output = await LLMSTxt({});
 		const text = await output.text();
 
 		expect(text).toContain('- https://example.com/about');
@@ -64,7 +64,7 @@ describe('LLMSTxt', () => {
 		fakeConfig.siteInfo.serviceAreas = undefined;
 		fakeConfig.routes = [{ path: '/about' }];
 
-		const output = LLMSTxt({});
+		const output = await LLMSTxt({});
 		const text = await output.text();
 
 		expect(text).toContain('## Services');
@@ -82,7 +82,7 @@ describe('LLMSTxt', () => {
 			{ path: '/sitemap.xml' },
 		];
 
-		const output = LLMSTxt({});
+		const output = await LLMSTxt({});
 		const text = await output.text();
 
 		expect(text).toContain('- https://example.com/about');

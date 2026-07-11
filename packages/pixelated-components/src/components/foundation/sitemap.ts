@@ -18,13 +18,21 @@ const debug = false;
 
 const DEFAULT_CONTENTFUL_IMAGE_FIELDS = ['image', 'images', 'carouselImages'];
 
-export type SitemapEntry = MetadataRoute.Sitemap[number];
+export type SitemapEntry = MetadataRoute.Sitemap[number] & {
+	name?: string;
+};
 /* export type SitemapEntry = {
 	url: string;
-	lastModified?: string;
+	name?: string;
+	lastModified?: string | Date;
 	changeFrequency?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
 	priority?: number;
 	images?: string[];
+	alternates?: {
+		languages?: {
+			[key: string]: string;
+		};
+	};
 }; */
 
 
@@ -324,6 +332,7 @@ export async function createPageURLs(routes: { path: string }[], origin?: string
 			const base = origin ? `${origin}` : '';
 			const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
 			sitemap.push({
+				name: route.name ?? undefined,
 				url: `${base}${path}` ,
 				lastModified: new Date(),
 				changeFrequency: "hourly",
@@ -344,9 +353,22 @@ export async function createSiteConfigURLs(siteConfig: any, origin?: string): Pr
 		return sitemap;
 	}
 
-	const services = Array.isArray(siteConfig.siteInfo.services) ? siteConfig.siteInfo.services : [];
-	const serviceAreas = Array.isArray(siteConfig.siteInfo.serviceAreas) ? siteConfig.siteInfo.serviceAreas : [];
+	sitemap.push(...(await createSiteConfigServiceURLs(siteConfig, origin)));
+	sitemap.push(...(await createSiteConfigServiceAreaURLs(siteConfig, origin)));
 
+	return sitemap;
+}
+
+
+
+
+export function createSiteConfigServiceURLs(siteConfig: any, origin?: string): SitemapEntry[] {
+	const sitemap: SitemapEntry[] = [];
+	if (!siteConfig || typeof siteConfig !== 'object' || !siteConfig.siteInfo) {
+		return sitemap;
+	}
+
+	const services = Array.isArray(siteConfig.siteInfo.services) ? siteConfig.siteInfo.services : [];
 	const servicePathPrefix = getServicePathPrefix(siteConfig?.siteInfo);
 	for (const service of services) {
 		const rawPath = `${servicePathPrefix}/${contentfulValueToSlug({ value: service.slug ?? service.name })}`;
@@ -354,20 +376,7 @@ export async function createSiteConfigURLs(siteConfig: any, origin?: string): Pr
 		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin ? origin : ''}${path}`;
 		if (url) {
 			sitemap.push({
-				url,
-				lastModified: new Date(),
-				changeFrequency: 'hourly',
-				priority: 0.8,
-			});
-		}
-	}
-
-	for (const serviceArea of serviceAreas) {
-		const rawPath = serviceArea.url || serviceArea.path || `/service-areas/${contentfulValueToSlug({ value: serviceArea.slug ?? serviceArea.name })}`;
-		const path = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
-		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin ? origin : ''}${path}`;
-		if (url) {
-			sitemap.push({
+				name: service.name ?? undefined,
 				url,
 				lastModified: new Date(),
 				changeFrequency: 'hourly',
@@ -378,6 +387,37 @@ export async function createSiteConfigURLs(siteConfig: any, origin?: string): Pr
 
 	return sitemap;
 }
+
+
+
+
+export function createSiteConfigServiceAreaURLs(siteConfig: any, origin?: string): SitemapEntry[] {
+	const sitemap: SitemapEntry[] = [];
+	if (!siteConfig || typeof siteConfig !== 'object' || !siteConfig.siteInfo) {
+		return sitemap;
+	}
+
+	const serviceAreas = Array.isArray(siteConfig.siteInfo.serviceAreas) ? siteConfig.siteInfo.serviceAreas : [];
+	for (const serviceArea of serviceAreas) {
+		const rawPath = serviceArea.url || serviceArea.path || `/service-areas/${contentfulValueToSlug({ value: serviceArea.slug ?? serviceArea.name })}`;
+		const path = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+		const url = typeof rawPath === 'string' && rawPath.startsWith('http') ? rawPath : `${origin ? origin : ''}${path}`;
+		if (url) {
+			sitemap.push({
+				name: serviceArea.name ?? undefined,
+				url,
+				lastModified: new Date(),
+				changeFrequency: 'hourly',
+				priority: 0.8,
+			});
+		}
+	}
+
+	return sitemap;
+}
+
+
+
 
 export async function createImageURLsFromJSON(origin?: string, jsonPath = 'public/site-images.json'): Promise<SitemapEntry[]>{
 	const sitemap: any[] = [];
@@ -402,6 +442,7 @@ export async function createImageURLsFromJSON(origin?: string, jsonPath = 'publi
 			return encode(`${origin}${rel}`);
 		});
 		sitemap.push({
+			name: 'Site Images',
 			url: `${origin ? origin : ''}/images`,
 			images: newImages,
 		});
@@ -424,6 +465,7 @@ export async function createWordPressURLs(props: {site: string, includeImages?: 
 			? getWordPressItemImages(post).map(img => encode(img.url))
 			: [];
 		sitemap.push({
+			name: post.title ?? undefined,
 			url: post.URL ,
 			lastModified: post.modified ? new Date(post.modified) : new Date(),
 			changeFrequency: "hourly" as const,
@@ -541,6 +583,7 @@ export async function createContentfulURLs(props: createContentfulURLsType){
 
 		const base = props.origin ? props.origin : '';
 		const sitemapEntry: any = {
+			name: entry.fields?.title ?? undefined,
 			url: `${base}${normalizedPath}` ,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
@@ -592,6 +635,7 @@ export async function createContentfulPageBuilderURLs(props: createContentfulPag
 	for ( const pageName of pageNames ){
 		const base = props.origin ? props.origin : '';
 		sitemap.push({
+			name: pageName ?? undefined,
 			url: `${base}/${encodeURIComponent(pageName)}` ,
 			lastModified: new Date(),
 			changeFrequency: "hourly",
@@ -665,6 +709,7 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 			}).filter(Boolean);
 			if (imageURLs.length > 0) {
 				sitemap.push({
+					name: 'Contentful Images',
 					url: `${props.origin ? props.origin : ''}/images`,
 					lastModified: new Date(),
 					changeFrequency: 'always',
@@ -683,6 +728,7 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 			if (debug) console.log("Video Assets", videoAssets);
 
 			sitemap.push({
+				name: 'Contentful Videos',
 				url: `${props.origin}/videos`,
 				lastModified: new Date(),
 				changeFrequency: 'always',
@@ -746,6 +792,7 @@ export async function createEbayItemURLs(origin?: string) {
 	const base = origin ? origin : '';
 	for (const item of items) {
 		sitemap.push({
+			name: item.title ?? undefined,
 			url: `${base}/store/${item.legacyItemId}` ,
 			lastModified: item.itemCreationDate ? new Date(item.itemCreationDate) : new Date(),
 			changeFrequency: "hourly",
@@ -791,6 +838,7 @@ export async function createSquareItemURLs(origin?: string) {
 			.map((img) => encode(img));
 
 		const entry: any = {
+			name: item.itemName ?? undefined,
 			url: item.itemURL.startsWith('http') ? item.itemURL : `${base}${item.itemURL}`,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
@@ -845,6 +893,7 @@ export async function createSquareEventURLs(origin?: string) {
 
 		const url = `${base}/events/${itemSlug}`;
 		const entry: any = {
+			name: title ?? undefined,
 			url,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',

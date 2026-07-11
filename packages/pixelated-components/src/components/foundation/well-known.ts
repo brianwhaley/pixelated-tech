@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import path from 'path';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { flattenRoutes } from './sitemap';
+import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs } from './sitemap';
 import { sanitizeString } from './utilities';
 import { getFullPixelatedConfig } from '../config/config';
 import { pixelatedComponentsVersion as selfExportedPixelatedComponentsVersion } from '../../version';
@@ -67,130 +67,6 @@ function getPackageJsonDependencyVersion(pkg: any) {
 	);
 }
 
-async function getVersionFromLockfileCandidates(cwd: string, filename: string) {
-	const candidates = [
-		path.join(cwd, filename),
-		path.join(cwd, '..', filename),
-		path.join(cwd, '..', '..', filename),
-	];
-	for (const candidate of candidates) {
-		const lock = await safeJSON(candidate);
-		if (!lock) continue;
-		const dependency = lock.dependencies?.['@pixelated-tech/components'];
-		if (dependency?.version) return dependency.version;
-		const packageEntry = lock.packages?.['node_modules/@pixelated-tech/components'];
-		if (packageEntry?.version) return packageEntry.version;
-	}
-	return null;
-}
-
-/* 
-async function getVersionFromPackageLock(cwd: string) {
-	return getVersionFromLockfileCandidates(cwd, 'package-lock.json');
-}
-
-async function getVersionFromNpmShrinkwrap(cwd: string) {
-	return getVersionFromLockfileCandidates(cwd, 'npm-shrinkwrap.json');
-}
-
-async function getVersionFromRootPackageJsonDependency(cwd: string) {
-	const candidates = [
-		path.join(cwd, '..', 'package.json'),
-		path.join(cwd, '..', '..', 'package.json'),
-	];
-	for (const candidate of candidates) {
-		const pkg = await safeJSON(candidate);
-		if (!pkg) continue;
-		const dependencyVersion = getPackageJsonDependencyVersion(pkg);
-		if (dependencyVersion) return dependencyVersion;
-	}
-	return null;
-}
-
-async function getVersionFromYarnLock(lockPath: string) {
-	try {
-		const content = await readFile(lockPath, 'utf8');
-		const match = content.match(/^['"]?@pixelated-tech\/components[^:\n]*['"]?:[\s\S]*?^\s*version\s+"([^"]+)"/m);
-		return match?.[1] ?? null;
-	} catch {
-		return null;
-	}
-}
-
-async function getVersionFromPnpmLock(lockPath: string) {
-	try {
-		const content = await readFile(lockPath, 'utf8');
-		const match = content.match(/^["']?@pixelated-tech\/components(?:@[^:]+)?["']?:\s*\n\s*version:\s*['"]?([0-9]+\.[0-9]+\.[0-9]+)['"]?/m);
-		return match?.[1] ?? null;
-	} catch {
-		return null;
-	}
-}
-
-async function getVersionFromNodeModulesPackageJson(cwd: string) {
-	const candidates = [
-		path.join(cwd, 'node_modules', '@pixelated-tech', 'components', 'package.json'),
-		path.join(cwd, '..', 'node_modules', '@pixelated-tech', 'components', 'package.json'),
-		path.join(cwd, '..', '..', 'node_modules', '@pixelated-tech', 'components', 'package.json'),
-	];
-	for (const candidate of candidates) {
-		const pkg = await safeJSON(candidate);
-		if (pkg && typeof pkg.version === 'string' && pkg.version.trim()) {
-			return pkg.version.trim();
-		}
-	}
-	return null;
-}
-
-async function getPixelatedComponentsPackageVersionFromResolver(cwd: string) {
-	const req = createRequireFromCwd(cwd);
-	if (!req) return null;
-	try {
-		const pkgPath = req.resolve('@pixelated-tech/components/package.json');
-		const pkg = await safeJSON(pkgPath);
-		if (pkg && typeof pkg.version === 'string' && pkg.version.trim()) {
-			return pkg.version.trim();
-		}
-	} catch {
-		return null;
-	}
-	return null;
-}
-
-export type PixelatedComponentsPackageVersionInfo = {
-	selfExportedVersion: string | null;
-	resolverVersion: string | null;
-	nodeModulesPackageJsonVersion: string | null;
-	packageLockVersion: string | null;
-	npmShrinkwrapVersion: string | null;
-	pnpmLockVersion: string | null;
-	yarnLockVersion: string | null;
-	packageJsonDependencyVersion: string | null;
-	rootPackageJsonDependencyVersion: string | null;
-	resolvedVersion: string | null;
-};
-*/
-
-export async function getPixelatedComponentsPackageVersionInfo(cwd: string) {
-	const selfExportedVersion = selfExportedPixelatedComponentsVersion || null;
-	return {
-		selfExportedVersion,
-		/* resolverVersion: null,
-		nodeModulesPackageJsonVersion: null,
-		packageLockVersion: null,
-		npmShrinkwrapVersion: null,
-		pnpmLockVersion: null,
-		yarnLockVersion: null,
-		packageJsonDependencyVersion: null,
-		rootPackageJsonDependencyVersion: null, */
-		resolvedVersion: selfExportedVersion,
-	};
-}
-
-export async function getPixelatedComponentsPackageVersion(cwd: string) {
-	const info = await getPixelatedComponentsPackageVersionInfo(cwd);
-	return info.resolvedVersion;
-}
 
 export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
@@ -199,7 +75,11 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const interimConfig = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
 	const configData = opts.siteConfig ?? interimConfig;
 	const site = configData.siteInfo ?? {};
-	const routes = Array.isArray(configData.routes) ? configData.routes : [];
+	const pageEntries = [
+		...(await createPageURLs(Array.isArray(configData.routes) ? configData.routes : [])),
+		...(await createSiteConfigServiceURLs(configData)),
+		...(await createSiteConfigServiceAreaURLs(configData)),
+	];
 	const pixelatedComponentsPackageVersion = selfExportedPixelatedComponentsVersion || 'N/A';
 
 	const lines: string[] = [
@@ -240,12 +120,12 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 		`   Site URL: ${sanitizeString(site.url ?? '')}`,
 		`   Site Languages: React, Node, NextJS, JavaScript, HTML5, CSS3, SASS `,
 		`   Site Tools: VSCode, GitHub, AWS, Contently, Cloudinary, Wordpress, Google Analytics, Google Search Console`,
-		`   Site Pages: (${routes.length})`,
+		`   Site Pages: (${pageEntries.length})`,
 	];
 
 	const limit = typeof opts.maxRoutes === 'number' ? opts.maxRoutes : 50;
-	for (const r of flattenRoutes(routes).slice(0, limit)) {
-		lines.push(`      - ${sanitizeString(r.path ?? r.pathname ?? r.url ?? '')} - ${sanitizeString(r.title ?? '')}`);
+	for (const r of pageEntries.slice(0, limit)) {
+		lines.push(`      - ${sanitizeString(r.url ?? '')} - ${sanitizeString(site.name ?? '')} - ${sanitizeString(r.name ?? '')}`);
 	}
 
 	const body = lines.join('\n');

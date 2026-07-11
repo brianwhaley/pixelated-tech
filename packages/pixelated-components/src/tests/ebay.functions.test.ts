@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getEbayAppToken, getEbayItems, getEbayItem, getEbayBrowseSearch, getEbayItemsSearch, getEbayProductSchema, getEbayRateLimits, getMergedEbayConfig, getEbayShoppingCartItem, getEbayBrowseItem } from '../components/shoppingcart/ebay.functions';
-import { getFullPixelatedConfig } from '../components/config/config';
+import * as configModule from '../components/config/config';
 import { CacheManager } from '../components/foundation/cache-manager';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
@@ -43,7 +43,7 @@ vi.mock('../components/foundation/smartfetch', () => ({
 describe('ebay.functions - Real Tests', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
+		(vi.mocked(configModule.getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
     const cache = new CacheManager({} as any);
     (cache as any).clear?.();
 	});
@@ -204,11 +204,11 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should merge provided apiProps with config values from getFullPixelatedConfig', () => {
-			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValueOnce(pixelatedConfig);
+			(vi.mocked(configModule.getFullPixelatedConfig) as any).mockReturnValueOnce(pixelatedConfig);
 
 			const merged = getMergedEbayConfig({ baseSearchURL: 'https://override.example.com', appId: 'override-id' });
 
-		expect(merged.proxyURL).toBe(pixelatedConfig.integrations?.ebay?.proxyURL ?? '');
+			expect(merged.proxyURL).toBe(pixelatedConfig.integrations?.ebay?.proxyURL ?? '');
 			expect(merged.baseSearchURL).toBe('https://override.example.com');
 			expect(merged.appId).toBe('override-id');
 		});
@@ -216,7 +216,7 @@ describe('ebay.functions - Real Tests', () => {
 
 	describe('error handling in ebay functions', () => {
 		it('getMergedEbayConfig should handle errors gracefully', () => {
-			(vi.mocked(getFullPixelatedConfig) as any).mockImplementationOnce(() => {
+			(vi.mocked(configModule.getFullPixelatedConfig) as any).mockImplementationOnce(() => {
 				throw new Error('Config error');
 			});
 			const merged = getMergedEbayConfig({});
@@ -418,6 +418,61 @@ describe('ebay.functions - Real Tests', () => {
 			expect(schema).toHaveProperty('name', 'Test Product');
 			expect(schema).toHaveProperty('brand');
 			expect(schema?.image).toContain('https://pic.ebay.com/image.jpg');
+		});
+
+		it('should include sku, mpn, gtin, shippingDetails, and policy URL when available', () => {
+			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: [{ path: '/returns', name: 'Returns' }]
+			} as any);
+
+			const item = {
+				legacyItemId: '123456',
+				mpn: 'MPN-123',
+				gtin: 'GTIN-123',
+				title: 'Test Product',
+				price: { value: '29.99', currency: 'USD' },
+				image: { imageUrl: 'https://pic.ebay.com/image.jpg' },
+				thumbnailImages: [{ imageUrl: 'https://pic.ebay.com/image.jpg' }],
+				itemWebUrl: 'https://ebay.com/itm/123456',
+				weight: 1.2,
+				weightUnit: 'lb',
+				shippingOptions: [{ type: 'Standard' }],
+			};
+
+			const schema = getEbayProductSchema({ item, siteUrl: 'https://example.com' });
+
+			expect(schema).not.toBeNull();
+			expect(schema?.sku).toBe('123456');
+			expect(schema?.mpn).toBe('MPN-123');
+			expect(schema?.gtin).toBe('GTIN-123');
+			expect(schema?.shippingDetails).toEqual({
+				isShippable: true,
+				shippingOptions: [{ type: 'Standard' }],
+				shipping: undefined,
+				weight: 1.2,
+				weightUnit: 'lb',
+			});
+			expect(schema?.hasMerchantReturnPolicy).toBe('https://example.com/returns');
+		});
+
+		it('should fallback brand to siteInfo when brandName is not provided', () => {
+			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: []
+			} as any);
+
+			const item = {
+				legacyItemId: '123456',
+				title: 'Test Product',
+				price: { value: '29.99', currency: 'USD' },
+				image: { imageUrl: 'https://pic.ebay.com/image.jpg' },
+				itemWebUrl: 'https://ebay.com/itm/123456',
+			};
+
+			const schema = getEbayProductSchema({ item });
+
+			expect(schema?.brand?.name).toBe('Example Brand');
 		});
 
 		it('should return null when item is missing required fields', () => {

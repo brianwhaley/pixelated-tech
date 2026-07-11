@@ -559,6 +559,7 @@ const ambiguousPronouns = [
 	'mine',
 ];
 const ambiguousPronounPattern = new RegExp(`\\b(?:${ambiguousPronouns.map(escapeRegExp).join('|')})\\b`, 'gi');
+const pronounExceptions = new Set(['US']);
 
 const strictPronounResolutionRule = {
 	meta: {
@@ -576,9 +577,11 @@ const strictPronounResolutionRule = {
 	create(context) {
 		function reportText(node, text) {
 			if (typeof text !== 'string' || text.trim().length === 0) return;
-			const match = text.match(ambiguousPronounPattern);
-			if (!match) return;
-			context.report({ node, messageId: 'ambiguousPronoun', data: { pronoun: match[0] } });
+			const matches = text.match(ambiguousPronounPattern);
+			if (!matches) return;
+			const filtered = matches.filter(match => !pronounExceptions.has(match));
+			if (!filtered.length) return;
+			context.report({ node, messageId: 'ambiguousPronoun', data: { pronoun: filtered[0] } });
 		}
 
 		function getTemplateText(node) {

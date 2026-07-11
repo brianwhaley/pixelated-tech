@@ -1,6 +1,6 @@
 {
   "name": "pixelated-template",
-  "version": "0.7.9",
+  "version": "0.7.10",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -28,11 +28,6 @@
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
   },
   "dependencies": {
-    "@aws-sdk/client-amplify": "^3.1062.0",
-    "@aws-sdk/client-cloudwatch": "^3.1062.0",
-    "@aws-sdk/client-dynamodb": "^3.1062.0",
-    "@aws-sdk/client-iam": "^3.1062.0",
-    "@aws-sdk/client-route-53": "^3.1062.0",
     "@pixelated-tech/components": "*",
     "happy-dom": "^20.10.1",
     "next": "^16.2.9",

@@ -14,13 +14,15 @@ import { SmartImage } from '../elements/smartimage';
 import { Carousel } from '../structure/carousel';
 import { buildSquareStoreFilters, matchesSquareStorePriceRange, SquarePaymentError, getSquarePaymentErrorMessage, SquareStoreItemShape, type SquareStoreItemShapeType, SquareStoreFilter, SquareStoreFilters, SquareStoreFilterValue, SquareFilterValues } from './square';
 import { ProductSchema, SchemaEvent } from '../foundation/schema';
+import { getPolicyRouteUrl } from '../foundation/schema.functions';
 import { sanitizeString, normalizeEmail } from '../foundation/utilities';
 import "./square.css";
 
 
-function buildSquareProductSchema(item: SquareStoreItemShapeType) {
+function buildSquareProductSchema(item: SquareStoreItemShapeType, siteInfo: any, policyUrl?: string) {
 	const images = item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
 	const productImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : undefined;
+	const brandName = siteInfo?.brand?.name || siteInfo?.name || undefined;
 
 	return {
 		'@context': 'https://schema.org',
@@ -30,6 +32,18 @@ function buildSquareProductSchema(item: SquareStoreItemShapeType) {
 		image: productImages,
 		url: item.itemURL,
 		sku: item.itemSKU || item.itemID,
+		brand: brandName ? {
+			'@type': 'Brand',
+			name: brandName,
+		} : undefined,
+		mpn: item.properties?.mpn || item.itemSKU || item.itemID,
+		gtin: item.properties?.gtin || item.itemSKU || item.itemID,
+		shippingDetails: {
+			isShippable: item.itemIsShippable !== false,
+			weight: item.itemWeight,
+			weightUnit: item.itemWeightUnit,
+		},
+		...(policyUrl ? { hasMerchantReturnPolicy: policyUrl } : {}),
 		offers: {
 			'@type': 'Offer',
 			url: item.itemURL,
@@ -519,6 +533,8 @@ SquareStoreItems.propTypes = {
 };
 export type SquareStoreItemsType = InferProps<typeof SquareStoreItems.propTypes>;
 export function SquareStoreItems(props: SquareStoreItemsType) {
+	const config = usePixelatedConfig();
+	const policyUrl = getPolicyRouteUrl(config?.routes, config?.siteInfo);
 	const items = props.items || [];
 	const filters = props.filters && props.filters.length ? props.filters : buildSquareStoreFilters(items);
 	const showFilters = props.showFilters !== false;
@@ -572,7 +588,7 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 			) : null}
 
 			{filteredItems.map((item) => (
-				<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item)} />
+				<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item, config?.siteInfo, policyUrl)} />
 			))}
 
 			{filteredItems.map((item) => (
@@ -613,6 +629,9 @@ SquareFeaturedItems.propTypes = {
 };
 export type SquareFeaturedItemsType = InferProps<typeof SquareFeaturedItems.propTypes>;
 export function SquareFeaturedItems(props: SquareFeaturedItemsType) {
+	const config = usePixelatedConfig();
+	const policyUrl = getPolicyRouteUrl(config?.routes, config?.siteInfo);
+
 	return (
 		<>
 			<PageGridItem columnStart={1} columnEnd={-1} id="square-featured-items-header" className="square-featured-items-header">
@@ -623,7 +642,7 @@ export function SquareFeaturedItems(props: SquareFeaturedItemsType) {
 			{props.items && props.items.length > 0 ? (
 				<>
 					{props.items.map((item) => (
-						<ProductSchema key={`featured-schema-${item.itemID}`} product={buildSquareProductSchema(item)} />
+						<ProductSchema key={`featured-schema-${item.itemID}`} product={buildSquareProductSchema(item, config?.siteInfo, policyUrl)} />
 					))}
 					{props.items.map((item) => (
 						<PageGridItem key={item.itemID}>
@@ -673,7 +692,7 @@ export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
 			{props.item.itemType?.toUpperCase() === 'EVENT' ? (
 				<SchemaEvent event={buildSquareEventSchema(props.item, config)} />
 			) : (
-				<ProductSchema product={buildSquareProductSchema(props.item)} />
+				<ProductSchema product={buildSquareProductSchema(props.item, config?.siteInfo, getPolicyRouteUrl(config?.routes, config?.siteInfo))} />
 			)}
 			
 			<div className="square-store-item-detail">

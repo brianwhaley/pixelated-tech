@@ -1,10 +1,11 @@
-"use client";
-
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { PageTitleHeader, PageSection } from "../structure/page-blocks";
-import { flattenRoutes } from "./sitemap";
-import { usePixelatedConfig } from "../config/config.client";
+import { getFullPixelatedConfig } from "../config/config";
+import type { VisualDesign } from "../config/config.types";
+import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs } from "./sitemap";
+import './styleguide.css';
+
 
 /**
  * StyleGuideUI — developer style guide and design tokens viewer (colors, fonts, IA routes).
@@ -16,74 +17,59 @@ StyleGuideUI.propTypes = {
 /** No Props */
 };
 export type StyleGuideUIType = InferProps<typeof StyleGuideUI.propTypes>;
-export function StyleGuideUI() {
-	const pixelatedConfig = usePixelatedConfig();
-	const routes = pixelatedConfig?.routes || [];
-
-	let primaryHeaderFont = "N/A";
-	let primaryBodyFont = "N/A";
-	if (typeof document != 'undefined') {
-		const headerFonts = getComputedStyle(document.documentElement).getPropertyValue("--header-font").trim();
-		primaryHeaderFont = headerFonts.split(',')[0].replaceAll('"', '').replaceAll("'", '');
-		const bodyFonts = getComputedStyle(document.documentElement).getPropertyValue("--body-font").trim();
-		primaryBodyFont = bodyFonts.split(',')[0].replaceAll('"', '').replaceAll("'", '');
-	}
-
-	function getCssVar(varName: string) {
-		if (typeof document === 'undefined') return '';
-		return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-	}
+export async function StyleGuideUI() {
+	const pixelatedConfig = getFullPixelatedConfig();
+	const routes = Array.isArray(pixelatedConfig?.routes) ? pixelatedConfig.routes : [];
+	const pageEntries = [
+		...(await createPageURLs(routes)),
+		...createSiteConfigServiceURLs(pixelatedConfig ?? {}),
+		...createSiteConfigServiceAreaURLs(pixelatedConfig ?? {}),
+	];
+	const visualdesign: VisualDesign = pixelatedConfig?.visualdesign ?? {} as VisualDesign;
+	const headerFont = typeof visualdesign?.['header-font']?.value === 'string'
+		? visualdesign['header-font'].value.split(',')[0].trim().replace(/^['"]+|['"]+$/g, '')
+		: 'sans-serif';
+	const bodyFont = typeof visualdesign?.['body-font']?.value === 'string'
+		? visualdesign['body-font'].value.split(',')[0].trim().replace(/^['"]+|['"]+$/g, '')
+		: 'sans-serif';
 
 	return (
-		<>
+		<div className="styleguide-ui">
 			<PageTitleHeader title="Style Guide" />
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="colors-section">
 				<h2>Color Palette</h2>
-				<div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-					<div suppressHydrationWarning style={{ backgroundColor: 'var(--primary-color)', color: '#fff' }} className="color-swatch">Primary Color - {getCssVar('--primary-color')}</div>
-					<div suppressHydrationWarning style={{ backgroundColor: 'var(--secondary-color)' }} className="color-swatch">Secondary Color - {getCssVar('--secondary-color')}</div>
-					<div suppressHydrationWarning style={{ backgroundColor: 'var(--accent1-color)' }} className="color-swatch">Accent 1 Color - {getCssVar('--accent1-color')}</div>
-					<div suppressHydrationWarning style={{ backgroundColor: 'var(--accent2-color)' }} className="color-swatch">Accent 2 Color - {getCssVar('--accent2-color')}</div>
-					<div suppressHydrationWarning style={{ backgroundColor: 'var(--bg-color)' }} className="color-swatch">Background Color - {getCssVar('--bg-color')}</div>
-					<div suppressHydrationWarning style={{ backgroundColor: 'var(--text-color)' }} className="color-swatch">Text Color - {getCssVar('--text-color')}</div>
+				<div className="color-swatch-grid">
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['primary-color']?.value, color: '#fff' }} className="color-swatch">Primary Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['secondary-color']?.value }} className="color-swatch">Secondary Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['accent1-color']?.value }} className="color-swatch">Accent 1 Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['accent2-color']?.value }} className="color-swatch">Accent 2 Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['bg-color']?.value }} className="color-swatch">Background Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['text-color']?.value }} className="color-swatch">Text Color</div>
 				</div>
 			</PageSection>
 
-			<style>{`
-			.color-swatch {
-				color: #000; 
-				border: 1px solid #ccc; 
-				padding: 10px; 
-				flex: 1 0 150px; 
-				text-align: center;
-				align-items: center;
-				justify-content: center;
-				display: flex;
-			}
-			`}</style>
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="fonts-section">
-				<h1 suppressHydrationWarning>H1 - {primaryHeaderFont} font</h1>
-				<h2 suppressHydrationWarning>H2 - {primaryHeaderFont} font</h2>
-				<h3 suppressHydrationWarning>H3 - {primaryHeaderFont} font</h3>
-				<h4 suppressHydrationWarning>H4 - {primaryHeaderFont} font</h4>
-				<h5 suppressHydrationWarning>H5 - {primaryHeaderFont} font</h5>
-				<h6 suppressHydrationWarning>H6 - {primaryHeaderFont} font</h6>
-				<p suppressHydrationWarning>{primaryBodyFont} font.  This is a paragraph of text to demonstrate the body font style. </p>
-				<p suppressHydrationWarning>{primaryBodyFont} font.  The quick brown fox jumps over the lazy dog. </p>
-				<p suppressHydrationWarning>{primaryBodyFont} font.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<h1 suppressHydrationWarning>H1 - {headerFont} font</h1>
+				<h2 suppressHydrationWarning>H2 - {headerFont} font</h2>
+				<h3 suppressHydrationWarning>H3 - {headerFont} font</h3>
+				<h4 suppressHydrationWarning>H4 - {headerFont} font</h4>
+				<h5 suppressHydrationWarning>H5 - {headerFont} font</h5>
+				<h6 suppressHydrationWarning>H6 - {headerFont} font</h6>
+				<p suppressHydrationWarning>{bodyFont} font.  This is a paragraph of text to demonstrate the body font style. </p>
+				<p suppressHydrationWarning>{bodyFont} font.  The quick brown fox jumps over the lazy dog. </p>
+				<p suppressHydrationWarning>{bodyFont} font.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 			</PageSection>
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="fonts-section">
 				<h2>Information Architecture</h2>
 				<ul>
-					{ flattenRoutes(routes).map((r: any, index: number) => {
-						return <li key={index}>{r.name} - {r.path}</li>;
+					{pageEntries.map((r: any, index: number) => {
+						return <li key={index}>{r.name} - {r.url}</li>;
 					})}
 				</ul>
 			</PageSection>
-
-		</>
+		</div>
 	);
 }

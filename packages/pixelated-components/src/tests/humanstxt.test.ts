@@ -8,10 +8,9 @@ import {
   safeJSON,
   generateHumansTxt,
   createWellKnownResponse,
-  getPixelatedComponentsPackageVersion,
-  getPixelatedComponentsPackageVersionInfo,
   createTextResponsePayload,
 } from '@/components/foundation/well-known';
+import { pixelatedComponentsVersion } from '@/version';
 import { sanitizeString } from '@/components/foundation/utilities';
 
 import testData from '../test/test-data';
@@ -33,21 +32,14 @@ describe('humanstxt (server)', () => {
     expect(v).toBeNull();
   });
 
-  it('getPixelatedComponentsPackageVersion resolves the installed package version', async () => {
-    const version = await getPixelatedComponentsPackageVersion(process.cwd());
-    expect(version).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+/);
-  });
-
-  it('getPixelatedComponentsPackageVersionInfo returns the exported version info', async () => {
-    const info = await getPixelatedComponentsPackageVersionInfo(process.cwd());
-    expect(info.selfExportedVersion).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+$/);
-    expect(info.resolvedVersion).toBe(info.selfExportedVersion);
+  it('uses the package-exported components version', () => {
+    expect(pixelatedComponentsVersion).toMatch(/^[0-9]+\.[0-9]+\.[0-9]+/);
   });
 
   it('generateHumansTxt reads package.json from provided cwd when pkg is not passed', async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-humans-txt-'));
     try {
-      const pixelatedVersion = await getPixelatedComponentsPackageVersion(process.cwd());
+      const pixelatedVersion = pixelatedComponentsVersion;
       await fs.mkdir(path.join(tmpDir, 'node_modules', '@pixelated-tech', 'components'), { recursive: true });
       await fs.writeFile(
         path.join(tmpDir, 'package.json'),
@@ -75,7 +67,7 @@ describe('humanstxt (server)', () => {
     const pkg = { name: 'acme', version: '9.9.9' };
     const routes = testData.routes || [];
     const siteInfo = testData.siteInfo || { name: 'Test Site' };
-    const pixelatedVersion = await getPixelatedComponentsPackageVersion(process.cwd());
+    const pixelatedVersion = pixelatedComponentsVersion;
 
     const { body, headers, etag } = await generateHumansTxt({ pkg, siteConfig: { siteInfo, routes } });
 
@@ -92,7 +84,7 @@ describe('humanstxt (server)', () => {
   it('createHumansTxtResponse returns 200 and body, and 304 when if-none-match matches', async () => {
     const pkg = { name: 'acme', version: '9.9.9' };
     const routes = [ { path: '/a', title: 'A' } ];
-    const pixelatedVersion = await getPixelatedComponentsPackageVersion(process.cwd());
+    const pixelatedVersion = pixelatedComponentsVersion;
 
     const generated = await generateHumansTxt({ pkg, siteConfig: { siteInfo: { name: 'ACME' }, routes } });
     expect(generated.body).toContain(`Site Pixelated Components Package Version: ${pixelatedVersion ?? 'N/A'}`);

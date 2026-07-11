@@ -2,6 +2,8 @@ import PropTypes, { InferProps } from "prop-types";
 import { encode, decode } from 'html-entities';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
+import { getClientOnlyPixelatedConfig } from '../config/config';
+import { getPolicyRouteUrl } from '../foundation/schema.functions';
 
 const debug = false;
 
@@ -604,7 +606,10 @@ export async function getContentfulProductSchema(props: getContentfulProductSche
 
 		const fields = product.fields;
 
-		// Create Product schema object
+		// Create Product Schema Object
+		const config = getClientOnlyPixelatedConfig();
+		const siteInfo = config?.siteInfo;
+		const policyUrl = getPolicyRouteUrl(config?.routes, siteInfo);
 		const productSchema = {
 			'@context': 'https://schema.org/',
 			'@type': 'Product',
@@ -613,8 +618,17 @@ export async function getContentfulProductSchema(props: getContentfulProductSche
 			image: [] as string[],
 			brand: {
 				'@type': 'Brand',
-				name: fields.brand || 'Pixelated'
+				name: fields.brand || siteInfo?.brand?.name || siteInfo?.name || 'Pixelated'
 			},
+			sku: fields.sku || productId || undefined,
+			mpn: fields.mpn || fields.sku || productId || undefined,
+			gtin: fields.gtin || fields.sku || productId || undefined,
+			shippingDetails: {
+				isShippable: !(fields.productType === 'EVENT' || fields.itemType === 'EVENT'),
+				weight: fields.weight,
+				weightUnit: fields.weightUnit || fields.weight_unit,
+			},
+			...(policyUrl ? { hasMerchantReturnPolicy: policyUrl } : {}),
 			offers: {
 				'@type': 'Offer',
 				url: siteUrl || '',

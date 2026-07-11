@@ -42,6 +42,7 @@ import siteImagesData from './data/site-images.json';
 import realContentfulAssetsData from './data/real-contentful-assets.json';
 import googlePsiExampleCom from './data/google-psi-example-com.json';
 import squareCatalogResponseWithRelatedObjects from './data/square-catalog-response-with-related-objects.json';
+import { POST } from './data/save-route-example';
 import squareCatalogResponseNoRelatedObjects from './data/square-catalog-response-no-related-objects.json';
 import squareCatalogResponseNestedVariation from './data/square-catalog-response-nested-variation.json';
 import squareCatalogResponseById from './data/square-catalog-response-by-id.json';
@@ -147,6 +148,7 @@ export {
 	formDefinition,
 	checkoutPersonalInfo,
 	checkoutDiscountInfo,
+	POST,
 	uspsGenericShippingInfo,
 	mockComponentTreeData,
 	visualdesignformJson as visualdesignForm,
