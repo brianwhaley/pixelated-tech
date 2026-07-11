@@ -106,14 +106,14 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 					</tbody>
 				</table>
 
-				<div className="invoice-bottom-payment">
+				<div className="invoice-bottom-payment no-break">
 					<h4>How To Pay:</h4>
 					<p className="payment-details-box">{invoice.paymentInfo.details}</p>
 					<p className="payment-terms-italic">{invoice.paymentInfo.terms}</p>
 				</div>
 
 				{invoice.enhancements && invoice.enhancements.length > 0 && (
-					<div className="invoice-addon-section">
+					<div className="invoice-addon-section no-break">
 						<h3>Enhancements</h3>
 						<ul className="invoice-enhancements-list" style={{ margin: '0 0 16px 0', paddingLeft: '20px', color: '#333' }}>
 							{invoice.enhancements.map((enhancement, idx) => (
@@ -124,7 +124,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 				)}
 
 				{invoice.posts.length > 0 && (
-					<div className="invoice-addon-section">
+					<div className="invoice-addon-section no-break">
 						<h3>Published Content</h3>
 						<table className="invoice-addon-table">
 							<thead>
@@ -157,7 +157,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 				)}
 
 				{formCompletions.length > 0 && (
-					<div className="invoice-addon-section">
+					<div className="invoice-addon-section no-break">
 						<h3>Form Completions</h3>
 						<table className="invoice-addon-table">
 							<thead>
@@ -181,7 +181,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 				)}
 
 				{shouldRenderAnalytics && invoice.siteName && (
-					<div className="invoice-addon-section">
+					<div className="invoice-addon-section no-break">
 						<SiteHealthGoogleAnalytics
 							siteName={invoice.siteName}
 							startDate={`${invoice.billingMonth}-01`}
@@ -194,7 +194,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 				)}
 
 				{shouldRenderCloudwatch && (
-					<div className="invoice-addon-section">
+					<div className="invoice-addon-section no-break">
 						<SiteHealthCloudwatch
 							siteName={invoice.siteName}
 							startDate={`${invoice.billingMonth}-01`}

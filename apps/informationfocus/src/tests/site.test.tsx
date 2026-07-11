@@ -84,7 +84,7 @@ describe('Site coverage', () => {
 			name: 'Style Guide',
 			Component: StyleGuide,
 			assertion: async () => {
-				await waitFor(() => expect(screen.getByTestId('styleguide-ui')).not.toBeNull());
+				await waitFor(() => expect(document.getElementById('colors-section')).not.toBeNull());
 			},
 		},
 	]);

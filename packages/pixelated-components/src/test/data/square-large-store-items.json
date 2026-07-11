@@ -22,9 +22,13 @@
     "itemPrice": 10,
     "itemCurrency": "USD",
     "itemInventory": 1,
+    "itemSKU": "SKU-022",
     "itemImageURL": "https://example.com/img2.png",
     "itemURL": "/store/other-item",
+    "itemIsShippable": true,
+    "itemWeight": 2,
+    "itemWeightUnit": "lb",
     "categories": [{ "id": "cat-2", "name": "Seasonal" }],
-    "properties": { "Color": "Blue" }
+    "properties": { "Color": "Blue", "mpn": "MPN-022", "gtin": "GTIN-022" }
   }
 ]
