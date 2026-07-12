@@ -324,4 +324,11 @@ describe('Metadata Functions', () => {
 			expect(result).toContain('name="application-name" content="Example"');
 			expect(result).toContain('name="author" content="Example, test@example.com"');
 		});
+
+		it('should include RSS autodiscovery link', async () => {
+			setupHeaders('/test', 'https://example.com', 'https://example.com/test');
+
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('<link rel="alternate" type="application/rss+xml" title="Sitemap RSS" href="/rss.xml"');
+		});
 	});});

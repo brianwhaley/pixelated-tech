@@ -36,12 +36,15 @@ The repository defines shared standards for all customer sites and template apps
 - Image priority and load time management
 - Intersection observer for managing events above the fold / within the viiewport
 - Dynamic route management and metadata loading for pages via layout.tsx
+- Dynamic sitemap.xml generation via pixelated.config.json data
 - MicroInteractions centralized via flags on layout.tsx
 - Proxy handler for Content Security management and standardized response headers
-- Standard use of Rich Schemas for SEO / AEO - BlogPosting, Breadcrumb, FAQ, LocalBusiness, Podcast, Product, Recipe, Review, Services, Website
+- Standard use of Rich Schemas for SEO / AEO - BlogPosting, Books, Breadcrumb, FAQ, LocalBusiness, Podcast, Product, Recipe, Review, Services, Website
 - App Router global error boundary — accessible `global-error` at `src/app/global-error.tsx` (branded, testable error UI)- SmartFetch to help manage Next based caching of API data via fetch
 - URL Builder for key-value pairs, properties, and directories
 - Well-Known txt pages such as humans.txt, security.txt
+- LLMs.txt for site readability / indexability for Large Language Models
+- WebMCP Integration to assist LLM form avlidation and submission handling
 - A general set of other utilities managing a wide variety of functions
 
 ### Caching
@@ -58,6 +61,9 @@ The repository defines shared standards for all customer sites and template apps
 - Manifest.webmanifest page
 - Robots.txt
 - Security.txt
+- LLMs.txt
+- Sitemap.json
+- Rss.xml and corresponding rss.xsl
 - Dynamically loaded sitemap.xml driven by content and integrations via pixelated.config.json config management
 - Style Guide
 - App-level loading & skeleton UI — canonical `SkeletonLoading` available at `src/app/loading.tsx` (consistent page-level loading state)
@@ -105,18 +111,22 @@ The repository defines shared standards for all customer sites and template apps
 - **SiteBuilder** - Configuration Builder (SiteInfo, Routes, VisualDesign), Form Builder, Page Builder, 
 - **SCSS/Sass** support for advanced styling capabilities
 - **Responsive Design** - Mobile-first approach with flexible layouts
-- **Visual Design System** - Configurable design tokens (colors, fonts, spacing) via routes.json
+- **Visual Design System** - Configurable design tokens (colors, fonts, spacing) via pixelated.config.json
 
 ### SEO & Performance
 - **Meta Tags** - Automatic generation from route configuration
 - **Schema Markup** - LocalBusiness and other structured data support
-- **Sitemap Generation** - Automatic XML sitemap creation
+- **Sitemap Generation** - Automatic XML sitemap creation via sitemap.xml
+- **Sitemap RSS Generation** - Automatic XML sitemap creation via rss.xml and corresponding rss.xsl
+- **Sitemap JSON Generation** - Automatic XML sitemap creation via sitemap.json
 - **Robots.txt** - Search engine crawling configuration
-- **Web App Manifest** - PWA-ready configuration
+- **Web App Manifest** - PWA-ready configuration via manifest.webmanifest
+- **LLMs.txt** - improve site readability / indexability for Large Language Models
+- **WebMCP Integration** to assist LLM form avlidation and submission handling
 - **Performance Optimized** - Built-in Next.js optimizations
 - **Proxy Middleware** - Header injection for SEO and routing (x-path, x-origin, x-url)
 - **Automated Rich Schemas** - LocalBusiness, WebSite, Breadcrumb, Product, Services, BlogPosts, Podcast, FAQ, Review, Resume, Recipe
-- ** Automaed SEO features**  - Sitemap.xml, Robots.txt, Humans.txt, Security.txt, Manifest.webmanifest
+- **Well-Known Automation** automated txt pages such as humans.txt, security.txt
 
 
 ## Adoption Checklist

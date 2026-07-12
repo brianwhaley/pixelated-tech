@@ -49,4 +49,24 @@ describe('SchemaBook component', () => {
     expect(schema).toBeDefined();
     expect(schema.isFamilyFriendly).toBe(true);
   });
+
+  it('includes sameAs on the book when present', () => {
+    const book = {
+      name: 'SameAs Book',
+      sameAs: [
+        'https://example.com/book-page',
+        'https://goodreads.com/book/show/12345',
+      ],
+    };
+
+    const { container } = renderWithConfig(<SchemaBook book={book} />);
+    const script = container.querySelector('script[type="application/ld+json"]');
+    const schema = script?.textContent ? JSON.parse(script.textContent) : null;
+
+    expect(schema).toBeDefined();
+    expect(schema.sameAs).toEqual([
+      'https://example.com/book-page',
+      'https://goodreads.com/book/show/12345',
+    ]);
+  });
 });
