@@ -201,6 +201,7 @@ SchemaBook.propTypes = {
 				name: PropTypes.string,
 			}),
 		]),
+		sameAs: PropTypes.arrayOf(PropTypes.string),
 		variants: PropTypes.arrayOf(
 			PropTypes.shape({
 				bookFormat: PropTypes.string,
@@ -241,6 +242,7 @@ export function SchemaBook(props: SchemaBookType) {
 		...(toBoolean(book.isFamilyFriendly) != null && { isFamilyFriendly: toBoolean(book.isFamilyFriendly) }),
 		...(author && { author: addSameAs(author, siteInfo?.sameAs) }),
 		...(publisher && { publisher: addSameAs(publisher, siteInfo?.sameAs) }),
+		...(book.sameAs && book.sameAs.length > 0 && { sameAs: book.sameAs }),
 		...(buildBookUrl(book.url, book.pageUrl, siteInfo?.url) && { url: buildBookUrl(book.url, book.pageUrl, siteInfo?.url) }),
 		...(book.copyrightYear && { copyrightYear: Number(book.copyrightYear) }),
 		...(variantSchemas.length > 0 && { workExample: variantSchemas }),
@@ -640,6 +642,9 @@ ProductSchema.propTypes = {
 			'@type': PropTypes.string,
 			ratingValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			reviewCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			ratingCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			bestRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			worstRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		}),
 	}).isRequired,
 };
@@ -652,10 +657,19 @@ export function ProductSchema(props: ProductSchemaType) {
 		...product,
 		brand: addSameAs(product.brand, sameAs),
 	} : product;
+	const aggregateRating = baseProduct.aggregateRating ? {
+		'@type': 'AggregateRating',
+		...baseProduct.aggregateRating,
+		bestRating: baseProduct.aggregateRating?.bestRating ?? '5',
+		worstRating: baseProduct.aggregateRating?.worstRating ?? '1',
+		...(baseProduct.aggregateRating?.reviewCount != null && baseProduct.aggregateRating?.ratingCount == null ? {
+			ratingCount: baseProduct.aggregateRating.reviewCount,
+		} : {}),
+	} : undefined;
 	const schema = {
 		...baseProduct,
 		review: baseProduct.review ?? [],
-		aggregateRating: baseProduct.aggregateRating ?? { '@type': 'AggregateRating' },
+		...(aggregateRating ? { aggregateRating } : {}),
 	};
 	return (
 		<SchemaScript schema={schema} />
@@ -1051,6 +1065,7 @@ export function buildGoogleAggregateRating(googleReviews: GoogleReview[]) {
 			googleReviews.reduce((sum, review) => sum + review.rating, 0) / googleReviews.length
 		).toFixed(1),
 		reviewCount: googleReviews.length.toString(),
+		ratingCount: googleReviews.length.toString(),
 		bestRating: '5',
 		worstRating: '1',
 	};

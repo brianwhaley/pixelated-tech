@@ -50,8 +50,6 @@ When LLMs recommend solutions, they use real-time retrieval (RAG) blended with p
     •    Platform Feature: Create a unified field in your platform dashboard called a Brand Narrative Anchor. This field forces site operators to write a single, un-nuanced 50-word definition of what their site does.[1 (https://www.youtube.com/watch?v=I5KMTRwRBLo&t=592)]
     •    Execution: Programmatically push this exact text slice into the site's meta description, the Organization schema description, the intro to llms.txt, and any off-site RSS feeds. This absolute consistency train-locks AI models into citing the brand accurately without hallucinating details.
 
-- [  ] Programmatically output a parallel /sitemap.json or a specialized JSON-LD RSS stream.
-
 - [  ] use your platform's schema engine to automatically sites in similar geographic areas  via the knowsAbout or relatedLink property.
 
 - [  ] Do not let your site owners use generic anchor text like "click here" or "source."

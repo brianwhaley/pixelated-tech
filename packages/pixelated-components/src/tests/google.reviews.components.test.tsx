@@ -137,5 +137,43 @@ describe('Google Reviews Components', () => {
 				expect(screen.getByText('John Doe')).toBeInTheDocument();
 			});
 		});
+
+		it('should include aggregateRating in review schema JSON-LD', async () => {
+			vi.spyOn(googleReviewsFunctions, 'getGoogleReviewsByPlaceId').mockResolvedValue({
+				place: mockPlace,
+				reviews: mockReviews
+			});
+
+			renderWithProviders(
+				<GoogleReviewsCarousel displayMode="grid" includeReviewSchema={true} businessName="Test Business" />,
+				{
+					config: googlePlacesTestConfig,
+				}
+			);
+
+			await waitFor(() => {
+				expect(screen.getByText('Test Restaurant')).toBeInTheDocument();
+			});
+
+			const scriptTags = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
+			const reviewSchema = scriptTags
+				.map((tag) => {
+					try {
+						return JSON.parse(tag.textContent || 'null');
+					} catch {
+						return null;
+					}
+				})
+				.find((schema) => schema && schema['@type'] === 'Review');
+
+			expect(reviewSchema).toBeTruthy();
+			expect(reviewSchema.itemReviewed).toBeTruthy();
+			expect(reviewSchema.itemReviewed.aggregateRating).toBeTruthy();
+			expect(reviewSchema.itemReviewed.aggregateRating.ratingValue).toBeDefined();
+			expect(reviewSchema.itemReviewed.aggregateRating.reviewCount).toBe(`${mockReviews.length}`);
+			expect(reviewSchema.itemReviewed.aggregateRating.ratingCount).toBe(`${mockReviews.length}`);
+			expect(reviewSchema.itemReviewed.aggregateRating.bestRating).toBe('5');
+			expect(reviewSchema.itemReviewed.aggregateRating.worstRating).toBe('1');
+		});
 	});
 });

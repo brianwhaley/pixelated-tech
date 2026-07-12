@@ -255,6 +255,15 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 		bodyText: review.text ? review.text : `- ${review.author_name}`,
 	}));
 
+	const aggregateRating = reviews.length > 0 ? {
+		'@type': 'AggregateRating',
+		ratingValue: (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1),
+		reviewCount: reviews.length.toString(),
+		ratingCount: reviews.length.toString(),
+		bestRating: '5',
+		worstRating: '1',
+	} : undefined;
+
 	const reviewSchemas = reviews.map((review) => ({
 		'@context': 'https://schema.org/',
 		'@type': 'Review',
@@ -268,6 +277,7 @@ export function GoogleReviewsCarousel(props: GoogleReviewsCarouselType) {
 		itemReviewed: {
 			'@type': 'LocalBusiness',
 			name: businessName,
+			...(aggregateRating && { aggregateRating }),
 		},
 		reviewRating: {
 			'@type': 'Rating',
