@@ -147,6 +147,17 @@ describe('ProductSchema', () => {
 		expect(schemaData.aggregateRating['@type']).toBe('AggregateRating');
 		expect(schemaData.aggregateRating.ratingValue).toBe('4.5');
 		expect(schemaData.aggregateRating.reviewCount).toBe('89');
+		expect(schemaData.aggregateRating.ratingCount).toBe('89');
+		expect(schemaData.aggregateRating.bestRating).toBe('5');
+		expect(schemaData.aggregateRating.worstRating).toBe('1');
+	});
+
+	it('should not include aggregateRating when no rating data is provided', () => {
+		const { container } = render(<ProductSchema product={defaultProduct} />);
+		const scriptTag = container.querySelector('script[type="application/ld+json"]');
+		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
+
+		expect(schemaData.aggregateRating).toBeUndefined();
 	});
 
 	it('should handle numeric price values', () => {

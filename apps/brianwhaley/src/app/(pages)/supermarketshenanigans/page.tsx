@@ -14,27 +14,35 @@ const book = {
 	genre: [ "Memoir", "Humor", "Business Humor" ],
 	inLanguage: "en-US",
 	isFamilyFriendly: true,
+	sameAs: [
+		"https://www.amazon.com/dp/B0H8FT29ZT", // kindle
+		"https://www.amazon.com/dp/B0H8FN5T71", // paperback
+		"https://www.amazon.com/dp/B0H8FK9MJM",  // hardcover
+		"https://www.goodreads.com/book/show/255240043-supermarket-shenanigans", // kindle
+		"https://www.goodreads.com/book/show/255240108-supermarket-shenanigans", // paperback
+		"https://www.goodreads.com/book/show/255241965-supermarket-shenanigans" // hardcover
+	],
 	variants: [
 		{
-			bookFormat: "Hardcover",
-			isbn: "9798186215172",
-			numberOfPages: 219,
-			offerURL: "https://amazon.com/supermarket-shenanigans-hardcover",
-			price: "24.99",
+			bookFormat: "EBook",
+			isbn: "9798184024486",
+			numberOfPages: 162,
+			offerURL: "https://www.amazon.com/dp/B0H8FT29ZT",
+			price: "4.99",
 		},
 		{
 			bookFormat: "Paperback",
 			isbn: "9798184024486",
 			numberOfPages: 219,
-			offerURL: "https://amazon.com/supermarket-shenanigans-paperback",
+			offerURL: "https://www.amazon.com/dp/B0H8FN5T71",
 			price: "14.99",
 		},
 		{
-			bookFormat: "EBook",
-			isbn: "9798184024486",
-			numberOfPages: 162,
-			offerURL: "https://amazon.com/supermarket-shenanigans-digital",
-			price: "4.99",
+			bookFormat: "Hardcover",
+			isbn: "9798186215172",
+			numberOfPages: 219,
+			offerURL: "https://www.amazon.com/dp/B0H8FK9MJM",
+			price: "24.99",
 		}
 	]
 };

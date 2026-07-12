@@ -20,7 +20,20 @@ const DEFAULT_CONTENTFUL_IMAGE_FIELDS = ['image', 'images', 'carouselImages'];
 
 export type SitemapEntry = MetadataRoute.Sitemap[number] & {
 	name?: string;
+	description?: string;
 };
+
+export type JsonSitemapUrl = {
+	loc: string;
+	lastmod?: string;
+	changefreq?: string;
+	priority?: number;
+};
+
+export type JsonSitemap = {
+	urlset: JsonSitemapUrl[];
+};
+
 /* export type SitemapEntry = {
 	url: string;
 	name?: string;
@@ -321,6 +334,56 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 	return entries as unknown as MetadataRoute.Sitemap;
 }
 
+export function sitemapEntriesToJson(entries: SitemapEntry[]): JsonSitemap {
+	return {
+		urlset: entries.map((entry) => ({
+			loc: entry.url,
+			lastmod: entry.lastModified
+				? (entry.lastModified instanceof Date
+					? entry.lastModified.toISOString()
+					: new Date(String(entry.lastModified)).toISOString())
+				: undefined,
+			changefreq: entry.changeFrequency,
+			priority: entry.priority,
+		})),
+	};
+}
+
+export async function generateSitemapJson(originInput?: string): Promise<JsonSitemap> {
+	const entries = await generateSitemap(originInput);
+	return sitemapEntriesToJson(entries);
+}
+
+export async function generateSiteMapRss(originInput?: string): Promise<string> {
+	const entries = await generateSitemap(originInput) as SitemapEntry[];
+	const origin = originInput ?? await getOriginFromNextHeaders() ?? '';
+	const items = entries.map((entry) => {
+		const title = encode(entry.name ?? entry.url);
+		const url = encode(entry.url);
+		const description = entry.description ? `<description>${encode(entry.description)}</description>` : '';
+		const pubDate = entry.lastModified
+			? `<pubDate>${(entry.lastModified instanceof Date ? entry.lastModified : new Date(String(entry.lastModified))).toUTCString()}</pubDate>`
+			: '';
+		return `<item>
+			<title>${title}</title>
+			<link>${url}</link>
+			<guid isPermaLink="true">${url}</guid>
+			${description}
+			${pubDate}</item>`;
+	}).join('');
+	return `<?xml version="1.0" encoding="UTF-8"?>\n
+		<?xml-stylesheet type="text/xsl" href="/rss.xsl"?>\n
+		<rss version="2.0">
+			<channel>
+				<title>Sitemap RSS</title>
+				<link>${encode(origin)}</link>
+				<description>Sitemap RSS</description>
+				<language>en-us</language>
+				${items}
+			</channel>
+		</rss>`;
+}
+
 
 
 
@@ -333,6 +396,7 @@ export async function createPageURLs(routes: { path: string }[], origin?: string
 			const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
 			sitemap.push({
 				name: route.name ?? undefined,
+				description: route.description ?? undefined,
 				url: `${base}${path}` ,
 				lastModified: new Date(),
 				changeFrequency: "hourly",
@@ -377,6 +441,7 @@ export function createSiteConfigServiceURLs(siteConfig: any, origin?: string): S
 		if (url) {
 			sitemap.push({
 				name: service.name ?? undefined,
+				description: service.description ?? undefined,
 				url,
 				lastModified: new Date(),
 				changeFrequency: 'hourly',
@@ -405,6 +470,7 @@ export function createSiteConfigServiceAreaURLs(siteConfig: any, origin?: string
 		if (url) {
 			sitemap.push({
 				name: serviceArea.name ?? undefined,
+				description: serviceArea.description ?? undefined,
 				url,
 				lastModified: new Date(),
 				changeFrequency: 'hourly',
@@ -443,6 +509,7 @@ export async function createImageURLsFromJSON(origin?: string, jsonPath = 'publi
 		});
 		sitemap.push({
 			name: 'Site Images',
+			description: 'Images from site-images.json',
 			url: `${origin ? origin : ''}/images`,
 			images: newImages,
 		});
@@ -584,6 +651,7 @@ export async function createContentfulURLs(props: createContentfulURLsType){
 		const base = props.origin ? props.origin : '';
 		const sitemapEntry: any = {
 			name: entry.fields?.title ?? undefined,
+			description: entry.fields?.description ?? undefined,
 			url: `${base}${normalizedPath}` ,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
@@ -636,6 +704,7 @@ export async function createContentfulPageBuilderURLs(props: createContentfulPag
 		const base = props.origin ? props.origin : '';
 		sitemap.push({
 			name: pageName ?? undefined,
+			description: `Contentful Page Builder page: ${pageName}` ,
 			url: `${base}/${encodeURIComponent(pageName)}` ,
 			lastModified: new Date(),
 			changeFrequency: "hourly",
@@ -710,6 +779,7 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 			if (imageURLs.length > 0) {
 				sitemap.push({
 					name: 'Contentful Images',
+					description: 'Images from Contentful assets',
 					url: `${props.origin ? props.origin : ''}/images`,
 					lastModified: new Date(),
 					changeFrequency: 'always',
@@ -839,6 +909,7 @@ export async function createSquareItemURLs(origin?: string) {
 
 		const entry: any = {
 			name: item.itemName ?? undefined,
+			description: item.itemDescription ?? undefined,
 			url: item.itemURL.startsWith('http') ? item.itemURL : `${base}${item.itemURL}`,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
@@ -894,7 +965,8 @@ export async function createSquareEventURLs(origin?: string) {
 		const url = `${base}/events/${itemSlug}`;
 		const entry: any = {
 			name: title ?? undefined,
-			url,
+			description: item.fields?.description ?? undefined,
+			url: url,
 			lastModified: new Date(),
 			changeFrequency: 'hourly',
 			priority: 1.0,

@@ -103,6 +103,7 @@ export async function generateMetaTags() {
 			<meta name="twitter:image:width" content={image_width != null ? String(image_width) : undefined} />
 			<meta name="twitter:title" content={title} />
 
+			<link rel="alternate" type="application/rss+xml" title="Sitemap RSS" href="/rss.xml" />
 			<link rel="author" fetchPriority="high" href="humans.txt" />
 			<link rel="canonical" fetchPriority="high" href={url} />
 			<link rel="icon" fetchPriority="high" type="image/x-icon" href={favicon ?? undefined} />

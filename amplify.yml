@@ -284,8 +284,8 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - # npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
-            - # BUILD STORYBOOK WITH EXTRA MEMORY TO AVOID CI OOM
+            # npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
+            # BUILD STORYBOOK WITH EXTRA MEMORY TO AVOID CI OOM
             - 'echo "Building Storybook with extra memory to avoid CI OOM ..."'
             - 'NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
