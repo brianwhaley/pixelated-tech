@@ -3,7 +3,7 @@ import * as contentfulModule from '../components/integrations/contentful.deliver
 import * as configModule from '../components/config/config';
 import { pixelatedConfig } from '../test/test-data';
 
-const mockContentfulApiProps = pixelatedConfig.integrations?.contentful;
+const mockContentfulApiProps = pixelatedConfig.integrations?.contentful!;
 
 // Mock fetch globally
 global.fetch = vi.fn();
@@ -808,7 +808,38 @@ describe('Contentful Delivery API', () => {
 
 			expect(result[0]['@context']).toBe('https://schema.org/');
 			expect(result[0]['@type']).toBe('Review');
-			expect(result[0].itemReviewed['@type']).toBe('Service');
+			expect(result[0].itemReviewed['@type']).toBe('LocalBusiness');
+		});
+
+		it('should fallback unsupported review item types to LocalBusiness', async () => {
+			const mockResponse = {
+				items: [
+					{
+						sys: {
+							contentType: { sys: { id: 'reviews' } },
+							createdAt: '2026-02-28T10:00:00.000Z'
+						},
+						fields: {
+							description: '"Awesome experience!"',
+							reviewer: ' - Jane Doe'
+						}
+					}
+				]
+			};
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockResponse
+			});
+
+			const result = await contentfulModule.getContentfulReviewsSchema({
+				apiProps: mockContentfulApiProps as any,
+				itemName: 'Test Unknown',
+				itemType: 'Recipe',
+				publisherName: 'Test Publisher'
+			});
+
+			expect(result[0].itemReviewed['@type']).toBe('LocalBusiness');
 		});
 
 		it('should extract reviewer name from reviewer field', async () => {
@@ -1019,7 +1050,7 @@ describe('Contentful Delivery API', () => {
 			expect(result).toEqual([]);
 		});
 
-		it('should use default Product type when itemType not provided', async () => {
+		it('should use default LocalBusiness type when itemType not provided', async () => {
 			const mockResponse = {
 				items: [
 					{
@@ -1045,7 +1076,7 @@ describe('Contentful Delivery API', () => {
 				itemName: 'Test Item'
 			});
 
-			expect(result[0].itemReviewed['@type']).toBe('Product');
+			expect(result[0].itemReviewed['@type']).toBe('LocalBusiness');
 		});
 
 		it('should generate review name from first sentence of review body', async () => {

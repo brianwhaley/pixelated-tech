@@ -62,6 +62,7 @@ The repository defines shared standards for all customer sites and template apps
 - Robots.txt
 - Security.txt
 - LLMs.txt
+- AI.txt
 - Sitemap.json
 - Rss.xml and corresponding rss.xsl
 - Dynamically loaded sitemap.xml driven by content and integrations via pixelated.config.json config management
