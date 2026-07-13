@@ -152,6 +152,7 @@ function buildBookVariant(variant: any): any | undefined {
 	}
 
 	const bookFormat = normalizeBookFormat(variant?.bookFormat || variant?.name || variant?.['@type']);
+	const asin = sanitizeString(variant?.asin);
 	const isbn = sanitizeString(variant?.isbn);
 	const numberOfPages = variant?.numberOfPages != null ? Number(variant.numberOfPages) : undefined;
 	const offer = buildBookOffer(variant);
@@ -159,6 +160,7 @@ function buildBookVariant(variant: any): any | undefined {
 	const variantSchema: any = {
 		'@type': 'Book',
 		...(bookFormat && { bookFormat }),
+		...(asin && { asin }),
 		...(isbn && { isbn }),
 		...(numberOfPages ? { numberOfPages } : {}),
 		...(offer && { offers: offer }),
@@ -207,6 +209,7 @@ SchemaBook.propTypes = {
 				bookFormat: PropTypes.string,
 				name: PropTypes.string,
 				'@type': PropTypes.string,
+				asin: PropTypes.string,
 				isbn: PropTypes.string,
 				numberOfPages: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 				offerURL: PropTypes.string,

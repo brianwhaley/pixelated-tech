@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs } from './sitemap';
+import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs, type SitemapEntry } from './sitemap';
 import type { SiteInfoType } from '../config/config.types';
 import { getFullPixelatedConfig } from '../config/config';
 import { sanitizeString } from './utilities';
@@ -23,13 +23,11 @@ const excludedRoutePatterns = [
 	/security/i,
 	/services/i,
 	/service-areas/i,
-	/sitemap/i,
 	/styleguide/i,
 	/style-guide/i,
 	/terms/i,
 	/updates/i,
 	/\.txt$/i,
-	/\.xml$/i,
 ];
 
   
@@ -55,36 +53,53 @@ export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 	const serviceAreaEntries = await createSiteConfigServiceAreaURLs(config, baseUrl);
 	const serviceAreaUrls = serviceAreaEntries.map((entry) => entry.url).filter(Boolean) as string[];
 
-	const pageRouteUrls = (await createPageURLs(routes, baseUrl))
-		.map((entry) => entry.url)
-		.filter((url) => typeof url === 'string')
-		.filter((url) => !excludedRoutePatterns.some((pattern) => pattern.test(url)))
-		.filter((url) => !serviceUrls.includes(url) && !serviceAreaUrls.includes(url)) as string[];
+	const pageRouteEntries = (await createPageURLs(routes, baseUrl))
+		.filter((entry) => typeof entry.url === 'string')
+		.filter((entry) => !excludedRoutePatterns.some((pattern) => pattern.test(entry.url)))
+		.filter((entry) => !serviceUrls.includes(entry.url) && !serviceAreaUrls.includes(entry.url)) as SitemapEntry[];
+
+	const optionalRouteEntries = (await createPageURLs(routes, baseUrl))
+		.filter((entry) => typeof entry.url === 'string')
+		.filter((entry) => excludedRoutePatterns.some((pattern) => pattern.test(entry.url)))
+		.filter((entry) => !serviceUrls.includes(entry.url) && !serviceAreaUrls.includes(entry.url)) as SitemapEntry[];
+
+	const formatLink = (entry: {name?: string | null; url: string}) => {
+		return `- [${sanitizeString(entry.name ?? entry.url)}](${entry.url})`;
+	};
 
 	const lines: string[] = [];
 	lines.push(`# ${sanitizeString(siteInfo.name ?? 'Site Name')}`);
 	lines.push('');
-
+	lines.push(`> ${sanitizeString(siteInfo.description ?? siteInfo.name)}`);
+	lines.push('');
 
 	lines.push('## Page Links');
-	if (pageRouteUrls.length) {
-		pageRouteUrls.forEach((url) => lines.push(`- ${url}`));
+	if (pageRouteEntries.length) {
+		pageRouteEntries.forEach((entry) => lines.push(formatLink(entry)));
 	} else {
 		lines.push('- none');
 	}
 	lines.push('');
 
 	lines.push('## Services');
-	if (serviceUrls.length) {
-		serviceUrls.forEach((url) => lines.push(`- ${url}`));
+	if (serviceEntries.length) {
+		serviceEntries.forEach((entry) => lines.push(formatLink(entry)));
 	} else {
 		lines.push('- none');
 	}
 	lines.push('');
 
 	lines.push('## Service Areas');
-	if (serviceAreaUrls.length) {
-		serviceAreaUrls.forEach((url) => lines.push(`- ${url}`));
+	if (serviceAreaEntries.length) {
+		serviceAreaEntries.forEach((entry) => lines.push(formatLink(entry)));
+	} else {
+		lines.push('- none');
+	}
+	lines.push('');
+
+	lines.push('## Optional');
+	if (optionalRouteEntries.length) {
+		optionalRouteEntries.forEach((entry) => lines.push(formatLink(entry)));
 	} else {
 		lines.push('- none');
 	}
@@ -109,6 +124,57 @@ export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 
 	lines.push('## Generated');
 	lines.push(`Generated: ${new Date().toISOString()}`);
+
+	return new NextResponse(lines.join('\n'), {
+		headers: {
+			'Content-Type': 'text/plain; charset=utf-8',
+		},
+	});
+}
+
+
+/**
+ 	* AITxt — Generates an ai.txt file containing AI crawler usage policy.
+ 	* @param {object} [props] - Props object.
+ 	* @returns {Promise<NextResponse>} A text file response with default AI crawler directives.
+ */
+AITxt.propTypes = {
+	/** no props */
+};
+export type AITxtType = InferProps<typeof AITxt.propTypes>;
+export async function AITxt(props: AITxtType): Promise<NextResponse> {
+	const config = getFullPixelatedConfig();
+	const siteInfo = config.siteInfo as SiteInfoType;
+	const siteName = sanitizeString(siteInfo.name ?? 'Site Name');
+	const contactEmail = sanitizeString(siteInfo.email ?? '');
+
+	const lines: string[] = [];
+	lines.push(`# ai.txt — AI crawler policy for ${siteName}`);
+	lines.push(`# Generated: ${new Date().toISOString()}`);
+	lines.push('');
+
+	lines.push('User-agent: *');
+	lines.push('Allow-Train: /');
+	lines.push('Allow-RAG: /');
+	lines.push('');
+
+	lines.push('# Custom AI Licensing Meta-Data');
+	lines.push('# ---------------------------------');
+	lines.push('# Training: yes');
+	lines.push('# Attribution: required');
+	lines.push('# Reuse: allowed');
+	lines.push('# Cache: allowed');
+	lines.push('# Indexing: allowed');
+	lines.push('# Derivatives: allowed');
+	lines.push('# Transformations: allowed');
+	lines.push('# Source: required');
+	lines.push('# Commercial-Use: disallowed');
+	lines.push('');
+
+	if (contactEmail) {
+		lines.push(`# Contact: mailto:${contactEmail}`);
+		lines.push('');
+	}
 
 	return new NextResponse(lines.join('\n'), {
 		headers: {

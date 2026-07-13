@@ -25,6 +25,7 @@ const book = {
 	variants: [
 		{
 			bookFormat: "EBook",
+			asin: "B0H8FT29ZT",
 			isbn: "9798184024486",
 			numberOfPages: 162,
 			offerURL: "https://www.amazon.com/dp/B0H8FT29ZT",
@@ -32,6 +33,7 @@ const book = {
 		},
 		{
 			bookFormat: "Paperback",
+			asin: "B0H8FN5T71",
 			isbn: "9798184024486",
 			numberOfPages: 219,
 			offerURL: "https://www.amazon.com/dp/B0H8FN5T71",
@@ -39,6 +41,7 @@ const book = {
 		},
 		{
 			bookFormat: "Hardcover",
+			asin: "B0H8FK9MJM",
 			isbn: "9798186215172",
 			numberOfPages: 219,
 			offerURL: "https://www.amazon.com/dp/B0H8FK9MJM",

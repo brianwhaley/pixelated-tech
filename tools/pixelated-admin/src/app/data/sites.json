@@ -57,7 +57,8 @@
 	"enhancements": {
 		"2026-08": [
 			"Added new LLMs.txt for site readability / indexability for Large Language Models",
-			"Added new WebMCP Integration into Form Engine to assist LLM form validation and submission handling"
+			"Added new WebMCP Integration into Form Engine to assist LLM form validation and submission handling",
+			"Added AI.txt to site for improved AI model discovery and indexing"
 		],
 		"2026-07": [
 			"Added new LLMS.txt feature to the site to improve search engine indexing and visibility to Large Language AI Models.",

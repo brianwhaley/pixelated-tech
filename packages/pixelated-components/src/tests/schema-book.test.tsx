@@ -50,6 +50,30 @@ describe('SchemaBook component', () => {
     expect(schema.isFamilyFriendly).toBe(true);
   });
 
+  it('includes variant ASIN values in the JSON-LD schema', () => {
+    const book = {
+      name: 'ASIN Book',
+      variants: [
+        {
+          bookFormat: 'Paperback',
+          asin: 'B0TEST1234',
+          isbn: '1234567890',
+          offerURL: 'https://example.com/book',
+          price: '19.99',
+        },
+      ],
+    };
+
+    const { container } = renderWithConfig(<SchemaBook book={book} />);
+    const script = container.querySelector('script[type="application/ld+json"]');
+    const schema = script?.textContent ? JSON.parse(script.textContent) : null;
+
+    expect(schema).toBeDefined();
+    expect(schema.workExample).toBeDefined();
+    expect(Array.isArray(schema.workExample)).toBe(true);
+    expect(schema.workExample[0].asin).toBe('B0TEST1234');
+  });
+
   it('includes sameAs on the book when present', () => {
     const book = {
       name: 'SameAs Book',

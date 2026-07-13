@@ -64,7 +64,8 @@ describe('Manifest Component', () => {
 		expect(manifest.icons).toEqual([{
 			src: mockSiteInfo.favicon,
 			sizes: mockSiteInfo.favicon_sizes,
-			type: mockSiteInfo.favicon_type
+			type: mockSiteInfo.favicon_type,
+			purpose: "any"
 		}]);
 	});
 

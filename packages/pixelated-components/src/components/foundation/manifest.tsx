@@ -20,26 +20,33 @@ export function generateManifest(options: ManifestOptions = {}): MetadataRoute.M
 	}
 
 	const baseManifest: MetadataRoute.Manifest = {
+		name: siteInfo.name,
+		short_name: siteInfo.name,
+		id: siteInfo.url,
 		// @ts-expect-error - 'author' is not in standard Manifest type but used by some PWA implementations
 		author: siteInfo.author,
-		background_color: siteInfo.background_color ?? undefined,
-		default_locale: siteInfo.default_locale,
-		description: siteInfo.description,
 		developer: {
-			name: siteInfo.author || "Developer",
-			url: siteInfo.url
+			name: "Pixelated Technologies",
+			url: "https://pixelated.tech"
 		},
-		display: siteInfo.display as "standalone" | "fullscreen" | "minimal-ui" | "browser" || "standalone",
+		start_url: ".",
 		homepage_url: siteInfo.url,
+		description: siteInfo.description,
+		categories: siteInfo.categories || [""],
+		default_locale: siteInfo.default_locale,
 		icons: [{
 			src: siteInfo.favicon || "/favicon.ico",
 			sizes: siteInfo.favicon_sizes || "64x64 32x32 24x24 16x16",
-			type: siteInfo.favicon_type || "image/x-icon"
+			type: siteInfo.favicon_type || "image/x-icon",
+			purpose: "any"
 		}],
-		name: siteInfo.name,
-		short_name: siteInfo.name,
-		start_url: ".",
+		background_color: siteInfo.background_color ?? undefined,
 		theme_color: siteInfo.theme_color ?? undefined,
+		display: siteInfo.display as "standalone" | "fullscreen" | "minimal-ui" | "browser" || "standalone",
+		orientation: "portrait",
+		lang: siteInfo.default_locale || "en",
+		dir: "ltr",
+		scope: "/",
 	};
 
 	// Merge with custom properties, allowing overrides

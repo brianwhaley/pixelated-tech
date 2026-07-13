@@ -26,7 +26,7 @@ vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: vi.fn(() => fakeConfig),
 }));
 
-import { LLMSTxt } from '../components/foundation/llms';
+import { AITxt, LLMSTxt } from '../components/foundation/llms';
 
 describe('LLMSTxt', () => {
 	beforeEach(() => {
@@ -37,15 +37,16 @@ describe('LLMSTxt', () => {
 		const text = await output.text();
 
 		expect(text).toContain('# Test Site');
+		expect(text).toContain('> Test Site');
 		expect(text).toContain('## Services');
-		expect(text).toContain('- https://example.com/services/web-design');
+		expect(text).toContain('- [Web Design](https://example.com/services/web-design)');
 		expect(text).toContain('## Service Areas');
-		expect(text).toContain('- https://example.com/service-areas/metro');
+		expect(text).toContain('- [Metro](https://example.com/service-areas/metro)');
 		expect(text).toContain('## Page Links');
-		expect(text).toContain('- https://example.com/about');
-		expect(text).toContain('- https://example.com/faq');
-		expect(text).not.toContain('styleguide');
-		expect(text).not.toContain('robots.txt');
+		expect(text).toContain('- [https://example.com/about](https://example.com/about)');
+		expect(text).toContain('- [https://example.com/faq](https://example.com/faq)');
+		expect(text).toContain('- [https://example.com/styleguide](https://example.com/styleguide)');
+		expect(text).toContain('- [https://example.com/robots.txt](https://example.com/robots.txt)');
 		expect(text).toContain('## Contact');
 		expect(text).toContain('Contact: mailto:hello@example.com');
 		expect(text).toMatch(/Generated: \d{4}-\d{2}-\d{2}T/);
@@ -55,8 +56,8 @@ describe('LLMSTxt', () => {
 		const output = await LLMSTxt({});
 		const text = await output.text();
 
-		expect(text).toContain('- https://example.com/about');
-		expect(text).toContain('- https://example.com/faq');
+		expect(text).toContain('- [https://example.com/about](https://example.com/about)');
+		expect(text).toContain('- [https://example.com/faq](https://example.com/faq)');
 	});
 
 	it('renders none when services and service areas are missing', async () => {
@@ -71,7 +72,7 @@ describe('LLMSTxt', () => {
 		expect(text).toContain('- none');
 		expect(text).toContain('## Service Areas');
 		expect(text).toContain('- none');
-		expect(text).toContain('- https://example.com/about');
+		expect(text).toContain('- [https://example.com/about](https://example.com/about)');
 	});
 
 	it('filters excluded routes from other links', async () => {
@@ -85,9 +86,23 @@ describe('LLMSTxt', () => {
 		const output = await LLMSTxt({});
 		const text = await output.text();
 
-		expect(text).toContain('- https://example.com/about');
+		expect(text).toContain('- [https://example.com/about](https://example.com/about)');
 		expect(text).not.toContain('- https://example.com/privacy');
 		expect(text).not.toContain('- https://example.com/terms');
 		expect(text).not.toContain('- https://example.com/sitemap.xml');
+	});
+});
+
+describe('AITxt', () => {
+	it('generates ai.txt directives with default policies', async () => {
+		const output = await AITxt({});
+		const text = await output.text();
+
+		expect(text).toContain('User-agent: *');
+		expect(text).toContain('Allow-Train: /');
+		expect(text).toContain('Allow-RAG: /');
+		expect(text).not.toContain('User-agent: ChatGPTUser');
+		expect(text).not.toContain('User-agent: Google-Extended');
+		expect(text).not.toContain('User-agent: ClaudeBot');
 	});
 });
