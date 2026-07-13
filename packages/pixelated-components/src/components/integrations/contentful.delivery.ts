@@ -476,7 +476,7 @@ export type getContentfulReviewsSchemaType = InferProps<typeof getContentfulRevi
 export async function getContentfulReviewsSchema(props: getContentfulReviewsSchemaType) {
 	const contentType = "reviews";
 	const itemName = props.itemName;
-	const itemType = props.itemType || "Product";
+	const itemType = ['Product', 'LocalBusiness', 'Organization'].includes(props.itemType ?? '') ? props.itemType : "LocalBusiness";
 	const publisherName = props.publisherName;
 
 	try {

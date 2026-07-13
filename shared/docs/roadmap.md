@@ -39,8 +39,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 An explicit Editorial Policy or Service Standards node in your footer.
 Author bio blocks on every single blog post that explicitly link back to the author's personal professional profiles (like LinkedIn or a master corporate profile).
 
-- [  ] Ai.txt 
-
 - [  ] Agents.md
 
 - [  ] Enforce aria rules 
