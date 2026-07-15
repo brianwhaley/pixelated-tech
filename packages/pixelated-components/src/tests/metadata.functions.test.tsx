@@ -325,6 +325,50 @@ describe('Metadata Functions', () => {
 			expect(result).toContain('name="author" content="Example, test@example.com"');
 		});
 
+		it('should fallback to service metadata for /services/* when route metadata is missing', async () => {
+			setupHeaders('/services/web-development', 'https://example.com', 'https://example.com/services/web-development');
+			mockGetFullPixelatedConfig.mockReturnValue({
+				siteInfo: {
+					...mockSiteInfo,
+					keywords: 'services, example',
+					services: [
+						{
+							name: 'Web Development',
+							description: 'Custom web development services',
+						},
+					],
+				},
+				routes: [],
+			} as any);
+
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('<title>Example - Web Development</title>');
+			expect(result).toContain('name="description" content=""');
+			expect(result).toContain('name="keywords" content="services, example"');
+		});
+
+		it('should fallback to service area metadata for /service-areas/* when route metadata is missing', async () => {
+			setupHeaders('/service-areas/east-coast', 'https://example.com', 'https://example.com/service-areas/east-coast');
+			mockGetFullPixelatedConfig.mockReturnValue({
+				siteInfo: {
+					...mockSiteInfo,
+					keywords: 'service areas, example',
+					serviceAreas: [
+						{
+							name: 'East Coast',
+							description: 'Service area description',
+						},
+					],
+				},
+				routes: [],
+			} as any);
+
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('<title>Example - East Coast</title>');
+			expect(result).toContain('name="description" content=""');
+			expect(result).toContain('name="keywords" content="service areas, example"');
+		});
+
 		it('should include RSS autodiscovery link', async () => {
 			setupHeaders('/test', 'https://example.com', 'https://example.com/test');
 

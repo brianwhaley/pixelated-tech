@@ -5,7 +5,7 @@ export default function Terms() {
 		<>
 			<PageSectionHeader title="Terms of Service" />
 			<div className="callout-body">
-                    By using anything offered by Pixelated, you automatically agree to this legal agreement. You also accept any updated version of this agreement by continuing to use the Services.<br/>
+                    By using anything offered by Pixelated Technologies, you automatically agree to this legal agreement. You also accept any updated version of this agreement by continuing to use the Services.<br/>
 				<br/>
                     You MUST be at least 13 years old to use the Services (or at least 16 years old if you are a resident of certain European countries as described above). Do not use the Services if it would mean breaking the law.<br/>
 				<br/>

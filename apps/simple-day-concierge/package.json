@@ -1,6 +1,6 @@
 {
   "name": "simple-day-concierge",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "private": true,
   "description": "Simple Day Concierge - Where Simplicity Meets Exceptional Service",
   "license": "MIT",
@@ -51,5 +51,5 @@
     "vitest": "^4.1.10"
   },
   "overrides": {},
-  "deployMarker": "2026-07-10T05:34:44.562Z"
+  "deployMarker": "2026-07-15T18:25:07.911Z"
 }

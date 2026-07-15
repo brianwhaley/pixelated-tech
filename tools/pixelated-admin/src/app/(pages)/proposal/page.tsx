@@ -106,6 +106,12 @@ function Proposal(props: { proposal: ProposalData }) {
 		<>
 			<PageSection id="title-section" columns={1} maxWidth="1024px">
 				<div className="assessment-page-header">
+					<SmartImage 
+						src="/images/pixelated-logo-v2.png"
+						alt="Pixelated Technologies"
+						title="Pixelated Technologies"
+						aboveFold={true}
+					/>
 					<h1>Proposal - {proposal.proposalType}</h1>
 					<br />
 					<p>{new Date(proposal.date).toLocaleDateString()}</p>
