@@ -141,6 +141,12 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 			<PageSection id="title-section" columns={1} maxWidth="1024px">
 				<div className="assessment-page-header">
+					<SmartImage 
+						src="/images/pixelated-logo-v2.png"
+						alt="Pixelated Technologies"
+						title="Pixelated Technologies"
+						aboveFold={true}
+					/>
 					<h1>Assessment</h1>
 					<br />
 					<p>{new Date(assessment.date).toLocaleDateString()}</p>

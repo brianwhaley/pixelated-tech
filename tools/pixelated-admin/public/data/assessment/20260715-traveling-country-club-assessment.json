@@ -1,0 +1,296 @@
+{
+  "companyName": "Traveling Country Club",
+  "companyContact": "Luke Sadler",
+  "date": "July 13, 2026",
+  "email": "michaelp@amavajanitorial.com",
+  "phone": "(877) 625-5959",
+  "address": {
+    "streetAddress": "115 North Franklin Turnpike, Suite 258",
+    "addressLocality": "Mahwah",
+    "addressRegion": "NJ",
+    "postalCode": "07430",
+    "addressCountry": "US"
+  },
+  "primaryAudience": [
+    "Corporate plaza and commercial office building facility managers in New Jersey, New York, Connecticut, Delaware, South Carolina, Southern & Central Florida.",
+    "Educational institutions, private schools, and daycare facilities requiring scheduled day-porter and nightly cleaning",
+    "General contractors, developers, and project managers looking for post-construction final clean-ups",
+    "Medical centers, clinical offices, and outpatient facilities needing specialized sanitation and floor care"
+  ],
+  "secondaryAudience": [
+    "Property managers overseeing large residential townhouse and condo communities requiring integrated janitorial and outdoor maintenance",
+    "Corporate clients seeking high-rise exterior window cleaning and professional property pressure washing",
+    "Complementary service providers such as landscaping, pest control, and HVAC companies seeking bundled service offerings for their clients"
+  ],
+  "marketOverview": [
+    "The Tri-State commercial real estate and facility management market is highly dense, driven by corporate plazas, medical offices, and educational institutions prioritizing rigorous health, safety, and compliance standards.",
+    "B2B clients in Northern New Jersey increasingly seek single-vendor solutions that can scale across geographic footprints, demanding integrated capabilities that span from complex interior post-construction clean-ups to external property and asset maintenance.",
+    "Cost management and efficiency are primary drivers for outsourcing, with corporate operations and property management firms shifting away from in-house custodial teams to rely on specialized, fully insured external partners who utilize advanced commercial floor care and green cleaning protocols."
+  ],
+  "currentSocialMedia": [
+    "Facebook - none",
+    "Instagram - none",
+    "Threads - none",
+    "X / Twitter - none",
+    "LinkedIn - none",
+    "Google Business Profile - none",
+    "Nextdoor - none",
+    "Yelp - https://www.yelp.com/biz/amava-janitorial-services-mahwah",
+    "Personal Facebook - https://www.linkedin.com/in/al-pope-09b23a26/"
+  ],
+  "advertisingPartners": [
+    "None currently listed"
+  ],
+  "earnedMedia": [
+    "https://www.mahwahlibrary.org/wp-content/uploads/2021/02/Minutes-2018-12-19.pdf"
+  ],
+  "existingSite": {
+    "url": "https://travelingcountryclub.com/",
+    "strengths": [
+      "The information architecture is sound, including Home Page, About, Services, Contact and Quote",
+      "There are individual pages for each of the different service lines",
+      "The home page explicitly states the operating regions (NJ, NY, CT Tri-State area, Florida, etc.)",
+      "Branding is consistent across the site and other service business sites (amavalandscape.com)",
+      "Some more modern techniques like full page headers, microinteractions, parallax backgrounds, and some responsive mobile design, are used to good effect",
+      "I see there is a Google Tag Manager implementation, which is a good sign for future marketing and analytics tracking",
+      "The site serves over a secure HTTPS connection, which is a fundamental requirement for search ranking algorithms and general user trust.",
+      "The phone number and email are hardcoded as clear text across pages, not hidden inside an image."
+    ],
+    "areasForImprovement": [
+      "A more Corporate, professional presence is necessary for the site.",
+      "There is too much use image transitions and moving text, which can be distracting and reduce the perception of professionalism.",
+      "Use of shadows, fonts, and color choice could be improved to make text more readable and create a more modern and professional feel.",
+      "There are many errors related to page construction",
+      "Improvements are needed for responsive and mobile display across various sizes and devices.",
+      "Technologies used are outdated, including Joomla, jquery, bootstrap, and more.",
+      "Content is thin, and doesn't include important E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) elements that are important for B2B and commercial service businesses.",
+      "Some basic and more advanced  search engine optimization (SEO) and more recent answer engine optimization (AEO) techniques are not being used, impacting findability and visibility in search results."
+    ]
+  },
+  "similarCompanyNames": [
+    {
+      "name": "AMAVA Landscaping Services - A sister company to AMAVA Janitorial Services",
+      "urls": [
+        "https://www.amavalandscape.com/",
+        "https://www.facebook.com/Amavaservices/",
+        "https://www.luxuriouslandscapes.com/New-Jersey/AMAVA-Landscaping-44288380384/",
+        "https://www.provenexpert.com/en-us/amava-landscaping-services/"
+      ],
+      "summary": "Focusing on landscaping and outdoor maintenance."
+    },
+    {
+      "name": "AMAVA DFW Landscaping (Grapevine, TX)",
+      "urls": [
+        "https://www.facebook.com/amavaDFW"
+      ],
+      "summary": "A landscape company in Grapevine TX with a nearly identical name."
+    },
+    {
+      "name": "AMAVA River Lodge (Africa)",
+      "urls": [
+        "https://www.instagram.com/hideaways.amavariverlodge/",
+        "https://hideawaysafrica.com/accommodation/hideaways-amava-river-lodge"
+      ],
+      "summary": "A luxury safari lodge in Africa with a nearly identical name."
+    },
+    {
+      "name": "AMAVA Arts",
+      "urls": [
+        "https://www.instagram.com/amavaarts",
+        "https://amava.carrd.co/",
+        "https://www.patreon.com/c/amava"
+      ],
+      "summary": "A fantasy artist and author."
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Bear Clean Janitorial Services",
+      "urls": [
+        "https://bearclean.com/"
+      ],
+      "summary": "A major regional Northern New Jersey commercial cleaning firm focusing heavily on office, corporate medical, and heavy industrial floor maintenance."
+    },
+    {
+      "name": "Advanced Cleaning Concepts",
+      "urls": [
+        "https://advancedcleaningconcepts.com/"
+      ],
+      "summary": "Serves Bergen County and the greater Tri-State area with customized commercial janitorial, night cleaning, and day porter services."
+    },
+    {
+      "name": "JAN-PRO of Northern New Jersey",
+      "urls": [
+        "https://jan-pro.com/northern-nj/"
+      ],
+      "summary": "A dominant national franchise model competitor competing aggressively on local enterprise office accounts and commercial cleaning contracts."
+    }
+  ],
+  "currentBusinessPlan": [
+    "Premium mobile golf simulator entertainment business for events, corporate outings, weddings, fundraisers and private parties.",
+    "Focus on bringing a country club golf experience directly to customers."
+  ],
+  "nextSteps": [
+    "Rebuild the janitorial services website to highlight business strengths, quality and commitment to service, and premium commercial services.",
+    "Use modern technologies that focus on delivery, performance, and security.",
+    "Create a site design with improved usability, findability, and services organization.",
+    "Prioritize improvements to E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) through  review collection, FAQs, service and service area content, connection to community, improved SEO, and local/regional visibility.",
+    "Rebuild the landscape services website to also receive upgrades to technologies, design aesthetic, and E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) improvements.",
+    "Build a new and independent web site for the outdoor flooring services website to also receive upgrades to technologies, design aesthetic, and E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) improvements.",
+    "Build and implement a targeted social media marketing strategy",
+    "Explore traditional and digital advertising to improve customer reach."
+  ],
+  "colorPalette": {
+    "primary": "#512773",
+    "secondary": "#6db74d",
+    "tertiary": "#f9f6fc",
+    "accent1": "#f0ebf5",
+    "accent2": "#f0f7ec",
+    "accent3": "#ffb703",
+    "headerFont": {
+      "name": "Montserrat:ital,wght@0,100..900;1,100..900",
+      "url": "https://fonts.google.com/specimen/Montserrat"
+    },
+    "bodyFont": {
+      "name": "Montserrat:ital,wght@0,100..900;1,100..900",
+      "url": "https://fonts.google.com/specimen/Montserrat"
+    }
+  },
+  "websiteDomain": {
+    "currentUrls": [
+      "https://www.amavajanitorial.com",
+      "https://www.amavalandscape.com"
+    ],
+    "proposedUrls": [
+      "https://www.amavajanitorial.com",
+      "https://www.amavalandscape.com",
+      "https://www.amavaflooring.com",
+      "https://www.amavaoutdoorflooring.com"
+    ]
+  },
+  "logo": {
+    "url": "https://www.amavalandscape.com/images/logos/AMAVA-LANDSCAPE-LOGO2a.png",
+    "altText": "AMAVA Janitorial Services Logo"
+  },
+  "informationArchitecture": [
+    {
+      "route": "/",
+      "title": "Home Page",
+      "notes": [
+        "Header with Logo and Navigation",
+        "Hero - Full-Width, High-Res Image or Video",
+        "Our Quality Commitment",
+        "Services overview",
+        "Service Areas overview",
+        "Our process and approach",
+        "Testimonials",
+        "Footer"
+      ]
+    },
+    {
+      "route": "/about",
+      "title": "About Us",
+      "notes": [
+        "Our Story: A narrative-driven section explaining the genesis of the company and its growth",
+        "Mission: A bold statement focusing on the philosophy and customer focus",
+        "Our Team: High-end portraits of your crew and team members, emphasizing their tenure, subject matter expertise, and focus on quality work",
+        "Latest News: A curated press feed or internal updates"
+      ]
+    },
+    {
+      "route": "/services",
+      "title": "Services",
+      "notes": [
+        "Categories: Broad buckets of your services that people can easily understand",
+        "Individual Services: break out individual pages focusing on content for each service and where it is offered, including high-res imagery and project examples"
+      ]
+    },
+    {
+      "route": "/service-areas",
+      "title": "Service Areas",
+      "notes": [
+        "Service Areas: Detailed information about the geographic areas you serve",
+        "Also include individual services offered in each area, with high-res imagery and project examples",
+        "Include details around popular towns, cities, neighborhoods, and corporate parks where you regularly operate, with a focus on SEO and local search visibility"
+      ]
+    },
+    {
+      "route": "/gallery",
+      "title": "Gallery",
+      "notes": [
+        "Visual Storytelling: This isn't just a grid of photos; it's a 'mood board' of the great work you and your company deliver.",
+        "Content: High-resolution shots of before and after your projects."
+      ]
+    },
+    {
+      "route": "/testimonials",
+      "title": "Testimonials",
+      "notes": [
+        "Case Studies/Examples: Small, elegant 'Scenario' cards",
+        "Testimonial Letters in a scrollable carousel",
+        "Links to review pages on Google Business, Yelp, Nextdoor and more"
+      ]
+    },
+    {
+      "route": "/faqs",
+      "title": "FAQs",
+      "notes": [
+        "Service Logistics: \"How quickly can a request be fulfilled?\" or \"What is the geographic range of your services?\"",
+        "Billing: Clarification on estimation process versus your competitors",
+        "Process questions about prep, materials, delivery time, and more",
+        "Functionality: Accordion-style \"Click to Expand\" text boxes to keep the page tidy."
+      ]
+    },
+    {
+      "route": "/blog",
+      "title": "Blog",
+      "notes": [
+        "Instead of \"blog posts,\" think of these as \"Updates\" or \"Briefings.\"",
+        "Content: think of these as an opportunity to share finished projects, demonstrate subject matter expertise, highlight team members, and more.",
+        "Spotlights: Share success stories for your customers for the services you offer",
+        "Social Sharing Buttons: So readers can post your tips to Pinterest or Facebook."
+      ]
+    },
+    {
+      "route": "/contact",
+      "title": "Contact Us",
+      "notes": [
+        "Inquiry Form: A minimal, sophisticated form asking for basic details and the specific area of interest.",
+        "Direct Lines: A dedicated phone number and email address for immediate inquiries.",
+        "Service Area: A map or list of primary hubs where Simple Day has physical \"boots on the ground\" presence.",
+        "Functionality: Integrated Map: For easy directions."
+      ]
+    }
+  ],
+  "blogRoute": {
+    "enabled": true,
+    "route": "/blog"
+  },
+  "keywords": [
+    "AMAVA Janitorial Services",
+    "Commercial cleaning services",
+    "Office cleaning",
+    "Day porter services",
+    "Post-construction clean-up",
+    "Medical office sanitation",
+    "Floor care and maintenance",
+    "Pressure washing services",
+    "Window cleaning services",
+    "Northern New Jersey janitorial"
+  ],
+  "differentiation": [
+    "Competitive Gap: Since you are targeting high end customers, you want to rank for keywords that imply top tier quality rather than just 'cheap' services. Instead of handling high volume and standard finishes, Marvelous can outshine them by targeting specific, high-end services that require more 'finesse.'",
+    "Regional Specificity: By continuing with individual landing pages per town or city, you capture local SEO that others might miss by being too narrow or too broad.",
+    "Companies with broad offerings are very 'process-heavy.' For Marvelous, I recommend a 'Gallery-First' approach. In Basking Ridge, 'seeing is believing.' Use high-resolution, local project photos (e.g., 'Recently completed project on Oak Ridge Rd') to create a local connection that a larger franchise can't easily replicate."
+  ],
+  "proposedSocialMediaAccounts": [
+    "Google Business Profile",
+    "Facebook",
+    "Instagram",
+    "Threads",
+    "X / Twitter",
+    "LinkedIn",
+    "Nextdoor",
+    "Reddit"
+  ]
+}

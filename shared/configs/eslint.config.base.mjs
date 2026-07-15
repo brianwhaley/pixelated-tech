@@ -4,6 +4,7 @@ import pluginNext from "@next/eslint-plugin-next";
 import tseslint from "typescript-eslint";
 import parser from "@typescript-eslint/parser";
 import jsonPlugin from "@eslint/json";
+import a11yPlugin from "eslint-plugin-jsx-a11y";
 import pixelatedPlugin from "@pixelated-tech/components/scripts/pixelated-eslint-plugin.js";
 
 /**
@@ -44,6 +45,7 @@ export function getBaseESLintConfig(__dirname) {
 			plugins: {
 				"@next/next": pluginNext,
 				"@typescript-eslint": tseslint.plugin,
+				"jsx-a11y": a11yPlugin,
 				"pixelated": pixelatedPlugin,
 			},
 			rules: {

@@ -4,7 +4,9 @@ import { headers } from "next/headers";
 import { assertSiteInfo } from '../config/config.validators';
 import { getFullPixelatedConfig } from '../config/config';
 import type { SiteInfo } from '../config/config.types';
+import { contentfulSlugToValue } from '../integrations/contentful.delivery';
 import { getRouteByKey } from './metadata.functions';
+import { normalizePath } from './utilities';
 
 export type GenerateMetaTagsProps = {
 	title: string;
@@ -14,13 +16,33 @@ export type GenerateMetaTagsProps = {
 	url: string;
 };
 
+function getFallbackMetadataFromPath(pathname: string, siteInfo: any) {
+	const isService = pathname.startsWith('/services');
+	const isServiceArea = pathname.startsWith('/service-areas');
+	const siteInfoSection = isService ? siteInfo?.services : isServiceArea ? siteInfo?.serviceAreas : null;
+	const slug = contentfulSlugToValue({ slug: pathname.split('/').filter(Boolean).pop() ?? '' });
+	const item = siteInfoSection?.find((item: any) => item.name.trim().toLowerCase() === slug.trim().toLowerCase());
+	if (!item) return null;
+	return {
+		title: (siteInfo.name ?? '' ).trim() + " - " + (item.name ?? '').trim(),
+		description: String(item.short_description ?? ''),
+		keywords: item.keywords?.join(', ') ?? String(siteInfo?.keywords ?? ''),
+	};
+}
+
 async function getPageMetaTagsProps(): Promise<GenerateMetaTagsProps> {
 	const reqHeaders = await headers();
 	const path = reqHeaders.get('x-path') ?? '/';
 	const origin = reqHeaders.get('x-origin') ?? '';
 	const url = reqHeaders.get('x-url') ?? `${origin}${path}`;
-	const pathname = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
-	const metadata = getRouteByKey(getFullPixelatedConfig().routes, 'path', pathname) || {};
+	const pathname = normalizePath(path);
+	const config = getFullPixelatedConfig();
+	let metadata = getRouteByKey(config.routes, 'path', pathname) || {};
+	const siteInfo = config.siteInfo;
+
+	if (pathname.startsWith('/services/') || pathname.startsWith('/service-areas/')) {
+		metadata = getFallbackMetadataFromPath(pathname, siteInfo);
+	}
 
 	return {
 		title: metadata?.title ?? '',

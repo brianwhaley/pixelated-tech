@@ -113,7 +113,7 @@ export default function SamplePage2() {
 						just the two of you for an intimate adventure in the beautiful landscapes of the area 
 						or in the busy streets of nearby cities surrounded by all your loved ones — it's your day. 
 						Your experience is my top priority, and you'll see that before, during, and after your wedding day."
-						buttonText="LEARN MORE"
+						buttonText="ABOUT US"
 					/>
 				</section>
 
@@ -132,7 +132,7 @@ export default function SamplePage2() {
 								We view photography as an art form, a way of translating feeling into image. 
 								Museums, paintings and nature continually remind us that beauty lies 
 								not in perfection, but in feeling."
-								buttonText="LEARN MORE"
+								buttonText="VIEW PORTFOLIO"
 							/>
 						</div>
 					</div>

@@ -117,9 +117,9 @@ export function ServiceAreaCard({ serviceArea, serviceAreaPathPrefix = defaultSe
 			title={serviceArea.name}
 			content={serviceArea.short_description}
 			url={url}
-			buttonText="Learn more"
 			img={serviceArea.image}
 			imgAlt={serviceArea.name}
+			buttonText={`View ${serviceArea.name}`}
 		/>
 	);
 }

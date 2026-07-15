@@ -105,7 +105,7 @@ export default function SamplePage1() {
 							for enhanced aesthetics and functionality. We understand that every client has 
 							unique needs and preferences, which is why we offer tailored solutions that 
 							cater to your specific requirements. Our company serves all counties in the state."
-							buttonText="LEARN MORE"
+							buttonText="VIEW ALL SERVICES"
 						/>
 					</PageGridItem>
 				</PageSection>
@@ -132,7 +132,7 @@ export default function SamplePage1() {
 							of each client. From stunning flower beds to serene water features, 
 							we pay meticulous attention to detail to ensure that every element of the 
 							landscape reflects the customer's personal style."
-						buttonText="LEARN MORE"
+						buttonText="VIEW ALL SERVICES"
 					/>
 				</PageSection>
 
