@@ -203,6 +203,7 @@ SchemaBook.propTypes = {
 				name: PropTypes.string,
 			}),
 		]),
+		lccn: PropTypes.string,
 		sameAs: PropTypes.arrayOf(PropTypes.string),
 		variants: PropTypes.arrayOf(
 			PropTypes.shape({
@@ -247,6 +248,8 @@ export function SchemaBook(props: SchemaBookType) {
 		...(publisher && { publisher: addSameAs(publisher, siteInfo?.sameAs) }),
 		...(book.sameAs && book.sameAs.length > 0 && { sameAs: book.sameAs }),
 		...(buildBookUrl(book.url, book.pageUrl, siteInfo?.url) && { url: buildBookUrl(book.url, book.pageUrl, siteInfo?.url) }),
+		// identifier: construct from `book.lccn` when present
+		...(book.lccn ? { identifier: { '@type': 'PropertyValue', propertyID: 'LCCN', value: String(book.lccn) } } : {}),
 		...(book.copyrightYear && { copyrightYear: Number(book.copyrightYear) }),
 		...(variantSchemas.length > 0 && { workExample: variantSchemas }),
 	};

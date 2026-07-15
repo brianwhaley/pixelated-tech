@@ -6,12 +6,12 @@
   "author": {
     "@type": "Organization",
     "name": "Pixelated Technologies",
-    "url": "https://pixelated.tech"
+    "url": "https://www.pixelated.tech"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Pixelated Technologies",
-    "url": "https://pixelated.tech"
+    "url": "https://www.pixelated.tech"
   },
   "datePublished": "2023-10-01",
   "dateModified": "2026-01-04",
@@ -19,11 +19,11 @@
   "isPartOf": {
     "@type": "WebSite",
     "name": "Pixelated Technologies",
-    "url": "https://pixelated.tech"
+    "url": "https://www.pixelated.tech"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://pixelated.tech/faqs"
+    "@id": "https://www.pixelated.tech/faqs"
   },
   "mainEntity": [
     {

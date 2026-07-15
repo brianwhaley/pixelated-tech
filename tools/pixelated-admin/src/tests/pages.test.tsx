@@ -3,6 +3,12 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import path from 'path';
 import { pathToFileURL } from 'url';
 
+// Ensure server module provides StyleGuideUI for page rendering
+vi.mock('@pixelated-tech/components/server', () => ({
+	StyleGuideUI: () => 'StyleGuide',
+	getFullPixelatedConfig: () => ({ routes: [{ name: 'Home', path: '/' }] }),
+}));
+
 let currentSearchParams = new URLSearchParams('callbackUrl=/');
 const mockSmartFetch = vi.fn(async (...args: any[]) => {
 	const stringUrl = String(args[0]);

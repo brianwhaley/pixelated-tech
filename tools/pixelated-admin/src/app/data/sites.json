@@ -207,10 +207,16 @@
 				"companyName": "Palmetto Epoxy",
 				"address": "116 Beckenridge Circle, Bluffton, SC 29909",
 				"additionalInvoiceItems": {
-					"2026-07": {
-						"amount": 150.00,
-						"description": "Reimbursement for Facebook Advertising for July 2026, as requested."
-					}
+					"2026-07": [
+						{
+							"amount": 19.01,
+							"description": "Reimbursement for Facebook Advertising for June 2026, as requested."
+						},
+						{
+							"amount": 57.74,
+							"description": "Reimbursement for Facebook Advertising for July 2026, as requested."
+						}
+					]
 				}	
 			}
 		},

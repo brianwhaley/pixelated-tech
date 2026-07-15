@@ -2,6 +2,9 @@
 const debug = false; 
 
 
+/* ======================================== 
+           HTML FUNCTIONS
+======================================== */
 
 export function html2dom (str: string) {
 	const globalAny = globalThis as any;
@@ -15,6 +18,25 @@ export function html2dom (str: string) {
 	dom.innerHTML = str;
 	return dom;
 }
+
+
+
+export function contrastyColor(hexColor: string) {
+	const hex = hexColor.replace('#', '');
+	const r = parseInt(hex.substring(0, 2), 16);
+	const g = parseInt(hex.substring(2, 4), 16);
+	const b = parseInt(hex.substring(4, 6), 16);
+	const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+	return luminance > 0.5 ? '#000000' : '#FFFFFF';
+}
+
+
+
+
+
+/* ======================================== 
+           ARRAY FUNCTIONS
+======================================== */
 
 
  
@@ -39,6 +61,13 @@ export function mergeDeep (a: any, b: any) {
 	return extended;
 }
 
+
+
+
+
+/* ======================================== 
+           NUMBER FUNCTIONS
+======================================== */
 
 
 export function randomBetween (min: number, max: number) {
@@ -105,6 +134,46 @@ export function hashCode(str: string): string {
 
 
 
+export function formatAsUSD(cost: number) {
+	if (!Number.isFinite(cost)) { return '$0.00'; }
+	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
+
+
+
+export function formatAsHundredths(num: number) {
+	return Math.trunc(num * 100) / 100;
+}
+
+
+
+
+export function toBoolean(value: unknown): boolean | undefined {
+	if (typeof value === 'boolean') {
+		return value;
+	}
+	if (typeof value === 'number') {
+		if (value === 1) return true;
+		if (value === 0) return false;
+		return undefined;
+	}
+	const normalized = sanitizeString(value).toLowerCase();
+	if (normalized === 'true' || normalized === 'yes' || normalized === '1') return true;
+	if (normalized === 'false' || normalized === 'no' || normalized === '0') return false;
+	return undefined;
+}
+
+
+
+
+
+/* ======================================== 
+           STRING FUNCTIONS
+======================================== */
+
+
+
 export function capitalize (str: string) {
 	return str[0].toUpperCase() + str.toLowerCase().slice(1);
 }
@@ -134,20 +203,53 @@ export function sanitizeString(value: unknown) {
 	return '';
 }
 
-export function toBoolean(value: unknown): boolean | undefined {
-	if (typeof value === 'boolean') {
-		return value;
-	}
-	if (typeof value === 'number') {
-		if (value === 1) return true;
-		if (value === 0) return false;
-		return undefined;
-	}
-	const normalized = sanitizeString(value).toLowerCase();
-	if (normalized === 'true' || normalized === 'yes' || normalized === '1') return true;
-	if (normalized === 'false' || normalized === 'no' || normalized === '0') return false;
-	return undefined;
+
+
+
+export function stringTo1337_v1 (str: string) {
+	return str
+		.replace(/o/gi, '0')
+		// .replace(/i/gi, '1')
+		.replace(/l/gi, '1')
+		.replace(/r/gi, '2')
+		.replace(/e/gi, '3')
+		.replace(/a/gi, '4')
+		.replace(/s/gi, '5')
+		.replace(/g/gi, '6')
+		.replace(/t/gi, '7')
+		.replace(/b/gi, '8')
+		.replace(/g/gi, '9');
 }
+
+
+
+
+export function stringTo1337(str: string): string {
+	//converts lowercase non consecutive, non number characters (and doublets) to leet speak numbers
+	const leetMap: Record<string, string> = {
+		'o': '0', 'l': '1', 'z': '2', 'e': '3', 
+		'a': '4', 's': '5', 'b': '6', 't': '7', 
+		'g': '9'
+	};
+	let result = '';
+	for (const char of str) {
+		const leet = leetMap[char];
+		const last = result.slice(-1);
+		const lastIsNumber = /[0-9]/.test(last);
+		// Convert if: 
+		// 1. There is a mapping 
+		// 2. AND (the last char isn't a leet number OR it's matches for a doublet)
+		if (leet && (!lastIsNumber || last === leet)) {
+			result += leet;
+		} else {
+			result += char;
+		}
+	}
+	return result;
+}
+
+
+
 
 
 export function normalizePath(path: string | undefined | null): string {
@@ -217,19 +319,6 @@ export function getDomain(url?: string): string {
 
 
 
-export function formatAsUSD(cost: number) {
-	if (!Number.isFinite(cost)) { return '$0.00'; }
-	return cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-}
-
-
-
-
-export function formatAsHundredths(num: number) {
-	return Math.trunc(num * 100) / 100;
-}
-
-
 
 
 /**
@@ -262,6 +351,10 @@ export function extractDomainName(hostname: string): string {
 	// Take the second-to-last part (the domain before the TLD)
 	return parts[parts.length - 2];
 }
+
+
+
+
 
 
 
@@ -424,46 +517,3 @@ export const SERVER_ONLY_PATTERNS = [
 //	/\bNextRequest\b/,
 //	/\bNextResponse\b/
 ];
-
-
-
-export function stringTo1337_v1 (str: string) {
-	return str
-		.replace(/o/gi, '0')
-		// .replace(/i/gi, '1')
-		.replace(/l/gi, '1')
-		.replace(/r/gi, '2')
-		.replace(/e/gi, '3')
-		.replace(/a/gi, '4')
-		.replace(/s/gi, '5')
-		.replace(/g/gi, '6')
-		.replace(/t/gi, '7')
-		.replace(/b/gi, '8')
-		.replace(/g/gi, '9');
-}
-
-
-
-export function stringTo1337(str: string): string {
-	//converts lowercase non consecutive, non number characters (and doublets) to leet speak numbers
-	const leetMap: Record<string, string> = {
-		'o': '0', 'l': '1', 'z': '2', 'e': '3', 
-		'a': '4', 's': '5', 'b': '6', 't': '7', 
-		'g': '9'
-	};
-	let result = '';
-	for (const char of str) {
-		const leet = leetMap[char];
-		const last = result.slice(-1);
-		const lastIsNumber = /[0-9]/.test(last);
-		// Convert if: 
-		// 1. There is a mapping 
-		// 2. AND (the last char isn't a leet number OR it's matches for a doublet)
-		if (leet && (!lastIsNumber || last === leet)) {
-			result += leet;
-		} else {
-			result += char;
-		}
-	}
-	return result;
-}

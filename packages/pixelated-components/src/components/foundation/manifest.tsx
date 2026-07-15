@@ -27,7 +27,7 @@ export function generateManifest(options: ManifestOptions = {}): MetadataRoute.M
 		author: siteInfo.author,
 		developer: {
 			name: "Pixelated Technologies",
-			url: "https://pixelated.tech"
+			url: "https://www.pixelated.tech"
 		},
 		start_url: ".",
 		homepage_url: siteInfo.url,

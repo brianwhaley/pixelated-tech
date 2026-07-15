@@ -34,6 +34,8 @@ vi.mock('@pixelated-tech/components/server', () => ({
 			{ name: 'Home', path: '/' },
 			{ name: 'Login', path: '/login' }
 		],
+		// Minimal mock for StyleGuideUI used by pages (return plain text to avoid JSX in setup)
+		StyleGuideUI: () => 'StyleGuide',
 	}),
 }));
 
@@ -64,4 +66,25 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 		siteName,
 		billingCycle,
 	}),
+	CacheManager: class {
+		constructor() {}
+		get() { return null; }
+		set() { return null; }
+	}
+}));
+
+// augment components mock with client-side utilities used by components
+vi.mock('@pixelated-tech/components', async (importOriginal) => {
+	const actual = await importOriginal();
+	return {
+		...actual,
+		PageSection: (props: any) => /*#__PURE__*/ (props.children),
+		Loading: () => 'Loading',
+		usePixelatedConfig: () => ({ siteInfo: { title: 'Test' }, routes: [] }),
+	};
+});
+
+// Mock next-auth hooks for components that use useSession
+vi.mock('next-auth/react', () => ({
+	useSession: () => ({ data: null, status: 'unauthenticated' }),
 }));

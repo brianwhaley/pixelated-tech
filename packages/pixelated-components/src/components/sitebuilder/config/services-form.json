@@ -42,7 +42,7 @@
         "name": "url",
         "label": "Service URL",
         "required": false,
-        "placeholder": "https://pixelated.tech/services/web-dev",
+        "placeholder": "https://www.pixelated.tech/services/web-dev",
         "size": "40"
       }
     }

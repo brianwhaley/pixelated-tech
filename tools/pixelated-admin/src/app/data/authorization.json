@@ -3,6 +3,8 @@
     "brian@pixelated.tech": {
       "routes": [
         "/",
+        "/assessment",
+		"/proposal",
         "/billing",
         "/component-usage",
         "/configbuilder",

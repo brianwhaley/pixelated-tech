@@ -59,7 +59,7 @@ export const Schema_Website_With_Search = {
 					'@type': 'SearchAction',
 					target: {
 						'@type': 'EntryPoint',
-						urlTemplate: 'https://pixelated.tech/search?q={search_term_string}'
+						urlTemplate: 'https://www.pixelated.tech/search?q={search_term_string}'
 					},
 					'query-input': 'required name=search_term_string'
 				}}

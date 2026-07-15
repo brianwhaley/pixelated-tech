@@ -18,7 +18,7 @@ const performanceAudits = [
     displayValue: '1.8s',
     details: {
       items: [
-        { url: 'https://pixelated.tech/', measurement: '1.8s' }
+        { url: 'https://www.pixelated.tech/', measurement: '1.8s' }
       ]
     }
   },
@@ -31,7 +31,7 @@ const performanceAudits = [
     displayValue: '120ms',
     details: {
       items: [
-        { url: 'https://pixelated.tech/blog', measurement: '120ms' }
+        { url: 'https://www.pixelated.tech/blog', measurement: '120ms' }
       ]
     }
   }
@@ -60,7 +60,7 @@ const accessibilityAudits = [
     displayValue: '2 images missing alt',
     details: {
       items: [
-        { url: 'https://pixelated.tech/about', issue: 'missing alt text' }
+        { url: 'https://www.pixelated.tech/about', issue: 'missing alt text' }
       ]
     }
   }
@@ -109,7 +109,7 @@ export const mockCoreWebVitalsResponse: CoreWebVitalsResponse = {
   data: [
     {
       site: 'pixelated-tech',
-      url: 'https://pixelated.tech',
+      url: 'https://www.pixelated.tech',
       metrics: {
         cls: 0.03,
         fid: 15,
@@ -172,7 +172,7 @@ export const mockAxeCoreResponse: AxeCoreResponse = {
   data: [
     {
       site: 'pixelated-tech',
-      url: 'https://pixelated.tech',
+      url: 'https://www.pixelated.tech',
       result: {
         violations: [
           {
@@ -218,7 +218,7 @@ export const mockAxeCoreResponse: AxeCoreResponse = {
           windowHeight: 900
         },
         timestamp: baseTime,
-        url: 'https://pixelated.tech'
+        url: 'https://www.pixelated.tech'
       },
       summary: {
         violations: 1,
@@ -285,7 +285,7 @@ export const mockDependencyData: DependencyData = {
   success: true,
   status: 'Low Risk',
   timestamp: baseTime,
-  url: 'https://pixelated.tech',
+  url: 'https://www.pixelated.tech',
   message: 'Dependency scan completed',
   summary: {
     info: 12,
@@ -320,17 +320,17 @@ export const mockUptimeData: UptimeData = {
   success: true,
   status: 'Healthy',
   timestamp: baseTime,
-  url: 'https://pixelated.tech',
+  url: 'https://www.pixelated.tech',
   message: 'All health checks passing'
 };
 
 export const mockOnSiteSEOData = {
   site: 'pixelated-tech',
-  url: 'https://pixelated.tech',
+  url: 'https://www.pixelated.tech',
   overallScore: 0.92,
   pagesAnalyzed: [
     {
-      url: 'https://pixelated.tech/',
+      url: 'https://www.pixelated.tech/',
       title: 'Home',
       statusCode: 200,
       crawledAt: baseTime,
@@ -359,7 +359,7 @@ export const mockOnSiteSEOData = {
       ]
     },
     {
-      url: 'https://pixelated.tech/blog/',
+      url: 'https://www.pixelated.tech/blog/',
       title: 'Blog',
       statusCode: 200,
       crawledAt: baseTime,

@@ -194,6 +194,37 @@ describe('Billing Functions', () => {
 			expect(data.totalOwed).toBe(750);
 		});
 
+		it('supports additional invoice items as an array for a billing month', () => {
+			const site = {
+				name: 'testsite',
+				url: 'https://testsite.com',
+				billing: {
+					tier: 'premier',
+					price: 250,
+					email: 'test@test.com',
+					companyName: 'Test Inc',
+					address: '123 Test St',
+					additionalInvoiceItems: {
+						'2026-07': [
+							{
+								amount: 19.01,
+								description: 'Reimbursement for Facebook Advertising for June 2026, as requested.'
+							},
+							{
+								amount: 57.74,
+								description: 'Reimbursement for Facebook Advertising for July 2026, as requested.'
+							}
+						]
+					}
+				}
+			};
+
+			const data = compileInvoiceData(site, '2026-07', mockSubscriptions, mockPayment, [], []);
+			expect(data.items[0].description).toContain('Reimbursement for Facebook Advertising for June 2026, as requested.');
+			expect(data.items[1].amount).toBe(57.74);
+			expect(data.totalOwed).toBe(326.75);
+		});
+
 		it('normalizes tier names properly', () => {
 			const site = {
 				name: 'testsite',

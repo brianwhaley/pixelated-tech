@@ -14,6 +14,7 @@ const book = {
 	genre: [ "Memoir", "Humor", "Business Humor" ],
 	inLanguage: "en-US",
 	isFamilyFriendly: true,
+	lccn: "2026918151",
 	sameAs: [
 		"https://www.amazon.com/dp/B0H8FT29ZT", // kindle
 		"https://www.amazon.com/dp/B0H8FN5T71", // paperback
