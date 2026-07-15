@@ -893,3 +893,20 @@ describe('Utility Functions', () => {
     });
   });
 });
+
+
+
+// Additional unit tests for contrastyColor utilities
+import { contrastyColor } from '../components/foundation/utilities';
+
+describe('contrastyColor utility', () => {
+  it('returns black for light colors', () => {
+    expect(contrastyColor('#ffffff')).toBe('#000000');
+    expect(contrastyColor('#ffebcd')).toBe('#000000');
+  });
+
+  it('returns white for dark colors', () => {
+    expect(contrastyColor('#000000')).toBe('#FFFFFF');
+    expect(contrastyColor('#112233')).toBe('#FFFFFF');
+  });
+});

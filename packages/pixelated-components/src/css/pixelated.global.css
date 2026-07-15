@@ -282,6 +282,18 @@ footer {
         visibility: hidden;
     }
 
+    .no-break {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .page-break {
+        clear: both;
+        break-before: page; 
+        page-break-before: always; 
+    }
+
+
 }
 
 

@@ -6,7 +6,7 @@ import type { SiteInfo } from '@/components/config/config.types';
 
 const siteInfo: SiteInfo = {
   name: 'Manning Metalworks',
-  description: 'Custom metal fabrication in Morris Plains, NJ.',
+  description: 'Custom metal fabrication in Morris County, NJ.',
   url: 'https://www.manningmetalworks.com',
   email: 'manningmetalworks@gmail.com',
   telephone: '(973) 906-0441',

@@ -87,7 +87,7 @@ describe('WebsiteSchema', () => {
 		if (siteInfo.potentialAction) {
 			expect(schemaData.potentialAction).toBeDefined();
 			expect(schemaData.potentialAction.target.urlTemplate).toBe(
-				'https://pixelated.tech/search?q={search_term_string}'
+				'https://www.pixelated.tech/search?q={search_term_string}'
 			);
 		} else {
 			expect(schemaData.potentialAction).toBeUndefined();
