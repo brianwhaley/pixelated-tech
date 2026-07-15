@@ -4,7 +4,7 @@
     "author": "Brian Whaley",
     "description": "Custom web development and digital design agency specializing in React, Next.js, and modern web technologies",
     "keywords": "pixelated, web development, react, next.js, custom websites, digital design, small business",
-    "url": "https://pixelated.tech",
+    "url": "https://www.pixelated.tech",
     "servicesPathPrefix": "/services",
     "email": "info@pixelated.tech",
     "favicon": "/favicon.ico",
@@ -73,13 +73,13 @@
       "@type": "Offer",
       "priceCurrency": "USD",
       "price": "0",
-      "url": "https://pixelated.tech/services",
+      "url": "https://www.pixelated.tech/services",
       "availability": "https://schema.org/InStock"
     },
     "availability": "https://schema.org/InStock",
     "availableChannel": {
       "@type": "ServiceChannel",
-      "serviceUrl": "https://pixelated.tech/contact",
+      "serviceUrl": "https://www.pixelated.tech/contact",
       "availableLanguage": [
         "English"
       ],

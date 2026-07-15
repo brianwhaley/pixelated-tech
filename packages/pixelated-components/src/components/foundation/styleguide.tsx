@@ -5,6 +5,8 @@ import { getFullPixelatedConfig } from "../config/config";
 import type { VisualDesign } from "../config/config.types";
 import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs } from "./sitemap";
 import './styleguide.css';
+import { contrastyColor } from "./utilities";
+
 
 
 /**
@@ -40,12 +42,12 @@ export async function StyleGuideUI() {
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="colors-section">
 				<h2>Color Palette</h2>
 				<div className="color-swatch-grid">
-					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['primary-color']?.value, color: '#fff' }} className="color-swatch">Primary Color</div>
-					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['secondary-color']?.value }} className="color-swatch">Secondary Color</div>
-					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['accent1-color']?.value }} className="color-swatch">Accent 1 Color</div>
-					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['accent2-color']?.value }} className="color-swatch">Accent 2 Color</div>
-					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['bg-color']?.value }} className="color-swatch">Background Color</div>
-					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['text-color']?.value }} className="color-swatch">Text Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['primary-color']?.value, color: contrastyColor(visualdesign?.['primary-color']?.value) }} className="color-swatch">Primary Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['secondary-color']?.value, color: contrastyColor(visualdesign?.['secondary-color']?.value) }} className="color-swatch">Secondary Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['accent1-color']?.value, color: contrastyColor(visualdesign?.['accent1-color']?.value) }} className="color-swatch">Accent 1 Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['accent2-color']?.value, color: contrastyColor(visualdesign?.['accent2-color']?.value) }} className="color-swatch">Accent 2 Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['bg-color']?.value, color: contrastyColor(visualdesign?.['bg-color']?.value) }} className="color-swatch">Background Color</div>
+					<div suppressHydrationWarning style={{ backgroundColor: visualdesign?.['text-color']?.value, color: contrastyColor(visualdesign?.['text-color']?.value) }} className="color-swatch">Text Color</div>
 				</div>
 			</PageSection>
 

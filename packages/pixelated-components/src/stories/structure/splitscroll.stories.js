@@ -95,7 +95,7 @@ export const SplitScroll_Basic = {
 				title="Get Started"
 				subtitle="Ready to begin?"
 				buttonText="Contact Us"
-				url="https://pixelated.tech/contact"
+				url="https://www.pixelated.tech/contact"
 			>
 				<div style={{ fontSize: '1.125rem', lineHeight: '1.75' }}>
 					<p>

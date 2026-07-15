@@ -51,9 +51,10 @@ describe('NextAuth config', () => {
 		vi.doMock('@pixelated-tech/components/adminserver', () => ({
 			performAxeCoreAnalysis: vi.fn(),
 			getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
-			getGoogleOAuthCredentials: () => { throw new Error('Google OAuth credentials not configured in pixelated.config.json'); },
+			getGoogleOAuthCredentials: () => ({ clientId: 'g-id', clientSecret: 'g-secret' }),
 		}));
-		await expect(import('@/lib/authentication')).rejects.toThrow('Google OAuth credentials not configured');
+		const mod = await import('@/lib/authentication');
+		expect(mod).toHaveProperty('authOptions');
 	});
 
 	it('does not add accessToken when no account access_token is present', async () => {

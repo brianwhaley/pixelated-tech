@@ -4,7 +4,7 @@ import { handlePixelatedProxy } from "../components/foundation/proxy-handler";
 
 describe('handlePixelatedProxy', () => {
     // Helper to create a NextRequest
-    const createRequest = (url = "https://pixelated.tech/test") => {
+    const createRequest = (url = "https://www.pixelated.tech/test") => {
         return new NextRequest(new URL(url), {
             headers: {
                 "user-agent": "test-agent",
@@ -13,7 +13,7 @@ describe('handlePixelatedProxy', () => {
     };
 
     it('sets standard x-path and x-url headers', () => {
-        const req = createRequest("https://pixelated.tech/about?query=1");
+        const req = createRequest("https://www.pixelated.tech/about?query=1");
         const response = handlePixelatedProxy(req);
 
         // Next.js NextResponse.next() request headers are buried in the request object

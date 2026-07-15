@@ -584,21 +584,3 @@
 		color: #333333;
 	}
 }
-
-
-
-@media print {
-  .no-break {
-    /* Modern standard */
-    break-inside: avoid;
-    /* Legacy fallback for older browsers */
-    page-break-inside: avoid;
-  }
-  .page-break {
-    clear: both;
-    /* Modern standard */
-    break-before: page; 
-    /* Legacy fallback for older browsers */
-    page-break-before: always; 
-  }
-}

@@ -163,6 +163,8 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	ServicesSchema: ({ children }: any) => <>{children}</>,
 	VisualDesignStyles: ({ children }: any) => <>{children}</>,
 	PixelatedServerConfigProvider: ({ children }: any) => <>{children}</>,
+	// Minimal mock for StyleGuideUI used by pages
+	StyleGuideUI: () => <div data-testid="mock-styleguide">StyleGuide</div>,
 	getFullPixelatedConfig: () => ({
 		integrations: {
 			nextAuth: { secret: 'test-secret' },
