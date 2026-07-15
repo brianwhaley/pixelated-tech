@@ -9,7 +9,7 @@ import { PageSectionHeader } from "@pixelated-tech/components";
 export default function SocialTags() {
 	return (
 		<>
-			<PageSectionHeader url="" title="Follow us on Social Media" />
+			<PageSectionHeader url="" title="Follow Pixelated Technologies on Social Media" />
 			<PageSection id="socialtag-section"columns={7} padding={"0px"}>
 				<PageGridItem>
 					<Callout variant="full" imgShape="squircle" layout="vertical" 

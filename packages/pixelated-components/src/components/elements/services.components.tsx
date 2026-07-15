@@ -135,9 +135,9 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 			title={service.name}
 			content={service.short_description}
 			url={url}
-			buttonText="Learn more"
 			img={service.image}
 			imgAlt={service.name}
+			buttonText={`View ${service.name}`}
 		/>
 	);
 }

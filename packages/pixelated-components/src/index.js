@@ -14,11 +14,11 @@ export * from './components/config/config.validators';
 export * from './components/elements/index.elements';
 export * as ElementsComponents from './components/elements/index.elements';
 
-export * as FoundationComponents from './components/foundation/index.foundation';
 export * from './components/foundation/index.foundation';
+export * as FoundationComponents from './components/foundation/index.foundation';
 
-export * as IntegrationsComponents from './components/integrations/index.integrations';
 export * from './components/integrations/index.integrations';
+export * as IntegrationsComponents from './components/integrations/index.integrations';
 
 export * from './components/pixelated/index.pixelated';
 export * as PixelatedComponents from './components/pixelated/index.pixelated';

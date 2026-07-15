@@ -441,7 +441,7 @@ export function createSiteConfigServiceURLs(siteConfig: any, origin?: string): S
 		if (url) {
 			sitemap.push({
 				name: service.name ?? undefined,
-				description: service.description ?? undefined,
+				description: service.short_description ?? undefined,
 				url,
 				lastModified: new Date(),
 				changeFrequency: 'hourly',
@@ -470,7 +470,7 @@ export function createSiteConfigServiceAreaURLs(siteConfig: any, origin?: string
 		if (url) {
 			sitemap.push({
 				name: serviceArea.name ?? undefined,
-				description: serviceArea.description ?? undefined,
+				description: serviceArea.short_description ?? undefined,
 				url,
 				lastModified: new Date(),
 				changeFrequency: 'hourly',

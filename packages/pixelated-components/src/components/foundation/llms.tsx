@@ -13,21 +13,21 @@ const excludedRoutePatterns = [
 	/api/i,
 	/blogcalendar/i,
 	/dashboard/i,
-	/humans/i,
-	/legal/i,
+	// /humans/i,
+	// /legal/i,
 	/manifest/i,
 	/not-found/i,
 	/preview/i,
-	/privacy/i,
-	/robots/i,
-	/security/i,
-	/services/i,
-	/service-areas/i,
+	// /privacy/i,
+	// /robots/i,
+	// /security/i,
+	// /services/i,
+	// /service-areas/i,
 	/styleguide/i,
 	/style-guide/i,
-	/terms/i,
+	// /terms/i,
 	/updates/i,
-	/\.txt$/i,
+	/\.txt$/i, // covers humans, robots, security, ai, llms
 ];
 
   
@@ -72,10 +72,12 @@ export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 	lines.push('');
 	lines.push(`> ${sanitizeString(siteInfo.description ?? siteInfo.name)}`);
 	lines.push('');
+	lines.push(`This file serves as a directory of machine-readable context for AI agents, crawlers, and LLM search systems looking to accurately analyze ${sanitizeString(siteInfo.name ?? 'the site')}.`);
+	lines.push('');
 
 	lines.push('## Page Links');
 	if (pageRouteEntries.length) {
-		pageRouteEntries.forEach((entry) => lines.push(formatLink(entry)));
+		pageRouteEntries.forEach((entry) => lines.push(formatLink(entry) + ": " + sanitizeString(entry.description ?? '')));
 	} else {
 		lines.push('- none');
 	}
@@ -83,7 +85,7 @@ export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 
 	lines.push('## Services');
 	if (serviceEntries.length) {
-		serviceEntries.forEach((entry) => lines.push(formatLink(entry)));
+		serviceEntries.forEach((entry) => lines.push(formatLink(entry) + ": " + sanitizeString(entry.description ?? '')));
 	} else {
 		lines.push('- none');
 	}
@@ -91,7 +93,7 @@ export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 
 	lines.push('## Service Areas');
 	if (serviceAreaEntries.length) {
-		serviceAreaEntries.forEach((entry) => lines.push(formatLink(entry)));
+		serviceAreaEntries.forEach((entry) => lines.push(formatLink(entry) + ": " + sanitizeString(entry.description ?? '')));
 	} else {
 		lines.push('- none');
 	}
@@ -99,7 +101,7 @@ export async function LLMSTxt(props: LLMSTxtType): Promise<NextResponse> {
 
 	lines.push('## Optional');
 	if (optionalRouteEntries.length) {
-		optionalRouteEntries.forEach((entry) => lines.push(formatLink(entry)));
+		optionalRouteEntries.forEach((entry) => lines.push(formatLink(entry) + ": " + sanitizeString(entry.description ?? '')));
 	} else {
 		lines.push('- none');
 	}

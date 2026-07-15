@@ -24,7 +24,7 @@ export function scheduleAppointment(props: CalloutLibraryType) {
 			and review tailored solutions that help you achieve your business goals. 
 			Whether you need a new website, a social media strategy, 
 			improved search engine optimization, or a complete 
-			digital transformation, we are here to help. 
+			digital transformation, Pixelated Technologies is here to help. 
 			Click here to schedule your free Digital Assessment today with Pixelated Technologies 
 			and take the first step towards growing your business in the digital age.' />
 	);

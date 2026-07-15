@@ -126,6 +126,58 @@ describe('pixelated-eslint-plugin', () => {
 		expect(messages.some(m => m.ruleId === 'pixelated/strict-pronoun-resolution')).toBe(false);
 	});
 
+	it('warns when <a> uses generic CTA link text', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<a href="/test">Click Here</a>); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/no-generic-cta-text': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/no-generic-cta-text')).toBe(true);
+	});
+
+	it('warns when buttonText prop uses generic CTA text', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<Callout url="/test" buttonText="Click Here" />); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/no-generic-cta-text': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/no-generic-cta-text')).toBe(true);
+	});
+
+	it('warns when ctaLabel prop uses generic CTA text', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<PageHeader ctaHref="/test" ctaLabel="Learn More" />); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/no-generic-cta-text': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/no-generic-cta-text')).toBe(true);
+	});
+
+	it('does not warn for descriptive CTA text', async () => {
+		const mod = await import('../scripts/pixelated-eslint-plugin.js');
+		const linter = new (await import('eslint')).Linter();
+		linter.definePlugin('pixelated', mod.default);
+		const code = `export default function Page(){ return (<a href="/test">Get started</a>); }`;
+		const messages = linter.verify(code, {
+			parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } },
+			plugins: { pixelated: true },
+			rules: { 'pixelated/no-generic-cta-text': 'warn' }
+		});
+		expect(messages.some(m => m.ruleId === 'pixelated/no-generic-cta-text')).toBe(false);
+	});
+
 	it('warns when JSX attribute strings contain ambiguous pronouns', async () => {
 		const mod = await import('../scripts/pixelated-eslint-plugin.js');
 		const linter = new (await import('eslint')).Linter();
