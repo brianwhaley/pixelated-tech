@@ -1,0 +1,259 @@
+{
+	"companyName": "The Bluffton Collective",
+	"companyContact": "Luke Sadler",
+	"date": "July 15, 2026",
+	"email": "info@theblufftoncollective.com",
+	"phone": "Contact via Social Media",
+	"address": {
+		"streetAddress": "Tanger 1 (Former Saks Fifth Avenue Building), 1256 Fording Island Rd",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "US"
+	},
+	"primaryAudience": [
+		"Local Bluffton and Hilton Head Island residents looking to shop for unique, handmade local goods, art, and boutique fashion",
+		"Tourists and seasonal visitors to the Lowcountry seeking authentic, regionally made souvenirs and gifts",
+		"Lowcountry artisans, makers, food vendors, and small business owners looking for a physical, air-conditioned retail space or pop-up market opportunity"
+	],
+	"secondaryAudience": [
+		"Local foodies and families seeking weekend community events and interactive pop-up markets",
+		"Commercial real estate partners and local tourism boards interested in collaborative community events and economic development in the Beaufort County area"
+	],
+	"marketOverview": [
+		"The Lowcountry (Bluffton/Hilton Head) has a booming tourism economy and a highly active local community that deeply values supporting 'local' and handmade goods.",
+		"While outdoor farmer's markets and seasonal pop-ups are highly popular in the region, extreme summer heat and unpredictable weather create a strong demand for comfortable, indoor, air-conditioned market footprints.",
+		"Micro-retail and multi-vendor collectives are surging in popularity as they lower the barrier to entry for local makers who want a physical retail presence without the massive overhead of a standalone brick-and-mortar lease."
+	],
+	"currentSocialMedia": [
+		"Facebook - https://www.facebook.com/TheBlufftonCollective",
+		"Instagram - https://www.instagram.com/theblufftoncollective",
+		"Threads - none",
+		"X / Twitter - none",
+		"LinkedIn - none",
+		"Google Business Profile - none",
+		"Nextdoor - none",
+		"Yelp - none",
+		"Google Form - https://forms.gle/PAaQm5yFtM8zbpKq5"
+	],
+	"advertisingPartners": [
+		"None currently listed (primarily organic social media and foot traffic from Tanger Outlets)"
+	],
+	"earnedMedia": [
+		"Local tourism mentions, regional event calendars, and influencer spotlights showcasing Lowcountry pop-up markets"
+	],
+	"existingSite": {
+		"url": "",
+		"strengths": [
+			"Active Social First Footprint: High engagement and solid aesthetic continuity on Instagram and Facebook, proving local demand.",
+			"Unique Market Differentiator: Strong focus on an indoor, climate-controlled setup (former Saks building), offering a unique value proposition for Southern summers.",
+			"Built-in Foot Traffic: Immediate physical visibility and physical parking advantages by being located directly inside Tanger Outlets 1.",
+			"Warm Community Trust: Strong rapport built by Luke Sadler with local makers and repeat shoppers.",
+			"High-Quality Visual Assets: A wealth of existing user-generated content, photos of products, and market-day video clips ready for web use.",
+			"Clear Core Niches: Defined market verticals (home decor, boutiques, local crafts, food) that easily translate into clear web categories.",
+			"High Search Intent Category: High local search volume for regional shopping, things to do, and artisan souvenirs in the Hilton Head/Bluffton area.",
+			"Excellent Vendor Pipeline: Natural, constant inbound interest from regional makers wanting to participate in pop-ups.",
+			"Low-Barrier Onboarding: Extremely agile business model that can rotate vendors and test new products dynamically.",
+			"Strong Brand Vibe: Natural aesthetic appeal of 'Lowcountry charm' which translates easily to modern, warm minimalist web layouts."
+		],
+		"areasForImprovement": [
+			"Complete Lack of Web Presence: No centralized domain means they are entirely invisible to search engines and non-social media users.",
+			"No Indexed Local SEO: Completely missing out on high-value search queries like 'artisan markets near me' or 'shopping in Bluffton SC'.",
+			"High Application Friction: Relying on Instagram/Facebook direct messages for vendor applications creates manual admin bottlenecks for Luke Sadler.",
+			"No Centralized Schedule: Shoppers have to dig through old social media posts to verify specific pop-up dates, hours, and holiday schedules.",
+			"Unclaimed Google Business Profile: Missing out on Google Maps traffic for tourists looking for physical locations or things to do near Tanger 1.",
+			"Zero Vendor Directory: No way to showcase permanent or recurring vendors, missing cross-promotional backlink opportunities.",
+			"No Email List Capture: Missing a major community-building asset by not collecting shopper or vendor emails via a website newsletter form.",
+			"Low Domain Authority: Starting from scratch on a new domain requires structured SEO strategy to compete with established local event sites.",
+			"Lack of Trust Signals for Vendors: Without a professional site detailing booth dimensions, pricing, and rules, prospective vendors may perceive it as a casual hobby market.",
+			"No E-commerce Integration: No secondary revenue channel to sell curated local gift boxes or market-branded merchandise online."
+		]
+	},
+	"similarCompanyNames": [
+		{
+			"name": "The Bluffton Artisan Market",
+			"urls": [
+				"https://www.facebook.com/blufftonartisanmarket"
+			],
+			"summary": "An outdoor traveling market hosting local makers at various Bluffton locations like breweries and parks."
+		},
+		{
+			"name": "Society of Bluffton Artists (SoBA)",
+			"urls": [
+				"https://sobagallery.com/"
+			],
+			"summary": "A long-standing local art gallery and collective in Old Town Bluffton, focusing strictly on fine arts."
+		},
+		{
+			"name": "The Bluffton General Store",
+			"urls": [
+				"https://blufftongeneralstore.com/"
+			],
+			"summary": "A physical retail storefront in Old Town Bluffton that curates local goods, gifts, and Lowcountry-themed artisan items, sharing a very similar aesthetic."
+		},
+		{
+			"name": "The Hilton Head Collective",
+			"urls": [
+				"https://www.instagram.com/thehiltonheadcollective"
+			],
+			"summary": "A similarly named local brand/presence on social media focusing on Hilton Head Island regional lifestyle and small businesses."
+		}
+	],
+	"competitors": [
+		{
+			"name": "The Farmers Market of Bluffton",
+			"urls": [
+				"https://www.farmersmarketbluffton.org/"
+			],
+			"summary": "The premier, highly popular weekly outdoor market in Old Town Bluffton featuring fresh produce, food vendors, and local artisans."
+		},
+		{
+			"name": "Farmers & Makers Market at Sea Pines",
+			"urls": [
+				"https://theshopsatseapinescenter.com/event/farmers-makers-market-seapines/"
+			],
+			"summary": "A highly popular weekly Tuesday market on nearby Hilton Head Island that attracts upscale tourists and high-end local artisans."
+		},
+		{
+			"name": "Shelter Cove Town Centre Merchants",
+			"urls": [
+				"https://www.sheltercovetowncentre.com/"
+			],
+			"summary": "A major nearby Hilton Head retail center hosting seasonal outdoor artisan markets, sunset celebrations, and community vendor events."
+		},
+		{
+			"name": "The Bluffton Arts and Seafood Festival",
+			"urls": [
+				"https://www.blufftonartsandseafoodfestival.org/"
+			],
+			"summary": "A massive, highly competitive annual multi-day event that draws regional and national attention for local art, music, and food vendors."
+		}
+	],
+	"currentBusinessPlan": [
+		"Operate a vibrant multi-vendor collective inside the air-conditioned former Saks Fifth Avenue building at Tanger Outlets 1.",
+		"Curate a rotating selection of local boutiques, makers, home decor, clothing, and artisanal food options.",
+		"Promote weekend pop-up markets (typically 10:00 AM - 4:00 PM) alongside the semi-permanent physical market space.",
+		"Actively recruit and vet high-quality local Lowcountry vendors through digital outreach."
+	],
+	"nextSteps": [
+		"Design and launch a dedicated, modern website to serve as the definitive hub for shoppers and vendors.",
+		"Implement an online vendor application portal with form submissions to streamline the onboarding process for Luke Sadler.",
+		"Create a dynamic event and market calendar showing upcoming pop-up dates, vendor lineups, and special market hours.",
+		"Establish a 'Vendor Directory' on the site to give permanent and recurring vendors digital exposure and backlinks.",
+		"Optimize the new site for local SEO (targeting 'things to do in Bluffton', 'Bluffton shopping', 'Lowcountry makers') to capture tourist search traffic.",
+		"Claim and optimize a Google Business Profile for the physical Tanger 1 location to capture high-intent map searches."
+	],
+	"colorPalette": {
+		"primary": "#5c5c42",
+		"secondary": "#745332",
+		"tertiary": "#FBF9F6",
+		"accent1": "#abaa8e",
+		"accent2": "#c5ab90",
+		"accent3": "#D4AF37",
+		"headerFont": {
+			"name": "Playfair Display:ital,wght@0,400..900;1,400..900",
+			"url": "https://fonts.google.com/specimen/Playfair+Display"
+		},
+		"bodyFont": {
+			"name": "Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900",
+			"url": "https://fonts.google.com/specimen/Inter"
+		}
+	},
+	"websiteDomain": {
+		"currentUrls": [],
+		"proposedUrls": [
+			"https://www.theblufftoncollective.com",
+			"https://www.blufftoncollective.com"
+		]
+	},
+	"logo": {
+		"url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ8eFJ2SOyd0CoWgvp9NBqhjjk-d0B9nymxmWW-DKkwdkzyPo-O9OvpFkv&s=10",
+		"altText": "The Bluffton Collective Logo"
+	},
+	"informationArchitecture": [
+		{
+			"route": "/",
+			"title": "Home Page",
+			"notes": [
+				"Header with Logo, Hours, Location, and Navigation",
+				"Hero - High-quality, warm image of the indoor market space highlighting its air-conditioned, family-friendly vibe",
+				"Location & Hours Callout: Explicitly highlighting Tanger 1 (Former Saks building) with an embedded map",
+				"About the Collective section: An introduction to Luke Sadler's vision of supporting local",
+				"Featured Vendors grid carousel",
+				"Upcoming Pop-up Dates teaser",
+				"Call-to-Action blocks for both shoppers and prospective vendors",
+				"Footer"
+			]
+		},
+		{
+			"route": "/about",
+			"title": "Our Story",
+			"notes": [
+				"The Vision: Transforming the former Saks Fifth Avenue space into a thriving community marketplace",
+				"Supporting Local: The impact of shopping small in the Lowcountry",
+				"FAQ-style brief on what to expect (dog-friendly, climate-controlled, parking details)"
+			]
+		},
+		{
+			"route": "/vendors",
+			"title": "Meet the Vendors",
+			"notes": [
+				"Categorized vendor directory (Boutiques, Art & Decor, Food & Sweet Treats, Handmade Goods)",
+				"Individual vendor cards with links to their respective social channels or websites",
+				"High-quality imagery showcasing actual maker booths"
+			]
+		},
+		{
+			"route": "/apply",
+			"title": "Become a Vendor",
+			"notes": [
+				"Vendor expectations and guidelines (booth sizes, pricing structure, set-up instructions)",
+				"Interactive digital application form capturing business name, product category, social handles, and booth style preferences",
+				"FAQ section specifically addressing vendor logistics (power access, AC, holiday markets)"
+			]
+		},
+		{
+			"route": "/events",
+			"title": "Market Calendar",
+			"notes": [
+				"Interactive, visual calendar listing weekly hours, holiday events, and special pop-up market dates",
+				"Spotlights on themed market days (e.g., Spring Fling, Holiday Markets, Family Fun Days)"
+			]
+		},
+		{
+			"route": "/contact",
+			"title": "Visit Us",
+			"notes": [
+				"Detailed directions to Tanger Outlets 1, including which entrance/parking lot is closest to the former Saks building",
+				"General inquiry contact form for customers and local community partners",
+				"Direct links to Instagram and Facebook pages"
+			]
+		}
+	],
+	"blogRoute": {
+		"enabled": true,
+		"route": "/news"
+	},
+	"keywords": [
+		"The Bluffton Collective",
+		"Bluffton SC artisan market",
+		"Tanger Outlets Bluffton events",
+		"Shop local Bluffton SC",
+		"Lowcountry makers market",
+		"Indoor market Bluffton",
+		"Bluffton boutique shopping",
+		"Hilton Head local crafts",
+		"Become a vendor Bluffton",
+		"Luke Sadler Bluffton"
+	],
+	"differentiation": [
+		"The Climate-Controlled Advantage: Unlike almost every other Lowcountry artisan market, The Bluffton Collective is indoor and air-conditioned. This must be a major focal point of the branding, appealing to shoppers and vendors tired of the coastal South Carolina summer heat.",
+		"Prime Outlet Foot Traffic: Positioned directly in Tanger Outlets 1, the collective offers local makers exposure to massive national tourist foot traffic that standard local farmer's markets in parks cannot match.",
+		"High-End Boutique Vibe: Operating in the former Saks Fifth Avenue building allows for a more polished, upscale, and organized micro-retail setup compared to standard pop-ups with simple tents."
+	],
+	"proposedSocialMediaAccounts": [
+		"Google Business Profile",
+		"Instagram",
+		"Facebook"
+	]
+}

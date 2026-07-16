@@ -18,6 +18,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { PageSection, PageSectionHeader, PageTitleHeader, Table } from '@pixelated-tech/components';
 import {
 	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
+	getFullPixelatedConfig,
 	listPixelatedFormSubmissionReportRows,
 } from '@pixelated-tech/components/server';
 
@@ -75,7 +76,7 @@ export function normalizeReportRow(row: Record<string, any>) {
 
 export function getEventIdentity(item: Record<string, any>) {
 	return {
-		eventId: item.sku ?? item.itemSKU ?? item.id ?? item.itemID ?? 'Unknown',
+		eventId: item.itemSKU ?? item.sku ?? item.itemID ?? item.id ?? 'Unknown',
 		eventName: item.title ?? item.itemTitle ?? item.name ?? item.sku ?? item.itemSKU ?? 'Unknown',
 		quantity: Number(item.quantity ?? item.itemQuantity ?? 1) || 1,
 	};
@@ -98,7 +99,7 @@ export function buildEventGroups(rows: Array<Record<string, any>>) {
 
 		parsed.items.forEach((item) => {
 			const { eventId, eventName, quantity } = getEventIdentity(item || {});
-			const key = `${eventId}::${eventName}`;
+			const key = eventId;
 			if (!groups.has(key)) {
 				groups.set(key, {
 					eventId,
@@ -111,6 +112,9 @@ export function buildEventGroups(rows: Array<Record<string, any>>) {
 			const group = groups.get(key)!;
 			for (let index = 0; index < quantity; index += 1) {
 				group.registrants.push({ attendee, parentGuardian });
+			}
+			if (parsed.createdAtMs >= group.latestCreatedAt) {
+				group.eventName = eventName;
 			}
 			group.latestCreatedAt = Math.max(group.latestCreatedAt, parsed.createdAtMs);
 		});
@@ -129,8 +133,14 @@ export default async function EventReportPage({ searchParams }: { searchParams?:
 	const resolvedSearchParams = await searchParams;
 
 	try {
+		const pixelatedConfig = getFullPixelatedConfig();
+		const cartConfig = pixelatedConfig?.integrations?.shoppingcart;
+		const domain = cartConfig?.orderDomain ?? '';
+		const formName = cartConfig?.orderFormName ?? '';
 		const rows = await listPixelatedFormSubmissionReportRows({
 			tableName: DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
+			domain,
+			formName,
 		});
 		const reportRows = sortReportRows(rows);
 		const eventGroups = buildEventGroups(reportRows);
