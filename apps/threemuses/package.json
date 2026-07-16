@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.7.18",
+  "version": "0.7.19",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1088.0",
+    "@aws-sdk/client-iam": "^3.1088.0",
+    "@aws-sdk/client-route-53": "^3.1088.0",
     "@pixelated-tech/components": "*",
     "next": "^16.2.10",
     "prop-types": "15.8.1",

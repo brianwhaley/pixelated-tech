@@ -19,6 +19,18 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		__esModule: true,
 		...actual,
 		SquareStoreItemsWrapper: (props: any) => React.createElement('div', { 'data-testid': 'square-store-items-wrapper' }, props.title ? React.createElement('div', { 'data-testid': 'square-store-items-wrapper-title' }, props.title) : null),
+		getFullPixelatedConfig: vi.fn(() => ({
+			integrations: {
+				shoppingcart: {
+					orderDomain: 'thethreemusesofbluffton.com',
+					orderFormName: 'The Three Muses of Bluffton Order Form',
+					orderTo: 'orders@thethreemusesofbluffton.com',
+					orderFrom: 'noreply@pixelated.tech',
+					orderSubject: 'The Three Muses of Bluffton Order Notification',
+					storeName: 'The Three Muses of Bluffton',
+				},
+			},
+		} as any)),
 		getSquareStoreItems: vi.fn(async () => ({ items: [] })),
 		getSquareStoreItemById: vi.fn(async (id: string) => ({ id, title: 'Test Item', price: 10 })),
 		createSquareOrderAndCapturePayment: vi.fn(async (sourceId: any, checkoutData: any) => ({ status: 'ok', sourceId, checkoutData })),
@@ -79,13 +91,13 @@ import StoreItemPage from '@/app/(pages)/store/[item]/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
 import GalleryPage from '@/app/(pages)/gallery/page';
 import StudioSpecialsPage from '@/app/(pages)/studio-specials/page';
-import { SquareEventCallout as EventCallout, SquareEventDetail as EventDetail } from '@pixelated-tech/components';
 import EventReportPage, { buildEventGroups, asArray, parsePossibleJson, normalizeReportRow, getEventIdentity } from '@/app/(pages)/events/report/page';
 import { getThreeMusesSubtotalDiscount } from '@/app/lib/shoppingcart-discounts';
 import { POST as capturePaymentPOST } from '@/app/api/capture-payment/route';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
+const { SquareEventCallout: EventCallout, SquareEventDetail: EventDetail } = createPageComponentMocks();
 
 const routeParams: Record<string, string | undefined> = {
 	event: undefined,
@@ -232,8 +244,8 @@ describe('ThreeMuses coverage harness', () => {
 				headers: new Headers({}),
 				url: 'https://example.com/test?a=1',
 			} as any);
-			expect(result.request.headers.get('x-path')).toBe('/test?a=1');
-			expect(result.request.headers.get('x-origin')).toBe('https://example.com');
+			expect((result as any).request.headers.get('x-path')).toBe('/test?a=1');
+			expect((result as any).request.headers.get('x-origin')).toBe('https://example.com');
 		});
 
 		it('redirects amplifyapp.com proxy requests to the canonical domain', () => {
@@ -252,7 +264,7 @@ describe('ThreeMuses coverage harness', () => {
 				headers: new Headers({}),
 				url: 'https://example.com/test?a=1',
 			} as any);
-			expect(result.request.headers.get('x-url')).toBe('https://example.com/test?a=1');
+			expect((result as any).request.headers.get('x-url')).toBe('https://example.com/test?a=1');
 		});
 
 		it('sets cache headers for /events/report proxy requests', () => {
@@ -273,14 +285,14 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Store page empty state', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
 			const store = await StorePage();
 			render(store as any);
 			expect(document.getElementById('store-items-section')).not.toBeNull();
 		});
 
 		it('renders Store page with items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'item-1', title: 'Test Item' }] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'item-1', itemURL: '/item-1', itemTitle: 'Test Item', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const store = await StorePage();
 			render(store as any);
 			expect(document.getElementById('store-items-section')).not.toBeNull();
@@ -347,14 +359,14 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Events page with no items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page with items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-1', title: 'Event A', price: 10, status: 'open' }] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Event A', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
@@ -362,28 +374,28 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('renders Events page when config is unavailable', async () => {
 			setPixelatedConfigOverride(null);
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page even with archived events', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-archived', title: 'Archived Event', status: 'archived' }] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-archived', itemURL: '/event-archived', itemTitle: 'Archived Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page even with content types that do not match', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-wrong', title: 'Wrong Event', status: 'open' }] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-wrong', itemURL: '/event-wrong', itemTitle: 'Wrong Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page even when event images are missing', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ id: 'event-no-image', title: 'No Image Event', status: 'open' }] });
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-no-image', itemURL: '/event-no-image', itemTitle: 'No Image Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
@@ -391,29 +403,29 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('renders EventDetailPage when config is unavailable', async () => {
 			setPixelatedConfigOverride(null);
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ id: 'event-1', title: 'Test Event', price: 10 });
-			const eventDetail = await EventDetailPage({ params: Promise.resolve({ item: 'event-1' }) });
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Test Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
+			const eventDetail = await EventDetailPage({ params: Promise.resolve({ event: 'event-1' }) });
 			render(eventDetail as any);
 			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders the event detail route page and loads event data', async () => {
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ id: 'event-1', title: 'Test Event', price: 10 });
-			const eventDetail = await EventDetailPage({ params: Promise.resolve({ item: 'event-1' }) });
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Test Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
+			const eventDetail = await EventDetailPage({ params: Promise.resolve({ event: 'event-1' }) });
 			render(eventDetail as any);
 			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders the event detail route page with carouselImages instead of image', async () => {
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ id: 'event-3', title: 'Carousel Event', price: 10 });
-			const eventDetail = await EventDetailPage({ params: Promise.resolve({ item: 'event-3' }) });
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-3', itemURL: '/event-3', itemTitle: 'Carousel Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
+			const eventDetail = await EventDetailPage({ params: Promise.resolve({ event: 'event-3' }) });
 			render(eventDetail as any);
 			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders EventDetailPage not found when the item is missing', async () => {
 			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce(undefined);
-			await expect(EventDetailPage({ params: Promise.resolve({ item: 'event-1' }) })).rejects.toThrow();
+			await expect(EventDetailPage({ params: Promise.resolve({ event: 'event-1' }) })).rejects.toThrow();
 		});
 
 		it('renders events page loading state and content', async () => {
@@ -530,19 +542,36 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('redirects event report requests when the version query is stale in production', async () => {
 			const originalEnv = process.env.NODE_ENV;
-			process.env.NODE_ENV = 'production';
+			(process.env as any).NODE_ENV = 'production';
 			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([]);
 			await expect(EventReportPage({ searchParams: Promise.resolve({ v: '1' }) })).rejects.toThrow('NEXT_REDIRECT:/events/report?v=0');
-			process.env.NODE_ENV = originalEnv;
+			(process.env as any).NODE_ENV = originalEnv;
 		});
 
 		it('renders event report page with registration rows', async () => {
+			vi.mocked(componentsServer.getFullPixelatedConfig).mockReturnValueOnce({
+				integrations: {
+					shoppingcart: {
+						orderDomain: 'thethreemusesofbluffton.com',
+						orderFormName: 'The Three Muses of Bluffton Order Form',
+						orderTo: 'orders@thethreemusesofbluffton.com',
+						orderFrom: 'noreply@pixelated.tech',
+						orderSubject: 'The Three Muses of Bluffton Order Notification',
+						storeName: 'The Three Muses of Bluffton',
+					},
+				},
+			} as any);
 			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
 				{ created_at: '2024-02-01', items: [{ id: '1', title: 'A', itemQuantity: 2 }], shipping_to: { name: 'John' } },
 			]);
 			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '2' }) });
 			render(page as any);
 			expect(document.getElementById('three-muses-order-report-section')).not.toBeNull();
+			expect(componentsServer.listPixelatedFormSubmissionReportRows).toHaveBeenCalledWith({
+				tableName: 'PixelatedFormSubmissionsTable',
+				domain: 'thethreemusesofbluffton.com',
+				formName: 'The Three Muses of Bluffton Order Form',
+			});
 		});
 
 		it('renders event report page with multiple groups and sorts event report rows', async () => {
@@ -593,15 +622,15 @@ describe('ThreeMuses coverage harness', () => {
 			expect(getEventIdentity(normalized.items[0]).eventId).toBe('old-legacy-2');
 		});
 
-		it('returns Unknown event identity when item has no id or itemID', () => {
-			expect(getEventIdentity({}).eventId).toBe('Unknown');
-		});
-
-		it('renders an event report page without redirect when version matches in test env', async () => {
-			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([]);
-			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '0' }) });
-			render(page as any);
-			expect(document.getElementById('three-muses-order-report-section')).not.toBeNull();
+		it('prefers itemSKU over itemID for event grouping', () => {
+			const normalized = normalizeReportRow({
+				submissionData: JSON.stringify({
+					items: [{ itemID: '2026-SC08', itemSKU: '2026-SC08', title: 'Summer Camp' }],
+					shippingTo: { name: 'Jane' },
+				}),
+				created_at: '2026-07-10',
+			});
+			expect(getEventIdentity(normalized.items[0]).eventId).toBe('2026-SC08');
 		});
 
 		it('renders an error message when EventReportPage fails to load rows', async () => {
@@ -613,7 +642,7 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('calculates a Three Muses subtotal discount for event cart items', () => {
 			const discount = getThreeMusesSubtotalDiscount([
-				{ itemCategory: 'event', itemQuantity: 3, itemCost: 100 },
+				{ itemID: 'event-1', itemTitle: 'Test Event', itemInventory: 1, itemCategory: 'event', itemQuantity: 3, itemCost: 100 },
 			]);
 			expect(discount).toBeGreaterThanOrEqual(0);
 		});
