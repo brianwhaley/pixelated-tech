@@ -1,70 +1,107 @@
 {
   "companyName": "Traveling Country Club",
   "companyContact": "Luke Sadler",
-  "date": "July 13, 2026",
-  "email": "michaelp@amavajanitorial.com",
-  "phone": "(877) 625-5959",
+  "date": "July 15, 2026",
+  "email": "",
+  "phone": "",
   "address": {
-    "streetAddress": "115 North Franklin Turnpike, Suite 258",
-    "addressLocality": "Mahwah",
-    "addressRegion": "NJ",
-    "postalCode": "07430",
+    "streetAddress": "",
+    "addressLocality": "",
+    "addressRegion": "SC",
+    "postalCode": "",
     "addressCountry": "US"
   },
   "primaryAudience": [
-    "Corporate plaza and commercial office building facility managers in New Jersey, New York, Connecticut, Delaware, South Carolina, Southern & Central Florida.",
-    "Educational institutions, private schools, and daycare facilities requiring scheduled day-porter and nightly cleaning",
-    "General contractors, developers, and project managers looking for post-construction final clean-ups",
-    "Medical centers, clinical offices, and outpatient facilities needing specialized sanitation and floor care"
+    "Avid golfers who want to experience premium golf courses without the high cost of traditional country club memberships.",
+    "Business professionals who frequently entertain clients and colleagues on the golf course.",
+    "Golf enthusiasts who enjoy traveling throughout North Carolina and South Carolina to experience new courses.",
+    "Young professionals seeking a flexible golf membership without long-term contracts or expensive initiation fees.",
+    "Retirees looking for access to multiple golf courses while maintaining an active lifestyle.",
+    "Corporate groups seeking networking opportunities through organized golf events and tournaments."
   ],
   "secondaryAudience": [
-    "Property managers overseeing large residential townhouse and condo communities requiring integrated janitorial and outdoor maintenance",
-    "Corporate clients seeking high-rise exterior window cleaning and professional property pressure washing",
-    "Complementary service providers such as landscaping, pest control, and HVAC companies seeking bundled service offerings for their clients"
+    "Golf courses seeking increased weekday tee time utilization and recurring membership revenue.",
+    "Corporate sponsors looking to reach affluent golfers through events and partnerships.",
+    "Golf instructors and teaching professionals seeking exposure to a regional golfing audience.",
+    "Hospitality partners including hotels, restaurants, breweries, and tourism organizations that benefit from traveling golfers.",
+    "Golf equipment manufacturers and retailers interested in reaching highly engaged recreational golfers."
   ],
   "marketOverview": [
-    "The Tri-State commercial real estate and facility management market is highly dense, driven by corporate plazas, medical offices, and educational institutions prioritizing rigorous health, safety, and compliance standards.",
-    "B2B clients in Northern New Jersey increasingly seek single-vendor solutions that can scale across geographic footprints, demanding integrated capabilities that span from complex interior post-construction clean-ups to external property and asset maintenance.",
-    "Cost management and efficiency are primary drivers for outsourcing, with corporate operations and property management firms shifting away from in-house custodial teams to rely on specialized, fully insured external partners who utilize advanced commercial floor care and green cleaning protocols."
+    "Golf participation continues to experience sustained growth following record participation levels established during the COVID era, creating increased demand for flexible membership models.",
+    "Traditional country club memberships continue to become more expensive due to initiation fees, monthly dues, food minimums, and restrictive reciprocity agreements, creating opportunities for alternative membership organizations.",
+    "Traveling Country Club occupies a unique niche between public golf and private club memberships by providing members with access to dozens of partner golf courses under one membership.",
+    "The Carolinas represent one of the strongest golf markets in the United States, containing hundreds of public, semi-private, and resort golf courses that attract both residents and golf tourists.",
+    "Consumers increasingly prefer subscription-based services that provide flexibility over long-term contractual commitments."
   ],
   "currentSocialMedia": [
-    "Facebook - none",
-    "Instagram - none",
-    "Threads - none",
-    "X / Twitter - none",
-    "LinkedIn - none",
-    "Google Business Profile - none",
-    "Nextdoor - none",
-    "Yelp - https://www.yelp.com/biz/amava-janitorial-services-mahwah",
-    "Personal Facebook - https://www.linkedin.com/in/al-pope-09b23a26/"
+    "Website - https://travelingcountryclub.com",
+    "Facebook - Active",
+    "Instagram - Active",
+    "YouTube - Limited presence",
+    "LinkedIn - Limited presence",
+    "Threads - None identified",
+    "X / Twitter - Minimal activity",
+    "Google Business Profile - Opportunity for improvement",
+    "Email Newsletter - Existing member communications"
   ],
   "advertisingPartners": [
-    "None currently listed"
+    "Partner Golf Courses",
+    "Regional Golf Events",
+    "Golf Tournament Sponsorships",
+    "Local Tourism Organizations",
+    "Potential hospitality partners including restaurants and lodging providers"
   ],
   "earnedMedia": [
-    "https://www.mahwahlibrary.org/wp-content/uploads/2021/02/Minutes-2018-12-19.pdf"
+    "Partner golf course websites featuring Traveling Country Club membership.",
+    "Regional golf blogs and event listings.",
+    "Social media mentions by participating golf courses.",
+    "Member-generated content across social platforms."
   ],
   "existingSite": {
     "url": "https://travelingcountryclub.com/",
     "strengths": [
-      "The information architecture is sound, including Home Page, About, Services, Contact and Quote",
-      "There are individual pages for each of the different service lines",
-      "The home page explicitly states the operating regions (NJ, NY, CT Tri-State area, Florida, etc.)",
-      "Branding is consistent across the site and other service business sites (amavalandscape.com)",
-      "Some more modern techniques like full page headers, microinteractions, parallax backgrounds, and some responsive mobile design, are used to good effect",
-      "I see there is a Google Tag Manager implementation, which is a good sign for future marketing and analytics tracking",
-      "The site serves over a secure HTTPS connection, which is a fundamental requirement for search ranking algorithms and general user trust.",
-      "The phone number and email are hardcoded as clear text across pages, not hidden inside an image."
+      "The business concept is immediately differentiated from traditional country club memberships.",
+      "Brand messaging clearly communicates affordability and flexibility.",
+      "Membership pricing is easy to locate and understand.",
+      "The site effectively explains how the membership works.",
+      "Partner golf courses are showcased throughout the website.",
+      "Calls-to-action encouraging membership registration appear consistently.",
+      "Golf imagery reinforces the lifestyle and experience being sold.",
+      "The website is served securely over HTTPS.",
+      "Navigation is relatively straightforward and easy to understand.",
+      "The overall branding is consistent throughout the website.",
+      "The website emphasizes experiences rather than simply selling rounds of golf.",
+      "Regional landing pages demonstrate an understanding of localized marketing.",
+      "Testimonials help establish trust with prospective members.",
+      "The membership model is unique and memorable.",
+      "The business has significant expansion potential into additional metropolitan markets."
     ],
     "areasForImprovement": [
-      "A more Corporate, professional presence is necessary for the site.",
-      "There is too much use image transitions and moving text, which can be distracting and reduce the perception of professionalism.",
-      "Use of shadows, fonts, and color choice could be improved to make text more readable and create a more modern and professional feel.",
-      "There are many errors related to page construction",
-      "Improvements are needed for responsive and mobile display across various sizes and devices.",
-      "Technologies used are outdated, including Joomla, jquery, bootstrap, and more.",
-      "Content is thin, and doesn't include important E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) elements that are important for B2B and commercial service businesses.",
-      "Some basic and more advanced  search engine optimization (SEO) and more recent answer engine optimization (AEO) techniques are not being used, impacting findability and visibility in search results."
+      "The overall visual design could be modernized to create a more premium brand experience.",
+      "Homepage storytelling could better communicate the emotional benefits of membership.",
+      "Improve typography hierarchy for easier reading.",
+      "Increase the amount of original content throughout the website.",
+      "Develop dedicated pages for every partner golf course.",
+      "Create dedicated landing pages for each metropolitan market served.",
+      "Expand FAQ content to improve Answer Engine Optimization (AEO).",
+      "Implement structured schema markup including Organization, FAQ, Event, Membership, and LocalBusiness where appropriate.",
+      "Improve Core Web Vitals and overall page performance.",
+      "Optimize imagery for faster mobile loading.",
+      "Increase internal linking between related content.",
+      "Develop a comprehensive content marketing strategy through an active blog.",
+      "Introduce member success stories and featured member profiles.",
+      "Add partner golf course spotlights highlighting unique course features.",
+      "Create an interactive map of participating golf courses.",
+      "Enhance search engine optimization through location-based keyword targeting.",
+      "Improve accessibility to meet WCAG recommendations.",
+      "Strengthen E-E-A-T signals by expanding information about company leadership and industry expertise.",
+      "Integrate Google Analytics 4, Google Tag Manager, and conversion tracking across membership funnels.",
+      "Develop email automation for lead nurturing and membership onboarding.",
+      "Expand event promotion through a dedicated calendar.",
+      "Improve mobile navigation for users researching courses while traveling.",
+      "Develop downloadable membership guides and digital brochures.",
+      "Increase trust through additional reviews, testimonials, and partner endorsements.",
+      "Implement marketing automation to improve lead conversion and member retention."
     ]
   },
   "similarCompanyNames": [
