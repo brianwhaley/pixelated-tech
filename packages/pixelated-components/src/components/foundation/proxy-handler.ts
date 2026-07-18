@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getOriginFromHeaders } from './sitemap';
 
 /**
  * STANDARD_PROXY_MATCHER
@@ -20,13 +21,16 @@ export const STANDARD_PROXY_MATCHER = ["/((?!_next/image|_next/static|api|favico
  */
 export function handlePixelatedProxy(req: NextRequest) {
 	const path = req.nextUrl.pathname + (req.nextUrl.search || "");
-	const origin = (req.nextUrl as any)?.origin ?? new URL(req.url).origin;
-	const url = (req.nextUrl as any)?.href ?? req.url ?? `${origin}${path}`;
+	const publicOrigin = getOriginFromHeaders(req.headers as any);
+	const origin = publicOrigin ?? (req.nextUrl as any)?.origin ?? new URL(req.url).origin;
+	const url = publicOrigin ? new URL(path, publicOrigin).href : ((req.nextUrl as any)?.href ?? req.url ?? new URL(path, origin).href);
+	const env = (origin.includes('localhost') || origin.includes('127.0.0.1')) ? 'local' : 'prod';
 
 	const requestHeaders = new Headers(req.headers);
 	requestHeaders.set("x-path", path);
 	requestHeaders.set("x-origin", String(origin));
 	requestHeaders.set("x-url", String(url));
+	requestHeaders.set("x-env", env);
 
 	const response = NextResponse.next({
 		request: {

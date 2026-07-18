@@ -34,17 +34,21 @@
 		"Google Business Profile - none",
 		"Nextdoor - none",
 		"Yelp - none",
-		"Google Form - https://forms.gle/PAaQm5yFtM8zbpKq5"
+		"Google Form - https://forms.gle/PAaQm5yFtM8zbpKq5",
+		"Luke Sadler on Linkedin - https://www.linkedin.com/in/luke-sadler-material-analyst/",
+		"Luke Sadler on Facebook - https://www.facebook.com/luke.sadler.547",
+		"Luke Sadler on Instagram - https://www.instagram.com/lukeasadler/"
 	],
-	"advertisingPartners": [
+	"currentAdvertisingPartners": [
 		"None currently listed (primarily organic social media and foot traffic from Tanger Outlets)"
 	],
-	"earnedMedia": [
+	"currentEarnedMedia": [
 		"Local tourism mentions, regional event calendars, and influencer spotlights showcasing Lowcountry pop-up markets"
 	],
-	"existingSite": {
-		"url": "",
-		"strengths": [
+	"existingSite": [
+		{
+			"url": "",
+			"strengths": [
 			"Active Social First Footprint: High engagement and solid aesthetic continuity on Instagram and Facebook, proving local demand.",
 			"Unique Market Differentiator: Strong focus on an indoor, climate-controlled setup (former Saks building), offering a unique value proposition for Southern summers.",
 			"Built-in Foot Traffic: Immediate physical visibility and physical parking advantages by being located directly inside Tanger Outlets 1.",
@@ -68,7 +72,7 @@
 			"Lack of Trust Signals for Vendors: Without a professional site detailing booth dimensions, pricing, and rules, prospective vendors may perceive it as a casual hobby market.",
 			"No E-commerce Integration: No secondary revenue channel to sell curated local gift boxes or market-branded merchandise online."
 		]
-	},
+	}],
 	"similarCompanyNames": [
 		{
 			"name": "The Bluffton Artisan Market",
@@ -162,14 +166,15 @@
 	"websiteDomain": {
 		"currentUrls": [],
 		"proposedUrls": [
-			"https://www.theblufftoncollective.com",
-			"https://www.blufftoncollective.com"
+			"https://www.theblufftoncollective.com"
 		]
 	},
-	"logo": {
-		"url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ8eFJ2SOyd0CoWgvp9NBqhjjk-d0B9nymxmWW-DKkwdkzyPo-O9OvpFkv&s=10",
-		"altText": "The Bluffton Collective Logo"
-	},
+	"logo": [
+		{
+			"url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ8eFJ2SOyd0CoWgvp9NBqhjjk-d0B9nymxmWW-DKkwdkzyPo-O9OvpFkv&s=10",
+			"altText": "The Bluffton Collective Logo"
+		}
+	],
 	"informationArchitecture": [
 		{
 			"route": "/",
@@ -192,6 +197,32 @@
 				"The Vision: Transforming the former Saks Fifth Avenue space into a thriving community marketplace",
 				"Supporting Local: The impact of shopping small in the Lowcountry",
 				"FAQ-style brief on what to expect (dog-friendly, climate-controlled, parking details)"
+			]
+		},
+		{
+			"route": "/services",
+			"title": "Our Services",
+			"notes": [
+				"Highlighting the benefits of being a vendor at The Bluffton Collective",
+				"Showcasing the indoor, climate-controlled advantage for both shoppers and vendors",
+				"Emphasizing the marketing support provided to vendors (social media promotion, event photography, and cross-promotion)"
+			]
+		},
+
+		{
+			"route": "/service-areas",
+			"title": "Service Areas",
+			"notes": [
+				"Bluffton, SC",
+				"Hilton Head Island, SC",
+				"Beaufort, SC",
+				"Okatie, SC",
+				"Port Royal, SC",
+				"Sun City, SC",
+				"Hardeeville, SC",
+				"Ridgeland, SC",
+				"Beaufort County, SC",
+				"Lowcountry Region, SC"
 			]
 		},
 		{
@@ -218,6 +249,14 @@
 			"notes": [
 				"Interactive, visual calendar listing weekly hours, holiday events, and special pop-up market dates",
 				"Spotlights on themed market days (e.g., Spring Fling, Holiday Markets, Family Fun Days)"
+			]
+		},
+		{
+			"route": "/faqs",
+			"title": "FAQs",
+			"notes": [
+				"Common questions about visiting the market (hours, parking, dog policy, climate control)",
+				"Vendor-related FAQs (booth setup, power access, application process)"
 			]
 		},
 		{
@@ -253,7 +292,12 @@
 	],
 	"proposedSocialMediaAccounts": [
 		"Google Business Profile",
-		"Instagram",
-		"Facebook"
+		"Instagram (already active)",
+		"Facebook (already active)",
+		"Threads",
+		"LinkedIn",
+		"Nextdoor",
+		"Yelp",
+		"Reddit"
 	]
 }
