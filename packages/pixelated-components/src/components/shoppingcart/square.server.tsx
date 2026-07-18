@@ -23,6 +23,10 @@ export interface SquareStoreQueryOptions {
 	propertyValue?: string;
 }
 
+export interface SquareEventQueryOptions {
+	includeCompleted?: boolean;
+}
+
 export type SquareStoreEventImage = {
 	image: string;
 };
@@ -441,9 +445,6 @@ function buildSquareEventItem(
 	const startDate = itemData?.event?.start_at;
 	const endDate = itemData?.event?.end_at;
 	const eventTimeZone = itemData?.event?.event_location_time_zone;
-	if (isSquareEventComplete(startDate, endDate)) {
-		return undefined;
-	}
 	const duration = getSquareEventDurationHours(startDate, endDate);
 	const itemInventory = variationIds.reduce((total: number, id: string) => total + (countsMap.get(id) ?? 0), 0);
 	const properties = getItemProperties(itemObject, variationObjects);
@@ -479,7 +480,7 @@ function buildSquareEventItem(
 	};
 }
 
-async function normalizeSquareEventObjects(squareConfig: any, selectionLabelMap?: Map<string, string>) {
+async function normalizeSquareEventObjects(squareConfig: any, selectionLabelMap?: Map<string, string>, options: SquareEventQueryOptions = {}) {
 	const objects = await fetchSquareCatalogObjects(squareConfig);
 	const variationMap = new Map<string, any>();
 	const imageMap = new Map<string, string>();
@@ -508,22 +509,23 @@ async function normalizeSquareEventObjects(squareConfig: any, selectionLabelMap?
 
 	return itemObjects
 		.map((item) => buildSquareEventItem(item, variationMap, imageMap, countsMap, selectionLabelMap))
-		.filter((item): item is SquareStoreEventShapeType => Boolean(item));
+		.filter((item): item is SquareStoreEventShapeType => Boolean(item))
+		.filter((item) => options.includeCompleted || !isSquareEventComplete(item.fields.startDate, item.fields.endDate));
 }
 
-export async function getSquareEventItems() {
+export async function getSquareEventItems(options: SquareEventQueryOptions = {}) {
 	const squareConfig = getFullPixelatedConfig()?.integrations?.square;
 	if (!squareConfig) {
 		throw new Error('Square configuration is required for event items.');
 	}
 
-	const cacheKey = 'square_event_items';
+	const cacheKey = `square_event_items_${options.includeCompleted ? 'all' : 'active'}`;
 	const cached = squareEventCache.get<SquareStoreEventShapeType[]>(cacheKey);
 	if (cached) return cached;
 
 	const definitions = await fetchSquareCustomAttributeDefinitions(squareConfig);
 	const selectionLabelMap = buildSquareSelectionLabelMap(definitions, 'isShippable');
-	const items = await normalizeSquareEventObjects(squareConfig, selectionLabelMap);
+	const items = await normalizeSquareEventObjects(squareConfig, selectionLabelMap, options);
 	items.sort((a, b) => {
 		const aTime = a.fields.startDate ? Date.parse(a.fields.startDate) : Infinity;
 		const bTime = b.fields.startDate ? Date.parse(b.fields.startDate) : Infinity;
@@ -814,6 +816,7 @@ function buildSquareStoreItem(
 		itemID: itemId,
 		itemURL: `/store/${itemSlug}`,
 		itemTitle,
+		catalogObjectId: variationIds.length > 0 ? variationIds[0] : undefined,
 		itemDescription: itemData?.description || '',
 		itemImageURL: primaryImageURL,
 		itemImageURLs: itemImageURLs.length ? itemImageURLs : undefined,
@@ -908,8 +911,16 @@ export async function getSquareStoreItems(options: SquareStoreQueryOptions = {})
 	const selectionLabelMap = buildSquareSelectionLabelMap(definitions, 'isShippable');
 	const { items } = await normalizeSquareCatalogObjects(squareConfig, selectionLabelMap);
 	const filtered = filterSquareStoreItems(items, squareItemCategoryIds, squareFeaturedCategoryId, options);
-	const filters = buildSquareStoreFilters(filtered);
-	const response = { items: filtered, filters };
+	const sorted = filtered.every((item) => item.itemType === 'EVENT')
+		? filtered.slice().sort((left, right) => {
+			const leftTime = left.itemStartDate && left.itemStartTime ? Date.parse(`${left.itemStartDate} ${left.itemStartTime}`) : Number.POSITIVE_INFINITY;
+			const rightTime = right.itemStartDate && right.itemStartTime ? Date.parse(`${right.itemStartDate} ${right.itemStartTime}`) : Number.POSITIVE_INFINITY;
+			if (leftTime !== rightTime) return leftTime - rightTime;
+			return left.itemTitle.localeCompare(right.itemTitle);
+		})
+		: filtered;
+	const filters = buildSquareStoreFilters(sorted);
+	const response = { items: sorted, filters };
 	squareStoreCache.set(cacheKey, response);
 	return response;
 }
@@ -1076,6 +1087,7 @@ function buildSquareLineItems(checkoutData: CheckoutType, currency: string) {
 			currency,
 		},
 		...(item.itemDescription ? { note: item.itemDescription } : {}),
+		...(item.catalogObjectId ? { catalog_object_id: item.catalogObjectId } : {}),
 	}));
 
 	const registrationData = getRegistrationData(checkoutData);

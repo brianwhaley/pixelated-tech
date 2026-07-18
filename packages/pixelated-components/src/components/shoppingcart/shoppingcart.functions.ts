@@ -49,6 +49,7 @@ export type CartItemType = {
     itemWeightUnit?: string,
     itemType?: string,
     itemCategory?: string | string[],
+    catalogObjectId?: string,
 }
 
 /* Historical: legacy ShoppingCartItemType removed — use CartItemType as the canonical data type */

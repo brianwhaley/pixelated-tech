@@ -73,4 +73,21 @@ describe('handlePixelatedProxy', () => {
 		expect((response as any).request.headers.get('x-path')).toBe('/fallback?q=1');
 		expect(response.headers.get('Content-Security-Policy')).toContain("default-src 'self'");
 	});
+
+    it('derives x-origin and x-url from x-forwarded-host and x-forwarded-proto when present', () => {
+        const req = {
+            nextUrl: { pathname: '/proxy-path', search: '?a=1' },
+            headers: new Headers({
+                'x-forwarded-host': 'public.example.com',
+                'x-forwarded-proto': 'https',
+            }),
+            url: 'https://internal.local/proxy-path?a=1',
+        } as any as NextRequest;
+
+        const response = handlePixelatedProxy(req);
+
+        expect((response as any).request.headers.get('x-origin')).toBe('https://public.example.com');
+        expect((response as any).request.headers.get('x-url')).toBe('https://public.example.com/proxy-path?a=1');
+        expect((response as any).request.headers.get('x-path')).toBe('/proxy-path?a=1');
+    });
 });

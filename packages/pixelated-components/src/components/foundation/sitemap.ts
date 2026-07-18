@@ -157,12 +157,12 @@ export function getOriginFromHeaders(headersProp?: { get: (k: string) => string 
 
 		const hostHeader = headersProp.get('x-forwarded-host') || headersProp.get('host');
 		if (hostHeader) {
-			const first = String(hostHeader).split(',')[0].trim();
-			if (first) {
-				const hostname = first.split(':')[0];
-				if (hostname) {
+			const host = String(hostHeader).split(',')[0].trim();
+			if (host) {
+				// const hostname = first.split(':')[0]; // commented out to retain port 
+				if (host) {
 					const proto = headersProp.get('x-forwarded-proto') || 'https';
-					return `${proto}://${hostname}`;
+					return `${proto}://${host}`;
 				}
 			}
 		}
@@ -194,10 +194,13 @@ export function getOriginFromHeaders(headersProp?: { get: (k: string) => string 
 export type RuntimeEnv = 'auto' | 'local' | 'prod';
 
 export function getRuntimeEnvFromHeaders(headersProp?: { get: (k: string) => string | null } | undefined): RuntimeEnv {
-	const origin = getOriginFromHeaders(headersProp);
+	// DEPRECATED - NOT A RELIABLE SOURCE OF ENVIRONMENT INFO. Use getOriginFromHeaders and derive from origin instead.
+	/* const origin = getOriginFromHeaders(headersProp);
 	if (!origin) return 'auto';
-	if (origin.includes('localhost') || origin.includes('127.0.0.1')) return 'local';
-	return 'prod';
+	if (origin.includes('localhost') || origin.includes('127.0.0.1')) return 'local'; */
+	const env = headersProp?.get('x-env')?.trim();
+	if (env === 'local' || env === 'prod' || env === 'auto') return env;
+	return 'auto';
 }
 
 /**

@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { PageSection, smartFetch, useFileData } from '@pixelated-tech/components';
-import { generateGoogleFontsUrl } from '@pixelated-tech/components';
+// import { generateGoogleFontsUrl } from '@pixelated-tech/components';
 import { contrastyColor } from '@pixelated-tech/components';
 import { SmartImage } from '@pixelated-tech/components';
 import './assessment.css';
@@ -25,13 +25,13 @@ type AssessmentData = {
 	secondaryAudience: string[];
 	marketOverview: string[] | string;
 	currentSocialMedia: string[];
-	advertisingPartners: string[];
-	earnedMedia: string[];
+	currentAdvertisingPartners: string[];
+	currentEarnedMedia: string[];
 	existingSite?: {
 		url: string;
 		strengths: string[];
 		areasForImprovement: string[];
-	};
+	}[];
 	similarCompanyNames: { name: string; urls?: string[]; url?: string; summary: string }[];
 	competitors: { name: string; urls?: string[]; summary: string }[];
 	currentState: string[];
@@ -54,7 +54,7 @@ type AssessmentData = {
 	differentiation: string[];
 	currentBusinessPlan: string[];
 	keywords: string[];
-	logo?: { url: string; altText?: string };
+	logo?: { url: string; altText?: string }[];
 };
 
 interface AssessmentManifest {
@@ -137,7 +137,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 	const {assessment} = props;
 	return (
 		<>
-			<FontLoader palette={assessment.colorPalette} />
+			{/* <FontLoader palette={assessment.colorPalette} /> */}
 
 			<PageSection id="title-section" columns={1} maxWidth="1024px">
 				<div className="assessment-page-header">
@@ -218,36 +218,33 @@ function Assessment(props: { assessment: AssessmentData }) {
 					))}
 				</div>
 
-				<div>
-					<h2>Current Web Site</h2>
-					{assessment.websiteDomain.currentUrls?.length ? (
-						<ul>
-							{assessment.websiteDomain.currentUrls.map((url: string, i: number) => (
-								<li key={i}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>
-							))}
-						</ul>
-					) : (
-						<p>No current website URL is provided.</p>
-					)}
-					<h3>Strengths</h3>
-					<ul>
-						{renderList(assessment.existingSite?.strengths || [])}
-					</ul>
-					<h3>Areas for Improvement</h3>
-					<ul>
-						{renderList(assessment.existingSite?.areasForImprovement || [])}
-					</ul>
-				</div>
+				{ assessment.existingSite ? (
+					assessment.existingSite.map((site, index) => (
+						<div key={index}>
+							<h2>Current Web Site<br/>{site.url ? <a href={site.url} target="_blank" rel="noreferrer">{site.url}</a> : 'No URL provided'}</h2>
+							<h3>Strengths</h3>
+							<ul>
+								{renderList(site?.strengths || [])}
+							</ul>
+							<h3>Areas for Improvement</h3>
+							<ul>
+								{renderList(site?.areasForImprovement || [])}
+							</ul>
+						</div>
+					))
+				) : (
+					<p>No existing site information available.</p>
+				)}
 
 				<div>
 					<h2>Current Social Media</h2>
 					{assessment.currentSocialMedia.length ? renderList(assessment.currentSocialMedia) : <p>No social media data available.</p>}
 
 					<h2>Current Advertising Partners</h2>
-					{assessment.advertisingPartners.length ? renderList(assessment.advertisingPartners) : <p>No current advertising partners listed.</p>}
+					{assessment.currentAdvertisingPartners.length ? renderList(assessment.currentAdvertisingPartners) : <p>No current advertising partners listed.</p>}
 
 					<h2>Current Earned / Traditional Media</h2>
-					{assessment.earnedMedia.length ? renderList(assessment.earnedMedia) : <p>No current earned media listed.</p>}
+					{assessment.currentEarnedMedia.length ? renderList(assessment.currentEarnedMedia) : <p>No current earned media listed.</p>}
 				</div>
 			</PageSection>
 
@@ -320,19 +317,21 @@ function Assessment(props: { assessment: AssessmentData }) {
 				<div>
 					<h2>Current Branding</h2>
 					<p>Here is a quick snapshot of your current branding / logo variations</p>
-					{assessment.logo?.url ? (
-						<>
-							<SmartImage 
-								src={assessment.logo.url} 
-								alt="Current Logo" 
-								title="Current Logo"
-								aboveFold={true} 
-							/>
-							<br />
-						</>
-					) : (
-						<p>No current logo provided.</p>
-					)}
+					{ assessment.logo ? 
+						assessment.logo.map((logo, index) => (
+							<div key={index}>
+								<SmartImage 
+									src={logo.url ?? ''} 
+									alt={logo.altText || `Current Logo ${index + 1}`} 
+									title={logo.altText || `Current Logo ${index + 1}`}
+									aboveFold={true} 
+								/>
+								<br />
+							</div>
+						)) : (
+							<p>No current logo provided.</p>
+						)
+					}
 				</div>
 
 				<div>
@@ -415,6 +414,8 @@ function Assessment(props: { assessment: AssessmentData }) {
 							{assessment.keywords.join(', ')}
 						</li>
 					</ul>
+
+					<br />
 
 					<p>AEO (Answer Engine Optimization): Phrase titles to answer the "How do I..." and "Best way to..." questions that AI bots (like Gemini, Perplexity, and ChatGPT) crawl to provide recommendations. Including behind-the-scenes features that help AI models digest, retrieve, and return your targeted information to potential customers asking questions via search agents.</p>
 				</div>
@@ -542,7 +543,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 
 // Load fonts and set CSS variables based on assessment colorPalette
-function FontLoader({palette}:{palette: AssessmentData['colorPalette']}){
+/* function FontLoader({palette}:{palette: AssessmentData['colorPalette']}){
 	useEffect(()=>{
 		const header = typeof palette.headerFont === 'string' ? palette.headerFont : palette.headerFont?.name;
 		const body = typeof palette.bodyFont === 'string' ? palette.bodyFont : palette.bodyFont?.name;
@@ -574,4 +575,4 @@ function FontLoader({palette}:{palette: AssessmentData['colorPalette']}){
 		}
 	}, [palette]);
 	return null;
-}
+} */

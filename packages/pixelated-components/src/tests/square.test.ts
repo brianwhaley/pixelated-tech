@@ -175,6 +175,24 @@ describe('Square payment helper', () => {
 		expect(body.order.line_items[1].note).toContain('child_birthdate');
 	});
 
+	it('includes catalog_object_id in Square order line items when cart items carry a catalogObjectId', () => {
+		const checkoutData = makeCheckoutData({
+			items: [
+				{
+					...(squareOrderCheckoutData as CheckoutType).items[0] as any,
+					catalogObjectId: 'var-123',
+				},
+			],
+		});
+
+		const body = buildSquareOrderBody(checkoutData, 'order-idempotency-key');
+
+		expect(body.order.line_items[0]).toMatchObject({
+			quantity: '2',
+			catalog_object_id: 'var-123',
+		});
+	});
+
 	it('omits shipment fulfillment when all items are marked non-shippable', () => {
 		const checkoutData = deepClone(squareOrderCheckoutData as CheckoutType);
 		checkoutData.items = checkoutData.items.map((it: any) => ({ ...it, itemIsShippable: false }));
@@ -1035,6 +1053,24 @@ describe('Square payment helper', () => {
 		const slug = await getSquareEventItemById('test-event');
 		expect(slug).toBeDefined();
 		expect(slug?.fields.id).toBe('item-1');
+	});
+
+	it('should return completed events when includeCompleted is true', async () => {
+		const cfg = deepClone(pixelatedConfig.integrations.square);
+		mockGetFullPixelatedConfig.mockReturnValue(createMockConfig({ integrations: { square: cfg } }));
+
+		const eventObjects = deepClone(squareEventCatalogObjects) as any[];
+		eventObjects[0].item_data.event.start_at = '2020-01-01T10:00:00Z';
+		eventObjects[0].item_data.event.end_at = '2020-01-01T12:00:00Z';
+
+		mockSmartFetch.mockResolvedValueOnce(squareAttributeDefinitionsResponse);
+		mockSmartFetch.mockResolvedValueOnce({ objects: eventObjects, cursor: undefined });
+		mockSmartFetch.mockResolvedValueOnce({ counts: [{ catalog_object_id: 'var-1', quantity: '2' }] });
+
+		const response = await getSquareEventItems({ includeCompleted: true });
+		expect(response).toHaveLength(1);
+		expect(response[0].fields.id).toBe('item-1');
+		expect(response[0].fields.status).toBe('closed');
 	});
 
 	it('should support SquareEventWrapper list and detail modes', async () => {

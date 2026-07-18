@@ -224,27 +224,23 @@ describe('Sitemap Helper Functions', () => {
 	});
 
 	describe('getRuntimeEnvFromHeaders', () => {
-		it('should return local for localhost origins', () => {
+		it('should return local when x-env is local', () => {
 			const headers = {
-				get: (key: string) => {
-					if (key === 'host') return 'localhost:3000';
-					if (key === 'x-forwarded-proto') return 'https';
-					return undefined;
-				}
+				get: (key: string) => key === 'x-env' ? 'local' : undefined,
 			};
 
 			expect(getRuntimeEnvFromHeaders(headers as any)).toBe('local');
 		});
 
-		it('should return prod for remote origins', () => {
+		it('should return prod when x-env is prod', () => {
 			const headers = {
-				get: (key: string) => key === 'host' ? 'example.com' : 'https'
+				get: (key: string) => key === 'x-env' ? 'prod' : undefined,
 			};
 
 			expect(getRuntimeEnvFromHeaders(headers as any)).toBe('prod');
 		});
 
-		it('should return auto when origin cannot be determined', () => {
+		it('should return auto when x-env is not present', () => {
 			expect(getRuntimeEnvFromHeaders(undefined)).toBe('auto');
 		});
 	});

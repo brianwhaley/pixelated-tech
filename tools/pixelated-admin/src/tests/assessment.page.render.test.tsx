@@ -18,8 +18,8 @@ const sampleAssessment = {
 	secondaryAudience: ['Enterprise clients'],
 	marketOverview: ['We operate in a competitive local market.'],
 	currentSocialMedia: ['Twitter'],
-	advertisingPartners: ['Google Ads'],
-	earnedMedia: ['Local press'],
+	currentAdvertisingPartners: ['Google Ads'],
+	currentEarnedMedia: ['Local press'],
 	similarCompanyNames: [
 		{ name: 'Example Corporation', url: 'https://examplecorp.com', summary: 'Similar brand' },
 	],
