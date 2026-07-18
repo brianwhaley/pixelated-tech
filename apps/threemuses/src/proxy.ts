@@ -1,18 +1,12 @@
  
 
+import { handlePixelatedProxy } from "@pixelated-tech/components/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function proxy(req: NextRequest) {
 	const path = req.nextUrl.pathname + (req.nextUrl.search || "");
-	const origin = (req.nextUrl as any)?.origin ?? new URL(req.url).origin;
 	const hostName = req.nextUrl?.hostname;
-	const url = (req.nextUrl as any)?.href ?? req.url ?? `${origin}${path}`;
-	const headers = new Headers(req.headers);
-	headers.set("x-path", path);
-	headers.set("x-origin", String(origin));
-	headers.set("x-url", String(url));
-	
 	if (hostName && hostName.endsWith('amplifyapp.com')) {
 		return NextResponse.redirect(
 			`https://www.thethreemusesofbluffton.com${path}`,
@@ -20,13 +14,9 @@ export function proxy(req: NextRequest) {
 		);
 	}
 
-	const response = NextResponse.next({
-		request: {
-			headers,
-		},
-	});
+	const response = handlePixelatedProxy(req);
 
-	if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')){
+	if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')) {
 		response.headers.set(
 			'Cache-Control',
 			'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
