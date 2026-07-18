@@ -68,7 +68,7 @@ export async function StyleGuideUI() {
 				<h2>Information Architecture</h2>
 				<ul>
 					{pageEntries.map((r: any, index: number) => {
-						return <li key={index}>{r.name} - {r.url}</li>;
+						return <li key={index}><a href={r.url}>{r.name} - {r.url}</a></li>;
 					})}
 				</ul>
 			</PageSection>
