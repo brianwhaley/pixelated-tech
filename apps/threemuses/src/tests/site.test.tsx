@@ -34,6 +34,7 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		getSquareStoreItems: vi.fn(async () => ({ items: [] })),
 		getSquareStoreItemById: vi.fn(async (id: string) => ({ id, title: 'Test Item', price: 10 })),
 		createSquareOrderAndCapturePayment: vi.fn(async (sourceId: any, checkoutData: any) => ({ status: 'ok', sourceId, checkoutData })),
+		getSquareEventItems: vi.fn(async () => []),
 		listPixelatedFormSubmissionReportRows: vi.fn(async () => []),
 	};
 });
@@ -91,6 +92,8 @@ import StoreItemPage from '@/app/(pages)/store/[item]/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
 import GalleryPage from '@/app/(pages)/gallery/page';
 import StudioSpecialsPage from '@/app/(pages)/studio-specials/page';
+import AboutUsPage from '@/app/(pages)/about-us/page';
+import ContactUsPage from '@/app/(pages)/contact-us/page';
 import EventReportPage, { buildEventGroups, asArray, parsePossibleJson, normalizeReportRow, getEventIdentity } from '@/app/(pages)/events/report/page';
 import { getThreeMusesSubtotalDiscount } from '@/app/lib/shoppingcart-discounts';
 import { POST as capturePaymentPOST } from '@/app/api/capture-payment/route';
@@ -109,6 +112,7 @@ vi.mock('next/navigation', () => ({
 	useParams: () => routeParams,
 	useRouter: () => ({ push: mockRouterPush }),
 	redirect: (url: string) => { throw new Error(`NEXT_REDIRECT:${url}`); },
+	notFound: () => { throw new Error('NEXT_NOT_FOUND'); },
 }));
 
 describe('ThreeMuses coverage harness', () => {
@@ -304,7 +308,127 @@ describe('ThreeMuses coverage harness', () => {
 			expect(document.getElementById('store-item-detail-section')).not.toBeNull();
 		});
 
-		it('renders consign page', () => {
+		it('throws notFound for a missing store item', async () => {
+			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce(null as any);
+			await expect(StoreItemPage({ params: Promise.resolve({ item: 'missing-item' }) })).rejects.toThrow('NEXT_NOT_FOUND');
+		});
+
+		it('renders Store page with query filters applied', async () => {
+			const store = await StorePage({ searchParams: Promise.resolve({ propertyName: 'color', propertyValue: 'blue' }) });
+			render(store as any);
+			expect(document.getElementById('store-items-section')).not.toBeNull();
+		});
+
+		it('renders About Us page with Google Reviews section when apiKey is configured', () => {
+			setPixelatedConfigOverride({ integrations: { googlePlaces: { apiKey: 'TEST_KEY' } } } as any);
+			render(<AboutUsPage />);
+			expect(document.getElementById('reviews-section')).not.toBeNull();
+		});
+
+		it('renders About Us page without Google Reviews section when apiKey is missing', () => {
+			setPixelatedConfigOverride({ integrations: { googlePlaces: {} } } as any);
+			render(<AboutUsPage />);
+			expect(document.getElementById('reviews-section')).not.toBeNull();
+		});
+
+		it('renders Contact Us page', () => {
+			render(<ContactUsPage />);
+			expect(document.getElementById('contact-us-section')).not.toBeNull();
+		});
+
+		it('renders Home page when featured boutique items fail to load', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockRejectedValueOnce(new Error('boom'));
+			const home = await Home();
+			render(home as any);
+			expect(document.getElementById('home-services-section')).not.toBeNull();
+		});
+
+		it('renders Home page when featured boutique items response has no items', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({} as any);
+			const home = await Home();
+			render(home as any);
+			expect(document.getElementById('home-services-section')).not.toBeNull();
+		});
+
+		it('renders Boutique page when featured items response has no items', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({} as any);
+			const boutique = await BoutiquePage();
+			render(boutique as any);
+			expect(document.getElementById('boutique-section')).not.toBeNull();
+		});
+
+		it('renders Contact Us page with no siteInfo', () => {
+			setPixelatedConfigOverride({ siteInfo: { address: { streetAddress: '', addressLocality: '', addressRegion: '', postalCode: '' }, email: '', telephone: '' } });
+			render(<ContactUsPage />);
+			expect(document.getElementById('contact-us-section')).not.toBeNull();
+		});
+
+		it('renders Header with no routes configured', () => {
+			setPixelatedConfigOverride({ routes: undefined } as any);
+			render(<Header />);
+			expect(screen.getByTestId('menuaccordion')).not.toBeNull();
+		});
+
+		it('renders Gallery page filtering excluded titles and handling missing image URLs', async () => {
+			const components = await vi.importMock('@pixelated-tech/components');
+			vi.spyOn(components, 'getContentfulAssetURLs').mockResolvedValueOnce([
+				{ image: 'https://example.com/dress-from-collection-museum-fine-arts.jpg', imageAlt: 'Excluded Image' },
+				{ image: 'https://example.com/unique_image.png?foo=bar', imageAlt: 'Included Image' },
+				{ image: undefined, imageAlt: 'Missing Image' },
+			]);
+			const page = await GalleryPage();
+			render(page as any);
+			expect(document.getElementById('gallery-section')).not.toBeNull();
+			expect(document.getElementById('gallery-items-section')).not.toBeNull();
+		});
+
+		it('renders EventReport page with year filter selected', async () => {
+			const currentYear = new Date().getUTCFullYear();
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'evt-1', title: 'Year Event', startDate: `${currentYear}-01-01`, endDate: `${currentYear}-12-31` } },
+			]);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'evt-1', title: 'Year Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+			]);
+			const page = await EventReportPage({ searchParams: Promise.resolve({ filter: 'year', v: '1' }) });
+			render(page as any);
+			expect(screen.getByText('Event Registrations ( 1 )')).toBeTruthy();
+		});
+
+		it('renders EventReport page when listPixelatedFormSubmissionReportRows fails', async () => {
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockRejectedValueOnce(new Error('boom'));
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '1' }) });
+			render(page as any);
+			expect(screen.getByText(/Unable to load the report:/)).not.toBeNull();
+		});
+
+		it('handles parsePossibleJson with invalid JSON and non-string values', () => {
+			expect(parsePossibleJson(null)).toBeNull();
+			expect(parsePossibleJson(123)).toBe(123);
+			expect(parsePossibleJson('invalid')).toBe('invalid');
+		});
+
+		it('handles asArray for various inputs', () => {
+			expect(asArray(undefined)).toEqual([]);
+			expect(asArray('one')).toEqual(['one']);
+			expect(asArray([1, 2])).toEqual([1, 2]);
+		});
+
+		it('handles event grouping with no event IDs', () => {
+			const groups = buildEventGroups([
+				{ created_at: '2024-01-01', items: [{ id: '1', title: 'Unknown' }], shipping_to: { name: 'Jane' } },
+			]);
+			expect(groups.length).toBe(1);
+			expect(groups[0].eventId).toBe('1');
+		});
+
+		it('renders Boutique page content', async () => {
+			const boutique = await BoutiquePage();
+			render(boutique as any);
+			expect(document.getElementById('boutique-section')).not.toBeNull();
+		});
+
+		it('renders Store page empty state', async () => {
 			render(<ConsignPage />);
 			expect(document.getElementById('consign-section')).not.toBeNull();
 		});
@@ -544,7 +668,7 @@ describe('ThreeMuses coverage harness', () => {
 			const originalEnv = process.env.NODE_ENV;
 			(process.env as any).NODE_ENV = 'production';
 			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([]);
-			await expect(EventReportPage({ searchParams: Promise.resolve({ v: '1' }) })).rejects.toThrow('NEXT_REDIRECT:/events/report?v=0');
+			await expect(EventReportPage({ searchParams: Promise.resolve({ v: '1' }) })).rejects.toThrow('NEXT_REDIRECT:/events/report?filter=active&v=0');
 			(process.env as any).NODE_ENV = originalEnv;
 		});
 
@@ -575,6 +699,13 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders event report page with multiple groups and sorts event report rows', async () => {
+			const today = new Date();
+			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: '1', title: 'A', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
+				{ fields: { id: '2', title: 'B', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
+			] as any);
 			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
 				{ created_at: '2024-02-01', items: [{ id: '1', title: 'A', itemQuantity: 2 }], shipping_to: { name: 'John' } },
 				{ created_at: '2024-01-01', items: [{ id: '2', title: 'B', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
@@ -582,6 +713,65 @@ describe('ThreeMuses coverage harness', () => {
 			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '3' }) });
 			render(page as any);
 			expect(document.getElementById('three-muses-event-report')).not.toBeNull();
+		});
+
+		it('renders event report page with event filter links and uses the active filter by default', async () => {
+			const today = new Date();
+			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+			const pastDate = new Date(today.getTime() - 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-active', title: 'Active Event', startDate: pastDate, endDate: futureDate } },
+				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-active', title: 'Active Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+				{ created_at: '2024-01-01', items: [{ itemID: 'event-past', title: 'Past Event', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
+			]);
+
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '2' }) });
+			render(page as any);
+
+			expect(screen.getByText('Active Events')).toBeTruthy();
+			expect(screen.getByText('This Year')).toBeTruthy();
+			expect(screen.getByText('All')).toBeTruthy();
+			expect(screen.getByText('Event Registrations ( 1 )')).toBeTruthy();
+		});
+
+		it('excludes undated events from the active filter', async () => {
+			const today = new Date();
+			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-active', title: 'Active Event', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
+				{ fields: { id: 'event-unknown', title: 'Unknown Dates Event' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-active', title: 'Active Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+				{ created_at: '2024-01-01', items: [{ itemID: 'event-unknown', title: 'Unknown Dates Event', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
+			]);
+
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '2' }) });
+			render(page as any);
+
+			expect(screen.getByText('Event Registrations ( 1 )')).toBeTruthy();
+			expect(screen.queryByText('Unknown Dates Event')).toBeNull();
+		});
+
+		it('renders event report page with the all filter showing every event', async () => {
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-active', title: 'Active Event', startDate: '2024-01-01', endDate: '2099-12-31' } },
+				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-active', title: 'Active Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+				{ created_at: '2024-01-01', items: [{ itemID: 'event-past', title: 'Past Event', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
+			]);
+
+			const page = await EventReportPage({ searchParams: Promise.resolve({ filter: 'all', v: '2' }) });
+			render(page as any);
+
+			expect(screen.getByText('Event Registrations ( 2 )')).toBeTruthy();
 		});
 
 		it('normalizes report rows when submissionData contains JSON string data', () => {

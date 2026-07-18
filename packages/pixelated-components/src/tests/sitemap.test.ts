@@ -2,22 +2,17 @@ import { describe, it, expect, vi } from 'vitest';
 import * as sitemap from '@/components/foundation/sitemap';
 
 describe('getRuntimeEnvFromHeaders', () => {
-	it('returns "local" for localhost host header', () => {
-		const hdrs = { get: (k: string) => (k === 'host' ? 'localhost:3000' : null) } as any;
+	it('returns "local" when x-env is local', () => {
+		const hdrs = { get: (k: string) => (k === 'x-env' ? 'local' : null) } as any;
 		expect(sitemap.getRuntimeEnvFromHeaders(hdrs)).toBe('local');
 	});
 
-	it('returns "local" for 127.0.0.1 host header', () => {
-		const hdrs = { get: (k: string) => (k === 'host' ? '127.0.0.1:3000' : null) } as any;
-		expect(sitemap.getRuntimeEnvFromHeaders(hdrs)).toBe('local');
-	});
-
-	it('returns "prod" for production host', () => {
-		const hdrs = { get: (k: string) => (k === 'host' ? 'example.com' : null) } as any;
+	it('returns "prod" when x-env is prod', () => {
+		const hdrs = { get: (k: string) => (k === 'x-env' ? 'prod' : null) } as any;
 		expect(sitemap.getRuntimeEnvFromHeaders(hdrs)).toBe('prod');
 	});
 
-	it('returns "auto" when headers not present', () => {
+	it('returns "auto" when x-env is not present', () => {
 		expect(sitemap.getRuntimeEnvFromHeaders(undefined)).toBe('auto');
 	});
 });

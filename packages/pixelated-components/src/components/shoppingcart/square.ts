@@ -4,6 +4,7 @@ export const SquareStoreItemShape = {
 	itemID: PropTypes.string.isRequired,
 	itemURL: PropTypes.string.isRequired,
 	itemTitle: PropTypes.string.isRequired,
+	catalogObjectId: PropTypes.string,
 	itemDescription: PropTypes.string,
 	itemImageURL: PropTypes.string,
 	itemImageURLs: PropTypes.arrayOf(PropTypes.string),

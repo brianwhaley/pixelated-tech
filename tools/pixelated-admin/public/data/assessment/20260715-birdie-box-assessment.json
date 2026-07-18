@@ -1,0 +1,306 @@
+{
+	"companyName": "Birdie Box",
+	"companyContact": "Luke Sadler",
+	"date": "July 15, 2026",
+	"email": "info@bookbirdiebox.com",
+	"phone": "850-843-4696",
+	"address": {
+		"streetAddress": "",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "US"
+	},
+	"primaryAudience": [
+		"Local golf enthusiasts in Bluffton and Hilton Head Island looking to analyze swing data, practice, and play virtual world-class courses year-round",
+		"Recreational golfers and friend groups seeking a premium, high-tech indoor social entertainment venue with food and drinks",
+		"Corporate groups, local businesses, and party organizers looking for a unique, interactive venue for team-building events, holiday parties, and private celebrations"
+	],
+	"secondaryAudience": [
+		"Junior golfers, high school teams, and golf instructors seeking professional indoor training facilities and accurate launch monitor feedback",
+		"Tourists and seasonal visitors to Hilton Head Island seeking upscale, weather-proof indoor activities during extreme summer heat or rainy days",
+		"Local golf leagues and competitive clubs looking to host indoor tournament match-play during the off-season"
+	],
+	"marketOverview": [
+		"The Hilton Head and Bluffton market is a world-class golf destination, yet high summer temperatures, high humidity, afternoon downpours, and shorter winter days create a massive, untapped demand for premium indoor, climate-controlled alternatives.",
+		"Off-course golf entertainment (driven globally by the success of simulator bars and venues like Topgolf) is expanding rapidly, attracting a younger, highly social demographic that values a casual, tech-infused gaming environment.",
+		"Commercial retail centers (such as Tanger Outlets) are actively pivoting toward experiential entertainment models to drive consistent evening foot traffic and offer visitors activities beyond traditional retail shopping."
+	],
+	"currentSocialMedia": [
+		"Facebook - none",
+		"Instagram - https://www.instagram.com/birdieb0x/",
+		"Threads - none",
+		"X / Twitter - none",
+		"LinkedIn - none",
+		"Google Business Profile - none",
+		"Nextdoor - none",
+		"Yelp - none",
+		"Luke Sadler on LinkedIn - https://www.linkedin.com/in/luke-sadler-material-analyst/",
+		"Luke Sadler on Facebook - https://www.facebook.com/luke.sadler.547",
+		"Luke Sadler on Instagram - https://www.instagram.com/lukeasadler/"
+	],
+	"currentAdvertisingPartners": [
+		"None currently listed (primarily relying on organic Instagram growth and word-of-mouth in the local golf community)"
+	],
+	"currentEarnedMedia": [
+		"none currently listed"
+	],
+	"existingSite": [
+		{
+			"url": "https://bookbirdiebox.com/",
+			"strengths": [
+				"Modern and Bold Visual Identity: The site has a high-end, premium sports lounge aesthetic with deep greens and clean typography, aligning perfectly with a luxury golf simulator brand.",
+				"Direct Reservation Focus: Features a highly visible 'Book Now' call-to-action (CTA) in the primary header and hero section, minimizing user journey friction.",
+				"Mobile-Responsive Layout: Pages and booking flows scale natively to mobile screen sizes, accommodating high-intent users looking to book simulator times on the go.",
+				"Interactive Booking Engine Integration: Eliminates administrative overhead by letting customers select specific simulator bays, times, and durations automatically.",
+				"Clean Information Architecture: Straightforward navigation makes it incredibly easy for users to find pricing, lounge details, event bookings, and locations without getting lost.",
+				"Social Media Continuity: Consistent branding and imagery link directly to the highly active Instagram presence (@birdieb0x), maintaining cohesive visual trust."
+			],
+			"areasForImprovement": [
+				"Local SEO Metadata Optimization: Page titles, header tags, and meta descriptions are under-optimized for high-volume regional keywords like 'indoor golf Bluffton SC' or 'golf simulator Hilton Head'.",
+				"Thin E-E-A-T (Experience, Expertise, Authoritativeness, Trust) Signals: The site lacks direct customer reviews, star ratings, and visual local trust badges on the landing page to build immediate credibility.",
+				"Missing Media Variety: While high-resolution photos are used, adding short, auto-playing video loops of players in the bays or swing tracking in action would boost session duration and engagement.",
+				"Under-Detailed Lounge Experience: The 'Lounge' section lacks a dedicated food and beverage menu or drink list, which is a major deciding factor for social groups and corporate event bookings.",
+				"No Schema Markup: The website lacks Structured Data (LocalBusiness schema) to help search engines instantly index their precise address in Tanger 1, phone number, and operating hours.",
+				"Missing Comprehensive FAQs: A dedicated FAQ accordion addressing common barrier-to-entry questions (e.g., 'Can I bring my own clubs?', 'Are golf shoes required?', 'What is the bay capacity limit?') is not fully built out.",
+				"Unoptimized Lead Capture: Outside of direct booking, there is no passive email/SMS newsletter signup box to build a marketing database for future seasonal leagues, tournaments, and holiday promotions."
+			]
+		}
+	],
+	"similarCompanyNames": [
+		{
+			"name": "BirdieBox (Corporate Gifting)",
+			"urls": [
+				"https://birdiebox.com/"
+			],
+			"summary": "A major corporate luxury gifting company specializing in curated gift boxes for high-end golf tournaments, sports events, and executive clients."
+		},
+		{
+			"name": "The Birdie Box (Subscription Apparel)",
+			"urls": [
+				"https://thebirdiebox.com/"
+			],
+			"summary": "A monthly subscription service and online retail brand delivering curated golf apparel, accessories, and gear directly to players."
+		},
+		{
+			"name": "Birdie Box Golf (UK)",
+			"urls": [
+				"https://birdieboxgolf.co.uk/"
+			],
+			"summary": "An international online retailer specializing in golf gift sets, training aids, and novelty accessories for golfers."
+		},
+		{
+			"name": "Birdie Box Mobile (Mobile Simulators)",
+			"urls": [
+				"https://www.instagram.com/birdieboxmobile/"
+			],
+			"summary": "A mobile event service in other regional markets that brings an enclosed trailer housing a golf simulator directly to private parties and outdoor events."
+		}
+	],
+	"competitors": [
+		{
+			"name": "Topgolf Savannah",
+			"urls": [
+				"https://topgolf.com/us/savannah/"
+			],
+			"summary": "The dominant regional outdoor golf entertainment giant located in nearby Savannah, GA, attracting large crowds for social events, drinks, and casual play."
+		},
+		{
+			"name": "Hilton Head Indoor Golf / Inne Golf",
+			"urls": [
+				"https://innegolf.com/"
+			],
+			"summary": "A local indoor golf simulation and swing-training facility focusing heavily on serious golfers, club fittings, and high-performance instruction."
+		},
+		{
+			"name": "Private Club Simulator Bays (e.g., Indigo Run / Sea Pines)",
+			"urls": [
+				"https://www.clubcorp.com/clubs/the-golf-club-at-indigo-run"
+			],
+			"summary": "Upscale private residential communities and country clubs in the Hilton Head area that provide private indoor simulator lounges exclusively for member use."
+		},
+		{
+			"name": "PGA Tour Superstore (Bluffton)",
+			"urls": [
+				"https://www.pgatoursuperstore.com/stores/bluffton-sc/1301.html"
+			],
+			"summary": "A major retail outlet in Bluffton that features indoor hitting bays and simulator technology used primarily for retail club fittings, practice, and lessons."
+		},
+		{
+			"name": "Station 300",
+			"urls": [
+				"https://station300.com/"
+			],
+			"summary": "A prominent local multi-lane bowling and family entertainment center in Bluffton that directly competes for corporate events, family weekend outings, and kid's birthday parties."
+		}
+	],
+	"currentBusinessPlan": [
+		"Operate a premier, high-tech indoor golf simulator lounge utilizing advanced launch monitor technology (such as TrackMan) inside Tanger Outlets 1.",
+		"Create an upscale, comfortable social lounge featuring a curation of quality beverages and food options to encourage long stays.",
+		"Provide flexible rental options, including hourly bay bookings for individuals, league match-play, and full venue buyouts for corporate team-builders and private parties.",
+		"Leverage proximity to both local residential golf communities and outlet tourist traffic to drive year-round, weather-proof entertainment revenue."
+	],
+	"nextSteps": [
+		"Fully optimize the Google Business Profile linked to bookbirdiebox.com to capture maps and local pack search traffic.",
+		"Implement high-impact local SEO optimizations to targeting search terms like 'indoor golf Bluffton' directly within the site's meta titles and content.",
+		"Integrate a 'Group Events' lead capture questionnaire page to scale group corporate bookings and private event rentals.",
+		"Consolidate and publish a clear menu of drinks and bites on the main website to boost the social lounge branding.",
+		"Establish a digital email list capture on the website to promote weekly winter leagues, local tournaments, and exclusive membership plans."
+	],
+	"colorPalette": {
+		"primary": "#0b3c22",
+		"secondary": "#b59410",
+		"tertiary": "#fcfbf9",
+		"accent1": "#232624",
+		"accent2": "#e3dfd5",
+		"accent3": "#39e75f",
+		"headerFont": {
+			"name": "Playfair Display:ital,wght@0,400..900;1,400..900",
+			"url": "https://fonts.google.com/specimen/Playfair+Display"
+		},
+		"bodyFont": {
+			"name": "Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900",
+			"url": "https://fonts.google.com/specimen/Inter"
+		}
+	},
+	"websiteDomain": {
+		"currentUrls": [
+			"https://bookbirdiebox.com"
+		],
+		"proposedUrls": [
+			"https://www.bookbirdiebox.com"
+		]
+	},
+	"logo": [
+		{
+			"url": "https://scontent-lga3-3.cdninstagram.com/v/t51.82787-15/658921147_18073652690244792_7639484675722049107_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ig_cache_key=Mzg2NTAyMDM2MTAwNzQ0OTcyOA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTAyNC5zZHIucmVndWxhcl9waG90by5DMiJ9&_nc_ohc=2Ft8UgCsTKAQ7kNvwH-JnoP&_nc_oc=AdpGnWZxOc-VhT6iXEi0J71EyNgD2-CHhYc65b8-_by2HK3AP9ONIYXYGovDWaqlxWQ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-lga3-3.cdninstagram.com&_nc_gid=pK6doPnP9Rqn8H0jcbLbhg&_nc_ss=7a22e&oh=00_AQDBpLZypsNFO5iyilDLgZ-8k3CRoFFbIDBf1mucKcdqfQ&oe=6A5F524F",
+			"altText": "Birdie Box Logo"
+		}
+	],
+	"informationArchitecture": [
+		{
+			"route": "/",
+			"title": "Home Page",
+			"notes": [
+				"Header with Logo, Hours, Location, Phone Number, and 'Book Now' CTA Button",
+				"Hero - High-resolution background loop video showcasing high-tech simulator play and the upscale lounge atmosphere",
+				"Direct Booking Portal Widget allowing guests to select a date, time, and reserve a simulator bay in seconds",
+				"The Concept: Seamlessly blending serious golf performance analytics with a premium social experience",
+				"Pricing & Packages quick-view cards",
+				"Upcoming Leagues & Social Events calendar teaser",
+				"Footer with interactive Google Map detailing the Tanger 1 location and Local Business Structured Data"
+			]
+		},
+		{
+			"route": "/about",
+			"title": "Our Lounge",
+			"notes": [
+				"The Tech: Detailing the industry-leading simulator systems used for precise spin, distance, and shot analysis",
+				"The Experience: Describing the luxury seating, food/beverage offerings, and weather-proof indoor comfort",
+				"Meet the Team: Introduction to Luke Sadler's vision of bringing golf entertainment closer to the community"
+			]
+		},
+		{
+			"route": "/services",
+			"title": "Our Services",
+			"notes": [
+				"Hourly Bay Rentals: Flexible options for individuals, groups, and families to book simulator bays by the hour",
+				"Corporate & Private Events: Customizable packages for team-building, birthday parties, and social gatherings with catering options",
+				"Leagues & Tournaments: Information on competitive leagues, seasonal tournaments, and registration for both individuals and teams",
+				"Golf Instruction & Club Fittings: Access to professional coaching, swing analysis, and club fitting services using advanced launch monitor data"
+			]
+		},
+		{
+			"route": "/service-areas",
+			"title": "Service Areas",
+			"notes": [
+				"Bluffton, SC",
+				"Hilton Head Island, SC",
+				"Beaufort, SC",
+				"Okatie, SC",
+				"Port Royal, SC",
+				"Sun City, SC",
+				"Hardeeville, SC",
+				"Ridgeland, SC",
+				"Beaufort County, SC",
+				"Lowcountry Region, SC"
+			]
+		},
+		{
+			"route": "/book-now",
+			"title": "Book a Bay",
+			"notes": [
+				"Fully integrated scheduling interface displaying real-time bay availability and pricing tiers (weekday vs. weekend/evening)",
+				"Add-on options (e.g., custom catering requests or renting professional club sets)",
+				"Pre-visit FAQs (what shoes to wear, can you bring your own clubs, how many people per bay)"
+			]
+		},
+		{
+			"route": "/events",
+			"title": "Groups & Events",
+			"notes": [
+				"Corporate & Team Building Packages: Pitching the venue as an interactive option for corporate outings",
+				"Private Parties: Information for hosting bachelor parties, birthdays, and custom golf-themed social gatherings",
+				"Interactive Event Inquiry Form collecting group size, date options, and catering preferences"
+			]
+		},
+		{
+			"route": "/leagues",
+			"title": "Leagues & Tournaments",
+			"notes": [
+				"Details on weekly indoor competitive leagues, tournament formats, and virtual course schedules",
+				"Registration portal for teams and individual free agents",
+				"Live leaderboard integration for ongoing seasonal matches"
+			]
+		},
+		{
+			"route": "/faqs",
+			"title": "FAQs",
+			"notes": [
+				"Common questions about the indoor golf experience, simulator technology, and lounge amenities",
+				"Information on age restrictions, group sizes, and accessibility",
+				"Policies on cancellations, rescheduling, and refunds",
+				"Guidelines for bringing personal equipment and attire recommendations"
+			]
+		},
+		{
+			"route": "/contact",
+			"title": "Contact & Visit",
+			"notes": [
+				"Detailed directions to Tanger Outlets 1, highlighting parking details and our exact entry point",
+				"Direct contact info: 850-843-4696, info@bookbirdiebox.com, and social DMs",
+				"General feedback and partnership inquiry form"
+			]
+		}
+	],
+	"blogRoute": {
+		"enabled": false,
+		"route": ""
+	},
+	"keywords": [
+		"Birdie Box Bluffton",
+		"Birdie B0x",
+		"indoor golf simulator Bluffton",
+		"golf simulator Hilton Head",
+		"TrackMan golf Bluffton SC",
+		"indoor golf SC",
+		"corporate events Bluffton",
+		"things to do in Bluffton SC",
+		"Luke Sadler golf",
+		"golf entertainment Lowcountry"
+	],
+	"differentiation": [
+		"Weather-Proof Golfing: Unlike the legendary outdoor courses of Hilton Head, Birdie Box provides a climate-controlled, pest-free environment that is immune to high humidity, rain delays, and scorching summer heat.",
+		"Serious Data Meets Social Play: Successfully balances high-end, highly accurate launch monitors for single-player game improvement with a relaxed, social party environment for groups.",
+		"High-Density Physical Footprint: Leveraging the foot traffic and massive parking infrastructure of Tanger Outlets 1 ensures high visibility among visiting tourists and local shoppers alike."
+	],
+	"proposedSocialMediaAccounts": [
+		"Google Business Profile",
+		"Instagram - already active",
+		"Facebook",
+		"Threads",
+		"LinkedIn",
+		"YouTube",
+		"Reddit"
+	]
+}

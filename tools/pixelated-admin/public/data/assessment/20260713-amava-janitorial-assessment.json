@@ -38,15 +38,16 @@
 		"Yelp - https://www.yelp.com/biz/amava-janitorial-services-mahwah",
 		"Personal Facebook - https://www.linkedin.com/in/al-pope-09b23a26/"
 	],
-	"advertisingPartners": [
+	"currentAdvertisingPartners": [
 		"None currently listed"
 	],
-	"earnedMedia": [
+	"currentEarnedMedia": [
 		"https://www.mahwahlibrary.org/wp-content/uploads/2021/02/Minutes-2018-12-19.pdf"
 	],
-	"existingSite": {
-		"url": "https://www.amavajanitorial.com/",
-		"strengths": [
+	"existingSite": [
+		{
+			"url": "https://www.amavajanitorial.com/",
+			"strengths": [
 			"The information architecture is sound, including Home Page, About, Services, Contact and Quote",
 			"There are individual pages for each of the different service lines",
 			"The home page explicitly states the operating regions (NJ, NY, CT Tri-State area, Florida, etc.)",
@@ -66,7 +67,7 @@
 			"Content is thin, and doesn't include important E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) elements that are important for B2B and commercial service businesses.",
 			"Some basic and more advanced  search engine optimization (SEO) and more recent answer engine optimization (AEO) techniques are not being used, impacting findability and visibility in search results."
 		]
-	},
+	}],
 	"similarCompanyNames": [
 		{
 			"name": "AMAVA Landscaping Services - A sister company to AMAVA Janitorial Services",
@@ -171,10 +172,12 @@
 			"https://www.amavaoutdoorflooring.com"
 		]
 	},
-	"logo": {
-		"url": "https://www.amavalandscape.com/images/logos/AMAVA-LANDSCAPE-LOGO2a.png",
-		"altText": "AMAVA Janitorial Services Logo"
-	},
+	"logo": [
+		{
+			"url": "https://www.amavalandscape.com/images/logos/AMAVA-LANDSCAPE-LOGO2a.png",
+			"altText": "AMAVA Janitorial Services Logo"
+		}
+	],
 	"informationArchitecture": [
 		{
 			"route": "/",

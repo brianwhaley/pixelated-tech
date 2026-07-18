@@ -1,0 +1,87 @@
+{
+	"companyName": "",
+	"companyContact": "",
+	"date": "",
+	"email": "",
+	"phone": "",
+	"address": {
+		"streetAddress": "",
+		"addressLocality": "",
+		"addressRegion": "",
+		"postalCode": "",
+		"addressCountry": ""
+	},
+	"primaryAudience": [],
+	"secondaryAudience": [],
+	"marketOverview": [],
+	"currentSocialMedia": [],
+	"currentAdvertisingPartners": [],
+	"currentEarnedMedia": [],
+	"existingSite": [
+		{
+			"url": "",
+			"strengths": [],
+			"areasForImprovement": []
+		}
+	],
+	"similarCompanyNames": [
+		{
+			"name": "",
+			"urls": [
+				""
+			],
+			"summary": ""
+		}
+	],
+	"competitors": [
+		{
+			"name": "",
+			"urls": [
+				""
+			],
+			"summary": ""
+		}
+	],
+	"currentBusinessPlan": [],
+	"nextSteps": [],
+	"colorPalette": {
+		"primary": "",
+		"secondary": "",
+		"tertiary": "",
+		"accent1": "",
+		"accent2": "",
+		"accent3": "",
+		"headerFont": {
+			"name": "",
+			"url": ""
+		},
+		"bodyFont": {
+			"name": "",
+			"url": ""
+		}
+	},
+	"websiteDomain": {
+		"currentUrls": [],
+		"proposedUrls": []
+	},
+	"logo": [
+		{
+			"url": "",
+			"altText": ""
+		}
+	],
+	"informationArchitecture": [
+		{
+			"route": "",
+			"title": "",
+			"notes": []
+		}
+	],
+	"blogRoute": {
+		"enabled": false,
+		"route": ""
+	},
+	"keywords": [],
+	"differentiation": [],
+	"proposedSocialMediaAccounts": []
+}
