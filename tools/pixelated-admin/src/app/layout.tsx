@@ -3,7 +3,7 @@ import Nav from "./components/Nav";
 import { Providers } from "./components/providers";
 import LayoutClient from "./components/layout-client";
 import { headers } from "next/headers";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { PageMetaTags, VisualDesignStyles, PixelatedServerConfigProvider, getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { redirect } from "next/navigation";
 import { authOptions } from "../lib/authentication";
@@ -78,7 +78,6 @@ export default async function RootLayout({
 					<PageMetaTags />
 					<WebsiteSchema />
 					<LocalBusinessSchema />
-					<ServicesSchema />
 					<VisualDesignStyles />
 				</PixelatedServerConfigProvider>
 			</head>

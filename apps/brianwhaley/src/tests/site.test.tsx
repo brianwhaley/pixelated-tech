@@ -112,6 +112,7 @@ describe('Brian Whaley coverage', () => {
 		},
 	]);
 
+
 	describe('Brian Whaley extra page coverage', () => {
 		it('renders Buzzword Bingo page without throwing', () => {
 			render(<BuzzWordBingoPage />);

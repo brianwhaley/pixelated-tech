@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { PageTitleHeader, PageSectionHeader, PageSection, PageGridItem, FormEngine, usePixelatedConfig } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSectionHeader, PageSection, PageGridItem, FormEngine, usePixelatedConfig, FacebookPixel } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
 import SocialTags from '@/app/elements/socialtags';
 
@@ -27,21 +27,14 @@ export default function SchedulePage() {
 	return (
 
 		<>
+			<FacebookPixel pixelId="1547622180236123" />
 			<PageTitleHeader title="Schedule your free Digital Assessment" />
 			<PageSection columns={1} maxWidth="768px" id="social-section">
 				<PageGridItem>
 					<div>
 						<p>
-						Our team of experts is here to help understand your
-						current state of business and digital presence -
-						web, social media, and search engine optimization -
-						and review tailored solutions that help you focus
-						on your customers and achieve your business goals.
-						Fill out the form below to schedule a free no-obligation review of your current website,
-						search engine optimization, content strategy, and social media presence.
-						Our review also includes honest, tailored recommendations to strengthen your
-						digital footprint, connection to your community, and ease some of your daily frustrations.
-						Or you can contact us via email or phone to discuss your needs and set up a meeting.
+						The Pixelated Technologies team of experts is here to help understand your current state of business and digital presence - web, social media, and search engine optimization - and review tailored solutions that help you focus on your customers and achieve your business goals.  Fill out the form below to schedule a free no-obligation review of your current website, search engine optimization, content strategy, and social media presence.
+						The Pixelated Technologies Assessment also includes honest, tailored recommendations to strengthen your digital footprint, connection to your community, and ease some of your daily frustrations. Or you can contact us via email or phone to discuss your needs and set up a meeting.
 						</p>
 					</div>
 				</PageGridItem>

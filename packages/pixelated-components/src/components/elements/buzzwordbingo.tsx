@@ -6,13 +6,6 @@ import "../../css/pixelated.grid.scss";
 import './buzzwordbingo.css';
 import { buzzwords as defaultBuzzwords } from './buzzwordbingo.words';
 
-function getBingoWords(arr: Array<string>, x: number){
-	var myBingoWords =[...arr].sort(() => Math.random() - 0.5); // Shuffle the array
-	myBingoWords = myBingoWords.slice(0, x); // Return the first x elements
-	myBingoWords.splice(12, 0, "FREE SPACE"); 
-	return myBingoWords;
-}
-
 /**
  * BuzzwordBingo — renders a bingo-style card populated with provided buzzwords (defaults to config or internal list).
  *
@@ -28,9 +21,12 @@ export type BuzzwordBingoType = InferProps<typeof BuzzwordBingo.propTypes>;
 export function BuzzwordBingo(props: BuzzwordBingoType) {
 	const buzzwords = props.buzzwords || defaultBuzzwords;
 	const myBingoHeaders = ["B", "I", "N", "G", "O"];
-	const [bingoWords, setBingoWords] = useState <string[]> ([]);
-	useEffect(() => { 
-		setBingoWords(getBingoWords(buzzwords, 24));
+	const [bingoWords, setBingoWords] = useState<string[]>([]);
+	useEffect(() => {
+		const shuffled = [...buzzwords].sort(() => Math.random() - 0.5);
+		const selection = shuffled.slice(0, 24);
+		selection.splice(12, 0, 'FREE SPACE');
+		setBingoWords(selection);
 	}, [buzzwords]);
 	return (
 		<div className="bingo-card rowfix-5col">

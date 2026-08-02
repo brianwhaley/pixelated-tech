@@ -17,6 +17,7 @@ export interface Route {
 	description?: string | null;
 	keywords?: string[] | null;
 	hidden?: boolean;
+	lastModified?: string | null;
 	routes?: Route[] | null;
 	[key: string]: any;
 }
@@ -117,7 +118,7 @@ export interface SiteInfo {
 	favicon_type?: string | null;
 	services?: Array<{
 		name: string;
-		description: string | string[];
+		description: string[];
 		short_description?: string | null;
 		provider?: string | null;
 		category?: string | null;
@@ -127,16 +128,18 @@ export interface SiteInfo {
 		audience?: string | null;
 		image?: string | null;
 		termsOfService?: string | null;
+		lastModified?: string | null;
 		[key: string]: any;
 	}> | null;
 	serviceAreas?: Array<{
 		name: string;
-		description: string | string[];
+		description: string[];
 		short_description?: string | null;
 		keywords?: string[] | null;
 		highlights?: string[] | null;
 		relatedServices?: string[] | null;
 		image?: string | null;
+		lastModified?: string | null;
 		[key: string]: any;
 	}> | null;
 }

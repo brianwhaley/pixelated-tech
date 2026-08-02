@@ -2,7 +2,6 @@ import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, renderWithoutProviders, screen } from '../test/test-utils';
 import { PixelatedClientConfigProvider, usePixelatedConfig } from '../components/config/config.client';
-import { getFullPixelatedConfig, getClientOnlyPixelatedConfig } from '../components/config/config';
 
 // Test component that uses the hook
 function TestComponent() {
@@ -321,18 +320,53 @@ describe('Config Utility Functions', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
-    // Reset environment variables
+    // Reset environment variables and module cache between each test.
     process.env = { ...originalEnv };
+    vi.resetModules();
   });
 
   afterEach(() => {
     process.env = originalEnv;
   });
 
+  async function importConfigWithFs(fullConfig: any) {
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn(() => true),
+        readFileSync: vi.fn(() => JSON.stringify(fullConfig)),
+      },
+      existsSync: vi.fn(() => true),
+      readFileSync: vi.fn(() => JSON.stringify(fullConfig)),
+    }));
+    return await import('../components/config/config');
+  }
+
+  async function importConfigWithRaw(rawConfig: string) {
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn(() => true),
+        readFileSync: vi.fn(() => rawConfig),
+      },
+      existsSync: vi.fn(() => true),
+      readFileSync: vi.fn(() => rawConfig),
+    }));
+    return await import('../components/config/config');
+  }
+
+  async function getClientConfigFromFs(fullConfig: any) {
+    const configModule = await importConfigWithFs(fullConfig);
+    return configModule.getClientOnlyPixelatedConfig();
+  }
+
+  async function getClientConfigFromRaw(rawConfig: string) {
+    const configModule = await importConfigWithRaw(rawConfig);
+    return configModule.getClientOnlyPixelatedConfig();
+  }
+
   describe('getClientOnlyPixelatedConfig', () => {
-    it('should strip secret keys from config', () => {
+    it('should strip secret keys from config', async () => {
       const fullConfig = {
-        cloudinary: { 
+        cloudinary: {
           product_env: 'test',
           api_key: 'secret-key',
           api_secret: 'secret-secret'
@@ -343,15 +377,15 @@ describe('Config Utility Functions', () => {
         }
       };
 
-      const clientConfig = getClientOnlyPixelatedConfig(fullConfig as any);
-      
+      const clientConfig = await getClientConfigFromFs(fullConfig);
+
       expect(clientConfig).toEqual({
         cloudinary: { product_env: 'test' },
         paypal: {}
       });
     });
 
-    it('should handle nested objects with secrets', () => {
+    it('should handle nested objects with secrets', async () => {
       const fullConfig = {
         cloudinary: {
           subLevel: {
@@ -360,8 +394,8 @@ describe('Config Utility Functions', () => {
         }
       };
 
-      const clientConfig = getClientOnlyPixelatedConfig(fullConfig as any);
-      
+      const clientConfig = await getClientConfigFromFs(fullConfig);
+
       expect(clientConfig).toEqual({
         cloudinary: {
           subLevel: {},
@@ -369,7 +403,7 @@ describe('Config Utility Functions', () => {
       });
     });
 
-    it('should handle arrays correctly', () => {
+    it('should handle arrays correctly', async () => {
       const fullConfig = {
         cloudinary: [
           { api_key: 'secret1', product_env: 'env1' },
@@ -377,8 +411,8 @@ describe('Config Utility Functions', () => {
         ]
       };
 
-      const clientConfig = getClientOnlyPixelatedConfig(fullConfig as any);
-      
+      const clientConfig = await getClientConfigFromFs(fullConfig);
+
       expect(clientConfig).toEqual({
         cloudinary: [
           { product_env: 'env1' },
@@ -387,50 +421,38 @@ describe('Config Utility Functions', () => {
       });
     });
 
-    it('should handle primitive values', () => {
-      const fullConfig = 'string value';
-
-      const clientConfig = getClientOnlyPixelatedConfig(fullConfig as any);
-      expect(clientConfig).toBe('string value');
-    });
-
-    it('should handle null and undefined values', () => {
-      const clientConfig = getClientOnlyPixelatedConfig(null as any);
+    it('should handle primitive values by returning an empty client config', async () => {
+      const clientConfig = await getClientConfigFromRaw(JSON.stringify('string value'));
       expect(clientConfig).toEqual({});
-
-      const clientConfig2 = getClientOnlyPixelatedConfig(undefined);
-      // Since we now have a real config file in src/config/, undefined will load it.
-      // We just ensure it returns an object.
-      expect(clientConfig2).toBeDefined();
-      expect(typeof clientConfig2).toBe('object');
     });
 
-    it('should ignore heuristic patterns and only use explicit keys', () => {
+    it('should handle null config file as empty object', async () => {
+      const clientConfig = await getClientConfigFromRaw('null');
+      expect(clientConfig).toEqual({});
+    });
+
+    it('should ignore heuristic patterns and only use explicit keys', async () => {
       const fullConfig = {
-        'API_KEY': 'not-secret-because-not-exposed', // explicitly not in whitelist/blacklist
-        'password': 'not-secret-because-not-exposed', 
-        'access_token': 'not-secret-because-not-exposed',
-        'PIXELATED_CONFIG_KEY': 'this-is-secret',
+        API_KEY: 'not-secret-because-not-exposed',
+        password: 'not-secret-because-not-exposed',
+        access_token: 'not-secret-because-not-exposed',
+        PIXELATED_CONFIG_KEY: 'this-is-secret',
         normal: 'normal'
       };
 
-      const clientConfig = getClientOnlyPixelatedConfig(fullConfig as any);
-      
+      const clientConfig = await getClientConfigFromFs(fullConfig);
+
       expect(clientConfig).toEqual({
-        'API_KEY': 'not-secret-because-not-exposed',
-        'password': 'not-secret-because-not-exposed',
-        'access_token': 'not-secret-because-not-exposed',
+        API_KEY: 'not-secret-because-not-exposed',
+        password: 'not-secret-because-not-exposed',
+        access_token: 'not-secret-because-not-exposed',
         normal: 'normal'
       });
     });
 
-    it('should handle errors during stripping', () => {
-      // Create a circular reference that will cause recursion
-      const circular: any = { self: null };
-      circular.self = circular;
-
-      const clientConfig = getClientOnlyPixelatedConfig(circular);
-      expect(clientConfig).toEqual({ self: '[Circular]' });
+    it('should handle invalid JSON gracefully', async () => {
+      const clientConfig = await getClientConfigFromRaw('invalid-json');
+      expect(clientConfig).toEqual({});
     });
   });
 });

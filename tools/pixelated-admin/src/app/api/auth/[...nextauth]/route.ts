@@ -43,7 +43,17 @@ async function authHandler(req: NextRequest, context: AuthRouteContext) {
 		body: req.body as any,
 	});
 
-	const callbackUrl = canonicalCallback(sanitizedRequest as any);
+	const normalizeUrl = (value?: string): string | undefined => {
+		if (!value) return undefined;
+		return value.replace(/\/$/, '');
+	};
+	const base = normalizeUrl(process.env.NEXTAUTH_URL);
+	const callbackUrl = base ? `${base}/api/auth/callback/google` : (() => {
+		const origin = getOriginFromHeaders(sanitizedRequest.headers as any);
+		if (!origin) return undefined;
+		if (process.env.NODE_ENV === 'production' && origin.includes('localhost')) return undefined;
+		return `${normalizeUrl(origin)}/api/auth/callback/google`;
+	})();
 	try {
 		if (debug) {
 			const headers = {
@@ -94,43 +104,25 @@ async function authHandler(req: NextRequest, context: AuthRouteContext) {
 	return cleanedResponse;
 }
 
-function normalizeUrl(value?: string): string | undefined {
-	if (!value) return undefined;
-	return value.replace(/\/$/, '');
-}
-
-function canonicalCallback(req: Request): string | undefined {
-	const base = normalizeUrl(process.env.NEXTAUTH_URL);
-	if (base) return `${base}/api/auth/callback/google`;
-
-	const origin = getOriginFromHeaders(req.headers);
-	if (!origin) return undefined;
-	if (process.env.NODE_ENV === 'production' && origin.includes('localhost')) return undefined;
-	return `${normalizeUrl(origin)}/api/auth/callback/google`;
-}
-
-function replaceRedirectUri(location: string, callbackUrl: string): string | null {
-	try {
-		const locUrl = new URL(location);
-		locUrl.searchParams.set('redirect_uri', callbackUrl);
-		return locUrl.toString();
-	} catch {
-		return null;
-	}
-}
 
 function rewriteRedirectLocation(response: Response, callbackUrl: string): Response | null {
 	const location = response.headers.get('location') ?? response.headers.get('Location');
 	if (!location || !location.includes('redirect_uri=')) return null;
-	const updated = replaceRedirectUri(location, callbackUrl);
-	if (!updated || updated === location) return null;
-	const headers = new Headers(response.headers);
-	headers.set('Location', updated);
-	return new Response(response.body, {
-		status: response.status,
-		statusText: response.statusText,
-		headers,
-	});
+	try {
+		const locUrl = new URL(location);
+		locUrl.searchParams.set('redirect_uri', callbackUrl);
+		const updated = locUrl.toString();
+		if (updated === location) return null;
+		const headers = new Headers(response.headers);
+		headers.set('Location', updated);
+		return new Response(response.body, {
+			status: response.status,
+			statusText: response.statusText,
+			headers,
+		});
+	} catch {
+		return null;
+	}
 }
 
 export { authHandler as GET, authHandler as POST };

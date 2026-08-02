@@ -29,16 +29,7 @@ const sampleAssessment = {
 	currentState: ['State 1'],
 	nextSteps: ['Next step 1'],
 	aboutPixelated: ['About pixelated'],
-	colorPalette: {
-		primary: '#000000',
-		secondary: '#ffffff',
-		tertiary: '#333333',
-		accent1: '#ff0000',
-		accent2: '#00ff00',
-		accent3: '#0000ff',
-		headerFont: { name: 'Inter', url: 'https://fonts.googleapis.com/css2?family=Inter' },
-		bodyFont: 'Arial',
-	},
+	visualDesign: { primary: '#000000', secondary: '#ffffff', tertiary: '#333333', accent1: '#ff0000', accent2: '#00ff00', accent3: '#0000ff', headerFont: { name: 'Inter', url: 'https://fonts.googleapis.com/css2?family=Inter' }, bodyFont: 'Arial' },
 	websiteDomain: {},
 	informationArchitecture: [{ route: '/home', title: 'Home', notes: ['Home note'] }],
 	blogRoute: { enabled: false, route: '/blog' },
@@ -46,7 +37,7 @@ const sampleAssessment = {
 	differentiation: ['Differentiation'],
 	currentBusinessPlan: ['Business plan'],
 	keywords: ['keyword1', 'keyword2'],
-	logo: { url: '/logo.png', altText: 'Company logo' },
+	logo: [{ url: '/logo.png', altText: 'Company logo' }],
 };
 
 let mockUseFileDataResult: any = null;
@@ -78,7 +69,7 @@ describe('Assessment page', () => {
 		await waitFor(() => expect(screen.getByText('Assessment')).toBeTruthy());
 		expect(screen.getByText('FOR: Example Corp')).toBeTruthy();
 		expect(screen.getByText('Some Local Competitors')).toBeTruthy();
-		expect(screen.getByText('No current website URL is provided.')).toBeTruthy();
+		expect(screen.getByText('No current website domain provided.')).toBeTruthy();
 	});
 
 	it('renders an error message when the manifest fails to load', async () => {

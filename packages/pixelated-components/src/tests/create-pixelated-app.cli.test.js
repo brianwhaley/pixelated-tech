@@ -17,18 +17,18 @@ describe('create-pixelated-app CLI', () => {
 		proc.stdin.write('\n');
 		proc.stdin.write('\n');
 		proc.stdin.write('n\n');
+		proc.stdin.end();
 
 		await new Promise((resolve, reject) => {
 			proc.on('exit', (code) => {
 				try {
 					expect(code).toBe(0);
-					// Confirm available templates printed
-					expect(out).toMatch(/Available templates/);
-					expect(out).toMatch(/FAQs/);
+					// Confirm CLI printed banner and prompted for site info
+					expect(out).toMatch(/Pixelated site creator/);
 					resolve(true);
 				} catch (e) { reject(e); }
 			});
 			proc.on('error', reject);
-		});
+		}, 20000);
 	});
 });

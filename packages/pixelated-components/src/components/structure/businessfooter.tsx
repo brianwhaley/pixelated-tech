@@ -25,17 +25,6 @@ function buildAddressQuery(address?: {
 		.join(', ');
 }
 
-function buildGoogleMapsUrl(addressQuery: string) {
-	return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressQuery)}`;
-}
-
-function buildGoogleMapsEmbedUrl(addressQuery: string, apiKey?: string) {
-	if (apiKey) {
-		return `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(apiKey)}&q=${encodeURIComponent(addressQuery)}`;
-	}
-	return `https://www.google.com/maps?q=${encodeURIComponent(addressQuery)}&output=embed`;
-}
-
 function formatTimeString(value?: string | null) {
 	if (!value) return undefined;
 	const normalized = value.toString().trim();
@@ -111,7 +100,9 @@ export function BusinessFooterAddress(props: BusinessFooterAddressType) {
 	const telephone = siteInfo?.telephone;
 	const email = siteInfo?.email;
 	const addressQuery = buildAddressQuery(address ?? null);
-	const mapsUrl = addressQuery ? buildGoogleMapsUrl(addressQuery) : undefined;
+	const mapsUrl = addressQuery
+		? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressQuery)}`
+		: undefined;
 
 	return (
 		<>
@@ -168,7 +159,11 @@ export function BusinessFooterMap(props: BusinessFooterMapType) {
 	const address = siteInfo?.address;
 	const googleMapsApiKey = config?.integrations?.googleMaps?.apiKey || config?.integrations?.google?.api_key;
 	const addressQuery = buildAddressQuery(address ?? null);
-	const embedUrl = addressQuery ? buildGoogleMapsEmbedUrl(addressQuery, googleMapsApiKey) : undefined;
+	const embedUrl = addressQuery
+		? googleMapsApiKey
+			? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(googleMapsApiKey)}&q=${encodeURIComponent(addressQuery)}`
+			: `https://www.google.com/maps?q=${encodeURIComponent(addressQuery)}&output=embed`
+		: undefined;
 	return embedUrl ? (
 		<iframe
 			title="Business location map"

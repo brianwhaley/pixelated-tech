@@ -1,8 +1,8 @@
 import React from "react";
 import { headers } from 'next/headers';
-import { PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig } from "@pixelated-tech/components/server";
+import { PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig, SchemaWebPage } from "@pixelated-tech/components/server";
 import { descriptionToKeywords, getEbayItem, getEbayProductSchema } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema, ProductSchema } from "@pixelated-tech/components";
+import { WebsiteSchema, LocalBusinessSchema, ProductSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
@@ -63,11 +63,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 			<head>
 				<PixelatedServerConfigProvider>
 					<PageMetaTags />
+					<SchemaWebPage {...myMetadata} />
 					<BreadcrumbListSchema />
 					{productSchema && <ProductSchema product={productSchema} />}
 					<WebsiteSchema />
 					<LocalBusinessSchema />
-					<ServicesSchema />
 					<VisualDesignStyles />
 					<GoogleFonts />
 				</PixelatedServerConfigProvider>

@@ -1,0 +1,23 @@
+
+
+#flooring-estimator-form { 
+
+    .form-section-header {
+        margin: 20px 0 0 0 !important;
+
+        .form-section-header-text {
+            font-size: 1.0rem !important;
+        }
+
+    }
+
+    .form-field {
+        margin-bottom: 0 !important;
+    }
+
+    label, input, textarea, select, form button {
+        font-size: 1.2rem;
+        font-family: Verdana, Geneva, sans-serif;
+    }
+
+}

@@ -1,10 +1,12 @@
-"use client";
-
+import { headers } from "next/headers";
 import React from "react";
 import { PageSection, GoogleAnalytics, PixelatedFooter, BusinessFooter } from "@pixelated-tech/components";
 import SocialTags from "./socialtags";
 
-export default function Footer() {
+export default async function Footer() {
+	const reqHeaders = await headers();
+	const path = reqHeaders.get("x-path") ?? "/";
+	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
 	return (
 		<>
 			<PageSection id="footer" columns={1} maxWidth="1024px" padding="20px 0 0 0">
@@ -19,7 +21,7 @@ export default function Footer() {
 					<div className="centered">
 						<br />
 						<p className="footer-text">&copy; {new Date().getFullYear()} Manning Metalworks. All rights reserved.</p>
-						<PixelatedFooter />
+						<PixelatedFooter pathname={pathname} />
 					</div>
 				</div>
 			</PageSection>

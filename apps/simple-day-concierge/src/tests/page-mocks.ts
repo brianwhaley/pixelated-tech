@@ -82,7 +82,6 @@ export const resetGoogleReviewsResponse = () => {
 let contentfulEntriesResponse: any = { items: [], includes: { Asset: [] } };
 let contentfulEntryResponse: any = null;
 let contentfulImagesResponse: any[] = [];
-let buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
 
 export const setContentfulEntriesResponse = (response: any) => {
 	contentfulEntriesResponse = response;
@@ -94,22 +93,13 @@ export const setContentfulImagesResponse = (response: any[]) => {
 	contentfulImagesResponse = response;
 };
 export const setBuildEventSchema = (fn: (event: any) => any) => {
-	buildEventSchemaImpl = fn;
+	(defaultMocks as any).buildEventSchema = fn;
 };
 export const resetContentfulMocks = () => {
 	contentfulEntriesResponse = { items: [], includes: { Asset: [] } };
 	contentfulEntryResponse = null;
 	contentfulImagesResponse = [];
-	buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
-};
-
-const readPublicData = (filePath: string): string | null => {
-	const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
-	const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
-	if (!fs.existsSync(resolvedPath)) {
-		return null;
-	}
-	return fs.readFileSync(resolvedPath, 'utf-8');
+	(defaultMocks as any).buildEventSchema = (event: any) => ({ title: event.fields.title });
 };
 
 const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style }: any) => {
@@ -172,30 +162,6 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	);
 };
 
-const mockServiceDetail = ({ service, title, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'servicedetailpage', id },
-		title ?? service?.name ?? 'Service Detail',
-	);
-};
-
-const mockServiceAreaDetail = ({ serviceArea, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'serviceareadetailpage', id },
-		serviceArea?.name ?? 'Service Area Detail',
-	);
-};
-
-const contentfulValueToSlug = ({ value }: any) =>
-	encode(
-		String(value ?? '')
-			.trim()
-			.toLowerCase()
-			.replace(/\s+/g, '-'),
-	);
-
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -206,11 +172,19 @@ const defaultMocks: Record<string, any> = {
 		if (mockState.fileData !== undefined && mockState.fileData !== null) {
 			return mockState.fileData;
 		}
-		const data = readPublicData(filePath);
+		const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+		const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
+		if (!fs.existsSync(resolvedPath)) {
+			return {
+				data: null,
+				loading: false,
+				error: `File not found: ${filePath}`,
+			};
+		}
 		return {
-			data,
+			data: fs.readFileSync(resolvedPath, 'utf-8'),
 			loading: false,
-			error: data === null ? `File not found: ${filePath}` : null,
+			error: null,
 		};
 	},
 	getCachedWordPressItems: async () => mockState.wordpressPosts,
@@ -223,7 +197,7 @@ const defaultMocks: Record<string, any> = {
 	getContentfulEntriesByType: async () => contentfulEntriesResponse,
 	getContentfulEntryByField: async () => contentfulEntryResponse,
 	getContentfulImagesFromEntries: async () => contentfulImagesResponse,
-	buildEventSchema: (event: any) => buildEventSchemaImpl(event),
+	buildEventSchema: (event: any) => ({ title: event.fields.title }),
 	getGravatarProfile: async () => null,
 	ToggleLoading: () => null, GoogleFonts: () => null,
 	MicroInteractions: () => null,
@@ -255,11 +229,30 @@ const defaultMocks: Record<string, any> = {
 	ServiceAreasList: mockServiceAreasList,
 	ServiceAreas: mockServiceAreasList,
 	ServiceCard: mockComponent('ServiceCard'),
-	ServiceDetail: mockServiceDetail,
-	ServiceAreaDetail: mockServiceAreaDetail,
-	contentfulValueToSlug,
+	ServiceDetail: ({ service, title, id }: any) => React.createElement(
+		'div',
+		{ 'data-testid': 'servicedetailpage', id },
+		title ?? service?.name ?? 'Service Detail',
+	),
+	ServiceAreaDetail: ({ serviceArea, id }: any) => React.createElement(
+		'div',
+		{ 'data-testid': 'serviceareadetailpage', id },
+		serviceArea?.name ?? 'Service Area Detail',
+	),
+	contentfulValueToSlug: ({ value }: any) =>
+		encode(
+			String(value ?? '')
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-'),
+		),
 	buildServiceUrl: (service: any, prefix?: string) => {
-		const slug = contentfulValueToSlug({ value: service?.name ?? '' });
+		const slug = encode(
+			String(service?.name ?? '')
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-'),
+		);
 		return prefix ? `${prefix}/${slug}` : `/services/${slug}`;
 	},
 	FAQ: mockComponent('FAQ', 'faq'),

@@ -44,7 +44,7 @@
 	],
 	"currentBusinessPlan": [],
 	"nextSteps": [],
-	"colorPalette": {
+	"visualDesign": {
 		"primary": "",
 		"secondary": "",
 		"tertiary": "",
@@ -58,7 +58,8 @@
 		"bodyFont": {
 			"name": "",
 			"url": ""
-		}
+		},
+		"additionalNotes": []
 	},
 	"websiteDomain": {
 		"currentUrls": [],

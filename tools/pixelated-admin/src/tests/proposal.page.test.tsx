@@ -27,18 +27,13 @@ vi.mock('@pixelated-tech/components', async () => {
 	};
 });
 
-async function importPage() {
-	const mod = await import('../../src/app/(pages)/proposal/page.tsx');
-	return mod.default;
-}
-
 describe('Proposal page', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it('renders and displays proposal fields', async () => {
-		const Page = await importPage();
+		const { default: Page } = await import('../../src/app/(pages)/proposal/page.tsx');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
 		expect(container).toHaveTextContent('Proposal - Web Site Build');

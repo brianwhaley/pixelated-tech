@@ -3,6 +3,21 @@ import { headers } from 'next/headers';
 import PropTypes, { InferProps } from 'prop-types';
 import { getFullPixelatedConfig } from '../config/config';
 import type { Route } from './metadata.functions';
+import { getRouteByKey } from './metadata.functions';
+import { getFallbackMetadataFromPath } from './metadata.server';
+import type { Metadata } from './metadata.functions';
+
+
+
+
+
+
+function SchemaScript({ schema }: { schema: any }) {
+	return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
+
+
 
 
 
@@ -76,3 +91,59 @@ export async function BreadcrumbListSchema() {
 
 	return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLD) }} />;
 }
+
+
+
+
+
+/* ========================================
+	WEBPAGE SCHEMA COMPONENTS
+======================================== */
+
+SchemaWebPage.propTypes = {
+	title: PropTypes.string,
+	description: PropTypes.string,
+	keywords: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.arrayOf(PropTypes.string),
+	]),
+	url: PropTypes.string,
+};
+export type SchemaWebPageType = InferProps<typeof SchemaWebPage.propTypes>;
+export async function SchemaWebPage({ title, description, keywords, url }: SchemaWebPageType) {
+	const reqHeaders: Headers = await (headers() as Promise<Headers>);
+	const path = reqHeaders.get('x-path') ?? '/';
+	const pathname = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
+	const config = getFullPixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const baseUrl = siteInfo?.url?.replace(/\/$/, '') || '';
+
+	const routeMetadata = getRouteByKey(config.routes, 'path', pathname) ?? {};
+	const fallbackMetadata = getFallbackMetadataFromPath(pathname, siteInfo) as Metadata ?? {} as Metadata;
+
+	const pageUrl = url ?? (baseUrl && pathname ? `${baseUrl}${pathname}` : undefined);
+	const pageTitle = title ?? routeMetadata.title ?? fallbackMetadata.title;
+	const pageDescription = description ?? routeMetadata.description ?? fallbackMetadata.description;
+	const keywordsValue = Array.isArray(keywords)
+		? keywords.filter(Boolean).join(', ')
+		: typeof keywords === 'string'
+			? keywords
+			: routeMetadata.keywords ?? fallbackMetadata.keywords;
+
+	if (!pageUrl || !pageTitle) {
+		return null;
+	}
+
+	const schemaData: any = {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': pageUrl,
+		url: pageUrl,
+		...(pageTitle && { name: pageTitle }),
+		...(pageDescription && { description: pageDescription }),
+		...(keywordsValue && { keywords: keywordsValue }),
+	};
+
+	return <SchemaScript schema={schemaData} />;
+}
+

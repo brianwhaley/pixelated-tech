@@ -5,22 +5,11 @@ import PropTypes, { InferProps } from 'prop-types';
 import { PageSection, PageSectionHeader, PageGridItem } from '../structure/page-blocks';
 import { Callout, variants, shapes, layouts, directions } from '../structure/callout';
 import { buildServiceAreaUrl } from './service-areas.components';
-import { contentfulValueToSlug } from '../integrations/contentful.delivery';
-import { formatServiceDescription } from '../foundation/schema';
+import { formatServiceDescription, renderArrayToParagraphs, ServicesSchema } from '../foundation/schema';
 import { usePixelatedConfig } from '../config/config.client';
 import { SmartImage } from './smartimage';
 import { defaultServicePathPrefix, getServicePathPrefix, buildServiceUrl, resolveServices, findServiceBySlug } from './services.functions';
 
-function renderServiceDescription(description: string | Array<string | null | undefined> | undefined) {
-	if (Array.isArray(description)) {
-		return description
-			.filter((paragraph): paragraph is string => typeof paragraph === 'string')
-			.map((paragraph, index) => (
-				<p key={index}>{paragraph}</p>
-			));
-	}
-	return description ? <p>{description}</p> : null;
-}
 
 
 
@@ -97,7 +86,7 @@ ServiceCard.propTypes = {
 	index: PropTypes.number.isRequired,
 	service: PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+		description: PropTypes.arrayOf(PropTypes.string).isRequired,
 		short_description: PropTypes.string,
 		image: PropTypes.string,
 		url: PropTypes.string,
@@ -125,20 +114,23 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 	const effectiveGridColumns = gridColumns ?? (index % 2 === 0 ? {left:1, right:3} : {left:3, right:1});
 	const effectiveImgShape = imgShape ?? 'square';
 	return (
-		<Callout
-			variant={effectiveVariant}
-			boxShape={effectiveBoxShape}
-			gridColumns={effectiveGridColumns}
-			layout={effectiveLayout}
-			direction={effectiveDirection}
-			imgShape={effectiveImgShape}
-			title={service.name}
-			content={service.short_description}
-			url={url}
-			img={service.image}
-			imgAlt={service.name}
-			buttonText={`View ${service.name}`}
-		/>
+		<>
+			<Callout
+				variant={effectiveVariant}
+				boxShape={effectiveBoxShape}
+				gridColumns={effectiveGridColumns}
+				layout={effectiveLayout}
+				direction={effectiveDirection}
+				imgShape={effectiveImgShape}
+				title={service.name}
+				content={service.short_description}
+				url={url}
+				img={service.image}
+				imgAlt={service.name}
+				buttonText={`View ${service.name}`}
+			/>
+			<ServicesSchema />
+		</>
 	);
 }
 
@@ -172,14 +164,15 @@ export function ServiceDetail({ serviceSlug, title, id }: ServiceDetailType) {
 	const serviceImage = activeService.image || siteInfo?.image;
 	return (
 		<PageSection id={id} className="servicedetailpage" layoutType="none" gap="20px">
+			<ServicesSchema />
 			{serviceImage ? (
 				<SmartImage src={serviceImage} alt={activeService.name} style={{ width: '100%', height: '300px', objectFit: 'cover', margin: '20px 0px' }} />
 			) : null}
 			<div className="service-detail-copy">
-				{renderServiceDescription(activeService.description)}
+				{renderArrayToParagraphs(activeService.description)}
 				{serviceAreaItems.length ? (
 					<div>
-						<p><strong>Areas served:</strong></p>
+						<p><strong>Areas where {siteInfo?.name} provides {activeService.name}:</strong></p>
 						<ul>
 							{serviceAreaItems.map((area, index) => (
 								<li key={index}>
@@ -189,7 +182,7 @@ export function ServiceDetail({ serviceSlug, title, id }: ServiceDetailType) {
 						</ul>
 					</div>
 				) : null}
-				{activeService.termsOfService ? (<p><a href={activeService.termsOfService}>Terms of Service</a></p>) : null}
+				{activeService.termsOfService?.trim() ? (<p><a href={activeService.termsOfService.trim()}>Terms of Service</a></p>) : null}
 			</div>
 		</PageSection>
 	);

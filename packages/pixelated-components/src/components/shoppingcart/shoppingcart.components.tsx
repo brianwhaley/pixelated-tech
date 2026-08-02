@@ -1200,7 +1200,7 @@ export function renderReceiptTable(receipt: ReceiptData) {
 	if (receipt.receiptUrl) {
 		rows.push({
 			Field: 'Receipt URL',
-			Value: <a href={receipt.receiptUrl} target="_blank" rel="noreferrer">View receipt</a>,
+			Value: <a href={receipt.receiptUrl} target="_blank" rel="noopener noreferrer">View receipt</a>,
 		});
 	}
 

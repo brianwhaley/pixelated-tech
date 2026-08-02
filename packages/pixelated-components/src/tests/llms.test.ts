@@ -26,7 +26,7 @@ vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: vi.fn(() => fakeConfig),
 }));
 
-import { AITxt, LLMSTxt } from '../components/foundation/llms';
+import { AITxt, LLMSTxt, LLMSFullTxt } from '../components/foundation/llms';
 
 describe('LLMSTxt', () => {
 	beforeEach(() => {
@@ -90,6 +90,39 @@ describe('LLMSTxt', () => {
 		expect(text).not.toContain('- https://example.com/privacy');
 		expect(text).not.toContain('- https://example.com/terms');
 		expect(text).not.toContain('- https://example.com/sitemap.xml');
+	});
+});
+
+describe('LLMSFullTxt', () => {
+	beforeEach(() => {
+		fakeConfig = createFakeConfig();
+	});
+
+	it('renders full service description from config', async () => {
+		fakeConfig.siteInfo.services = [
+			{ name: 'Web Design', slug: 'web-design', description: ['Full service description line 1.', 'Full service description line 2.'] },
+		];
+
+		const output = await LLMSFullTxt({});
+		const text = await output.text();
+
+		expect(text).toContain('## Services');
+		expect(text).toContain('- [Web Design](https://example.com/services/web-design): Full service description line 1. Full service description line 2.');
+	});
+
+	it('renders full service area description and highlights from config', async () => {
+		fakeConfig.siteInfo.serviceAreas = [
+			{ name: 'Metro', slug: 'metro', path: '/service-areas/metro', description: ['Full area description.'], highlights: ['Fast', 'Local'] },
+		];
+
+		const output = await LLMSFullTxt({});
+		const text = await output.text();
+
+		expect(text).toContain('## Service Areas');
+		expect(text).toContain('- [Metro](https://example.com/service-areas/metro): Full area description.');
+		expect(text).toContain('Highlights:');
+		expect(text).toContain('- Fast');
+		expect(text).toContain('- Local');
 	});
 });
 

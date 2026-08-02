@@ -59,7 +59,8 @@ function buildSquareEventSchema(item: SquareStoreItemShapeType, config: any) {
 	const eventImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : undefined;
 	const startDate = item.itemStartDate && item.itemStartTime ? buildSquareEventIsoDate(`${item.itemStartDate} ${item.itemStartTime}`) : undefined;
 	const endDate = item.itemEndDate && item.itemEndTime ? buildSquareEventIsoDate(`${item.itemEndDate} ${item.itemEndTime}`) : undefined;
-	const eventStatus = startDate ? 'https://schema.org/EventScheduled' : undefined;
+	const isCompleted = !!endDate && Date.parse(endDate) < Date.now();
+	const eventStatus = isCompleted ? 'https://schema.org/EventCompleted' : startDate ? 'https://schema.org/EventScheduled' : undefined;
 	const organizer = config?.siteInfo ? {
 		'@type': 'Organization',
 		name: config.siteInfo.name,
@@ -82,37 +83,31 @@ function buildSquareEventSchema(item: SquareStoreItemShapeType, config: any) {
 			url: item.itemURL,
 			priceCurrency: item.itemCurrency ?? 'USD',
 			price: item.itemPrice,
-			availability: item.itemInventory > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+			availability: isCompleted ? 'https://schema.org/Discontinued' : item.itemInventory > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
 		} : undefined,
 		performer,
 	};
 }
 
+function isEventComplete(item: SquareStoreItemShapeType) {
+	if (!item.itemEndDate || !item.itemEndTime) return false;
+	const endDateTime = buildSquareEventIsoDate(`${item.itemEndDate} ${item.itemEndTime}`);
+	if (!endDateTime) return false;
+	const endTime = Date.parse(endDateTime);
+	return !Number.isNaN(endTime) && endTime < Date.now();
+}
+
 const SQUARE_PRODUCTION_SCRIPT_URL = 'https://web.squarecdn.com/v1/square.js';
 const SQUARE_SANDBOX_SCRIPT_URL = 'https://sandbox.web.squarecdn.com/v1/square.js';
 
-function isScriptSrc(scriptSrc: string) {
-	const scripts = document.querySelectorAll<HTMLScriptElement>('script[src]');
-	for (let i = 0; i < scripts.length; i++) {
-		if (scripts[i].src.includes(scriptSrc)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function isSandboxSquare(squareConfig: any, checkoutData?: CheckoutType) {
-	const checkoutEmail = normalizeEmail(checkoutData?.shippingTo?.email);
-	const sandboxEmails = Array.isArray(squareConfig?.sandboxSquareEmails)
-		? squareConfig.sandboxSquareEmails.map((value: any) => normalizeEmail(value))
-		: [];
-	const explicitSandbox = squareConfig?.environment === 'sandbox';
-	return explicitSandbox || Boolean(checkoutEmail && sandboxEmails.includes(checkoutEmail));
-}
-
 function getSquareScriptUrl(applicationId?: string, squareConfig?: any, checkoutData?: CheckoutType) {
 	if (squareConfig) {
-		const useSandbox = isSandboxSquare(squareConfig, checkoutData);
+		const checkoutEmail = normalizeEmail(checkoutData?.shippingTo?.email);
+		const sandboxEmails = Array.isArray(squareConfig?.sandboxSquareEmails)
+			? squareConfig.sandboxSquareEmails.map((value: any) => normalizeEmail(value))
+			: [];
+		const explicitSandbox = squareConfig?.environment === 'sandbox';
+		const useSandbox = explicitSandbox || Boolean(checkoutEmail && sandboxEmails.includes(checkoutEmail));
 		return useSandbox
 			? squareConfig?.sandboxSquareScriptUrl || SQUARE_SANDBOX_SCRIPT_URL
 			: squareConfig?.squareScriptUrl || SQUARE_PRODUCTION_SCRIPT_URL;
@@ -130,11 +125,18 @@ function buildSquareEventIsoDate(value: string) {
 
 function loadSquareScript(src: string) {
 	return new Promise<void>((resolve, reject) => {
-		if (isScriptSrc(src) && (window as any).Square) {
+		const scripts = document.querySelectorAll<HTMLScriptElement>('script[src]');
+		let scriptAlreadyLoaded = false;
+		for (let i = 0; i < scripts.length; i++) {
+			if (scripts[i].src.includes(src)) {
+				scriptAlreadyLoaded = true;
+				break;
+			}
+		}
+		if (scriptAlreadyLoaded && (window as any).Square) {
 			resolve();
 			return;
 		}
-
 		const script = document.createElement('script');
 		script.src = src;
 		script.async = true;
@@ -427,10 +429,12 @@ export function SquareStoreItemSmall(props: SquareStoreItemSmallType) {
 					) */ }
 					<div className="square-store-item-actions">
 						<ViewItemDetails href={itemURL} itemID={props.item.itemID} />
-						<AddToCartButton handler={addToShoppingCart} item={{
-							...props.item,
-							itemQuantity: 1,
-						}} itemID={props.item.itemID} />
+						{!isEventComplete(props.item) ? (
+							<AddToCartButton handler={addToShoppingCart} item={{
+								...props.item,
+								itemQuantity: 1,
+							}} itemID={props.item.itemID} />
+						) : null}
 					</div>
 				</div>
 			</Callout>
@@ -479,10 +483,12 @@ export function SquareStoreItemLarge(props: SquareStoreItemLargeType) {
 					</div>
 					<div className="square-store-item-actions">
 						<ViewItemDetails href={itemURL} itemID={props.item.itemID} />
-						<AddToCartButton handler={addToShoppingCart} item={{
-							...props.item,
-							itemQuantity: 1,
-						}} itemID={props.item.itemID} />
+						{!isEventComplete(props.item) ? (
+							<AddToCartButton handler={addToShoppingCart} item={{
+								...props.item,
+								itemQuantity: 1,
+							}} itemID={props.item.itemID} />
+						) : null}
 					</div>
 				</div>
 			</Callout>
@@ -528,6 +534,7 @@ SquareStoreItems.propTypes = {
 		propertyValue: PropTypes.string.isRequired,
 	}),
 	showFilters: PropTypes.bool,
+	showPastEvents: PropTypes.bool,
 	itemSize: PropTypes.oneOf(['small', 'large']),
 	itemURLPrefix: PropTypes.string,
 };
@@ -536,17 +543,18 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 	const config = usePixelatedConfig();
 	const policyUrl = getPolicyRouteUrl(config?.routes, config?.siteInfo);
 	const items = props.items || [];
-	const filters = props.filters && props.filters.length ? props.filters : buildSquareStoreFilters(items);
+	const visibleItems = props.showPastEvents ? items : items.filter((item) => item.itemType?.toUpperCase() !== 'EVENT' || !isEventComplete(item));
+	const filters = props.filters && props.filters.length ? props.filters : buildSquareStoreFilters(visibleItems);
 	const showFilters = props.showFilters !== false;
 	const itemSize = props.itemSize ?? 'small';
 	const [selectedFilter, setSelectedFilter] = useState<SquareFilterValues | null>(props.initialFilter ?? null);
 
 	const filteredItems = useMemo(() => {
 		if (!selectedFilter || !selectedFilter.propertyName || !selectedFilter.propertyValue) {
-			return items;
+			return visibleItems;
 		}
 
-		return items.filter((item) => {
+		return visibleItems.filter((item) => {
 			if (selectedFilter.propertyName === 'Category') {
 				return Boolean(item.categories?.some((category) => category?.id === selectedFilter.propertyValue));
 			}
@@ -557,9 +565,9 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 
 			return item.properties?.[selectedFilter.propertyName] === selectedFilter.propertyValue;
 		});
-	}, [items, selectedFilter]);
+	}, [visibleItems, selectedFilter]);
 
-	const totalItems = items.length;
+	const totalItems = visibleItems.length;
 	const hasActiveFilter = Boolean(selectedFilter?.propertyName && selectedFilter?.propertyValue);
 
 	function handleFilter(select: SquareFilterValues) {
@@ -587,9 +595,13 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 				</PageGridItem>
 			) : null}
 
-			{filteredItems.map((item) => (
-				<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item, config?.siteInfo, policyUrl)} />
-			))}
+			{filteredItems.map((item) => {
+				return item.itemType?.toUpperCase() === 'EVENT' ? (
+					<SchemaEvent event={buildSquareEventSchema(item, config)} />
+				) : (
+					<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item, config?.siteInfo, policyUrl)} />
+				);
+			})}
 
 			{filteredItems.map((item) => (
 				itemSize === 'large' ? (
@@ -753,10 +765,14 @@ export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
 					) : null */ }
 					<div className="square-store-item-detail-price">{`${props.item.itemPrice.toFixed(2)} ${props.item.itemCurrency}`}</div>
 					<div className="square-store-item-detail-actions">
-						<AddToCartButton handler={addToShoppingCart} item={{
-							...props.item,
-							itemQuantity: 1,
-						}} itemID={props.item.itemID} />
+						{props.item.itemType?.toUpperCase() === 'EVENT' && isEventComplete(props.item) ? (
+							<div className="square-store-item-detail-closed-message">You cannot register for this event, and it is now over.</div>
+						) : (
+							<AddToCartButton handler={addToShoppingCart} item={{
+								...props.item,
+								itemQuantity: 1,
+							}} itemID={props.item.itemID} />
+						)}
 					</div>
 				</div>
 			</div>

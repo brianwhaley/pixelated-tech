@@ -11,13 +11,13 @@ export default {
 const services = [
 	{
 		name: 'Interior Epoxy Floors',
-		description: 'Durable epoxy finishes for garages, basements, and workshops.',
+		description: ['Durable epoxy finishes for garages, basements, and workshops.'],
 		short_description: 'High-performance floor coatings for residential and commercial uses.',
 		slug: 'interior-epoxy-floors',
 	},
 	{
 		name: 'Surface Preparation',
-		description: 'Concrete grinding, repair, and moisture mitigation before coating application.',
+		description: ['Concrete grinding, repair, and moisture mitigation before coating application.'],
 		short_description: 'Premium surface prep services that make coatings last longer.',
 		slug: 'surface-preparation',
 	},

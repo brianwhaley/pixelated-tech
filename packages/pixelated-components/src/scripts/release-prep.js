@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { patchConfigLastModified } from './update-sitemap-lastmodified.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -216,6 +217,7 @@ async function runWorkspacePipeline(workspaceDir) {
 	const workspaceName = pkgJson.name || path.basename(workspaceDir);
 	const steps = {
 		update: { label: 'Update', status: 'skipped' },
+		patchConfig: { label: 'Patch Config lastModified', status: 'skipped' },
 		lint: { label: 'Lint', status: 'skipped' },
 		test: { label: 'Test', status: 'skipped' },
 		build: { label: 'Build', status: 'skipped' },
@@ -223,6 +225,12 @@ async function runWorkspacePipeline(workspaceDir) {
 	};
 
 	steps.update = await runUpdateStep(workspaceDir, pkgJson);
+	steps.patchConfig = await patchConfigLastModified(workspaceDir);
+	if (steps.patchConfig.status !== 'skipped') {
+		console.log(`
+--- ${steps.patchConfig.label} (${path.basename(workspaceDir)}) ---`);
+		console.log(steps.patchConfig.detail);
+	}
 	steps.lint = await runLintStep(workspaceDir, pkgJson);
 
 	if (steps.lint.status === 'failed') {

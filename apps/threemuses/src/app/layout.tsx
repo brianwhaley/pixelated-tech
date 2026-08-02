@@ -1,5 +1,6 @@
-import { PageMetaTags, PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { headers } from 'next/headers';
+import { PageMetaTags, PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig, SchemaWebPage } from '@pixelated-tech/components/server';
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
@@ -17,6 +18,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+	const reqHeaders: Headers = await (headers() as Promise<Headers>);
+	const path = reqHeaders.get('x-path') ?? '/';
+	const pathname = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
+	const pixelatedConfig = getFullPixelatedConfig();
+	const metadata = getRouteByKey(pixelatedConfig.routes, 'path', pathname) ?? {};
 
 	return (
 		<html lang="en">
@@ -25,9 +31,9 @@ export default async function RootLayout({
 				<PixelatedServerConfigProvider>
 					<PageMetaTags />
 					<BreadcrumbListSchema />
+					<SchemaWebPage {...metadata} />
 					<WebsiteSchema />
 					<LocalBusinessSchema />
-					<ServicesSchema />
 					<VisualDesignStyles />
 					<GoogleFonts />
 				</PixelatedServerConfigProvider>

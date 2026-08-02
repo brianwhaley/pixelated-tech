@@ -289,12 +289,12 @@ export function runCommonServiceRouteCoverage({
 
 		it('renders the service areas index page', () => {
 			render(React.createElement(ServiceAreasPage));
-			expect(screen.getByTestId(serviceAreaTestId)).toBeTruthy();
+			expect(queryByTestIdOrId(screen, serviceAreaTestId)).toBeTruthy();
 		});
 
 		it('renders a service area detail route when the slug exists', async () => {
 			render(React.createElement(ServiceAreaDetailPage));
-			await waitFor(() => expect(screen.getByTestId(serviceAreaDetailTestId)).toBeTruthy());
+			await waitFor(() => expect(queryByTestIdOrId(screen, serviceAreaDetailTestId)).toBeTruthy());
 		});
 
 		it('renders a service area detail route not found message when slug does not exist', async () => {
@@ -305,7 +305,7 @@ export function runCommonServiceRouteCoverage({
 
 		it('renders a service detail route when the slug exists', async () => {
 			render(React.createElement(ServiceDetailPage));
-			await waitFor(() => expect(screen.getByTestId(serviceDetailTestId)).toBeTruthy());
+			await waitFor(() => expect(queryByTestIdOrId(screen, serviceDetailTestId)).toBeTruthy());
 		});
 
 		it('renders a service detail route not found message when slug does not exist', async () => {
@@ -323,7 +323,7 @@ export function runCommonServiceRouteCoverage({
 				});
 				routeParams.serviceArea = 'custom-area';
 				render(React.createElement(ServiceAreaDetailPage));
-				await waitFor(() => expect(screen.getByTestId(serviceAreaDetailTestId)).toBeTruthy());
+				await waitFor(() => expect(queryByTestIdOrId(screen, serviceAreaDetailTestId)).toBeTruthy());
 			});
 
 			it('renders a service detail route when an explicit slug field is present', async () => {
@@ -334,7 +334,7 @@ export function runCommonServiceRouteCoverage({
 				});
 				routeParams.service = 'custom-kitchens';
 				render(React.createElement(ServiceDetailPage));
-				await waitFor(() => expect(screen.getByTestId(serviceDetailTestId)).toBeTruthy());
+				await waitFor(() => expect(queryByTestIdOrId(screen, serviceDetailTestId)).toBeTruthy());
 			});
 		}
 	});

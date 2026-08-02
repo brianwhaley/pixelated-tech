@@ -15,22 +15,6 @@ export function VisualDesignStyles() {
 
 	const resolveValue = (v: any) => (v && typeof v === 'object' && 'value' in v) ? v.value : v;
 
-	// Check if Google Fonts are being used
-	const hasGoogleFonts = () => {
-		for (const [key, val] of Object.entries(tokens)) {
-			const value = resolveValue(val);
-			if ((key === 'header-font' || key === 'body-font') && typeof value === 'string') {
-				// Check if the font stack contains non-web-safe fonts
-				const fonts = value.split(',').map((f: string) => f.trim().replace(/["']/g, ''));
-				for (const font of fonts) {
-					if (!ALL_WEBSAFE_FONTS.some(f => f.value === font)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	};
 
 	const varLines: string[] = [];
 	// Always include base font sizing first (from pixelated.visualdesign.scss)

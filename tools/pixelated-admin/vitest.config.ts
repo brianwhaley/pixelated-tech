@@ -1,17 +1,5 @@
-import { defineConfig } from 'vitest/config';
-import path from 'path';
-import rootConfig from '../../shared/configs/vitest.config.base.ts';
+import { createAppVitestConfig } from '../../shared/configs/vitest.config.base.ts';
 
-export default defineConfig({
-	...rootConfig,
-	test: {
-		...rootConfig.test,
-		setupFiles: ['./src/tests/setup.ts'],
-		globals: true,
-	},
-	resolve: {
-		alias: {
-			'@': path.resolve(__dirname, './src'),
-		},
-	},
+export default createAppVitestConfig(__dirname, {
+	globals: true,
 });

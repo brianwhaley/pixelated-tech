@@ -96,30 +96,6 @@ export interface SmartFetchOptions {
 }
 
 /**
- * Extract hostname from URL for enhanced error messages
- */
-function getHostname(url: string): string {
-	try {
-		return new URL(url).hostname;
-	} catch {
-		return 'unknown';
-	}
-}
-
-/**
- * Check if error is CORS-related
- */
-function isCorsError(error: Error): boolean {
-	const message = error.message.toLowerCase();
-	return (
-		message.includes('cors') ||
-		message.includes('cross-origin') ||
-		message.includes('network') ||
-		message.includes('failed to fetch')
-	);
-}
-
-/**
  * Intelligent fetch with caching, retries, proxy fallback, and timeout
  */
 export async function smartFetch(
@@ -142,7 +118,13 @@ export async function smartFetch(
 		onComplete,
 	} = options;
 
-	const hostname = getHostname(url);
+	const hostname = (() => {
+		try {
+			return new URL(url).hostname;
+		} catch {
+			return 'unknown';
+		}
+	})();
 
 	try {
 		// Step 1: Check CacheManager first (fastest, cross-request)
@@ -220,7 +202,16 @@ export async function smartFetch(
 						return data;
 					} catch (error) {
 						// On CORS error, try proxy if available
-						if (proxy?.fallbackOnCors && isCorsError(error as Error)) {
+						const corsError = (() => {
+							const message = (error as Error).message.toLowerCase();
+							return (
+								message.includes('cors') ||
+								message.includes('cross-origin') ||
+								message.includes('network') ||
+								message.includes('failed to fetch')
+							);
+						})();
+						if (proxy?.fallbackOnCors && corsError) {
 							if (debug) console.log(`[smartFetch] ${hostname}: CORS error, falling back to proxy`);
 							tryDirect = false;
 							fetchUrl = proxy.url + encodeURIComponent(url);
@@ -230,8 +221,6 @@ export async function smartFetch(
 						}
 					}
 				}
-
-				// Attempt via proxy (if set or after direct CORS failure)
 				if (!tryDirect) {
 					if (debug) console.log(`[smartFetch] ${hostname}: Fetching (proxy)`);
 

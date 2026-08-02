@@ -16,6 +16,7 @@ import { describe, expect, test } from 'vitest';
 import { PixelatedClientConfigProvider } from '../components/config/config.client';
 import type { GoogleAnalyticsConfig, GoogleMapsConfig, GoogleSearchConfig, GooglePlacesConfig, PixelatedConfig } from '../components/config/config.types';
 import { pixelatedConfig, mockContentfulItems, mockContentfulAssets, formDefinition, mockPlaceReviews, mockContentfulItem, squareOrderCheckoutData } from './test-data';
+import pixelatedEslintPlugin from '../../../../shared/eslint-plugin/pixelated-eslint-plugin.js';
 
 export const mockConfig = pixelatedConfig;
 
@@ -207,7 +208,8 @@ export function runErrorStateTest(
 
 export {
 	renderWithProviders as render,
-	screen, fireEvent, waitFor, userEvent 
+	screen, fireEvent, waitFor, userEvent,
+	pixelatedEslintPlugin
 };
 
 export function deepClone<T>(obj: T): T {

@@ -1,4 +1,4 @@
-import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, ServicesSchema } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
 import { SquareFeaturedItems } from '@pixelated-tech/components';
 import { getSquareStoreItems } from '@pixelated-tech/components/server';
@@ -19,14 +19,14 @@ export default async function BoutiquePage() {
 				<PageTitleHeader title="The Three Muses of Bluffton Boutique" />
 				<div>
 					<p>
-					Our Boutique, presided over by the Muse of Celebration, is a curated treasure trove bringing the Lowcountry's artistic spirit to life through high-end, handcrafted goods. We showcase exceptional local and regional artisans specializing in one-of-a-kind accessories, home decor, and bespoke gifts. Every item, from hand-stitched scarves to artisanal jewelry, is selected for superior craftsmanship and lasting beauty. By focusing on small-batch production, we offer truly original pieces that reflect your personal aesthetic.
+					Our Boutique, presided over by the Muse of Celebration, is a curated treasure trove bringing the Lowcountry's artistic spirit to life through high-end, handcrafted goods. The Three Muses of Bluffton showcases exceptional local and regional artisans specializing in one-of-a-kind accessories, home decor, and bespoke gifts. Every item, from hand-stitched scarves to artisanal jewelry, is selected for superior craftsmanship and lasting beauty. By focusing on small-batch production, The Three Muses of Bluffton offers truly original pieces that reflect your personal aesthetic.
 					</p>
 					<p>
 					The shopping experience is defined by elegance and a passion for storytelling through craft. We offer personalized services, including professional gift wrapping and custom commissions, ensuring every gift is as special as its recipient. Our expert staff provides deep insight into our rotating collection and the makers behind each piece. Because we work closely with local artisans, we can often facilitate unique modifications or custom color palettes. Visit us to experience the artistry of the human hand and discover gifts to be cherished for a lifetime.
 					</p>
 				</div>
 			</PageSection>
-
+			<ServicesSchema />
 
 			<PageSection columns={1} maxWidth="1024px" id="boutique-items-section">
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { ResumeName, ResumeContact, ResumeQualifications, ResumeSkills, 
 	ResumeSummary, ResumeEvents, ResumeProjects, ResumeReferences, 
@@ -12,20 +12,23 @@ import ResumeData from "@/app/data/resume.json";
 
 export default function ResumePage() {
 	const [modalContent, setModalContent] = useState<React.JSX.Element | undefined>();
-	if (typeof window !== 'undefined') {
+
+	useEffect(() => {
+		const handleImageClick = (event: Event) => {
+			event.preventDefault();
+			const url = (event.target as HTMLElement).parentElement?.getAttribute('href') || '';
+			const myContent: React.JSX.Element = <SmartImage src={url} alt="Modal Image" />;
+			setModalContent(myContent);
+			handleModalOpen(event as MouseEvent);
+		};
+
 		const images = document.querySelectorAll('.u-photo-icon');
-		images.forEach(image => {
-			image.addEventListener('click', (e) => {
-				handleImageClick(e, (e.target as HTMLElement).parentElement?.getAttribute('href') || '');
-			});
-		});
-	}
-	const handleImageClick = (event: Event, url: string) => {
-		event.preventDefault();
-		const myContent: React.JSX.Element = <SmartImage src={url} alt="Modal Image" />;
-		setModalContent(myContent);
-		handleModalOpen(event as MouseEvent);
-	};
+		images.forEach(image => image.addEventListener('click', handleImageClick));
+
+		return () => {
+			images.forEach(image => image.removeEventListener('click', handleImageClick));
+		};
+	}, []);
 	return (
 		<>
 			<PageSection columns={12} className="p-resume" id="resume-section">

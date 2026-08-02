@@ -7,10 +7,6 @@ const outFile = process.argv[3] || (() => {
 	return path.join(parsed.dir, `${parsed.name}.csv`);
 })();
 
-function normalizeKey(k) {
-	return k.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
-}
-
 function normalizeEmails(value) {
 	if (!value) return [];
 	if (Array.isArray(value)) {
@@ -58,7 +54,12 @@ rows.forEach(r => {
 keysSet.delete('emails');
 const keys = Array.from(keysSet);
 // Normalize keys for header
-const headerKeys = keys.map(k => normalizeKey(k));
+const headerKeys = keys.map((k) =>
+	String(k)
+		.replace(/\s+/g, '_')
+		.replace(/[^a-zA-Z0-9_]/g, '')
+		.toLowerCase()
+);
 // Ensure standard 'email' column after others
 const header = [...headerKeys, 'email'];
 

@@ -21,18 +21,9 @@ const REPORTS_DIR = path.join(process.cwd(), 'public', 'reports');
 const REPORT_FILE_NAME = `google-places-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
 const REPORT_FILE_PATH = path.join(REPORTS_DIR, REPORT_FILE_NAME);
 
-function ensureReportsDir() {
-	if (!fs.existsSync(REPORTS_DIR)) fs.mkdirSync(REPORTS_DIR, { recursive: true });
-}
-
-function writeJsonSafe(filePath: string, data: any) {
-	const tmp = `${filePath}.tmp`;
-	fs.writeFileSync(tmp, JSON.stringify(data, null, 2), 'utf8');
-	fs.renameSync(tmp, filePath);
-}
 
 function appendQueryResultToReport(query: string, places: any[], leads: any[], pagesFetched: number) {
-	ensureReportsDir();
+	if (!fs.existsSync(REPORTS_DIR)) fs.mkdirSync(REPORTS_DIR, { recursive: true });
 	let report: any;
 	try {
 		const raw = fs.readFileSync(REPORT_FILE_PATH, 'utf8');
@@ -61,7 +52,9 @@ function appendQueryResultToReport(query: string, places: any[], leads: any[], p
 
 	report.places.push(...places);
 	report.leads.push(...leads);
-	writeJsonSafe(REPORT_FILE_PATH, report);
+	const tmpReportPath = `${REPORT_FILE_PATH}.tmp`;
+	fs.writeFileSync(tmpReportPath, JSON.stringify(report, null, 2), 'utf8');
+	fs.renameSync(tmpReportPath, REPORT_FILE_PATH);
 }
 
 type Lead = {

@@ -20,17 +20,14 @@ export default function PortfolioPage() {
 		method: "flickr.photosets.getPhotos", 
 		photoset_id: "72177720326903710",
 		photoSize: "Large", 
-		callback: getFlickrCards 
+		callback(cards: CarouselCardType[]) {
+			setFlickrCards(cards.sort((a, b) => ((a.imageAlt ?? '') < (b.imageAlt ?? '')) ? 1 : -1));
+		},
 	};
-	function getFlickrCards(cards: CarouselCardType[]) {
-		const myCards = cards.sort((a, b) => ((a.imageAlt ?? '') < (b.imageAlt ?? '')) ? 1 : -1);
-		setFlickrCards(myCards);
-	}
 	useEffect(() => {
-		async function fetchGallery() {
+		(async () => {
 			await FlickrWrapper(props as any);
-		}
-		fetchGallery();
+		})();
 	}, []); 
 	useEffect(() => {
 		MicroInteractions({ 

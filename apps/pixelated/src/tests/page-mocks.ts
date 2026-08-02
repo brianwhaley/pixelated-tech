@@ -85,7 +85,6 @@ export const resetGoogleReviewsResponse = () => {
 let contentfulEntriesResponse: any = { items: [], includes: { Asset: [] } };
 let contentfulEntryResponse: any = null;
 let contentfulImagesResponse: any[] = [];
-let buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
 
 export const setContentfulEntriesResponse = (response: any) => {
 	contentfulEntriesResponse = response;
@@ -97,22 +96,13 @@ export const setContentfulImagesResponse = (response: any[]) => {
 	contentfulImagesResponse = response;
 };
 export const setBuildEventSchema = (fn: (event: any) => any) => {
-	buildEventSchemaImpl = fn;
+	(defaultMocks as any).buildEventSchema = fn;
 };
 export const resetContentfulMocks = () => {
 	contentfulEntriesResponse = { items: [], includes: { Asset: [] } };
 	contentfulEntryResponse = null;
 	contentfulImagesResponse = [];
-	buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
-};
-
-const readPublicData = (filePath: string): string | null => {
-	const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
-	const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
-	if (!fs.existsSync(resolvedPath)) {
-		return null;
-	}
-	return fs.readFileSync(resolvedPath, 'utf-8');
+	(defaultMocks as any).buildEventSchema = (event: any) => ({ title: event.fields.title });
 };
 
 const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style }: any) => {
@@ -165,30 +155,6 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	);
 };
 
-const mockServiceDetail = ({ service, title, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'servicedetailpage', id },
-		title ?? service?.name ?? 'Service Detail',
-	);
-};
-
-const mockServiceAreaDetail = ({ serviceArea, title, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'serviceareadetailpage', id },
-		title ?? serviceArea?.name ?? 'Service Area Detail',
-	);
-};
-
-const contentfulValueToSlug = ({ value }: any) =>
-	encode(
-		String(value ?? '')
-			.trim()
-			.toLowerCase()
-			.replace(/\s+/g, '-'),
-	);
-
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -199,11 +165,19 @@ const defaultMocks: Record<string, any> = {
 		if (mockState.fileData !== undefined && mockState.fileData !== null) {
 			return mockState.fileData;
 		}
-		const data = readPublicData(filePath);
+		const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+		const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
+		if (!fs.existsSync(resolvedPath)) {
+			return {
+				data: null,
+				loading: false,
+				error: `File not found: ${filePath}`,
+			};
+		}
 		return {
-			data,
+			data: fs.readFileSync(resolvedPath, 'utf-8'),
 			loading: false,
-			error: data === null ? `File not found: ${filePath}` : null,
+			error: null,
 		};
 	},
 	getCachedWordPressItems: async () => mockState.wordpressPosts,
@@ -264,9 +238,23 @@ const defaultMocks: Record<string, any> = {
 	ServiceAreasList: mockServiceAreasList,
 	ServiceAreas: mockServiceAreasList,
 	ServiceCard: mockComponent('ServiceCard'),
-	ServiceDetail: mockServiceDetail,
-	ServiceAreaDetail: mockServiceAreaDetail,
-	contentfulValueToSlug,
+	ServiceDetail: ({ service, title, id }: any) => React.createElement(
+		'div',
+		{ 'data-testid': 'servicedetailpage', id },
+		title ?? service?.name ?? 'Service Detail',
+	),
+	ServiceAreaDetail: ({ serviceArea, title, id }: any) => React.createElement(
+		'div',
+		{ 'data-testid': 'serviceareadetailpage', id },
+		title ?? serviceArea?.name ?? 'Service Area Detail',
+	),
+	contentfulValueToSlug: ({ value }: any) =>
+		encode(
+			String(value ?? '')
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-'),
+		),
 	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 	Markdown: mockComponent('Markdown', 'markdown'),

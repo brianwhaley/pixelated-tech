@@ -554,7 +554,16 @@ describe('SquareCheckout component', () => {
 		});
 
 		it('renders large square store items with a category filter and hides filters when showFilters is false', () => {
-const items = squareLargeStoreItems;
+			const items = squareLargeStoreItems.map((item) => {
+				if (item.itemType === 'EVENT') {
+					return {
+						...item,
+						itemStartDate: '2028-01-01',
+						itemEndDate: '2028-01-01',
+					};
+				}
+				return item;
+			});
 
 			renderWithProviders(
 				<SquareStoreItems
@@ -569,7 +578,7 @@ const items = squareLargeStoreItems;
 
 			expect(screen.getByText(/Featured Boutique/)).toBeInTheDocument();
 			expect(screen.getByText(/Shop the latest items/)).toBeInTheDocument();
-			expect(screen.getByText('Total items: 2 · Filtered items: 1')).toBeInTheDocument();
+			expect(screen.getByText(/Total items:\s*2\s*·\s*Filtered items:\s*1/)).toBeInTheDocument();
 			expect(screen.getByText(/More Details/)).toBeInTheDocument();
 			expect(screen.queryByText(/No filterable product details are available for these items/)).toBeNull();
 		});
@@ -637,6 +646,72 @@ const items = squareLargeStoreItems;
 			expect(screen.getByText('End: 2026-09-01 at 11:00 AM')).toBeInTheDocument();
 			expect(screen.getByText('Duration: 2 hours')).toBeInTheDocument();
 			expect(screen.getAllByRole('img').length).toBeGreaterThanOrEqual(1);
+		});
+
+		it('renders a closed message and hides the add-to-cart button for past event details', () => {
+			const item = {
+				itemID: 'item-6',
+				itemTitle: 'Past Event',
+				itemDescription: 'This event is already over.',
+				itemPrice: 30,
+				itemCurrency: 'USD',
+				itemInventory: 0,
+				itemImageURL: 'https://example.com/event-past.png',
+				itemURL: '/store/past-event',
+				itemType: 'EVENT',
+				itemStartDate: '2020-01-01',
+				itemStartTime: '09:00 AM',
+				itemEndDate: '2020-01-01',
+				itemEndTime: '11:00 AM',
+				itemIsShippable: false,
+			};
+
+			renderWithProviders(<SquareStoreItemDetail item={item as any} />);
+
+			expect(screen.getByText(/You cannot register for this event, and it is now over\./i)).toBeInTheDocument();
+			expect(screen.queryByRole('button', { name: /Add to Shopping Cart/i })).toBeNull();
+		});
+
+		it('renders no add-to-cart button for completed event items in SquareStoreItemSmall', () => {
+			const item = {
+				itemID: 'item-7',
+				itemTitle: 'Past Small Event',
+				itemPrice: 25,
+				itemCurrency: 'USD',
+				itemInventory: 0,
+				itemImageURL: 'https://example.com/event-small.png',
+				itemURL: '/store/past-small-event',
+				itemType: 'EVENT',
+				itemStartDate: '2020-02-01',
+				itemStartTime: '10:00 AM',
+				itemEndDate: '2020-02-01',
+				itemEndTime: '12:00 PM',
+			};
+
+			renderWithProviders(<SquareStoreItemSmall item={item as any} itemURLPrefix="/shop" />);
+
+			expect(screen.queryByRole('button', { name: /Add to Shopping Cart/i })).toBeNull();
+		});
+
+		it('renders no add-to-cart button for completed event items in SquareStoreItemLarge', () => {
+			const item = {
+				itemID: 'item-8',
+				itemTitle: 'Past Large Event',
+				itemPrice: 55,
+				itemCurrency: 'USD',
+				itemInventory: 0,
+				itemImageURL: 'https://example.com/event-large.png',
+				itemURL: '/store/past-large-event',
+				itemType: 'EVENT',
+				itemStartDate: '2020-03-01',
+				itemStartTime: '01:00 PM',
+				itemEndDate: '2020-03-01',
+				itemEndTime: '03:00 PM',
+			};
+
+			renderWithProviders(<SquareStoreItemLarge item={item as any} itemURLPrefix="/shop" />);
+
+			expect(screen.queryByRole('button', { name: /Add to Shopping Cart/i })).toBeNull();
 		});
 
 		it('renders empty featured items fallback when there are no featured products', () => {

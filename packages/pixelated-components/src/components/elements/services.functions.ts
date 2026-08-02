@@ -6,7 +6,7 @@ import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 
 export const defaultServicePathPrefix = '/services';
 
-type ServiceType = ServiceCardType['service'];
+type ServiceType = ServiceCardType['service'] | NonNullable<SiteInfoType['services']>[number];
 
 export function normalizePathPrefix(prefix?: string | null, fallback = defaultServicePathPrefix) {
 	if (prefix == null || typeof prefix !== 'string') return fallback;

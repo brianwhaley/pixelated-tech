@@ -1,3 +1,4 @@
+export * from './browserconfig';
 export * from './manifest';
 export * from './metadata.functions';
 export * from './metadata.server';

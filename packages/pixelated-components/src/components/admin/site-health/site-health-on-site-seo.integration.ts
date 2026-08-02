@@ -63,11 +63,11 @@ const dataCollectors: Record<string, (...args: any[]) => any> = {
 	collectFacetedNavigationData,
 	collectBrowserCachingData,
 	collectGzipCompressionData,
-	collectSchemaBlogPostingData,
-	collectSchemaFAQData,
-	collectSchemaLocalBusinessData,
-	collectSchemaServicesData,
-	collectSchemaWebsiteData
+	collectSchemaBlogPostingData: (html: string) => collectSchemaData(html, 'BlogPosting'),
+	collectSchemaFAQData: (html: string) => collectSchemaData(html, 'FAQPage'),
+	collectSchemaLocalBusinessData: (html: string) => collectSchemaData(html, 'LocalBusiness'),
+	collectSchemaServicesData: (html: string) => collectSchemaData(html, 'Service'),
+	collectSchemaWebsiteData: (html: string) => collectSchemaData(html, 'WebSite')
 };
 
 /**
@@ -83,11 +83,11 @@ const scorers: Record<string, (data: any) => { score: number; displayValue: stri
 	calculateFacetedNavigationScore,
 	calculateBrowserCachingScore,
 	calculateGzipCompressionScore,
-	calculateSchemaBlogPostingScore,
-	calculateSchemaFAQScore,
-	calculateSchemaLocalBusinessScore,
-	calculateSchemaServicesScore,
-	calculateSchemaWebsiteScore
+	calculateSchemaBlogPostingScore: calculateSchemaScore,
+	calculateSchemaFAQScore: calculateSchemaScore,
+	calculateSchemaLocalBusinessScore: calculateSchemaScore,
+	calculateSchemaServicesScore: calculateSchemaScore,
+	calculateSchemaWebsiteScore: calculateSchemaScore
 };
 
 /**
@@ -609,53 +609,12 @@ async function collectGzipCompressionData(url: string) {
 /**
  * Schema Detection Data Collectors
  */
-function collectSchemaBlogPostingData(html: string) {
-	const hasBlogPostingSchema = /"@type"\s*:\s*"BlogPosting"/i.test(html) ||
-		/"@type":\s*"BlogPosting"/i.test(html) ||
-		/itemtype="https?:\/\/schema\.org\/BlogPosting"/i.test(html);
+function collectSchemaData(html: string, schemaType: string) {
+	const jsonLdRegex = new RegExp(`"@type"\\s*:\\s*"${schemaType}"`, 'i');
+	const itemTypeRegex = new RegExp(`itemtype="https?:\\/\\/schema\\.org\\/${schemaType}"`, 'i');
 
 	return {
-		present: hasBlogPostingSchema
-	};
-}
-
-function collectSchemaFAQData(html: string) {
-	const hasFAQSchema = /"@type"\s*:\s*"FAQPage"/i.test(html) ||
-		/"@type":\s*"FAQPage"/i.test(html) ||
-		/itemtype="https?:\/\/schema\.org\/FAQPage"/i.test(html);
-
-	return {
-		present: hasFAQSchema
-	};
-}
-
-function collectSchemaLocalBusinessData(html: string) {
-	const hasLocalBusinessSchema = /"@type"\s*:\s*"LocalBusiness"/i.test(html) ||
-		/"@type":\s*"LocalBusiness"/i.test(html) ||
-		/itemtype="https?:\/\/schema\.org\/LocalBusiness"/i.test(html);
-
-	return {
-		present: hasLocalBusinessSchema
-	};
-}
-
-function collectSchemaServicesData(html: string) {
-	const hasServicesSchema = /"@type"\s*:\s*"Service"/i.test(html) ||
-		/"@type":\s*"Service"/i.test(html) ||
-		/itemtype="https?:\/\/schema\.org\/Service"/i.test(html);
-
-	return {
-		present: hasServicesSchema
-	};
-}
-
-function collectSchemaWebsiteData(html: string) {
-	const hasWebsiteSchema = /"@type"\s*:\s*"WebSite"/i.test(html) ||
-		/"@type":\s*"WebSite"/i.test(html) ||
-		/itemtype="https?:\/\/schema\.org\/WebSite"/i.test(html);
-
-	return {
-		present: hasWebsiteSchema
+		present: jsonLdRegex.test(html) || itemTypeRegex.test(html)
 	};
 }
 
@@ -790,56 +749,12 @@ function calculateGzipCompressionScore(data: Awaited<ReturnType<typeof collectGz
 }
 
 /**
- * Schema Detection Scorers
+ * Schema Detection Scorer
  */
-function calculateSchemaBlogPostingScore(data: ReturnType<typeof collectSchemaBlogPostingData>) {
+function calculateSchemaScore(data: { present: boolean } ) {
 	const score = data.present ? 1 : 0;
-	const displayValue = data.present ? 'BlogPosting schema found' : 'BlogPosting schema not found';
-
-	return {
-		score,
-		displayValue
-	};
-}
-
-function calculateSchemaFAQScore(data: ReturnType<typeof collectSchemaFAQData>) {
-	const score = data.present ? 1 : 0;
-	const displayValue = data.present ? 'FAQ schema found' : 'FAQ schema not found';
-
-	return {
-		score,
-		displayValue
-	};
-}
-
-function calculateSchemaLocalBusinessScore(data: ReturnType<typeof collectSchemaLocalBusinessData>) {
-	const score = data.present ? 1 : 0;
-	const displayValue = data.present ? 'LocalBusiness schema found' : 'LocalBusiness schema not found';
-
-	return {
-		score,
-		displayValue
-	};
-}
-
-function calculateSchemaServicesScore(data: ReturnType<typeof collectSchemaServicesData>) {
-	const score = data.present ? 1 : 0;
-	const displayValue = data.present ? 'Service schema found' : 'Service schema not found';
-
-	return {
-		score,
-		displayValue
-	};
-}
-
-function calculateSchemaWebsiteScore(data: ReturnType<typeof collectSchemaWebsiteData>) {
-	const score = data.present ? 1 : 0;
-	const displayValue = data.present ? 'WebSite schema found' : 'WebSite schema not found';
-
-	return {
-		score,
-		displayValue
-	};
+	const displayValue = data.present ? "Schema found" : "Schema not found";
+	return { score, displayValue };
 }
 
 export interface OnSiteSEOAudit {

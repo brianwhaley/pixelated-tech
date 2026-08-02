@@ -1,9 +1,10 @@
 import { headers } from "next/headers";
 import { PageMetaTags } from "@pixelated-tech/components/server";
+import { SchemaWebPage } from "@pixelated-tech/components/server";
 import { PixelatedServerConfigProvider } from "@pixelated-tech/components/server";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { GoogleFonts } from "@pixelated-tech/components/server";
 import LayoutClient from "./elements/layout-client";
 import Header from "./elements/header";
@@ -28,9 +29,9 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 				<PixelatedServerConfigProvider>
 					<PageMetaTags />
 					<BreadcrumbListSchema />
+					<SchemaWebPage />
 					<WebsiteSchema />
 					<LocalBusinessSchema />
-					<ServicesSchema />
 					<VisualDesignStyles />
 					<GoogleFonts />
 					<meta name="google-site-verification" content="t2yy9wL1bXPiPQjBqDee2BTgpiGQjwVldlfa4X5CQkU" />

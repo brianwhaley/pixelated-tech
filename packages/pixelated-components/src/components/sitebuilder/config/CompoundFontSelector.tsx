@@ -49,16 +49,13 @@ export function CompoundFontSelector(props: CompoundFontSelectorType) {
 		setFonts(parseCompoundValue(value || ''));
 	}, [value]);
 
-	// Combine fonts into a single font stack value
-	const combineFonts = (fontParts: typeof fonts) => {
-		return [fontParts.primary, fontParts.fallback, fontParts.generic].filter(Boolean).join(', ');
-	};
-
 	// Handle changes from individual font selectors
 	const handleFontChange = (type: 'primary' | 'fallback' | 'generic', newValue: string) => {
 		const updatedFonts = { ...fonts, [type]: newValue };
 		setFonts(updatedFonts);
-		const combinedValue = combineFonts(updatedFonts);
+		const combinedValue = [updatedFonts.primary, updatedFonts.fallback, updatedFonts.generic]
+			.filter(Boolean)
+			.join(', ');
 		onChange?.(combinedValue);
 	};
 

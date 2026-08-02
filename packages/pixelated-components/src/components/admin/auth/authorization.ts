@@ -8,14 +8,10 @@ export type AuthorizationConfig = {
   authorizedUsers?: Record<string, AuthorizedUser>;
 };
 
-function getUserConfig(email: string | undefined | null, config?: AuthorizationConfig): AuthorizedUser | undefined {
-	if (!email || !config) return undefined;
-	const key = email.toLowerCase().trim();
-	return config.authorizedUsers?.[key];
-}
-
 export function getAuthorizedRoutesByID(email: string | undefined | null, config?: AuthorizationConfig): string[] {
-	const userConfig = getUserConfig(email, config);
+	if (!email || !config) return [];
+	const key = email.toLowerCase().trim();
+	const userConfig = config.authorizedUsers?.[key];
 	if (!userConfig?.routes || !Array.isArray(userConfig.routes)) {
 		return [];
 	}

@@ -283,12 +283,6 @@ export function normalizeContentfulAssetUrl(url: unknown): string | undefined {
 	return url;
 }
 
-function resolveContentfulAssets(assets: any): any[] {
-	if (Array.isArray(assets)) return assets;
-	if (assets && Array.isArray(assets.items)) return assets.items;
-	return [];
-}
-
 /**
  * getContentfulImagesFromEntries — Resolve image asset URLs and alt text for entry image references.
  *
@@ -304,7 +298,11 @@ getContentfulImagesFromEntries.propTypes = {
 export type getContentfulImagesFromEntriesType = InferProps<typeof getContentfulImagesFromEntries.propTypes>;
 export async function getContentfulImagesFromEntries(props: getContentfulImagesFromEntriesType){
 	const images = props.images ? (Array.isArray(props.images) ? props.images : [props.images]) : [];
-	const assets = resolveContentfulAssets(props.assets);
+	const assets = Array.isArray(props.assets)
+		? props.assets
+		: props.assets && Array.isArray(props.assets.items)
+			? props.assets.items
+			: [];
 	const imageURLs: Array<{ image: string; imageAlt?: string }> = [];
 
 	for (const image of images) {

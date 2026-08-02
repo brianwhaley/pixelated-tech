@@ -1,12 +1,14 @@
-"use client";
-
+import { headers } from "next/headers";
 import React from "react";
 import { PageSection, PageGridItem, PageSectionHeader } from "@pixelated-tech/components";
 import { GoogleAnalytics } from "@pixelated-tech/components";
 import { PixelatedFooter } from "@pixelated-tech/components";
 import { BusinessFooterAddress, BusinessFooterMap } from "@pixelated-tech/components";
 
-export default function Footer() {
+export default async function Footer() {
+	const reqHeaders = await headers();
+	const path = reqHeaders.get("x-path") ?? "/";
+	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
 	return (
 		<>
 			<PageSection id="footer" columns={3} maxWidth="1024px" padding="20px">
@@ -41,7 +43,7 @@ export default function Footer() {
 					<div className="centered">
 						<p className="footer-text">&copy; {new Date().getFullYear()} Simple Day Concierge Service. All rights reserved.</p>
 
-						<PixelatedFooter />
+						<PixelatedFooter pathname={pathname} />
 						
 					</div>
 				</div>

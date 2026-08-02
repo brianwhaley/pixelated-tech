@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next';
 import type { NextRequest } from 'next/server';
 import { encode } from 'html-entities';
 import { getAllRoutes } from "./metadata.functions";
+import type { Route } from '../config/config.types';
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
 import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
@@ -326,8 +327,13 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 			if (entry.images && entry.images.length) {
 				existing.images = Array.from(new Set([...(existing.images || []), ...entry.images]));
 			}
-			// Keep the earliest lastModified? Use whichever is present (prefer existing)
-			existing.lastModified = existing.lastModified || entry.lastModified;
+			const existingLast = existing.lastModified ? new Date(existing.lastModified) : null;
+			const newLast = entry.lastModified ? new Date(entry.lastModified) : null;
+			if (existingLast && newLast) {
+				existing.lastModified = existingLast > newLast ? existing.lastModified : entry.lastModified;
+			} else if (!existingLast && newLast) {
+				existing.lastModified = entry.lastModified;
+			}
 			existing.priority = existing.priority || entry.priority;
 			existing.changeFrequency = existing.changeFrequency || entry.changeFrequency;
 			map.set(key, existing);
@@ -390,22 +396,26 @@ export async function generateSiteMapRss(originInput?: string): Promise<string> 
 
 
 
-export async function createPageURLs(routes: { path: string }[], origin?: string) {
+export async function createPageURLs(routes: Route[], origin?: string) {
 	const sitemap: SitemapEntry[] = [];
 	const allRoutes = getAllRoutes(routes, "routes");
-	for ( const route of allRoutes ){
-		if(route.path.substring(0, 4).toLowerCase() !== 'http') {
-			const base = origin ? `${origin}` : '';
-			const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
-			sitemap.push({
-				name: route.name ?? undefined,
-				description: route.description ?? undefined,
-				url: `${base}${path}` ,
-				lastModified: new Date(),
-				changeFrequency: "hourly",
-				priority: 1.0,
-			});
+	for (const route of allRoutes) {
+		if (!route || typeof route.path !== 'string' || !route.path.trim()) {
+			continue;
 		}
+		if (route.path.substring(0, 4).toLowerCase() === 'http') {
+			continue;
+		}
+		const base = origin ? `${origin}` : '';
+		const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
+		sitemap.push({
+			name: route.name ?? undefined,
+			description: route.description ?? undefined,
+			url: `${base}${path}` ,
+			lastModified: route.lastModified ?? new Date(),
+			changeFrequency: "hourly",
+			priority: 1.0,
+		});
 	}
 	return sitemap;
 }
@@ -446,7 +456,7 @@ export function createSiteConfigServiceURLs(siteConfig: any, origin?: string): S
 				name: service.name ?? undefined,
 				description: service.short_description ?? undefined,
 				url,
-				lastModified: new Date(),
+				lastModified: service.lastModified ?? new Date(),
 				changeFrequency: 'hourly',
 				priority: 0.8,
 			});
@@ -475,7 +485,7 @@ export function createSiteConfigServiceAreaURLs(siteConfig: any, origin?: string
 				name: serviceArea.name ?? undefined,
 				description: serviceArea.short_description ?? undefined,
 				url,
-				lastModified: new Date(),
+				lastModified: serviceArea.lastModified ?? new Date(),
 				changeFrequency: 'hourly',
 				priority: 0.8,
 			});
@@ -851,7 +861,9 @@ export async function createEbayItemURLs(origin?: string) {
 		...ebay 
 	};
 
-	const cacheTTL = getEbayCacheTTL(ebay?.cacheTTL);
+	const cacheTTL = (typeof ebay?.cacheTTL === 'number' && ebay.cacheTTL > 0)
+		? ebay.cacheTTL
+		: SITEMAP_TTL;
 	let items;
 	try {
 		items = await fetchCachedEbayItems(ebayProps, cacheTTL);
@@ -1005,13 +1017,6 @@ const EBAY_SITE_SITEMAP_KEY = 'ebay_sitemap_items';
 const ebaySitemapCache = new CacheManager({ mode: 'memory', domain: getDomain(), namespace: 'ebaySitemap', ttl: SITEMAP_TTL });
 const SQUARE_SITE_SITEMAP_KEY = 'square_sitemap_items';
 const squareSitemapCache = new CacheManager({ mode: 'memory', domain: getDomain(), namespace: 'squareSitemap', ttl: SITEMAP_TTL });
-
-function getEbayCacheTTL(configTTL?: number) {
-	if (typeof configTTL === 'number' && configTTL > 0) {
-		return configTTL;
-	}
-	return SITEMAP_TTL;
-}
 
 async function fetchCachedEbayItems(apiProps: any, cacheTTL: number) {
 	const cached = ebaySitemapCache.get<any[]>(EBAY_SITE_SITEMAP_KEY);

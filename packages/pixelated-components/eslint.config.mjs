@@ -6,7 +6,7 @@ import reactPlugin from 'eslint-plugin-react';
 // import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import importPlugin from 'eslint-plugin-import';
 import a11yPlugin from 'eslint-plugin-jsx-a11y';
-import pixelatedPlugin from './dist/scripts/pixelated-eslint-plugin.js';
+import pixelatedPlugin from '../../shared/eslint-plugin/pixelated-eslint-plugin.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 

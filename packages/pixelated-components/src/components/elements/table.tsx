@@ -7,6 +7,7 @@ import './table.css';
 
 const debug = false;
 
+/* eslint-disable-next-line */
 function isImageURL(url: string) {
   	const isImage = /\.(jpeg|jpg|gif|png|webp|svg|bmp)$/i.test(url);
 	const isURL = () => { try { new URL(url); return true; } catch { return false; } };
@@ -53,6 +54,7 @@ export function Table (props: TableType) {
 		return <tr>{headings}</tr>;
 	}
 
+	// eslint-disable-next-line
 	function getRows (data: Array<{ [key: string]: any }>) {
 		if (!data || data.length === 0) {
 			return <tr><td colSpan={1}>No data available.</td></tr>;

@@ -5,6 +5,7 @@ export * from './global-error';
 export * from './image';
 export * from './intersection-observer';
 export * from './loading';
+export * from './inp-guardrail';
 export * from './metadata.components';
 export * from './metadata.functions';
 export * from './microinteractions';

@@ -48,7 +48,12 @@ const commonElementPaths = {
 	Proxy: 'src/proxy',
 	HumansRoute: 'src/app/humans.txt/route',
 	SecurityRoute: 'src/app/security.txt/route',
-	LLMSRoute: 'src/app/llms.txt/route',
+	LLMSTxtRoute: 'src/app/llms.txt/route',
+	LLMSFullRoute: 'src/app/llms-full.txt/route',
+	AITxtRoute: 'src/app/ai.txt/route',
+	RssRoute: 'src/app/rss.xml/route',
+	SitemapJsonRoute: 'src/app/sitemap.json/route',
+	BrowserConfigRoute: 'src/app/browserconfig.xml/route',
 	PageMocks: ['src/test/page-mocks', 'src/tests/page-mocks'],
 };
 
@@ -88,18 +93,6 @@ function findPageFile(appRoot: string, routeSegments: string | string[]): string
 		}
 	}
 	return null;
-}
-
-function getPageRouteCandidates(pageType: any, routeOverrides?: Record<string, string>) {
-	const overrideKey = pageType.routeSegment.toLowerCase();
-	const nameKey = pageType.name.toLowerCase();
-	const override = routeOverrides?.[overrideKey] ?? routeOverrides?.[nameKey];
-	const candidates = [override || pageType.routeSegment, ...(pageType.aliases ?? [])];
-	return Array.from(new Set(candidates.filter(Boolean)));
-}
-
-function resolveAssociatedFile(appRoot: string, associatedFile: string) {
-	return path.join(appRoot, associatedFile);
 }
 
 function getIgnoredPageTypes(overrides: string[] = []) {
@@ -153,7 +146,10 @@ export function runCommonPageCoverage({
 		const ignoredRoutes = getIgnoredPageTypes(ignoredCommonRoutes);
 
 		for (const pageType of pageTypes) {
-			const routeCandidates = getPageRouteCandidates(pageType, routeOverrides);
+			const overrideKey = pageType.routeSegment.toLowerCase();
+			const nameKey = pageType.name.toLowerCase();
+			const override = routeOverrides?.[overrideKey] ?? routeOverrides?.[nameKey];
+			const routeCandidates = Array.from(new Set([override || pageType.routeSegment, ...(pageType.aliases ?? [])].filter(Boolean)));
 			if (ignored.has(pageType.routeSegment.toLowerCase()) || ignored.has(pageType.name.toLowerCase())) {
 				it.skip(`skips ${pageType.name} when the app does not implement that page type`, () => {
 					expect(true).toBe(true);
@@ -190,7 +186,7 @@ export function runCommonPageCoverage({
 			if (verifyAssociatedFiles && pageType.associatedFiles.length > 0) {
 				for (const associatedFile of pageType.associatedFiles) {
 					it(`includes associated file ${associatedFile} for ${pageType.name}`, () => {
-						const filePath = resolveAssociatedFile(appRoot, associatedFile);
+						const filePath = path.join(appRoot, associatedFile);
 						expect(fs.existsSync(filePath)).toBe(true);
 					});
 				}
@@ -346,12 +342,83 @@ export function runCommonPageCoverage({
 			});
 
 			it('returns llms well-known response', async () => {
-				const filePath = findAppModule(appRoot, commonElementPaths.LLMSRoute);
+				const filePath = findAppModule(appRoot, commonElementPaths.LLMSTxtRoute);
 				expect(filePath).not.toBeNull();
 				const importedModule = await importModule(filePath!);
 				const response = await importedModule.GET({ url: 'https://example.com/llms.txt' } as any);
 				if (typeof Response !== 'undefined' && response instanceof Response) {
 					expect(await response.text()).toContain('AI / LLM Usage Policy');
+				} else {
+					expect(response).toEqual(expect.any(Object));
+				}
+			});
+
+			it('returns llms-full well-known response', async () => {
+				const filePath = findAppModule(appRoot, commonElementPaths.LLMSFullRoute);
+				expect(filePath).not.toBeNull();
+				const importedModule = await importModule(filePath!);
+				const response = await importedModule.GET({ url: 'https://example.com/llms-full.txt' } as any);
+				if (typeof Response !== 'undefined' && response instanceof Response) {
+					expect(await response.text()).toContain('Generated:');
+				} else {
+					expect(response).toEqual(expect.any(Object));
+				}
+			}, 20000);
+
+			it('returns ai.txt response from the route', async () => {
+				const filePath = findAppModule(appRoot, commonElementPaths.AITxtRoute);
+				expect(filePath).not.toBeNull();
+				const importedModule = await importModule(filePath!);
+				const response = await importedModule.GET({ url: 'https://example.com/ai.txt' } as any);
+				if (typeof Response !== 'undefined' && response instanceof Response) {
+					expect(response.status).toBe(200);
+					expect(response.headers.get('content-type')).toContain('text/plain');
+					expect(await response.text()).toContain('# ai.txt — AI crawler policy for');
+				} else {
+					expect(response).toEqual(expect.any(Object));
+				}
+			});
+
+			it('returns sitemap.json response from the route', async () => {
+				const filePath = findAppModule(appRoot, commonElementPaths.SitemapJsonRoute);
+				expect(filePath).not.toBeNull();
+				const importedModule = await importModule(filePath!);
+				const response = await importedModule.GET({ url: 'https://example.com/sitemap.json' } as any);
+				if (typeof Response !== 'undefined' && response instanceof Response) {
+					expect(response.status).toBe(200);
+					const json = await response.json();
+					expect(json).toHaveProperty('urlset');
+					expect(Array.isArray(json.urlset)).toBe(true);
+				} else {
+					expect(response).toEqual(expect.any(Object));
+				}
+			});
+
+			it('returns rss.xml response from the route', async () => {
+				const filePath = findAppModule(appRoot, commonElementPaths.RssRoute);
+				expect(filePath).not.toBeNull();
+				const importedModule = await importModule(filePath!);
+				const response = await importedModule.GET({ url: 'https://example.com/rss.xml' } as any);
+				if (typeof Response !== 'undefined' && response instanceof Response) {
+					expect(response.status).toBe(200);
+					expect(response.headers.get('content-type')).toContain('application/xml');
+					const text = await response.text();
+					expect(text).toContain('<?xml-stylesheet type="text/xsl" href="/rss.xsl"?>');
+					expect(text).toContain('<rss version="2.0">');
+				} else {
+					expect(response).toEqual(expect.any(Object));
+				}
+			});
+
+			it('returns browserconfig.xml response from the route', async () => {
+				const filePath = findAppModule(appRoot, commonElementPaths.BrowserConfigRoute);
+				expect(filePath).not.toBeNull();
+				const importedModule = await importModule(filePath!);
+				const response = await importedModule.GET({ url: 'https://example.com/browserconfig.xml' } as any);
+				if (typeof Response !== 'undefined' && response instanceof Response) {
+					expect(response.status).toBe(200);
+					const text = await response.text();
+					expect(text).toContain('<browserconfig');
 				} else {
 					expect(response).toEqual(expect.any(Object));
 				}

@@ -74,6 +74,7 @@ import ebayListings from './data/ebay-listings.json';
 import mockGoogleAuth from './data/mock-google-auth.json';
 import mockInstagramMedia from './data/mock-instagram-media.json';
 import mockGoogleSearchConsoleData from './data/google-search-console.json';
+import validateExportsFixture from './data/validate-exports-fixture.json';
 import mockGoogleAnalyticsData from './data/mock-google-analytics-data.json';
 import mockAxeCoreResponse from './data/mock-axe-core-response.json';
 import mockCloudwatchData from './data/mock-cloudwatch-data.json';
@@ -142,6 +143,7 @@ export {
 	mockGoogleAuth,
 	mockInstagramMedia,
 	mockGoogleSearchConsoleData,
+	validateExportsFixture,
 	mockGoogleAnalyticsData,
 	mockAxeCoreResponse,
 	mockCloudwatchData,

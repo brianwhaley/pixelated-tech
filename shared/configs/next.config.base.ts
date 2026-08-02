@@ -12,7 +12,9 @@ export function getBaseNextConfig(): NextConfig {
 		experimental: {
 			optimizeCss: false,
 			externalDir: true,
+            // ppr: true,
 		},
+        // cacheComponents: true,
 		outputFileTracingRoot: path.resolve(__dirname, '../../'),
 		outputFileTracingIncludes: {
 			'/**': ['./src/app/config/pixelated.config.json.enc'],

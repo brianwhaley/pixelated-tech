@@ -2,15 +2,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { TEST_CONFIG } from '@/tests/fixtures';
 
-const createDefaultAdminserverMock = () => ({
-	performAxeCoreAnalysis: vi.fn(),
-	getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
-	getGoogleOAuthCredentials: () => ({
-		clientId: (TEST_CONFIG.integrations as any).google.client_id,
-		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
-	}),
-});
-
 describe('NextAuth config (server)', () => {
 	afterEach(() => {
 		vi.resetModules();
@@ -19,7 +10,14 @@ describe('NextAuth config (server)', () => {
 
 	it('exposes authOptions with values from pixelated config', async () => {
 		vi.resetModules();
-		vi.doMock('@pixelated-tech/components/adminserver', createDefaultAdminserverMock);
+		vi.doMock('@pixelated-tech/components/adminserver', () => ({
+			performAxeCoreAnalysis: vi.fn(),
+			getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
+			getGoogleOAuthCredentials: () => ({
+				clientId: (TEST_CONFIG.integrations as any).google.client_id,
+				clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+			}),
+		}));
 
 		const mod = await import('@/lib/authentication');
 		const { authOptions } = mod as any;

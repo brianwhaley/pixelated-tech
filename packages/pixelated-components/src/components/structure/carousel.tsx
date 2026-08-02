@@ -17,19 +17,7 @@ TODO: #20 Carousel bug conflict with drag and click
 
 
 
-export type CarouselCardType = {
-	index: number,
-	cardIndex: number,
-	cardLength: number,
-	link?: string,
-	linkTarget?: string,
-	image: string,
-	imageAlt?: string,
-	imgFit?: 'contain' | 'cover' | 'fill',
-	headerText?: string,
-	subHeaderText?: string,
-	bodyText?: string,
-};
+
 
 function capitalize(str: string) {
 	return str && String(str[0]).toUpperCase() + String(str).slice(1);
@@ -188,7 +176,37 @@ export function Carousel(props: CarouselType) {
 
 
 /* ========== CAROUSEL CARD ========== */
-function CarouselCard( props: CarouselCardType ) {
+/**
+ * CarouselCard — renders an individual card within the Carousel, including image, text, and optional link.
+ *
+ * @param {number} [props.index] - Zero-based index of this card within the carousel.
+ * @param {number} [props.cardIndex] - Current active index of the carousel (used for positioning).
+ * @param {number} [props.cardLength] - Total number of cards in the carousel (used for z-index).
+ * @param {string} [props.link] - Optional href for the card; if provided, wraps content in a link.
+ * @param {string} [props.linkTarget] - Target attribute for the link (e.g., '_self', '_blank').
+ * @param {string} [props.image] - Image URL for the card.
+ * @param {string} [props.imageAlt] - Alt text for the image (accessibility).
+ * @param {oneOf} [props.imgFit] - How to fit images: 'contain' | 'cover' | 'fill'.
+ * @param {string} [props.headerText] - Optional header/title text for the card.
+ * @param {string} [props.subHeaderText] - Optional subtitle text for the card.
+ * @param {string} [props.bodyText] - Optional body content for the card.
+ */
+CarouselCard.propTypes = {
+	/** Zero-based index of this card within the carousel. */
+	index: PropTypes.number.isRequired,
+	cardIndex: PropTypes.number.isRequired,
+	cardLength: PropTypes.number.isRequired,
+	link: PropTypes.string,
+	linkTarget: PropTypes.string,
+	image: PropTypes.string.isRequired,
+	imageAlt: PropTypes.string,
+	imgFit: PropTypes.oneOf(['contain', 'cover', 'fill']),
+	headerText: PropTypes.string,
+	subHeaderText: PropTypes.string,
+	bodyText: PropTypes.string,
+};
+export type CarouselCardType = InferProps<typeof CarouselCard.propTypes>;
+export function CarouselCard( props: CarouselCardType ) {
 	const myZindex = props.cardLength - props.index;
 	const styles: React.CSSProperties = {
 		zIndex: myZindex
@@ -207,7 +225,7 @@ function CarouselCard( props: CarouselCardType ) {
 		< div draggable='false'>
 			{ (props.link) ? <div draggable='false' className="carousel-card-link" /> : null }
 			{ (props.image) ? <div draggable='false' className="carousel-card-image">
-				<SmartImage draggable={false} src={props.image} title={props?.imageAlt} 
+				<SmartImage draggable={false} src={props.image} title={props.imageAlt ?? undefined} 
 					alt={props?.imageAlt || ""} className={imgFit} 
 					aboveFold={ props?.index === 0 ? true : undefined }
 					cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
@@ -226,7 +244,7 @@ function CarouselCard( props: CarouselCardType ) {
 	return (
 		<div draggable='true' id={'c-' + props.index} className="carousel-card-wrapper" style={styles}>
 			<div draggable='false' className="carousel-card">
-				{ (props.link) ? <a draggable='false' href={props.link} target={props.linkTarget}>{ cardBody }</a> : cardBody }
+				{ (props.link) ? <a draggable='false' href={props.link} target={props.linkTarget ?? undefined}>{ cardBody }</a> : cardBody }
 			</div>
 		</div>
 		
@@ -277,11 +295,13 @@ CarouselArrow.propTypes = {
 	/** Glyph or label text used for the arrow control. */
 	glyph: PropTypes.string.isRequired
 };
-function CarouselArrow(props: { direction: string; clickFunction: React.MouseEventHandler<HTMLButtonElement>; glyph: string; }) {
+export type CarouselArrowType = InferProps<typeof CarouselArrow.propTypes>;
+export function CarouselArrow(props: CarouselArrowType) {
+	const { direction, clickFunction, glyph } = props;
 	return (
-		<button className={`carousel-button${capitalize(props.direction)} text-outline`}
-			onClick={ props.clickFunction }>
-			{ props.glyph }
+		<button className={`carousel-button${capitalize(direction)} text-outline`}
+			onClick={ clickFunction }>
+			{ glyph }
 		</button>
 	);
 }
@@ -289,10 +309,15 @@ function CarouselArrow(props: { direction: string; clickFunction: React.MouseEve
 
 
 /* ========== CAROUSEL LOADING ========== */
-function CarouselLoading() {
+CarouselLoading.propTypes = {
+	/** Optional message to display while loading. */
+	message: PropTypes.string
+};
+export type CarouselLoadingType = InferProps<typeof CarouselLoading.propTypes>;
+export function CarouselLoading(props: CarouselLoadingType) {
 	return (
 		<div className="carousel-loading horizontal-centered vertical-centered centered">
-			<div>Loading...</div>
+			<div>{ props.message ?? 'Loading...' }</div>
 		</div>
 	);
 }

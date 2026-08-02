@@ -170,7 +170,7 @@ BestOfSouthCarolina.propTypes = {};
 export type BestOfSouthCarolinaType = InferProps<typeof BestOfSouthCarolina.propTypes>;
 export function BestOfSouthCarolina() {
 	return (
-		<a href="https://guidetosouthcarolina.com/bluffton/ga-contractors/palmetto-epoxy?from=badge"  title="Find me on Guide to South Carolina" target="_blank">
+		<a href="https://guidetosouthcarolina.com/bluffton/ga-contractors/palmetto-epoxy?from=badge"  title="Find Palmetto Epoxy on Guide to South Carolina" target="_blank" rel="noopener noreferrer">
 			<SmartImage src="https://guidetosouthcarolina.com/images/BOSC-Medallion-NOMINEE-RGBforWeb-0908.png" alt="Palmetto Epoxy on Guide to South Carolina" />
 		</a>
 	);
@@ -185,7 +185,7 @@ SourceSC.propTypes = {};
 export type SourceSCType = InferProps<typeof SourceSC.propTypes>;
 export function SourceSC() {
 	return (
-		<a href=""  title="Find me on SourceSC" target="_blank">
+		<a href=""  title="Find Palmetto Epoxy on SourceSC" target="_blank" rel="noopener noreferrer">
 			<SmartImage src="https://scbizdev.sccommerce.com/sites/default/files/2020-03/SCDOC_SourceSC_Logo_OLs_2.png" alt="Palmetto Epoxy on SourceSC" />
 		</a>
 	);

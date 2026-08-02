@@ -27,6 +27,14 @@ type AssessmentData = {
 	currentSocialMedia: string[];
 	currentAdvertisingPartners: string[];
 	currentEarnedMedia: string[];
+    references?: { 
+        name: string; 
+        url: string; 
+        contactName?: string;
+        contactEmail?: string;
+        contactPhone?: string;
+        summary: string;
+    }[];
 	existingSite?: {
 		url: string;
 		strengths: string[];
@@ -37,7 +45,7 @@ type AssessmentData = {
 	currentState: string[];
 	nextSteps: string[];
 	aboutPixelated: string[];
-	colorPalette: {
+	visualDesign: {
 		primary: string;
 		secondary: string;
 		tertiary: string;
@@ -46,6 +54,7 @@ type AssessmentData = {
 		accent3: string;
 		headerFont: { name: string; url: string } | string;
 		bodyFont: { name: string; url: string } | string;
+        additionalNotes: string[];
 	};
 	websiteDomain: { currentUrls?: string[]; proposedUrls?: string[] };
 	informationArchitecture: { route: string; title: string; notes: string[] }[];
@@ -71,10 +80,6 @@ function renderList(items: string[]) {
 			))}
 		</ul>
 	);
-}
-
-function renderParagraphs(items: string[]) {
-	return items.map((item, index) => <p key={index}>{item}</p>);
 }
 
 export default function AssessmentPage() {
@@ -137,7 +142,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 	const {assessment} = props;
 	return (
 		<>
-			{/* <FontLoader palette={assessment.colorPalette} /> */}
+			{/* <FontLoader palette={assessment.visualDesign} /> */}
 
 			<PageSection id="title-section" columns={1} maxWidth="1024px">
 				<div className="assessment-page-header">
@@ -177,9 +182,9 @@ function Assessment(props: { assessment: AssessmentData }) {
 						<div key={index}>
 							<h3>{company.name}</h3>
 							<ul>
-								{company.url ? <li><a href={company.url} target="_blank" rel="noreferrer">{company.url}</a></li> : null}
+								{company.url ? <li><a href={company.url} target="_blank" rel="noopener noreferrer">{company.url}</a></li> : null}
 								{company.urls?.length ? company.urls.map((url, i) => (
-									<li key={i}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>
+									<li key={i}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
 								)) : null}
 								<li>{company.summary}</li>
 							</ul>
@@ -200,7 +205,9 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 				<div>
 					<h2>Local Market Overview</h2>
-					{renderParagraphs(Array.isArray(assessment.marketOverview) ? assessment.marketOverview : [assessment.marketOverview])}
+					{(Array.isArray(assessment.marketOverview) ? assessment.marketOverview : [assessment.marketOverview]).map((item, index) => (
+						<p key={index}>{item}</p>
+					))}
 				</div>
 
 				<div>
@@ -210,7 +217,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 							<h3>{competitor.name}</h3>
 							<ul>
 								{competitor.urls?.length ? competitor.urls.map((url) => (
-									<li key={url}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>
+									<li key={url}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
 								)) : null}
 								<li>{competitor.summary}</li>
 							</ul>
@@ -221,7 +228,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 				{ assessment.existingSite ? (
 					assessment.existingSite.map((site, index) => (
 						<div key={index}>
-							<h2>Current Web Site<br/>{site.url ? <a href={site.url} target="_blank" rel="noreferrer">{site.url}</a> : 'No URL provided'}</h2>
+							<h2>Current Web Site<br/>{site.url ? <a href={site.url} target="_blank" rel="noopener noreferrer">{site.url}</a> : 'No URL provided'}</h2>
 							<h3>Strengths</h3>
 							<ul>
 								{renderList(site?.strengths || [])}
@@ -282,6 +289,26 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<li>If you prefer to focus on your business and build relationships with new customers, having a company like Pixelated to manage your website is both cost-effective and time efficient from a business perspective.</li>
 					<li>While a small business owner can take on website management themselves (or hand it over to a family member or friend), it is often not business-minded, well maintained, optimized for speed and search, kept up-to-date, and ultimately presents as “old” or “dormant”. This does not instill confidence in new customers visiting your site.</li>
 				</ul>
+
+				<h2>References and Industry Based Portfolio Work</h2>
+				{assessment.references && assessment.references.length > 0 ? (
+					<div>
+						{assessment.references.map((ref, index) => (
+							<div key={index}>
+								<h3>{ref.name}</h3>
+								<ul>
+									{ref.url && <li>Website: <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.url}</a></li>}
+									{ref.contactName && <li>Contact Name: {ref.contactName}</li>}
+									{ref.contactEmail && <li>Contact Email: {ref.contactEmail}</li>}
+									{ref.contactPhone && <li>Contact Phone: {ref.contactPhone}</li>}
+									<li>{ref.summary}</li>
+								</ul>
+							</div>
+						))}
+					</div>
+				) : (
+					<p>No references available.</p>
+				)}
 			</PageSection>
 
 			<PageSection id="plan-overviewsection" className="page-break" columns={1} maxWidth="1024px">
@@ -290,7 +317,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 				<ul>
 					<li>Build, adapt, and strengthen your business strategy to reflect your brand and business goals. Create and update a strong visual brand connecting you to the community and local businesses.</li>
 					<li>Focus on content creation for visibility, engagement, trust, and growth. This starts with the website and extends to social media platforms.</li>
-					<li>Re-platform your website to improve scalability, functionality, SEO, and AI-friendly AEO.</li>
+					<li>Uplift your website to improve scalability, functionality, SEO, and AI-friendly AEO.</li>
 					<li>Choose social media platforms that align with your business goals, community, and competitor landscape.</li>
 					<li>Invest in digital, print, and earned media for a holistic advertising approach.</li>
 					<li>Participate in the local community ecosystem, including clubs, nonprofits, hobby groups, and more.</li>
@@ -319,15 +346,19 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<p>Here is a quick snapshot of your current branding / logo variations</p>
 					{ assessment.logo ? 
 						assessment.logo.map((logo, index) => (
-							<div key={index}>
-								<SmartImage 
-									src={logo.url ?? ''} 
-									alt={logo.altText || `Current Logo ${index + 1}`} 
-									title={logo.altText || `Current Logo ${index + 1}`}
-									aboveFold={true} 
-								/>
-								<br />
-							</div>
+							logo.url ? (
+								<div key={index}>
+									<SmartImage 
+										src={logo.url ?? ''} 
+										alt={logo.altText || `Current Logo ${index + 1}`} 
+										title={logo.altText || `Current Logo ${index + 1}`}
+										aboveFold={true} 
+									/>
+									<br />
+								</div>
+							) : (
+								<p key={index}>No current logo provided.</p>
+							)
 						)) : (
 							<p>No current logo provided.</p>
 						)
@@ -338,20 +369,27 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<h2>Color Palette</h2>
 					<p>Here is an overview of the proposed color palette you use for your new web site, consistent with your branding and design aesthetic.</p>
 					<div className="color-palette row-3col">
-						<div className="color-palette-item grid-item" style={{ background: assessment.colorPalette.primary, color: contrastyColor(assessment.colorPalette.primary) }}>Primary</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.colorPalette.secondary, color: contrastyColor(assessment.colorPalette.secondary) }}>Secondary</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.colorPalette.tertiary, color: contrastyColor(assessment.colorPalette.tertiary) }}>Tertiary</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.colorPalette.accent1, color: contrastyColor(assessment.colorPalette.accent1) }}>Accent 1</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.colorPalette.accent2, color: contrastyColor(assessment.colorPalette.accent2) }}>Accent 2</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.colorPalette.accent3, color: contrastyColor(assessment.colorPalette.accent3) }}>Accent 3</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.primary, color: contrastyColor(assessment.visualDesign.primary) }}>Primary</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.secondary, color: contrastyColor(assessment.visualDesign.secondary) }}>Secondary</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.tertiary, color: contrastyColor(assessment.visualDesign.tertiary) }}>Tertiary</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent1, color: contrastyColor(assessment.visualDesign.accent1) }}>Accent 1</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent2, color: contrastyColor(assessment.visualDesign.accent2) }}>Accent 2</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent3, color: contrastyColor(assessment.visualDesign.accent3) }}>Accent 3</div>
 					</div>
 				</div>
 
 				<div>
 					<h3>Typography</h3>
 					<p>Based on your logo, balance serif (traditional/authority) with sans-serif (modern/accessible).</p>
-					<p>Header font: <a href={typeof assessment.colorPalette.headerFont === 'string' ? assessment.colorPalette.headerFont : assessment.colorPalette.headerFont.url} target="_blank" rel="noreferrer">{typeof assessment.colorPalette.headerFont === 'string' ? assessment.colorPalette.headerFont : assessment.colorPalette.headerFont.name}</a></p>
-					<p>Body content font: <a href={typeof assessment.colorPalette.bodyFont === 'string' ? assessment.colorPalette.bodyFont : assessment.colorPalette.bodyFont.url} target="_blank" rel="noreferrer">{typeof assessment.colorPalette.bodyFont === 'string' ? assessment.colorPalette.bodyFont : assessment.colorPalette.bodyFont.name}</a></p>
+					<p>Header font: <a href={typeof assessment.visualDesign.headerFont === 'string' ? assessment.visualDesign.headerFont : assessment.visualDesign.headerFont.url} target="_blank" rel="noopener noreferrer">{typeof assessment.visualDesign.headerFont === 'string' ? assessment.visualDesign.headerFont : assessment.visualDesign.headerFont.name}</a></p>
+					<p>Body content font: <a href={typeof assessment.visualDesign.bodyFont === 'string' ? assessment.visualDesign.bodyFont : assessment.visualDesign.bodyFont.url} target="_blank" rel="noopener noreferrer">{typeof assessment.visualDesign.bodyFont === 'string' ? assessment.visualDesign.bodyFont : assessment.visualDesign.bodyFont.name}</a></p>
+				</div>
+
+				<div>
+					<h3>Additional Notes</h3>
+					<ul>
+						{renderList(assessment.visualDesign.additionalNotes || [])}
+					</ul>
 				</div>
 
 				<div>
@@ -372,7 +410,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<ul>
 						{assessment.websiteDomain.currentUrls ? (
 							assessment.websiteDomain.currentUrls.map((url, index) => (
-								<li key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>
+								<li key={index}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
 							))
 						) : <li>No current website domain provided.</li>}
 					</ul>
@@ -380,7 +418,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<ul>
 						{assessment.websiteDomain.proposedUrls ? (
 							assessment.websiteDomain.proposedUrls.map((url: string, index: number) => (
-								<li key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>
+								<li key={index}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
 							))
 						) : null}
 					</ul>
@@ -542,8 +580,8 @@ function Assessment(props: { assessment: AssessmentData }) {
 }
 
 
-// Load fonts and set CSS variables based on assessment colorPalette
-/* function FontLoader({palette}:{palette: AssessmentData['colorPalette']}){
+// Load fonts and set CSS variables based on assessment visualDesign
+/* function FontLoader({palette}:{palette: AssessmentData['visualDesign']}){
 	useEffect(()=>{
 		const header = typeof palette.headerFont === 'string' ? palette.headerFont : palette.headerFont?.name;
 		const body = typeof palette.bodyFont === 'string' ? palette.bodyFont : palette.bodyFont?.name;

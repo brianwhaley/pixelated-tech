@@ -217,9 +217,9 @@ describe('Pixelated Template site coverage', () => {
 		expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
 	});
 
-	it('renders Footer fallback when config is unavailable', () => {
+	it('renders Footer fallback when config is unavailable', async () => {
 		setPixelatedConfigOverride(null);
-		render(<Footer />);
+		render(await Footer());
 		expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
 		expect(screen.getByText(/__SITE_NAME__/)).not.toBeNull();
 	});
@@ -254,6 +254,7 @@ describe('Pixelated Template site coverage', () => {
 		expect(screen.getByTestId('page-title-header')).not.toBeNull();
 		expect(screen.getByText(/This site serves targeted geographic areas/i)).not.toBeNull();
 	});
+
 
 	describe('Pixelated Template explicit branch coverage', () => {
 		it('renders Blog Calendar loading state', async () => {

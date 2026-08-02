@@ -78,7 +78,6 @@ import StyleGuide from '@/app/(pages)/styleguide/page';
 import Subscribe from '@/app/(pages)/subscribe/page';
 import Search from '@/app/elements/search';
 import Privacy from '@/app/elements/privacy';
-import Terms from '@/app/elements/terms';
 import Interactions from '@/app/elements/interactions';
 import { default as robots } from '@/app/robots';
 import * as CalloutLibrary from '@/app/elements/calloutlibrary';
@@ -238,10 +237,6 @@ describe('PixelVivid coverage', () => {
 			expect(screen.getByText(/Privacy Policy/i)).not.toBeNull();
 		});
 
-		it('renders terms page content', () => {
-			render(<Terms />);
-			expect(screen.getAllByText(/Terms of Service/i).length).toBeGreaterThan(0);
-		});
 
 		it('renders interactions without error', async () => {
 			render(<Interactions />);

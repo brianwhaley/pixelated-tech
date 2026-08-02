@@ -69,6 +69,7 @@ export type SquareStoreItemsWrapperProps = {
 	emptyMessage?: string;
 	errorMessage?: string;
 	showFilters?: boolean;
+	showPastEvents?: boolean;
 	itemSize?: 'small' | 'large';
 	itemURLPrefix?: string;
 };
@@ -92,6 +93,7 @@ export async function SquareStoreItemsWrapper(props: SquareStoreItemsWrapperProp
 				emptyMessage={emptyMessage}
 				errorMessage={errorMessage}
 				showFilters={showFilters}
+				showPastEvents={props.showPastEvents}
 				itemSize={itemSize}
 				itemURLPrefix={itemURLPrefix}
 			/>
@@ -116,23 +118,11 @@ export async function SquareEventWrapper(props: SquareEventWrapperProps): Promis
 	return await getSquareEventItems();
 }
 
-function isSandboxSquareConfig(squareConfig: any) {
-	return squareConfig?.environment === 'sandbox';
-}
 
 function getSquareBaseUrl(squareConfig: any) {
-	return isSandboxSquareConfig(squareConfig)
+	return squareConfig?.environment === 'sandbox'
 		? 'https://connect.squareupsandbox.com'
 		: 'https://connect.squareup.com';
-}
-
-function getSquareCatalogUrl() {
-	const params = new URLSearchParams({ types: 'ITEM,ITEM_VARIATION,IMAGE,CATEGORY' });
-	return `/v2/catalog/list?${params.toString()}`;
-}
-
-function getSquareInventoryUrl() {
-	return '/v2/inventory/batch-retrieve-counts';
 }
 
 async function fetchSquareCustomAttributeDefinitions(squareConfig: any) {
@@ -379,22 +369,6 @@ function formatSquareEventDate(dateString: string, options: Intl.DateTimeFormatO
 	}
 }
 
-function buildSquareEventSchedule(startDate?: string, endDate?: string, timeZone?: string) {
-	if (!startDate || !endDate) return undefined;
-	const start = formatSquareEventDate(startDate, { dateStyle: 'short', timeStyle: 'short' }, timeZone);
-	const end = formatSquareEventDate(endDate, { dateStyle: 'short', timeStyle: 'short' }, timeZone);
-	if (!start || !end) return undefined;
-	return `${start} - ${end}`;
-}
-
-function isSquareEventComplete(startDate?: string, endDate?: string) {
-	if (!endDate) {
-		return false;
-	}
-	const endTime = Date.parse(endDate);
-	return !Number.isNaN(endTime) && endTime < Date.now();
-}
-
 function buildSquareEventStatus(startDate?: string, endDate?: string, itemInventory?: number) {
 	const now = Date.now();
 	const endTime = endDate ? Date.parse(endDate) : NaN;
@@ -462,7 +436,13 @@ function buildSquareEventItem(
 			status: buildSquareEventStatus(startDate, endDate, itemInventory),
 			carouselImages,
 			category: ['event'],
-			schedule: buildSquareEventSchedule(startDate, endDate, eventTimeZone),
+			schedule: (() => {
+				if (!startDate || !endDate) return undefined;
+				const start = formatSquareEventDate(startDate, { dateStyle: 'short', timeStyle: 'short' }, eventTimeZone);
+				const end = formatSquareEventDate(endDate, { dateStyle: 'short', timeStyle: 'short' }, eventTimeZone);
+				if (!start || !end) return undefined;
+				return `${start} - ${end}`;
+			})(),
 			isShippable: toBoolean(getPropertyValue(itemData?.is_shippable))
 				?? (selectionLabelMap
 					? sanitizeString(getPropertyValue(itemData?.is_shippable))
@@ -509,8 +489,7 @@ async function normalizeSquareEventObjects(squareConfig: any, selectionLabelMap?
 
 	return itemObjects
 		.map((item) => buildSquareEventItem(item, variationMap, imageMap, countsMap, selectionLabelMap))
-		.filter((item): item is SquareStoreEventShapeType => Boolean(item))
-		.filter((item) => options.includeCompleted || !isSquareEventComplete(item.fields.startDate, item.fields.endDate));
+		.filter((item): item is SquareStoreEventShapeType => Boolean(item));
 }
 
 export async function getSquareEventItems(options: SquareEventQueryOptions = {}) {
@@ -701,7 +680,7 @@ async function fetchSquareInventoryCounts(squareConfig: any, variationIds: strin
 		throw new Error('Square access token is not configured.');
 	}
 
-	const url = `${getSquareBaseUrl(squareConfig)}${getSquareInventoryUrl()}`;
+	const url = `${getSquareBaseUrl(squareConfig)}/v2/inventory/batch-retrieve-counts`;
 	const response = await smartFetch(url, {
 		responseType: 'json',
 		requestInit: {
@@ -726,26 +705,6 @@ async function fetchSquareInventoryCounts(squareConfig: any, variationIds: strin
 	return counts;
 }
 
-function buildPriceFromVariations(variationObjects: any[]) {
-	if (!variationObjects || variationObjects.length === 0) return { amount: 0, currency: 'USD' };
-	const variation = variationObjects[0];
-	const money = variation?.item_variation_data?.price_money;
-	return {
-		amount: typeof money?.amount === 'number' ? money.amount / 100 : 0,
-		currency: money?.currency || 'USD',
-	};
-}
-
-function slugifyValue(value: string) {
-	return value
-		.toString()
-		.toLowerCase()
-		.trim()
-		.replace(/['’]/g, '')
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '');
-}
-
 function buildSquareStoreItem(
 	itemObject: any,
 	variationMap: Map<string, any>,
@@ -757,16 +716,16 @@ function buildSquareStoreItem(
 	const itemData = itemObject?.item_data || {};
 	const eventStartDate = itemData?.event?.start_at;
 	const eventEndDate = itemData?.event?.end_at;
-	if (itemData?.product_type === 'EVENT' && isSquareEventComplete(eventStartDate, eventEndDate)) {
-		return undefined;
-	}
 	const variationRefs = Array.isArray(itemData?.variations) ? itemData.variations : [];
 	const variationIds = variationRefs.map((ref: any) => ref?.id).filter(Boolean);
 	let variationObjects = variationIds.map((variationId: string) => variationMap.get(variationId)).filter(Boolean);
 	if (variationObjects.length === 0) {
 		variationObjects = variationRefs.filter((ref: any) => ref?.item_variation_data);
 	}
-	const { amount, currency } = buildPriceFromVariations(variationObjects);
+	const variation = variationObjects[0];
+	const variationMoney = variation?.item_variation_data?.price_money;
+	const amount = typeof variationMoney?.amount === 'number' ? variationMoney.amount / 100 : 0;
+	const currency = variationMoney?.currency || 'USD';
 
 	const itemImageIds = Array.isArray(itemData?.image_ids) ? itemData.image_ids : [];
 	const itemImageURLs = itemImageIds.map((imageId: string) => albumImageMap.get(imageId)).filter(Boolean);
@@ -806,7 +765,13 @@ function buildSquareStoreItem(
 	const itemType = itemData?.product_type ?? 'PRODUCT';
 
 	const itemTitle = itemData?.name || 'Untitled Item';
-	const itemSlug = slugifyValue(itemTitle);
+	const itemSlug = itemTitle
+		.toString()
+		.toLowerCase()
+		.trim()
+		.replace(/['’]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
 	const itemId = itemObject?.id || '';
 	const variationWeight = variationObjects.length > 0 ? variationObjects[0]?.item_variation_data?.item_weight : undefined;
 	const variationWeightUnit = variationObjects.length > 0 ? variationObjects[0]?.item_variation_data?.item_weight_unit : undefined;
@@ -987,19 +952,6 @@ function formatMoneyAmount(value: any) {
 	return Number.isFinite(parsed) ? Math.round(parsed * 100) : 0;
 }
 
-function selectObjectFields(source: Record<string, any>, fields: ReadonlyArray<string>) {
-	return fields.reduce((result, field) => {
-		if (source[field] !== undefined) {
-			result[field] = source[field];
-		}
-		return result;
-	}, {} as Record<string, any>);
-}
-
-function getRegistrationData(checkoutData?: CheckoutType) {
-	return selectObjectFields(checkoutData?.shippingTo || {}, REGISTRATION_FIELD_NAMES);
-}
-
 function resolveSquareCredentials(squareConfig: any, checkoutData?: CheckoutType): SelectedSquareCredentials | undefined {
 	if (!squareConfig) {
 		return undefined;
@@ -1090,7 +1042,15 @@ function buildSquareLineItems(checkoutData: CheckoutType, currency: string) {
 		...(item.catalogObjectId ? { catalog_object_id: item.catalogObjectId } : {}),
 	}));
 
-	const registrationData = getRegistrationData(checkoutData);
+	const registrationData = ((): Record<string, any> => {
+		return REGISTRATION_FIELD_NAMES.reduce((result, field) => {
+			const value = checkoutData?.shippingTo?.[field];
+			if (value !== undefined) {
+				result[field] = value;
+			}
+			return result;
+		}, {} as Record<string, any>);
+	})();
 	if (Object.keys(registrationData).length <= 0) {
 		return cartLineItems;
 	}
@@ -1153,10 +1113,6 @@ function buildSquareServiceCharges(checkoutData: CheckoutType, currency: string)
 	return serviceCharges;
 }
 
-function hasShippableItems(checkoutData: CheckoutType) {
-	return checkoutData.items.some((item) => item?.itemIsShippable !== false);
-}
-
 function buildSquareTaxes(checkoutData: CheckoutType) {
 	const config = getFullPixelatedConfig();
 	const taxRateValue = Number(config?.integrations?.shoppingcart?.taxRate ?? 0);
@@ -1172,7 +1128,7 @@ function buildSquareTaxes(checkoutData: CheckoutType) {
 }
 
 function buildSquareFulfillment(checkoutData: CheckoutType) {
-	if (!hasShippableItems(checkoutData)) {
+	if (!checkoutData.items.some((item) => item?.itemIsShippable !== false)) {
 		return undefined;
 	}
 
@@ -1241,28 +1197,6 @@ function createSquarePaymentError(error: unknown) {
 	}
 
 	return new SquarePaymentError(code, 'Your payment could not be processed. Please try again.');
-}
-
-function maybeGetSquarePaymentErrorMessage(error: unknown) {
-	if (error instanceof SquarePaymentError) {
-		return error.userMessage;
-	}
-
-	const details = getSquarePaymentErrorDetails(error);
-	if (typeof details?.error === 'string' && details.error.trim().length > 0) {
-		return details.error.trim();
-	}
-
-	const message = error instanceof Error ? error.message : String(error || '');
-	if (message.includes('Please re-enter your card details and try again.')) {
-		return 'Please re-enter your card details and try again.';
-	}
-
-	if (message.includes('Card verification failed. Please check the CVV and try again.')) {
-		return 'Card verification failed. Please check the CVV and try again.';
-	}
-
-	return undefined;
 }
 
 export function buildSquarePaymentBody(sourceId: string, checkoutData: CheckoutType, idempotencyKey: string) {
@@ -1343,19 +1277,14 @@ function createSquareIdempotencyKey(suffix: string) {
 	return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}-${suffix}`;
 }
 
-function getSquarePaymentAmount(checkoutData: CheckoutType, orderResponse: any) {
-	const orderTotalMoney = orderResponse?.order?.total_money;
-	return typeof orderTotalMoney?.amount === 'number'
-		? orderTotalMoney.amount / 100
-		: checkoutData.total;
-}
-
 export async function createSquareOrderAndCapturePayment(sourceId: string, checkoutData: CheckoutType) {
 	const orderIdempotencyKey = createSquareIdempotencyKey('order');
 	const paymentIdempotencyKey = createSquareIdempotencyKey('payment');
 	const orderResponse = await createSquareOrder(checkoutData, orderIdempotencyKey);
 	const orderId = orderResponse?.order?.id || orderResponse?.order_id || orderResponse?.id;
-	const paymentAmount = getSquarePaymentAmount(checkoutData, orderResponse);
+	const paymentAmount = typeof orderResponse?.order?.total_money?.amount === 'number'
+		? orderResponse.order.total_money.amount / 100
+		: checkoutData.total;
 	const captureResponse = await captureSquarePayment(sourceId, checkoutData, paymentIdempotencyKey, orderId, paymentAmount);
 	return {
 		...captureResponse,

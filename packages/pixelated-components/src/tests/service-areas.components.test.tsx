@@ -6,7 +6,7 @@ import { ServiceAreas as ServiceAreasList, ServiceAreaDetail } from '../componen
 const mockServiceAreas = [
 	{
 		name: 'Coastal Service Area',
-		description: 'Serving coastal homes with specialized exterior coatings and weatherproof finishes.',
+		description: ['Serving coastal homes with specialized exterior coatings and weatherproof finishes.'],
 		short_description: 'Waterproof and corrosion-resistant service area solutions.',
 		path: '/service-areas/coastal-service-area',
 		highlights: ['Marine-safe coatings', 'Salt-air protection'],
@@ -14,7 +14,7 @@ const mockServiceAreas = [
 	},
 	{
 		name: 'Downtown Service Area',
-		description: 'Urban garage and business floor solutions for downtown locations.',
+		description: ['Urban garage and business floor solutions for downtown locations.'],
 		short_description: 'Heavy-duty flooring coverage for downtown commercial spaces.',
 		slug: 'downtown-service-area',
 	},
@@ -31,7 +31,7 @@ describe('Service areas components', () => {
 	});
 
 	it('uses the generated slug for service area URLs even when path is provided', () => {
-		render(<ServiceAreasList title="Service Areas" intro="We serve the following regions:" />, { config: { siteInfo: { serviceAreas: [{ name: 'Coastal Service Area', description: 'Serving coastal homes.', short_description: 'Waterproof service area solutions.', path: '/service-areas/wrong-path' }] } } });
+		render(<ServiceAreasList title="Service Areas" intro="We serve the following regions:" />, { config: { siteInfo: { serviceAreas: [{ name: 'Coastal Service Area', description: ['Serving coastal homes.'], short_description: 'Waterproof service area solutions.', path: '/service-areas/wrong-path' }] } } });
 
 		expect(screen.getByRole('link', { name: /Coastal Service Area/i })).toHaveAttribute('href', '/service-areas/coastal-service-area');
 	});

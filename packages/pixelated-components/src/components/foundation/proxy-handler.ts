@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getOriginFromHeaders } from './sitemap';
+import { NextURL } from "next/dist/server/web/next-url";
 
 /**
  * STANDARD_PROXY_MATCHER
@@ -20,9 +21,22 @@ export const STANDARD_PROXY_MATCHER = ["/((?!_next/image|_next/static|api|favico
  * enabling/disabling specific permissions (e.g., camera access), or setting custom rate limits.
  */
 export function handlePixelatedProxy(req: NextRequest) {
+
+	let response: NextResponse;
+
+	const isProduction = process.env.NODE_ENV === 'production';
+	const isHttp = req.headers.get('x-forwarded-proto')?.toLowerCase().split(',')[0].trim() === 'http';
+
+	if ( isProduction && isHttp ) {
+		const host = req.headers.get('host') || req.nextUrl.host;
+		const httpsUrl = `https://${host}${req.nextUrl.pathname}${req.nextUrl.search}`;
+		// Status 308 indicates a permanent redirect in Next.js
+		return NextResponse.redirect(httpsUrl, 308);
+	} 
+
 	const path = req.nextUrl.pathname + (req.nextUrl.search || "");
-	const publicOrigin = getOriginFromHeaders(req.headers as any);
-	const origin = publicOrigin ?? (req.nextUrl as any)?.origin ?? new URL(req.url).origin;
+	const publicOrigin = getOriginFromHeaders(req.headers as Headers);
+	const origin = publicOrigin ?? (req.nextUrl as NextURL)?.origin ?? new URL(req.url).origin;
 	const url = publicOrigin ? new URL(path, publicOrigin).href : ((req.nextUrl as any)?.href ?? req.url ?? new URL(path, origin).href);
 	const env = (origin.includes('localhost') || origin.includes('127.0.0.1')) ? 'local' : 'prod';
 
@@ -31,33 +45,22 @@ export function handlePixelatedProxy(req: NextRequest) {
 	requestHeaders.set("x-origin", String(origin));
 	requestHeaders.set("x-url", String(url));
 	requestHeaders.set("x-env", env);
-
-	const response = NextResponse.next({
-		request: {
-			headers: requestHeaders,
-		},
+	response = NextResponse.next({
+		request: { headers: requestHeaders },
 	});
-
-	if (!(response as any).request) {
-		(response as any).request = {
-			headers: requestHeaders,
-		};
-	}
 
 	// --- Security Headers ---
 
-	// HSTS: Force HTTPS for 1 year
-	response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-
+	if (isProduction) {
+		// HSTS: Force HTTPS for 1 year
+		response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+	}
 	// Clickjacking Protection
 	response.headers.set("X-Frame-Options", "DENY");
-
 	// MIME-Sniffing Protection
 	response.headers.set("X-Content-Type-Options", "nosniff");
-
 	// Referrer Policy
 	response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-
 	// Permissions Policy: Lock down hardware access
 	response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), interest-cohort=()");
 

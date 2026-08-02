@@ -2,6 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
+import { pixelatedEslintPlugin as plugin } from '../test/test-utils';
 
 function createTemporaryProject(files: Record<string, string>) {
 	const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pixelated-eslint-'));
@@ -15,7 +16,6 @@ function createTemporaryProject(files: Record<string, string>) {
 
 describe('pixelated no-stale-override rule', () => {
 	it('errors when a root override target is missing from the lockfile', async () => {
-		const plugin = await import('../scripts/pixelated-eslint-plugin.js');
 		const { Linter } = await import('eslint');
 		const linter = new Linter({ configType: 'flat' });
 
@@ -30,7 +30,7 @@ describe('pixelated no-stale-override rule', () => {
 			const messages = linter.verify('const x = 1;', {
 				files: ['**/*.{js,jsx,mjs,mjsx,cjs,cjsx,ts,tsx,mts,mtsx,cts,ctsx}'],
 				languageOptions: { ecmaVersion: 2022, sourceType: 'module' },
-				plugins: { pixelated: plugin.default },
+				plugins: { pixelated: plugin },
 				rules: { 'pixelated/no-stale-override': 'error' },
 			}, { filename: 'src/index.ts' });
 
@@ -42,7 +42,6 @@ describe('pixelated no-stale-override rule', () => {
 	});
 
 	it('does not error when override is necessary', async () => {
-		const plugin = await import('../scripts/pixelated-eslint-plugin.js');
 		const { Linter } = await import('eslint');
 		const linter = new Linter({ configType: 'flat' });
 
@@ -64,7 +63,7 @@ describe('pixelated no-stale-override rule', () => {
 			const messages = linter.verify('const x = 1;', {
 				files: ['**/*.{js,jsx,mjs,mjsx,cjs,cjsx,ts,tsx,mts,mtsx,cts,ctsx}'],
 				languageOptions: { ecmaVersion: 2022, sourceType: 'module' },
-				plugins: { pixelated: plugin.default },
+				plugins: { pixelated: plugin },
 				rules: { 'pixelated/no-stale-override': 'error' },
 			}, { filename: 'src/index.ts' });
 

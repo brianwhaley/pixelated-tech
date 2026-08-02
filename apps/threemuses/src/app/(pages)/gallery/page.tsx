@@ -50,14 +50,6 @@ const excludedGalleryTitles = [
 	'lot-party-dresses-hanging-hangers-market'
 ];
 
-function getGalleryTitleFromUrl(url?: string) {
-	if (!url) return '';
-	const lastSegment = String(url).split('/').pop() || '';
-	const withoutQuery = lastSegment.split('?')[0];
-	const withoutExtension = withoutQuery.replace(/\.[^.]+$/, '');
-	return withoutExtension.replace(/_/g, ' ').trim().toLowerCase();
-}
-
 async function fetchGalleryImages() {
 	const pixelatedConfig = getFullPixelatedConfig();
 	const apiProps = {
@@ -72,7 +64,14 @@ async function fetchGalleryImages() {
 export default async function GalleryPage() {
 	const galleryImages = await fetchGalleryImages();
 	const filteredGalleryImages = galleryImages.filter((image) => {
-		const title = getGalleryTitleFromUrl(image.image);
+		const title = (() => {
+			const url = image.image;
+			if (!url) return '';
+			const lastSegment = String(url).split('/').pop() || '';
+			const withoutQuery = lastSegment.split('?')[0];
+			const withoutExtension = withoutQuery.replace(/\.[^.]+$/, '');
+			return withoutExtension.replace(/_/g, ' ').trim().toLowerCase();
+		})();
 		return !excludedGalleryTitles.includes(title);
 	});
 	const updatedGalleryImages = filteredGalleryImages.map((image, index) => ({

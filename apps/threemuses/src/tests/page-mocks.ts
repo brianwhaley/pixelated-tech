@@ -91,7 +91,6 @@ export const resetCartItems = () => {
 let contentfulEntriesResponse: any = { items: [], includes: { Asset: [] } };
 let contentfulEntryResponse: any = null;
 let contentfulImagesResponse: any[] = [];
-let buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
 
 export const setContentfulEntriesResponse = (response: any) => {
 	contentfulEntriesResponse = response;
@@ -103,22 +102,13 @@ export const setContentfulImagesResponse = (response: any[]) => {
 	contentfulImagesResponse = response;
 };
 export const setBuildEventSchema = (fn: (event: any) => any) => {
-	buildEventSchemaImpl = fn;
+	(defaultMocks as any).buildEventSchema = fn;
 };
 export const resetContentfulMocks = () => {
 	contentfulEntriesResponse = { items: [], includes: { Asset: [] } };
 	contentfulEntryResponse = null;
 	contentfulImagesResponse = [];
-	buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
-};
-
-const readPublicData = (filePath: string): string | null => {
-	const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
-	const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
-	if (!fs.existsSync(resolvedPath)) {
-		return null;
-	}
-	return fs.readFileSync(resolvedPath, 'utf-8');
+	(defaultMocks as any).buildEventSchema = (event: any) => ({ title: event.fields.title });
 };
 
 const mockComponent = (name: string, testId?: string) => ({ children, title, site, posts, markdowndata, faqsData, className, id, style, ...rest }: any) => {
@@ -172,54 +162,6 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 	);
 };
 
-const mockServiceDetail = ({ service, title, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'servicedetailpage', id },
-		title ?? service?.name ?? 'Service Detail',
-	);
-};
-
-const mockServiceAreaDetail = ({ serviceArea, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'serviceareadetailpage', id },
-		serviceArea?.name ?? 'Service Area Detail',
-	);
-};
-
-const mockSquareEventDetail = ({ eventData, ...props }: any) => {
-	const isOpen = String(eventData?.fields?.status ?? '').toLowerCase() === 'open';
-	return React.createElement(
-		'div',
-		{ ...props, 'data-testid': 'squareeventdetail', id: 'event-callout-section' },
-		isOpen ? React.createElement('button', {
-			id: 'add-to-cart-button',
-			onClick: () => {
-				const fn = (globalThis as any).mockRouterPush;
-				if (typeof fn === 'function') fn('/cart');
-			},
-		}, 'Add to cart') : null,
-	);
-};
-
-const mockSquareEventCallout = ({ ...props }: any) => {
-	return React.createElement(
-		'div',
-		{ ...props, 'data-testid': 'squareeventcallout' },
-		React.createElement('div', { 'data-testid': 'schemaevent' }),
-		React.createElement('div', { 'data-testid': 'callout' }),
-	);
-};
-
-const contentfulValueToSlug = ({ value }: any) =>
-	encode(
-		String(value ?? '')
-			.trim()
-			.toLowerCase()
-			.replace(/\s+/g, '-'),
-	);
-
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -230,11 +172,19 @@ const defaultMocks: Record<string, any> = {
 		if (mockState.fileData !== undefined && mockState.fileData !== null) {
 			return mockState.fileData;
 		}
-		const data = readPublicData(filePath);
+		const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+		const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
+		if (!fs.existsSync(resolvedPath)) {
+			return {
+				data: null,
+				loading: false,
+				error: `File not found: ${filePath}`,
+			};
+		}
 		return {
-			data,
+			data: fs.readFileSync(resolvedPath, 'utf-8'),
 			loading: false,
-			error: data === null ? `File not found: ${filePath}` : null,
+			error: null,
 		};
 	},
 	getCachedWordPressItems: async () => mockState.wordpressPosts,
@@ -249,7 +199,7 @@ const defaultMocks: Record<string, any> = {
 	getContentfulEntryByField: async () => contentfulEntryResponse,
 	getContentfulImagesFromEntries: async () => contentfulImagesResponse,
 	getContentfulAssetURLs: async () => [],
-	buildEventSchema: (event: any) => buildEventSchemaImpl(event),
+	buildEventSchema: (event: any) => ({ title: event?.fields?.title }),
 	getGravatarProfile: async () => null,
 	ToggleLoading: () => null, GoogleFonts: () => null,
 	MicroInteractions: () => null,
@@ -281,9 +231,17 @@ const defaultMocks: Record<string, any> = {
 	ServicesList: mockServicesList,
 	Services: mockServicesList,
 	ServiceAreas: mockServiceAreasList,
-	ServiceAreaDetail: mockServiceAreaDetail,
+	ServiceAreaDetail: ({ serviceArea, id }: any) => React.createElement(
+		'div',
+		{ 'data-testid': 'serviceareadetailpage', id },
+		serviceArea?.name ?? 'Service Area Detail',
+	),
 	ServiceCard: mockComponent('ServiceCard'),
-	ServiceDetail: mockServiceDetail,
+	ServiceDetail: ({ service, title, id }: any) => React.createElement(
+		'div',
+		{ 'data-testid': 'servicedetailpage', id },
+		title ?? service?.name ?? 'Service Detail',
+	),
 	ShoppingCart: ({ onPaymentCapture, ...props }: any) => {
 		if (typeof onPaymentCapture === 'function') {
 			void Promise.resolve(onPaymentCapture({ sourceId: 'test-source', checkoutData: { amount: 1 } }));
@@ -295,14 +253,38 @@ const defaultMocks: Record<string, any> = {
 	SquareStoreItemDetail: mockComponent('SquareStoreItemDetail'),
 	Table: mockComponent('Table'),
 	Tiles: mockComponent('Tiles', 'tiles'),
-	SquareEventDetail: mockSquareEventDetail,
-	SquareEventCallout: mockSquareEventCallout,
+	SquareEventDetail: ({ eventData, ...props }: any) => {
+		const isOpen = String(eventData?.fields?.status ?? '').toLowerCase() === 'open';
+		return React.createElement(
+			'div',
+			{ ...props, 'data-testid': 'squareeventdetail', id: 'event-callout-section' },
+			isOpen ? React.createElement('button', {
+				id: 'add-to-cart-button',
+				onClick: () => {
+					const fn = (globalThis as any).mockRouterPush;
+					if (typeof fn === 'function') fn('/cart');
+				},
+			}, 'Add to cart') : null,
+		);
+	},
+	SquareEventCallout: ({ ...props }: any) => React.createElement(
+		'div',
+		{ ...props, 'data-testid': 'squareeventcallout' },
+		React.createElement('div', { 'data-testid': 'schemaevent' }),
+		React.createElement('div', { 'data-testid': 'callout' }),
+	),
 	addToShoppingCart: () => null,
 	getCart: () => cartItems,
 	getCartItemCount: (items: any[]) => Array.isArray(items) ? items.reduce((sum, item) => sum + (Number(item?.itemQuantity) || 0), 0) : 0,
 	getCartSubTotal: (items: any[]) => Array.isArray(items) ? items.reduce((sum, item) => sum + ((Number(item?.itemCost) || 0) * (Number(item?.itemQuantity) || 1)), 0) : 0,
 	formatAsHundredths: (value: number) => Number.isFinite(value) ? Math.round(value * 100) / 100 : 0,
-	contentfulValueToSlug,
+	contentfulValueToSlug: ({ value }: any) =>
+		encode(
+			String(value ?? '')
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-'),
+		),
 	ContentfulAlert: mockComponent('ContentfulAlert'),
 	ContentfulAlerts: mockComponent('ContentfulAlerts'),
 	FAQAccordion: mockComponent('FAQ'),

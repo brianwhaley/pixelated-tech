@@ -1,7 +1,7 @@
 {
 	"companyName": "AMAVA Janitorial Services",
 	"companyContact": "Michael Pope",
-	"date": "July 13, 2026",
+	"date": "July 24, 2026",
 	"email": "michaelp@amavajanitorial.com",
 	"phone": "(877) 625-5959",
 	"address": {
@@ -14,11 +14,10 @@
 	"proposalType": "Monthly Maintenance",
 	"goal": 
 	[
-		"To keep AMAVA Janitorial Services, AMAVA Landscaping, and AMAVA Flooring web sites healthy, engaging, and updated with regular maintenance and updates."
+		"To keep AMAVA Janitorial Services and AMAVA Flooring web sites healthy, engaging, and updated with regular maintenance and updates."
 	],
 	"deliverables": [
 		"Monthly GROWTH Package for amavajanitorial.com",
-		"Monthly PREMIUM Package for amavalandscaping.com",
 		"Monthly PREMIUM Package for amavaflooring.com"
 	],
 	"features": [
@@ -121,13 +120,16 @@
 		}
 	],
 	"paymentTotal": {
-		"amount": 1000,
+		"amount": 700,
+		"isDiscounted": true,
 		"description": [
-			"Monthly Maintenance Fee is for all three web sites: amavajanitorial.com, amavalandscaping.com, and amavaflooring.com",
+			"Monthly Maintenance Fee is for two web sites: amavajanitorial.com and amavaflooring.com",
 
-			"The proposal is for a monthly maintenance package for amavajanitorial.com as GROWTH, amavalandscaping.com as PREMIUM, and amavaflooring.com as PREMIUM.  Since Amava Janitorial is strictly commercial, the recommendation is less social media activity is needed.  The other two target commercial and residential customers, so the recommendation is more activity on social media accounts.",
-			"Initial estimated monthly maintenance costs for GROWTH is $300 and PREMIUM is $500, for a total estimate of $1300.",
-			"The final cost is based on efficiencies gained by building all three web sites at the same time, with a reusable template across all three sites."
+			"The proposal is for a monthly maintenance package for amavajanitorial.com as GROWTH and amavaflooring.com as PREMIUM.",
+			
+			"Since Amava Janitorial is strictly commercial, the recommendation is less social media activity is needed.  The other targets commercial and residential customers, so the recommendation is more activity on social media accounts.",
+
+			"Initial base pricing for GROWTH is $300 and PREMIUM is $500, for a total estimate of $800."
 		]
 	}
 }

@@ -10,15 +10,6 @@ export type UspsRateOption = {
 	serviceType?: string;
 };
 
-function normalizeUspsServiceId(serviceName: string) {
-	return serviceName
-		.toString()
-		.trim()
-		.toUpperCase()
-		.replace(/[^A-Z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '');
-}
-
 function getUspsBaseUrl(config?: USPSConfig) {
 	const defaultUrl = config?.environment === 'sandbox' ? 'https://apis-tem.usps.com' : 'https://apis.usps.com';
 	return (config?.environment === 'sandbox'
@@ -26,31 +17,6 @@ function getUspsBaseUrl(config?: USPSConfig) {
 		: config?.baseURL?.trim()) || defaultUrl;
 }
 
-function getUspsApiUrl(config?: USPSConfig) {
-	const baseUrl = getUspsBaseUrl(config).replace(/\/+$/, '');
-	if (baseUrl.toLowerCase().includes('/prices/v3')) {
-		return baseUrl;
-	}
-	return baseUrl.replace(/\/ShippingAPI\.dll$/i, '').replace(/\/+$/, '') + '/prices/v3';
-}
-
-function getUspsTokenUrl(config?: USPSConfig) {
-	const baseUrl = getUspsBaseUrl(config).replace(/\/+$/, '');
-	if (baseUrl.toLowerCase().includes('/oauth2/v3/token')) {
-		return baseUrl;
-	}
-	return baseUrl.replace(/\/ShippingAPI\.dll$/i, '').replace(/\/+$/, '') + '/oauth2/v3/token';
-}
-
-function encodeBase64(value: string) {
-	if (typeof btoa === 'function') {
-		return btoa(value);
-	}
-	if (typeof Buffer !== 'undefined') {
-		return Buffer.from(value, 'utf-8').toString('base64');
-	}
-	throw new Error('No base64 encoder available');
-}
 
 async function fetchUspsAccessToken(config?: USPSConfig) {
 	const consumerKey = (config?.consumerKey || '').toString().trim();
@@ -63,7 +29,13 @@ async function fetchUspsAccessToken(config?: USPSConfig) {
 		throw new Error('USPS consumerSecret is required to fetch rates.');
 	}
 
-	const tokenUrl = getUspsTokenUrl(config);
+	const tokenUrl = (() => {
+		const baseUrl = getUspsBaseUrl(config).replace(/\/+$/, '');
+		if (baseUrl.toLowerCase().includes('/oauth2/v3/token')) {
+			return baseUrl;
+		}
+		return baseUrl.replace(/\/ShippingAPI\.dll$/i, '').replace(/\/+$/, '') + '/oauth2/v3/token';
+	})();
 	const tokenRequestBody = {
 		grant_type: 'client_credentials',
 		client_id: consumerKey,
@@ -151,7 +123,12 @@ function parseTotalRatesResponse(response: any): UspsRateOption[] {
 
 	const parsedRates: Array<UspsRateOption | null> = rateEntries.map((rate: any, index: number) => {
 		const serviceName = String(rate?.description ?? rate?.service?.name ?? rate?.service?.id ?? rate?.mailClass ?? '').trim();
-		const serviceId = normalizeUspsServiceId(String(rate?.service?.id ?? rate?.mailClass ?? serviceName));
+		const serviceId = String(rate?.service?.id ?? rate?.mailClass ?? serviceName)
+			.toString()
+			.trim()
+			.toUpperCase()
+			.replace(/[^A-Z0-9]+/g, '-')
+			.replace(/^-+|-+$/g, '');
 		const rawCharge = rate?.price ?? rate?.summary?.totalCharge?.value ?? rate?.summary?.totalCharge?.amount ?? rate?.totalPrice ?? rate?.totalBasePrice;
 		const charge = Number(rawCharge);
 		if (!serviceName || !Number.isFinite(charge)) {
@@ -197,7 +174,14 @@ export async function getUspsRates(params: {
 	const weightOunces = Math.max(1, Math.round(params.weightOunces));
 	const isDomestic = fromCountry === 'US' && toCountry === 'US';
 	const accessToken = await fetchUspsAccessToken(uspsConfig);
-	const url = `${getUspsApiUrl(uspsConfig)}/total-rates/search`;
+	const apiBaseUrl = (() => {
+		const baseUrl = getUspsBaseUrl(uspsConfig).replace(/\/+$/, '');
+		if (baseUrl.toLowerCase().includes('/prices/v3')) {
+			return baseUrl;
+		}
+		return baseUrl.replace(/\/ShippingAPI\.dll$/i, '').replace(/\/+$/, '') + '/prices/v3';
+	})();
+	const url = `${apiBaseUrl}/total-rates/search`;
 	const requestBody = buildTotalRatesRequestBody({
 		fromZip,
 		fromCountry,

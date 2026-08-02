@@ -26,10 +26,9 @@ export default function PortfolioPage() {
 		callback: setFlickrCards 
 	};
 	useEffect(() => {
-		async function fetchGallery() {
+		(async () => {
 			await FlickrWrapper(props);
-		}
-		fetchGallery();
+		})();
 	}, []); 
 	useEffect(() => {
 		MicroInteractions({ 

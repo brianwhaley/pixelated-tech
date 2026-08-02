@@ -64,15 +64,13 @@ export function Tiles(props: TilesType) {
 	const [modalContent, setModalContent] = useState<React.ReactNode | undefined>(undefined);
 	const modalID = useId();
 
-	const handleTileImageClick = (event: React.MouseEvent<HTMLImageElement>, url: string) => {
+	const handleTileImageClick = props.imgClick ?? (modalOnClick ? (event: React.MouseEvent<HTMLImageElement>, url: string) => {
 		const myContent = <div className="modal-image-container">
 			<SmartImage src={url} alt="Image preview" />
 		</div>;
 		setModalContent(myContent);
 		handleModalOpen(event.nativeEvent as unknown as MouseEvent, modalID);
-	};
-
-	const tileClick = props.imgClick ?? (modalOnClick ? handleTileImageClick : undefined);
+	} : undefined);
 
 	if (props.cards && props.cards.length > 0) {
 		return (
@@ -89,7 +87,7 @@ export function Tiles(props: TilesType) {
 									image={card.image}
 									imageAlt={card.imageAlt}
 									bodyText={card.bodyText}
-									imgClick={tileClick}
+									imgClick={handleTileImageClick}
 									variant={(props.variant ?? "overlay" ) as TilesVariantType}
 									showOverlay={showOverlay}
 								/>

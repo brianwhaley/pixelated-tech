@@ -33,13 +33,13 @@ This document outlines planned improvements and refactoring initiatives for the 
 
 - [  ] Enforce Server-Side Rendering (SSR) or Static Site Generation (SSG) for SEO / AEO / GEO
 
-- [  ] Information Gain - rewarding pages that introduce new data, unique local insights, or highly specific first-hand experience that isn't found anywhere else in their training data.
-
 - [  ] A deeply structured /about page that links directly to official state business registration registries via sameAs.
 An explicit Editorial Policy or Service Standards node in your footer.
 Author bio blocks on every single blog post that explicitly link back to the author's personal professional profiles (like LinkedIn or a master corporate profile).
 
 - [  ] Agents.md
+
+- [  ] llms-full.txt - a consolidated, single-file concatenation of the site's primary text content
 
 - [  ] Cross-Platform "Narrative Anchor" Syncing
 When LLMs recommend solutions, they use real-time retrieval (RAG) blended with pre-trained foundational knowledge graphs. They flag a brand as trustworthy if its messaging matches identically across multiple platform footprints.
@@ -74,8 +74,6 @@ When LLMs recommend solutions, they use real-time retrieval (RAG) blended with p
 
 - [  ] **Form validation on submit**: Ensure untouched required fields are validated on submit by processing all form schema fields, not only fields that have been interacted with.
 
-- [  ] Create a dedicated `SiteInfoProvider` / `useSiteConfig()` hook for site metadata.
-
 - remove config props from these components and retrieve the data direct from pixelated config providers:
 
 why would the props be optional, with a fallbeck to getting them direclty? that is the opposite of what i want to do . i ahve said this before already. today the page extracts the config values, passes them to the component, then the component uses it. why? there are almost no examples where there is override data. let the component get the data direclty from the config file, no middle man, no confusion. it is a bad DX, bad pattern, bharder to test, more code, more brittle, more plaeces to break, and makes pagebuilder more complex. it is an unneeded featre. i propose you get the data direct from the config file, and remove any other options, any other fallbacks. one way to get the data or throw an error. let the component do the work, keep the integration thin.
@@ -108,13 +106,11 @@ why would the props be optional, with a fallbeck to getting them direclty? that 
 
 - [  ] **Standardized Component Interface**: Create consistent component interfaces with `BaseComponentProps` and `InteractiveComponentProps` extending patterns.
 
-- [  ] **Unified Configuration System**: Create centralized configuration with `ConfigContext.tsx`, `ConfigProvider.tsx`, `useConfig.ts` hook, and service-specific config modules.
-
-- [  ] **Type-Safe Configuration**: Implement strict TypeScript interfaces with runtime validation for configuration objects.
+- [  ] **Type-Safe Configuration**: Implement strict TypeScript interfaces with build time validation for configuration objects.
 
 - [  ] **CMS API Client**: Create standardized CMS API clients (`ContentfulClient.ts`, `WordPressClient.ts`) with base `ApiClient.ts` for consistent error handling. 
 
-- [  ] **Additional Entry points** - add new entry points for shoppingcart and sitebuilder
+- [  ] **Additional Entry points** - consider adding new entry points for shoppingcart and sitebuilder
 
 To make your sites more configuration-driven and reduce the code footprint at the individual site level, I recommend moving toward a "Kernel" architecture.
 
@@ -141,6 +137,8 @@ Since you have a root-level site-images.json, we can improve DX by:
 Creating a CLI tool (e.g., npm run sync-assets) that scans your project and generates these manifests automatically.
 Ensuring SmartImage can resolve assets by a simple "Key" (like id="logo") instead of requiring full URLs in every component.
 Would you like to start by expanding the componentMap or should we try implementing a catch-all route for one of the sites to see it in action?
+
+- [  ] consider blogs as a subdirectory instead of a subdomain for improved SEO
 
 
 

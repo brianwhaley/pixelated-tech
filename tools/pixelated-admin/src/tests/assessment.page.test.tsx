@@ -22,7 +22,7 @@ const sampleAssessment = {
 	currentState: [],
 	nextSteps: [],
 	aboutPixelated: [],
-	colorPalette: { primary: '#000', secondary: '#111', tertiary: '#222', accent1: '#333', accent2: '#444', accent3: '#555', headerFont: 'Arial', bodyFont: 'Roboto' },
+	visualDesign: { primary: '#000', secondary: '#111', tertiary: '#222', accent1: '#333', accent2: '#444', accent3: '#555', headerFont: 'Arial', bodyFont: 'Roboto' },
 	websiteDomain: { currentUrls: ['https://example.com'] },
 	informationArchitecture: [{ route: '/', title: 'Home', notes: ['n'] }],
 	proposedSocialMediaAccounts: [],
@@ -42,18 +42,13 @@ vi.mock('@pixelated-tech/components', async () => {
 	};
 });
 
-async function importPage() {
-	const mod = await import('../../src/app/(pages)/assessment/page.tsx');
-	return mod.default;
-}
-
 describe('Assessment page', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it('renders selection and loads assessment', async () => {
-		const Page = await importPage();
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page.tsx');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#selection-section')).toBeTruthy());
 		// After fetch the assessment should render title
@@ -64,15 +59,15 @@ describe('Assessment page', () => {
 
 	it('shows no website message when none provided', async () => {
 		currentSample = { ...sampleAssessment, websiteDomain: {} } as any;
-		const Page = await importPage();
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page.tsx');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
-		expect(container).toHaveTextContent('No current website URL is provided.');
+		expect(container).toHaveTextContent('No current website domain provided.');
 	});
 
 	it('renders existingSite strengths when present', async () => {
-		currentSample = { ...sampleAssessment, existingSite: { url: 'https://x', strengths: ['s1'], areasForImprovement: [] } } as any;
-		const Page = await importPage();
+		currentSample = { ...sampleAssessment, existingSite: [{ url: 'https://x', strengths: ['s1'], areasForImprovement: [] }] } as any;
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page.tsx');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#marketing-analysis-section')).toBeTruthy());
 		expect(container).toHaveTextContent('Strengths');

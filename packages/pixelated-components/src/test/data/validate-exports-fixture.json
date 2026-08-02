@@ -1,0 +1,17 @@
+{
+  "packageJson": {
+    "name": "validate-exports-fixture",
+    "version": "0.0.0",
+    "type": "module"
+  },
+  "files": {
+    "src/index.server.js": "export * from './components/exists';\nexport * from './components/extra';\n",
+    "src/index.js": "export * from './components/exists';\nexport * from './components/extra';\n",
+    "src/components/exists.js": "export const Foo = () => 'foo';\n",
+    "src/components/extra.js": "export const Extra = () => 'extra';\n",
+    "src/components/exists.ts": "export const Foo = () => 'foo';\n",
+    "src/components/extra.ts": "export const Extra = () => 'extra';\n",
+    "src/components/admin/index.admin.server.js": "export * from '../exists';\n",
+    "src/components/admin/index.admin.js": "export * from '../exists';\n"
+  }
+}

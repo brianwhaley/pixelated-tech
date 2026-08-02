@@ -9,11 +9,19 @@ import path from 'path';
 
 
 const debug = false;
+
+// Cache config for the lifetime of the Node process.
+// pixelated.config is static after deploy, and local development
+// can clear the cache by restarting the process.
+let cachedFullConfig: PixelatedConfig | null = null;
+let cachedClientOnlyConfig: PixelatedConfig | null = null;
+
 /**
  * Read the full master config blob from local file.
  * This function is intended for server-side use only.
  */
 export function getFullPixelatedConfig(): PixelatedConfig {
+	if (cachedFullConfig) { return cachedFullConfig; }
 	let raw = '';
 	let source = 'none';
 
@@ -81,9 +89,10 @@ export function getFullPixelatedConfig(): PixelatedConfig {
 	}
 
 	try {
-		const parsed = JSON.parse(raw);
+		const fullConfig = JSON.parse(raw);
 		if (debug) console.log(`PIXELATED_CONFIG loaded from ${source}`);
-		return parsed as PixelatedConfig;
+		cachedFullConfig = fullConfig as PixelatedConfig;
+		return cachedFullConfig;
 	} catch (err) {
 		console.error('Failed to parse PIXELATED_CONFIG JSON; source=', source, err);
 		return {} as PixelatedConfig;
@@ -94,21 +103,17 @@ export function getFullPixelatedConfig(): PixelatedConfig {
  * Produce a client-safe copy of a full config by removing secret-like keys.
  * This will walk the object and drop any fields that match a secret pattern.
  */
-export function getClientOnlyPixelatedConfig(full?: PixelatedConfig): PixelatedConfig {
-	const src = (full === undefined) ? getFullPixelatedConfig() : full;
-	if (src === null || typeof src !== 'object') return (src || {}) as PixelatedConfig;
+export function getClientOnlyPixelatedConfig(): PixelatedConfig {
+	if (cachedClientOnlyConfig) { return cachedClientOnlyConfig; }
+
+	const raw = getFullPixelatedConfig();
+	if (raw === null || typeof raw !== 'object') {
+		cachedClientOnlyConfig = {} as PixelatedConfig;
+		return cachedClientOnlyConfig;
+	}
 
 	// Inlined secret stripping logic (previously in config.utils)
 	const visited = new WeakSet();
-
-	function isSecretKey(key: string, serviceName?: string) {
-		if (SECRET_CONFIG_KEYS.global.includes(key)) return true;
-		if (serviceName && (SECRET_CONFIG_KEYS.services as any)[serviceName]) {
-			const serviceSecrets = (SECRET_CONFIG_KEYS.services as any)[serviceName];
-			if (serviceSecrets.includes(key)) return true;
-		}
-		return false;
-	}
 
 	function strip(obj: any, serviceName?: string): any {
 		if (obj === null || typeof obj !== 'object') return obj;
@@ -128,14 +133,24 @@ export function getClientOnlyPixelatedConfig(full?: PixelatedConfig): PixelatedC
 				currentService = ''; // Reset for integrations children
 			}
 
-			if (isSecretKey(k, serviceName)) continue;
+			const isSecretKey = (() => {
+				if (SECRET_CONFIG_KEYS.global.includes(k)) return true;
+				if (serviceName && (SECRET_CONFIG_KEYS.services as any)[serviceName]) {
+					const serviceSecrets = (SECRET_CONFIG_KEYS.services as any)[serviceName];
+					if (serviceSecrets.includes(k)) return true;
+				}
+				return false;
+			})();
+			if (isSecretKey) continue;
 			out[k] = strip(obj[k], currentService);
 		}
 		return out;
 	}
 
 	try {
-		return strip(src) as PixelatedConfig;
+		const clientOnlyConfig = strip(raw) as PixelatedConfig;
+		cachedClientOnlyConfig = clientOnlyConfig;
+		return cachedClientOnlyConfig;
 	} catch (err) {
 		console.error('Failed to strip secrets from config', err);
 		return {} as PixelatedConfig;

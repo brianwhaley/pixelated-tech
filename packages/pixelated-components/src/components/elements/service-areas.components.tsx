@@ -6,7 +6,7 @@ import { PageSection, PageSectionHeader, PageGridItem } from '../structure/page-
 import { Callout } from '../structure/callout';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import { usePixelatedConfig } from '../config/config.client';
-import { SchemaWebPage } from '../foundation/schema';
+import { renderArrayToParagraphs } from '../foundation/schema';
 
 
 const defaultServiceAreaPathPrefix = '/service-areas';
@@ -14,26 +14,6 @@ const defaultServiceAreaPathPrefix = '/service-areas';
 export function buildServiceAreaUrl(item: { name: string }, prefix = defaultServiceAreaPathPrefix) {
 	const slug = contentfulValueToSlug({ value: item.name });
 	return slug ? `${prefix}/${slug}` : prefix;
-}
-
-function findServiceAreaBySlug(siteInfo: any, serviceAreaSlug: string) {
-	const items = siteInfo?.serviceAreas || [];
-	const slug = serviceAreaSlug || '';
-	return items.find((item: any) => {
-		const itemSlug = contentfulValueToSlug({ value: item.name });
-		return itemSlug === slug;
-	}) || undefined;
-}
-
-function renderServiceAreaDescription(description: string | Array<string | null | undefined> | undefined) {
-	if (Array.isArray(description)) {
-		return description
-			.filter((paragraph): paragraph is string => typeof paragraph === 'string')
-			.map((paragraph, index) => (
-				<p key={index}>{paragraph}</p>
-			));
-	}
-	return description ? <p>{description}</p> : null;
 }
 
 
@@ -95,7 +75,7 @@ ServiceAreaCard.propTypes = {
 	/** Service area object to render in the card. */
 	serviceArea: PropTypes.shape({
 		name: PropTypes.string.isRequired,
-		description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+		description: PropTypes.arrayOf(PropTypes.string).isRequired,
 		short_description: PropTypes.string,
 		keywords: PropTypes.arrayOf(PropTypes.string),
 		highlights: PropTypes.arrayOf(PropTypes.string),
@@ -148,7 +128,10 @@ export type ServiceAreaDetailType = InferProps<typeof ServiceAreaDetail.propType
 export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefix = defaultServiceAreaPathPrefix, id }: ServiceAreaDetailType) {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
-	const activeArea = findServiceAreaBySlug(siteInfo, serviceAreaSlug ?? '');
+	const activeArea = (siteInfo?.serviceAreas || []).find((item: any) => {
+		const itemSlug = contentfulValueToSlug({ value: item.name });
+		return itemSlug === (serviceAreaSlug ?? '');
+	}) ?? undefined;
 	if (!activeArea) {
 		return null;
 	}
@@ -160,10 +143,9 @@ export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefi
 	});
 	return (
 		<PageSection id={id} className="serviceareadetailpage" layoutType="none" gap="20px">
-			<SchemaWebPage serviceAreaSlug={serviceAreaSlug ?? ''} serviceAreaPathPrefix={serviceAreaPathPrefix} />
 			<PageSectionHeader title={title ?? activeArea.name} />
 			<div className="service-area-detail-copy">
-				{renderServiceAreaDescription(activeArea.description)}
+				{renderArrayToParagraphs(activeArea.description)}
 				{activeArea.highlights ? (
 					<>
 						<h4>Highlights</h4>
@@ -174,7 +156,7 @@ export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefi
 				) : null}
 				{serviceLinks.length ? (
 					<div>
-						<p><strong>Related services:</strong></p>
+						<p><strong>Services offered in {activeArea.name}:</strong></p>
 						<ul>
 							{serviceLinks.map((service, idx: number) => (
 								<li key={idx}>

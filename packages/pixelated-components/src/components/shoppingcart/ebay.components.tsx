@@ -109,12 +109,11 @@ export function EbayItems(props: EbayItemsType) {
 
 	useEffect(() => {
 		if (debug) console.log("Running useEffect");
-		async function init() {
+		(async () => {
 			ToggleLoading(true);
 			await fetchItems();
 			ToggleLoading(false);
-		}
-		init();
+		})();
 	}, []);
 
 	if (items && items.length > 0) {
@@ -363,7 +362,7 @@ export function EbayItemDetail(props: EbayItemDetailType) {
 	const apiProps = { ...(config?.integrations?.ebay || {}), ...props.apiProps };
 	useEffect(() => {
 		if (debug) console.log("Running useEffect");
-		async function fetchItem() {
+		(async () => {
 			try {
 				const response: any = await getEbayItem({ apiProps: apiProps });
 				if (debug) console.log("eBay API Get Items Data", response);
@@ -371,8 +370,7 @@ export function EbayItemDetail(props: EbayItemDetailType) {
 			} catch (error) {
 				console.error("Error fetching eBay items:", error);
 			}
-		}
-		fetchItem();
+		})();
 	}, []);
 	if (item && Object.keys(item) && Object.keys(item).length > 0) {
 		const thisItem = { ...item } as any;

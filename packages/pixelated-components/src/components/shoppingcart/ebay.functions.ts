@@ -10,16 +10,6 @@ import { getPolicyRouteUrl } from "../foundation/schema.functions";
 
 const debug = false;
 
-function encodeBase64(value: string) {
-	if (typeof btoa === 'function') {
-		return btoa(value);
-	}
-	if (typeof Buffer !== 'undefined') {
-		return Buffer.from(value, 'utf-8').toString('base64');
-	}
-	throw new Error('No base64 encoder available');
-}
-
 export type EbayApiType = {
     proxyURL: string;
     baseTokenURL: string;
@@ -152,7 +142,7 @@ export type getEbayAppTokenType = InferProps<typeof getEbayAppToken.propTypes>;
 export function getEbayAppToken(props: getEbayAppTokenType) {
 	const apiProps = getMergedEbayConfig(props.apiProps);
 
-	const fetchToken = async () => {
+	return (async () => {
 		if (debug) console.log("Fetching Token");
 		try {
 			const data = await smartFetch(apiProps.baseTokenURL, {
@@ -167,7 +157,11 @@ export function getEbayAppToken(props: getEbayAppTokenType) {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
-						'Authorization': 'Basic ' + encodeBase64(`${apiProps.appId}:${apiProps.appCertId}`),
+						'Authorization': 'Basic ' + (typeof btoa === 'function'
+							? btoa(`${apiProps.appId}:${apiProps.appCertId}`)
+							: typeof Buffer !== 'undefined'
+								? Buffer.from(`${apiProps.appId}:${apiProps.appCertId}`, 'utf-8').toString('base64')
+								: (() => { throw new Error('No base64 encoder available'); })()),
 					},
 					body: new URLSearchParams({
 						grant_type: 'client_credentials',
@@ -181,8 +175,7 @@ export function getEbayAppToken(props: getEbayAppTokenType) {
 		} catch (error) {
 			console.error('Error fetching token:', error);
 		}
-	};
-	return fetchToken();
+	})();
 }
 
 

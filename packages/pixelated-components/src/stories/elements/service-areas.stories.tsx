@@ -11,7 +11,7 @@ export default {
 const serviceAreas = [
 	{
 		name: 'Coastal Neighborhoods',
-		description: 'Protecting coastal homes from salt air, humidity, and outdoor wear.',
+		description: ['Protecting coastal homes from salt air, humidity, and outdoor wear.'],
 		short_description: 'Local coastal service area for marine-safe flooring.',
 		path: '/service-areas/coastal-neighborhoods',
 		highlights: ['Salt-air protection', 'Exterior surface sealing'],
@@ -19,7 +19,7 @@ const serviceAreas = [
 	},
 	{
 		name: 'Downtown Districts',
-		description: 'Commercial and residential floor systems built for heavy foot traffic.',
+		description: ['Commercial and residential floor systems built for heavy foot traffic.'],
 		short_description: 'Urban district service coverage with durable commercial finishes.',
 		slug: 'downtown-districts',
 	},

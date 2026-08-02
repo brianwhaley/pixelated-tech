@@ -37,7 +37,7 @@ const sharedTestConfig = {
 			perFile: false,
 		},
 	},
-	include: ['src/**/*.{test,spec}.{ts,tsx}'],
+	include: ['src/**/*.{test,spec}.{ts,tsx,js}'],
 	exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
 };
 
