@@ -21,7 +21,8 @@ describe('LocalBusinessSchema', () => {
 		const schema = getSchema(container);
 		expect(schema).toBeTruthy();
 		expect(schema['@context']).toBe('https://schema.org');
-		expect(schema['@type']).toBe('LocalBusiness');
+		const schemaType = schema['@type'];
+		expect(Array.isArray(schemaType) ? schemaType : [schemaType]).toContain('LocalBusiness');
 	});
 
 	it('falls back to siteInfo values from config', () => {
@@ -53,6 +54,29 @@ describe('LocalBusinessSchema', () => {
 		const schema = getSchema(container);
 		expect(schema.priceRange).toBe(siteInfo.priceRange);
 		expect(schema.sameAs).toEqual(siteInfo.sameAs);
+	});
+
+	it('includes brand and availableChannel when provided', () => {
+		const { container } = renderSchema();
+		const schema = getSchema(container);
+		expect(schema.brand).toEqual(siteInfo.brand);
+		expect(schema.availableChannel).toEqual(siteInfo.availableChannel);
+	});
+
+	it('includes areaServed based on serviceAreas', () => {
+		const siteMeta = {
+			...siteInfo,
+			serviceAreas: [
+				{name: 'Denville NJ'},
+				{name: 'Savannah GA'}
+			]
+		};
+		const { container } = renderSchema(siteMeta as any);
+		const schema = getSchema(container);
+		expect(schema.areaServed).toEqual([
+			{ '@type': 'City', name: 'Denville', sameAs: 'https://en.wikipedia.org/wiki/Denville_Township,_New_Jersey' },
+			{ '@type': 'City', name: 'Savannah', sameAs: 'https://en.wikipedia.org/wiki/Savannah,_Georgia' }
+		]);
 	});
 
 	it('uses siteInfo openingHours from config', () => {

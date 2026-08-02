@@ -1,6 +1,7 @@
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
-import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { PageMetaTags, PixelatedServerConfigProvider } from '@pixelated-tech/components/server';
+import { BreadcrumbListSchema } from '@pixelated-tech/components/server';
+import { SchemaWebPage } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import LayoutClient from '@/app/elements/layout-client';
 import Header from '@/app/elements/header';
@@ -22,9 +23,9 @@ export default async function RootLayout({
 				<PixelatedServerConfigProvider>
 					<PageMetaTags />
 					<BreadcrumbListSchema />
+					<SchemaWebPage />
 					<WebsiteSchema />
 					<LocalBusinessSchema />
-					<ServicesSchema />
 					<VisualDesignStyles />
 				</PixelatedServerConfigProvider>
 			</head>

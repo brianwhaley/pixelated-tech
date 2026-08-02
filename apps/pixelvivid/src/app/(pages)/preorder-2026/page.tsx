@@ -61,9 +61,9 @@ export default function Preorder2026Page() {
 									<li><b>Coastal Blue & Tan</b><br />
 										This style is inspired by Coastal colors in South Carolina.  
 										The color palette will be 
-										 <a href="https://colorkit.co/color/a5c8d5/" target="_blank"> #A5D2D5</a>, 
-										 <a href="https://colorkit.co/color/d3b395/" target="_blank"> #D3B395</a>, and 
-										 <a href="https://colorkit.co/color/7ebdbf/" target="_blank"> #7EBDBF</a>.
+										 <a href="https://colorkit.co/color/a5c8d5/" target="_blank" rel="noopener noreferrer"> #A5D2D5</a>, 
+										 <a href="https://colorkit.co/color/d3b395/" target="_blank" rel="noopener noreferrer"> #D3B395</a>, and 
+										 <a href="https://colorkit.co/color/7ebdbf/" target="_blank" rel="noopener noreferrer"> #7EBDBF</a>.
 										This will be an airbrushed design, fading randomly through 
 										each of the three colors across the face of the frame,
 										and lightly splattered with the same, plus black and white.</li>

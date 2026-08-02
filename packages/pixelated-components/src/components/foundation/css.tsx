@@ -1,13 +1,4 @@
 
- 
-function isPartialMatchInArray(searchString: string, array: string[]): boolean {
-	// Convert both the search string and array items to lowercase for case-insensitive matching
-	const lowerCaseSearchString = searchString.toLowerCase();
-	return array.every(item => {
-		return item.toLowerCase().includes(lowerCaseSearchString);
-	});
-}
-
 export function preloadAllCSS() {
 	// console.log("Deferring all CSS loading...");
 	// Select all link tags with rel="stylesheet"

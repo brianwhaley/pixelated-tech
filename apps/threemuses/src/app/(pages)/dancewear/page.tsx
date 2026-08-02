@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, ServicesSchema } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
 import * as componentLibrary from "../../elements/componentlibrary";
 
@@ -15,11 +15,11 @@ export default function DancewearPage() {
 						Dancewear is the Lowcountry's premier destination for high-performance apparel and footwear. Our Bluffton boutique features a curated inventory of industry-leading brands like Bloch, Capezio, Jo+Jax, and Mirella. We stock professional-grade leotards, durable tights, and sleek unitards from celebrated designers such as Eurotard, Suffolk, and Body Wrappers. Whether you need the technical precision of Gaynor Minden or the style of Ainsliewear, our collection ensures every dancer finds their perfect silhouette. Shopping in-person allows you to experience high-quality fabrics and vibrant palettes firsthand, ensuring your gear is both stunning and functional.
 					</p>
 					<p>
-						Exceptional customer service and meticulous attention to detail are the hallmarks of your experience with us. Our knowledgeable staff provides personalized consultations, understanding that a proper fit is vital for a dancer's confidence and safety. We offer specialized technical expertise, from delicate drawstring adjustments to professional pointe shoe fittings, that online shopping cannot replicate. Our team also helps you navigate local studio dress codes within a supportive environment for all ages. We provide the professional guidance and premium tools necessary to achieve your artistic goals with grace and poise.
+						Exceptional customer service and meticulous attention to detail are the hallmarks of your experience with The Three Muses of Bluffton. Our knowledgeable staff provides personalized consultations, understanding that a proper fit is vital for a dancer's confidence and safety. The Three Muses of Bluffton offers specialized technical expertise, from delicate drawstring adjustments to professional pointe shoe fittings, that online shopping cannot replicate. Our team also helps you navigate local studio dress codes within a supportive environment for all ages. We provide the professional guidance and premium tools necessary to achieve your artistic goals with grace and poise.
 					</p>
 				</div>
 			</PageSection>
-
+			<ServicesSchema />
 
 			<PageSection columns={2} maxWidth="768px" id="dancewear-packages-section">
 

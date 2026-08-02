@@ -17,7 +17,11 @@ type ProposalData = {
 	features: { feature: string; description: string[] }[];
 	milestones: { date: string; milestone: string }[];
 	startDate?: string;
-	paymentTotal: { amount: number; description: string[] };
+	paymentTotal: { 
+        amount: number; 
+        isDiscounted: boolean; 
+        description: string[] 
+    };
 };
 
 interface ProposalManifest { files: string[] }
@@ -31,10 +35,6 @@ function renderList(items: string[]) {
 		</ul>
 	);
 }
-
-/* function renderParagraphs(items: string[]) {
-	return items.map((item, index) => <p key={index}>{item}</p>);
-} */
 
 export default function ProposalPage() {
 	const { data: manifest, loading: manifestLoading, error: manifestError } = useFileData('/data/proposal/manifest.json', 'json');
@@ -165,7 +165,12 @@ function Proposal(props: { proposal: ProposalData }) {
 							))}
 							{proposal.proposalType == "Monthly Maintenance" && (
 								<tr>
-									<td colSpan={2} style={{ fontSize: '0.9rem', fontWeight: 'bold', fontStyle: 'italic' }}>Note: The GROWTH Package includes all features from the ESSENTIAL and GROWTH features.  The PREMIUM Package includes all features from the ESSENTIAL and PREMIUM features.</td>
+									<td colSpan={2} style={{ fontSize: '0.9rem', fontWeight: 'bold', fontStyle: 'italic' }}>Note:
+										<ul>
+											<li>The GROWTH Package includes all features from the ESSENTIAL and GROWTH features.</li>
+											<li>The PREMIUM Package includes all features from the ESSENTIAL and PREMIUM features.</li>
+										</ul>
+									</td>
 								</tr>
 							)}
 						</tbody>
@@ -186,7 +191,7 @@ function Proposal(props: { proposal: ProposalData }) {
 			<PageSection id="proposal-payment-section" className="no-break" columns={1} maxWidth="1024px">
 				<h2>{sectionCounter+=1}. PAYMENT TERMS</h2>
 				<h3>Total Fee: 
-					${proposal.paymentTotal.amount.toLocaleString()}{proposal.proposalType == "Monthly Maintenance" && " monthly"}
+					${proposal.paymentTotal.amount.toLocaleString()}{proposal.proposalType == "Monthly Maintenance" && " monthly"}{ proposal.paymentTotal.isDiscounted && " (Discounted)"}
 				</h3>
 				<ul>
 					{proposal.paymentTotal.description.map((desc: string, index: number) => (

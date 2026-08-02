@@ -1,0 +1,245 @@
+{
+	"properties": {
+		"name": "flooring-estimator",
+		"id": "flooring-estimator-form",
+		"toggleLoading": true,
+		"openModal": true,
+		"resetForm": true
+	},
+	"fields" : [
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "from",
+				"name" : "from",
+				"value" : "palmettoepoxy@gmail.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "to",
+				"name" : "to",
+				"value" : "palmettoepoxy@gmail.com, brian@pixelated.tech"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "subject",
+				"name" : "subject",
+				"value" : "Palmetto Epoxy Flooring Estimator Submit"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "domain",
+				"name" : "domain",
+				"value" : "palmetto-epoxy.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "formName",
+				"name" : "formName",
+				"value" : "flooring-estimator"
+			}
+		},{
+			"component" : "FormHoneypot",
+			"props" : {
+				"id": "winnie",
+				"name" : "website"
+			}
+		},
+		
+		
+		
+		{
+			"component" : "FormSectionHeader",
+			"props" : {
+				"title": "Project Information",
+				"text" : "Provide your project information, so Palmetto Epoxy can create a flooring estimate based on the information you provide.",
+				"className" : "form-section-header"
+			}
+		},{
+			"component" : "FormSelect",
+			"props" : {
+				"id" : "project-type",
+				"name" : "project-type",
+				"defaultValue" : "",
+				"autoComplete" : "",
+				"multiple" : null,
+				"required": "required",
+				"display" : "horizontal",
+				"label" : "Project Type (required) : ",
+				"options" : [
+					{ "value" : "", "text" : "", "disabled" : "disabled" },
+					{ "value" : "epoxy_garage_floors", "text" : "Epoxy Garage Floors" },
+					{ "value" : "driveway_coating", "text" : "Driveway Coating" },
+					{ "value" : "paver_sealing", "text" : "Paver Sealing" },
+					{ "value" : "concrete_polishing", "text" : "Concrete Polishing" }
+				]
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "number",
+				"id" : "length",
+				"name" : "length",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Length in feet (required) : ",
+				"validate" : "isNumber",
+				"tooltip" : "Please type in the Length in feet of the area to be coated, rounding up to the nearest foot."
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "number",
+				"id" : "width",
+				"name" : "width",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Width in feet (required) : ",
+				"validate" : "isNumber",
+				"tooltip" : "Please type in the Width in feet of the area to be coated, rounding up to the nearest foot."
+			}
+		},{
+			"component" : "FormSelect",
+			"props" : {
+				"id" : "flooring-condition",
+				"name" : "flooring-condition",
+				"defaultValue" : "",
+				"autoComplete" : "",
+				"multiple" : null,
+				"required": "required",
+				"display" : "horizontal",
+				"label" : "Flooring Condition (required) : ",
+				"tooltip" : "Good Condition: Clean, smooth concrete with minimal or no cracks. Moderate Wear: Minor cracks, oil stains, or light spalling. Heavy Wear: Significant cracks, heavy pitting, or moisture issues. Old Coating: Existing coating that needs removal or repair.",
+				"options" : [
+					{ "value" : "", "text" : "", "disabled" : "disabled" },
+					{ "value" : "good-condition", "text" : "Good Condition" },
+					{ "value" : "moderate-wear", "text" : "Moderate Wear" },
+					{ "value" : "heavy-wear", "text" : "Heavy Wear" },
+					{ "value" : "old-coating", "text" : "Old Coating" }
+				]
+			}
+		},{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "flooring-options",
+				"name" : "flooring-options",
+				"label" : "Flooring Options : ",
+				"display" : "vertical",
+				"tooltip" : "Please select the flooring options you are interested in. You may select more than one option.",
+				"validate" : "isOneChecked",
+				"options" : [
+					{ "value" : "solid", "text" : "Solid Color", "selected" : "" },
+					{ "value" : "flake", "text" : "Full Flake", "selected" : "" },
+					{ "value" : "metallic", "text" : "Metallic Finish", "selected" : "" },
+					{ "value" : "matte", "text" : "Matte Finish", "selected" : "" },
+					{ "value" : "gloss", "text" : "High Gloss Topcoat", "selected" : "" }
+				]
+			}
+		},{
+			"component" : "FormCheckbox",
+			"props" : {
+				"id" : "flooring-addons",
+				"name" : "flooring-addons",
+				"label" : "Flooring Add-Ons : ",
+				"display" : "vertical",
+				"tooltip" : "Please select the flooring add-ons you are interested in. You may select more than one option.",
+				"validate" : "",
+				"options" : [
+					{ "value" : "stem-wall", "text" : "Stem wall / baseboard coating (linear feet)", "selected" : "" },
+					{ "value" : "moisture-barrier", "text" : "Moisture-vapor barrier / mitigation primer", "selected" : "" },
+					{ "value" : "uv-resistant", "text" : "UV-resistant polyaspartic top coat upgrade", "selected" : "" },
+					{ "value" : "slip-resistant", "text" : "Slip-resistant texture additive", "selected" : "" }
+				]
+			}
+		},
+		
+		
+		
+		{
+			"component" : "FormSectionHeader",
+			"props" : {
+				"title": "Contact Information",
+				"text" : "Provide your contact information, so Palmetto Epoxy can email you a flooring estimate based on the information you provide, and contact you for an installation date.",
+				"className" : "form-section-header"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "firstname",
+				"name" : "firstname",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "First Name (required) : ",
+				"tooltip" : "Please type in your First Name"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "lastname",
+				"name" : "lastname",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Last Name (required) : ",
+				"tooltip" : "Please type in your Last Name"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "email",
+				"id" : "email",
+				"name" : "email",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Email Address (required) : ",
+				"validate" : "isValidEmailAddress",
+				"tooltip" : "Please type in your Email Address"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "tel",
+				"id" : "telephone",
+				"name" : "telephone",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Telephone (required) : ",
+				"validate" : "isValidUSPhoneNumber",
+				"tooltip" : "Please type in your Telephone Number"
+			}
+		},
+		
+		
+		
+		{
+			"component" : "FormButton",
+			"props" : {
+				"type" : "submit",
+				"id" : "submit",
+				"text" : "Estimate Flooring Project"
+			}
+		}
+	]
+}

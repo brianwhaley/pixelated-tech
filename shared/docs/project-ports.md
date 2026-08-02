@@ -17,8 +17,9 @@ This document lists the localhost ports used by various projects in the Pixelate
 | pixelated-template | 3008 | https://localhost:3008 |
 | jz-home-improvement | 3009 | https://localhost:3009 |
 | manningmetalworks | 3010 | https://localhost:3010 |
-| simple-day-concierge | 3012 | https://localhost:3012 |
 | three-muses | 3011 | https://localhost:3011 |
+| simple-day-concierge | 3012 | https://localhost:3012 |
+| gea-construction | 3013 | https://localhost:3013 |
 
 ## Component Library
 

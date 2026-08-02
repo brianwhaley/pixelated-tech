@@ -1,0 +1,96 @@
+{
+	"companyName": "GEA Construction",
+	"companyContact": "Nicholas Warchal",
+	"date": "July 26, 2026",
+	"email": "nicholas@geaconstruction.net",
+	"phone": "(843) 368-6229",
+	"address": {
+		"streetAddress": "117 Beckenridge Circle",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "US"
+	},
+	"proposalType": "Web Site Build",
+	"goal": 
+	[
+		"To design and build a modern, professional, and visually appealing web presence for GEA Construction."
+	],
+	"deliverables": [
+		"Newly redesigned web site for geaconstruction.net",
+		"The features listed below apply to the web site - geaconstruction.net"
+	],
+	"features": [
+		{ 
+			"feature": "Web Site",
+			"description": [
+				"Home Page",
+				"About Us",
+				"Services",
+				"Kitchen Remodeling",
+				"Bathroom Remodeling",
+				"Doors & Window Replacement",
+				"Decks & Outdoor Living",
+				"Realtor Partner Program",
+				"Project Gallery (Photos / Videos)",
+				"Service Areas",
+				"Frequently Asked Questions",
+				"Blog & Home Improvement Tips",
+				"Contact Us"
+			]
+		},{
+			"feature": "Content Management",
+			"description": [
+				"Storage of scalable content and images in Contentful Content Management System",
+				"Hosting, Domain, and Template usage costs for Blog on WordPress platform",
+				"Stock Photography usage and licensing"
+			]
+		},{
+			"feature": "Search Engine Optimization",
+			"description": [
+				"Meta tags - title, description, keywords, and Open Graph tags for social media sharing",
+				"Foundational files - sitemap.xml, sitemap.json, rss.xml, robots.txt, not-found.html, manifest.webmanifest, humans.txt, security.txt, well-known.txt, Loading page, Global Errors page, Style Guide page",
+				"Rich Schemas for AI - Blog Posting, Breadcrumbs, FAQs, LocalBusiness, Podcast (if used), Product, Recipe, Review, Services, Website",
+				"Additional files for AI - llms.txt, ai.txt"
+
+			]
+		},{
+			"feature": "Hosting",
+			"description": [
+				"Hosting via Amazon Web Services (AWS).  Services include AWS Amplify, AWS CloudFront CDN, AWS Route 53 DNS including SSL Certificate, AWS CloudWatch Logging",
+				"Distribution of images in Cloudinary Content Delivery System"
+			]
+		},{
+			"feature": "Social Media Accounts",
+			"description": [
+				"Create new social media accounts:",
+				"Google Business, Facebook, Instagram, Threads, Nextdoor, LinkedIn",
+				"Links of new / existing social media accounts added to the web site"
+
+			]
+		}
+	],
+	"startDate": "08/03/2026",
+	"milestones": [
+		{
+			"milestone": "Information Architecture and design agreement",
+			"date": "8/14/2026"
+		},{
+			"milestone": "Initial Site Build - geaconstruction.net",
+			"date": "8/21/2026"
+		},{
+			"milestone": "Site Launch - geaconstruction.net",
+			"date": "8/28/2026"
+		}, {
+			"milestone": "New Social Media accounts created",
+			"date": "9/4/2026"
+		}
+	],
+	"paymentTotal": {
+		"amount": 2500,
+		"isDiscounted": true,
+		"description": [
+			"Initial base pricing for building the web site: geaconstruction.net and creating new social media accounts is $3000."
+		]
+	}
+}

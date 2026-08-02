@@ -63,7 +63,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 					<div className="invoice-card-section">
 						<h3>Project Details:</h3>
 						<p className="company-title">{invoice.siteName}</p>
-						<p className="card-details"><a href={invoice.siteUrl} target="_blank" rel="noreferrer" className="post-link">{invoice.siteUrl}</a></p>
+						<p className="card-details"><a href={invoice.siteUrl} target="_blank" rel="noopener noreferrer" className="post-link">{invoice.siteUrl}</a></p>
 						<p className="card-details">Billing Cycle: {invoice.billingMonth}</p>
 					</div>
 				</div>
@@ -138,11 +138,11 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 								{invoice.posts.map((post, idx) => (
 									<tr key={idx}>
 										<td>
-											<a href={post.url} target="_blank" rel="noreferrer" className="post-link" style={{ fontWeight: 'bold' }}>{post.title}</a>
+											<a href={post.url} target="_blank" rel="noopener noreferrer" className="post-link" style={{ fontWeight: 'bold' }}>{post.title}</a>
 											{post.socialLinks && post.socialLinks.length > 0 && (
 												<ul style={{ margin: '6px 0 0 0', paddingLeft: '20px', fontSize: '11px', color: '#666', listStyleType: 'circle' }}>
 													{post.socialLinks.map((link, lidx) => (
-														<li key={lidx}><a href={link} target="_blank" rel="noreferrer" style={{ color: '#666' }}>{link}</a></li>
+														<li key={lidx}><a href={link} target="_blank" rel="noopener noreferrer" style={{ color: '#666' }}>{link}</a></li>
 													))}
 												</ul>
 											)}

@@ -13,13 +13,6 @@ export interface PageData {
 }
 
 /**
- * Normalizes text content by collapsing extra whitespace and newlines
- */
-function normalizeText(text: string): string {
-	return text.replace(/\s+/g, ' ').trim();
-}
-
-/**
  * Extracts PageBuilder JSON from a TSX source string
  */
 export function extractPageDataFromSource(sourceCode: string, filePath: string = 'filename.tsx'): PageData {
@@ -129,7 +122,11 @@ export function extractPageDataFromSource(sourceCode: string, filePath: string =
 				};
 			}
 
-			return processJsxElement(node);
+			return {
+				component: node.openingElement.tagName.getText(),
+				props: extractProps(node.openingElement.attributes),
+				...(coalesceChildren([...node.children]).length > 0 ? { children: coalesceChildren([...node.children]) } : {}),
+			};
 		} else if (ts.isJsxSelfClosingElement(node)) {
 			const name = node.tagName.getText();
 			if (/^[a-z]/.test(name)) {
@@ -138,11 +135,14 @@ export function extractPageDataFromSource(sourceCode: string, filePath: string =
 					props: { html: node.getText() }
 				};
 			}
-			return processJsxSelfClosingElement(node);
+			return {
+				component: name,
+				props: extractProps(node.attributes)
+			};
 		} else if (ts.isJsxFragment(node)) {
 			return coalesceChildren([...node.children]);
 		} else if (ts.isJsxText(node)) {
-			const text = normalizeText(node.getText());
+			const text = node.getText().replace(/\s+/g, ' ').trim();
 			if (text) {
 				return {
 					component: 'PageHTML',
@@ -156,28 +156,6 @@ export function extractPageDataFromSource(sourceCode: string, filePath: string =
 			};
 		}
 		return null;
-	};
-
-	const processJsxElement = (node: ts.JsxElement): ComponentData => {
-		const name = node.openingElement.tagName.getText();
-		const props = extractProps(node.openingElement.attributes);
-		const children = coalesceChildren([...node.children]);
-
-		return {
-			component: name,
-			props,
-			...(children.length > 0 ? { children } : {})
-		};
-	};
-
-	const processJsxSelfClosingElement = (node: ts.JsxSelfClosingElement): ComponentData => {
-		const name = node.tagName.getText();
-		const props = extractProps(node.attributes);
-
-		return {
-			component: name,
-			props
-		};
 	};
 
 	const extractProps = (attributes: ts.JsxAttributes): Record<string, any> => {

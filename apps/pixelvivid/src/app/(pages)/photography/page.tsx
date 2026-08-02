@@ -24,10 +24,9 @@ export default function PhotographyPage() {
 		callback: setFlickrCards 
 	};
 	useEffect(() => {
-		async function fetchGallery() {
+		(async () => {
 			await FlickrWrapper(props);
-		}
-		fetchGallery();
+		})();
 	}, []); 
     
 	return (

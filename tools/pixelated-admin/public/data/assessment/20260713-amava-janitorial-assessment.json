@@ -44,6 +44,24 @@
 	"currentEarnedMedia": [
 		"https://www.mahwahlibrary.org/wp-content/uploads/2021/02/Minutes-2018-12-19.pdf"
 	],
+	"references": [
+		{ 
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{ 
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		}
+	],
 	"existingSite": [
 		{
 			"url": "https://www.amavajanitorial.com/",
@@ -144,7 +162,7 @@
 		"Build and implement a targeted social media marketing strategy",
 		"Explore traditional and digital advertising to improve customer reach."
 	],
-	"colorPalette": {
+	"visualDesign": {
 		"primary": "#512773",
 		"secondary": "#6db74d",
 		"tertiary": "#f9f6fc",
@@ -158,7 +176,8 @@
 		"bodyFont": {
 			"name": "Montserrat:ital,wght@0,100..900;1,100..900",
 			"url": "https://fonts.google.com/specimen/Montserrat"
-		}
+		},
+		"additionalNotes": []
 	},
 	"websiteDomain": {
 		"currentUrls": [

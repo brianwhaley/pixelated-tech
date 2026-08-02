@@ -9,8 +9,7 @@ let mockConfig = {};
 try {
 	// Import the local config file which is gitignored.
 	// We use the stripper utility to ensure no secrets accidentally leak into the bundle.
-	const rawConfig = require('../src/config/pixelated.config.json');
-	mockConfig = getClientOnlyPixelatedConfig(rawConfig);
+	mockConfig = getClientOnlyPixelatedConfig();
 } catch (e) {
 	console.warn('Local pixelated.config.json not found in src/config/. Storybook will use empty configuration.');
 }

@@ -1,7 +1,7 @@
 {
 	"companyName": "AMAVA Janitorial Services",
 	"companyContact": "Michael Pope",
-	"date": "July 13, 2026",
+	"date": "July 24, 2026",
 	"email": "michaelp@amavajanitorial.com",
 	"phone": "(877) 625-5959",
 	"address": {
@@ -14,12 +14,11 @@
 	"proposalType": "Web Site Build",
 	"goal": 
 	[
-		"To uplift and redesign a modern, professional, and visually appealing web presence for AMAVA Janitorial Services and AMAVA Landscaping",
+		"To uplift and redesign a modern, professional, and visually appealing web presence for AMAVA Janitorial Services",
 		"To create a modern, professional, and visually appealing web presence for AMAVA Flooring"
 	],
 	"deliverables": [
 		"Newly redesigned web site for amavajanitorial.com",
-		"Newly redesigned web site for amavalandscaping.com",
 		"Newly created web site for amavaflooring.com",
 		"The features listed below apply to each of the web sites - amavajanitorial.com, amavalandscaping.com, and amavaflooring.com"
 	],
@@ -82,12 +81,6 @@
 			"milestone": "Site Launch and New Social Media accounts created - amavajanitorial.com",
 			"date": "8/21/2026"
 		},{
-			"milestone": "Initial Site Build - amavalandscaping.com",
-			"date": "8/28/2026"
-		},{
-			"milestone": "Site Launch and New Social Media accounts created - amavalandscaping.com",
-			"date": "9/4/2026"
-		},{
 			"milestone": "Initial Site Build - amavaflooring.com",
 			"date": "8/28/2026"
 		},{
@@ -96,10 +89,10 @@
 		}
 	],
 	"paymentTotal": {
-		"amount": 6000,
+		"amount": 5000,
+		"isDiscounted": true,
 		"description": [
-			"Initial estimated cost for building all three web sites: amavajanitorial.com, amavalandscaping.com, and amavaflooring.com is $2500 each, for a total of $7500.",
-			"The final cost is based on efficiencies gained by building all three web sites at the same time, with a reusable template across all three sites."
+			"Initial base pricing for building two web sites: amavajanitorial.com and amavaflooring.com is $3000 each, for a total of $6000."
 		]
 	}
 }

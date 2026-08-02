@@ -72,6 +72,24 @@
 		"Golf industry publications covering innovative membership models.",
 		"Traditional local media outlets including newspapers, radio, and television."
 	],
+	"references": [
+		{ 
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{ 
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		}
+	],
 	"existingSite": [
 		{
 			"url": "https://travelingcountryclub.com/",
@@ -317,7 +335,7 @@
 		"Improve accessibility throughout the website.",
 		"Establish monthly performance reporting dashboards measuring traffic, conversions, and member acquisition."
 	],
-	"colorPalette": {
+	"visualDesign": {
 		"primary": "#0B5E3C",
 		"secondary": "#D4AF37",
 		"tertiary": "#F8F6F1",
@@ -331,7 +349,8 @@
 		"bodyFont": {
 			"name": "Inter:wght@100..900",
 			"url": "https://fonts.google.com/specimen/Inter"
-		}
+		},
+		"additionalNotes": []
 	},
 	"websiteDomain": {
 		"currentUrls": [

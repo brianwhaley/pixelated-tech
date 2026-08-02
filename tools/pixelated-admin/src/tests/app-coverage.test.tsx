@@ -402,6 +402,64 @@ describe('pixelated-admin extra coverage', () => {
 		expect(mockRedirect).toHaveBeenCalledWith('/login');
 	});
 
+	it('allows /newdeployment on localhost without redirect', async () => {
+		mockRedirect.mockReset();
+		mockGetServerSession.mockResolvedValueOnce({ user: { name: 'Admin' } });
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/newdeployment';
+			if (name === 'host') return 'localhost:3006';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).not.toHaveBeenCalled();
+	});
+
+	it('allows login route without redirect', async () => {
+		mockRedirect.mockReset();
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/login';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).not.toHaveBeenCalled();
+	});
+
+	it('allows protected route when authenticated and authorized', async () => {
+		mockRedirect.mockReset();
+		mockGetServerSession.mockResolvedValueOnce({ user: { name: 'Admin', email: 'admin@example.com' } });
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/configbuilder';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).not.toHaveBeenCalled();
+	});
+
+	it('bypasses auth for internal Puppeteer invoice requests', async () => {
+		mockRedirect.mockReset();
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/billing/invoice/site-a/2026-06';
+			if (name === 'x-origin') return 'https://admin.pixelated.tech';
+			if (name === 'x-url') return 'https://admin.pixelated.tech/billing/invoice/site-a/2026-06?token=test-token';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { puppeteer: { internalToken: 'test-token' } } });
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).not.toHaveBeenCalled();
+	});
+
 	it('renders billing page without errors', async () => {
 		const mod = await importModule('src/app/(pages)/billing/page.tsx');
 		const BillingPage = mod.default;

@@ -130,6 +130,7 @@ describe('JZ Home Improvement coverage', () => {
 		},
 	]);
 
+
 	describe('JZ Home Improvement home page coverage', () => {
 		const originalLocation = window.location;
 

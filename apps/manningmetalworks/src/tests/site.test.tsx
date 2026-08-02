@@ -39,7 +39,7 @@ import ContactUsPage from '@/app/(pages)/contact-us/page';
 import FaqsPage from '@/app/(pages)/faqs/page';
 import GalleryPage from '@/app/(pages)/gallery/page';
 import ServicesPage from '@/app/(pages)/services/page';
-import StyleGuidePage from '@/app/(pages)/style-guide/page';
+import StyleGuidePage from '@/app/(pages)/styleguide/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
@@ -147,6 +147,7 @@ describe('Manning Metalworks coverage', () => {
 			},
 		},
 	]);
+
 
 	runCommonBlogPageCoverage({
 		Component: BlogPage,

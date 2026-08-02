@@ -1,0 +1,368 @@
+{
+	"companyName": "GEA Construction",
+	"companyContact": "Nicholas Warchal",
+	"date": "July 26, 2026",
+	"email": "nicholas@geaconstruction.net",
+	"phone": "(843) 368-6229",
+	"address": {
+		"streetAddress": "117 Beckenridge Circle",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "US"
+	},
+	"primaryAudience": [
+		"Homeowners in Bluffton, Hilton Head Island, and surrounding Lowcountry communities seeking medium-to-large interior and exterior renovations (kitchens, bathrooms, doors, windows, basements, and decks).",
+		"New homebuyers in Bluffton who need immediate pre-move-in repairs, cosmetic updates, and custom structural upgrades.",
+		"Real estate agents and brokers seeking a reliable, licensed general contractor/handyman partner to recommend to buyers and sellers for closing repairs and move-in renovations."
+	],
+	"secondaryAudience": [
+		"Property managers and vacation rental owners requiring rapid turnarounds on maintenance, finish carpentry, wood rot repair, and fixture updates.",
+		"Local fire department colleagues, emergency responders, and civic network contacts seeking trustworthy trade services.",
+		"Out-of-state buyers purchasing second homes or investment properties in Beaufort County who require transparent, digital project updates."
+	],
+	"marketOverview": [
+		"The Bluffton and Lowcountry home renovation market is highly competitive and rapidly expanding, driven by explosive population growth, active master-planned communities (e.g., Sun City, Palmetto Bluff), and high property turnover.",
+		"Homeowners in the region demand high-trust tradespeople and quality craftsmanship for major investments like kitchen overhauls, custom tile baths, and storm-resistant window/door replacements.",
+		"Relying exclusively on a Facebook page severely limits online discoverability, trust, and search authority in a crowded market where consumers actively research general contractors via Google search, map listings, and dedicated websites before requesting high-ticket quotes."
+	],
+	"currentSocialMedia": [
+		"Facebook - none",
+		"Instagram - none",
+		"Google Business Profile - none",
+		"Nextdoor - none",
+		"LinkedIn - none",
+		"Bizapedia - https://www.bizapedia.com/sc/gea-construction-llc.html"
+	],
+	"currentAdvertisingPartners": [
+		"Local Realtor referral network for pre-move-in handyman work and closing repair recommendations, including wood rot, floor and wall repair, paint, electrical and plumbing fixtures, landscape/irrigation/landscape lighting, flooring, finish carpentry, door/window repair/replace, interior/exterior cleaning."
+	],
+	"currentEarnedMedia": [
+		"Word-of-mouth recommendations through local realtor partnerships and Bluffton Fire Department community networks."
+	],
+	"references": [
+		{ 
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{ 
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		},
+		{ 
+			"name": "JZ Home Improvement",
+			"url": "https://www.jzhomeimprovement.com",
+			"contactName": "",
+			"contactEmail": "",
+			"contactPhone": "",
+			"summary": " Local Union NJ home improvement contractor specializing in kitchen and bathroom remodeling, basement finishing, decks and outdoor spaces, and custom carpentry."
+		}
+	],
+	"existingSite": [
+		{
+			"url": "None (Client has secured the domain geaconstruction.net but has not yet built a website)",
+			"strengths": [
+				"No web development and maintenance costs, or hosting overhead currently being spent."
+			],
+			"areasForImprovement": [
+				"Critical lack of findability and search engine optimization (SEO) on Google, Bing, and AI search engines.",
+				"Inability to capture organic search traffic for high-intent keywords like 'kitchen remodeler Bluffton SC' or 'deck builder Bluffton'.",
+				"Social media platforms such as Facebook acts as a walled garden; non-Facebook users and users searching via traditional maps/search rank much lower than companies with dedicated web sites.",
+				"limited features that can be implemented on a Facebook page (e.g., structured service pages, project galleries, lead capture forms, and integrated analytics).",
+				"Lack of a centralized web site damages brand credibility for higher-ticket projects ($20k+ kitchens/baths) compared to established competitors.",
+				"Missing structured schema markup, service area landing pages, and proper analytics tracking for lead conversion.",
+				"Limited ability to showcase high-resolution before-and-after project galleries, which are critical for visual proof of craftsmanship and quality.",
+				"Limited ability to implement a blog or content marketing strategy to capture long-tail search traffic and establish thought leadership in the home renovation space.",
+				"Difficulty to implement a structured email marketing strategy to nurture leads and maintain relationships with real estate agents and past clients."
+			]
+		}
+	],
+	"similarCompanyNames": [
+		{
+			"name": "GEA Construction",
+			"urls": [
+				"https://www.geaconstruction.net/"
+			],
+				"summary": "Unrelated construction company based in the Phillipines"
+			},
+		{
+			"name": "GEA General Construction / GEA Group",
+			"urls": [
+				"https://www.gea.com/"
+			],
+			"summary": "Global industrial technology group with unrelated operations"
+		},
+		{
+			"name": "GEA Construction / Contracting",
+			"urls": [
+				"https://www.google.com/search?q=GEA+Construction"
+			],
+			"summary": "Other general contractor companies with similar acronym-based branding."
+		}
+	],
+	"competitors": [
+		{
+			"name": "Bluffton Builders, LLC",
+			"urls": [
+				"https://bluffton.builders/"
+			],
+			"summary": "Established local remodeler specializing in custom kitchens, spa baths, one-day acrylic conversions, and whole-home remodeling."
+		},
+		{
+			"name": "Beachside Construction",
+			"urls": [
+				"https://www.builtbybeachside.com/"
+			],
+			"summary": "Local general contracting firm specializing in indoor/outdoor renovations, kitchen/bath remodels, custom decks, and interior additions."
+		},
+		{
+			"name": "Kipar Construction Services LLC",
+			"urls": [
+				"https://www.bbb.org/us/sc/bluffton/profile/remodeling/kipar-construction-services-llc-0663-34241026"
+			],
+			"summary": "Bluffton-based residential remodeling and renovation contractor serving Beaufort and Jasper counties."
+		},
+		{
+			"name": "Hackett Homes & Construction LLC",
+			"urls": [
+				"https://www.bbb.org/us/sc/bluffton/profile/home-builders/hackett-homes-construction-llc-0663-34251234"
+			],
+			"summary": "Local home improvement and remodeling contractor serving Bluffton homeowners."
+		},
+		{
+			"name": "Mr. Handyman of Bluffton and Hilton Head (Neighborly Franchise)",
+			"urls": [
+				"https://www.mrhandyman.com/bluffton-hilton-head/"
+			],
+			"summary": "National handyman franchise capturing local search market share for small repairs, wood rot, fixture replacements, and door/window repairs."
+		},
+		{
+			"name": "CertaPro Painters of Hilton Head & Bluffton",
+			"urls": [
+				"https://certapro.com/hilton-head-bluffton/"
+			],
+			"summary": "National painting franchise heavily competing in interior/exterior painting, dry rot, and wall repair across Lowcountry neighborhoods."
+		},
+		{
+			"name": "Re-Bath Lowcountry",
+			"urls": [
+				"https://www.rebath.com/location/lowcountry/"
+			],
+			"summary": "National bath remodeling franchise actively targeting high-margin bathroom transformations and tub-to-shower conversions."
+		},
+		{
+			"name": "Jacuzzi Bath Remodel / Bath Fitter Regional Franchise",
+			"urls": [
+				"https://www.jacuzzibathremodel.com/"
+			],
+			"summary": "National brand dominating local digital ad spend for fast-turnaround bathroom renovations."
+		}
+	],
+	"currentBusinessPlan": [
+		"Nicholas Warchal currently serves full-time as a firefighter with the Bluffton Fire Department while building GEA Construction.",
+		"Currently handling smaller handyman and home improvement jobs (wood rot, drywall/wall repair, interior/exterior painting, electrical & plumbing fixtures, landscape lighting, flooring, finish carpentry, door/window repair).",
+		"Strategic focus on building strong local B2B connections with real estate agents (e.g., offering a 10% move-in discount for homebuyers booking prior to move-in).",
+		"Goal is to scale into high-value remodeling jobs: full kitchen overhauls, custom bathrooms, window and door replacements, basements, and outdoor living/decks.",
+		"There is no current digital footprint.  Initial strategy is to rely exclusively on Facebook and word-of-mouth, creating an urgent need for a structured digital strategy to win bigger projects."
+	],
+	"nextSteps": [
+		"Build a modern, responsive 'Brochure Web Site' on geaconstruction.net to serve as the single source of truth and digital hub for GEA Construction.",
+		"Set up an email account using the geaconstruction.net email address to establish a professional, branded communication channel for client inquiries and realtor partnerships.",
+		"Position the new website as the hub, utilizing social media channels (Facebook, Instagram, Nextdoor) as traffic spokes directing leads back to high-converting quote landing pages.",
+		"Launch and optimize a Google Business Profile (GBP) to secure high visibility on the Local Google Map Pack for Bluffton home remodeling queries.",
+		"Create specialized service pages (Kitchen Remodeling, Bathroom Remodeling, Doors & Windows, Decks & Basements) and hyper-local service area pages across Lowcountry neighborhoods.",
+		"Establish an Instagram portfolio feed showcasing clean, high-resolution before-and-after photos of finish carpentry and tile work to drive visual proof.",
+		"Set up a Nextdoor business presence to tap into community recommendations and build local neighborhood trust.",
+		"Develop a targeted Email Marketing and Content/Blog campaign targeting local real estate agents, offering downloadable guides and exclusive pre-move-in promotional incentives."
+	],
+	"visualDesign": {
+		"primary": "#1C3144",
+		"secondary": "#A23B2A",
+		"tertiary": "#F4F6F8",
+		"accent1": "#D00000",
+		"accent2": "#E0A96D",
+		"accent3": "#2B580C",
+		"headerFont": {
+			"name": "Montserrat:ital,wght@0,100..900;1,100..900",
+			"url": "https://fonts.google.com/specimen/Montserrat"
+		},
+		"bodyFont": {
+			"name": "Open Sans:ital,wght@0,300..800;1,300..800",
+			"url": "https://fonts.google.com/specimen/Open+Sans"
+		},
+		"additionalNotes": [
+			" Primary Color (#1C3144 - Deep Navy / Slate): Black can feel harsh or unapproachable on digital screens. Deep slate navy projects stability, structural strength, and high-end craftsmanship. It grounds the website while feeling more premium than standard black." ,
+
+			"Secondary (#A23B2A - Warm Brick / Terracotta): Evokes traditional masonry, warm wood tones, and architectural materials. It bridges the gap between rugged construction and refined residential design.",
+
+			"Tertiary (#F4F6F8 - Crisp Off-White / Architectural Light Grey): Pure white (#FFFFFF) can feel clinical. A soft, cool off-white acts as a clean background for high-res project galleries without straining the eyes.",
+
+			"Accent 1 (#D00000 - Firehouse Red / First Responder Accent): A subtle nod to Nicholas's background as a Bluffton firefighter. Used sparingly on action buttons (e.g., 'Get Free Consultation' or 'Realtor 10% Discount'), it commands immediate attention and builds immediate community trust.",
+
+			"Accent 2 (#E0A96D - Lowcountry Oak / Natural Wood Tone): Perfectly reflects GEA's focus on finish carpentry, decks, doors, and custom kitchen/bath trim. Connects the digital brand to the physical materials Nick uses every day.",
+
+			"GEA Typography: Uses a high-contrast, classic Serif font (similar to Cinzel or Times New Roman). Serif fonts convey tradition and prestige, but this specific font feels disjointed when paired with the modern, geometric rooflines above it.",
+
+			"Construction LLC. Typography: Uses a Geometric Sans-Serif font (similar to Montserrat or Century Gothic).",
+
+			"The Mismatch Issue: Combining a traditional serif on 'GEA' with a modern sans-serif on 'Construction LLC.' creates visual friction. In the construction and remodeling space, typographic unity signifies precision and structural integrity.",
+
+			"Header Font: Montserrat (All-Caps / Bold Weights for Brand Headings)Visual Match: Montserrat directly matches the clean, geometric structure of 'Construction LLC.' in the current logo.  Its wide stance and heavy geometric proportions project strength, reliability, and modern architectural design. Standardizing 'GEA CONSTRUCTION' into a bold, clean sans-serif like Montserrat unifies the logo mark with website headers (H1, H2, H3).",
+
+			"Body Font: Open Sans - Highly legible on mobile devices, which is critical for real estate agents and homeowners checking services on their phones.  It is a Neutral Complement - Open Sans is clean and unpretentious—it lets the project portfolio photos and service details take center stage without competing with bold headers."
+
+		]
+	},
+	"websiteDomain": {
+		"currentUrls": [],
+		"proposedUrls": [
+			"https://www.geaconstruction.net"
+		]
+	},
+	"logo": [
+		{
+			"url": "/data/assessment/gea-construction-logo.jpg",
+			"altText": "GEA Construction - Premier Renovation & Remodeling Bluffton SC"
+		}
+	],
+	"informationArchitecture": [
+		{
+			"route": "/",
+			"title": "Home",
+			"notes": [
+				"Hero section highlighting Bluffton's trusted firefighter-owned renovation specialist",
+				"Prominent CTA for Free Consultations & Realtor Pre-Move-In Discounts",
+				"Core Services Grid (Kitchens, Baths, Doors & Windows, Decks)",
+				"Google Map Pack & Review Integration",
+				"Before & After Transformation Carousel"
+			]
+		},
+		{
+			"route": "/about",
+			"title": "About Us",
+			"notes": [
+				"Nicholas Warchal's story: Serving the Bluffton community as a firefighter and dedicated contractor",
+				"Commitment to integrity, craftsmanship, and local accountability",
+				"Realtor & Community Partnership approach"
+			]
+		},
+		{
+			"route": "/services",
+			"title": "Services",
+			"notes": [
+				"Overview of full service offerings from handyman repairs to full renovations",
+				"Sub-pages for Kitchen Remodeling, Bathroom Remodeling, Doors & Windows, Basements & Decks, and Handyman/Repair Services"
+			]
+		},
+		{
+			"route": "/services/kitchen-remodeling",
+			"title": "Kitchen Remodeling",
+			"notes": [
+				"Custom cabinetry, island installations, countertops, backsplashes, and lighting upgrades"
+			]
+		},
+		{
+			"route": "/services/bathroom-remodeling",
+			"title": "Bathroom Remodeling",
+			"notes": [
+				"Spa conversions, custom tile work, vanity installs, and fixture upgrades"
+			]
+		},
+		{
+			"route": "/services/doors-and-windows",
+			"title": "Doors & Window Replacement",
+			"notes": [
+				"Energy efficient upgrades, interior door casing, entry doors, and hurricane-rated coastal windows"
+			]
+		},
+		{
+			"route": "/services/decks-and-outdoor-living",
+			"title": "Decks & Outdoor Living",
+			"notes": [
+				"Custom composite/wood deck builds, patio updates, landscape lighting, and exterior finish carpentry"
+			]
+		},
+		{
+			"route": "/realtor-partners",
+			"title": "Realtor Partner Program",
+			"notes": [
+				"Dedicated portal for local real estate agents",
+				"Details on the 10% Pre-Move-In Discount program for new buyers",
+				"Priority scheduling form for closing repair checklists"
+			]
+		},
+		{
+			"route": "/gallery",
+			"title": "Project Gallery",
+			"notes": [
+				"Categorized before-and-after photo galleries of kitchens, baths, decks, and custom repairs"
+			]
+		},
+		{
+			"route": "/service-areas",
+			"title": "Service Areas",
+			"notes": [
+				"Dedicated landing pages for Bluffton, Hilton Head Island, Okatie, Beaufort, and Palmetto Bluff"
+			]
+		},
+		{
+			"route": "/faqs",
+			"title": "Frequently Asked Questions",
+			"notes": [
+				"Common questions and answers about GEA Construction services, pricing, and scheduling"
+			]
+		},
+		{
+			"route": "/blog",
+			"title": "Blog & Home Improvement Tips",
+			"notes": [
+				"Home maintenance advice, pre-listing renovation checklists, and design inspiration for Lowcountry homeowners"
+			]
+		},
+		{
+			"route": "/contact",
+			"title": "Contact Us",
+			"notes": [
+				"Simple quote request form, phone (+1 843-368-6229), direct email, and service area map"
+			]
+		}
+	],
+	"blogRoute": {
+		"enabled": true,
+		"route": "/blog"
+	},
+	"keywords": [
+		"GEA Construction Bluffton",
+		"Kitchen remodeling Bluffton SC",
+		"Bathroom contractor Bluffton",
+		"Window replacement Bluffton SC",
+		"Door installation Hilton Head",
+		"Deck builder Bluffton SC",
+		"Handyman services Bluffton",
+		"Firefighter owned contractor Bluffton",
+		"Pre-move-in home renovation Lowcountry",
+		"Realtor preferred contractor Beaufort County"
+	],
+	"differentiation": [
+		"Firefighter-Owned Integrity: Emphasizes extreme trust, safety, discipline, and community service that sets Nicholas apart from unreliable fly-by-night contractors.",
+		"Realtor Referral Ecosystem: Unique focus on structured real estate partnerships offering an exclusive 10% discount for buyers booking renovations prior to move-in.",
+		"Full-Spectrum Adaptability: Capability to handle smaller handyman repairs (wood rot, fixtures, trim) and seamlessly transition into high-ticket major kitchen/bath/deck remodels under one contract.",
+		"Hub and Spoke Digital Strategy: Elevates brand authority far above competitors who rely solely on social media, using a high-performing website hub tied directly to Google Maps, Nextdoor, and Instagram."
+	],
+	"proposedSocialMediaAccounts": [
+		"Google Business Profile",
+		"Facebook",
+		"Instagram",
+		"Threads",
+		"Nextdoor",
+		"LinkedIn"
+	]
+}

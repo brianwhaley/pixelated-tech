@@ -149,128 +149,6 @@ export function FormExtractEngine(props: FormExtractEngineType) {
 	const [ htmlPaste, setHtmlPaste ] = useState<string | null | undefined>(props.htmlPaste);
 	const [ formJson, setFormJson ] = useState<any>();
 
-	function extractOptions (thisElement: HTMLSelectElement) {
-		// GENERATE OPTIONS FOR SELECT FIELD - INTERNAL
-		if (debug) console.log("Extracting Options...");
-		if (thisElement.tagName.toLowerCase() === 'select' && thisElement.options && thisElement.options.length) {
-			const options = [];
-			for (let option = 0; option < thisElement.options.length; option++) {
-				const thisOption = thisElement.options[option];
-				const attribs: { [key: string]: any } = {};
-				for (let attrib = 0; attrib < thisOption.attributes.length; attrib++) {
-					const thisAttrib = thisOption.attributes[attrib];
-					attribs[attributeMap(thisAttrib.name)] = thisAttrib.value;
-				}
-				if (thisOption.innerText) attribs.text = thisOption.innerText;
-				if (Object.keys(attribs).length > 0) options.push(attribs); // not empty then add
-			}
-			if (options.length > 0) return options;
-		}
-		return false;
-	}
-
-	function extractSelectedOptions (thisOptions: any) {
-		if (debug) console.log("Extracting Selected Options...");
-		// GENERATE LIST OF SELECTED OPTIONS FOR SELECT FIELD - INTERNAL
-		if (thisOptions && thisOptions.length) {
-			const selected = [];
-			for (let option = 0; option < thisOptions.length; option++) {
-				const thisOption = thisOptions[option];
-
-				if (Object.prototype.hasOwnProperty.call(thisOption, 'selected')) {
-					selected.push(thisOption.value);
-					delete thisOptions[option].selected;
-				}
-			}
-			// MULTIPLE - Return array
-			if (selected.length > 1) return selected;
-			// Not Multiple = return string
-			if (selected.length === 1) return selected.toString();
-		}
-		return false;
-	}
-
-	function extractAttribs (thisElement: HTMLFormElement) {
-		if (debug) console.log("Extracting Attributes...");
-		// EXTRACT ALL ATTRIBUTES FOR A FORM ELEMENT - INTERNAL
-		// LOOK AT THAT - JAVASCRIPT REFLECTION!
-		if (thisElement && thisElement.attributes && thisElement.attributes.length) {
-			const props: { [key: string]: any } = {};
-			for (let attrib = 0; attrib < thisElement.attributes.length; attrib++) {
-				const thisAttrib = thisElement.attributes[attrib];
-				if (thisAttrib.name === 'style') {
-					// Do not gather styles
-				} else if (['disabled', 'multiple', 'readonly', 'required', 'selected'].indexOf(thisAttrib.name.toLowerCase()) > -1) {
-					// Flag type Attributes
-					props[attributeMap(thisAttrib.name)] = attributeMap(thisAttrib.name);
-				} else if (thisAttrib && thisAttrib.name && thisAttrib.value) {
-					// use attributeMap to map html props to React props
-					props[attributeMap(thisAttrib.name)] = thisAttrib.value;
-				}
-			}
-			if (Object.keys(props).length > 0) return props;
-		}
-		return false;
-	}
-
-	function extractLabel (html: any, thisElement: HTMLFormElement) {
-		// IDENTIFY AND EXTRACT LABEL PROPERTIES FOR A SPECIFIC FIELD - INTERNAL
-		if (debug) console.log("Extracting Label...");
-		const myElement = thisElement.attributes.getNamedItem('id');
-		if (myElement && myElement.value) {
-			const thisID = myElement.value;
-			const thisLabel = html.querySelector("label[for='" + thisID + "']");
-			if (thisLabel) return thisLabel;
-		}
-		return false;
-	}
-
-	function formToJSON (html: any) {
-		// CONVERT HTML TO CONFIG JSON - INTERNAL
-		if (debug) console.log("Converting Form to JSON...");
-		const json: { [key: string]: any } = {};
-		json.fields = [];
-		const forms = html.getElementsByTagName('form');
-		// ----- FORMS
-		for (let form = 0; form < forms.length; form++) {
-			const thisForm = forms[form];
-			if (Object.keys(thisForm).length > 0) {
-				// ----- ELEMENTS
-				for (let element = 0; element < thisForm.elements.length; element++) {
-					const thisElement = thisForm[element];
-					const elem: { [key: string]: any } = {};
-					if (thisElement && thisElement.attributes && thisElement.tagName) {
-						// ----- COMPONENT
-						elem.component = 'Form' + capitalize(thisElement.tagName);
-						let props: { [key: string]: any } = {};
-						// ----- ELEMENT ATTRIBUTES
-						const thisProps = extractAttribs(thisElement);
-						if (thisProps) props = thisProps;
-						// ----- ELEMENT OPTIONS
-						const thisOptions = extractOptions(thisElement);
-						if (thisOptions) {
-							// only true for SELECT elements
-							const thisSelected = extractSelectedOptions(thisOptions);
-							if (thisSelected) props.defaultValue = thisSelected;
-							props.options = thisOptions;
-						} else {
-							// get innerText on all but SELECT elements
-							if (thisElement.innerText) props.text = thisElement.innerText;
-						}
-						elem.props = props;
-						// ----- LABEL
-						const thisLabel = extractLabel(html, thisElement);
-						if (thisLabel) {
-							elem.props.label = (thisLabel.innerText || thisLabel.textContent);
-						}
-					}
-					if (Object.keys(elem).length > 0) json.fields.push(elem);
-				}
-			}
-		}
-		return json;
-	}
-
 	function getHTML (url: string, callback: any) {
 		// GET SERVER SIDE HTML THROUGH XMLHTTPREQUEST - INTERNAL
 		if (debug) console.log("Getting HTML From URL...");
@@ -320,4 +198,130 @@ export function FormExtractEngine(props: FormExtractEngineType) {
 			<pre id='formJson'>{ JSON.stringify(formJson, null, 2) }</pre>
 		</div>
 	);
+}
+
+
+
+
+export function extractOptions (thisElement: HTMLSelectElement) {
+	// GENERATE OPTIONS FOR SELECT FIELD - INTERNAL
+	if (debug) console.log("Extracting Options...");
+	if (thisElement.tagName.toLowerCase() === 'select' && thisElement.options && thisElement.options.length) {
+		const options = [];
+		for (let option = 0; option < thisElement.options.length; option++) {
+			const thisOption = thisElement.options[option];
+			const attribs: { [key: string]: any } = {};
+			for (let attrib = 0; attrib < thisOption.attributes.length; attrib++) {
+				const thisAttrib = thisOption.attributes[attrib];
+				attribs[attributeMap(thisAttrib.name)] = thisAttrib.value;
+			}
+			if (thisOption.innerText) attribs.text = thisOption.innerText;
+			if (Object.keys(attribs).length > 0) options.push(attribs); // not empty then add
+		}
+		if (options.length > 0) return options;
+	}
+	return false;
+}
+
+
+export function extractSelectedOptions (thisOptions: any) {
+	if (debug) console.log("Extracting Selected Options...");
+	// GENERATE LIST OF SELECTED OPTIONS FOR SELECT FIELD - INTERNAL
+	if (thisOptions && thisOptions.length) {
+		const selected = [];
+		for (let option = 0; option < thisOptions.length; option++) {
+			const thisOption = thisOptions[option];
+
+			if (Object.prototype.hasOwnProperty.call(thisOption, 'selected')) {
+				selected.push(thisOption.value);
+				delete thisOptions[option].selected;
+			}
+		}
+		// MULTIPLE - Return array
+		if (selected.length > 1) return selected;
+		// Not Multiple = return string
+		if (selected.length === 1) return selected.toString();
+	}
+	return false;
+}
+
+export function extractAttribs (thisElement: HTMLFormElement) {
+	if (debug) console.log("Extracting Attributes...");
+	// EXTRACT ALL ATTRIBUTES FOR A FORM ELEMENT - INTERNAL
+	// LOOK AT THAT - JAVASCRIPT REFLECTION!
+	if (thisElement && thisElement.attributes && thisElement.attributes.length) {
+		const props: { [key: string]: any } = {};
+		for (let attrib = 0; attrib < thisElement.attributes.length; attrib++) {
+			const thisAttrib = thisElement.attributes[attrib];
+			if (thisAttrib.name === 'style') {
+				// Do not gather styles
+			} else if (['disabled', 'multiple', 'readonly', 'required', 'selected'].indexOf(thisAttrib.name.toLowerCase()) > -1) {
+				// Flag type Attributes
+				props[attributeMap(thisAttrib.name)] = attributeMap(thisAttrib.name);
+			} else if (thisAttrib && thisAttrib.name && thisAttrib.value) {
+				// use attributeMap to map html props to React props
+				props[attributeMap(thisAttrib.name)] = thisAttrib.value;
+			}
+		}
+		if (Object.keys(props).length > 0) return props;
+	}
+	return false;
+}
+
+export function extractLabel (html: any, thisElement: HTMLFormElement) {
+	// IDENTIFY AND EXTRACT LABEL PROPERTIES FOR A SPECIFIC FIELD - INTERNAL
+	if (debug) console.log("Extracting Label...");
+	const myElement = thisElement.attributes.getNamedItem('id');
+	if (myElement && myElement.value) {
+		const thisID = myElement.value;
+		const thisLabel = html.querySelector("label[for='" + thisID + "']");
+		if (thisLabel) return thisLabel;
+	}
+	return false;
+}
+
+export function formToJSON (html: any) {
+	// CONVERT HTML TO CONFIG JSON - INTERNAL
+	if (debug) console.log("Converting Form to JSON...");
+	const json: { [key: string]: any } = {};
+	json.fields = [];
+	const forms = html.getElementsByTagName('form');
+	// ----- FORMS
+	for (let form = 0; form < forms.length; form++) {
+		const thisForm = forms[form];
+		if (Object.keys(thisForm).length > 0) {
+			// ----- ELEMENTS
+			for (let element = 0; element < thisForm.elements.length; element++) {
+				const thisElement = thisForm[element];
+				const elem: { [key: string]: any } = {};
+				if (thisElement && thisElement.attributes && thisElement.tagName) {
+					// ----- COMPONENT
+					elem.component = 'Form' + capitalize(thisElement.tagName);
+					let props: { [key: string]: any } = {};
+					// ----- ELEMENT ATTRIBUTES
+					const thisProps = extractAttribs(thisElement);
+					if (thisProps) props = thisProps;
+					// ----- ELEMENT OPTIONS
+					const thisOptions = extractOptions(thisElement);
+					if (thisOptions) {
+						// only true for SELECT elements
+						const thisSelected = extractSelectedOptions(thisOptions);
+						if (thisSelected) props.defaultValue = thisSelected;
+						props.options = thisOptions;
+					} else {
+						// get innerText on all but SELECT elements
+						if (thisElement.innerText) props.text = thisElement.innerText;
+					}
+					elem.props = props;
+					// ----- LABEL
+					const thisLabel = extractLabel(html, thisElement);
+					if (thisLabel) {
+						elem.props.label = (thisLabel.innerText || thisLabel.textContent);
+					}
+				}
+				if (Object.keys(elem).length > 0) json.fields.push(elem);
+			}
+		}
+	}
+	return json;
 }

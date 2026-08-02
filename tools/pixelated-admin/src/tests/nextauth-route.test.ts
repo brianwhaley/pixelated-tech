@@ -93,4 +93,19 @@ describe('nextauth/[...nextauth] route', () => {
 		const res = await routeModule.GET(req as any, makeContext(['session']) as any);
 		expect(await res.text()).toBe('ok');
 	});
+
+	it('strips next-auth.callback-url cookies from the response', async () => {
+		process.env.NEXTAUTH_URL = 'https://admin.pixelated.tech';
+		vi.doMock('next-auth', () => ({
+			default: () => async () => {
+				const headers = new Headers();
+				headers.append('Set-Cookie', 'next-auth.callback-url=/api/auth/callback/google; Path=/; HttpOnly');
+				return new Response('', { status: 302, headers });
+			},
+		}));
+		const routeModule = await import('@/app/api/auth/[...nextauth]/route');
+		const req = makeReq('https://admin.pixelated.tech/api/auth/signin/google', { host: 'admin.pixelated.tech' });
+		const res = await routeModule.GET(req as any, makeContext(['signin', 'google']) as any);
+		expect(res.headers.get('set-cookie')).toBeNull();
+	});
 });

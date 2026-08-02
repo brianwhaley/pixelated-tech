@@ -9,7 +9,7 @@ export default function Footer() {
 	return (
 		<div className="section-container">
 			<div>
-				<Nav />
+				<Nav /><br />
 				{ /* <Analytics id="G-X2R4REQ3NG" /> */ }
 				<GoogleAnalytics />
 			</div>

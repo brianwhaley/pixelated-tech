@@ -24,7 +24,7 @@
 
 
 
- 
+/* eslint-disable-next-line */
 function isInViewport(el: Element) {
 	const rect = el.getBoundingClientRect();
 	return (
@@ -97,6 +97,7 @@ export function preloadImages_v2() {
 
 
 
+/* eslint-disable-next-line */
 function preloadImage(url: string) {
 	const img = new Image();
 	img.src = url;

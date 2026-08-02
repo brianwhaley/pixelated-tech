@@ -18,7 +18,7 @@ const tsxFiles = glob.sync('src/components/**/*.tsx', {
 const allComponentFiles = [...tsFiles, ...tsxFiles];
 
 // Analyze each component file to determine if it's client-required or server-safe
-function analyzeComponentFile(filePath) {
+export function analyzeComponentFile(filePath) {
 	const content = fs.readFileSync(filePath, 'utf8');
 
 	// Server-only patterns that indicate this should only be on server (not client)
@@ -69,7 +69,7 @@ const indexAdminServer = fs.readFileSync('src/components/admin/index.admin.serve
 const indexAdminClient = fs.readFileSync('src/components/admin/index.admin.js', 'utf8');
 
 // Updated to handle recursive barrel files
-function extractExports(content, currentFilePath = 'src/index.js') {
+export function extractExports(content, currentFilePath = 'src/index.js') {
 	// Remove comments
 	content = content.replace(/\/\*[\s\S]*?\*\//g, '');
 	content = content.replace(/\/\/.*$/gm, '');
@@ -133,7 +133,7 @@ const bundleErrors = {
 };
 
 // Check if exported paths correspond to existing files
-function checkExportPathsExist(exports, bundleName) {
+export function checkExportPathsExist(exports, bundleName) {
 	exports.forEach(exportPath => {
 		// Convert export path to file path (./components/... -> src/components/...)
 		const filePathBase = exportPath.replace('./', 'src/');

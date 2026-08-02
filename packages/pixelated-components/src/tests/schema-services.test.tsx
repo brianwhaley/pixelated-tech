@@ -8,6 +8,11 @@ vi.mock('../components/integrations/google.reviews.functions', () => ({
 	getGoogleReviewsByPlaceId: vi.fn(),
 }));
 
+let mockPathname = '/';
+vi.mock('next/navigation', () => ({
+	usePathname: () => mockPathname,
+}));
+
 describe('ServicesSchema', () => {
 	const defaultServices = [
 		{
@@ -32,6 +37,19 @@ describe('ServicesSchema', () => {
 		const { container } = render(<ServicesSchema />, { config: defaultConfig });
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		expect(scriptTags.length).toBe(2); // One for each service
+	});
+
+	it('should emit only a single service when the pathname matches a service detail page', () => {
+		mockPathname = '/services/web-development';
+		const { container } = render(<ServicesSchema />, { config: defaultConfig });
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		expect(scriptTags.length).toBe(1);
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+		expect(service.name).toBe('Web Development');
+	});
+
+	afterEach(() => {
+		mockPathname = '/';
 	});
 
 	it('should include schema.org context and Service type for each service', () => {
@@ -80,6 +98,23 @@ describe('ServicesSchema', () => {
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
 		expect(firstService.provider.logo).toBe(siteInfo.image);
+	});
+
+	it('should include provider brand when provided', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			brand: {
+				'@type': 'Brand',
+				name: 'Test Agency'
+			},
+			services: defaultServices
+		};
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(firstService.provider.brand).toEqual(siteInfo.brand);
 	});
 
 	it('should include provider telephone when provided', () => {

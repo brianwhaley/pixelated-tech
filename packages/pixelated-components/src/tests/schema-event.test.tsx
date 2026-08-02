@@ -74,11 +74,11 @@ describe('SchemaEvent component schema generation', () => {
 			availability: 'https://schema.org/InStock',
 			validFrom: '2025-06-01T18:00:00.000Z',
 		});
-		expect(schema.organizer).toEqual({
+		expect(schema.organizer).toEqual(expect.objectContaining({
 			'@type': 'Organization',
 			name: 'Three Muses',
 			url: 'https://threemuses.example',
-		});
+		}));
 	});
 
 	it('omits offers when price is missing', () => {

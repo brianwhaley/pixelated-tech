@@ -12,6 +12,7 @@ declare global {
 	}
 }
 
+/* eslint-disable-next-line */
 function isGA() {
 	if (typeof window === 'undefined') return false;
 	const hasGtag = typeof window.gtag === 'function';

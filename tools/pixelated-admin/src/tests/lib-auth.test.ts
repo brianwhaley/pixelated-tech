@@ -2,19 +2,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TEST_CONFIG } from '@/tests/fixtures';
 
-const createDefaultAdminserverMock = () => ({
-	performAxeCoreAnalysis: vi.fn(),
-	getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
-	getGoogleOAuthCredentials: () => ({
-		clientId: (TEST_CONFIG.integrations as any).google.client_id,
-		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
-	}),
-});
-
 describe('NextAuth config', () => {
 	beforeEach(() => {
 		vi.resetModules();
-		vi.doMock('@pixelated-tech/components/adminserver', createDefaultAdminserverMock);
+		vi.doMock('@pixelated-tech/components/adminserver', () => ({
+			performAxeCoreAnalysis: vi.fn(),
+			getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
+			getGoogleOAuthCredentials: () => ({
+				clientId: (TEST_CONFIG.integrations as any).google.client_id,
+				clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+			}),
+		}));
 	});
 
 	afterEach(() => {
@@ -76,5 +74,13 @@ describe('NextAuth config', () => {
 
 		const redirectResult = await authOptions.callbacks.redirect({ url: 'https://example.com/other', baseUrl: 'https://admin.pixelated.tech' });
 		expect(redirectResult).toBe('https://admin.pixelated.tech');
+	});
+
+	it('prefixes relative URLs with the baseUrl', async () => {
+		const mod = await import('@/lib/authentication');
+		const { authOptions } = mod as any;
+
+		const redirectResult = await authOptions.callbacks.redirect({ url: '/dashboard', baseUrl: 'https://admin.pixelated.tech' });
+		expect(redirectResult).toBe('https://admin.pixelated.tech/dashboard');
 	});
 });
