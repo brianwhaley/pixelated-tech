@@ -88,5 +88,6 @@ describe('Site coverage', () => {
 			},
 		},
 	]);
+
 });
 

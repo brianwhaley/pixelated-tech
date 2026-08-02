@@ -13,92 +13,6 @@ const fetchTimeoutMs = 	120000; // 2 mins timeout, max localhost to gemini api c
 
 const debug = false;
 
-function safeWriteSync(filePath: string, data: any) {
-	const tmp = filePath + '.tmp';
-	fs.writeFileSync(tmp, JSON.stringify(data, null, 2), 'utf8');
-	fs.renameSync(tmp, filePath);
-}
-
-function makeHydratedFileName(fileName: string): string {
-	const extension = path.extname(fileName) || '.json';
-	const baseName = path.basename(fileName, extension);
-	const dateSuffix = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-	return `${baseName}-${dateSuffix}-hydrated${extension}`;
-}
-
-function extractJsonFromText(text: string): string {
-	let trimmed = String(text).trim();
-	if (trimmed.startsWith('```')) {
-		trimmed = trimmed.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
-	}
-
-	const candidateStarts = [] as number[];
-	for (let i = 0; i < trimmed.length; i++) {
-		if (trimmed[i] === '{' || trimmed[i] === '[') {
-			candidateStarts.push(i);
-		}
-	}
-
-	if (!candidateStarts.length) {
-		throw new Error('No JSON object or array found in Gemini response');
-	}
-
-	for (const startIndex of candidateStarts) {
-		const stack: string[] = [];
-		let inString = false;
-		let escaped = false;
-
-		for (let i = startIndex; i < trimmed.length; i++) {
-			const char = trimmed[i];
-
-			if (escaped) {
-				escaped = false;
-				continue;
-			}
-
-			if (char === '\\') {
-				escaped = true;
-				continue;
-			}
-
-			if (char === '"') {
-				inString = !inString;
-				continue;
-			}
-
-			if (inString) {
-				continue;
-			}
-
-			if (char === '{' || char === '[') {
-				stack.push(char);
-				continue;
-			}
-
-			if (char === '}' || char === ']') {
-				const open = stack.pop();
-				if (!open || (open === '{' && char !== '}') || (open === '[' && char !== ']')) {
-					break;
-				}
-				if (stack.length === 0) {
-					const candidate = trimmed.slice(startIndex, i + 1);
-					try {
-						JSON.parse(candidate);
-						return candidate;
-					} catch {
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	throw new Error('Unable to extract valid JSON from Gemini response');
-}
-
-function parseJsonFromText(text: string): any {
-	return JSON.parse(extractJsonFromText(text));
-}
 
 function normalizeEmail(raw: string): string {
 	return String(raw || '').trim().toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '');
@@ -118,26 +32,6 @@ function normalizeEmails(value: any): string[] {
 function normalizePhone(value: any): string {
 	if (!value) return '';
 	return String(value).trim();
-}
-
-function buildAddressFromComponents(lead: any): string {
-	const street = String(lead['address'] || lead.formattedAddress || lead['street address'] || lead['streetAddress'] || lead['street_address'] || '').trim();
-	const city = String(lead.city || '').trim();
-	const state = String(lead.state || '').trim();
-	const zip = String(lead.zip || lead.postalCode || lead.postal_code || '').trim();
-
-	const parts = [street, city, state, zip].filter(Boolean);
-	return parts.join(', ');
-}
-
-function getLeadsArray(payload: any): any[] {
-	if (Array.isArray(payload.leads)) {
-		return payload.leads;
-	}
-	if (Array.isArray(payload.results)) {
-		return payload.results;
-	}
-	return [];
 }
 
 interface GeminiBatchLead {
@@ -215,11 +109,6 @@ function normalizeAddressValue(value: any, originalAddress: string): string {
 	return originalAddress;
 }
 
-function buildGeminiPrompt(leads: GeminiBatchLead[]): string {
-	return `You are a data verifier. You are given a JSON array of lead records. Each record includes company, address, website, emails, phone, and optionally full name, first name, and last name. Some fields may be empty. For each record, verify the information and fill in only the website, emails, phone, and address fields if you can confirm them. If the address is blank or only partial, return the best available address information. If a person name is provided, return any emails associated with that person, company, or address; more emails are better. If the original website field is empty, return what you can find. If the returned website is the same domain as the original, keep the original value. If a different valid domain is found, include both values. The website field may be a string or an array of strings. Do not invent any information. Return only valid JSON: the same array of lead objects in the same order.` +
-		`\n\nInput:\n` + JSON.stringify(leads, null, 2);
-}
-
 async function requestGemini(prompt: string, apiKey: string) {
 	const url = buildUrl({
 		baseUrl: 'https://generativelanguage.googleapis.com',
@@ -292,7 +181,77 @@ async function requestGemini(prompt: string, apiKey: string) {
 
 	let parsed;
 	try {
-		parsed = parseJsonFromText(raw);
+		const extractJsonFromText = (text: string) => {
+			let trimmed = String(text).trim();
+			if (trimmed.startsWith('```')) {
+				trimmed = trimmed.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+			}
+
+			const candidateStarts: number[] = [];
+			for (let i = 0; i < trimmed.length; i++) {
+				if (trimmed[i] === '{' || trimmed[i] === '[') {
+					candidateStarts.push(i);
+				}
+			}
+
+			if (!candidateStarts.length) {
+				throw new Error('No JSON object or array found in Gemini response');
+			}
+
+			for (const startIndex of candidateStarts) {
+				const stack: string[] = [];
+				let inString = false;
+				let escaped = false;
+
+				for (let i = startIndex; i < trimmed.length; i++) {
+					const char = trimmed[i];
+
+					if (escaped) {
+						escaped = false;
+						continue;
+					}
+
+					if (char === '\\') {
+						escaped = true;
+						continue;
+					}
+
+					if (char === '"') {
+						inString = !inString;
+						continue;
+					}
+
+					if (inString) {
+						continue;
+					}
+
+					if (char === '{' || char === '[') {
+						stack.push(char);
+						continue;
+					}
+
+					if (char === '}' || char === ']') {
+						const open = stack.pop();
+						if (!open || (open === '{' && char !== '}') || (open === '[' && char !== ']')) {
+							break;
+						}
+						if (stack.length === 0) {
+							const candidate = trimmed.slice(startIndex, i + 1);
+							try {
+								JSON.parse(candidate);
+								return candidate;
+							} catch {
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			throw new Error('Unable to extract valid JSON from Gemini response');
+		};
+
+		parsed = JSON.parse(extractJsonFromText(raw));
 	} catch (error: unknown) {
 		const errorMessage = error instanceof Error ? error.message : String(error);
 		const errorStack = error instanceof Error ? error.stack : undefined;
@@ -324,7 +283,10 @@ export async function GET(req: NextRequest) {
 	const batchSize = Number(req.nextUrl.searchParams.get('batchSize') || String(DEFAULT_BATCH_SIZE));
 	const maxCalls = Number(req.nextUrl.searchParams.get('maxCalls') || String(DEFAULT_MAX_CALLS));
 	const filePath = path.join(process.cwd(), 'public', 'data', fileName);
-	const hydratedFileName = makeHydratedFileName(fileName);
+	const extension = path.extname(fileName) || '.json';
+	const baseName = path.basename(fileName, extension);
+	const dateSuffix = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+	const hydratedFileName = `${baseName}-${dateSuffix}-hydrated${extension}`;
 	const hydratedFilePath = path.join(process.cwd(), 'public', 'data', hydratedFileName);
 
 	if (!fs.existsSync(filePath)) {
@@ -353,7 +315,7 @@ export async function GET(req: NextRequest) {
 		return NextResponse.json({ error: 'Failed to parse JSON file', details: String(err) }, { status: 500 });
 	}
 
-	const leads = getLeadsArray(payload);
+	const leads = Array.isArray(payload.leads) ? payload.leads : Array.isArray(payload.results) ? payload.results : [];
 	if (!Array.isArray(leads) || leads.length === 0) {
 		return NextResponse.json({ error: 'Input JSON does not contain a leads or results array' }, { status: 400 });
 	}
@@ -386,7 +348,12 @@ export async function GET(req: NextRequest) {
 				lead['displayName']?.text ||
 				''
 			).trim();
-			const address = buildAddressFromComponents(lead);
+			const address = [
+				String(lead['address'] || lead.formattedAddress || lead['street address'] || lead['streetAddress'] || lead['street_address'] || '').trim(),
+				String(lead.city || '').trim(),
+				String(lead.state || '').trim(),
+				String(lead.zip || lead.postalCode || lead.postal_code || '').trim(),
+			].filter(Boolean).join(', ');
 			const fullName = String(lead['full name'] || '').trim();
 			const firstName = String(lead['first name'] || '').trim();
 			const lastName = String(lead['last name'] || '').trim();
@@ -418,7 +385,8 @@ export async function GET(req: NextRequest) {
 
 		let prompt: string;
 		try {
-			prompt = buildGeminiPrompt(batchLeads);
+			prompt = `You are a data verifier. You are given a JSON array of lead records. Each record includes company, address, website, emails, phone, and optionally full name, first name, and last name. Some fields may be empty. For each record, verify the information and fill in only the website, emails, phone, and address fields if you can confirm them. If the address is blank or only partial, return the best available address information. If a person name is provided, return any emails associated with that person, company, or address; more emails are better. If the original website field is empty, return what you can find. If the returned website is the same domain as the original, keep the original value. If a different valid domain is found, include both values. The website field may be a string or an array of strings. Do not invent any information. Return only valid JSON: the same array of lead objects in the same order.` +
+				`\n\nInput:\n` + JSON.stringify(batchLeads, null, 2);
 			callsMade++;
 			const results = await requestGemini(prompt, apiKey);
 
@@ -579,7 +547,9 @@ export async function GET(req: NextRequest) {
 			hydratedPayload.file = hydratedFileName;
 			hydratedPayload.sourceFile = fileName;
 			hydratedPayload.updatedAt = new Date().toISOString();
-			safeWriteSync(hydratedFilePath, hydratedPayload);
+			const tmpHydratedFilePath = hydratedFilePath + '.tmp';
+			fs.writeFileSync(tmpHydratedFilePath, JSON.stringify(hydratedPayload, null, 2), 'utf8');
+			fs.renameSync(tmpHydratedFilePath, hydratedFilePath);
 			if (debug) {
 				console.log('[scrape-gemini-hydration] hydrated batch saved', {
 					batch: batchIndex,

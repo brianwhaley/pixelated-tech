@@ -29,6 +29,10 @@ The repository defines shared standards for all customer sites and template apps
 - **TypeScript 6** for type safety and better development experience
 - **React 19** with latest features and performance optimizations
 - **ESLint 9** configuration for code quality and consistency
+- **AWS** - Amplify, Route53, CloutFront, CloudWatch, Dynamo, Lambda, API Gateway, Certificate Manager
+- **amplify.yml** for build scripting
+- **customHttp.yml** for cache rules
+- **WebPack**
 
 ### Foundation Features
 - Cache Manger for standard cache management
@@ -40,7 +44,11 @@ The repository defines shared standards for all customer sites and template apps
 - MicroInteractions centralized via flags on layout.tsx
 - Proxy handler for Content Security management and standardized response headers
 - Standard use of Rich Schemas for SEO / AEO - BlogPosting, Books, Breadcrumb, FAQ, LocalBusiness, Podcast, Product, Recipe, Review, Services, Website
-- App Router global error boundary — accessible `global-error` at `src/app/global-error.tsx` (branded, testable error UI)- SmartFetch to help manage Next based caching of API data via fetch
+- App Router global error boundary — accessible `global-error` at `src/app/global-error.tsx` (branded, testable error UI)
+- Interaction Guardrail component to improve Interaction To Next Paint (in-page state change etc)
+- SmartImage and SmartVideo feature to push to the optimal format (webp), size, caching and fetchpriority
+- SmartFetch to help manage Next based caching of API data via fetch
+- Partial Prerendering (PPR) support via `experimental: { ppr: 'incremental' }` in the shared base Next config for instant app-shell delivery
 - URL Builder for key-value pairs, properties, and directories
 - Well-Known txt pages such as humans.txt, security.txt
 - LLMs.txt for site readability / indexability for Large Language Models
@@ -51,6 +59,8 @@ The repository defines shared standards for all customer sites and template apps
 - Cache Manager to manage localstorage caching on demand
 - SmartImage - leverage Next based image caching
 - Next.cofig.js - caching for images
+- SmartFetch - can use local cache manager, Next based server caching, or both
+- Pixelated Config uses Module level caching for Server and Client versions
 - customHttp.yml - cache strategy for CloudFront and edge caching via Amplify
 
 ### Foundation Pages
@@ -65,7 +75,7 @@ The repository defines shared standards for all customer sites and template apps
 - AI.txt
 - Sitemap.json
 - Rss.xml and corresponding rss.xsl
-- Dynamically loaded sitemap.xml driven by content and integrations via pixelated.config.json config management
+- Sitemap.xml Dynamically loaded and driven by content and integrations via pixelated.config.json config management
 - Style Guide
 - App-level loading & skeleton UI — canonical `SkeletonLoading` available at `src/app/loading.tsx` (consistent page-level loading state)
 
@@ -103,19 +113,30 @@ The repository defines shared standards for all customer sites and template apps
 - **Dynamic Navigation** - Header, footer, and navigation components
 - **SEO-friendly URLs** - Clean, readable URL structures
 
+### Component Groups
+- **Admin** - Auth, Billing, Component Usage, Deploy, Site Health, Sites
+- **Config** - Client, Server, Validators, Crypto
+- **Elements** - Accordion, CountUp, FAQ, Markdown, Menu (accordion, expando, simple), modal, recipe, services, service areas, Side Panel, Smart Image, Smart Media Utils, Smart Video, Tab, Table, Tiles
+- **Foundation** - 404, Cache Manager, CSS, Global Error, Image, INP Guardrail, Intersection Observer, LLMs, Loading, Manifest, Metadata, MicroInteractions, Proxy, Schemas (BlogPosting, Book, Breadcrumb, Event, FAQ, LocalBusiness, Podcast, Product, Recipe, Review, Services, WebPage, WebSite), Sitemap, Skeleton, Smart Error Boundary, Smart Fetch, Style Guide, URL Builder, Utility Functions, Visual Design Styles, WebMCP, Well Known (Humans, Security)
+- **Integrations** - AWS, Calendly, Cloudinary, COntentful (Alerts, Items, Review, Delivery, Management), Flickr, Gemini, Google (Fonts, API, Maps, Reviews, Analytics, Places, Search), Gravatar, Hubspot, Instagram, Lipsum / Lorem Ipsum, SocialCards, Spotify, Wikipedia, Wordpress, Yelp
+- **Pixelated** - NerdJoke, Pixelated Footer
+- **Shopping Cart** - Ebay, Paypal, Shopping Cart, Square, Stripe (stub), USPS
+- **Site Builder** - Config, Form, Page
+- S**tructure** - Business Footer, Callout, Carousel, Hero, Page Blocks (Title Header, Section, Section Header, Section Background, Grid Item, Flex Item, Link, Header, Main, Nav, HTML Block, Footer), Resume, Split Scroll, Timeline
+
 ### UI & Styling
-- **Pixelated Components Library** - Pre-built, reusable components for common UI elements
-- **General Components** - Accordion, Callout, Carousel, CountUp, FAQ Accordion, Hero, Markdown Display, Menus (accordion, expando, simple), Modal, Semantic (pagesection, pagesectionheader, pagetitleheader, pagegriditem, pageflexitem), sidepanel, SmartImage, SmartVideo, Split Scroll, Tab, Table, Tiles, Timeline
-- **Content Components** - Buzzword Bingo, Resume, Recipe, NerdJokes
-- **Integration Components** - Calendly, Cloudinary, Contentful, Flickr, Gemini, Google (reviews, analytics, maps, places, search), Gravatar, Hubspot, Instagram, LoremIpsum, Spotify, Wordpress, Yelp
-- **Shopping Cart Functionality** - Integrates with PayPal
-- **SiteBuilder** - Configuration Builder (SiteInfo, Routes, VisualDesign), Form Builder, Page Builder, 
 - **SCSS/Sass** support for advanced styling capabilities
 - **Responsive Design** - Mobile-first approach with flexible layouts
-- **Visual Design System** - Configurable design tokens (colors, fonts, spacing) via pixelated.config.json
+- **Visual Design System** - Configurable design tokens (colors, fonts, spacing) via pixelated.config.json, and automatically injected into layout.tsx page template
+- Global SCSS Files
+    - Global CSS
+    - Font Management SCSS
+    - Grid SCSS
+    - Visual Design SCSS
 
 ### SEO & Performance
-- **Meta Tags** - Automatic generation from route configuration
+- **Meta Tag Injection** - Automatic and Dynamic title, description, keyword generation from route configuration
+- **Preconnect, OG and Scial Metatags** dynamically generated and inserted into each page
 - **Schema Markup** - LocalBusiness and other structured data support
 - **Sitemap Generation** - Automatic XML sitemap creation via sitemap.xml
 - **Sitemap RSS Generation** - Automatic XML sitemap creation via rss.xml and corresponding rss.xsl
@@ -123,11 +144,42 @@ The repository defines shared standards for all customer sites and template apps
 - **Robots.txt** - Search engine crawling configuration
 - **Web App Manifest** - PWA-ready configuration via manifest.webmanifest
 - **LLMs.txt** - improve site readability / indexability for Large Language Models
+- **AI.txt** - improves discovery with LLMs and AI models
 - **WebMCP Integration** to assist LLM form avlidation and submission handling
 - **Performance Optimized** - Built-in Next.js optimizations
 - **Proxy Middleware** - Header injection for SEO and routing (x-path, x-origin, x-url)
-- **Automated Rich Schemas** - LocalBusiness, WebSite, Breadcrumb, Product, Services, BlogPosts, Podcast, FAQ, Review, Resume, Recipe
+- **Automated Rich Schemas** - Built into page templates and associated components - BlogPosts, Books, Breadcrumb, FAQ, LocalBusiness, Podcast, Product, Review, Resume, Recipe, Services, WebSite, 
 - **Well-Known Automation** automated txt pages such as humans.txt, security.txt
+
+## Developer Experience
+
+### Linting Rules
+- **class-name-kebab-case** - Enforces kebab-case values in JSX className attributes
+- **enforce-target-blank-rel** - Enforces rel="noopener noreferrer"
+- **file-name-kebab-case** - Enforces kebab-case file naming for source files
+- **no-debug-true** - Warns when debug = true appears in source files
+- **no-direct-fetch** - forces the use of SmartFetch
+- **no-duplicate-export-names** - Prevents duplicate exported identifiers barrel files
+- **no-generic-cta-text** - Warns when generic CTA copy like “click here”, “read more”, or “learn more” is used
+- **no-hardcoded-config-keys** - Prevents hardcoding Pixelated config keys in source
+- **no-low-information-copy** - identify and fix low information gain copy for SEO purposes
+- **no-process-env** - limits the use of environment variables
+- **no-raw-img** - forces the use of SmartImage
+- **np-single-use-helpers** - forces small local helper functions to be moved inline 
+- **no-stale-override** - Detects stale dependency overrides 
+- **no-temp-dependency** - Blocks expired security dependency versions in package-lock.json
+- **package-json-missing-dependency** - Detects imports that are not declared in package.json
+- **package-json-no-unused-dependency** - Detects declared dependencies that are not used in runtime source
+- **package-json-wrong-dependency-type** - Detects dependency type mismatches, ie devDependencies vs dependencies
+- **prop-types-inferprops** - forces the use of PropTypes and InferrProps for intellisense and typeahead
+- **require-contentful-image-webp** - Requires Contentful image URLs to include ?fm=webp
+- **required-faq** - Ensures an FAQ page exists and that it contains FAQ schema/FAQPage JSON-LD
+- **required-files** - errors if sitemap, sitemap.json, rss.xml, ai.txt, humans.txt, security.txt, global-error, loading, manifest, robots, not-found, and proxy are not present
+- **required-proptypes-jsdoc** - Requires JSDoc comments for components using propTypes
+- **required-schemas** - forces base schemas into layout template file
+- **require-section-ids** - forces section and pagesection elements to have ids
+- **strict-pronoun-resolution** - Warns on ambiguous pronouns in text to improve brand references
+- **validate-test-locations** - Enforces canonical test file locations under src/tests/ or src/stories/
 
 
 ## Adoption Checklist

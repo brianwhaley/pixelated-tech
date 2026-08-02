@@ -5,7 +5,7 @@ import tseslint from "typescript-eslint";
 import parser from "@typescript-eslint/parser";
 import jsonPlugin from "@eslint/json";
 import a11yPlugin from "eslint-plugin-jsx-a11y";
-import pixelatedPlugin from "@pixelated-tech/components/scripts/pixelated-eslint-plugin.js";
+import pixelatedPlugin from "../eslint-plugin/pixelated-eslint-plugin.js";
 
 /**
  * Base ESLint configuration shared by all apps in the monorepo

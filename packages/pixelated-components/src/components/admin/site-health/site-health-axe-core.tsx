@@ -61,10 +61,6 @@ export function SiteHealthAxeCore({ siteName }: SiteHealthAxeCoreType) {
 	}, []);
 
 
-	const getImpactIcon = (impact: string) => {
-		return getImpactIndicator(impact).icon;
-	};
-
 	const formatNodeInfo = (node: AxeNode): string => {
 		if (node.target && Array.isArray(node.target) && node.target.length > 0) {
 			// Return the CSS selector
@@ -193,7 +189,7 @@ export function SiteHealthAxeCore({ siteName }: SiteHealthAxeCoreType) {
 										.map((violation: AxeViolation) => (
 											<div key={violation.id} className="health-audit-item">
 												<span className="health-audit-icon">
-													{getImpactIcon(violation.impact)}
+													{getImpactIndicator(violation.impact).icon}
 												</span>
 												<div className="health-audit-content">
 													<span className="health-audit-title">

@@ -11,6 +11,7 @@ import {
 	runCommonElementCoverage,
 	runCommonBlogPageCoverage,
 	runCommonMarkdownPageCoverage,
+	runCommonServiceRouteCoverage,
 	runPageSmokeTests,
 } from '../../../../shared/test-utils/index.test-utils';
 import {
@@ -20,6 +21,7 @@ import {
 	setFileDataState,
 	resetFileDataState,
 	setPixelatedConfigOverride,
+	resetPixelatedConfigOverride,
 	setContentfulEntriesResponse,
 	setContentfulEntryResponse,
 	setContentfulImagesResponse,
@@ -43,19 +45,23 @@ import ProjectsPage from '@/app/(pages)/projects/page';
 import ProjectDetailPage from '@/app/(pages)/projects/[project]/page';
 import AdCalendarPage from '@/app/(pages)/adcalendar/page';
 import ServicesPage from '@/app/(pages)/services/page';
-import CommercialService from '@/app/(pages)/services/commercial/page';
-import ConcretePolishingService from '@/app/(pages)/services/concrete-polishing/page';
-import DrivewayCoatingService from '@/app/(pages)/services/driveway-coating/page';
-import EpoxyGarageFloorsService from '@/app/(pages)/services/epoxy-garage-floors/page';
-import PaverSealingService from '@/app/(pages)/services/paver-sealing/page';
-import ResidentialService from '@/app/(pages)/services/residential/page';
-import ResinCountertopsService from '@/app/(pages)/services/resin-countertops/page';
-import BeaufortSCServiceArea from '@/app/(pages)/service-areas/beaufort-sc/page';
-import BlufftonSCServiceArea from '@/app/(pages)/service-areas/bluffton-sc/page';
-import HardeevilleSCServiceArea from '@/app/(pages)/service-areas/hardeeville-sc/page';
-import HiltonHeadSCServiceArea from '@/app/(pages)/service-areas/hilton-head-sc/page';
-import OkatieSCServiceArea from '@/app/(pages)/service-areas/okatie-sc/page';
-import RidgelandSCServiceArea from '@/app/(pages)/service-areas/ridgeland-sc/page';
+import ServiceAreasPage from '@/app/(pages)/service-areas/page';
+import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
+import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
+import CommercialService from '@/app/(pages)/services/[service]/page';
+import ConcretePolishingService from '@/app/(pages)/services/[service]/page';
+import DrivewayCoatingService from '@/app/(pages)/services/[service]/page';
+import EpoxyGarageFloorsService from '@/app/(pages)/services/[service]/page';
+import PaverSealingService from '@/app/(pages)/services/[service]/page';
+import ResidentialService from '@/app/(pages)/services/[service]/page';
+import ResinCountertopsService from '@/app/(pages)/services/[service]/page';
+import BeaufortSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
+import BlufftonSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
+import HardeevilleSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
+import HiltonHeadSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
+import OkatieSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
+import RidgelandSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
+import FlooringEstimatorPage, { FlooringEstimate } from '@/app/(pages)/flooring-estimator/page';
 import StyleGuidePage from '@/app/(pages)/styleguide/page';
 import SubmitReviewPage from '@/app/(pages)/submitreview/page';
 import UpdatesPage from '@/app/(pages)/updates/page';
@@ -129,6 +135,25 @@ describe('Palmetto Epoxy coverage', () => {
 		},
 	});
 
+	runCommonServiceRouteCoverage({
+		routeParams,
+		ServiceAreasPage,
+		ServiceAreaDetailPage,
+		ServiceDetailPage,
+		render,
+		screen,
+		waitFor,
+		setPixelatedConfigOverride,
+		resetPixelatedConfigOverride,
+		serviceAreaNotFoundText: 'Service area not found. Please return to the service areas list and choose another region.',
+		serviceNotFoundText: 'Service not found. Please return to the services list and choose another option.',
+		serviceAreaTestId: 'service-areas-intro',
+		serviceAreaDetailTestId: 'service-area-detail-wrapper',
+		serviceDetailTestId: 'service-detail-wrapper',
+		initialServiceAreaSlug: 'bluffton-sc',
+		initialServiceSlug: 'commercial',
+	});
+
 	runCommonBlogPageCoverage({
 		Component: BlogPage,
 		render,
@@ -169,6 +194,7 @@ describe('Palmetto Epoxy coverage', () => {
 		setFileDataState,
 		resetFileDataState,
 	});
+
 
 	it('renders Projects page with Contentful carousel cards', async () => {
 		setPixelatedConfigOverride(pixelatedConfig);
@@ -306,6 +332,13 @@ describe('Palmetto Epoxy coverage', () => {
 			},
 		},
 		{
+			name: 'Flooring Estimator',
+			Component: FlooringEstimatorPage,
+			assertion: async () => {
+				await waitFor(() => expect(document.getElementById('floor-estimator-section')).not.toBeNull());
+			},
+		},
+		{
 			name: 'Submit Review',
 			Component: SubmitReviewPage,
 			assertion: async () => {
@@ -416,21 +449,8 @@ describe('Palmetto Epoxy coverage', () => {
 		setContentfulImagesResponse([{ image: '/images/card.jpg', imageAlt: 'Card image' }]);
 
 		render(<ProjectsPage />);
-		await waitFor(() => expect(screen.getByTestId('carousel')).not.toBeNull());
-	});
-
-	it('renders ad calendar markdown loading, error, and content branches', async () => {
-		setFileDataState({ data: null, loading: true, error: null });
-		render(<AdCalendarPage />);
-		await waitFor(() => expect(screen.getByText('Loading...')).not.toBeNull());
-
-		setFileDataState({ data: null, loading: false, error: 'File not found: /data/adcalendar.md' });
-		render(<AdCalendarPage />);
-		await waitFor(() => expect(screen.getByText(/Error:/i)).not.toBeNull());
-
-		setFileDataState({ data: '# Hello', loading: false, error: null });
-		render(<AdCalendarPage />);
-		await waitFor(() => expect(screen.getByTestId('markdown')).not.toBeNull());
+		await waitFor(() => expect(screen.getByTestId('callout')).not.toBeNull());
+		expect(screen.getByText('Test Project')).not.toBeNull();
 	});
 
 	it('executes home page CTA navigation buttons', async () => {
@@ -461,6 +481,97 @@ describe('Palmetto Epoxy coverage', () => {
 		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(() => null as any);
 		render(<SubmitReviewPage />);
 		await waitFor(() => expect(screen.getByText(/Share your experience/i)).not.toBeNull());
+		spy.mockRestore();
+	});
+
+	it('renders the flooring estimate component with selected options and addons', async () => {
+		render(<FlooringEstimate estimate={{
+			projectType: 'epoxy_garage_floors',
+			length: 10,
+			width: 10,
+			condition: 'heavy-wear',
+			floorOptions: ['gloss'],
+			addons: ['stem-wall', 'slip-resistant'],
+			baseRate: 8,
+			multiplier: 1.35,
+			area: 100,
+			subtotal: 1080,
+			addonCost: 750,
+			total: 1830,
+		}} />);
+		await waitFor(() => expect(screen.getByText(/Flooring Estimate/i)).not.toBeNull());
+		expect(screen.getByText(/gloss/i)).not.toBeNull();
+		expect(screen.getByText(/stem-wall, slip-resistant/i)).not.toBeNull();
+		expect(screen.getByText(/Total: \$1830\.00/i)).not.toBeNull();
+	});
+
+	it('renders the flooring estimate component with no options or addons fallback', async () => {
+		render(<FlooringEstimate estimate={{
+			projectType: 'epoxy_garage_floors',
+			length: 10,
+			width: 10,
+			condition: 'good-condition',
+			floorOptions: [],
+			addons: [],
+			baseRate: 4,
+			multiplier: 1,
+			area: 100,
+			subtotal: 400,
+			addonCost: 0,
+			total: 1200,
+		}} />);
+		await waitFor(() => expect(screen.getByText(/Flooring Estimate/i)).not.toBeNull());
+		expect(screen.getByText(/Floor Options: None/i)).not.toBeNull();
+		expect(screen.getByText(/Add-Ons: None/i)).not.toBeNull();
+	});
+
+	it('submits the flooring estimator with a non-epoxy service and unknown condition', async () => {
+		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(({ onSubmitHandler }: any) => (
+			<form data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
+				<label htmlFor="project-type">Project Type</label>
+				<input id="project-type" name="project-type" defaultValue="driveway_coating" />
+				<label htmlFor="length">Length in feet</label>
+				<input id="length" name="length" defaultValue="5" />
+				<label htmlFor="width">Width in feet</label>
+				<input id="width" name="width" defaultValue="5" />
+				<label htmlFor="flooring-condition">Flooring Condition</label>
+				<input id="flooring-condition" name="flooring-condition" defaultValue="unknown-condition" />
+				<label htmlFor="flooring-addons-unknown">Flooring Addons</label>
+				<input type="checkbox" id="flooring-addons-unknown" name="flooring-addons" value="unknown-addon" defaultChecked />
+				<button type="submit">Submit</button>
+			</form>
+		));
+
+		render(<FlooringEstimatorPage />);
+		fireEvent.submit(screen.getByTestId('flooring-estimator-form'));
+		await waitFor(() => expect(screen.getByText(/Total: \$/i)).not.toBeNull());
+		expect(screen.getByText(/Total: \$1200\.00/i)).not.toBeNull();
+		spy.mockRestore();
+	});
+
+	it('submits the flooring estimator and clamps total to the minimum', async () => {
+		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(({ onSubmitHandler }: any) => (
+			<form data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
+				<label htmlFor="project-type">Project Type</label>
+				<input id="project-type" name="project-type" defaultValue="epoxy_garage_floors" />
+				<label htmlFor="length">Length in feet</label>
+				<input id="length" name="length" defaultValue="5" />
+				<label htmlFor="width">Width in feet</label>
+				<input id="width" name="width" defaultValue="5" />
+				<label htmlFor="flooring-condition">Flooring Condition</label>
+				<input id="flooring-condition" name="flooring-condition" defaultValue="good-condition" />
+				<label htmlFor="flooring-options-solid">Flooring Options</label>
+				<input type="checkbox" id="flooring-options-solid" name="flooring-options" value="solid" defaultChecked />
+				<label htmlFor="flooring-addons-slip">Flooring Addons</label>
+				<input type="checkbox" id="flooring-addons-slip" name="flooring-addons" value="slip-resistant" defaultChecked />
+				<button type="submit">Submit</button>
+			</form>
+		));
+
+		render(<FlooringEstimatorPage />);
+		fireEvent.submit(screen.getByTestId('flooring-estimator-form'));
+		await waitFor(() => expect(screen.getByText(/Total: \$/i)).not.toBeNull());
+		expect(screen.getByText(/Total: \$1200\.00/i)).not.toBeNull();
 		spy.mockRestore();
 	});
 

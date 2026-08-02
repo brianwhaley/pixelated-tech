@@ -6,14 +6,14 @@ import { Services as ServicesList, ServiceDetail } from '../components/elements/
 const mockServices = [
 	{
 		name: 'Floor Coating',
-		description: 'Professional epoxy floor coating for residential and commercial spaces.',
+		description: ['Professional epoxy floor coating for residential and commercial spaces.'],
 		short_description: 'Protect and beautify concrete floors with long-lasting epoxy.',
 		image: '/images/floor-coating.jpg',
 		slug: 'floor-coating',
 	},
 	{
 		name: 'Garage Floor Repair',
-		description: 'Fast garage floor repair with concrete resurfacing and sealing.',
+		description: ['Fast garage floor repair with concrete resurfacing and sealing.'],
 		short_description: 'Restore cracked and worn garage floors with expert repair.',
 		image: '/images/garage-floor-repair.jpg',
 		slug: 'garage-floor-repair',
@@ -48,7 +48,7 @@ describe('Services components', () => {
 	});
 
 	it('uses the generated slug for service URLs even when url is provided', () => {
-		render(<ServicesList title="Our Work" intro="Choose a service" />, { config: { siteInfo: { services: [{ name: 'Floor Coating', description: 'Professional epoxy floor coating.', short_description: 'Protect floors with epoxy.', url: '/services/wrong-path', slug: 'floor-coating' }] } } });
+		render(<ServicesList title="Our Work" intro="Choose a service" />, { config: { siteInfo: { services: [{ name: 'Floor Coating', description: ['Professional epoxy floor coating.'], short_description: 'Protect floors with epoxy.', url: '/services/wrong-path', slug: 'floor-coating' }] } } });
 
 		expect(screen.getByRole('link', { name: /Floor Coating/i })).toHaveAttribute('href', '/services/floor-coating');
 	});

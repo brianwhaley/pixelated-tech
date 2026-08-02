@@ -15,7 +15,7 @@ export default function BuzzWordBingoPage() {
 			<br /><br />
 			<CalloutHeader title="Instructions : " />
 			<div>
-			According to <a href="https://en.wikipedia.org/wiki/Buzzword_bingo" target="_blank">Wikipedia</a> : 
+			According to <a href="https://en.wikipedia.org/wiki/Buzzword_bingo" target="_blank" rel="noopener noreferrer">Wikipedia</a> : 
 				<blockquote cite="https://en.wikipedia.org/wiki/Buzzword_bingo">
 					<p>
 						Buzzword bingo, also known as bullshit bingo, is a bingo-style game 

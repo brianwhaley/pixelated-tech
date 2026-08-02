@@ -48,6 +48,13 @@
 				"value" : "custom-request"
 			}
 		},{
+			"component" : "FormSectionHeader",
+			"props" : {
+				"title": "Form Example",
+				"text" : "This is an example of a form built with the Pixelated Components Form component. It includes various input types, validation, and a honeypot field for spam prevention.",
+				"className" : "form-section-header"
+			}
+		},{
 			"component" : "FormSelect",
 			"props" : {
 				"id" : "title",

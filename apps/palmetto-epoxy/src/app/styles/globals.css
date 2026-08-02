@@ -323,3 +323,21 @@ section[id$="-service-section"] > div:first-child {
         }
     }
 }
+
+#service-detail-wrapper {
+    img {
+        float: right;
+        aspect-ratio: 1 / 1;
+        width: 384px !important;
+        height: 384px !important;
+        border-radius: 20px;
+        margin: 0 0 20px 20px !important;
+    }
+    @media screen and (max-width: 480px) {
+        img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+        }
+    }
+}

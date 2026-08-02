@@ -190,7 +190,6 @@ describe('Simple Day Concierge coverage', () => {
 			} as any);
 			expect(result.request.headers.get('x-url')).toBe('https://example.com/test');
 		});
-
 		it('renders Home with missing service names and fallback index values', async () => {
 			setPixelatedConfigOverride({
 				siteInfo: {

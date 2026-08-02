@@ -93,7 +93,7 @@
     "services": [
       {
         "name": "Custom Website Design",
-        "description": "Mobile-first website design and development for local service businesses.",
+        "description": ["Mobile-first website design and development for local service businesses."],
         "short_description": "High-converting local website design for service brands.",
         "category": "Web Development",
         "serviceType": "Custom Website Design",
@@ -105,7 +105,7 @@
       },
       {
         "name": "Local SEO & Content",
-        "description": "Search engine optimization and local landing page content that targets service area customers.",
+        "description": ["Search engine optimization and local landing page content that targets service area customers."],
         "short_description": "Targeted local SEO and content packages for service areas.",
         "category": "Digital Marketing",
         "serviceType": "Local SEO & Content",
@@ -119,7 +119,7 @@
     "serviceAreas": [
       {
         "name": "Denville, NJ Service Area",
-        "description": "Serving Denville and the surrounding Morris County communities with comprehensive digital services.",
+        "description": ["Serving Denville and the surrounding Morris County communities with comprehensive digital services."],
         "short_description": "Local Denville digital marketing and website services.",
         "keywords": [
           "Denville service area",
@@ -132,7 +132,7 @@
       },
       {
         "name": "Northern New Jersey Service Area",
-        "description": "Focused service coverage for the broader Northern New Jersey market.",
+        "description": ["Focused service coverage for the broader Northern New Jersey market."],
         "short_description": "Regional market coverage across northern New Jersey.",
         "keywords": [
           "Northern New Jersey service area",

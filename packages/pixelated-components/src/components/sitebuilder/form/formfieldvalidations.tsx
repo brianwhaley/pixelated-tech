@@ -50,6 +50,13 @@ export function isOneRadioSelected (field: { name: string; }) {
 	return isValid;
 }
 
+export function isNumber (field: { value: string; }) {
+	const val = field.value?.trim();
+	if (!val) return false; // Catches empty inputs and browser invalid states
+	const num = Number(val);
+	return !isNaN(num);
+}
+
 export function isValidUSZipCode (field: { value: string; }) {
 	const regexStr = /^\d{5}(-\d{4})?$/;
 	const regex = new RegExp(regexStr);

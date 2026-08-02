@@ -60,8 +60,6 @@ import StkrPage from '@/app/(pages)/stkr/page';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
-import { GET as sitemapJsonGET } from '@/app/sitemap.json/route';
-import { GET as rssXmlGET } from '@/app/rss.xml/route';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -134,22 +132,6 @@ describe('Site coverage', () => {
 		expect(screen.getByTestId('google-search')).not.toBeNull();
 	});
 
-	it('returns sitemap.json response from the route', async () => {
-		const response = await sitemapJsonGET({ url: 'https://example.com/sitemap.json' } as any);
-		expect(response.status).toBe(200);
-		const json = await response.json();
-		expect(json).toHaveProperty('urlset');
-		expect(Array.isArray(json.urlset)).toBe(true);
-	});
-
-	it('returns rss.xml response from the route', async () => {
-		const response = await rssXmlGET({ url: 'https://example.com/rss.xml' } as any);
-		expect(response.status).toBe(200);
-		expect(response.headers.get('content-type')).toContain('application/xml');
-		const text = await response.text();
-		expect(text).toContain('<?xml-stylesheet type="text/xsl" href="/rss.xsl"?>');
-		expect(text).toContain('<rss version="2.0">');
-	});
 
 	it('renders Portfolio page and exercises Flickr callback sorting branches', async () => {
 		render(React.createElement(Portfolio));

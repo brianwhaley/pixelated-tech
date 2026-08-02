@@ -48,26 +48,6 @@ generateHumansTxt.propTypes = {
 	maxRoutes: PropTypes.number,
 };
 export type GenerateHumansTxtType = InferProps<typeof generateHumansTxt.propTypes>;
-function usesPixelatedComponents(pkg: any) {
-	return !!(
-		pkg.dependencies?.['@pixelated-tech/components'] ||
-		pkg.devDependencies?.['@pixelated-tech/components'] ||
-		pkg.peerDependencies?.['@pixelated-tech/components'] ||
-		pkg.optionalDependencies?.['@pixelated-tech/components']
-	);
-}
-
-function getPackageJsonDependencyVersion(pkg: any) {
-	return (
-		pkg.dependencies?.['@pixelated-tech/components'] ||
-		pkg.devDependencies?.['@pixelated-tech/components'] ||
-		pkg.peerDependencies?.['@pixelated-tech/components'] ||
-		pkg.optionalDependencies?.['@pixelated-tech/components'] ||
-		null
-	);
-}
-
-
 export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};

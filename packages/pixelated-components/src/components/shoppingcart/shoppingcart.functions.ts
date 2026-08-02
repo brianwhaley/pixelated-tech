@@ -71,6 +71,7 @@ export type ShippingInfoType = AddressType & {
     discountCode?: string,
     originPostalCode?: string,
     originCountry?: string,
+    [key: string]: any,
 }
 
 export type DiscountCodeType = {
@@ -304,16 +305,6 @@ export function setShippingInfo(shippingFormData: ShippingInfoType) {
 }
 
 
-function normalizeWeightToPounds(weight: number, unit?: string): number {
-	if (!weight || typeof weight !== 'number' || weight <= 0) return 0;
-	const normalizedUnit = String(unit || 'lb').trim().toLowerCase();
-	if (normalizedUnit === 'lb' || normalizedUnit === 'lbs') return weight;
-	if (normalizedUnit === 'oz' || normalizedUnit === 'ounce' || normalizedUnit === 'ounces') return weight / 16;
-	if (normalizedUnit === 'g' || normalizedUnit === 'gram' || normalizedUnit === 'grams') return weight * 0.00220462;
-	return weight;
-}
-
-
 export function getCartShippingWeight(cart: CartItemType[]) {
 	let totalWeight = 0;
 	for (const item of cart) {
@@ -323,7 +314,16 @@ export function getCartShippingWeight(cart: CartItemType[]) {
 		const quantity = Number(item.itemQuantity ?? 1);
 		if (!isShippable || weight <= 0 || quantity <= 0) continue;
 		const unit = item.itemWeightUnit;
-		totalWeight += normalizeWeightToPounds(weight, unit) * quantity;
+		const normalizedUnit = String(unit || 'lb').trim().toLowerCase();
+		const weightInPounds =
+			normalizedUnit === 'lb' || normalizedUnit === 'lbs'
+				? weight
+				: normalizedUnit === 'oz' || normalizedUnit === 'ounce' || normalizedUnit === 'ounces'
+					? weight / 16
+					: normalizedUnit === 'g' || normalizedUnit === 'gram' || normalizedUnit === 'grams'
+						? weight * 0.00220462
+						: weight;
+		totalWeight += weightInPounds * quantity;
 	}
 	return formatAsHundredths(totalWeight);
 }

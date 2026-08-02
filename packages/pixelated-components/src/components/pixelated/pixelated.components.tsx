@@ -32,15 +32,16 @@ function getPixelatedFooterLink(pathname: string): string {
 }
 
 /**
- * PixelatedFooter — Simple footer component for Pixelated sites. 
- * @param {any} [props] - No props are accepted by PixelatedFooter.
+ * PixelatedFooter — Simple footer component for Pixelated sites.
+ * @param {any} [props] - Optional pathname may be passed during SSR hydration.
  */
-PixelatedFooter.propTypes = { /** no props */ };
+PixelatedFooter.propTypes = {
+	pathname: PropTypes.string,
+};
 export type PixelatedFooterType = InferProps<typeof PixelatedFooter.propTypes>;
 export function PixelatedFooter (props: PixelatedFooterType) {
-	const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+	const pathname = props.pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
 	const href = getPixelatedFooterLink(pathname);
-
 	return (
 		<>
 			<p className="footer-text">Designed and developed by 

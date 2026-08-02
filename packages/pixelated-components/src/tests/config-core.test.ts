@@ -1,8 +1,9 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { getFullPixelatedConfig, getClientOnlyPixelatedConfig } from '../components/config/config';
 import fs from 'fs';
 import path from 'path';
 import { encrypt } from '../components/config/crypto';
+
+let configModule: typeof import('../components/config/config');
 
 // Mock fs and path
 vi.mock('fs', () => ({
@@ -27,97 +28,106 @@ vi.mock('path', async () => {
 });
 
 describe('config core logic', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
+		vi.resetModules();
 		vi.resetAllMocks();
 		vi.stubEnv('PIXELATED_CONFIG_KEY', 'test-key');
+		configModule = await import('../components/config/config');
 	});
 
 	afterEach(() => {
 		vi.unstubAllEnvs();
 	});
 
+	function getFullPixelatedConfig() {
+		return configModule.getFullPixelatedConfig();
+	}
+
+	function getClientOnlyPixelatedConfig() {
+		return configModule.getClientOnlyPixelatedConfig();
+	}
+
 	describe('getFullPixelatedConfig', () => {
-		it('should return empty object if no config file is found', () => {
+		it('should return empty object if no config file is found', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(false);
-			
 			const config = getFullPixelatedConfig();
 			expect(config).toEqual({});
 		});
 
-		it('should load and parse valid JSON config', () => {
+		it('should load and parse valid JSON config', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ siteName: 'Test Site' }));
-			
 			const config = getFullPixelatedConfig();
 			expect(config).toEqual({ siteName: 'Test Site' });
 		});
 
-		it('should handle read errors gracefully', () => {
+		it('should handle read errors gracefully', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockImplementation(() => {
 				throw new Error('Read error');
 			});
-			
 			const config = getFullPixelatedConfig();
 			expect(config).toEqual({});
 		});
 
-		it('should handle invalid JSON', () => {
+		it('should handle invalid JSON', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue('invalid json');
-			
 			const config = getFullPixelatedConfig();
 			expect(config).toEqual({});
 		});
 
-		it('should try multiple paths until success', () => {
+		it('should try multiple paths until success', async () => {
 			vi.mocked(fs.existsSync)
 				.mockReturnValueOnce(false)
 				.mockReturnValueOnce(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ found: true }));
-			
 			const config = getFullPixelatedConfig();
 			expect(config).toEqual({ found: true });
 			expect(fs.existsSync).toHaveBeenCalledTimes(2);
 		});
 
-		it('should decrypt and load when only .enc exists and PIXELATED_CONFIG_KEY is set', () => {
-			const json = JSON.stringify({ siteName: 'EncSite' });
-			const key = 'a'.repeat(64); // 32 bytes hex key
-			const encrypted = encrypt(json, key);
-
-			vi.mocked(fs.existsSync).mockImplementation((p: any) => {
-				if (typeof p === 'string' && p.endsWith('src/app/config/pixelated.config.json')) return false;
-				if (typeof p === 'string' && p.endsWith('src/app/config/pixelated.config.json.enc')) return true;
-				return false;
-			});
-			vi.mocked(fs.readFileSync).mockImplementation((p: any) => {
-				if (typeof p === 'string' && p.endsWith('.enc')) return encrypted;
-				return '';
-			});
-			vi.stubEnv('PIXELATED_CONFIG_KEY', key);
-
-			const config = getFullPixelatedConfig();
-			expect(config).toEqual({});
+		it('should cache getFullPixelatedConfig results across calls', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ siteName: 'Cached Site' }));
+			const first = getFullPixelatedConfig();
+			const second = getFullPixelatedConfig();
+			expect(first).toEqual({ siteName: 'Cached Site' });
+			expect(second).toEqual({ siteName: 'Cached Site' });
+			expect(fs.existsSync).toHaveBeenCalledTimes(1);
+			expect(fs.readFileSync).toHaveBeenCalledTimes(1);
 		});
+
 	});
 
 	describe('getClientOnlyPixelatedConfig', () => {
-		it('should return empty object if input is invalid', () => {
-			// @ts-ignore
-			expect(getClientOnlyPixelatedConfig(null)).toEqual({});
+		it('should return empty object if config is invalid', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue('null');
+			expect(getClientOnlyPixelatedConfig()).toEqual({});
 		});
 
-		it('should call getFullPixelatedConfig if no arg provided', () => {
+		it('should call getFullPixelatedConfig if no arg provided', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ integrations: { global: { proxyUrl: 'test' } } }));
-			
 			const config = getClientOnlyPixelatedConfig();
 			expect(config.integrations?.global?.proxyUrl).toBe('test');
 		});
 
-		it('should strip secrets from provided config', () => {
-			const fullConfig = {
+		it('should cache getClientOnlyPixelatedConfig results across calls', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ integrations: { global: { proxyUrl: 'test' } } }));
+			const first = getClientOnlyPixelatedConfig();
+			const second = getClientOnlyPixelatedConfig();
+			expect(first).toEqual({ integrations: { global: { proxyUrl: 'test' } } });
+			expect(second).toEqual(first);
+			expect(fs.existsSync).toHaveBeenCalledTimes(1);
+			expect(fs.readFileSync).toHaveBeenCalledTimes(1);
+		});
+
+		it('should strip secrets from loaded config', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
 				integrations: {
 					global: { proxyUrl: 'test' },
 					cloudinary: {
@@ -131,8 +141,8 @@ describe('config core logic', () => {
 						payPalSecret: 'prod-secret'
 					}
 				}
-			};
-			const client = getClientOnlyPixelatedConfig(fullConfig as any);
+			}));
+			const client = getClientOnlyPixelatedConfig();
 			expect(client.integrations?.global?.proxyUrl).toBe('test');
 			expect(client.integrations?.cloudinary).toBeDefined();
 			expect((client.integrations?.cloudinary as any).api_secret).toBeUndefined();

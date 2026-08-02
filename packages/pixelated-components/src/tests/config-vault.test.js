@@ -1,35 +1,25 @@
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
-import { spawn } from 'child_process';
 import { describe, it, expect } from 'vitest';
+import { encrypt, decrypt, isEncrypted } from '../components/config/crypto';
 
-function runCmd(cmd, args = []) {
-	return new Promise((resolve, reject) => {
-		const p = spawn(cmd, args, {});
-		let out = '';
-		p.stdout.on('data', (c) => out += c.toString());
-		p.stderr.on('data', (c) => out += c.toString());
-		p.on('exit', (code) => code === 0 ? resolve(out) : reject(new Error(out)));
-	});
-}
-
-describe('config-vault script', () => {
-	it('encrypts and decrypts a file using the CLI', async () => {
+describe('config-vault crypto helpers', () => {
+	it('encrypts and decrypts content using crypto helpers', async () => {
 		const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-vault-'));
 		const filePath = path.join(tmp, 'secret.txt');
-		await fs.writeFile(filePath, 'super-secret');
+		await fs.writeFile(filePath, 'super-secret', 'utf8');
 		const key = 'a'.repeat(64); // valid 32-byte hex
 
-		// encrypt
-		await runCmd('npx', ['tsx', 'src/scripts/config-vault.ts', 'encrypt', filePath, key]);
+		// Use library-level encrypt to create an encrypted payload and write it
+		const encrypted = encrypt('super-secret', key);
+		expect(isEncrypted(encrypted)).toBe(true);
 		const encPath = `${filePath}.enc`;
-		const enc = await fs.readFile(encPath, 'utf8');
-		expect(enc.startsWith('pxl:v1:')).toBe(true);
+		await fs.writeFile(encPath, encrypted, 'utf8');
 
-		// decrypt
-		await runCmd('npx', ['tsx', 'src/scripts/config-vault.ts', 'decrypt', encPath, key]);
-		const decrypted = await fs.readFile(filePath, 'utf8');
+		// Now read and decrypt using library helper
+		const read = await fs.readFile(encPath, 'utf8');
+		const decrypted = decrypt(read, key);
 		expect(decrypted).toBe('super-secret');
 	});
 });

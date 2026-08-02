@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { Carousel, usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries, Loading, contentfulValueToSlug } from "@pixelated-tech/components";
+// import { Carousel } from "@pixelated-tech/components";
+import { usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries, Loading, contentfulValueToSlug } from "@pixelated-tech/components";
 import type { CarouselCardType } from "@pixelated-tech/components";
 import { PageSection } from "@pixelated-tech/components";
+import { Callout } from "@pixelated-tech/components";
 
 // const imageOrigin = "https://images.palmetto-epoxy.com";
 
@@ -58,10 +60,23 @@ export default function ProjectsPage() {
 			<CalloutLibrary.PageTitle title="Projects" />
 			
 			<PageSection columns={1} className="" id="projects-section">
-				<Carousel 
+				{carouselCards.map((card, index) => (
+					<Callout
+						key={index}
+						variant='boxed grid'
+						url={card.link}
+						title={card.headerText}
+						img={card.image}
+						imgAlt={card.imageAlt} 
+						content={card.bodyText}
+						layout='horizontal' 
+						imgShape='square'
+					/>
+				))}
+				{ /* <Carousel 
 					cards={carouselCards} 
 					draggable={false} 
-					imgFit='contain' />
+					imgFit='contain' /> */ }
 			</PageSection>
             
 			<PageSection columns={1} className="section-bluechip" id="contact-section">

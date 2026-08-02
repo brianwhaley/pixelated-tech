@@ -82,8 +82,6 @@ export const resetGoogleReviewsResponse = () => {
 let contentfulEntriesResponse: any = { items: [], includes: { Asset: [] } };
 let contentfulEntryResponse: any = null;
 let contentfulImagesResponse: any[] = [];
-let buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
-
 export const setContentfulEntriesResponse = (response: any) => {
 	contentfulEntriesResponse = response;
 };
@@ -94,22 +92,13 @@ export const setContentfulImagesResponse = (response: any[]) => {
 	contentfulImagesResponse = response;
 };
 export const setBuildEventSchema = (fn: (event: any) => any) => {
-	buildEventSchemaImpl = fn;
+	(defaultMocks as any).buildEventSchema = fn;
 };
 export const resetContentfulMocks = () => {
 	contentfulEntriesResponse = { items: [], includes: { Asset: [] } };
 	contentfulEntryResponse = null;
 	contentfulImagesResponse = [];
-	buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
-};
-
-const readPublicData = (filePath: string): string | null => {
-	const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
-	const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
-	if (!fs.existsSync(resolvedPath)) {
-		return null;
-	}
-	return fs.readFileSync(resolvedPath, 'utf-8');
+	(defaultMocks as any).buildEventSchema = (event: any) => ({ title: event.fields.title });
 };
 
 const mockComponent = (name: string, testId?: string) => ({ children, title, site, posts, markdowndata, faqsData, className, id, style }: any) => {
@@ -132,14 +121,6 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, sit
 	);
 };
 
-const contentfulValueToSlug = ({ value }: any) =>
-	encode(
-		String(value ?? '')
-			.trim()
-			.toLowerCase()
-			.replace(/\s+/g, '-'),
-	);
-
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
@@ -147,11 +128,19 @@ const defaultMocks: Record<string, any> = {
 		if (fileDataState) {
 			return fileDataState;
 		}
-		const data = readPublicData(filePath);
+		const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+		const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
+		if (!fs.existsSync(resolvedPath)) {
+			return {
+				data: null,
+				loading: false,
+				error: `File not found: ${filePath}`,
+			};
+		}
 		return {
-			data,
+			data: fs.readFileSync(resolvedPath, 'utf-8'),
 			loading: false,
-			error: data === null ? `File not found: ${filePath}` : null,
+			error: null,
 		};
 	},
 	getCachedWordPressItems: async () => mockState.wordpressPosts,
@@ -178,7 +167,7 @@ const defaultMocks: Record<string, any> = {
 	getContentfulEntriesByType: async () => contentfulEntriesResponse,
 	getContentfulEntryByField: async () => contentfulEntryResponse,
 	getContentfulImagesFromEntries: async () => contentfulImagesResponse,
-	buildEventSchema: (event: any) => buildEventSchemaImpl(event),
+	buildEventSchema: (event: any) => ({ title: event.fields.title }),
 	getGravatarProfile: async () => null,
 	ToggleLoading: () => null, GoogleFonts: () => null,
 	MicroInteractions: () => null,
@@ -208,7 +197,13 @@ const defaultMocks: Record<string, any> = {
 	PageGridItem: mockComponent('PageGridItem', 'page-grid-item'),
 	PageFlexItem: mockComponent('PageFlexItem', 'page-flex-item'),
 	Callout: mockComponent('Callout', 'callout'),
-	contentfulValueToSlug,
+	contentfulValueToSlug: ({ value }: any) =>
+		encode(
+			String(value ?? '')
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-'),
+		),
 	capitalizeWords: (value: string) => String(value ?? '')
 		.trim()
 		.replace(/[-_]+/g, ' ')

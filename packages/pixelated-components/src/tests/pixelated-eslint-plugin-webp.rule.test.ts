@@ -1,5 +1,5 @@
 const { RuleTester } = await import('eslint');
-const mod = await import('../scripts/pixelated-eslint-plugin.js');
+const mod = await import('../../../../shared/eslint-plugin/pixelated-eslint-plugin.js');
 const rule = mod.default.rules['require-contentful-image-webp'];
 
 const tester = new RuleTester({

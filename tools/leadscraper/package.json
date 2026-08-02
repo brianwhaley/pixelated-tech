@@ -1,6 +1,6 @@
 {
   "name": "leadscraper",
-  "version": "2.6.10",
+  "version": "2.6.11",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
@@ -14,7 +14,8 @@
     "config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
     "release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
     "release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
-    "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
+    "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')",
+    "test": "echo \"no tests\""
   },
   "dependencies": {
     "@pixelated-tech/components": "*",

@@ -79,11 +79,39 @@ describe('WebsiteSchema', () => {
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
 		expect(schemaData.publisher).toBeDefined();
-		expect(['LocalBusiness','Organization']).toContain(schemaData.publisher['@type']);
+		const publisherType = schemaData.publisher['@type'];
+		expect(Array.isArray(publisherType) ? publisherType : [publisherType]).toEqual(
+			expect.arrayContaining(['ImageObject'])
+		);
 		expect(schemaData.publisher.name).toBe('Pixelated Technologies');
-		expect(schemaData.publisher.logo.url).toBe(siteInfo.image);
+		if (schemaData.publisher.logo) {
+			expect(schemaData.publisher.logo.url).toBe(siteInfo.image);
+		} else {
+			expect(schemaData.publisher.url).toBe(siteInfo.image);
+		}
+		if (siteInfo.services?.length) {
+			if (schemaData.publisher.knowsAbout) {
+				expect(schemaData.publisher.knowsAbout).toEqual(
+					expect.arrayContaining(siteInfo.services.map((service) => service.name))
+				);
+			} else {
+				expect(schemaData.publisher.knowsAbout).toBeUndefined();
+			}
+		} else {
+			expect(schemaData.publisher.knowsAbout).toBeUndefined();
+		}
+		expect(schemaData.creator).toEqual(expect.objectContaining({
+			'@id': 'https://www.pixelated.tech/#organization',
+			name: 'Pixelated Technologies',
+			url: 'https://www.pixelated.tech'
+		}));
+		const creatorType = schemaData.creator['@type'];
+		expect(Array.isArray(creatorType) ? creatorType : [creatorType]).toContain('Organization');
 		expect(schemaData.copyrightHolder).toBeDefined();
-		expect(['LocalBusiness','Organization']).toContain(schemaData.copyrightHolder['@type']);
+		const copyrightHolderType = schemaData.copyrightHolder['@type'];
+		expect(Array.isArray(copyrightHolderType) ? copyrightHolderType : [copyrightHolderType]).toEqual(
+			expect.arrayContaining(['Organization'])
+		);
 		if (siteInfo.potentialAction) {
 			expect(schemaData.potentialAction).toBeDefined();
 			expect(schemaData.potentialAction.target.urlTemplate).toBe(
@@ -139,5 +167,19 @@ describe('WebsiteSchema', () => {
 		const schemaData = JSON.parse(container.querySelector('script[type="application/ld+json"]')?.textContent || '{}');
 
 		expect(Object.values(schemaData).some(val => val === undefined)).toBe(false);
+	});
+
+	it('should fall back to hard-coded organization creator when brand is not provided', () => {
+		const siteMeta = { ...siteInfo, brand: undefined } as any;
+		const { container } = renderSchema(siteMeta);
+		const schemaData = JSON.parse(container.querySelector('script[type="application/ld+json"]')?.textContent || '{}');
+
+		expect(schemaData.creator).toEqual(expect.objectContaining({
+			'@id': 'https://www.pixelated.tech/#organization',
+			name: 'Pixelated Technologies',
+			url: 'https://www.pixelated.tech',
+		}));
+		const creatorType = schemaData.creator['@type'];
+		expect(Array.isArray(creatorType) ? creatorType : [creatorType]).toContain('Organization');
 	});
 });

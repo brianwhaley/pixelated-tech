@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { PageMetaTags, PixelatedServerConfigProvider } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { SchemaWebPage } from "@pixelated-tech/components/server";
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { VisualDesignStyles, BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import LayoutClient from "@/app/elements/layoutclient";
 import Header from "@/app/elements/header";
@@ -19,10 +20,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<head>
 					<PixelatedServerConfigProvider>
 						<PageMetaTags />
+						<SchemaWebPage />
 						<BreadcrumbListSchema />
 						<WebsiteSchema />
 						<LocalBusinessSchema />
-						<ServicesSchema />
 						<VisualDesignStyles />
 					</PixelatedServerConfigProvider>
 				</head>

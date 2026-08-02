@@ -4,13 +4,14 @@ import React from "react";
 import { PageSection, PageTitleHeader, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function TermsPage() {
-	const siteInfo = usePixelatedConfig()?.siteInfo ?? {};
-	const legalEntityName = siteInfo.name ?? 'Simple Day Concierge';
-	const primaryEmail = siteInfo.email ?? 'info@simpledayconcierge.com';
-	const corporateAddress = siteInfo.address
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const legalEntityName = siteInfo?.name ?? 'Simple Day Concierge';
+	const primaryEmail = siteInfo?.email ?? 'info@simpledayconcierge.com';
+	const corporateAddress = siteInfo?.address
 		? `${siteInfo.address.streetAddress}, ${siteInfo.address.addressLocality}, ${siteInfo.address.addressRegion} ${siteInfo.address.postalCode}`
 		: 'Address not available';
-	const legalGoverningState = siteInfo.address?.addressRegion ?? 'State not available';
+	const legalGoverningState = siteInfo?.address?.addressRegion ?? 'State not available';
 
 	return (
 		<>

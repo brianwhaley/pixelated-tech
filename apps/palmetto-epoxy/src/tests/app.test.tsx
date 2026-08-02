@@ -84,6 +84,13 @@ describe('Palmetto Epoxy app coverage', () => {
 		expect(findReactElementByTypeName(content, 'PageMetaTags')).toBe(true);
 	});
 
+	it('renders root layout when project slug decoding fails and falls back gracefully', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/projects/%E0', 'x-origin': 'https://example.com' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		const content = root.props?.children ?? root;
+		expect(findReactElementByTypeName(content, 'PageMetaTags')).toBe(true);
+	});
+
 	it('renders root layout with x-url fallback metadata when origin is missing', async () => {
 		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/contact', 'x-url': 'https://example.com/contact' }));
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
@@ -176,6 +183,33 @@ describe('Palmetto Epoxy app coverage', () => {
 	it('renders root layout fallback metadata when Contentful lookup throws', async () => {
 		vi.spyOn(components, 'getContentfulEntriesByType').mockRejectedValueOnce(new Error('Contentful failure'));
 		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/projects/test-project', 'x-origin': 'https://example.com' }));
+		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+		const content = root.props?.children ?? root;
+		expect(findReactElementByTypeName(content, 'PageMetaTags')).toBe(true);
+	});
+
+	it('renders root layout for a project route with empty decoded slug and fallback metadata', async () => {
+		setContentfulEntriesResponse({
+			items: [
+				{
+					sys: { contentType: { sys: { id: 'carouselCard' } } },
+					fields: {
+						title: '',
+						description: '',
+						keywords: '',
+					},
+				},
+			],
+			includes: { Asset: [] },
+		});
+		setContentfulEntryResponse({
+			fields: {
+				title: '',
+				description: '',
+				keywords: '',
+			},
+		});
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/projects/%20', 'x-origin': 'https://example.com' }));
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
 		const content = root.props?.children ?? root;
 		expect(findReactElementByTypeName(content, 'PageMetaTags')).toBe(true);

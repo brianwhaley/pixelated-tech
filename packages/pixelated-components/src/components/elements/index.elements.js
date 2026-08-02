@@ -1,6 +1,7 @@
 export * from './accordion';
 export * from './buzzwordbingo';
 export * from './countup';
+export * from './calendar';
 export * from './faq';
 export * from './markdown';
 export * from './menu-accordion';

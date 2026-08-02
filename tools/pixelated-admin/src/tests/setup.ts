@@ -39,16 +39,25 @@ vi.mock('@pixelated-tech/components/server', () => ({
 	}),
 }));
 
-vi.mock('@pixelated-tech/components', () => ({
-	server: {
-		getFullPixelatedConfig: () => ({
-			integrations: {
-				nextAuth: { secret: TEST_CONFIG.nextAuth.secret, url: TEST_CONFIG.nextAuth.url },
-				google: { client_id: (TEST_CONFIG.integrations as any).google.client_id, client_secret: (TEST_CONFIG.integrations as any).google.client_secret },
-			}
-		}),
-	},
-}));
+vi.mock('@pixelated-tech/components', async (importOriginal) => {
+	const actual = await importOriginal();
+	return {
+		__esModule: true,
+		...actual,
+		server: {
+			...actual.server,
+			getFullPixelatedConfig: () => ({
+				integrations: {
+					nextAuth: { secret: TEST_CONFIG.nextAuth.secret, url: TEST_CONFIG.nextAuth.url },
+					google: { client_id: (TEST_CONFIG.integrations as any).google.client_id, client_secret: (TEST_CONFIG.integrations as any).google.client_secret },
+				},
+			}),
+		},
+		PageSection: (props: any) => props.children,
+		Loading: () => 'Loading',
+		usePixelatedConfig: () => ({ siteInfo: { title: 'Test' }, routes: [] }),
+	};
+});
 
 // Provide a minimal adminserver integration mock so tests that import it can spy on
 // `performAxeCoreAnalysis` without pulling in optional heavy modules from the real package.

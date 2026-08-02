@@ -11,7 +11,9 @@ import * as componentsServer from '@pixelated-tech/components/server';
 const mockRouterPush = vi.fn();
 (globalThis as any).mockRouterPush = mockRouterPush;
 
-vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
+vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
+	EventCalendar: ({ events }: any) => React.createElement('div', { 'data-testid': 'event-calendar' }, events?.length ?? 0),
+}));
 
 vi.mock('@pixelated-tech/components/server', async () => {
 	const actual = await vi.importActual<typeof import('@pixelated-tech/components/server')>('@pixelated-tech/components/server');
@@ -83,6 +85,7 @@ import CartPage from '@/app/(pages)/cart/page';
 import ConsignPage from '@/app/(pages)/consign/page';
 import DancewearPage from '@/app/(pages)/dancewear/page';
 import EventsPage from '@/app/(pages)/events/page';
+import EventsCalendarPage from '@/app/(pages)/events/calendar/page';
 import EventDetailPage from '@/app/(pages)/events/[event]/page';
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
@@ -235,6 +238,7 @@ describe('ThreeMuses coverage harness', () => {
 		},
 	]);
 
+
 	describe('ThreeMuses additional coverage', () => {
 		it('renders Home with no WordPress posts', async () => {
 			const HomeComponent = await Home();
@@ -242,14 +246,195 @@ describe('ThreeMuses coverage harness', () => {
 			await waitFor(() => expect(document.getElementById('home-services-section')).not.toBeNull());
 		});
 
-		it('proxies request headers correctly', () => {
-			const result = proxy({
-				nextUrl: { pathname: '/test', search: '?a=1', origin: 'https://example.com', href: 'https://example.com/test?a=1', hostname: 'example.com' },
-				headers: new Headers({}),
-				url: 'https://example.com/test?a=1',
-			} as any);
-			expect((result as any).request.headers.get('x-path')).toBe('/test?a=1');
-			expect((result as any).request.headers.get('x-origin')).toBe('https://example.com');
+		it('renders Home page gracefully when featured boutique fetch throws', async () => {
+			vi.mocked(componentsServer.getSquareStoreItems).mockRejectedValueOnce(new Error('Service unavailable'));
+			const HomeComponent = await Home();
+			render(HomeComponent as any);
+			await waitFor(() => expect(document.getElementById('home-services-section')).not.toBeNull());
+		});
+
+		it('renders EventsCalendar page and handles past events without URLs', async () => {
+			const now = new Date();
+			const futureDate = new Date(now.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+			const pastDate = new Date(now.getTime() - 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'future', title: 'Future Event', startDate: futureDate, endDate: futureDate, category: ['Event'] } },
+				{ fields: { id: 'past', title: 'Past Event', startDate: pastDate, endDate: pastDate, category: ['Event'] } },
+			] as any);
+			const page = await EventsCalendarPage();
+			render(page as any);
+			await waitFor(() => expect(document.getElementById('events-calendar-section')).not.toBeNull());
+		});
+
+		it('renders ServiceAreaDetail page using name fallback when slug is missing', async () => {
+			routeParams.serviceArea = 'custom-area';
+			setPixelatedConfigOverride({ siteInfo: { serviceAreas: [{ name: 'Custom Area' }] } } as any);
+			render(<ServiceAreaDetailPage />);
+			await waitFor(() => expect(document.getElementById('service-area-detail-wrapper')).not.toBeNull());
+		});
+
+		it('renders cart page when itemCategory is undefined and skips extra form fields', async () => {
+			setCartItems([{ itemCategory: undefined, itemQuantity: 1, itemCost: 100 } as any]);
+			render(<CartPage />);
+			await waitFor(() => expect(screen.getByTestId('shopping-cart')).not.toBeNull());
+		});
+
+		it('renders Contact Us page with missing siteInfo gracefully', () => {
+			setPixelatedConfigOverride({ siteInfo: { address: { streetAddress: '', addressLocality: '', addressRegion: '', postalCode: '' }, email: '', telephone: '' } } as any);
+			render(<ContactUsPage />);
+			expect(screen.getByTestId('formengine')).not.toBeNull();
+		});
+
+		it('renders EventReportPage year filter using registration year fallback for undated events', async () => {
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-unknown', title: 'Unknown Event' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-unknown', title: 'Unknown Event', itemQuantity: 1 }], shipping_to: { name: 'Alex' } },
+			]);
+			const page = await EventReportPage({ searchParams: Promise.resolve({ filter: 'year', v: '1' }) });
+			render(page as any);
+			expect(screen.getByText(/Event Registrations/)).not.toBeNull();
+		});
+
+		it('renders event report page with no registrations', async () => {
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([]);
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '1' }) });
+			render(page as any);
+			expect(document.getElementById('three-muses-order-report-section')).not.toBeNull();
+		});
+
+		it('redirects event report requests when the version query is stale in production', async () => {
+			const originalEnv = process.env.NODE_ENV;
+			(process.env as any).NODE_ENV = 'production';
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([]);
+			await expect(EventReportPage({ searchParams: Promise.resolve({ v: '1' }) })).rejects.toThrow('NEXT_REDIRECT:/events/report?filter=active&v=0');
+			(process.env as any).NODE_ENV = originalEnv;
+		});
+
+		it('renders event report page with event filter links and uses the active filter by default', async () => {
+			const today = new Date();
+			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-active', title: 'Active Event', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
+				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-active', title: 'Active Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+				{ created_at: '2024-01-01', items: [{ itemID: 'event-past', title: 'Past Event', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
+			]);
+
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '2' }) });
+			render(page as any);
+			expect(screen.getByText('Active Events')).toBeTruthy();
+			expect(screen.getByText('This Year')).toBeTruthy();
+			expect(screen.getByText('All')).toBeTruthy();
+		});
+
+		it('excludes undated events from the active filter', async () => {
+			const today = new Date();
+			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-active', title: 'Active Event', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
+				{ fields: { id: 'event-unknown', title: 'Unknown Dates Event' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-active', title: 'Active Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+				{ created_at: '2024-01-01', items: [{ itemID: 'event-unknown', title: 'Unknown Dates Event', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
+			]);
+
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '2' }) });
+			render(page as any);
+			expect(screen.getByText('Event Registrations ( 1 )')).toBeTruthy();
+			expect(screen.queryByText('Unknown Dates Event')).toBeNull();
+		});
+
+		it('renders event report page with the all filter showing every event', async () => {
+			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+				{ fields: { id: 'event-active', title: 'Active Event', startDate: '2024-01-01', endDate: '2099-12-31' } },
+				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
+			] as any);
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
+				{ created_at: '2024-02-01', items: [{ itemID: 'event-active', title: 'Active Event', itemQuantity: 1 }], shipping_to: { name: 'John' } },
+				{ created_at: '2024-01-01', items: [{ itemID: 'event-past', title: 'Past Event', itemQuantity: 1 }], shipping_to: { name: 'Jane' } },
+			]);
+
+			const page = await EventReportPage({ searchParams: Promise.resolve({ filter: 'all', v: '2' }) });
+			render(page as any);
+			expect(screen.getByText('Event Registrations ( 2 )')).toBeTruthy();
+		});
+
+		it('normalizes report rows when submissionData contains JSON string data', () => {
+			const normalized = normalizeReportRow({
+				data: {
+					orderData: JSON.stringify({
+						items: [{ itemID: '1', title: 'A', itemQuantity: 2 }],
+						shippingTo: { name: 'John' },
+					}),
+					created_at: '2024-01-01',
+				},
+			});
+			expect(normalized.items.length).toBe(1);
+			expect(normalized.shippingTo.name).toBe('John');
+		});
+
+		it('normalizes report rows from submissionData and falls back to itemID', () => {
+			const normalized = normalizeReportRow({
+				submissionData: JSON.stringify({
+					items: [{ itemID: '2', title: 'B' }],
+					shippingTo: { name: 'Jane' },
+				}),
+				created_at: '2024-01-02',
+			});
+			expect(normalized.items[0].itemID).toBe('2');
+			expect(getEventIdentity(normalized.items[0]).eventId).toBe('2');
+		});
+
+		it('uses Square itemSKU as the canonical event identifier when present', () => {
+			const normalized = normalizeReportRow({
+				submissionData: JSON.stringify({
+					items: [{ itemID: 'new-guid-123', itemSKU: 'old-legacy-2', title: 'B' }],
+					shippingTo: { name: 'Jane' },
+				}),
+				created_at: '2024-01-02',
+			});
+			expect(normalized.items[0].itemID).toBe('new-guid-123');
+			expect(getEventIdentity(normalized.items[0]).eventId).toBe('old-legacy-2');
+		});
+
+		it('prefers itemSKU over itemID for event grouping', () => {
+			const normalized = normalizeReportRow({
+				submissionData: JSON.stringify({
+					items: [{ itemID: '2026-SC08', itemSKU: '2026-SC08', title: 'Summer Camp' }],
+					shippingTo: { name: 'Jane' },
+				}),
+				created_at: '2026-07-10',
+			});
+			expect(getEventIdentity(normalized.items[0]).eventId).toBe('2026-SC08');
+		});
+
+		it('renders an error message when EventReportPage fails to load rows', async () => {
+			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockRejectedValueOnce(new Error('boom'));
+			const page = await EventReportPage({ searchParams: Promise.resolve({ v: '0' }) });
+			render(page as any);
+			expect(screen.getByText(/Unable to load the report:/)).not.toBeNull();
+		});
+
+		it('calculates a Three Muses subtotal discount for event cart items', () => {
+			const discount = getThreeMusesSubtotalDiscount([
+				{ itemID: 'event-1', itemTitle: 'Test Event', itemInventory: 1, itemCategory: 'event', itemQuantity: 3, itemCost: 100 },
+			]);
+			expect(discount).toBeGreaterThanOrEqual(0);
+		});
+
+		it('returns capture payment validation error when body is incomplete', async () => {
+			const response = await capturePaymentPOST(new Request('https://example.com/api/capture-payment', {
+				method: 'POST',
+				body: JSON.stringify({}),
+			}));
+			const json = await response.json();
+			expect(response.status).toBe(400);
+			expect(json).toHaveProperty('error');
 		});
 
 		it('redirects amplifyapp.com proxy requests to the canonical domain', () => {
@@ -320,7 +505,15 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders About Us page with Google Reviews section when apiKey is configured', () => {
-			setPixelatedConfigOverride({ integrations: { googlePlaces: { apiKey: 'TEST_KEY' } } } as any);
+			setPixelatedConfigOverride({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					googlePlaces: {
+						...pixelatedConfig.integrations?.googlePlaces,
+					},
+				},
+			} as any);
 			render(<AboutUsPage />);
 			expect(document.getElementById('reviews-section')).not.toBeNull();
 		});

@@ -67,8 +67,10 @@ export function runCommonElementCoverage({
 			expect(smartImage).not.toBeNull();
 		});
 
-		it('renders footer without error', () => {
-			render(<Footer />);
+		it('renders footer without error', async () => {
+			const footerElement = Footer();
+			render(footerElement && typeof (footerElement as any).then === 'function' ? await footerElement : footerElement);
+			await new Promise((resolve) => setTimeout(resolve, 0));
 			if (footerAssertion) {
 				footerAssertion();
 				return;

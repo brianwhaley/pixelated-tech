@@ -1,10 +1,12 @@
-"use client";
-
-import React, { } from 'react';
+import { headers } from "next/headers";
+import React from 'react';
 import { GoogleAnalytics } from "@pixelated-tech/components";
 import { PixelatedFooter } from "@pixelated-tech/components";
 
-export default function Footer() {
+export default async function Footer() {
+	const reqHeaders = await headers();
+	const path = reqHeaders.get("x-path") ?? "/";
+	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
 	return (
     	<>
 			<GoogleAnalytics />
@@ -12,7 +14,7 @@ export default function Footer() {
 		  	<br />
 		  	<div className="centered">
 		    	<p className="footer-text">&copy; {new Date().getFullYear()} InformationFocus. All rights reserved.</p>
-				<PixelatedFooter />
+				<PixelatedFooter pathname={pathname} />
 		  	</div>
 		  	<br /><br />
     	</>

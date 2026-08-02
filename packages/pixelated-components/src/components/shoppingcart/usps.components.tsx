@@ -9,28 +9,6 @@ import type { ShippingInfoType } from './shoppingcart.functions';
 import type { UspsRateOption } from './usps.functions';
 import { fetchUspsRatesServer } from './usps.server';
 
-export function normalizeZipCode(zip?: string | null) {
-	return String(zip ?? '').replace(/\D/g, '').slice(0, 9);
-}
-
-export function isValidZipCode(zip?: string) {
-	const normalizedZip = normalizeZipCode(zip);
-	return normalizedZip.length === 5 || normalizedZip.length === 9;
-}
-
-function getShippingFormValues(form: HTMLFormElement | null) {
-	if (!form) return null;
-	const formValues = Object.fromEntries(new FormData(form).entries());
-	return {
-		zip: normalizeZipCode(String(formValues.zip ?? '')),
-		country: String(formValues.country ?? '').trim() || 'US',
-	};
-}
-
-function buildRateFetchSignature(values: { zip: string; country: string; fromZip: string; fromCountry: string; cartWeight: number; }) {
-	return [values.zip, values.country, values.fromZip, values.fromCountry, values.cartWeight.toFixed(2)].join('|');
-}
-
 function USPSRateSelector(props: {
 	shippingDefaults: Partial<ShippingInfoType>;
 	cartWeight: number;
@@ -143,17 +121,17 @@ export function USPSShippingForm(props: USPSShippingFormType) {
 	}, 0), [props.shoppingCart]);
 
 	const fetchRatesForFormValues = useCallback(async (formValues: { zip: string; country: string; }) => {
-		const fromZip = normalizeZipCode(props.shippingDefaults.originPostalCode);
+		const fromZip = String(props.shippingDefaults.originPostalCode ?? '').replace(/\D/g, '').slice(0, 9);
 		const fromCountry = String(props.shippingDefaults.originCountry ?? 'US').trim() || 'US';
-		const toZip = normalizeZipCode(formValues.zip);
+		const toZip = String(formValues.zip ?? '').replace(/\D/g, '').slice(0, 9);
 		const toCountry = String(formValues.country ?? '').trim() || 'US';
-		const requestSignature = buildRateFetchSignature({
-			zip: toZip,
-			country: toCountry,
+		const requestSignature = [
+			toZip,
+			toCountry,
 			fromZip,
 			fromCountry,
-			cartWeight,
-		});
+			cartWeight.toFixed(2),
+		].join('|');
 
 		if (!fromZip) {
 			setError('Origin postal code is required for USPS rates.');
@@ -161,7 +139,7 @@ export function USPSShippingForm(props: USPSShippingFormType) {
 			return;
 		}
 
-		if (!isValidZipCode(toZip)) {
+		if (!(toZip.length === 5 || toZip.length === 9)) {
 			lastFetchSignatureRef.current = '';
 			clearRates();
 			setError(null);
@@ -216,9 +194,11 @@ export function USPSShippingForm(props: USPSShippingFormType) {
 		if (!form) return;
 
 		const syncRatesFromForm = () => {
-			const formValues = getShippingFormValues(form);
-			if (!formValues) return;
-			void fetchRatesForFormValues(formValues);
+			if (!form) return;
+			const formValues = Object.fromEntries(new FormData(form).entries());
+			const normalizedZip = String(formValues.zip ?? '').replace(/\D/g, '').slice(0, 9);
+			const normalizedCountry = String(formValues.country ?? '').trim() || 'US';
+			void fetchRatesForFormValues({ zip: normalizedZip, country: normalizedCountry });
 		};
 
 		const handleInputOrChange = (event: Event) => {

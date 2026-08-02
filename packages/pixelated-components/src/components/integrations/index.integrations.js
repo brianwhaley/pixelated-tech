@@ -15,6 +15,7 @@ export * from './google.reviews.components';
 export * from './google.reviews.functions';
 export * from './googleplaces';
 export * from './googleanalytics';
+export * from './facebookpixel';
 export * from './googlesearch';
 export * from './gravatar.components';
 export * from './gravatar.functions';

@@ -1,6 +1,6 @@
 import { RuleTester } from 'eslint';
 import fs from 'fs';
-import plugin from '../scripts/pixelated-eslint-plugin.js';
+import plugin from '../../../../shared/eslint-plugin/pixelated-eslint-plugin.js';
 import { vi, describe, afterEach, test } from 'vitest';
 
 const rule = (plugin as any).rules['required-faq'];

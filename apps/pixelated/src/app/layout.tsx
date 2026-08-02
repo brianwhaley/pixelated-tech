@@ -1,11 +1,13 @@
 
 import { headers } from "next/headers";
 import { PageMetaTags, PixelatedServerConfigProvider } from "@pixelated-tech/components/server";
-import { LocalBusinessSchema, WebsiteSchema, ServicesSchema } from "@pixelated-tech/components";
+import { SchemaWebPage } from "@pixelated-tech/components/server";
+import { LocalBusinessSchema, WebsiteSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import { LayoutClient } from "@/app/elements/layoutclient";
 import { ContentfulAlerts } from "@pixelated-tech/components";
+import { InteractionGuardrail } from "@pixelated-tech/components";
 import Header from "@/app/elements/header";
 import HeaderNav from "@/app/elements/headernav";
 import Nav from "@/app/elements/nav";
@@ -60,11 +62,11 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 			<html lang="en">
 				<head>
 					<PixelatedServerConfigProvider>
-						<PageMetaTags />	
+						<PageMetaTags />
+					    <SchemaWebPage />
 						<BreadcrumbListSchema />
 						<WebsiteSchema />
 						<LocalBusinessSchema />
-						<ServicesSchema />
 						<VisualDesignStyles />
 						<LocalBusinessSchema
 							streetAddress="4 Raymond Court"
@@ -81,7 +83,9 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 				</head>
 				<body>
 					<PixelatedServerConfigProvider>
-						{ layoutBody }
+						<InteractionGuardrail>
+							{ layoutBody }
+						</InteractionGuardrail>
 					</PixelatedServerConfigProvider>
 				</body>
 			</html></>

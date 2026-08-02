@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { getRouteByKey, type Metadata, getFullPixelatedConfig } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ServicesSchema } from "@pixelated-tech/components";
+import { SchemaWebPage } from "@pixelated-tech/components/server";
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { PageMetaTags } from "@pixelated-tech/components/server";
 import { PixelatedServerConfigProvider } from "@pixelated-tech/components/server";
@@ -94,9 +95,9 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 					<PixelatedServerConfigProvider>
 						<PageMetaTags />
 						<BreadcrumbListSchema />
+						<SchemaWebPage {...metadata} />
 						<WebsiteSchema />
 						<LocalBusinessSchema />
-						<ServicesSchema />
 						<VisualDesignStyles />
 						<link rel="preload" fetchPriority="high" as="image" type="image/webp" 
 							href="https://www.palmetto-epoxy.com/images/logo/palmetto-epoxy-logo.jpg" ></link>

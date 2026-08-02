@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
 import { describe, it, expect } from 'vitest';
-import { findTemplateForSlug, printAvailableTemplates } from '../scripts/create-pixelated-app.js';
+import { findTemplateForSlug, printAvailableTemplates, copyTemplateForPage } from '../scripts/create-pixelated-app.js';
 
 describe('template-mapper', () => {
 	it('findTemplateForSlug matches aliases and fuzzy variants', () => {
