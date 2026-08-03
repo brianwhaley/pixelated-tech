@@ -54,38 +54,23 @@ function buildSquareProductSchema(item: SquareStoreItemShapeType, siteInfo: any,
 	};
 }
 
-function buildSquareEventSchema(item: SquareStoreItemShapeType, config: any) {
+function buildSquareEventSchema(item: SquareStoreItemShapeType) {
 	const images = item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
-	const eventImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : undefined;
+	const eventImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : [];
 	const startDate = item.itemStartDate && item.itemStartTime ? buildSquareEventIsoDate(`${item.itemStartDate} ${item.itemStartTime}`) : undefined;
 	const endDate = item.itemEndDate && item.itemEndTime ? buildSquareEventIsoDate(`${item.itemEndDate} ${item.itemEndTime}`) : undefined;
-	const isCompleted = !!endDate && Date.parse(endDate) < Date.now();
-	const eventStatus = isCompleted ? 'https://schema.org/EventCompleted' : startDate ? 'https://schema.org/EventScheduled' : undefined;
-	const organizer = config?.siteInfo ? {
-		'@type': 'Organization',
-		name: config.siteInfo.name,
-		url: config.siteInfo.url,
-	} : undefined;
-	const performer = organizer;
 
 	return {
-		'@context': 'https://schema.org',
-		'@type': 'Event',
-		name: item.itemTitle,
-		description: item.itemDescription || item.itemTitle,
-		image: eventImages,
-		url: item.itemURL,
-		startDate,
-		endDate,
-		eventStatus,
-		offers: item.itemPrice != null ? {
-			'@type': 'Offer',
-			url: item.itemURL,
-			priceCurrency: item.itemCurrency ?? 'USD',
+		fields: {
+			id: item.itemID,
+			title: item.itemTitle,
+			description: item.itemDescription || item.itemTitle,
+			startDate,
+			endDate,
+			carouselImages: eventImages.length > 0 ? eventImages.map((image) => ({ image })) : undefined,
 			price: item.itemPrice,
-			availability: isCompleted ? 'https://schema.org/Discontinued' : item.itemInventory > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-		} : undefined,
-		performer,
+			maxSeats: item.itemInventory,
+		},
 	};
 }
 
@@ -597,7 +582,7 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 
 			{filteredItems.map((item) => {
 				return item.itemType?.toUpperCase() === 'EVENT' ? (
-					<SchemaEvent event={buildSquareEventSchema(item, config)} />
+					<SchemaEvent event={buildSquareEventSchema(item)} />
 				) : (
 					<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item, config?.siteInfo, policyUrl)} />
 				);
@@ -702,7 +687,7 @@ export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
 		<PageSection columns={1} id="square-store-item-detail" className="square-store-item-detail">
 
 			{props.item.itemType?.toUpperCase() === 'EVENT' ? (
-				<SchemaEvent event={buildSquareEventSchema(props.item, config)} />
+				<SchemaEvent event={buildSquareEventSchema(props.item)} />
 			) : (
 				<ProductSchema product={buildSquareProductSchema(props.item, config?.siteInfo, getPolicyRouteUrl(config?.routes, config?.siteInfo))} />
 			)}
@@ -766,7 +751,7 @@ export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
 					<div className="square-store-item-detail-price">{`${props.item.itemPrice.toFixed(2)} ${props.item.itemCurrency}`}</div>
 					<div className="square-store-item-detail-actions">
 						{props.item.itemType?.toUpperCase() === 'EVENT' && isEventComplete(props.item) ? (
-							<div className="square-store-item-detail-closed-message">You cannot register for this event, and it is now over.</div>
+							<div className="square-store-item-detail-closed-message">You cannot register for this event, because it is now over.</div>
 						) : (
 							<AddToCartButton handler={addToShoppingCart} item={{
 								...props.item,
