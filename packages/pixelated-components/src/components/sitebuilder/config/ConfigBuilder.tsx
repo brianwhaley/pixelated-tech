@@ -74,7 +74,6 @@ ConfigBuilder.propTypes = {
 					closed: PropTypes.bool,
 				})),
 			]),
-			publisherType: PropTypes.string,
 			copyrightYear: PropTypes.number,
 			potentialAction: PropTypes.shape({
 				'@type': PropTypes.string,

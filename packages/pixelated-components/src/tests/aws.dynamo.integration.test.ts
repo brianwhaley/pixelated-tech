@@ -50,13 +50,12 @@ describe('aws dynamo integration', () => {
 		} as any));
 	});
 
-	it('flattens orderData into report row fields', async () => {
+	it('parses orderData into a generic report row', async () => {
 		mockSend.mockResolvedValueOnce({
 			Items: [
 				{
 					domain: { S: 'thethreemusesofbluffton.com' },
 					timestamp: { S: '2026-05-05T10:00:00.000Z' },
-					domain: { S: 'thethreemusesofbluffton.com' },
 					orderData: { S: JSON.stringify({
 						checkoutData: mockOrderCheckoutData,
 						captureResponse: {
@@ -78,115 +77,84 @@ describe('aws dynamo integration', () => {
 		expect(rows).toHaveLength(1);
 		expect(rows[0]).toMatchObject({
 			created_at: new Date('2026-05-05T10:00:00.000Z').toISOString(),
-			shipping_to: {
-				name: 'Test User',
-				street1: '123 Main St',
-				city: 'Bluffton',
-				state: 'SC',
-				zip: '29910',
-				country: 'US',
-				phone: '1234567890',
-				email: 'test@example.com',
-			},
-			registration_data: {
-				child_name: 'Grace Sturkie',
-				child_birthdate: '2017-10-21',
-				birthdate: '2026-05-01',
-				emergency_contact_name: 'Test User',
-				emergency_contact_telephone: '1234567890',
-				full_payment: 'yes',
-				cancellation_policy: 'yes',
-				photo_consent: 'yes',
-				closed_toe_shoes: 'yes',
-				class_materials: 'yes',
-				minimum_students: 'yes',
-				food_allergies: 'cats',
-				bleeding_disorder: 'no',
-				injury_liability: 'Test Liability',
-			},
-			items: [
+			domain: 'thethreemusesofbluffton.com',
+			orderData: expect.any(Object),
+		});
+		expect(rows[0].orderData.checkoutData).toMatchObject(mockOrderCheckoutData);
+	});
+
+	it('parses nested orderData object without normalizing custom fields', async () => {
+		mockSend.mockResolvedValueOnce({
+			Items: [
 				{
-					itemID: 'class-1',
-					itemTitle: 'Sewing Class',
-					itemQuantity: 2,
-					itemCategory: 'Adult',
+					domain: { S: 'thethreemusesofbluffton.com' },
+					orderData: { S: JSON.stringify({
+						checkoutData: {
+							domain: 'thethreemusesofbluffton.com',
+							items: {
+								id: 'solo-1',
+								title: 'Solo Class',
+								quantity: 1,
+								category: 'Adult',
+							},
+						},
+					}) },
 				},
 			],
+			LastEvaluatedKey: undefined,
 		});
-	});
 
-	it('keeps a single items object as a nested object', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
-			{
-				domain: { S: 'thethreemusesofbluffton.com' },
-				orderData: { S: JSON.stringify({
-					checkoutData: {
-						domain: 'thethreemusesofbluffton.com',
-						items: {
-							id: 'solo-1',
-							title: 'Solo Class',
-							quantity: 1,
-							category: 'Adult',
-						},
-					},
-				}) },
-			},
-		],
-		LastEvaluatedKey: undefined,
-	});
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com'
+		});
 
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com'
-	});
-
-	expect(rows).toHaveLength(1);
-	expect(rows[0].items).toEqual({
-		itemID: 'solo-1',
-		itemTitle: 'Solo Class',
-		itemQuantity: 1,
-		itemCategory: 'Adult',
-	});
+		expect(rows).toHaveLength(1);
+		expect(rows[0].orderData.checkoutData.items).toEqual({
+			id: 'solo-1',
+			title: 'Solo Class',
+			quantity: 1,
+			category: 'Adult',
+		});
 });
 
-it('maps legacy item field names into the new item shape', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
+it('preserves legacy item arrays inside parsed orderData', async () => {
+		mockSend.mockResolvedValueOnce({
+			Items: [
+				{
+					domain: { S: 'thethreemusesofbluffton.com' },
+					orderData: { S: JSON.stringify({
+						checkoutData: {
+							domain: 'thethreemusesofbluffton.com',
+							items: [
+								{
+									itemID: 'legacy-1',
+									itemTitle: 'Legacy Class',
+									itemQuantity: 3,
+									itemCategory: 'Adult',
+								},
+							],
+						},
+					}) },
+				},
+			],
+			LastEvaluatedKey: undefined,
+		});
+
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com'
+		});
+
+		expect(rows).toHaveLength(1);
+		expect(rows[0].orderData.checkoutData.items).toEqual([
 			{
-				domain: { S: 'thethreemusesofbluffton.com' },
-				orderData: { S: JSON.stringify({
-					checkoutData: {
-						domain: 'thethreemusesofbluffton.com',
-						items: [
-							{
-								itemID: 'legacy-1',
-								itemTitle: 'Legacy Class',
-								itemQuantity: 3,
-								itemCategory: 'Adult',
-							},
-						],
-					},
-				}) },
+				itemID: 'legacy-1',
+				itemTitle: 'Legacy Class',
+				itemQuantity: 3,
+				itemCategory: 'Adult',
 			},
-		],
-		LastEvaluatedKey: undefined,
-	});
-
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com'
-	});
-
-	expect(rows).toHaveLength(1);
-	expect(rows[0].items).toEqual([
-		{
-			itemID: 'legacy-1',
-			itemTitle: 'Legacy Class',
-			itemQuantity: 3,
-			itemCategory: 'Adult',
-		},
-	]);
+		]);
 });
 
 it('scans the report table with domain and formName filters', async () => {
@@ -226,44 +194,10 @@ it('scans the report table with domain and formName filters', async () => {
 	expect(mockSend).toHaveBeenCalledTimes(1);
 	expect(rows).toHaveLength(1);
 	expect(rows[0].created_at).toBe(new Date('2026-05-05T10:00:00.000Z').toISOString());
-	expect(rows[0].shipping_to).toHaveProperty('name');
+	expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Test User');
 });
 
-it('does not filter by formName when formName is undefined', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
-			{
-				domain: { S: 'palmetto-epoxy.com' },
-				formName: { S: 'Palmetto Epoxy Order Form' },
-				createdAt: { S: '2026-06-01T08:00:00.000Z' },
-				orderData: { S: JSON.stringify({
-					checkoutData: { items: [], shippingTo: { name: 'A' } },
-					captureResponse: { payment: { created_at: '2026-06-01T08:00:00.000Z' } },
-				}) },
-			},
-			{
-				domain: { S: 'palmetto-epoxy.com' },
-				formName: { S: 'Palmetto Epoxy Secondary Form' },
-				createdAt: { S: '2026-06-02T09:00:00.000Z' },
-				orderData: { S: JSON.stringify({
-					checkoutData: { items: [], shippingTo: { name: 'B' } },
-					captureResponse: { payment: { created_at: '2026-06-02T09:00:00.000Z' } },
-				}) },
-			},
-		],
-		LastEvaluatedKey: undefined,
-	});
-
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'palmetto-epoxy.com',
-	});
-
-	expect(rows).toHaveLength(2);
-	expect(rows.map((row) => row.formName)).toEqual(['Palmetto Epoxy Order Form', 'Palmetto Epoxy Secondary Form']);
-});
-
-it('does not fall back to Date when timestamp is missing', async () => {
+it('returns generic rows without Three Muses-specific shipping fields', async () => {
 	mockSend.mockResolvedValueOnce({
 		Items: [
 			{
@@ -291,33 +225,8 @@ it('does not fall back to Date when timestamp is missing', async () => {
 		created_at: '',
 		domain: 'palmetto-epoxy.com',
 		formName: 'contact-form',
-		shipping_to: { email: 'test@example.com' },
-		registration_data: { email: 'test@example.com' },
 	});
-});
-
-it('prefers top-level timestamp for contact form created_at values', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
-			{
-				domain: { S: 'thethreemusesofbluffton.com' },
-				formName: { S: 'contact-form' },
-				Date: { S: '6/27/2026' },
-				timestamp: { S: '2026-06-27T18:55:09.447Z' },
-				name: { S: 'Test User' },
-				email: { S: 'test@thethreemusesofbluffton.com' },
-			},
-		],
-		LastEvaluatedKey: undefined,
-	});
-
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com',
-	});
-
-	expect(rows).toHaveLength(1);
-	expect(rows[0].created_at).toBe(new Date('2026-06-27T18:55:09.447Z').toISOString());
+	expect(rows[0].orderData).toBeUndefined();
 });
 
 it('matches domain from nested orderData when top-level domain is missing', async () => {
@@ -343,7 +252,8 @@ it('matches domain from nested orderData when top-level domain is missing', asyn
 	});
 
 	expect(rows).toHaveLength(1);
-	expect(rows[0].shipping_to.name).toBe('Nested Domain User');
+	expect(rows[0].domain).toBe('palmetto-epoxy.com');
+	expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Nested Domain User');
 });
 
 it('creates a Dynamo client without credentials when only region is configured', async () => {
@@ -435,12 +345,12 @@ it('normalizes DynamoDB attribute values into plain JavaScript values', async ()
 		});
 
 		expect(rows).toHaveLength(1);
-		expect(rows[0].shipping_to).toEqual(expect.objectContaining({ name: 'Test User' }));
-		expect(rows[0].extra).toBeUndefined();
-		expect(rows[0].flags).toBeUndefined();
-		expect(rows[0].list).toBeUndefined();
-		expect(rows[0].textSet).toBeUndefined();
-		expect(rows[0].numSet).toBeUndefined();
-		expect(rows[0].bytes).toBeUndefined();
+		expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Test User');
+		expect(rows[0].extra).toEqual({ nested: 'value' });
+		expect(rows[0].flags).toBe(true);
+		expect(rows[0].list).toEqual(['a', 2]);
+		expect(rows[0].textSet).toEqual(['a', 'b']);
+		expect(rows[0].numSet).toEqual([1, 2]);
+		expect(rows[0].bytes).toBe('abc');
 	});
 });

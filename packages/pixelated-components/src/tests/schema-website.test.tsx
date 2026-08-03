@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import type { SiteInfo } from '@/components/config/config.types';
-import { WebsiteSchema } from '@/components/foundation/schema';
+import type { SiteInfo } from '../components/config/config.types';
+import { WebsiteSchema } from '../components/foundation/schema';
 import { pixelatedConfig } from '../test/test-data';
 
 describe('WebsiteSchema', () => {
-	const siteInfo: SiteInfo = (pixelatedConfig.siteInfoFull || pixelatedConfig.siteInfo) as SiteInfo;
+	const siteInfo: SiteInfo = pixelatedConfig.siteInfo as SiteInfo;
 
 	const renderSchema = (siteMeta?: SiteInfo) => {
 		return render(<WebsiteSchema />, { config: { siteInfo: siteMeta ?? siteInfo } });
@@ -79,9 +79,9 @@ describe('WebsiteSchema', () => {
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
 		expect(schemaData.publisher).toBeDefined();
-		const publisherType = schemaData.publisher['@type'];
-		expect(Array.isArray(publisherType) ? publisherType : [publisherType]).toEqual(
-			expect.arrayContaining(['ImageObject'])
+		const publisherTypeValue = schemaData.publisher['@type'];
+		expect(Array.isArray(publisherTypeValue) ? publisherTypeValue : [publisherTypeValue]).toEqual(
+			expect.arrayContaining(['Organization'])
 		);
 		expect(schemaData.publisher.name).toBe('Pixelated Technologies');
 		if (schemaData.publisher.logo) {
@@ -92,7 +92,7 @@ describe('WebsiteSchema', () => {
 		if (siteInfo.services?.length) {
 			if (schemaData.publisher.knowsAbout) {
 				expect(schemaData.publisher.knowsAbout).toEqual(
-					expect.arrayContaining(siteInfo.services.map((service) => service.name))
+					expect.arrayContaining(siteInfo.services.map((service: any) => service.name))
 				);
 			} else {
 				expect(schemaData.publisher.knowsAbout).toBeUndefined();

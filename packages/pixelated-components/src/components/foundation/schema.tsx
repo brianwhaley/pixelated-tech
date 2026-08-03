@@ -10,10 +10,9 @@ import { getServicePathPrefix, findServiceBySlug } from '../elements/services.fu
 import { getGoogleReviewsByPlaceId, type GoogleReview } from '../integrations/google.reviews.functions';
 import { getWikipediaCityObject } from '../integrations/wikipedia.functions';
 import { sanitizeString, toBoolean } from '../foundation/utilities';
-import { url } from 'inspector/promises';
+import { parseNumber, safeString, normalizeProtocolRelativeUrl } from '../elements/smartmediautils';
 
 type ServiceSchemaType = NonNullable<SiteInfo['services']>[number];
-
 
 
 
@@ -142,23 +141,6 @@ function normalizeBookFormat(value: unknown): string | undefined {
 	return mapping[normalized] || format;
 }
 
-function buildBookOffer(variant: any): any | undefined {
-	const url = sanitizeString(variant?.offerURL || variant?.offerUrl || variant?.url);
-	if (!url) {
-		return undefined;
-	}
-	const price = variant?.price != null ? sanitizeString(variant.price) : undefined;
-	const priceCurrency = sanitizeString(variant?.priceCurrency) || 'USD';
-	const availability = sanitizeString(variant?.availability) || 'https://schema.org/InStock';
-	return {
-		'@type': 'Offer',
-		url,
-		...(price && { price }),
-		priceCurrency,
-		availability,
-	};
-}
-
 function buildBookVariant(variant: any): any | undefined {
 	if (!variant || typeof variant !== 'object') {
 		return undefined;
@@ -168,7 +150,12 @@ function buildBookVariant(variant: any): any | undefined {
 	const asin = sanitizeString(variant?.asin);
 	const isbn = sanitizeString(variant?.isbn);
 	const numberOfPages = variant?.numberOfPages != null ? Number(variant.numberOfPages) : undefined;
-	const offer = buildBookOffer(variant);
+	const offer = buildOfferSchema({
+		url: variant?.offerURL || variant?.offerUrl || variant?.url,
+		price: variant?.price,
+		priceCurrency: variant?.priceCurrency,
+		availability: variant?.availability || 'https://schema.org/InStock',
+	});
 
 	const variantSchema: any = {
 		'@type': 'Book',
@@ -316,6 +303,11 @@ export function SchemaEvent(props: SchemaEventType) {
 	const schema = event?.['@type'] ? event : (() => {
 		const baseUrl = siteInfo?.url?.replace(/\/$/, '') ?? '';
 		const eventUrl = baseUrl ? `${baseUrl}/events/${event.fields.id}` : `/events/${event.fields.id}`;
+		const startIso = toIsoDate(event.fields.startDate);
+		const endIso = toIsoDate(event.fields.endDate);
+		const now = Date.now();
+		const startTime = startIso ? Date.parse(startIso) : NaN;
+		const endTime = endIso ? Date.parse(endIso) : NaN;
 		const images = Array.isArray(event.fields.carouselImages)
 			? event.fields.carouselImages
 				.map((image: any) => normalizeContentfulAssetUrl(image?.image))
@@ -325,40 +317,41 @@ export function SchemaEvent(props: SchemaEventType) {
 			'@context': 'https://schema.org',
 			'@type': 'Event',
 			name: event.fields.title,
-			startDate: toIsoDate(event.fields.startDate),
-			endDate: toIsoDate(event.fields.endDate),
-			eventStatus: 'https://schema.org/EventScheduled',
+			startDate: startIso,
+			endDate: endIso,
+			eventStatus: !Number.isNaN(endTime) && endTime < now
+				? 'https://schema.org/EventCompleted'
+				: !Number.isNaN(startTime) && startTime > now
+					? 'https://schema.org/EventScheduled'
+					: !Number.isNaN(startTime) && !Number.isNaN(endTime) && startTime <= now && endTime >= now
+						? 'https://schema.org/EventOngoing'
+						: !Number.isNaN(startTime)
+							? 'https://schema.org/EventScheduled'
+							: undefined,
 			location: {
 				'@type': 'Place',
+				...(siteInfo?.url ? { '@id': `${siteInfo.url.replace(/\/$/, '')}/#organization` } : {}),
 				name: siteInfo?.name,
-				address: {
-					'@type': 'PostalAddress',
-					streetAddress: siteInfo?.address?.streetAddress,
-					addressLocality: siteInfo?.address?.addressLocality,
-					postalCode: siteInfo?.address?.postalCode,
-					addressRegion: siteInfo?.address?.addressRegion,
-					addressCountry: siteInfo?.address?.addressCountry,
-				},
+				address: buildPostalAddress(siteInfo?.address),
 			},
 			image: images.length ? images : siteInfo?.image ? [siteInfo.image] : undefined,
 			performer: addSameAs({
-				'@type': 'Organization',
+				'@type': ['Organization', 'LocalBusiness'],
 				'@id': siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 				name: siteInfo?.name,
 				url: siteInfo?.url,
 			}, siteInfo?.sameAs),
 			description: event.fields.description,
 			url: eventUrl,
-			offers: event.fields.price != null ? {
-				'@type': 'Offer',
+			offers: event.fields.price != null ? buildOfferSchema({
 				url: eventUrl,
-				price: event.fields.price,
+				price: typeof event.fields.price === 'number' ? event.fields.price.toFixed(2) : event.fields.price,
 				priceCurrency: 'USD',
 				availability: event.fields.maxSeats > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
 				validFrom: toIsoDate(event.fields.startDate),
-			} : undefined,
+			}) : undefined,
 			organizer: addSameAs({
-				'@type': 'Organization',
+				'@type': ['Organization', 'LocalBusiness'],
 				'@id': siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 				name: siteInfo?.name,
 				url: siteInfo?.url,
@@ -369,6 +362,41 @@ export function SchemaEvent(props: SchemaEventType) {
 		<SchemaScript schema={schema} />
 	);
 }
+
+
+
+
+
+
+
+
+
+/* ========================================
+	IMAGE OBJECT COMPONENTS
+======================================== */
+
+export function buildImageObject(siteInfo?: SiteInfo, id?: string) {
+	const siteInfoAny = siteInfo as any;
+	if (!siteInfoAny?.image) {
+		return undefined;
+	}
+	const imageObject: any = {
+		'@type': 'ImageObject',
+		url: siteInfoAny.image,
+		...(siteInfoAny.name && { name: siteInfoAny.name }),
+		...(siteInfoAny.image_width && { width: parseDimension(siteInfoAny.image_width ?? undefined) }),
+		...(siteInfoAny.image_height && { height: parseDimension(siteInfoAny.image_height ?? undefined) }),
+		copyrightNotice: `© ${new Date().getFullYear()} ${siteInfoAny.name ?? ''}. All rights reserved.`,
+		creditText: `${siteInfoAny.name ?? ''}${siteInfoAny.author ? ` / ${siteInfoAny.author}` : ''}`,
+		acquireLicensePage: siteInfoAny.url ? `${siteInfoAny.url.replace(/\/$/, '')}/contact` : undefined,
+		license: siteInfoAny.url ? `${siteInfoAny.url.replace(/\/$/, '')}/terms` : undefined,
+	};
+	if (id && siteInfoAny.url) {
+		imageObject['@id'] = `${siteInfoAny.url.replace(/\/$/, '')}/${id}`;
+	}
+	return imageObject;
+}
+
 
 
 
@@ -512,13 +540,8 @@ export function LocalBusinessSchema() {
 
 	if (!name || !url) { return null; }
 
-	const streetAddress = siteInfo?.address?.streetAddress;
-	const addressLocality = siteInfo?.address?.addressLocality;
-	const addressRegion = siteInfo?.address?.addressRegion;
-	const postalCode = siteInfo?.address?.postalCode;
-	const addressCountry = siteInfo?.address?.addressCountry || 'United States';
 	const telephone = siteInfo?.telephone;
-	const logo = siteInfo?.image;
+	const logoImageObject = siteInfo?.image ? buildImageObject(siteInfo, 'organization') : undefined;
 	const services = siteInfo?.services || [];
 	const servicePathPrefix = getServicePathPrefix(siteInfo);
 	const serviceCatalogItems = services
@@ -528,19 +551,18 @@ export function LocalBusinessSchema() {
 			const serviceSlug = contentfulValueToSlug({ value: serviceName });
 			const serviceUrl = service.url
 				|| (url && serviceSlug ? `${url.replace(/\/$/, '')}${servicePathPrefix}/${serviceSlug}` : undefined);
-			return {
-				'@type': 'Offer',
+			return buildOfferSchema({
+				url: serviceUrl,
 				itemOffered: {
-					'@type': 'Service',
 					name: serviceName,
-					...(service.description && { description: formatServiceDescription(service.description) }),
-					...(serviceUrl && { url: serviceUrl }),
-				}
-			};
+					description: service.description,
+					url: serviceUrl,
+				},
+			});
 		});
 	const brand = siteInfo?.brand;
 	const availableChannel = siteInfo?.availableChannel;
-	const image = siteInfo?.image || logo;
+	const image = siteInfo?.image;
 	const openingHours = normalizeOpeningHoursValue(siteInfo?.openingHours);
 	const description = siteInfo?.description;
 	const email = siteInfo?.email;
@@ -555,19 +577,12 @@ export function LocalBusinessSchema() {
 		'@type': ["Organization", "LocalBusiness"],
 		'@id': `${url?.replace(/\/$/, '')}/#organization`,
 		name,
-		address: {
-			'@type': 'PostalAddress',
-			...(streetAddress && { streetAddress }),
-			...(addressLocality && { addressLocality }),
-			...(addressRegion && { addressRegion }),
-			...(postalCode && { postalCode }),
-			...(addressCountry && { addressCountry }),
-		},
+		address: buildPostalAddress(siteInfo?.address),
 		...(telephone && { telephone }),
 		url,
 		"creator": pixelatedTechOrganizationSchema ,
 		"provider": pixelatedTechOrganizationSchema,
-		...(logo && { logo }),
+		...(logoImageObject && { logo: logoImageObject }),
 		...(brand && { brand }),
 		...(availableChannel && { availableChannel }),
 		...(serviceCatalogItems.length > 0 && {
@@ -591,6 +606,66 @@ export function LocalBusinessSchema() {
 		<SchemaScript schema={schemaData} />
 	);
 }
+
+
+
+
+
+
+
+
+/* ========================================
+	OFFER SCHEMA COMPONENTS
+======================================== */
+
+interface OfferSchemaInput {
+  url?: string;
+  offerURL?: string;
+  offerUrl?: string;
+  price?: string | number;
+  priceCurrency?: string;
+  availability?: string;
+  validFrom?: string;
+  itemOffered?: any;
+}
+
+function buildOfferSchema(input: OfferSchemaInput): any | undefined {
+	const url = sanitizeString(input?.url ?? input?.offerURL ?? input?.offerUrl);
+	const itemOfferedRaw = input?.itemOffered;
+	let itemOffered: any | undefined;
+	if (itemOfferedRaw && typeof itemOfferedRaw === 'object') {
+		const name = sanitizeString(itemOfferedRaw.name);
+		if (name) {
+			itemOffered = {
+				'@type': 'Service',
+				name,
+				...(itemOfferedRaw.description && { description: formatServiceDescription(itemOfferedRaw.description) }),
+				...(itemOfferedRaw.url && { url: sanitizeString(itemOfferedRaw.url) }),
+				...(itemOfferedRaw.serviceType && { serviceType: sanitizeString(itemOfferedRaw.serviceType) }),
+				...(itemOfferedRaw.category && { category: sanitizeString(itemOfferedRaw.category) }),
+			};
+		}
+	}
+	if (!url && !itemOffered) {
+		return undefined;
+	}
+	const price = input?.price != null ? sanitizeString(input.price) : undefined;
+	const priceCurrency = sanitizeString(input?.priceCurrency) || (price ? 'USD' : undefined);
+	const availability = sanitizeString(input?.availability) || (url ? 'https://schema.org/InStock' : undefined);
+	const validFrom = sanitizeString(input?.validFrom);
+	return {
+		'@type': 'Offer',
+		...(url && { url }),
+		...(price && { price }),
+		...(priceCurrency && { priceCurrency }),
+		...(availability && { availability }),
+		...(validFrom && { validFrom }),
+		...(itemOffered && { itemOffered }),
+	};
+}
+
+
+
 
 
 
@@ -631,6 +706,46 @@ export function SchemaPodcastSeries(props: SchemaPodcastSeriesType) {
 		<SchemaScript schema={series} />
 	);
 }
+
+
+
+
+
+
+
+
+
+/* ========================================
+	POSTAL ADDRESS SCHEMA COMPONENTS
+======================================== */
+
+function buildPostalAddress(address: any): any | undefined {
+	if (!address || typeof address !== 'object') {
+		return undefined;
+	}
+	const streetAddress = sanitizeString(address.streetAddress);
+	const addressLocality = sanitizeString(address.addressLocality);
+	const addressRegion = sanitizeString(address.addressRegion);
+	const postalCode = sanitizeString(address.postalCode);
+	const addressCountry = sanitizeString(address.addressCountry) || "United States";
+	return Object.keys({ streetAddress, addressLocality, addressRegion, postalCode, addressCountry })
+		.filter((key) => Boolean(({
+			streetAddress,
+			addressLocality,
+			addressRegion,
+			postalCode,
+			addressCountry,
+		} as any)[key]))
+		.length > 0 ? {
+			'@type': 'PostalAddress',
+			...(streetAddress && { streetAddress }),
+			...(addressLocality && { addressLocality }),
+			...(addressRegion && { addressRegion }),
+			...(postalCode && { postalCode }),
+			...(addressCountry && { addressCountry }),
+		} : undefined;
+}
+
 
 
 
@@ -902,7 +1017,7 @@ export function ServicesSchema() {
 		name: siteInfo?.name || '',
 		id: siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 		url: siteInfo?.url || '',
-		logo: siteInfo?.image,
+		logo: siteInfo?.image ? buildImageObject(siteInfo, 'organization') : undefined,
 		telephone: siteInfo?.telephone,
 		email: siteInfo?.email,
 		address: siteInfo?.address,
@@ -949,7 +1064,16 @@ export function ServicesSchema() {
 		const serviceOutput = service.serviceOutput || `High-performance ${service.name.toLowerCase()} optimized for business growth and measurable results.`;
 		const category = service.category || service.name;
 		const audience = service.audience || sharedAudience;
-		const offers = service.offers || sharedOffers;
+		const offers = service.offers || sharedOffers || buildOfferSchema({
+			url: computedServiceUrl,
+			itemOffered: {
+				name: service.name,
+				description: service.description,
+				url: computedServiceUrl,
+				serviceType,
+				category,
+			},
+		});
 		const termsOfService = service.termsOfService || sharedTermsOfService;
 
 		return {
@@ -976,10 +1100,7 @@ export function ServicesSchema() {
 				...(provider.logo && { logo: provider.logo }),
 				...(provider.telephone && { telephone: provider.telephone }),
 				...(provider.email && { email: provider.email }),
-				...(provider.address && { address: {
-					'@type': 'PostalAddress',
-					...provider.address
-				} }),
+				...(provider.address && { address: buildPostalAddress(provider.address) }),
 				...(siteInfo?.brand && { brand: siteInfo.brand }),
 				...(Array.isArray(provider.sameAs) && provider.sameAs.length > 0 && { sameAs: provider.sameAs }),
 				...(Array.isArray(provider.openingHours) && provider.openingHours.length > 0 && { openingHours: provider.openingHours })
@@ -995,6 +1116,113 @@ export function ServicesSchema() {
 		</>
 	);
 }
+
+
+
+
+
+
+
+/* ========================================
+	VIDEO SCHEMA COMPONENTS
+======================================== */
+
+
+export interface VideoObjectSchemaInput {
+	contentUrl?: string | null;
+	title?: string | null;
+	name?: string | null;
+	description?: string | null;
+	poster?: string | null;
+	thumbnailUrl?: string | null;
+	width?: string | number | null;
+	height?: string | number | null;
+	uploadDate?: string | null;
+	duration?: string | null;
+	captionsSrc?: string | null;
+	caption?: string | null;
+}
+
+export function buildVideoObjectSchema(props: VideoObjectSchemaInput) {
+	const contentUrl = normalizeProtocolRelativeUrl(safeString(props.contentUrl) || '');
+	const thumbnailUrl = normalizeProtocolRelativeUrl(safeString(props.thumbnailUrl ?? props.poster) || '');
+	const name = sanitizeString(props.title ?? props.name);
+	const description = sanitizeString(props.description);
+	const uploadDate = sanitizeString(props.uploadDate);
+	const duration = sanitizeString(props.duration);
+	const caption = sanitizeString(props.caption ?? props.captionsSrc);
+	const width = parseNumber(props.width ?? undefined);
+	const height = parseNumber(props.height ?? undefined);
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'VideoObject',
+		'@id': contentUrl ? `${contentUrl}#video` : undefined,
+		...(name && { name }),
+		...(description && { description }),
+		...(contentUrl && { contentUrl }),
+		...(thumbnailUrl && { thumbnailUrl }),
+		...(width ? { width } : {}),
+		...(height ? { height } : {}),
+		...(uploadDate && { uploadDate }),
+		...(duration && { duration }),
+		...(caption && { caption }),
+	};
+}
+
+/**
+ * SchemaVideoObject — Inject a JSON-LD <script> tag containing a VideoObject schema object.
+ *
+ * @param {object} [props] - Structured JSON-LD object representing a video (VideoObject schema).
+ * @returns {JSX.Element} - A <SchemaScript> component containing the VideoObject schema.
+ * 
+ */
+SchemaVideoObject.propTypes = {
+	contentUrl: PropTypes.string,
+	title: PropTypes.string,
+	name: PropTypes.string,
+	description: PropTypes.string,
+	thumbnailUrl: PropTypes.string,
+	uploadDate: PropTypes.string,
+	duration: PropTypes.string,
+};
+export type SchemaVideoObjectType = InferProps<typeof SchemaVideoObject.propTypes>;
+export function SchemaVideoObject(props: SchemaVideoObjectType) {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const logoImageObject = siteInfo?.image ? buildImageObject(siteInfo, 'organization') : undefined;
+	const defaultPublisher = siteInfo?.url ? {
+		'@type': ['Organization', 'LocalBusiness'],
+		'@id': `${siteInfo.url.replace(/\/$/, '')}/#organization`,
+		...(siteInfo.name && { name: siteInfo.name }),
+		...(siteInfo.url && { url: siteInfo.url }),
+		...(logoImageObject ? { logo: logoImageObject } : {}),
+		...(siteInfo.sameAs && siteInfo.sameAs.length > 0 ? { sameAs: siteInfo.sameAs } : {}),
+	} : undefined;
+	const defaultAuthor = defaultPublisher ? {
+		'@type': ['Organization', 'LocalBusiness'],
+		'@id': defaultPublisher['@id'],
+	} : undefined;
+	const baseSchema = buildVideoObjectSchema({
+		contentUrl: props.contentUrl,
+		title: props.title,
+		name: props.name,
+		description: props.description,
+		thumbnailUrl: props.thumbnailUrl,
+		uploadDate: props.uploadDate,
+		duration: props.duration
+	});
+	const schema = {
+		...baseSchema,
+		...(defaultPublisher && { publisher: defaultPublisher }),
+		...(defaultAuthor && { author: defaultAuthor }),
+	};
+
+	return <SchemaScript schema={schema} />;
+}
+
+
+
+
 
 
 
@@ -1078,6 +1306,7 @@ export function buildGoogleAggregateRating(googleReviews: GoogleReview[]) {
 
 
 
+
 /* ========================================
 	WEBSITE SCHEMA COMPONENTS
 ======================================== */
@@ -1107,9 +1336,28 @@ export function WebsiteSchema() {
 	const keywords = siteInfo?.keywords;
 	const inLanguage = siteInfo?.default_locale;
 	const sameAs = siteInfo?.sameAs;
-	const potentialAction = buildPotentialAction(siteInfo?.potentialAction);
+	let potentialAction: any;
+	const potentialActionTarget = siteInfo?.potentialAction;
+	if (potentialActionTarget?.target) {
+		const queryInput = potentialActionTarget['query-input'] ?? potentialActionTarget.queryInput;
+		potentialAction = {
+			'@type': potentialActionTarget['@type'] ?? 'SearchAction',
+			target: {
+				'@type': 'EntryPoint',
+				urlTemplate: potentialActionTarget.target,
+			},
+			...(queryInput && { 'query-input': queryInput }),
+		};
+	}
 	const copyrightYear = siteInfo?.copyrightYear;
-	const copyrightHolder = buildCopyrightHolder(siteInfo);
+	let copyrightHolder: any;
+	if (siteInfo?.name) {
+		copyrightHolder = {
+			'@type': ['Organization','LocalBusiness'],
+			name: siteInfo.name,
+			...(siteInfo.url && { url: siteInfo.url }),
+		};
+	}
 
 	const schemaData = {
 		'@context': 'https://schema.org',
@@ -1123,16 +1371,11 @@ export function WebsiteSchema() {
 		...(sameAs && sameAs.length ? { sameAs } : {}),
 		creator: pixelatedTechOrganizationSchema,
 		publisher: {
-			'@type': siteInfo.publisherType || 'Organization',
+			'@type': ['Organization', 'LocalBusiness'],
+			'@id': siteInfo.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 			name: siteInfo.name,
 			...(siteInfo.url && { url: siteInfo.url }),
-			...(siteInfo.image && {
-				'@type': 'ImageObject',
-				'@id': `${siteInfo.url.replace(/\/$/, '')}/#organization`,
-				url: siteInfo.image,
-				...(siteInfo.image_width && { width: parseDimension(siteInfo.image_width ?? undefined) }),
-				...(siteInfo.image_height && { height: parseDimension(siteInfo.image_height ?? undefined) })
-			}),
+			...(siteInfo.image ? { logo: buildImageObject(siteInfo, 'organization') } : {}),
 			...(buildKnowsAboutFromServices(siteInfo))
 		},
 		...(potentialAction && { potentialAction }),
@@ -1145,18 +1388,6 @@ export function WebsiteSchema() {
 	);
 }
 
-function buildCopyrightHolder(siteInfo?: SiteInfo) {
-	if (!siteInfo?.name) {
-		return undefined;
-	}
-	const holderType = siteInfo.publisherType || 'Organization';
-	return {
-		'@type': holderType,
-		name: siteInfo.name,
-		...(siteInfo.url && { url: siteInfo.url })
-	};
-}
-
 function buildKnowsAboutFromServices(siteInfo?: SiteInfo) {
 	if (!siteInfo?.services || !Array.isArray(siteInfo.services)) {
 		return undefined;
@@ -1165,21 +1396,6 @@ function buildKnowsAboutFromServices(siteInfo?: SiteInfo) {
 		.map((service) => typeof service?.name === 'string' ? service.name.trim() : '')
 		.filter((value): value is string => Boolean(value));
 	return knowsAbout.length ? Array.from(new Set(knowsAbout)) : undefined;
-}
-
-function buildPotentialAction(action?: SiteInfo['potentialAction']) {
-	if (!action || !action.target) {
-		return undefined;
-	}
-	const queryInput = action['query-input'] ?? action.queryInput;
-	return {
-		'@type': action['@type'] ?? 'SearchAction',
-		target: {
-			'@type': 'EntryPoint',
-			urlTemplate: action.target
-		},
-		...(queryInput && { 'query-input': queryInput })
-	};
 }
 
 function parseDimension(value?: string | number) {

@@ -97,7 +97,9 @@ describe('ServicesSchema', () => {
 		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
 		const firstService = JSON.parse(scriptTags[0].textContent || '{}');
 
-		expect(firstService.provider.logo).toBe(siteInfo.image);
+		expect(firstService.provider.logo).toBeDefined();
+		expect(firstService.provider.logo['@type']).toBe('ImageObject');
+		expect(firstService.provider.logo.url).toBe(siteInfo.image);
 	});
 
 	it('should include provider brand when provided', () => {
@@ -384,7 +386,9 @@ describe('ServicesSchema', () => {
 		
 		expect(schemaData.provider.name).toBe(siteInfo.name);
 		expect(schemaData.provider.url).toBe(siteInfo.url);
-		expect(schemaData.provider.logo).toBe(siteInfo.image);
+		expect(schemaData.provider.logo).toBeDefined();
+		expect(schemaData.provider.logo['@type']).toBe('ImageObject');
+		expect(schemaData.provider.logo.url).toBe(siteInfo.image);
 		expect(schemaData.provider.telephone).toBe(siteInfo.telephone);
 		expect(schemaData.provider.email).toBe(siteInfo.email);
 	});

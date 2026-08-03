@@ -1,8 +1,8 @@
 import React from "react";
 import { headers } from 'next/headers';
 import { PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig, SchemaWebPage } from "@pixelated-tech/components/server";
-import { descriptionToKeywords, getEbayItem, getEbayProductSchema } from "@pixelated-tech/components/server";
-import { WebsiteSchema, LocalBusinessSchema, ProductSchema } from "@pixelated-tech/components";
+import { descriptionToKeywords, getEbayItem } from "@pixelated-tech/components/server";
+import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
@@ -22,10 +22,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 	const pixelatedConfig = getFullPixelatedConfig();
 	const headersList: Headers = await (headers() as Promise<Headers>);
-	const origin = headersList.get("x-origin") || "";
 	const pathname = headersList.get("x-path") || "";
 	let myMetadata = getRouteByKey(pixelatedConfig.routes, "path", pathname);
-	let productSchema = null;
 
 	if (!myMetadata && pathname.includes('/store/')) {
 		/// NO METADATA FOUND - EBAY STORE ITEM 
@@ -46,12 +44,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 					description: ebayItem.description?.replace(/[\r\n]+/g, ' '),
 					keywords: descriptionToKeywords(thisItemTitle + " " + ebayItem.description, 30).join(", "),
 				};
-
-				// Generate product schema from the fetched item
-				productSchema = getEbayProductSchema({
-					item: ebayItem,
-					siteUrl: `${origin}/store/${itemID}`
-				});
 			}
 		} catch (error) {
 			console.error('Error fetching eBay item:', error);
@@ -65,7 +57,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 					<PageMetaTags />
 					<SchemaWebPage {...myMetadata} />
 					<BreadcrumbListSchema />
-					{productSchema && <ProductSchema product={productSchema} />}
 					<WebsiteSchema />
 					<LocalBusinessSchema />
 					<VisualDesignStyles />

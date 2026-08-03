@@ -12,6 +12,7 @@ import {
 	deriveMediaId,
 	SmartMediaUtilsPropTypes,
 } from './smartmediautils';
+import { SchemaVideoObject } from '../foundation/schema';
 
 const debug = false;
 
@@ -125,15 +126,23 @@ export function SmartVideo(props: SmartVideoType) {
 	};
 
 	return (
-		<video {...videoProps}>
-			<track
-				kind="captions"
-				src={props.captionsSrc || undefined}
-				srcLang="en"
-				label="English captions"
-				default
+		<>
+			<SchemaVideoObject
+				contentUrl={videoSrc}
+				title={title}
+				name={title}
+				thumbnailUrl={posterUrl}
 			/>
-			Your browser does not support the HTML5 Video element.
-		</video>
+			<video {...videoProps}>
+				<track
+					kind="captions"
+					src={props.captionsSrc || undefined}
+					srcLang="en"
+					label="English captions"
+					default
+				/>
+                Your browser does not support the HTML5 Video element.
+			</video>
+		</>
 	);
 }

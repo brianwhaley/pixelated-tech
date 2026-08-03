@@ -15,13 +15,14 @@ export default async function EventsCalendarPage() {
 			.replace(/[^a-z0-9]+/g, '-')
 			.replace(/^-+|-+$/g, '');
 		const eventStartDate = new Date(String(eventFields.startDate ?? ''));
-		const eventEndDate = new Date(String(eventFields.endDate ?? ''));
+		// const eventEndDate = new Date(String(eventFields.endDate ?? ''));
 		return {
 			id: String(eventFields.id ?? index),
 			title: String(eventFields.title ?? 'Untitled Event'),
 			date: eventStartDate.toISOString().split('T')[0],
 			category: String(eventFields.category?.[0] ?? 'General'),
-			url: eventSlug && eventEndDate >= new Date() ? `/events/${eventSlug}` : undefined,
+			// url: eventSlug && eventEndDate >= new Date() ? `/events/${eventSlug}` : undefined,
+			url: eventSlug ? `/events/${eventSlug}` : undefined,
 		};
 	});
 	return (

@@ -214,7 +214,7 @@
 							"description": "Reimbursement for Facebook Advertising for June 2026, as requested."
 						},
 						{
-							"amount": 57.74,
+							"amount": 269.09,
 							"description": "Reimbursement for Facebook Advertising for July 2026, as requested."
 						}
 					]
@@ -357,19 +357,24 @@
 				"additionalInvoiceItems": {
 					"2026-05": {
 						"amount": 1000.00,
-						"description": "Payment #1 and #2 for Initial Build of The Three Muses of Bluffton website"
+						"description": "Payment #1 and #2 of 5 for Initial Build of The Three Muses of Bluffton website"
 					},
 					"2026-06": {
 						"amount": 500.00,
-						"description": "Payment #3 for Initial Build of The Three Muses of Bluffton website"
+						"description": "Payment #3 of 5 for Initial Build of The Three Muses of Bluffton website"
 					},
-					"2026-07": {
-						"amount": 500.00,
-						"description": "Payment #4 for Initial Build of The Three Muses of Bluffton website"
-					},
+					"2026-07": [
+						{
+							"amount": 500.00,
+							"description": "Payment #4 of 5 for Initial Build of The Three Muses of Bluffton website"
+						},{
+							"amount": 250.00,
+							"description": "Monthly Maintenance Fee Overdue for June 2026"
+						}
+					],
 					"2026-08": {
 						"amount": 500.00,
-						"description": "Payment #5 for Initial Build of The Three Muses of Bluffton website"
+						"description": "Payment #5 of 5 for Initial Build of The Three Muses of Bluffton website"
 					}
 				}	
 			}

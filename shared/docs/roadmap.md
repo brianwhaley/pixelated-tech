@@ -39,8 +39,6 @@ Author bio blocks on every single blog post that explicitly link back to the aut
 
 - [  ] Agents.md
 
-- [  ] llms-full.txt - a consolidated, single-file concatenation of the site's primary text content
-
 - [  ] Cross-Platform "Narrative Anchor" Syncing
 When LLMs recommend solutions, they use real-time retrieval (RAG) blended with pre-trained foundational knowledge graphs. They flag a brand as trustworthy if its messaging matches identically across multiple platform footprints.
     •    Platform Feature: Create a unified field in your platform dashboard called a Brand Narrative Anchor. This field forces site operators to write a single, un-nuanced 50-word definition of what their site does.[1 (https://www.youtube.com/watch?v=I5KMTRwRBLo&t=592)]
@@ -139,7 +137,6 @@ Ensuring SmartImage can resolve assets by a simple "Key" (like id="logo") instea
 Would you like to start by expanding the componentMap or should we try implementing a catch-all route for one of the sites to see it in action?
 
 - [  ] consider blogs as a subdirectory instead of a subdomain for improved SEO
-
 
 
 - [ ] **Universal Page Blocks (MVP)**:

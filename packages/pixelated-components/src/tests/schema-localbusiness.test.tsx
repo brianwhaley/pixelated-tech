@@ -46,7 +46,10 @@ describe('LocalBusinessSchema', () => {
 	it('uses the siteInfo image as logo', () => {
 		const { container } = renderSchema();
 		const schema = getSchema(container);
-		expect(schema.logo).toBe(siteInfo.image);
+		expect(schema.logo).toEqual(expect.objectContaining({
+			'@type': 'ImageObject',
+			url: siteInfo.image,
+		}));
 	});
 
 	it('includes priceRange and social links supplied by siteInfo', () => {

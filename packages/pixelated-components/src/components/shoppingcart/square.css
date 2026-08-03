@@ -41,6 +41,12 @@
     padding: 5px 20px;
 }
 
+.square-store-item-detail-closed-message {
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
 .square-store-item-callout .callout-button,
 .square-store-item-callout .callout-button button {
     display: none !important;
