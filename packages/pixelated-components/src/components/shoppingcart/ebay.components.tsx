@@ -128,7 +128,13 @@ export function EbayItems(props: EbayItemsType) {
 				</div>
 				<div id="ebay-items" className="ebay-items">
 					{items.map((item) => {
-						const productSchema = getEbayProductSchema({ item, brandName: 'eBay', siteUrl: item.itemWebUrl });
+						const productSchema = getEbayProductSchema({
+							item,
+							brandName: 'eBay',
+							siteUrl: item.itemWebUrl,
+							siteInfo: config?.siteInfo,
+							routes: config?.routes,
+						});
 						return productSchema ? <ProductSchema key={`ebay-schema-${item.legacyItemId}`} product={productSchema} /> : null;
 
 					})}
@@ -386,7 +392,13 @@ export function EbayItemDetail(props: EbayItemDetailType) {
 		const itemURLTarget = "_self"; /* "_blank" */
 		const shoppingCartItem = getEbayShoppingCartItem({ thisItem: thisItem, cloudinaryProductEnv: props.cloudinaryProductEnv, apiProps: apiProps });
 		shoppingCartItem.itemURL = itemURL;
-		const productSchema = getEbayProductSchema({ item: thisItem, brandName: 'eBay', siteUrl: thisItem.itemWebUrl });
+		const productSchema = getEbayProductSchema({
+			item: thisItem,
+			brandName: 'eBay',
+			siteUrl: thisItem.itemWebUrl,
+			siteInfo: config?.siteInfo,
+			routes: config?.routes,
+		});
 		return (
 			<>
 				{productSchema ? <ProductSchema product={productSchema} /> : null}

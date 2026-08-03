@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server';
+import type { RouteType, SiteInfoType } from "../config/config.types";
 import PropTypes, { InferProps } from "prop-types";
 import { getFullPixelatedConfig } from "../config/config";
 import { CacheManager } from "../foundation/cache-manager";
@@ -460,15 +461,23 @@ getEbayProductSchema.propTypes = {
 	item: PropTypes.object.isRequired,
 	brandName: PropTypes.string,
 	siteUrl: PropTypes.string,
+	siteInfo: PropTypes.object,
+	routes: PropTypes.any,
 };
-export type getEbayProductSchemaType = InferProps<typeof getEbayProductSchema.propTypes>;
+export interface GetEbayProductSchemaProps {
+	item: any;
+	brandName?: string;
+	siteUrl?: string;
+	siteInfo?: SiteInfoType;
+	routes?: RouteType[] | RouteType;
+}
+export type getEbayProductSchemaType = InferProps<typeof getEbayProductSchema.propTypes> & GetEbayProductSchemaProps;
 export function getEbayProductSchema(props: getEbayProductSchemaType) {
 	const item: any = props.item;
-	const config = getFullPixelatedConfig();
-	const siteInfo = config?.siteInfo;
+	const siteInfo = props.siteInfo;
 	const brandName = props.brandName || item.brand?.name || siteInfo?.brand?.name || siteInfo?.name || 'eBay';
 	const siteUrl = props.siteUrl || item.itemWebUrl || '';
-	const policyUrl = getPolicyRouteUrl(config?.routes, siteInfo);
+	const policyUrl = getPolicyRouteUrl(props.routes, siteInfo);
 
 	if (!item || !item.title || !item.price) {
 		return null;

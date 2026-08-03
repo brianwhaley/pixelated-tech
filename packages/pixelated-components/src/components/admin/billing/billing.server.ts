@@ -40,11 +40,21 @@ export async function loadBillingConfigData(month?: string, siteName?: string) {
 				return created.getTime() > 0 && `${created.getFullYear()}-${String(created.getMonth() + 1).padStart(2, '0')}` === month;
 			})
 			.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-			.map((row) => ({
-				submitAt: row.created_at,
-				formName: row.formName || '',
-				email: row.shipping_to?.email || row.registration_data?.email || '',
-			}));
+			.map((row) => {
+				const email =
+					row.email || row.from || row.to ||
+					row.orderData?.checkoutData?.shippingTo?.email ||
+					row.orderData?.checkoutData?.email ||
+					row.orderData?.shippingTo?.email ||
+					row.orderData?.email ||
+					'';
+
+				return {
+					submitAt: row.created_at,
+					formName: row.formName || '',
+					email,
+				};
+			});
 	}
 
 	return {

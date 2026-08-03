@@ -668,7 +668,7 @@ describe('SquareCheckout component', () => {
 
 			renderWithProviders(<SquareStoreItemDetail item={item as any} />);
 
-			expect(screen.getByText(/You cannot register for this event, and it is now over\./i)).toBeInTheDocument();
+			expect(screen.getByText(/You cannot register for this event, because it is now over\./i)).toBeInTheDocument();
 			expect(screen.queryByRole('button', { name: /Add to Shopping Cart/i })).toBeNull();
 		});
 

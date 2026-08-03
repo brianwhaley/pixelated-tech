@@ -100,7 +100,6 @@ export interface SiteInfo {
 	termsOfService?: string | null;
 	keywords?: string | null;
 	categories?: string[] | null;
-	publisherType?: string | null;
 	copyrightYear?: number | null;
 	potentialAction?: {
 		"@type"?: string;

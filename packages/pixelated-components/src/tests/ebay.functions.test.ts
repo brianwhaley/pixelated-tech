@@ -421,11 +421,6 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should include sku, mpn, gtin, shippingDetails, and policy URL when available', () => {
-			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({
-				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
-				routes: [{ path: '/returns', name: 'Returns' }]
-			} as any);
-
 			const item = {
 				legacyItemId: '123456',
 				mpn: 'MPN-123',
@@ -440,7 +435,12 @@ describe('ebay.functions - Real Tests', () => {
 				shippingOptions: [{ type: 'Standard' }],
 			};
 
-			const schema = getEbayProductSchema({ item, siteUrl: 'https://example.com' });
+			const schema = getEbayProductSchema({
+				item,
+				siteUrl: 'https://example.com',
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: [{ path: '/returns', name: 'Returns' }],
+			});
 
 			expect(schema).not.toBeNull();
 			expect(schema?.sku).toBe('123456');
@@ -457,11 +457,6 @@ describe('ebay.functions - Real Tests', () => {
 		});
 
 		it('should fallback brand to siteInfo when brandName is not provided', () => {
-			vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue({
-				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
-				routes: []
-			} as any);
-
 			const item = {
 				legacyItemId: '123456',
 				title: 'Test Product',
@@ -470,7 +465,10 @@ describe('ebay.functions - Real Tests', () => {
 				itemWebUrl: 'https://ebay.com/itm/123456',
 			};
 
-			const schema = getEbayProductSchema({ item });
+			const schema = getEbayProductSchema({
+				item,
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+			});
 
 			expect(schema?.brand?.name).toBe('Example Brand');
 		});

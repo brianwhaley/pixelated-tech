@@ -46,8 +46,8 @@ describe('SchemaEvent component schema generation', () => {
 				id: 'event-1',
 				title: 'Spring Gathering',
 				description: 'A live workshop',
-				startDate: '2025-06-01T18:00:00Z',
-				endDate: '2025-06-01T20:00:00Z',
+				startDate: '2028-06-01T18:00:00Z',
+				endDate: '2028-06-01T20:00:00Z',
 				carouselImages: [
 					{ image: '//images.ctfassets.net/abc/1.jpg', imageAlt: 'Image 1' },
 				],
@@ -62,23 +62,64 @@ describe('SchemaEvent component schema generation', () => {
 		expect(schema['@context']).toBe('https://schema.org');
 		expect(schema['@type']).toBe('Event');
 		expect(schema.name).toBe('Spring Gathering');
-		expect(schema.startDate).toBe('2025-06-01T18:00:00.000Z');
-		expect(schema.endDate).toBe('2025-06-01T20:00:00.000Z');
+		expect(schema.startDate).toBe('2028-06-01T18:00:00.000Z');
+		expect(schema.endDate).toBe('2028-06-01T20:00:00.000Z');
 		expect(schema.url).toBe('https://threemuses.example/events/event-1');
 		expect(schema.image).toEqual(['https://images.ctfassets.net/abc/1.jpg']);
+		expect(schema.location).toEqual({
+			'@type': 'Place',
+			'@id': 'https://threemuses.example/#organization',
+			name: 'Three Muses',
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: '123 Main St',
+				addressLocality: 'Cambridge',
+				addressRegion: 'MA',
+				postalCode: '02139',
+				addressCountry: 'USA',
+			},
+		});
 		expect(schema.offers).toEqual({
 			'@type': 'Offer',
 			url: 'https://threemuses.example/events/event-1',
-			price: 45,
+			price: '45.00',
 			priceCurrency: 'USD',
 			availability: 'https://schema.org/InStock',
-			validFrom: '2025-06-01T18:00:00.000Z',
+			validFrom: '2028-06-01T18:00:00.000Z',
 		});
-		expect(schema.organizer).toEqual(expect.objectContaining({
-			'@type': 'Organization',
+		expect(schema.organizer).toEqual({
+			'@type': ['Organization', 'LocalBusiness'],
+			'@id': 'https://threemuses.example/#organization',
 			name: 'Three Muses',
 			url: 'https://threemuses.example',
-		}));
+		});
+		expect(schema.performer).toEqual({
+			'@type': ['Organization', 'LocalBusiness'],
+			'@id': 'https://threemuses.example/#organization',
+			name: 'Three Muses',
+			url: 'https://threemuses.example',
+		});
+		expect(schema.eventStatus).toBe('https://schema.org/EventScheduled');
+	});
+
+	it('marks completed for past events', () => {
+		const eventData = {
+			fields: {
+				id: 'event-past',
+				title: 'Past Event',
+				description: 'An event that already happened',
+				startDate: '2020-01-01T18:00:00Z',
+				endDate: '2020-01-01T20:00:00Z',
+				carouselImages: [],
+				price: 40,
+				maxSeats: 10,
+			},
+		};
+
+		const { container } = render(<SchemaEvent event={eventData as any} />, { config: { siteInfo } });
+		const schema = parseJsonLd(container);
+
+		expect(schema.eventStatus).toBe('https://schema.org/EventCompleted');
 	});
 
 	it('omits offers when price is missing', () => {

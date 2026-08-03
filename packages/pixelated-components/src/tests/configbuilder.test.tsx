@@ -279,7 +279,7 @@ describe('ConfigBuilder Component', () => {
 
       const sameAs = testConfigData.siteInfo?.sameAs || [];
       // assert that at least the canonical social URLs appear in the rendered form
-      sameAs.slice(0, 3).forEach(url => {
+      sameAs.slice(0, 3).forEach((url: string | undefined) => {
         if (url) expect(screen.getByDisplayValue(new RegExp(url))).toBeInTheDocument();
       });
     });
@@ -510,7 +510,6 @@ describe('ConfigBuilder Component', () => {
       expect(screen.getByLabelText('Opening Hours')).toBeInTheDocument();
       expect(screen.getByLabelText('Price Range')).toBeInTheDocument();
       expect(screen.getByLabelText('Keywords')).toBeInTheDocument();
-      expect(screen.getByLabelText('Publisher Type')).toBeInTheDocument();
       expect(screen.getByLabelText('Copyright Year')).toBeInTheDocument();
       expect(screen.getByLabelText('Search Action Type')).toBeInTheDocument();
       expect(screen.getByLabelText('Search Target URL')).toBeInTheDocument();
@@ -524,17 +523,12 @@ describe('ConfigBuilder Component', () => {
       const openingHoursInput = screen.getByLabelText('Opening Hours') as HTMLInputElement;
       fireEvent.change(openingHoursInput, { target: { value: 'Mo-Fr 09:00-17:00' } });
       
-      // Update publisher type
-      const publisherTypeSelect = screen.getByLabelText('Publisher Type') as HTMLSelectElement;
-      fireEvent.change(publisherTypeSelect, { target: { value: 'LocalBusiness' } });
-      
       // Update copyright year
       const copyrightYearInput = screen.getByLabelText('Copyright Year') as HTMLInputElement;
       fireEvent.change(copyrightYearInput, { target: { value: '2024' } });
       
       // Check that the input values are updated
       expect(openingHoursInput.value).toBe('Mo-Fr 09:00-17:00');
-      expect(publisherTypeSelect.value).toBe('LocalBusiness');
       expect(copyrightYearInput.value).toBe('2024');
       
       // Check that preview contains the updated values (more flexible check)

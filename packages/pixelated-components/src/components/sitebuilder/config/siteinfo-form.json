@@ -222,19 +222,6 @@
       }
     },
     {
-      "component": "FormSelect",
-      "props": {
-        "id": "publisherType",
-        "name": "publisherType",
-        "label": "Publisher Type",
-        "options": [
-          { "value": "Organization", "label": "Organization" },
-          { "value": "LocalBusiness", "label": "Local Business" },
-          { "value": "Person", "label": "Person" }
-        ]
-      }
-    },
-    {
       "component": "FormInput",
       "props": {
         "type": "number",

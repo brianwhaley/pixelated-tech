@@ -89,6 +89,7 @@ const pageComponents = [
 	['login', 'src/app/(pages)/login/page.tsx'],
 	['configbuilder', 'src/app/(pages)/configbuilder/page.tsx'],
 	['contentful-migrate', 'src/app/(pages)/contentful-migrate/page.tsx'],
+	['form-submits', 'src/app/(pages)/form-submits/page.tsx'],
 	['formbuilder', 'src/app/(pages)/formbuilder/page.tsx'],
 	['newdeployment', 'src/app/(pages)/newdeployment/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
