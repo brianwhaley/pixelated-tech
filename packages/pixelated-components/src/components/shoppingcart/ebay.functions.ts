@@ -508,15 +508,12 @@ export function getEbayProductSchema(props: getEbayProductSchemaType) {
 	const currency = item.price?.currency || item.price?.currencyCode || 'USD';
 
 	return {
-		'@context': 'https://schema.org',
-		'@type': 'Product',
-		'name': item.title,
-		'image': images,
-		'description': item.description || '',
-		'sku': sku || item.itemId,
-		'brand': {
-			'@type': 'Brand',
-			'name': brandName,
+		name: item.title,
+		image: images,
+		description: item.description || '',
+		sku: sku || item.itemId,
+		brand: {
+			name: brandName,
 		},
 		mpn,
 		gtin,
@@ -528,13 +525,12 @@ export function getEbayProductSchema(props: getEbayProductSchemaType) {
 			weightUnit: item.weightUnit,
 		},
 		...(policyUrl ? { hasMerchantReturnPolicy: policyUrl } : {}),
-		'offers': {
-			'@type': 'Offer',
-			'url': siteUrl,
-			'priceCurrency': currency,
-			'price': priceValue,
-			'availability': 'https://schema.org/InStock',
-			'itemCondition': item.condition ? `https://schema.org/${item.condition.replace(/\s+/g, '')}` : 'https://schema.org/NewCondition',
+		offers: {
+			url: siteUrl,
+			priceCurrency: currency,
+			price: priceValue,
+			availability: 'https://schema.org/InStock',
+			itemCondition: item.condition ? `https://schema.org/${item.condition.replace(/\s+/g, '')}` : 'https://schema.org/NewCondition',
 		},
 	};
 }

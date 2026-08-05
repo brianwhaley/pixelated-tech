@@ -50,6 +50,7 @@
 
 .menu-item:hover {
 	background-color: var(--accent1-color);
+    color: contrast-color(var(--accent1-color));
 }
 
 .menu-item:not(:first-child) {
@@ -59,6 +60,7 @@
 .menu-item a {
 	/* this is the button */
 	background-color: var(--accent1-color);
+    color: contrast-color(var(--accent1-color));
 	font-weight: bold;
 	height: 30px;
 	line-height: 30px;
@@ -73,8 +75,10 @@
 
 .menu-item a.selected {
 	background-color: var(--secondary-color);
+    color: contrast-color(var(--secondary-color));
 }
 
 .menu-item a:hover {
 	background-color: var(--accent2-color);
+    color: contrast-color(var(--accent2-color));
 }

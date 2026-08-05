@@ -1,16 +1,16 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "name": "Gea Construction FAQs",
-  "description": "Frequently asked questions about Gea Construction' web design, development, and digital services.",
+  "name": "GEA Construction FAQs",
+  "description": "Frequently asked questions about GEA Construction's residential remodeling, kitchen and bath renovations, decks, hardscaping, and handyman services in the Lowcountry.",
   "author": {
     "@type": "Organization",
-    "name": "Gea Construction",
+    "name": "GEA Construction",
     "url": "https://www.geaconstruction.net"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Gea Construction",
+    "name": "GEA Construction",
     "url": "https://www.geaconstruction.net"
   },
   "datePublished": "2023-10-01",
@@ -18,7 +18,7 @@
   "inLanguage": "en-US",
   "isPartOf": {
     "@type": "WebSite",
-    "name": "Gea Construction",
+    "name": "GEA Construction",
     "url": "https://www.geaconstruction.net"
   },
   "mainEntityOfPage": {
@@ -28,8 +28,8 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why should I choose Gea Construction? What makes you different?",
-      "category": "Getting Started",
+      "name": "Why should I choose GEA Construction? What makes you different?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -40,13 +40,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "We combine technical expertise with creative design thinking, delivering websites that not only look great but drive real business results. Unlike Do-It-Yourself platforms like Wordpress, Wix, or Godaddy that require you to learn new tools, create your own content, and manage ongoing maintenance, we offer an all-inclusive service that bundles custom web development, graphic design, content creation, SEO optimization, and ongoing support.", "We act as an extension of your team, handling everything from business strategy and competitive analysis to technical implementation and performance monitoring.", "Our transparent pricing eliminates hidden costs, and our focus on long-term partnerships ensures your website grows with your business rather than becoming outdated. While platforms like WordPress, Wix, or Godaddy provide basic tools with customer service phone numbers, we deliver professional-grade solutions with years of experience across industries, ensuring your site is fast, secure, accessible, and optimized for conversions." ]
+        "text": [
+          "Selecting a residential general contractor requires placing immense trust in the crew working inside your personal living space. GEA Construction grounds every single project in firefighter-backed principles of duty, rigorous safety standards, total honesty, and unwavering operational order. While ordinary builders often leave clients guessing through unreturned phone calls, shifting estimates, and dusty, chaotic job sites, our team operates with disciplined daily structure and absolute clarity. We treat every home with utmost respect by enforcing strict dust control containment barriers, maintaining ultra-clean work zones, and keeping homeowners informed through clear daily progress updates. You never have to wonder who is on your property or what phase of construction is happening next because our direct hands-on project management guarantees active oversight from day one.",
+          "Our specialized expertise spans the full scope of interior and exterior residential carpentry, including high-end kitchen redesigns, custom curbless tile shower conversions, composite porch structures, and coastal exterior updates. Rather than delegating critical construction details to distant third parties, our leadership stays directly involved on-site to ensure structural integrity and flawless aesthetic finishes. We intentionally navigate every regional requirement unique to the Lowcountry, taking care of municipal building permits, structural inspections, and complex neighborhood Architectural Review Board submittals on your behalf. Homeowners choose us when they want complete peace of mind, uncompromising structural craftsmanship, and a reliable partner who honors commitments down to the smallest detail. When you hire our crew, you gain a dedicated partner committed to elevating your property value and providing a smooth, stress-free remodeling journey."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "How long will it take to build my website?",
-      "category": "Process & Timeline",
+      "name": "What primary service areas does GEA Construction cover?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -57,13 +60,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "Website development timelines vary based on project complexity and scope. Simple brochure sites typically take 2-3 weeks from concept to launch, while complex e-commerce platforms or custom web applications may require 4-8 weeks. Our agile development process ensures regular progress updates and milestones.", "During the discovery phase, we provide a detailed timeline estimate tailored to your specific project. Learn more about our development process at <a href='/process'>https://www.geaconstruction.net/process</a>." ]
+        "text": [
+          "GEA Construction delivers premier residential general contracting services to property owners located throughout Beaufort County and Jasper County in coastal South Carolina. Our active local service footprint includes Bluffton, Hilton Head Island, Okatie, Beaufort, Hardeeville, and Ridgeland. Because coastal environments present distinct structural challenges related to high humidity, salt spray, and extreme storm cycles, living and working directly within these communities gives us deep insight into proper material selection. We regularly perform custom indoor transformations, exterior deck builds, window installations, and structural repairs in both established historic neighborhoods and modern planned developments across the region. Homes located near coastal waterways require specialized building methods, and our crew brings comprehensive knowledge regarding proper flashing, stainless hardware, and moisture resistance to every job.",
+          "Furthermore, our company maintains extensive experience navigating the specific entrance protocols and construction regulations of private gated communities across the Lowcountry. We frequently execute high-end home renovations inside developments such as Palmetto Bluff, Sea Pines, Belfair, Berkeley Hall, Colleton River, Wexford, Long Cove, Sun City, and Oldfield. Working within these private enclaves requires strict adherence to designated work hours, formal contractor registration, heavy equipment parking rules, and precise job site debris management. We handle all administrative logistics seamlessly, ensuring your renovation moves forward smoothly without incurring community fines or unnecessary delays. Whether your residence is a coastal golf villa on Hilton Head or a plantation home in Bluffton, our local team brings reliable, high-quality construction directly to your doorstep."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "What's your development process?",
-      "category": "Process & Timeline",
+      "name": "How long does a kitchen or bathroom remodeling project take?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -74,13 +80,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "Our proven development process includes: 1) Discovery & Planning (requirements gathering, goal setting, and project scoping), 2) Design (wireframes, mockups, and user experience design), 3) Development (coding with modern technologies and best practices), 4) Testing (quality assurance, performance optimization, and cross-browser compatibility), and 5) Launch & Training (deployment, handover, and user training).", "We maintain transparent communication throughout, with weekly updates and client feedback at every stage. View our detailed process at <a href='/process'>https://www.geaconstruction.net/process</a>." ]
+        "text": [
+          "Determining a precise construction schedule relies heavily on the physical size of your room, required structural changes, electrical and plumbing re-configurations, and material availability. A comprehensive kitchen overhaul involving custom cabinetry, stone countertop fabrication, tile backsplash installation, and fixture upgrades typically spans three to five weeks of active on-site labor once all materials have been delivered. Smaller kitchen updates or straight surface replacements can often be completed even faster when structural walls remain unchanged. Bathrooms follow a similar predictable cadence; a standard guest bath update usually finishes within seven to ten business days, whereas an extensive master suite bath renovation takes roughly two to three weeks. We focus on completing work efficiently without ever cutting corners on drying times, waterproofing cures, or code inspections.",
+          "To eliminate unexpected downtime during active construction, our team establishes a fully staged project plan long before the first demolition hammer hits your wall. We pre-order all custom cabinetry, specialty plumbing fixtures, quartz slabs, and imported tiles in advance, verifying that every single component sits safely in storage before tearing out existing fixtures. This deliberate staging approach prevents scenario where your home sits idle for weeks waiting on a backordered faucet or custom cabinet door. Every client receives a structured line-item schedule detailing specific trade visits, floor protection steps, framing days, tiling phases, and final inspections. Should unexpected hidden issues like historic wood rot or outdated wiring arise behind open walls, we communicate the necessary adjustments immediately alongside clear timeline updates."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can I edit the site myself and what CMS do you use?",
-      "category": "Content & Management",
+      "name": "What is GEA Construction's remodeling process?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -91,13 +100,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "Absolutely! We build websites using user-friendly content management systems (CMS) like Contentful and WordPress for flexible content sites, Shopify for e-commerce, or custom headless CMS solutions for web applications. This gives you the power to easily update content, add blog posts, modify images, and manage your site without technical skills. We offer comprehensive training sessions and detailed documentation for whichever platform best fits your needs.", "For clients who prefer not to manage content themselves, we offer ongoing maintenance packages that include content updates as part of our service. Our CMS choices prioritize ease of use while maintaining professional functionality and security." ]
+        "text": [
+          "Our operational methodology is structured around five deliberate phases engineered to eliminate confusion, manage costs, and deliver superior building quality. It starts with an initial on-site consultation where we evaluate your existing physical space, listen to your functional goals, take precise field measurements, and discuss visual style preferences. Next, we translate those details into a comprehensive, fully itemized scope of work complete with fixed line-item pricing so you understand exact material and labor costs up front. Once the proposal receives your sign-off, phase three focuses on administrative preparation, where we submit all detailed construction drawings, material finish samples, and site plans to local municipal building departments and neighborhood architectural review boards. Securing official approvals before pulling trade permits ensures full compliance and protects your investment.",
+          "The fourth phase brings active construction, beginning with floor protection laydowns, zip-wall dust containment, and controlled structural demolition. Throughout the build phase, our project managers coordinate skilled trade technicians, execute structural modifications, install specialized finishes, and manage mandatory municipal rough-in inspections. We maintain active daily communication with you, offering visual photo updates and answering questions as work progresses toward completion. The fifth and final phase involves a thorough quality assurance walkthrough alongside the homeowner to inspect every tile grout line, cabinet hinge, paint edge, and electrical switch. Any minor touch-ups are recorded on a formal punch list and resolved immediately before final payment, ensuring total satisfaction with your newly transformed space."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Do you offer ongoing maintenance?  What if I need more pages later?",
-      "category": "Support & Maintenance",
+      "name": "Do you handle local municipal permits and HOA/ARB approvals?",
+      "category": "Permits & Compliance",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -108,13 +120,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We provide comprehensive and competitive maintenance packages including security updates, performance monitoring, backup management, content updates, and technical support. Regular maintenance ensures your site stays secure, fast, and compatible with the latest web standards. We offer flexible plans from basic security monitoring to full content management services. We design websites with scalability and future growth in mind.Adding new pages, sections, or features is straightforward and cost-effective compared to building from scratch. Our modular approach means we can easily integrate new content areas, blog functionality, or additional services. During the initial planning phase, we discuss potential future needs to ensure your site can grow with your business. "
+        "text": [
+          "Navigating government building departments and neighborhood HOA regulations can easily feel overwhelming for homeowners attempting to manage renovations independently. GEA Construction assumes complete responsibility for every administrative requirement, pulling official building, electrical, plumbing, and mechanical permits with local authorities across Beaufort and Jasper counties. Our thorough familiarity with South Carolina building codes guarantees that every beam modification, window replacement, deck structure, or shower plumbing shift satisfies modern structural standards. We schedule all mandatory municipal inspections at key construction milestones, meeting on-site directly with code enforcement officials to secure formal sign-offs. This rigorous approach ensures your home remains fully compliant, legally protected, and easy to insure or sell in the future.",
+          "In addition to city and county permits, we possess extensive experience handling strict Architectural Review Board (ARB) submittals for master-planned coastal communities. Gated Lowcountry plantations maintain rigid guidelines regarding exterior paint swatches, rooflines, window styles, deck materials, tree preservation zones, and hardscape setbacks. Our office compiles complete application packets containing architectural elevation drawings, manufacturer material cut sheets, physical trim samples, site surveys, and landscape impact plans required by your specific board. We represent your project directly during review meetings, responding to board inquiries and making necessary plan tweaks promptly to secure swift written approvals. By managing these complex bureaucratic workflows entirely in-house, we save you significant time and protect your project from costly community violation fines."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Is the site SEO-friendly?",
-      "category": "Technical Details",
+      "name": "What materials do you use for decks and outdoor living projects?",
+      "category": "Outdoor Construction",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -125,13 +140,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "SEO is fundamental to our development approach. Every website we build includes: fast loading speeds, mobile-first responsive design, semantic HTML structure, proper heading hierarchy, alt text for images, meta descriptions, and schema markup. We implement technical SEO best practices and can provide ongoing SEO audits, keyword optimization, and performance monitoring. Our portfolio showcases sites that consistently rank well in search results."
+        "text": [
+          "Outdoor structures built in the humid coastal Lowcountry must withstand intense ultraviolet heat, relentless rain showers, destructive termites, and salty air currents. GEA Construction constructs high-performance composite decks using industry-leading capped composite and PVC decking materials from brands like Trex and TimberTech. These advanced synthetic surface boards resist splintering, fading, staining, and rotting, completely removing the grueling annual task of sanding and staining natural wood boards. We install boards utilizing hidden clipping systems that secure decking from the sides, creating a sleek, barefoot-friendly surface completely free of exposed screw heads. To frame these beautiful outdoor spaces, we incorporate custom aluminum or powder-coated cable railing systems that maximize surrounding views of local marshes, lagoons, and golf courses.",
+          "The invisible subframe beneath your deck boards determines whether the structure lasts five years or thirty years, which is why we over-engineer our framing foundations. We construct support framing using heavy-duty pressure-treated lumber specifically rated for ground contact, securing post connections into deep concrete footings. Crucially, we protect every joist top and beam surface with waterproof butyl joist tape, creating a protective membrane that prevents standing water from seeping into wood grain and causing subframe rot. All frame connections, structural hangers, and carriage bolts utilize marine-grade stainless steel or double-dipped galvanized hardware built to resist coastal corrosion. Whether constructing a custom multi-level composite deck or a screened porch with under-deck drainage, our structural techniques yield long-lasting performance."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Will my web site work on mobile ( i.e. - responsive layout)?",
-      "category": "Technical Details",
+      "name": "Are your replacement windows and doors rated for coastal storms?",
+      "category": "Windows & Doors",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -142,13 +160,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Yes, mobile responsiveness is non-negotiable in modern web design. All our websites are built with a mobile-first approach, ensuring optimal performance across all devices - from large desktop screens to smartphones. We test extensively on various devices and browsers, implementing fluid layouts, touch-friendly navigation, and optimized loading speeds for mobile users. With over 60% of web traffic coming from mobile devices, this ensures your site reaches your entire audience effectively."
+        "text": [
+          "Upgrading exterior doors and windows along the South Carolina coast demands strict structural attention to wind-borne debris hazards and intense atmospheric pressure changes. GEA Construction exclusively installs high-efficiency, impact-rated windows and entry door systems specifically engineered to meet or exceed rigorous coastal building codes. These advanced window units feature heavy-duty laminated safety glass sandwiching a clear structural interlayer that remains intact even if impacted by flying storm debris. Beyond hurricane defense, impact glass delivers outstanding daily benefits by blocking over 99 percent of harmful ultraviolet rays that fade interior hardwood floors and furniture. Furthermore, the thick multi-pane laminated construction dramatically reduces exterior noise pollution from neighborhood traffic, lawn mowers, and storms, creating a noticeably quieter indoor living sanctuary.",
+          "Proper installation techniques matter just as much as purchasing a high-quality glass unit when protecting your home against severe coastal weather. Our technicians frame, level, flash, and seal every opening using multi-layer self-adhering flashing tapes, high-grade silicones, and non-expanding closed-cell foam insulation. This meticulous installation seals out driving rain and eliminates drafty air leaks, directly reducing your monthly heating and air conditioning power bills. We offer extensive style options ranging from classic double-hung windows with traditional lowcountry divider grilles to expansive multi-panel sliding patio doors that seamlessly open living spaces to covered porches. Upgrading your home's thermal envelope with certified impact-rated glass not only elevates visual curb appeal, but also frequently qualifies homeowners for substantial savings on annual coastal windstorm insurance premiums."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Do you build e-commerce sites?",
-      "category": "Services",
+      "name": "How do you waterproof custom tile showers during bath remodels?",
+      "category": "Bathroom Remodeling",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -159,13 +180,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Yes, e-commerce is one of our specialties. We build robust online stores using platforms like Shopify, WooCommerce, or custom solutions. Our e-commerce sites include secure payment processing (Stripe, PayPal), inventory management, customer accounts, order tracking, and integration with shipping providers. We also implement conversion optimization techniques to maximize sales. Check out our e-commerce portfolio at <a href='/portfolio'>https://www.geaconstruction.net/portfolio</a> for examples."
+        "text": [
+          "Preventing moisture penetration behind shower walls is the absolute most critical technical aspect of any high-end bathroom renovation project. Traditional shower construction methods rely on outdated liquid painted membranes or simple mortar beds with weep holes that frequently fail, trapping moisture and causing structural wood rot or hidden mold growth over time. GEA Construction completely eliminates water intrusion risks by installing fully integrated Schluter-KERDI waterproofing systems beneath every tile installation. We construct shower walls using rigid, waterproof KERDI-BOARD panels, fastening them securely to wall studs with specialized target washers and structural screws. This forms a continuous, completely sealed, vapor-tight enclosure that permanently prevents steam and water from ever reaching the underlying wooden studs.",
+          "Our technicians seal every panel seam, wall intersection, shower niche corner, and fastener head using KERDI-BAND waterproofing strips embedded in specialized modified thin-set mortar. We install prefabricated, pre-sloped shower trays combined with integrated bonding drain flanges, ensuring wastewater flows directly down the drain without pooling beneath floor tiles. Pipe protrusions and mixing valves receive engineered elastic pipe seals to guarantee no water sneaks behind wall valves during daily shower use. Prior to laying a single decorative tile, we conduct thorough flood tests by capping the drain and filling the basin to verify a 100% watertight seal. When your custom tile, natural stone, or linear drain is set over our sealed substrate, you receive a luxurious, low-maintenance shower engineered to last for decades."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "How will my web site be hosted?",
-      "category": "Ownership & Legal",
+      "name": "What types of handyman and home repair services do you offer?",
+      "category": "Handyman & Repairs",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -176,13 +200,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We recommend using our hosting partner, Amazon Web Services (AWS), for your hosting needs. This allows us to offer fast and cost effective solutions with high reliability and scalability.  We ensure your hosting includes SSL certificates, regular backups, CDN integration for global speed, and security monitoring. Our Essential maintenance package offers hands-off management and fully managed hosting that include server maintenance, updates, and performance optimization."
+        "text": [
+          "Beyond major structural renovations, GEA Construction maintains a dedicated general repair branch to keep your home operating in peak structural condition. The Lowcountry climate causes accelerated wear on exterior building components, making routine maintenance essential for preserving long-term property values. We specialize in exterior wood rot repair, removing damaged trim, fascia, and window surrounds and replacing them with rot-proof cellular PVC composite lumber. Interior repair services cover drywall patching, crack repair, ceiling texture matching, interior door adjustments, casing replacement, and custom crown molding installations. We also execute smaller scale plumbing and electrical updates, such as replacing outdated bathroom vanities, swapping kitchen sinks, installing ceiling fans, and mounting decorative light fixtures.",
+          "Homeowners preparing to buy or sell property regularly turn to our versatile repair crew to resolve comprehensive real estate inspection punch lists quickly. Inspection reports often highlight minor deficiencies like loose railing posts, improper flashing, sticking doors, missing attic insulation, or exterior sealant gaps that can stall property transactions. We review your inspector's repair summary, provide a clear flat-rate price, and execute every necessary fix according to professional trade standards. Our team works efficiently alongside local real estate agents to ensure all punch list items are fully resolved well before scheduled closing dates. No matter if you need a minor trim repair or a full list of inspector repairs completed, our handyman team delivers prompt, professional, and reliable service."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "What happens if my site breaks?",
-      "category": "Support & Maintenance",
+      "name": "Do you offer discounts for new homebuyers or real estate punch lists?",
+      "category": "Offers & Pricing",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -193,13 +220,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We stand behind our work with reliable support options. Our maintenance packages include priority response times, with emergency fixes available within hours for critical issues. For clients without maintenance plans, we offer emergency support services. Regular maintenance and proactive monitoring help prevent most issues before they occur."
+        "text": [
+          "Purchasing a new residence is an exciting milestone, but settling into a newly acquired home often highlights needed cosmetic updates and functional repairs. GEA Construction partners closely with local real estate agents, mortgage brokers, and home buyers to provide exclusive promotional savings during the moving process. We proudly offer a dedicated 10% Pre-Move-In Discount for home buyers who contract renovation work or inspection punch list repairs prior to moving their personal belongings inside. Executing wall painting, flooring replacement, bathroom tile updates, and kitchen modifications while the house stands completely empty maximizes work efficiency and saves substantial time. This promotional discount allows buyers to stretch their remodeling budgets further while creating their dream interior layout before unpacking a single moving box.",
+          "Accessing this special introductory rate simply requires providing proof of recent property purchase or a referral from your real estate representative during your initial consultation. Our team conducts a pre-closing property walkthrough to measure spaces and prepare itemized estimates while your transaction sits in escrow. This proactive approach allows us to secure necessary building permits and order construction materials early, enabling work to commence immediately upon your official closing day. We can complete wall painting, cabinet updates, light fixture swaps, and bathroom conversions before your moving truck arrives on site. Our pre-move incentive provides an affordable, convenient, and organized solution for converting a newly purchased house into your ideal home."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can you show me examples of your work?",
-      "category": "Getting Started",
+      "name": "How is a custom paver patio built to prevent sagging and standing water?",
+      "category": "Patios & Hardscaping",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -210,13 +240,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Absolutely! Our portfolio showcases diverse projects across industries including e-commerce, professional services, healthcare, and creative businesses. Each case study includes project details, technologies used, and results achieved. Visit <a href='/portfolio'>https://www.geaconstruction.net/portfolio</a> to explore our work and see how we've helped businesses like yours succeed online."
+        "text": [
+          "A stunning outdoor paver patio or natural travertine terrace is only as stable as the invisible structural foundation constructed underneath its surface. Installing pavers directly over soft coastal sand or poor topsoil inevitable results in uneven shifting, sunken tire tracks, weeds taking root, and pooling water during rainstorms. GEA Construction begins hardscape projects by excavating native soil down to a firm, sub-grade depth determined by specific site conditions. We lay down thick layers of crushed granite aggregate base rock, saturating and compacting the base materials in heavy layers using mechanical plate compactors. This dense sub-base forms a rigid, load-bearing platform that prevents future soil settling and handles severe vehicle or patio furniture weight without cracking or dipping.",
+          "Over the compacted aggregate base, we spread a smooth, level layer of washed concrete bedding sand engineered for proper water drainage. Pavers or natural stone tiles are laid in carefully planned architectural patterns, utilizing string lines and laser levels to establish subtle slope angles away from your home's foundation. Heavy-duty plastic edge restraints secured with long steel spikes are fastened around the entire perimeter to lock pavers in place and prevent lateral spreading. Once the surface is set, we sweep specialized polymeric sand into every joint line, activating the binder with a light water mist to lock pavers together. This hardened joint sand forms a durable barrier that stops weed growth, prevents ant infestations, and allows rainwater to drain cleanly off your patio."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can you help with digital marketing?",
-      "category": "Services",
+      "name": "How much does a home remodeling project cost?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -227,41 +260,10 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Yes, we offer comprehensive digital marketing services including SEO optimization, Google Ads management, social media marketing, email campaigns, and conversion rate optimization. A polished website is just the foundation - we help you attract, engage, and convert visitors into customers. Our data-driven approach ensures measurable results and ROI."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does a website cost?",
-      "category": "Getting Started",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": "Website costs vary significantly based on complexity, features, and scope. Our pricing scales from cost-effective brochure sites to complex e-commerce platforms or custom web applications. We provide free assessments with transparent, detailed estimates after working with you to understand your specific needs. For a comprehensive breakdown of our pricing structure and what's included, visit our detailed cost guide at <a href='/cost'>https://www.geaconstruction.net/cost</a>."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can you provide references?",
-      "category": "Getting Started",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": "We are happy to provide references upon request. Our portfolio includes a diverse range of clients across various industries, and we can connect you with previous clients who can share their experiences working with us. Please contact us directly to discuss your specific needs and we will provide relevant references to help you make an informed decision."
+        "text": [
+          "Project costs vary across residential construction projects depending on square footage, structural layout changes, plumbing and electrical modifications, and specific material selections. A simple cosmetic refresh using builder-grade materials costs significantly less than a full structural renovation featuring high-end custom cabinetry, quartz countertops, and imported tile. Because every house in the Lowcountry presents unique architectural footprints and site conditions, providing generic flat rates without inspecting the property can lead to inaccurate budgeting. We prioritize complete financial transparency, evaluating your exact physical space and design goals during an initial on-site consultation. This thorough review allows us to construct an accurate financial framework tailored specifically to your expectations without hidden surprises down the road.",
+          "Following our initial site evaluation, GEA Construction provides a detailed, fully itemized written proposal detailing exact labor, material, permit, and trade management costs line by line. You receive clear pricing breakdowns for every phase of construction, allowing you to adjust material choices or project scope to fit comfortably within your target budget. We discuss various material tiers with you—such as comparing capped composite decking against natural hardwoods or custom tiled showers against prefabricated units—so you can make informed investment choices. Our transparent pricing model guarantees that the figure listed on your signed agreement remains the fixed cost of your project unless you request formal changes. Contact our office today to schedule your consultation and receive a precise estimate for your upcoming home renovation."
+        ]
       }
     }
   ]

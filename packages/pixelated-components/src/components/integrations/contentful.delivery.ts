@@ -2,8 +2,6 @@ import PropTypes, { InferProps } from "prop-types";
 import { encode, decode } from 'html-entities';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
-import { getClientOnlyPixelatedConfig } from '../config/config';
-import { getPolicyRouteUrl } from '../foundation/schema.functions';
 
 const debug = false;
 
@@ -210,6 +208,41 @@ export async function getContentfulEntryByEntryID(props: getContentfulEntryByEnt
 }
 
 
+
+
+
+
+/**
+ * getContentfulAssetByAssetID — Fetch a single Contentful asset by its asset ID.
+ *
+ * @param {shape} [props.apiProps] - Contentful API configuration object.
+ * @param {string} [props.asset_id] - Contentful asset ID to fetch.
+ */
+getContentfulAssetByAssetID.propTypes = {
+	/** Contentful API configuration */
+	apiProps: PropTypes.shape({
+		proxyURL: PropTypes.string,
+		base_url: PropTypes.string,
+		space_id: PropTypes.string,
+		environment: PropTypes.string,
+		delivery_access_token: PropTypes.string,
+	}).isRequired,
+	/** Target asset ID */
+	asset_id: PropTypes.string.isRequired,
+};
+export type getContentfulAssetByAssetIDType = InferProps<typeof getContentfulAssetByAssetID.propTypes>;
+export async function getContentfulAssetByAssetID(props: getContentfulAssetByAssetIDType) {
+	const { base_url, space_id, environment, delivery_access_token } = props.apiProps;
+	if (!base_url || !space_id || !environment) {
+		throw new Error('Contentful API properties not configured: base_url, space_id, or environment');
+	}
+	const full_url = buildUrl({
+		baseUrl: base_url,
+		pathSegments: ['spaces', space_id as string, 'environments', environment as string, 'assets', props.asset_id],
+		params: { access_token: delivery_access_token }
+	});
+	return await callContentfulDeliveryAPI({ full_url });
+}
 
 
 
@@ -604,31 +637,21 @@ export async function getContentfulProductSchema(props: getContentfulProductSche
 
 		const fields = product.fields;
 
-		// Create Product Schema Object
-		const config = getClientOnlyPixelatedConfig();
-		const siteInfo = config?.siteInfo;
-		const policyUrl = getPolicyRouteUrl(config?.routes, siteInfo);
-		const productSchema = {
-			'@context': 'https://schema.org/',
-			'@type': 'Product',
+		const rawGtin = fields.gtin != null ? String(fields.gtin).trim() : '';
+		const gtin = rawGtin || undefined;
+		const productSchema: any = {
 			name: fields.title || '',
 			description: fields.description || '',
-			image: [] as string[],
-			brand: {
-				'@type': 'Brand',
-				name: fields.brand || siteInfo?.brand?.name || siteInfo?.name || 'Pixelated'
-			},
+			brand: fields.brand ? { name: fields.brand } : undefined,
 			sku: fields.sku || productId || undefined,
 			mpn: fields.mpn || fields.sku || productId || undefined,
-			gtin: fields.gtin || fields.sku || productId || undefined,
+			...(gtin && { gtin }),
 			shippingDetails: {
 				isShippable: !(fields.productType === 'EVENT' || fields.itemType === 'EVENT'),
 				weight: fields.weight,
 				weightUnit: fields.weightUnit || fields.weight_unit,
 			},
-			...(policyUrl ? { hasMerchantReturnPolicy: policyUrl } : {}),
 			offers: {
-				'@type': 'Offer',
 				url: siteUrl || '',
 				priceCurrency: 'USD',
 				price: String(fields.price || '0'),
@@ -636,22 +659,18 @@ export async function getContentfulProductSchema(props: getContentfulProductSche
 			}
 		};
 
-		// Handle images
 		if (Array.isArray(fields.images) && fields.images.length > 0) {
-			// Note: Contentful images are links to assets
-			// In a real implementation, you'd need to resolve these asset URLs
-			// For now, we store them as asset IDs that can be looked up later
-			(productSchema as any).image = fields.images.map((img: any) => {
-				if (img.sys?.id) {
-					return getAssetUrl ? getAssetUrl(img.sys.id) : `https://assets.ctfassets.net/${img.sys.id}`;
-				}
-				return '';
-			}).filter((url: string) => url);
-		}
-
-		// Add additional product attributes if available
-		if (fields.brand) {
-			(productSchema as any).brand.name = fields.brand;
+			(productSchema as any).image = fields.images
+				.map((img: any) => {
+					if (typeof img === 'string') {
+						return img;
+					}
+					if (img?.sys?.id) {
+						return getAssetUrl ? getAssetUrl(img.sys.id) : `https://assets.ctfassets.net/${img.sys.id}`;
+					}
+					return '';
+				})
+				.filter((url: string) => Boolean(url));
 		}
 		if (fields.model) {
 			(productSchema as any).model = fields.model;

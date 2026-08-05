@@ -46,19 +46,40 @@ describe('Hero (unit)', () => {
 		expect(img).toBeNull();
 	});
 
-		it('renders video variant with video element and no background-image', () => {
-			const { container } = render(
-				<Hero variant="video" video="/videos/clip.mp4" videoPoster="/videos/poster.jpg" />
-			);
-			const section = container.querySelector('.hero.video') as HTMLElement;
-			expect(section).not.toBeNull();
-			// style should not include background-image when video is used
-			expect(section.style.backgroundImage).toBe('');
-			const videoEl = container.querySelector('video') as HTMLVideoElement;
-			expect(videoEl).not.toBeNull();
-			expect(videoEl.src).toContain('/videos/clip.mp4');
-			expect(videoEl.getAttribute('poster')).toContain('/videos/poster.jpg');
-		});
+	it('renders video variant with video element and no background-image', () => {
+		const { container } = render(
+			<Hero variant="video" video="/videos/clip.mp4" poster="/videos/poster.jpg" />
+		);
+		const section = container.querySelector('.hero.video') as HTMLElement;
+		expect(section).not.toBeNull();
+		// style should not include background-image when video is used
+		expect(section.style.backgroundImage).toBe('');
+		const videoEl = container.querySelector('video') as HTMLVideoElement;
+		expect(videoEl).not.toBeNull();
+		expect(videoEl.src).toContain('/videos/clip.mp4');
+		expect(videoEl).toHaveAttribute('poster');
+		expect(videoEl.getAttribute('poster')).toEqual(expect.stringContaining('/videos/poster.jpg'));
+	});
+
+	it('renders video variant with optional schema metadata caption', () => {
+		const { container } = render(
+			<Hero
+				variant="video"
+				video="/videos/clip.mp4"
+				poster="/videos/poster.jpg"
+				title="Hero title"
+				description="Hero description"
+				duration="PT1M"
+				caption="Hero caption"
+			/>
+		);
+		const script = container.querySelector('script[type="application/ld+json"]');
+		expect(script).not.toBeNull();
+		const json = JSON.parse(script!.textContent || '{}');
+		expect(json.caption).toBe('Hero caption');
+		expect(json.name).toBe('Hero title');
+		expect(json.duration).toBe('PT1M');
+	});
 
 	it('renders anchored-img variant using SmartImage', () => {
 		const originalObserver = window.IntersectionObserver;

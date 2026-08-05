@@ -23,21 +23,20 @@ function buildSquareProductSchema(item: SquareStoreItemShapeType, siteInfo: any,
 	const images = item.itemImageURLs?.filter((image): image is string => typeof image === 'string') ?? [];
 	const productImages = images.length > 0 ? images : item.itemImageURL ? [item.itemImageURL] : undefined;
 	const brandName = siteInfo?.brand?.name || siteInfo?.name || undefined;
+	const sku = item.itemSKU || item.itemID;
+	const mpn = item.properties?.mpn || sku;
+	const rawGtin = sanitizeString(item.properties?.gtin);
+	const gtin = rawGtin && /^(?:\d{8}|\d{12}|\d{13}|\d{14})$/.test(rawGtin) ? rawGtin : undefined;
 
 	return {
-		'@context': 'https://schema.org',
-		'@type': 'Product',
 		name: item.itemTitle,
 		description: item.itemDescription || item.itemTitle,
 		image: productImages,
 		url: item.itemURL,
-		sku: item.itemSKU || item.itemID,
-		brand: brandName ? {
-			'@type': 'Brand',
-			name: brandName,
-		} : undefined,
-		mpn: item.properties?.mpn || item.itemSKU || item.itemID,
-		gtin: item.properties?.gtin || item.itemSKU || item.itemID,
+		sku,
+		brand: brandName ? { name: brandName } : undefined,
+		mpn,
+		...(gtin && { gtin }),
 		shippingDetails: {
 			isShippable: item.itemIsShippable !== false,
 			weight: item.itemWeight,
@@ -45,7 +44,6 @@ function buildSquareProductSchema(item: SquareStoreItemShapeType, siteInfo: any,
 		},
 		...(policyUrl ? { hasMerchantReturnPolicy: policyUrl } : {}),
 		offers: {
-			'@type': 'Offer',
 			url: item.itemURL,
 			priceCurrency: item.itemCurrency ?? 'USD',
 			price: item.itemPrice,

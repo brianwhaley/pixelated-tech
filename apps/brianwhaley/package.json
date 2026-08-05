@@ -1,6 +1,6 @@
 {
   "name": "brianwhaley",
-  "version": "2.13.22",
+  "version": "2.13.23",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -35,19 +35,19 @@
     "@eslint/eslintrc": "^3.3.6",
     "@eslint/js": "9.39.4",
     "@eslint/json": "^2.0.1",
-    "@next/eslint-plugin-next": "^16.2.12",
+    "@next/eslint-plugin-next": "^16.3.0",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.0.0",
     "@types/prop-types": "^15.7.15",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/testing-library__react": "^10.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.65.0",
+    "@typescript-eslint/eslint-plugin": "^8.66.0",
+    "@typescript-eslint/parser": "^8.66.0",
     "@vitest/coverage-v8": "^4.1.10",
     "css-loader": "^7.1.4",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.12",
+    "eslint-config-next": "^16.3.0",
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",
     "react-dom": "^19.2.6",
@@ -55,8 +55,8 @@
     "sass-loader": "^17.0.0",
     "style-loader": "^4.0.0",
     "typescript": "6.0.2",
-    "typescript-eslint": "^8.65.0",
+    "typescript-eslint": "^8.66.0",
     "vitest": "^4.1.10"
   },
-  "deployMarker": "2026-07-18T20:40:48.108Z"
+  "deployMarker": "2026-08-05T04:05:55.527Z"
 }

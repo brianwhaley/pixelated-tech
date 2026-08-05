@@ -238,13 +238,13 @@ describe('ebay.functions - Real Tests', () => {
 
 		it('getEbayBrowseItem should handle fetch errors', async () => {
 			(vi.mocked(smartFetch) as any).mockRejectedValueOnce(new Error('Item fetch failed'));
-			const results = await getEbayBrowseItem({ apiProps: mockEbayApiProps as any, itemId: '123', token: 'token' });
+			const results = await getEbayBrowseItem({ apiProps: mockEbayApiProps as any, token: 'token' });
 			expect(results).toBeUndefined();
 		});
 
 		it('getEbayBrowseItem should return item data when fetch succeeds', async () => {
 			(vi.mocked(smartFetch) as any).mockResolvedValueOnce({ item: 'data' });
-			const results = await getEbayBrowseItem({ apiProps: mockEbayApiProps as any, itemId: '123', token: 'token' });
+			const results = await getEbayBrowseItem({ apiProps: mockEbayApiProps as any, token: 'token' });
 			expect(results).toEqual({ item: 'data' });
 		});
 	});
@@ -401,7 +401,7 @@ describe('ebay.functions - Real Tests', () => {
 	});
 
 	describe('getEbayProductSchema', () => {
-		it('should return schema object for valid item', () => {
+		it('should return raw product data for valid item', () => {
 			const item = {
 				legacyItemId: '123456',
 				title: 'Test Product',
@@ -411,13 +411,14 @@ describe('ebay.functions - Real Tests', () => {
 				itemWebUrl: 'https://ebay.com/itm/123456',
 			};
 
-			const schema = getEbayProductSchema({ item, brandName: 'TestBrand', siteUrl: 'https://example.com' });
+			const product = getEbayProductSchema({ item, brandName: 'TestBrand', siteUrl: 'https://example.com' });
 
-			expect(schema).toBeDefined();
-			expect(schema).toHaveProperty('@type', 'Product');
-			expect(schema).toHaveProperty('name', 'Test Product');
-			expect(schema).toHaveProperty('brand');
-			expect(schema?.image).toContain('https://pic.ebay.com/image.jpg');
+			expect(product).toBeDefined();
+			expect(product).not.toHaveProperty('@context');
+			expect(product).not.toHaveProperty('@type');
+			expect(product).toHaveProperty('name', 'Test Product');
+			expect(product).toHaveProperty('brand');
+			expect(product?.image).toContain('https://pic.ebay.com/image.jpg');
 		});
 
 		it('should include sku, mpn, gtin, shippingDetails, and policy URL when available', () => {
@@ -438,7 +439,7 @@ describe('ebay.functions - Real Tests', () => {
 			const schema = getEbayProductSchema({
 				item,
 				siteUrl: 'https://example.com',
-				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				siteInfo: { name: 'Example Site', description: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
 				routes: [{ path: '/returns', name: 'Returns' }],
 			});
 
@@ -467,7 +468,7 @@ describe('ebay.functions - Real Tests', () => {
 
 			const schema = getEbayProductSchema({
 				item,
-				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				siteInfo: { name: 'Example Site', description: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
 			});
 
 			expect(schema?.brand?.name).toBe('Example Brand');

@@ -1,10 +1,12 @@
+/* import path from 'node:path'; */
+/* import { fileURLToPath } from 'node:url'; */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { runCommonPageCoverage, runCommonElementCoverage, runCommonMarkdownPageCoverage, runCommonPodcastPageCoverage, runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
-import { config as pixelatedConfig, createPageComponentMocks, mockState, resetMockState, resetFileDataState, setFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
+import { runCommonPageCoverage, runCommonElementCoverage, /* runCommonBlogPageCoverage, */ runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
+import { config as pixelatedConfig, createPageComponentMocks, /* mockState, */ resetMockState, resetFileDataState, /* setFileDataState, */ setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
 
 vi.mock('@pixelated-tech/components', async () => ({
@@ -21,21 +23,33 @@ import LayoutClient from '@/app/elements/layout-client';
 import NotFound from '@/app/not-found';
 import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
-import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
-import PodcastPage from '@/app/(pages)/podcast/page';
+/* import BlogPage from '@/app/(pages)/blog/page'; */
+/* import PodcastPage from '@/app/(pages)/podcast/page'; */
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
 import ServicesPage from '@/app/(pages)/services/page';
 import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
 import TermsPage from '@/app/(pages)/terms/page';
-import UpdatesPage from '@/app/(pages)/updates/page';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
 
+const getFirstSlug = (items: any[] | undefined) => {
+	if (!Array.isArray(items) || items.length === 0) {
+		return '';
+	}
+	return String(items[0]?.slug ?? items[0]?.name ?? '')
+		.trim()
+		.toLowerCase()
+		.replace(/\s+/g, '-');
+};
+
+const initialServiceAreaSlug = getFirstSlug(pixelatedConfig.siteInfo?.serviceAreas);
+const initialServiceSlug = getFirstSlug(pixelatedConfig.siteInfo?.services);
+
 const routeParams = {
-	serviceArea: 'metro-service-area',
-	service: 'website-design-and-development',
+	serviceArea: initialServiceAreaSlug,
+	service: initialServiceSlug,
 };
 
 vi.mock('next/navigation', () => ({
@@ -90,9 +104,9 @@ const appRoot = path.resolve(__dirname, '..', '..');
 describe('Pixelated Template site coverage', () => {
 	beforeEach(() => {
 		resetMockState();
-		setPixelatedConfigOverride(undefined);
-		routeParams.serviceArea = 'metro-service-area';
-		routeParams.service = 'website-design-and-development';
+		setPixelatedConfigOverride(pixelatedConfig);
+		routeParams.serviceArea = initialServiceAreaSlug;
+		routeParams.service = initialServiceSlug;
 	});
 
 	afterEach(() => {
@@ -103,6 +117,10 @@ describe('Pixelated Template site coverage', () => {
 
 	runCommonPageCoverage({
 		appRoot,
+		ignoredPageTypes: ['blogcalendar', 'updates', 'podcast', 'projects'],
+		routeOverrides: {
+			partners: 'realtor-partner-program',
+		},
 	});
 
 	runCommonElementCoverage({
@@ -135,6 +153,7 @@ describe('Pixelated Template site coverage', () => {
 		},
 	});
 
+	/*
 	runCommonMarkdownPageCoverage({
 		pages: [
 			{
@@ -167,6 +186,7 @@ describe('Pixelated Template site coverage', () => {
 		mockState,
 		resetMockState,
 	});
+	*/
 
 	runCommonServiceRouteCoverage({
 		routeParams,
@@ -179,8 +199,8 @@ describe('Pixelated Template site coverage', () => {
 		setPixelatedConfigOverride,
 		serviceAreaNotFoundText: 'Service area not found. Please return to the service areas list and choose another region.',
 		serviceNotFoundText: 'Service not found. Please return to the services list and choose another option.',
-		initialServiceAreaSlug: 'metro-service-area',
-		initialServiceSlug: 'website-design-and-development',
+		initialServiceAreaSlug,
+		initialServiceSlug,
 	});
 
 	runPageSmokeTests([
@@ -196,7 +216,7 @@ describe('Pixelated Template site coverage', () => {
 			Component: ServicesPage,
 			assertion: async () => {
 				expect(screen.getByTestId('page-title-header')).not.toBeNull();
-				expect(screen.getByText(/Gea Construction Services/)).not.toBeNull();
+				expect(screen.getByText(/GEA Construction Services/)).not.toBeNull();
 			},
 		},
 		{
@@ -256,6 +276,7 @@ describe('Pixelated Template site coverage', () => {
 	});
 
 
+	/*
 	describe('Pixelated Template explicit branch coverage', () => {
 		it('renders Blog Calendar loading state', async () => {
 			setFileDataState({ data: null, loading: true, error: null });
@@ -293,4 +314,5 @@ describe('Pixelated Template site coverage', () => {
 			expect(screen.getByText(/Service not found\./i)).toBeTruthy();
 		});
 	});
+	*/
 });

@@ -1,19 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import { ProductSchema, type ProductSchemaType } from '@/components/foundation/schema';
+import { ProductSchema, type ProductSchemaType } from '../components/foundation/schema';
 
 const defaultProduct: ProductSchemaType['product'] = {
-	'@context': 'https://schema.org/',
-	'@type': 'Product',
 	name: 'Custom Sunglasses',
 	description: 'A pair of custom-painted sunglasses with unique artistic design.',
 	image: 'https://example.com/sunglasses.jpg',
 	brand: {
-		'@type': 'Brand',
 		name: 'Pixelated Customs'
 	},
+	shippingDetails: {
+		isShippable: true,
+		weight: 1.2,
+		weightUnit: 'lb',
+	},
 	offers: {
-		'@type': 'Offer',
 		url: 'https://example.com/custom-sunglasses',
 		priceCurrency: 'USD',
 		price: '250.00',
@@ -29,12 +30,29 @@ describe('ProductSchema', () => {
 		expect(scriptTag).toBeTruthy();
 	});
 
+	it('should strip caller-provided @context and @type from the product object', () => {
+		const invalidProduct = {
+			...defaultProduct,
+		} as any;
+		(invalidProduct as any)['@context'] = 'https://schema.org';
+		(invalidProduct as any)['@type'] = 'Product';
+
+		const { container } = render(<ProductSchema product={invalidProduct} />);
+		const scriptTag = container.querySelector('script[type="application/ld+json"]');
+		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
+
+		expect(schemaData['@context']).toBe('https://schema.org');
+		expect(schemaData['@type']).toBe('Product');
+		expect(schemaData.name).toBe(defaultProduct.name);
+		expect(schemaData.description).toBe(defaultProduct.description);
+	});
+
 	it('should include schema.org context and Product type', () => {
 		const { container } = render(<ProductSchema product={defaultProduct} />);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
-		expect(schemaData['@context']).toBe('https://schema.org/');
+		expect(schemaData['@context']).toBe('https://schema.org');
 		expect(schemaData['@type']).toBe('Product');
 	});
 
@@ -81,6 +99,11 @@ describe('ProductSchema', () => {
 		expect(schemaData.offers.priceCurrency).toBe('USD');
 		expect(schemaData.offers.price).toBe('250.00');
 		expect(schemaData.offers.availability).toBe('https://schema.org/InStock');
+		expect(schemaData.offers.shippingDetails).toEqual({
+			isShippable: true,
+			weight: 1.2,
+			weightUnit: 'lb',
+		});
 	});
 
 	it('should handle multiple offers', () => {
@@ -88,14 +111,12 @@ describe('ProductSchema', () => {
 			...defaultProduct,
 			offers: [
 				{
-					'@type': 'Offer',
 					url: 'https://example.com/custom-sunglasses',
 					priceCurrency: 'USD',
 					price: '250.00',
 					availability: 'https://schema.org/InStock'
 				},
 				{
-					'@type': 'Offer',
 					url: 'https://ebay.com/custom-sunglasses',
 					priceCurrency: 'USD',
 					price: '245.00',
@@ -134,7 +155,6 @@ describe('ProductSchema', () => {
 		const productWithRating: ProductSchemaType['product'] = {
 			...defaultProduct,
 			aggregateRating: {
-				'@type': 'AggregateRating',
 				ratingValue: '4.5',
 				reviewCount: '89'
 			}
@@ -164,7 +184,6 @@ describe('ProductSchema', () => {
 		const productWithNumericPrice: ProductSchemaType['product'] = {
 			...defaultProduct,
 			offers: {
-				'@type': 'Offer',
 				url: 'https://example.com/product',
 				priceCurrency: 'USD',
 				price: 199.99,

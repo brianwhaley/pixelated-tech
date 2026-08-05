@@ -47,6 +47,11 @@ SmartVideo.propTypes = {
 	playsInline: PropTypes.bool,
 	preload: PropTypes.oneOf(['auto', 'metadata', 'none']),
 	captionsSrc: PropTypes.string,
+	title: PropTypes.string,
+	description: PropTypes.string,
+	uploadDate: PropTypes.string,
+	duration: PropTypes.string,
+	caption: PropTypes.string,
 	className: PropTypes.string,
 };
 export type SmartVideoType = InferProps<typeof SmartVideo.propTypes> & React.VideoHTMLAttributes<HTMLVideoElement>;
@@ -129,9 +134,13 @@ export function SmartVideo(props: SmartVideoType) {
 		<>
 			<SchemaVideoObject
 				contentUrl={videoSrc}
-				title={title}
-				name={title}
+				title={props.title || title}
+				name={props.title || title}
+				description={props.description}
 				thumbnailUrl={posterUrl}
+				uploadDate={props.uploadDate}
+				duration={props.duration}
+				caption={props.caption}
 			/>
 			<video {...videoProps}>
 				<track

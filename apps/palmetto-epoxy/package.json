@@ -1,6 +1,6 @@
 {
   "name": "palmetto-epoxy",
-  "version": "0.10.16",
+  "version": "0.10.17",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-amplify": "^3.1088.0",
-    "@next/third-parties": "^16.2.12",
+    "@next/third-parties": "^16.3.0",
     "@pixelated-tech/components": "*",
     "next": "^16.2.9",
     "prop-types": "^15.8.1",
@@ -60,5 +60,5 @@
     "webpack-dev-server": "^6.0.0"
   },
   "overrides": {},
-  "deployMarker": "2026-07-18T20:40:48.219Z"
+  "deployMarker": "2026-08-05T04:05:55.673Z"
 }

@@ -39,10 +39,20 @@ Hero.propTypes = {
 	/** Video file URL (mp4/webm etc) when using the 'video' variant */
 	video: PropTypes.string,
 	/** Poster image to show before the video plays */
-	videoPoster: PropTypes.string,
+	poster: PropTypes.string,
+	/** Optional title metadata for video schema */
+	title: PropTypes.string,
+	/** Optional description metadata for video schema */
+	description: PropTypes.string,
+	/** Optional upload date metadata for video schema */
+	uploadDate: PropTypes.string,
+	/** Optional duration metadata for video schema */
+	duration: PropTypes.string,
+	/** Optional caption metadata for video schema */
+	caption: PropTypes.string,
 };
 export type HeroType = InferProps<typeof Hero.propTypes>;
-export function Hero({ img, imgAlt, video, videoPoster, imgId, variant = 'static', height = '60vh', children }: HeroType) {
+export function Hero({ img, imgAlt, video, poster, title, description, uploadDate, duration, caption, imgId, variant = 'static', height = '60vh', children }: HeroType) {
 	const id = imgId ?? imgAlt ?? img?.split('/').pop()?.split('.')[0] ?? '';
 	const hasVideo = variant === 'video' && !!video; // only play when variant explicitly video
 
@@ -108,7 +118,12 @@ export function Hero({ img, imgAlt, video, videoPoster, imgId, variant = 'static
 			<div id={id} className="hero video" style={{ height: height ?? '60vh' }}>
 				<SmartVideo
 					src={video}
-					poster={videoPoster || undefined}
+					poster={poster || undefined}
+					title={title || undefined}
+					description={description || undefined}
+					uploadDate={uploadDate || undefined}
+					duration={duration || undefined}
+					caption={caption || undefined}
 					autoPlay={true}
 					muted={true}
 					loop={true}

@@ -22,6 +22,9 @@ export * as FoundationComponents from './components/foundation/index.foundation.
 export * from './components/integrations/index.integrations.server';
 export * as IntegrationsComponents from './components/integrations/index.integrations.server';
 
+export * from './components/pixelated/index.pixelated.server';
+export * as PixelatedComponents from './components/pixelated/index.pixelated.server';
+
 export * from './components/shoppingcart/index.shoppingcart.server';
 export * as ShoppingCartComponents from './components/shoppingcart/index.shoppingcart.server';
 

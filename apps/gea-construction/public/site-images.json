@@ -1,9 +1,14 @@
 {
   "metadata": {
-    "imageCount": 2
+    "imageCount": 7
   },
   "images": [
-    "images/pix-bg-512.jpg",
-    "images/placeholder.png"
+    "images/placeholder.png",
+    "images/services/bathroom-remodeling.jpg",
+    "images/services/decks-outdoor.jpg",
+    "images/services/doors-windows.jpg",
+    "images/services/handyman-repairs.jpg",
+    "images/services/kitchen-remodeling.jpg",
+    "images/services/patios-hardscaping.jpg"
   ]
 }

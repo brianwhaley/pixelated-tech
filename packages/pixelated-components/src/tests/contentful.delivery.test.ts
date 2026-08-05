@@ -252,6 +252,23 @@ describe('Contentful Delivery API', () => {
 			const callUrl = (global.fetch as any).mock.calls[0][0];
 			expect(callUrl).toContain('entry456');
 		});
+
+		it('should fetch asset by ID', async () => {
+			const mockAsset = { sys: { id: 'asset123', createdAt: '2025-01-01T00:00:00Z' }, fields: { title: 'Hero video', description: 'Hero animation', file: { url: '//videos.ctfassets.net/asset123/video.mp4' } } };
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockAsset
+			});
+
+			const result = await contentfulModule.getContentfulAssetByAssetID({
+				apiProps: mockContentfulApiProps as any,
+				asset_id: 'asset123'
+			});
+
+			expect(result).toEqual(mockAsset);
+			const callUrl = (global.fetch as any).mock.calls[0][0];
+			expect(callUrl).toContain('assets/asset123');
+		});
 	});
 
 	describe('getContentfulEntryByField', () => {
@@ -410,7 +427,7 @@ describe('Contentful Delivery API', () => {
 			expect(result?.image?.[0]).toBe('https://assets.example.com/img1');
 		});
 
-		it('should include sku, mpn, gtin, shippingDetails, and policy URL when available', async () => {
+		it('should include sku, mpn, gtin, and shippingDetails when available', async () => {
 			const mockResponse = {
 				items: [
 					{
@@ -455,7 +472,49 @@ describe('Contentful Delivery API', () => {
 			expect(result?.gtin).toBe('GTIN-123');
 			expect(result?.brand?.name).toBe('BrandZ');
 			expect(result?.shippingDetails).toEqual({ isShippable: true, weight: 2.5, weightUnit: 'lb' });
-			expect(result?.hasMerchantReturnPolicy).toBe('https://example.com/returns');
+		});
+
+		it('should preserve invalid gtin values and preserve sku/mpn', async () => {
+			const mockResponse = {
+				items: [
+					{
+						sys: { contentType: { sys: { id: 'item' } } },
+						fields: {
+							id: 'PRD-004',
+							title: 'Product 4',
+							description: 'Bad GTIN product',
+							brand: 'BrandBad',
+							price: 39.99,
+							quantity: 2,
+							sku: 'SKU-004',
+							mpn: 'MPN-004',
+							gtin: '616987S',
+							images: []
+						}
+					}
+				]
+			};
+
+			vi.spyOn(configModule, 'getClientOnlyPixelatedConfig').mockReturnValue({
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: [{ path: '/returns', name: 'Returns' }]
+			} as any);
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockResponse
+			});
+
+			const result = await contentfulModule.getContentfulProductSchema({
+				apiProps: mockContentfulApiProps as any,
+				productId: 'PRD-004',
+				siteUrl: 'https://example.com/product4'
+			});
+
+			expect(result).not.toBeNull();
+			expect(result?.sku).toBe('SKU-004');
+			expect(result?.mpn).toBe('MPN-004');
+			expect(result?.gtin).toBe('616987S');
 		});
 
 		it('should return product schema with in-stock availability when quantity is greater than zero', async () => {

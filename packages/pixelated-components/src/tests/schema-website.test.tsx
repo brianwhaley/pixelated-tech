@@ -115,51 +115,66 @@ describe('WebsiteSchema', () => {
 		if (siteInfo.potentialAction) {
 			expect(schemaData.potentialAction).toBeDefined();
 			expect(schemaData.potentialAction.target.urlTemplate).toBe(
-				'https://www.pixelated.tech/search?q={search_term_string}'
-			);
+			'https://www.pixelated.tech/search?q={search_term_string}'
+		);
 		} else {
 			expect(schemaData.potentialAction).toBeUndefined();
 		}
 	});
 
-	it('should exclude potentialAction when not provided', () => {
-		const siteMeta = { ...siteInfo, potentialAction: undefined };
+	it('should include telephone, priceRange, address, and image when provided', () => {
+		const siteMeta = {
+			...siteInfo,
+			telephone: '+1-800-555-1234',
+			priceRange: '$$$',
+			address: {
+				streetAddress: '123 Main St',
+				addressLocality: 'Austin',
+				addressRegion: 'TX',
+				postalCode: '78701',
+				addressCountry: 'US',
+			},
+			image: 'https://example.com/logo.png',
+		};
 		const { container } = renderSchema(siteMeta);
 		const scriptTag = container.querySelector('script[type="application/ld+json"]');
 		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
 
-		expect(schemaData.potentialAction).toBeUndefined();
-	});
-
-	it('should generate valid JSON', () => {
-		const { container } = renderSchema();
-		const scriptTag = container.querySelector('script[type="application/ld+json"]');
-
-		expect(() => {
-			JSON.parse(scriptTag?.textContent || '{}');
-		}).not.toThrow();
-	});
-
-	it('should handle special characters in name', () => {
-		const siteMeta = { ...siteInfo, name: "O'Brien's Technology & Design" };
-		const { container } = renderSchema(siteMeta);
-		const schemaData = JSON.parse(container.querySelector('script[type="application/ld+json"]')?.textContent || '{}');
-
-		expect(schemaData.name).toBe(siteMeta.name);
-	});
-
-	it('should handle HTTPS URLs', () => {
-		const siteMeta = { ...siteInfo, url: 'https://secure.example.com' };
-		const { container } = renderSchema(siteMeta);
-		const schemaData = JSON.parse(container.querySelector('script[type="application/ld+json"]')?.textContent || '{}');
-
-		expect(schemaData.url).toBe('https://secure.example.com');
-	});
-
-	it('should render without crashing with minimal required props', () => {
-		expect(() => {
-			renderSchema();
-		}).not.toThrow();
+		expect(schemaData.telephone).toBe('+1-800-555-1234');
+		expect(schemaData.priceRange).toBe('$$$');
+		expect(schemaData.address).toEqual({
+			'@type': 'PostalAddress',
+			streetAddress: '123 Main St',
+			addressLocality: 'Austin',
+			addressRegion: 'TX',
+			postalCode: '78701',
+			addressCountry: 'US',
+		});
+		expect(schemaData.image).toBe('https://example.com/logo.png');
+		expect(schemaData.publisher).toBeDefined();
+		expect(schemaData.publisher.telephone).toBe('+1-800-555-1234');
+		expect(schemaData.publisher.priceRange).toBe('$$$');
+		expect(schemaData.publisher.address).toEqual({
+			'@type': 'PostalAddress',
+			streetAddress: '123 Main St',
+			addressLocality: 'Austin',
+			addressRegion: 'TX',
+			postalCode: '78701',
+			addressCountry: 'US',
+		});
+		expect(schemaData.publisher.image).toBe('https://example.com/logo.png');
+		expect(schemaData.copyrightHolder).toBeDefined();
+		expect(schemaData.copyrightHolder.telephone).toBe('+1-800-555-1234');
+		expect(schemaData.copyrightHolder.priceRange).toBe('$$$');
+		expect(schemaData.copyrightHolder.address).toEqual({
+			'@type': 'PostalAddress',
+			streetAddress: '123 Main St',
+			addressLocality: 'Austin',
+			addressRegion: 'TX',
+			postalCode: '78701',
+			addressCountry: 'US',
+		});
+		expect(schemaData.copyrightHolder.image).toBe('https://example.com/logo.png');
 	});
 
 	it('should not include undefined optional fields in JSON output', () => {

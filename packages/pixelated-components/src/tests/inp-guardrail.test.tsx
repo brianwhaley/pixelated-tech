@@ -49,4 +49,43 @@ describe('InteractionGuardrail', () => {
 
 		expect(document.body.getAttribute('data-platform-inp-guardrail')).toBe('true');
 	});
+
+	it('does not start transition on urgent button click', () => {
+		renderWithProviders(
+			<InteractionGuardrail>
+				<button type="button" data-urgent data-testid="urgent-button">Urgent</button>
+			</InteractionGuardrail>
+		);
+
+		const button = screen.getByTestId('urgent-button');
+		fireEvent.click(button);
+
+		expect(document.body.getAttribute('data-platform-loading')).toBe('false');
+	});
+
+	it('does not start transition for form submit when form has urgent attribute', () => {
+		renderWithProviders(
+			<InteractionGuardrail>
+				<form data-urgent data-testid="urgent-form">
+					<button type="submit">Submit</button>
+				</form>
+			</InteractionGuardrail>
+		);
+
+		const form = screen.getByTestId('urgent-form');
+		fireEvent.submit(form);
+
+		expect(document.body.getAttribute('data-platform-loading')).toBe('false');
+	});
+
+	it('handles pointerdown events on actionable elements without error', () => {
+		renderWithProviders(
+			<InteractionGuardrail>
+				<button type="button" data-testid="pointer-button">Pointer</button>
+			</InteractionGuardrail>
+		);
+
+		const button = screen.getByTestId('pointer-button');
+		expect(() => fireEvent.pointerDown(button)).not.toThrow();
+	});
 });
