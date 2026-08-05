@@ -69,6 +69,41 @@ applications:
           - node_modules/**/*
 
 
+
+
+  #========================================
+  - appRoot: apps/gea-construction
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'cd ../../ && pwd'
+            - 'npm install --force'
+        build:
+          commands:
+            - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'npm run build -w packages/pixelated-components'
+            - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+        postBuild:
+          commands:
+            - 'echo "Calling Config Vault postbuild ..."'
+            - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
+
+
   #========================================
   - appRoot: apps/jz-home-improvement
     frontend:

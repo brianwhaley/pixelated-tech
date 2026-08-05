@@ -6,10 +6,14 @@ import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import SocialTags from "@/app/elements/socialtags";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { Hero } from "@pixelated-tech/components";
+import { Hero, usePixelatedConfig, getContentfulAssetByAssetID, normalizeContentfulAssetUrl } from "@pixelated-tech/components";
 import { BlogPostList } from "@pixelated-tech/components";
 
 export default function Home() {
+	const config = usePixelatedConfig();
+	const [heroVideo, setHeroVideo] = useState<string>();
+	const [heroVideoMeta, setHeroVideoMeta] = useState<{ title?: string; description?: string; uploadDate?: string; duration?: string; poster?: string }>({});
+
 	const videos = [
 		"https://videos.ctfassets.net/ank9sh265hdu/4rxGU5MYRZtZcfD0b7nq1j/1a4a9f7a7f8f4f5e6de7aae53796f024/0_Animation_Network_Connection.mp4",
 		"https://videos.ctfassets.net/ank9sh265hdu/4rukYNzKrmBTrM7r2AWcxw/eca6e2aa323209ce3949593a7a1c1a50/0_People_Animation.mp4",
@@ -17,10 +21,56 @@ export default function Home() {
 		"https://videos.ctfassets.net/ank9sh265hdu/5CfnOgx8k1Gqq0xXDlyJpd/108a865ae94f4c521fe4cfbd63cdd9b0/GettyImages-1251562713.mp4",
 		"https://videos.ctfassets.net/ank9sh265hdu/6kj4wZu4VRAupq78sYhA9D/f2c378598ba552197884be5e29e1e0c3/GettyImages-675750094.mp4",
 	];
-	const [heroVideo, setHeroVideo] = useState<string>();
 	useEffect(() => {
 		setHeroVideo(videos[Math.floor(Math.random() * videos.length)]);
+		setHeroVideoMeta({});
 	}, []);
+
+	useEffect(() => {
+		const assetId = heroVideo
+			? (() => {
+				try {
+					const parsed = new URL(heroVideo);
+					const segments = parsed.pathname.split('/').filter(Boolean);
+					return segments[1];
+				} catch {
+					return undefined;
+				}
+			})()
+			: undefined;
+
+		const contentful = config?.integrations?.contentful;
+		if (!heroVideo || !assetId || !contentful?.base_url || !contentful?.space_id || !contentful?.environment || !contentful?.delivery_access_token) {
+			return;
+		}
+
+		let cancelled = false;
+		getContentfulAssetByAssetID({
+			apiProps: {
+				base_url: contentful.base_url,
+				environment: contentful.environment,
+				space_id: contentful.space_id,
+				delivery_access_token: contentful.delivery_access_token,
+			},
+			asset_id: assetId,
+		})
+			.then((asset: any) => {
+				if (cancelled || !asset) return;
+				const fields = asset.fields ?? {};
+				const sys = asset.sys ?? {};
+				setHeroVideoMeta({
+					title: fields.title || fields.file?.fileName || undefined,
+					description: fields.description || undefined,
+					uploadDate: sys.createdAt || sys.updatedAt || undefined,
+					poster: normalizeContentfulAssetUrl(fields.file?.url) || undefined,
+				});
+			})
+			.catch(() => undefined);
+
+		return () => {
+			cancelled = true;
+		};
+	}, [heroVideo, config]);
 
 	return (
 		<>
@@ -29,6 +79,11 @@ export default function Home() {
 				variant="video"
 				// video="/videos/GettyImages-1251562713.mp4"
 				video={heroVideo}
+				poster={heroVideoMeta.poster}
+				title={heroVideoMeta.title}
+				description={heroVideoMeta.description}
+				uploadDate={heroVideoMeta.uploadDate}
+				duration={heroVideoMeta.duration}
 				height="40vh"
 			/>
 
@@ -41,13 +96,7 @@ export default function Home() {
 						imgAlt='Pixelated Technologies'
 						imgShape="squircle" 
 						subtitle="About Pixelated Technologies"
-						content='Pixelated Technologies is a Digital Services company that 
-							specializes in transforming small businesses through
-							custom IT solutions, including web development, social media marketing,
-							search engine optimization, content management, eCommerce solutions,
-							and small business modernization. Our mission is to empower small businesses
-							to thrive in the digital age by providing tailored technology services that
-							drive growth and efficiency.'/>
+						content='Pixelated Technologies is a Digital Services company that specializes in transforming small businesses through custom IT solutions, including web development, social media marketing, search engine optimization, content management, eCommerce solutions, and small business modernization. Our mission is to empower small businesses to thrive in the digital age by providing tailored technology services that drive growth and efficiency.'/>
 				</PageGridItem>
 			</PageSection>
 
@@ -71,13 +120,7 @@ export default function Home() {
 						imgAlt='Portfolio'
 						imgShape='bevel'
 						title='View Our Work Portfolio'
-						content='Explore our portfolio to see examples of the web development 
-							and design work delivered by our team members over the years. 
-							From responsive websites and custom web applications to branding 
-							and logo designs, our portfolio showcases the diverse range of 
-							projects we have successfully completed for small businesses. 
-							Discover how Pixelated Technologies can bring your vision to life 
-							with tailored solutions that meet your unique needs.'/>
+						content='Explore the Pixelated Technologies portfolio to see examples of the web development and design work delivered by our team members over the years. From responsive websites and custom web applications to branding and logo designs, our portfolio showcases the diverse range of projects we have successfully completed for small businesses. Discover how Pixelated Technologies can bring your vision to life with tailored solutions that meet your unique needs.'/>
 				</PageGridItem>
 
 				<PageGridItem>
@@ -89,10 +132,7 @@ export default function Home() {
 						imgAlt='Samples'
 						imgShape='bevel'
 						title='View Some Samples'
-						content="Take a look at some of the web design samples to get an idea of the quality and style we bring to our projects.
-						Examples include a landscape company website, a wedding photographer, a local restaurant menu, a bicycle shop, and a taco food truck.  
-						These samples are just a few examples of how we can create visually appealing and user-friendly websites tailored to your industry.
-						No matter your industry, we have experience creating custom web solutions that can help your business succeed online."/>
+						content="Take a look at some of the Pixelated Technologies web design samples to get an idea of the quality and style we bring to our projects. Examples include a landscape company website, a wedding photographer, a local restaurant menu, a bicycle shop, and a taco food truck.  These samples are just a few examples of how Pixelated Technologies can create visually appealing and user-friendly websites tailored to your industry. No matter your industry, we have experience creating custom web solutions that can help your business succeed online."/>
 				</PageGridItem>
 			</PageSection>
 
@@ -115,13 +155,8 @@ export default function Home() {
 						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg?fm=webp'
 						imgAlt='Web Development'
 						title='Web Development'
-						subtitle='Do you need a new website or web application for your business? 
-							Is your current website outdated or not mobile-friendly?
-							Have you focused on other parts of your business and need help with your online presence?' 
-						content='Pixelated Technologies can be your Virtual Technology Department, 
-							providing custom web development solutions tailored to your business needs.
-							We specialize in creating responsive, user-friendly websites and web applications 
-							that help small businesses succeed online.'/>
+						subtitle='Do you need a new website or web application for your business? Is your current website outdated or not mobile-friendly? Have you focused on other parts of your business and need help with your online presence?' 
+						content='Pixelated Technologies can be your Virtual Technology Department, providing custom web development solutions tailored to your business needs.  We specialize in creating responsive, user-friendly websites and web applications that help small businesses succeed online.'/>
 				</PageGridItem>
 				<PageGridItem >
 					<Callout
@@ -169,10 +204,7 @@ export default function Home() {
 						subtitle='Do you have to rely on a web developer to make updates to your website?
 							Would you like to be able to make updates yourself, without needing technical skills?
 							Do you need a content management system that is easy to use and maintain?' 
-						content='Pixelated Technologies can help you implement a content management system (CMS) 
-							that allows you to easily update and manage your website content.
-							We can help you choose the right CMS at the right cost for your business needs, set it up, 
-							and provide training and support to ensure you can manage your website effectively.'  />
+						content='Pixelated Technologies can help you implement a content management system (CMS) that allows you to easily update and manage your website content. We can help you choose the right CMS at the right cost for your business needs, set it up, and provide training and support to ensure you can manage your website effectively.'  />
 				</PageGridItem>
 				<PageGridItem >
 					<Callout
@@ -203,9 +235,7 @@ export default function Home() {
 						subtitle='Are you looking to integrate your site with other business systems,
 							such as marketing automation tools, billing and finance systems, 
 							scheduling or inventory systems, or other business applications?' 
-						content='Pixelated Technologies can help you develop custom business solutions that streamline your operations 
-							and improve your efficiency. We can work with you to understand your business processes,
-							identify areas for improvement, and develop custom software solutions that meet your specific needs.' />
+						content='Pixelated Technologies can help you develop custom business solutions that streamline your operations and improve your efficiency. We can work with you to understand your business processes, identify areas for improvement, and develop custom software solutions that meet your specific needs.' />
 				</PageGridItem>
 			</PageSection>
 

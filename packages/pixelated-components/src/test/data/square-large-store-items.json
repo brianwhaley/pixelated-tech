@@ -29,6 +29,6 @@
     "itemWeight": 2,
     "itemWeightUnit": "lb",
     "categories": [{ "id": "cat-2", "name": "Seasonal" }],
-    "properties": { "Color": "Blue", "mpn": "MPN-022", "gtin": "GTIN-022" }
+    "properties": { "Color": "Blue", "mpn": "MPN-022", "gtin": "12345678" }
   }
 ]

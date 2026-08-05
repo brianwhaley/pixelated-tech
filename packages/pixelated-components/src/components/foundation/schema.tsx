@@ -10,7 +10,10 @@ import { getServicePathPrefix, findServiceBySlug } from '../elements/services.fu
 import { getGoogleReviewsByPlaceId, type GoogleReview } from '../integrations/google.reviews.functions';
 import { getWikipediaCityObject } from '../integrations/wikipedia.functions';
 import { sanitizeString, toBoolean } from '../foundation/utilities';
+import { getPolicyRouteUrl } from '../foundation/schema.functions';
 import { parseNumber, safeString, normalizeProtocolRelativeUrl } from '../elements/smartmediautils';
+
+import { pixelatedTechOrganizationSchema } from '../pixelated/pixelated.functions';
 
 type ServiceSchemaType = NonNullable<SiteInfo['services']>[number];
 
@@ -33,12 +36,6 @@ function addSameAs(entity: any, sameAs?: string[] | null) {
 	return { ...entity, sameAs: combined };
 }
 
-const pixelatedTechOrganizationSchema = {
-	'@type': ['Organization', 'LocalBusiness'],
-	'@id': 'https://www.pixelated.tech/#organization',
-	name: 'Pixelated Technologies',
-	url: 'https://www.pixelated.tech'
-};
 
 
 
@@ -230,7 +227,7 @@ export function SchemaBook(props: SchemaBookType) {
 	const siteInfo = config?.siteInfo;
 
 	const author = normalizeBookEntity(book.author || siteInfo?.author, siteInfo?.name, 'Person');
-	const publisher = normalizeBookEntity(book.publisher, undefined, 'Organization') || author;
+	const publisher = normalizeBookEntity(book.publisher, undefined, 'Organization') || buildPublisher(siteInfo);
 	const variantSchemas = Array.isArray(book.variants)
 		? book.variants.map(buildBookVariant).filter(Boolean)
 		: [];
@@ -369,40 +366,6 @@ export function SchemaEvent(props: SchemaEventType) {
 
 
 
-
-
-/* ========================================
-	IMAGE OBJECT COMPONENTS
-======================================== */
-
-export function buildImageObject(siteInfo?: SiteInfo, id?: string) {
-	const siteInfoAny = siteInfo as any;
-	if (!siteInfoAny?.image) {
-		return undefined;
-	}
-	const imageObject: any = {
-		'@type': 'ImageObject',
-		url: siteInfoAny.image,
-		...(siteInfoAny.name && { name: siteInfoAny.name }),
-		...(siteInfoAny.image_width && { width: parseDimension(siteInfoAny.image_width ?? undefined) }),
-		...(siteInfoAny.image_height && { height: parseDimension(siteInfoAny.image_height ?? undefined) }),
-		copyrightNotice: `© ${new Date().getFullYear()} ${siteInfoAny.name ?? ''}. All rights reserved.`,
-		creditText: `${siteInfoAny.name ?? ''}${siteInfoAny.author ? ` / ${siteInfoAny.author}` : ''}`,
-		acquireLicensePage: siteInfoAny.url ? `${siteInfoAny.url.replace(/\/$/, '')}/contact` : undefined,
-		license: siteInfoAny.url ? `${siteInfoAny.url.replace(/\/$/, '')}/terms` : undefined,
-	};
-	if (id && siteInfoAny.url) {
-		imageObject['@id'] = `${siteInfoAny.url.replace(/\/$/, '')}/${id}`;
-	}
-	return imageObject;
-}
-
-
-
-
-
-
-
 /* ========================================
 	FAQ SCHEMA COMPONENTS
 ======================================== */
@@ -446,6 +409,47 @@ export function SchemaFAQ({ faqsData }: SchemaFAQType) {
 	return (
 		<SchemaScript schema={normalized} />
 	);
+}
+
+
+
+
+
+
+
+
+
+/* ========================================
+	IMAGE OBJECT COMPONENTS
+======================================== */
+
+export function buildImageObject(props: { siteInfo?: SiteInfo, id?: string }) {
+	const { siteInfo, id } = props;
+	// const siteInfoAny = siteInfo as any;
+
+	if (!siteInfo?.image) {
+		return undefined;
+	}
+	const imageObject: any = {
+		'@type': 'ImageObject',
+		url: siteInfo.image,
+		contentUrl: siteInfo.image,
+		name: siteInfo.name,
+		creator: {
+			'@type': siteInfo?.author ? 'Person' : 'Organization',
+			name: siteInfo?.author || siteInfo?.name
+		},
+		width: parseDimension(siteInfo.image_width ?? undefined),
+		height: parseDimension(siteInfo.image_height ?? undefined),
+		copyrightNotice: `© ${new Date().getFullYear()} ${siteInfo.name ?? ''}. All rights reserved.`,
+		creditText: `${siteInfo.name ?? ''}${siteInfo.author ? ` / ${siteInfo.author}` : ''}`,
+		acquireLicensePage: siteInfo.url ? `${siteInfo.url.replace(/\/$/, '')}/contact` : undefined,
+		license: siteInfo.url ? `${siteInfo.url.replace(/\/$/, '')}/terms` : undefined,
+	};
+	if (id) {
+		imageObject['@id'] = `${siteInfo.url.replace(/\/$/, '')}/${id}`;
+	}
+	return imageObject;
 }
 
 
@@ -541,7 +545,7 @@ export function LocalBusinessSchema() {
 	if (!name || !url) { return null; }
 
 	const telephone = siteInfo?.telephone;
-	const logoImageObject = siteInfo?.image ? buildImageObject(siteInfo, 'organization') : undefined;
+	const logoImageObject = siteInfo?.image ? buildImageObject({ siteInfo, id: 'organization' }) : undefined;
 	const services = siteInfo?.services || [];
 	const servicePathPrefix = getServicePathPrefix(siteInfo);
 	const serviceCatalogItems = services
@@ -568,7 +572,7 @@ export function LocalBusinessSchema() {
 	const email = siteInfo?.email;
 	const priceRange = siteInfo?.priceRange;
 	const sameAs = siteInfo?.sameAs;
-	const knowsAbout = buildKnowsAboutFromServices(siteInfo);
+	const knowsAbout = buildKnowsAbout(siteInfo);
 	const serviceAreaValues = (siteInfo?.serviceAreas || [])
 		.map((area) => getWikipediaCityObject(area?.name))
 		.filter((item): item is NonNullable<typeof item> => item !== null);
@@ -756,81 +760,179 @@ function buildPostalAddress(address: any): any | undefined {
 ======================================== */
 
 /**
- * ProductSchema — embeds a product/offer as JSON-LD for SEO (schema.org/Product).
+ * ProductSchema — embeds a product as JSON-LD for SEO (schema.org/Product).
  *
- * @param {shape} [props.product] - Product object conforming to schema.org/Product; will be serialized as JSON-LD.
+ * @param {shape} [props.product] - Raw product fields for a schema.org/Product object.
+ *   Fields like name, description, sku, mpn, gtin, color, model, sameAs, brand, offers,
+ *   aggregateRating, and review are passed through into the generated schema.
  * @param {string} [props.product.name] - The product name.
  * @param {string} [props.product.description] - Product description.
- * @param {shape} [props.product.brand] - Brand information (name and @type).
- * @param {shape} [props.product.offers] - Offer information including price, currency, URL, and availability.
  */
 ProductSchema.propTypes = {
 	/** Product information object to be serialized as JSON-LD. */
 	product: PropTypes.shape({
-		'@context': PropTypes.string.isRequired,
-		'@type': PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		description: PropTypes.string,
 		image: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-		brand: PropTypes.shape({
-			'@type': PropTypes.string.isRequired,
-			name: PropTypes.string.isRequired,
-		}),
+		brand: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.shape({
+				name: PropTypes.string.isRequired,
+				sameAs: PropTypes.arrayOf(PropTypes.string),
+			}),
+		]),
 		offers: PropTypes.oneOfType([
 			PropTypes.shape({
-				'@type': PropTypes.string.isRequired,
 				url: PropTypes.string,
 				priceCurrency: PropTypes.string,
 				price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 				availability: PropTypes.string,
+				validFrom: PropTypes.string,
+				itemOffered: PropTypes.any,
 			}),
 			PropTypes.arrayOf(
 				PropTypes.shape({
-					'@type': PropTypes.string.isRequired,
 					url: PropTypes.string,
 					priceCurrency: PropTypes.string,
 					price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 					availability: PropTypes.string,
+					validFrom: PropTypes.string,
+					itemOffered: PropTypes.any,
 				})
 			)
 		]),
 		review: PropTypes.arrayOf(PropTypes.object),
 		aggregateRating: PropTypes.shape({
-			'@type': PropTypes.string,
 			ratingValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			reviewCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			ratingCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			bestRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			worstRating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		}),
+		sku: PropTypes.string,
+		mpn: PropTypes.string,
+		gtin: PropTypes.string,
+		color: PropTypes.string,
+		model: PropTypes.string,
+		shippingDetails: PropTypes.shape({
+			isShippable: PropTypes.bool,
+			weight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			weightUnit: PropTypes.string,
+		}),
+		hasMerchantReturnPolicy: PropTypes.string,
+		sameAs: PropTypes.arrayOf(PropTypes.string),
 	}).isRequired,
 };
 export type ProductSchemaType = InferProps<typeof ProductSchema.propTypes>;
 export function ProductSchema(props: ProductSchemaType) {
 	const config = usePixelatedConfig();
-	const sameAs = config?.siteInfo?.sameAs;
+	const siteInfo = config?.siteInfo;
+	const sameAs = siteInfo?.sameAs;
 	const { product } = props;
-	const baseProduct = sameAs?.length && product?.brand ? {
-		...product,
-		brand: addSameAs(product.brand, sameAs),
-	} : product;
-	const aggregateRating = baseProduct.aggregateRating ? {
-		'@type': 'AggregateRating',
-		...baseProduct.aggregateRating,
-		bestRating: baseProduct.aggregateRating?.bestRating ?? '5',
-		worstRating: baseProduct.aggregateRating?.worstRating ?? '1',
-		...(baseProduct.aggregateRating?.reviewCount != null && baseProduct.aggregateRating?.ratingCount == null ? {
-			ratingCount: baseProduct.aggregateRating.reviewCount,
-		} : {}),
-	} : undefined;
+	const {
+		'@context': _context,
+		'@type': _type,
+		shippingDetails: productShippingDetails,
+		hasMerchantReturnPolicy: productHasMerchantReturnPolicyRaw,
+		...productData
+	} = product as Record<string, any>;
+	const productHasMerchantReturnPolicy = productHasMerchantReturnPolicyRaw || getPolicyRouteUrl(config?.routes, siteInfo);
+	const brand = productData.brand
+		? addSameAs(
+			typeof productData.brand === 'string'
+				? { '@type': 'Brand', name: sanitizeString(productData.brand) }
+				: { '@type': 'Brand', ...productData.brand, name: sanitizeString(productData.brand.name) },
+			sameAs
+		)
+		: siteInfo?.name
+			? addSameAs(
+				{ '@type': 'Brand', name: sanitizeString(siteInfo.name) },
+				sameAs
+			)
+			: undefined;
+	const mergeOfferFields = (offer: any) => {
+		if (!offer || typeof offer !== 'object') {
+			return offer;
+		}
+		return {
+			'@type': offer['@type'] || 'Offer',
+			...offer,
+			...(offer.shippingDetails == null && productShippingDetails ? { shippingDetails: productShippingDetails } : {}),
+			...(offer.hasMerchantReturnPolicy == null && productHasMerchantReturnPolicy ? { hasMerchantReturnPolicy: productHasMerchantReturnPolicy } : {}),
+		};
+	};
+
+	const offers = (() => {
+		if (productData.offers == null) {
+			return undefined;
+		}
+		if (Array.isArray(productData.offers)) {
+			return productData.offers.map(mergeOfferFields);
+		}
+		if (typeof productData.offers === 'object') {
+			return mergeOfferFields(productData.offers);
+		}
+		return productData.offers;
+	})();
+	const aggregateRating = productData.aggregateRating
+		? {
+			'@type': 'AggregateRating',
+			...productData.aggregateRating,
+			bestRating: productData.aggregateRating?.bestRating ?? '5',
+			worstRating: productData.aggregateRating?.worstRating ?? '1',
+			...(productData.aggregateRating?.reviewCount != null && productData.aggregateRating?.ratingCount == null ? { ratingCount: productData.aggregateRating.reviewCount } : {}),
+		}
+		: undefined;
+	const review = Array.isArray(productData.review) && productData.review.length > 0 ? productData.review : undefined;
 	const schema = {
-		...baseProduct,
-		review: baseProduct.review ?? [],
+		...productData,
+		'@context': 'https://schema.org',
+		'@type': 'Product',
+		...(brand && { brand }),
+		...(offers && { offers }),
 		...(aggregateRating ? { aggregateRating } : {}),
+		...(review ? { review } : {}),
 	};
 	return (
 		<SchemaScript schema={schema} />
 	);
+}
+
+
+
+
+
+
+
+/* ========================================
+	PUBLISHER SCHEMA COMPONENTS
+======================================== */
+
+function buildPublisher(siteInfo?: SiteInfo): any | undefined {
+	if (siteInfo) {
+		const url = sanitizeString(siteInfo.url);
+		const name = sanitizeString(siteInfo.name ?? siteInfo?.author);
+		const logo = siteInfo.image ? buildImageObject({ siteInfo, id: 'organization' }) : undefined;
+		const sameAs = Array.isArray(siteInfo.sameAs) && siteInfo.sameAs.length > 0 ? siteInfo.sameAs : undefined;
+		const knowsAbout = buildKnowsAbout(siteInfo);
+		const address = buildPostalAddress(siteInfo?.address);
+		const publisher = {
+			'@type': ['Organization', 'LocalBusiness'],
+			...(url && { '@id': `${url.replace(/\/$/, '')}/#organization` }),
+			...(name && { name }),
+			...(url && { url }),
+			...(logo && { logo }),
+			...(siteInfo?.image && { image: sanitizeString(siteInfo.image) }),
+			...(siteInfo?.telephone && { telephone: sanitizeString(siteInfo.telephone) }),
+			...(siteInfo?.priceRange && { priceRange: sanitizeString(siteInfo.priceRange) }),
+			...(address && { address }),
+			...(sameAs && { sameAs }),
+			...(knowsAbout && { knowsAbout }),
+		};
+		return Object.keys(publisher).length > 1 ? publisher : undefined;
+	} else {
+		return undefined;
+	}
 }
 
 
@@ -899,13 +1001,15 @@ RecipeSchema.propTypes = {
 export type RecipeSchemaType = InferProps<typeof RecipeSchema.propTypes>;
 export function RecipeSchema(props: RecipeSchemaType) {
 	const config = usePixelatedConfig();
-	const sameAs = config?.siteInfo?.sameAs;
+	const siteInfo = config?.siteInfo;
+	const sameAs = siteInfo?.sameAs;
 	const { recipe } = props;
-	const schema = sameAs?.length ? {
+	const publisher = addSameAs(buildPublisher(siteInfo), sameAs);
+	const schema = {
 		...recipe,
 		author: addSameAs((recipe as any)?.author, sameAs),
-		publisher: addSameAs((recipe as any)?.publisher, sameAs),
-	} : recipe;
+		...(publisher && { publisher }),
+	};
 	return (
 		<SchemaScript schema={schema} />
 	);
@@ -1017,7 +1121,7 @@ export function ServicesSchema() {
 		name: siteInfo?.name || '',
 		id: siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 		url: siteInfo?.url || '',
-		logo: siteInfo?.image ? buildImageObject(siteInfo, 'organization') : undefined,
+		logo: siteInfo?.image ? buildImageObject({ siteInfo, id: 'organization' }) : undefined,
 		telephone: siteInfo?.telephone,
 		email: siteInfo?.email,
 		address: siteInfo?.address,
@@ -1184,24 +1288,13 @@ SchemaVideoObject.propTypes = {
 	thumbnailUrl: PropTypes.string,
 	uploadDate: PropTypes.string,
 	duration: PropTypes.string,
+	caption: PropTypes.string,
 };
 export type SchemaVideoObjectType = InferProps<typeof SchemaVideoObject.propTypes>;
 export function SchemaVideoObject(props: SchemaVideoObjectType) {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
-	const logoImageObject = siteInfo?.image ? buildImageObject(siteInfo, 'organization') : undefined;
-	const defaultPublisher = siteInfo?.url ? {
-		'@type': ['Organization', 'LocalBusiness'],
-		'@id': `${siteInfo.url.replace(/\/$/, '')}/#organization`,
-		...(siteInfo.name && { name: siteInfo.name }),
-		...(siteInfo.url && { url: siteInfo.url }),
-		...(logoImageObject ? { logo: logoImageObject } : {}),
-		...(siteInfo.sameAs && siteInfo.sameAs.length > 0 ? { sameAs: siteInfo.sameAs } : {}),
-	} : undefined;
-	const defaultAuthor = defaultPublisher ? {
-		'@type': ['Organization', 'LocalBusiness'],
-		'@id': defaultPublisher['@id'],
-	} : undefined;
+	const publisher = buildPublisher(siteInfo);
 	const baseSchema = buildVideoObjectSchema({
 		contentUrl: props.contentUrl,
 		title: props.title,
@@ -1209,12 +1302,12 @@ export function SchemaVideoObject(props: SchemaVideoObjectType) {
 		description: props.description,
 		thumbnailUrl: props.thumbnailUrl,
 		uploadDate: props.uploadDate,
-		duration: props.duration
+		duration: props.duration,
+		caption: props.caption,
 	});
 	const schema = {
 		...baseSchema,
-		...(defaultPublisher && { publisher: defaultPublisher }),
-		...(defaultAuthor && { author: defaultAuthor }),
+		...(publisher && { publisher }),
 	};
 
 	return <SchemaScript schema={schema} />;
@@ -1350,14 +1443,9 @@ export function WebsiteSchema() {
 		};
 	}
 	const copyrightYear = siteInfo?.copyrightYear;
-	let copyrightHolder: any;
-	if (siteInfo?.name) {
-		copyrightHolder = {
-			'@type': ['Organization','LocalBusiness'],
-			name: siteInfo.name,
-			...(siteInfo.url && { url: siteInfo.url }),
-		};
-	}
+	const publisher = buildPublisher(siteInfo);
+	const copyrightHolder = publisher;
+	const address = buildPostalAddress(siteInfo?.address);
 
 	const schemaData = {
 		'@context': 'https://schema.org',
@@ -1367,17 +1455,14 @@ export function WebsiteSchema() {
 		url,
 		...(description && { description }),
 		...(keywords && { keywords }),
+		...(siteInfo?.telephone && { telephone: sanitizeString(siteInfo.telephone) }),
+		...(siteInfo?.priceRange && { priceRange: sanitizeString(siteInfo.priceRange) }),
+		...(address && { address }),
+		...(siteInfo?.image && { image: sanitizeString(siteInfo.image) }),
 		...(inLanguage && { inLanguage }),
 		...(sameAs && sameAs.length ? { sameAs } : {}),
 		creator: pixelatedTechOrganizationSchema,
-		publisher: {
-			'@type': ['Organization', 'LocalBusiness'],
-			'@id': siteInfo.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
-			name: siteInfo.name,
-			...(siteInfo.url && { url: siteInfo.url }),
-			...(siteInfo.image ? { logo: buildImageObject(siteInfo, 'organization') } : {}),
-			...(buildKnowsAboutFromServices(siteInfo))
-		},
+		...(publisher && { publisher }),
 		...(potentialAction && { potentialAction }),
 		...(copyrightYear != null && { copyrightYear }),
 		...(copyrightHolder && { copyrightHolder })
@@ -1388,7 +1473,7 @@ export function WebsiteSchema() {
 	);
 }
 
-function buildKnowsAboutFromServices(siteInfo?: SiteInfo) {
+function buildKnowsAbout(siteInfo?: SiteInfo) {
 	if (!siteInfo?.services || !Array.isArray(siteInfo.services)) {
 		return undefined;
 	}

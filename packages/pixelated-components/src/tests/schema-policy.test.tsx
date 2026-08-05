@@ -1,11 +1,9 @@
 import { render } from '../test/test-utils';
-import { ProductSchema } from '@/components/foundation/schema';
+import { ProductSchema } from '../components/foundation/schema';
 
 describe('ProductSchema policy fields', () => {
 	test('renders JSON-LD script with hasMerchantReturnPolicy when provided', () => {
 		const product = {
-			'@context': 'https://schema.org',
-			'@type': 'Product',
 			name: 'Test Product',
 			sku: 'SKU-123',
 			brand: { '@type': 'Brand', name: 'Test Brand' },
@@ -16,6 +14,6 @@ describe('ProductSchema policy fields', () => {
 		const { container } = render(<ProductSchema product={product} />);
 		expect(container.querySelector('script[type="application/ld+json"]')).toBeInTheDocument();
 		const json = JSON.parse(container.querySelector('script')?.textContent || '{}');
-		expect(json.hasMerchantReturnPolicy).toBe('https://example.com/returns');
+		expect(json.offers.hasMerchantReturnPolicy).toBe('https://example.com/returns');
 	});
 });
