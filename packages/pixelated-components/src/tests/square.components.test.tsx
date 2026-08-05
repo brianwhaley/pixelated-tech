@@ -517,14 +517,45 @@ describe('SquareCheckout component', () => {
 			const schema = JSON.parse(script?.textContent || '{}');
 			expect(schema.sku).toBe('SKU-022');
 			expect(schema.mpn).toBe('MPN-022');
-			expect(schema.gtin).toBe('GTIN-022');
-			expect(schema.shippingDetails).toEqual({
-				isShippable: true,
-				weight: 2,
-				weightUnit: 'lb',
-			});
+			expect(schema.gtin).toBe('12345678');
+			expect(schema.offers.shippingDetails).toEqual({
+			isShippable: true,
+			weight: 2,
+			weightUnit: 'lb',
+		});
 			expect(schema.brand?.name).toBe('Example Brand');
-			expect(schema.hasMerchantReturnPolicy).toBe('https://example.com/returns');
+			expect(schema.offers.hasMerchantReturnPolicy).toBe('https://example.com/returns');
+		});
+
+		it('omits invalid gtin values and does not fallback to itemSKU or itemID', () => {
+			const item = {
+				...squareLargeStoreItems[1] as any,
+				properties: { mpn: 'MPN-004', gtin: '616987S' },
+				itemSKU: 'SKU-004',
+				itemID: 'item-004',
+				itemURL: 'https://example.com/product4',
+				itemPrice: 39.99,
+				itemCurrency: 'USD',
+				itemInventory: 10,
+				itemTitle: 'Bad GTIN Item',
+				itemDescription: 'Product with invalid GTIN',
+				itemImageURL: 'https://example.com/image.jpg',
+			};
+
+			const config = createMockConfig({
+				siteInfo: { name: 'Example Site', brand: { name: 'Example Brand' }, url: 'https://example.com' },
+				routes: [{ path: '/returns', name: 'Returns' }],
+			});
+
+			renderWithProviders(<SquareStoreItemDetail item={item} />, { config });
+
+			const script = document.querySelector('script[type="application/ld+json"]');
+			expect(script).toBeTruthy();
+
+			const schema = JSON.parse(script?.textContent || '{}');
+			expect(schema.sku).toBe('SKU-004');
+			expect(schema.mpn).toBe('MPN-004');
+			expect(schema.gtin).toBeUndefined();
 		});
 	});
 

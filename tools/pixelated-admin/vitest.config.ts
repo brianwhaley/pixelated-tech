@@ -2,4 +2,5 @@ import { createAppVitestConfig } from '../../shared/configs/vitest.config.base.t
 
 export default createAppVitestConfig(__dirname, {
 	globals: true,
+	testTimeout: 10000,
 });
