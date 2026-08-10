@@ -53,6 +53,12 @@ describe('Services components', () => {
 		expect(screen.getByRole('link', { name: /Floor Coating/i })).toHaveAttribute('href', '/services/floor-coating');
 	});
 
+	it('hides the header section when no title and no intro are provided', () => {
+		render(<ServicesList />, { config: { siteInfo: { services: mockServices } } });
+
+		expect(document.querySelector('#services-list-header')).not.toBeInTheDocument();
+	});
+
 	it('renders service detail from slug using config-provided services', () => {
 		render(<ServiceDetail serviceSlug="garage-floor-repair" />, { config: { siteInfo: { services: mockServices } } });
 

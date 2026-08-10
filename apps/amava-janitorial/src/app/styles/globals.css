@@ -1,0 +1,73 @@
+html, body { padding: 0; margin: 0; }
+* { box-sizing: border-box; }
+#root { min-height:100vh; }
+
+
+@media screen and (max-width: 768px) {
+    #social-section .page-section-content {
+        max-width: 70%;
+		margin: 0 auto;
+    }
+}
+
+
+/* ========================================
+    MENU
+======================================== */
+.menu-wrapper {
+    margin: 5px 0;
+}
+.menu {
+    border-top: 2px solid var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+.menu-item a {
+    background-color: transparent;
+    color: contrast-color(var(--bg-color));
+}
+.menu-item:not(:first-child) {
+    border-left: none;
+}
+.menu-item a:hover {
+    background-color: var(--secondary-color);
+    color: contrast-color(var(--secondary-color));
+}
+.menu-item a.selected {
+    background-color: var(--primary-color);
+    color: contrast-color(var(--primary-color));
+}
+
+
+
+.callout {
+    border: 3px solid var(--secondary-color) !important;
+
+    .callout-image {
+        border: 10px solid var(--primary-color);
+    }
+
+}
+
+
+
+header #header-section {
+    padding: 10px 0 0 0;
+    img {
+        margin: 0 auto;
+    }
+}
+
+
+/* ========================================
+        PAGES 
+======================================== */
+
+#home-services-section {
+    .callout .callout-image {
+        width: 100%;
+        clip-path: none !important;
+    }
+    .callout .callout-image img {
+        clip-path: none !important;
+    }
+}

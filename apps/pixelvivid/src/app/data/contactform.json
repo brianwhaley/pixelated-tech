@@ -60,6 +60,7 @@
 				"id" : "firstname",
 				"name" : "firstname",
 				"defaultValue" : null,
+				"autocomplete" : "given-name",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
@@ -74,6 +75,7 @@
 				"id" : "lastname",
 				"name" : "lastname",
 				"defaultValue" : null,
+				"autocomplete" : "family-name",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
@@ -88,12 +90,29 @@
 				"id" : "email",
 				"name" : "email",
 				"defaultValue" : null,
+				"autocomplete" : "email",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
 				"label" : "Email Address (required) : ",
 				"validate" : "isValidEmailAddress",
 				"tooltip" : "Please type in your Email Address"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "telephone",
+				"name" : "telephone",
+				"defaultValue" : null,
+				"autocomplete" : "tel",
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Telephone (required) : ",
+				"validate" : "isValidUSPhoneNumber",
+				"tooltip" : "Please type in your Telephone Number"
 			}
 		},
 		{

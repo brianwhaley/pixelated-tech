@@ -24,33 +24,10 @@ export default async function RootLayout({
 	const path = reqHeaders.get("x-path") ?? "/";
 	const pathname = normalizeRoutePath(path);
 
-	// Check if running on localhost
-	const hostname = reqHeaders.get("host")?.split(':')[0];
-	const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-
 	const isPrintRoute = pathname.startsWith('/billing/invoice');
 	const urlToken = new URLSearchParams((reqHeaders.get('x-url') ?? '').split('?')[1] || '').get('token');
 	const serverToken = getFullPixelatedConfig()?.integrations?.puppeteer?.internalToken;
 	const isInternalPuppeteerRequest = isPrintRoute && !!serverToken && urlToken === serverToken;
-
-	// Restrict new deployment page to localhost only
-	if (pathname === '/newdeployment' && !isLocalhost) {
-		// Check if user is authenticated
-		let session;
-		try {
-			session = await getServerSession(authOptions);
-		} catch (error) {
-			console.error('Session check failed:', error);
-			session = null;
-		}
-		
-		// If authenticated, redirect to home; if not, redirect to login
-		if (session) {
-			redirect('/');
-		} else {
-			redirect('/login');
-		}
-	}
 
 	// Check authentication and authorization for all routes (except login, unauthorized, and internal invoice renders)
 	if (pathname !== '/login' && pathname !== '/unauthorized' && !isInternalPuppeteerRequest) {

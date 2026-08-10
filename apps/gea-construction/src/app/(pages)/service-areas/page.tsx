@@ -6,7 +6,7 @@ import { PageTitleHeader, PageSection, ServiceAreas, usePixelatedConfig } from '
 export default function ServiceAreasPage() {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
-	const siteName = siteInfo?.name || "Gea Construction";
+	const siteName = siteInfo?.name || "GEA Construction";
 
 	return (
 		<>
@@ -18,7 +18,6 @@ export default function ServiceAreasPage() {
 			</PageSection>
 
 			<ServiceAreas
-				
 				title={`${siteName} Service Areas`}
 				intro="Click a service area to read about the local coverage, specialties, and how we support businesses in that region."
 				serviceAreaPathPrefix="/service-areas"
