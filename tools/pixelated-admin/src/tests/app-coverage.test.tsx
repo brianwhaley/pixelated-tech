@@ -195,7 +195,6 @@ const appPages = [
 	['configbuilder', 'src/app/(pages)/configbuilder/page.tsx'],
 	['contentful-migrate', 'src/app/(pages)/contentful-migrate/page.tsx'],
 	['formbuilder', 'src/app/(pages)/formbuilder/page.tsx'],
-	['newdeployment', 'src/app/(pages)/newdeployment/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
 	['component-usage', 'src/app/(pages)/component-usage/page.tsx'],
 	['billing', 'src/app/(pages)/billing/page.tsx'],
@@ -344,22 +343,8 @@ describe('pixelated-admin extra coverage', () => {
 		expect(mockRedirect).not.toHaveBeenCalled();
 	});
 
-	it('redirects /newdeployment to login when unauthenticated and not localhost', async () => {
-		mockRedirect.mockReset();
-		mockHeaders.get = (name: string) => {
-			if (name === 'x-path') return '/newdeployment';
-			if (name === 'x-origin') return 'https://admin.pixelated.tech';
-			if (name === 'x-url') return 'https://admin.pixelated.tech/newdeployment';
-			if (name === 'host') return 'admin.pixelated.tech';
-			return null;
-		};
-		const mod = await importModule('src/app/layout.tsx');
-		const Layout = mod.default;
-		await Layout({ children: <div /> });
-		expect(mockRedirect).toHaveBeenCalledWith('/login');
-	});
-
 	it('redirects protected routes to login when unauthenticated', async () => {
+
 		mockRedirect.mockReset();
 		mockHeaders.get = (name: string) => {
 			if (name === 'x-path') return '/configbuilder';
@@ -372,48 +357,6 @@ describe('pixelated-admin extra coverage', () => {
 		const Layout = mod.default;
 		await Layout({ children: <div /> });
 		expect(mockRedirect).toHaveBeenCalledWith('/login');
-	});
-
-	it('RootLayout redirects /newdeployment to home when authenticated', async () => {
-		mockRedirect.mockReset();
-		mockGetServerSession.mockResolvedValue({ user: { name: 'Admin' } });
-		mockHeaders.get = (name: string) => {
-			if (name === 'x-path') return '/newdeployment';
-			if (name === 'host') return 'admin.pixelated.tech';
-			return null;
-		};
-		const mod = await importModule('src/app/layout.tsx');
-		const Layout = mod.default;
-		await Layout({ children: <div /> });
-		expect(mockRedirect).toHaveBeenCalledWith('/');
-	});
-
-	it('RootLayout handles session check failure for /newdeployment', async () => {
-		mockRedirect.mockReset();
-		mockGetServerSession.mockRejectedValueOnce(new Error('Auth fail'));
-		mockHeaders.get = (name: string) => {
-			if (name === 'x-path') return '/newdeployment';
-			if (name === 'host') return 'admin.pixelated.tech';
-			return null;
-		};
-		const mod = await importModule('src/app/layout.tsx');
-		const Layout = mod.default;
-		await Layout({ children: <div /> });
-		expect(mockRedirect).toHaveBeenCalledWith('/login');
-	});
-
-	it('allows /newdeployment on localhost without redirect', async () => {
-		mockRedirect.mockReset();
-		mockGetServerSession.mockResolvedValueOnce({ user: { name: 'Admin' } });
-		mockHeaders.get = (name: string) => {
-			if (name === 'x-path') return '/newdeployment';
-			if (name === 'host') return 'localhost:3006';
-			return null;
-		};
-		const mod = await importModule('src/app/layout.tsx');
-		const Layout = mod.default;
-		await Layout({ children: <div /> });
-		expect(mockRedirect).not.toHaveBeenCalled();
 	});
 
 	it('allows login route without redirect', async () => {
@@ -441,6 +384,37 @@ describe('pixelated-admin extra coverage', () => {
 		const Layout = mod.default;
 		await Layout({ children: <div /> });
 		expect(mockRedirect).not.toHaveBeenCalled();
+	});
+
+	it('redirects root path to login when x-path header is absent', async () => {
+		mockRedirect.mockReset();
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-origin') return 'https://admin.pixelated.tech';
+			if (name === 'x-url') return 'https://admin.pixelated.tech/';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).toHaveBeenCalledWith('/login');
+	});
+
+	it('redirects unauthorized protected routes to unauthorized', async () => {
+		mockRedirect.mockReset();
+		mockGetServerSession.mockResolvedValueOnce({ user: { name: 'Admin', email: 'admin@example.com' } });
+		mockHeaders.get = (name: string) => {
+			if (name === 'x-path') return '/configbuilder';
+			if (name === 'host') return 'admin.pixelated.tech';
+			return null;
+		};
+		const adminClient = await import('@pixelated-tech/components/adminclient');
+		const spy = vi.spyOn(adminClient, 'isRouteAllowedForID').mockReturnValue(false);
+		const mod = await importModule('src/app/layout.tsx');
+		const Layout = mod.default;
+		await Layout({ children: <div /> });
+		expect(mockRedirect).toHaveBeenCalledWith('/unauthorized');
+		spy.mockRestore();
 	});
 
 	it('bypasses auth for internal Puppeteer invoice requests', async () => {

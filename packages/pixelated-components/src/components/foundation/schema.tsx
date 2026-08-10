@@ -330,6 +330,9 @@ export function SchemaEvent(props: SchemaEventType) {
 				...(siteInfo?.url ? { '@id': `${siteInfo.url.replace(/\/$/, '')}/#organization` } : {}),
 				name: siteInfo?.name,
 				address: buildPostalAddress(siteInfo?.address),
+				telephone: siteInfo?.telephone,
+				priceRange: siteInfo?.priceRange,
+				image: siteInfo?.image,
 			},
 			image: images.length ? images : siteInfo?.image ? [siteInfo.image] : undefined,
 			performer: addSameAs({

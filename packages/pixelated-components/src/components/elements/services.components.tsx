@@ -36,20 +36,20 @@ Services.propTypes = {
 	id: PropTypes.string,
 };
 export type ServicesType = InferProps<typeof Services.propTypes>;
-export function Services({ title = 'Our Services', intro, id = 'services-list', variant, boxShape, layout, direction, gridColumns, imgShape }: ServicesType) {
+export function Services({ title, intro, id = 'services-list', variant, boxShape, layout, direction, gridColumns, imgShape }: ServicesType) {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
 	const resolvedPrefix = getServicePathPrefix(siteInfo);
 	const items = resolveServices({ siteInfo });
-	if (!items?.length) {
-		return null;
-	}
+	if (!items?.length) { return null; }
 	return (
 		<>
-			<PageSection id={`${id}-header`} columns={1}>
-			    <PageSectionHeader title={title ?? 'Our Services'} />
-			    {intro ? intro : null}
-			</PageSection>
+			{ (title || intro) ? (
+				<PageSection id={`${id}-header`} columns={1}>
+				    <PageSectionHeader title={title ?? 'Our Services'} />
+				    {intro ? intro : null}
+				</PageSection>
+			) : null }
 			<PageSection id={`${id}-section`} columns={1}>
 				{items.map((service: ServiceCardType['service'], index: number) => (
 					<PageGridItem key={index}>
@@ -111,7 +111,9 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 	const effectiveBoxShape = boxShape ?? 'squircle';
 	const effectiveLayout = layout ?? 'horizontal';
 	const effectiveDirection = direction ?? (index % 2 === 0 ? 'left' : 'right');
-	const effectiveGridColumns = gridColumns ?? (index % 2 === 0 ? {left:1, right:3} : {left:3, right:1});
+	const effectiveGridLeft = gridColumns?.left ?? 1;
+	const effectiveGridRight = gridColumns?.right ?? 3;
+	const effectiveGridColumns = (index % 2 === 0 ? {left: effectiveGridLeft, right: effectiveGridRight} : {left: effectiveGridRight, right: effectiveGridLeft});
 	const effectiveImgShape = imgShape ?? 'square';
 	return (
 		<>

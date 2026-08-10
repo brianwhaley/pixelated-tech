@@ -6,7 +6,7 @@ import { PageSection, PageTitleHeader, PageSectionHeader, usePixelatedConfig } f
 export default function TermsPage() {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo ?? {};
-	const legalEntityName = siteInfo.name ?? 'Gea Construction';
+	const legalEntityName = siteInfo.name ?? 'GEA Construction';
 	const primaryEmail = siteInfo.email ?? '';
 	const corporateAddress = siteInfo.address
 		? `${siteInfo.address.streetAddress}, ${siteInfo.address.addressLocality}, ${siteInfo.address.addressRegion} ${siteInfo.address.postalCode}`

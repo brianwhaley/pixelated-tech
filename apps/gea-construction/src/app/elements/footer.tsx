@@ -7,7 +7,7 @@ export default async function Footer() {
 	const path = reqHeaders.get("x-path") ?? "/";
 	const pathname = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
 	const config = await getFullPixelatedConfig();
-	const siteName = config?.siteInfo?.name || "Gea Construction";
+	const siteName = config?.siteInfo?.name || "GEA Construction";
 	return (
 		<PageSection id="footer" columns={1} maxWidth="1024px" padding="20px 0 0 0">
 			<div suppressHydrationWarning={true} >
