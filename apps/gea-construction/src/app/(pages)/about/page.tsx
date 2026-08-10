@@ -44,7 +44,7 @@ export default function AboutPage() {
 	return (
 		<>
 
-			<PageTitleHeader title="About Gea Construction" />
+			<PageTitleHeader title="About GEA Construction" />
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="team-section">
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
 				
 				<PageSectionHeader title="Our History" />
 
-				<p>In the heart of the South Carolina Lowcountry, Gea Construction began 
+				<p>In the heart of the South Carolina Lowcountry, GEA Construction began 
 					its journey with little more than an idea and a dedication 
 					to quality. Founded in 1492, the company built 
 					its reputation one project at a time. They focused on mastering the unique 
@@ -75,7 +75,7 @@ export default function AboutPage() {
 					satisfaction quickly fostered a loyal clientele, establishing 
 					a strong foundation rooted in trust and meticulous attention to detail.</p>
 				
-				<p>As their reputation flourished through word-of-mouth, Gea Construction 
+				<p>As their reputation flourished through word-of-mouth, GEA Construction 
 					strategically expanded its operations to meet the demands of the areas 
 					booming growth. The small, family-owned business gradually 
 					scaled up moving to more complex projects.  
@@ -84,7 +84,7 @@ export default function AboutPage() {
 					and aesthetic excellence, adapting its bespoke service model to 
 					suit its expanding clientele.</p>
 				
-				<p>At Gea Construction, the philosophy remains simple: every project 
+				<p>At GEA Construction, the philosophy remains simple: every project 
 					is a testament to the art of superior service. The goal is 
 					to exceed expectations not just through the beauty of the finished work, 
 					but through exceptional service and a profound respect for the 

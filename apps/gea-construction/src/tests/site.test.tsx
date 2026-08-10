@@ -143,7 +143,7 @@ describe('Pixelated Template site coverage', () => {
 			expect(screen.getByTestId('menu-simple')).not.toBeNull();
 		},
 		headerAssertion: () => {
-			expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
+			expect(screen.getByTestId('smart-image')).not.toBeNull();
 		},
 		footerAssertion: () => {
 			expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
@@ -208,7 +208,7 @@ describe('Pixelated Template site coverage', () => {
 			name: 'Home',
 			Component: Home,
 			assertion: async () => {
-				expect(screen.getByText('Welcome to Gea Construction')).not.toBeNull();
+				expect(screen.getByText(/Welcome to GEA Construction/i)).not.toBeNull();
 			},
 		},
 		{
@@ -234,14 +234,14 @@ describe('Pixelated Template site coverage', () => {
 	it('renders Header fallback when config is unavailable', () => {
 		setPixelatedConfigOverride(null);
 		render(<Header />);
-		expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
+		expect(screen.getByTestId('smart-image')).not.toBeNull();
 	});
 
 	it('renders Footer fallback when config is unavailable', async () => {
 		setPixelatedConfigOverride(null);
 		render(await Footer());
 		expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
-		expect(screen.getByText(/Gea Construction/)).not.toBeNull();
+		expect(screen.getByText(/GEA Construction/)).not.toBeNull();
 	});
 
 	it('proxies request headers with fallback origin when nextUrl.origin is unavailable', () => {
@@ -265,7 +265,7 @@ describe('Pixelated Template site coverage', () => {
 	it('renders Services page fallback when config is unavailable', () => {
 		setPixelatedConfigOverride(null);
 		render(<ServicesPage />);
-		expect(screen.getByText(/Gea Construction provides a full suite/i)).not.toBeNull();
+		expect(screen.getByText(/GEA Construction provides a full suite/i)).not.toBeNull();
 	});
 
 	it('renders Service Areas page fallback when config is unavailable', () => {

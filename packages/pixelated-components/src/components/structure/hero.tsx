@@ -140,7 +140,9 @@ export function Hero({ img, imgAlt, video, poster, title, description, uploadDat
 		/* If no valid variant or required media is provided, render an empty hero container with children (if any) */
 		return (
 			<div id={id} className={"hero" + (variant ? " " + variant : '')} style={{ height: height ?? '60vh' }}>
-				{ children }
+				<div className="hero-content">
+				    { children }
+				</div>
 			</div>
 		);
 	}

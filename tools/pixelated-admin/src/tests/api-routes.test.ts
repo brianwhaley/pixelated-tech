@@ -189,15 +189,6 @@ describe('pixelated-admin API routes', () => {
 		expect(await response.json()).toEqual({ success: true, data: { results: ['yes'] } });
 	});
 
-	it('handles deploy route', async () => {
-		const route = await importModule('src/app/api/deploy/route.ts');
-		const response = await route.POST({
-			request: makeRequest({ site: 'test', environments: ['prod'], versionType: 'patch', commitMessage: 'ok' }),
-		});
-		expect(response.status).toBe(200);
-		expect(await response.json()).toEqual({ message: 'Deployment results', success: true });
-	});
-
 	it('returns contentful content types for valid credentials', async () => {
 		const route = await importModule('src/app/api/contentful/content-types/route.ts');
 		const response = await route.POST(makeJsonRequest('http://localhost', {
@@ -503,60 +494,6 @@ describe('pixelated-admin API routes', () => {
 		const response = await route.POST(makeJsonRequest('http://localhost', { input: [] }));
 		expect(response.status).toBe(200);
 		expect(await response.json()).toMatchObject({ success: false, error: 'failed' });
-	});
-
-	it('rejects deploy route when not running locally', async () => {
-		const route = await importModule('src/app/api/deploy/route.ts');
-		const request = new Request('https://example.com/api/deploy', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', host: 'example.com' },
-			body: JSON.stringify({ site: 'test', environments: ['prod'], versionType: 'patch', commitMessage: 'ok' }),
-		});
-		const response = await route.POST({ request } as any);
-		expect(response.status).toBe(403);
-		expect(await response.json()).toMatchObject({ error: expect.stringContaining('only allowed when running locally') });
-	});
-
-	it('rejects deploy route when required fields are missing', async () => {
-		const route = await importModule('src/app/api/deploy/route.ts');
-		const request = new Request('http://localhost/api/deploy', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', host: 'localhost' },
-			body: JSON.stringify({ site: 'test' }),
-		});
-		const response = await route.POST({ request } as any);
-		expect(response.status).toBe(400);
-		expect(await response.json()).toMatchObject({ error: 'Missing required fields' });
-	});
-
-	it('rejects deploy route when site is not found', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue(null);
-		const route = await importModule('src/app/api/deploy/route.ts');
-		const request = new Request('http://localhost/api/deploy', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', host: 'localhost' },
-			body: JSON.stringify({ site: 'missing', environments: ['prod'], versionType: 'patch', commitMessage: 'ok' }),
-		});
-		const response = await route.POST({ request } as any);
-		expect(response.status).toBe(404);
-		expect(await response.json()).toMatchObject({ error: expect.stringContaining("not found") });
-	});
-
-	it('returns deploy route error when executeDeployment throws', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', localPath: '/site-a', remote: 'site-a' } as any);
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'executeDeployment').mockRejectedValue(new Error('boom'));
-		const route = await importModule('src/app/api/deploy/route.ts');
-		const request = new Request('http://localhost/api/deploy', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', host: 'localhost' },
-			body: JSON.stringify({ site: 'test', environments: ['prod'], versionType: 'patch', commitMessage: 'ok' }),
-		});
-		const response = await route.POST({ request } as any);
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ error: expect.stringContaining('Deployment failed') });
 	});
 
 	it('returns sites route 500 when loading sites fails', async () => {
@@ -1069,21 +1006,6 @@ describe('pixelated-admin API routes', () => {
 		expect(response.status).toBe(200);
 	});
 
-	it('returns deploy route success branch when local host and valid site config exist', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'brianwhaley', localPath: '/repo', remote: 'repo' } as any);
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'executeDeployment').mockResolvedValue({ success: true, environments: { prod: 'ok' } });
-		const route = await importModule('src/app/api/deploy/route.ts');
-		const request = new Request('http://localhost/api/deploy', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', host: 'localhost' },
-			body: JSON.stringify({ site: 'brianwhaley', environments: ['prod'], versionType: 'patch', commitMessage: 'ok' }),
-		});
-		const response = await route.POST({ request } as any);
-		expect(response.status).toBe(200);
-	});
-
 	it('returns pagebuilder route import response for delete route', async () => {
 		const route = await importModule('src/app/api/pagebuilder/delete/route.ts');
 		const response = await route.DELETE(new Request('http://localhost?name=test', { method: 'DELETE' }));
@@ -1124,10 +1046,7 @@ describe('pixelated-admin API routes', () => {
 				expect(response).toBeInstanceOf(Response);
 			}
 			if (typeof module.POST === 'function') {
-				const arg = file.includes('/deploy/route.ts')
-					? { request: makeRequest({ test: true }) }
-					: makeRequest({ test: true });
-				const response = await module.POST(arg);
+				const response = await module.POST(makeRequest({ test: true }));
 				expect(response).toBeInstanceOf(Response);
 			}
 			if (typeof module.DELETE === 'function') {

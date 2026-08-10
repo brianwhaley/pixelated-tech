@@ -80,6 +80,56 @@
 	},
 	"sites": [
 		{
+			"name": "AMAVA Flooring",
+			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/amava-flooring",
+			"localPort": "3000",
+			"remote": "amava-flooring",
+			"repo": "amava-flooring",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.amava-flooring.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.amava-flooring.com",
+			"billing": {
+				"tier": "premium",
+				"price": 450.00,
+				"email": "michaelp@amava-janitorial.com",
+				"companyName": "AMAVA Flooring",
+				"address": "",
+				"notes": {
+					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
+					"2026-09": "Since GEA Construction was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
+				}
+			}
+		},
+		{
+			"name": "AMAVA Janitorial",
+			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/amava-janitorial",
+			"localPort": "3014",
+			"remote": "amava-janitorial",
+			"repo": "amava-janitorial",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.amava-janitorial.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.amava-janitorial.com",
+			"billing": {
+				"tier": "growth",
+				"price": 250.00,
+				"email": "al@amava-janitorial.com",
+				"companyName": "AMAVA Janitorial",
+				"address": "",
+				"notes": {
+					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
+					"2026-09": "Since GEA Construction was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
+				}
+			}
+		},
+		{
 			"name": "brianwhaley",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/brianwhaley",
 			"localPort": "3000",
@@ -92,6 +142,31 @@
 			"url": "https://www.brianwhaley.com",
 			"ga4PropertyId": "494828096",
 			"gscSiteUrl": "https://www.brianwhaley.com"
+		},
+		{
+			"name": "gea-construction",
+			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/gea-construction",
+			"localPort": "3013",
+			"remote": "gea-construction",
+			"repo": "gea-construction",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.geaconstruction.net",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "sc-domain:geaconstruction.net",
+			"billing": {
+				"tier": "growth",
+				"price": 250.00,
+				"email": "nick@geaconstruction.net",
+				"companyName": "GEA Construction, LLC",
+				"address": "117 Beckenridge Circle, Bluffton, SC 29910",
+				"notes": {
+					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
+					"2026-09": "Since GEA Construction was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
+				}
+			}
 		},
 		{
 			"name": "informationfocus",
@@ -153,7 +228,7 @@
 				"tier": "growth",
 				"price": 150.00,
 				"email": "greg@manningmetalworks.com",
-				"companyName": "Manning Metal Works, LLC",
+				"companyName": "Manning Metalworks, LLC",
 				"address": "24 West Hanover Avenue, Morris Plains, NJ 07950",
 				"notes": {
 					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
@@ -176,12 +251,18 @@
 			"gscSiteUrl": "sc-domain:oaktree-landscaping.com",
 			"blogRss": "https://blog.oaktree-landscaping.com/feed/",
 			"billing": {
-				"tier": "premier",
-				"price": 250.00,
+				"tier": "essential",
+				"price": 100.00,
 				"email": "cwoods@live.com",
 				"companyName": "Oaktree Landscaping, LLC",
 				"address": "26504 Whyte Hardee Boulevard, Hardeeville, SC 29927",
 				"notes": {
+					"2026-12": "Thank you for your scheduled payment!",
+					"2026-11": "Thank you for your scheduled payment!",
+					"2026-10": "Thank you for your scheduled payment!",
+					"2026-09": "Thank you for your scheduled payment!",
+					"2026-08": "Thank you for your scheduled payment!",
+					"2026-07": "Thank you for your scheduled payment!",
 					"2026-06": "Thank you for your scheduled payment!",
 					"2026-05": "Thank you for your scheduled payment!"
 				}
@@ -202,7 +283,7 @@
 			"gscSiteUrl": "sc-domain:palmetto-epoxy.com",
 			"blogRss": "https://blog.palmetto-epoxy.com/feed/",
 			"billing": {
-				"tier": "premier",
+				"tier": "premium",
 				"price": 200.00,
 				"email": "palmettoepoxy@gmail.com, marthaaberle21@gmail.com",
 				"companyName": "Palmetto Epoxy",
@@ -341,7 +422,7 @@
 				"email": "info@thethreemusesofbluffton.com",
 				"companyName": "The Three Muses of Bluffton",
 				"address": "1460 Fording Island Road, Bluffton, SC 29910",
-				"tier": "premier",
+				"tier": "premium",
 				"price": 250.00,
 				"notes": {
 					"2026-07": [ 

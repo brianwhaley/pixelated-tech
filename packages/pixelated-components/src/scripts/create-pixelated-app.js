@@ -5,7 +5,7 @@
  * Simple CLI to scaffold a new site from `pixelated-template`.
  * - copies the template to a destination folder
  * - clears out the .git history in the copy
- * - optionally initializes a fresh git repo and adds a remote
+ * - optionally initializes a fresh git repo and makes an initial commit
  *
  * TODOs (placeholders for later work):
  *  - Run `npm ci` / `npm run lint` / `npm test` and optionally build
@@ -278,132 +278,6 @@ export async function copyTemplateForPage(templatePathArg, templateSrc, template
 	}
 }
 
-
-export async function createAndPushRemote(destPath, siteName, defaultOwner) {
-	// Initialize a local git repo and make the initial commit
-	await _exec('git init -b main', { cwd: destPath });
-	await _exec('git add .', { cwd: destPath });
-	await _exec('git commit -m "chore: initial commit from pixelated-template"', { cwd: destPath });
-	console.log('✅ Git initialized and initial commit created.');
-
-	// If an encrypted config exists, attempt a non-fatal decrypt in the new site to ensure the token can be read
-	const encCandidates = [
-		path.join(destPath, 'src', 'app', 'config', 'pixelated.config.json.enc'),
-		path.join(destPath, 'src', 'config', 'pixelated.config.json.enc'),
-		path.join(destPath, 'src', 'pixelated.config.json.enc'),
-		path.join(destPath, 'pixelated.config.json.enc'),
-		path.join(destPath, 'dist', 'config', 'pixelated.config.json.enc')
-	];
-	for (const p of encCandidates) {
-		if (await exists(p)) {
-			console.log(`Found encrypted config at ${p}. Attempting to run 'npm run config:decrypt' in the new site (non-fatal)`);
-			try {
-				await _exec('npm run config:decrypt', { cwd: destPath, timeout: 60_000 });
-				console.log('Attempted config:decrypt (non-fatal)');
-			} catch (err) {
-				console.warn('config:decrypt failed or PIXELATED_CONFIG_KEY missing (non-fatal):', err?.message || err);
-			}
-			break;
-		}
-	}
-
-	// Create a small temporary script inside the new site to reliably import the project's provider and print JSON to stdout
-	const tmpDir = path.join(destPath, '.px-scripts');
-	const tmpFile = path.join(tmpDir, 'get_github_token.ts');
-	await fs.mkdir(tmpDir, { recursive: true });
-	const configModulePath = path.resolve(destPath, 'src', 'components', 'config', 'config');
-	const tmpContent = `import('${configModulePath}').then(m => {
-		const cfg = m.getFullPixelatedConfig();
-		// Only print the github object (or null) as JSON to stdout
-		console.log(JSON.stringify(cfg?.github || null));
-	}).catch(e => {
-		console.error('ERR_IMPORT', e?.message || e);
-		process.exit(2);
-	});`;
-	await fs.writeFile(tmpFile, tmpContent, 'utf8');
-
-	let execOut;
-	try {
-		execOut = await _exec(`npx tsx ${tmpFile}`, { cwd: destPath, timeout: 60_000 });
-	} catch (e) {
-		// Provide a helpful error message and ensure cleanup happens below
-		console.error('❌ Failed to run config provider to obtain GitHub token. Ensure PIXELATED_CONFIG_KEY is available (e.g., in .env.local) and the site includes an encrypted pixelated.config.json.enc');
-		throw e;
-	} finally {
-		// Always clean up the temporary script directory
-		try { await fs.rm(tmpDir, { recursive: true, force: true }); } catch (_) { /* ignore cleanup errors */ }
-	}
-
-	const outStr = (execOut && execOut.stdout) ? String(execOut.stdout).trim() : '';
-	if (!outStr) {
-		console.error('❌ No output from config provider; cannot locate github token');
-		throw new Error('Missing provider output');
-	}
-
-	let githubInfo;
-	try { githubInfo = JSON.parse(outStr); } catch (e) { console.error('❌ Invalid JSON from config provider:', outStr); throw e; }
-	const token = githubInfo?.token;
-	const cfgOwner = githubInfo?.defaultOwner;
-	if (!token) {
-		console.error('❌ github.token not found in decrypted config; cannot create remote repo.');
-		throw new Error('Missing github.token');
-	}
-
-	const repoName = siteName;
-	const ownerForMessage = cfgOwner || defaultOwner;
-	console.log(`Creating GitHub repo: ${ownerForMessage}/${repoName} ...`);
-
-	let resp;
-	try {
-		resp = await fetch('https://api.github.com/user/repos', {
-			method: 'POST',
-			headers: {
-				'Authorization': `token ${token}`,
-				'Content-Type': 'application/json',
-				'User-Agent': 'create-pixelated-app'
-			},
-			body: JSON.stringify({ name: repoName, private: false })
-		});
-	} catch (e) {
-		console.error('❌ Failed to call GitHub API', e?.message || e);
-		throw e;
-	}
-
-	const body = await (async () => { try { return await resp.json(); } catch (e) { return null; } })();
-	if (!resp.ok) {
-		console.error(`❌ Failed to create GitHub repo: ${resp.status} ${resp.statusText} ${body?.message || ''}`);
-		throw new Error('GitHub repo creation failed');
-	}
-	const cloneUrl = body.clone_url;
-	if (!cloneUrl) {
-		console.error('❌ GitHub returned unexpected response (no clone_url)');
-		throw new Error('Invalid GitHub response');
-	}
-
-	// Add remote and push using repo-name as remote
-	const remoteName = repoName;
-	await _exec(`git remote add ${remoteName} ${cloneUrl}`, { cwd: destPath });
-	await _exec('git branch --show-current || git branch -M main', { cwd: destPath });
-	try {
-		// If we have a github token available in the decrypted config, use it for an authenticated push (avoids relying on local credential helper)
-		if (token) {
-			await _exec(`git -c credential.helper= -c http.extraheader="Authorization: token ${token}" push -u ${remoteName} main`, { cwd: destPath });
-			await _exec('git branch -f dev main', { cwd: destPath });
-			await _exec(`git -c credential.helper= -c http.extraheader="Authorization: token ${token}" push -u ${remoteName} dev`, { cwd: destPath });
-		} else {
-			await _exec(`git push -u ${remoteName} main`, { cwd: destPath });
-			await _exec('git branch -f dev main', { cwd: destPath });
-			await _exec(`git push -u ${remoteName} dev`, { cwd: destPath });
-		}
-		console.log(`✅ Remote '${remoteName}' created and pushed (main, dev): ${cloneUrl}`);
-		// Return useful values for downstream steps (e.g., Amplify app creation)
-		return { cloneUrl, remoteName, token };
-	} catch (e) {
-		console.warn('⚠️  Failed to push branches automatically. The repo was created on GitHub, but you may need to push manually or configure your git credentials. Error:', e?.message || e);
-		// Still return partial info so caller can decide next steps
-		return { cloneUrl, remoteName, token };
-	}
-}
 
 // Create an AWS Amplify app and connect repository branches (best-effort via AWS CLI).
 // This uses the local AWS CLI configuration (credentials/profile) and optionally a GitHub
@@ -834,30 +708,11 @@ async function main() {
 
 
 
-		// Prompt about creating a new GitHub repository. Default owner is read from components config `github.defaultOwner` (fallback: 'brianwhaley')
-		console.log(`\nStep ${stepNumber++}: GitHub Repository Creation`);
-		console.log('================================================================================\n');
-		const componentsCfgPath = path.resolve(__dirname, '..', 'config', 'pixelated.config.json');
-		let defaultOwner = 'brianwhaley';
-		try {
-			if (await exists(componentsCfgPath)) {
-				const compCfgText = await fs.readFile(componentsCfgPath, 'utf8');
-				const compCfg = JSON.parse(compCfgText);
-				if (compCfg?.github?.defaultOwner) defaultOwner = compCfg.github.defaultOwner;
-			}
-		} catch (e) {
-			// ignore and use fallback
-		}
-		const createRemoteAnswer = (await rl.question(`Create a new GitHub repository in '${defaultOwner}' and push the initial commit? (Y/n): `)) || 'y';
+		// Repository creation has been removed from this CLI. 
+
+
+
 		let remoteInfo = null;
-		if (createRemoteAnswer.toLowerCase() === 'y' || createRemoteAnswer.toLowerCase() === 'yes') {
-			try {
-				remoteInfo = await createAndPushRemote(destPath, siteName, defaultOwner);
-			} catch (e) {
-				console.warn('⚠️  Repo creation or git push failed. Your local repository is still available at:', destPath);
-				console.warn(e?.stderr || e?.message || e);
-			}
-		}
 		// Optionally create an AWS Amplify app and connect branches (main, dev)
 		console.log(`\nStep ${stepNumber++}: AWS Amplify App Creation`);
 		console.log('================================================================================\n');	// Inform user what region will be used (config-backed)

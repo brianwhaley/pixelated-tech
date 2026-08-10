@@ -1,0 +1,54 @@
+{
+  "name": "AMAVA-Janitorial",
+  "version": "0.7.20",
+  "private": true,
+  "description": "Pixelated starter template for Next.js, Typescript, and common configs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brianwhaley/pixelated-template.git"
+  },
+  "scripts": {
+    "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3014 --experimental-https",
+    "build": "npm run clean && NODE_ENV=production next build --webpack",
+    "start": "npm run clean && next build --webpack && next start",
+    "lint": "eslint --fix",
+    "test": "vitest run --silent",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "clean": "rm -rf .next && rm -rf out",
+    "generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
+    "config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
+    "config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",
+    "config:decrypt": "npm run config:vault -- decrypt src/app/config/pixelated.config.json.enc",
+    "config:postbuild": "npm run config:vault -- postbuild",
+    "release:prep": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release-prep.js\"))')",
+    "release": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/release.sh\"))')",
+    "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
+  },
+  "dependencies": {
+    "@pixelated-tech/components": "*",
+    "happy-dom": "^20.10.1",
+    "next": "^16.2.9",
+    "react": "^19.2.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^26.0.0",
+    "@types/react": "^19.2.14",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "9.39.4",
+    "eslint-config-next": "^16.2.9",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "glob": "^13.0.6",
+    "html-entities": "^2.3.3",
+    "react-dom": "^19.2.6",
+    "typescript": "6.0.2",
+    "vitest": "^4.1.10"
+  },
+  "overrides": {},
+  "deployMarker": "2026-08-05T04:05:55.698Z"
+}

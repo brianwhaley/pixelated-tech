@@ -20,6 +20,7 @@ This document lists the localhost ports used by various projects in the Pixelate
 | three-muses | 3011 | https://localhost:3011 |
 | simple-day-concierge | 3012 | https://localhost:3012 |
 | gea-construction | 3013 | https://localhost:3013 |
+| amava-janitorial | 3014 | https://localhost:3013 |
 
 ## Component Library
 

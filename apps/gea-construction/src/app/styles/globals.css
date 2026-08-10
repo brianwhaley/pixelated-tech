@@ -1,11 +1,118 @@
-html, body { padding: 0; margin: 0; }
-* { box-sizing: border-box; }
-#root { min-height:100vh; }
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#root {
+    min-height: 100vh;
+}
 
 
 @media screen and (max-width: 768px) {
     #social-section .page-section-content {
         max-width: 70%;
-		margin: 0 auto;
+        margin: 0 auto;
+    }
+}
+
+/* ========================================
+        HEADER 
+======================================== */
+
+#header-section {
+    padding-bottom: 0;
+}
+
+.hero {
+    margin-bottom: 0;
+
+    .hero-content {
+        background: rgba(255, 255, 255, 0.5);
+    }
+}
+
+/* ========================================
+        MENU 
+======================================== */
+
+.menu-item {
+	height: 40px;
+}
+
+.menu-item a {
+    background-color: var(--primary-color);
+    color: contrast-color(var(--primary-color)) !important;
+}
+
+.menu-item a:hover {
+    background-color: var(--secondary-color);
+    color: contrast-color(var(--secondary-color)) !important;
+}
+
+.menu-item a.selected {
+    background-color: var(--tertiary-color);
+    color: contrast-color(var(--tertiary-color)) !important;
+}
+
+/* ========================================
+        CALLOUTS 
+======================================== */
+
+.callout {
+    border: 10px solid var(--secondary-color) !important;
+    background-color: var(--accent3-color) !important;
+}
+.callout .callout-button button:hover {
+    color: var(--secondary-color) !important;
+}
+body.buttonring {
+    button:hover, .button:hover, .centered-button:hover {
+        color: var(--secondary-color) !important;
+        outline-color: var(--secondary-color) !important;
+    }
+}
+body.formglow {
+    form input:hover, select:hover, textarea:hover {
+        outline: 5px solid rgba(139, 58, 43, 0.2) !important;
+    }
+}
+input.invalid, textarea.invalid, select.invalid, .tag-container.invalid {
+    border: 1px solid var(--secondary-color) !important;
+    box-shadow: 0 0 5px 2px rgba(139, 58, 43, 0.45);
+}
+body.formglow {
+    form button:hover, input:focus, input:focus:hover, select:focus, select:focus:hover, textarea:focus, textarea:focus:hover {
+        outline: 5px solid rgba(139, 58, 43, 1) !important;
+    }
+}
+
+/* ========================================
+        SERVICE AREAS 
+======================================== */
+
+.service-areas-list { 
+
+    .callout {
+        border-radius: 0 !important;
+    }
+
+}
+
+/* ========================================
+        PAGES 
+======================================== */
+
+#home-services-section {
+    .callout .callout-image {
+        width: 100%;
+        clip-path: none !important;
+    }
+    .callout .callout-image img {
+        clip-path: none !important;
     }
 }

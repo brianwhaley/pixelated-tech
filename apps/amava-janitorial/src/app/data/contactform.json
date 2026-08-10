@@ -1,0 +1,281 @@
+{
+	"properties": {
+		"name": "contact-us",
+		"id": "contact-us-form",
+		"toggleLoading": true,
+		"openModal": true,
+		"resetForm": true
+	},
+	"fields" : [
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "from",
+				"name" : "from",
+				"value" : "info@amavajanitorial.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "to",
+				"name" : "to",
+				"value" : "info@amavajanitorial.com"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "subject",
+				"name" : "subject",
+				"value" : "AMAVA Janitorial Contact Us Submit"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "domain",
+				"name" : "domain",
+				"value" : "AMAVA Janitorial"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "formName",
+				"name" : "formName",
+				"value" : "contact-us"
+			}
+		},{
+			"component" : "FormHoneypot",
+			"props" : {
+				"id": "winnie",
+				"name" : "website"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "firstname",
+				"name" : "firstname",
+				"defaultValue" : null,
+				"autoComplete" : "given-name",
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "First Name (required) : ",
+				"tooltip" : "Please type in your First Name"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "lastname",
+				"name" : "lastname",
+				"defaultValue" : null,
+				"autoComplete" : "family-name",
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Last Name (required) : ",
+				"tooltip" : "Please type in your Last Name"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "companyname",
+				"name" : "companyname",
+				"defaultValue" : null,
+				"autoComplete" : "organization",
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Company Name (required) : ",
+				"tooltip" : "Please type in your Company Name"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "streetaddress",
+				"name" : "streetaddress",
+				"autoComplete" : "address-line1",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Street Address (required) : ",
+				"tooltip" : "Please type in your Street Address"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "city",
+				"name" : "city",
+				"autoComplete" : "address-level2",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "City (required) : ",
+				"tooltip" : "Please type in your City"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "state",
+				"name" : "state",
+				"autoComplete" : "address-level1",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "State (required) : ",
+				"tooltip" : "Please type in your State"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "zipcode",
+				"name" : "zipcode",
+				"autoComplete" : "postal-code",
+				"defaultValue" : null,
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Zip Code (required) : ",
+				"tooltip" : "Please type in your Zip Code"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "email",
+				"id" : "email",
+				"name" : "email",
+				"defaultValue" : null,
+				"autoComplete" : "email",
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Email Address (required) : ",
+				"validate" : "isValidEmailAddress",
+				"tooltip" : "Please type in your Email Address"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "tel",
+				"id" : "telephone",
+				"name" : "telephone",
+				"defaultValue" : null,
+				"autoComplete" : "tel",
+				"size" : "30",
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Telephone (required) : ",
+				"validate" : "isValidUSPhoneNumber",
+				"tooltip" : "Please type in your Telephone Number"
+			}
+		},{
+			"component" : "FormSelect",
+			"props" : {
+				"id" : "facility-type",
+				"name" : "facility-type",
+				"defaultValue" : "",
+				"autoComplete" : "",
+				"multiple" : null,
+				"required": "required",
+				"display" : "horizontal",
+				"label" : "Facility Type (required) : ",
+				"options" : [
+					{ "value" : "", "text" : "", "disabled" : "disabled" },
+					{ "value" : "corporate-building", "text" : "Corporate Building" },
+					{ "value" : "commercial-office", "text" : "Commercial Office" },
+					{ "value" : "hotel", "text" : "Hotel" },
+					{ "value" : "school", "text" : "School" },
+					{ "value" : "restaurant", "text" : "Restaurant" },
+					{ "value" : "health-club", "text" : "Health Club" },
+					{ "value" : "grocery-store", "text" : "Grocery Store" },
+					{ "value" : "other", "text" : "Other" }
+				]
+			}
+		},{
+			"component" : "FormSelect",
+			"props" : {
+				"id" : "service-required",
+				"name" : "service-required",
+				"defaultValue" : "",
+				"autoComplete" : "",
+				"multiple" : null,
+				"required": "required",
+				"display" : "horizontal",
+				"label" : "Service Required (required) : ",
+				"options" : [
+					{ "value" : "", "text" : "", "disabled" : "disabled" },
+					{ "value" : "custodial-janitorial", "text" : "Custodial/Janitorial" },
+					{ "value" : "janitorial-supplies", "text" : "Janitorial Supplies" },
+					{ "value" : "porter-matron-services", "text" : "Porter/Matron Services" },
+					{ "value" : "handyman-services", "text" : "Handyman Services" },
+					{ "value" : "specialty-cleaning", "text" : "Specialty Cleaning" },
+					{ "value" : "24-hour-services", "text" : "24 Hour Services" },
+					{ "value" : "other", "text" : "Other" }
+				]
+			}
+		},{
+			"component" : "FormSelect",
+			"props" : {
+				"id" : "hear-about-us",
+				"name" : "hear-about-us",
+				"defaultValue" : "",
+				"autoComplete" : "",
+				"multiple" : null,
+				"required": "required",
+				"display" : "horizontal",
+				"label" : "How Did You Hear About Us? (required) : ",
+				"options" : [
+					{ "value" : "", "text" : "", "disabled" : "disabled" },
+					{ "value" : "search-engine", "text" : "Search Engine" },
+					{ "value" : "website", "text" : "Website" },
+					{ "value" : "social-media", "text" : "Social Media" },
+					{ "value" : "print-ad", "text" : "Print Ad" },
+					{ "value" : "existing-client", "text" : "Existing Client" },
+					{ "value" : "personal-referral", "text" : "Personal Referral" },
+					{ "value" : "other", "text" : "Other" }
+				]
+			}
+		},{
+			"component" : "FormTextarea",
+			"props" : {
+				"id" : "message",
+				"name" : "message",
+				"rows" : "5",
+				"cols" : "30",
+				"defaultValue" : null,
+				"display" : "horizontal",
+				"required" : "required",
+				"label" : "Additional Message (required) : ",
+				"tooltip": "Please enter any additional details of your request"
+			}
+		},{
+			"component" : "FormButton",
+			"props" : {
+				"type" : "submit",
+				"id" : "submit",
+				"text" : "Submit Request"
+			}
+		}
+	]
+}

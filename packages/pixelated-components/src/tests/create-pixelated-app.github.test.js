@@ -11,7 +11,7 @@ import path from 'path';
 
 const skipNetworkTests = false;
 
-describe('createAndPushRemote (injected)', () => {
+describe('create-pixelated-app CLI', () => {
 	let tmpDir;
 	beforeEach(() => {
 		tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'create-site-'));
@@ -22,62 +22,6 @@ describe('createAndPushRemote (injected)', () => {
 		vi.restoreAllMocks();
 		// reset any module mocks
 		vi.resetModules();
-	});
-
-	vitestTest.skip('creates repo successfully when provider returns token and GitHub returns clone_url', async () => {
-		// Provide a mocked child_process.exec that calls the callback with stdout JSON for the inline tsx probe
-		const mockExecCb = (cmd, opts, cb) => {
-			if (typeof opts === 'function') { cb = opts; }
-			if (String(cmd).includes('npx tsx')) {
-				cb(null, JSON.stringify({ token: 'fake-token', defaultOwner: 'me' }), '');
-				return;
-			}
-			// git commands
-			cb(null, '', '');
-		};
-
-		// ensure git commands don't hit real ~/.gitconfig by providing a fake `git` in PATH
-		const binDir = path.join(tmpDir, 'bin');
-		await fs.promises.mkdir(binDir, { recursive: true });
-		const gitPath = path.join(binDir, 'git');
-		await fs.promises.writeFile(gitPath, '#!/bin/sh\necho "ok"\nexit 0\n');
-		await fs.promises.chmod(gitPath, 0o755);
-		process.env.PATH = `${binDir}${path.delimiter}${process.env.PATH}`;
-
-		// Mock child_process.exec before importing module so internal exec is our stub
-		vi.doMock('child_process', async (importOriginal) => {
-			const actual = await importOriginal();
-			const execFn = (cmd, opts, cb) => { if (typeof opts === 'function') cb = opts; if (String(cmd).includes('npx tsx')) return cb(null, JSON.stringify({ token: 'fake-token', defaultOwner: 'me' }), ''); return cb(null, '', ''); };
-			return { ...actual, exec: execFn, default: { ...actual, exec: execFn } };
-		});
-		const appModule = await import('../scripts/create-pixelated-app.js');
-
-		// Injected dependencies
-		const injectedExec = async (cmd) => {
-			if (String(cmd).includes('npx tsx')) return { stdout: JSON.stringify({ token: 'fake-token', defaultOwner: 'me' }), stderr: '' };
-			return { stdout: '', stderr: '' };
-		};
-		const injectedFetch = vi.fn(async () => ({ ok: true, json: async () => ({ clone_url: 'https://github.com/me/test.git' }) }));
-
-		await expect(appModule.createAndPushRemote(tmpDir, 'test', 'me', { exec: injectedExec, fetch: injectedFetch })).resolves.not.toThrow();
-		const res = await appModule.createAndPushRemote(tmpDir, 'test', 'me', { exec: injectedExec, fetch: injectedFetch });
-		expect(res).toHaveProperty('cloneUrl', 'https://github.com/me/test.git');
-	});
-
-	vitestTest.skip('throws when provider output does not include token', async () => {
-		const mockExecCb = (cmd, opts, cb) => { if (typeof opts === 'function') { cb = opts; } if (String(cmd).includes('npx tsx')) { cb(null, JSON.stringify({}), ''); return; } cb(null, '', ''); };
-		const binDir = path.join(tmpDir, 'bin');
-		await fs.promises.mkdir(binDir, { recursive: true });
-		const gitPath = path.join(binDir, 'git');
-		await fs.promises.writeFile(gitPath, '#!/bin/sh\necho "ok"\nexit 0\n');
-		await fs.promises.chmod(gitPath, 0o755);
-		process.env.PATH = `${binDir}${path.delimiter}${process.env.PATH}`;
-
-		// Injected exec that returns empty token output
-		const injectedExecEmpty = async (cmd) => ({ stdout: '', stderr: '' });
-		vi.doMock('child_process', async (importOriginal) => { const actual = await importOriginal(); const execFn = (cmd, opts, cb) => { if (typeof opts === 'function') cb = opts; return cb(null, '', ''); }; return { ...actual, exec: execFn, default: { ...actual, exec: execFn } }; });
-		const appModule2 = await import('../scripts/create-pixelated-app.js');
-		await expect(appModule2.createAndPushRemote(tmpDir, 'test', 'me')).rejects.toThrow(/Missing github.token/);
 	});
 
 	it('creates an Amplify app when AWS SDK client is present and commands succeed', async () => {

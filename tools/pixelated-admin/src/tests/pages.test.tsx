@@ -25,9 +25,6 @@ const mockSmartFetch = vi.fn(async (...args: any[]) => {
 			}),
 		};
 	}
-	if (stringUrl.includes('/api/deploy')) {
-		return { ok: true, json: async () => ({ success: true, results: {} }) };
-	}
 	if (stringUrl.includes('/api/contentful/validate')) {
 		return { ok: true, json: async () => ({ success: true }) };
 	}
@@ -39,11 +36,38 @@ const mockSmartFetch = vi.fn(async (...args: any[]) => {
 
 vi.mock('next/navigation', () => ({
 	useSearchParams: () => currentSearchParams,
+	redirect: (path: string) => path,
 }));
+
+vi.mock('nodemailer', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('nodemailer')>();
+	return {
+		__esModule: true,
+		...actual,
+		createTransport: vi.fn(() => ({
+			sendMail: vi.fn(async () => ({ messageId: 'sent' })),
+		})),
+	};
+});
 
 vi.mock('next-auth/react', () => ({
 	signIn: vi.fn(async () => true),
 }));
+
+vi.mock('fs', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('fs')>();
+	const mockFs = {
+		__esModule: true,
+		...actual,
+		existsSync: vi.fn(() => false),
+		readdirSync: vi.fn(() => []),
+		readFileSync: vi.fn(() => '[]'),
+	};
+	return {
+		...mockFs,
+		default: mockFs,
+	};
+});
 
 vi.mock('@pixelated-tech/components', async () => {
 	const React = await vi.importActual<typeof import('react')>('react');
@@ -91,10 +115,10 @@ const pageComponents = [
 	['contentful-migrate', 'src/app/(pages)/contentful-migrate/page.tsx'],
 	['form-submits', 'src/app/(pages)/form-submits/page.tsx'],
 	['formbuilder', 'src/app/(pages)/formbuilder/page.tsx'],
-	['newdeployment', 'src/app/(pages)/newdeployment/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
 	['component-usage', 'src/app/(pages)/component-usage/page.tsx'],
 	['styleguide', 'src/app/(pages)/styleguide/page.tsx'],
+	['mail-merge', 'src/app/(pages)/mail-merge/page.tsx'],
 	['loading', 'src/app/loading.tsx'],
 	['not-found', 'src/app/not-found.tsx'],
 	['global-error', 'src/app/global-error.tsx'],
@@ -187,24 +211,6 @@ describe('pixelated-admin page components', () => {
 		render(<Page />);
 		const signInButton = screen.getByRole('button', { name: /Sign in with Google/i });
 		expect(signInButton).toBeTruthy();
-	});
-
-	it('submits new deployment page via FormEngine and renders results', async () => {
-		mockSmartFetch.mockImplementation(async (url: unknown) => {
-			const stringUrl = String(url);
-			if (stringUrl.includes('/api/deploy')) {
-				return { ok: true, json: async () => ({ success: true, results: { 'brianwhaley': { message: 'ok', success: true } } }) };
-			}
-			return { ok: true, json: async () => ({}) };
-		});
-
-		const mod = await importModule('src/app/(pages)/newdeployment/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
-		await waitFor(() => expect(mockSmartFetch).toHaveBeenCalledWith('/api/deploy', expect.anything()));
-		await waitFor(() => expect(screen.getByText(/Deployment Results/i)).toBeTruthy());
 	});
 
 	it('validates and migrates content types in contentful migrate page', async () => {
@@ -319,6 +325,196 @@ describe('pixelated-admin page components', () => {
 		const select = screen.getByLabelText(/Select Site/i);
 		fireEvent.change(select, { target: { value: 'site-a' } });
 		expect((select as HTMLSelectElement).value).toBe('site-a');
+	});
+
+	it('updates site-health date inputs after loading', async () => {
+		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
+		const startInput = screen.getByLabelText(/Start Date/i) as HTMLInputElement;
+		const endInput = screen.getByLabelText(/End Date/i) as HTMLInputElement;
+
+		fireEvent.change(startInput, { target: { value: '2026-01-01' } });
+		fireEvent.change(endInput, { target: { value: '2026-02-01' } });
+
+		expect(startInput.value).toBe('2026-01-01');
+		expect(endInput.value).toBe('2026-02-01');
+	});
+
+	it('renders mail merge page when no mailer files exist', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(false);
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const Page = mod.default;
+		const element = await Page({ searchParams: Promise.resolve({}) });
+		render(element);
+
+		expect(screen.getByText(/Mail Merge/i)).toBeInTheDocument();
+	});
+
+	it('renders mail merge page with a selected file and categories', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockImplementation((value: string) => String(value).includes('mailer'));
+		(fs.readdirSync as any).mockReturnValue(['mailer.json']);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'test' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const Page = mod.default;
+		const element = await Page({ searchParams: Promise.resolve({ mailerFile: 'mailer.json', category: 'test' }) });
+		render(element);
+
+		expect(screen.getByText(/Mail Merge/i)).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /Send/i })).toBeInTheDocument();
+	});
+
+	it('renders MailMergeClientForm with categories', async () => {
+		const mod = await importModule('src/app/(pages)/mail-merge/MailMergeClientForm.tsx');
+		const Form = mod.MailMergeClientForm;
+		render(<Form selectedFile="mailer.json" selectedCategory="test" categories={[ 'test' ]} sendMailAction={async () => {}} />);
+
+		expect(screen.getByRole('button', { name: /Send/i })).toBeInTheDocument();
+		expect(screen.getByRole('combobox')).toBeInTheDocument();
+	});
+
+	it('normalizes mail merge query params correctly', async () => {
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		expect(mod.normalizeQueryParam(['file.json'])).toBe('file.json');
+		expect(mod.normalizeQueryParam('file.json')).toBe('file.json');
+		expect(mod.normalizeQueryParam(undefined)).toBe('');
+	});
+
+	it('extracts categories from mailer json file', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(true);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'test' }, { category: 'test' }, { category: 'other' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		expect(mod.getCategoriesForFile('mailer.json')).toEqual(['test', 'other']);
+	});
+
+	it('sendMailAction redirects with validation error when fields are missing', async () => {
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const formData = new FormData();
+		formData.append('mailerFile', '');
+		formData.append('category', '');
+		formData.append('from', '');
+		formData.append('subject', '');
+		formData.append('body', '');
+
+		expect(await mod.sendMailAction(formData)).toContain('/mail-merge?status=error');
+	});
+
+	it('sendMailAction redirects when mailer file is missing', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(false);
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const formData = new FormData();
+		formData.append('mailerFile', 'mailer.json');
+		formData.append('category', 'test');
+		formData.append('from', 'sender@example.com');
+		formData.append('subject', 'Hello');
+		formData.append('body', 'Hello world');
+
+		const result = await mod.sendMailAction(formData);
+		expect(decodeURIComponent(result)).toContain('Mailer JSON file not found');
+	});
+
+	it('sendMailAction sends mail and redirects to success when data is valid', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockImplementation((value: string) => String(value).includes('mailer'));
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'test', contactEmail: 'recipient@example.com' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const formData = new FormData();
+		formData.append('mailerFile', 'mailer.json');
+		formData.append('category', 'test');
+		formData.append('from', 'sender@example.com');
+		formData.append('subject', 'Hello');
+		formData.append('body', 'Hello [category]');
+
+		expect(await mod.sendMailAction(formData)).toContain('status=sent');
+	});
+
+	it('normalizes mail merge query params using fallback for undefined array entries', async () => {
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		expect(mod.normalizeQueryParam([undefined])).toBe('');
+	});
+
+	it('extracts categories from mailer json object containing venues', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(true);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify({ venues: [{ category: 'test' }, { category: 'other' }] }));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		expect(mod.getCategoriesForFile('mailer.json')).toEqual(['test', 'other']);
+	});
+
+	it('sendMailAction redirects with error when no entries match the selected category', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(true);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'other', email: 'recipient@example.com' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const formData = new FormData();
+		formData.append('mailerFile', 'mailer.json');
+		formData.append('category', 'test');
+		formData.append('from', 'sender@example.com');
+		formData.append('subject', 'Hello');
+		formData.append('body', 'Hello world');
+
+		expect(decodeURIComponent(await mod.sendMailAction(formData))).toContain('No entries found for category');
+	});
+
+	it('sendMailAction counts failed entries when matching entries have no email', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(true);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'test' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const formData = new FormData();
+		formData.append('mailerFile', 'mailer.json');
+		formData.append('category', 'test');
+		formData.append('from', 'sender@example.com');
+		formData.append('subject', 'Hello');
+		formData.append('body', 'Hello world');
+
+		const result = await mod.sendMailAction(formData);
+		expect(result).toContain('status=sent');
+		expect(result).toContain('sent=0');
+		expect(result).toContain('failed=1');
+	});
+
+	it('renders mail merge success and error banners', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockImplementation((value: string) => String(value).includes('mailer'));
+		(fs.readdirSync as any).mockReturnValue(['mailer.json']);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'test' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const successElement = await mod.default({ searchParams: Promise.resolve({ mailerFile: 'mailer.json', category: 'test', status: 'sent', sent: '1', failed: '0' }) });
+		render(successElement);
+		expect(screen.getByText(/Mail merge complete\./i)).toBeInTheDocument();
+
+		const errorElement = await mod.default({ searchParams: Promise.resolve({ mailerFile: 'mailer.json', category: 'test', status: 'error', message: 'Oops' }) });
+		render(errorElement);
+		expect(screen.getByText(/Error:/i)).toBeInTheDocument();
+		expect(screen.getByText('Oops')).toBeInTheDocument();
+	});
+
+	it('renders no categories found message when selected file has no categories', async () => {
+		const fs = await import('fs');
+		(fs.existsSync as any).mockReturnValue(true);
+		(fs.readdirSync as any).mockReturnValue(['mailer.json']);
+		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: '' }]));
+
+		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
+		const element = await mod.default({ searchParams: Promise.resolve({ mailerFile: 'mailer.json', category: '' }) });
+		render(element);
+		expect(screen.getByText(/No categories found for mailer.json/i)).toBeInTheDocument();
 	});
 
 });

@@ -16,12 +16,14 @@ function createFakeConfig() {
     visualdesign: {
       'header-font': { value: '"Montserrat", Arial, sans-serif' },
       'body-font': { value: "'Roboto', system-ui, -apple-system" },
-        'primary-color': { value: '#000000' },
-        'secondary-color': { value: '#111111' },
-        'accent1-color': { value: '#FF0000' },
-        'accent2-color': { value: '#00FF00' },
-        'bg-color': { value: '#FFFFFF' },
-        'text-color': { value: '#000000' },
+      'primary-color': { value: '#000000' },
+      'secondary-color': { value: '#111111' },
+      'tertiary-color': { value: '#222222' },
+      'accent1-color': { value: '#FF0000' },
+      'accent2-color': { value: '#00FF00' },
+      'accent3-color': { value: '#0000FF' },
+      'bg-color': { value: '#FFFFFF' },
+      'text-color': { value: '#000000' },
     },
   };
 }
@@ -147,7 +149,7 @@ describe('StyleGuideUI', () => {
     });
 
     it('when config fonts are absent the font placeholders fallback to sans-serif', async () => {
-      fakeConfig = { ...fakeConfig, visualdesign: { 'primary-color': { value: '#000000' }, 'secondary-color': { value: '#111111' }, 'accent1-color': { value: '#FF0000' }, 'accent2-color': { value: '#00FF00' }, 'bg-color': { value: '#FFFFFF' }, 'text-color': { value: '#000000' } } };
+      fakeConfig = { ...fakeConfig, visualdesign: { 'primary-color': { value: '#000000' }, 'secondary-color': { value: '#111111' }, 'tertiary-color': { value: '#222222' }, 'accent1-color': { value: '#FF0000' }, 'accent2-color': { value: '#00FF00' }, 'accent3-color': { value: '#0000FF' }, 'bg-color': { value: '#FFFFFF' }, 'text-color': { value: '#000000' } } };
       // keep colors present but fonts absent
       const { container } = await render(<StyleGuideUI routes={nestedRoutes} />);
       const fontsSection = container.querySelector('#fonts-section');

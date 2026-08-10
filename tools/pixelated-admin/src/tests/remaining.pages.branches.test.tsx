@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 
 describe('remaining page modules (import-only)', () => {
 	const modules = [
-		'@/app/(pages)/newdeployment/page',
 		'@/app/(pages)/component-usage/page',
 		'@/app/(pages)/proposal/page',
 		'@/app/(pages)/billing/invoice/[siteName]/[billingCycle]/layout',

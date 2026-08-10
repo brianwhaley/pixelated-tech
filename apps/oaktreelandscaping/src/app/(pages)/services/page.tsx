@@ -14,10 +14,7 @@ export default function ServicesPage() {
 				</p>
 			</PageSection>
 
-			<Services
-				title="Our Services"
-				intro="Click a service to read more about how it works for your business."
-			/>
+			<Services />
 
 			<PageSection columns={1} maxWidth="1024px" id="service-areas-link-section">
 				<p>

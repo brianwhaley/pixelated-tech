@@ -21,7 +21,8 @@ const book = {
 		"https://www.amazon.com/dp/B0H8FK9MJM",  // hardcover
 		"https://www.goodreads.com/book/show/255240043-supermarket-shenanigans", // kindle
 		"https://www.goodreads.com/book/show/255240108-supermarket-shenanigans", // paperback
-		"https://www.goodreads.com/book/show/255241965-supermarket-shenanigans" // hardcover
+		"https://www.goodreads.com/book/show/255241965-supermarket-shenanigans", // hardcover
+		"https://patch.com/new-jersey/denville-nj/denville-resident-releases-comedic-memoir-frontline-supermarket-life-nodx"
 	],
 	variants: [
 		{
@@ -100,7 +101,14 @@ export default function SupermarketShenanigansPage() {
 				content="Published July 8, 2026"
 				buttonText="$24.99"
 			/>
-					
+
+			<br />
+
+			<PageGridItem columnStart={1} columnEnd={-1}>
+				<PageSectionHeader title="Supermarket Shenanigans In The News" />
+				<p><a href="https://patch.com/new-jersey/denville-nj/denville-resident-releases-comedic-memoir-frontline-supermarket-life-nodx">Aug 7, 2026 - Denville Resident Releases Comedic Memoir on Frontline Supermarket Life</a></p>
+			</PageGridItem>
+
 				
 		</PageSection>
 	);

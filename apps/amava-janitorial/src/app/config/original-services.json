@@ -1,0 +1,89 @@
+{
+	"services": [
+		{
+			"name": "Professional Cleaning",
+			"description": [
+				"Cleaning a busy commercial building can be highly stressful. When faced with such a stressful task, you want a trusted professional at your side to assist you—a commercial cleaning contractor who is highly trained in the profession. AMAVA Janitorial meets and exceeds these needs.  We are 'Your Partner in Professional Facility Maintenance.'",
+				"We are a leading provider of first-rate cleaning solutions to Fortune 500 companies, corporate plazas, corporate offices, schools, restaurants and small business premises. Office cleaning and other types of commercial cleaning are our specialty.",
+				"At AMAVA Janitorial, we know that every business is unique; to us, no two businesses are exactly alike.  We will visit your building, assess it, and come up with a customized and affordable solution tailored to meet your cleaning needs. Our office service includes general cleaning, such as carpet cleaning and window cleaning, as well as specialist cleaning, such as computer and IT equipment cleaning.",
+				"We offer daytime, nightly, and complete 24/7 service cleaning packages to our clients."
+			],
+			"short_description": "Professional cleaning services for commercial buildings, offices, and small businesses.",
+			"keywords": [
+				"professional cleaning",
+				"commercial cleaning",
+				"office cleaning",
+				"janitorial services"
+			],
+			"image": "/images/services/professional-cleaning.jpg",
+			"category": "Professional Cleaning Services",
+			"serviceType": "Professional Cleaning Services",
+			"serviceOutput": "High-quality cleaning services tailored to commercial buildings, offices, and small businesses.",
+			"audience": "Local service businesses, contractors, and small business owners",
+			"termsOfService": "/terms",
+			"offers": "",
+			"lastModified": "2026-08-02T04:39:36.469Z"
+		},
+		{
+			"name": "Janitorial Service",
+			"description": [
+				"To efficiently clean and maintain a building, especially a commercial one, you need the help of an experienced and professional custodial partner. At AMAVA Janitorial, we have the professional expertise and a wealth of experience to keep your building in the best condition.",
+				"We are among the most successful commercial janitorial services providers. As a leading provider of reliable and affordable Janitorial Service, we provide top-notch property cleaning and building maintenance solutions to thousands of clients, including Fortune 500 companies, corporate offices, schools, hotels, restaurants and tenant properties.",
+				"We have been using our innovative 7-prong cleaning approach to cater to the cleaning needs of our residential and commercial clients for more than 30 years. Our effective 7-step cleaning system ensures that nothing is missed during your scheduled janitorial cleaning. Upon completion of the cleaning, we use our customized cleaning checklist to double-check that everything has been done correctly.",
+				"In addition to property cleaning and building maintenance, we offer the following services to our clients:",
+				"• Complete Porter Service",
+				"• Handyman Services",
+				"• Construction Clean Ups",
+				"• Complete Janitorial Service",
+				"• Maid Services/Housekeeping for Hotels"
+			],
+			"short_description": "Professional janitorial services for commercial buildings, offices, and small businesses.",
+			"keywords": [
+				"professional cleaning",
+				"commercial cleaning",
+				"office cleaning",
+				"janitorial services"
+			],
+			"image": "/images/services/janitorial-service.jpg",
+			"category": "Professional Cleaning Services",
+			"serviceType": "Professional Cleaning Services",
+			"serviceOutput": "High-quality cleaning services tailored to commercial buildings, offices, and small businesses.",
+			"audience": "Local service businesses, contractors, and small business owners",
+			"termsOfService": "/terms",
+			"offers": "",
+			"lastModified": "2026-08-02T04:39:36.469Z"
+		},
+		{
+			"name": "Facility Maintenance",
+			"description": [
+				"AMAVA Janitorial is the right choice for general building maintenance services. We have an A+ BBB rating—ironclad proof of the quality of our services.",
+				"As a proven leader in building maintenance, we have been satisfying the demands of thousands of individual and corporate clients, including Fortune 500 companies, hotels, schools, corporate offices, restaurants, and health clubs for more than twenty years. We strive to exceed the building maintenance goals of our clients.",
+				"At Amava, we have invested heavily in the training of our staff, as well as in the latest available technology and cutting-edge equipment, to enable us to provide you with services that meet and exceed your facility needs. Our staff have over 50 years of combined experience in the industry.",
+				"We are familiar with the most effective ways to keep your facility in excellent condition. We will help you maintain and protect the value and function of your building, as well as the health and safety of your tenants, visitors, employees, and clients.",
+				"We offer a broad range of services to our clients:",
+				"• Interior Janitorial Maintenance",
+				"• Janitorial Supply",
+				"• Medical Cleaning",
+				"• Snow and Ice Removal Services",
+				"• Site Management",
+				"• Construction Clean Ups",
+				"• Complete Grounds Maintenance"
+			],
+			"short_description": "Comprehensive facility maintenance services for commercial buildings, offices, and small businesses.",
+			"keywords": [
+				"facility maintenance",
+				"building maintenance",
+				"commercial cleaning",
+				"janitorial services"
+			],
+			"image": "/images/services/facility-maintenance.jpg",
+			"category": "Facility Maintenance Services",
+			"serviceType": "Facility Maintenance Services",
+			"serviceOutput": "Comprehensive maintenance solutions for commercial buildings and offices.",
+			"audience": "Facility managers, business owners, and property managers",
+			"termsOfService": "/terms",
+			"offers": "",
+			"lastModified": "2026-08-02T04:39:36.469Z"
+		}
+	]
+}

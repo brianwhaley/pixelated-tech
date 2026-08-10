@@ -21,7 +21,7 @@ export default function LayoutClient() {
 		MicroInteractions({ 
 			buttonring: true,
 			formglow: true,
-			grayscalehover: true,
+			// grayscalehover: true,
 			imgscale: true,
 			scrollfadeSelectors: '.callout , .calloutSmall , .carousel-container, .scroll-fade-element',
 		});

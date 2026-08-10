@@ -6,17 +6,14 @@ import { PageTitleHeader, PageSection, Services } from '@pixelated-tech/componen
 export default function ServicesPage() {
 	return (
 		<>
-			<PageTitleHeader title="Services" />
+			<PageTitleHeader title="Pixelated Technologies Services" />
 			<PageSection columns={1} maxWidth="1024px" id="services-intro">
 				<p>
 					Pixelated Technologies provides a full suite of digital services for small businesses in New Jersey and South Carolina. Browse our service offerings and click through to learn how we can support your online growth.
 				</p>
 			</PageSection>
 
-			<Services
-				title="Pixelated Technologies Services"
-				intro="Click a service to read more about how it works for your business."
-			/>
+			<Services />
 
 			<PageSection columns={1} maxWidth="1024px" id="service-areas-link-section">
 				<p>

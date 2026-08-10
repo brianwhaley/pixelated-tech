@@ -5,7 +5,6 @@ describe('other api route modules (import-only)', () => {
 		'@/app/api/auth/[...nextauth]/route',
 		'@/app/api/billing/generate/route',
 		'@/app/api/billing/email/route',
-		'@/app/api/deploy/route',
 		'@/app/api/pagebuilder/save/route',
 	];
 
