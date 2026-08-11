@@ -1,6 +1,6 @@
 {
   "name": "simple-day-concierge",
-  "version": "1.2.15",
+  "version": "1.2.16",
   "private": true,
   "description": "Simple Day Concierge - Where Simplicity Meets Exceptional Service",
   "license": "MIT",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.14",

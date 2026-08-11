@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.7.27",
+  "version": "0.7.28",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@types/md5": "^2.3.6",
     "@types/node": "^26.1.0",
@@ -54,7 +54,7 @@
     "googleapis": "^174.0.0",
     "html-entities": "^2.3.3",
     "jsdom": "^29.1.1",
-    "nodemailer": "^9.0.4",
+    "nodemailer": "^9.0.5",
     "puppeteer": "^25.3.0",
     "react-dom": "^19.2.6",
     "recharts": "^3.9.1",
