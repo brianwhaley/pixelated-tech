@@ -12,11 +12,9 @@ import formData from "@/app/data/flooring-estimator.json";
 const pricing = {
 	"minimum": 1200.00,
 	"epoxy_garage_floors": { 
-		"solid": 4.00,
-		"flake": 5.00,
-		"metallic": 7.00,
-		"matte": 8.00,
-		"gloss": 8.00
+		"solid": 5.00,
+		"flake": 7.50,
+		"metallic": 8.50
 	},
 	"driveway_coating": 3.00,
 	"paver_sealing": 2.00,
@@ -28,16 +26,17 @@ const pricing = {
 		"old-coating": 1.50
 	},
 	"addons": {
-		"stem-wall": 450.00,
-		"moisture-barrier": 650.00,
-		"uv-resistant": 850.00,
-		"slip-resistant": 300.00
+		"stem-wall": {"type": "flat-fee", "amount": 450.00},
+		"moisture-barrier": {"type": "sqft", "amount": 2.00},
+		"uv-resistant": {"type": "sqft", "amount": 2.50},
+		"slip-resistant": {"type": "sqft", "amount": 1.00},
+		"additional-topcoat": {"type": "sqft", "amount": 3.50 }
 	}
 };
 
 
 export default function ContactPage() {
-	const [estimate, setEstimate] = useState<any>(null);
+	const [estimate, setEstimate] = useState<FlooringEstimateType["estimate"] | null>(null);
 
 	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -49,11 +48,13 @@ export default function ContactPage() {
 		const width = Math.max(0, Math.ceil(Number(data.get("width") ?? 0)));
 		const condition = String(data.get("flooring-condition") ?? "good-condition");
 		const floorOptions = data.getAll("flooring-options").map((value) => String(value)).filter(Boolean);
+		const flooringFinishes = data.getAll("flooring-finishes").map((value) => String(value)).filter(Boolean);
 		const addons = data.getAll("flooring-addons").map((value) => String(value)).filter(Boolean);
 
+		const selectedFloorOption = (floorOptions[0] ?? "solid") as keyof typeof pricing.epoxy_garage_floors;
 		const baseRate =
 			projectType === "epoxy_garage_floors"
-				? pricing.epoxy_garage_floors[floorOptions[0] ?? "solid"] ?? pricing.epoxy_garage_floors.solid
+				? pricing.epoxy_garage_floors[selectedFloorOption] ?? pricing.epoxy_garage_floors.solid
 				: typeof (pricing as any)[projectType] === "number"
 					? (pricing as any)[projectType]
 					: 0;
@@ -63,7 +64,11 @@ export default function ContactPage() {
 		const area = length * width;
 		const subtotal = area * baseRate * multiplier;
 		const addonCost = addons.reduce((sum, addon) => {
-			return sum + ((pricing.addons as any)[addon] ?? 0);
+			const addonConfig = (pricing.addons as Record<string, { type: string; amount: number }>)[addon];
+			if (!addonConfig) {
+				return sum;
+			}
+			return sum + (addonConfig.type === "sqft" ? addonConfig.amount * area : addonConfig.amount);
 		}, 0);
 
 		const total = Math.max(pricing.minimum, subtotal + addonCost);
@@ -74,6 +79,7 @@ export default function ContactPage() {
 			width,
 			condition,
 			floorOptions,
+			flooringFinishes,
 			addons,
 			baseRate,
 			multiplier,
@@ -99,6 +105,8 @@ export default function ContactPage() {
 					<FormEngine formData={formData} 
 						onSubmitHandler={handleFormSubmit} />
 					{estimate ? <FlooringEstimate estimate={estimate} /> : null}
+					<br />
+					<p>Please Note: This calculation provides a preliminary estimate based on your inputs. Every concrete slab is unique, so a Palmetto Epoxy representative will contact you shortly to schedule an on-site visit. Final pricing is confirmed in person after evaluating surface conditions to guarantee a lifetime bond.</p>
 				</PageGridItem>
 				{ /* <PageGridItem>
 					<iframe src={`https://calendar.google.com/calendar/embed?src=${calendarID}&mode=WEEK`} style={{ border: 0 }} width="100%" height="600px" frameBorder="0" scrolling="no"></iframe>
@@ -116,7 +124,21 @@ export default function ContactPage() {
  * @returns {JSX.Element}
  */
 FlooringEstimate.propTypes = {
-	estimate: PropTypes.object,
+	estimate: PropTypes.shape({
+		projectType: PropTypes.string.isRequired,
+		length: PropTypes.number.isRequired,
+		width: PropTypes.number.isRequired,
+		condition: PropTypes.string.isRequired,
+		floorOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+		flooringFinishes: PropTypes.arrayOf(PropTypes.string).isRequired,
+		addons: PropTypes.arrayOf(PropTypes.string).isRequired,
+		baseRate: PropTypes.number.isRequired,
+		multiplier: PropTypes.number.isRequired,
+		area: PropTypes.number.isRequired,
+		subtotal: PropTypes.number.isRequired,
+		addonCost: PropTypes.number.isRequired,
+		total: PropTypes.number.isRequired,
+	}).isRequired,
 };
 export type FlooringEstimateType = InferProps<typeof FlooringEstimate.propTypes>;
 export function FlooringEstimate({ estimate }: FlooringEstimateType) {
@@ -132,6 +154,7 @@ export function FlooringEstimate({ estimate }: FlooringEstimateType) {
 					{ /*<li>Rate: ${estimate.baseRate.toFixed(2)} / sq ft</li> */}
 					{ /*<li>Multiplier: {estimate.multiplier.toFixed(2)}</li> */ }
 					<li>Floor Options: {estimate.floorOptions.length > 0 ? estimate.floorOptions.join(", ") : "None"}</li>
+					<li>Flooring Finishes: {estimate.flooringFinishes?.length > 0 ? estimate.flooringFinishes.join(", ") : "None"}</li>
 					<li>Add-Ons: {estimate.addons.length > 0 ? estimate.addons.join(", ") : "None"}</li>
 					{ /*<li>Add-On Cost: ${estimate.addonCost.toFixed(2)}</li> */}
 					{ /*<li>Subtotal: ${estimate.subtotal.toFixed(2)}</li> */ }

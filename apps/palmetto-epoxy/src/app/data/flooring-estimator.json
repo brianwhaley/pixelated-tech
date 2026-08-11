@@ -132,18 +132,30 @@
 				]
 			}
 		},{
-			"component" : "FormCheckbox",
+			"component" : "FormRadio",
 			"props" : {
 				"id" : "flooring-options",
 				"name" : "flooring-options",
 				"label" : "Flooring Options : ",
 				"display" : "vertical",
 				"tooltip" : "Please select the flooring options you are interested in. You may select more than one option.",
-				"validate" : "isOneChecked",
+				"validate" : "isOneRadioSelected",
 				"options" : [
 					{ "value" : "solid", "text" : "Solid Color", "selected" : "" },
 					{ "value" : "flake", "text" : "Full Flake", "selected" : "" },
-					{ "value" : "metallic", "text" : "Metallic Finish", "selected" : "" },
+					{ "value" : "metallic", "text" : "Metallic Finish", "selected" : "" }
+				]
+			}
+		},{
+			"component" : "FormRadio",
+			"props" : {
+				"id" : "flooring-finishes",
+				"name" : "flooring-finishes",
+				"label" : "Flooring Finishes : ",
+				"display" : "vertical",
+				"tooltip" : "Please select the flooring finishes you are interested in. You may select more than one option.",
+				"validate" : "isOneRadioSelected",
+				"options" : [
 					{ "value" : "matte", "text" : "Matte Finish", "selected" : "" },
 					{ "value" : "gloss", "text" : "High Gloss Topcoat", "selected" : "" }
 				]
@@ -161,7 +173,8 @@
 					{ "value" : "stem-wall", "text" : "Stem wall / baseboard coating (linear feet)", "selected" : "" },
 					{ "value" : "moisture-barrier", "text" : "Moisture-vapor barrier / mitigation primer", "selected" : "" },
 					{ "value" : "uv-resistant", "text" : "UV-resistant polyaspartic top coat upgrade", "selected" : "" },
-					{ "value" : "slip-resistant", "text" : "Slip-resistant texture additive", "selected" : "" }
+					{ "value" : "slip-resistant", "text" : "Slip-resistant texture additive", "selected" : "" },
+					{ "value" : "additional-topcoat", "text" : "Additional top coat", "selected" : "" }
 				]
 			}
 		},
