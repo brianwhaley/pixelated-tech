@@ -1,6 +1,6 @@
 {
   "name": "manningmetalworks",
-  "version": "0.7.17",
+  "version": "0.7.18",
   "private": true,
   "description": "Manning Metalworks - A custom metal fabrication company specializing in high-quality craftsmanship and personalized service.",
   "license": "MIT",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@types/md5": "^2.3.6",
     "@types/node": "^26.0.0",
