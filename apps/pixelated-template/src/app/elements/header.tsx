@@ -17,6 +17,7 @@ export default function Header() {
 					id="logo"
 					src="/images/placeholder.png"
 					alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
+					aboveFold={true}
 					width={120}
 					height={120}
 				/>

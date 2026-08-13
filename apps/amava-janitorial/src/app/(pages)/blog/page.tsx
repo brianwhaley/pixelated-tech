@@ -5,18 +5,21 @@ import { PageTitleHeader } from '@pixelated-tech/components';
 import { PageSection } from '@pixelated-tech/components';
 import { MicroInteractions } from "@pixelated-tech/components";
 import { BlogPostList } from '@pixelated-tech/components';
+import { PageHero } from '@/app/elements/page-hero';
 
 export default function BlogPage() {
-	
+
 	useEffect(() => {
-		MicroInteractions({ 
+		MicroInteractions({
 			scrollfadeSelectors: '.tile, .blog-post-summary, .scroll-fade-element',
 		});
-	}, []); 
+	}, []);
 
 	return (
 		<>
-			<PageTitleHeader title="Oaktree Landscaping Blog Posts" />
+			<PageHero />
+
+			<PageTitleHeader title="AMAVA Janitorial Blog Posts" />
 			<PageSection columns={1} maxWidth="1024px" id="blog-section">
 				<BlogPostList showCategories={false} />
 			</PageSection>

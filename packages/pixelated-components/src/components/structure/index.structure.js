@@ -8,3 +8,4 @@ export * from './page-blocks';
 export * from './resume';
 export * from './splitscroll';
 export * from './timeline';
+export * from './underconstruction';

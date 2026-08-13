@@ -1,5 +1,6 @@
 "use client";
 
+import { PageHero } from "@/app/elements/page-hero";
 import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
 
@@ -89,6 +90,7 @@ export default function GalleryPage() {
     
 	return (
 		<>
+			<PageHero />
 
 			<PageTitleHeader title="AMAVA Janitorial Projects" />
 

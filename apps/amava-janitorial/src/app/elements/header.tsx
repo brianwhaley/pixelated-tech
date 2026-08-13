@@ -13,6 +13,7 @@ export default function Header() {
 					id="logo"
 					src="/images/amava-logo.png"
 					alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
+					aboveFold={true} 
 					width={448}
 					height={123}
 				/>

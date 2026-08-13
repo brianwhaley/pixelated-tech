@@ -2,15 +2,17 @@
 
 import React from 'react';
 import { PageSection, PageTitleHeader, FAQ } from '@pixelated-tech/components';
+import { PageHero } from '@/app/elements/page-hero';
 import faqsData from '@/app/data/faqs.json';
 
 export default function FAQPage() {
 	return (
 		<>
+			<PageHero />
+
 			<PageSection columns={1} maxWidth="1024px" id="header-section">
 				<PageTitleHeader
 					title="Frequently Asked Questions"
-					subtitle="Find answers to common questions about our web design and development services"
 				/>
 				<p>These frequently asked questions (FAQs) provide answers to common inquiries about 
 					our services and offerings. If you have any additional questions, feel free to 

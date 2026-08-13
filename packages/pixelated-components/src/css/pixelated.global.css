@@ -59,11 +59,6 @@ select:focus {
     box-shadow: 0 0 5px 2px var(--accent2-color);
 }
 
-ol, ul {
-	margin: 20px 0;
-	padding-left: 40px;
-}
-
 blockquote {
 	margin-top: 1em;
     margin-bottom: 1em;
@@ -73,10 +68,10 @@ blockquote {
     border-left: 3px solid var(--accent1-color);
     border-right: 3px solid var(--accent1-color);
     background-color: white;
-}
 
-blockquote p {
-	margin-bottom: 0px !important;
+    p {
+        margin-bottom: 0px !important;
+    }
 }
 
 pre {
@@ -111,7 +106,27 @@ main {
 }
 
 main p {
-	margin-bottom: 20px;
+    margin: 0px;
+    /* 
+	margin-bottom: 20px; */
+    padding: 0 0 20px 0;
+
+    &:has(+ ul),
+    &:has(+ ol) {
+        padding: 0px;
+    }
+
+    + ul,
+    + ol {
+        padding: 0 0 20px 20px;
+    }
+
+}
+
+main ol, main ul {
+	margin: 0; /* margin: 20px 0; */
+	padding-left: 20px; /* 40px */
+    list-style-type: disc;
 }
 
 footer {

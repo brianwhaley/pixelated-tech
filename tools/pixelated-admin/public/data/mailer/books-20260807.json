@@ -1,1381 +1,1891 @@
 {
-	"venues": [
-		{
-        "name": "The Bookworm",
-        "contactFirstName": "",
-        "contactLastName": "",
-        "contactEmail": ["thebookworm99@outlook.com"],
-        "category": "Bookstore"
-    },
-    {
-        "name": "Ray & Judy's Book Stop",
-        "contactFirstName": "Ray",
-        "contactLastName": "",
-        "contactEmail": [],
-        "category": "Bookstore"
-    },
-    {
-        "name": "Barnes & Noble - Ledgewood",
-        "contactFirstName": "",
-        "contactLastName": "",
-        "contactEmail": [],
-        "category": "Bookstore"
-    },
-    {
-        "name": "The Chatham Bookseller",
-        "contactFirstName": "Kate",
-        "contactLastName": "Park",
-        "contactEmail": ["chatham8@optonline.net"],
-        "category": "Bookstore"
-    },
-    {
-        "name": "The Book Trader",
-        "contactFirstName": "",
-        "contactLastName": "",
-        "contactEmail": [],
-        "category": "Bookstore"
-    },
-    {
-        "name": "Black Dog Books",
-        "contactFirstName": "",
-        "contactLastName": "",
-        "contactEmail": [],
-        "category": "Bookstore"
-    },
-    {
-        "name": "Watchung Booksellers",
-        "contactFirstName": "Maddie",
-        "contactLastName": "",
-        "contactEmail": ["info@watchungbooksellers.com", "maddie@watchungbooksellers.com"],
-        "category": "Bookstore"
-    },
-    {
-        "name": "Logos Bookstore",
-        "contactFirstName": "",
-        "contactLastName": "",
-        "contactEmail": [],
-        "category": "Bookstore"
-    },
-    {
-        "name": "New Wineskin Emporium",
-        "contactFirstName": "",
-        "contactLastName": "",
-        "contactEmail": ["info@newwineskinnj.com"],
-        "category": "Bookstore"
-    },
-		{
-			"name": "The Book Barn",
-			"contactFirstName": "Tiffany",
-			"contactLastName": "",
-			"contactEmail": ["tiffany@thebookbarn.org"],
-			"category": "Bookstore"
-		},
-		{
-			"name": "Denville Public Library",
-			"contactFirstName": "Ilene",
-			"contactLastName": "Lefkowitz",
-			"contactEmail": [
-				"ilene.lefkowitz@denvillelibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Denville Free Public Library",
-			"contactFirstName": "Siobhan",
-			"contactLastName": "Koch",
-			"contactEmail": [
-				"director@denvillelibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Diamond Spring Brewing Co.",
-			"contactFirstName": "Craig",
-			"contactLastName": "",
-			"contactEmail": [
-				"craig@diamondspringbrewing.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Downtown Denville Business Improvement District",
-			"contactFirstName": "S",
-			"contactLastName": "Crichton",
-			"contactEmail": [
-				"scrichton@downtowndenville.org",
-				"info@downtowndenville.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Fort Nonsense Brewing Company",
-			"contactFirstName": "Events",
-			"contactLastName": "Booking Team",
-			"contactEmail": [
-				"fnbcevents@gmail.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Denville Museum / Denville Historical Society",
-			"contactFirstName": "J.",
-			"contactLastName": "Harp",
-			"contactEmail": [
-				"info@denvillemuseum.org",
-				"harpj@denvillemuseum.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Indian Lake Community Club (ILCC)",
-			"contactFirstName": "Board of Trustees",
-			"contactLastName": "",
-			"contactEmail": [
-				"ilccnj@gmail.com"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Township of Denville Recreation Department",
-			"contactFirstName": "Nicholas",
-			"contactLastName": "Panetta",
-			"contactEmail": [
-				"npanetta@denvillenj.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Mara's Cafe & Bakery",
-			"contactFirstName": "Mara",
-			"contactLastName": "Magley",
-			"contactEmail": [
-				"marasbakery1@gmail.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Denville Rotary Club",
-			"contactFirstName": "Tony",
-			"contactLastName": "Toriello",
-			"contactEmail": [
-				"ttoriello1@gmail.com"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Smartworld Coffee",
-			"contactFirstName": "Dave",
-			"contactLastName": "Walters",
-			"contactEmail": [
-				"dwalters@smartworldcoffee.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "The Barn Cafe",
-			"contactFirstName": "Store Management",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@thebarndenville.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Sweet Vinyl Cafe",
-			"contactFirstName": "Management & Booking Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@sweetvinylcafe.com"
-			],
-			"category": "Retail"
-		},
-		{
-			"name": "Denville Dairy",
-			"contactFirstName": "The Fine Family",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@denvilledairy.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Morristown & Morris Township Library",
-			"contactFirstName": "Chad",
-			"contactLastName": "Leinaweaver",
-			"contactEmail": [
-				"chad.leinaweaver@mmt.mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "LOKL Cafe Morristown",
-			"contactFirstName": "Cafe Manager",
-			"contactLastName": "",
-			"contactEmail": [
-				"cafe@myloklcafe.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Glenbrook Brewery",
-			"contactFirstName": "Darren",
-			"contactLastName": "Higgins",
-			"contactEmail": [
-				"info@glenbrookbrewery.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Just Jersey",
-			"contactFirstName": "Tina",
-			"contactLastName": "Bolcar",
-			"contactEmail": [
-				"tina@justjerseygoods.com"
-			],
-			"category": "Retail"
-		},
-		{
-			"name": "Macculloch Hall Historical Museum",
-			"contactFirstName": "Kathleen",
-			"contactLastName": "Bartlett",
-			"contactEmail": [
-				"info@maccullochhall.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Roast Coffee House",
-			"contactFirstName": "Events & Management",
-			"contactLastName": "Team",
-			"contactEmail": [],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Mayo Performing Arts Center (MPAC)",
-			"contactFirstName": "Community Relations",
-			"contactLastName": "& Operations",
-			"contactEmail": [
-				"info@mayoarts.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "General Coffee Co",
-			"contactFirstName": "Store",
-			"contactLastName": "Manager",
-			"contactEmail": [
-				"generalcoffeeco@gmail.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Morris County Historical Society",
-			"contactFirstName": "Amy",
-			"contactLastName": "Curry",
-			"contactEmail": [
-				"mchs@morriscountyhistory.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Stirling Tavern",
-			"contactFirstName": "Event & Catering Manager",
-			"contactLastName": "",
-			"contactEmail": [
-				"events@stirlingtavern.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Homestead Bar & Kitchen",
-			"contactFirstName": "General Manager",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@thehomesteadnj.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "End of Elm",
-			"contactFirstName": "Private Events Director",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@endofelm.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Moqa Brew",
-			"contactFirstName": "Event & Store Manager",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@moqabrew.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Turning Point of Morris Township",
-			"contactFirstName": "Events Manager",
-			"contactLastName": "",
-			"contactEmail": [
-				"events@tpbbl.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Baklava Cafe",
-			"contactFirstName": "Store Management",
-			"contactLastName": "",
-			"contactEmail": [],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Morris Plains Community Center",
-			"contactFirstName": "Community Center Coordinator",
-			"contactLastName": "",
-			"contactEmail": [
-				"rec@morrisplainsboro.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "The Chatham Bookseller",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@chathambookseller.com"
-			],
-			"category": "Bookstore"
-		},
-		{
-			"name": "The Nature of Reading Bookshop",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@thenatureofreading.com"
-			],
-			"category": "Bookstore"
-		},
-		{
-			"name": "A&R Pharmacy & Gift Boutique",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"contact@arpharmacy.com"
-			],
-			"category": "Retail"
-		},
-		{
-			"name": "Madison Public Library",
-			"contactFirstName": "Lynn",
-			"contactLastName": "Favreau",
-			"contactEmail": [
-				"FavreauL@rosenet.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Parsippany-Troy Hills Public Library",
-			"contactFirstName": "Melissa",
-			"contactLastName": "Kuzma",
-			"contactEmail": [
-				"adultservices@parsippanylibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Parsippany-Troy Hills Public Library",
-			"contactFirstName": "Nicholas",
-			"contactLastName": "Jackson",
-			"contactEmail": [
-				"nicholas.jackson@pt.mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Randolph Township Public Library",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"director@randolphlibrary.net",
-				"director@randolphlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Kinnelon Public Library",
-			"contactFirstName": "Kimberly",
-			"contactLastName": "Fraone",
-			"contactEmail": [
-				"kimberly.fraone@kinnelonlibrary.org",
-				"kinnelon@kinnelonlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Roxbury Public Library",
-			"contactFirstName": "Cassie",
-			"contactLastName": "Collucci",
-			"contactEmail": [
-				"cassie.collucci@roxburylibrary.org",
-				"comments@roxburylibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Boonton Holmes Public Library",
-			"contactFirstName": "Lotte",
-			"contactLastName": "Newlin",
-			"contactEmail": [
-				"lotte.newlin@boontonlibrary.org",
-				"bhpl@boontonlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Butler Public Library",
-			"contactFirstName": "Jenn",
-			"contactLastName": "Caputo",
-			"contactEmail": [
-				"info@butlerlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Library of the Chathams",
-			"contactFirstName": "Karen",
-			"contactLastName": "Brodsky",
-			"contactEmail": [
-				"kbrodsky@chathamlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Dover Free Public Library",
-			"contactFirstName": "Beverly",
-			"contactLastName": "Rowan",
-			"contactEmail": [
-				"beverly.rowan@dfpl.org",
-				"library@dover.mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "East Hanover Township Public Library",
-			"contactFirstName": "Gayle",
-			"contactLastName": "Carlson",
-			"contactEmail": [
-				"gayle.carlson@easthanoverlibrary.com"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Florham Park Free Public Library",
-			"contactFirstName": "Christine",
-			"contactLastName": "Brandenburg",
-			"contactEmail": [
-				"christine.brandenburg@florhamparklib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Harding Township Library",
-			"contactFirstName": "Lotte",
-			"contactLastName": "Newlin",
-			"contactEmail": [
-				"desk@hardinglibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Lincoln Park Public Library",
-			"contactFirstName": "Sara",
-			"contactLastName": "Tomasheski",
-			"contactEmail": [
-				"sara.tomasheski@lpk.mainlib.org",
-				"librarylincolnpark@gmail.com"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Long Hill Township Public Library",
-			"contactFirstName": "Alberta",
-			"contactLastName": "Ashbrook",
-			"contactEmail": [
-				"alberta.ashbrook@lhtlibrary.mainlib.org",
-				"librarians@lhtlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Mendham Borough Library",
-			"contactFirstName": "Contact Desk",
-			"contactLastName": "Administration",
-			"contactEmail": [
-				"circ-mnb@mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Mendham Township Library",
-			"contactFirstName": "Rachel",
-			"contactLastName": "Harrison",
-			"contactEmail": [
-				"rachel.harrison@mendhamtwplib.org",
-				"hello@mendhamtwplib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Mount Arlington Public Library",
-			"contactFirstName": "Tina",
-			"contactLastName": "Mayer",
-			"contactEmail": [
-				"tina.mayer@mtarlington.mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Mount Olive Public Library",
-			"contactFirstName": "Mauro",
-			"contactLastName": "Magarelli",
-			"contactEmail": [
-				"director@mopl.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Mountain Lakes Public Library",
-			"contactFirstName": "Jennifer",
-			"contactLastName": "Lynch",
-			"contactEmail": [],
-			"category": "Library"
-		},
-		{
-			"name": "Pequannock Township Public Library",
-			"contactFirstName": "Jean",
-			"contactLastName": "Moroz",
-			"contactEmail": [
-				"jean.moroz@pequannocklibrary.org",
-				"peq-director@peq.mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Riverdale Public Library",
-			"contactFirstName": "Debbie",
-			"contactLastName": "Maynard",
-			"contactEmail": [
-				"circ-riv@mainlib.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Rockaway Borough Free Public Library",
-			"contactFirstName": "Melissa",
-			"contactLastName": "Okerblom",
-			"contactEmail": [
-				"melissa.okerblom@rockboro.mainlib.org",
-				"rcblibrary@gmail.com"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Rockaway Township Free Public Library",
-			"contactFirstName": "Scott",
-			"contactLastName": "Davan",
-			"contactEmail": [
-				"scott.davan@rtlibrary.org",
-				"rockawaytwplibrary@rtlibrary.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Township of Washington Public Library",
-			"contactFirstName": "Jacqueline",
-			"contactLastName": "Zuzzi",
-			"contactEmail": [
-				"jacqueline.zuzzi@wtpl.org",
-				"info@wtpl.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Wharton Public Library",
-			"contactFirstName": "Virginia",
-			"contactLastName": "Halprin",
-			"contactEmail": [],
-			"category": "Library"
-		},
-		{
-			"name": "Whippanong Library",
-			"contactFirstName": "Amy",
-			"contactLastName": "Puskas",
-			"contactEmail": [
-				"director@whippanong.org"
-			],
-			"category": "Library"
-		},
-		{
-			"name": "Autodidact Beer",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Twin Elephant Brewing Company",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@twinelephantbrewing.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Jersey Girl Brewing Company",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@jerseygirlbrewing.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Sunday Motor Co. Cafe",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"hello@sundaymotorco.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "Boonton Coffee Co.",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@boontoncoffee.com"
-			],
-			"category": "Food & Beverage"
-		},
-		{
-			"name": "The Shakespeare Theatre of New Jersey",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@shakespearenj.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Museum of Early American Trades & Crafts",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@meatc.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Schiff Nature Preserve",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@schiffnaturepreserve.org"
-			],
-			"category": "Community"
-		},
-		{
-			"name": "Morristown Minute",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"Editor@MorristownMinute.org"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "TapInto Denville / Morristown / Morris County",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"sales@tapinto.net",
-				"info@tapinto.net"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "NJNN Digital Blast",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"aclear@njpa.org"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Booked on Reality",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"morristownreaders@mmt.mainlib.org"
-			],
-			"category": "Book Club"
-		},
-		{
-			"name": "Florham Park Readers Group / Morristown Area Book Club",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@meetup.com"
-			],
-			"category": "Book Club"
-		},
-		{
-			"name": "Audubon Backyard Book Clubs Network (NJ)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"director@audubonlibrary.org"
-			],
-			"category": "Book Club"
-		},
-		{
-			"name": "Retail Getting Real Podcast",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"podcasts@nrf.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Tales From the Front Line",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				""
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "The Retail Daily Podcast",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"media@retaildaily.com",
-				"editor@retaildaily.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Rethink Retail",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"media@rethinkretail.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "The Omni Talk Retail Podcast",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@omnitalk.biz"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Work Appropriate",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"workappropriate@crooked.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "We’re Not Really Strangers / Workplace Stories",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"hello@werenotreallystrangers.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "The Anxious Achiever",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"anxiousachiever@hbr.org"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Manager Tools Podcast",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"customerservice@manager-tools.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "The Modern Manager",
-			"contactFirstName": "Mamie",
-			"contactLastName": "Kanfer Stewart",
-			"contactEmail": [
-				"mamie@mamiekse.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Coaching for Leaders",
-			"contactFirstName": "Dave",
-			"contactLastName": "Stachowiak",
-			"contactEmail": [
-				"dave@coachingforleaders.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Risk! Podcast",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"pitch@risk-show.com"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "The Moth Podcast / StorySLAM",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"pitches@themoth.org"
-			],
-			"category": "Podcast"
-		},
-		{
-			"name": "Daily Record (Morris County)",
-			"contactFirstName": "Local Newsroom & Features Desk",
-			"contactLastName": "",
-			"contactEmail": [
-				"drnews@gannettnj.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "The Star-Ledger / NJ.com",
-			"contactFirstName": "Features & Entertainment Desk",
-			"contactLastName": "",
-			"contactEmail": [
-				"features@starledger.com",
-				"statehouse@njlocalnews.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "New Jersey Herald",
-			"contactFirstName": "Features Editor",
-			"contactLastName": "",
-			"contactEmail": [
-				"newsroom@njherald.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "The Madison Eagle / The Chatham Courier",
-			"contactFirstName": "EditorialStaff ",
-			"contactLastName": "",
-			"contactEmail": [
-				"editor@newjerseyhills.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "TAPinto Denville / TAPinto Morristown / TAPinto Morris County",
-			"contactFirstName": "Editorial Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"morristown@tapinto.net",
-				"info@tapinto.net"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Morristown Green",
-			"contactFirstName": "Kevin",
-			"contactLastName": "Coughlin",
-			"contactEmail": [
-				"editor@morristowngreen.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Morristown Minute",
-			"contactFirstName": "Editorial Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"editor@morristownminute.org"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Morris/Essex Health & Life Magazine",
-			"contactFirstName": "Editorial Department",
-			"contactLastName": "",
-			"contactEmail": [
-				"editor@healthandlifemag.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "New Jersey Monthly Magazine",
-			"contactFirstName": "Editorial Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"editor@njmonthly.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Denville Life Magazine / Best Version Media",
-			"contactFirstName": "Content Coordinator / Publisher",
-			"contactLastName": "",
-			"contactEmail": [
-				"submissons@bestversionmedia.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "WDHA 105.5 FM",
-			"contactFirstName": "Programming & Morning Show Desk",
-			"contactLastName": "",
-			"contactEmail": [
-				"wdhanews@wdhafm.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "WMTR 1250 AM",
-			"contactFirstName": "Local Programming & Guest Booking",
-			"contactLastName": "",
-			"contactEmail": [
-				"wmtrnews@wmtram.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "NJ 101.5 FM",
-			"contactFirstName": "Newsroom / Executive Producer",
-			"contactLastName": "",
-			"contactEmail": [
-				"news@nj1015.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Patch — Morris County / New Jersey Pitch Desk",
-			"contactFirstName": "Regional News Desk",
-			"contactLastName": "",
-			"contactEmail": [
-				"jack.slocum@patch.com",
-				"newjersey@patch.com",
-				"newsdesk@patch.com"
-			],
-			"category": "Advertiser"
-		},
-		{
-			"name": "Independent Book Review (IBR)",
-			"contactFirstName": "Editorial Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"editorial@independentbookreview.com"
-			],
-			"category": "Book Review"
-		},
-		{
-			"name": "IndieReader",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@indiereader.com"
-			],
-			"category": "Book Review"
-		},
-		{
-			"name": "Reedsy Discovery Publication & Newsletter",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"discovery@reedsy.com"
-			],
-			"category": "Book Review"
-		},
-		{
-			"name": "Foreword Reviews",
-			"contactFirstName": "Editorial Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"editorial@forewordreviews.com"
-			],
-			"category": "Book Review"
-		},
-		{
-			"name": "Fussy Librarian",
-			"contactFirstName": "Support Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"support@thefussylibrarian.com"
-			],
-			"category": "Newsletter"
-		},
-		{
-			"name": "Freebooksy / Bargain Booksy (Written Word Media)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@writtenwordmedia.com"
-			],
-			"category": "Newsletter"
-		},
-		{
-			"name": "BookBub Blog & Editorial Team",
-			"contactFirstName": "Editorial Team",
-			"contactLastName": "",
-			"contactEmail": [
-				"authors@bookbub.com",
-				"blog@bookbub.com"
-			],
-			"category": "Newsletter"
-		},
-		{
-			"name": "Literary Hub (LitHub) Daily",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@lithub.com"
-			],
-			"category": "Newsletter"
-		},
-		{
-			"name": "Hippocampus Magazine",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@hippocampusmagazine.com"
-			],
-			"category": "Literary Magazine"
-		},
-		{
-			"name": "Brevity: A Journal of Concise Literary Nonfiction",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"brevitymag@gmail.com"
-			],
-			"category": "Literary Magazine"
-		},
-		{
-			"name": "The Pulpwood Queens Book Club Network",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"thepulpwoodqueen@gmail.com"
-			],
-			"category": "Book Club"
-		},
-		{
-			"name": "Girly Book Club",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"hello@girlybookclub.com"
-			],
-			"category": "Book Club"
-		},
-		{
-			"name": "Silent Book Club (SBC International)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@silentbook.club"
-			],
-			"category": "Book Club"
-		},
-		{
-			"name": "Nonfiction Authors Association (NFAA)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"admin@nonfictionauthorsassociation.com"
-			],
-			"category": "Organization"
-		},
-		{
-			"name": "Independent Book Publishers Association (IBPA)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"info@ibpa-online.org"
-			],
-			"category": "Organization"
-		},
-		{
-			"name": "Lady Unemployed (Career & Work Culture Blog)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"admin@ladyunemployed.com"
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "Leave Dates Blog",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"hello@leavedates.com"
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "Medium Publications (Funny, Inc. / Workplace Culture)",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				""
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "The Brevity Blog",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"brevitymag@gmail.com"
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "Author Imprints Blog",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				""
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "Jane Friedman’s Blog",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"jane@janefriedman.com"
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "Click & Inc. Business Blog",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				"guestblog@clickindustries.com"
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "Creately Blog",
-			"contactFirstName": "",
-			"contactLastName": "",
-			"contactEmail": [
-				""
-			],
-			"category": "Blogs"
-		},
-		{
-			"name": "County College of Morris - BUS 119 Introduction to Business",
-			"contactFirstName": "Melissa",
-			"contactLastName": "Ford",
-			"contactEmail": [
-				"mford@ccm.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "County College of Morris - BUS 200 Principles of Management",
-			"contactFirstName": "John",
-			"contactLastName": "McDermott",
-			"contactEmail": [
-				"jmcdermott@ccm.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "County College of Morris - BUS 213 Customer Service & Relationship Management",
-			"contactFirstName": "Frank",
-			"contactLastName": "Doto",
-			"contactEmail": [
-				"fdoto@ccm.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "County College of Morris - BUS 215 Human Resources Management",
-			"contactFirstName": "Maureen",
-			"contactLastName": "Sutton",
-			"contactEmail": [
-				"msutton@ccm.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Fairleigh Dickinson University (FDU) - MGMT 2600 Organizational Behavior",
-			"contactFirstName": "Gwen",
-			"contactLastName": "Jones",
-			"contactEmail": [
-				"gjones@fdu.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Fairleigh Dickinson University (FDU) - MGMT 3700 Human Resources & Frontline Management",
-			"contactFirstName": "Kent",
-			"contactLastName": "Fairchild",
-			"contactEmail": [
-				"fairchild@fdu.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Fairleigh Dickinson University (FDU) - MKTG 2120 Principles of Marketing & Retail Operations",
-			"contactFirstName": "James",
-			"contactLastName": "Almeida",
-			"contactEmail": [
-				"almeida@fdu.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Fairleigh Dickinson University (FDU) - ENTR 3160 Launch & Manage Small Business Operations",
-			"contactFirstName": "Dennis",
-			"contactLastName": "Strigl",
-			"contactEmail": [
-				"dstrigl@fdu.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Drew University - BUS 101 Fundamentals of Business & Management",
-			"contactFirstName": "Alex",
-			"contactLastName": "de Arana",
-			"contactEmail": [
-				"adearana@drew.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Drew University - BUS 220 Organizational Leadership & Behavior",
-			"contactFirstName": "Minjoon",
-			"contactLastName": "Jun",
-			"contactEmail": [
-				"mjun@drew.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Montclair State University (Feliciano School of Business) - MGMT 201 Fundamentals of Management & Leadership",
-			"contactFirstName": "Wencang",
-			"contactLastName": "Zhou",
-			"contactEmail": [
-				"zhouw@montclair.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Montclair State University (Feliciano School of Business) - MGMT 300 Organizational Behavior & Human Dynamics",
-			"contactFirstName": "Angela",
-			"contactLastName": "Grotto",
-			"contactEmail": [
-				"grottoa@montclair.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Montclair State University (Feliciano School of Business) - MGMT 315 Human Resource Management & Frontline Staffing",
-			"contactFirstName": "Melissa",
-			"contactLastName": "Gutworth",
-			"contactEmail": [
-				"gutworthm@montclair.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Montclair State University (Feliciano School of Business) - MGMT 363 Operations & Service Management",
-			"contactFirstName": "Michele",
-			"contactLastName": "Rigolizzo",
-			"contactEmail": [
-				"rigolizzom@montclair.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "William Paterson University (Cotsakos College of Business) - MGT 2000 Principles of Management",
-			"contactFirstName": "Stephen",
-			"contactLastName": "Betts",
-			"contactEmail": [
-				"bettss@wpunj.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "William Paterson University (Cotsakos College of Business) - MGT 3050 Small Business Management & Operations",
-			"contactFirstName": "Jorge",
-			"contactLastName": "Arevalo",
-			"contactEmail": [
-				"arevaloj1@wpunj.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "William Paterson University (Cotsakos College of Business) - MGT 3550 Values, Ethics, & Leadership in Organizations",
-			"contactFirstName": "Raza",
-			"contactLastName": "Mir",
-			"contactEmail": [
-				"mirr@wpunj.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "William Paterson University (Cotsakos College of Business) - MKT 3100 Retail Management & Customer Dynamics",
-			"contactFirstName": "Rajiv",
-			"contactLastName": "Kashyap",
-			"contactEmail": [
-				"kashyapr@wpunj.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Caldwell University (School of Business & Leadership) - BU 205 Principles of Management & Supervision",
-			"contactFirstName": "Bernie",
-			"contactLastName": "O'Rourke",
-			"contactEmail": [
-				"borourke@caldwell.edu"
-			],
-			"category": "School"
-		},
-		{
-			"name": "Caldwell University (School of Business & Leadership) - BU 335 Operations & Supply Chain Management",
-			"contactFirstName": "Cagla",
-			"contactLastName": "Yildirim",
-			"contactEmail": [
-				"cyildirim@caldwell.edu"
-			],
-			"category": "School"
-		}
-	]
+    "venues": [
+        {
+            "name": "The Bookworm",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "thebookworm99@outlook.com"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Ray & Judy's Book Stop",
+            "contactFirstName": "Ray",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Barnes & Noble - Ledgewood",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "The Chatham Bookseller",
+            "contactFirstName": "Kate",
+            "contactLastName": "Park",
+            "contactEmail": [
+                "chatham8@optonline.net"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "The Book Trader",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Black Dog Books",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Watchung Booksellers",
+            "contactFirstName": "Maddie",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@watchungbooksellers.com",
+                "maddie@watchungbooksellers.com"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Logos Bookstore",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "New Wineskin Emporium",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@newwineskinnj.com"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "The Book Barn",
+            "address": "18 Pocono Rd, Denville, NJ 07834",
+            "phone": "(973) 625-6411",
+            "contactFirstName": "Tiffany",
+            "contactLastName": "",
+            "contactEmail": [
+                "tiffany@thebookbarn.org",
+                "tbmc@thebookbarn.org"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Public Library",
+            "contactFirstName": "Ilene",
+            "contactLastName": "Lefkowitz",
+            "contactEmail": [
+                "ilene.lefkowitz@denvillelibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Free Public Library",
+            "contactFirstName": "Siobhan",
+            "contactLastName": "Koch",
+            "contactEmail": [
+                "director@denvillelibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Diamond Spring Brewing Co.",
+            "contactFirstName": "Craig",
+            "contactLastName": "",
+            "contactEmail": [
+                "craig@diamondspringbrewing.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Downtown Denville Business Improvement District",
+            "contactFirstName": "S",
+            "contactLastName": "Crichton",
+            "contactEmail": [
+                "scrichton@downtowndenville.org",
+                "info@downtowndenville.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Fort Nonsense Brewing Company",
+            "contactFirstName": "Events",
+            "contactLastName": "Booking Team",
+            "contactEmail": [
+                "fnbcevents@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Museum / Denville Historical Society",
+            "contactFirstName": "J.",
+            "contactLastName": "Harp",
+            "contactEmail": [
+                "info@denvillemuseum.org",
+                "harpj@denvillemuseum.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Indian Lake Community Club (ILCC)",
+            "contactFirstName": "Board of Trustees",
+            "contactLastName": "",
+            "contactEmail": [
+                "ilccnj@gmail.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Township of Denville Recreation Department",
+            "contactFirstName": "Nicholas",
+            "contactLastName": "Panetta",
+            "contactEmail": [
+                "npanetta@denvillenj.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Mara's Cafe & Bakery",
+            "contactFirstName": "Mara",
+            "contactLastName": "Magley",
+            "contactEmail": [
+                "marasbakery1@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Rotary Club",
+            "contactFirstName": "Tony",
+            "contactLastName": "Toriello",
+            "contactEmail": [
+                "ttoriello1@gmail.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Smartworld Coffee",
+            "contactFirstName": "Dave",
+            "contactLastName": "Walters",
+            "contactEmail": [
+                "dwalters@smartworldcoffee.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "The Barn Cafe",
+            "contactFirstName": "Store Management",
+            "contactLastName": "",
+            "contactEmail": [
+                "thebarndenville@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Sweet Vinyl Cafe",
+            "contactFirstName": "Management & Booking Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@sweetvinylcafe.com"
+            ],
+            "category": "Retail",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Dairy",
+            "contactFirstName": "The Fine Family",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@denvilledairy.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Dairy",
+            "address": "34A Broadway, Denville, NJ 07834",
+            "phone": "(973) 627-4214",
+            "contactFirstName": "Austin",
+            "contactLastName": "Hackett",
+            "contactEmail": [],
+            "category": "Food & Beverage",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Morristown & Morris Township Library",
+            "contactFirstName": "Chad",
+            "contactLastName": "Leinaweaver",
+            "contactEmail": [
+                "chad.leinaweaver@mmt.mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "LOKL Cafe Morristown",
+            "contactFirstName": "Cafe Manager",
+            "contactLastName": "",
+            "contactEmail": [
+                "cafe@myloklcafe.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Glenbrook Brewery",
+            "contactFirstName": "Darren",
+            "contactLastName": "Higgins",
+            "contactEmail": [
+                "info@glenbrookbrewery.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Just Jersey",
+            "contactFirstName": "Tina",
+            "contactLastName": "Bolcar",
+            "contactEmail": [
+                "tina@justjerseygoods.com"
+            ],
+            "category": "Retail",
+            "status": "Emailed"
+        },
+        {
+            "name": "Macculloch Hall Historical Museum",
+            "contactFirstName": "Kathleen",
+            "contactLastName": "Bartlett",
+            "contactEmail": [
+                "info@maccullochhall.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Macculloch Hall Historical Museum",
+            "contactFirstName": "Patricia",
+            "contactLastName": "Phelps",
+            "contactEmail": [
+                "pphelps@maccullochhall.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Roast Coffee House",
+            "contactFirstName": "Events & Management",
+            "contactLastName": "Team",
+            "contactEmail": [],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Mayo Performing Arts Center (MPAC)",
+            "contactFirstName": "Community Relations",
+            "contactLastName": "& Operations",
+            "contactEmail": [
+                "info@mayoarts.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "General Coffee Co",
+            "contactFirstName": "Store",
+            "contactLastName": "Manager",
+            "contactEmail": [
+                "generalcoffeeco@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Morris County Historical Society",
+            "contactFirstName": "Amy",
+            "contactLastName": "Curry",
+            "contactEmail": [
+                "mchs@morriscountyhistory.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Stirling Tavern",
+            "contactFirstName": "Event & Catering Manager",
+            "contactLastName": "",
+            "contactEmail": [
+                "events@stirlingtavern.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Deferred",
+            "notes": "$500 site fee, food package for a minimum of 30 guests at $72 per person"
+        },
+        {
+            "name": "Homestead Bar & Kitchen",
+            "contactFirstName": "General Manager",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@thehomesteadnj.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "End of Elm",
+            "contactFirstName": "Private Events Director",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@endofelm.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Moqa Brew",
+            "contactFirstName": "Event & Store Manager",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@moqabrew.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Turning Point of Morris Township",
+            "contactFirstName": "Events Manager",
+            "contactLastName": "",
+            "contactEmail": [
+                "events@tpbbl.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Declined"
+        },
+        {
+            "name": "Baklava Cafe",
+            "contactFirstName": "Store Management",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Morris Plains Community Center",
+            "contactFirstName": "Community Center Coordinator",
+            "contactLastName": "",
+            "contactEmail": [
+                "rec@morrisplainsboro.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Chatham Bookseller",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@chathambookseller.com"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "The Nature of Reading Bookshop",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@thenatureofreading.com"
+            ],
+            "category": "Bookstore",
+            "status": "Emailed"
+        },
+        {
+            "name": "Madison Public Library",
+            "contactFirstName": "Lynn",
+            "contactLastName": "Favreau",
+            "contactEmail": [
+                "FavreauL@rosenet.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Parsippany-Troy Hills Public Library",
+            "contactFirstName": "Melissa",
+            "contactLastName": "Kuzma",
+            "contactEmail": [
+                "melissa.kuzma@parsippanylibrary.org",
+                "adultservices@parsippanylibrary.org"
+            ],
+            "category": "Library",
+            "status": "Deferred",
+            "notes": "Full - contact in January 2027"
+        },
+        {
+            "name": "Friends of the Parsippany  Library",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "parsippanylibraryfriends@gmail.com"
+            ],
+            "category": "Library",
+            "status": "Deferred",
+            "notes": "Full - contact in January 2027",
+            "lastModified": "2026-08-12T14:57:59.026Z"
+        },
+        {
+            "name": "Parsippany-Troy Hills Public Library",
+            "contactFirstName": "Nicholas",
+            "contactLastName": "Jackson",
+            "contactEmail": [
+                "nicholas.jackson@pt.mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Deferred",
+            "notes": "Full - contact in January 2027"
+        },
+        {
+            "name": "Parsippany-Troy Hills Public Library",
+            "contactFirstName": "Heidi",
+            "contactLastName": "Jensen",
+            "contactEmail": [
+                "heidi.jensen@parsippanylibrary.org"
+            ],
+            "category": "Library",
+            "status": "Deferred",
+            "notes": "Full - contact in January 2027",
+            "lastModified": "2026-08-12T14:58:00.026Z"
+        },
+        {
+            "name": "Randolph Township Public Library",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "director@randolphlibrary.net",
+                "director@randolphlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Kinnelon Public Library",
+            "contactFirstName": "Kimberly",
+            "contactLastName": "Fraone",
+            "contactEmail": [
+                "kimberly.fraone@kinnelonlibrary.org",
+                "kinnelon@kinnelonlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Roxbury Public Library",
+            "contactFirstName": "Cassie",
+            "contactLastName": "Collucci",
+            "contactEmail": [
+                "cassie.collucci@roxburylibrary.org",
+                "comments@roxburylibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Boonton Holmes Public Library",
+            "contactFirstName": "Lotte",
+            "contactLastName": "Newlin",
+            "contactEmail": [
+                "lotte.newlin@boontonlibrary.org",
+                "bhpl@boontonlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Butler Public Library",
+            "contactFirstName": "Jenn",
+            "contactLastName": "Caputo",
+            "contactEmail": [
+                "info@butlerlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Library of the Chathams",
+            "contactFirstName": "Karen",
+            "contactLastName": "Brodsky",
+            "contactEmail": [
+                "kbrodsky@chathamlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Dover Free Public Library",
+            "contactFirstName": "Beverly",
+            "contactLastName": "Rowan",
+            "contactEmail": [
+                "beverly.rowan@dfpl.org",
+                "library@dover.mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "East Hanover Township Public Library",
+            "contactFirstName": "Gayle",
+            "contactLastName": "Carlson",
+            "contactEmail": [
+                "gayle.carlson@easthanoverlibrary.com"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Florham Park Free Public Library",
+            "contactFirstName": "Christine",
+            "contactLastName": "Brandenburg",
+            "contactEmail": [
+                "christine.brandenburg@florhamparklib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Harding Township Library",
+            "contactFirstName": "Lotte",
+            "contactLastName": "Newlin",
+            "contactEmail": [
+                "desk@hardinglibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Lincoln Park Public Library",
+            "contactFirstName": "Sara",
+            "contactLastName": "Tomasheski",
+            "contactEmail": [
+                "sara.tomasheski@lpk.mainlib.org",
+                "librarylincolnpark@gmail.com"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Long Hill Township Public Library",
+            "contactFirstName": "Alberta",
+            "contactLastName": "Ashbrook",
+            "contactEmail": [
+                "alberta.ashbrook@lhtlibrary.mainlib.org",
+                "librarians@lhtlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Mendham Borough Library",
+            "contactFirstName": "Contact Desk",
+            "contactLastName": "Administration",
+            "contactEmail": [
+                "circ-mnb@mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Mendham Township Library",
+            "contactFirstName": "Rachel",
+            "contactLastName": "Harrison",
+            "contactEmail": [
+                "rachel.harrison@mendhamtwplib.org",
+                "hello@mendhamtwplib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Mount Arlington Public Library",
+            "contactFirstName": "Tina",
+            "contactLastName": "Mayer",
+            "contactEmail": [
+                "tina.mayer@mtarlington.mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Mount Olive Public Library",
+            "contactFirstName": "Mauro",
+            "contactLastName": "Magarelli",
+            "contactEmail": [
+                "director@mopl.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Mountain Lakes Public Library",
+            "contactFirstName": "Jennifer",
+            "contactLastName": "Lynch",
+            "contactEmail": [],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Pequannock Township Public Library",
+            "contactFirstName": "Jean",
+            "contactLastName": "Moroz",
+            "contactEmail": [
+                "jean.moroz@pequannocklibrary.org",
+                "peq-director@peq.mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Deferred",
+            "notes": "Full - contact in January 2027"
+        },
+        {
+            "name": "Riverdale Public Library",
+            "contactFirstName": "Debbie",
+            "contactLastName": "Maynard",
+            "contactEmail": [
+                "circ-riv@mainlib.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Rockaway Borough Free Public Library",
+            "contactFirstName": "Melissa",
+            "contactLastName": "Okerblom",
+            "contactEmail": [
+                "melissa.okerblom@rockboro.mainlib.org",
+                "rcblibrary@gmail.com"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Rockaway Township Free Public Library",
+            "contactFirstName": "Scott",
+            "contactLastName": "Davan",
+            "contactEmail": [
+                "scott.davan@rtlibrary.org",
+                "rockawaytwplibrary@rtlibrary.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Township of Washington Public Library",
+            "contactFirstName": "Jacqueline",
+            "contactLastName": "Zuzzi",
+            "contactEmail": [
+                "jacqueline.zuzzi@wtpl.org",
+                "info@wtpl.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Wharton Public Library",
+            "contactFirstName": "Virginia",
+            "contactLastName": "Halprin",
+            "contactEmail": [],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Whippanong Library",
+            "contactFirstName": "Amy",
+            "contactLastName": "Puskas",
+            "contactEmail": [
+                "director@whippanong.org"
+            ],
+            "category": "Library",
+            "status": "Emailed"
+        },
+        {
+            "name": "Autodidact Beer",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Twin Elephant Brewing Company",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@twinelephantbrewing.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Jersey Girl Brewing Company",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@jerseygirlbrewing.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Sunday Motor Co. Cafe",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "hello@sundaymotorco.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "Boonton Coffee Co.",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@boontoncoffee.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed"
+        },
+        {
+            "name": "The Shakespeare Theatre of New Jersey",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@shakespearenj.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Museum of Early American Trades & Crafts",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@meatc.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Schiff Nature Preserve",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@schiffnaturepreserve.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Morristown Minute",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "Editor@MorristownMinute.org"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:42.726Z"
+        },
+        {
+            "name": "TapInto Morristown",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "morristown@tapinto.net",
+                "info@tapinto.net"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:43.678Z"
+        },
+        {
+            "name": "TAPinto Denville",
+            "contactFirstName": "Michael",
+            "contactLastName": "Shapiro",
+            "contactEmail": [
+                "denville@tapinto.net",
+                "info@tapinto.net"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:39:39.804Z"
+        },
+        {
+            "name": "TapInto Denville",
+            "contactFirstName": "Tom",
+            "contactLastName": "Mulligan",
+            "contactEmail": [
+                "tmulligan@tapinto.net"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:44.600Z"
+        },
+        {
+            "name": "NJNN Digital Blast",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "NJNN@mansimedia.com"
+            ],
+            "category": "Advertiser",
+            "status": "Not Emailed",
+            "lastModified": "2026-08-12T17:50:36.707Z"
+        },
+        {
+            "name": "Booked on Reality",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "morristownreaders@mmt.mainlib.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Florham Park Readers Group / Morristown Area Book Club",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@meetup.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Audubon Backyard Book Clubs Network (NJ)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "director@audubonlibrary.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Retail Getting Real Podcast",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "podcasts@nrf.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Tales From the Front Line",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                ""
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Retail Daily Podcast",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "media@retaildaily.com",
+                "editor@retaildaily.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Rethink Retail",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "media@rethinkretail.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Omni Talk Retail Podcast",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@omnitalk.biz"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Work Appropriate",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "workappropriate@crooked.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "We’re Not Really Strangers / Workplace Stories",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "hello@werenotreallystrangers.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Anxious Achiever",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "anxiousachiever@hbr.org"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Manager Tools Podcast",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "customerservice@manager-tools.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Modern Manager",
+            "contactFirstName": "Mamie",
+            "contactLastName": "Kanfer Stewart",
+            "contactEmail": [
+                "mamie@mamiekse.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Coaching for Leaders",
+            "contactFirstName": "Dave",
+            "contactLastName": "Stachowiak",
+            "contactEmail": [
+                "dave@coachingforleaders.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Risk! Podcast",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "pitch@risk-show.com"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Moth Podcast / StorySLAM",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "pitches@themoth.org"
+            ],
+            "category": "Podcast",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Daily Record",
+            "contactFirstName": "News Desk",
+            "contactLastName": "",
+            "contactEmail": [
+                "drnews@gannettnj.com",
+                "newsroom@northjersey.com",
+                "newstips@dailyrecord.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:46.439Z"
+        },
+        {
+            "name": "NJ.com",
+            "contactFirstName": "News Desk",
+            "contactLastName": "",
+            "contactEmail": [
+                "statehouse@njlocalnews.com",
+                "press@njnpublishing.com",
+                "tips@njadvancemedia.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:48.152Z"
+        },
+        {
+            "name": "New Jersey Herald",
+            "contactFirstName": "Features Editor",
+            "contactLastName": "",
+            "contactEmail": [
+                "newsroom@njherald.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:49.106Z"
+        },
+        {
+            "name": "The Madison Eagle and The Chatham Courier",
+            "contactFirstName": "Editorial Staff ",
+            "contactLastName": "",
+            "contactEmail": [
+                "editor@newjerseyhills.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:49.995Z"
+        },
+        {
+            "name": "Morristown Green",
+            "contactFirstName": "Kevin",
+            "contactLastName": "Coughlin",
+            "contactEmail": [
+                "editor@morristowngreen.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:50.989Z"
+        },
+        {
+            "name": "Morristown Minute",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "editor@morristownminute.org"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:51.881Z"
+        },
+        {
+            "name": "Morris and Essex Magazine",
+            "contactFirstName": "Editorial Department",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@wainscotmedia.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:53.006Z"
+        },
+        {
+            "name": "Morris and Essex Magazine",
+            "contactFirstName": "Thomas",
+            "contactLastName": "Flannery",
+            "contactEmail": [
+                "thomas.flannery@wainscotmedia.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:53.919Z"
+        },
+        {
+            "name": "New Jersey Monthly Magazine",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "editor@njmonthly.com",
+                "events@njmonthly.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:54.982Z"
+        },
+        {
+            "name": "Denville Now",
+            "contactFirstName": "Content Coordinator / Publisher",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@denvillenow.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:55.931Z"
+        },
+        {
+            "name": "WDHA 105.5 FM",
+            "contactFirstName": "Programming & Morning Show Desk",
+            "contactLastName": "",
+            "contactEmail": [
+                "Terrie.Carr@bbgi.com",
+                "Jaclyn.Farago@bbgi.com",
+                "Edwin.Silver@bbgi.com"
+            ],
+            "category": "Advertiser",
+            "status": "Not Emailed",
+            "lastModified": "2026-08-12T17:50:37.594Z"
+        },
+        {
+            "name": "WMTR 1250 AM",
+            "contactFirstName": "Local Programming & Guest Booking",
+            "contactLastName": "",
+            "contactEmail": [
+                "Michael.Scecchitano@bbgi.com",
+                "NewJersey.PublicFile@bbgi.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:50:38.548Z"
+        },
+        {
+            "name": "NJ 101.5 FM",
+            "contactFirstName": "Newsroom / Executive Producer",
+            "contactLastName": "",
+            "contactEmail": [
+                "contact@nj1015.com",
+                "annette.petriccione@townsquaremedia.com",
+                "sergio.bichao@townsquaremedia.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:50:39.574Z"
+        },
+        {
+            "name": "Patch",
+            "contactFirstName": "Regional News Desk",
+            "contactLastName": "",
+            "contactEmail": [
+                "jack.slocum@patch.com",
+                "newjersey@patch.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T17:36:59.970Z"
+        },
+        {
+            "name": "Independent Book Review (IBR)",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "editorial@independentbookreview.com"
+            ],
+            "category": "Book Review",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "IndieReader",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@indiereader.com"
+            ],
+            "category": "Book Review",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Reedsy Discovery Publication & Newsletter",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "discovery@reedsy.com"
+            ],
+            "category": "Book Review",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Foreword Reviews",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "editorial@forewordreviews.com"
+            ],
+            "category": "Book Review",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Fussy Librarian",
+            "contactFirstName": "Support Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "support@thefussylibrarian.com"
+            ],
+            "category": "Newsletter",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:18:22.560Z"
+        },
+        {
+            "name": "Freebooksy",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@writtenwordmedia.com",
+                "info@freebooksy.com"
+            ],
+            "category": "Newsletter",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:18:23.582Z"
+        },
+        {
+            "name": "Bargain Booksy",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@bargainbooksy.com"
+            ],
+            "category": "Newsletter",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:18:24.504Z"
+        },
+        {
+            "name": "BookBub",
+            "contactFirstName": "Blog Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "blog@bookbub.com"
+            ],
+            "category": "Newsletter",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:18:25.939Z"
+        },
+        {
+            "name": "Literary Hub Daily",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@lithub.com"
+            ],
+            "category": "Newsletter",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:18:26.963Z"
+        },
+        {
+            "name": "Hippocampus Magazine",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@hippocampusmagazine.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:19:07.340Z"
+        },
+        {
+            "name": "Brevity: A Journal of Concise Literary Nonfiction",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "brevitymag@gmail.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T18:19:08.360Z"
+        },
+        {
+            "name": "The Pulpwood Queens Book Club Network",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "thepulpwoodqueen@gmail.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Girly Book Club",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "hello@girlybookclub.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Silent Book Club (SBC International)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@silentbook.club"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Nonfiction Authors Association (NFAA)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "admin@nonfictionauthorsassociation.com"
+            ],
+            "category": "Organization",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Independent Book Publishers Association (IBPA)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@ibpa-online.org"
+            ],
+            "category": "Organization",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Lady Unemployed (Career & Work Culture Blog)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "admin@ladyunemployed.com"
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Leave Dates Blog",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "hello@leavedates.com"
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Medium Publications (Funny, Inc. / Workplace Culture)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                ""
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Brevity Blog",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "brevitymag@gmail.com"
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Author Imprints Blog",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                ""
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Jane Friedman’s Blog",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "jane@janefriedman.com"
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Click & Inc. Business Blog",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "guestblog@clickindustries.com"
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Creately Blog",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                ""
+            ],
+            "category": "Blogs",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "County College of Morris - BUS 119 Introduction to Business",
+            "contactFirstName": "Melissa",
+            "contactLastName": "Ford",
+            "contactEmail": [
+                "mford@ccm.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "County College of Morris - BUS 200 Principles of Management",
+            "contactFirstName": "John",
+            "contactLastName": "McDermott",
+            "contactEmail": [
+                "jmcdermott@ccm.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "County College of Morris - BUS 213 Customer Service & Relationship Management",
+            "contactFirstName": "Frank",
+            "contactLastName": "Doto",
+            "contactEmail": [
+                "fdoto@ccm.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "County College of Morris - BUS 215 Human Resources Management",
+            "contactFirstName": "Maureen",
+            "contactLastName": "Sutton",
+            "contactEmail": [
+                "msutton@ccm.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Fairleigh Dickinson University (FDU) - MGMT 2600 Organizational Behavior",
+            "contactFirstName": "Gwen",
+            "contactLastName": "Jones",
+            "contactEmail": [
+                "gjones@fdu.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Fairleigh Dickinson University (FDU) - MGMT 3700 Human Resources & Frontline Management",
+            "contactFirstName": "Kent",
+            "contactLastName": "Fairchild",
+            "contactEmail": [
+                "fairchild@fdu.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Fairleigh Dickinson University (FDU) - MKTG 2120 Principles of Marketing & Retail Operations",
+            "contactFirstName": "James",
+            "contactLastName": "Almeida",
+            "contactEmail": [
+                "almeida@fdu.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Fairleigh Dickinson University (FDU) - ENTR 3160 Launch & Manage Small Business Operations",
+            "contactFirstName": "Dennis",
+            "contactLastName": "Strigl",
+            "contactEmail": [
+                "dstrigl@fdu.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Drew University - BUS 101 Fundamentals of Business & Management",
+            "contactFirstName": "Alex",
+            "contactLastName": "de Arana",
+            "contactEmail": [
+                "adearana@drew.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Drew University - BUS 220 Organizational Leadership & Behavior",
+            "contactFirstName": "Minjoon",
+            "contactLastName": "Jun",
+            "contactEmail": [
+                "mjun@drew.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Montclair State University (Feliciano School of Business) - MGMT 201 Fundamentals of Management & Leadership",
+            "contactFirstName": "Wencang",
+            "contactLastName": "Zhou",
+            "contactEmail": [
+                "zhouw@montclair.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Montclair State University (Feliciano School of Business) - MGMT 300 Organizational Behavior & Human Dynamics",
+            "contactFirstName": "Angela",
+            "contactLastName": "Grotto",
+            "contactEmail": [
+                "grottoa@montclair.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Montclair State University (Feliciano School of Business) - MGMT 315 Human Resource Management & Frontline Staffing",
+            "contactFirstName": "Melissa",
+            "contactLastName": "Gutworth",
+            "contactEmail": [
+                "gutworthm@montclair.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Montclair State University (Feliciano School of Business) - MGMT 363 Operations & Service Management",
+            "contactFirstName": "Michele",
+            "contactLastName": "Rigolizzo",
+            "contactEmail": [
+                "rigolizzom@montclair.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "William Paterson University (Cotsakos College of Business) - MGT 2000 Principles of Management",
+            "contactFirstName": "Stephen",
+            "contactLastName": "Betts",
+            "contactEmail": [
+                "bettss@wpunj.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "William Paterson University (Cotsakos College of Business) - MGT 3050 Small Business Management & Operations",
+            "contactFirstName": "Jorge",
+            "contactLastName": "Arevalo",
+            "contactEmail": [
+                "arevaloj1@wpunj.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "William Paterson University (Cotsakos College of Business) - MGT 3550 Values, Ethics, & Leadership in Organizations",
+            "contactFirstName": "Raza",
+            "contactLastName": "Mir",
+            "contactEmail": [
+                "mirr@wpunj.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "William Paterson University (Cotsakos College of Business) - MKT 3100 Retail Management & Customer Dynamics",
+            "contactFirstName": "Rajiv",
+            "contactLastName": "Kashyap",
+            "contactEmail": [
+                "kashyapr@wpunj.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Caldwell University (School of Business & Leadership) - BU 205 Principles of Management & Supervision",
+            "contactFirstName": "Bernie",
+            "contactLastName": "O'Rourke",
+            "contactEmail": [
+                "borourke@caldwell.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Caldwell University (School of Business & Leadership) - BU 335 Operations & Supply Chain Management",
+            "contactFirstName": "Cagla",
+            "contactLastName": "Yildirim",
+            "contactEmail": [
+                "cyildirim@caldwell.edu"
+            ],
+            "category": "School",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "The Oaks at Denville",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [],
+            "category": "Community",
+            "status": "Emailed"
+        },
+        {
+            "name": "Denville Farmers Market",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "denvillefarmersmarket@gmail.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Downtown Denville Business Improvement District",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@downtowndenville.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Morris Arts",
+            "contactFirstName": "Tom",
+            "contactLastName": "Werder",
+            "contactEmail": [
+                "info@morrisarts.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Morris County Economic Development Corporation",
+            "contactFirstName": "Meghan",
+            "contactLastName": "Hunscher",
+            "contactEmail": [
+                "mcdac@morrischamber.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Denville Rocks",
+            "phone": "(973) 200-1920",
+            "contactFirstName": "Chris",
+            "contactLastName": "Cartwright",
+            "contactEmail": [
+                "chris@cartwrightseo.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed",
+            "notes": "CWS/Cartwright Web Strategies"
+        },
+        {
+            "name": "Denville Historical Society & Museum",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "denvillemhnj@gmail.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Denville Edit",
+            "phone": "(973) 957-0957",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@twogirlsmedia.com"
+            ],
+            "category": "Advertiser",
+            "status": "Emailed",
+            "notes": "Formerly Denville Guide",
+            "lastModified": "2026-08-12T17:39:42.513Z"
+        },
+        {
+            "name": "Swiss Chalet Bakery & Cafe",
+            "address": "159 South Street, Morristown, NJ 07960",
+            "phone": "(973) 267-0092",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "swisschaletbakery@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Not Emailed",
+            "lastModified": "2026-08-12T15:00:06.615Z"
+        },
+        {
+            "name": "L'Arte Della Pasticceria",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@larte.biz"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:08.873Z"
+        },
+        {
+            "name": "The Artist Baker",
+            "contactFirstName": "Andrea",
+            "contactLastName": "Lekomiec",
+            "contactEmail": [
+                "theartistbaker@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:09.999Z"
+        },
+        {
+            "name": "Paris Baguette (Morristown)",
+            "address": "10 Lafayette Ave, Morristown, NJ 07960",
+            "phone": "(973) 200-2381",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "contactus@parisbaguette.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:14:01.588Z"
+        },
+        {
+            "name": "Toastique Morristown",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "catering@toastique.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:14.089Z"
+        },
+        {
+            "name": "The Barn Cafe",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "thebarndenville@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:16.346Z"
+        },
+        {
+            "name": "Sweetberry Bowls (Denville)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@sweetberrybowls.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:18.005Z"
+        },
+        {
+            "name": "Sweet Leilani Bakery",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "sweetleilanibakery@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:20.035Z"
+        },
+        {
+            "name": "Mo'Pweeze Bakery",
+            "contactFirstName": "Christine",
+            "contactLastName": "Hazelwood",
+            "contactEmail": [
+                "info@mopweezebakery.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:00:21.469Z"
+        },
+        {
+            "name": "Cream & Sugar",
+            "address": "1250 Sussex Turnpike, Randolph, NJ 07869",
+            "phone": "862-233-7777",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "creamandsugarnj@gmail.com"
+            ],
+            "category": "Food & Beverage",
+            "status": "Emailed",
+            "lastModified": "2026-08-12T15:14:03.264Z"
+        },
+        {
+            "name": "Cedar Crest Senior Living",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "cedarcrest@erickson.com"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Rutgers Alumni Association",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@rutgersalumni.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Rutgers Preparatory School - Alumni Relations",
+            "contactFirstName": "Genevieve",
+            "contactLastName": "Strycharz",
+            "contactEmail": [
+                "strycharz@rutgersprep.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        },
+        {
+            "name": "Rutgers Preparatory School - Alumni Relations",
+            "contactFirstName": "Susan",
+            "contactLastName": "Gantz",
+            "contactEmail": [
+                "gantz@rutgersprep.org"
+            ],
+            "category": "Community",
+            "status": "Not Emailed"
+        }
+    ]
 }

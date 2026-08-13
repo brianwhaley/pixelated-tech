@@ -1,6 +1,6 @@
 {
   "name": "AMAVA-Janitorial",
-  "version": "0.7.20",
+  "version": "0.7.21",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -31,6 +31,7 @@
     "@pixelated-tech/components": "*",
     "happy-dom": "^20.10.1",
     "next": "^16.2.9",
+    "prop-types": "15.8.1",
     "react": "^19.2.7"
   },
   "devDependencies": {

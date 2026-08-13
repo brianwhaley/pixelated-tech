@@ -105,7 +105,12 @@ export default function SupermarketShenanigansPage() {
 			<br />
 
 			<PageGridItem columnStart={1} columnEnd={-1}>
-				<PageSectionHeader title="Supermarket Shenanigans In The News" />
+				<PageSectionHeader title="Supermarket Shenanigans - News and Events" />
+
+				<p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-november-2026-tickets-1996103206424">Nov 7, 2026 11am - 2pm - The Great Big Book Swap</a></p>
+
+				<p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-after-dark-october-2026-tickets-1996101999815">Oct 10, 2026 6:30pm - 9:30pm - The Great Big Book Swap After Dark</a></p>
+                
 				<p><a href="https://patch.com/new-jersey/denville-nj/denville-resident-releases-comedic-memoir-frontline-supermarket-life-nodx">Aug 7, 2026 - Denville Resident Releases Comedic Memoir on Frontline Supermarket Life</a></p>
 			</PageGridItem>
 
