@@ -70,6 +70,8 @@ export function SmartVideo(props: SmartVideoType) {
 	const normalizedPoster = props.poster ? normalizeProtocolRelativeUrl(safeString(props.poster) ?? '') : undefined;
 	const cloudinaryEnv = safeString(props.cloudinaryEnv ?? cloudCfg?.product_env);
 	const cloudinaryDomain = safeString(props.cloudinaryDomain ?? cloudCfg?.baseUrl) ?? 'https://res.cloudinary.com/';
+	const isCloudinaryAvailable = !!cloudinaryEnv;
+	const effectiveVariant = currentVariant === 'cloudinary' ? 'cloudinary' : 'html';
 	const width = parseNumber(props.width ?? 1280);
 	const height = parseNumber(props.height ?? 720);
 	const quality = parseNumber(props.quality ?? 75);
@@ -78,8 +80,6 @@ export function SmartVideo(props: SmartVideoType) {
 	const id = deriveMediaId({ id: props.id, name: safeString(props.name), title: props.title, alt: undefined, src: normalizedSrc });
 	const posterSrc = normalizedPoster;
 	const title = safeString(props.title) || undefined;
-	const isCloudinaryAvailable = !!cloudinaryEnv;
-	const effectiveVariant = currentVariant === 'cloudinary' ? 'cloudinary' : 'html';
 
 	useEffect(() => {
 		if (effectiveVariant === 'cloudinary' && !isCloudinaryAvailable) {
@@ -105,6 +105,9 @@ export function SmartVideo(props: SmartVideoType) {
 
 	const videoSrc = currentVariant === 'cloudinary' && isCloudinaryAvailable ? cloudinarySource : normalizedSrc;
 	const posterUrl = currentVariant === 'cloudinary' && cloudinaryPoster ? cloudinaryPoster : posterSrc;
+
+	const videoKey = `variant-${currentVariant}-${id || 'video'}`;
+	// Need the key here to force React to remount the video element when the variant changes.
 
 	const videoProps: React.VideoHTMLAttributes<HTMLVideoElement> = {
 		id: id || undefined,
@@ -142,7 +145,7 @@ export function SmartVideo(props: SmartVideoType) {
 				duration={props.duration}
 				caption={props.caption}
 			/>
-			<video {...videoProps}>
+			<video key={videoKey} suppressHydrationWarning={true} {...videoProps}>
 				<track
 					kind="captions"
 					src={props.captionsSrc || undefined}

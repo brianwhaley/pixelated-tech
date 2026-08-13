@@ -12,7 +12,7 @@ export default function Header() {
 			<PageSection maxWidth="100%" columns={1} id="header-section">
 				<Hero 
 					variant="video"
-					video="/videos/kitchen-walkthrough-2.mp4"
+					video="https://videos.ctfassets.net/6ewno74sai9a/1TrFikTTfPiUfKYr65AfxK/bdd46b0f5b1ee4a315b0818c58d52ed6/2020008_Darwin_Nt_1280x720.mp4"
 					height="300px"
 				>
 					<div className="hero-content centered">

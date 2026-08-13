@@ -10,7 +10,8 @@ export default function ServicesPage() {
 
 	return (
 		<>
-			<PageTitleHeader title="GEA Construction Services" />
+			<PageTitleHeader title={`${siteInfo?.name ?? 'Site'} Services`} />
+			<br />
 			<PageSection columns={1} maxWidth="1024px" id="services-intro">
 				<p>
 					{siteName} provides a full suite of digital services for small businesses. Browse our service offerings and click through to learn how we can support your online growth.

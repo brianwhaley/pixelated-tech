@@ -1,6 +1,6 @@
 {
   "name": "gea-construction",
-  "version": "0.7.22",
+  "version": "0.7.23",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@pixelated-tech/components": "*",
     "happy-dom": "^20.10.1",
-    "next": "^16.2.9",
+    "next": "^16.3.1",
     "react": "^19.2.7"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "@types/react": "^19.2.14",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.9",
+    "eslint-config-next": "^16.3.1",
     "eslint-import-resolver-typescript": "^4.4.4",
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",

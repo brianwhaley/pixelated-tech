@@ -20,7 +20,7 @@ export default function ServiceDetailPage() {
 
 	return (
 		<>
-			<PageTitleHeader title={`${siteInfo?.name ?? 'Site'}${activeService?.name ? ` - ${activeService.name}` : ' - Service'}`} />
+			<PageTitleHeader title={`${siteInfo?.name ?? 'Site'} ${activeService?.name ? ` - ${activeService.name}` : ' - Service'}`} />
 			<PageSection columns={1} maxWidth="1024px" id="service-detail-wrapper">
 				{activeService ? (
 					<ServiceDetail

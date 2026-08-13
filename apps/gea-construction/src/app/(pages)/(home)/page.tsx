@@ -59,7 +59,7 @@ export default function Home() {
 					layout='horizontal'
 					url='/contact' 
 					boxShape="square"
-					img='/images/services/assessment.jpg'
+					img='https://images.ctfassets.net/6ewno74sai9a/57HS2y1ykJkYyQ2oIYBPkj/08bb7c0f62b146416783795c7cfbb6fe/building-inspector-real-estate-agent-with-clipboard-front-new-home-concept-home-inspection-real-estate-property-appraisal-co.jpg'
 					imgShape="square"
 					title='Schedule Your Free Assessment'
 					content='GEA Construction provides free, no-obligation assessments for all your home improvement needs. Schedule a time to meet with our team and discuss your project goals, budget, and timeline. Our team from GEA Construction will provide a detailed estimate, focused on your requirements and top notch quality, and answer any questions you may have about the process.' 

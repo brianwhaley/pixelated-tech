@@ -154,6 +154,7 @@ export function ServiceAreaDetail({ serviceAreaSlug, title, serviceAreaPathPrefi
 						</ul>
 					</>
 				) : null}
+				<br />
 				{serviceLinks.length ? (
 					<div>
 						<p><strong>Services offered in {activeArea.name}:</strong></p>
