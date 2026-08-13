@@ -24,7 +24,7 @@ describe('isUnderConstruction', () => {
 
 	it('returns false when the env var is not true', async () => {
 		vi.stubEnv('UNDER_CONSTRUCTION', 'false');
-		headersMock.mockReturnValue({ get: () => 'www.example.com' });
+		headersMock.mockReturnValue({ get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'www.example.com' });
 		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
 
 		expect(await isUnderConstruction()).toBe(false);
@@ -32,7 +32,7 @@ describe('isUnderConstruction', () => {
 
 	it('returns false when request is localhost', async () => {
 		vi.stubEnv('UNDER_CONSTRUCTION', 'true');
-		headersMock.mockReturnValue({ get: () => 'localhost:3000' });
+		headersMock.mockReturnValue({ get: (key: string) => key === 'x-forwarded-proto' ? 'https' : 'localhost:3000' });
 		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
 
 		expect(await isUnderConstruction()).toBe(false);
@@ -40,7 +40,15 @@ describe('isUnderConstruction', () => {
 
 	it('returns false when request is amplifyapp preview host', async () => {
 		vi.stubEnv('UNDER_CONSTRUCTION', 'true');
-		headersMock.mockReturnValue({ get: () => 'main.d123abc.amplifyapp.com' });
+		headersMock.mockReturnValue({ get: (key: string) => key === 'x-forwarded-host' ? null : key === 'x-forwarded-proto' ? 'https' : 'main.d123abc.amplifyapp.com' });
+		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
+
+		expect(await isUnderConstruction()).toBe(false);
+	});
+
+	it('returns false when x-forwarded-host is an Amplify preview host', async () => {
+		vi.stubEnv('UNDER_CONSTRUCTION', 'true');
+		headersMock.mockReturnValue({ get: (key: string) => key === 'x-forwarded-host' ? 'main.d123abc.amplifyapp.com' : key === 'x-forwarded-proto' ? 'https' : null });
 		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
 
 		expect(await isUnderConstruction()).toBe(false);
@@ -48,7 +56,15 @@ describe('isUnderConstruction', () => {
 
 	it('returns true when env is true and request host matches config site url', async () => {
 		vi.stubEnv('UNDER_CONSTRUCTION', 'true');
-		headersMock.mockReturnValue({ get: () => 'www.example.com' });
+		headersMock.mockReturnValue({ get: (key: string) => key === 'x-forwarded-host' ? null : key === 'x-forwarded-proto' ? 'https' : 'www.example.com' });
+		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
+
+		expect(await isUnderConstruction()).toBe(true);
+	});
+
+	it('returns true when env is true and request origin includes default https port', async () => {
+		vi.stubEnv('UNDER_CONSTRUCTION', 'true');
+		headersMock.mockReturnValue({ get: (key: string) => key === 'x-forwarded-host' ? null : key === 'x-forwarded-proto' ? 'https' : 'www.example.com:443' });
 		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
 
 		expect(await isUnderConstruction()).toBe(true);
