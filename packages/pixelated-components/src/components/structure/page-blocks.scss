@@ -100,7 +100,27 @@ main {
 }
 
 main p {
-	margin-bottom: 20px;
+    margin: 0px;
+    /* 
+	margin-bottom: 20px; */
+    padding: 0 0 20px 0;
+
+    &:has(+ ul),
+    &:has(+ ol) {
+        padding: 0px;
+    }
+
+    + ul,
+    + ol {
+        padding: 0 0 20px 20px;
+    }
+
+}
+
+main ol, main ul {
+	margin: 0; /* margin: 20px 0; */
+	padding-left: 20px; /* 40px */
+    list-style-type: disc;
 }
 
 .page-main {

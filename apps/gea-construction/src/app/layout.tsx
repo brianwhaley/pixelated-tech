@@ -3,6 +3,8 @@ import { PageMetaTags, PixelatedServerConfigProvider } from '@pixelated-tech/com
 import { BreadcrumbListSchema } from '@pixelated-tech/components/server';
 import { SchemaWebPage } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
+import { isUnderConstruction } from '@pixelated-tech/components/server';
+import { UnderConstruction } from '@pixelated-tech/components';
 import LayoutClient from '@/app/elements/layout-client';
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
@@ -16,6 +18,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+	const showConstruction = await isUnderConstruction();
+
 	return (
 		<html lang="en">
 			<LayoutClient />
@@ -31,10 +35,16 @@ export default async function RootLayout({
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>
-					<header><Header /></header>
-					<nav><Nav /></nav>
-					<main>{children}</main>
-					<footer><Footer /></footer>
+					{showConstruction ? (
+						<UnderConstruction />
+					) : (
+						<>
+							<header><Header /></header>
+							<nav><Nav /></nav>
+							<main>{children}</main>
+							<footer><Footer /></footer>
+						</>
+					)}
 				</PixelatedServerConfigProvider>
 			</body>
 		</html>

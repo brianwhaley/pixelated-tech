@@ -15,29 +15,9 @@ export function normalizeQueryParam(value?: string | string[]) {
 	return value ?? '';
 }
 
-export function getCategoriesForFile(fileName: string): string[] {
-	const safeFileName = path.basename(fileName);
-	const mailerFilePath = path.join(mailerDataDirectory, safeFileName);
-
-	if (!fs.existsSync(mailerFilePath)) {
-		return [];
-	}
-
-	const rawJson = fs.readFileSync(mailerFilePath, 'utf8');
-	const jsonData = JSON.parse(rawJson) as any;
-	const entries = Array.isArray(jsonData) ? jsonData : jsonData?.venues ?? [];
-
-	if (!Array.isArray(entries)) {
-		return [];
-	}
-
-	return Array.from(
-		new Set(
-			entries
-				.map((entry: any) => entry?.category)
-				.filter((value: any): value is string => typeof value === 'string' && value.trim().length > 0)
-		)
-	);
+function normalizeEntryStatus(entry: any) {
+	const status = String(entry?.status || '').trim();
+	return status.length ? status : 'Not Emailed';
 }
 
 export async function sendMailAction(formData: FormData) {
@@ -45,13 +25,15 @@ export async function sendMailAction(formData: FormData) {
 
 	const mailerFile = String(formData.get('mailerFile') || '').trim();
 	const category = String(formData.get('category') || '').trim();
+	const filterStatus = String(formData.get('filterStatus') || '').trim();
 	const from = String(formData.get('from') || '').trim();
 	const subject = String(formData.get('subject') || '').trim();
 	const bodyTemplate = String(formData.get('body') || '').trim();
+	const statusQuery = filterStatus || 'All';
 
 	const redirectWithError = (message: string) => {
 		return redirect(
-			`/mail-merge?status=error&message=${encodeURIComponent(message)}&mailerFile=${encodeURIComponent(mailerFile)}&category=${encodeURIComponent(category)}`
+			`/mail-merge?status=error&message=${encodeURIComponent(message)}&mailerFile=${encodeURIComponent(mailerFile)}&category=${encodeURIComponent(category)}&filterStatus=${encodeURIComponent(statusQuery)}`
 		);
 	};
 
@@ -74,9 +56,14 @@ export async function sendMailAction(formData: FormData) {
 		return redirectWithError(`Expected JSON array or object with venues array in ${mailerFile}`);
 	}
 
-	const matchingEntries = entries.filter(entry => String(entry?.category || '').trim() === category);
+	const matchingEntries = entries.filter(entry => {
+		const entryCategory = String(entry?.category || '').trim();
+		const entryStatus = normalizeEntryStatus(entry);
+		const statusMatches = !filterStatus || filterStatus === 'All' ? true : entryStatus === filterStatus;
+		return entryCategory === category && statusMatches;
+	});
 	if (!matchingEntries.length) {
-		return redirectWithError(`No entries found for category "${category}".`);
+		return redirectWithError(`No entries found for category "${category}" and status "${statusQuery}".`);
 	}
 
 	const config = getFullPixelatedConfig() as any;
@@ -128,14 +115,26 @@ export async function sendMailAction(formData: FormData) {
 		try {
 			await transporter.sendMail(mailOptions);
 			sent += 1;
+			entry.status = 'Emailed';
+			entry.lastModified = new Date().toISOString();
 		} catch {
 			failed += 1;
+		}
+	}
+
+	if (sent > 0) {
+		if (Array.isArray(jsonData)) {
+			fs.writeFileSync(mailerFilePath, JSON.stringify(jsonData, null, 4) + '\n', 'utf8');
+		} else {
+			jsonData.venues = entries;
+			fs.writeFileSync(mailerFilePath, JSON.stringify(jsonData, null, 4) + '\n', 'utf8');
 		}
 	}
 
 	const query = new URLSearchParams({
 		mailerFile,
 		category,
+		filterStatus: statusQuery,
 		status: 'sent',
 		sent: String(sent),
 		failed: String(failed),
@@ -150,6 +149,7 @@ export default async function MailMergePage({
 	searchParams?: Promise<{
 		mailerFile?: string | string[];
 		category?: string | string[];
+		filterStatus?: string | string[];
 		status?: string | string[];
 		sent?: string | string[];
 		failed?: string | string[];
@@ -164,17 +164,66 @@ export default async function MailMergePage({
 		: [];
 	const selectedFile = normalizeQueryParam(resolvedSearchParams.mailerFile);
 	const selectedCategory = normalizeQueryParam(resolvedSearchParams.category);
-	const status = normalizeQueryParam(resolvedSearchParams.status);
+	const selectedStatus = normalizeQueryParam(resolvedSearchParams.filterStatus);
+	const resultStatus = normalizeQueryParam(resolvedSearchParams.status);
 	const sent = normalizeQueryParam(resolvedSearchParams.sent) || '0';
 	const failed = normalizeQueryParam(resolvedSearchParams.failed) || '0';
 	const message = normalizeQueryParam(resolvedSearchParams.message);
-	const categories = selectedFile ? getCategoriesForFile(selectedFile) : [];
+
+	let categories: string[] = [];
+	let statuses: string[] = [];
+	let entries: any[] = [];
+	let targetCounts: Record<string, number> = {};
+
+	if (selectedFile) {
+		const safeFileName = path.basename(selectedFile);
+		const mailerFilePath = path.join(mailerDataDirectory, safeFileName);
+
+		if (fs.existsSync(mailerFilePath)) {
+			const rawJson = fs.readFileSync(mailerFilePath, 'utf8');
+			const jsonData = JSON.parse(rawJson) as any;
+			const fileEntries = Array.isArray(jsonData) ? jsonData : jsonData?.venues ?? [];
+
+			if (Array.isArray(fileEntries)) {
+				entries = fileEntries;
+				categories = Array.from(
+					new Set(
+						fileEntries
+							.map((entry: any) => entry?.category)
+							.filter((value: any): value is string => typeof value === 'string' && value.trim().length > 0)
+					)
+				);
+
+				statuses = Array.from(
+					new Set(
+						fileEntries
+							.map((entry: any) => normalizeEntryStatus(entry))
+							.filter((value: any): value is string => typeof value === 'string' && value.trim().length > 0)
+					)
+				);
+
+				const counts: Record<string, number> = {};
+				for (const entry of fileEntries) {
+					const category = String(entry?.category || '').trim();
+					if (!category) {
+						continue;
+					}
+					const status = normalizeEntryStatus(entry);
+					const allKey = `${category}||All`;
+					const entryKey = `${category}||${status}`;
+					counts[allKey] = (counts[allKey] || 0) + 1;
+					counts[entryKey] = (counts[entryKey] || 0) + 1;
+				}
+				targetCounts = counts;
+			}
+		}
+	}
 
 	return (
 		<section id="mail-merge" style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
 			<h1>Mail Merge</h1>
 
-			{status === 'sent' && (
+			{resultStatus === 'sent' && (
 				<div style={{ marginBottom: '20px', padding: '16px', background: '#e6ffed', border: '1px solid #b7f5ce' }}>
 					<strong>Mail merge complete.</strong>
 					<div>Sent: {sent}</div>
@@ -182,7 +231,7 @@ export default async function MailMergePage({
 				</div>
 			)}
 
-			{status === 'error' && message && (
+			{resultStatus === 'error' && message && (
 				<div style={{ marginBottom: '20px', padding: '16px', background: '#fff1f0', border: '1px solid #f5c6cb', color: '#a71d2a' }}>
 					<strong>Error:</strong>
 					<div>{message}</div>
@@ -190,9 +239,9 @@ export default async function MailMergePage({
 			)}
 
 			<form method="get" style={{ marginBottom: '24px' }}>
-				<label style={{ display: 'block', marginBottom: '12px' }}>
+				<label style={{ marginBottom: '12px' }}>
 					Mailer JSON file
-					<select name="mailerFile" defaultValue={selectedFile} style={{ width: '100%', padding: '10px', marginTop: '8px' }}>
+					<select name="mailerFile" defaultValue={selectedFile} style={{ padding: '10px', marginTop: '8px' }}>
 						<option value="">Select a file</option>
 						{mailerFiles.map(file => (
 							<option key={file} value={file}>
@@ -210,7 +259,11 @@ export default async function MailMergePage({
 				<MailMergeClientForm
 					selectedFile={selectedFile}
 					selectedCategory={selectedCategory}
+					selectedStatus={selectedStatus}
 					categories={categories}
+					statuses={statuses}
+					targetCounts={targetCounts}
+					entries={entries}
 					sendMailAction={sendMailAction}
 				/>
 			)}

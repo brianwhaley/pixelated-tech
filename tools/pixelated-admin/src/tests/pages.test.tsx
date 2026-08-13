@@ -62,6 +62,7 @@ vi.mock('fs', async (importOriginal) => {
 		existsSync: vi.fn(() => false),
 		readdirSync: vi.fn(() => []),
 		readFileSync: vi.fn(() => '[]'),
+		writeFileSync: vi.fn(() => undefined),
 	};
 	return {
 		...mockFs,
@@ -91,7 +92,42 @@ vi.mock('@pixelated-tech/components', async () => {
 				if (envField?.props?.onChange) envField.props.onChange(['prod']);
 				if (commitField?.props?.onChange) commitField.props.onChange('deploy message');
 			}, []);
-			return <button onClick={() => onSubmitHandler?.()}>Submit</button>;
+			return (
+				<form onSubmit={(event) => { event.preventDefault(); onSubmitHandler?.(new FormData(event.currentTarget as HTMLFormElement)); }}>
+					{formData.fields.map((field: any) => {
+						const fieldElement = (() => {
+							if (field.component === 'FormSelect') {
+								return (
+									<select
+										key={field.props.id}
+										id={field.props.id}
+										name={field.props.name}
+										value={field.props.value}
+										onChange={(event) => field.props.onChange?.(event.target.value)}
+									>
+										{field.props.options?.map((option: any) => (
+											<option key={option.value} value={option.value} disabled={option.disabled}>
+												{option.text}
+											</option>
+										))}
+									</select>
+								);
+							}
+							if (field.component === 'FormTextarea') {
+								return <textarea key={field.props.id} id={field.props.id} name={field.props.name} rows={field.props.rows} defaultValue={field.props.defaultValue || ''} />;
+							}
+							if (field.component === 'FormButton') {
+								return <button key={field.props.id} type={field.props.type}>{field.props.text}</button>;
+							}
+							if (field.component === 'FormInput') {
+								return <input key={field.props.id} {...field.props} />;
+							}
+							return null;
+						})();
+						return field.props.label ? <label key={field.props.id} htmlFor={field.props.id}>{field.props.label}{fieldElement}</label> : fieldElement;
+					})}
+				</form>
+			);
 		},
 		PageBuilderUI: make('PageBuilderUI'),
 		Accordion: ({ items }: any) => (
@@ -373,10 +409,11 @@ describe('pixelated-admin page components', () => {
 	it('renders MailMergeClientForm with categories', async () => {
 		const mod = await importModule('src/app/(pages)/mail-merge/MailMergeClientForm.tsx');
 		const Form = mod.MailMergeClientForm;
-		render(<Form selectedFile="mailer.json" selectedCategory="test" categories={[ 'test' ]} sendMailAction={async () => {}} />);
+		render(<Form selectedFile="mailer.json" selectedCategory="test" categories={[ 'test' ]} statuses={['Emailed', 'Not Emailed']} targetCounts={{ 'test||All': 1 }} sendMailAction={async () => {}} />);
 
 		expect(screen.getByRole('button', { name: /Send/i })).toBeInTheDocument();
-		expect(screen.getByRole('combobox')).toBeInTheDocument();
+		expect(screen.getByRole('combobox', { name: /Category/i })).toBeInTheDocument();
+		expect(screen.getByRole('combobox', { name: /Status/i })).toBeInTheDocument();
 	});
 
 	it('normalizes mail merge query params correctly', async () => {
@@ -384,15 +421,6 @@ describe('pixelated-admin page components', () => {
 		expect(mod.normalizeQueryParam(['file.json'])).toBe('file.json');
 		expect(mod.normalizeQueryParam('file.json')).toBe('file.json');
 		expect(mod.normalizeQueryParam(undefined)).toBe('');
-	});
-
-	it('extracts categories from mailer json file', async () => {
-		const fs = await import('fs');
-		(fs.existsSync as any).mockReturnValue(true);
-		(fs.readFileSync as any).mockReturnValue(JSON.stringify([{ category: 'test' }, { category: 'test' }, { category: 'other' }]));
-
-		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
-		expect(mod.getCategoriesForFile('mailer.json')).toEqual(['test', 'other']);
 	});
 
 	it('sendMailAction redirects with validation error when fields are missing', async () => {

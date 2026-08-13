@@ -4,7 +4,8 @@ import React from 'react';
 import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
 import { buildServiceUrl, usePixelatedConfig } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
-import { Hero } from '@pixelated-tech/components';
+import { PageHero } from '../../elements/page-hero';
+
 
 export default function Home() {
 	const pixelatedConfig = usePixelatedConfig();
@@ -12,14 +13,7 @@ export default function Home() {
 	return (
 		<>
 
-			<PageSection columns={1} maxWidth="100%" id="header-hero-section">
-				<Hero
-					img="/images/large-room-with-large-window-that-says-no-one.jpg"
-					imgAlt="AMAVA Janitorial Services"
-					variant="static"
-					height="300px"
-				/>
-			</PageSection>
+			<PageHero />
 
 			<PageSection columns={1} maxWidth="1024px" id="header-section">
 				<PageTitleHeader title="AMAVA Janitorial" />

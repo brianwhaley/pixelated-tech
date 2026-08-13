@@ -5,6 +5,7 @@ import React from "react";
 import { PageTitleHeader, PageSection, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
+import { PageHero } from "@/app/elements/page-hero";
 
 export default function ContactPage() {
 	const config = usePixelatedConfig();
@@ -13,6 +14,8 @@ export default function ContactPage() {
 
 	return (
 		<>
+			<PageHero />
+
 			<PageTitleHeader title={`Contact ${siteName}`} />
 
 			{siteInfo && (

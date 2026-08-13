@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { PageTitleHeader, PageSection, ServiceAreas, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageHero } from '@/app/elements/page-hero';
 
 export default function ServiceAreasPage() {
 	const config = usePixelatedConfig();
@@ -10,6 +11,9 @@ export default function ServiceAreasPage() {
 
 	return (
 		<>
+
+			<PageHero />
+
 			<PageTitleHeader title={`${siteName} Service Areas`} />
 			<PageSection columns={1} maxWidth="1024px" id="service-areas-intro">
 				<p>

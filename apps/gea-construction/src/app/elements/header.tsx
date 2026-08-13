@@ -20,6 +20,7 @@ export default function Header() {
 							id="logo"
 							src="/images/gea-construction-logo-2-color.png"
 							alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
+							aboveFold={true}
 							width={525}
 							height={237.5}
 						/>
