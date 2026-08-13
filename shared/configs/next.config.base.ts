@@ -34,6 +34,7 @@ export function getBaseNextConfig(): NextConfig {
 			PIXELATED_CONFIG_KEY: process.env.PIXELATED_CONFIG_KEY,
 			AMPLIFY_MONOREPO_APP_ROOT: process.env.AMPLIFY_MONOREPO_APP_ROOT,
 			AMPLIFY_DIFF_DEPLOY: process.env.AMPLIFY_DIFF_DEPLOY,
+			UNDER_CONSTRUCTION: process.env.UNDER_CONSTRUCTION,
 		},
 		productionBrowserSourceMaps: true,
 		images: {
