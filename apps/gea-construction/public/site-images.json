@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 10
+    "imageCount": 11
   },
   "images": [
     "images/gea-construction-logo-2-bw.png",
@@ -12,6 +12,7 @@
     "images/services/doors-windows.jpg",
     "images/services/handyman-repairs.jpg",
     "images/services/kitchen-remodeling.jpg",
-    "images/services/patios-hardscaping.jpg"
+    "images/services/patios-hardscaping.jpg",
+    "images/under-construction.jpg"
   ]
 }

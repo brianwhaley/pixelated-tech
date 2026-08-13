@@ -11,6 +11,11 @@ html, body { padding: 0; margin: 0; }
 }
 
 
+.hero {
+    height: 40vh !important;
+}
+
+
 /* ========================================
     MENU
 ======================================== */
@@ -69,5 +74,27 @@ header #header-section {
     }
     .callout .callout-image img {
         clip-path: none !important;
+    }
+}
+
+
+
+
+
+/* ========================================
+        SERVICES 
+======================================== */
+
+#service-detail-wrapper { 
+
+    .page-section-content {
+        max-width: 100% !important;
+        width: 100%;
+    }
+
+    .service-detail-copy {
+        max-width: 1024px;;
+        width: 100%;
+        margin: 0 auto;
     }
 }

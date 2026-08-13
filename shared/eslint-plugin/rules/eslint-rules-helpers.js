@@ -35,6 +35,7 @@ export const ALLOWED_ENV_VARS = [
 	'NODE_ENV',
 	'PIXELATED_CONFIG_KEY',
 	'PUPPETEER_EXECUTABLE_PATH',
+	'UNDER_CONSTRUCTION',
 ];
 
 export function isClientComponent(fileContent) {

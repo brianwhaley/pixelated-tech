@@ -94,3 +94,9 @@
   visibility: visible;
   opacity: 1;
 }
+
+
+.accordion {
+    overflow-x: auto;
+    max-width: 100%;
+}

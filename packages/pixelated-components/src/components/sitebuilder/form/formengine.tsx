@@ -192,7 +192,6 @@ function FormEngineInner(props: FormEngineInnerType) {
 
 	function handleSubmit(event: React.FormEvent) {
 		// HANDLES THE FORM ACTION / FORM SUBMIT - EXPOSED EXTERNAL
-		event.preventDefault();
 
 		const form = event.currentTarget as HTMLFormElement;
 		if (!form.checkValidity()) {
@@ -202,12 +201,16 @@ function FormEngineInner(props: FormEngineInnerType) {
 		// Check if form is valid before submission
 		if (!validateAllFields()) {
 			// Form has validation errors, don't submit
+			event.preventDefault();
 			return false;
 		}
 
 		// Try context handler first (from FormSubmitWrapper), then props handler
 		const handler = contextSubmitHandler || props.onSubmitHandler;
-		if (handler) handler(event as any);
+		if (handler) {
+			event.preventDefault();
+			handler(event as any);
+		}
 		return true;
 	}
 

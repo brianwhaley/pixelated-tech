@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { PageTitleHeader, PageSection, Services, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageHero } from '@/app/elements/page-hero';
 
 export default function ServicesPage() {
 	const config = usePixelatedConfig();
@@ -10,7 +11,10 @@ export default function ServicesPage() {
 
 	return (
 		<>
-			<PageTitleHeader title="Amava janitorial Services" />
+        
+			<PageHero />
+                    
+			<PageTitleHeader title={`${siteName} Services`} />
 			<PageSection columns={1} maxWidth="1024px" id="services-intro">
 				<p>
 					{siteName} provides professional janitorial and facility maintenance services for commercial buildings, offices, and small businesses.
