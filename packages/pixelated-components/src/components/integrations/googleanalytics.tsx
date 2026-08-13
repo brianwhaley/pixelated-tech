@@ -40,7 +40,10 @@ export function GoogleAnalytics( props: GoogleAnalyticsType ) {
 	const adId = config?.integrations?.googleAnalytics?.adId;
 
 	useEffect(() => {
-		if (!id) return;
+		if (!id) {
+			console.warn('GoogleAnalytics is not configured. Skipping Google Analytics script injection.');
+			return;
+		}
 		if (typeof window === 'undefined') { return; }
 		if (typeof document === 'undefined') { return; }
 		if (isGA()) { return; }
@@ -67,11 +70,7 @@ ${adId ? `window.gtag('config', '${adId}');` : ''}
 	}, [id, adId]);
 
 	if (!id) {
-		return (
-			<div className="smart-error-boundary-fallback">
-				<p>Sorry, something went wrong loading GoogleAnalytics.</p>
-			</div>
-		);
+		return null;
 	}
 
 	return (

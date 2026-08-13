@@ -63,11 +63,12 @@ const customGoogleAnalyticsConfig = {
 			expect(initScript?.textContent).toContain('G-CUSTOM123');
 		});
 
-		it('should render fallback when no ID provided and config missing', () => {
+		it('should render nothing when no ID provided and config missing', () => {
 			const { container } = renderWithProviders(<GoogleAnalytics />, { config: {} });
 
-			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
-			expect(container.textContent).toMatch(/GoogleAnalytics/i);
+			expect(container.textContent).toBe('');
+			expect(document.querySelector('script#ga-init')).toBeNull();
+			expect(document.querySelector('script#ga')).toBeNull();
 		});
 
 		it('should have correct script source with id', () => {
@@ -107,11 +108,12 @@ const customGoogleAnalyticsConfig = {
 			expect(initScript?.textContent).toContain("gtag('config', 'G-TEST123')");
 		});
 
-		it('should render fallback when GoogleAnalytics throws', () => {
+		it('should render nothing when GoogleAnalytics is unconfigured', () => {
 			const { container } = renderWithProviders(<GoogleAnalytics />, { config: pixelatedConfigEmpty });
 
-			expect(container.textContent).toMatch(/Sorry, something went wrong loading/i);
-			expect(container.textContent).toMatch(/GoogleAnalytics/i);
+			expect(container.textContent).toBe('');
+			expect(document.querySelector('script#ga-init')).toBeNull();
+			expect(document.querySelector('script#ga')).toBeNull();
 		});
 
 		it('should not inject GA when analytics is already initialized', () => {
