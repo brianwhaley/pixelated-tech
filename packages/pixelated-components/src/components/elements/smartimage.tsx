@@ -157,6 +157,26 @@ export function SmartImage(props: SmartImageType) {
 	newProps.height = parseNumber(props.height ?? 500);
 	newProps.quality = parseNumber(props.quality ?? 75);
 
+
+
+	// Preserve aspect ratio at render time when width or height is provided.
+	const styleProps: React.CSSProperties = {
+		...(props.style as React.CSSProperties | undefined),
+	};
+	const hasExplicitWidth = props.width != null;
+	const hasExplicitHeight = props.height != null;
+	const hasStyleWidth = styleProps.width !== undefined;
+	const hasStyleHeight = styleProps.height !== undefined;
+	if (hasExplicitWidth || hasExplicitHeight || hasStyleWidth || hasStyleHeight) {
+		if (!hasStyleWidth) styleProps.width = '100%';
+		if (!hasStyleHeight) styleProps.height = 'auto';
+		if (hasExplicitWidth && styleProps.maxWidth === undefined) styleProps.maxWidth = newProps.width;
+		if (hasExplicitHeight && styleProps.maxHeight === undefined) styleProps.maxHeight = newProps.height;
+	}
+	newProps.style = styleProps;
+
+
+    
 	const filename = (String(newProps.src || '')).split('/').pop()?.split('?')[0] || '';
 	const imageName = filename.replace(/\.[^.]+$/, '');
 	newProps.id = newProps.id || newProps.name || sanitizeMediaString(newProps.title) || sanitizeMediaString(newProps.alt) || sanitizeMediaString(imageName);
@@ -241,7 +261,7 @@ export function SmartImage(props: SmartImageType) {
 	if (variant !== 'img') {
 		if (debug) console.warn('SmartImage: rendering nextjs variant', { ...(newProps as any) });
 		// Force remount of next/image when the delivery variant changes after a fallback.
-		// Without a key change, React will reuse the same internal Image instance even if props differ.
+		// Without a key change, React may attempt to hydrate the previous DOM and cause a mismatch.
 		const imageKey = `${variant}-${newProps.id ?? newProps.src}`;
 		try {
 			return (

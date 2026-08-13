@@ -16,7 +16,7 @@ export default function BlogPage() {
 
 	return (
 		<>
-			<PageTitleHeader title="Oaktree Landscaping Blog Posts" />
+			<PageTitleHeader title="GEA Construction Blog Posts" />
 			<PageSection columns={1} maxWidth="1024px" id="blog-section">
 				<BlogPostList showCategories={false} />
 			</PageSection>

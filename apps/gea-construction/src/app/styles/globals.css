@@ -116,3 +116,8 @@ body.formglow {
         clip-path: none !important;
     }
 }
+
+
+#history-cards-section .callout .callout-image {
+    width: 100%;
+}

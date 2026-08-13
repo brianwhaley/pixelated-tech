@@ -116,13 +116,19 @@ export function BlogPostList(props: BlogPostListType) {
 		// Fetch posts from WordPress using the cached helper
 		ToggleLoading({ show: true });
 		(async () => {
-			const params: { site: string; count?: number; baseURL?: string } = { site };
-			if (count !== null && count !== undefined) params.count = count;
-			if (baseURL !== null && baseURL !== undefined) params.baseURL = baseURL;
-			const data = (await getCachedWordPressItems(params)) ?? [];
-			const sorted = data.sort((a: BlogPostType, b: BlogPostType) => ((a.date ?? '') < (b.date ?? '')) ? 1 : -1);
-			setPosts(sorted);
-			ToggleLoading({ show: false });
+			try {
+				const params: { site: string; count?: number; baseURL?: string } = { site };
+				if (count !== null && count !== undefined) params.count = count;
+				if (baseURL !== null && baseURL !== undefined) params.baseURL = baseURL;
+				const data = (await getCachedWordPressItems(params)) ?? [];
+				const sorted = data.sort((a: BlogPostType, b: BlogPostType) => ((a.date ?? '') < (b.date ?? '')) ? 1 : -1);
+				setPosts(sorted);
+			} catch (error) {
+				console.error('Error fetching WordPress posts:', error);
+				setPosts([]);
+			} finally {
+				ToggleLoading({ show: false });
+			}
 		})();
 	}, [site, baseURL, count]);
 
