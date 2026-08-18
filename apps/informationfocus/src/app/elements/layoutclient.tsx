@@ -16,7 +16,7 @@ export default function LayoutClient() {
 			formglow: true,
 			imgscale: true,
 			simplemenubutton: true,
-			scrollfadeSelectors: '.callout , .calloutSmall , .carousel-container, .scroll-fade-element',
+			scrollfadeSelectors: '.callout , .calloutSmall , .carousel-container , .countup , .scroll-fade-element , .tile , .timeline-container ',
 		});
 	}, []);
     

@@ -1,3 +1,24 @@
+
+CATEGORIES:
+Bookstore
+Library
+Food & Beverage
+Retail
+News Media
+Newsletter
+Literary Magazine
+Podcast
+Blogs
+Book Review
+Book Club
+School
+Organization
+Community
+
+
+
+
+
 Template 1: Event & In-Store Pitch
 
 Categories: Bookstore, Library, Food & Beverage, Retail
@@ -36,7 +57,7 @@ https://www.brianwhaley.com/supermarketshenanigans
 
 
 Template 2: Local Media & Press Pitch
-Categories: Advertiser, Newsletter, Literary Magazine
+Categories: News Media, Newsletter, Literary Magazine
 
 Subject: Local Story: Denville Author Releases Comedic Retail Memoir
 
@@ -76,29 +97,26 @@ Subject: Guest Pitch: Frontline Retail Chaos & Ground-Level Lessons
 
 Hi [contactFirstName],
 
-I’ve been following [name] and love the content you share with your audience.
+I’ve been reading [name] and love the content you share with your audience.
 
 I’m reaching out to see if you’re currently open to guest interviews or feature pitches. I'm a former supermarket Courtesy Desk clerk turned author of Supermarket Shenanigans: True Tales from Behind the Courtesy Desk.
 
 Having spent years on the customer service frontline, I bring a fast-paced, humorous perspective on topics your audience would love:
 
-Handling high-stress customer interactions and crazy floor encounters with humor.
-
-The unspoken dynamics between hourly staff, shift supervisors, and store lifers.
-
-Transitioning frontline retail lessons into writing and career growth.
+* Handling high-stress customer interactions and crazy floor encounters with humor.
+* The unspoken dynamics between hourly staff, shift supervisors, and store lifers.
+* Transitioning frontline retail lessons into writing and career growth.
 
 I’d love to contribute an entertaining guest interview or article for [name]. I'm happy to send along a complimentary digital copy of the book so you can check out the style.
 
-Would you be open to a quick audio chat or reviewing a copy?
+Would you be open to a quick chat, or to reviewing a copy?
 
 Cheers,
 
 Brian Whaley
-
 Author, Supermarket Shenanigans
-
-[Your Phone Number] | [Your Website URL]
+(973) 710-8008
+https://www.brianwhaley.com/supermarketshenanigans
 
 
 

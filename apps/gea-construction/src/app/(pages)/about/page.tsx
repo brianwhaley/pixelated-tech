@@ -19,21 +19,21 @@ export default function AboutPage() {
 				<Callout
 					layout="vertical"
 					subtitle="Firefighter Heritage"
-					img="https://images.ctfassets.net/6ewno74sai9a/4ew1smDiPqpwE3vuE9eHzY/9177ab3ab695c7a4ca8017b37877a5a2/firefighter-protective-gear-battles-raging-inferno.jpg"
+					img="https://images.ctfassets.net/6ewno74sai9a/4ew1smDiPqpwE3vuE9eHzY/9177ab3ab695c7a4ca8017b37877a5a2/firefighter-protective-gear-battles-raging-inferno.jpg?fm=webp"
 					imgAlt="GEA Construction - Firefighter Heritage"
 					imgShape="square"
 				/>
 				<Callout
 					layout="vertical"
 					subtitle="Coastal Experience"
-					img="https://images.ctfassets.net/6ewno74sai9a/4Vr5iefQH9bcUpj0WiWEMU/188621b677b8dff012353b9713373bdf/luxurious-living-room-with-ocean-view.jpg"
+					img="https://images.ctfassets.net/6ewno74sai9a/4Vr5iefQH9bcUpj0WiWEMU/188621b677b8dff012353b9713373bdf/luxurious-living-room-with-ocean-view.jpg?fm=webp"
 					imgAlt="GEA Construction - Coastal Experience"
 					imgShape="square"
 				/>
 				<Callout
 					layout="vertical"
 					subtitle="Realtor Partner"
-					img="https://images.ctfassets.net/6ewno74sai9a/XeXBPYBVCho5s247sKuQt/54e647e8d4e5e8ff06d56d146e10cd20/sold-home-sale-sign-front-new-house.jpg"
+					img="https://images.ctfassets.net/6ewno74sai9a/XeXBPYBVCho5s247sKuQt/54e647e8d4e5e8ff06d56d146e10cd20/sold-home-sale-sign-front-new-house.jpg?fm=webp"
 					imgAlt="GEA Construction - Realtor Partner"
 					imgShape="square"
 				/>

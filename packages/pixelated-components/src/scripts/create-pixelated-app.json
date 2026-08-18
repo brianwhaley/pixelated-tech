@@ -99,6 +99,11 @@
 			"src": "../../pixelated-template/src/app/(pages)/styleguide"
 		},
 		{
+			"name": "Terms of Service",
+			"aliases": ["terms", "terms of service", "terms of use", "tos"],
+			"src": "../../pixelated-template/src/app/(pages)/terms"
+		},
+		{
 			"name": "Updates",
 			"aliases": ["updates", "update", "changelog"],
 			"src": "../../pixelated-template/src/app/(pages)/updates"

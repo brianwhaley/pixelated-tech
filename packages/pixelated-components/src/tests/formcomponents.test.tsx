@@ -222,13 +222,13 @@ describe('FormComponents', () => {
   it('renders FormHoneypot as a hidden input', () => {
     render(
       <FormValidationProvider>
-        <FormHoneypot id="winnie" />
+        <FormHoneypot />
       </FormValidationProvider>
     );
 
     const honeypotInput = screen.getByRole('textbox', { hidden: true });
     expect(honeypotInput).toHaveAttribute('id', 'winnie');
-    expect(honeypotInput).toHaveAttribute('name', 'website');
+    expect(honeypotInput).toHaveAttribute('name', 'pooh');
   });
 
   it('renders FormTagInput and allows adding and removing tags', () => {

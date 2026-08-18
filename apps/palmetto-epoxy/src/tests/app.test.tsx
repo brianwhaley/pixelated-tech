@@ -2,9 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import React from 'react';
 import { createPageComponentMocks, resetMockState, setContentfulEntriesResponse, setContentfulEntryResponse } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
-import * as components from '@pixelated-tech/components';
-import * as componentsServer from '@pixelated-tech/components/server';
-
 function findReactElementByTypeName(node: any, typeName: string): boolean {
 	if (node == null) return false;
 	const nodes = Array.isArray(node) ? node : [node];
@@ -19,43 +16,7 @@ function findReactElementByTypeName(node: any, typeName: string): boolean {
 }
 
 vi.mock('@pixelated-tech/components', () => createPageComponentMocks());
-vi.mock('@pixelated-tech/components/server', async () => {
-	const actual = await vi.importActual<typeof componentsServer>('@pixelated-tech/components/server');
-	return {
-		__esModule: true,
-		...actual,
-		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
-		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
-		PageMetaTags: function PageMetaTags() { return React.createElement('meta', { 'data-testid': 'page-meta-tags' }, null); },
-		WebsiteSchema: () => null,
-		LocalBusinessSchema: () => null,
-		ServicesSchema: () => null,
-		BreadcrumbListSchema: () => null,
-		VisualDesignStyles: () => null,
-		PixelatedServerConfigProvider: ({ children }: any) => React.createElement('div', { 'data-testid': 'server-config-provider' }, children),
-		getFullPixelatedConfig: () => ({}),
-		buildSitemapConfig: () => ({ sitemap: true }),
-		generateSitemap: async () => [{ url: 'https://example.com/sitemap.xml' }],
-		getOriginFromNextHeaders: async () => 'https://example.com',
-		Manifest: vi.fn((opts: any) => ({ manifest: true, ...opts })),
-	};
-});
 
-vi.mock('next/headers', () => ({
-	headers: vi.fn(async () => new Headers({ 'x-path': '/', 'x-origin': 'https://example.com', 'x-url': 'https://example.com/' })),
-}));
-
-vi.mock('next/server', () => ({
-	NextResponse: {
-		next: (options: any) => ({
-			...options,
-			request: options?.request ?? {
-				headers: options?.request?.headers ?? new Headers(),
-			},
-			headers: new Headers(),
-		}),
-	},
-}));
 
 import RootLayout from '@/app/layout';
 import { proxy } from '@/proxy';

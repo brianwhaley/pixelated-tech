@@ -56,21 +56,21 @@ function stableStringify(value) {
 	return JSON.stringify(normalizeForDiff(value));
 }
 
-// Duplicate implementation of `flattenRoutes` from
-// `src/components/foundation/sitemap.ts`.
+// Duplicate implementation of `getAllRoutes` from
+// `src/components/foundation/metadata.functions.ts`.
 //
 // This helper is duplicated here because `update-sitemap-lastmodified.js`
 // is a Node-run JS script and cannot reliably import the TS-only module
 // implementation from `sitemap.ts` without a TS-aware loader.
-function flattenRoutes(routes) {
+function getAllRoutes(routes, childKey = 'routes') {
 	const result = [];
 	if (!Array.isArray(routes)) return result;
 
 	for (const route of routes) {
 		if (!route || typeof route !== 'object') continue;
 		result.push(route);
-		if (Array.isArray(route.routes)) {
-			result.push(...flattenRoutes(route.routes));
+		if (Array.isArray(route[childKey])) {
+			result.push(...getAllRoutes(route[childKey], childKey));
 		}
 	}
 	return result;

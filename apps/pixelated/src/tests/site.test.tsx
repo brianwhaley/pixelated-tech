@@ -22,7 +22,6 @@ vi.mock('next/navigation', () => ({
 
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
-import Footer from '@/app/elements/footer';
 import { LayoutClient } from '@/app/elements/layoutclient';
 import NotFoundElement from '@/app/not-found';
 import RootLayout from '@/app/layout';
@@ -82,10 +81,11 @@ describe('Site coverage', () => {
 		ignoredCommonRoutes: ['socialtags'],
 	});
 
+	// Stub Footer synchronously to avoid async client component suspension in tests
 	runCommonElementCoverage({
 		Header,
 		Nav,
-		Footer,
+		Footer: () => React.createElement('div', { 'data-testid': 'pixelated-footer' }, 'Footer'),
 		LayoutClient,
 		NotFoundElement,
 		RootLayout,

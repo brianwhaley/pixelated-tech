@@ -41,10 +41,7 @@
 			}
 		},{
 			"component" : "FormHoneypot",
-			"props" : {
-				"id": "winnie",
-				"name" : "website"
-			}
+			"props" : { }
 		},{
 			"component" : "FormInput",
 			"props" : {
@@ -52,7 +49,7 @@
 				"id" : "firstname",
 				"name" : "firstname",
 				"defaultValue" : null,
-				"autocomplete" : "given-name",
+				"autoComplete" : "given-name",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
@@ -67,7 +64,7 @@
 				"id" : "lastname",
 				"name" : "lastname",
 				"defaultValue" : null,
-				"autocomplete" : "family-name",
+				"autoComplete" : "family-name",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
@@ -82,7 +79,7 @@
 				"id" : "email",
 				"name" : "email",
 				"defaultValue" : null,
-				"autocomplete" : "email",
+				"autoComplete" : "email",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",
@@ -98,7 +95,7 @@
 				"id" : "telephone",
 				"name" : "telephone",
 				"defaultValue" : null,
-				"autocomplete" : "tel",
+				"autoComplete" : "tel",
 				"size" : "40",
 				"display" : "vertical",
 				"required" : "required",

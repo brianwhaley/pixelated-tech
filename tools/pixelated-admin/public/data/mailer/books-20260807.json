@@ -444,6 +444,52 @@
             "status": "Emailed"
         },
         {
+            "name": "Reader's Favorite",
+            "contactFirstName": "Support Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "support@readersfavorite.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:13.964Z"
+        },
+        {
+            "name": "Independent Author Network",
+            "contactFirstName": "William",
+            "contactLastName": "Potter",
+            "contactEmail": [
+                "william@theindependentauthornetwork.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "IAN",
+            "lastModified": "2026-08-17T15:09:15.796Z"
+        },
+        {
+            "name": "City Book Review",
+            "contactFirstName": "Heidi",
+            "contactLastName": "Komlofske-Rojek",
+            "contactEmail": [
+                "info@citybookreview.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "San Francisco / Manhattan Book Review",
+            "lastModified": "2026-08-17T15:09:16.820Z"
+        },
+        {
+            "name": "LitPick Student Book Reviews",
+            "contactFirstName": "Gary",
+            "contactLastName": "Cassel",
+            "contactEmail": [
+                "garyc@litpick.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:17.950Z"
+        },
+        {
             "name": "Parsippany-Troy Hills Public Library",
             "contactFirstName": "Melissa",
             "contactLastName": "Kuzma",
@@ -824,7 +870,7 @@
             "contactEmail": [
                 "Editor@MorristownMinute.org"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:42.726Z"
         },
@@ -836,7 +882,7 @@
                 "morristown@tapinto.net",
                 "info@tapinto.net"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:43.678Z"
         },
@@ -848,7 +894,7 @@
                 "denville@tapinto.net",
                 "info@tapinto.net"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:39:39.804Z"
         },
@@ -859,7 +905,7 @@
             "contactEmail": [
                 "tmulligan@tapinto.net"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:44.600Z"
         },
@@ -870,9 +916,9 @@
             "contactEmail": [
                 "NJNN@mansimedia.com"
             ],
-            "category": "Advertiser",
-            "status": "Not Emailed",
-            "lastModified": "2026-08-12T17:50:36.707Z"
+            "category": "News Media",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:03:04.421Z"
         },
         {
             "name": "Booked on Reality",
@@ -895,6 +941,149 @@
             "status": "Not Emailed"
         },
         {
+            "name": "words Bookstore Book Clubs (Maplewood)",
+            "contactFirstName": "Jonah",
+            "contactLastName": "Zimiles",
+            "contactEmail": [
+                "wordsbookstore@gmail.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Watchung Booksellers Book Clubs (Montclair)",
+            "contactFirstName": "Margot",
+            "contactLastName": "Sage-EL",
+            "contactEmail": [
+                "info@watchungbooksellers.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Symposia Bookstore Book Club (Hoboken)",
+            "contactFirstName": "Carmen",
+            "contactLastName": "Rusu",
+            "contactEmail": [
+                "symposia_books@yahoo.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "The Bookworm Book Club (Bernardsville)",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "info@bookwormnj.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Little City Books Reading Groups (Hoboken)",
+            "contactFirstName": "Kate",
+            "contactLastName": "Jacobs",
+            "contactEmail": [
+                "info@littlecitybooks.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Inkwood NJ Book Club (Haddonfield)",
+            "contactFirstName": "Stefani",
+            "contactLastName": "Beddingfield",
+            "contactEmail": [
+                "inkwoodnj@gmail.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Montclair Public Library Book Clubs (Montclair)",
+            "contactFirstName": "Janet",
+            "contactLastName": "Torsney",
+            "contactEmail": [
+                "reference@montclair.bccls.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Morristown & Morris Township Library Book Clubs (Morristown)",
+            "contactFirstName": "Chad",
+            "contactLastName": "Leinaweaver",
+            "contactEmail": [
+                "info@mmtlibrary.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Denville Public Library Evening Book Club (Denville)",
+            "contactFirstName": "Siobhan",
+            "contactLastName": "Koch",
+            "contactEmail": [
+                "denvillelibrary@denvillelibrary.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Asbury Park Book Cooperative Clubs (Asbury Park)",
+            "contactFirstName": "Liza",
+            "contactLastName": "Minno Bloom",
+            "contactEmail": [
+                "info@asburyparkbookcoop.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Princeton Public Library Community Book Groups (Princeton)",
+            "contactFirstName": "Jennifer",
+            "contactLastName": "Podolsky",
+            "contactEmail": [
+                "refdesk@princetonlibrary.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "South Jersey Writers Group (SJWG)",
+            "contactFirstName": "Amy",
+            "contactLastName": "Kornberger",
+            "contactEmail": [
+                "southjerseywriters@gmail.com"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
+            "name": "Somerset County Library System (SCLSNJ) Author Clubs (Bridgewater)",
+            "contactFirstName": "Brian",
+            "contactLastName": "Auger",
+            "contactEmail": [
+                "ask@sclibnj.org"
+            ],
+            "category": "Book Club",
+            "status": "Not Emailed",
+            "lastModified": ""
+        },
+        {
             "name": "Audubon Backyard Book Clubs Network (NJ)",
             "contactFirstName": "",
             "contactLastName": "",
@@ -909,10 +1098,12 @@
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
-                "podcasts@nrf.com"
+				"contact@nrf.com",
+                "press@nrf.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Not Emailed",
+            "lastModified": "2026-08-17T15:28:15.914Z"
         },
         {
             "name": "Tales From the Front Line",
@@ -933,7 +1124,19 @@
                 "editor@retaildaily.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:17.153Z"
+        },
+        {
+            "name": "InD'tale Magazine",
+            "contactFirstName": "TJ",
+            "contactLastName": "Mackay",
+            "contactEmail": [
+                "tjmackay@indtale.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:18.865Z"
         },
         {
             "name": "Rethink Retail",
@@ -943,37 +1146,31 @@
                 "media@rethinkretail.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:18.248Z"
         },
         {
             "name": "The Omni Talk Retail Podcast",
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
-                "info@omnitalk.biz"
+                "info@redarcherretail.com",
+				"chris@redarcherretail.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Not Emailed",
+            "lastModified": "2026-08-17T15:28:19.302Z"
         },
         {
-            "name": "Work Appropriate",
-            "contactFirstName": "",
-            "contactLastName": "",
-            "contactEmail": [
-                "workappropriate@crooked.com"
-            ],
-            "category": "Podcast",
-            "status": "Not Emailed"
-        },
-        {
-            "name": "We’re Not Really Strangers / Workplace Stories",
+            "name": "We're Not Really Strangers / Workplace Stories",
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
                 "hello@werenotreallystrangers.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:21.760Z"
         },
         {
             "name": "The Anxious Achiever",
@@ -983,7 +1180,8 @@
                 "anxiousachiever@hbr.org"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:23.093Z"
         },
         {
             "name": "Manager Tools Podcast",
@@ -993,27 +1191,19 @@
                 "customerservice@manager-tools.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:24.174Z"
         },
         {
             "name": "The Modern Manager",
             "contactFirstName": "Mamie",
             "contactLastName": "Kanfer Stewart",
             "contactEmail": [
-                "mamie@mamiekse.com"
+                "mamie@mamieks.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
-        },
-        {
-            "name": "Coaching for Leaders",
-            "contactFirstName": "Dave",
-            "contactLastName": "Stachowiak",
-            "contactEmail": [
-                "dave@coachingforleaders.com"
-            ],
-            "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Not Emailed",
+            "lastModified": "2026-08-17T15:28:25.164Z"
         },
         {
             "name": "Risk! Podcast",
@@ -1023,17 +1213,151 @@
                 "pitch@risk-show.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:27.403Z"
         },
         {
-            "name": "The Moth Podcast / StorySLAM",
-            "contactFirstName": "",
-            "contactLastName": "",
+            "name": "The Indy Author Podcast",
+            "contactFirstName": "Matty",
+            "contactLastName": "Dalrymple",
             "contactEmail": [
-                "pitches@themoth.org"
+                "matty@theindyauthor.com"
             ],
             "category": "Podcast",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:30.347Z"
+        },
+        {
+            "name": "Wish I’d Known Then… For Writers",
+            "contactFirstName": "Jami",
+            "contactLastName": "Albright",
+            "contactEmail": [
+                "wishidknownthenforwriters@gmail.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:31.419Z"
+        },
+        {
+            "name": "The Creative Penn Podcast",
+            "contactFirstName": "Joanna",
+            "contactLastName": "Penn",
+            "contactEmail": [
+                "joanna@thecreativepenn.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:32.822Z"
+        },
+        {
+            "name": "Self-Publishing Insiders (by Draft2Digital)",
+            "contactFirstName": "Kevin",
+            "contactLastName": "Tumlinson",
+            "contactEmail": [
+                "support@draft2digital.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:34.356Z"
+        },
+        {
+            "name": "Writers, Ink",
+            "contactFirstName": "J.D.",
+            "contactLastName": "Barker",
+            "contactEmail": [
+                "info@writersinkpodcast.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:35.892Z"
+        },
+        {
+            "name": "Self-Publishing with ALLi Podcast",
+            "contactFirstName": "Orna",
+            "contactLastName": "Ross",
+            "contactEmail": [
+                "podcast@allianceindependentauthors.org"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:37.138Z"
+        },
+        {
+            "name": "The Author Success Show (by Happy Self Publishing)",
+            "contactFirstName": "Jyotsna",
+            "contactLastName": "Ramachandran",
+            "contactEmail": [
+                "jyotsna@happyselfpublishing.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:38.118Z"
+        },
+        {
+            "name": "QWERTY: A Podcast for Writers",
+            "contactFirstName": "Marion",
+            "contactLastName": "Roach Smith",
+            "contactEmail": [
+                "marion@marionroach.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:39.272Z"
+        },
+        {
+            "name": "Read To Lead Podcast",
+            "contactFirstName": "Jeff",
+            "contactLastName": "Brown",
+            "contactEmail": [
+                "jeff@readtoleadpodcast.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:40.531Z"
+        },
+        {
+            "name": "The Self-Publishing Show",
+            "contactFirstName": "James",
+            "contactLastName": "Blatch",
+            "contactEmail": [
+                "support@selfpublishingformula.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:41.645Z"
+        },
+        {
+            "name": "Publishing Profits Podcast",
+            "contactFirstName": "Tom",
+            "contactLastName": "Corson-Knowles",
+            "contactEmail": [
+                "tom@tckpublishing.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:43.071Z"
+        },
+        {
+            "name": "Self Publishing with Dale",
+            "contactFirstName": "Dale",
+            "contactLastName": "Roberts",
+            "contactEmail": [
+                "dale@selfpublishingwithdale.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:44.083Z"
+        },
+        {
+            "name": "New Books Network",
+            "contactFirstName": "Marshall",
+            "contactLastName": "Poe",
+            "contactEmail": [
+                "marshallpoe@newbooksnetwork.com"
+            ],
+            "category": "Podcast",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:28:45.143Z"
         },
         {
             "name": "Daily Record",
@@ -1044,7 +1368,7 @@
                 "newsroom@northjersey.com",
                 "newstips@dailyrecord.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:46.439Z"
         },
@@ -1057,7 +1381,7 @@
                 "press@njnpublishing.com",
                 "tips@njadvancemedia.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:48.152Z"
         },
@@ -1068,7 +1392,7 @@
             "contactEmail": [
                 "newsroom@njherald.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:49.106Z"
         },
@@ -1079,9 +1403,78 @@
             "contactEmail": [
                 "editor@newjerseyhills.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
+            "notes": "Hannah Peters from The Citizen - interview on 8/14/2026",
             "lastModified": "2026-08-12T17:36:49.995Z"
+        },
+        {
+            "name": "TAPinto Parsippany",
+            "contactFirstName": "Frank",
+            "contactLastName": "Cahill",
+            "contactEmail": [
+                "parsippany@tapinto.net"
+            ],
+            "category": "News Media",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:03:05.572Z"
+        },
+        {
+            "name": "TAPinto Randolph",
+            "contactFirstName": "Michael",
+            "contactLastName": "Shapiro",
+            "contactEmail": [
+                "randolph@tapinto.net"
+            ],
+            "category": "News Media",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:03:06.823Z"
+        },
+        {
+            "name": "TAPinto Roxbury",
+            "contactFirstName": "Michael",
+            "contactLastName": "Shapiro",
+            "contactEmail": [
+                "roxbury@tapinto.net"
+            ],
+            "category": "News Media",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:03:08.418Z"
+        },
+        {
+            "name": "TAPinto Chatham",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "ebarmakian@tapinto.net",
+                "editor@thealternativepress.com"
+            ],
+            "category": "News Media",
+            "status": "Not Emailed",
+            "lastModified": "2026-08-17T15:03:10.536Z"
+        },
+        {
+            "name": "Morris County Tourism Bureau",
+            "contactFirstName": "Craig",
+            "contactLastName": "Schlosser",
+            "contactEmail": [
+                "welcome@morriscountytourism.org"
+            ],
+            "category": "News Media",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:03:11.895Z"
+        },
+        {
+            "name": "Denville Life Magazine",
+            "contactFirstName": "Editorial Desk",
+            "contactLastName": "",
+            "contactEmail": [
+                "submissions@bestversionmedia.com"
+            ],
+            "category": "News Media",
+            "status": "Emailed",
+            "notes": "Best Version Media",
+            "lastModified": "2026-08-17T15:03:13.358Z"
         },
         {
             "name": "Morristown Green",
@@ -1090,7 +1483,7 @@
             "contactEmail": [
                 "editor@morristowngreen.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:50.989Z"
         },
@@ -1101,7 +1494,7 @@
             "contactEmail": [
                 "editor@morristownminute.org"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:51.881Z"
         },
@@ -1112,7 +1505,7 @@
             "contactEmail": [
                 "info@wainscotmedia.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:53.006Z"
         },
@@ -1123,7 +1516,7 @@
             "contactEmail": [
                 "thomas.flannery@wainscotmedia.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:53.919Z"
         },
@@ -1135,7 +1528,7 @@
                 "editor@njmonthly.com",
                 "events@njmonthly.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:54.982Z"
         },
@@ -1146,7 +1539,7 @@
             "contactEmail": [
                 "info@denvillenow.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:55.931Z"
         },
@@ -1159,9 +1552,9 @@
                 "Jaclyn.Farago@bbgi.com",
                 "Edwin.Silver@bbgi.com"
             ],
-            "category": "Advertiser",
-            "status": "Not Emailed",
-            "lastModified": "2026-08-12T17:50:37.594Z"
+            "category": "News Media",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:03:15.161Z"
         },
         {
             "name": "WMTR 1250 AM",
@@ -1171,7 +1564,7 @@
                 "Michael.Scecchitano@bbgi.com",
                 "NewJersey.PublicFile@bbgi.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:50:38.548Z"
         },
@@ -1184,7 +1577,7 @@
                 "annette.petriccione@townsquaremedia.com",
                 "sergio.bichao@townsquaremedia.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:50:39.574Z"
         },
@@ -1196,7 +1589,7 @@
                 "jack.slocum@patch.com",
                 "newjersey@patch.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "lastModified": "2026-08-12T17:36:59.970Z"
         },
@@ -1211,6 +1604,54 @@
             "status": "Not Emailed"
         },
         {
+            "name": "Publishers Weekly",
+            "contactFirstName": "Jonathon",
+            "contactLastName": "Segura",
+            "contactEmail": [
+                "JSegura@publishersweekly.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "BookLife",
+            "lastModified": "2026-08-17T15:09:20.263Z"
+        },
+        {
+            "name": "Publishers Weekly",
+            "contactFirstName": "Dave",
+            "contactLastName": "Adams",
+            "contactEmail": [
+                "dadams@publishersweekly.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "BookLife",
+            "lastModified": "2026-08-17T15:09:20.263Z"
+        },
+        {
+            "name": "Publishers Weekly",
+            "contactFirstName": "David",
+            "contactLastName": "Varno",
+            "contactEmail": [
+                "dvarno@publishersweekly.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "BookLife",
+            "lastModified": "2026-08-17T15:09:20.263Z"
+        },
+        {
+            "name": "Publishers Weekly",
+            "contactFirstName": "Kerensa",
+            "contactLastName": "Cadenas",
+            "contactEmail": [
+                "kcadenas@publishersweekly.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "BookLife",
+            "lastModified": "2026-08-17T15:09:20.263Z"
+        },
+        {
             "name": "IndieReader",
             "contactFirstName": "",
             "contactLastName": "",
@@ -1219,6 +1660,29 @@
             ],
             "category": "Book Review",
             "status": "Not Emailed"
+        },
+        {
+            "name": "Indie Author Magazine",
+            "contactFirstName": "Nicole",
+            "contactLastName": "Schroeder",
+            "contactEmail": [
+                "nicole@indieauthormagazine.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:21.420Z"
+        },
+        {
+            "name": "Independent Publisher",
+            "contactFirstName": "Jim",
+            "contactLastName": "Barnes",
+            "contactEmail": [
+                "editor@independentpublisher.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "IP Select",
+            "lastModified": "2026-08-17T15:09:22.502Z"
         },
         {
             "name": "Reedsy Discovery Publication & Newsletter",
@@ -1252,6 +1716,29 @@
             "lastModified": "2026-08-12T18:18:22.560Z"
         },
         {
+            "name": "WordCrafter",
+            "contactFirstName": "Kaye",
+            "contactLastName": "Lynne Booth",
+            "contactEmail": [
+                "klbwordcrafter@gmail.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "Writing to be Read",
+            "lastModified": "2026-08-17T15:09:23.515Z"
+        },
+        {
+            "name": "n+1 Magazine",
+            "contactFirstName": "Editorial Desk",
+            "contactLastName": "",
+            "contactEmail": [
+                "editors@nplusonemag.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:24.809Z"
+        },
+        {
             "name": "Freebooksy",
             "contactFirstName": "",
             "contactLastName": "",
@@ -1262,6 +1749,17 @@
             "category": "Newsletter",
             "status": "Emailed",
             "lastModified": "2026-08-12T18:18:23.582Z"
+        },
+        {
+            "name": "Writer's Digest",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "wdsubmissions@aimmedia.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:26.074Z"
         },
         {
             "name": "Bargain Booksy",
@@ -1312,10 +1810,10 @@
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
-                "brevitymag@gmail.com"
+                "brevityblogessays@gmail.com"
             ],
             "category": "Literary Magazine",
-            "status": "Emailed",
+            "status": "Not Emailed",
             "lastModified": "2026-08-12T18:19:08.360Z"
         },
         {
@@ -1376,7 +1874,20 @@
                 "admin@ladyunemployed.com"
             ],
             "category": "Blogs",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:30:43.688Z"
+        },
+        {
+            "name": "Indie Authors",
+            "contactFirstName": "Editorial Team",
+            "contactLastName": "",
+            "contactEmail": [
+                "admin@indieauthors.in"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "notes": "IndieAuthors.in",
+            "lastModified": "2026-08-17T15:09:27.369Z"
         },
         {
             "name": "Leave Dates Blog",
@@ -1386,17 +1897,19 @@
                 "hello@leavedates.com"
             ],
             "category": "Blogs",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:30:46.248Z"
         },
         {
-            "name": "Medium Publications (Funny, Inc. / Workplace Culture)",
+            "name": "Medium Publications",
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
                 ""
             ],
             "category": "Blogs",
-            "status": "Not Emailed"
+            "status": "Not Emailed",
+            "notes": "Funny, Inc. / Workplace Culture"
         },
         {
             "name": "The Brevity Blog",
@@ -1406,7 +1919,8 @@
                 "brevitymag@gmail.com"
             ],
             "category": "Blogs",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:30:47.680Z"
         },
         {
             "name": "Author Imprints Blog",
@@ -1426,7 +1940,8 @@
                 "jane@janefriedman.com"
             ],
             "category": "Blogs",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:30:49.423Z"
         },
         {
             "name": "Click & Inc. Business Blog",
@@ -1436,7 +1951,8 @@
                 "guestblog@clickindustries.com"
             ],
             "category": "Blogs",
-            "status": "Not Emailed"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:30:50.893Z"
         },
         {
             "name": "Creately Blog",
@@ -1447,6 +1963,17 @@
             ],
             "category": "Blogs",
             "status": "Not Emailed"
+        },
+        {
+            "name": "Kirkus Indie",
+            "contactFirstName": "Customer Service",
+            "contactLastName": "",
+            "contactEmail": [
+                "indie@kirkus.com"
+            ],
+            "category": "Literary Magazine",
+            "status": "Emailed",
+            "lastModified": "2026-08-17T15:09:28.391Z"
         },
         {
             "name": "County College of Morris - BUS 119 Introduction to Business",
@@ -1726,7 +2253,7 @@
             "contactEmail": [
                 "info@twogirlsmedia.com"
             ],
-            "category": "Advertiser",
+            "category": "News Media",
             "status": "Emailed",
             "notes": "Formerly Denville Guide",
             "lastModified": "2026-08-12T17:39:42.513Z"
@@ -1741,8 +2268,8 @@
                 "swisschaletbakery@gmail.com"
             ],
             "category": "Food & Beverage",
-            "status": "Not Emailed",
-            "lastModified": "2026-08-12T15:00:06.615Z"
+            "status": "Emailed",
+            "lastModified": "2026-08-17T14:58:31.497Z"
         },
         {
             "name": "L'Arte Della Pasticceria",
@@ -1763,7 +2290,8 @@
                 "theartistbaker@gmail.com"
             ],
             "category": "Food & Beverage",
-            "status": "Emailed",
+            "status": "Declined",
+            "notes": "no events in the shop, reach out to MOrristown Library and Book Nook",
             "lastModified": "2026-08-12T15:00:09.999Z"
         },
         {
