@@ -1,26 +1,56 @@
 'use server';
 
 import { headers } from 'next/headers';
-// import { getFullPixelatedConfig } from '../config/config';
-import { getOriginFromHeaders } from '../foundation/sitemap';
+import { getFullPixelatedConfig } from '../config/config';
+
+function normalizeHost(host: string): string {
+	const trimmed = String(host || '').trim().toLowerCase();
+	if (!trimmed) {
+		return '';
+	}
+
+	const withoutPort = trimmed.replace(/:\d+$/u, '');
+	if (withoutPort.startsWith('[') && withoutPort.includes(']')) {
+		return withoutPort.split(']')[0].replace(/\[|\]/gu, '');
+	}
+
+	return withoutPort;
+}
 
 export async function isUnderConstruction(): Promise<boolean> {
-	let underConstruction = true; 
 	const envValue = process.env.UNDER_CONSTRUCTION;
-	if (String(envValue || '').trim().toLowerCase() !== 'true') { underConstruction = false; }
-	const hdrs = await headers();
-	const requestOrigin = getOriginFromHeaders(hdrs as any)?.toLowerCase() || '';
-	if (!requestOrigin) { return false; }
-	if (
-		requestOrigin.includes('localhost') ||
-		requestOrigin.includes('127.0.0.1') ||
-		requestOrigin.includes('amplifyapp.com')
-	) {
-		underConstruction = false;
+	if (String(envValue || '').trim().toLowerCase() !== 'true') {
+		return false;
 	}
-	/* const pixelatedConfig = getFullPixelatedConfig() as any;
+
+	const hdrs = await headers();
+	const hostHeader = hdrs.get('host') || '';
+	const requestHost = normalizeHost(hostHeader);
+	if (!requestHost) {
+		return false;
+	}
+
+	if (
+		requestHost === 'localhost' ||
+		requestHost === '127.0.0.1' ||
+		requestHost.startsWith('localhost') ||
+		requestHost.includes('amplifyapp.com')
+	) {
+		return false;
+	}
+
+	const pixelatedConfig = getFullPixelatedConfig() as any;
 	const siteUrl = String(pixelatedConfig?.siteInfo?.url || '').trim();
-	if (!siteUrl) { return false; }
-	if (requestOrigin.toLowerCase() !== siteUrl.toLowerCase()) { underConstruction = false; } */
-	return underConstruction;
+	if (!siteUrl) {
+		return false;
+	}
+
+	let configHost = '';
+	try {
+		configHost = new URL(siteUrl).hostname.toLowerCase();
+	} catch {
+		configHost = normalizeHost(siteUrl);
+	}
+
+	return requestHost === configHost;
 }

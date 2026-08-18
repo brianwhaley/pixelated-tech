@@ -478,7 +478,12 @@ describe('pixelated-admin page components', () => {
 		(fs.readFileSync as any).mockReturnValue(JSON.stringify({ venues: [{ category: 'test' }, { category: 'other' }] }));
 
 		const mod = await importModule('src/app/(pages)/mail-merge/page.tsx');
-		expect(mod.getCategoriesForFile('mailer.json')).toEqual(['test', 'other']);
+		const element = await mod.default({ searchParams: Promise.resolve({ mailerFile: 'mailer.json' }) });
+		render(element);
+
+		expect(screen.getByRole('combobox', { name: /Category/i })).toBeInTheDocument();
+		expect(screen.getByRole('option', { name: 'test' })).toBeInTheDocument();
+		expect(screen.getByRole('option', { name: 'other' })).toBeInTheDocument();
 	});
 
 	it('sendMailAction redirects with error when no entries match the selected category', async () => {

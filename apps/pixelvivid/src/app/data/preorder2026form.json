@@ -49,10 +49,7 @@
 			}
 		},{
 			"component" : "FormHoneypot",
-			"props" : {
-				"id": "winnie",
-				"name" : "website"
-			}
+			"props" : { }
 		},{
 			"component" : "FormInput",
 			"props" : {

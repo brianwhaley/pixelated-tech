@@ -1,0 +1,182 @@
+{
+	"properties": {
+		"name": "partner-contact-us",
+		"id": "partner-contact-us-form",
+		"toggleLoading": true,
+		"openModal": true,
+		"resetForm": true
+	},
+	"fields" : [
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "from",
+				"name" : "from",
+				"value" : "info@geaconstruction.net"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "to",
+				"name" : "to",
+				"value" : "info@geaconstruction.net"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "subject",
+				"name" : "subject",
+				"value" : "GEA Construction Partner Contact Us Submit"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "domain",
+				"name" : "domain",
+				"value" : "geaconstruction.net"
+			}
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "formName",
+				"name" : "formName",
+				"value" : "partner-contact-us"
+			}
+		},{
+			"component" : "FormHoneypot",
+			"props" : { }
+		},{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "firstname",
+				"name" : "firstname",
+				"defaultValue" : null,
+				"autoComplete" : "given-name",
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "First Name (required) : ",
+				"tooltip" : "Please type in your First Name"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "lastname",
+				"name" : "lastname",
+				"defaultValue" : null,
+				"autoComplete" : "family-name",
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Last Name (required) : ",
+				"tooltip" : "Please type in your Last Name"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "company",
+				"name" : "company",
+				"defaultValue" : null,
+				"autoComplete" : "organization",
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Real Estate Brokerage / Company (required) : ",
+				"tooltip" : "Please type in your Real Estate Brokerage or Company Name"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "email",
+				"id" : "email",
+				"name" : "email",
+				"defaultValue" : null,
+				"autoComplete" : "email",
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Email Address (required) : ",
+				"validate" : "isValidEmailAddress",
+				"tooltip" : "Please type in your Email Address"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "tel",
+				"id" : "telephone",
+				"name" : "telephone",
+				"defaultValue" : null,
+				"autoComplete" : "tel",
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Telephone (required) : ",
+				"validate" : "isValidUSPhoneNumber",
+				"tooltip" : "Please type in your Telephone Number"
+			}
+		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "text",
+				"id" : "service-areas",
+				"name" : "service-areas",
+				"defaultValue" : null,
+				"size" : "40",
+				"display" : "vertical",
+				"required" : "required",
+				"label" : "Primary Service Areas (required) : ",
+				"tooltip" : "Please type in your Primary Service Areas (Bluffton, Hilton Head, Beaufort, etc.)"
+			}
+		},{
+			"component" : "FormSelect",
+			"props" : {
+				"id" : "assistance",
+				"name" : "assistance",
+				"defaultValue" : "",
+				"autoComplete" : "off",
+				"multiple" : null,
+				"required": true,
+				"display" : "horizontal",
+				"label" : "How can we best assist your current active listings or buyers : ",
+				"options" : [
+					{ "value" : "", "text" : "", "disabled" : "disabled" },
+					{ "value" : "inspection-punch-list", "text" : "Need immediate inspection punch list help" },
+					{ "value" : "pre-move-in-remodeling", "text" : "Buyer interested in pre-move-in remodeling" },
+					{ "value" : "general-partnership", "text" : "General partnership / Want marketing materials" }
+				]
+			}
+		},{
+			"component" : "FormTextarea",
+			"props" : {
+				"id" : "additional-info",
+				"name" : "additional-info",
+				"rows" : "5",
+				"cols" : "30",
+				"defaultValue" : null,
+				"display" : "vertical",
+				"label" : "Additional Information : ",
+				"tooltip": "Please enter any additional information about your request"
+			}
+		},{
+			"component" : "FormButton",
+			"props" : {
+				"type" : "submit",
+				"id" : "submit",
+				"text" : "Submit Request"
+			}
+		}
+	]
+}

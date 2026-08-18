@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { pixelatedConfig } from '../test/test-data';
-import { flattenRoutes } from '../components/foundation/sitemap';
+import { getAllRoutes } from '../components/foundation/metadata.functions';
 
 describe('siteconfig.json — integration smoke', () => {
   it('uses canonical siteInfo from src/data/siteconfig.json', () => {
@@ -14,8 +14,8 @@ describe('siteconfig.json — integration smoke', () => {
     expect(primary?.value).toBe('#336699');
   });
 
-  it('flattenRoutes(routes) contains the Buzzword Bingo route', () => {
-    const flat = flattenRoutes(pixelatedConfig.routes || []);
+  it('getAllRoutes(routes, "routes") contains the Buzzword Bingo route', () => {
+    const flat = getAllRoutes(pixelatedConfig.routes || [], 'routes');
     expect(Array.isArray(flat)).toBe(true);
     expect(flat.some((r: any) => String(r.path) === '/buzzwordbingo')).toBe(true);
   });

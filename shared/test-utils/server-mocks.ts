@@ -6,6 +6,7 @@ export function createServerMocks() {
 		createWellKnownResponse: vi.fn((type: string, req: any) => ({ type, url: req.url })),
 		generateMetaTags: vi.fn(() => React.createElement('meta', { 'data-testid': 'meta-tags' }, null)),
 		PageMetaTags: () => React.createElement('meta', { 'data-testid': 'page-meta-tags' }, null),
+		FooterMenu: () => React.createElement('div', { 'data-testid': 'footer-menu' }, null),
 		WebsiteSchema: () => null,
 		LocalBusinessSchema: () => null,
 		ServicesSchema: () => null,

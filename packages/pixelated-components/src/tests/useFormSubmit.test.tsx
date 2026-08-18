@@ -233,7 +233,7 @@ describe('useFormSubmit', () => {
   it('emailJSON should bypass submission when honeypot field is present', async () => {
     const callback = vi.fn();
     const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
-    await emailJSON({ winnie: 'spam' }, callback);
+    await emailJSON({ pooh: 'spam' }, callback);
 
     expect(callback).toHaveBeenCalled();
     expect(smartFetch).not.toHaveBeenCalled();

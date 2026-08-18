@@ -16,7 +16,7 @@ describe('FormEngine → emailFormData integration (honeypot)', () => {
     const localForm = {
       fields: [
         { component: 'FormInput', props: { id: 'name', name: 'name', type: 'text' } },
-        { component: 'FormHoneypot', props: { name: 'website' } },
+        { component: 'FormHoneypot' },
         { component: 'FormButton', props: { type: 'submit', id: 'submit', text: 'Send' } }
       ]
     } as any;

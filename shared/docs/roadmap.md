@@ -145,6 +145,10 @@ Would you like to start by expanding the componentMap or should we try implement
   - [ ] **Prop Tokenization**: Enable `{{token.path}}` resolution inside `PageEngine` to support truly dynamic, data-driven layouts without new React code.
 
 
+- [  ] EIN PRESSWIRE
+
+- [  ] BRIGHT LOCAL CITATION MANAGEMENT and SOCIAL MEDIA APIS
+
 
 ### WORKSPACE Enhancements
 

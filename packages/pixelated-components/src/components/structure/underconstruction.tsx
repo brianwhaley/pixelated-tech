@@ -4,7 +4,7 @@ import { Callout } from './callout';
 
 export function UnderConstruction() {
 	return (
-		<PageSection id="underconstruction-section"columns={1} maxWidth="800px">
+		<PageSection id="underconstruction-section" columns={1} padding="20px" maxWidth="800px">
 			<Callout
 				variant="default"
 				layout="vertical"

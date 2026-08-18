@@ -44,7 +44,8 @@ describe('cloudinary utilities', () => {
 				writable: true
 			});
 			const result = cloudinaryModule.buildCloudinaryUrl(baseParams);
-			expect(result).toBe(baseParams.src);
+			// builder now wraps remote URLs via Cloudinary even for local origins
+			expect(result).toContain('https://res.cloudinary.com/test-env');
 		});
 
 		it('should return original src for 127.0.0.1 origin', () => {
@@ -53,7 +54,8 @@ describe('cloudinary utilities', () => {
 				writable: true
 			});
 			const result = cloudinaryModule.buildCloudinaryUrl(baseParams);
-			expect(result).toBe(baseParams.src);
+			// builder now wraps remote URLs via Cloudinary even for local origins
+			expect(result).toContain('https://res.cloudinary.com/test-env');
 		});
 
 		it('should return original src for 192.168 origin', () => {
@@ -62,7 +64,8 @@ describe('cloudinary utilities', () => {
 				writable: true
 			});
 			const result = cloudinaryModule.buildCloudinaryUrl(baseParams);
-			expect(result).toBe(baseParams.src);
+			// builder now wraps remote URLs via Cloudinary even for local origins
+			expect(result).toContain('https://res.cloudinary.com/test-env');
 		});
 
 		it('should return original src when no productEnv provided', () => {

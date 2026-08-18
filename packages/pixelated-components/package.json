@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.21.30",
+	"version": "3.21.31",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -91,12 +91,12 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-amplify": "^3.1110.0",
-		"@aws-sdk/client-dynamodb": "^3.1110.0",
-		"@aws-sdk/client-iam": "^3.1110.0",
+		"@aws-sdk/client-amplify": "^3.1112.0",
+		"@aws-sdk/client-dynamodb": "^3.1112.0",
+		"@aws-sdk/client-iam": "^3.1112.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.2",
-		"@testing-library/user-event": "^14.6.4",
+		"@testing-library/user-event": "^14.6.5",
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
 		"nodemailer": "^9.0.5",
@@ -104,19 +104,19 @@
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",
 		"typescript": "6.0.2",
-		"vitest": "^4.1.10"
+		"vitest": "^4.1.11"
 	},
 	"devDependencies": {
 		"@babel/parser": "^8.0.4",
 		"@babel/preset-env": "^8.0.2",
 		"@babel/preset-react": "^8.0.1",
 		"@eslint/js": "9.39.4",
-		"@storybook/addon-a11y": "^10.5.8",
-		"@storybook/addon-docs": "^10.5.8",
+		"@storybook/addon-a11y": "^10.5.9",
+		"@storybook/addon-docs": "^10.5.9",
 		"@storybook/addon-webpack5-compiler-babel": "^4.0.1",
 		"@storybook/preset-scss": "^1.0.3",
-		"@storybook/react-dom-shim": "^10.5.8",
-		"@storybook/react-webpack5": "^10.5.8",
+		"@storybook/react-dom-shim": "^10.5.9",
+		"@storybook/react-webpack5": "^10.5.9",
 		"@testing-library/dom": "^10.4.1",
 		"@types/md5": "^2.3.6",
 		"@types/node": "^26.2.0",
@@ -127,8 +127,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.67.0",
 		"@typescript-eslint/parser": "^8.67.0",
 		"@vitejs/plugin-react": "^6.0.5",
-		"@vitest/coverage-v8": "^4.1.10",
-		"@vitest/ui": "^4.1.10",
+		"@vitest/coverage-v8": "^4.1.11",
+		"@vitest/ui": "^4.1.11",
 		"ajv": "^8.20.0",
 		"ajv-keywords": "^5.1.0",
 		"babel-loader": "^10.1.1",
@@ -151,7 +151,7 @@
 		"react-test-renderer": "^19.2.8",
 		"sass": "^1.102.0",
 		"sass-loader": "^17.0.0",
-		"storybook": "^10.5.8",
+		"storybook": "^10.5.9",
 		"style-loader": "^4.0.0",
 		"ts-loader": "^9.6.2",
 		"url-loader": "^4.1.1",
@@ -163,13 +163,13 @@
 		"flatted": "^3.4.2"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1110.0",
-		"@aws-sdk/client-route-53": "^3.1110.0",
+		"@aws-sdk/client-cloudwatch": "^3.1112.0",
+		"@aws-sdk/client-route-53": "^3.1112.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
-		"googleapis": "^174.0.1",
+		"googleapis": "^175.0.0",
 		"md5": "^2.3.0",
-		"puppeteer": "^25.7.0",
+		"puppeteer": "^25.8.0",
 		"recharts": "^3.10.1"
 	}
 }

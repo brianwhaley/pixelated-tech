@@ -1,0 +1,89 @@
+{
+	"companyName": "AMAVA Janitorial Services",
+	"companyContact": "Michael Pope",
+	"date": "August 14, 2026",
+	"email": "michaelp@amavajanitorial.com",
+	"phone": "(877) 625-5959",
+	"address": {
+		"streetAddress": "115 North Franklin Turnpike, Suite 258",
+		"addressLocality": "Mahwah",
+		"addressRegion": "NJ",
+		"postalCode": "07430",
+		"addressCountry": "US"
+	},
+	"proposalType": "Web Site Build",
+	"goal": 
+	[
+		"To uplift and redesign a modern, professional, and visually appealing web presence for AMAVA Janitorial Services"
+	],
+	"deliverables": [
+		"Newly redesigned web site for amavajanitorial.com"
+	],
+	"features": [
+		{ 
+			"feature": "Web Site",
+			"description": [
+				"Home Page",
+				"About Us",
+				"Services",
+				"Our Process",
+				"Testimonials",
+				"Service Area",
+				"Gallery (Photos / Videos)",
+				"Frequently Asked Questions",
+				"Blog",
+				"Contact Us"
+			]
+		},{
+			"feature": "Content Management",
+			"description": [
+				"Storage of scalable content and images in Contentful Content Management System",
+				"Hosting, Domain, and Template usage costs for Blog on WordPress platform",
+				"Stock Photography usage and licensing"
+			]
+		},{
+			"feature": "Search Engine Optimization",
+			"description": [
+				"Meta tags - title, description, keywords, and Open Graph tags for social media sharing",
+				"Foundational files - sitemap.xml, sitemap.json, rss.xml, robots.txt, not-found.html, manifest.webmanifest, humans.txt, security.txt, well-known.txt, Loading page, Global Errors page, Style Guide page",
+				"Rich Schemas for AI - Blog Posting, Breadcrumbs, FAQs, LocalBusiness, Podcast (if used), Product, Recipe, Review, Services, Website",
+				"Additional files for AI - llms.txt, ai.txt"
+
+			]
+		},{
+			"feature": "Hosting",
+			"description": [
+				"Hosting via Amazon Web Services (AWS).  Services include AWS Amplify, AWS CloudFront CDN, AWS Route 53 DNS including SSL Certificate, AWS CloudWatch Logging",
+				"Distribution of images in Cloudinary Content Delivery System"
+			]
+		},{
+			"feature": "Social Media Accounts",
+			"description": [
+				"Create new social media accounts:",
+				"Google Business, Facebook, Instagram, Threads, Twitter, LinkedIn, Nextdoor, Yelp, Reddit",
+				"Links of new / existing social media accounts added to the web site"
+
+			]
+		}
+	],
+	"startDate": "8/17/2026",
+	"milestones": [
+		{
+			"milestone": "Information Architecture and design agreement",
+			"date": "8/21/2026"
+		},{
+			"milestone": "Initial Site Build - amavajanitorial.com",
+			"date": "8/28/2026"
+		},{
+			"milestone": "Site Launch and New Social Media accounts created - amavajanitorial.com",
+			"date": "9/4/2026"
+		}
+	],
+	"paymentTotal": {
+		"amount": 2500,
+		"isDiscounted": true,
+		"description": [
+			"Initial base pricing for building the amavajanitorial web site is $3,000"
+		]
+	}
+}

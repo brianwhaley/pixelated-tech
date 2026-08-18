@@ -17,7 +17,8 @@ export default function LayoutClient() {
 			buttonring: true,
 			formglow: true,
 			imgscale: true,
-			scrollfadeSelectors: '.callout , .calloutSmall , .carousel-container, .tile, .scroll-fade-element',
+			scrollfadeSelectors: '.callout , .calloutSmall , .carousel-container , .countup , .scroll-fade-element , .tile , .timeline-container ',
+
 		});
 	}, []);
 

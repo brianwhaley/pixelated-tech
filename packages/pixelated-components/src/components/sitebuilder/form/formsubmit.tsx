@@ -95,8 +95,8 @@ export async function emailJSON(jsonData: any, callback?: () => void) {
 		myJsonData[key] = value ;
 	}
 	// MVP honeypot guard: check both the canonical id/key 'winnie' and the
-	// FormHoneypot default name 'website' to cover both DOM- and JSON-based calls.
-	if (myJsonData['winnie'] || myJsonData['website']) {
+	// FormHoneypot hard coded name 'pooh' to cover both DOM- and JSON-based calls.
+	if (myJsonData['winnie'] || myJsonData['pooh']) {
 		if (callback) callback();
 		return;
 	}

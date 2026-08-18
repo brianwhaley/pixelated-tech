@@ -1,0 +1,34 @@
+
+
+footer section:has(.footer-menu) {
+
+    .footer-menu {
+        background-color: var(--primary-color) !important;
+        padding: 10px;
+
+        .page-section-content{
+            padding: 0px !important;
+            gap: 0px !important;
+        }
+
+        .footer-menu-item {
+        }
+
+        .footer-menu-item a {
+            color: contrast-color(var(--primary-color)) !important;
+            padding: 10px 5px;
+        }
+
+        .footer-menu-item a.selected {
+            background-color: var(--tertiary-color);
+            color: contrast-color(var(--tertiary-color));
+        }
+
+        .footer-menu-item a:hover {
+            background-color: var(--secondary-color);
+            color: contrast-color(var(--secondary-color));
+        }
+
+    }
+
+}
