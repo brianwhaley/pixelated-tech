@@ -1,8 +1,10 @@
 {
   "files": [
-    "20250713-amava-janitorial-build-proposal.json",
-    "20250713-amava-janitorial-maintenance-proposal.json",
+    "20250713-amava-combined-build-proposal.json",
+    "20250713-amava-combined-maintenance-proposal.json",
     "20250726-gea-construction-build-proposal.json",
-    "20250726-gea-construction-maintenance-proposal.json"
+    "20250726-gea-construction-maintenance-proposal.json",
+    "20250814-amava-janitorial-build-proposal.json",
+    "20250814-amava-janitorial-maintenance-proposal.json"
   ]
 }

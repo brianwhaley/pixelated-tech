@@ -31,7 +31,7 @@ export function buildCloudinaryUrl(params: { src: string; productEnv: string | n
 	if (!isAbsoluteUrl && !origin) return src;
 
 	// Don't fetch from cloudinary during local dev
-	if (origin.includes("localhost") || origin.includes("127.0.0.1") || origin.includes("192.168")) return src;
+	// if (origin.includes("localhost") || origin.includes("127.0.0.1") || origin.includes("192.168")) return src;
 
 	let url = src;
 	if (!isAbsoluteUrl) {
@@ -66,7 +66,13 @@ export function buildCloudinaryUrl(params: { src: string; productEnv: string | n
 	const t = parts.length ? parts.join(',') : '';
 	const domainAndCloud = productEnv ? joinWithSlash(cloudinaryDomain, productEnv) : cloudinaryDomain;
 	const encodedUrl = url.includes("?") ? encodeURIComponent(url) : url;
-	return `${domainAndCloud}/image/fetch/${t}/${encodedUrl}`;
+
+	// Decide whether this is a video or an image by extension and use the appropriate Cloudinary fetch endpoint.
+	// Use `/video/fetch` for common video types, `/image/fetch` for images and other content.
+	const videoExtRe = /\.(mp4|webm|mov|m4v)(?:\?.*)?$/i;
+	const isVideo = videoExtRe.test(url);
+	const fetchType = isVideo ? 'video' : 'image';
+	return `${domainAndCloud}/${fetchType}/fetch/${t}/${encodedUrl}`;
 }
 
 

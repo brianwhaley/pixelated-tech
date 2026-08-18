@@ -105,11 +105,45 @@ export default function SupermarketShenanigansPage() {
 			<br />
 
 			<PageGridItem columnStart={1} columnEnd={-1}>
+				<Callout
+					variant='boxed grid'
+					layout='horizontal' 
+					gridColumns={{left:1, right:3}}
+					url='https://www.amazon.com/author/brian.t.whaley' 
+					// img='/images/brianwhaley-headshot.jpg'
+					img='/images/logos/amazon-logo.png'
+					title='Brian T. Whaley on Amazon'
+					content="Visit my author page on Amazon to see other books I have written, read reviews written by readers, find reading list recommendations, and learn more about me."
+					buttonText="View my Author Page"
+				/>
+			</PageGridItem>
+
+
+			<PageGridItem columnStart={1} columnEnd={-1}>
+				<Callout
+					variant='boxed grid'
+					layout='horizontal' 
+					direction='right'
+					gridColumns={{left:3, right:1}}
+					url='https://www.goodreads.com/author/show/14567890.Brian_T_Whaley' 
+					// img='/images/brianwhaley-headshot.jpg'
+					img='/images/logos/goodreads-logo.png'
+					title='Brian T. Whaley on Goodreads'
+					content="Visit my author page on Goodreads to see other books I have written, read reviews written by readers, find reading list recommendations, and learn more about me."
+					buttonText="View my Author Page"
+				/>
+			</PageGridItem>
+
+			<br />
+
+			<PageGridItem columnStart={1} columnEnd={-1}>
 				<PageSectionHeader title="Supermarket Shenanigans - News and Events" />
 
 				<p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-november-2026-tickets-1996103206424">Nov 7, 2026 11am - 2pm - The Great Big Book Swap</a></p>
 
 				<p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-after-dark-october-2026-tickets-1996101999815">Oct 10, 2026 6:30pm - 9:30pm - The Great Big Book Swap After Dark</a></p>
+
+				<p><a href="https://rblibrary.org/monthly-events">Sept 26, 2026 1pm - 2pm - Rockaway Borough Free Public Library</a></p>
                 
 				<p><a href="https://patch.com/new-jersey/denville-nj/denville-resident-releases-comedic-memoir-frontline-supermarket-life-nodx">Aug 7, 2026 - Denville Resident Releases Comedic Memoir on Frontline Supermarket Life</a></p>
 			</PageGridItem>

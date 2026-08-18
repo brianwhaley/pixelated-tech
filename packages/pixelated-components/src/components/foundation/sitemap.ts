@@ -226,13 +226,6 @@ export async function getOriginFromNextHeaders() {
 
 
 
-export function flattenRoutes(routes: any) {
-	// Convenience wrapper for the project-level getAllRoutes helper
-	return getAllRoutes(routes, 'routes');
-}
-
-
-
 export function jsonToSitemapEntries(entries: SitemapEntry[]){
 	return entries.map(
 		(entry: SitemapEntry) => 
@@ -274,7 +267,7 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 	if (usePages) {
 		const routes = resolvedConfig.siteConfig?.routes;
 		if (routes) {
-			const flat = flattenRoutes(routes);
+			const flat = getAllRoutes(routes, 'routes');
 			sitemapEntries.push(...(await createPageURLs(flat, origin)));
 		}
 	}

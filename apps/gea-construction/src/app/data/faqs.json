@@ -1,270 +1,366 @@
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "name": "GEA Construction FAQs",
-  "description": "Frequently asked questions about GEA Construction's residential remodeling, kitchen and bath renovations, decks, hardscaping, and handyman services in the Lowcountry.",
-  "author": {
-    "@type": "Organization",
-    "name": "GEA Construction",
-    "url": "https://www.geaconstruction.net"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "GEA Construction",
-    "url": "https://www.geaconstruction.net"
-  },
-  "datePublished": "2023-10-01",
-  "dateModified": "2026-01-04",
-  "inLanguage": "en-US",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "GEA Construction",
-    "url": "https://www.geaconstruction.net"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://www.geaconstruction.net/faqs"
-  },
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Why should I choose GEA Construction? What makes you different?",
-      "category": "",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Selecting a residential general contractor requires placing immense trust in the crew working inside your personal living space. GEA Construction grounds every single project in firefighter-backed principles of duty, rigorous safety standards, total honesty, and unwavering operational order. While ordinary builders often leave clients guessing through unreturned phone calls, shifting estimates, and dusty, chaotic job sites, our team operates with disciplined daily structure and absolute clarity. We treat every home with utmost respect by enforcing strict dust control containment barriers, maintaining ultra-clean work zones, and keeping homeowners informed through clear daily progress updates. You never have to wonder who is on your property or what phase of construction is happening next because our direct hands-on project management guarantees active oversight from day one.",
-          "Our specialized expertise spans the full scope of interior and exterior residential carpentry, including high-end kitchen redesigns, custom curbless tile shower conversions, composite porch structures, and coastal exterior updates. Rather than delegating critical construction details to distant third parties, our leadership stays directly involved on-site to ensure structural integrity and flawless aesthetic finishes. We intentionally navigate every regional requirement unique to the Lowcountry, taking care of municipal building permits, structural inspections, and complex neighborhood Architectural Review Board submittals on your behalf. Homeowners choose us when they want complete peace of mind, uncompromising structural craftsmanship, and a reliable partner who honors commitments down to the smallest detail. When you hire our crew, you gain a dedicated partner committed to elevating your property value and providing a smooth, stress-free remodeling journey."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What primary service areas does GEA Construction cover?",
-      "category": "",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "GEA Construction delivers premier residential general contracting services to property owners located throughout Beaufort County and Jasper County in coastal South Carolina. Our active local service footprint includes Bluffton, Hilton Head Island, Okatie, Beaufort, Hardeeville, and Ridgeland. Because coastal environments present distinct structural challenges related to high humidity, salt spray, and extreme storm cycles, living and working directly within these communities gives us deep insight into proper material selection. We regularly perform custom indoor transformations, exterior deck builds, window installations, and structural repairs in both established historic neighborhoods and modern planned developments across the region. Homes located near coastal waterways require specialized building methods, and our crew brings comprehensive knowledge regarding proper flashing, stainless hardware, and moisture resistance to every job.",
-          "Furthermore, our company maintains extensive experience navigating the specific entrance protocols and construction regulations of private gated communities across the Lowcountry. We frequently execute high-end home renovations inside developments such as Palmetto Bluff, Sea Pines, Belfair, Berkeley Hall, Colleton River, Wexford, Long Cove, Sun City, and Oldfield. Working within these private enclaves requires strict adherence to designated work hours, formal contractor registration, heavy equipment parking rules, and precise job site debris management. We handle all administrative logistics seamlessly, ensuring your renovation moves forward smoothly without incurring community fines or unnecessary delays. Whether your residence is a coastal golf villa on Hilton Head or a plantation home in Bluffton, our local team brings reliable, high-quality construction directly to your doorstep."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How long does a kitchen or bathroom remodeling project take?",
-      "category": "",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Determining a precise construction schedule relies heavily on the physical size of your room, required structural changes, electrical and plumbing re-configurations, and material availability. A comprehensive kitchen overhaul involving custom cabinetry, stone countertop fabrication, tile backsplash installation, and fixture upgrades typically spans three to five weeks of active on-site labor once all materials have been delivered. Smaller kitchen updates or straight surface replacements can often be completed even faster when structural walls remain unchanged. Bathrooms follow a similar predictable cadence; a standard guest bath update usually finishes within seven to ten business days, whereas an extensive master suite bath renovation takes roughly two to three weeks. We focus on completing work efficiently without ever cutting corners on drying times, waterproofing cures, or code inspections.",
-          "To eliminate unexpected downtime during active construction, our team establishes a fully staged project plan long before the first demolition hammer hits your wall. We pre-order all custom cabinetry, specialty plumbing fixtures, quartz slabs, and imported tiles in advance, verifying that every single component sits safely in storage before tearing out existing fixtures. This deliberate staging approach prevents scenario where your home sits idle for weeks waiting on a backordered faucet or custom cabinet door. Every client receives a structured line-item schedule detailing specific trade visits, floor protection steps, framing days, tiling phases, and final inspections. Should unexpected hidden issues like historic wood rot or outdated wiring arise behind open walls, we communicate the necessary adjustments immediately alongside clear timeline updates."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is GEA Construction's remodeling process?",
-      "category": "",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Our operational methodology is structured around five deliberate phases engineered to eliminate confusion, manage costs, and deliver superior building quality. It starts with an initial on-site consultation where we evaluate your existing physical space, listen to your functional goals, take precise field measurements, and discuss visual style preferences. Next, we translate those details into a comprehensive, fully itemized scope of work complete with fixed line-item pricing so you understand exact material and labor costs up front. Once the proposal receives your sign-off, phase three focuses on administrative preparation, where we submit all detailed construction drawings, material finish samples, and site plans to local municipal building departments and neighborhood architectural review boards. Securing official approvals before pulling trade permits ensures full compliance and protects your investment.",
-          "The fourth phase brings active construction, beginning with floor protection laydowns, zip-wall dust containment, and controlled structural demolition. Throughout the build phase, our project managers coordinate skilled trade technicians, execute structural modifications, install specialized finishes, and manage mandatory municipal rough-in inspections. We maintain active daily communication with you, offering visual photo updates and answering questions as work progresses toward completion. The fifth and final phase involves a thorough quality assurance walkthrough alongside the homeowner to inspect every tile grout line, cabinet hinge, paint edge, and electrical switch. Any minor touch-ups are recorded on a formal punch list and resolved immediately before final payment, ensuring total satisfaction with your newly transformed space."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you handle local municipal permits and HOA/ARB approvals?",
-      "category": "Permits & Compliance",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Navigating government building departments and neighborhood HOA regulations can easily feel overwhelming for homeowners attempting to manage renovations independently. GEA Construction assumes complete responsibility for every administrative requirement, pulling official building, electrical, plumbing, and mechanical permits with local authorities across Beaufort and Jasper counties. Our thorough familiarity with South Carolina building codes guarantees that every beam modification, window replacement, deck structure, or shower plumbing shift satisfies modern structural standards. We schedule all mandatory municipal inspections at key construction milestones, meeting on-site directly with code enforcement officials to secure formal sign-offs. This rigorous approach ensures your home remains fully compliant, legally protected, and easy to insure or sell in the future.",
-          "In addition to city and county permits, we possess extensive experience handling strict Architectural Review Board (ARB) submittals for master-planned coastal communities. Gated Lowcountry plantations maintain rigid guidelines regarding exterior paint swatches, rooflines, window styles, deck materials, tree preservation zones, and hardscape setbacks. Our office compiles complete application packets containing architectural elevation drawings, manufacturer material cut sheets, physical trim samples, site surveys, and landscape impact plans required by your specific board. We represent your project directly during review meetings, responding to board inquiries and making necessary plan tweaks promptly to secure swift written approvals. By managing these complex bureaucratic workflows entirely in-house, we save you significant time and protect your project from costly community violation fines."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What materials do you use for decks and outdoor living projects?",
-      "category": "Outdoor Construction",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Outdoor structures built in the humid coastal Lowcountry must withstand intense ultraviolet heat, relentless rain showers, destructive termites, and salty air currents. GEA Construction constructs high-performance composite decks using industry-leading capped composite and PVC decking materials from brands like Trex and TimberTech. These advanced synthetic surface boards resist splintering, fading, staining, and rotting, completely removing the grueling annual task of sanding and staining natural wood boards. We install boards utilizing hidden clipping systems that secure decking from the sides, creating a sleek, barefoot-friendly surface completely free of exposed screw heads. To frame these beautiful outdoor spaces, we incorporate custom aluminum or powder-coated cable railing systems that maximize surrounding views of local marshes, lagoons, and golf courses.",
-          "The invisible subframe beneath your deck boards determines whether the structure lasts five years or thirty years, which is why we over-engineer our framing foundations. We construct support framing using heavy-duty pressure-treated lumber specifically rated for ground contact, securing post connections into deep concrete footings. Crucially, we protect every joist top and beam surface with waterproof butyl joist tape, creating a protective membrane that prevents standing water from seeping into wood grain and causing subframe rot. All frame connections, structural hangers, and carriage bolts utilize marine-grade stainless steel or double-dipped galvanized hardware built to resist coastal corrosion. Whether constructing a custom multi-level composite deck or a screened porch with under-deck drainage, our structural techniques yield long-lasting performance."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are your replacement windows and doors rated for coastal storms?",
-      "category": "Windows & Doors",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Upgrading exterior doors and windows along the South Carolina coast demands strict structural attention to wind-borne debris hazards and intense atmospheric pressure changes. GEA Construction exclusively installs high-efficiency, impact-rated windows and entry door systems specifically engineered to meet or exceed rigorous coastal building codes. These advanced window units feature heavy-duty laminated safety glass sandwiching a clear structural interlayer that remains intact even if impacted by flying storm debris. Beyond hurricane defense, impact glass delivers outstanding daily benefits by blocking over 99 percent of harmful ultraviolet rays that fade interior hardwood floors and furniture. Furthermore, the thick multi-pane laminated construction dramatically reduces exterior noise pollution from neighborhood traffic, lawn mowers, and storms, creating a noticeably quieter indoor living sanctuary.",
-          "Proper installation techniques matter just as much as purchasing a high-quality glass unit when protecting your home against severe coastal weather. Our technicians frame, level, flash, and seal every opening using multi-layer self-adhering flashing tapes, high-grade silicones, and non-expanding closed-cell foam insulation. This meticulous installation seals out driving rain and eliminates drafty air leaks, directly reducing your monthly heating and air conditioning power bills. We offer extensive style options ranging from classic double-hung windows with traditional lowcountry divider grilles to expansive multi-panel sliding patio doors that seamlessly open living spaces to covered porches. Upgrading your home's thermal envelope with certified impact-rated glass not only elevates visual curb appeal, but also frequently qualifies homeowners for substantial savings on annual coastal windstorm insurance premiums."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do you waterproof custom tile showers during bath remodels?",
-      "category": "Bathroom Remodeling",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Preventing moisture penetration behind shower walls is the absolute most critical technical aspect of any high-end bathroom renovation project. Traditional shower construction methods rely on outdated liquid painted membranes or simple mortar beds with weep holes that frequently fail, trapping moisture and causing structural wood rot or hidden mold growth over time. GEA Construction completely eliminates water intrusion risks by installing fully integrated Schluter-KERDI waterproofing systems beneath every tile installation. We construct shower walls using rigid, waterproof KERDI-BOARD panels, fastening them securely to wall studs with specialized target washers and structural screws. This forms a continuous, completely sealed, vapor-tight enclosure that permanently prevents steam and water from ever reaching the underlying wooden studs.",
-          "Our technicians seal every panel seam, wall intersection, shower niche corner, and fastener head using KERDI-BAND waterproofing strips embedded in specialized modified thin-set mortar. We install prefabricated, pre-sloped shower trays combined with integrated bonding drain flanges, ensuring wastewater flows directly down the drain without pooling beneath floor tiles. Pipe protrusions and mixing valves receive engineered elastic pipe seals to guarantee no water sneaks behind wall valves during daily shower use. Prior to laying a single decorative tile, we conduct thorough flood tests by capping the drain and filling the basin to verify a 100% watertight seal. When your custom tile, natural stone, or linear drain is set over our sealed substrate, you receive a luxurious, low-maintenance shower engineered to last for decades."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What types of handyman and home repair services do you offer?",
-      "category": "Handyman & Repairs",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Beyond major structural renovations, GEA Construction maintains a dedicated general repair branch to keep your home operating in peak structural condition. The Lowcountry climate causes accelerated wear on exterior building components, making routine maintenance essential for preserving long-term property values. We specialize in exterior wood rot repair, removing damaged trim, fascia, and window surrounds and replacing them with rot-proof cellular PVC composite lumber. Interior repair services cover drywall patching, crack repair, ceiling texture matching, interior door adjustments, casing replacement, and custom crown molding installations. We also execute smaller scale plumbing and electrical updates, such as replacing outdated bathroom vanities, swapping kitchen sinks, installing ceiling fans, and mounting decorative light fixtures.",
-          "Homeowners preparing to buy or sell property regularly turn to our versatile repair crew to resolve comprehensive real estate inspection punch lists quickly. Inspection reports often highlight minor deficiencies like loose railing posts, improper flashing, sticking doors, missing attic insulation, or exterior sealant gaps that can stall property transactions. We review your inspector's repair summary, provide a clear flat-rate price, and execute every necessary fix according to professional trade standards. Our team works efficiently alongside local real estate agents to ensure all punch list items are fully resolved well before scheduled closing dates. No matter if you need a minor trim repair or a full list of inspector repairs completed, our handyman team delivers prompt, professional, and reliable service."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you offer discounts for new homebuyers or real estate punch lists?",
-      "category": "Offers & Pricing",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Purchasing a new residence is an exciting milestone, but settling into a newly acquired home often highlights needed cosmetic updates and functional repairs. GEA Construction partners closely with local real estate agents, mortgage brokers, and home buyers to provide exclusive promotional savings during the moving process. We proudly offer a dedicated 10% Pre-Move-In Discount for home buyers who contract renovation work or inspection punch list repairs prior to moving their personal belongings inside. Executing wall painting, flooring replacement, bathroom tile updates, and kitchen modifications while the house stands completely empty maximizes work efficiency and saves substantial time. This promotional discount allows buyers to stretch their remodeling budgets further while creating their dream interior layout before unpacking a single moving box.",
-          "Accessing this special introductory rate simply requires providing proof of recent property purchase or a referral from your real estate representative during your initial consultation. Our team conducts a pre-closing property walkthrough to measure spaces and prepare itemized estimates while your transaction sits in escrow. This proactive approach allows us to secure necessary building permits and order construction materials early, enabling work to commence immediately upon your official closing day. We can complete wall painting, cabinet updates, light fixture swaps, and bathroom conversions before your moving truck arrives on site. Our pre-move incentive provides an affordable, convenient, and organized solution for converting a newly purchased house into your ideal home."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How is a custom paver patio built to prevent sagging and standing water?",
-      "category": "Patios & Hardscaping",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "A stunning outdoor paver patio or natural travertine terrace is only as stable as the invisible structural foundation constructed underneath its surface. Installing pavers directly over soft coastal sand or poor topsoil inevitable results in uneven shifting, sunken tire tracks, weeds taking root, and pooling water during rainstorms. GEA Construction begins hardscape projects by excavating native soil down to a firm, sub-grade depth determined by specific site conditions. We lay down thick layers of crushed granite aggregate base rock, saturating and compacting the base materials in heavy layers using mechanical plate compactors. This dense sub-base forms a rigid, load-bearing platform that prevents future soil settling and handles severe vehicle or patio furniture weight without cracking or dipping.",
-          "Over the compacted aggregate base, we spread a smooth, level layer of washed concrete bedding sand engineered for proper water drainage. Pavers or natural stone tiles are laid in carefully planned architectural patterns, utilizing string lines and laser levels to establish subtle slope angles away from your home's foundation. Heavy-duty plastic edge restraints secured with long steel spikes are fastened around the entire perimeter to lock pavers in place and prevent lateral spreading. Once the surface is set, we sweep specialized polymeric sand into every joint line, activating the binder with a light water mist to lock pavers together. This hardened joint sand forms a durable barrier that stops weed growth, prevents ant infestations, and allows rainwater to drain cleanly off your patio."
-        ]
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does a home remodeling project cost?",
-      "category": "",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "image": {
-          "@type": "ImageObject",
-          "contentUrl": "",
-          "width": 200,
-          "height": 200,
-          "name": "",
-          "layout": "left"
-        },
-        "text": [
-          "Project costs vary across residential construction projects depending on square footage, structural layout changes, plumbing and electrical modifications, and specific material selections. A simple cosmetic refresh using builder-grade materials costs significantly less than a full structural renovation featuring high-end custom cabinetry, quartz countertops, and imported tile. Because every house in the Lowcountry presents unique architectural footprints and site conditions, providing generic flat rates without inspecting the property can lead to inaccurate budgeting. We prioritize complete financial transparency, evaluating your exact physical space and design goals during an initial on-site consultation. This thorough review allows us to construct an accurate financial framework tailored specifically to your expectations without hidden surprises down the road.",
-          "Following our initial site evaluation, GEA Construction provides a detailed, fully itemized written proposal detailing exact labor, material, permit, and trade management costs line by line. You receive clear pricing breakdowns for every phase of construction, allowing you to adjust material choices or project scope to fit comfortably within your target budget. We discuss various material tiers with you—such as comparing capped composite decking against natural hardwoods or custom tiled showers against prefabricated units—so you can make informed investment choices. Our transparent pricing model guarantees that the figure listed on your signed agreement remains the fixed cost of your project unless you request formal changes. Contact our office today to schedule your consultation and receive a precise estimate for your upcoming home renovation."
-        ]
-      }
-    }
-  ]
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	"name": "GEA Construction FAQs",
+	"description": "Frequently asked questions about GEA Construction's residential remodeling, kitchen and bath renovations, window and door replacements, and handyman services in the Lowcountry.",
+	"author": {
+		"@type": "Organization",
+		"name": "GEA Construction",
+		"url": "https://www.geaconstruction.net"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "GEA Construction",
+		"url": "https://www.geaconstruction.net"
+	},
+	"datePublished": "2023-10-01",
+	"dateModified": "2026-08-14",
+	"inLanguage": "en-US",
+	"isPartOf": {
+		"@type": "WebSite",
+		"name": "GEA Construction",
+		"url": "https://www.geaconstruction.net"
+	},
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": "https://www.geaconstruction.net/faqs"
+	},
+	"mainEntity": [
+		{
+			"@type": "Question",
+			"name": "Why should I choose GEA Construction? What makes you different?",
+			"category": "1. Getting Started & Trust",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Selecting a residential contractor requires placing immense trust in the crew working inside your personal home. GEA Construction grounds every project in principles of rigorous site safety, total transparency, clean work habits, and unwavering operational order. While ordinary contractors often leave clients guessing with unreturned calls, shifting estimates, and dusty, chaotic job sites, our team operates with disciplined structure and proactive daily communication. We treat every home with utmost respect by setting up strict dust containment barriers, maintaining clean work zones, and keeping you informed through every step of construction.",
+					"Our specialized launch services focus on core interior and home envelope improvements: custom kitchen redesigns, luxury bathroom and shower transformations, energy-efficient window and exterior door replacements, and reliable handyman or home inspection repairs. Backed by years of residential renovation experience in coastal NJ and Lowcountry trade work, the GEA Construction leadership maintains direct hands-on oversight on every job site to ensure structural integrity and flawless finishes. We handle all administrative logistics, including municipal building permits and gated community Architectural Review Board (ARB) submittals. Homeowners choose GEA Construction for complete peace of mind, honest trade practices, and a local partner who stands behind their work 100%."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What primary service areas does GEA Construction cover?",
+			"category": "1. Getting Started & Trust",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"GEA Construction delivers high-quality residential general contracting services to property owners located throughout Beaufort County and Jasper County in coastal South Carolina. Our active local service footprint includes Bluffton, Hilton Head Island, Okatie, Beaufort, Hardeeville, and Ridgeland. Living and serving directly within these local communities gives us deep insight into coastal construction demands, humidity management, and local building codes.",
+					"Furthermore, the GEA Construction team possesses extensive experience navigating the specific entrance protocols and construction rules of private gated communities across the Lowcountry. We frequently execute kitchen remodels, bath overhauls, and replacement window upgrades inside developments such as Palmetto Bluff, Sea Pines, Belfair, Berkeley Hall, Colleton River, Wexford, Long Cove, Sun City, and Oldfield. Working within these private enclaves requires strict adherence to designated work hours, formal contractor registration, and job site debris management. GEA Construction handles all administrative requirements seamlessly, ensuring your project moves forward without community fines or unnecessary delays."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Are you licensed and insured to work in Lowcountry homes?",
+			"category": "1. Getting Started & Trust",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes. GEA Construction is fully licensed and insured to operate as a general contractor throughout South Carolina. We maintain comprehensive General Liability Insurance and Workers' Compensation coverage to ensure total protection for your property, our team, and any specialized trade mechanics on site.",
+					"GEA Construction is happy to provide copies of our state trade license, certificate of insurance, and local municipality registrations prior to starting work. In addition, GEA Construction ensures all necessary trade permits are pulled officially under our license so your home remains fully compliant with state and local building codes."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you offer free on-site consultations and detailed project estimates?",
+			"category": "2. Pricing, Estimates & Contracts",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes. GEA Construction offers complimentary initial on-site consultations for homeowners in Bluffton, Hilton Head, and surrounding Beaufort/Jasper County communities.",
+					"During our visit, GEA Construction evaluates your space, takes precise physical measurements, listens to your goals, and reviews design possibilities for your kitchen, bathroom, door, window, or repair project. Following the consultation, you receive a detailed written estimate with line-item breakdowns for labor, materials, and administrative fees so you have complete cost clarity before making a decision."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How much does a home remodeling project or repair cost?",
+			"category": "2. Pricing, Estimates & Contracts",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Project costs vary depending on square footage, material selections, and whether structural, electrical, or plumbing modifications are required. Simple cosmetic updates or minor handyman repairs cost significantly less than complete structural kitchen overhauls or custom tile bathroom conversions. Because every Lowcountry home presents unique layout and site conditions, GEA Construction avoids generic guesswork.",
+					"GEA Construction provides clear, fully itemized written estimates following an initial on-site consultation. Your proposal breaks down exact labor, materials, permits, and trade management costs line by line. GEA Construction's fixed-price proposal model guarantees that the figure listed on your agreement remains the fixed price of your project unless you explicitly request a formal change in scope."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How are project payments structured, and is my bid a fixed cost?",
+			"category": "2. Pricing, Estimates & Contracts",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"GEA Construction provides fixed-cost proposals following our initial on-site consultation and scope review. The price listed on your signed contract is the exact amount you pay—there are no surprise charges or hidden markups unless you explicitly request a change in project scope.",
+					"Payments are tied directly to clear project milestones rather than arbitrary dates. GEA Construction typically requires a deposit to lock in your start date and pre-order long-lead materials (such as custom cabinets or replacement window units). Subsequent progress payments are distributed across key phases—such as completion of demolition, rough plumbing/electrical inspections, and tile/cabinet installation—with a final payment reserved until your final walkthrough punch list is 100% complete."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can we make changes to the project scope after work has already started?",
+			"category": "2. Pricing, Estimates & Contracts",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes. It is completely normal for homeowners to decide on additional updates—such as adding under-cabinet lighting during a kitchen remodel or extending a tile pattern—once they see their space transformed.",
+					"GEA Construction handles all additions or modifications through formal written Change Orders. Before any additional work proceeds, our team outlines the exact adjustment to the material costs, labor, and timeline. No surprise charges are ever added to your bill without your prior written approval."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you offer a warranty on your construction work and installed materials?",
+			"category": "2. Pricing, Estimates & Contracts",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes. GEA Construction stands behind all of our work with a dedicated Labor & Workmanship Warranty, ensuring that every tile installation, window seal, cabinet fit, and structural repair meets strict trade standards.",
+					"For materials—such as replacement window glass, entry door hardware, plumbing fixtures, or composite trim—GEA Construction passes along all official manufacturer warranties directly to you. Should a warranty issue ever arise, we assist you directly in coordinating with the manufacturer to resolve it quickly."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What is GEA Construction's step-by-step remodeling process?",
+			"category": "3. Planning & Preparation",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"The GEA Construction operational methodology is built on five straightforward phases engineered to eliminate confusion and deliver high-quality trade results. Step 1 is an initial on-site consultation where we evaluate your space, listen to your goals, and take field measurements. Step 2 is a fully itemized, fixed-price proposal breaking down exact labor and material scope so there are zero hidden fees. Step 3 covers administrative preparation, where GEA Construction pulls municipal permits and submits HOA/ARB packets if required.",
+					"Step 4 brings active construction, beginning with floor protection laydowns, zip-wall dust containment, and controlled removal of old materials. Throughout active work, our project managers coordinate trade mechanics, schedule city inspections, and provide clear progress updates. Step 5 is a detailed quality assurance walkthrough alongside you to inspect every tile grout line, cabinet door alignment, trim joint, and paint edge. Any minor touch-ups are recorded on a formal punch list and resolved immediately prior to final payment."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How long does a kitchen, bathroom, or window remodeling project take?",
+			"category": "3. Planning & Preparation",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Project timelines depend on physical room size, structural modifications, trade work (plumbing/electrical), and material availability. A standard guest bathroom update usually finishes within 7 to 10 business days, whereas an extensive master suite bathroom renovation takes roughly 2 to 3 weeks. A comprehensive kitchen remodel involving custom cabinetry, quartz fabrication, tile backsplash installation, and fixture updates typically spans 3 to 5 weeks of active work. Replacing whole-house exterior windows or door packages generally takes 2 to 5 days on-site.",
+					"To eliminate unnecessary downtime during active construction, GEA Construction pre-orders custom cabinetry, specialty tile, quartz slabs, and impact replacement windows in advance, verifying materials are safely stored before demolition begins. This deliberate staging approach prevents scenarios where your home sits idle waiting on backordered materials. Every GEA Construction client receives a structured line-item schedule detailing floor protection steps, framing, trade rough-ins, tiling, and final walkthroughs."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How far in advance should I book my project?",
+			"category": "3. Planning & Preparation",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"For small handyman repairs, real estate inspection punch lists, or wood rot repairs, GEA Construction can often schedule work within 1 to 2 weeks depending on current field schedules.",
+					"For larger window replacement packages, exterior door installations, or full room remodels, GEA Construction recommends initiating the design and consultation phase 4 to 6 weeks before your target start date. Custom-ordered replacement windows, specialized entry doors, and kitchen cabinetry require lead times for manufacturing and delivery. Ordering materials early ensures everything is safely staged in storage before GEA Construction begins on-site work."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you handle local municipal building permits and HOA/ARB approvals?",
+			"category": "3. Planning & Preparation",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes, GEA Construction assumes complete responsibility for all necessary building, electrical, plumbing, and mechanical permits with local municipal authorities across Beaufort and Jasper counties. Our familiarity with South Carolina coastal building codes ensures that every structural header modification, shower conversion, or window replacement satisfies modern safety standards. GEA Construction schedules all required municipal inspections and meet on-site directly with code enforcement officials.",
+					"Additionally, GEA Construction handles Architectural Review Board (ARB) submittals for master-planned coastal communities. Gated Lowcountry plantations maintain rigid guidelines regarding exterior changes, window styles, and work hours. The GEA Construction team compiles complete application packets containing manufacturer cut sheets, color samples, and site plans required by your specific board, saving you time and protecting you from costly community violation fines."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do I need an independent designer or architect, or do you assist with material selections?",
+			"category": "3. Planning & Preparation",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"For most kitchen, bath, window, and interior repair projects, you do not need to hire an expensive independent architect or designer.",
+					"GEA Construction provides in-house design assistance to guide you through material selections—including tile layouts, cabinet door styles, quartz countertops, hardware finishes, and window frame options. If your project involves complex structural modifications or custom architectural drawings, we collaborate directly with trusted local engineers to produce stamped plans for municipal permitting."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Should I purchase my own materials, or does GEA Construction handle material procurement?",
+			"category": "3. Planning & Preparation",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"We recommend having GEA Construction procure all core building materials—such as custom cabinets, replacement windows, shower waterproofing membranes, vanity units, and plumbing fixtures.",
+					"Sourcing through GEA Construction ensures all items meet regional Lowcountry building codes, carry valid manufacturer warranties, and arrive on site complete with all necessary structural mounting hardware. If you prefer to supply decorative elements (like specific cabinet knobs or accent light fixtures), our team simply inspects them prior to installation to confirm compatibility with the scope."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can I live in my home during a kitchen or bathroom renovation?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes, most of our clients remain living comfortably in their homes while work is underway. Remodeling inevitably brings noise and activity, but GEA Construction implements strict daily site protection protocols to minimize disruption to your household routine.",
+					"Before work begins, GEA Construction sets up heavy-duty floor protection through traffic corridors and installs sealed zip-wall dust barriers around the active construction zone. For kitchen remodels, we help you plan a temporary staging area for basic food prep and small appliances. For bathroom renovations, if you only have one full bath, the GEA Construction crew coordinates work in carefully sequenced phases so essential plumbing facilities remain operational for as long as possible."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How do you protect my home's interior and existing flooring during construction?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Protecting your home is GEA Construction's top priority before demolition ever starts. We lay down heavy-duty protective floor coverings along all primary worker foot-traffic paths, covering hardwood, tile, or carpet from the entrance door to the work area.",
+					"For dusty phases like sheetrock sanding, tile tear-outs, or window replacements, GEA Construction seals off doorways using heavy plastic zip-wall barriers and utilizes HEPA air scrubbers. This keeps dust contained strictly within the construction zone and out of your HVAC system and living quarters."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What is your daily site cleanup and protection routine?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"A clean job site is a safe, efficient job site. Every morning, the GEA Construction crew lays down floor protection runner mats and verifies that dust containment zippers are closed before starting work.",
+					"At the end of every single workday, the GEA Construction crew performs a thorough site clean sweep: removing trash and debris, vacuuming active dust with HEPA-filtered vacuums, capping exposed plumbing lines, and securing all trade tools. Exterior access points and entrance doors are locked tight so your home remains secure overnight."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How do you handle trash removal, site cleanup, and dumpsters on my property?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"GEA Construction takes full responsibility for all demolition waste and construction debris removal. Depending on the size of your project, we either utilize compact, rubber-tired dump trailers or haul away debris daily to prevent messy piles from sitting on your lawn or driveway.",
+					"In gated Lowcountry communities with strict HOA driveway and parking rules, GEA Construction coordinates equipment placement in advance to ensure full compliance with neighborhood regulations."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Who will be on site supervising my renovation project on a daily basis?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"You will never be handed off to anonymous subcontractors or distant third-party managers. GEA Construction provides direct, hands-on project management for every single job site.",
+					"The hands-on GEA Construction leadership oversees daily trade execution, performs site safety and dust containment checks, coordinates municipal inspectors, and serves as your single point of contact throughout the entire build."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How do you handle unexpected issues like hidden rot, outdated wiring, or termite damage?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"In coastal South Carolina homes, opening up walls during a window replacement, bath overhaul, or trim repair occasionally reveals historical moisture rot, hidden insect damage, or non-code-compliant wiring. If an unexpected issue is uncovered, GEA Construction stops work in that specific area immediately.",
+					"GEA Construction will take photos of the discovery, explain the situation clearly, and present a straightforward, itemized solution alongside exact costs before any additional work proceeds. No unauthorized repairs are performed without your formal written sign-off, ensuring complete control over your project scope and budget."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What happens if there are delays in material deliveries or custom orders?",
+			"category": "4. Job Site Standards & Living Space",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"To minimize timeline risks, GEA Construction does not begin major demolition until custom orders—such as specialized impact windows, custom cabinetry, or imported tiles—have been manufactured, delivered, and inspected in our staging area.",
+					"If a manufacturer delivery delay ever occurs prior to construction, we notify you immediately and adjust the project start date accordingly so your home is never left in a demolished state while waiting on backordered materials."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What is the biggest expense in a kitchen or bath remodel, and how can I control costs?",
+			"category": "5. Services Deep Dive",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"In a kitchen remodel, custom cabinetry and stone countertops typically represent the largest portion of the budget. In a bathroom renovation, custom tile work, shower waterproofing systems, and plumbing fixture relocations make up the highest costs.",
+					"The single best way to keep costs on budget is to lock in your layout and material selections early. Keeping existing plumbing and electrical supply lines in their current locations avoids costly wall and subfloor alterations. During your initial consultation, GEA Construction helps you evaluate material trade-offs—such as comparing semi-custom cabinetry against full custom boxes or quartz slabs against high-end marble—so you achieve your desired aesthetic without overspending."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can you work around existing plumbing lines, or do they always need to be moved during a bath or kitchen remodel?",
+			"category": "5. Services Deep Dive",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"In many cases, GEA Construction can design around your home's existing plumbing and electrical layout. Keeping sink, toilet, and shower drains in their current positions is one of the most effective ways to maximize your remodeling budget.",
+					"However, if your goal is to expand a shower footprint, convert a tub into a walk-in tile shower, or relocate a kitchen sink island, licensed GEA Construction trade partners make necessary plumbing re-configurations according to modern South Carolina building codes."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "How do you waterproof custom tile showers during bathroom remodels?",
+			"category": "5. Services Deep Dive",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Preventing water intrusion behind tile walls is the most critical technical phase of any bathroom renovation. Traditional mortar beds or liquid paints often fail over time, causing structural wood rot and hidden mold. GEA Construction utilizes fully integrated waterproof membrane systems (such as Schluter-KERDI) beneath every custom shower installation. We install rigid, waterproof backing panels fastened with target washers, forming a continuous vapor-tight enclosure over structural wall studs.",
+					"Every panel seam, niche, corner, and fastener head is sealed with engineered waterproofing bands set in thin-set mortar. GEA Construction pairs this with pre-sloped shower trays and integrated bonding drain flanges to ensure wastewater moves directly down the drain without pooling beneath floor tiles. Before setting a single piece of decorative tile, we perform a thorough flood test by capping the drain to verify a 100% watertight seal."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Are your replacement windows and entry doors rated for coastal storms?",
+			"category": "5. Services Deep Dive",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes. Upgrading exterior doors and replacement windows along the South Carolina coast demands strict adherence to wind-borne debris regulations and atmospheric pressure requirements. GEA Construction installs high-efficiency, impact-rated window and door packages engineered to meet or exceed coastal building codes. These units feature heavy-duty laminated safety glass that stays intact during severe storm events while blocking 99% of harmful UV rays that fade interior flooring and furniture.",
+					"Proper installation techniques are just as important as the glass rating. The GEA Construction team frames, levels, flashes, and seals every opening using multi-layer self-adhering flashing tapes, high-grade silicones, and non-expanding closed-cell foam insulation. This creates a tight thermal envelope that seals out driving rain, eliminates drafty air leaks, reduces outside noise, and helps lower monthly utility costs while protecting your home."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What types of handyman and repair services do you provide?",
+			"category": "5. Services Deep Dive",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"In addition to full room remodels, GEA Construction operates a dedicated handyman repair branch for focused home repairs. The Lowcountry climate causes accelerated wear on exterior building components, making routine trade maintenance essential. GEA Construction specializes in exterior wood rot repair, removing damaged trim, fascia, and window surrounds and replacing them with rot-proof cellular PVC composite materials. Our interior handyman services include drywall patching, interior door adjustments, casing and crown molding installation, vanity replacements, and light fixture upgrades.",
+					"GEA Construction also partners directly with local real estate agents, home buyers, and sellers to resolve real estate inspection punch lists quickly. Inspection reports often highlight minor deficiencies like sticky doors, exterior sealant gaps, rotten trim, or loose hardware that can delay closings. GEA Construction reviews the inspection report, provides a clear flat-rate quote, and completes all required repairs promptly according to professional trade standards."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Can GEA Construction perform small repair jobs, or do you only take on major remodels?",
+			"category": "5. Services Deep Dive",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"We welcome small-scale home repair jobs as enthusiastically as full room renovations. The dedicated GEA Construction handyman and repair branch handles focused trade tasks such as wood rot repair, window casing replacements, door realignments, drywall patches, and vanity swaps.",
+					"Whether you have a single window frame with moisture damage or a 15-item real estate inspection punch list before closing, GEA Construction delivers the same professional trade standards and site care."
+				]
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Do you work with realtors and new homebuyers on pre-move-in renovations?",
+			"category": "6. Realtor & Pre-Move Services",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": [
+					"Yes! GEA Construction partners closely with local realtors, buyers, and sellers across Bluffton and Hilton Head to handle inspection punch lists and pre-move-in renovations. Completing kitchen updates, bathroom remodels, flooring adjustments, or replacement window upgrades before moving furniture into an empty home is the easiest, cleanest, and most efficient way to renovate.",
+					"GEA Construction offers a 10% Pre-Move-In Discount for homebuyers referred by partner realtors who contract renovation work prior to moving into their new home. We perform pre-closing property walkthroughs, lock in scopes, secure permits, and pre-order materials early so our crew can begin work the day you receive the keys—ensuring a smooth, stress-free transition into your new space."
+				]
+			}
+		}
+	]
 }

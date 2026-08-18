@@ -1302,9 +1302,9 @@ export function SchemaVideoObject(props: SchemaVideoObjectType) {
 		contentUrl: props.contentUrl,
 		title: props.title,
 		name: props.name,
-		description: props.description,
+		description: props.description || props.title || props.name,
 		thumbnailUrl: props.thumbnailUrl,
-		uploadDate: props.uploadDate,
+		uploadDate: props.uploadDate || new Date().toISOString(),
 		duration: props.duration,
 		caption: props.caption,
 	});

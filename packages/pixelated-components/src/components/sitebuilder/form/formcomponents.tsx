@@ -1394,33 +1394,34 @@ export function FormFieldset(props: FormFieldsetType) {
 
 
 /*
-  FormHoneypot — MVP
-  - id: "winnie" (canonical)
-  - default name: "website"
-  - inline off-screen styling: { position: 'absolute', top: '-9999px' }
-  - aria-hidden + tabIndex -1 + autocomplete="off"
-  - no label / no validation / no required
+    FormHoneypot — MVP
+    - id: "winnie" (canonical)
+    - name: "pooh" (canonical)
+    - type: "text"
+    - defaultValue: null
+    - autoComplete: "hunnypot" (canonical)
+    - inline off-screen styling: { position: 'absolute', top: '-9999px' }
+    - aria-hidden + tabIndex -1 + autocomplete="off"
+    - no label / no validation / no required
 */
 /**
  * FormHoneypot — Render a hidden honeypot text input used to trap automated spam bots.
  *
- * @param {string} [props.id] - Id for the honeypot field (defaults to 'winnie').
- * @param {string} [props.name] - Name attribute for the honeypot input (defaults to 'website').
+ * @param no props
+ * @returns A hidden input field that is visually hidden and not focusable, intended to catch bots.
+ * 
  */
 FormHoneypot.propTypes = {
-/** Id for the honeypot field (defaults to 'winnie') */
-	id: PropTypes.string.isRequired,
-	/** Name attribute for the honeypot input (defaults to 'website') */
-	name: PropTypes.string,
+	/* no props accepted */
 };
 export type FormHoneypotType = InferProps<typeof FormHoneypot.propTypes>;
-export function FormHoneypot({ id = "winnie", name }: FormHoneypotType) {
+export function FormHoneypot(props: FormHoneypotType) {
 	const hpProps: FormInputType = {
 		type: 'text',
-		id: "winnie",
-		name: name || 'website',
+		id: "winnie" ,
+		name: 'pooh',
 		defaultValue : null,
-		autoComplete: 'off',
+		autoComplete: 'hunnypot',
 		'aria-hidden': 'true',
 		tabIndex: -1,
 		style: { position: 'absolute', top: '-9999px' },

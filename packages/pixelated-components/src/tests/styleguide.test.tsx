@@ -40,7 +40,7 @@ vi.mock('@pixelated-tech/components', () => {
   return {
     PageTitleHeader: (props: any) => React.createElement('h1', { className: 'page-title-header' }, props.title),
     PageSection: (props: any) => React.createElement('section', { id: props.id, className: 'page-section' }, props.children),
-    flattenRoutes: (r: any) => {
+    getAllRoutes: (r: any) => {
       // simple leaf-only flatten used by tests
       if (!r) return [];
       return r.flatMap((item: any) => (item.routes ? item.routes : [item]));

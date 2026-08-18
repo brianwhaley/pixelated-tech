@@ -3,6 +3,7 @@ import React from "react";
 import { PageSection } from "@pixelated-tech/components";
 import { PixelatedFooter } from "@pixelated-tech/components";
 import { GoogleAnalytics, GoogleAnalyticsEvent } from "@pixelated-tech/components";
+import { FooterMenu } from "@pixelated-tech/components/server";
 // import { GoogleAnalytics } from '@next/third-parties/google';
 
 export default async function Footer() {
@@ -21,6 +22,10 @@ export default async function Footer() {
 					}} 
 				/>
 				{ /* <GoogleAnalytics gaId="G-1J1W90VBE1" /> */ }
+				<hr style={{ margin: "0 auto", width: "80%" }} />
+				<br />
+				<FooterMenu />
+				<br />
 				<hr style={{ margin: "0 auto", width: "80%" }} />
 				<br />
 				<div className="centered">
