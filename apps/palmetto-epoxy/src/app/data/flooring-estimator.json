@@ -175,6 +175,15 @@
 				]
 			}
 		},
+		{
+			"component" : "FormInput",
+			"props" : {
+				"type" : "hidden",
+				"id" : "total",
+				"name" : "total",
+				"value" : "0.00"
+			}
+		}, 
 		
 		
 		

@@ -38,6 +38,7 @@ vi.mock('@pixelated-tech/components/server', async () => {
 		createSquareOrderAndCapturePayment: vi.fn(async (sourceId: any, checkoutData: any) => ({ status: 'ok', sourceId, checkoutData })),
 		getSquareEventItems: vi.fn(async () => []),
 		listPixelatedFormSubmissionReportRows: vi.fn(async () => []),
+		FooterMenu: () => React.createElement('div', { 'data-testid': 'footer-menu' }, null),
 	};
 });
 

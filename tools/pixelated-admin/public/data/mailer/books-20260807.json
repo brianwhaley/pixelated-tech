@@ -2414,6 +2414,15 @@
             ],
             "category": "Community",
             "status": "Not Emailed"
+        },{
+            "name": "Morris County Library",
+            "contactFirstName": "",
+            "contactLastName": "",
+            "contactEmail": [
+                "morrisauthorsday@co.morris.nj.us"
+            ],
+            "category": "Library",
+            "status": "Not Emailed"
         }
     ]
 }

@@ -528,8 +528,9 @@ describe('Palmetto Epoxy coverage', () => {
 	});
 
 	it('submits the flooring estimator with a non-epoxy service and unknown condition', async () => {
+		const emailSpy = vi.spyOn(PixelatedComponents, 'emailFormData').mockResolvedValue({ success: true, response: {} });
 		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(({ onSubmitHandler }: any) => (
-			<form data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
+			<form id="flooring-estimator-form" data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
 				<label htmlFor="project-type">Project Type</label>
 				<input id="project-type" name="project-type" defaultValue="driveway_coating" />
 				<label htmlFor="length">Length in feet</label>
@@ -545,15 +546,18 @@ describe('Palmetto Epoxy coverage', () => {
 		));
 
 		render(<FlooringEstimatorPage />);
-		fireEvent.submit(screen.getByTestId('flooring-estimator-form'));
+		const submitButton = screen.getByRole('button', { name: /submit/i });
+		fireEvent.click(submitButton);
 		await waitFor(() => expect(screen.getByText(/Total: \$/i)).not.toBeNull());
 		expect(screen.getByText(/Total: \$1200\.00/i)).not.toBeNull();
+		emailSpy.mockRestore();
 		spy.mockRestore();
 	});
 
 	it('submits the flooring estimator and clamps total to the minimum', async () => {
+		const emailSpy = vi.spyOn(PixelatedComponents, 'emailFormData').mockResolvedValue({ success: true, response: {} });
 		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(({ onSubmitHandler }: any) => (
-			<form data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
+			<form id="flooring-estimator-form" data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
 				<label htmlFor="project-type">Project Type</label>
 				<input id="project-type" name="project-type" defaultValue="epoxy_garage_floors" />
 				<label htmlFor="length">Length in feet</label>
@@ -571,9 +575,11 @@ describe('Palmetto Epoxy coverage', () => {
 		));
 
 		render(<FlooringEstimatorPage />);
-		fireEvent.submit(screen.getByTestId('flooring-estimator-form'));
+		const submitButton = screen.getByRole('button', { name: /submit/i });
+		fireEvent.click(submitButton);
 		await waitFor(() => expect(screen.getByText(/Total: \$/i)).not.toBeNull());
 		expect(screen.getByText(/Total: \$1200\.00/i)).not.toBeNull();
+		emailSpy.mockRestore();
 		spy.mockRestore();
 	});
 

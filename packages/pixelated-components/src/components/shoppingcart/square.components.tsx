@@ -580,7 +580,7 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 
 			{filteredItems.map((item) => {
 				return item.itemType?.toUpperCase() === 'EVENT' ? (
-					<SchemaEvent event={buildSquareEventSchema(item)} />
+					<SchemaEvent key={`square-schema-${item.itemID}`} event={buildSquareEventSchema(item)} />
 				) : (
 					<ProductSchema key={`square-schema-${item.itemID}`} product={buildSquareProductSchema(item, config?.siteInfo, policyUrl)} />
 				);
@@ -588,12 +588,12 @@ export function SquareStoreItems(props: SquareStoreItemsType) {
 
 			{filteredItems.map((item) => (
 				itemSize === 'large' ? (
-					<PageGridItem columnStart={1} columnEnd={-1} key={item.itemID}>
-						<SquareStoreItemLarge key={item.itemID} item={item} itemURLPrefix={props.itemURLPrefix} />
+					<PageGridItem key={item.itemID} columnStart={1} columnEnd={-1}>
+						<SquareStoreItemLarge item={item} itemURLPrefix={props.itemURLPrefix} />
 					</PageGridItem>
 				) : (
 					<PageGridItem key={item.itemID}>
-						<SquareStoreItemSmall key={item.itemID} item={item} itemURLPrefix={props.itemURLPrefix} />
+						<SquareStoreItemSmall item={item} itemURLPrefix={props.itemURLPrefix} />
 					</PageGridItem>
 				)
 			))}

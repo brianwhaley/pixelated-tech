@@ -1,5 +1,15 @@
 # Palmetto Epoxy -- Updates
 
+## 2026-08-19 UPDATE
+* [ x ] Redid the Projects section
+* [  ] Palmetto Epoxy Email Addresses for Dennis and Martha
+* [  ] Flooring Estimator
+* [  ] Email Campaign - Builders
+* [  ] Email Campaign - Realtors
+* [  ] Citation Management
+* [  ] Press Release
+
+
 ## 2026-05-20 UPDATE
 * [ X ] Referrals:
 Adam David - review on April 22, 6:43pm
@@ -12,9 +22,9 @@ one referral via contact us form
 * [  ] Google Business Profile
 * [ X ] Advertising Plan
 * [ x ] Business Cards with QR Code
-* [  ] Advertising campaign
+* [ X ] Advertising campaign
 * [ x ] how to convert a 3 hour video to a time lapse video - iMovie or Garage Band
-* [  ] improve seo for "epoxy floors" , add in zip codes
+* [ X ] improve seo for "epoxy floors" , add in zip codes
 
 
 ## 2026-04-15 Update

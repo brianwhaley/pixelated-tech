@@ -24,7 +24,7 @@ export default async function EventsPage({
 			<PageSection columns={1} maxWidth="100%" id="events-page-header">
 				<PageTitleHeader title="The Three Muses of Bluffton Events" />
 				<p>
-					Explore our upcoming events, classes, workshops, and summer camps. Filter by event details to find the perfect activity for you.
+					Explore our upcoming events, classes, workshops, and summer camps. Filter by event details to find the perfect activity for you. You can also view our upcoming and past events on our <a href="/events/calendar">Events Calendar</a> page.
 				</p>
 			</PageSection>
 
