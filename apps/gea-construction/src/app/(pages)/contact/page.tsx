@@ -15,14 +15,7 @@ export default function ContactPage() {
 		<>
 			<PageTitleHeader title={`Contact ${siteName}`} />
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-us-section">
-				<PageSectionHeader title="Contact Us" />
-				<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
-					<FormEngine formData={formData as any} />
-				</div>
-			</PageSection>
-
-			{siteInfo && (
+			{ siteInfo && (
 				<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-info-section">
 					<PageSectionHeader title="Contact Information" />
 					<div style={{ margin: '0 auto' }}>
@@ -39,6 +32,13 @@ export default function ContactPage() {
 					</div>
 				</PageSection>
 			)}
+
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-us-section">
+				<PageSectionHeader title="Contact Us" />
+				<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
+					<FormEngine formData={formData as any} />
+				</div>
+			</PageSection>
 
 		</>
 	);

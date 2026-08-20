@@ -43,10 +43,10 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 		try {
 			const cfg = getFullPixelatedConfig();
 			const apiProps = {
-				base_url: cfg.contentful?.base_url ?? "",
-				space_id: cfg.contentful?.space_id ?? "",
-				environment: cfg.contentful?.environment ?? "",
-				delivery_access_token: cfg.contentful?.delivery_access_token ?? "",
+				base_url: cfg.integrations?.contentful?.base_url ?? "",
+				space_id: cfg.integrations?.contentful?.space_id ?? "",
+				environment: cfg.integrations?.contentful?.environment ?? "",
+				delivery_access_token: cfg.integrations?.contentful?.delivery_access_token ?? "",
 			};
 			const cards = await getContentfulEntriesByType({ apiProps, contentType: 'carouselCard' });
 			const card = await getContentfulEntryByField({ cards, searchField: 'title', searchVal: raw });

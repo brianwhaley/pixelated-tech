@@ -142,6 +142,7 @@ describe('Palmetto Epoxy app coverage', () => {
 	});
 
 	it('renders root layout fallback metadata when Contentful lookup throws', async () => {
+		const components = await import('@pixelated-tech/components');
 		vi.spyOn(components, 'getContentfulEntriesByType').mockRejectedValueOnce(new Error('Contentful failure'));
 		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/projects/test-project', 'x-origin': 'https://example.com' }));
 		const root = await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
