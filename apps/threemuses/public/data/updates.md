@@ -9,10 +9,10 @@
 * [  ] KATIE - Photos of classes to Brian
 * [  ] KATIE - Send Brian more events for event calendar and advertising
 * [  ] KATIE - Review Bookkeeping assessment
-* [  ] BRIAN - Add an event calendar page to the site
-* [  ] BRIAN - Draft a Legal page - terms, return policy, etc. 
+* [ X ] BRIAN - Add an event calendar page to the site
+* [ X ] BRIAN - Draft a Legal page - terms, return policy, etc. 
 * [  ] BRIAN - Meta Advertising Campaign for workshops, classes, offer a package deal - Fall Theme
-* [  ] BRIAN - Buidl 1-pager used for meta ad and for handouts
+* [  ] BRIAN - Build 1-pager used for meta ad and for handouts
 * [  ] BRIAN - Build Mail List for Studio Open Hose - Vendors
 * [  ] BRIAN - Build Mail List for Studio Open Hose - Possible Attendees
 

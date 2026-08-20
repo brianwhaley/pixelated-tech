@@ -157,6 +157,34 @@ body.formglow {
 
 
 
+
+/* ========================================
+	EVENTS Styles
+ ======================================== */
+
+#events-section .square-store-item-callout {
+	max-width: 1024px;
+    margin: 0 auto;
+}
+
+
+
+
+
+/* ========================================
+	EVENT CALENDAR Styles
+ ======================================== */
+.calendar-container .event-badge {
+    background-color: var(--primary-color);
+    color: contrast-color(var(--primary-color));
+}
+
+
+
+/* ========================================
+	EVENT REPORT Styles
+ ======================================== */
+
 table#three-muses-order-report.pix-table {
     th, th span {
         font-size: 16px;
@@ -172,6 +200,10 @@ table#three-muses-order-report.pix-table {
 
 
 
+
+/* ========================================
+	STUDIO SPECIALS Styles
+ ======================================== */
 
 .coupon-section .page-section-content {
 	border: 5px dashed var(--primary-color);
@@ -196,7 +228,3 @@ table#three-muses-order-report.pix-table {
   padding: 0;
 }
 
-#events-section .square-store-item-callout {
-	max-width: 1024px;
-    margin: 0 auto;
-}

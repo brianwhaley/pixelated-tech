@@ -1,6 +1,8 @@
 import { headers } from "next/headers";
 import React from "react";
 import { PageSection, GoogleAnalytics, PixelatedFooter } from "@pixelated-tech/components";
+import { BusinessFooter } from "@pixelated-tech/components";
+import { FooterMenu } from "@pixelated-tech/components/server";
 import { getFullPixelatedConfig } from "@pixelated-tech/components/server";
 export default async function Footer() {
 	const reqHeaders = await headers();
@@ -12,6 +14,11 @@ export default async function Footer() {
 		<PageSection id="footer" columns={1} maxWidth="1024px" padding="20px 0 0 0">
 			<div suppressHydrationWarning={true} >
 				<GoogleAnalytics />
+				<BusinessFooter />
+				<hr style={{ margin: "0 auto", width: "80%" }} />
+				<br />
+				<FooterMenu />
+				<br />
 				<hr style={{ margin: "0 auto", width: "80%" }} />
 				<br />
 				<div className="centered">

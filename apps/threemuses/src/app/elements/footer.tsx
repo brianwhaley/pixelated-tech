@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import React from "react";
 import { PageSection, GoogleAnalytics, PixelatedFooter, BusinessFooter } from "@pixelated-tech/components";
 import SocialTags from "./socialtags";
+import {FooterMenu} from "@pixelated-tech/components/server";
 
 export default async function Footer() {
 	const reqHeaders = await headers();
@@ -16,6 +17,10 @@ export default async function Footer() {
 					<SocialTags />
 					<hr style={{ margin: "0 auto", width: "80%" }} />
 					<BusinessFooter />
+					<hr style={{ margin: "0 auto", width: "80%" }} />
+					<br />
+					<FooterMenu />
+					<br />
 					<hr style={{ margin: "0 auto", width: "80%" }} />
 					<br />
 					<div className="centered">

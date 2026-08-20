@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import PropTypes, { InferProps } from "prop-types";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { FormEngine } from "@pixelated-tech/components";
+import { emailFormData, FormEngine } from "@pixelated-tech/components";
+import { Loading, ToggleLoading } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import "./flooring-estimator.css";
 import formData from "@/app/data/flooring-estimator.json";
@@ -38,8 +39,9 @@ const pricing = {
 export default function ContactPage() {
 	const [estimate, setEstimate] = useState<FlooringEstimateType["estimate"] | null>(null);
 
-	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		ToggleLoading({ show: true });
 		const form = event.currentTarget;
 		const data = new FormData(form);
 
@@ -72,8 +74,12 @@ export default function ContactPage() {
 		}, 0);
 
 		const total = Math.max(pricing.minimum, subtotal + addonCost);
+		const totalValue = total.toFixed(2);
 
-		setEstimate({
+		const totalField = form.querySelector<HTMLInputElement>('input[name="total"]');
+		if (totalField) { totalField.value = totalValue; }
+
+		const estimateResult = {
 			projectType,
 			length,
 			width,
@@ -87,7 +93,16 @@ export default function ContactPage() {
 			subtotal,
 			addonCost,
 			total,
-		});
+		};
+
+		const nativeEvent = event.nativeEvent as unknown as Event;
+		const emailResult = await emailFormData(nativeEvent);
+		if (!emailResult.success) {
+			console.error('Flooring estimator email submission failed', emailResult.error);
+		}
+
+		setEstimate(estimateResult);
+		ToggleLoading({ show: false });
 	};
 
 	return (
@@ -96,22 +111,20 @@ export default function ContactPage() {
 			<PageSection columns={1} className="" maxWidth="1024px" id="floor-estimator-section">
 				<PageGridItem>
 					<div>
-						Please fill out the form below. 
-						We would LOVE to answer any questions or to setup 
-						an appointment to talk about our favorite subject… 
-						Epoxy Flooring! 
-						<br /><br />
+						<p>Please fill out the form below to receive a rough estimate for a Palmetto Epoxy flooring treatment. </p>
+						<p><strong>Please Note:</strong> This calculation provides a <strong>rough, preliminary estimate</strong> based on the information you provide. Every concrete slab is unique, so a Palmetto Epoxy representative will contact you shortly to schedule an on-site visit. Final pricing is confirmed in person after evaluating surface conditions to guarantee a lifetime bond.</p>
 					</div>
 					<FormEngine formData={formData} 
 						onSubmitHandler={handleFormSubmit} />
 					{estimate ? <FlooringEstimate estimate={estimate} /> : null}
 					<br />
-					<p>Please Note: This calculation provides a preliminary estimate based on your inputs. Every concrete slab is unique, so a Palmetto Epoxy representative will contact you shortly to schedule an on-site visit. Final pricing is confirmed in person after evaluating surface conditions to guarantee a lifetime bond.</p>
+					<p><strong>Please Note:</strong> This calculation provides a rough, preliminary estimate based on your inputs. Every concrete slab is unique, so a Palmetto Epoxy representative will contact you shortly to schedule an on-site visit. Final pricing is confirmed in person after evaluating surface conditions to guarantee a lifetime bond.</p>
 				</PageGridItem>
 				{ /* <PageGridItem>
 					<iframe src={`https://calendar.google.com/calendar/embed?src=${calendarID}&mode=WEEK`} style={{ border: 0 }} width="100%" height="600px" frameBorder="0" scrolling="no"></iframe>
 				</PageGridItem> */ }
 			</PageSection>
+			<Loading />
 		</>
 	);
 }
