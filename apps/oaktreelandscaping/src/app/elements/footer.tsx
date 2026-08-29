@@ -4,7 +4,7 @@ import { PageSection } from "@pixelated-tech/components";
 import { GoogleAnalytics } from "@pixelated-tech/components";
 import { PixelatedFooter } from "@pixelated-tech/components";
 // import { GoogleAnalytics } from '@next/third-parties/google';
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 
 
 export default async function Footer() {

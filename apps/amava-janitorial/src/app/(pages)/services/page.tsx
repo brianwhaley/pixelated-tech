@@ -3,6 +3,7 @@
 import React from 'react';
 import { PageTitleHeader, PageSection, Services, usePixelatedConfig } from '@pixelated-tech/components';
 import { PageHero } from '@/app/elements/page-hero';
+import { ServiceAreasCallout, ContactUsCallout } from '@/app/elements/service-areas-callouts';
 
 export default function ServicesPage() {
 	const config = usePixelatedConfig();
@@ -14,8 +15,8 @@ export default function ServicesPage() {
         
 			<PageHero />
                     
-			<PageTitleHeader title={`${siteName} Services`} />
-			<PageSection columns={1} maxWidth="1024px" id="services-intro">
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="services-intro">
+			    <PageTitleHeader title={`${siteName} Services`} />
 				<p>
 					{siteName} provides professional janitorial and facility maintenance services for commercial buildings, offices, and small businesses.
 				</p>
@@ -26,14 +27,10 @@ export default function ServicesPage() {
 				boxShape="square"
 			/>
 
-			<PageSection columns={1} maxWidth="1024px" id="service-areas-link-section">
-				<p>
-					Check out our <a href="/service-areas">Service Areas</a> page to see the regions we serve and the local expertise we offer.
-				</p>
-				<p>
-					<a href="/contact">Contact us</a> to learn more about our services, service areas, and how we can support your needs in your area. We are committed to providing excellent service and local expertise wherever you are.
-				</p>
-			</PageSection>
+			<section id="services-callouts" style={{ backgroundColor: "var(--accent1-color)" }}>
+				<ServiceAreasCallout />
+				<ContactUsCallout />
+			</section>
 
 		</>
 	);

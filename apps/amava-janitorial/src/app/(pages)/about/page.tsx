@@ -21,7 +21,7 @@ export default function AboutPage() {
 				</PageGridItem>
 			</PageSection>
 
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="about-our-story-section">
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="about-our-story-section" background="var(--accent2-color)">
 				<PageSectionHeader title="Our Story: Built on Quality, Expanded by Trust" />
 				<p>AMAVA Janitorial was founded on a simple yet powerful premise: commercial property owners deserve a custodial partner who treats their facility with the same care, accountability, and detail as the owners themselves. What began over 30 years ago as a dedicated regional cleaning operation has steadily grown into a multi-state commercial maintenance enterprise.</p>
 				<p>Our growth hasn't come from aggressive short-cuts, but from long-term client retention and word-of-mouth recommendations. As client portfolios expanded, so did AMAVA. We established our dual regional hubs in Mahwah, New Jersey, and Florida to provide rapid, hands-on oversight across the Eastern Seaboard. Through economic shifts, evolving health standards, and rapid commercial development, AMAVA has remained a constant, reliable force in the industry—continuously investing in advanced machinery, sustainable chemistries, and rigorous workforce training to stay ahead of modern facility demands. Today, our innovative 7-prong cleaning methodology and multi-pillar service model allow us to manage complex, multi-site corporate accounts while delivering the personal touch of a local partner.</p>
@@ -56,6 +56,10 @@ export default function AboutPage() {
 						<strong>Dedicated Account Supervision:</strong> You are never left dealing with automated call centers. Every client is paired with a dedicated account manager and field supervisor who conduct routine site audits and remain reachable 24/7.
 					</li>
 				</ul>
+			</PageSection>
+
+
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="about-founder-section" background="var(--accent1-color)">
 				<Callout
 					variant='boxed grid'
 					layout='horizontal'

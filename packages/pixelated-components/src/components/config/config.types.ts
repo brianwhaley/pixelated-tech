@@ -11,7 +11,7 @@ export interface OpeningHoursEntry {
 }
 
 export interface Route {
-	name?: string | null;
+	name: string;
 	path: string;
 	title?: string | null;
 	description?: string | null;
@@ -82,6 +82,17 @@ export interface SiteInfo {
 	openingHoursAdditionalInfo?: string | null;
 	priceRange?: string | null;
 	sameAs?: string[] | null;
+	socialProfiles?: Array<{
+		name: string;
+		url: string;
+		img: string;
+		handle?: string;
+	}> | null;
+	partners?: Array<{
+		name: string;
+		url: string;
+		img: string;
+	}> | null;
 	brand?: {
 		"@type"?: string;
 		name?: string | null;
@@ -132,6 +143,7 @@ export interface SiteInfo {
 	}> | null;
 	serviceAreas?: Array<{
 		name: string;
+		type?: 'City' | 'State' | 'AdministrativeArea' | null;
 		description: string[];
 		short_description?: string | null;
 		keywords?: string[] | null;

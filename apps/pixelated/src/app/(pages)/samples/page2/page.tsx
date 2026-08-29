@@ -14,7 +14,7 @@ import { MicroInteractions } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "./page2.css";
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 
 const menuItems1 = [
 	{ "name": "About Us", "path": "/samples", } ,

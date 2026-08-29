@@ -126,14 +126,11 @@
 			}
 		},
 		{
-			"component" : "FormInput",
+			"component" : "FormUSState",
 			"props" : {
-				"type" : "text",
 				"id" : "state",
 				"name" : "state",
-				"autoComplete" : "address-level1",
 				"defaultValue" : null,
-				"size" : "30",
 				"display" : "horizontal",
 				"required" : "required",
 				"label" : "State (required) : ",

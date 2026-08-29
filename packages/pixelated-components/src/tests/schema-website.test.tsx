@@ -44,6 +44,41 @@ describe('WebsiteSchema', () => {
 		expect(schemaData.description).toBe('A great website');
 	});
 
+	it('should merge socialProfiles urls into sameAs for website and publisher', () => {
+		const siteMeta = { ...siteInfo, partners: undefined } as SiteInfo;
+
+		const { container } = renderSchema(siteMeta);
+		const scriptTag = container.querySelector('script[type="application/ld+json"]');
+		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
+
+		expect(schemaData.sameAs).toEqual([
+			'https://www.linkedin.com/in/brianwhaley',
+			'https://github.com/brianwhaley',
+			'https://twitter.com/brianwhaley',
+			'https://linkedin.com/company/pixelated',
+			'https://facebook.com/pixelated',
+		]);
+		expect(schemaData.publisher.sameAs).toEqual(schemaData.sameAs);
+	});
+
+	it('should merge partners urls into sameAs for website and publisher', () => {
+		const siteMeta = siteInfo;
+
+		const { container } = renderSchema(siteMeta);
+		const scriptTag = container.querySelector('script[type="application/ld+json"]');
+		const schemaData = JSON.parse(scriptTag?.textContent || '{}');
+
+		expect(schemaData.sameAs).toEqual([
+			'https://www.linkedin.com/in/brianwhaley',
+			'https://github.com/brianwhaley',
+			'https://twitter.com/brianwhaley',
+			'https://linkedin.com/company/pixelated',
+			'https://facebook.com/pixelated',
+			'https://pca.st/o8v0icqv',
+		]);
+		expect(schemaData.publisher.sameAs).toEqual(schemaData.sameAs);
+	});
+
 	it('should exclude description when not provided', () => {
 		const siteMeta = { ...siteInfo, description: '' };
 		const { container } = renderSchema(siteMeta);

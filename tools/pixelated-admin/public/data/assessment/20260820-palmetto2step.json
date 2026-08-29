@@ -1,0 +1,255 @@
+{
+	"companyName": "Palmetto 2 Step",
+	"companyContact": "Yon Lucas",
+	"date": "August 20, 2026",
+	"email": "yon.lucas@palmetto2step.com",
+	"phone": "(854) 683-5154",
+	"address": {
+		"streetAddress": "158 Tanners Run",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "USA"
+	},
+	"primaryAudience": [
+		"Homeowners in Bluffton, Hilton Head Island, and surrounding Lowcountry communities seeking interior painting, exterior painting, deck and fence staining, home repair and maintenance, and concrete epoxy coatings."
+	],
+	"secondaryAudience": [
+		""
+	],
+	"marketOverview": [
+		"The Bluffton and Lowcountry home renovation market is highly competitive and rapidly expanding, driven by explosive population growth, active master-planned communities (e.g., Sun City, Palmetto Bluff), and high property turnover.",
+		"Homeowners in the region demand high-trust tradespeople and quality craftsmanship for major investments like home renovations, particularly for interior and exterior painting, deck and fence staining, home repair and maintenance, and concrete epoxy coatings.",
+		"Palmetto 2 Step is well-positioned to capitalize on this market by leveraging the founder's expertise as a home inspector, offering personalized service, and emphasizing quality and attention to detail in all home improvement projects."
+	],
+	"currentSocialMedia": [
+		"Facebook - https://www.facebook.com/profile.php?id=61592159717050"
+	],
+	"currentAdvertisingPartners": [
+		""
+	],
+	"currentEarnedMedia": [
+		""
+	],
+	"references": [
+		{ 
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{ 
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		},
+		{ 
+			"name": "JZ Home Improvement",
+			"url": "https://www.jzhomeimprovement.com",
+			"contactName": "",
+			"contactEmail": "",
+			"contactPhone": "",
+			"summary": " Local Union NJ home improvement contractor specializing in kitchen and bathroom remodeling, basement finishing, decks and outdoor spaces, and custom carpentry."
+		}
+	],
+	"existingSite": [
+		{
+			"url": "https://www.palmetto2step.com",
+			"strengths": [
+				"I like the current design.  The header and menu is anchored, the background is lowcountry, the color palette is solid.",
+				"The current information architecture is solid - Home, Services, About, Gallery, Blog, Contact, Privacy Policy, Terms of Service.",
+				"The Home Page is good - Layout and design is solid.",
+				"The About Us page - I love the personal touch, this is very important in the Lowcountry",
+				"The Blog page is great for freshness of content and seo, the 2 existing posts are great topics and covered well.",
+				"The Contact Us page has all the needed contact details and a simple form to fill out",
+				"Most of the images on the site are webp format, which is the best format for performance reasons for web images.",
+				"The images and CSS on the site are cached",
+				"Pages have lightweight and subdued microinteractions on the site, which is good. The engage the customer without being overwhelming.",
+				"LocalBusiness and Organization schema are emitted on home page, which is great for LLMS and AI search indexing.  I also see that your facebook account is listed in the sameAs section. This sends signals to SEO / AEO bots that you have content in all those places, and you are connected.",
+				"There is a sitemap.xml file with the basic site pages listed",
+				"robots.txt is present and wide open, allowing search engines to crawl anything on the site",
+				"llms.txt is also present, but very brief"
+
+			],
+			"areasForImprovement": [
+				"======= DESIGN =======",
+				"The only thing I would consider changing about the design of the site is a minor change to the usage of the logo.  It looks to be AI Generated, which is not a problem in itself.  But AI does not consider usage when coming up with a design. There are a lot of small details in the logo, so I would have a version for small spaces (like the header/menu) that drops out the small details so it remains bold and readable.  There are also times where you may want a more horizontal version of the logo such as business card, letterhead, maybe even the header / menu.  So I would come up with a horizontal version as well.  Then you would have 3 versions of your logo you can use at the right time - a full version, a small version, and a horizontal version.",
+				"======== CONTENT ========",
+				"Most of the content on the home page should be a teaser to more content onto other, deeper pages.",
+				"It seems the favicon is present, but not working",
+				"About Us page - the One Trusted Team photo has something weird going on inside it. It looks like text is leaking out of it and misshapen a bit.",
+				"The Gallery is empty, this needs at least stock photos for now, or hidden until complete.",
+				"There is no FAQs page, and this is critical for LLMs / AEO",
+				"There is a services page, but not individual pages for each individual service.  This is a missed opportunity for SEO / AEO",
+				"There are also no service areas listing page and detail pages for each individual service area.  Another missed opportunity for SEO / AEO",
+				"There is no legal / terms of service / privacy policy page - they go to 404.  This should be fixed quickly, as this is probably already indexed this way by Google.",
+				"=========== TECHNOLOGY ===========",
+				"You look to have implemented a basic analytics service (possibly from GoDaddy) on the page.  I recommend wiring up Google Analytics instead.  It is free, and the gold standard for the industry.",
+				"You should also create a Google Search Console profile to see how your site is indexed, particularly as you add / remove / improve your pages",
+				"Google Page Speed is good, but the metric for Largest Contentful Paint indicates the pages could use some help to improve.",
+				"There seem to be some React errors in the console.  You should track those down and see if that is due to anything within your control.",
+				"The Blog does not emit a Blog or Article schema for AEO.  Can GoDaddy do that?",
+				"It seems that caching is not enabled for your HTML documents or for fonts.  You should investigate how to do that on GoDaddy.",
+				"The logo is a large image, the biggest on the page.  It is also a PNG format but doesn't seem to be transparent.  I recommend a WebP format instead, like all the other images.  Then remove the white background around the edges.  This will improve performance and may be the cause of the lower LCP score.",
+				"The site does not emit any of these files.  While they are less critical, it impacts the user experience and findability.",
+				"The following files are missing: llms-full.txt, rss.xml, manifest, sitemap.json, humans.txt, security.txt, ai.txt, browserconfig.xml"
+			]
+		}
+	],
+	"similarCompanyNames": [
+		{
+			"name": "",
+			"urls": [
+				""
+			],
+			"summary": ""
+		}
+	],
+	"competitors": [
+		{
+			"name": "",
+			"urls": [
+				""
+			],
+			"summary": ""
+		}
+	],
+	"currentBusinessPlan": [
+		"Yon Lucas is a skilled and experienced home inspector with a strong reputation in the Bluffton and Lowcountry area. He has been operating Homegrown Home Inspections for several years, providing thorough and reliable home inspection services to clients. Yon has built a loyal customer base and has established himself as a trusted professional in the industry.",
+
+		"Yon has identified a growing demand for home improvement and renovation services in the Bluffton area, particularly in the realm of interior and exterior painting, deck and fence staining, home repair and maintenance, and concrete epoxy coatings. Recognizing this opportunity, he has decided to expand his business by launching Palmetto 2 Step, a new venture that will focus on providing high-quality home improvement services to homeowners in the region.",
+
+		"Palmetto 2 Step will leverage Yon's expertise in home inspections to offer a comprehensive range of services that address the needs of homeowners looking to enhance the aesthetics and functionality of their properties. By combining his knowledge of home construction and maintenance with a commitment to delivering exceptional craftsmanship, Yon aims to establish Palmetto 2 Step as a trusted and reliable provider of home improvement services in the Bluffton and Lowcountry area."
+	],
+	"nextSteps": [
+		"Evaluate and enhance the palmetto2step web site with a solid information architecture, clear service offerings, and a visually appealing design that reflects the brand's professionalism and expertise.",
+		"Address the suggestions listed as opportunitites for improvement in the existing site assessment, including logo variations, content expansion, and technical optimizations to improve search engine visibility and user experience.",
+		"Position the new website as the hub, utilizing social media channels (Google Business, Facebook, Instagram, Threads, Nextdoor) as traffic spokes directing leads back to high-converting quote landing pages.",
+		"Leverage the blog to provide valuable content, establish authority, and improve search engine visibility, while also integrating lead capture forms and calls-to-action to convert visitors into potential clients. Develop a content calendar for regular blog posts, focusing on timely and regional topics relevant to homeowners in Bluffton and the Lowcountry area.",
+		"Implement a comprehensive citation and backlink strategy to improve local search rankings, including partnerships with local businesses, sponsorships, and guest blogging opportunities.",
+		"Leverage the press release channel to announce the launch of Palmetto 2 Step, highlighting Yon's expertise, the range of services offered, and the company's commitment to quality and customer satisfaction.",
+		"Consider and develop a digital advertising campaign targeting homeowners in Bluffton and surrounding areas, utilizing the primary platform where you plan to be strongly present, to reach potential clients with tailored messaging and offers. Start small, $100 to $200 per month, and scale up as you see results.",
+		"Develop a targeted Email Marketing and Content/Blog campaign targeting local real estate agents, offering downloadable guides and exclusive pre-move-in promotional incentives.",
+		"Consider traditional media sources as well, such as brochures, flyers, local magazines like Sunsations for Sun City, etc. Target large volume (Sun City) or high margin (Palmetto Bluff, Belfair) areas / neighborhoods."
+	],
+	"visualDesign": {
+		"primary": "#1A2744",
+		"secondary": "#E8722A",
+		"tertiary": "",
+		"accent1": "#d5c5aa",
+		"accent2": "#E8722A1A",
+		"accent3": "#EDE3D0",
+		"headerFont": {
+			"name": "Playfair Display",
+			"url": "https://fonts.google.com/specimen/Playfair+Display"
+		},
+		"bodyFont": {
+			"name": "Source Sans 3",
+			"url": "https://fonts.google.com/specimen/Source+Sans+3"
+		},
+		"additionalNotes": [
+			""
+
+		]
+	},
+	"websiteDomain": {
+		"currentUrls": [
+			"https://www.geaconstruction.net"
+		],
+		"proposedUrls": []
+	},
+	"logo": [
+		{
+			"url": "https://palmetto2step.com/assets/logo%20palmetto%202%20step.PNG",
+			"altText": "Palmetto 2 Step"
+		}
+	],
+	"informationArchitecture": [
+		{
+			"route": "/",
+			"title": "Home",
+			"notes": [
+				"Existing Page"
+			]
+		},
+		{
+			"route": "/services",
+			"title": "Services",
+			"notes": [
+				"Existing Page",
+				"Recommend expanding this by adding individual service pages for each service offered, and adding service area pages for each service area served.  This will help with SEO / AEO."
+			]
+		},
+		{
+			"route": "/about",
+			"title": "About Us",
+			"notes": [
+				"Existing Page"
+			]
+		},
+		{
+			"route": "/gallery",
+			"title": "Gallery",
+			"notes": [
+				"Existing Page"
+			]
+		},
+		{
+			"route": "/gallery",
+			"title": "Project Gallery",
+			"notes": [
+				"Existing Page"
+			]
+		},
+		{
+			"route": "/blog",
+			"title": "Blog & Home Improvement Tips",
+			"notes": [
+				"Existing Page"
+			]
+		},
+		{
+			"route": "/contact",
+			"title": "Contact Us",
+			"notes": [
+				"Existing Page"
+			]
+		},
+		{
+			"route": "/faqs",
+			"title": "FAQs",
+			"notes": [
+				"Recommend adding this page for LLMs / AEO"
+			]
+		},
+		{
+			"route": "/service-areas",
+			"title": "Service Areas",
+			"notes": [
+				"Recommend adding this page and individual service area pages for each service area served.  This will help with SEO / AEO."
+			]
+		}
+	],
+	"blogRoute": {
+		"enabled": true,
+		"route": "/blog"
+	},
+	"keywords": [
+		""
+	],
+	"differentiation": [
+		"Palmetto 2 Step differentiates itself from competitors by leveraging the founder's expertise as a home inspector, ensuring that all home improvement services are performed with a keen eye for quality and attention to detail. The company emphasizes personalized service, building trust with homeowners through transparent communication and a commitment to exceeding expectations. Additionally, Palmetto 2 Step focuses on using high-quality materials and techniques, ensuring long-lasting results that enhance the value and aesthetics of clients' homes."
+	],
+	"proposedSocialMediaAccounts": [
+		"Google Business Profile",
+		"Facebook",
+		"Instagram",
+		"Threads",
+		"Nextdoor"
+	]
+}

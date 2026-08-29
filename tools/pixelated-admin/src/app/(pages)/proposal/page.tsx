@@ -11,6 +11,7 @@ type ProposalData = {
 	companyName: string;
 	companyContact: string;
 	address: { streetAddress: string; addressLocality: string; addressRegion: string; postalCode: string };
+    email?: string;
 	phone?: string;
 	goal: string[];
 	deliverables: string[];
@@ -66,6 +67,30 @@ export default function ProposalPage() {
 		};
 		fetchProposal();
 	}, [selectedFile]);
+
+	useEffect(() => {
+		const preconnect1 = document.createElement('link');
+		preconnect1.rel = 'preconnect';
+		preconnect1.href = 'https://fonts.googleapis.com';
+
+		const preconnect2 = document.createElement('link');
+		preconnect2.rel = 'preconnect';
+		preconnect2.href = 'https://fonts.gstatic.com';
+		preconnect2.crossOrigin = 'anonymous';
+
+		const stylesheet = document.createElement('link');
+		stylesheet.rel = 'stylesheet';
+		// stylesheet.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap';
+		stylesheet.href = 'https://fonts.googleapis.com/css2?family=Seaweed+Script&display=swap';
+
+		document.head.append(preconnect1, preconnect2, stylesheet);
+
+		return () => {
+			preconnect1.remove();
+			preconnect2.remove();
+			stylesheet.remove();
+		};
+	}, []);
 
 	return (
 		<>
@@ -124,8 +149,10 @@ function Proposal(props: { proposal: ProposalData }) {
 					/>
 					<br /><br />
 					<h2>FOR: {proposal.companyName}</h2>
-					<p>{proposal.address.streetAddress}, {proposal.address.addressLocality}, {proposal.address.addressRegion} {proposal.address.postalCode}</p>
-					<p>{proposal.phone}</p>
+					{proposal.companyContact}<br />
+					{proposal.address.streetAddress}, {proposal.address.addressLocality}, {proposal.address.addressRegion} {proposal.address.postalCode}<br />
+					{proposal.email}<br />
+					{proposal.phone}<br />
 				</div>
 			</PageSection>
 
@@ -208,8 +235,10 @@ function Proposal(props: { proposal: ProposalData }) {
 						</>
 					)}
 					<>
+						<li>Invoices will be issued on the first business day of each month for services rendered during the preceding month. </li>
+						<li>Payment is due within 5 business days of the receipt of invoice.</li>
+						<li>In the event of default, Client responsible for all collection costs and attorney fees.</li>
 						<li>Payments requested to be made via Zelle.  Account information is brian@pixelated.tech or 973-710-8008.</li>
-						<li>Payment is due within 5 business days of the receipt of invoice.  In the event of default, Client responsible for all collection costs and attorney fees.</li>
 					</>
 				</ul>
 			</PageSection>
@@ -248,7 +277,7 @@ function Proposal(props: { proposal: ProposalData }) {
 				<p>Client: __________________________________________________ Date: ______________<br/>
 					{proposal.companyContact}, Individually and on behalf of {proposal.companyName}</p>
 				<br />
-				<p>Developer: ______________________________________________ Date: ______________<br/>
+				<p>Developer: ____<span className="signature">Brian T. Whaley</span>____________ Date: __<span className="signature-date">{new Date().toLocaleDateString()}</span>__<br/>
 				Brian Whaley for Pixelated Technologies</p>
 			</PageSection>
 

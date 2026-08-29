@@ -273,6 +273,31 @@ describe('ServicesSchema', () => {
 		]);
 	});
 
+	it('should respect serviceAreas.type when generating areaServed', () => {
+		const siteInfo = {
+			name: 'Test Agency',
+			url: 'https://testagency.com',
+			serviceAreas: [
+				{ name: 'Bergen County NJ', type: 'AdministrativeArea' },
+				{ name: 'New Jersey', type: 'State' },
+				{ name: 'Hilton Head Island SC', type: 'City' }
+			],
+			services: [
+				{ name: 'Web Development', description: 'Custom web development services' }
+			]
+		};
+
+		const { container } = render(<ServicesSchema />, { config: { siteInfo } });
+		const scriptTags = container.querySelectorAll('script[type="application/ld+json"]');
+		const service = JSON.parse(scriptTags[0].textContent || '{}');
+
+		expect(service.areaServed).toEqual([
+			{ '@type': 'AdministrativeArea', name: 'Bergen County', sameAs: 'https://en.wikipedia.org/wiki/Bergen_County,_New_Jersey' },
+			{ '@type': 'State', name: 'New Jersey', sameAs: 'https://en.wikipedia.org/wiki/New_Jersey' },
+			{ '@type': 'City', name: 'Hilton Head Island', sameAs: 'https://en.wikipedia.org/wiki/Hilton_Head_Island,_South_Carolina' }
+		]);
+	});
+
 	it('should generate structured areaServed objects with Wikipedia sameAs links', () => {
 		const siteInfo = {
 			name: 'Test Agency',

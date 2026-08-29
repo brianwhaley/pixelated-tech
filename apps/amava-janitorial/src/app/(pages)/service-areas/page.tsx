@@ -14,8 +14,8 @@ export default function ServiceAreasPage() {
 
 			<PageHero />
 
-			<PageTitleHeader title={`${siteName} Service Areas`} />
-			<PageSection columns={1} maxWidth="1024px" id="service-areas-intro">
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="service-areas-intro">
+			    <PageTitleHeader title={`${siteName} Service Areas`} />
 				<p>
 					This site serves targeted geographic areas with localized services and expertise. Explore the regions where we deliver dependable service and local support.
 				</p>

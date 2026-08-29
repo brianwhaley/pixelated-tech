@@ -1,4 +1,6 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
+import { render, screen } from '../test/test-utils';
 
 vi.mock('next/headers', () => ({ headers: vi.fn() }));
 vi.mock('../components/config/config', () => ({ getFullPixelatedConfig: vi.fn() }));
@@ -6,6 +8,7 @@ vi.mock('../components/config/config', () => ({ getFullPixelatedConfig: vi.fn() 
 import { headers } from 'next/headers';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { isUnderConstruction } from '../components/structure/underconstruction.server';
+import { UnderConstruction } from '../components/structure/underconstruction';
 
 const headersMock = headers as unknown as Mock;
 const configMock = getFullPixelatedConfig as unknown as Mock;
@@ -68,5 +71,14 @@ describe('isUnderConstruction', () => {
 		configMock.mockReturnValue({ siteInfo: { url: 'https://www.example.com' } });
 
 		expect(await isUnderConstruction()).toBe(true);
+	});
+});
+
+describe('UnderConstruction component', () => {
+	it('renders an under construction callout with title and subtitle', () => {
+		render(React.createElement(UnderConstruction));
+
+		expect(screen.getByText('Under Construction')).toBeInTheDocument();
+		expect(screen.getByText("We're working hard to bring you something amazing. Check back soon!")).toBeInTheDocument();
 	});
 });

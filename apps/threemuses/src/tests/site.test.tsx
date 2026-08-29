@@ -99,6 +99,7 @@ import StudioSpecialsPage from '@/app/(pages)/studio-specials/page';
 import AboutUsPage from '@/app/(pages)/about-us/page';
 import ContactUsPage from '@/app/(pages)/contact-us/page';
 import EventReportPage, { buildEventGroups, asArray, parsePossibleJson, normalizeReportRow, getEventIdentity } from '@/app/(pages)/events/report/page';
+import TermsPage from '@/app/(pages)/terms/page';
 import { getThreeMusesSubtotalDiscount } from '@/app/lib/shoppingcart-discounts';
 import { POST as capturePaymentPOST } from '@/app/api/capture-payment/route';
 import { proxy } from '@/proxy';
@@ -555,6 +556,13 @@ describe('ThreeMuses coverage harness', () => {
 			setPixelatedConfigOverride({ siteInfo: { address: { streetAddress: '', addressLocality: '', addressRegion: '', postalCode: '' }, email: '', telephone: '' } });
 			render(<ContactUsPage />);
 			expect(document.getElementById('contact-us-section')).not.toBeNull();
+		});
+
+		it('renders Terms page with fallback site info when config is unavailable', () => {
+			setPixelatedConfigOverride(null);
+			render(<TermsPage />);
+			expect(document.getElementById('terms-container')).not.toBeNull();
+			expect(screen.getByText('Terms of Service')).not.toBeNull();
 		});
 
 		it('renders Header with no routes configured', () => {

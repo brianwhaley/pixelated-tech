@@ -40,7 +40,8 @@ div .color-palette-item {
     text-align: center;
     min-height: 50px;
     place-items: center;
-    color: #999
+    color: #999;
+    padding: 10px;
 }
 
 #selection-section .page-section-content {

@@ -16,6 +16,7 @@ export * from './sidepanel';
 export * from './smartimage';
 export * from './smartmediautils';
 export * from './smartvideo';
+export * from './socialtags';
 export * from './tab';
 export * from './table';
 export * from './tiles';

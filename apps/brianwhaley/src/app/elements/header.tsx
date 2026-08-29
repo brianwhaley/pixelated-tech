@@ -9,7 +9,7 @@ export default function Header() {
 	return (
 		<div className="section-container">
 			<MenuAccordionButton />
-			<h2 className="pull-left text-halo">Brian Whaley</h2>
+			<a href="/"><h2 className="pull-left text-halo">Brian Whaley</h2></a>
 		</div>
 	);
 }

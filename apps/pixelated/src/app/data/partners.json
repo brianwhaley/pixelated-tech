@@ -1,211 +1,32 @@
 {
     "partners" : [
 		{
-			"name": "Akama",
-			"url": "https://akama.com/company/Pixelated_Technologies_a28773951767.html",
-			"register": "https://akama.com/register"
+			"IP_name": "all.biz",
+			"IP_url": ""
 		} , {
-			"name": "Alignable",
-			"url": "https://www.alignable.com/denville-nj/pixelated-technologies",
-			"register": "https://www.alignable.com/onboarding/welcome"
+			"IP_name": "cityof.com",
+			"IP_url": ""
 		} , {
-			"name": "AllBusiness",
-			"url": "https://www.allbusiness.com/company-profile/pixelated-technologies",
-			"register": "https://www.allbusiness.com/company-profile-submission"
+			"IP_name": "citysquares.com",
+			"IP_url": ""
 		} , {
-			"name": "Amazon Music",
-			"url": "https://music.amazon.com/podcasts/aa7a1d9e-9ef6-4d05-af0e-e8036e34a60d/the-pixelated-podcast"
+			"IP_name": "ec21.com",
+			"IP_url": ""
 		} , {
-			"name": "American Business Directory",
-			"url": "https://americanbusinessdirectory.org/pixelated-technologies/",
-			"register": "https://americanbusinessdirectory.org/my-account/"
+			"IP_name": "geebo.com",
+			"IP_url": ""
 		} , {
-			"name": "Apple Maps",
-			"url": "https://maps.apple/p/xcM4L2198Zo.Fi",
-			"img": "/images/logos/apple-logo.png",
-			"register": "https://businessconnect.apple.com"
+			"IP_name": "sortlist.com",
+			"IP_url": ""
 		} , {
-			"name": "Apple Podcast",
-			"url": "https://podcasts.apple.com/us/podcast/the-pixelated-podcast/id1884500494",
-			"img": "/images/logos/apple-podcast-logo.png"
+			"IP_name": "top-rated.online",
+			"IP_url": ""
 		} , {
-			"name": "AskMap",
-			"url": "http://www.askmap.net/location/7763240/united-states/pixelated-technologies",
-			"register": "http://www.askmap.net/"
-		} , {
-			"name": "Blinx",
-			"url": "https://www.blinx.biz/pixelated-technologies"
-		} , {
-			"name": "Brownbook",
-			"url": "https://www.brownbook.net/business/54889552/pixelated-technologies",
-			"register": "https://www.brownbook.net/add-business"
-		} , {
-			"name": "Castbox",
-			"url": "https://castbox.fm/channel/id7125789?country=us"
-		} , {
-			"name": "Clutch",
-			"url": "https://clutch.co/profile/pixelated-technologies",
-			"register": "https://clutch.co/get-listed"
-		} , {
-			"name": "Cylex",
-			"url": "https://www.cylex.us.com/company/pixelated-technologies-40544527.html",
-			"register": "https://www.cylex.us.com/signin?view=register"
-		} , {
-			"name": "Design Rush",
-			"url": "https://www.designrush.com/agency/profile/pixelated-technologies",
-			"register": "https://www.designrush.com/submit/agency"
-		} , {
-			"name": "Elio Plus",
-			"url": "https://elioplus.com/profiles/channel-partners/221293/pixelated-technologies",
-			"img": "/images/logos/elioplus-logo.png",
-			"register": "https://elioplus.com/free-sign-up"
-		} , {
-			"name": "Eventbrite",
-			"url": "https://www.eventbrite.com/o/brian-whaley-120645314676"
-		} , {
-			"name": "Ezlink",
-			"url": "https://ezlink.ai/PixelatedTechnologies"
-		} , {
-			"name": "Ezlocal",
-			"url": "https://ezlocal.com/nj/denville/internet-web-site-design-and-development/0919561652",
-			"register": "https://dash.ezlocal.com/newlisting/"
-		} , {
-			"name": "Facebook",
-			"url": "https://www.facebook.com/profile.php?id=61577216017129",
-			"register": "https://www.facebook.com/business/m/get-started-meta-advertising"
-		} , {
-			"name": "Find-Open",
-			"url": "https://find-open.com/denville/pixelated-technologies-16820213",
-			"register": "https://www.cylex.us.com/register-company?step=0&src=findopen&d=www.cylex.us.com"
-		} , {
-			"name": "Firmania",
-			"url": "https://firmania.com/denville/pixelated-technologies-19666709"
-		} , {
-			"name": "Foursquare",
-			"url": "",
-			"register": "https://foursquare.com/products/business-listings/"
-		} , {
-			"name": "GoodFirms",
-			"url": "https://www.goodfirms.co/company/pixelated-technologies",
-			"register": "https://account.goodfirms.co/users/login?next=https:/www.goodfirms.co/get-listed"
-		} , {
-			"name": "Google",
-			"url": "https://share.google/an1Yqe6CTFA946zZV",
-			"img": "/images/logos/google-logo.png"
-		} , {
-			"name": "Hotfrog",
-			"url": "https://www.hotfrog.com/company/fabd35eb9d2323c50bfbb68dd3b2c9a0/pixelated-technologies/denville/web-design",
-			"register": "https://admin.hotfrog.com/add/index-card"
-		} , {
-			"name": "iHeartRadio",
-			"url": "https://www.iheart.com/podcast/269-the-pixelated-podcast-326511552/"
-		} , {
-			"name": "Instagram",
-			"url": "https://www.instagram.com/_pixelatedtech_/",
-			"register": "https://www.facebook.com/business/instagram/advertising"
-		} , {
-			"name": "JustLanded",
-			"url": "https://directory.justlanded.com/en/Telco_Webdesign/Pixelated-Technologies",
-			"register": "https://account.justlanded.com/en/login_or_register"
-		} , {
-			"name": "LinkedIn",
-			"url": "https://www.linkedin.com/company/106825397/",
-			"register": "https://business.linkedin.com/marketing-solutions/cx/24/01/ads-for-linkedin"
-		} , {
-			"name": "The Manifest",
-			"url": "https://themanifest.com/company/pixelated-technologies",
-			"url2": "https://themanifest.com/digital-marketing/agencies/savannah",
-			"url3": "https://themanifest.com/web-development/companies/charleston?page=1",
-			"url4": "https://themanifest.com/ecommerce-development/companies/new-york?page=16",
-			"register": "https://clutch.co/get-listed"
-		} , {
-			"name": "Manta",
-			"url": "https://www.manta.com/c/m1hmc2f/pixelated-technologies",
-			"register": "https://www.manta.com/business-listings/add-your-company"
-		} , {
-			"name": "Merchant Circle",
-			"url": "https://www.merchantcircle.com/pixelated-technologies-denville-nj",
-			"register": "https://www.merchantcircle.com/signup#step=stepOne"
-		} , {
-			"name": "N49",
-			"url": "https://www.n49.com/biz/7094192/pixelated-technologies-nj-denville-10-jade-circle/",
-			"register": "https://www.n49.com/add-business?currency=usd&period=monthly"
-		} , {
-			"name": "Nextdoor Page",
-			"url": "https://nextdoor.com/page/pixelated-technologies/",
-			"register": "https://nextdoor.com/create-business"
-		} , {
-			"name": "Nextdoor Profile",
-			"url": "https://nextdoor.com/profile/01rbjYH2btT-yY8yF",
-			"register": "https://nextdoor.com/create-business"
-		} , {
-			"name": "Overcast",
-			"url": "https://www.overcast.fm/itunes1884500494"
-		} , {
-			"name": "Patch",
-			"url": "https://patch.com/new-jersey/denville-nj/business/listing/558828/pixelated-technologies",
-			"register": "https://patch.com/register"
-		} , {
-			"name": "Pixelated Blog",
-			"url": "https://blog.pixelated.tech"
-		} , {
-			"name": "Place123",
-			"url": "http://www.place123.net/place/pixelated-technologies-denville-united-states",
-			"register": "http://www.place123.net/add.asp"
-		} , {
-			"name": "Pocket Casts",
-			"url": "https://pca.st/o8v0icqv",
-			"img": "/images/logos/pocket-casts-logo.png"
-		} , {
-			"name": "Proven Expert",
-			"url": "https://www.provenexpert.com/pixelated-technologies/",
-			"register": "https://www.provenexpert.com/en-us/register/"
-		} , {
-			"name": "Reddit",
-			"url": "https://www.reddit.com/r/PixelatedTech/",
-			"register": "https://ads.reddit.com/register"
-		} , {
-			"name": "Right Firms",
-			"url": "https://www.rightfirms.co/company/pixelated-technologies",
-			"register": "https://www.rightfirms.co/registration"
-		} , {
-			"name": "Spotify Creators",
-			"url": "https://creators.spotify.com/pod/profile/pixelated-technologies/",
-			"img": "/images/logos/spotify-creators-logo.png"
-		} , {
-			"name": "Spotify Podcast",
-			"url": "https://open.spotify.com/show/68EPDLNTLd804NiOL6w6ot"
-		} , {
-			"name": "StoreBoard",
-			"url": "https://www.storeboard.com/pixelatedtechnologies",
-			"register": "https://www.storeboard.com/sign-up"
-		} , {
-			"name": "TechDirectory",
-			"url": "https://www.techdirectory.io/denville/technology-company/pixelated-technologies",
-			"register": "https://www.techdirectory.io/get-listed"
-		} , {
-			"name": "Trustpilot",
-			"url": "https://www.trustpilot.com/review/pixelated.tech",
-			"register": "https://business.trustpilot.com/signup"
-		} , {
-			"name": "Tumblr",
-			"url": "https://www.tumblr.com/pixelatedtech",
-			"register": "https://www.tumblr.com/register"
-		} , {
-			"name": "Tupalo",
-			"url": "https://www.tupalo.co/denville-new-jersey/pixelated-technologies",
-			"register": "https://www.tupalo.co/en/api/v5/spot/new"
-		} , {
-			"name": "Twitter",
-			"url": "http://twitter.com/pixelatedviews",
-			"register": "https://x.com/i/flow/signup"
-		} , {
-			"name": "Yelp",
-			"url": "https://www.yelp.com/user_details?userid=SUFlzBCRMR0OIc3D3nN5pg",
-			"register": "https://biz.yelp.com/claim"
-		} , 
-		
-		
+			"IP_name": "yplocal.us",
+			"IP_url": ""
+		} ,
+
+
 
 
 
@@ -222,9 +43,6 @@
 			"TBD_url": "https://www.cloudtango.net/providers/get-listed/"
 		} , {
 			"TBD_url": "https://corporation.directory/register"
-		} , {
-			"TBD_name": "Cybo",
-			"TBD_url": "https://www.cybo.com/log-in/?next=/add-business/"
 		} , {
 			"TBD_url": "https://www.downtownmorrisplains.org/directory"
 		} , {

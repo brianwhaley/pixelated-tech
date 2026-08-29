@@ -4,7 +4,7 @@ import React from "react";
 import { PageTitleHeader, PageSection } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 import { ContentfulReviewsCarousel } from "@pixelated-tech/components";
 import { Loading } from '@pixelated-tech/components';
 import { usePixelatedConfig } from "@pixelated-tech/components";

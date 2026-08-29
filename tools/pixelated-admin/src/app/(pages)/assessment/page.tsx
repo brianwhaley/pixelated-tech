@@ -82,6 +82,22 @@ function renderList(items: string[]) {
 	);
 }
 
+function objectHasContent(value?: unknown): boolean {
+	if (value === undefined || value === null) {
+		return false;
+	}
+	if (typeof value === 'string') {
+		return value.trim().length > 0;
+	}
+	if (Array.isArray(value)) {
+		return value.some(objectHasContent);
+	}
+	if (typeof value === 'object') {
+		return Object.values(value).some(objectHasContent);
+	}
+	return true;
+}
+
 export default function AssessmentPage() {
 	const { data: manifest, loading: manifestLoading, error: manifestError } = useFileData('/data/assessment/manifest.json', 'json');
 	const manifestData = (manifest as unknown) as AssessmentManifest | undefined;
@@ -164,8 +180,10 @@ function Assessment(props: { assessment: AssessmentData }) {
 					/>
 					<br /><br />
 					<h2>FOR: {assessment.companyName}</h2>
-					<p>{assessment.address.streetAddress}, {assessment.address.addressLocality}, {assessment.address.addressRegion} {assessment.address.postalCode}</p>
-					<p>{assessment.phone}</p>
+					{assessment.companyContact}<br />
+					{assessment.address.streetAddress}, {assessment.address.addressLocality}, {assessment.address.addressRegion} {assessment.address.postalCode}<br />
+					{assessment.email}<br />
+					{assessment.phone}
 				</div>
 			</PageSection>
 
@@ -174,56 +192,65 @@ function Assessment(props: { assessment: AssessmentData }) {
 				<p>I have completed an analysis of your company to see what your digital footprint looks like compared to some of your competitors. This includes current branding, web sites, social media platforms used, current advertising and marketing, and articles about your company.</p>
 
 				<h2>Company Information</h2>
-				<p>There does not appear to be any local companies with the same exact name as {assessment.companyName} in your local market. However, there are  other companies with your name or similar name in other locations.</p>
 
-				<div>
-					<h3>COMPANIES WITH SIMILAR NAMES</h3>
-					{assessment.similarCompanyNames.map((company, index) => (
-						<div key={index}>
-							<h3>{company.name}</h3>
-							<ul>
-								{company.url ? <li><a href={company.url} target="_blank" rel="noopener noreferrer">{company.url}</a></li> : null}
-								{company.urls?.length ? company.urls.map((url, i) => (
-									<li key={i}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
-								)) : null}
-								<li>{company.summary}</li>
-							</ul>
-						</div>
-					))}
+				{objectHasContent(assessment.similarCompanyNames) ? (
+					<div>
+						<h3>COMPANIES WITH SIMILAR NAMES</h3>
+						{assessment.similarCompanyNames.map((company, index) => (
+							<div key={index}>
+								<h3>{company.name}</h3>
+								<ul>
+									{company.url ? <li><a href={company.url} target="_blank" rel="noopener noreferrer">{company.url}</a></li> : null}
+									{company.urls?.length ? company.urls.map((url, i) => (
+										<li key={i}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
+									)) : null}
+									<li>{company.summary}</li>
+								</ul>
+							</div>
+						))}
 
-				</div>
+					</div>
+				) : null}
 
-				<div>
-					<h3>Primary Target Audience</h3>
-					{renderList(assessment.primaryAudience)}
-				</div>
+				{objectHasContent(assessment.primaryAudience) ? (
+					<div>
+						<h3>Primary Target Audience</h3>
+						{renderList(assessment.primaryAudience)}
+					</div>
+				) : null}
 
-				<div>
-					<h3>Secondary Target Audience</h3>
-					{renderList(assessment.secondaryAudience)}
-				</div>
+				{objectHasContent(assessment.secondaryAudience) ? (
+					<div>
+						<h3>Secondary Target Audience</h3>
+						{renderList(assessment.secondaryAudience)}
+					</div>
+				) : null}
 
-				<div>
-					<h2>Local Market Overview</h2>
-					{(Array.isArray(assessment.marketOverview) ? assessment.marketOverview : [assessment.marketOverview]).map((item, index) => (
-						<p key={index}>{item}</p>
-					))}
-				</div>
+				{objectHasContent(assessment.marketOverview) ? (
+					<div>
+						<h2>Local Market Overview</h2>
+						{(Array.isArray(assessment.marketOverview) ? assessment.marketOverview : [assessment.marketOverview]).map((item, index) => (
+							<p key={index}>{item}</p>
+						))}
+					</div>
+				) : null}
 
-				<div>
-				    <h2>Some Local Competitors</h2>
-					{assessment.competitors.map((competitor, index) => (
-						<div key={index}>
-							<h3>{competitor.name}</h3>
-							<ul>
-								{competitor.urls?.length ? competitor.urls.map((url) => (
-									<li key={url}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
-								)) : null}
-								<li>{competitor.summary}</li>
-							</ul>
-						</div>
-					))}
-				</div>
+				{objectHasContent(assessment.competitors) ? (
+					<div>
+					    <h2>Some Local Competitors</h2>
+						{assessment.competitors.map((competitor, index) => (
+							<div key={index}>
+								<h3>{competitor.name}</h3>
+								<ul>
+									{competitor.urls?.length ? competitor.urls.map((url) => (
+										<li key={url}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></li>
+									)) : null}
+									<li>{competitor.summary}</li>
+								</ul>
+							</div>
+						))}
+					</div>
+				) : null}
 
 				{ assessment.existingSite ? (
 					assessment.existingSite.map((site, index) => (
@@ -243,22 +270,32 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<p>No existing site information available.</p>
 				)}
 
-				<div>
-					<h2>Current Social Media</h2>
-					{assessment.currentSocialMedia.length ? renderList(assessment.currentSocialMedia) : <p>No social media data available.</p>}
+				{objectHasContent(assessment.currentSocialMedia) ? (
+					<div>
+						<h2>Current Social Media</h2>
+						{renderList(assessment.currentSocialMedia)}
+					</div>
+				) : null}
 
-					<h2>Current Advertising Partners</h2>
-					{assessment.currentAdvertisingPartners.length ? renderList(assessment.currentAdvertisingPartners) : <p>No current advertising partners listed.</p>}
+				{objectHasContent(assessment.currentAdvertisingPartners) ? (
+					<div>
+						<h2>Current Advertising Partners</h2>
+						{renderList(assessment.currentAdvertisingPartners)}
+					</div>
+				) : null}
 
-					<h2>Current Earned / Traditional Media</h2>
-					{assessment.currentEarnedMedia.length ? renderList(assessment.currentEarnedMedia) : <p>No current earned media listed.</p>}
-				</div>
+				{objectHasContent(assessment.currentEarnedMedia) ? (
+					<div>
+						<h2>Current Earned / Traditional Media</h2>
+						{renderList(assessment.currentEarnedMedia)}
+					</div>
+				) : null}
 			</PageSection>
 
 			<PageSection id="about-pixelated-section" className="page-break" columns={1} maxWidth="1024px">
 				<h1>About Pixelated Technologies</h1>
                 
-				<p>Pixelated Technologies is a digital services company that helps small businesses grow through custom IT solutions, including web development, social media marketing, search engine optimization, content management, eCommerce, and small-business modernization. The company’s mission is to empower small businesses to thrive in the digital age by delivering tailored technology services that drive growth and efficiency.</p>
+				<p>Pixelated Technologies is a digital services company that helps small businesses grow through custom IT solutions, including web development, social media marketing, search engine optimization, content management, eCommerce, and small-business modernization. The company's mission is to empower small businesses to thrive in the digital age by delivering tailored technology services that drive growth and efficiency.</p>
 
 				<p>The owner, Brian Whaley, began his career working with small- and medium-sized businesses and then spent more than 25 years leading web development teams at major organizations such as American Express, PR Newswire, The Associated Press, Bellcore (a former division of AT&T), and Bristol-Myers Squibb.  Now returning to those roots, Pixelated Technologies focuses on helping local small businesses grow and succeed.</p>
 
@@ -369,30 +406,29 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<h2>Color Palette</h2>
 					<p>Here is an overview of the proposed color palette you use for your new web site, consistent with your branding and design aesthetic.</p>
 					<div className="color-palette row-3col">
-						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.primary, color: contrastyColor(assessment.visualDesign.primary) }}>Primary</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.secondary, color: contrastyColor(assessment.visualDesign.secondary) }}>Secondary</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.tertiary, color: contrastyColor(assessment.visualDesign.tertiary) }}>Tertiary</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent1, color: contrastyColor(assessment.visualDesign.accent1) }}>Accent 1</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent2, color: contrastyColor(assessment.visualDesign.accent2) }}>Accent 2</div>
-						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent3, color: contrastyColor(assessment.visualDesign.accent3) }}>Accent 3</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.primary, color: contrastyColor(assessment.visualDesign.primary) }}>Primary:<br />{assessment.visualDesign.primary}</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.secondary, color: contrastyColor(assessment.visualDesign.secondary) }}>Secondary:<br />{assessment.visualDesign.secondary}</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.tertiary, color: contrastyColor(assessment.visualDesign.tertiary) }}>Tertiary:<br />{assessment.visualDesign.tertiary}</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent1, color: contrastyColor(assessment.visualDesign.accent1) }}>Accent 1:<br />{assessment.visualDesign.accent1}</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent2, color: contrastyColor(assessment.visualDesign.accent2) }}>Accent 2:<br />{assessment.visualDesign.accent2}</div>
+						<div className="color-palette-item grid-item" style={{ background: assessment.visualDesign.accent3, color: contrastyColor(assessment.visualDesign.accent3) }}>Accent 3:<br />{assessment.visualDesign.accent3}</div>
 					</div>
 				</div>
 
 				<div>
 					<h3>Typography</h3>
-					<p>Based on your logo, balance serif (traditional/authority) with sans-serif (modern/accessible).</p>
 					<p>Header font: <a href={typeof assessment.visualDesign.headerFont === 'string' ? assessment.visualDesign.headerFont : assessment.visualDesign.headerFont.url} target="_blank" rel="noopener noreferrer">{typeof assessment.visualDesign.headerFont === 'string' ? assessment.visualDesign.headerFont : assessment.visualDesign.headerFont.name}</a></p>
 					<p>Body content font: <a href={typeof assessment.visualDesign.bodyFont === 'string' ? assessment.visualDesign.bodyFont : assessment.visualDesign.bodyFont.url} target="_blank" rel="noopener noreferrer">{typeof assessment.visualDesign.bodyFont === 'string' ? assessment.visualDesign.bodyFont : assessment.visualDesign.bodyFont.name}</a></p>
 				</div>
 
-				<div>
-					<h3>Additional Notes</h3>
-					<ul>
-						{renderList(assessment.visualDesign.additionalNotes || [])}
-					</ul>
-				</div>
+				{objectHasContent(assessment.visualDesign.additionalNotes) ? (
+					<div>
+						<h3>Additional Notes</h3>
+						{renderList(assessment.visualDesign.additionalNotes)}
+					</div>
+				) : null}
 
-				<div>
+				{ /* <div>
 					<h2>Visual Elements &amp; UI</h2>
 					<p>This design language succeeds only through ample, deliberate white space. It is not just empty space; it plays a crucial role and is a vital part of the brand.White space expresses exclusivity, giving page elements room to breathe implies luxury, prevents information overload for the users, and ensures elegant branding and typography become the heroes.</p>
 
@@ -401,7 +437,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<p>Navigation should be top and right on the screen, use a clean sans-serif text, with a subtle hover highlight. Buttons should be solid, matching the color palette with white text.</p>
 
 					<p>Iconography should be minimal line-art in charcoal gray.</p>
-				</div>
+				</div> */ }
 
 				<div>
 					<h2>Web Site Domain</h2>
@@ -446,12 +482,12 @@ function Assessment(props: { assessment: AssessmentData }) {
                     
 					<p>SEO (Search Engine Optimization): While other companies may be further along in their digital presence journey, {assessment.companyName} can win by doubling down on quality, connection to community, personalized service, and a high-end product.</p>
                     
-					<h3>Recommended Keywords:</h3>
-					<ul>
-						<li>
-							{assessment.keywords.join(', ')}
-						</li>
-					</ul>
+					{objectHasContent(assessment.keywords) ? (
+						<div>
+							<h3>Recommended Keywords:</h3>
+							{renderList(assessment.keywords)}
+						</div>
+					) : null}
 
 					<br />
 
@@ -536,10 +572,24 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 				<p>Last, I would build a presence and a reputation on Reddit.  This is a more long term, holistic approach, contributing to a much broader online conversation, participating in threads started by consumers and companies in relevant subreddits.  You can host an AMA (Ask Me Anything) there for those industries as well.  Once you have established with some Karma (i.e. Reddit’s rating system), I would then buy into Reddit Advertising.  This is a much longer-term investment rather than trying to get quick page hits.</p>
 
+				<h2>Citation Management</h2>
+                
+				<p>The objective of citation management is to ensure that your business's name, address, and phone number (NAP) are consistently listed across various online directories and platforms. This helps improve local SEO, build trust with search engines, and make it easier for potential customers to find accurate information about your business.</p>
+
+				<p>It is also designed to enhance your online presence and credibility, making it easier for potential customers to trust and engage with your business.  By being listed in reputable online directories and platforms, your business gains visibility and authority in your industry.  These backlinks can drive traffic to your website and improve your search engine rankings.</p>
+
+
+				<h2>Press Releases</h2>
+                
+				<p>Press releases are official statements issued to media outlets to announce significant company news, product launches, events, or other noteworthy developments. They help generate media coverage, increase brand visibility, and establish credibility in the industry.</p>
+
+				<p>By distributing press releases to relevant media outlets, you can increase the chances of your news being picked up and covered by journalists, bloggers, and industry influencers. This can lead to increased brand awareness, website traffic, and potential business opportunities.</p>
+
+
 				<h2>Other Earned Media</h2>
 
 				<ul>
-					<li>Online industry directories are a great way to get your company’s profile out there</li>
+					<li>Online industry directories are a great way to get your company's profile out there</li>
 					<li>Becoming a member of Local and National organizations related to your industry are another place to invest time.  They have web sites, publications, and events of their own and can provide scaled media opportunities.</li>
 					<li>Chambers of Commerce can help you get the word out, have networking events, and are a great way to find partners in the community</li>
 					<li>As you have big announcements about your company, reach out to small radio tv and digital media companies to possibly get a spotlight or a feature run about your company or your announcements.</li>

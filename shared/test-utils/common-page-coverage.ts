@@ -2,7 +2,7 @@ import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-/* eslint-disable pixelated/package-json-missing-dependency, pixelated/package-json-wrong-dependency-type */
+/* eslint-disable pixelated/package-json-wrong-dependency-type */
 import { describe, expect, it } from 'vitest';
 import { render } from '@testing-library/react';
 
@@ -126,7 +126,7 @@ interface CommonPageCoverageOptions {
 	verifyPageRender?: boolean;
 	verifyAssociatedFiles?: boolean;
 	verifyCommonRoutes?: boolean;
-	// eslint-disable-next-line no-unused-vars
+	 
 	pageRenderAssertion?: (_route: string) => void | Promise<void>;
 }
 
@@ -264,13 +264,15 @@ export function runCommonPageCoverage({
 				safeRenderComponent(LayoutClientComponent);
 			});
 
-			const socialTagsTest = ignoredRoutes.has('socialtags') ? it.skip : it;
-			socialTagsTest('renders social tags section', async () => {
-				const filePath = findAppModule(appRoot, commonElementPaths.SocialTags);
-				expect(filePath).not.toBeNull();
-				const importedModule = await importModule(filePath!);
-				safeRenderComponent(importedModule.default);
-			});
+			const socialTagsFilePath = findAppModule(appRoot, commonElementPaths.SocialTags);
+			if (!socialTagsFilePath || ignoredRoutes.has('socialtags')) {
+				it.skip('renders social tags section', () => {});
+			} else {
+				it('renders social tags section', async () => {
+					const importedModule = await importModule(socialTagsFilePath);
+					safeRenderComponent(importedModule.default);
+				});
+			}
 
 			it('uses real pixelated.config.json siteInfo and route data', async () => {
 				const filePath = findAppModule(appRoot, commonElementPaths.PageMocks);

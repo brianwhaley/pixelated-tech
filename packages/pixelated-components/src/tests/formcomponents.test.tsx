@@ -16,6 +16,7 @@ import {
   FormGooglePlacesInput,
   FormTagInput,
   FormFieldset,
+  FormUSState,
 } from '../components/sitebuilder/form/formcomponents';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';
 
@@ -71,6 +72,25 @@ describe('FormComponents', () => {
     expect(screen.getByLabelText('Select Label')).toBeInTheDocument();
     expect(screen.getByText('Option A')).toBeInTheDocument();
     expect(screen.getByText('Option B')).toBeInTheDocument();
+  });
+
+  it('renders FormUSState with shared US state options and default props', () => {
+    render(
+      <FormValidationProvider>
+        <FormUSState
+          id="state-id"
+          name="state"
+          label="State"
+        />
+      </FormValidationProvider>
+    );
+
+    const select = screen.getByLabelText('State') as HTMLSelectElement;
+    expect(select).toBeInTheDocument();
+    expect(select.getAttribute('autoComplete')).toBe('address-level1');
+    expect(screen.getByText('Alabama')).toBeInTheDocument();
+    expect(screen.getByText('Wyoming')).toBeInTheDocument();
+    expect(screen.getAllByRole('option').length).toBe(50);
   });
 
   it('renders FormTextarea with placeholder text', () => {

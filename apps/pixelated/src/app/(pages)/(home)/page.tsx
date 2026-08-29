@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { Hero, usePixelatedConfig, getContentfulAssetByAssetID, normalizeContentfulAssetUrl } from "@pixelated-tech/components";
 import { BlogPostList } from "@pixelated-tech/components";

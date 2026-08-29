@@ -23,9 +23,7 @@ export default async function Footer() {
 				<br />
 				<div className="centered">
 					<p className="footer-text">&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</p>
-
 					<PixelatedFooter pathname={pathname} />
-					
 				</div>
 			</div>
 		</PageSection>

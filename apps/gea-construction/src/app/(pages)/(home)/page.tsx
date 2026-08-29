@@ -4,6 +4,7 @@ import React from 'react';
 import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
 import { Callout, buildServiceUrl, usePixelatedConfig } from '@pixelated-tech/components';
 import { BlogPostList } from '@pixelated-tech/components';
+import { SocialTags } from '@pixelated-tech/components';
 
 export default function Home() {
 	const pixelatedConfig = usePixelatedConfig();
@@ -77,7 +78,7 @@ export default function Home() {
 				/>
 			</PageSection>
 
-			
+			<SocialTags />
 
 		</>
 	);

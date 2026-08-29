@@ -30,10 +30,12 @@ export default function Header() {
 					<div className="row-12col">
 						<div className="logo grid-s1-e4">
 							<MenuAccordionButton />
-							<SmartImage 
-								src="/images/logo/mm-logo-white.webp" 
-								aboveFold={true}
-								alt="Manning Metalworks Logo"/>
+							<a href="/">
+								<SmartImage 
+									src="/images/logo/mm-logo-white.webp" 
+									aboveFold={true}
+									alt="Manning Metalworks Logo"/>
+							</a>
 						</div>
 						<div className="menu grid-s4-e13">
 							<nav>

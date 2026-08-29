@@ -13,12 +13,23 @@ body {
 }
 
 
-@media screen and (max-width: 768px) {
-    #social-section .page-section-content {
-        max-width: 70%;
-        margin: 0 auto;
+
+
+/* ========================================
+        SOCIAL TAGS 
+======================================== */
+
+
+#social-section .page-section-content,
+#socialtag-section .page-section-content {
+    .callout .callout-image,
+    .callout .callout-image img {
+        clip-path: none !important;
     }
 }
+
+
+
 
 /* ========================================
         HEADER 

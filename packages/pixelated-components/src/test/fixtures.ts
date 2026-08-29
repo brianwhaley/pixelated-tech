@@ -10,14 +10,12 @@
 // YOU SHOULD IMPORT THE DATA FROM OBJECTS IN test-data.ts AND THEN MODIFY THAT OBJECT IN YOUR TEST FILE
 
 
-import { vi } from 'vitest';
-import type { CarouselCardType } from '@/components/general/carousel';
-import type { GeminiRecommendationRequest } from '../components/integrations/gemini-api.server';
+import type { CarouselCardType } from '../components/structure/carousel';
+import type { SiteInfoType } from '../components/config/config.types';
 
 export const emptySiteInfo = { name: '', author: '', description: '', url: '', email: '' };
 export const emptyRoutes: any[] = [];
 export const malformedRoutes = [{ invalidField: 'value' }];
-
 
 import { siteHealthData, googlePsiExampleCom, mockCarouselCards as mockCarouselCardsCentralized, mockGoogleDateRangesJson } from './test-data';
 import { processPSIData } from '../components/admin/site-health/site-health-core-web-vitals.integration';

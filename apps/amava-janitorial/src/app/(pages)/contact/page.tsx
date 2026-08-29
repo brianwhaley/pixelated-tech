@@ -16,10 +16,9 @@ export default function ContactPage() {
 		<>
 			<PageHero />
 
-			<PageTitleHeader title={`Contact ${siteName}`} />
-
 			{siteInfo && (
 				<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-info-section">
+			        <PageTitleHeader title={`Contact ${siteName}`} />
 					<PageSectionHeader title="Contact Information" />
 					<div style={{ margin: '0 auto' }}>
 						<h3>Address:</h3>
@@ -38,7 +37,7 @@ export default function ContactPage() {
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="contact-us-section">
 				<PageSectionHeader title="Contact Us" />
-				<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
+				<div style={{ margin: '0 auto', backgroundColor: 'var(--accent2-color)', border: '5px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>
 					<FormEngine formData={formData as any} />
 				</div>
 			</PageSection>

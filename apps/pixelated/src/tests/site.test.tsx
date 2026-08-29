@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, vi } from 'vitest';
 import { cleanup, render, screen, waitFor, runCommonPageCoverage, runCommonElementCoverage, runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
 import React from 'react';
+import { PixelatedClientConfigProvider } from '@pixelated-tech/components';
 import { config as pixelatedConfig, mockState, resetMockState, setFileDataState, resetFileDataState, setPixelatedConfigOverride, resetPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
 
@@ -79,7 +80,6 @@ describe('Site coverage', () => {
 			'contact',
 			'updates',
 		],
-		ignoredCommonRoutes: ['socialtags'],
 	});
 
 	runCommonElementCoverage({
@@ -196,9 +196,16 @@ describe('Site coverage', () => {
 	});
 
 	it('renders Partners page and exercises PartnersBadge URL branch', async () => {
-		render(React.createElement(PartnersPage));
-		await screen.findByText(/Pixelated Technologies Partners/i);
-		await waitFor(() => expect(document.querySelectorAll('[data-testid="callout"]').length).toBeGreaterThan(0));
+		render(
+			React.createElement(
+				PixelatedClientConfigProvider,
+				{ config: pixelatedConfig },
+				React.createElement(PartnersPage),
+			),
+		);
+		await screen.findByTestId('page-title-header');
+		await waitFor(() => expect(document.getElementById('partnertag-section')).not.toBeNull());
+		await waitFor(() => expect(document.querySelectorAll('.callout').length).toBeGreaterThan(0));
 	});
 
 	it('renders Podcast page and exercises Spotify series sorting branch', async () => {
@@ -315,7 +322,7 @@ describe('Site coverage', () => {
 			Component: PartnersPage,
 			assertion: async () => {
 				await waitFor(() => expect(screen.getByTestId('page-title-header')).not.toBeNull());
-				expect(document.getElementById('partners-section')).not.toBeNull();
+				expect(document.getElementById('partnertag-section')).not.toBeNull();
 			},
 		},
 		{

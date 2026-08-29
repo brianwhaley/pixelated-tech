@@ -27,15 +27,6 @@ function SchemaScript({ schema }: { schema: any }) {
 	return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
-function addSameAs(entity: any, sameAs?: string[] | null) {
-	if (!sameAs?.length || !entity) { return entity; }
-	/* if (entity.sameAs) { return entity; }
-	return { ...entity, sameAs }; */
-	const existing = Array.isArray(entity.sameAs) ? entity.sameAs : [];
-	const combined = Array.from(new Set([...existing, ...sameAs]));
-	return { ...entity, sameAs: combined };
-}
-
 
 
 
@@ -58,7 +49,8 @@ SchemaBlogPosting.propTypes = {
 export type SchemaBlogPostingType = InferProps<typeof SchemaBlogPosting.propTypes>;
 export function SchemaBlogPosting(props: SchemaBlogPostingType) {
 	const config = usePixelatedConfig();
-	const sameAs = config?.siteInfo?.sameAs;
+	const siteInfo = config?.siteInfo;
+	const sameAs = generateSameAs(siteInfo);
 	const { post } = props;
 	const schema = sameAs?.length ? {
 		...post,
@@ -225,6 +217,7 @@ export function SchemaBook(props: SchemaBookType) {
 	const config = usePixelatedConfig();
 	const { book } = props;
 	const siteInfo = config?.siteInfo;
+	const sameAs = generateSameAs(siteInfo);
 
 	const author = normalizeBookEntity(book.author || siteInfo?.author, siteInfo?.name, 'Person');
 	const publisher = normalizeBookEntity(book.publisher, undefined, 'Organization') || buildPublisher(siteInfo);
@@ -241,8 +234,8 @@ export function SchemaBook(props: SchemaBookType) {
 		...(book.genre && { genre: book.genre }),
 		...(book.inLanguage && { inLanguage: book.inLanguage }),
 		...(toBoolean(book.isFamilyFriendly) != null && { isFamilyFriendly: toBoolean(book.isFamilyFriendly) }),
-		...(author && { author: addSameAs(author, siteInfo?.sameAs) }),
-		...(publisher && { publisher: addSameAs(publisher, siteInfo?.sameAs) }),
+		...(author && { author: addSameAs(author, sameAs) }),
+		...(publisher && { publisher: addSameAs(publisher, sameAs) }),
 		...(book.sameAs && book.sameAs.length > 0 && { sameAs: book.sameAs }),
 		...(buildBookUrl(book.url, book.pageUrl, siteInfo?.url) && { url: buildBookUrl(book.url, book.pageUrl, siteInfo?.url) }),
 		// identifier: construct from `book.lccn` when present
@@ -296,6 +289,7 @@ export function SchemaEvent(props: SchemaEventType) {
 	const config = usePixelatedConfig();
 	const { event } = props;
 	const siteInfo = config?.siteInfo;
+	const sameAs = generateSameAs(siteInfo);
 
 	const schema = event?.['@type'] ? event : (() => {
 		const baseUrl = siteInfo?.url?.replace(/\/$/, '') ?? '';
@@ -340,7 +334,7 @@ export function SchemaEvent(props: SchemaEventType) {
 				'@id': siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 				name: siteInfo?.name,
 				url: siteInfo?.url,
-			}, siteInfo?.sameAs),
+			}, sameAs),
 			description: event.fields.description,
 			url: eventUrl,
 			offers: event.fields.price != null ? buildOfferSchema({
@@ -355,7 +349,7 @@ export function SchemaEvent(props: SchemaEventType) {
 				'@id': siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
 				name: siteInfo?.name,
 				url: siteInfo?.url,
-			}, siteInfo?.sameAs),
+			}, sameAs),
 		};
 	})();
 	return (
@@ -574,10 +568,10 @@ export function LocalBusinessSchema() {
 	const description = siteInfo?.description;
 	const email = siteInfo?.email;
 	const priceRange = siteInfo?.priceRange;
-	const sameAs = siteInfo?.sameAs;
+	const sameAs = generateSameAs(siteInfo);
 	const knowsAbout = buildKnowsAbout(siteInfo);
 	const serviceAreaValues = (siteInfo?.serviceAreas || [])
-		.map((area) => getWikipediaCityObject(area?.name))
+		.map((area) => getWikipediaCityObject(area?.name, area?.type))
 		.filter((item): item is NonNullable<typeof item> => item !== null);
 	const schemaData = {
 		'@context': 'https://schema.org',
@@ -830,7 +824,7 @@ export type ProductSchemaType = InferProps<typeof ProductSchema.propTypes>;
 export function ProductSchema(props: ProductSchemaType) {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
-	const sameAs = siteInfo?.sameAs;
+	const sameAs = generateSameAs(siteInfo);
 	const { product } = props;
 	const {
 		'@context': _context,
@@ -916,9 +910,9 @@ function buildPublisher(siteInfo?: SiteInfo): any | undefined {
 		const url = sanitizeString(siteInfo.url);
 		const name = sanitizeString(siteInfo.name ?? siteInfo?.author);
 		const logo = siteInfo.image ? buildImageObject({ siteInfo, id: 'organization' }) : undefined;
-		const sameAs = Array.isArray(siteInfo.sameAs) && siteInfo.sameAs.length > 0 ? siteInfo.sameAs : undefined;
 		const knowsAbout = buildKnowsAbout(siteInfo);
 		const address = buildPostalAddress(siteInfo?.address);
+		const sameAs = generateSameAs(siteInfo);
 		const publisher = {
 			'@type': ['Organization', 'LocalBusiness'],
 			...(url && { '@id': `${url.replace(/\/$/, '')}/#organization` }),
@@ -1005,7 +999,7 @@ export type RecipeSchemaType = InferProps<typeof RecipeSchema.propTypes>;
 export function RecipeSchema(props: RecipeSchemaType) {
 	const config = usePixelatedConfig();
 	const siteInfo = config?.siteInfo;
-	const sameAs = siteInfo?.sameAs;
+	const sameAs = generateSameAs(siteInfo);
 	const { recipe } = props;
 	const publisher = addSameAs(buildPublisher(siteInfo), sameAs);
 	const schema = {
@@ -1072,7 +1066,8 @@ ReviewSchema.propTypes = {
 export type ReviewSchemaType = InferProps<typeof ReviewSchema.propTypes>;
 export function ReviewSchema(props: ReviewSchemaType) {
 	const config = usePixelatedConfig();
-	const sameAs = config?.siteInfo?.sameAs;
+	const siteInfo = config?.siteInfo;
+	const sameAs = generateSameAs(siteInfo);
 	const { review } = props;
 	const schema = sameAs?.length ? {
 		...review,
@@ -1085,6 +1080,31 @@ export function ReviewSchema(props: ReviewSchemaType) {
 }
 
 
+
+
+
+
+/* ========================================
+	SAMEAS FUNCTIONS
+======================================== */
+
+export function generateSameAs(siteInfo?: SiteInfo): string[] | undefined {
+	const sameAsUrls = Array.isArray(siteInfo?.sameAs) ? siteInfo.sameAs : [];
+	const profileUrls = siteInfo?.socialProfiles?.map((profile) => profile?.url).filter((url): url is string => Boolean(url)) ?? [];
+	const partnerUrls = siteInfo?.partners?.map((partner) => partner?.url).filter((url): url is string => Boolean(url)) ?? [];
+	const combined = Array.from(new Set([...sameAsUrls, ...profileUrls, ...partnerUrls]));
+	return combined.length ? combined : undefined;
+}
+
+
+function addSameAs(entity: any, sameAs?: string[] | null) {
+	if (!sameAs?.length || !entity) { return entity; }
+	/* if (entity.sameAs) { return entity; }
+	return { ...entity, sameAs }; */
+	const existing = Array.isArray(entity.sameAs) ? entity.sameAs : [];
+	const combined = Array.from(new Set([...existing, ...sameAs]));
+	return { ...entity, sameAs: combined };
+}
 
 
 
@@ -1120,6 +1140,7 @@ export function ServicesSchema() {
 	const pageServiceSlug = servicePageMatch?.[1];
 	const activeService = pageServiceSlug ? findServiceBySlug(pageServiceSlug, siteInfo) : undefined;
 	const services = activeService ? [activeService as ServiceSchemaType] : siteInfo?.services || [];
+	const sameAs = generateSameAs(siteInfo);
 	const provider = {
 		name: siteInfo?.name || '',
 		id: siteInfo?.url ? `${siteInfo.url.replace(/\/$/, '')}/#organization` : undefined,
@@ -1128,7 +1149,7 @@ export function ServicesSchema() {
 		telephone: siteInfo?.telephone,
 		email: siteInfo?.email,
 		address: siteInfo?.address,
-		sameAs: siteInfo?.sameAs,
+		...(sameAs && { sameAs }),
 		openingHours: siteInfo?.openingHours
 	};
 
@@ -1136,7 +1157,7 @@ export function ServicesSchema() {
 	const serviceAreas = siteInfo?.serviceAreas || [];
 
 	const areaServedValues = serviceAreas
-		.map(area => getWikipediaCityObject(area?.name))
+		.map(area => getWikipediaCityObject(area?.name, area?.type))
 		.filter((item): item is NonNullable<typeof item> => item !== null);
 
 
@@ -1431,7 +1452,7 @@ export function WebsiteSchema() {
 	const description = siteInfo?.description;
 	const keywords = siteInfo?.keywords;
 	const inLanguage = siteInfo?.default_locale;
-	const sameAs = siteInfo?.sameAs;
+	const sameAs = generateSameAs(siteInfo);
 	let potentialAction: any;
 	const potentialActionTarget = siteInfo?.potentialAction;
 	if (potentialActionTarget?.target) {

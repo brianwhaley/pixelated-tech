@@ -57,7 +57,31 @@ describe('Brian Whaley coverage', () => {
 			'service-areas',
 			'updates',
 		],
-		ignoredCommonRoutes: ['socialtags'],
+
+		Nav,
+		Footer,
+		LayoutClient,
+		NotFoundElement: NotFound,
+		RootLayout,
+		proxy,
+		humansGET,
+		securityGET,
+		config: pixelatedConfig,
+		setPixelatedConfigOverride,
+		headersModule: { headers },
+		cloudinaryProductEnv,
+		render,
+		screen,
+		createElement: React.createElement,
+		navAssertion: () => {
+			expect(screen.getByTestId('menu-accordion')).not.toBeNull();
+		},
+		headerAssertion: () => {
+			expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
+		},
+		notFoundAssertion: () => {
+			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
+		},
 	});
 
 	runCommonElementCoverage({

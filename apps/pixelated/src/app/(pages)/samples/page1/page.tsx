@@ -11,7 +11,7 @@ import { Callout, CalloutButton } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
 import { MicroInteractions } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import "./page1.css";

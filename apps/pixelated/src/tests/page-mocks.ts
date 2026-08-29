@@ -105,7 +105,7 @@ export const resetContentfulMocks = () => {
 	(defaultMocks as any).buildEventSchema = (event: any) => ({ title: event.fields.title });
 };
 
-const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style }: any) => {
+const mockComponent = (name: string, testId?: string, classNameOverride?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style }: any) => {
 	const textContent = title ??
 		content ??
 		(site && Array.isArray(posts) ? `site:${site} count:${posts.length}` :
@@ -114,7 +114,8 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 				undefined));
 
 	const props: any = { 'data-testid': testId ?? `${name.toLowerCase()}` };
-	if (className) props.className = className;
+	const classNameToApply = className ?? classNameOverride;
+	if (classNameToApply) props.className = classNameToApply;
 	if (id) props.id = id;
 	if (style) props.style = style;
 
@@ -232,7 +233,7 @@ const defaultMocks: Record<string, any> = {
 	PageGridItem: mockComponent('PageGridItem'),
 	PageFlexItem: mockComponent('PageFlexItem'),
 	Timeline: mockComponent('Timeline', 'timeline'),
-	Callout: mockComponent('Callout', 'callout'),
+	Callout: mockComponent('Callout', 'callout', 'callout'),
 	ServicesList: mockServicesList,
 	Services: mockServicesList,
 	ServiceAreasList: mockServiceAreasList,

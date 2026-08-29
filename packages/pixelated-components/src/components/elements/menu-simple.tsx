@@ -1,8 +1,11 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import React from 'react';
 import PropTypes, { InferProps } from "prop-types";
 import './menu-simple.css';
+
+
 
 const menuItemShape = PropTypes.shape({
 	name: PropTypes.string.isRequired,
@@ -11,6 +14,8 @@ const menuItemShape = PropTypes.shape({
 	hidden: PropTypes.bool,
 	routes: PropTypes.array,
 });
+
+
 
 /**
  * MenuSimple — renders a simple flat navigation menu from an array of items.
@@ -23,46 +28,33 @@ MenuSimple.propTypes = {
 };
 export type MenuSimpleType = InferProps<typeof MenuSimple.propTypes>;
 export function MenuSimple(props: MenuSimpleType) {
-	function generateMenuItems() {
-		const myItems = [];
-		for (const itemKey in props.menuItems) {
-			const myItem = props.menuItems[itemKey];
-			if (!myItem) continue; // Skip null/undefined items
-			// if (myItem.hidden) continue; // Skip nested routes
-			if (myItem.routes) continue; // Skip nested routes
-			myItems.push(<MenuSimpleItem
-				key={itemKey}
-				name={myItem.name}
-				path={myItem.path || ''}
-				target={myItem.target || undefined}
-				hidden={myItem.hidden || undefined}
-			/>);
-		}
-		return myItems;
-	}
-	function styleSelectedMenuItem() {
-		if (typeof window === 'undefined') return;
-		const menuitems = document.querySelectorAll('.menu-item a');
-		const currentURL = window.location.href;
-		menuitems.forEach( (menuitem) => {
-			if ((menuitem as HTMLAnchorElement).href === currentURL) {
-				menuitem.classList.add('selected');
-			}
-		});
-	}
-	useEffect(() => {
-		styleSelectedMenuItem();
-	}, []);
+	const pathname = usePathname();
 	return (
 		<div className="menu-wrapper">
-			{ /* <hr /> */ }
 			<div className="menu" id="menu">
-				<ul>{ generateMenuItems() }</ul>
+				<ul>{props.menuItems?.map((item, index) => {
+					if (!item) return null;
+					// if (item.hidden) return null; // Skip nested routes
+					if (item.routes) return null;
+					const isSelected = typeof item.path === 'string'
+						? pathname === item.path || pathname.startsWith(`${item.path}/`)
+						: false;
+					return (
+						<MenuSimpleItem
+							key={item.path ?? index}
+							name={item.name}
+							path={item.path || ''}
+							target={item.target || undefined}
+							hidden={item.hidden || undefined}
+							isSelected={isSelected}
+						/>
+					);
+				})}</ul>
 			</div>
-			{ /* <hr /> */}
 		</div>
 	);
 }
+
 
 
 /* ========== MENU ITEM ========== */
@@ -85,21 +77,23 @@ MenuSimpleItem.propTypes = {
 	target: PropTypes.string,
 	/** When true, the item is hidden */
 	hidden: PropTypes.bool,
+	/** When true, the item is selected */
+	isSelected: PropTypes.bool,
 	/** Optional nested routes (ignored by this renderer) */
 	routes: PropTypes.array,
 };
 export type MenuSimpleItemType = InferProps<typeof MenuSimpleItem.propTypes>;
 export function MenuSimpleItem(props: MenuSimpleItemType) {
-	const classNames = ['menu-item'];
+	const listClassNames = ['menu-item'];
 	if (props.hidden) {
-		classNames.push('menu-item-hidden');
+		listClassNames.push('menu-item-hidden');
 	}
-
+	const anchorClassNames = props.isSelected ? 'selected' : undefined;
 	return (
-		<li className={classNames.join(' ')}>
+		<li className={listClassNames.join(' ')}>
 			{props.target
-				? <a href={props.path || undefined} target={props.target}>{props.name}</a>
-				: <a href={props.path || undefined}>{props.name}</a>}
+				? <a href={props.path || undefined} target={props.target} className={anchorClassNames}>{props.name}</a>
+				: <a href={props.path || undefined} className={anchorClassNames}>{props.name}</a>}
 		</li>
 	);
 }

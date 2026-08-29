@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '../test/test-utils';
-import type { SiteInfo } from '@/components/config/config.types';
-import { LocalBusinessSchema } from '@/components/foundation/schema';
+import type { SiteInfo } from '../components/config/config.types';
+import { LocalBusinessSchema } from '../components/foundation/schema';
 import { pixelatedConfig } from '../test/test-data';
 
-const siteInfo: SiteInfo = (pixelatedConfig.siteInfoFull || pixelatedConfig.siteInfo) as SiteInfo;
+const siteInfo: SiteInfo = pixelatedConfig.siteInfo as SiteInfo;
 
 const renderSchema = (siteMeta: SiteInfo = siteInfo) => {
 	return render(<LocalBusinessSchema />, { config: { siteInfo: siteMeta } });
@@ -56,7 +56,43 @@ describe('LocalBusinessSchema', () => {
 		const { container } = renderSchema();
 		const schema = getSchema(container);
 		expect(schema.priceRange).toBe(siteInfo.priceRange);
-		expect(schema.sameAs).toEqual(siteInfo.sameAs);
+		expect(schema.sameAs).toEqual([
+			'https://www.linkedin.com/in/brianwhaley',
+			'https://github.com/brianwhaley',
+			'https://twitter.com/brianwhaley',
+			'https://linkedin.com/company/pixelated',
+			'https://facebook.com/pixelated',
+			'https://pca.st/o8v0icqv',
+		]);
+	});
+
+	it('merges socialProfiles URLs into LocalBusiness sameAs output', () => {
+		const siteMeta = { ...siteInfo, partners: undefined } as SiteInfo;
+
+		const { container } = renderSchema(siteMeta);
+		const schema = getSchema(container);
+		expect(schema.sameAs).toEqual([
+			'https://www.linkedin.com/in/brianwhaley',
+			'https://github.com/brianwhaley',
+			'https://twitter.com/brianwhaley',
+			'https://linkedin.com/company/pixelated',
+			'https://facebook.com/pixelated',
+		]);
+	});
+
+	it('merges partners URLs into LocalBusiness sameAs output', () => {
+		const siteMeta = siteInfo;
+
+		const { container } = renderSchema(siteMeta);
+		const schema = getSchema(container);
+		expect(schema.sameAs).toEqual([
+			'https://www.linkedin.com/in/brianwhaley',
+			'https://github.com/brianwhaley',
+			'https://twitter.com/brianwhaley',
+			'https://linkedin.com/company/pixelated',
+			'https://facebook.com/pixelated',
+			'https://pca.st/o8v0icqv',
+		]);
 	});
 
 	it('includes brand and availableChannel when provided', () => {
@@ -79,6 +115,24 @@ describe('LocalBusinessSchema', () => {
 		expect(schema.areaServed).toEqual([
 			{ '@type': 'City', name: 'Denville', sameAs: 'https://en.wikipedia.org/wiki/Denville_Township,_New_Jersey' },
 			{ '@type': 'City', name: 'Savannah', sameAs: 'https://en.wikipedia.org/wiki/Savannah,_Georgia' }
+		]);
+	});
+
+	it('includes areaServed with ServiceArea type support', () => {
+		const siteMeta = {
+			...siteInfo,
+			serviceAreas: [
+				{name: 'Bergen County NJ', type: 'AdministrativeArea'},
+				{name: 'New Jersey', type: 'State'},
+				{name: 'Hilton Head Island SC', type: 'City'}
+			]
+		};
+		const { container } = renderSchema(siteMeta as any);
+		const schema = getSchema(container);
+		expect(schema.areaServed).toEqual([
+			{ '@type': 'AdministrativeArea', name: 'Bergen County', sameAs: 'https://en.wikipedia.org/wiki/Bergen_County,_New_Jersey' },
+			{ '@type': 'State', name: 'New Jersey', sameAs: 'https://en.wikipedia.org/wiki/New_Jersey' },
+			{ '@type': 'City', name: 'Hilton Head Island', sameAs: 'https://en.wikipedia.org/wiki/Hilton_Head_Island,_South_Carolina' }
 		]);
 	});
 

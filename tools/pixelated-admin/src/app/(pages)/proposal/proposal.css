@@ -68,3 +68,15 @@ div .color-palette-item {
         visibility: hidden;
     }
 }
+
+.signature {
+    /* font-family: 'Dancing Script', cursive; */
+    font-family: 'Seaweed Script', cursive;
+    font-size: var(--font-size1);
+}
+
+.signature-date {
+    /* font-family: 'Dancing Script', cursive; */
+    font-family: 'Seaweed Script', cursive;
+}
+

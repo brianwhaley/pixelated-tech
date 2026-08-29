@@ -78,6 +78,7 @@ import StyleGuide from '@/app/(pages)/styleguide/page';
 import Subscribe from '@/app/(pages)/subscribe/page';
 import Search from '@/app/elements/search';
 import Privacy from '@/app/elements/privacy';
+import Terms from '@/app/elements/terms';
 import Interactions from '@/app/elements/interactions';
 import { default as robots } from '@/app/robots';
 import * as CalloutLibrary from '@/app/elements/calloutlibrary';
@@ -166,7 +167,32 @@ describe('PixelVivid coverage', () => {
 	runCommonPageCoverage({
 		appRoot,
 		ignoredPageTypes: ['blog', 'blogcalendar', 'partners', 'podcast', 'projects', 'updates'],
-		ignoredCommonRoutes: ['socialtags'],
+
+		Header,
+		Nav,
+		Footer,
+		LayoutClient,
+		NotFoundElement,
+		RootLayout,
+		proxy,
+		humansGET,
+		securityGET,
+		config: pixelatedConfig,
+		setPixelatedConfigOverride,
+		headersModule: { headers },
+		cloudinaryProductEnv,
+		render,
+		screen,
+		createElement: React.createElement,
+		navAssertion: () => {
+			expect(screen.getByTestId('menu-accordion')).not.toBeNull();
+		},
+		headerAssertion: () => {
+			expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
+		},
+		notFoundAssertion: () => {
+			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
+		},
 	});
 
 	runCommonElementCoverage({
@@ -191,6 +217,9 @@ describe('PixelVivid coverage', () => {
 		},
 		headerAssertion: () => {
 			expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
+		},
+		footerAssertion: () => {
+			expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
 		},
 		notFoundAssertion: () => {
 			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
@@ -306,11 +335,35 @@ describe('PixelVivid coverage', () => {
 			expect(screen.getAllByTestId('menu-simple').length).toBeGreaterThan(0);
 		});
 
+		it('renders Header element without error', () => {
+			render(<Header />);
+			expect(screen.getByTestId('menu-accordion-button')).not.toBeNull();
+			expect(screen.getByText(/PixelVivid/i)).not.toBeNull();
+		});
+
+		it('renders Nav element without error', () => {
+			render(<Nav />);
+			expect(screen.getByTestId('menu-accordion')).not.toBeNull();
+		});
+
+		it('renders Footer element without error', async () => {
+			vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/', 'x-origin': 'https://example.com', 'x-url': 'https://example.com/' }));
+			const footerElement = await Footer();
+			render(footerElement && typeof (footerElement as any).then === 'function' ? await footerElement : footerElement);
+			expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
+		});
+
 		it('renders Contact page safely with default site info values', () => {
 			setPixelatedConfigOverride({ siteInfo: { address: { streetAddress: '', addressLocality: '', addressRegion: '', postalCode: '' }, email: '', telephone: '' } });
 			render(<Contact />);
 			const headers = screen.getAllByTestId('page-title-header');
 			expect(headers.some((header) => /Contact Us/i.test(header.textContent ?? ''))).toBe(true);
+		});
+
+		it('renders Terms element without error', () => {
+			render(<Terms />);
+			expect(screen.getByTestId('page-title-header')).not.toBeNull();
+			expect(screen.getByText(/By using anything offered by PixelVivid/i)).not.toBeNull();
 		});
 
 		it('renders Home loading fallback without config', () => {

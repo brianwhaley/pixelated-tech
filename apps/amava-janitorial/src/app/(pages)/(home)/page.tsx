@@ -15,7 +15,7 @@ export default function Home() {
 
 			<PageHero />
 
-			<PageSection columns={1} maxWidth="1024px" id="header-section">
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="header-section">
 				<PageTitleHeader title="AMAVA Janitorial" />
 				<p>Welcome to AMAVA Janitorial</p>
 				<p>For over three decades, AMAVA Janitorial has served as a trusted partner in commercial facility maintenance across New Jersey, New York, Connecticut, Delaware, South Carolina, and Florida. Holding an A+ rating from the Better Business Bureau, our team takes the complete burden of daily sanitation off your shoulders so you can focus on running your business. We deliver custom cleaning programs for corporate offices, medical clinics, educational campuses, industrial sites, and hospitality venues. Utilizing our proven 7-prong cleaning methodology, we guarantee that no operational detail is ever overlooked during scheduled service visits. Our flexible seven-service ecosystem covers nightly janitorial work, day porter care, commercial floor restoration, specialty cleaning, post-construction cleanup, consumable supply management, and handyman repairs. Operating 24 hours a day, 7 days a week, our dedicated account supervisors conduct regular quality audits to ensure complete compliance across every square foot of your building. Partnering with AMAVA Janitorial gives you total operational peace of mind and an immaculate facility that reflects the high standards of your organization.</p>
@@ -40,13 +40,13 @@ export default function Home() {
 				))}
 			</PageSection>
 
-			<PageSection columns={1} maxWidth="1024px" id="realtor-partner-section">
+			<PageSection columns={1} maxWidth="1024px" id="home-assessment-section" background="var(--accent1-color)">
 				<Callout
 					variant='boxed grid'
 					layout='horizontal'
 					url='/contact' 
 					boxShape="square"
-					img="/images/services/facility-maintenance.jpg"
+					img="/images/stock/schedule-assessment.jpg"
 					imgShape="square"
 					title='Schedule Your Free Assessment'
 					content="Contact our team today to schedule your comprehensive, no-obligation facility assessment tailored specifically to your building's footprint and operational schedule. We will walk your space, identify your exact operational requirements, and deliver a custom, cost-effective service proposal with zero commitment required.  We make evaluating your commercial property needs completely simple, seamless, and stress-free."

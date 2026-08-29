@@ -1,55 +1,8 @@
-export const STATE_MAP: Record<string, string> = {
-	AL: 'Alabama',
-	AK: 'Alaska',
-	AZ: 'Arizona',
-	AR: 'Arkansas',
-	CA: 'California',
-	CO: 'Colorado',
-	CT: 'Connecticut',
-	DE: 'Delaware',
-	FL: 'Florida',
-	GA: 'Georgia',
-	HI: 'Hawaii',
-	ID: 'Idaho',
-	IL: 'Illinois',
-	IN: 'Indiana',
-	IA: 'Iowa',
-	KS: 'Kansas',
-	KY: 'Kentucky',
-	LA: 'Louisiana',
-	ME: 'Maine',
-	MD: 'Maryland',
-	MA: 'Massachusetts',
-	MI: 'Michigan',
-	MN: 'Minnesota',
-	MS: 'Mississippi',
-	MO: 'Missouri',
-	MT: 'Montana',
-	NE: 'Nebraska',
-	NV: 'Nevada',
-	NH: 'New_Hampshire',
-	NJ: 'New_Jersey',
-	NM: 'New_Mexico',
-	NY: 'New_York',
-	NC: 'North_Carolina',
-	ND: 'North_Dakota',
-	OH: 'Ohio',
-	OK: 'Oklahoma',
-	OR: 'Oregon',
-	PA: 'Pennsylvania',
-	RI: 'Rhode_Island',
-	SC: 'South_Carolina',
-	SD: 'South_Dakota',
-	TN: 'Tennessee',
-	TX: 'Texas',
-	UT: 'Utah',
-	VT: 'Vermont',
-	VA: 'Virginia',
-	WA: 'Washington',
-	WV: 'West_Virginia',
-	WI: 'Wisconsin',
-	WY: 'Wyoming'
-};
+import { sanitizeString, US_STATES } from '../foundation/utilities';
+
+export const STATE_MAP: Record<string, string> = Object.fromEntries(
+	US_STATES.map((state) => [state.value, state.text.replace(/\s+/g, '_')])
+);
 
 export function formatWikipediaLocation(city: string, stateFull: string): string {
 	let cityFormatted = city.trim();
@@ -68,21 +21,39 @@ export function formatWikipediaLocation(city: string, stateFull: string): string
 	return `https://en.wikipedia.org/wiki/${cityUnderscores},_${stateFormatted}`;
 }
 
-export function getWikipediaCityObject(rawName: string | null | undefined) {
+export function getWikipediaCityObject(rawName: string | null | undefined, type?: string | null) {
 	if (!rawName || typeof rawName !== 'string') return null;
-	const trimmed = rawName.trim();
-	// Match trailing 2-letter state abbreviation
-	const match = trimmed.match(/^(.+?)\s+([A-Z]{2})$/i);
-	if (match) {
-		const city = match[1].trim();
-		const stateAbbr = match[2].toUpperCase();
-		const fullState = STATE_MAP[stateAbbr];
+	const trimmed = sanitizeString(rawName);
+	const normalizedType = (type ?? 'City').trim().toLowerCase();
+
+	if (normalizedType === 'state') {
+		return {
+			'@type': 'State',
+			name: trimmed,
+			sameAs: `https://en.wikipedia.org/wiki/${trimmed.replace(/\s+/g, '_')}`
+		};
+	}
+
+	if (normalizedType === 'administrativearea') {
+		const match = trimmed.match(/^(.+? County)(?:,)?\s+(.+)$/i);
+		const name = match ? match[1].trim() : trimmed;
+		const sameAs = match ? `https://en.wikipedia.org/wiki/${name.replace(/\s+/g, '_')},_${STATE_MAP[match[2].toUpperCase()] ?? match[2].trim().replace(/\s+/g, '_')}` : undefined;
+		return {
+			'@type': 'AdministrativeArea',
+			name,
+			...(sameAs ? { sameAs } : {})
+		};
+	}
+
+	const cityMatch = trimmed.match(/^(.+?)\s+([A-Z]{2})$/i);
+	if (cityMatch) {
+		const cityName = cityMatch[1].trim();
+		const fullState = STATE_MAP[cityMatch[2].toUpperCase()];
 		if (fullState) {
-			const url = formatWikipediaLocation(city, fullState);
 			return {
 				'@type': 'City',
-				name: city,
-				sameAs: url
+				name: cityName,
+				sameAs: formatWikipediaLocation(cityName, fullState)
 			};
 		}
 	}

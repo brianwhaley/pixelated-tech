@@ -2,7 +2,7 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "name": "AMAVA Janitorial FAQs",
-  "description": "Frequently asked questions about AMAVA Janitorial' web design, development, and digital services.",
+  "description": "Comprehensive guide to AMAVA Janitorial's commercial cleaning, day porter programs, floor restoration, post-construction cleanup, and facility maintenance services.",
   "author": {
     "@type": "Organization",
     "name": "AMAVA Janitorial",
@@ -14,7 +14,7 @@
     "url": "https://www.amavajanitorial.com"
   },
   "datePublished": "2023-10-01",
-  "dateModified": "2026-01-04",
+  "dateModified": "2026-08-24",
   "inLanguage": "en-US",
   "isPartOf": {
     "@type": "WebSite",
@@ -28,8 +28,8 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why should I choose AMAVA Janitorial? What makes you different?",
-      "category": "Getting Started",
+      "name": "Why should I choose AMAVA Janitorial? What sets you apart?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -40,13 +40,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "We combine technical expertise with creative design thinking, delivering websites that not only look great but drive real business results. Unlike Do-It-Yourself platforms like Wordpress, Wix, or Godaddy that require you to learn new tools, create your own content, and manage ongoing maintenance, we offer an all-inclusive service that bundles custom web development, graphic design, content creation, SEO optimization, and ongoing support.", "We act as an extension of your team, handling everything from business strategy and competitive analysis to technical implementation and performance monitoring.", "Our transparent pricing eliminates hidden costs, and our focus on long-term partnerships ensures your website grows with your business rather than becoming outdated. While platforms like WordPress, Wix, or Godaddy provide basic tools with customer service phone numbers, we deliver professional-grade solutions with years of experience across industries, ensuring your site is fast, secure, accessible, and optimized for conversions." ]
+        "text": [
+          "AMAVA Janitorial serves as 'Your Partner in Professional Facility Maintenance'. Backed by an A+ BBB rating and over 30 years of industry experience, we take the complete burden of daily facility sanitation off your shoulders. Unlike standard janitorial companies that rely on basic surface cleaning, we utilize an innovative 7-prong cleaning approach alongside customized post-cleaning checklists to ensure zero missed details across every single shift.",
+          "Every property we partner with receives tailored building assessments, scheduled supervisor quality audits, and customizable green cleaning options. We focus on building long-term, transparent relationships backed by dedicated account management, single points of contact, and executive-level oversight. Whether managing multi-tenant office complexes, high-spec healthcare facilities, or large industrial sites, our rigorous quality control protocols and dependable personnel consistently set us apart."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "How long will it take to build my website?",
-      "category": "Process & Timeline",
+      "name": "What geographic areas and regions do you service?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -57,13 +60,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "Website development timelines vary based on project complexity and scope. Simple brochure sites typically take 2-3 weeks from concept to launch, while complex e-commerce platforms or custom web applications may require 4-8 weeks. Our agile development process ensures regular progress updates and milestones.", "During the discovery phase, we provide a detailed timeline estimate tailored to your specific project. Learn more about our development process at <a href='/process'>https://www.amavajanitorial.com/process</a>." ]
+        "text": [
+          "Headquartered in Mahwah, New Jersey, AMAVA Janitorial provides full-scale commercial custodial and facility care across six key states: New Jersey, New York, Connecticut, Delaware, South Carolina, and Central/Southern Florida. Our extensive geographic reach allows us to service multi-state corporate portfolios as well as regional commercial hubs with complete operational consistency.",
+          "Our coverage includes major metropolitan areas such as Bergen, Morris, Essex, and Hudson counties in New Jersey; Manhattan, Brooklyn, Queens, and Long Island in New York; Fairfield and New Haven counties in Connecticut; the Upstate region of South Carolina (including Greenville, Spartanburg, and Richland); and premier South Florida territories including Palm Beach, Broward, Miami-Dade, and Collier counties."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "What's your development process?",
-      "category": "Process & Timeline",
+      "name": "What types of commercial facilities do you service?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -74,13 +80,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "Our proven development process includes: 1) Discovery & Planning (requirements gathering, goal setting, and project scoping), 2) Design (wireframes, mockups, and user experience design), 3) Development (coding with modern technologies and best practices), 4) Testing (quality assurance, performance optimization, and cross-browser compatibility), and 5) Launch & Training (deployment, handover, and user training).", "We maintain transparent communication throughout, with weekly updates and client feedback at every stage. View our detailed process at <a href='/process'>https://www.amavajanitorial.com/process</a>." ]
+        "text": [
+          "We provide customized recurring custodial programs across a diverse spectrum of commercial properties. Our client base includes Fortune 500 corporate offices, commercial plazas, multi-tenant office complexes, outpatient healthcare facilities, medical clinics, educational institutions, retail centers, industrial warehouses, distribution centers, and hospitality venues such as hotels and event spaces.",
+          "Every industry presents unique operational standards and regulatory compliance demands. We tailor our protocols accordingly—offering terminal-grade infection control for healthcare environments, non-static IT equipment care for corporate computer suites, and flexible maid and housekeeping staffing solutions tailored specifically to the hospitality sector."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can I edit the site myself and what CMS do you use?",
-      "category": "Content & Management",
+      "name": "What is included in your Commercial Janitorial Services?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -91,13 +100,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": [ "Absolutely! We build websites using user-friendly content management systems (CMS) like Contentful and WordPress for flexible content sites, Shopify for e-commerce, or custom headless CMS solutions for web applications. This gives you the power to easily update content, add blog posts, modify images, and manage your site without technical skills. We offer comprehensive training sessions and detailed documentation for whichever platform best fits your needs.", "For clients who prefer not to manage content themselves, we offer ongoing maintenance packages that include content updates as part of our service. Our CMS choices prioritize ease of use while maintaining professional functionality and security." ]
+        "text": [
+          "Our recurring commercial janitorial contracts deliver meticulous day, night, or round-the-clock maintenance based on your operational schedule. Standard service scopes encompass comprehensive trash and recycling management, thorough high-touch surface disinfection (focusing on door hardware, light switches, and elevator panels), commercial vacuuming with HEPA-filtration systems, damp-mopping hard floors, and complete breakdown cleaning of breakrooms and kitchens.",
+          "Restrooms receive specialized multi-step sanitation, including the washing and disinfecting of all fixtures, mirrors, and partitions. Every scope of work is built around customized building assessments and verified using post-cleaning checklists and field supervisor audits to guarantee consistently high standards."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Do you offer ongoing maintenance?  What if I need more pages later?",
-      "category": "Support & Maintenance",
+      "name": "What is the difference between Nightly Janitorial and Day Porter Services?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -108,13 +120,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We provide comprehensive and competitive maintenance packages including security updates, performance monitoring, backup management, content updates, and technical support. Regular maintenance ensures your site stays secure, fast, and compatible with the latest web standards. We offer flexible plans from basic security monitoring to full content management services. We design websites with scalability and future growth in mind.Adding new pages, sections, or features is straightforward and cost-effective compared to building from scratch. Our modular approach means we can easily integrate new content areas, blog functionality, or additional services. During the initial planning phase, we discuss potential future needs to ensure your site can grow with your business. "
+        "text": [
+          "Nightly Janitorial Services focus on deep cleaning, detailed sanitation, and floor care performed after standard business operating hours when your building is vacant. This allows crews to complete heavy vacuuming, detailed floor care, and comprehensive surface scrubbing without disrupting employees, clients, or daily operational workflow.",
+          "In contrast, Day Porter and Matron Services provide dedicated, uniformed, on-site personnel during active business hours. Day porters continuously monitor restrooms, restock paper supplies, manage high-volume trash overflow, clean entry lobby glass, handle immediate spill responses, assist with room setups for meetings, and ensure continuous pristine conditions throughout peak operating hours."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Is the site SEO-friendly?",
-      "category": "Technical Details",
+      "name": "How do your Day Porter and Matron Services handle restroom upkeep during business hours?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -125,13 +140,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "SEO is fundamental to our development approach. Every website we build includes: fast loading speeds, mobile-first responsive design, semantic HTML structure, proper heading hierarchy, alt text for images, meta descriptions, and schema markup. We implement technical SEO best practices and can provide ongoing SEO audits, keyword optimization, and performance monitoring. Our portfolio showcases sites that consistently rank well in search results."
+        "text": [
+          "Maintaining high-traffic public and employee restrooms requires continuous maintenance throughout the workday. Our portering model pairs male and female attendants—porters and matrons—allowing us to continuously inspect, clean, sanitize, and restock gender-segregated restrooms and locker rooms without needing to shut down access to building occupants or visitors.",
+          "These dedicated team members manage ongoing restocking of paper supplies and soaps, sanitize high-touch fixtures, wipe down counters, address water spills on floors, and clear trash receptacles in real-time, keeping high-use areas clean and hygienic during peak facility usage."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Will my web site work on mobile ( i.e. - responsive layout)?",
-      "category": "Technical Details",
+      "name": "What specialized hard-floor and carpet care services do you provide?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -142,13 +160,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Yes, mobile responsiveness is non-negotiable in modern web design. All our websites are built with a mobile-first approach, ensuring optimal performance across all devices - from large desktop screens to smartphones. We test extensively on various devices and browsers, implementing fluid layouts, touch-friendly navigation, and optimized loading speeds for mobile users. With over 60% of web traffic coming from mobile devices, this ensures your site reaches your entire audience effectively."
+        "text": [
+          "Our Commercial Floor Care division utilizes advanced machinery and industry-leading techniques to protect and restore high-traffic commercial flooring surfaces. We specialize in complete VCT floor stripping, refinishing, waxing, and high-speed burnishing; hot-water extraction and low-moisture encapsulation carpet cleaning; deep tile and grout pressure scrubbing; and concrete scrub-and-seal treatments. We also service terrazzo and natural stone through specialized cleaning and polishing programs.",
+          "Because major floor restoration requires proper chemical setup and drying times, all heavy-duty floor projects are scheduled during off-hours, over weekends, or during facility downtime to ensure zero disruption to your daily operations while leaving floors thoroughly restored."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Do you build e-commerce sites?",
-      "category": "Services",
+      "name": "Do you offer post-construction cleanup for renovated or new buildings?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -159,13 +180,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Yes, e-commerce is one of our specialties. We build robust online stores using platforms like Shopify, WooCommerce, or custom solutions. Our e-commerce sites include secure payment processing (Stripe, PayPal), inventory management, customer accounts, order tracking, and integration with shipping providers. We also implement conversion optimization techniques to maximize sales. Check out our e-commerce portfolio at <a href='/portfolio'>https://www.amavajanitorial.com/portfolio</a> for examples."
+        "text": [
+          "Yes, we collaborate directly with general contractors, commercial developers, and facility project managers to deliver turn-key post-construction cleanups. Construction debris and fine particulate dust pose significant cleanup challenges that standard janitorial routines cannot handle. We execute a structured 3-phase cleaning program designed to transition your build site into a turn-key space.",
+          "Phase 1 (Rough Clean) focuses on removing heavy construction debris, leftover stickers, drywall mud, and protective coatings. Phase 2 (Deep Detail Clean) involves detailed scrubbing of all surfaces, micro-dust extraction from HVAC vents and fixtures, deep glass cleaning, and complete floor preparation. Phase 3 (Final Touch-Up / Punch List Clean) polishes the site immediately before building owner handoff or certificate-of-occupancy inspections."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "How will my web site be hosted?",
-      "category": "Ownership & Legal",
+      "name": "What specialty cleaning projects can AMAVA Janitorial handle?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -176,13 +200,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We recommend using our hosting partner, Amazon Web Services (AWS), for your hosting needs. This allows us to offer fast and cost effective solutions with high reliability and scalability.  We ensure your hosting includes SSL certificates, regular backups, CDN integration for global speed, and security monitoring. Our Essential maintenance package offers hands-off management and fully managed hosting that include server maintenance, updates, and performance optimization."
+        "text": [
+          "Our Specialty Cleaning division handles technical, high-access, and heavy-duty maintenance tasks that fall outside standard daily scopes. Our scope includes interior and exterior architectural window washing, high-bay structural ceiling dusting for exposed ductwork, beams, and trusses in open-concept offices or warehouses, exterior power washing for walkways and facades, pre/post-event management, and electrostatic disinfectant fogging for rapid outbreak mitigation.",
+          "All specialized cleaning projects are planned with strict safety standards. Our personnel operate aerial lifts, scaffolding, and specialized rigging systems fully certified under OSHA guidelines, protecting both property assets and workers during execution."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "What happens if my site breaks?",
-      "category": "Support & Maintenance",
+      "name": "Can you manage and restock our restroom consumable supplies?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -193,13 +220,17 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We stand behind our work with reliable support options. Our maintenance packages include priority response times, with emergency fixes available within hours for critical issues. For clients without maintenance plans, we offer emergency support services. Regular maintenance and proactive monitoring help prevent most issues before they occur."
+        "text": [
+          "Yes, through our Janitorial Supply Services, we serve as your single-source vendor for complete restroom and facility consumable management. We supply, restock, and maintain inventory levels for paper towels, commercial toilet tissue, hand soaps, sanitizers, heavy-duty trash liners, and touchless dispenser hardware.",
+          "Our team conducts routine usage audits, tracks consumption patterns, and automates reordering so your facility never runs out of critical hygiene supplies. By consolidating supply management with your core cleaning service, you save on administrative costs and streamline procurement under a single invoice.",
+		  "If you would like for AMAVA Janitorial to fully manage ordering your consumable supplies, that is an integrated service we proudly offer[cite: 3]. We take full responsibility for purchasing, inventory tracking, and stock maintenance, eliminating the need for your staff to manage orders or track delivery schedules."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can you show me examples of your work?",
-      "category": "Getting Started",
+      "name": "Do you provide handyman and facility repair services?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -210,13 +241,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Absolutely! Our portfolio showcases diverse projects across industries including e-commerce, professional services, healthcare, and creative businesses. Each case study includes project details, technologies used, and results achieved. Visit <a href='/portfolio'>https://www.amavajanitorial.com/portfolio</a> to explore our work and see how we've helped businesses like yours succeed online."
+        "text": [
+          "Yes, we offer integrated Facility Maintenance and Commercial Handyman Services alongside our janitorial solutions. Having a single partner handle both sanitation and general physical repairs saves building managers significant time and coordination overhead. Our maintenance crew handles drywall patching, touch-up painting, light fixture and LED/ballast replacements, door latch/lock repairs, ceiling tile replacements, and basic plumbing repairs.",
+          "Additionally, our exterior facility upkeep includes groundskeeping, parking lot maintenance, and seasonal emergency services. During winter months, we provide 24/7 snow plowing, sidewalk clearing, and de-icing pre-treatments to keep your commercial property safe and accessible."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can you help with digital marketing?",
-      "category": "Services",
+      "name": "How does AMAVA Janitorial ensure quality control and accountability?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -227,13 +261,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Yes, we offer comprehensive digital marketing services including SEO optimization, Google Ads management, social media marketing, email campaigns, and conversion rate optimization. A polished website is just the foundation - we help you attract, engage, and convert visitors into customers. Our data-driven approach ensures measurable results and ROI."
+        "text": [
+          "Quality assurance is built directly into our operational workflow. We enforce high standards through our signature 7-prong cleaning methodology and customized post-cleaning checklists that crew members complete during each shift. To verify these results, dedicated field supervisors perform routine scheduled and unannounced site audits, assessing cleanliness scores and procedural compliance.",
+          "Furthermore, every client is paired with a dedicated account manager who serves as a single point of contact. This ensures rapid communication, transparent operational reporting, and immediate handling of dynamic requests, custom floor projects, or emergency calls."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "How much does a website cost?",
-      "category": "Getting Started",
+      "name": "Do you offer eco-friendly or green cleaning options?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -244,13 +281,16 @@
           "name": "",
           "layout": "left"
         },
-        "text": "Website costs vary significantly based on complexity, features, and scope. Our pricing scales from cost-effective brochure sites to complex e-commerce platforms or custom web applications. We provide free assessments with transparent, detailed estimates after working with you to understand your specific needs. For a comprehensive breakdown of our pricing structure and what's included, visit our detailed cost guide at <a href='/cost'>https://www.amavajanitorial.com/cost</a>."
+        "text": [
+          "Yes, we offer eco-friendly green cleaning programs tailored to meet the environmental standards of modern commercial spaces. Our green cleaning packages utilize Green Seal-certified non-toxic cleaning agents that effectively clean and disinfect without emitting harsh volatile organic compounds (VOCs) or toxic residues.",
+          "In addition, we deploy commercial vacuums fitted with HEPA filtration to capture microscopic allergens and improve indoor air quality. We pair these with microfiber color-coded wiping systems to eliminate cross-contamination and reduce chemical consumption, as well as post-consumer recycled paper goods, supporting your company's sustainability initiatives."
+        ]
       }
     },
     {
       "@type": "Question",
-      "name": "Can you provide references?",
-      "category": "Getting Started",
+      "name": "How do I get a custom quote or schedule a building assessment?",
+      "category": "",
       "acceptedAnswer": {
         "@type": "Answer",
         "image": {
@@ -261,7 +301,30 @@
           "name": "",
           "layout": "left"
         },
-        "text": "We are happy to provide references upon request. Our portfolio includes a diverse range of clients across various industries, and we can connect you with previous clients who can share their experiences working with us. Please contact us directly to discuss your specific needs and we will provide relevant references to help you make an informed decision."
+        "text": [
+          "Getting started with AMAVA Janitorial is simple and straightforward. You can reach our administrative office directly at (973) 710-8008, send an email to info@amavajanitorial.com, or submit a request online via our contact portal at <a href='https://www.amavajanitorial.com/contact'>https://www.amavajanitorial.com/contact</a>.",
+          "Once you contact us, an account executive will schedule an on-site walk-through and building assessment. We evaluate square footage, flooring types, high-traffic zones, and cleaning schedules to design a tailored scope of work with transparent, competitive pricing designed specifically for your budget."
+        ]
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are your standard business operating hours and availability?",
+      "category": "",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "image": {
+          "@type": "ImageObject",
+          "contentUrl": "",
+          "width": 200,
+          "height": 200,
+          "name": "",
+          "layout": "left"
+        },
+        "text": [
+          "Our central administrative headquarters in Mahwah, NJ operates Monday through Friday from 9:00 AM to 5:00 PM EST for routine business inquiries, contract consultations, and account administration.",
+          "However, our operational service coverage runs 24/7/365. Because commercial facilities operate on diverse schedules, our cleaning technicians, day porters, floor maintenance specialists, and emergency response teams are active day, night, weekends, and holidays to accommodate your facility's exact scheduling needs."
+        ]
       }
     }
   ]

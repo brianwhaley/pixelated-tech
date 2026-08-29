@@ -4,6 +4,9 @@ import { getBaseNextConfig } from '../../shared/configs/next.config.base';
 const nextConfig: NextConfig = {
 	...getBaseNextConfig(),
 	serverExternalPackages: ['ssh2'],
+	env: {
+		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+	},
 	async headers() {
 		return [
 			{

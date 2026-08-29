@@ -11,7 +11,7 @@ import { MenuSimple, MenuAccordion, MenuAccordionButton } from "@pixelated-tech/
 import { PageSection } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "./page4.css";
 

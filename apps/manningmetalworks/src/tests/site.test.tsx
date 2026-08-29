@@ -65,7 +65,6 @@ describe('Manning Metalworks coverage', () => {
 	runCommonPageCoverage({
 		appRoot,
 		ignoredPageTypes: ['partners', 'podcast'],
-		ignoredCommonRoutes: ['socialtags'],
 	});
 
 	runCommonElementCoverage({

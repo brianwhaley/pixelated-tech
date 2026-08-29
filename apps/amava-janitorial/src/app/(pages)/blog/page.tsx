@@ -19,8 +19,8 @@ export default function BlogPage() {
 		<>
 			<PageHero />
 
-			<PageTitleHeader title="AMAVA Janitorial Blog Posts" />
-			<PageSection columns={1} maxWidth="1024px" id="blog-section">
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="blog-section">
+			    <PageTitleHeader title="AMAVA Janitorial Blog Posts" />
 				<BlogPostList showCategories={false} />
 			</PageSection>
 		</>

@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import React from "react";
 import { PageSection, GoogleAnalytics, PixelatedFooter, BusinessFooter } from "@pixelated-tech/components";
-import SocialTags from "./socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 import {FooterMenu} from "@pixelated-tech/components/server";
 
 export default async function Footer() {

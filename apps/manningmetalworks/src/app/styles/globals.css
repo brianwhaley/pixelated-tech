@@ -44,7 +44,13 @@ html, body { padding: 0; margin: 0; }
 
 
 
+/* ========================================
+	SOCIAL TAG Styles
+ ======================================== */
 
+#socialtag-section .page-section-content {
+    max-width: 768px !important;
+}
 @media screen and (max-width: 768px) {
     #socialtag-section .page-section-content {
         max-width: 70%;
