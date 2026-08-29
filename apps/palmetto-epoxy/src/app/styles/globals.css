@@ -40,7 +40,26 @@ h1 {
 
 .header-social {
     margin: auto 0;
+
+    h2 {
+        display: none;
+    }
+
+    #socialtag-section {
+        padding: 0px !important;
+    }
+
 } 
+
+@media screen and (max-width: 768px) {
+    #socialtag-section {
+        max-width: 100% !important;
+
+        .page-section-content {
+            grid-template-columns: repeat(5, 1fr) !important;
+        }
+    }
+}
 
 
 /* ===== CALLOUT STYLES ===== */

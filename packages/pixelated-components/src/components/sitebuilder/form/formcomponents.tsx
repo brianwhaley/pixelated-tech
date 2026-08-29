@@ -9,6 +9,7 @@ import * as FVF from "./formfieldvalidations";
 import { FontSelector } from "../config/FontSelector";
 import { CompoundFontSelector } from "../config/CompoundFontSelector";
 import { usePixelatedConfig } from "../../config/config.client";
+import { US_STATES } from '../../foundation/utilities';
 import "./form.css";
 
 
@@ -646,6 +647,7 @@ export function FormInput(props: FormInputType) {
  * @param {string} [props.name] - Input name attribute.
  * @param {string} [props.size] - visual size attribute for single-select lists.
  * @param {string} [props.autoComplete] - Autocomplete hint.
+ * @param {string} [props.placeholder] - Placeholder text shown for the select.
  * @param {oneOfType} [props.defaultValue] - Default selected value (string or array for multi-select).
  * @param {string} [props.autoFocus] - Autofocus flag.
  * @param {string} [props.disabled] - Disabled flag.
@@ -662,7 +664,7 @@ export function FormInput(props: FormInputType) {
  * @param {function} [props.onChange] - Change handler invoked with new value.
  */
 FormSelect.propTypes = {
-/** Input id */
+	/** Input id */
 	id: PropTypes.string.isRequired,
 	/** Input name */
 	name: PropTypes.string,
@@ -670,6 +672,8 @@ FormSelect.propTypes = {
 	size: PropTypes.string,
 	/** Autocomplete hint */
 	autoComplete: PropTypes.string,
+	/** Placeholder text shown for the select */
+	placeholder: PropTypes.string,
 	/** Default selected value (or array for multi-select) */
 	defaultValue: PropTypes.oneOfType([
 		PropTypes.string,
@@ -720,6 +724,49 @@ export function FormSelect(props: FormSelectType) {
 	);
 }
 
+
+
+
+
+/**
+ * FormUSState — Render a US state select using the shared US_STATES option list.
+ * @props {string} [props.id] - Input id attribute.
+ * @props {string} [props.name] - Input name attribute.
+ * @props {string} [props.autoComplete] - Autocomplete hint.
+ * @props {string} [props.display] - Layout hint (e.g., 'vertical').
+ * @props {string} [props.label] - Field label text.
+ * @props {string} [props.tooltip] - Tooltip/help text.
+ * @props {string} [props.className] - CSS class names.
+ * @props {string} [props.validate] - Named validation rule.
+ * @props {function} [props.onChange] - Change handler invoked with new value.
+ * 
+ * @returns {JSX.Element} - Rendered FormUSState component.
+ * 
+ */
+FormUSState.propTypes = {
+	/** props are the same as FormSelect */
+	...FormSelect.propTypes,
+};
+export type FormUSStateType = InferProps<typeof FormUSState.propTypes>;
+export function FormUSState(props: FormUSStateType) {
+	const {
+		autoComplete = "address-level1",
+		options,
+		...rest
+	} = props;
+	const stateOptions = [
+		{ value: '', text: '', hidden: true },
+		...(options ?? US_STATES)
+	];
+	return (
+		<FormSelect
+			{...rest}
+			autoComplete={autoComplete}
+			defaultValue=""
+			options={stateOptions}
+		/>
+	);
+}
 
 
 

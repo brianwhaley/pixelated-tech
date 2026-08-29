@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import React from "react";
 import { PageSection, GoogleAnalytics, PixelatedFooter, BusinessFooter } from "@pixelated-tech/components";
-import SocialTags from "./socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 
 export default async function Footer() {
 	const reqHeaders = await headers();

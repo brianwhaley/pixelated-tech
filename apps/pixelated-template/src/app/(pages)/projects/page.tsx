@@ -2,8 +2,12 @@
 
 import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
+import { usePixelatedConfig } from "@pixelated-tech/components";
 
 export default function AboutPage() {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const siteName = siteInfo?.name || "__SITE_NAME__";
 
 	const project1 = [
 		{
@@ -90,7 +94,7 @@ export default function AboutPage() {
 	return (
 		<>
 
-			<PageTitleHeader title="__SITE_NAME__ Projects" />
+			<PageTitleHeader title={`${siteName} Projects`} />
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="colors-section">
 				<PageSectionHeader title="Our Projects" />

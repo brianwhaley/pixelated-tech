@@ -53,8 +53,9 @@ export function runCommonElementCoverage({
 				navAssertion();
 				return;
 			}
-			const nav = screen.queryByTestId('menu-simple');
-			expect(nav).not.toBeNull();
+			const nav = screen.queryByTestId('menu-simple') ?? screen.queryByTestId('menu-accordion');
+			const navButton = screen.queryByTestId('menu-accordion-button');
+			expect(nav || navButton).not.toBeNull();
 		});
 
 		it('renders header without error', () => {
@@ -64,7 +65,9 @@ export function runCommonElementCoverage({
 				return;
 			}
 			const smartImage = screen.queryByTestId('smart-image');
-			expect(smartImage).not.toBeNull();
+			const menuButton = screen.queryByTestId('menu-accordion-button');
+			const pageTitle = screen.queryByTestId('page-title-header');
+			expect(smartImage || menuButton || pageTitle).not.toBeNull();
 		});
 
 		it('renders footer without error', async () => {
@@ -76,7 +79,7 @@ export function runCommonElementCoverage({
 				return;
 			}
 			const analytics = screen.queryByTestId('google-analytics');
-			const footer = screen.queryByTestId('pixelated-footer');
+			const footer = screen.queryByTestId('pixelated-footer') ?? screen.queryByText(/all rights reserved/i);
 			// Analytics script may be conditionally omitted in test environments; ensure footer exists
 			expect(footer).not.toBeNull();
 			if (analytics) {

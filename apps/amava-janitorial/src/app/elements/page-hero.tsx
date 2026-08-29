@@ -1,15 +1,24 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
 import PropTypes, { InferProps } from 'prop-types';
 import { Hero } from "@pixelated-tech/components";
 
 const heroImages = [
-	"/images/large-room-with-large-window-that-says-no-one.jpg",
-
-	"/images/services/facility-maintenance.jpg",
-	"/images/services/janitorial-service.jpg",
+	"/images/stock/office-building.jpg", 
+	"/images/stock/office-building-2.jpg", 
+	"/images/stock/office-building-3.jpg", 
+	"/images/services/facility-maintenance.jpg", 
+	// "/images/services/janitorial-service.jpg",
+	// "/images/services/janitorial-service-2.jpg",
 	"/images/services/professional-cleaning.jpg",
+	"/images/services/professional-cleaning-2.jpg",
+	"/images/services/professional-cleaning-3.jpg",
+	"/images/services/professional-cleaning-4.jpg",
+	"/images/services/professional-cleaning-5.jpg",
+	// "/images/services/professional-cleaning-6.jpg",
+	"/images/services/day-porter-services.jpg",
+	// "/images/services/day-porter-services-2.jpg", 
+	"/images/services/specialty-cleaning-services.jpg",
+	"/images/services/janitorial-supply-services-2.jpg", 
+	"/images/services/construction-cleanup.jpg",
 ];
 
 /**
@@ -21,18 +30,16 @@ const heroImages = [
 PageHero.propTypes = PropTypes.exact({});
 export type PageHeroType = InferProps<typeof PageHero.propTypes>;
 export function PageHero() {
-	const [heroImage, setHeroImage] = useState<string>();
-	useEffect(() => {
-		setHeroImage(heroImages[Math.floor(Math.random() * heroImages.length)]);
-	}, []);
+	const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
 
 	return ( 
 		<Hero
 			// variant="static"
 			variant="anchored-img"
 			img={heroImage}
+			imgId="amava-page-hero"
 			imgAlt="AMAVA Janitorial Services"
-			height="40vh"
+			height="50vh"
 		/>
 	);
 }

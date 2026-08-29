@@ -17,6 +17,7 @@ export default function Home() {
 				imgAlt="JZ Home Improvement - Expert Work. Honest Pricing. Beautiful Results."
 				imgId='jz-kitchen'
 				variant="anchored-img"
+			    height="50vh"
 			>
 				<PageTitleHeader title="JZ Home Improvement" />
 				<h2><span> Expert Work. </span><span> Honest Pricing. </span><span> Beautiful Results.</span></h2>
@@ -80,25 +81,29 @@ export default function Home() {
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					imgShape="bevel"
+					boxShape="squircle"
+					imgShape="square"
 					img="https://images.ctfassets.net/kcm01cmyxlgq/2Rh82mKRC4NzciFxEUkIAT/82dd860b4018c755621580fd35233fdd/IMG_3994.jpeg?fm=webp"
 					title="Kitchens" />
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					imgShape="bevel"
+					boxShape="squircle"
+					imgShape="square"
 					img="https://images.ctfassets.net/kcm01cmyxlgq/Gam85MuDCo3rdt5NHva21/d93555e8d4185624527ca26e74423848/img_0738.webp?fm=webp"
 					title="Bathrooms" />
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					imgShape="bevel"
+					boxShape="squircle"
+					imgShape="square"
 					img="https://images.ctfassets.net/kcm01cmyxlgq/6PdYkhzKHb6OiKg2xCgxIQ/9914251ac93d9f5ce920f2543532f301/0E4D00ED-D722-4281-8C7D-D16F2B2A7477_1_105_c.jpeg?fm=webp"
 					title="Basements" />
 				<Callout
 					variant="boxed"
 					layout="vertical"
-					imgShape="bevel"
+					boxShape="squircle"
+					imgShape="square"
 					img="https://images.ctfassets.net/kcm01cmyxlgq/SBj2WBdzLYoQsgTQPXDX6/05d0ded2da645e2972d15838961c3cdb/img_2656.webp?fm=webp"
 					title="Decks" />
 			</PageSection>
@@ -109,6 +114,7 @@ export default function Home() {
 				imgAlt="JZ Home Improvement - Expert Work. Honest Pricing. Beautiful Results."
 				imgId='jz-master-bathroom'
 				variant="anchored-img"
+			    height="50vh"
 			>
 				<PageTitleHeader title="JZ Home Improvement" />
 				<h2><span> Expert Work. </span><span> Honest Pricing. </span><span> Beautiful Results.</span></h2>
@@ -140,6 +146,7 @@ export default function Home() {
 				imgAlt="JZ Home Improvement - Expert Work. Honest Pricing. Beautiful Results."
 				imgId='jz-hall-bathroom'
 				variant="anchored-img"
+			    height="50vh"
 			>
 				<PageTitleHeader title="JZ Home Improvement" />
 				<h2><span> Expert Work. </span><span> Honest Pricing. </span><span> Beautiful Results.</span></h2>

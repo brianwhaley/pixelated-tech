@@ -20,7 +20,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -53,7 +53,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -86,7 +86,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -121,7 +121,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -154,7 +154,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -187,7 +187,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -220,7 +220,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -253,7 +253,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -286,7 +286,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -319,7 +319,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -388,7 +388,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -421,7 +421,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
@@ -454,7 +454,7 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
+            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'

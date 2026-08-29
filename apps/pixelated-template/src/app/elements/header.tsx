@@ -13,14 +13,16 @@ export default function Header() {
 			<MenuAccordionButton />
 			<MenuAccordion menuItems={routes} />
 			<PageSection columns={1} id="header-section">
-				<SmartImage
-					id="logo"
-					src="/images/placeholder.png"
-					alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
-					aboveFold={true}
-					width={120}
-					height={120}
-				/>
+				<a href="/">
+					<SmartImage
+						id="logo"
+						src="/images/placeholder.png"
+						alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
+						aboveFold={true}
+						width={120}
+						height={120}
+					/>
+				</a>
 			</PageSection>
 		</>
 	);

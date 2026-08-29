@@ -8,10 +8,14 @@ import { ToggleLoading } from '@pixelated-tech/components';
 import { getSpotifyEpisodes, type SpotifyPodcastEpisodeType } from '@pixelated-tech/components';
 import { getSpotifySeries, type SpotifyPodcastSeriesType } from '@pixelated-tech/components';
 import { PodcastEpisodeList } from '@pixelated-tech/components';
+import { usePixelatedConfig } from '@pixelated-tech/components';
 
 const podSite = "https://anchor.fm/s/10fc04b98/podcast/rss";
 
 export default function PodcastPage() {
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const siteName = siteInfo?.name || "__SITE_NAME__";
 
 	const [ series, setSeries ] = useState<SpotifyPodcastSeriesType | null>(null);
 	const [ episodes, setEpisodes ] = useState<SpotifyPodcastEpisodeType[]>([]);
@@ -36,7 +40,7 @@ export default function PodcastPage() {
 
 	return (
 		<>
-			<PageTitleHeader title="Pixelated Technologies Podcast Episodes" />
+			<PageTitleHeader title={`${siteName} Podcast Episodes`} />
 			<PageSection columns={1} maxWidth="1024px" id="podcast-section">
 				<PodcastEpisodeList episodes={episodes} series={series} />
 			</PageSection>

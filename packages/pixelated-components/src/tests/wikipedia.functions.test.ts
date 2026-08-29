@@ -82,13 +82,23 @@ describe('Wikipedia Integration Functions', () => {
 			});
 		});
 
-		it('should fall back to raw name when state is not in STATE_MAP', () => {
-			const obj = getWikipediaCityObject('London UK');
-			expect(obj).toEqual({
-				'@type': 'City',
-				name: 'London UK'
-			});
+	it('should generate State schema with sameAs when type is State', () => {
+		const obj = getWikipediaCityObject('New Jersey', 'State');
+		expect(obj).toEqual({
+			'@type': 'State',
+			name: 'New Jersey',
+			sameAs: 'https://en.wikipedia.org/wiki/New_Jersey'
 		});
+	});
+
+	it('should generate AdministrativeArea schema with sameAs for county names', () => {
+		const obj = getWikipediaCityObject('Bergen County NJ', 'AdministrativeArea');
+		expect(obj).toEqual({
+			'@type': 'AdministrativeArea',
+			name: 'Bergen County',
+			sameAs: 'https://en.wikipedia.org/wiki/Bergen_County,_New_Jersey'
+		});
+	});
 
 		it('should return null for null, undefined, or non-string inputs', () => {
 			expect(getWikipediaCityObject(null)).toBeNull();

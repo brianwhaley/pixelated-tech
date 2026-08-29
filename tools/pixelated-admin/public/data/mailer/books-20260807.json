@@ -143,7 +143,8 @@
                 "fnbcevents@gmail.com"
             ],
             "category": "Food & Beverage",
-            "status": "Emailed"
+            "status": "Deferred",
+			"notes": "Possible author event in 2027"
         },
         {
             "name": "Denville Museum / Denville Historical Society",
@@ -1120,11 +1121,12 @@
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
-                "media@retaildaily.com",
-                "editor@retaildaily.com"
+                "Chloe.Riley@Informa.com",
+				"William.Wilson@Informa.com",
+				"Timothy.Inklebarger@Informa.com"
             ],
             "category": "Podcast",
-            "status": "Emailed",
+            "status": "Not Emailed",
             "lastModified": "2026-08-17T15:28:17.153Z"
         },
         {
@@ -1146,7 +1148,7 @@
                 "media@rethinkretail.com"
             ],
             "category": "Podcast",
-            "status": "Emailed",
+            "status": "Email Failed",
             "lastModified": "2026-08-17T15:28:18.248Z"
         },
         {
@@ -1166,10 +1168,10 @@
             "contactFirstName": "",
             "contactLastName": "",
             "contactEmail": [
-                "hello@werenotreallystrangers.com"
+                "info@notreallystrangers.com"
             ],
             "category": "Podcast",
-            "status": "Emailed",
+            "status": "Not Emailed",
             "lastModified": "2026-08-17T15:28:21.760Z"
         },
         {
@@ -1224,7 +1226,7 @@
                 "matty@theindyauthor.com"
             ],
             "category": "Podcast",
-            "status": "Emailed",
+            "status": "Email Failed",
             "lastModified": "2026-08-17T15:28:30.347Z"
         },
         {
@@ -2279,7 +2281,7 @@
                 "info@larte.biz"
             ],
             "category": "Food & Beverage",
-            "status": "Emailed",
+            "status": "Declined",
             "lastModified": "2026-08-12T15:00:08.873Z"
         },
         {

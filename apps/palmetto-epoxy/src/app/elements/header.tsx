@@ -3,15 +3,15 @@
 
 import React from "react";
 import { SmartImage, usePixelatedConfig } from "@pixelated-tech/components";
-import Social from "@/app/elements/social";
+import { SocialTags } from "@pixelated-tech/components";
 import Nav from "@/app/elements/nav";
 
 export default function Header() {
 	const pixelatedConfig = usePixelatedConfig();
 	const siteInfo = pixelatedConfig?.siteInfo;
+
 	return (
 		<div className="section-container">
-
 			<div className="row-10col">
 				<div className="grid-s1-e3 header-logo">
 					<a href="/">
@@ -22,12 +22,8 @@ export default function Header() {
 							loading="eager" />
 					</a>
 				</div>
-			
-
 				<div className="grid-s3-e10 header-right">
-
 					<div className="row-1col">
-					
 						<div className="grid-item header-address">
 							<h3>Dennis and Martha Aberle</h3>
 							<h3>{siteInfo.address.addressLocality}, {siteInfo.address.addressRegion}</h3>
@@ -35,21 +31,15 @@ export default function Header() {
 							<h3>Tel : {siteInfo.telephone}</h3>
 							<br />
 						</div>
-
 						<div className="grid-item header-social centered">
-							<Social />
+							<SocialTags columns={10} />
 						</div>
-
 					</div>
-
 				</div>
-
 			</div>
-
 			<div>
 				<Nav />
 			</div>
-			
 		</div>
 	);
 }

@@ -105,9 +105,18 @@ export function Hero({ img, imgAlt, video, poster, title, description, uploadDat
 		return (
 			<>
 				<div className={"hero" + (variant ? " " + variant : '')} id={"hero-" + id?.toString()}>
-					<SmartImage src={img} alt={imgAlt || ''} id={id?.toString() || ''} 
-						quality={100} width={4000} height={3000} /* unoptimized={true} */
-						fetchPriority="high" aboveFold={true}
+					<SmartImage 
+						src={img} 
+						alt={imgAlt || ''} 
+						id={id?.toString() || ''} 
+						quality={75} 
+						width={2000} 
+						height={1500} 
+						/* unoptimized={true} */
+						fetchPriority="high" 
+						sizes="75vw"
+						loading="eager"
+						aboveFold={true}
 						style={{height: height ?? '60vh'}} />
 					{ children }
 				</div>

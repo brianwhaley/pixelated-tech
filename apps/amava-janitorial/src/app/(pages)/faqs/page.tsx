@@ -10,7 +10,7 @@ export default function FAQPage() {
 		<>
 			<PageHero />
 
-			<PageSection columns={1} maxWidth="1024px" id="header-section">
+			<PageSection columns={1} maxWidth="1024px" padding="20px" id="header-section">
 				<PageTitleHeader
 					title="Frequently Asked Questions"
 				/>

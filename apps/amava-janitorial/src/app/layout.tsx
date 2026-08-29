@@ -5,7 +5,7 @@ import { SchemaWebPage } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import LayoutClient from '@/app/elements/layout-client';
 import Header from '@/app/elements/header';
-import Nav from '@/app/elements/nav';
+// import Nav from '@/app/elements/nav';
 import Footer from '@/app/elements/footer';
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
@@ -32,7 +32,7 @@ export default async function RootLayout({
 			<body>
 				<PixelatedServerConfigProvider>
 					<header><Header /></header>
-					<nav><Nav /></nav>
+					{ /* <nav><Nav /></nav> */ }
 					<main>{children}</main>
 					<footer><Footer /></footer>
 				</PixelatedServerConfigProvider>

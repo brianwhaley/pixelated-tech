@@ -48,7 +48,7 @@ describe('Assessment page', () => {
 	});
 
 	it('renders selection and loads assessment', async () => {
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page.tsx');
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#selection-section')).toBeTruthy());
 		// After fetch the assessment should render title
@@ -59,7 +59,7 @@ describe('Assessment page', () => {
 
 	it('shows no website message when none provided', async () => {
 		currentSample = { ...sampleAssessment, websiteDomain: {} } as any;
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page.tsx');
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
 		expect(container).toHaveTextContent('No current website domain provided.');
@@ -67,11 +67,27 @@ describe('Assessment page', () => {
 
 	it('renders existingSite strengths when present', async () => {
 		currentSample = { ...sampleAssessment, existingSite: [{ url: 'https://x', strengths: ['s1'], areasForImprovement: [] }] } as any;
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page.tsx');
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
 		const { container } = render(<Page />);
 		await waitFor(() => expect(container.querySelector('#marketing-analysis-section')).toBeTruthy());
 		expect(container).toHaveTextContent('Strengths');
 		expect(container).toHaveTextContent('s1');
+	});
+
+	it('does not show typography additional notes when none are provided', async () => {
+		currentSample = { ...sampleAssessment, visualDesign: { ...sampleAssessment.visualDesign, additionalNotes: [] } } as any;
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
+		const { container } = render(<Page />);
+		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
+		expect(container).not.toHaveTextContent('Additional Notes');
+	});
+
+	it('does not show recommended keywords when the keywords list is empty', async () => {
+		currentSample = { ...sampleAssessment, keywords: [] } as any;
+		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
+		const { container } = render(<Page />);
+		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
+		expect(container).not.toHaveTextContent('Recommended Keywords');
 	});
 
 	// additional branch tests can be added later; keeping focused smoke tests for now

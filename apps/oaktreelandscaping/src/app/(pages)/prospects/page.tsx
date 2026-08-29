@@ -1,7 +1,7 @@
  
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageTitleHeader, PageSection, useFileData } from "@pixelated-tech/components";
 import { Table } from "@pixelated-tech/components";
 import "./prospects.css";
@@ -11,7 +11,7 @@ export default function Requests() {
 	const [prospectData, setProspectData] = useState<any[]>([]);
 
 	// Transform the loaded JSON into table format
-	React.useEffect(() => {
+	useEffect(() => {
 		if (jsonData) {
 			const trimmedData: any[] = Array.isArray(jsonData)
 				? jsonData.map((item: any, index: number) => ({

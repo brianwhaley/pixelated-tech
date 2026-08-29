@@ -150,7 +150,8 @@ describe('Pixelated Template site coverage', () => {
 			name: 'Home',
 			Component: Home,
 			assertion: async () => {
-				expect(screen.getByText('Welcome to __SITE_NAME__')).not.toBeNull();
+				expect(screen.getByTestId('page-title-header')).not.toBeNull();
+				expect(screen.getByText('__SITE_NAME__')).not.toBeNull();
 			},
 		},
 		{

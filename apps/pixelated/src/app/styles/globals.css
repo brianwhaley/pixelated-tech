@@ -162,15 +162,6 @@ footer section:has(.footer-menu) {
 	border: 1px solid #999; 
 }
 
-
-@media screen and (max-width: 768px) {
-    #socialtag-section {
-        max-width: 70%;
-        margin: 0 auto;
-    }
-}
-
-
 #samples-tiles-section .callout-subtitle {
     margin: 0 auto;
 }

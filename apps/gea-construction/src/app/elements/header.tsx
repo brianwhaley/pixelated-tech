@@ -16,14 +16,16 @@ export default function Header() {
 					height="300px"
 				>
 					<div className="hero-content centered">
-						<SmartImage
-							id="logo"
-							src="/images/gea-construction-logo-2-color.png"
-							alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
-							aboveFold={true}
-							width={525}
-							height={237.5}
-						/>
+						<a href="/">
+							<SmartImage
+								id="logo"
+								src="/images/gea-construction-logo-2-color.png"
+								alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
+								aboveFold={true}
+								width={525}
+								height={237.5}
+							/>
+						</a>
 					</div>
 				</Hero>
 			</PageSection>

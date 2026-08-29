@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { render as rtlRender, RenderOptions } from '@testing-library/react';
 import { expect } from 'vitest';
-import { PixelatedClientConfigProvider } from '../../packages/pixelated-components/src/components/config/config.client';
-import type { PixelatedConfig } from '../../packages/pixelated-components/src/components/config/config.types';
+import { PixelatedClientConfigProvider } from '@pixelated-tech/components';
+import type { PixelatedConfig } from '@pixelated-tech/components';
 
 export const mockConfig: PixelatedConfig = {} as PixelatedConfig;
 export const createMockConfig = (overrides: Partial<PixelatedConfig>): PixelatedConfig => ({

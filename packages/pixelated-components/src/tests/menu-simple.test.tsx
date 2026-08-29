@@ -1,6 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import { render } from '../test/test-utils';
+
+let mockPathname = '/';
+vi.mock('next/navigation', () => ({
+	usePathname: () => mockPathname,
+}));
 import { MenuSimple } from '../components/elements/menu-simple';
 
 describe('MenuSimple Component', () => {
@@ -108,5 +113,16 @@ describe('MenuSimple Component', () => {
 		render(<MenuSimple menuItems={itemsNoTarget} />);
 		const link = screen.getByText('Internal') as HTMLAnchorElement;
 		expect(link.target).toBe('');
+	});
+
+	it('should apply selected class to the active link', () => {
+		mockPathname = '/about';
+		render(<MenuSimple menuItems={mockMenuItems} />);
+		const aboutLink = screen.getByText('About');
+		expect(aboutLink.classList.contains('selected')).toBe(true);
+	});
+
+	afterEach(() => {
+		mockPathname = '/';
 	});
 });
