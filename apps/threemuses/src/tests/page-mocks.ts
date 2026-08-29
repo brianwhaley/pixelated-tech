@@ -224,6 +224,7 @@ const defaultMocks: Record<string, any> = {
 	MenuSimple: mockComponent('MenuSimple', 'menu-simple'),
 	GoogleAnalytics: mockComponent('GoogleAnalytics', 'google-analytics'),
 	PixelatedFooter: mockComponent('PixelatedFooter', 'pixelated-footer'),
+	SocialTags: mockComponent('SocialTags', 'social-tags'),
 	PageGridItem: mockComponent('PageGridItem'),
 	PageFlexItem: mockComponent('PageFlexItem'),
 	BusinessFooter: mockComponent('BusinessFooter'),

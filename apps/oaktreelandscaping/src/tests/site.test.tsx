@@ -45,7 +45,6 @@ import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
 import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
 import StyleGuidePage from '@/app/(pages)/styleguide/page';
-import UnderConstruction from '@/app/elements/underconstruction';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
@@ -76,6 +75,17 @@ describe('Oaktree Landscaping coverage', () => {
 			'readme',
 			'recipes',
 		],
+
+		config: pixelatedConfig,
+		setPixelatedConfigOverride,
+		headersModule: { headers },
+		cloudinaryProductEnv: 'test_env',
+		render,
+		screen,
+		createElement: React.createElement,
+		notFoundAssertion: () => {
+			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
+		},
 	});
 
 	runCommonElementCoverage({
@@ -305,13 +315,6 @@ describe('Oaktree Landscaping coverage', () => {
 			Component: StyleGuidePage,
 			assertion: async () => {
 				await waitFor(() => expect(document.getElementById('colors-section')).not.toBeNull());
-			},
-		},
-		{
-			name: 'Under Construction',
-			Component: UnderConstruction,
-			assertion: async () => {
-				await waitFor(() => expect(screen.getByTestId('callout')).not.toBeNull());
 			},
 		},
 	]);

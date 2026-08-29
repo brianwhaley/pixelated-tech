@@ -20,7 +20,7 @@ export default function Header() {
 			<style dangerouslySetInnerHTML={{ __html: customCSS }} />
 			<div className="section-container">
 				<MenuAccordionButton />
-				<h2 className="pull-left text-outline">PixelVivid</h2>
+				<a href="/"><h2 className="pull-left text-outline">PixelVivid</h2></a>
 				<div className="right">
 					<CartButton href={'/cart'} />
 				</div>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageTitleHeader, PageSectionHeader, PageSection, PageGridItem, FormEngine, usePixelatedConfig, FacebookPixel } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
-import SocialTags from '@/app/elements/socialtags';
+import { SocialTags } from "@pixelated-tech/components";
 
 export default function SchedulePage() {
 	const pixelatedConfig = usePixelatedConfig();

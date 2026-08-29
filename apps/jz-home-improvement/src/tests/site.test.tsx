@@ -67,7 +67,25 @@ describe('JZ Home Improvement coverage', () => {
 			'readme',
 			'recipes',
 		],
-		ignoredCommonRoutes: ['socialtags'],
+
+		Nav,
+		Footer,
+		LayoutClient,
+		NotFoundElement: NotFound,
+		RootLayout,
+		proxy,
+		humansGET,
+		securityGET,
+		config: pixelatedConfig,
+		setPixelatedConfigOverride,
+		headersModule: { headers },
+		cloudinaryProductEnv: 'test_env',
+		render,
+		screen,
+		createElement: React.createElement,
+		notFoundAssertion: () => {
+			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
+		},
 	});
 
 	runCommonElementCoverage({

@@ -1,0 +1,100 @@
+{
+	"companyName": "Palmetto 2 Step",
+	"companyContact": "Yon Lucas",
+	"date": "August 20, 2026",
+	"email": "yon.lucas@palmetto2step.com",
+	"phone": "(854) 683-5154",
+	"address": {
+		"streetAddress": "158 Tanners Run",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "USA"
+	},
+	"proposalType": "Web Site Build",
+	"goal": 
+	[
+		"To enhance the existing web presence for Palmetto 2 Step on the GoDaddy platform"
+	],
+	"deliverables": [
+		"Additional pages for the palmetto2step.com web site"
+	],
+	"features": [
+		{ 
+			"feature": "New Web Site Content",
+			"description": [
+				"Gallery (Photos / Videos)",
+				"Frequently Asked Questions",
+				"Services Detail Pages",
+				"Service Areas Listing Page",
+				"Service Areas Detail Pages"
+			]
+		},{
+			"feature": "Other Content Adjustments",
+			"description": [
+				"Additional Logo Versions - small version, horizontal version",
+				"Logo file size and webp format optimization",
+				"Favicon.ico fix (if possible on GoDaddy)",
+				"One Trusted Team photo on the About us page",
+				"Investigate / repair React console errors (if possible on GoDaddy)",
+				"Investigate / fix caching for HTML and Font files (if possible on GoDaddy)",
+				"Investigate / add additional helper files - llms-full.txt, rss.xml, manifest, sitemap.json, humans.txt, security.txt, ai.txt, browserconfig.xml (if possible on GoDaddy)"
+			]
+		},{
+			"feature": "Blog",
+			"description": [
+				"Blog Schema on Blog posts (if possible on GoDaddy)",
+				"52 week Blog Calendar with topics and titles for each week"
+			]
+		},{
+			"feature": "Social Media Accounts",
+			"description": [
+				"Create new social media accounts:",
+				"Google Business, Instagram, Threads, Nextdoor",
+				"Links of new / existing social media accounts added to the web site"
+
+			]
+		},{
+			"feature": "Other Tools",
+			"description": [
+				"Google Analytics setup and implementation",
+				"Google Search Console setup and implementation"
+			]
+		},{
+			"feature": "Citation Management",
+			"description": [
+				"Create new citations on relevant business directories",
+				"Links of new / existing citations added to the web site"
+
+			]
+		},{
+			"feature": "Press Release",
+			"description": [
+				"Write and distribute press releases to relevant media outlets",
+				"Links of press releases added to the web site"
+
+			]
+		}
+	],
+	"startDate": "8/27/2026",
+	"milestones": [
+		{
+			"milestone": "Information Architecture and design agreement",
+			"date": "8/31/2026"
+		},{
+			"milestone": "Build out of web site changes - new pages, content adjustments, blog - palmetto2step.com",
+			"date": "9/7/2026"
+		},{
+			"milestone": "Site analytics and marketing - Google Analytics, Social Media Accounts, Citation Management, Press Release",
+			"date": "10/2/2026"
+		}
+	],
+	"paymentTotal": {
+		"amount": 2000,
+		"isDiscounted": true,
+		"description": [
+			"Initial base pricing for building the palmetto2step web site is $2,500",
+			"Discounted pricing for building and maintaining the palmetto2step web site on the GoDaddy platform"
+		]
+	}
+}

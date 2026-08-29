@@ -107,7 +107,21 @@ describe('Palmetto Epoxy coverage', () => {
 			'readme',
 			'recipes',
 		],
-		ignoredCommonRoutes: ['socialtags'],
+
+		securityGET,
+		config: pixelatedConfig,
+		setPixelatedConfigOverride,
+		headersModule: { headers },
+		cloudinaryProductEnv: 'test_env',
+		render,
+		screen,
+		createElement: React.createElement,
+		footerAssertion: () => {
+			expect(screen.getByText(/Palmetto Epoxy\. All rights reserved\./i)).not.toBeNull();
+		},
+		notFoundAssertion: () => {
+			expect(document.getElementById('notfound-section')).not.toBeNull();
+		},
 	});
 
 	runCommonElementCoverage({
@@ -127,11 +141,16 @@ describe('Palmetto Epoxy coverage', () => {
 		render,
 		screen,
 		createElement: React.createElement,
-		footerAssertion: () => {
-			expect(screen.getByText(/Palmetto Epoxy\. All rights reserved\./i)).not.toBeNull();
-		},
 		notFoundAssertion: () => {
 			expect(document.getElementById('notfound-section')).not.toBeNull();
+		},
+		headerAssertion: () => {
+			const smartImage = screen.queryByTestId('smart-image');
+			expect(smartImage).not.toBeNull();
+		},
+		navAssertion: () => {
+			const nav = screen.queryByTestId('menu-simple');
+			expect(nav).not.toBeNull();
 		},
 	});
 

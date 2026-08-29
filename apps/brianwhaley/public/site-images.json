@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 71
+    "imageCount": 81
   },
   "images": [
     "images/blue-splatter-3.jpg",
@@ -22,12 +22,15 @@
     "images/icons/up.jpg",
     "images/icons/www-bw.png",
     "images/icons/www.png",
+    "images/logos/24symbols-logo.png",
     "images/logos/500px-logo.png",
     "images/logos/amazon-logo.png",
-    "images/logos/ancestry-logo.jpg",
+    "images/logos/ancestry-logo.png",
     "images/logos/angi-logo.png",
+    "images/logos/barnesandnoble-logo.png",
     "images/logos/blog-logo.png",
     "images/logos/blurb-logo.png",
+    "images/logos/chirpbooks-logo.png",
     "images/logos/cv-icon.jpg",
     "images/logos/ebay-logo.png",
     "images/logos/etsy-logo.png",
@@ -36,6 +39,8 @@
     "images/logos/foursquare-logo.png",
     "images/logos/github-logo.png",
     "images/logos/goodreads-logo.png",
+    "images/logos/google-play-books-logo.png",
+    "images/logos/google-play-logo.png",
     "images/logos/google-plus-logo-2.png",
     "images/logos/google-plus-logo.png",
     "images/logos/google-reader-logo.png",
@@ -43,6 +48,8 @@
     "images/logos/instagram-logo.jpg",
     "images/logos/instagram-logo.png",
     "images/logos/istock-logo.jpg",
+    "images/logos/kobo-logo.png",
+    "images/logos/librofm-logo.png",
     "images/logos/linkedin-logo.png",
     "images/logos/nextdoor-logo.png",
     "images/logos/patch-logo.png",
@@ -50,6 +57,7 @@
     "images/logos/reddit-logo.png",
     "images/logos/shutterfly-logo.png",
     "images/logos/shutterstock-logo.png",
+    "images/logos/storytel-logo.png",
     "images/logos/threads-logo.png",
     "images/logos/thumbtack-logo.jpg",
     "images/logos/tumblr-logo.png",
@@ -73,6 +81,8 @@
     "images/pix/pix-bg.jpg",
     "images/pix/pix-bg.png",
     "images/pizza-gaine.jpg",
+    "images/stock/readme.jpg",
+    "images/stock/resume.jpg",
     "images/supermarket-shenanigans-cover.jpg"
   ]
 }

@@ -8,7 +8,7 @@ import { PageSection } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
-import SocialTags from "@/app/elements/socialtags";
+import { SocialTags } from "@pixelated-tech/components";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "./page6.css";
 

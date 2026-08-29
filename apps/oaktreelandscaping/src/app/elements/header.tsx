@@ -11,14 +11,16 @@ export default function Header() {
 			<MenuAccordionButton />
 			<MenuAccordion menuItems={routes} />
 			<PageSection columns={1} id="header-section">
-				<SmartImage
-					id="logo"
-					src="/images/logo/oaktree-logo-horizontal.png"
-					alt="Oaktree Landscaping"
-					aboveFold={true}
-					width={3500}
-					height={811}
-				/>
+				<a href="/">
+					<SmartImage
+						id="logo"
+						src="/images/logo/oaktree-logo-horizontal.png"
+						alt="Oaktree Landscaping"
+						aboveFold={true}
+						width={3500}
+						height={811}
+					/>
+				</a>
 			</PageSection>
 		</>
 	);

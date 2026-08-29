@@ -3,22 +3,39 @@ html, body { padding: 0; margin: 0; }
 #root { min-height:100vh; }
 
 
-@media screen and (max-width: 768px) {
-    #social-section .page-section-content {
-        max-width: 70%;
-		margin: 0 auto;
+/* ========================================
+    HEADER
+======================================== */
+
+header #header-section {
+    padding: 20px;
+    .page-section-content {
+        display: flex;
+    }
+    img {
+        margin: 0 auto;
+    }
+}
+
+header .menu-wrapper {
+    margin: auto 10px;
+}
+
+@media (max-width: 767px) {
+    header #header-section {
+        .page-section-content {
+            flex-direction: column;
+        }
     }
 }
 
 
-.hero {
-    height: 40vh !important;
-}
 
 
 /* ========================================
     MENU
 ======================================== */
+
 .menu-wrapper {
     margin: 5px 0;
 }
@@ -44,38 +61,83 @@ html, body { padding: 0; margin: 0; }
 
 
 
-.callout {
-    border: 3px solid var(--secondary-color) !important;
 
-    .callout-image {
-        border: 10px solid var(--primary-color);
-    }
 
+/* ========================================
+    HERO
+======================================== */
+
+.hero {
+    height: 50vh !important;
 }
 
-
-
-header #header-section {
-    padding: 10px 0 0 0;
-    img {
-        margin: 0 auto;
+@media (max-width: 767px) {
+    .hero {
+        height: 30vh !important;
+    }
+    .hero img {
+        min-height: 70vh !important;
+        object-position: 50% 0% !important;
     }
 }
 
 
 /* ========================================
-        PAGES 
+    FOOTER MENU
 ======================================== */
 
-#home-services-section {
-    .callout .callout-image {
-        width: 100%;
-        clip-path: none !important;
-    }
-    .callout .callout-image img {
-        clip-path: none !important;
+footer section:has(.footer-menu) {
+    & .footer-menu {
+        .footer-menu-item a:hover {
+            background-color: var(--tertiary-color) !important;
+            color: contrast-color(var(--tertiary-color)) !important;
+        }
     }
 }
+
+footer section:has(.footer-menu) {
+    & .footer-menu {
+        .footer-menu-item a.selected {
+            background-color: var(--secondary-color) !important;
+            color: contrast-color(var(--secondary-color)) !important;
+        }
+    }
+}
+
+
+
+
+/* ========================================
+    SOCIAL TAGS
+======================================== */
+
+footer #socialtag-section .page-section-content {
+    max-width: 768px !important;
+}
+
+
+
+/* ========================================
+    CALLOUTS
+======================================== */
+
+main .callout,
+footer .callout {
+    border: 4px solid var(--secondary-color) !important;
+    padding: 5px !important;
+
+    .callout-image {
+        border: 6px solid var(--primary-color);
+        width: 100% !important; /* for mobile */
+        clip-path: none !important;
+    }
+
+    .callout-image img {
+        clip-path: none !important;
+    }
+
+}
+
 
 
 
@@ -97,4 +159,8 @@ header #header-section {
         width: 100%;
         margin: 0 auto;
     }
+}
+
+#services-callouts section {
+    background-color: transparent;
 }

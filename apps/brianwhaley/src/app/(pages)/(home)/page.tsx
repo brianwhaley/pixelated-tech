@@ -3,8 +3,7 @@
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
-import SocialTags from "@/app/elements/socialtags";
-
+import { SocialTags } from "@pixelated-tech/components";
  
 export default function Work() {
     
@@ -34,7 +33,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='/resume' 
-					img='/images/icons/resume-icon.png'
+					img='/images/stock/resume.jpg'
 					imgShape='squircle'
 					subtitle='Resume'
 					content='A digital version of my curriculum vitae, with a 
@@ -53,7 +52,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='/readme' 
-					img='/images/icons/readme-icon.png'
+					img='/images/stock/readme.jpg'
 					imgShape='squircle'
 					subtitle='Readme'
 					content="The objective of my README is to share who I am, set some expectations, 
@@ -82,10 +81,7 @@ export default function Work() {
 					img='/images/logos/github-logo.png'
 					imgShape='squircle' 
 					subtitle='GitHub Portfolio'
-					content='This is a link to my GitHub account.  I have only uploaded a few pieces of code.
-						repositories include a library of LotusScripts and agents;
-						pilot applications written in jQuery, Angular, React and Node, Spring iOS, and Java Android.  
-						I enjoy working most on my component library and using it to rabidly build web sites for small businesses.'/>
+					content='This is a link to my GitHub account.  The primary repository is a monorepo I use to build custom web sites for small businesses, and the underlying platform components.'/>
 			</PageSection>
 
 			<PageSection columns={1} background="#DDD" id="social-section">
@@ -122,11 +118,7 @@ export default function Work() {
 					img='/images/blue-splatter-3.jpg'
 					imgShape='squircle' 
 					title='Custom Sunglasses'
-					content='I refurbish, repair, and customize Oakley sunglasses. 
-						I enjoy providing custom paint jobs with a splash of colors - 
-						marbled, splattered, and dripped. Custom paint can be one color, 
-						or a combination of complimentary colors. Patterns can also be small or large, 
-						thin or thick, dense or sparse. As the customer, you choose!'/>
+					content='I refurbish, repair, and customize Oakley sunglasses. I enjoy providing custom paint jobs with a splash of colors - marbled, splattered, and dripped. Custom colors and patterns can all be customized. As the customer, you choose!'/>
 			</PageSection>
 		</>
 	);

@@ -130,14 +130,7 @@ Your VisualDesign structure in siteconfig.types.ts is already excellent.
 Next Step: Ensure that all site-level CSS variables are strictly derived from this config.
 Tooling: We can create a script that validates pixelated.config.json against its TypeScript schema before build, ensuring that a "configuration-driven" site is also a "type-safe" site.
 
-- [  ]  Automated Asset Management
-Since you have a root-level site-images.json, we can improve DX by:
-Creating a CLI tool (e.g., npm run sync-assets) that scans your project and generates these manifests automatically.
-Ensuring SmartImage can resolve assets by a simple "Key" (like id="logo") instead of requiring full URLs in every component.
-Would you like to start by expanding the componentMap or should we try implementing a catch-all route for one of the sites to see it in action?
-
 - [  ] consider blogs as a subdirectory instead of a subdomain for improved SEO
-
 
 - [ ] **Universal Page Blocks (MVP)**:
   - [ ] **PageList**: A generic "Retailer" component that iterates over any data source (FAQs, Team, Projects) using a single JSON-defined layout. Eliminates the need for specialized `ServiceList` components.

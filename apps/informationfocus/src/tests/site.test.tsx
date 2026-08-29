@@ -10,7 +10,7 @@ import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
 import Footer from '@/app/elements/footer';
 import LayoutClient from '@/app/elements/layoutclient';
-import NotFoundElement from '@/app/elements/notfound';
+import NotFoundElement from '@/app/not-found';
 import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
 import Resume from '@/app/(pages)/resume/page';
@@ -41,7 +41,14 @@ describe('Site coverage', () => {
 			'service-areas',
 			'updates',
 		],
-		ignoredCommonRoutes: ['socialtags'],
+
+		cloudinaryProductEnv,
+		render,
+		screen,
+		createElement: React.createElement,
+		notFoundAssertion: () => {
+			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
+		},
 	});
 
 	runCommonElementCoverage({
@@ -49,7 +56,7 @@ describe('Site coverage', () => {
 		Nav,
 		Footer,
 		LayoutClient,
-		NotFoundElement,
+		NotFoundElement: NotFoundElement,
 		RootLayout,
 		proxy,
 		humansGET,
@@ -61,6 +68,9 @@ describe('Site coverage', () => {
 		render,
 		screen,
 		createElement: React.createElement,
+		notFoundAssertion: () => {
+			expect(screen.getByTestId('four-oh-four')).not.toBeNull();
+		},
 	});
 
 	runPageSmokeTests([
