@@ -43,7 +43,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='https://www.linkedin.com/in/brianwhaley' 
-					img='/images/logos/linkedin-logo.png'
+					img='https://www.pixelated.tech/images/logos/linkedin-logo.png'
 					imgShape='squircle' 
 					subtitle='LinkedIn'
 					content='Check out my LinkedIn profile, including my experience, education, licenses and certifications, 
@@ -61,7 +61,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='http://twitter.com/brianwhaley' 
-					img='/images/logos/x-logo.png'
+					img='https://www.pixelated.tech/images/logos/x-logo.png'
 					imgShape='squircle' 
 					subtitle='X (Twitter)'
 					content='I use this account to regularly post great articles I come across that strike me on topics such as 
@@ -69,7 +69,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='https://www.goodreads.com/review/list/49377228-brian-whaley?shelf=books-for-work' 
-					img='/images/logos/goodreads-logo.png'
+					img='https://www.pixelated.tech/images/logos/goodreads-logo.png'
 					imgShape='squircle' 
 					subtitle='Goodreads'
 					content='This Goodreads Shelf is a collection of books that i have found to be 
@@ -78,7 +78,7 @@ export default function Work() {
 				<Callout
 					layout='vertical' 
 					url='https://github.com/brianwhaley'
-					img='/images/logos/github-logo.png'
+					img='https://www.pixelated.tech/images/logos/github-logo.png'
 					imgShape='squircle' 
 					subtitle='GitHub Portfolio'
 					content='This is a link to my GitHub account.  The primary repository is a monorepo I use to build custom web sites for small businesses, and the underlying platform components.'/>

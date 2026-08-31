@@ -76,27 +76,27 @@ export function SocialCards(props: SocialCardsType) {
 		sources: mergeDeep( {
 			/* DEFAULT VALUES FOR KNOWN SOURCES */
 			blank: { url: null , entryCount: 5, iconSrc: '', iconSrcAlt: '' },
-			SOOpx: { url: null , entryCount: 5, iconSrc: '/images/logos/500px-logo.png', iconSrcAlt: '500px Post' },
-			blog: { url: null , entryCount: 5, iconSrc: '/images/logos/blog-logo.png', iconSrcAlt: 'Blog Post' },
-			ebay: { url: null , entryCount: 5, iconSrc: '/images/logos/ebay-logo.png', iconSrcAlt: 'eBay Items For Sale' },
-			etsy: { url: null , entryCount: 5, iconSrc: '/images/logos/etsy-logo.png', iconSrcAlt: 'Etsy Favorite' },
-			/* facebook: { iconSrc: '/images/logos/facebook-logo.png', iconSrcAlt: 'Facebook Wall Post' }, */
-			flickr: { userID: '', apiKey: '', tags: '', entryCount: 5, iconSrc: '/images/logos/flickr-logo.png', iconSrcAlt: 'Flickr Photo' },
+			SOOpx: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/500px-logo.png', iconSrcAlt: '500px Post' },
+			blog: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png', iconSrcAlt: 'Blog Post' },
+			ebay: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/ebay-logo.png', iconSrcAlt: 'eBay Items For Sale' },
+			etsy: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/etsy-logo.png', iconSrcAlt: 'Etsy Favorite' },
+			/* facebook: { iconSrc: 'https://www.pixelated.tech/images/logos/facebook-logo.png', iconSrcAlt: 'Facebook Wall Post' }, */
+			flickr: { userID: '', apiKey: '', tags: '', entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/flickr-logo.png', iconSrcAlt: 'Flickr Photo' },
 			/* ==========
 			NOTE - FourSquare RSS stopped working March 2019
 			========== */
-			/* foursquare: { url: null , entryCount: 5, iconSrc: '/images/logos/foursquare-logo.png', iconSrcAlt: 'FourSquare Checkin' }, */
-			github: { url: null , entryCount: 5, iconSrc: '/images/logos/github-logo.png', iconSrcAlt: 'Github Activity' },
-			goodreads: { url: null , entryCount: 5, iconSrc: '/images/logos/goodreads-logo.png', iconSrcAlt: 'GoodReads Currently Reading' },
-			instagram: { userID: '', entryCount: 5, iconSrc: '/images/logos/instagram-logo.jpg', iconSrcAlt: 'Instagram Photo' },
-			pinterest: { url: null , entryCount: 5, iconSrc: '/images/logos/pinterest-logo.png', iconSrcAlt: 'Pinterest Pin' },
-			reddit: { url: null , entryCount: 5, iconSrc: '/images/logos/reddit-logo.png', iconSrcAlt: 'Reddit Saves' },
-			shutterfly: { url: null , entryCount: 5, iconSrc: '/images/logos/shutterfly-logo.jpg', iconSrcAlt: 'Shutterfly Items' },
-			tumblr: { url: null , entryCount: 5, iconSrc: '/images/logos/tumblr-logo.png', iconSrcAlt: 'Tumblr Post' },
-			twitter: { url: null , entryCount: 5, iconSrc: '/images/logos/twitter-logo.png', iconSrcAlt: 'Twitter Tweet' },
-			x: { url: null , entryCount: 5, iconSrc: '/images/logos/x-logo.png', iconSrcAlt: 'X Post' },
-			youtube: { url: null , entryCount: 5, iconSrc: '/images/logos/youtube-logo.png', iconSrcAlt: 'Youtube Favorite Video' },
-			other: { url: null , entryCount: 5, iconSrc: '/images/logos/blog-logo.png', iconSrcAlt: 'Post' }
+			/* foursquare: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/foursquare-logo.png', iconSrcAlt: 'FourSquare Checkin' }, */
+			github: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/github-logo.png', iconSrcAlt: 'Github Activity' },
+			goodreads: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/goodreads-logo.png', iconSrcAlt: 'GoodReads Currently Reading' },
+			instagram: { userID: '', entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/instagram-logo.jpg', iconSrcAlt: 'Instagram Photo' },
+			pinterest: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/pinterest-logo.png', iconSrcAlt: 'Pinterest Pin' },
+			reddit: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/reddit-logo.png', iconSrcAlt: 'Reddit Saves' },
+			shutterfly: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/shutterfly-logo.jpg', iconSrcAlt: 'Shutterfly Items' },
+			tumblr: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/tumblr-logo.png', iconSrcAlt: 'Tumblr Post' },
+			twitter: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/twitter-logo.png', iconSrcAlt: 'Twitter Tweet' },
+			x: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/x-logo.png', iconSrcAlt: 'X Post' },
+			youtube: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/youtube-logo.png', iconSrcAlt: 'Youtube Favorite Video' },
+			other: { url: null , entryCount: 5, iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png', iconSrcAlt: 'Post' }
 		}, props.sources )
 	});
 

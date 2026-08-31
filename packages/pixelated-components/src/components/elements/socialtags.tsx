@@ -14,7 +14,7 @@ function getMyLogo(url: string): string {
 	let domain = (domainBits.length <= 2) ? domainBits[0] :
 		(domainBits.length > 2) ? domainBits.slice(1, -1).join('.') : domainBits.join('.');
 	domain = domain.charAt(0).toUpperCase() + domain.slice(1).toLowerCase();
-	const myLogo = `/images/logos/${domain.toLowerCase()}-logo.png`;
+	const myLogo = `https://www.pixelated.tech/images/logos/${domain.toLowerCase()}-logo.png`;
 	return myLogo;
 }
 
@@ -82,7 +82,7 @@ export function PartnerTags(props: PartnerTagsType) {
 								company={siteInfo?.name || ''} 
 								name={partner.name} 
 								url={partner.url} 
-								img={partner.img ?? ''} 
+								img={partner.img  || getMyLogo(partner.url)} 
 							/>
 						</PageGridItem>
 					);

@@ -84,7 +84,7 @@ export function subscribe(props: CalloutLibraryType) {
 			layout={props.layout || 'vertical'}
 			direction={props.direction || undefined}
 			url='/subscribe'
-			img='/images/icons/email-icon.png'
+			img='https://www.pixelated.tech/images/icons/email-icon.png'
 			imgShape="squircle" 
 			title='Subscribe'
 			content='Subscribe for updates and announcements about new products, 
@@ -100,7 +100,7 @@ export function specialOrder(props: CalloutLibraryType) {
 			layout={props.layout || 'vertical'} 
 			direction={props.direction || undefined}
 			url='/requests'
-			img='/images/icons/request-icon.jpg'
+			img='https://www.pixelated.tech/images/icons/request-icon.jpg'
 			imgShape='squircle'
 			title='Special Sunglass Orders'
 			content='Pixelvivid can co-create a personalized pair of 
@@ -123,7 +123,7 @@ export function feedback(props: CalloutLibraryType) {
 				layout={props.layout || 'horizontal'} 
 				direction={props.direction || undefined}
 				url="https://g.page/r/CRUehLbYQeHOEBM/review"
-				img='/images/logos/google-business.png'
+				img='https://www.pixelated.tech/images/logos/google-business.png'
 				imgShape='squircle'
 				title='Leave a Google Review'
 				content='If you have worked with us, and you were thrilled with your experience, please leave a review on our 
@@ -142,7 +142,7 @@ export function sustainabilityMessage(props: CalloutLibraryType) {
 			layout={props.layout || 'horizontal'} 
 			direction={props.direction || undefined}
 			url={undefined}
-			img='/images/icons/globe-icon.png'
+			img='https://www.pixelated.tech/images/icons/globe-icon.png'
 			title='Sustainability Message'
 			content='By purchasing PixelVivid custom painted 
                 sunglasses, you are supporting “creative upcycling”, 

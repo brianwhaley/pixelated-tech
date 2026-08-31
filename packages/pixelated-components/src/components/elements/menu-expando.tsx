@@ -230,7 +230,7 @@ export function MenuExpandoButton(props: MenuExpandoButtonType) {
 			role="button"
 			aria-label="Toggle mobile menu"
 		>
-			<SmartImage src="/images/icons/mobile-menu2.png" title="Mobile Menu" alt="Mobile Menu"/>
+			<SmartImage src="https://www.pixelated.tech/images/icons/mobile-menu2.png" title="Mobile Menu" alt="Mobile Menu"/>
 		</div>
 	);
 }

@@ -29,10 +29,13 @@ if (typeof globalThis.fetch === 'function') {
 
 vi.mock('@pixelated-tech/components', async () => {
 	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
+	const contentfulDelivery = await import('../../packages/pixelated-components/src/components/integrations/contentful.delivery.ts');
+	const mockedComponents = createPageComponentMocks();
 	return {
 		__esModule: true,
 		...actual,
-		...createPageComponentMocks(),
+		...mockedComponents,
+		getContentfulVideoMetadata: actual.getContentfulVideoMetadata ?? contentfulDelivery.getContentfulVideoMetadata,
 	};
 });
 

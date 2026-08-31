@@ -271,6 +271,53 @@ describe('Contentful Delivery API', () => {
 		});
 	});
 
+	describe('getContentfulVideoMetadata', () => {
+		const mockVideoApiProps = {
+			base_url: 'https://cdn.contentful.com',
+			space_id: mockContentfulApiProps.space_id,
+			environment: 'master',
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
+		};
+
+		it('should fetch asset metadata for a Contentful video URL', async () => {
+			const videoUrl = 'https://videos.ctfassets.net/6ewno74sai9a/asset123/video.mp4';
+			const mockAsset = {
+				sys: { id: 'asset123', createdAt: '2025-01-01T00:00:00Z' },
+				fields: {
+					title: 'Hero video',
+					description: 'Hero animation',
+					file: {
+						url: '//videos.ctfassets.net/6ewno74sai9a/asset123/video.mp4',
+						details: { duration: 120 }
+					}
+				}
+			};
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => mockAsset
+			});
+
+			const result = await contentfulModule.getContentfulVideoMetadata(videoUrl, mockVideoApiProps as any);
+
+			expect(result).toEqual({
+				contentUrl: videoUrl,
+				poster: 'https://videos.ctfassets.net/6ewno74sai9a/asset123/video.mp4',
+				title: 'Hero video',
+				name: 'Hero video',
+				description: 'Hero animation',
+				uploadDate: '2025-01-01T00:00:00Z',
+				duration: '120',
+			});
+		});
+
+		it('should return null for non-Contentful video URLs', async () => {
+			const result = await contentfulModule.getContentfulVideoMetadata('https://example.com/video.mp4', mockVideoApiProps as any);
+
+			expect(result).toBeNull();
+		});
+	});
+
 	describe('getContentfulEntryByField', () => {
 		const mockCards = {
 			items: [

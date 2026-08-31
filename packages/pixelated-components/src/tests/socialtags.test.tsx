@@ -30,7 +30,7 @@ describe('SocialTags', () => {
 		const facebookImage = screen.getByAltText('Facebook') as HTMLImageElement;
 		expect(facebookImage).toBeInTheDocument();
 		expect(facebookImage.closest('a')).toHaveAttribute('href', 'https://facebook.com/pixelated');
-		expect(facebookImage.src).toContain('/images/logos/facebook-logo.png');
+		expect(facebookImage.src).toContain('https://www.pixelated.tech/images/logos/facebook-logo.png');
 
 		const socialLinks = container.querySelectorAll('#socialtag-section a');
 		expect(socialLinks.length).toBe(2);
@@ -66,7 +66,7 @@ describe('PartnerTags', () => {
 				url: 'https://www.pixelated.tech',
 				email: 'hello@pixelated.tech',
 				partners: [
-					{ name: 'Pocket Casts', url: 'https://pca.st/o8v0icqv', img: '/images/logos/pocket-casts-logo.png' },
+					{ name: 'Pocket Casts', url: 'https://pca.st/o8v0icqv', img: 'https://www.pixelated.tech/images/logos/pocket-casts-logo.png' },
 					{ name: 'No Url Partner', url: '', img: '' },
 					{ name: 'Example Partner', url: 'https://example.com/partner', img: '' },
 				],
@@ -85,7 +85,7 @@ describe('PartnerTags', () => {
 		const examplePartnerImage = screen.getByAltText('Pixelated Technologies on Example Partner') as HTMLImageElement;
 		expect(examplePartnerImage).toBeInTheDocument();
 		expect(examplePartnerImage.closest('a')).toHaveAttribute('href', 'https://example.com/partner');
-		expect(examplePartnerImage.src).toContain('/images/logos/example-logo.png');
+		expect(examplePartnerImage.src).toContain('https://www.pixelated.tech/images/logos/example-logo.png');
 
 		expect(container.querySelector('img[alt="Pixelated Technologies on No Url Partner"]')).toBeNull();
 	});
