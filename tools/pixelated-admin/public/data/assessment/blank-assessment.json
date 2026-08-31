@@ -1,0 +1,115 @@
+{
+	"companyName": "",
+	"companyContact": "",
+	"date": "",
+	"email": "",
+	"phone": "",
+	"address": {
+		"streetAddress": "",
+		"addressLocality": "",
+		"addressRegion": "",
+		"postalCode": "",
+		"addressCountry": ""
+	},
+	"primaryAudience": [],
+	"secondaryAudience": [],
+	"marketOverview": [],
+	"currentSocialMedia": [],
+	"currentAdvertisingPartners": [],
+	"currentEarnedMedia": [],
+	"existingSite": [
+		{
+			"url": "",
+			"strengths": [],
+			"areasForImprovement": []
+		}
+	],
+	"similarCompanyNames": [
+		{
+			"name": "",
+			"urls": [
+				""
+			],
+			"summary": ""
+		}
+	],
+	"competitors": [
+		{
+			"name": "",
+			"urls": [
+				""
+			],
+			"summary": ""
+		}
+	],
+	"currentBusinessPlan": [],
+
+	"references": [
+		{ 
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{ 
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		},
+		{ 
+			"name": "JZ Home Improvement",
+			"url": "https://www.jzhomeimprovement.com",
+			"contactName": "",
+			"contactEmail": "",
+			"contactPhone": "",
+			"summary": " Local Union NJ home improvement contractor specializing in kitchen and bathroom remodeling, basement finishing, decks and outdoor spaces, and custom carpentry."
+		}
+	],
+	"nextSteps": [],
+	"visualDesign": {
+		"primary": "",
+		"secondary": "",
+		"tertiary": "",
+		"accent1": "",
+		"accent2": "",
+		"accent3": "",
+		"headerFont": {
+			"name": "",
+			"url": ""
+		},
+		"bodyFont": {
+			"name": "",
+			"url": ""
+		},
+		"additionalNotes": []
+	},
+	"websiteDomain": {
+		"currentUrls": [],
+		"proposedUrls": []
+	},
+	"logo": [
+		{
+			"url": "",
+			"altText": ""
+		}
+	],
+	"informationArchitecture": [
+		{
+			"route": "",
+			"title": "",
+			"notes": []
+		}
+	],
+	"blogRoute": {
+		"enabled": false,
+		"route": ""
+	},
+	"keywords": [],
+	"differentiation": [],
+	"proposedSocialMediaAccounts": []
+}

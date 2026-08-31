@@ -40,32 +40,6 @@
 	"currentEarnedMedia": [
 		"Word-of-mouth recommendations through local realtor partnerships and Bluffton Fire Department community networks."
 	],
-	"references": [
-		{ 
-			"name": "Palmetto Epoxy",
-			"url": "https://www.palmetto-epoxy.com",
-			"contactName": "Martha Aberle",
-			"contactEmail": "palmettoepoxy@gmail.com",
-			"contactPhone": "(516) 607-0176",
-			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
-		},
-		{ 
-			"name": "The Three Muses of Bluffton",
-			"url": "https://www.thethreemusesofbluffton.com",
-			"contactName": "Katie Coupland",
-			"contactEmail": "info@thethreemusesofbluffton.com",
-			"contactPhone": "(843) 705-0837",
-			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
-		},
-		{ 
-			"name": "JZ Home Improvement",
-			"url": "https://www.jzhomeimprovement.com",
-			"contactName": "",
-			"contactEmail": "",
-			"contactPhone": "",
-			"summary": " Local Union NJ home improvement contractor specializing in kitchen and bathroom remodeling, basement finishing, decks and outdoor spaces, and custom carpentry."
-		}
-	],
 	"existingSite": [
 		{
 			"url": "None (Client has secured the domain geaconstruction.net but has not yet built a website)",
@@ -182,6 +156,32 @@
 		"Establish an Instagram portfolio feed showcasing clean, high-resolution before-and-after photos of finish carpentry and tile work to drive visual proof.",
 		"Set up a Nextdoor business presence to tap into community recommendations and build local neighborhood trust.",
 		"Develop a targeted Email Marketing and Content/Blog campaign targeting local real estate agents, offering downloadable guides and exclusive pre-move-in promotional incentives."
+	],
+	"references": [
+		{ 
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{ 
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		},
+		{ 
+			"name": "JZ Home Improvement",
+			"url": "https://www.jzhomeimprovement.com",
+			"contactName": "",
+			"contactEmail": "",
+			"contactPhone": "",
+			"summary": " Local Union NJ home improvement contractor specializing in kitchen and bathroom remodeling, basement finishing, decks and outdoor spaces, and custom carpentry."
+		}
 	],
 	"visualDesign": {
 		"primary": "#1C3144",

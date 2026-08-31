@@ -46,7 +46,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical'
 						url="https://secure.istockphoto.com/portfolio/brianwhaley" 
-						img='/images/logos/istock-logo.jpg'
+						img='https://www.pixelated.tech/images/logos/istock-logo.jpg'
 						imgShape='squircle'
 						title='iStockPhoto'
 						content='I have converted my passion of Landscape, Macro, and Travel Photography 
@@ -58,7 +58,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical'
 						url='http://www.shutterstock.com/g/brianwhaley' 
-						img='/images/logos/shutterstock-logo.png'
+						img='https://www.pixelated.tech/images/logos/shutterstock-logo.png'
 						imgShape='squircle'
 						title='ShutterStock'
 						content='Shutterstock helps creative professionals from all backgrounds 
@@ -68,7 +68,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical'
 						url="http://www.blurb.com/user/brianwhaley" 
-						img='/images/logos/blurb-logo.png'
+						img='https://www.pixelated.tech/images/logos/blurb-logo.png'
 						imgShape='squircle'
 						title='Blurb'
 						content="Blurb is a self-publishing and marketing platform that unleashes 
@@ -79,7 +79,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical'
 						url="http://brianwhaley.shutterfly.com/" 
-						img='/images/logos/shutterfly-logo.png'
+						img='https://www.pixelated.tech/images/logos/shutterfly-logo.png'
 						imgShape='squircle'
 						title='ShutterFly'
 						content='The Shutterfly family of brands together make up a leading 
@@ -88,7 +88,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical'
 						url="http://twitter.com/pixelatedviews" 
-						img='/images/logos/x-logo.png'
+						img='https://www.pixelated.tech/images/logos/x-logo.png'
 						imgShape='squircle'
 						title='X (Twitter)'
 						content='Twitter, now known as X, is a microblogging and social networking service 
@@ -98,7 +98,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical' 
 						url="https://500px.com/brianwhaley" 
-						img='/images/logos/500px-logo.png'
+						img='https://www.pixelated.tech/images/logos/500px-logo.png'
 						imgShape='squircle'
 						title='500px'
 						content="500px is a global online platform for photographers to discover, share, and sell their work. 
@@ -107,7 +107,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical' 
 						url="http://www.flickr.com/photos/brianwhaley/" 
-						img='/images/logos/flickr-logo.png'
+						img='https://www.pixelated.tech/images/logos/flickr-logo.png'
 						imgShape='squircle'
 						title='Flickr'
 						content='Flickr is a free, ad-supported photo-sharing service and online community 
@@ -117,7 +117,7 @@ export default function PhotographyPage() {
 					<Callout
 						layout='vertical'
 						url="https://www.instagram.com/pixelated.views/" 
-						img='/images/logos/instagram-logo.jpg'
+						img='https://www.pixelated.tech/images/logos/instagram-logo.jpg'
 						imgShape='squircle'
 						title='Instagram'
 						content="Instagram is a free, online photo and video sharing app and social network platform. 

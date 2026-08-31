@@ -411,7 +411,7 @@ export function BackToTop() {
 		<div className="back-to-top">
 			<a href="#top" onClick={scrollToTop}>
 				<div>
-					<SmartImage src="/images/icons/up.jpg" title="Back To Top" alt="Back To Top"
+					<SmartImage src="https://www.pixelated.tech/images/icons/up.jpg" title="Back To Top" alt="Back To Top"
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 						cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
 						cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined}

@@ -17,8 +17,8 @@ export default function Home() {
 
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="header-section">
 				<PageTitleHeader title="AMAVA Janitorial" />
-				<p>Welcome to AMAVA Janitorial</p>
-				<p>For over three decades, AMAVA Janitorial has served as a trusted partner in commercial facility maintenance across New Jersey, New York, Connecticut, Delaware, South Carolina, and Florida. Holding an A+ rating from the Better Business Bureau, our team takes the complete burden of daily sanitation off your shoulders so you can focus on running your business. We deliver custom cleaning programs for corporate offices, medical clinics, educational campuses, industrial sites, and hospitality venues. Utilizing our proven 7-prong cleaning methodology, we guarantee that no operational detail is ever overlooked during scheduled service visits. Our flexible seven-service ecosystem covers nightly janitorial work, day porter care, commercial floor restoration, specialty cleaning, post-construction cleanup, consumable supply management, and handyman repairs. Operating 24 hours a day, 7 days a week, our dedicated account supervisors conduct regular quality audits to ensure complete compliance across every square foot of your building. Partnering with AMAVA Janitorial gives you total operational peace of mind and an immaculate facility that reflects the high standards of your organization.</p>
+				<PageSectionHeader>Welcome to AMAVA Janitorial</PageSectionHeader>
+				<p>For over three decades, AMAVA Janitorial has served as a trusted partner in commercial facility maintenance across New Jersey, New York, Connecticut, South Carolina, and Florida. Holding an A+ rating from the Better Business Bureau, our team takes the complete burden of daily sanitation off your shoulders so you can focus on running your business. AMAVA Janitorial delivers custom cleaning programs for corporate offices, medical clinics, educational campuses, industrial sites, and hospitality venues. Utilizing our proven 7-step cleaning methodology, we guarantee that no operational detail is ever overlooked during scheduled service visits. Our flexible seven-service ecosystem covers nightly janitorial work, day porter care, commercial floor restoration, specialty cleaning, post-construction cleanup, consumable supply management, and handyman repairs. Operating 24 hours a day, 7 days a week, our dedicated account supervisors conduct regular quality audits to ensure complete compliance across every square foot of your building. Partnering with AMAVA Janitorial gives you total operational peace of mind and an immaculate facility that reflects the high standards of your organization.</p>
 			</PageSection>
 
 			<PageSection columns={4} maxWidth="1024px" gap="20px" id="home-services-section">
@@ -38,6 +38,14 @@ export default function Home() {
 						/>
 					</PageGridItem>
 				))}
+			</PageSection>
+
+
+			<PageSection columns={1} maxWidth="1024px" gap="20px" id="home-quality-section">
+				<PageSectionHeader title="Our Quality Commitment" />
+				<p>
+					At AMAVA, we pride ourselves on our ability to take the burden of cleaning and general building maintenance off the shoulders of our clients so that they can focus completely on their businesses. Our mission is to provide our clients with cleaning and building maintenance solutions of the highest quality.	And that is exactly what we are promising you. We are totally committed to providing you with 100% customer satisfaction; we strive to surpass even your own high standard. We are “Your Partner in Custodial Maintenance.” 
+				</p>
 			</PageSection>
 
 			<PageSection columns={1} maxWidth="1024px" id="home-assessment-section" background="var(--accent1-color)">

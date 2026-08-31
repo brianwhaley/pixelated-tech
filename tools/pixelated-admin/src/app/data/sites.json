@@ -80,31 +80,6 @@
 	},
 	"sites": [
 		{
-			"name": "AMAVA Flooring",
-			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/amava-flooring",
-			"localPort": "3000",
-			"remote": "amava-flooring",
-			"repo": "amava-flooring",
-			"healthCheckId": "",
-			"rte53HostedZoneID": "",
-			"amplifyAppId": "",
-			"cloudfronturl": "",
-			"url": "https://www.amava-flooring.com",
-			"ga4PropertyId": "",
-			"gscSiteUrl": "https://www.amava-flooring.com",
-			"billing": {
-				"tier": "premium",
-				"price": 450.00,
-				"email": "michaelp@amava-janitorial.com",
-				"companyName": "AMAVA Flooring",
-				"address": "",
-				"notes": {
-					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
-					"2026-09": "Since GEA Construction was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
-				}
-			}
-		},
-		{
 			"name": "AMAVA Janitorial",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/amava-janitorial",
 			"localPort": "3014",
@@ -114,18 +89,18 @@
 			"rte53HostedZoneID": "",
 			"amplifyAppId": "d1rbu53fslcy38",
 			"cloudfronturl": "",
-			"url": "https://www.amava-janitorial.com",
+			"url": "https://www.amavajanitorial.com",
 			"ga4PropertyId": "",
-			"gscSiteUrl": "https://www.amava-janitorial.com",
+			"gscSiteUrl": "https://www.amavajanitorial.com",
 			"billing": {
 				"tier": "growth",
 				"price": 250.00,
-				"email": "al@amava-janitorial.com",
+				"email": "al@amavajanitorial.com",
 				"companyName": "AMAVA Janitorial",
 				"address": "",
 				"notes": {
 					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
-					"2026-09": "Since GEA Construction was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
+					"2026-09": "Since AMAVA Janitorial was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
 				}
 			}
 		},

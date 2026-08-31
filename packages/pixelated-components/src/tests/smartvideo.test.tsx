@@ -114,6 +114,27 @@ describe('SmartVideo Component', () => {
 		expect(json.duration).toBe('PT2M');
 	});
 
+	it('renders JSON-LD schema with title, description, uploadDate, and duration', () => {
+		const { container } = renderSmartVideo(
+			<SmartVideo
+				src="https://example.com/test-video.mp4"
+				poster="https://example.com/poster.jpg"
+				variant="html"
+				title="Test Video"
+				description="A sample video"
+				uploadDate="2025-01-01"
+				duration="PT2M"
+			/>
+		);
+		const script = container.querySelector('script[type="application/ld+json"]');
+		expect(script).not.toBeNull();
+		const json = JSON.parse(script!.textContent || '{}');
+		expect(json.name).toBe('Test Video');
+		expect(json.description).toBe('A sample video');
+		expect(json.uploadDate).toBe('2025-01-01');
+		expect(json.duration).toBe('PT2M');
+	});
+
 	it('supports optional controls and loop props', () => {
 		const { container } = renderSmartVideo(
 			<SmartVideo src="https://example.com/test-video.mp4" variant="html" controls loop muted />

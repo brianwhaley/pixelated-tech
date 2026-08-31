@@ -923,7 +923,7 @@ export function CartButton(props: CartButtonType) {
 		<div className="pix-cart-button-wrapper">
 			<button className="pix-cart-button" type="button" id="pix-cart-button" 
 				onClick={()=>window.location.href=props.href} >
-				<SmartImage src="/images/icons/cart-icon.png" title="View Shopping Cart" alt="View Shopping Cart" 
+				<SmartImage src="https://www.pixelated.tech/images/icons/cart-icon.png" title="View Shopping Cart" alt="View Shopping Cart" 
 					cloudinaryEnv={config?.integrations?.cloudinary?.product_env}
 					cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl}
 					cloudinaryTransforms={config?.integrations?.cloudinary?.transforms} />

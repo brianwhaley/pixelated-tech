@@ -92,7 +92,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -103,7 +103,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -114,7 +114,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -125,7 +125,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -137,7 +137,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -150,13 +150,13 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
       const icon = container.querySelector('.card-icon');
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute('src', '/images/logos/blog-logo.png');
+      expect(icon).toHaveAttribute('src', 'https://www.pixelated.tech/images/logos/blog-logo.png');
       expect(icon).toHaveAttribute('alt', 'Blog Post');
     });
 
@@ -164,7 +164,7 @@ describe('SocialCard Components', () => {
       render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -175,7 +175,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -188,7 +188,7 @@ describe('SocialCard Components', () => {
       render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -199,7 +199,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -214,7 +214,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={cardWithHtmlContent} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -230,7 +230,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={cardWithPlainText} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -246,12 +246,12 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={githubCard} 
-          iconSrc="/images/logos/github-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/github-logo.png" 
           iconSrcAlt="Github Activity"
         />
       );
       const icon = container.querySelector('.card-icon');
-      expect(icon).toHaveAttribute('src', '/images/logos/github-logo.png');
+      expect(icon).toHaveAttribute('src', 'https://www.pixelated.tech/images/logos/github-logo.png');
     });
 
     it('should preserve original link URL', () => {
@@ -262,7 +262,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={customCard} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -274,7 +274,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={mockCardData} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -292,7 +292,7 @@ describe('SocialCard Components', () => {
         blog: {
           url: null,
           entryCount: 5,
-          iconSrc: '/images/logos/blog-logo.png',
+          iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
           iconSrcAlt: 'Blog Post'
         }
       };
@@ -320,7 +320,7 @@ describe('SocialCard Components', () => {
         blog: {
           url: null,
           entryCount: 5,
-          iconSrc: '/images/logos/blog-logo.png',
+          iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
           iconSrcAlt: 'Blog Post'
         }
       };
@@ -337,13 +337,13 @@ describe('SocialCard Components', () => {
         blog: {
           url: null,
           entryCount: 5,
-          iconSrc: '/images/logos/blog-logo.png',
+          iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
           iconSrcAlt: 'Blog Post'
         },
         github: {
           url: null,
           entryCount: 5,
-          iconSrc: '/images/logos/github-logo.png',
+          iconSrc: 'https://www.pixelated.tech/images/logos/github-logo.png',
           iconSrcAlt: 'Github Activity'
         }
       };
@@ -359,7 +359,7 @@ describe('SocialCard Components', () => {
         blog: {
           url: null,
           entryCount: 10,
-          iconSrc: '/images/logos/blog-logo.png',
+          iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
           iconSrcAlt: 'Blog Post'
         }
       };
@@ -392,7 +392,7 @@ describe('SocialCard Components', () => {
             other: {
               url: 'https://unknown.example.com/feed',
               entryCount: 1,
-              iconSrc: '/images/logos/blog-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
               iconSrcAlt: 'Blog Post'
             }
           }}
@@ -428,7 +428,7 @@ describe('SocialCard Components', () => {
             github: {
               url: 'https://example.com/github-feed',
               entryCount: 1,
-              iconSrc: '/images/logos/github-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/github-logo.png',
               iconSrcAlt: 'Github Activity'
             }
           }}
@@ -462,7 +462,7 @@ describe('SocialCard Components', () => {
             blog: {
               url: 'https://example.com/atom-feed',
               entryCount: 1,
-              iconSrc: '/images/logos/blog-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
               iconSrcAlt: 'Blog Post'
             }
           }}
@@ -485,7 +485,7 @@ describe('SocialCard Components', () => {
             blog: {
               url: 'https://example.com/failure-feed',
               entryCount: 1,
-              iconSrc: '/images/logos/blog-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
               iconSrcAlt: 'Blog Post'
             }
           }}
@@ -513,7 +513,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={cardNoDescription} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -535,7 +535,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={cardLongTitle} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -554,7 +554,7 @@ describe('SocialCard Components', () => {
       render(
         <SocialCard 
           card={specialCard} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -573,7 +573,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={cardNullDate as any} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -594,7 +594,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={githubCard} 
-          iconSrc="/images/logos/github-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/github-logo.png" 
           iconSrcAlt="Github Activity"
         />
       );
@@ -614,7 +614,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={twitterCard} 
-          iconSrc="/images/logos/twitter-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/twitter-logo.png" 
           iconSrcAlt="Twitter Tweet"
         />
       );
@@ -634,7 +634,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={youtubeCard} 
-          iconSrc="/images/logos/youtube-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/youtube-logo.png" 
           iconSrcAlt="Youtube Favorite Video"
         />
       );
@@ -656,7 +656,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={htmlCard} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -677,7 +677,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={safeCard} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -699,7 +699,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={deadHrefCard} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -720,7 +720,7 @@ describe('SocialCard Components', () => {
       const { container } = render(
         <SocialCard 
           card={validUrlCard} 
-          iconSrc="/images/logos/blog-logo.png" 
+          iconSrc="https://www.pixelated.tech/images/logos/blog-logo.png" 
           iconSrcAlt="Blog Post"
         />
       );
@@ -756,7 +756,7 @@ describe('SocialCard Components', () => {
             blog: {
               url: 'https://example.com/feed',
               entryCount: 1,
-              iconSrc: '/images/logos/blog-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
               iconSrcAlt: 'Blog Post'
             }
           }}
@@ -813,7 +813,7 @@ describe('SocialCard Components', () => {
             blog: {
               url: 'https://example.com/mixed-feed',
               entryCount: 4,
-              iconSrc: '/images/logos/blog-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
               iconSrcAlt: 'Blog Post'
             }
           }}
@@ -839,7 +839,7 @@ describe('SocialCard Components', () => {
             blog: {
               url: 'https://example.com/feed',
               entryCount: 1,
-              iconSrc: '/images/logos/blog-logo.png',
+              iconSrc: 'https://www.pixelated.tech/images/logos/blog-logo.png',
               iconSrcAlt: 'Blog Post'
             }
           }}

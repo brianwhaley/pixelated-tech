@@ -247,6 +247,75 @@ export async function getContentfulAssetByAssetID(props: getContentfulAssetByAss
 
 
 
+export type ContentfulVideoMetadata = {
+	contentUrl?: string;
+	poster?: string;
+	title?: string;
+	name?: string;
+	description?: string;
+	uploadDate?: string;
+	duration?: string;
+	width?: number;
+	height?: number;
+	caption?: string;
+};
+
+export async function getContentfulVideoMetadata(videoUrl: string, contentfulConfig?: ContentfulApiType): Promise<ContentfulVideoMetadata | null> {
+	if (!videoUrl) {
+		return null;
+	}
+
+	const contentful = contentfulConfig;
+	if (!contentful?.base_url || !contentful?.space_id || !contentful?.environment || !contentful?.delivery_access_token) {
+		if (debug) console.warn('getContentfulVideoMetadata: missing Contentful config.');
+		return null;
+	}
+
+	let assetId: string | undefined;
+	try {
+		const parsed = new URL(videoUrl);
+		const segments = parsed.pathname.split('/').filter(Boolean);
+		assetId = segments[1];
+	} catch {
+		assetId = undefined;
+	}
+
+	if (!assetId) {
+		return null;
+	}
+
+	const asset = await getContentfulAssetByAssetID({
+		apiProps: contentful,
+		asset_id: assetId,
+	});
+	if (!asset) {
+		return null;
+	}
+
+	const fields = asset.fields ?? {};
+	const sys = asset.sys ?? {};
+	const file = fields.file ?? {};
+	const duration = file?.details?.duration ? String(file.details.duration) : undefined;
+
+	return {
+		contentUrl: videoUrl,
+		poster: normalizeContentfulAssetUrl(file?.url),
+		title: fields.title || file?.fileName || undefined,
+		name: fields.title || file?.fileName || undefined,
+		description: fields.description,
+		uploadDate: sys.createdAt || sys.updatedAt || undefined,
+		duration,
+	};
+}
+
+
+
+
+
+
+
+
+
 // Define the type for the params object
 type ContentfulCardParams = {
     cards: any, 

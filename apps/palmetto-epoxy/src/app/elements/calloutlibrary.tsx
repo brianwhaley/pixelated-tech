@@ -110,7 +110,7 @@ export function LowCountrysBest() {
 						variant='boxed grid'
 						url='https://www.votedlowcountrysbest.com/listing/palmetto-epoxy.html'
 						title="Lowcountrys Best 2025"
-						img='/images/logos/lowcountrysbest-logo.jpg'
+						img='https://www.pixelated.tech/images/logos/lowcountrysbest-logo.jpg'
 						imgAlt="Lowcountrys Best 2025 Carpet & Flooring Store Silver Winner" 
 						content='The Island Packet and The Beaufort Gazette created Lowcountrys Best 
 								to honor the people, places, and businesses that capture what makes the 
@@ -140,7 +140,7 @@ export function LowCountrysBestSm() {
 	return (
 		<>
 			<a href="https://www.votedlowcountrysbest.com/listing/palmetto-epoxy.html">
-				<SmartImage src="/images/logos/lowcountrysbest-logo.jpg" alt="Lowcountrys Best 2025 Carpet & Flooring Store Silver Winner" />
+				<SmartImage src="https://www.pixelated.tech/images/logos/lowcountrysbest-logo.jpg" alt="Lowcountrys Best 2025 Carpet & Flooring Store Silver Winner" />
 			</a>
 		</>
 	);

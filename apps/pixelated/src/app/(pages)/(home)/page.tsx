@@ -1,16 +1,16 @@
 "use client"; 
 
 import React, { useState, useEffect } from "react";
-import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { SocialTags } from "@pixelated-tech/components";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { Hero, usePixelatedConfig, getContentfulAssetByAssetID, normalizeContentfulAssetUrl } from "@pixelated-tech/components";
+import { Hero, getContentfulVideoMetadata } from "@pixelated-tech/components";
 import { BlogPostList } from "@pixelated-tech/components";
 
 export default function Home() {
-	const config = usePixelatedConfig();
+	const pixelatedConfig = usePixelatedConfig();
 	const [heroVideo, setHeroVideo] = useState<string>();
 	const [heroVideoMeta, setHeroVideoMeta] = useState<{ title?: string; description?: string; uploadDate?: string; duration?: string; poster?: string }>({});
 
@@ -27,42 +27,16 @@ export default function Home() {
 	}, []);
 
 	useEffect(() => {
-		const assetId = heroVideo
-			? (() => {
-				try {
-					const parsed = new URL(heroVideo);
-					const segments = parsed.pathname.split('/').filter(Boolean);
-					return segments[1];
-				} catch {
-					return undefined;
-				}
-			})()
-			: undefined;
-
-		const contentful = config?.integrations?.contentful;
-		if (!heroVideo || !assetId || !contentful?.base_url || !contentful?.space_id || !contentful?.environment || !contentful?.delivery_access_token) {
+		if (!heroVideo) {
 			return;
 		}
 
 		let cancelled = false;
-		getContentfulAssetByAssetID({
-			apiProps: {
-				base_url: contentful.base_url,
-				environment: contentful.environment,
-				space_id: contentful.space_id,
-				delivery_access_token: contentful.delivery_access_token,
-			},
-			asset_id: assetId,
-		})
-			.then((asset: any) => {
-				if (cancelled || !asset) return;
-				const fields = asset.fields ?? {};
-				const sys = asset.sys ?? {};
+		getContentfulVideoMetadata(heroVideo, pixelatedConfig?.integrations?.contentful)
+			.then((metadata) => {
+				if (cancelled || !metadata) return;
 				setHeroVideoMeta({
-					title: fields.title || fields.file?.fileName || undefined,
-					description: fields.description || undefined,
-					uploadDate: sys.createdAt || sys.updatedAt || undefined,
-					poster: normalizeContentfulAssetUrl(fields.file?.url) || undefined,
+					...metadata,
 				});
 			})
 			.catch(() => undefined);
@@ -70,7 +44,7 @@ export default function Home() {
 		return () => {
 			cancelled = true;
 		};
-	}, [heroVideo, config]);
+	}, [heroVideo]);
 
 	return (
 		<>
@@ -78,12 +52,8 @@ export default function Home() {
 			<Hero 
 				variant="video"
 				// video="/videos/GettyImages-1251562713.mp4"
+				{...heroVideoMeta}
 				video={heroVideo}
-				poster={heroVideoMeta.poster}
-				title={heroVideoMeta.title}
-				description={heroVideoMeta.description}
-				uploadDate={heroVideoMeta.uploadDate}
-				duration={heroVideoMeta.duration}
 				height="40vh"
 			/>
 
@@ -115,7 +85,6 @@ export default function Home() {
 					<Callout
 						layout='vertical'
 						url='/portfolio'
-						// img='/images/icons/portfolio.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/5o6Znbm8NrLxnAYNigmZ9v/1c86b278e3c15271d452c3a4d25ff1c2/portfolio.jpg?fm=webp'
 						imgAlt='Portfolio'
 						imgShape='bevel'
@@ -127,7 +96,6 @@ export default function Home() {
 					<Callout
 						layout='vertical'
 						url='/samples'
-						// img='/images/icons/samples.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/6eYGISUKzCqZnQ7J9uASQK/a31c298d8a6e4da5c174a9615e9cb1e8/samples.jpg?fm=webp'
 						imgAlt='Samples'
 						imgShape='bevel'
@@ -151,7 +119,6 @@ export default function Home() {
 						variant="boxed"
 						layout='horizontal' 
 						direction="left"
-						// img='/images/icons/webdev.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg?fm=webp'
 						imgAlt='Web Development'
 						title='Web Development'
@@ -164,7 +131,6 @@ export default function Home() {
 						variant="boxed"
 						layout='horizontal' 
 						direction="right"
-						// img='/images/icons/socialmedia.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg?fm=webp'
 						imgAlt='Social Media Marketing'
 						title='Social Media Marketing'
@@ -181,7 +147,6 @@ export default function Home() {
 						variant="boxed"
 						layout='horizontal' 
 						direction="left"
-						// img='/images/icons/seo-2.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg?fm=webp'
 						imgAlt='Search Engine Optimization'
 						title='Search Engine Optimization'
@@ -197,7 +162,6 @@ export default function Home() {
 						variant="boxed"
 						layout='horizontal' 
 						direction="right"
-						// img='/images/icons/content.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg?fm=webp'
 						imgAlt='Content Management'
 						title='Content Management'
@@ -211,7 +175,6 @@ export default function Home() {
 						variant="boxed"
 						layout='horizontal' 
 						direction="left"
-						// img='/images/icons/ecommerce.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg?fm=webp'
 						imgAlt='eCommerce Solutions'
 						title='eCommerce Solutions'
@@ -228,7 +191,6 @@ export default function Home() {
 						variant="boxed"
 						layout='horizontal' 
 						direction="right"
-						// img='/images/icons/custom.png'
 						img='https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg?fm=webp'
 						imgAlt='Small Business Modernization'
 						title='Small Business Modernization'

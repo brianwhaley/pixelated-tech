@@ -11,10 +11,6 @@ export default function LayoutClient() {
 	useEffect(() => {
 		preloadImages();
 		preloadAllCSS();
-		/* loadAllImagesFromCloudinary({ 
-			origin: window.location.origin,
-			product_env: "dlbon7tpq"
-		}); */
 	}, []);
 
 	useEffect(() => {

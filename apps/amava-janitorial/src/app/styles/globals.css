@@ -144,7 +144,7 @@ footer .callout {
 
 
 /* ========================================
-        SERVICES 
+        SERVICES / SERVICE AREAS
 ======================================== */
 
 #service-detail-wrapper { 
@@ -163,4 +163,8 @@ footer .callout {
 
 #services-callouts section {
     background-color: transparent;
+}
+
+.service-areas-list .callout {
+    border-radius: 0px !important;
 }

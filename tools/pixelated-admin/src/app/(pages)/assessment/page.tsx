@@ -9,65 +9,65 @@ import { SmartImage } from '@pixelated-tech/components';
 import './assessment.css';
 
 type AssessmentData = {
-	companyName: string;
+    companyName: string;
     companyContact: string;
-	date: string;
-	email: string;
-	phone?: string;
-	address: {
-		streetAddress: string;
-		addressLocality: string;
-		addressRegion: string;
-		postalCode: string;
-		addressCountry?: string;
-	};
-	primaryAudience: string[];
-	secondaryAudience: string[];
-	marketOverview: string[] | string;
-	currentSocialMedia: string[];
-	currentAdvertisingPartners: string[];
-	currentEarnedMedia: string[];
-    references?: { 
-        name: string; 
-        url: string; 
+    date: string;
+    email: string;
+    phone?: string;
+    address: {
+        streetAddress: string;
+        addressLocality: string;
+        addressRegion: string;
+        postalCode: string;
+        addressCountry?: string;
+    };
+    primaryAudience: string[];
+    secondaryAudience: string[];
+    marketOverview: string[] | string;
+    currentSocialMedia: string[];
+    currentAdvertisingPartners: string[];
+    currentEarnedMedia: string[];
+    references?: {
+        name: string;
+        url: string;
         contactName?: string;
         contactEmail?: string;
         contactPhone?: string;
         summary: string;
     }[];
-	existingSite?: {
-		url: string;
-		strengths: string[];
-		areasForImprovement: string[];
-	}[];
-	similarCompanyNames: { name: string; urls?: string[]; url?: string; summary: string }[];
-	competitors: { name: string; urls?: string[]; summary: string }[];
-	currentState: string[];
-	nextSteps: string[];
-	aboutPixelated: string[];
-	visualDesign: {
-		primary: string;
-		secondary: string;
-		tertiary: string;
-		accent1: string;
-		accent2: string;
-		accent3: string;
-		headerFont: { name: string; url: string } | string;
-		bodyFont: { name: string; url: string } | string;
+    existingSite?: {
+        url: string;
+        strengths: string[];
+        areasForImprovement: string[];
+    }[];
+    similarCompanyNames: { name: string; urls?: string[]; url?: string; summary: string }[];
+    competitors: { name: string; urls?: string[]; summary: string }[];
+    currentState: string[];
+    nextSteps: string[];
+    aboutPixelated: string[];
+    visualDesign: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        accent1: string;
+        accent2: string;
+        accent3: string;
+        headerFont: { name: string; url: string } | string;
+        bodyFont: { name: string; url: string } | string;
         additionalNotes: string[];
-	};
-	websiteDomain: { currentUrls?: string[]; proposedUrls?: string[] };
-	informationArchitecture: { route: string; title: string; notes: string[] }[];
-	blogRoute?: { enabled: boolean; route: string };
-	proposedSocialMediaAccounts: string[];
-	differentiation: string[];
-	currentBusinessPlan: string[];
-	keywords: string[];
-	logo?: { url: string; altText?: string }[];
+    };
+    websiteDomain: { currentUrls?: string[]; proposedUrls?: string[] };
+    informationArchitecture: { route: string; title: string; notes: string[] }[];
+    blogRoute?: { enabled: boolean; route: string };
+    proposedSocialMediaAccounts: string[];
+    differentiation: string[];
+    currentBusinessPlan: string[];
+    keywords: string[];
+    logo?: { url: string; altText?: string }[];
 };
 
 interface AssessmentManifest {
-	files: string[];
+    files: string[];
 }
 
 
@@ -101,14 +101,15 @@ function objectHasContent(value?: unknown): boolean {
 export default function AssessmentPage() {
 	const { data: manifest, loading: manifestLoading, error: manifestError } = useFileData('/data/assessment/manifest.json', 'json');
 	const manifestData = (manifest as unknown) as AssessmentManifest | undefined;
+	const sortedManifestFiles = manifestData?.files ? [...manifestData.files].sort((a, b) => b.localeCompare(a, undefined, { sensitivity: 'base' })) : [];
 	const [selectedFile, setSelectedFile] = useState<string | null>(null);
 	const [assessment, setAssessment] = useState<AssessmentData | null>(null);
 
 	useEffect(() => {
-		if (!selectedFile && manifestData?.files?.length) {
-			setSelectedFile(manifestData.files[0]);
+		if (!selectedFile && sortedManifestFiles.length) {
+			setSelectedFile(sortedManifestFiles[0]);
 		}
-	}, [manifestData, selectedFile]);
+	}, [sortedManifestFiles, selectedFile]);
 
 	useEffect(() => {
 		if (!selectedFile) {
@@ -137,9 +138,9 @@ export default function AssessmentPage() {
 					{manifestError && <div className="assessment-error">Error loading assessment manifest: {manifestError}</div>}
 					{!manifestLoading && !manifestError && manifestData?.files?.length ? (
 						<label className="assessment-select-label">
-            Choose assessment JSON:
+                            Choose assessment JSON:
 							<select value={selectedFile ?? ''} onChange={(event) => setSelectedFile(event.target.value)}>
-								{manifestData.files.map((file: string) => (
+								{sortedManifestFiles.map((file: string) => (
 									<option key={file} value={file}>{file.replace(/\.[^.]+$/, '')}</option>
 								))}
 							</select>
@@ -155,14 +156,14 @@ export default function AssessmentPage() {
 
 
 function Assessment(props: { assessment: AssessmentData }) {
-	const {assessment} = props;
+	const { assessment } = props;
 	return (
 		<>
 			{/* <FontLoader palette={assessment.visualDesign} /> */}
 
 			<PageSection id="title-section" columns={1} maxWidth="1024px">
 				<div className="assessment-page-header">
-					<SmartImage 
+					<SmartImage
 						src="/images/pixelated-logo-v2.png"
 						alt="Pixelated Technologies"
 						title="Pixelated Technologies"
@@ -172,7 +173,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 					<br />
 					<p>{new Date(assessment.date).toLocaleDateString()}</p>
 					<br />
-					<SmartImage 
+					<SmartImage
 						src="/images/pexels-fauxels-3184292-sm.jpg"
 						alt="Pixelated Technologies Assessment"
 						title="Pixelated Technologies Assessment"
@@ -237,7 +238,7 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 				{objectHasContent(assessment.competitors) ? (
 					<div>
-					    <h2>Some Local Competitors</h2>
+						<h2>Some Local Competitors</h2>
 						{assessment.competitors.map((competitor, index) => (
 							<div key={index}>
 								<h3>{competitor.name}</h3>
@@ -252,10 +253,10 @@ function Assessment(props: { assessment: AssessmentData }) {
 					</div>
 				) : null}
 
-				{ assessment.existingSite ? (
+				{assessment.existingSite ? (
 					assessment.existingSite.map((site, index) => (
 						<div key={index}>
-							<h2>Current Web Site<br/>{site.url ? <a href={site.url} target="_blank" rel="noopener noreferrer">{site.url}</a> : 'No URL provided'}</h2>
+							<h2>Current Web Site<br />{site.url ? <a href={site.url} target="_blank" rel="noopener noreferrer">{site.url}</a> : 'No URL provided'}</h2>
 							<h3>Strengths</h3>
 							<ul>
 								{renderList(site?.strengths || [])}
@@ -292,9 +293,9 @@ function Assessment(props: { assessment: AssessmentData }) {
 				) : null}
 			</PageSection>
 
-			<PageSection id="about-pixelated-section" className="page-break" columns={1} maxWidth="1024px">
+			<PageSection id="about-pixelated-section" className="page-break" columns={1} maxWidth="1024px" background="var(--accent1-color)">
 				<h1>About Pixelated Technologies</h1>
-                
+
 				<p>Pixelated Technologies is a digital services company that helps small businesses grow through custom IT solutions, including web development, social media marketing, search engine optimization, content management, eCommerce, and small-business modernization. The company's mission is to empower small businesses to thrive in the digital age by delivering tailored technology services that drive growth and efficiency.</p>
 
 				<p>The owner, Brian Whaley, began his career working with small- and medium-sized businesses and then spent more than 25 years leading web development teams at major organizations such as American Express, PR Newswire, The Associated Press, Bellcore (a former division of AT&T), and Bristol-Myers Squibb.  Now returning to those roots, Pixelated Technologies focuses on helping local small businesses grow and succeed.</p>
@@ -381,15 +382,15 @@ function Assessment(props: { assessment: AssessmentData }) {
 				<div>
 					<h2>Current Branding</h2>
 					<p>Here is a quick snapshot of your current branding / logo variations</p>
-					{ assessment.logo ? 
+					{assessment.logo ?
 						assessment.logo.map((logo, index) => (
 							logo.url ? (
 								<div key={index}>
-									<SmartImage 
-										src={logo.url ?? ''} 
-										alt={logo.altText || `Current Logo ${index + 1}`} 
+									<SmartImage
+										src={logo.url ?? ''}
+										alt={logo.altText || `Current Logo ${index + 1}`}
 										title={logo.altText || `Current Logo ${index + 1}`}
-										aboveFold={true} 
+										aboveFold={true}
 									/>
 									<br />
 								</div>
@@ -462,9 +463,9 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 				<div>
 					<h2>Information Architecture</h2>
-                    
+
 					<p>The objective of the new website is to build a unified and holistic home base for all things related to your company. The site should have a primarily flat hierarchy, making it easy for your customers and search engines to find what they are looking for.</p>
-                    
+
 					<p>To pull it all together, I recommend the following information architecture for the web site.  This structure is designed to mirror the refined, high-touch experience of the brand. Each page should feel less like a "sales pitch" and more like an invitation into an exclusive world.</p>
 					{assessment.informationArchitecture.map((item, index) => (
 						<div key={index} className="ia-item">
@@ -476,22 +477,55 @@ function Assessment(props: { assessment: AssessmentData }) {
 				</div>
 
 				<div>
-					<h2>SEO / AEO Strategy</h2>
-                    
-					<p>SEO, Page Speed, and Accessibility are a critical part of this step.  There should be a rigor and diligence applied to these disciplines as each page and the entire site is built, deployed, and maintained to ensure high page rankings and great customer experience.  </p>
-                    
-					<p>SEO (Search Engine Optimization): While other companies may be further along in their digital presence journey, {assessment.companyName} can win by doubling down on quality, connection to community, personalized service, and a high-end product.</p>
-                    
-					{objectHasContent(assessment.keywords) ? (
-						<div>
-							<h3>Recommended Keywords:</h3>
-							{renderList(assessment.keywords)}
-						</div>
-					) : null}
+					<h2>Technology Strategy</h2>
 
-					<br />
+					<p>SEO, Page Speed, Accessibility, and Analytics are a critical part of this step.  There should be a rigor and diligence applied to these disciplines as each page and the entire site is built, deployed, and maintained to ensure high page rankings and great customer experience.  </p>
+
+					<h3>SEO / AEO</h3>
+
+					<p>SEO (Search Engine Optimization): While other companies may be further along in their digital presence journey, {assessment.companyName} can win by doubling down on quality, connection to community, personalized service, and a high-end product.</p>
 
 					<p>AEO (Answer Engine Optimization): Phrase titles to answer the "How do I..." and "Best way to..." questions that AI bots (like Gemini, Perplexity, and ChatGPT) crawl to provide recommendations. Including behind-the-scenes features that help AI models digest, retrieve, and return your targeted information to potential customers asking questions via search agents.</p>
+
+					{objectHasContent(assessment.keywords) ? (
+						<>
+							<br />
+							<div>
+								<h3>Recommended Keywords:</h3>
+								{renderList(assessment.keywords)}
+							</div>
+						</>
+					) : null}
+
+				</div>
+
+				<div>
+					<h3>Page Performance</h3>
+					<p>Page Performance & Google PageSpeed Insights
+                        Page performance measures how quickly and smoothly a website's content loads, renders, and becomes interactive for visitors. Optimizing performance is critical because speed directly dictates user experience, conversion rates, and organic search visibility. Modern web users expect near-instant responses; even a one-second delay in page load time can lead to steep drops in engagement and elevated bounce rates. From an SEO perspective, search engines like Google treat user experience metrics—specifically Core Web Vitals such as Largest Contentful Paint (LCP) and Interaction to Next Paint (INP)—as foundational ranking signals. A slow-loading website not only frustrates prospective customers but actively harms your search visibility and paid advertising ROI by driving users away before they can digest your messaging.
+					</p>
+
+					<p>
+                        The tool of choice for measuring site performance is Google PageSpeed Insights (PSI). It is recommended because it provides the official diagnostic benchmark Google uses for rankings by combining synthetic lab audits with real-world Chrome User Experience Report (CrUX) field data to pinpoint actionable Core Web Vitals fixes.
+					</p>
+				</div>
+
+				<div>
+					<h3>Accessibility</h3>
+					<p>
+                        Web accessibility (often abbreviated as a11y) is the practice of designing and developing websites so that all users—including people with visual, auditory, motor, or cognitive disabilities—can navigate, understand, and interact with the site effectively. Addressing accessibility directly during the build phase is critical because retroactive fixes are significantly more expensive and complex than incorporating standards like the Web Content Accessibility Guidelines (WCAG 2.2 AA) into the initial visual design and code architecture. Building accessibly ensures proper screen reader compatibility, keyboard navigation, clear visual contrast, and intuitive form controls, which expands your reachable audience to the millions of users relying on assistive technologies. Beyond the clear social and user-experience benefits, prioritizing accessibility from day one enhances overall search engine optimization (SEO), improves site usability for aging demographics, and protects organizations from costly legal liability under compliance regulations such as the Americans with Disabilities Act (ADA) and Title II requirements.
+					</p>
+				</div>
+
+				<div>
+					<h3>Analytics</h3>
+					<p>
+                        Web analytics is the continuous practice of measuring, collecting, and analyzing digital traffic data to understand user behavior and optimize business outcomes. Without robust analytics, website strategies rely on guesswork rather than empirical evidence. Implementing analytics allows organizations to track key performance indicators (KPIs), map conversion funnels, evaluate marketing channel performance, and pinpoint precisely where users lose interest or encounter friction. By monitoring metrics such as active user trends, event engagements, and conversion paths, teams can make data-driven decisions—refining user acquisition channels, improving content strategy, and allocating marketing budgets toward high-performing initiatives.
+					</p>
+
+					<p>
+                        The tool of choice for tracking user behavior is Google Analytics 4 (GA4). It is recommended as the industry gold standard because its event-based tracking unified across web and mobile platforms provides complete funnel visibility, seamless ad platform integration, and predictive machine learning insights to guide business growth.
+					</p>
 				</div>
 
 				<div>
@@ -573,14 +607,14 @@ function Assessment(props: { assessment: AssessmentData }) {
 				<p>Last, I would build a presence and a reputation on Reddit.  This is a more long term, holistic approach, contributing to a much broader online conversation, participating in threads started by consumers and companies in relevant subreddits.  You can host an AMA (Ask Me Anything) there for those industries as well.  Once you have established with some Karma (i.e. Reddit’s rating system), I would then buy into Reddit Advertising.  This is a much longer-term investment rather than trying to get quick page hits.</p>
 
 				<h2>Citation Management</h2>
-                
+
 				<p>The objective of citation management is to ensure that your business's name, address, and phone number (NAP) are consistently listed across various online directories and platforms. This helps improve local SEO, build trust with search engines, and make it easier for potential customers to find accurate information about your business.</p>
 
 				<p>It is also designed to enhance your online presence and credibility, making it easier for potential customers to trust and engage with your business.  By being listed in reputable online directories and platforms, your business gains visibility and authority in your industry.  These backlinks can drive traffic to your website and improve your search engine rankings.</p>
 
 
 				<h2>Press Releases</h2>
-                
+
 				<p>Press releases are official statements issued to media outlets to announce significant company news, product launches, events, or other noteworthy developments. They help generate media coverage, increase brand visibility, and establish credibility in the industry.</p>
 
 				<p>By distributing press releases to relevant media outlets, you can increase the chances of your news being picked up and covered by journalists, bloggers, and industry influencers. This can lead to increased brand awareness, website traffic, and potential business opportunities.</p>
@@ -632,35 +666,35 @@ function Assessment(props: { assessment: AssessmentData }) {
 
 // Load fonts and set CSS variables based on assessment visualDesign
 /* function FontLoader({palette}:{palette: AssessmentData['visualDesign']}){
-	useEffect(()=>{
-		const header = typeof palette.headerFont === 'string' ? palette.headerFont : palette.headerFont?.name;
-		const body = typeof palette.bodyFont === 'string' ? palette.bodyFont : palette.bodyFont?.name;
-		const families: string[] = [];
-		if(header) families.push(header);
-		if(body && body !== header) families.push(body);
+    useEffect(()=>{
+        const header = typeof palette.headerFont === 'string' ? palette.headerFont : palette.headerFont?.name;
+        const body = typeof palette.bodyFont === 'string' ? palette.bodyFont : palette.bodyFont?.name;
+        const families: string[] = [];
+        if(header) families.push(header);
+        if(body && body !== header) families.push(body);
 
-		if(families.length){
-			const url = generateGoogleFontsUrl(families);
-			if(url){
-				// inject link tags
-				const pre1 = document.createElement('link');
-				pre1.rel = 'preconnect';
-				pre1.href = 'https://fonts.googleapis.com';
-				document.head.appendChild(pre1);
-				const pre2 = document.createElement('link');
-				pre2.rel = 'preconnect';
-				pre2.href = 'https://fonts.gstatic.com';
-				pre2.crossOrigin = '';
-				document.head.appendChild(pre2);
-				const link = document.createElement('link');
-				link.rel = 'stylesheet';
-				link.href = url;
-				document.head.appendChild(link);
-				// set CSS vars
-				document.documentElement.style.setProperty('--header-font', header || '');
-				document.documentElement.style.setProperty('--body-font', body || '');
-			}
-		}
-	}, [palette]);
-	return null;
+        if(families.length){
+            const url = generateGoogleFontsUrl(families);
+            if(url){
+                // inject link tags
+                const pre1 = document.createElement('link');
+                pre1.rel = 'preconnect';
+                pre1.href = 'https://fonts.googleapis.com';
+                document.head.appendChild(pre1);
+                const pre2 = document.createElement('link');
+                pre2.rel = 'preconnect';
+                pre2.href = 'https://fonts.gstatic.com';
+                pre2.crossOrigin = '';
+                document.head.appendChild(pre2);
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = url;
+                document.head.appendChild(link);
+                // set CSS vars
+                document.documentElement.style.setProperty('--header-font', header || '');
+                document.documentElement.style.setProperty('--body-font', body || '');
+            }
+        }
+    }, [palette]);
+    return null;
 } */
