@@ -40,14 +40,15 @@ function renderList(items: string[]) {
 export default function ProposalPage() {
 	const { data: manifest, loading: manifestLoading, error: manifestError } = useFileData('/data/proposal/manifest.json', 'json');
 	const manifestData = (manifest as unknown) as ProposalManifest | undefined;
+	const sortedManifestFiles = manifestData?.files ? [...manifestData.files].sort((a, b) => b.localeCompare(a, undefined, { sensitivity: 'base' })) : [];
 	const [selectedFile, setSelectedFile] = useState<string | null>(null);
 	const [proposal, setProposal] = useState<ProposalData | null>(null);
 
 	useEffect(() => {
-		if (!selectedFile && manifestData?.files?.length) {
-			setSelectedFile(manifestData.files[0]);
+		if (!selectedFile && sortedManifestFiles.length) {
+			setSelectedFile(sortedManifestFiles[0]);
 		}
-	}, [manifestData, selectedFile]);
+	}, [sortedManifestFiles, selectedFile]);
 
 	useEffect(() => {
 		if (!selectedFile) {
@@ -102,7 +103,7 @@ export default function ProposalPage() {
 						<label className="assessment-select-label">
             Choose proposal JSON:
 							<select value={selectedFile ?? ''} onChange={(event) => setSelectedFile(event.target.value)}>
-								{manifestData.files.map((file: string) => (
+								{sortedManifestFiles.map((file: string) => (
 									<option key={file} value={file}>{file.replace(/\.[^.]+$/, '')}</option>
 								))}
 							</select>

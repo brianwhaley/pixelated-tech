@@ -2,7 +2,6 @@
 
 import React from "react";
 import { PageSection, PageTitleHeader, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
-import { PageHero } from "@/app/elements/page-hero";
 
 export default function TermsPage() {
 	const config = usePixelatedConfig();
@@ -16,8 +15,6 @@ export default function TermsPage() {
 
 	return (
 		<>
-			<PageHero />
-
 			<PageTitleHeader>Terms & Privacy</PageTitleHeader>
 			<PageSection columns={1} id="terms-container">
 				<div>

@@ -27,8 +27,6 @@ export function FourOhFour (props: FourOhFourType) {
 	useEffect(() => {
 		const randomIndex = Math.floor(Math.random() * images.length);
 		setRandomIndex(randomIndex);
-		// const cloudinaryURL = getCloudinaryRemoteFetchURL({ url: images[randomIndex].img, product_env:"dlbon7tpq" });
-		// setCloudinaryURL(cloudinaryURL);
 		setImageURL(images[randomIndex].img);
   	}, [images]);
 
@@ -48,7 +46,6 @@ export function FourOhFour (props: FourOhFourType) {
 							aboveFold={true}
 							title={"Page Not Found - " + images[randomIndex].description} 
 							alt={"Page Not Found - " + images[randomIndex].description} 
-							variant="nextjs"
 							cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 							cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
 							cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined}

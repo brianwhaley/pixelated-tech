@@ -6,14 +6,8 @@ import { afterEach, beforeEach, describe, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { runCommonPageCoverage, runCommonElementCoverage, /* runCommonBlogPageCoverage, */ runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
-import { config as pixelatedConfig, createPageComponentMocks, /* mockState, */ resetMockState, resetFileDataState, /* setFileDataState, */ setPixelatedConfigOverride } from '@/tests/page-mocks';
+import { config as pixelatedConfig, /* createPageComponentMocks, */ /* mockState, */ resetMockState, resetFileDataState, /* setFileDataState, */ setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
-
-vi.mock('@pixelated-tech/components', async () => ({
-	__esModule: true,
-	...(await vi.importActual('@pixelated-tech/components')),
-	...createPageComponentMocks(),
-}));
 
 pixelatedConfig.siteInfo.url = 'https://example.com';
 import Header from '@/app/elements/header';
@@ -198,6 +192,54 @@ describe('Pixelated Template site coverage', () => {
 		setPixelatedConfigOverride(null);
 		render(<Header />);
 		expect(screen.getByTestId('smart-image')).not.toBeNull();
+	});
+
+	it('requests Contentful video metadata when Contentful integration is configured', async () => {
+		const mockAsset = {
+			sys: { id: '1TrFikTTfPiUfKYr65AfxK', createdAt: '2025-01-01T00:00:00Z' },
+			fields: {
+				title: 'GEA Hero',
+				description: 'A hero video',
+				file: {
+					url: '//videos.ctfassets.net/6ewno74sai9a/1TrFikTTfPiUfKYr65AfxK/2020008_Darwin_Nt_1280x720.mp4',
+					details: { duration: 120 }
+				}
+			}
+		};
+
+		const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
+			ok: true,
+			json: async () => mockAsset,
+		} as any);
+
+		const contentfulBaseUrl = 'base_url';
+		const contentfulSpaceId = 'space_id';
+		const contentfulEnvironment = 'environment';
+		const contentfulDeliveryAccessToken = 'delivery_access_token';
+
+		setPixelatedConfigOverride({
+			...pixelatedConfig,
+			integrations: {
+				...pixelatedConfig.integrations,
+				contentful: {
+					[contentfulBaseUrl]: 'https://cdn.contentful.com',
+					[contentfulSpaceId]: 'space-id',
+					[contentfulEnvironment]: 'master',
+					[contentfulDeliveryAccessToken]: 'token',
+				},
+			},
+		});
+
+		render(<Header />);
+		await waitFor(() => {
+			expect(fetchSpy).toHaveBeenCalled();
+			expect(screen.getByTestId('hero')).toHaveAttribute('poster', 'https://videos.ctfassets.net/6ewno74sai9a/1TrFikTTfPiUfKYr65AfxK/2020008_Darwin_Nt_1280x720.mp4');
+		});
+
+		const hero = screen.getByTestId('hero');
+		expect(hero).toHaveAttribute('description', 'A hero video');
+		expect(hero).toHaveAttribute('duration', '120');
+		expect(hero).toHaveAttribute('uploaddate', '2025-01-01T00:00:00Z');
 	});
 
 	it('renders Footer fallback when config is unavailable', async () => {
