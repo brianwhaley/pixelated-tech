@@ -55,6 +55,9 @@
 		}
 	},
 	"enhancements": {
+		"2026-09": [
+			"Enhancement of Social Media and Partner tags for image storage and performance."
+		],
 		"2026-08": [
 			"Added new LLMs-Full.txt file for improved site readability / indexability for Large Language Models",
 			"Added new AI.txt file to site for improved AI model discovery and indexing",
@@ -101,7 +104,8 @@
 				"notes": {
 					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
 					"2026-09": "Since AMAVA Janitorial was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
-				}
+				},
+				"additionalInvoiceItems": {}
 			}
 		},
 		{
@@ -140,7 +144,8 @@
 				"notes": {
 					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
 					"2026-09": "Since GEA Construction was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
-				}
+				},
+				"additionalInvoiceItems": {}
 			}
 		},
 		{
@@ -208,7 +213,8 @@
 				"notes": {
 					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
 					"2026-05": "Since Manning Metalworks was launched in May, billing for maintenance will begin starting in June, and will be billed $150 monthly at the end of each month.  Thank you!"
-				}
+				},
+				"additionalInvoiceItems": {}
 			}
 		},
 		{
@@ -240,7 +246,8 @@
 					"2026-07": "Thank you for your scheduled payment!",
 					"2026-06": "Thank you for your scheduled payment!",
 					"2026-05": "Thank you for your scheduled payment!"
-				}
+				},
+				"additionalInvoiceItems": {}
 			}
 		},
 
@@ -295,15 +302,22 @@
 				"email": "palmettoepoxy@gmail.com, marthaaberle21@gmail.com",
 				"companyName": "Palmetto Epoxy",
 				"address": "116 Beckenridge Circle, Bluffton, SC 29909",
+				"notes": {},
 				"additionalInvoiceItems": {
+					"2026-08": [
+						{
+							"amount": 299.06,
+							"description": "Reimbursement for Facebook Advertising for August 2026, as requested. 110,400 impressions to 20,369 people."
+						}
+					],
 					"2026-07": [
 						{
 							"amount": 19.01,
-							"description": "Reimbursement for Facebook Advertising for June 2026, as requested."
+							"description": "Reimbursement for Facebook Advertising for June 2026, as requested.  804 impressions to 471 people."
 						},
 						{
 							"amount": 269.09,
-							"description": "Reimbursement for Facebook Advertising for July 2026, as requested."
+							"description": "Reimbursement for Facebook Advertising for July 2026, as requested. 13,588 impressions to 5,664 people."
 						}
 					]
 				}	
@@ -410,6 +424,62 @@
 				}	
 			}
 		},
+
+
+
+
+		{
+			"name": "medicare-in-a-box",
+			"localPath": "",
+			"localPort": "",
+			"remote": "medicare-in-a-box",
+			"repo": "medicare-in-a-box",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.medicareinabox.org",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.medicareinabox.org",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "priscilla@simplystatedrs.com",
+				"companyName": "Medicare in a Box",
+				"address": "PO Box 1260, Bluffton, SC 29910",
+				"notes": {},
+				"additionalInvoiceItems": {}	
+			}
+		},
+		{
+			"name": "Simply Stated Workbook",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.simplystatedwb.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.simplystatedwb.com",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "priscilla@simplystatedrs.com",
+				"companyName": "Simply Stated Workbook",
+				"address": "PO Box 1260, Bluffton, SC 29910",
+				"notes": {},
+				"additionalInvoiceItems": {}	
+			}
+		},
+
+
+
+
 		{
 			"name": "threemuses",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/threemuses",

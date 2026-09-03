@@ -12,9 +12,9 @@
 * [ X ] BRIAN - Add an event calendar page to the site
 * [ X ] BRIAN - Draft a Legal page - terms, return policy, etc. 
 * [  ] BRIAN - Meta Advertising Campaign for workshops, classes, offer a package deal - Fall Theme
-* [  ] BRIAN - Build 1-pager used for meta ad and for handouts
-* [  ] BRIAN - Build Mail List for Studio Open Hose - Vendors
-* [  ] BRIAN - Build Mail List for Studio Open Hose - Possible Attendees
+* [ X ] BRIAN - Build 1-pager used for meta ad and for handouts
+* [  ] BRIAN - Build Mail List for Studio Open House - Vendors
+* [  ] BRIAN - Build Mail List for Studio Open House - Possible Attendees
 
 
 ## 2026-07-02 Updates

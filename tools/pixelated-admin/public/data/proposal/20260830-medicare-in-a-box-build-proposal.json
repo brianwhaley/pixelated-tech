@@ -1,0 +1,109 @@
+{
+	"companyName": "Medicare In A Box",
+	"companyContact": "Priscilla Johnson",
+	"date": "08/30/2026",
+	"email": "info@medicareinabox.org",
+	"phone": "866-250-5738",
+	"address": {
+		"streetAddress": "PO Box 1260",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "USA"
+	},
+	"proposalType": "Web Site Build",
+	"goal": 
+	[
+		"To design and build a modern, professional, and visually appealing web presence for Medicare In A Box."
+	],
+	"deliverables": [
+		"Newly redesigned web site for medicareinabox.org",
+		"The features listed below apply to the web site - medicareinabox.org"
+	],
+	"features": [
+		{ 
+			"feature": "Web Site",
+			"description": [
+				"Home Page",
+				"Why Medicare In A Box",
+				"Products",
+				"Product - Medicare in a Box",
+				"Product - Bulk Orders",
+				"Product - Co-Branding",
+				"Product - Licensing",
+				"I Have the Kit",
+				"About Us",
+				"Service Areas",
+				"Frequently Asked Questions",
+				"Blog",
+				"Privacy Policy",
+				"Refund Policy",
+				"Terms of Service",
+				"Shipping Policy",
+				"Cancellation Policy",
+				"Contact Us"
+			]
+		},{
+			"feature": "E-Commerce",
+			"description": [
+				"Integrate with existing Shopify e-commerce platform account for product catalog, shopping cart management, payment processing, fulfillment, and order tracking"
+			]
+		},{
+			"feature": "Content Management",
+			"description": [
+				"Storage of scalable content and images in Contentful Content Management System",
+				"Hosting, Domain, and Template usage costs for Blog on WordPress platform",
+				"Stock Photography usage and licensing"
+			]
+		},{
+			"feature": "Search Engine Optimization",
+			"description": [
+				"Meta tags - title, description, keywords, and Open Graph tags for social media sharing",
+				"Foundational files - sitemap.xml, sitemap.json, rss.xml, robots.txt, not-found.html, manifest.webmanifest, humans.txt, security.txt, well-known.txt, Loading page, Global Errors page, Style Guide page",
+				"Rich Schemas for AI - Blog Posting, Breadcrumbs, FAQs, LocalBusiness, Podcast (if used), Product, Recipe, Review, Services, Website",
+				"Additional files for AI - llms.txt, ai.txt"
+
+			]
+		},{
+			"feature": "Hosting",
+			"description": [
+				"Hosting via Amazon Web Services (AWS).  Services include AWS Amplify, AWS CloudFront CDN, AWS Route 53 DNS including SSL Certificate, AWS CloudWatch Logging",
+				"Distribution of images in Cloudinary Content Delivery System"
+			]
+		},{
+			"feature": "Social Media Accounts",
+			"description": [
+				"Create new social media accounts:",
+				"Google Business, Threads, LinkedIn",
+				"Links of new / existing social media accounts added to the web site"
+
+			]
+		}
+	],
+	"startDate": "10/1/2026",
+	"milestones": [
+		{
+			"milestone": "Information Architecture and design agreement",
+			"date": "10/9/2026"
+		},{
+			"milestone": "Initial Site Build - medicareinabox.org",
+			"date": "10/16/2026"
+		},{
+			"milestone": "Site Launch - medicareinabox.org",
+			"date": "10/23/2026"
+		}, {
+			"milestone": "New Social Media accounts created",
+			"date": "10/30/2026"
+		}
+	],
+	"paymentTotal": {
+		"amount": 4000,
+		"isDiscounted": true,
+		"description": [
+			"Initial base pricing for building the web site: medicareinabox.org and creating new social media accounts is $5000.",
+			"Typical pricing for a small brochure site is $3,000.",
+			"Pricing for medicareinabox.org is based upon a much larger site, with more complexity including e-commerce integration with Shopify.",
+			"Discounting is applied based on building for both medicareinabox.org and simplystatedwb.com."
+		]
+	}
+}

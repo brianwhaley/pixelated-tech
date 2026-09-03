@@ -821,7 +821,7 @@ export async function createContentfulAssetURLs(props: createContentfulAssetURLs
 					}
 					return { 
 						title: a.fields?.title || 'Untitled Video',
-						thumbnail_loc: `${props.origin ? props.origin : ''}/images/placeholder.png`,
+						thumbnail_loc: `${props.origin ? props.origin : ''}https://www.pixelated.tech/images/icons/placeholder.png`,
 						description: a.fields?.description || 'No description available',
 						publication_date: a.sys?.createdAt || new Date().toISOString(),
 						content_loc: encode(url),

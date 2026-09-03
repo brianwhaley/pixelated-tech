@@ -8,7 +8,7 @@
 * [  ] Curator.io - Instagram Gallery - Gallery Page
 * [  ] About Us - Photo
 * [  ] About Us - Photo - Others?
-* [  ] VisualDesign section of routes.json - colors, fonts
+* [ X ] VisualDesign section of routes.json - colors, fonts
 * [  ] Facebook account
 * [  ] Instagram account
 * [  ] Threads account
@@ -18,5 +18,5 @@
 * [  ] Contentful
 * [  ] Cloudinary
 * [  ] First quarter of blog posts (3)
-* [  ] Move dmain
+* [  ] Move domain
 * [  ] Migrate email

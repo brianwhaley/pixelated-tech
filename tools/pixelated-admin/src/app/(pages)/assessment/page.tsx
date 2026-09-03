@@ -59,6 +59,7 @@ type AssessmentData = {
     websiteDomain: { currentUrls?: string[]; proposedUrls?: string[] };
     informationArchitecture: { route: string; title: string; notes: string[] }[];
     blogRoute?: { enabled: boolean; route: string };
+    blogCalendar: { week: number; date: string; title: string; notes: string[] }[];
     proposedSocialMediaAccounts: string[];
     differentiation: string[];
     currentBusinessPlan: string[];
@@ -556,6 +557,31 @@ function Assessment(props: { assessment: AssessmentData }) {
 							</ul>
 
 							<p>These blog posts are drafted by Pixelated Technologies, then reviewed by you and your team.  We do the heavy lifting to research the topic, write the content, post the article, and distribute across your social media platforms.  We customize the approach to write and publish these to keep you focused on your customers, not writing blog posts or web content.</p>
+
+							{ /* assessment.blogCalendar?.length > 0 ? (
+								assessment.blogCalendar.map((post, index) => (
+									<div key={index}>
+										<h3>Week {index + 1} - {post.date}: {post.title}</h3>
+										<ul>
+											{post.notes.map((note, noteIndex) => (
+												<li key={noteIndex}>{note}</li>
+											))}
+										</ul>
+									</div>
+								))
+							) : null */}
+
+							{assessment.blogCalendar?.length > 0 ? (
+								<>
+									<h3>Proposed Blog Post Calendar</h3>
+									{assessment.blogCalendar.map((post, index) => (
+										<ul key={index}>
+											<li><strong>Week {post.week} - {post.date}:</strong> {post.title}</li>
+										</ul>
+									))}
+								</>
+							) : null}
+
 						</>
 					) : null}
 				</div>

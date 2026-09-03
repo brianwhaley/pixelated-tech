@@ -1,11 +1,9 @@
 {
   "metadata": {
-    "imageCount": 4
+    "imageCount": 2
   },
   "images": [
     "images/gea-construction-logo-2-bw.png",
-    "images/gea-construction-logo-2-color.png",
-    "images/placeholder.png",
-    "images/under-construction.jpg"
+    "images/gea-construction-logo-2-color.png"
   ]
 }

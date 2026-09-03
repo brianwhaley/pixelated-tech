@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 32
+    "imageCount": 31
   },
   "images": [
     "images/favicon/android-chrome-192x192.png",
@@ -33,7 +33,6 @@
     "images/logo/three-muses-color-round.png",
     "images/logo/three-muses-color.jpg",
     "images/pix-bg-512.jpg",
-    "images/placeholder.png",
     "images/site/consignment-period.png"
   ]
 }

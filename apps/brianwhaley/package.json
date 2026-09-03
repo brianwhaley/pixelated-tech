@@ -1,6 +1,6 @@
 {
   "name": "brianwhaley",
-  "version": "2.13.29",
+  "version": "2.13.30",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -32,9 +32,9 @@
     "react": "^19.2.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.6",
+    "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "9.39.4",
-    "@eslint/json": "^2.0.1",
+    "@eslint/json": "^2.1.0",
     "@next/eslint-plugin-next": "^16.3.0",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.0.0",

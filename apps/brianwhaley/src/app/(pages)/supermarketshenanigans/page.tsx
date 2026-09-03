@@ -120,7 +120,7 @@ export default function SupermarketShenanigansPage() {
 
 			</PageSection>
         
-			<PartnerTags title="Supermarket Shenanigans Links" />
+			<PartnerTags title="Supermarket Shenanigans Links" columns={8}/>
         
 		</>
 	);

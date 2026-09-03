@@ -1,9 +1,8 @@
 {
   "metadata": {
-    "imageCount": 2
+    "imageCount": 1
   },
   "images": [
-    "images/pix-bg-512.jpg",
-    "images/placeholder.png"
+    "images/pix-bg-512.jpg"
   ]
 }

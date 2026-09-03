@@ -2,11 +2,11 @@
 
 ## 2026-08-19 UPDATE
 * [ x ] Redid the Projects section
-* [  ] Palmetto Epoxy Email Addresses for Dennis and Martha
-* [  ] Flooring Estimator
+* [ X ] Palmetto Epoxy Email Addresses for Dennis and Martha
+* [ X ] Flooring Estimator
 * [  ] Email Campaign - Builders
 * [  ] Email Campaign - Realtors
-* [  ] Citation Management
+* [ X ] Citation Management
 * [  ] Press Release
 
 

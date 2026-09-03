@@ -1,0 +1,1035 @@
+{
+	"companyName": "Simply Stated Workbook",
+	"companyContact": "Priscilla Johnson",
+	"date": "08/31/2026",
+	"email": "info@simplystatedwb.com",
+	"phone": "866.250.5728",
+	"address": {
+		"streetAddress": "PO Box 1260",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "USA"
+	},
+	"primaryAudience": [
+        "Seniors, pre-retirees, and older adults navigating major health, financial, and life transitions (Medicare enrollment, retirement planning, long-term care management).",
+        "Parents and family heads managing generational family transitions (young adults heading to college, empty nesters re-evaluating household needs).",
+        "Family caregivers and adult children assisting aging parents through healthcare coordination, home care transitions, and emergency preparedness/vital document tracking.",
+        "Individuals looking for a physical, tactile, and non-overwhelming way to organize critical life details (financial, medical, personal records) in case of unexpected events."
+    ],
+    "secondaryAudience": [
+        "Financial Advisors, Elder Law Attorneys, & Wealth Planners using the workbooks (e.g., 'When Life Happens', 'When Retirement Happens') as consultative intake tools or value-add client gifts.",
+        "HR Departments, Employee Benefits Teams, & Wellness Managers incorporating transition toolkits into corporate retirement, caregiving, and employee assistance programs (EAPs).",
+        "Healthcare Providers, Senior Home Care Agencies, & Social Workers distributing organizational workbooks (e.g., 'When Home Care Happens', 'When Manage Your Care Happens') to patients and families.",
+        "Community Centers, Senior Centers, & Local Libraries hosting workshops on retirement readiness, college planning, or emergency family preparedness."
+    ],
+    "marketOverview": [
+        "Operates as a physical direct-to-consumer (D2C) self-help publishing ecosystem and B2B consultative client-engagement platform.",
+        "Positions products around the recurring theme of major life milestones ('When [X] Happens'), cutting through cognitive overload and dense bureaucratic language across healthcare, finance, and caregiving.",
+        "Differentiates through low-tech, high-tactile physical workbooks and supplemental tools (kits, calendar stickers, annual update subscriptions) complemented by digital assistance ('Max' avatar).",
+        "Monetizes via individual retail unit sales ($24.99–$34.99 price point), add-on consumable supplies (stickers, refills), recurring digital community subscriptions ($45/yr), and bulk/B2B distributor sales for professional client building."
+    ],
+	"currentSocialMedia": [
+		"https://www.youtube.com/@MedicareinaBox",
+		"https://www.facebook.com/medicareinabox",
+		"https://www.facebook.com/profile.php?id=61572411337913",
+		"https://www.instagram.com/medicareinabox/",
+		"https://simplystatedwb.com/",
+		"https://www.facebook.com/profile.php?id=61572750325135",
+		"https://www.instagram.com/simplystatedworkbook/",
+		"https://www.youtube.com/@SimplyStatedWorkbook",
+		"https://www.linkedin.com/in/priscilla-johnsonss/",
+		"https://simplystatedrs.com/",
+		"https://www.facebook.com/profile.php?id=61556301054781",
+		"https://www.linkedin.com/company/simply-stated-retirement-solutions/about/",
+		"https://www.yelp.com/biz/simply-stated-retirement-solutions-bluffton",
+		"https://www.mapquest.com/us/south-carolina/simply-stated-retirement-solutions-427891406"
+	],
+	"currentAdvertisingPartners": [
+		"https://www.kohls.com/product/prd-7997863/simply-stated-workbook-featuring-medicare-in-a-box.jsp",
+		"https://shopredbag.com/products/medicare-in-a-box%C2%AE-medicare-starter-kit-for-seniors-caregivers-advisors",
+		"QVC",
+		"Good Morning America",
+		"Live with Kelly & Mark",
+		"Hooters",
+		"West Carolina"
+	],
+	"currentEarnedMedia": [],
+	"existingSite": [
+		{
+			"url": "https://simplystatedwb.com/",
+			"strengths": [
+				"Design language for the site is solid and strong",
+				"Content throughout the site is informative, including the home page, about us, ordering, why medicare in a box, bulk orders, contact us, and FAQs.",
+				"The site is mobile responsive",
+				"There is a blog section on the site, with a few solid blog posts.  Blogs are great for LLM discovery and search engine optimization.",
+				"There is a schema for Organization, which is good for LLM discovery and search engine optimization.",
+				"Favicon is present and working.",
+				"There is a sitemap.xml, robots.txt, llms.txt, and llms-full.txt, which is good for LLM discovery and search engine optimization.",
+				"There is a contact form, contact phone number and email address, which is good for building a mailing list of people who are interested in your products and services."
+			],
+			"areasForImprovement": [
+				"===== DESIGN =====",
+				"Make the logo bigger and put the menu underneath, or on the right side, so you focus on the logo and the brand, and not the menu.",
+				"Make some adjustments for mobile versions of the site, ie separate the Jumpstart and box in the hero area so they wrap but stay big and readable.",
+				"Adjust the footer menu to be more readable and comprehensive, with all of the legal links as well as the primary header links.",
+				"===== CONTENT =====",
+				"Currently there are 3 separate shopping pages, plus the home page.  This is a bit confiusing.  Adjust the shopping experience so the home page has 'featured' items, and the shopping experience is one page with filtering by type.",
+				"Add an FAQs page, including to 15-20 common questions asked by customers, and should emit a Schema for Answer Engines",
+				"Add some personal details on the About Us page for you and your team, so people can connect with you and your story.",
+				"Create a Services page, where you can describe the product you offer by category, Bulk Orders, Co-Brand, Licensing Partners, etc.  This is good for LLM discovery and search engine optimization, and will help you convert more customers.",
+				"Service Area pages are usually a good idea to help signal where you are located, and where you provide services.  This is good for LLM discovery and search engine optimization, and will help you convert more customers.  We should discuss how this will work for you.",
+				"There is a blog section, but the posts are very infrequent.  Post more frequently, and to have a regular schedule for posting, so you can build a following and get more traffic to your site.",
+				"Consider adding content only available for those who register for the site, ( in addition to the newsletter, or move the newsletter to be a part of the site) so you can build a mailing list of people who are interested in your products and services.",
+				"Create a place for Financial Advisors to register and upload bulk orders, manage their orders, track shipping labels, etc.  This can even automate shipping and label creation.  It may be a good idea to add all uploaded recipients to your newsletter / blog / walled garden of content, so you can build a list of people who are interested in your products and services.",
+				"===== TECHNICAL =====",
+				"The Organization schema is very light, containing almost none of the content.",
+				"Other schemas like LocalBusiness, Products, FAQs, Breadcrumbs, Videos, and more should be added to the site to help with LLM discovery and search engine optimization.",
+				"The sitemap.xml, robots.txt, llms.txt, llms-full.txt are incorrect, hindering your site being indexed.  The following files are missing: rss.xml, manifest, sitemap.json, humans.txt, security.txt, ai.txt, browserconfig.xml",
+				"Email and phone number should be clickable on your contact us page, so people can easily contact you."
+			]
+		}
+	],
+	"similarCompanyNames": [
+        {
+            "name": "Simply Stated Media",
+            "urls": [
+                "https://simplystatedmedia.com/"
+            ],
+            "summary": "An independent digital marketing, AI workflow, and content strategy consultancy run by Raubi Perilli. Specializes in translating complex business, financial, and legal services into accessible website copy and client communications."
+        },
+        {
+            "name": "Simply Stated Business",
+            "urls": [
+                "https://simplystatedbusiness.com/"
+            ],
+            "summary": "An independent business communications blog and resource platform offering templates, guides, and tips to help small businesses simplify professional writing and clear client messaging."
+        },
+        {
+            "name": "Simply Stated Finance",
+            "urls": [
+                "https://www.simplystatedfinance.com/"
+            ],
+            "summary": "An independent consumer financial literacy website focusing on breaking down complex budgeting, retirement planning, and personal finance concepts into plain-English guides."
+        },
+        {
+            "name": "Simply Stated Spotlights (Georgetown Business Law Review)",
+            "urls": [
+                "https://businesslawreviewgeorgetown.org/simply-stated/"
+            ],
+            "summary": "An academic legal publications tracker by Georgetown University that breaks down complex antitrust, corporate litigation, and business law cases into simplified public summaries."
+        },
+        {
+            "name": "Simply Stated Bath & Body (Simply Stated Creations LLC)",
+            "urls": [
+                "https://simplystatedcreations.com/"
+            ],
+            "summary": "A small-batch handcrafted consumer products brand based in Colorado, producing physical care products and subscription boxes targeting busy women and working mothers."
+        },
+        {
+            "name": "Simply Stated LLC (Quality Handmade Goods)",
+            "urls": [
+                "https://shopsimplystated.com/"
+            ],
+            "summary": "An e-commerce retail store based in Michigan selling custom handmade goods, home accessories, ceramic gifts, and apparel."
+        },
+        {
+            "name": "Simply Stated SLP Services, LLC",
+            "urls": [
+                "https://npidb.org/organizations/ambulatory_health_care/hearing-and-speech_261qh0700x/1184370041.aspx"
+            ],
+            "summary": "An independent healthcare provider and speech-language pathology clinical practice focused on diagnostic and therapeutic speech and hearing care."
+        }
+    ],
+	"competitors": [
+        {
+            "name": "NOLO Publishing (Life Planning & Estate Workbooks)",
+            "urls": [
+                "https://www.nolo.com/"
+            ],
+            "summary": "Direct competitor in consumer self-help legal, financial, and eldercare publishing. Produces fill-in-the-blank physical planners, legal workbooks, and organizational guides for retirement, estate planning, and family caregiving."
+        },
+        {
+            "name": "Knock Knock / 'I'm Dead, Now What?' Planners",
+            "urls": [
+                "https://knockknockstuff.com/"
+            ],
+            "summary": "Competes directly in the physical life-organizer space. Sells structured journals and prompt workbooks designed to organize vital records, account details, and end-of-life/emergency instructions for loved ones."
+        },
+        {
+            "name": "Her Retirement (Life & Retirement Toolkits)",
+            "urls": [
+                "https://herretirement.com/"
+            ],
+            "summary": "Competes in providing step-by-step physical/digital workbooks, software, and decision tools for individuals and financial advisors navigating retirement, healthcare costs, and lifestyle transitions."
+        },
+        {
+            "name": "Horsesmouth (Savvy Client-Education Workbooks)",
+            "urls": [
+                "https://www.horsesmouth.com/"
+            ],
+            "summary": "B2B competitor publishing turn-key client-facing educational workbooks, guides, and workshop materials for financial advisors, insurance agents, and HR professionals to distribute to clients."
+        },
+        {
+            "name": "Caregiver Action Network (CAN) / Family Caregiver Guides",
+            "urls": [
+                "https://www.caregiveraction.org/"
+            ],
+            "summary": "Competes in the caregiving and healthcare management space by offering free and paid organizational toolkits, checklists, and guides for managing home care and patient care transitions."
+        }
+    ],
+	"currentBusinessPlan": [
+		"Simply Stated is the parent company of Medicare In A Box, and has been in business since 2018.  The company has a strong track record of providing educational workbooks and toolkits for seniors and pre-retirees navigating Medicare enrollment.",
+		"Medicare in a Box is considered a passsive income business, with the potential for growth through strategic partnerships and expanded product offerings.",
+		"The business model is a hybrid of direct-to-consumer (D2C) sales through the website and bulk enterprise/B2B distribution to financial advisors, benefits brokers, HR departments, and senior centers.",
+		"Revenue streams include individual kit sales at $34.99 per unit and bulk orders for enterprise clients, which can be customized or co-branded.",
+		"Marketing strategies include traditional and social media engagement, partnerships with senior-focused organizations, and educational webinars or workshops.",
+		"Customer acquisition strategies focus on targeted online advertising, referral programs, and community outreach initiatives."
+	],
+	"nextSteps": [
+		"Redesign the website to improve user experience, navigation, and content presentation.",
+		"Implement a comprehensive SEO strategy to enhance online visibility and search engine rankings.",
+		"Develop an expanded content marketing plan that includes regular blog posts, educational resources, and social media engagement.",
+		"Strengthen partnerships with financial advisors, HR departments, and senior centers to increase bulk orders and co-branding opportunities.",
+		"Automate the bulk order process for enterprise clients, including order tracking, shipping label generation, and customer relationship management.",
+		"Expand the product line to include additional educational resources, tools, and services that complement the existing Medicare In A Box offering.",
+		"Explore new marketing channels and advertising platforms to reach a broader audience, including Google Business, LinkedIn, and Threads."
+	],
+	"references": [
+		{
+			"name": "Palmetto Epoxy",
+			"url": "https://www.palmetto-epoxy.com",
+			"contactName": "Martha Aberle",
+			"contactEmail": "palmettoepoxy@gmail.com",
+			"contactPhone": "(516) 607-0176",
+			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
+		},
+		{
+			"name": "The Three Muses of Bluffton",
+			"url": "https://www.thethreemusesofbluffton.com",
+			"contactName": "Katie Coupland",
+			"contactEmail": "info@thethreemusesofbluffton.com",
+			"contactPhone": "(843) 705-0837",
+			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
+		},
+		{
+			"name": "JZ Home Improvement",
+			"url": "https://www.jzhomeimprovement.com",
+			"contactName": "",
+			"contactEmail": "",
+			"contactPhone": "",
+			"summary": " Local Union NJ home improvement contractor specializing in kitchen and bathroom remodeling, basement finishing, decks and outdoor spaces, and custom carpentry."
+		}
+	],
+	"visualDesign": {
+        "primary": "#ffffff",
+        "secondary": "#212255",
+        "tertiary": "#BFBFBF",
+        "accent1": "#212255",
+        "accent2": "#000000",
+        "accent3": "#BFBFBF",
+        "headerFont": {
+            "name": "Nunito",
+            "url": "https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
+        },
+        "bodyFont": {
+            "name": "Outfit",
+            "url": "//simplystatedwb.com/cdn/fonts/outfit/outfit_n4.387c2e2.woff2"
+        },
+        "additionalNotes": [
+            "The site runs on Shopify Dawn/Sense architecture, utilizing CSS custom properties for root layout variables, animation tokens, and scheme-based color management.",
+            "Color values mapped from root scheme-1: Primary Background White (#ffffff / RGB 255, 255, 255), Foreground/Secondary Dark Blue (#212255 / RGB 33, 34, 85), Background Contrast Gray (#BFBFBF / RGB 191, 191, 191), and Black (#000000 / RGB 0, 0, 0) for secondary button text and links.",
+            "Font families mapped directly from root theme settings: Body font scale set to Outfit (400/700 weight) and Heading font scale set to Nunito (400 weight default).",
+            "Base html font size scales dynamically via CSS calculation: `calc(var(--font-body-scale) * 62.5%)`, setting the root rem base to 10px (1.0 scale).",
+            "Includes custom animation tokens (`--animation-slide-in`, `--animation-fade-in`) configured with cubic-bezier easing (`cubic-bezier(0, 0, .3, 1)`) and multi-tier duration variables ranging from 0.1s to 3s, wrapped inside media queries checking for hover capabilities and reduced-motion user preferences."
+        ]
+    },
+	"websiteDomain": {
+		"currentUrls": [
+			"https://simplystatedwb.com/"
+		],
+		"proposedUrls": []
+	},
+	"logo": [
+		{
+			"url": "https://simplystatedwb.com/cdn/shop/files/Asset_5.png?v=1726282731",
+			"altText": ""
+		}
+	],
+	"informationArchitecture": [
+		{
+			"route": "/",
+			"title": "Home",
+			"notes": [
+				"Remove all items, focus on 'Featured' items"
+			]
+		},{
+			"route": "/pages/about",
+			"title": "About",
+			"notes": []
+		},{
+			"route": "/collections/shop-all-1",
+			"title": "Shop All",
+			"notes": []
+		},{
+			"route": "/collections/workbooks",
+			"title": "Shop Workbooks",
+			"notes": [
+				"Combine with 'Shop All' page, and filter by type"
+			]
+		},{
+			"route": "/collections/planning-essentials",
+			"title": "Shop Planning Essentials",
+			"notes": [
+				"Combine with 'Shop All' page, and filter by type"
+			]
+		},{
+			"route": "/pages/wholesale",
+			"title": "Bulk Purchases",
+			"notes": []
+		},{
+			"route": "https://simplystatedwb.com/pages/retailer-application",
+			"title": "Retailer Application",
+			"notes": [
+				"NOTE: This page is blank."
+			]
+		},{
+			"route": "/pages/blog",
+			"title": "Blog",
+			"notes": [
+				"Move to /blog route, and add more frequent content."
+			]
+		},{
+			"route": "/policies/privacy-policy",
+			"title": "Privacy Policy",
+			"notes": [
+				"Move to /privacy-policy route."
+			]
+		},{
+			"route": "/policies/refund-policy route",
+			"title": "Refund Policy",
+			"notes": [
+				"Move to /refund-policy route."
+			]
+		},{
+			"route": "/policies/terms-of-service",
+			"title": "Terms of Service",
+			"notes": [
+				"Move to /terms-of-service route."
+			]
+		},{
+			"route": "/policies/shipping-policy",
+			"title": "Shipping Policy",
+			"notes": [
+				"Move to /shipping-policy route."
+			]
+		},{
+			"route": "/policies/contact-information",
+			"title": "Contact Information",
+			"notes": [
+				"Combine with Contact Us page."
+			]
+		},{
+			"route": "/policies/cancellation-policy",
+			"title": "Cancellation Policy",
+			"notes": [
+				"Move to /cancellation-policy route."
+			]
+		}
+	],
+	"blogRoute": {
+		"enabled": true,
+		"route": "/blog"
+	},
+	"blogCalendar": [
+		{
+			"week": "1",
+			"date": "October 1",
+			"title": "Medicare Open Enrollment Starts October 15: Your Pre-Flight Checklist",
+			"notes": [
+				"Topic: October 15th Medicare Annual Election Period (AEP) launch prep.",
+				"Featured Product: Medicare in a Box® Kit ($34.99)",
+				"Target Audience: Medicare beneficiaries preparing to compare plans, caregivers.",
+				"Customer Motivation: Feeling fully prepared and confident before plan comparison tools open.",
+				"SEO/AEO Strategy: Target query 'medicare open enrollment checklist october 15'. Structured snippet targeting.",
+				"Differentiation: Complete physical toolkit keeps incoming brochures organized without cluttering dining tables."
+			]
+		},
+		{
+			"week": "2",
+			"date": "October 8",
+			"title": "Medicare ANOC Letters Are Arriving: How to Read Your Annual Notice of Change",
+			"notes": [
+				"Topic: ANOC letter interpretation, premium increases, drug formulary shifts.",
+				"Featured Product: When Medicare Happens Workbook ($24.99)",
+				"Target Audience: Current Medicare beneficiaries receiving autumn mailers.",
+				"Customer Motivation: Understanding confusing notice letters without panic or confusion.",
+				"SEO/AEO Strategy: Target query 'what is Medicare Annual Notice of Change letter'. Clear definitions and step-by-step instructions.",
+				"Differentiation: Max guides readers line-by-line through what numbers actually matter in the ANOC."
+			]
+		},
+		{
+			"week": "3",
+			"date": "October 15",
+			"title": "How to Review Your Medicare Advantage Plan During Open Enrollment",
+			"notes": [
+				"Topic: AEP plan comparison, network changes, extra benefits check.",
+				"Featured Product: Max’s Medicare Tribe Annual Subscription ($45.00)",
+				"Target Audience: Seniors actively shopping during AEP.",
+				"Customer Motivation: Ensuring current doctors stay in-network for the upcoming year.",
+				"SEO/AEO Strategy: Target query 'how to check if doctor is in medicare advantage network next year'. Step-by-step instructions.",
+				"Differentiation: Tribe subscribers get real-time walkthroughs and live assistance during open enrollment."
+			]
+		},
+		{
+			"week": "4",
+			"date": "October 22",
+			"title": "Is Your Medicare Workbook Up to Date? Time for Your Annual Sticker Refill",
+			"notes": [
+				"Topic: New Medicare rates for upcoming year, updating physical reference books.",
+				"Featured Product: Annual Medicare Sticker Refill ($4.99)",
+				"Target Audience: Existing workbook owners updating figures for the new year.",
+				"Customer Motivation: Instant update of physical reference tools for less than five dollars.",
+				"SEO/AEO Strategy: Target query 'new medicare deductibles and copays next year sticker update'. High recency intent.",
+				"Differentiation: Shows how easy it is to peel and stick updated CMS rates directly into existing workbooks."
+			]
+		},
+		{
+			"week": "5",
+			"date": "October 29",
+			"title": "Don't Overpay for Medicare Part D: How to Audit Your Prescription List",
+			"notes": [
+				"Topic: AEP prescription drug review, Tier changes.",
+				"Featured Product: When Medicare Happens Workbook ($24.99)",
+				"Target Audience: Seniors taking branded or expensive generic medications.",
+				"Customer Motivation: Cutting drug costs before the December 7th deadline.",
+				"SEO/AEO Strategy: Target query 'how to compare medicare part d drug plans online'. Conversion-focused content.",
+				"Differentiation: Offers a clean paper worksheet to log drugs before running online comparison tools."
+			]
+		},
+		{
+			"week": "6",
+			"date": "November 5",
+			"title": "Managing Health Emergencies on Campus: A Guide for College Parents at Mid-Terms",
+			"notes": [
+				"Topic: Mid-semester student health check, ER visits away from home.",
+				"Featured Product: When College Happens Workbook ($27.99)",
+				"Target Audience: Parents of college students during mid-terms.",
+				"Customer Motivation: Relief knowing medical info can be shared during distant campus emergencies.",
+				"SEO/AEO Strategy: Target query 'how to handle college student medical emergency away from home'. Empathetic guide.",
+				"Differentiation: Highlights the student health wallet card and signed medical release tracking features."
+			]
+		},
+		{
+			"week": "7",
+			"date": "November 12",
+			"title": "Home Safety Audit for Aging Parents: Preventing Falls Before Winter Hits",
+			"notes": [
+				"Topic: Fall prevention, home accessibility modifications, home care setup.",
+				"Featured Product: When Home Care Happens Workbook ($24.99)",
+				"Target Audience: Adult children preparing aging parents' homes for winter.",
+				"Customer Motivation: Keeping parents safe, independent, and out of the hospital.",
+				"SEO/AEO Strategy: Target query 'elderly home safety inspection checklist'. Bulleted list layout.",
+				"Differentiation: Includes home environment assessment sheets to track necessary safety upgrades."
+			]
+		},
+		{
+			"week": "8",
+			"date": "November 19",
+			"title": "Holiday Family Meetings: How to Discuss Elder Care Planning Respectfully",
+			"notes": [
+				"Topic: Thanksgiving family gatherings, multi-generational planning conversations.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Families gathering for Thanksgiving/Holidays.",
+				"Customer Motivation: Using holiday time together to get everyone on the same page regarding parents' care.",
+				"SEO/AEO Strategy: Target query 'how to hold a family meeting about aging parents'. Clear conversation framework.",
+				"Differentiation: Workbook serves as an objective agenda for family meetings, avoiding emotional arguments."
+			]
+		},
+		{
+			"week": "9",
+			"date": "November 26",
+			"title": "Medicare Open Enrollment Deadline is Dec 7: The Last-Minute Decision Guide",
+			"notes": [
+				"Topic: Countdown to AEP end, final plan verification.",
+				"Featured Product: Medicare in a Box® Kit ($34.99)",
+				"Target Audience: Seniors who haven't finalized their Medicare plan choices yet.",
+				"Customer Motivation: Urgency relief—making a safe, smart choice before enrollment closes.",
+				"SEO/AEO Strategy: Target query 'last day to change medicare plan open enrollment'. High urgency Q&A block.",
+				"Differentiation: Delivers clear, emergency decision flowcharts to avoid choice paralysis."
+			]
+		},
+		{
+			"week": "10",
+			"date": "December 3",
+			"title": "Giving the Gift of Organization: Unique Holiday Gifts for Parents & Pre-Retirees",
+			"notes": [
+				"Topic: Practical holiday gift guides, meaningful family gifts.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Holiday shoppers buying for adult parents or spouses.",
+				"Customer Motivation: Giving something genuinely useful that shows deep care for family well-being.",
+				"SEO/AEO Strategy: Target query 'best practical gifts for elderly parents who have everything'. E-commerce gift focus.",
+				"Differentiation: Positions beautiful, hardcover physical workbooks as thoughtful, premium gifts."
+			]
+		},
+		{
+			"week": "11",
+			"date": "December 10",
+			"title": "End-of-Year Medical Log Audit: Maximize Your Deductibles Before Dec 31",
+			"notes": [
+				"Topic: FSA/HSA utilization, insurance deductible tracking.",
+				"Featured Product: When Manage Your Care Happens Workbook ($24.99)",
+				"Target Audience: Patients who have met deductibles, families managing FSA balances.",
+				"Customer Motivation: Ensuring no health benefits or pre-tax dollars go to waste at year end.",
+				"SEO/AEO Strategy: Target query 'how to check if you met health insurance deductible before year end'. Action items list.",
+				"Differentiation: Features annual medical expense logs to make tax and insurance claims effortless."
+			]
+		},
+		{
+			"week": "12",
+			"date": "December 17",
+			"title": "Retiring in the New Year? Your 30-Day Pre-Retirement Administrative Checklist",
+			"notes": [
+				"Topic: End-of-year retirement transitions, benefits rollover prep.",
+				"Featured Product: When Retirement Happens Workbook ($24.99)",
+				"Target Audience: Workers retiring December 31st or January 1st.",
+				"Customer Motivation: Seamless transition from employer benefits to personal retirement systems.",
+				"SEO/AEO Strategy: Target query 'what to do 30 days before retiring'. High-intent checklist.",
+				"Differentiation: Physical step-by-step checklist ensures zero overlooked steps during HR offboarding."
+			]
+		},
+		{
+			"week": "13",
+			"date": "December 24",
+			"title": "New Year’s Resolutions That Stick: Organizing Your Family’s Vital Records",
+			"notes": [
+				"Topic: New Year goals, life binder setup, family preparedness.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Adults setting life-organization resolutions.",
+				"Customer Motivation: Starting the upcoming year with total control over household administrative details.",
+				"SEO/AEO Strategy: Target query 'new year resolution personal document organization'. Inspirational tone.",
+				"Differentiation: Replaces vague resolutions with a tangible, finishable physical project."
+			]
+		},
+		{
+			"week": "14",
+			"date": "December 31",
+			"title": "Welcome to Your New Medicare Plan: What to Do in Week 1 of the New Year",
+			"notes": [
+				"Topic: January 1st plan activation, new ID cards, establishing care.",
+				"Featured Product: Date Dots – Calendar Stickers ($4.95)",
+				"Target Audience: Seniors starting new Medicare plans on Jan 1.",
+				"Customer Motivation: Starting the year smoothly with new prescription cards and doctor appointments locked in.",
+				"SEO/AEO Strategy: Target query 'what to do when new medicare plan starts january 1'. Quick start answer block.",
+				"Differentiation: Pairs new plan setup with visual Date Dots to mark preventive care visits early."
+			]
+		},
+		{
+			"week": "15",
+			"date": "January 7",
+			"title": "New Year, Organized Life: How to Build Your Emergency Binder for Unexpected Events",
+			"notes": [
+				"Topic: Life organization, vital document tracking, emergency preparedness.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Heads of households, adult children managing aging parents, pre-retirees.",
+				"Customer Motivation: Relief from anxiety about unpredictable life events; desire to get organized at the start of the year.",
+				"SEO/AEO Strategy: Focus on long-tail target keyphrases like 'how to make a master life binder' and 'essential documents for emergency binder'. Format post with clear Q&A headers for AI overview scraping.",
+				"Differentiation: Emphasizes a tactile, physical, fill-in-the-blank system rather than scattered digital PDFs or complex password managers."
+			]
+		},
+		{
+			"week": "16",
+			"date": "January 14",
+			"title": "Turning 65 This Year? Your Step-by-Step Initial Enrollment Period (IEP) Roadmap",
+			"notes": [
+				"Topic: Medicare Initial Enrollment Period (IEP) timeline and rules.",
+				"Featured Product: When Medicare Happens Workbook ($24.99)",
+				"Target Audience: Seniors turning 65 in Q1/Q2, working pre-retirees.",
+				"Customer Motivation: Overcoming fear of penalty fees and decision paralysis caused by aggressive Medicare junk mail.",
+				"SEO/AEO Strategy: Target query 'when to apply for Medicare before 65'. Structured timeline layout engineered for Answer Engine Optimization.",
+				"Differentiation: Introduces 'Max' as an approachable, friendly guide that translates dense CMS government jargon into step-by-step clarity."
+			]
+		},
+		{
+			"week": "17",
+			"date": "January 21",
+			"title": "The Empty Nest Shift: Reclaiming Your Identity and Household After Kids Move Out",
+			"notes": [
+				"Topic: Emotional transition, financial adjustment, and life planning for empty nesters.",
+				"Featured Product: When the Empty Nest Happens Workbook ($24.99)",
+				"Target Audience: Parents whose youngest child recently graduated or moved out.",
+				"Customer Motivation: Validation of emotional turbulence coupled with a constructive action plan for the next chapter.",
+				"SEO/AEO Strategy: Target keyphrase 'what to do when children leave home empty nest'. Direct answer block defining 'Empty Nest Syndrome action plan'.",
+				"Differentiation: Combines physical planning prompts with personal goal-setting rather than generic empty-nest lifestyle blogs."
+			]
+		},
+		{
+			"week": "18",
+			"date": "January 28",
+			"title": "Caregiver Burnout is Real: How to Track and Organize Your Loved One's Medical Records",
+			"notes": [
+				"Topic: Medical record keeping, physician appointment notes, medication lists.",
+				"Featured Product: When Manage Your Care Happens Workbook ($24.99)",
+				"Target Audience: Sandwich generation caregivers, spouses managing illness.",
+				"Customer Motivation: Reducing stress during doctor visits; preventing medical errors due to lost information.",
+				"SEO/AEO Strategy: Target query 'how to keep track of medical history for elderly parents'. Structured list format designed for snippet extraction.",
+				"Differentiation: Focuses on physical portability—a workbook you can hand directly to a physician or nurse."
+			]
+		},
+		{
+			"week": "19",
+			"date": "February 4",
+			"title": "Retirement Beyond the Money: Planning Your Daily Life, Health, and Purpose",
+			"notes": [
+				"Topic: Non-financial retirement preparation, routine building, lifestyle transition.",
+				"Featured Product: When Retirement Happens Workbook ($24.99)",
+				"Target Audience: Pre-retirees 1–3 years out from retiring.",
+				"Customer Motivation: Transitioning smoothly from career identity to personal fulfillment without feeling lost.",
+				"SEO/AEO Strategy: Target query 'non financial retirement checklist'. Provide direct bulleted summaries ideal for generative search engines.",
+				"Differentiation: Moves beyond stock portfolio advice to focus on holistic lifestyle and operational readiness."
+			]
+		},
+		{
+			"week": "20",
+			"date": "February 11",
+			"title": "Navigating Home Care Support: Questions to Ask Before Hiring In-Home Aides",
+			"notes": [
+				"Topic: In-home care coordination, aide management, family support logistics.",
+				"Featured Product: When Home Care Happens Workbook ($24.99)",
+				"Target Audience: Adult children arranging care for aging parents, recovering surgical patients.",
+				"Customer Motivation: Confidence that their loved one is receiving safe, structured, and accountable care.",
+				"SEO/AEO Strategy: Target query 'checklist for hiring home health care aide'. Use tabular data structures in the post for AEO.",
+				"Differentiation: Provides a central physical hub for home aides to log daily activities, emergency contacts, and care routines."
+			]
+		},
+		{
+			"week": "21",
+			"date": "February 18",
+			"title": "Why Tactile Visual Systems Beat Digital Apps for Complex Family Planning",
+			"notes": [
+				"Topic: Physical vs. digital organization, visual planning systems, memory retention.",
+				"Featured Product: Date Dots – Calendar Stickers ($4.95)",
+				"Target Audience: Visual planners, senior caregivers, organized parents.",
+				"Customer Motivation: Eliminating screen fatigue and digital log-in barriers for high-stakes family schedules.",
+				"SEO/AEO Strategy: Target query 'benefits of physical calendar planning vs digital apps'. Focus on semantic entities around cognitive organization.",
+				"Differentiation: Highlights how physical visual cues (color-coded Date Dots) increase compliance and household visibility."
+			]
+		},
+		{
+			"week": "22",
+			"date": "February 25",
+			"title": "The Hidden Costs of Medicare: Deductibles, Premiums, and IRMAA Explained",
+			"notes": [
+				"Topic: Medicare Part A/B/D costs, income-related adjustments (IRMAA), budget tracking.",
+				"Featured Product: Medicare in a Box® Kit ($34.99)",
+				"Target Audience: Pre-retirees estimating healthcare budgets, high-income seniors.",
+				"Customer Motivation: Avoiding surprise medical bills and high-income surcharge penalties.",
+				"SEO/AEO Strategy: Target query 'how to calculate Medicare IRMAA tier'. Include clean formula blocks for AI scrapers.",
+				"Differentiation: Shows how Medicare in a Box® integrates physical cost-tracking cards with updated rate stickers annually."
+			]
+		},
+		{
+			"week": "23",
+			"date": "March 4",
+			"title": "College Prep for Parents: What to Organize Before Sending Your Teen to Campus",
+			"notes": [
+				"Topic: Student independence, legal permissions (FERPA/HIPAA), budget & life skills.",
+				"Featured Product: When College Happens Workbook ($27.99)",
+				"Target Audience: Parents of high school seniors and college freshmen.",
+				"Customer Motivation: Relief from anxiety that their child isn't prepared to handle health or financial emergencies on campus.",
+				"SEO/AEO Strategy: Target query 'college transition checklist for parents'. Optimize conversational search phrases like 'what documents does a college student need'.",
+				"Differentiation: Bridges the gap between academic prep and real-world life management skills for young adults."
+			]
+		},
+		{
+			"week": "24",
+			"date": "March 11",
+			"title": "Why Static Books Don't Work for Medicare (And How Refillable Systems Fix It)",
+			"notes": [
+				"Topic: Annual Medicare rate updates, staying current with changes.",
+				"Featured Product: Annual Medicare Sticker Refill ($4.99)",
+				"Target Audience: Existing owners of Medicare workbooks, current Medicare beneficiaries.",
+				"Customer Motivation: Confidence in having accurate, up-to-date numbers without buying a brand-new book every year.",
+				"SEO/AEO Strategy: Target query 'current year Medicare deductible and premium updates'. Focus on recency signals for SEO.",
+				"Differentiation: Highlights the eco-friendly, cost-effective refill sticker ecosystem unique to Simply Stated Workbooks."
+			]
+		},
+		{
+			"week": "25",
+			"date": "March 18",
+			"title": "Inside Max’s Medicare Tribe: Year-Round Guidance for Open Enrollment & Beyond",
+			"notes": [
+				"Topic: Ongoing Medicare support, community education, annual plan reviews.",
+				"Featured Product: Max’s Medicare Tribe Annual Subscription ($45.00)",
+				"Target Audience: Seniors wanting continuous unbiased guidance, caregivers.",
+				"Customer Motivation: Peace of mind having an expert support community during Annual Enrollment Period (AEP).",
+				"SEO/AEO Strategy: Target query 'unbiased Medicare advice membership community'. Focus on authority and trust metrics (E-E-A-T).",
+				"Differentiation: Positions the tribe as a zero-pressure, non-broker educational community paired directly with their workbook."
+			]
+		},
+		{
+			"week": "26",
+			"date": "March 25",
+			"title": "The Ultimate Healthcare Log: How to Keep Track of Symptoms, Tests, and Rx",
+			"notes": [
+				"Topic: Health tracking, chronic illness management, specialist coordination.",
+				"Featured Product: When Manage Your Care Happens Workbook ($24.99)",
+				"Target Audience: Individuals with chronic conditions, seniors managing multiple doctors.",
+				"Customer Motivation: Empowerment during appointment visits; avoiding repetitive tests and miscommunications.",
+				"SEO/AEO Strategy: Target query 'how to organize medical history records at home'. Use bulleted lists and short definitions for AEO.",
+				"Differentiation: Features structured appointment templates designed specifically to be filled out *during* doctor visits."
+			]
+		},
+		{
+			"week": "27",
+			"date": "April 1",
+			"title": "Spring Cleaning for Your Personal Finances & Legal Documents",
+			"notes": [
+				"Topic: Estate planning organization, account audits, household inventory.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Families, pre-retirees doing seasonal organization.",
+				"Customer Motivation: Satisfaction of clearing administrative clutter and knowing family is protected.",
+				"SEO/AEO Strategy: Target query 'spring cleaning personal document checklist'. Focus on seasonal search intent.",
+				"Differentiation: Replaces complicated digital spreadsheets with a structured, durable physical workbook."
+			]
+		},
+		{
+			"week": "28",
+			"date": "April 8",
+			"title": "Navigating Medicare Part D: How to Compare Drug Plans Without Getting Tricked",
+			"notes": [
+				"Topic: Prescription drug coverage, formulary changes, coverage gap (donut hole).",
+				"Featured Product: When Medicare Happens Workbook ($24.99)",
+				"Target Audience: Seniors taking maintenance medications, caregivers.",
+				"Customer Motivation: Saving money on prescriptions and preventing mid-year plan surprises.",
+				"SEO/AEO Strategy: Target query 'how to check Medicare prescription formulary changes'. Use structured Q&A formats.",
+				"Differentiation: Walks users through recording their exact drug dosages on physical tracking sheets for easy comparison."
+			]
+		},
+		{
+			"week": "29",
+			"date": "April 15",
+			"title": "Transitioning Home After Hospitalization: A Step-by-Step Home Care Checklist",
+			"notes": [
+				"Topic: Hospital discharge planning, rehabilitation, home care setup.",
+				"Featured Product: When Home Care Happens Workbook ($24.99)",
+				"Target Audience: Families facing unexpected hospital discharges for senior parents.",
+				"Customer Motivation: Preventing hospital readmission and ensuring a safe, stress-free return home.",
+				"SEO/AEO Strategy: Target query 'hospital discharge checklist for home care'. Create an AEO summary block at the top.",
+				"Differentiation: Provides clear prompts for medical discharge planners to sign off on and families to follow."
+			]
+		},
+		{
+			"week": "30",
+			"date": "April 22",
+			"title": "Financial Literacy for Young Adults: The Real Skills High School Didn't Teach",
+			"notes": [
+				"Topic: Budgeting, credit, healthcare basics for college-bound youth.",
+				"Featured Product: When College Happens Workbook ($27.99)",
+				"Target Audience: High school graduates, college students, parents.",
+				"Customer Motivation: Equipping young adults with real-world autonomy before they leave home.",
+				"SEO/AEO Strategy: Target query 'essential life skills for college students'. Focus on educational keyphrases.",
+				"Differentiation: Combines personal finance, health insurance basics, and daily living skills in one physical book."
+			]
+		},
+		{
+			"week": "31",
+			"date": "April 29",
+			"title": "How to Talk to Aging Parents About Life Planning Without Causing Stress",
+			"notes": [
+				"Topic: Family communication, eldercare planning, gentle intervention strategies.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Adult children (ages 40–60) of aging parents.",
+				"Customer Motivation: Starting difficult conversations without sounding invasive or overwhelming.",
+				"SEO/AEO Strategy: Target query 'how to ask elderly parents for financial and legal information'. Optimize for empathetic tone and clear steps.",
+				"Differentiation: Uses the workbook as a neutral, structured third-party tool rather than an awkward interrogation."
+			]
+		},
+		{
+			"week": "32",
+			"date": "May 6",
+			"title": "Medicare Advantage vs. Original Medicare: Making the Choice That Fits Your Life",
+			"notes": [
+				"Topic: Plan comparison, networks, out-of-pocket maximums.",
+				"Featured Product: Medicare in a Box® Kit ($34.99)",
+				"Target Audience: Pre-retirees evaluating Medicare choices.",
+				"Customer Motivation: Cutting through commercial television ads to make an objective, safe choice.",
+				"SEO/AEO Strategy: Target query 'difference between Medicare Advantage and Medicare Supplement'. Provide clean comparison matrix.",
+				"Differentiation: Unpacks unbiased facts using the physical comparison worksheets included in Medicare in a Box®."
+			]
+		},
+		{
+			"week": "33",
+			"date": "May 13",
+			"title": "Downsizing Your Home in Retirement: A Room-by-Room Emotional & Tactical Guide",
+			"notes": [
+				"Topic: Home downsizing, clutter reduction, lifestyle simplification.",
+				"Featured Product: When Retirement Happens Workbook ($24.99)",
+				"Target Audience: Pre-retirees and empty nesters preparing to move.",
+				"Customer Motivation: Making downsizing manageable rather than an overwhelming physical chore.",
+				"SEO/AEO Strategy: Target query 'how to downsize home for retirement checklist'. Structured steps for AI search.",
+				"Differentiation: Integrates physical sticker systems and inventory logs to organize what stays and what goes."
+			]
+		},
+		{
+			"week": "34",
+			"date": "May 20",
+			"title": "Graduation Gift Guide: Giving Practical Independence Beyond Cash",
+			"notes": [
+				"Topic: Practical gifts for grads, young adult readiness.",
+				"Featured Product: When College Happens Workbook ($27.99)",
+				"Target Audience: Grandparents, parents, relatives shopping for graduates.",
+				"Customer Motivation: Giving a meaningful, lasting gift that helps a graduate succeed in real life.",
+				"SEO/AEO Strategy: Target query 'practical high school graduation gift ideas'. Focus on commercial intent keywords.",
+				"Differentiation: Positions the workbook as the ultimate 'life manual' for starting young adulthood right."
+			]
+		},
+		{
+			"week": "35",
+			"date": "May 27",
+			"title": "The Caregiver’s Communication Hub: Organizing Shift Duties Across Family Members",
+			"notes": [
+				"Topic: Shared caregiving responsibilities, communication logs.",
+				"Featured Product: When Home Care Happens Workbook ($24.99)",
+				"Target Audience: Siblings sharing parent care, family-home aide teams.",
+				"Customer Motivation: Ending family friction and duplicate care tasks through transparent organization.",
+				"SEO/AEO Strategy: Target query 'how to coordinate family caregiving duties'. Focus on practical solution snippets.",
+				"Differentiation: Acts as a central countertop reference binder that anyone coming into the house can read and update."
+			]
+		},
+		{
+			"week": "36",
+			"date": "June 3",
+			"title": "Redefining the Empty Nest: Turning Extra Bedrooms into Passion Workspaces",
+			"notes": [
+				"Topic: Home transformation, hobby development, lifestyle refocus.",
+				"Featured Product: When the Empty Nest Happens Workbook ($24.99)",
+				"Target Audience: Empty nesters looking to repurpose home space.",
+				"Customer Motivation: Excitement about reclaiming space and focusing on long-delayed personal goals.",
+				"SEO/AEO Strategy: Target query 'empty nest room ideas and lifestyle transition'. Focus on aspirational content.",
+				"Differentiation: Combines practical home planning with structured self-discovery exercises."
+			]
+		},
+		{
+			"week": "37",
+			"date": "June 10",
+			"title": "Healthcare Proxy vs. Power of Attorney: Where to Store Your Critical Documents",
+			"notes": [
+				"Topic: Medical directives, legal document organization, emergency access.",
+				"Featured Product: When Manage Your Care Happens Workbook ($24.99)",
+				"Target Audience: Adults of all ages, healthcare decision-makers.",
+				"Customer Motivation: Peace of mind knowing doctors can access legal authorizations instantly in a crisis.",
+				"SEO/AEO Strategy: Target query 'where to keep medical power of attorney documents'. Direct definition headers.",
+				"Differentiation: Provides specific, labeled document pockets and clear instructions on who should hold copies."
+			]
+		},
+		{
+			"week": "38",
+			"date": "June 17",
+			"title": "The High Cost of Missed Deadlines: Avoid Late Enrollment Penalties in Medicare",
+			"notes": [
+				"Topic: Medicare Part B & D penalties, special enrollment periods (SEP).",
+				"Featured Product: When Medicare Happens Workbook ($24.99)",
+				"Target Audience: Seniors working past 65, pre-retirees.",
+				"Customer Motivation: Avoiding lifelong financial penalties caused by minor administrative misunderstandings.",
+				"SEO/AEO Strategy: Target query 'how to avoid Medicare Part B late enrollment penalty'. Formatted answer blocks.",
+				"Differentiation: Features highlighted date-tracking tools to lock in enrollment windows long before deadlines hit."
+			]
+		},
+		{
+			"week": "39",
+			"date": "June 24",
+			"title": "Mid-Year Life Check-In: Updating Your Emergency & Financial Contacts",
+			"notes": [
+				"Topic: Routine document maintenance, emergency contact updates.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Current workbook owners, proactive household planners.",
+				"Customer Motivation: Keeping information fresh so emergency binders are actually useful when needed.",
+				"SEO/AEO Strategy: Target query 'how often should you update emergency planning documents'. AI summary friendly.",
+				"Differentiation: Prompts routine physical maintenance with easy-to-fill annual review pages."
+			]
+		},
+		{
+			"week": "40",
+			"date": "July 1",
+			"title": "Planning Your Summer Move? How to Keep Vital Documents Safe in Transit",
+			"notes": [
+				"Topic: Document security during relocation, household records transfer.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Families relocating, retirees moving to retirement communities.",
+				"Customer Motivation: Preventing lost birth certificates, deeds, and medical records during moving chaos.",
+				"SEO/AEO Strategy: Target query 'how to secure important documents during home move'. Listicle layout.",
+				"Differentiation: Physical hardcover format ensures critical papers stay organized in one grab-and-go binder."
+			]
+		},
+		{
+			"week": "41",
+			"date": "July 8",
+			"title": "Mid-Year Medicare Audit: Are Your Rx Costs Matching Your Expectations?",
+			"notes": [
+				"Topic: Mid-year drug plan review, managing out-of-pocket thresholds.",
+				"Featured Product: Max’s Medicare Tribe Annual Subscription ($45.00)",
+				"Target Audience: Tribe members, current Medicare beneficiaries.",
+				"Customer Motivation: Preventing mid-year spending surprises and preparing for upcoming autumn changes.",
+				"SEO/AEO Strategy: Target query 'what to do if prescription costs change mid year Medicare'. Concise guidance blocks.",
+				"Differentiation: Connects workbook users with live community updates and Q&A support from Max's Tribe."
+			]
+		},
+		{
+			"week": "42",
+			"date": "July 15",
+			"title": "Preparing for College Orientation: What Parents Need to Know About Campus Health",
+			"notes": [
+				"Topic: Campus health insurance, emergency contacts, medical privacy.",
+				"Featured Product: When College Happens Workbook ($27.99)",
+				"Target Audience: Parents attending summer college orientations.",
+				"Customer Motivation: Navigating campus health requirements without confusion.",
+				"SEO/AEO Strategy: Target query 'do college students need health insurance from campus'. Q&A snippet optimization.",
+				"Differentiation: Translates complex campus health requirements into simple fill-in-the-blank logs."
+			]
+		},
+		{
+			"week": "43",
+			"date": "July 22",
+			"title": "Managing Multiple Doctors: How to Create a Unified Medication Master List",
+			"notes": [
+				"Topic: Polypharmacy safety, drug interaction prevention, doctor coordination.",
+				"Featured Product: When Manage Your Care Happens Workbook ($24.99)",
+				"Target Audience: Seniors seeing multiple specialists, caregivers.",
+				"Customer Motivation: Preventing dangerous drug interactions and forgotten dosages.",
+				"SEO/AEO Strategy: Target query 'printable master medication list for doctor visits'. Direct zero-click answer formatting.",
+				"Differentiation: Features dedicated portable medication cards and wallet trackers."
+			]
+		},
+		{
+			"week": "44",
+			"date": "July 29",
+			"title": "The Caregiver’s Guide to Respite Care: Taking a Break Without Guilt",
+			"notes": [
+				"Topic: Caregiver self-care, temporary relief care setup.",
+				"Featured Product: When Home Care Happens Workbook ($24.99)",
+				"Target Audience: Primary family caregivers experiencing exhaustion.",
+				"Customer Motivation: Overcoming guilt and smoothly handing off duties to temporary respite providers.",
+				"SEO/AEO Strategy: Target query 'how to arrange respite care for elderly parent'. Empathetic structured guide.",
+				"Differentiation: Provides seamless handoff templates so temporary aides know exact routines instantly."
+			]
+		},
+		{
+			"week": "45",
+			"date": "August 5",
+			"title": "Back-to-Campus Countdown: The 4-Week Student Life Organization Plan",
+			"notes": [
+				"Topic: Dorm room organization, personal budget setup, medical readiness.",
+				"Featured Product: When College Happens Workbook ($27.99)",
+				"Target Audience: College freshmen and returning students.",
+				"Customer Motivation: Preventing week-one campus overwhelm with a pre-packaged organizational structure.",
+				"SEO/AEO Strategy: Target query 'college dorm prep checklist and organization schedule'. Seasonal search push.",
+				"Differentiation: High-tactile design encourages students to manually write down goals and budgets."
+			]
+		},
+		{
+			"week": "46",
+			"date": "August 12",
+			"title": "The Mental Shift of Retirement: Preparing for Changes in Your Daily Routine",
+			"notes": [
+				"Topic: Retirement psychology, time management after leaving work.",
+				"Featured Product: When Retirement Happens Workbook ($24.99)",
+				"Target Audience: Professionals retiring in Q3/Q4.",
+				"Customer Motivation: Overcoming the fear of boredom and isolation in retirement.",
+				"SEO/AEO Strategy: Target query 'psychological adjustment to retirement tips'. High authority advice snippets.",
+				"Differentiation: Guides users through structuring a fulfilling 7-day weekly planner for retirement."
+			]
+		},
+		{
+			"week": "47",
+			"date": "August 19",
+			"title": "Why Visual Calendar Stickers Help Seniors and Caregivers Stay on Schedule",
+			"notes": [
+				"Topic: Visual memory aids, appointment adherence, household planning.",
+				"Featured Product: Date Dots – Calendar Stickers ($4.95)",
+				"Target Audience: Seniors, caregivers, visual thinkers.",
+				"Customer Motivation: Eliminating missed doctor visits and forgotten prescription refills.",
+				"SEO/AEO Strategy: Target query 'visual reminder aids for elderly calendar management'. Focus on practical accessibility keywords.",
+				"Differentiation: Pre-printed, vibrant icon stickers specifically designed for medical and insurance dates."
+			]
+		},
+		{
+			"week": "48",
+			"date": "August 26",
+			"title": "Planning for Medicare Open Enrollment: What Changes Every October 15th",
+			"notes": [
+				"Topic: Medicare Annual Election Period (AEP) preparation.",
+				"Featured Product: Medicare in a Box® Kit ($34.99)",
+				"Target Audience: All Medicare beneficiaries, caregivers.",
+				"Customer Motivation: Getting ahead of open enrollment noise before TV ads begin in October.",
+				"SEO/AEO Strategy: Target query 'medicare open enrollment dates and preparation checklist'. Structured snippet targeting.",
+				"Differentiation: Uses the physical Kit to organize incoming plan changes before making expensive switches."
+			]
+		},
+		{
+			"week": "49",
+			"date": "September 2",
+			"title": "The Empty Nest Budget: How Your Household Expenses Change When Kids Leave",
+			"notes": [
+				"Topic: Financial adjustments, utility/grocery savings, reallocating funds.",
+				"Featured Product: When the Empty Nest Happens Workbook ($24.99)",
+				"Target Audience: Empty nesters adjusting household finances.",
+				"Customer Motivation: Leveraging household savings to fund retirement or personal travel.",
+				"SEO/AEO Strategy: Target query 'how much money do you save when kids leave home'. Financial calculation formatting.",
+				"Differentiation: Offers straightforward, fill-in-the-blank budgeting sheets for household expenses."
+			]
+		},
+		{
+			"week": "50",
+			"date": "September 9",
+			"title": "Organizing Medical History Before Surgery: What Your Surgical Team Needs",
+			"notes": [
+				"Topic: Pre-op planning, medical history summaries, recovery prep.",
+				"Featured Product: When Manage Your Care Happens Workbook ($24.99)",
+				"Target Audience: Patients scheduled for elective or major surgery.",
+				"Customer Motivation: Reducing pre-surgery anxiety by having all medical details neatly organized.",
+				"SEO/AEO Strategy: Target query 'what medical information to bring to pre op appointment'. Actionable checklist.",
+				"Differentiation: Dedicated surgical prep section designed to hand straight to hospital intake nurses."
+			]
+		},
+		{
+			"week": "51",
+			"date": "September 16",
+			"title": "How to Build a Caregiver Support Network So You Don't Do It Alone",
+			"notes": [
+				"Topic: Community caregiving, delegating tasks, respite support.",
+				"Featured Product: When Home Care Happens Workbook ($24.99)",
+				"Target Audience: Overwhelmed primary caregivers.",
+				"Customer Motivation: Finding relief by organizing friends, family, and professional aides into a cohesive team.",
+				"SEO/AEO Strategy: Target query 'how to set up care network for elderly parent'. Structured AEO overview.",
+				"Differentiation: Features explicit team-role assignment sheets within the workbook."
+			]
+		},
+		{
+			"week": "52",
+			"date": "September 23",
+			"title": "The Estate Planning Document Audit: Do You Have These 5 Critical Items?",
+			"notes": [
+				"Topic: Wills, trusts, power of attorney, beneficiary designations.",
+				"Featured Product: When Life Happens Workbook ($27.99)",
+				"Target Audience: Adults age 40+, pre-retirees.",
+				"Customer Motivation: Ensuring family won't face probate delays or legal disputes.",
+				"SEO/AEO Strategy: Target query '5 essential legal documents for estate planning binder'. High conversion keyphrases.",
+				"Differentiation: Focuses on document location and access loggers, ensuring loved ones can actually *find* the legal papers."
+			]
+		}
+	],
+	"keywords": [],
+	"differentiation": [
+		"Physical + Digital Hybrid Framework: Combines a tactile physical kit (hardcover 'When Medicare Happens' workbook, appointment notepad, wallet medication tracker, document organizer) with dynamic online video guidance featuring the character 'Max'. This directly solves the cognitive overload of pure digital apps and heavy government manuals for pre-retirees.",
+		"B2B2C Enterprise Distribution Model: Positions the kit as a turnkey white-label or co-branded client-appreciation asset for financial advisors, benefits brokers, senior centers, and HR departments. Institutional clients leverage it as a relationship-building tool to conduct Medicare planning without taking on broker compliance liabilities.",
+		"Annual Renewal 'Sticker' System: Utilizes a physical update mechanism where beneficiaries receive annual update stickers containing new IRMAA tiers, Part A/B deductibles, and premiums. This keeps physical workbooks perpetually accurate year after year, establishing long-term customer engagement and recurring B2B re-orders.",
+		"Carrier-Neutral & Unbiased Position: Functionally differentiates from traditional Field Marketing Organizations (FMOs) and commission-driven brokers by offering strictly objective, educational materials devoid of insurance sales pitches, carrier steering, or lead-capturing gimmicks.",
+		"Turnkey Modular Packaging for Employers: Provides HR and corporate benefits teams with a compliance-friendly, standardized 'Medicare Transition in a Box' that simplifies offboarding for retiring employees approaching age 65, mitigating potential age-discrimination or benefit-counseling risks."
+	],
+	"proposedSocialMediaAccounts": [
+		"Google Business",
+		"LinkedIn Company Page",
+		"Threads Business Page"
+	]
+}

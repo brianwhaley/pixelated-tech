@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 15
+    "imageCount": 14
   },
   "images": [
     "images/favicon/android-chrome-192x192.png",
@@ -16,7 +16,6 @@
     "images/logo/mm-logo-white.webp",
     "images/logo/mm-logo.jpg",
     "images/logo/mm-logo.webp",
-    "images/pix-bg-512.jpg",
-    "images/placeholder.png"
+    "images/pix-bg-512.jpg"
   ]
 }

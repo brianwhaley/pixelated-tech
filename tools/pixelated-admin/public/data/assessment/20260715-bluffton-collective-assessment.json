@@ -300,6 +300,7 @@
 		"enabled": true,
 		"route": "/news"
 	},
+	"blogCalendar": [],
 	"keywords": [
 		"The Bluffton Collective",
 		"Bluffton SC artisan market",

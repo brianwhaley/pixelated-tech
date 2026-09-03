@@ -1,5 +1,10 @@
+"use client";
+
+import { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { Hero } from "@pixelated-tech/components";
+
+const defaultHeroImage = "https://www.pixelated.tech/images/icons/1x1.png";
 
 const heroImages = [
 	"/images/stock/office-building.jpg", 
@@ -30,7 +35,11 @@ const heroImages = [
 PageHero.propTypes = PropTypes.exact({});
 export type PageHeroType = InferProps<typeof PageHero.propTypes>;
 export function PageHero() {
-	const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
+	const [heroImage, setHeroImage] = useState(defaultHeroImage);
+
+	useEffect(() => {
+		setHeroImage(heroImages[Math.floor(Math.random() * heroImages.length)]);
+	}, []);
 
 	return ( 
 		<Hero

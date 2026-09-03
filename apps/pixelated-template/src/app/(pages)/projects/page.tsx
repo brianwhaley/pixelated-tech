@@ -12,81 +12,81 @@ export default function AboutPage() {
 	const project1 = [
 		{
 			index: 0, cardIndex: 0, cardLength: 9,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 1",
 		},
 		{
 			index: 1, cardIndex: 1, cardLength: 9,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 2",
 		},
 		{
 			index: 2, cardIndex: 2, cardLength: 9,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 3",
 		}, 
 		{
 			index: 3, cardIndex: 3, cardLength: 9,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 4",
 		},
 		{
 			index: 4, cardIndex: 4, cardLength: 9,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 5",
 		},
 		{
 			index: 5, cardIndex: 5, cardLength: 9,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 6",
 		}];
 
 	const project2 = [
 		{
 			index: 0, cardIndex: 0, cardLength: 3,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 7",
 		},
 		{
 			index: 1, cardIndex: 1, cardLength: 3,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 8",
 		},
 		{
 			index: 2, cardIndex: 2, cardLength: 3,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 9",
 		}];
 
 	const project3 = [
 		{
 			index: 0, cardIndex: 0, cardLength: 6,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 10",
 		},
 		{
 			index: 1, cardIndex: 1, cardLength: 6,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 11",
 		},
 		{
 			index: 2, cardIndex: 2, cardLength: 6,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 12",
 		},
 		{
 			index: 3, cardIndex: 3, cardLength: 6,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 13",
 		},
 		{
 			index: 4, cardIndex: 4, cardLength: 6,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 14",
 		},
 		{
 			index: 5, cardIndex: 5, cardLength: 6,
-			image: "/images/placeholder.png",
+			image: "https://www.pixelated.tech/images/icons/placeholder.png",
 			imageAlt: "Project Photo 15",
 		}];
 

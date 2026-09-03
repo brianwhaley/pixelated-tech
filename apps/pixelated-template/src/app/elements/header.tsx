@@ -16,7 +16,7 @@ export default function Header() {
 				<a href="/">
 					<SmartImage
 						id="logo"
-						src="/images/placeholder.png"
+						src="https://www.pixelated.tech/images/icons/placeholder.png"
 						alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
 						aboveFold={true}
 						width={120}
