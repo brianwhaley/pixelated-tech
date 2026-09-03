@@ -32,9 +32,14 @@
 		"https://www.facebook.com/medicareinabox",
 		"https://www.facebook.com/profile.php?id=61572411337913",
 		"https://www.instagram.com/medicareinabox/",
-		"https://www.linkedin.com/in/priscilla-johnsonss/",
 		"https://simplystatedwb.com/",
+		"https://www.facebook.com/profile.php?id=61572750325135",
+		"https://www.instagram.com/simplystatedworkbook/",
+		"https://www.youtube.com/@SimplyStatedWorkbook",
+		"https://www.linkedin.com/in/priscilla-johnsonss/",
 		"https://simplystatedrs.com/",
+		"https://www.facebook.com/profile.php?id=61556301054781",
+		"https://www.linkedin.com/company/simply-stated-retirement-solutions/about/",
 		"https://www.yelp.com/biz/simply-stated-retirement-solutions-bluffton",
 		"https://www.mapquest.com/us/south-carolina/simply-stated-retirement-solutions-427891406"
 	],
@@ -49,8 +54,8 @@
 		{
 			"url": "https://medicareinabox.org/",
 			"strengths": [
-				"Design for the site is solid and strong",
-				"All the right content is present on the site.  Content throughout the site is strong, including the home page, about us, ordering, why medicare in a box, bulk orders, contact us, and FAQs.",
+				"Design language for the site is solid and strong",
+				"There is informative content present on the site, including the home page, about us, ordering, why medicare in a box, bulk orders, contact us, and FAQs.",
 				"The site is mobile responsive",
 				"There is a schema for Organization, which is good for LLM discovery and search engine optimization.",
 				"Favicon is present and working.",
@@ -324,6 +329,13 @@
 		{
 			"route": "/policies/shipping-policy",
 			"title": "Shipping Policy",
+			"notes": [
+				"Recommendations - remove /policies from the route."
+			]
+		},
+		{
+			"route": "/policies/cancellation-policy",
+			"title": "Cancellation Policy",
 			"notes": [
 				"Recommendations - remove /policies from the route."
 			]

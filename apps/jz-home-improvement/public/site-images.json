@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 12
+    "imageCount": 11
   },
   "images": [
     "images/favicon/android-chrome-192x192.png",
@@ -13,7 +13,6 @@
     "images/logo/jz-home-improvement-vertical.jpg",
     "images/logo/jz-home-improvement-vertical.png",
     "images/logo/jz-home-improvement.jpg",
-    "images/logo/jz-home-improvement.png",
-    "images/placeholder.png"
+    "images/logo/jz-home-improvement.png"
   ]
 }
