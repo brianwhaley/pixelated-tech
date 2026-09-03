@@ -101,7 +101,7 @@
         "audience": "Local service businesses, contractors, and small business owners",
         "termsOfService": "/terms",
         "offers": "",
-        "image": "/images/placeholder.png"
+        "image": "https://www.pixelated.tech/images/icons/placeholder.png"
       },
       {
         "name": "Local SEO & Content",
@@ -113,7 +113,7 @@
         "audience": "Local service businesses, contractors, and small business owners",
         "termsOfService": "/terms",
         "offers": "",
-        "image": "/images/placeholder.png"
+        "image": "https://www.pixelated.tech/images/icons/placeholder.png"
       }
     ],
     "serviceAreas": [

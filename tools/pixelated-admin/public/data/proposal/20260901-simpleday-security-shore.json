@@ -1,0 +1,105 @@
+{
+	"companyName": "Simple Day Concierge",
+	"companyContact": "Joe Jadevaia",
+	"date": "September 1, 2026",
+	"email": "joejjjade@aol.com",
+	"phone": "(201) 675-7633 / (201) 310-4105",
+	"address": {
+		"streetAddress": "Shore Home",
+		"addressLocality": "",
+		"addressRegion": "NJ",
+		"postalCode": "",
+		"addressCountry": "USA"
+	},
+	"proposalType": "Security System Installation",
+	"goal": 
+	[
+		"Install the listed security components for 124 McIntosh Drive."
+	],
+	"deliverables": [
+		"Ring Camera System installed, including cameras, door/window/garage sensors, and flood/freeze sensors."
+	],
+	"features": [
+		{
+			"feature": "Ring Cameras",
+			"description": [
+				"Front door - Ring Wired Doorbell 2k - $179.99", 
+				"Ring Doorbell Chime 3rd Generation - $34.99",
+				"Garage Exterior Camera (Side House) - Ring Floodlight Cam 2k - $199.99",
+				"Garage Interior Camera - Ring Outdoor Cam 2k - $99.99",
+				"Exterior Camera 1 - Ring Outdoor Cam 2k - $99.99",
+				"Exterior Camera 2 - Ring Outdoor Cam 2k - $99.99",
+				"Interior - Ring Indoor Cam 2k - $59.99",
+				"Cameras Subtotal: $774.93"
+			]
+		},{
+			"feature": "Doors, Windows, and Garage Doors",
+			"description": [
+				"Window Sensor 6pk - $139.99 X 2 = $279.98",
+				"(covers Front Door, Back Door, 2 Sliders, and 8 first floor windows)",
+				"Garage Door Sensor - $39.99",
+				"Alarm Base Station - $119.99",
+				"Alarm Keypad - $49.99",
+				"Sensors Subtotal: $489.95"
+			]
+		},{
+			"feature": "Other Equipment",
+			"description": [
+				"Flood & Freeze Sensor $39.99 X 4 = $159.96",
+				"(covers Water Heater, Main, Sump Pump, Laundry Room)",
+				"Other Subtotal: $159.96"
+			]
+		},{
+			"feature": "Not Included in Proposal",
+			"description": [
+				"Door Locks",
+				"Garage Door Opener",
+				"Digital Thermostats",
+				"Digital Water Shut Off",
+				"Smart Lighting, Plugs, and Switches",
+				"Other Smart Home Devices"
+			]
+		},{
+			"feature": "Equipment Total Cost",
+			"description": [
+				"Ring Cameras Total Cost: $774.93",
+				"Doors, Windows, and Garage Doors Total Cost: $489.95",
+				"Other Equipment Total Cost: $159.96",
+				"Sub Total: $1,424.84"
+			]
+		},{
+			"feature": "Installation Cost",
+			"description": [
+				"Installation of Ring Cameras, Door / Window Sensors, and Flood / Freeze Sensors",
+				"Subtotal - $1,200.00"
+			]
+		},{
+			"feature": "Grand Total Cost",
+			"description": [
+				"Grand Total: $2,624.84"
+			]
+		}
+	],
+	"startDate": "10/1/2026",
+	"milestones": [
+		{
+			"milestone": "Purchase of Equipment",
+			"date": "October Week 1"
+		},{
+			"milestone": "Electrician to install for exterior cameras (or use existing outlets)",
+			"date": "October Week 2"
+		},{
+			"milestone": "Install Ring Camera System and Sensors",
+			"date": "October Week 3"
+		}
+	],
+	"paymentTotal": {
+		"amount": 2624.84,
+		"isDiscounted": false,
+		"description": [
+			"Cost for security system equipment is $1,424.84.",
+			"Cost for Security System setup and installation is $1,200.",
+			"Grand Total: $2,624.84"
+		]
+	}
+}

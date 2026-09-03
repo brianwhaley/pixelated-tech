@@ -8,7 +8,7 @@ export function UnderConstruction() {
 			<Callout
 				variant="default"
 				layout="vertical"
-				img="/images/under-construction.jpg"
+				img="https://www.pixelated.tech/images/stock/under-construction.jpg"
 				aboveFold={true}
 				title="Under Construction"
 				subtitle="We're working hard to bring you something amazing. Check back soon!"

@@ -300,6 +300,7 @@
 		"enabled": true,
 		"route": "/blog"
 	},
+	"blogCalendar": [],
 	"keywords": [
 		"AMAVA Janitorial Services",
 		"Commercial cleaning services",

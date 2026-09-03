@@ -239,6 +239,7 @@
 		"enabled": true,
 		"route": "/blog"
 	},
+	"blogCalendar": [],
 	"keywords": [
 		""
 	],

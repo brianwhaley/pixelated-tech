@@ -1,6 +1,6 @@
 {
   "name": "pixelated-template",
-  "version": "0.7.25",
+  "version": "0.7.26",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",

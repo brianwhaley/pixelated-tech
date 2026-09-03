@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 251
+    "imageCount": 252
   },
   "images": [
     "images/brianwhaley-headshot.jpg",
@@ -87,6 +87,7 @@
     "images/logos/blinx-logo.png",
     "images/logos/blog-logo.png",
     "images/logos/blurb-logo.png",
+    "images/logos/bni-logo.png",
     "images/logos/booktopia-logo.png",
     "images/logos/brownbook-logo.png",
     "images/logos/bubble-life-logo.png",
@@ -162,6 +163,7 @@
     "images/logos/provenexpert-logo.png",
     "images/logos/readme-icon.png",
     "images/logos/reddit-logo.png",
+    "images/logos/replaio-logo.png",
     "images/logos/resume-icon.png",
     "images/logos/rightfirms-logo.png",
     "images/logos/shutterfly-logo.png",
@@ -217,7 +219,6 @@
     "images/pix/pixelated-logo.png",
     "images/pix/pixelated-p-logo.png",
     "images/pix/pixelated-p-txt-logo.png",
-    "images/placeholder.png",
     "images/samples/foodtruck/HolyGuacamole.png",
     "images/samples/foodtruck/HolyGuacamoleMock-v1.jpg",
     "images/samples/foodtruck/HolyGuacamoleMock-v2.jpg",

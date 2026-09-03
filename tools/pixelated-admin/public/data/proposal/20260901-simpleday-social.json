@@ -1,0 +1,83 @@
+{
+	"companyName": "Simple Day Concierge",
+	"companyContact": "Joe Jadevaia",
+	"date": "September 1, 2026",
+	"email": "joejjjade@aol.com",
+	"phone": "(201) 675-7633 / (201) 310-4105",
+	"address": {
+		"streetAddress": "124 McIntosh Drive",
+		"addressLocality": "Mahwah",
+		"addressRegion": "NJ",
+		"postalCode": "07430",
+		"addressCountry": "USA"
+	},
+	"proposalType": "Web Site Build",
+	"goal": 
+	[
+		"Build out the social media presence for simpledayconcierge.com."
+	],
+	"deliverables": [
+		"Social Media accounts created for simpledayconcierge.com",
+		"Web site updated to include social media links and feeds",
+		"Blog created and linked to social media accounts",
+		"Blog calendar and blog posts created and shared on social media accounts"
+	],
+	"features": [
+		{
+			"feature": "Create Social Media Accounts",
+			"description": [
+				"Facebook Business Page",
+				"Instagram Business Account",
+				"Threads Business Account",
+				"LinkedIn Business Account",
+				"Nextdoor Business Account",
+				"Google Business Profile"
+			]
+		},{
+			"feature": "Update Web Site to Include Social Media Links and Feeds",
+			"description": [
+				"Add new social media links to the web site in the footer, appearing on all pages"
+
+			]
+		},{
+			"feature": "Create Blog",
+			"description": [
+				"Create new blog on Wordpress platform and link to social media accounts",
+				"Create blog calendar for 1 blog post per month",
+				"Create blog posts and share on social media accounts",
+				"Add Blog page to the web site and link to social media accounts"
+			]
+		},{
+			"feature": "Upgrade Maintenance Plan to Growth",
+			"description": [
+				"Upgrade the current maintenance plan for simpledayconcierge.com to the GROWTH package to include 1 blog post per month and 1 social media post per month.",
+				"NOTE: Monthly maintenance cost does not include the cost of advertising campaigns."
+			]
+		},{
+			"feature": "Discuss advertising budget and implement Digital Advertising Campaign",
+			"description": [
+				"Discuss and set the advertising budget for simpledayconcierge.com",
+				"Implement a digital advertising campaign on one social media platform accordingly.",
+				"NOTE: Monthly maintenance cost does not include the cost of advertising campaigns."
+			]
+		}
+	],
+	"startDate": "10/1/2026",
+	"milestones": [
+		{
+			"milestone": "Create Social Media Accounts and Blog",
+			"date": "October Week 1"
+		},{
+			"milestone": "Update Web Site to Include Social Media Links, Blog page, and blog feeds.  Implement Digital advertising campaign",
+			"date": "October Week 2"
+		}
+	],
+	"paymentTotal": {
+		"amount": 750,
+		"isDiscounted": true,
+		"description": [
+			"Initial cost for Social Media setup and launch is $1,000.",
+			"Since Simple Day Concierge is an existing customer, the cost of the project is discounted."
+		]
+	}
+}

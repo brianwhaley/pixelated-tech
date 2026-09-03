@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.9.30",
+  "version": "1.9.31",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -32,7 +32,7 @@
     "axe-core": "^4.13.0",
     "next": "^16.3.2",
     "next-auth": "^4.24.15",
-    "nodemailer": "^9.1.0",
+    "nodemailer": "^9.1.1",
     "prop-types": "^15.8.1",
     "puppeteer": "^25.1.0",
     "react": "^19.2.7",
@@ -51,7 +51,7 @@
     "@types/prop-types": "^15.7.15",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19",
-    "@types/ssh2": "^1.15.5",
+    "@types/ssh2": "^1.15.6",
     "@vitejs/plugin-react": "^6.0.3",
     "@vitest/coverage-v8": "^4.1.11",
     "@vitest/ui": "^4.1.11",

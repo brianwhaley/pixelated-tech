@@ -5,12 +5,20 @@ import { PageSection, smartFetch, useFileData } from '@pixelated-tech/components
 import { SmartImage } from '@pixelated-tech/components';
 import './proposal.css';
 
+type ProposalType = 'Monthly Maintenance' | 'Web Site Build' | 'Security System Installation';
+
 type ProposalData = {
-	proposalType: string;
+	proposalType: ProposalType;
 	date: string;
 	companyName: string;
 	companyContact: string;
-	address: { streetAddress: string; addressLocality: string; addressRegion: string; postalCode: string };
+	address: { 
+        streetAddress: string; 
+        addressLocality: string; 
+        addressRegion: string; 
+        postalCode: string; 
+        addressCountry: string 
+    };
     email?: string;
 	phone?: string;
 	goal: string[];
@@ -233,11 +241,23 @@ function Proposal(props: { proposal: ProposalData }) {
 							<li>Initial Deposit: {(initialDeposit * 100).toFixed(0)}% due upon signing.</li>
 							<li>Additional payments of {(milestonePayment * 100).toFixed(0)}% due on completions of each Milestone.</li>
 							<li>The final Milestone payments will be {(lastMilestonePayment * 100).toFixed(0)}%, due on completions of the final Milestone.</li>
+							<li>Invoices for {proposal.proposalType} will be issued upon completion for services rendered. </li>
+							<li>Payment is due within 5 business days of the receipt of invoice.</li>
+						</>
+					)}
+					{proposal.proposalType == "Monthly Maintenance" && (
+						<>
+							<li>Invoices for {proposal.proposalType} will be issued on the first business day of each month for services rendered during the preceding month. </li>
+							<li>Payment is due within 5 business days of the receipt of invoice.</li>
+						</>
+					)}
+					{proposal.proposalType == "Security System Installation" && (
+						<>
+							<li>Initial Deposit: Payment for all hardware, software, and materials is due upon signing.</li>
+							<li>Payment for installation is due immediately upon completion.</li>
 						</>
 					)}
 					<>
-						<li>Invoices will be issued on the first business day of each month for services rendered during the preceding month. </li>
-						<li>Payment is due within 5 business days of the receipt of invoice.</li>
 						<li>In the event of default, Client responsible for all collection costs and attorney fees.</li>
 						<li>Payments requested to be made via Zelle.  Account information is brian@pixelated.tech or 973-710-8008.</li>
 					</>
@@ -247,19 +267,32 @@ function Proposal(props: { proposal: ProposalData }) {
 			<PageSection id="proposal-revisions-section" className="no-break" columns={1} maxWidth="1024px">
 				<h2>{sectionCounter+=1}. REVISIONS & CHANGES</h2>
 				<ul>
-					<li>Client is entitled to two rounds of revisions per milestone.</li>
+					{proposal.proposalType != "Security System Installation" && (
+						<li>Client is entitled to two rounds of revisions per milestone.</li>
+					)}
 					<li>Additional changes outside scope billed at $100/hour.</li>
 				</ul>
 			</PageSection>
 
 			<PageSection id="proposal-ownership-section" className="no-break" columns={1} maxWidth="1024px">
-				<h2>{sectionCounter+=1}. OWNERSHIP, COPYRIGHT & CLIENT COOPERATION</h2>
-				<p>Upon full payment, Client owns final website, content, and code.  Developer retains rights to pre-existing tools and component libraries.  Client responsible for providing necessary materials and content to build the website (e.g. company logo, contact information, social media profiles, testimonials, product/service descriptions, staff profiles, customer lists, etc.) within two weeks of request.  Client shall approve development version of the site before going live (including design, information architecture, and content).</p>
+				{proposal.proposalType != "Security System Installation" && (
+					<>
+						<h2>{sectionCounter += 1}. OWNERSHIP, COPYRIGHT & CLIENT COOPERATION</h2>
+						<p>Upon full payment, Client owns final website, content, and code.  Developer retains rights to pre-existing tools and component libraries.  Client responsible for providing necessary materials and content to build the website (e.g. company logo, contact information, social media profiles, testimonials, product/service descriptions, staff profiles, customer lists, etc.) within two weeks of request.  Client shall approve development version of the site before going live (including design, information architecture, and content).</p>
+					</>
+				)}
+				{proposal.proposalType == "Security System Installation" && (
+					<>
+						<h2>{sectionCounter += 1}. OWNERSHIP, COPYRIGHT & CLIENT COOPERATION</h2>
+						<p>Upon full payment, Client owns hardware, software, materials, and related documentation. All hardware, software, and materials will be installed on Client premises and Client devices. Client is responsible for providing necessary access, information, and cooperation to facilitate the installation and operation of the security system.  Installer retains rights to pre-existing tools and custom software used for the installation.  Installer is responsible for any issues related to installation within the first 30 days from the date of install. </p>
+					</>
+				)}
 			</PageSection>
+
 
 			<PageSection id="proposal-liability-section" className="no-break" columns={1} maxWidth="1024px">
 				<h2>{sectionCounter+=1}. LIMITATION OF LIABILITY</h2>
-				<p>Pixelated Technologies shall not be responsible for any indirect, incidental, special, consequential, or punitive damages for loss of profits, loss of data, loss of use, or cost of alternative procurements, with respect to this agreement, whether in contract, tort, or otherwise.</p>
+				<p>Pixelated Technologies shall not be responsible for any indirect, incidental, special, consequential, or punitive damages for loss of profits, loss of data, loss of use, loss of property, or cost of alternative procurements, with respect to this agreement, whether in contract, tort, or otherwise.</p>
 			</PageSection>
 
 			<PageSection id="proposal-confidentiality-section" className="no-break" columns={1} maxWidth="1024px">

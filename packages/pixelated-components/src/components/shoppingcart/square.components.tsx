@@ -391,7 +391,7 @@ export function SquareStoreItemSmall(props: SquareStoreItemSmallType) {
 				variant="boxed"
 				layout="vertical"
 				direction="left"
-				img={props.item.itemImageURL ?? '/images/placeholder.png'}
+				img={props.item.itemImageURL ?? 'https://www.pixelated.tech/images/icons/placeholder.png'}
 				imgAlt={props.item.itemTitle}
 				title={props.item.itemTitle}
 				url={itemURL}
@@ -452,7 +452,7 @@ export function SquareStoreItemLarge(props: SquareStoreItemLargeType) {
 				variant="grid"
 				layout="horizontal"
 				direction="left"
-				img={props.item.itemImageURL ?? '/images/placeholder.png'}
+				img={props.item.itemImageURL ?? 'https://www.pixelated.tech/images/icons/placeholder.png'}
 				imgAlt={props.item.itemTitle}
 				title={props.item.itemTitle}
 				url={itemURL}
@@ -704,7 +704,7 @@ export function SquareStoreItemDetail(props: SquareStoreItemDetailType) {
 					) : props.item.itemImageURL ? (
 						<SmartImage aboveFold={true} src={props.item.itemImageURL} alt={props.item.itemTitle} />
 					) : (
-						<SmartImage aboveFold={true} src="/images/placeholder.png" alt={props.item.itemTitle} />
+						<SmartImage aboveFold={true} src="https://www.pixelated.tech/images/icons/placeholder.png" alt={props.item.itemTitle} />
 					)}
 				</div>
 

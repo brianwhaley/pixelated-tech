@@ -1,15 +1,28 @@
 {
   "files": [
-    "20250713-amava-combined-build-proposal.json",
-    "20250713-amava-combined-maintenance-proposal.json",
+	"blank-build-proposal.json",
+	"blank-maintenance-proposal.json",
 
-    "20250726-gea-construction-build-proposal.json",
-    "20250726-gea-construction-maintenance-proposal.json",
+    "20260713-amava-combined-build-proposal.json",
+    "20260713-amava-combined-maintenance-proposal.json",
+
+    "20260726-gea-construction-build-proposal.json",
+    "20260726-gea-construction-maintenance-proposal.json",
 	
-    "20250814-amava-janitorial-build-proposal.json",
-    "20250814-amava-janitorial-maintenance-proposal.json",
+    "20260814-amava-janitorial-build-proposal.json",
+    "20260814-amava-janitorial-maintenance-proposal.json",
 	
-    "20250820-palmetto2step-build-proposal.json",
-    "20250820-palmetto2step-maintenance-proposal.json"
+    "20260820-palmetto2step-build-proposal.json",
+    "20260820-palmetto2step-maintenance-proposal.json",
+	
+    "20260830-medicare-in-a-box-build-proposal.json",
+    "20260830-medicare-in-a-box-maintenance-proposal.json",
+	
+    "20260831-simply-stated-workbook-build-proposal.json",
+    "20260831-simply-stated-workbook-maintenance-proposal.json",
+
+    "20260901-simpleday-social.json",
+    "20260901-simpleday-security-mahwah.json",
+    "20260901-simpleday-security-shore.json"
   ]
 }
