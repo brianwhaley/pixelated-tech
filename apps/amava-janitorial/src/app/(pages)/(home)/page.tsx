@@ -5,6 +5,7 @@ import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@
 import { buildServiceUrl, usePixelatedConfig } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
 import { PageHero } from '../../elements/page-hero';
+import { BlogPostList } from '@pixelated-tech/components';
 
 
 export default function Home() {
@@ -39,6 +40,15 @@ export default function Home() {
 					</PageGridItem>
 				))}
 			</PageSection>
+
+
+
+                        
+			<PageSection id="recent-blog-section" columns={1} >
+				<PageSectionHeader title="Read Our Most Recent Blog Post" />
+				<BlogPostList count={1} showCategories={false}  />
+			</PageSection>
+            
 
 
 			<PageSection columns={1} maxWidth="1024px" gap="20px" id="home-quality-section">
