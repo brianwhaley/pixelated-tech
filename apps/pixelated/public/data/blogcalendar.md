@@ -1,28 +1,6 @@
 
 # Pixelated Technologies: 100-Week Content Strategy
 
-## Criteria for each individual Blog Post :
-* Each post must have between 1000 and 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
-* ensure the content of the blog post demonstrates subject matter expertise, targets small business owners, helps convert readers to customers, and helps with search engine and answer engine optimization
-* After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.pixelated.tech/schedule
-* Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..  
-* Add links to other blog posts ( https://blog.pixelated.tech ) or other content on https://www/pixelated.tech
-* Use a tone of empathy, understanding as a small business owner myself, an expert in the field of web and marketing, and straightforward language
-* Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.  
-* do not use md tables, charts, formatting, or html tables
-* format the title properly, including proper punctuation and capitalization
-
-
-
-## Criteria for Blog Post to Podcast Conversion
-* Making the minimum amount of changes possible, Write a podcast-friendly script for this blog post.
-* Change or remove titles to be conversational, while keeping as close to the original content as possible. 
-* Change bulleted lists to be conversational, while keeping as close to the original content as possible. 
-* change tables to be conversational, while keeping as close to the original content as possible. 
-* Keep the rest of the blog post exactly the same. 
-* End with a short plug to schedule a free assessment now at pixelated.com/schedule. 
-* Here are the exact words from the original blog post.
-
 ## [ x ] Week 1: The Digital Storefront: Why a Website is No Longer Optional
 In 2026, your website is your first and most important impression. According to Forbes, 81% of shoppers research online before buying, and 84% of consumers find businesses with websites more credible than those with only social media. For small businesses in Denville and Bluffton, a site is the foundation of modern trust. Without a site, you are invisible to the 31% of the population who avoid businesses they cannot find via search. This post explores the "Credibility Gap" and why a professional web presence is your only 24/7 salesperson.
 

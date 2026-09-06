@@ -4,7 +4,7 @@ import { PageSection, GoogleAnalytics, PixelatedFooter } from "@pixelated-tech/c
 import { getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { FooterMenu } from "@pixelated-tech/components/server";
 import { BusinessFooter } from "@pixelated-tech/components";
-import { SocialTags } from "@pixelated-tech/components";
+// import { SocialTags } from "@pixelated-tech/components";
 
 export default async function Footer() {
 	const reqHeaders = await headers();
@@ -17,8 +17,8 @@ export default async function Footer() {
 			<div suppressHydrationWarning={true} >
 				<GoogleAnalytics />
 				<hr style={{ margin: "0 auto", width: "80%" }} />
-				<SocialTags />
-				<hr style={{ margin: "0 auto", width: "80%" }} />
+				{ /* <SocialTags />
+				<hr style={{ margin: "0 auto", width: "80%" }} /> */ }
 				<BusinessFooter />
 				<hr style={{ margin: "0 auto", width: "80%" }} />
 				<br />

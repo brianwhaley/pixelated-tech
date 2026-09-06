@@ -7,6 +7,7 @@ import { pathToFileURL } from 'url';
 vi.mock('@pixelated-tech/components/server', () => ({
 	StyleGuideUI: () => 'StyleGuide',
 	getFullPixelatedConfig: () => ({ routes: [{ name: 'Home', path: '/' }] }),
+	sendSmtpMail: vi.fn(async () => ({ info: { messageId: 'sent' }, hasSmtpConfig: true })),
 }));
 
 let currentSearchParams = new URLSearchParams('callbackUrl=/');
@@ -334,6 +335,18 @@ describe('pixelated-admin page components', () => {
 
 		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
 		expect(screen.getByLabelText(/Select Site/i)).toBeInTheDocument();
+	});
+
+	it('handles a non-OK site list response and injects axe when absent', async () => {
+		mockSmartFetch.mockResolvedValueOnce({ ok: false, json: async () => [] });
+		delete (window as any).axe;
+		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
+		const Page = mod.default;
+		render(<Page />);
+
+		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
+		expect(screen.getByLabelText(/Select Site/i)).toBeInTheDocument();
+		expect(document.querySelector('script[src="https://cdn.jsdelivr.net/npm/axe-core/axe.min.js"]')).toBeTruthy();
 	});
 
 	it('reports a validation error when required contentful fields are missing', async () => {

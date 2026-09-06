@@ -48,7 +48,6 @@
 				"There is a sitemap.xml file with the basic site pages listed",
 				"robots.txt is present and wide open, allowing search engines to crawl anything on the site",
 				"llms.txt is also present, but very brief"
-
 			],
 			"areasForImprovement": [
 				"======= DESIGN =======",
@@ -95,9 +94,7 @@
 	],
 	"currentBusinessPlan": [
 		"Yon Lucas is a skilled and experienced home inspector with a strong reputation in the Bluffton and Lowcountry area. He has been operating Homegrown Home Inspections for several years, providing thorough and reliable home inspection services to clients. Yon has built a loyal customer base and has established himself as a trusted professional in the industry.",
-
 		"Yon has identified a growing demand for home improvement and renovation services in the Bluffton area, particularly in the realm of interior and exterior painting, deck and fence staining, home repair and maintenance, and concrete epoxy coatings. Recognizing this opportunity, he has decided to expand his business by launching Palmetto 2 Step, a new venture that will focus on providing high-quality home improvement services to homeowners in the region.",
-
 		"Palmetto 2 Step will leverage Yon's expertise in home inspections to offer a comprehensive range of services that address the needs of homeowners looking to enhance the aesthetics and functionality of their properties. By combining his knowledge of home construction and maintenance with a commitment to delivering exceptional craftsmanship, Yon aims to establish Palmetto 2 Step as a trusted and reliable provider of home improvement services in the Bluffton and Lowcountry area."
 	],
 	"nextSteps": [
@@ -112,7 +109,7 @@
 		"Consider traditional media sources as well, such as brochures, flyers, local magazines like Sunsations for Sun City, etc. Target large volume (Sun City) or high margin (Palmetto Bluff, Belfair) areas / neighborhoods."
 	],
 	"references": [
-		{ 
+		{
 			"name": "Palmetto Epoxy",
 			"url": "https://www.palmetto-epoxy.com",
 			"contactName": "Martha Aberle",
@@ -120,7 +117,7 @@
 			"contactPhone": "(516) 607-0176",
 			"summary": "Established local Bluffton SC flooring contractor specializing in epoxy garage floors, concrete resurfacing, and decorative coatings."
 		},
-		{ 
+		{
 			"name": "The Three Muses of Bluffton",
 			"url": "https://www.thethreemusesofbluffton.com",
 			"contactName": "Katie Coupland",
@@ -128,7 +125,7 @@
 			"contactPhone": "(843) 705-0837",
 			"summary": "Local Bluffton SC storefront and online boutique specializing in dancewear, sewing classes, alterations, curated home goods, gifts, and boutique items."
 		},
-		{ 
+		{
 			"name": "JZ Home Improvement",
 			"url": "https://www.jzhomeimprovement.com",
 			"contactName": "",
@@ -154,7 +151,6 @@
 		},
 		"additionalNotes": [
 			""
-
 		]
 	},
 	"websiteDomain": {
@@ -239,7 +235,683 @@
 		"enabled": true,
 		"route": "/blog"
 	},
-	"blogCalendar": [],
+	"blogCalendar": [
+		{
+			"week": "1",
+			"date": "October 1",
+			"title": "5 Lowcountry Fall Maintenance Tasks Every Bluffton Homeowner Should Do",
+			"notes": [
+				"Topic: Essential autumn prep for homes in coastal South Carolina, focusing on humidity, salt air, and storm wind protection[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Caulking and weatherproofing)[cite: 1].",
+				"Target Audience: Local homeowners in Sun City, Palmetto Bluff, and Hilton Head Island[cite: 1].",
+				"Customer Motivation: Preventing costly winter repair issues and protecting home value before cooler weather[cite: 1].",
+				"SEO/AEO Strategy: Target query 'fall home maintenance checklist Bluffton SC'. Structured list snippet targeting[cite: 1].",
+				"Differentiation: Insights grounded in founder Yon Lucas's experience inspecting hundreds of area homes[cite: 1]."
+			]
+		},
+		{
+			"week": "2",
+			"date": "October 8",
+			"title": "Passing Your Inspection: How to Clear 90% of Repair Flags Before Closing",
+			"notes": [
+				"Topic: Common inspection findings during real estate transactions and how to resolve them efficiently[cite: 1].",
+				"Featured Service: Home Inspection Repairs[cite: 1].",
+				"Target Audience: Home sellers, buyers, and local real estate agents in Bluffton and Hilton Head[cite: 1].",
+				"Customer Motivation: Keeping real estate closings on schedule without transaction fall-throughs[cite: 1].",
+				"SEO/AEO Strategy: Target query 'home inspection repair contractor Bluffton SC'. Direct Q&A formatting for AI search[cite: 1].",
+				"Differentiation: Offered by a licensed home inspector who knows exactly what buyers' inspectors flag[cite: 1]."
+			]
+		},
+		{
+			"week": "3",
+			"date": "October 15",
+			"title": "Why Fall Is the Ideal Season for Exterior House Painting in the Lowcountry",
+			"notes": [
+				"Topic: Optimal humidity and temperature conditions for exterior paint adhesion in South Carolina[cite: 1].",
+				"Featured Service: Exterior Painting[cite: 1].",
+				"Target Audience: Homeowners with faded or peeling exterior siding, trim, or shutters[cite: 1].",
+				"Customer Motivation: Maximizing coat longevity and weatherproofing before winter rains.",
+				"SEO/AEO Strategy: Target query 'best time to paint house exterior Bluffton SC'. Mildew-resistant coating keywords[cite: 1].",
+				"Differentiation: Specially formulated paint systems selected for salt air and high moisture resistance[cite: 1]."
+			]
+		},
+		{
+			"week": "4",
+			"date": "October 22",
+			"title": "Transforming Your Garage into a Clean, Durable Workshop with Epoxy",
+			"notes": [
+				"Topic: Concrete surface preparation and high-performance polyaspartic/epoxy flooring systems[cite: 1].",
+				"Featured Service: Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Golf cart owners, hobbyists, and homeowners seeking clean garage storage[cite: 1].",
+				"Customer Motivation: Eliminating hot-tire pickup, dust, and concrete stains with a showroom finish[cite: 1].",
+				"SEO/AEO Strategy: Target query 'garage floor epoxy contractors Bluffton SC'. Flake system terms[cite: 1].",
+				"Differentiation: Multi-step floor prep process ensuring long-term adhesion against thermal expansion[cite: 1]."
+			]
+		},
+		{
+			"week": "5",
+			"date": "October 29",
+			"title": "Protecting Outdoor Wood: Deck and Fence Staining Before Winter",
+			"notes": [
+				"Topic: Sanding, sealing, and protecting wood decks and fences from rot and UV degradation[cite: 1].",
+				"Featured Service: Deck & Fence Staining[cite: 1].",
+				"Target Audience: Homeowners with pine, cedar, or composite decks and perimeter fencing[cite: 1].",
+				"Customer Motivation: Preserving structural wood integrity and restoring rich wood color[cite: 1].",
+				"SEO/AEO Strategy: Target query 'deck staining and sealing Bluffton SC'. Moisture protection keywords[cite: 1].",
+				"Differentiation: Deep cleaning and sanding protocols prior to stain application[cite: 1]."
+			]
+		},
+		{
+			"week": "6",
+			"date": "November 5",
+			"title": "Preparing Your Home Interior for Holiday Guests: Quick-Turn Painting Tips",
+			"notes": [
+				"Topic: High-impact indoor touch-ups, accent walls, and full-room painting prior to family visits[cite: 1].",
+				"Featured Service: Interior Painting[cite: 1].",
+				"Target Audience: Lowcountry hosts expecting out-of-town holiday visitors[cite: 1].",
+				"Customer Motivation: Achieving a fresh, modern aesthetic with minimal disruption and zero mess[cite: 1].",
+				"SEO/AEO Strategy: Target query 'interior painters near me Bluffton SC'. Zero-VOC paint focus[cite: 1].",
+				"Differentiation: Includes comprehensive furniture protection, floor covering, and same-day cleanup[cite: 1]."
+			]
+		},
+		{
+			"week": "7",
+			"date": "November 12",
+			"title": "Spotting and Fixing Hidden Wood Rot Around Trim and Windows",
+			"notes": [
+				"Topic: Early identification of moisture intrusion, soft wood, and subfloor damage in coastal climates[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Wood Rot Repair)[cite: 1].",
+				"Target Audience: Owners of mature homes in communities like Belfair, Berkeley Hall, or Sun City[cite: 1].",
+				"Customer Motivation: Stopping hidden water damage before structural repairs become major expenses[cite: 1].",
+				"SEO/AEO Strategy: Target query 'wood rot repair Bluffton SC'. Diagnostic repair keywords[cite: 1].",
+				"Differentiation: Trained inspector eye spots underlying leak causes, not just surface rot[cite: 1]."
+			]
+		},
+		{
+			"week": "8",
+			"date": "November 19",
+			"title": "GFCI Outlets and Guardrails: Essential Safety Fixes for Older Homes",
+			"notes": [
+				"Topic: Meeting current safety standards for electrical shock protection and staircase support[cite: 1].",
+				"Featured Service: Home Inspection Repairs (GFCI Installation & Guardrails)[cite: 1].",
+				"Target Audience: Buyers, sellers, and landlords bringing older properties up to modern code standards[cite: 1].",
+				"Customer Motivation: Safeguarding family and ensuring safety compliance during property checks[cite: 1].",
+				"SEO/AEO Strategy: Target query 'GFCI outlet repair home inspector Bluffton'. Modern safety standards[cite: 1].",
+				"Differentiation: Single-trip handling of both carpentry handrails and minor electrical safety fixes[cite: 1]."
+			]
+		},
+		{
+			"week": "9",
+			"date": "November 26",
+			"title": "Choosing the Right Color Palette for Lowcountry Interior Lighting",
+			"notes": [
+				"Topic: Color theory and light reflection for coastal plantation, craftsman, and modern coastal homes[cite: 1].",
+				"Featured Service: Interior Painting (Color Consultation)[cite: 1].",
+				"Target Audience: Homeowners remodeling or redecorating living spaces[cite: 1].",
+				"Customer Motivation: Selecting undertones that complement natural coastal sunlight without clashing[cite: 1].",
+				"SEO/AEO Strategy: Target query 'coastal interior paint colors Benjamin Moore Sherwin Williams'. Natural light SEO[cite: 1].",
+				"Differentiation: On-site color consultation taking architectural orientation into account[cite: 1]."
+			]
+		},
+		{
+			"week": "10",
+			"date": "December 3",
+			"title": "Commercial Space Makeovers: Refreshing Your Business Before Year-End",
+			"notes": [
+				"Topic: Off-hours interior and exterior commercial painting for retail, medical, and office spaces[cite: 1].",
+				"Featured Service: Commercial Painting[cite: 1].",
+				"Target Audience: Local small business owners, property managers, and facility directors in Beaufort County[cite: 1].",
+				"Customer Motivation: Improving customer impression and utilizing annual improvement budgets before year-end[cite: 1].",
+				"SEO/AEO Strategy: Target query 'commercial painting contractors Bluffton Hilton Head'. Night/weekend service tags[cite: 1].",
+				"Differentiation: Night and weekend scheduling to ensure zero disruption to business operations[cite: 1]."
+			]
+		},
+		{
+			"week": "11",
+			"date": "December 10",
+			"title": "Drywall Damage 101: Patching, Texture Matching, and Flawless Repairs",
+			"notes": [
+				"Topic: How to repair dings, doorknob holes, and water-damaged drywall seamless with surrounding walls[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Drywall Repair)[cite: 1].",
+				"Target Audience: Property managers and homeowners preparing spaces for upcoming moves or visits[cite: 1].",
+				"Customer Motivation: Restoring wall integrity so repairs disappear completely under new paint[cite: 1].",
+				"SEO/AEO Strategy: Target query 'drywall texture matching Bluffton SC'. Seamless repair keywords[cite: 1].",
+				"Differentiation: Specialized hand-matching for knockdown, orange peel, and smooth wall textures[cite: 1]."
+			]
+		},
+		{
+			"week": "12",
+			"date": "December 17",
+			"title": "End-of-Year Home Safety & Maintenance Checkup Checklist",
+			"notes": [
+				"Topic: Preventive winter audit covering caulk lines, window frames, door weatherstripping, and deck joints[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry[cite: 1].",
+				"Target Audience: Proactive homeowners wanting to protect long-term property values[cite: 1].",
+				"Customer Motivation: Total peace of mind entering the new year knowing structural shells are tight[cite: 1].",
+				"SEO/AEO Strategy: Target query 'annual home maintenance audit Bluffton SC'. Preventive repair snippets[cite: 1].",
+				"Differentiation: Professional inspector-grade oversight applied directly to home maintenance tasks[cite: 1]."
+			]
+		},
+		{
+			"week": "13",
+			"date": "December 24",
+			"title": "The Lowcountry Winter Painting Guide: Temperatures, Drying Times, and Myths",
+			"notes": [
+				"Topic: Addressing common misconceptions about painting homes during Southern winters[cite: 1].",
+				"Featured Service: Exterior Painting[cite: 1].",
+				"Target Audience: Homeowners scheduling home improvements during quiet winter months[cite: 1].",
+				"Customer Motivation: Taking advantage of winter availability for major home improvement updates[cite: 1].",
+				"SEO/AEO Strategy: Target query 'can you paint outside in winter South Carolina'. Temperature guideline targeting[cite: 1].",
+				"Differentiation: Technical understanding of dew point and curing thresholds for low-temp resins[cite: 1]."
+			]
+		},
+		{
+			"week": "14",
+			"date": "December 31",
+			"title": "New Year, New Floors: Why Concrete Epoxy Coatings Outperform Paint",
+			"notes": [
+				"Topic: Comparing standard porch/floor paint against commercial-grade epoxy and polyaspartic coatings[cite: 1].",
+				"Featured Service: Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Homeowners updating garages, patios, and entryway floors for the new year[cite: 1].",
+				"Customer Motivation: Seeking a durable, stain-resistant, anti-slip surface that lasts decades[cite: 1].",
+				"SEO/AEO Strategy: Target query 'epoxy floor vs floor paint garage Bluffton'. Comparison table layout[cite: 1].",
+				"Differentiation: Complete multi-layer system with decorative anti-slip flakes and chemical resistance[cite: 1]."
+			]
+		},
+		{
+			"week": "15",
+			"date": "January 7",
+			"title": "Reclaiming Your Space: DIY vs. Pro Cabinet and Trim Refinishing",
+			"notes": [
+				"Topic: Detailed steps involved in sanding, priming, and enameling trim, baseboards, and built-ins[cite: 1].",
+				"Featured Service: Interior Painting (Trim and Built-ins)[cite: 1].",
+				"Target Audience: Homeowners looking to modernize dated stained trim or dark cabinetry[cite: 1].",
+				"Customer Motivation: Achieving factory-smooth finishes without buying all new trim or cabinets[cite: 1].",
+				"SEO/AEO Strategy: Target query 'trim painting built-in refinishing Bluffton SC'. Fine finish keywords[cite: 1].",
+				"Differentiation: Dust-controlled sanding prep and high-durability enamel finishes[cite: 1]."
+			]
+		},
+		{
+			"week": "16",
+			"date": "January 14",
+			"title": "Home Buyer Inspection Survival: Fixing Red Flags Fast After the Audit",
+			"notes": [
+				"Topic: Navigating the Repair Procedure (CL-100 and general inspection) during real estate closings[cite: 1].",
+				"Featured Service: Home Inspection Repairs[cite: 1].",
+				"Target Audience: Sellers navigating contract contingency deadlines[cite: 1].",
+				"Customer Motivation: Securing single-source fixed quote repairs to meet contract deadlines[cite: 1].",
+				"SEO/AEO Strategy: Target query 'home inspection repair checklist South Carolina real estate'. Urgent seller keywords[cite: 1].",
+				"Differentiation: Guaranteed fixed pricing and quick turnaround for real estate agent partners[cite: 1]."
+			]
+		},
+		{
+			"week": "17",
+			"date": "January 21",
+			"title": "Curb Appeal Revamp: 4 Small Carpentry Repairs That Make a Big Impact",
+			"notes": [
+				"Topic: Upgrading entryways with window trim fixes, door repairs, fascia touch-ups, and decorative trim[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Door & Window Trim)[cite: 1].",
+				"Target Audience: Homeowners looking for impactful outdoor updates without major construction[cite: 1].",
+				"Customer Motivation: Increasing neighborhood curb appeal and overall property value[cite: 1].",
+				"SEO/AEO Strategy: Target query 'exterior trim repair front door fix Bluffton'. Exterior design keywords[cite: 1].",
+				"Differentiation: Precision finish carpentry tailored to Lowcountry architectural styles[cite: 1]."
+			]
+		},
+		{
+			"week": "18",
+			"date": "January 28",
+			"title": "Protecting Exterior Surfaces from Salt Air Corrosion in Coastal SC",
+			"notes": [
+				"Topic: How salt air and high coastal humidity accelerate paint failure and metal rusting[cite: 1].",
+				"Featured Service: Exterior Painting[cite: 1].",
+				"Target Audience: Waterfront and marshfront property owners in Hilton Head and Bluffton[cite: 1].",
+				"Customer Motivation: Preventing premature exterior peeling, rusting, and chalking[cite: 1].",
+				"SEO/AEO Strategy: Target query 'coastal home exterior maintenance salt air SC'. Salt-resistant coatings[cite: 1].",
+				"Differentiation: Specialized primer and sealant selection for coastal marine atmospheric exposure[cite: 1]."
+			]
+		},
+		{
+			"week": "19",
+			"date": "February 4",
+			"title": "Transforming Covered Porches with Non-Slip Decorative Epoxy Coatings",
+			"notes": [
+				"Topic: Enhancing outdoor concrete porches and lanais with weather-resistant flake epoxy systems[cite: 1].",
+				"Featured Service: Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Sun City and Lowcountry outdoor living enthusiasts[cite: 1].",
+				"Customer Motivation: Creating clean, slip-resistant outdoor living areas that resist tire and foot wear[cite: 1].",
+				"SEO/AEO Strategy: Target query 'patio concrete epoxy anti-slip coating Bluffton'. Outdoor epoxy keywords[cite: 1].",
+				"Differentiation: UV-stable topcoats that prevent yellowing under direct Lowcountry sunlight exposure[cite: 1]."
+			]
+		},
+		{
+			"week": "20",
+			"date": "February 11",
+			"title": "How to Plan a Multi-Room Painting Project Without Moving Out",
+			"notes": [
+				"Topic: Phased scheduling, dust confinement, and room-by-room painting logistics[cite: 1].",
+				"Featured Service: Interior Painting[cite: 1].",
+				"Target Audience: Busy families and retirees living in their homes during renovations[cite: 1].",
+				"Customer Motivation: Completing major house refreshes with minimal disruption to daily routines[cite: 1].",
+				"SEO/AEO Strategy: Target query 'whole house interior painting timeline process'. Clean job site targeting[cite: 1].",
+				"Differentiation: Structured daily cleanup and floor-to-ceiling protective barrier setups[cite: 1]."
+			]
+		},
+		{
+			"week": "21",
+			"date": "February 18",
+			"title": "Preventing Leaks: Caulking and Weatherproofing Door and Window Frames",
+			"notes": [
+				"Topic: Finding gaps in exterior seals that lead to moisture intrusion and elevated energy bills[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Caulking)[cite: 1].",
+				"Target Audience: Homeowners noticing drafts, high cooling bills, or window condensation[cite: 1].",
+				"Customer Motivation: Lowering monthly energy bills and protecting sub-framing from rain leaks[cite: 1].",
+				"SEO/AEO Strategy: Target query 'window caulking and sealing services Bluffton SC'. Energy efficiency tags[cite: 1].",
+				"Differentiation: High-grade elastomeric sealants selected for severe joint movement and thermal changes[cite: 1]."
+			]
+		},
+		{
+			"week": "22",
+			"date": "February 25",
+			"title": "Annual Fence Care: Staining, Sealing, and Structural Repair",
+			"notes": [
+				"Topic: Protecting wood perimeter fencing from ground-moisture wicking, termites, and graying[cite: 1].",
+				"Featured Service: Deck & Fence Staining[cite: 1].",
+				"Target Audience: Neighborhood homeowners with wood privacy or picket fencing[cite: 1].",
+				"Customer Motivation: Keeping fences sturdy, rich in tone, and compliant with local HOA standards[cite: 1].",
+				"SEO/AEO Strategy: Target query 'wood fence staining and repair Bluffton SC'. HOA compliance keywords[cite: 1].",
+				"Differentiation: Complete offering combining fence carpentry repair with high-penetration oil/water stains[cite: 1]."
+			]
+		},
+		{
+			"week": "23",
+			"date": "March 4",
+			"title": "Spring Cleaning Exterior Checklist: Power Washing Prep & Touch-Up Paint",
+			"notes": [
+				"Topic: How to clean home exteriors safely without blowing out caulk lines or ruining paint coats[cite: 1].",
+				"Featured Service: Exterior Painting[cite: 1].",
+				"Target Audience: Homeowners kicking off spring maintenance across Beaufort County[cite: 1].",
+				"Customer Motivation: Restoring vibrant color and clean siding without damaging exterior surfaces[cite: 1].",
+				"SEO/AEO Strategy: Target query 'spring home exterior maintenance Bluffton SC'. Soft-wash prep terms[cite: 1].",
+				"Differentiation: Pre-paint pressure washing performed with correct pressure levels to protect siding integrity[cite: 1]."
+			]
+		},
+		{
+			"week": "24",
+			"date": "March 11",
+			"title": "Preparing Your Commercial Space for the Lowcountry Spring Tourism Boom",
+			"notes": [
+				"Topic: Facade touch-ups, entry door repainting, and interior refreshes for local commercial spaces[cite: 1].",
+				"Featured Service: Commercial Painting[cite: 1].",
+				"Target Audience: Storefront owners, restaurant managers, and commercial operators in Hilton Head & Bluffton[cite: 1].",
+				"Customer Motivation: Impressing spring tourists and local shoppers with pristine commercial spaces[cite: 1].",
+				"SEO/AEO Strategy: Target query 'commercial property maintenance Hilton Head Bluffton'. Retail facelift tags[cite: 1].",
+				"Differentiation: Fast-turnaround commercial teams working flexible hours to meet opening deadlines[cite: 1]."
+			]
+		},
+		{
+			"week": "25",
+			"date": "March 18",
+			"title": "Minor Plumbing & Electrical Fixes Every Homeowner Should Delegate",
+			"notes": [
+				"Topic: Replacing leaky faucets, changing light fixtures, fixing running toilets, and updating switches[cite: 1].",
+				"Featured Service: Home Inspection Repairs (Minor Plumbing/Electrical)[cite: 1].",
+				"Target Audience: Seniors, busy professionals, and non-DIY homeowners[cite: 1].",
+				"Customer Motivation: Getting small, annoying household maintenance issues resolved by a single visit[cite: 1].",
+				"SEO/AEO Strategy: Target query 'small home handyman repair services Bluffton SC'. One-call repairs[cite: 1].",
+				"Differentiation: Honest scoping—handling small fixes directly and advising when master trades are required[cite: 1]."
+			]
+		},
+		{
+			"week": "26",
+			"date": "March 25",
+			"title": "Semi-Transparent vs. Solid Stains: Choosing the Best Protection for Your Deck",
+			"notes": [
+				"Topic: Comparing stain types based on wood age, grain visibility preference, and sun exposure[cite: 1].",
+				"Featured Service: Deck & Fence Staining[cite: 1].",
+				"Target Audience: Homeowners refinishing wood decks or outdoor docks[cite: 1].",
+				"Customer Motivation: Making an informed choice between natural grain look and heavy-duty coverage[cite: 1].",
+				"SEO/AEO Strategy: Target query 'solid stain vs semi transparent stain deck Bluffton'. Comparison guide[cite: 1].",
+				"Differentiation: Detailed wood condition assessment prior to recommending stain formulations[cite: 1]."
+			]
+		},
+		{
+			"week": "27",
+			"date": "April 1",
+			"title": "Beat the Heat: Color Choices to Keep Interior Spaces Cool in SC Summers",
+			"notes": [
+				"Topic: Reflective qualities of high-LRV (Light Reflectance Value) interior paint shades[cite: 1].",
+				"Featured Service: Interior Painting[cite: 1].",
+				"Target Audience: Homeowners wanting to create light, airy indoor environments before summer heat[cite: 1].",
+				"Customer Motivation: Lowering interior heat gain feeling while refreshing main living areas[cite: 1].",
+				"SEO/AEO Strategy: Target query 'light paint colors for warm climates LRV ratings'. Interior design SEO[cite: 1]."
+			]
+		},
+		{
+			"week": "28",
+			"date": "April 8",
+			"title": "Garage Floor Upgrades: Flake Systems vs. Solid Epoxy Coatings",
+			"notes": [
+				"Topic: Comparing decorative flake broadcasts with solid color garage coatings for durability and aesthetics[cite: 1].",
+				"Featured Service: Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Homeowners organizing or finishing their garage spaces[cite: 1].",
+				"Customer Motivation: Selecting the right decorative style that hides dirt while providing traction[cite: 1].",
+				"SEO/AEO Strategy: Target query 'decorative epoxy flake flooring options Bluffton'. Concrete finish guide[cite: 1].",
+				"Differentiation: Full broadcast vinyl flake techniques providing uniform texture and high impact resistance[cite: 1]."
+			]
+		},
+		{
+			"week": "29",
+			"date": "April 15",
+			"title": "Why Professional Surface Prep is 80% of a Great Paint Job",
+			"notes": [
+				"Topic: Scraper work, sanding, caulking, and priming steps required before applying paint coats[cite: 1].",
+				"Featured Service: Exterior Painting[cite: 1].",
+				"Target Audience: Homeowners comparing low-cost painter quotes vs premium long-lasting work[cite: 1].",
+				"Customer Motivation: Understanding why professional paint jobs last 10+ years while cheap ones peel in 2[cite: 1].",
+				"SEO/AEO Strategy: Target query 'exterior paint preparation steps professional painters'. Quality focus[cite: 1].",
+				"Differentiation: Detailed breakdown of Palmetto 2 Step's multi-point surface preparation process[cite: 1]."
+			]
+		},
+		{
+			"week": "30",
+			"date": "April 22",
+			"title": "Real Estate Agent Guide: Streamlining Inspection Repair Negotiation Lists",
+			"notes": [
+				"Topic: How realtors can save deals using single-contractor repair quotes for punch list items[cite: 1].",
+				"Featured Service: Home Inspection Repairs[cite: 1].",
+				"Target Audience: Beaufort County and Hilton Head real estate agents and brokers[cite: 1].",
+				"Customer Motivation: Closing escrow faster without juggling five separate trade subcontractors[cite: 1].",
+				"SEO/AEO Strategy: Target query 'realtor repair contractor Bluffton SC inspection list'. Agent partner focus[cite: 1].",
+				"Differentiation: Fast turnaround, itemized billing matching repair addendums directly[cite: 1]."
+			]
+		},
+		{
+			"week": "31",
+			"date": "April 29",
+			"title": "Fixing Sagging Doors and Sticking Windows: Lowcountry Humidity Solutions",
+			"notes": [
+				"Topic: How seasonal humidity causes wood expansion and how frame adjustments correct sticking doors[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Door & Window Adjustments)[cite: 1].",
+				"Target Audience: Lowcountry residents struggling with swollen wood doors and sticking windows[cite: 1].",
+				"Customer Motivation: Smoothly operating entry and patio doors without forcing handles or hinges[cite: 1].",
+				"SEO/AEO Strategy: Target query 'fix sticking front door high humidity Bluffton'. Carpentry fix guide[cite: 1].",
+				"Differentiation: Precise planing, hinge adjustment, and proper sealing to block future moisture absorption[cite: 1]."
+			]
+		},
+		{
+			"week": "32",
+			"date": "May 6",
+			"title": "Extending Deck Life: Why Annual Deck Maintenance Pays Off",
+			"notes": [
+				"Topic: Annual wash, seal, and structural nail/screw checks for outdoor elevated wooden decks[cite: 1].",
+				"Featured Service: Deck & Fence Staining (Annual Maintenance Programs)[cite: 1].",
+				"Target Audience: Outdoor deck owners across Hilton Head, Bluffton, and Okatie[cite: 1].",
+				"Customer Motivation: Avoiding total deck replacement costs by maintaining protective seal coatings annually[cite: 1].",
+				"SEO/AEO Strategy: Target query 'annual deck maintenance plan Bluffton SC'. Maintenance program focus[cite: 1].",
+				"Differentiation: Recurring maintenance scheduling keeping decks in prime condition without owner oversight[cite: 1]."
+			]
+		},
+		{
+			"week": "33",
+			"date": "May 13",
+			"title": "The Ultimate Living Room Refresh: Walls, Ceilings, and Accent Trim",
+			"notes": [
+				"Topic: Transforming open-concept main living areas with warm neutrals and crisp white ceiling coats[cite: 1].",
+				"Featured Service: Interior Painting[cite: 1].",
+				"Target Audience: Sun City and Lowcountry homeowners modernizing legacy interior paint colors[cite: 1].",
+				"Customer Motivation: Brightening dark living spaces to align with current Lowcountry coastal design trends[cite: 1].",
+				"SEO/AEO Strategy: Target query 'open floor plan interior paint ideas Bluffton'. Living room redesign[cite: 1].",
+				"Differentiation: Crisp line cutting and complete furniture protection throughout open floor layouts[cite: 1]."
+			]
+		},
+		{
+			"week": "34",
+			"date": "May 20",
+			"title": "Commercial Exterior Maintenance: First Impressions for Retail and Offices",
+			"notes": [
+				"Topic: Restoring curb appeal with crisp exterior facade, sign-trim, and entry painting[cite: 1].",
+				"Featured Service: Commercial Painting[cite: 1].",
+				"Target Audience: Local commercial property owners and retail facility leaders[cite: 1].",
+				"Customer Motivation: Driving walk-in traffic by keeping business exteriors sharp and professional[cite: 1].",
+				"SEO/AEO Strategy: Target query 'commercial building repainting Hilton Head Bluffton'. Facility manager guide[cite: 1].",
+				"Differentiation: High-durability commercial paints built to handle intense solar UV and public wear[cite: 1]."
+			]
+		},
+		{
+			"week": "35",
+			"date": "May 27",
+			"title": "Hurricane Season Prep: Inspecting Siding, Seals, and Exterior Carpentry",
+			"notes": [
+				"Topic: Pre-storm checklist to ensure exterior trim, fascia, caulk lines, and siding hold fast in heavy winds[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry[cite: 1].",
+				"Target Audience: All coastal South Carolina homeowners preparing for June 1 hurricane season launch[cite: 1].",
+				"Customer Motivation: Preventing rain intrusion during severe summer tropical storms and hurricanes[cite: 1].",
+				"SEO/AEO Strategy: Target query 'hurricane home prep exterior repairs Bluffton SC'. Weather protection[cite: 1].",
+				"Differentiation: Inspection-backed assessment identifying subtle gaps before storm conditions test them[cite: 1]."
+			]
+		},
+		{
+			"week": "36",
+			"date": "June 3",
+			"title": "Beat the Humidity: Fast-Drying Interior Paint Projects for Early Summer",
+			"notes": [
+				"Topic: Utilizing air-conditioned interior environments for summer home improvement projects[cite: 1].",
+				"Featured Service: Interior Painting[cite: 1].",
+				"Target Audience: Homeowners staying indoors during summer heat peaks[cite: 1].",
+				"Customer Motivation: Enhancing indoor spaces while staying comfortably out of the high summer heat[cite: 1].",
+				"SEO/AEO Strategy: Target query 'indoor painting summer Bluffton SC zero VOC'. Climate control focus[cite: 1].",
+				"Differentiation: Low-odor, fast-drying paint selections that let you occupy painted rooms same-day[cite: 1]."
+			]
+		},
+		{
+			"week": "37",
+			"date": "June 10",
+			"title": "Protecting Porches and Patio Floors from Summer Sun and Moisture",
+			"notes": [
+				"Topic: How non-porous concrete coatings prevent moisture wicking and concrete spalling[cite: 1].",
+				"Featured Service: Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Outdoor patio owners in Palmetto Bluff and Bluffton communities[cite: 1].",
+				"Customer Motivation: Eliminating bare concrete dust while creating easy-to-clean outdoor entertaining spaces[cite: 1].",
+				"SEO/AEO Strategy: Target query 'patio coating concrete protection Bluffton SC'. UV stability features[cite: 1].",
+				"Differentiation: Polyaspartic UV-stable topcoats that won't yellow or degrade under intense SC summer sun[cite: 1]."
+			]
+		},
+		{
+			"week": "38",
+			"date": "June 17",
+			"title": "Handrails and Guardrails: Safety and HOA Code Compliance in Lowcountry Homes",
+			"notes": [
+				"Topic: Repairing loose deck railings, stair handrails, and entry steps to meet structural safety codes[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Handrails & Guardrails)[cite: 1].",
+				"Target Audience: Homeowners receiving HOA violation notices or planning multi-generational family visits[cite: 1].",
+				"Customer Motivation: Ensuring solid support for guests while complying with neighborhood HOA guidelines[cite: 1].",
+				"SEO/AEO Strategy: Target query 'handrail repair guardrail contractor Bluffton SC'. HOA compliance guide[cite: 1].",
+				"Differentiation: Code-compliant framing and mounting methods for lasting structural stability[cite: 1]."
+			]
+		},
+		{
+			"week": "39",
+			"date": "June 24",
+			"title": "Fascia and Soffit Rot: How Moisture Creeps In and How to Fix It",
+			"notes": [
+				"Topic: Spotting roofline water damage caused by gutter overflows and humid overhang environments[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Wood Rot Repair)[cite: 1].",
+				"Target Audience: Owners of mature homes with overhangs and established tree canopy coverage[cite: 1].",
+				"Customer Motivation: Stopping soffit decay before moisture damage spreads into attic trusses[cite: 1].",
+				"SEO/AEO Strategy: Target query 'soffit fascia wood rot repair Bluffton SC'. Roofline maintenance[cite: 1].",
+				"Differentiation: Full replacement of compromised wood combined with proper priming and water management[cite: 1]."
+			]
+		},
+		{
+			"week": "40",
+			"date": "July 1",
+			"title": "Protecting Your Home Siding Against Mildew and Algae Growth",
+			"notes": [
+				"Topic: How humidity drives green algae and black mildew on north-facing exterior home walls[cite: 1].",
+				"Featured Service: Exterior Painting (Mildew-Resistant Paint Systems)[cite: 1].",
+				"Target Audience: Homeowners fighting persistent mildew stains on exterior siding[cite: 1].",
+				"Customer Motivation: Keeping exterior walls bright and stain-free through mid-summer humidity[cite: 1].",
+				"SEO/AEO Strategy: Target query 'mildew resistant exterior house paint Bluffton SC'. Moisture defense[cite: 1].",
+				"Differentiation: Antimicrobial paint formulations explicitly chosen for humid Lowcountry microclimates[cite: 1]."
+			]
+		},
+		{
+			"week": "41",
+			"date": "July 8",
+			"title": "Selling Your Home in the Summer? 3 Must-Do Inspection Repairs",
+			"notes": [
+				"Topic: Key repair areas buyers' inspectors target during peak summer home buying season[cite: 1].",
+				"Featured Service: Home Inspection Repairs[cite: 1].",
+				"Target Audience: Home sellers wanting quick sales during peak summer relocation activity[cite: 1].",
+				"Customer Motivation: Eliminating buyer price re-negotiations by repairing items upfront[cite: 1].",
+				"SEO/AEO Strategy: Target query 'pre listing home inspection repair list SC'. Fast closing tips[cite: 1].",
+				"Differentiation: Direct contractor execution guided by home inspector industry standards[cite: 1]."
+			]
+		},
+		{
+			"week": "42",
+			"date": "July 15",
+			"title": "Why Professional Drywall Patching Beats DIY Spackling Every Time",
+			"notes": [
+				"Topic: Common DIY mistakes like flashing, uneven sanding marks, and mismatched textures[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry (Drywall Patching)[cite: 1].",
+				"Target Audience: Homeowners with visible wall patches or damaged drywall corners[cite: 1].",
+				"Customer Motivation: Obtaining smooth, invisible wall repairs that look original to the home[cite: 1].",
+				"SEO/AEO Strategy: Target query 'professional drywall repair vs DIY patch Bluffton'. Wall repair tips[cite: 1].",
+				"Differentiation: Seamless texture matching and feathered sanding technique for flawless repaint readiness[cite: 1]."
+			]
+		},
+		{
+			"week": "43",
+			"date": "July 22",
+			"title": "Upgrading Your Rental Property: High-Durability Paints and Floor Coatings",
+			"notes": [
+				"Topic: Selecting scuff-resistant interior wall paints and durable floor finishes for long-term rentals[cite: 1].",
+				"Featured Service: Interior Painting & Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Long-term and short-term rental owners in Hilton Head and Bluffton[cite: 1].",
+				"Customer Motivation: Reducing tenant turn maintenance costs with scuff-resistant paint coatings[cite: 1].",
+				"SEO/AEO Strategy: Target query 'durable paint for rental properties Bluffton SC'. Landlord maintenance[cite: 1].",
+				"Differentiation: High-scrub enamel finishes that clean up easily between tenant stays[cite: 1]."
+			]
+		},
+		{
+			"week": "44",
+			"date": "July 29",
+			"title": "Restoring Weathered Fences: Cleaning, Repairing, and Staining",
+			"notes": [
+				"Topic: Transforming grayed, weathered wood fencing back to rich natural tones[cite: 1].",
+				"Featured Service: Deck & Fence Staining[cite: 1].",
+				"Target Audience: Homeowners with aged pine or cedar perimeter fences[cite: 1].",
+				"Customer Motivation: Doubling remaining fence lifespan without paying full replacement cost[cite: 1].",
+				"SEO/AEO Strategy: Target query 'restore old wood fence Bluffton SC stain'. Fence restoration guide[cite: 1].",
+				"Differentiation: Cleaning prep removes gray wood fibers before applying fresh deep-penetrating stain[cite: 1]."
+			]
+		},
+		{
+			"week": "45",
+			"date": "August 5",
+			"title": "Managing High-Humidity Painting: Professional Moisture Testing Techniques",
+			"notes": [
+				"Topic: Measuring wood moisture content before applying exterior paint or stain coatings[cite: 1].",
+				"Featured Service: Exterior Painting[cite: 1].",
+				"Target Audience: Detail-oriented homeowners wanting guaranteed long-term paint adhesion[cite: 1].",
+				"Customer Motivation: Preventing blistering and peeling caused by trapping sub-surface moisture[cite: 1].",
+				"SEO/AEO Strategy: Target query 'paint moisture content wood test SC'. Technical paint guide[cite: 1].",
+				"Differentiation: Use of digital moisture meters prior to painting to ensure optimal surface conditions[cite: 1]."
+			]
+		},
+		{
+			"week": "46",
+			"date": "August 12",
+			"title": "Showroom Garage Transformations: High-Performance Flake Epoxy Systems",
+			"notes": [
+				"Topic: Step-by-step transformation of stained, cracked garage floors into clean living spaces[cite: 1].",
+				"Featured Service: Concrete Epoxy Coatings[cite: 1].",
+				"Target Audience: Car collectors, golf cart owners, and organized homeowners[cite: 1].",
+				"Customer Motivation: Turning dirty garage spaces into bright, durable, easy-to-clean extensions of the home[cite: 1].",
+				"SEO/AEO Strategy: Target query 'garage floor showroom finish Bluffton SC'. Epoxy flake transformation[cite: 1].",
+				"Differentiation: Heavy-duty diamond grinding prep for maximum mechanical bond strength[cite: 1]."
+			]
+		},
+		{
+			"week": "47",
+			"date": "August 19",
+			"title": "Protecting Exterior Doors and Entryways from Harsh Sun and Rain",
+			"notes": [
+				"Topic: Refinishing wood front doors, repainting entry trim, and sealing decorative glass frames[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry & Exterior Painting[cite: 1].",
+				"Target Audience: Homeowners with sun-bleached or peeling front entry doors[cite: 1].",
+				"Customer Motivation: Restoring welcoming front entrances with marine-grade spar varnishes or paints[cite: 1].",
+				"SEO/AEO Strategy: Target query 'front door refinishing painting Bluffton SC'. Entryway curb appeal[cite: 1].",
+				"Differentiation: Multi-coat exterior finish systems designed to endure intense Southern solar exposure[cite: 1]."
+			]
+		},
+		{
+			"week": "48",
+			"date": "August 26",
+			"title": "Commercial Space Refresh: Flexible Scheduling with Zero Downtime",
+			"notes": [
+				"Topic: How commercial painting teams execute off-hours work for offices, clinics, and shops[cite: 1].",
+				"Featured Service: Commercial Painting[cite: 1].",
+				"Target Audience: Office managers, medical clinic directors, and retail business owners[cite: 1].",
+				"Customer Motivation: Updating business spaces without losing revenue or shutting down operation hours[cite: 1].",
+				"SEO/AEO Strategy: Target query 'overnight commercial painting contractor Bluffton'. Zero downtime painting[cite: 1].",
+				"Differentiation: Flexible evening and weekend crew deployment designed around client business hours[cite: 1]."
+			]
+		},
+		{
+			"week": "49",
+			"date": "September 2",
+			"title": "Peak Hurricane Season: Emergency Wood Rot and Exterior Trim Fixes",
+			"notes": [
+				"Topic: Spotting and repairing exposed exterior wood trim vulnerable to heavy wind-driven rain[cite: 1].",
+				"Featured Service: Home Repairs & Carpentry[cite: 1].",
+				"Target Audience: Homeowners conducting mid-season hurricane preparedness checks[cite: 1].",
+				"Customer Motivation: Sealing vulnerable exterior points before September storm activity ramps up[cite: 1].",
+				"SEO/AEO Strategy: Target query 'emergency exterior repair wind driven rain Bluffton SC'. Storm prep[cite: 1].",
+				"Differentiation: Fast response team handling small wood, siding, and trim sealing tasks[cite: 1]."
+			]
+		},
+		{
+			"week": "50",
+			"date": "September 9",
+			"title": "Accent Walls, Ceilings, and Trim: Modernizing Lowcountry Interiors",
+			"notes": [
+				"Topic: Using bold accent colors on dining walls, coffered ceilings, or board-and-batten trim[cite: 1].",
+				"Featured Service: Interior Painting[cite: 1].",
+				"Target Audience: Homeowners modernizing traditional home layouts[cite: 1].",
+				"Customer Motivation: Adding personality and focal features without repainting entire main floors[cite: 1].",
+				"SEO/AEO Strategy: Target query 'accent wall ideas board batten paint Bluffton'. Interior styling tags[cite: 1].",
+				"Differentiation: Crisp, razor-sharp paint lines and accent trim installation options[cite: 1]."
+			]
+		},
+		{
+			"week": "51",
+			"date": "September 16",
+			"title": "The One-Visit Home Repair Solution: How Palmetto 2 Step Saves You Time",
+			"notes": [
+				"Topic: Consolidating home maintenance tasks—painting, carpentry, staining, and minor repairs—into one visit[cite: 1].",
+				"Featured Service: Home Inspection Repairs & General Home Repairs[cite: 1].",
+				"Target Audience: Busy home buyers, sellers, and multi-property owners[cite: 1].",
+				"Customer Motivation: Streamlining home upgrades with one accountable team instead of multiple contractors[cite: 1].",
+				"SEO/AEO Strategy: Target query 'single source home maintenance contractor Bluffton SC'. Efficiency messaging[cite: 1].",
+				"Differentiation: Built on Yon Lucas's inspector background, delivering complete multi-trade execution[cite: 1]."
+			]
+		},
+		{
+			"week": "52",
+			"date": "September 23",
+			"title": "Lowcountry Home Care Year in Review: Preparing Your Home for Fall",
+			"notes": [
+				"Topic: Recap of full-year home maintenance cycles and setting up your annual home upkeep budget[cite: 1].",
+				"Featured Service: All Services (Interior/Exterior Painting, Repairs, Epoxy, Staining)[cite: 1].",
+				"Target Audience: All Bluffton, Hilton Head, and Lowcountry community homeowners[cite: 1].",
+				"Customer Motivation: Protecting property values over time with proactive seasonal planning[cite: 1].",
+				"SEO/AEO Strategy: Target query 'annual Lowcountry home maintenance plan summary'. Yearly home checklist[cite: 1].",
+				"Differentiation: Full-service home improvement partner providing complete exterior-to-interior care[cite: 1]."
+			]
+		}
+	],
 	"keywords": [
 		""
 	],

@@ -3,9 +3,9 @@
 import fs from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
-import nodemailer from 'nodemailer';
 import { headers } from 'next/headers';
 import { getFullPixelatedConfig } from '../../config/config';
+import { sendSmtpMail } from '../../integrations/smtp.integration';
 import { getLiveBillingStats } from '../../integrations/wordpress.jetpack.server';
 import {
 	listPixelatedFormSubmissionReportRows,
@@ -186,9 +186,6 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 }
 
 export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPath: string; email: string }[]): Promise<string[]> {
-	const config = getFullPixelatedConfig() as any;
-	const smtpConfig = config?.integrations?.smtp;
-
 	let fromEmail = '"Pixelated Technologies" <billing@pixelated.tech>';
 	try {
 		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
@@ -200,27 +197,6 @@ export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPat
 		}
 	} catch (e) {
 		console.error('Error reading fromEmail from sites.json:', e);
-	}
-	
-	const hasSmtpConfig = !!(smtpConfig && (smtpConfig as any).smtpHost && (smtpConfig as any).smtpUser && (smtpConfig as any).smtpPass);
-	
-	let transporter;
-	if (hasSmtpConfig) {
-		transporter = nodemailer.createTransport({
-			host: (smtpConfig as any).smtpHost,
-			port: (smtpConfig as any).smtpPort || 465,
-			secure: (smtpConfig as any).smtpSecure !== false,
-			auth: {
-				user: (smtpConfig as any).smtpUser,
-				pass: (smtpConfig as any).smtpPass,
-			},
-		});
-	} else {
-		transporter = nodemailer.createTransport({
-			streamTransport: true,
-			newline: 'unix',
-			buffer: true
-		});
 	}
 
 	const logs: string[] = [];
@@ -253,7 +229,7 @@ export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPat
 				]
 			};
 
-			const info = await transporter.sendMail(mailOptions);
+			const { info, hasSmtpConfig } = await sendSmtpMail(mailOptions, { allowStreamFallback: true });
 			if (!hasSmtpConfig) {
 				logs.push(`[${timestamp}] ℹ️ Running in Local Stream Mode (Nodemailer Compiled successfully).`);
 				logs.push(`[${timestamp}] ✅ Email dispatched successfully to ${targetEmail}! Message size: ${(info as any).message.length} bytes.`);
