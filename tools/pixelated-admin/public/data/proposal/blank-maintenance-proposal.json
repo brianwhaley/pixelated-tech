@@ -12,6 +12,7 @@
 		"addressCountry": ""
 	},
 	"proposalType": "Monthly Maintenance",
+	"maintenancePackage": "PREMIUM",
 	"goal": 
 	[
 		"To keep XYZ Service web site healthy, engaging, and updated with regular maintenance and updates."

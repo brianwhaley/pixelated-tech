@@ -3,7 +3,7 @@
 import React from 'react';
 import { PageTitleHeader, PageSection, Services, usePixelatedConfig } from '@pixelated-tech/components';
 import { PageHero } from '@/app/elements/page-hero';
-import { ServiceAreasCallout, ContactUsCallout } from '@/app/elements/service-areas-callouts';
+import { ServiceAreasCallout, ContactUsCallout } from '@/app/elements/callout-library';
 
 export default function ServicesPage() {
 	const config = usePixelatedConfig();

@@ -12,6 +12,7 @@
 		"addressCountry": "USA"
 	},
 	"proposalType": "Monthly Maintenance",
+	"maintenancePackage": "PREMIUM",
 	"goal": 
 	[
 		"To keep the palmetto2step.com web site, hosted on GoDaddy, healthy, engaging, and updated with regular maintenance and updates."
@@ -96,8 +97,8 @@
 		"description": [
 			"Monthly Maintenance Fee is for palmetto2step.com",
 			"The proposal is for a monthly maintenance package for palmetto2step.com as PREMIUM.",
-			"Initial monthly base pricing for GROWTH is $300.",
-			"Since Palmetto 2 Step remains hosted on GoDaddy, the maintenance package is discounted to remove hosting and security support costs."
+			"Initial monthly base pricing for PREMIUM is $500.",
+			"Since Palmetto 2 Step remains hosted on GoDaddy, the maintenance package is discounted to remove platform and technology support costs."
 		]
 	}
 }

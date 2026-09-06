@@ -9,6 +9,7 @@ type ProposalType = 'Monthly Maintenance' | 'Web Site Build' | 'Security System 
 
 type ProposalData = {
 	proposalType: ProposalType;
+    maintenancePackage?: 'ESSENTIAL' | 'GROWTH' | 'PREMIUM';
 	date: string;
 	companyName: string;
 	companyContact: string;

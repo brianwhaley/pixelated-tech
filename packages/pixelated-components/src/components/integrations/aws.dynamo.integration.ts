@@ -1,4 +1,4 @@
-import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, PutItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { getFullPixelatedConfig } from '../config/config';
 
 export const DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE = 'PixelatedFormSubmissionsTable';
@@ -120,4 +120,12 @@ export async function listPixelatedFormSubmissionReportRows(options: PixelatedFo
 		}
 		return true;
 	});
+}
+
+export async function putDynamoStringItem(tableName: string, item: Record<string, string>) {
+	const client = new DynamoDBClient(getDynamoConfig());
+	return client.send(new PutItemCommand({
+		TableName: tableName,
+		Item: Object.fromEntries(Object.entries(item).map(([key, value]) => [key, { S: value }])),
+	}));
 }

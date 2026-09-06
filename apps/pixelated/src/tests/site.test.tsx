@@ -182,6 +182,12 @@ describe('Site coverage', () => {
 		expect(await screen.findByText(/Error: File not found/i)).not.toBeNull();
 	});
 
+	it('renders Blog Calendar with an empty markdown fallback', async () => {
+		setFileDataState({ data: null, loading: false, error: null });
+		render(React.createElement(BlogCalendarPage));
+		expect(await screen.findByTestId('markdown')).not.toBeNull();
+	});
+
 	it('renders NerdJokes page with installed query branch', async () => {
 		setNavigationSearchParams('installed=true');
 		render(React.createElement(NerdJokesPage));
@@ -209,6 +215,14 @@ describe('Site coverage', () => {
 	});
 
 	it('renders Podcast page and exercises Spotify series sorting branch', async () => {
+		render(React.createElement(PodcastPage));
+		await screen.findByText(/Pixelated Technologies Podcast Episodes/i);
+		await waitFor(() => expect(document.querySelector('[data-testid="podcast-episode-list"]')).not.toBeNull());
+	});
+
+	it('renders Podcast page with missing series and episodes fallbacks', async () => {
+		mockState.spotifySeries = null;
+		mockState.spotifyEpisodes = null;
 		render(React.createElement(PodcastPage));
 		await screen.findByText(/Pixelated Technologies Podcast Episodes/i);
 		await waitFor(() => expect(document.querySelector('[data-testid="podcast-episode-list"]')).not.toBeNull());
