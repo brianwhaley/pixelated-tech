@@ -1,30 +1,8 @@
 {
   "metadata": {
-    "imageCount": 23
+    "imageCount": 1
   },
   "images": [
-    "images/amava-logo.png",
-    "images/pix-bg-512.jpg",
-    "images/services/construction-cleanup.jpg",
-    "images/services/day-porter-services-2.jpg",
-    "images/services/day-porter-services.jpg",
-    "images/services/facility-maintenance.jpg",
-    "images/services/janitorial-service-2.jpg",
-    "images/services/janitorial-service.jpg",
-    "images/services/janitorial-supply-services-2.jpg",
-    "images/services/janitorial-supply-services.jpg",
-    "images/services/professional-cleaning-2.jpg",
-    "images/services/professional-cleaning-3.jpg",
-    "images/services/professional-cleaning-4.jpg",
-    "images/services/professional-cleaning-5.jpg",
-    "images/services/professional-cleaning-6.jpg",
-    "images/services/professional-cleaning.jpg",
-    "images/services/specialty-cleaning-services.jpg",
-    "images/stock/contact-us.jpg",
-    "images/stock/office-building-2.jpg",
-    "images/stock/office-building-3.jpg",
-    "images/stock/office-building.jpg",
-    "images/stock/schedule-assessment.jpg",
-    "images/stock/service-areas.jpg"
+    "images/amava-logo.png"
   ]
 }

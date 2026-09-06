@@ -12,6 +12,7 @@
 		"addressCountry": "USA"
 	},
 	"proposalType": "Security System Installation",
+	"maintenancePackage": "",
 	"goal": 
 	[
 		"Install the listed security components for 124 McIntosh Drive."

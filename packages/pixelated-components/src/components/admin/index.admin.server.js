@@ -3,6 +3,8 @@ export * from './componentusage/componentDiscovery';
 
 export * from './deploy/deployment.integration';
 
+export * from './email-forwarding/email-forwarding.integration';
+
 export * from './site-health/google.api.integration';
 export * from './site-health/google.api.utils';
 export * from './site-health/seo-constants';

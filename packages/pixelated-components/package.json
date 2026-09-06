@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.21.35",
+	"version": "3.21.36",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -94,17 +94,18 @@
 		"@aws-sdk/client-amplify": "^3.1125.0",
 		"@aws-sdk/client-dynamodb": "^3.1125.0",
 		"@aws-sdk/client-iam": "^3.1125.0",
+		"@aws-sdk/client-sesv2": "^3.1126.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.7",
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
-		"nodemailer": "^9.1.1",
+		"nodemailer": "^10.0.0",
 		"prop-types": "^15.8.1",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",
 		"typescript": "6.0.2",
-		"vitest": "^4.1.11"
+		"vitest": "^5.0.0"
 	},
 	"devDependencies": {
 		"@babel/parser": "^8.0.4",
@@ -127,8 +128,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.69.0",
 		"@typescript-eslint/parser": "^8.69.0",
 		"@vitejs/plugin-react": "^6.1.1",
-		"@vitest/coverage-v8": "^4.1.11",
-		"@vitest/ui": "^4.1.11",
+		"@vitest/coverage-v8": "^5.0.0",
+		"@vitest/ui": "^5.0.0",
 		"ajv": "^8.20.0",
 		"ajv-keywords": "^5.1.0",
 		"babel-loader": "^10.1.1",

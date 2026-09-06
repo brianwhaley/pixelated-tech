@@ -54,7 +54,7 @@ export default function Home() {
 					layout='horizontal'
 					url='/contact' 
 					boxShape="square"
-					img="/images/stock/schedule-assessment.jpg"
+					img="https://images.ctfassets.net/syybqad2lwuh/3T2nZHFEm9GmhkUFfb9ar7/08aadced1ef23c4298dcd5c7ce12ab1a/schedule-assessment.jpg?fm=webp"
 					imgShape="square"
 					title='Schedule Your Free Assessment'
 					content="Contact our team today to schedule your comprehensive, no-obligation facility assessment tailored specifically to your building's footprint and operational schedule. We will walk your space, identify your exact operational requirements, and deliver a custom, cost-effective service proposal with zero commitment required.  We make evaluating your commercial property needs completely simple, seamless, and stress-free."

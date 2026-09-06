@@ -3,6 +3,8 @@
 import React from 'react';
 import { PageTitleHeader, PageSection, ServiceAreas, usePixelatedConfig } from '@pixelated-tech/components';
 import { PageHero } from '@/app/elements/page-hero';
+import { ServicesCallout, ContactUsCallout } from '@/app/elements/callout-library';
+
 
 export default function ServiceAreasPage() {
 	const config = usePixelatedConfig();
@@ -27,15 +29,12 @@ export default function ServiceAreasPage() {
 				intro="Click a service area to read about the local coverage, specialties, and how we support businesses in that region."
 				serviceAreaPathPrefix="/service-areas"
 			/>
-			
-			<PageSection columns={1} maxWidth="1024px" id="services-link-section">
-				<p>
-					Check out our <a href="/services">Services</a> page to see the services we offer and the expertise we provide.
-				</p>
-				<p>
-					<a href="/contact">Contact us</a> to learn more about our services, service areas, and how we can support your needs in your area. We are committed to providing excellent service and local expertise wherever you are.
-				</p>
-			</PageSection>
+
+			<section id="services-callouts" style={{ backgroundColor: "var(--accent1-color)" }}>
+				<ServicesCallout />
+				<ContactUsCallout />
+			</section>
+            
 			
 		</>
 	);

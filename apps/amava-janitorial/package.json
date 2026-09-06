@@ -1,6 +1,6 @@
 {
   "name": "AMAVA-Janitorial",
-  "version": "0.7.25",
+  "version": "0.7.26",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -28,11 +28,20 @@
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
   },
   "dependencies": {
+    "@aws-sdk/client-amplify": "^3.1127.0",
+    "@aws-sdk/client-cloudwatch": "^3.1127.0",
+    "@aws-sdk/client-dynamodb": "^3.1127.0",
+    "@aws-sdk/client-iam": "^3.1127.0",
+    "@aws-sdk/client-route-53": "^3.1127.0",
+    "@aws-sdk/client-sesv2": "^3.1127.0",
     "@pixelated-tech/components": "*",
-    "happy-dom": "^20.10.1",
+    "@types/react-dom": "^19.2.7",
+    "happy-dom": "^20.14.0",
     "next": "^16.2.9",
     "prop-types": "15.8.1",
-    "react": "^19.2.7"
+    "puppeteer": "^25.10.0",
+    "react": "^19.2.7",
+    "sass": "^1.104.0"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
@@ -40,16 +49,17 @@
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.14",
-    "@vitest/coverage-v8": "^4.1.11",
-    "@vitest/ui": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.0",
+    "@vitest/ui": "^5.0.0",
     "eslint": "9.39.4",
     "eslint-config-next": "^16.3.4",
     "eslint-import-resolver-typescript": "^4.4.4",
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",
+    "nodemailer": "^10.0.0",
     "react-dom": "^19.2.6",
     "typescript": "6.0.2",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.0"
   },
   "overrides": {},
   "deployMarker": "2026-08-05T04:05:55.698Z"

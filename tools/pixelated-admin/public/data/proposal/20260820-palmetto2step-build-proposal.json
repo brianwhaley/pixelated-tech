@@ -12,6 +12,7 @@
 		"addressCountry": "USA"
 	},
 	"proposalType": "Web Site Build",
+	"maintenancePackage": "",
 	"goal": 
 	[
 		"To enhance the existing web presence for Palmetto 2 Step on the GoDaddy platform"
@@ -63,30 +64,30 @@
 		},{
 			"feature": "Citation Management",
 			"description": [
-				"Create new citations on relevant business directories",
+				"Create new citations on roughly 30-35 relevant business directories",
 				"Links of new / existing citations added to the web site"
 
 			]
 		},{
 			"feature": "Press Release",
 			"description": [
-				"Write and distribute press releases to relevant media outlets",
+				"Write and distribute press a release to relevant media outlets regarding the launch of Palmetto 2 Step",
 				"Links of press releases added to the web site"
 
 			]
 		}
 	],
-	"startDate": "8/27/2026",
+	"startDate": "9/28/2026",
 	"milestones": [
 		{
 			"milestone": "Information Architecture and design agreement",
-			"date": "8/31/2026"
+			"date": "10/2/2026"
 		},{
 			"milestone": "Build out of web site changes - new pages, content adjustments, blog - palmetto2step.com",
-			"date": "9/7/2026"
+			"date": "10/9/2026"
 		},{
 			"milestone": "Site analytics and marketing - Google Analytics, Social Media Accounts, Citation Management, Press Release",
-			"date": "10/2/2026"
+			"date": "10/16/2026"
 		}
 	],
 	"paymentTotal": {

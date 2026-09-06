@@ -13,10 +13,10 @@
 * [  ] Instagram account
 * [  ] Threads account
 * [  ] Nextdoor Account
-* [  ] Set up wordpress blog
+* [ X ] Set up wordpress blog
 * [  ] Sign Up for Jetpack
-* [  ] Contentful
-* [  ] Cloudinary
+* [ X ] Contentful
+* [ X ] Cloudinary
 * [  ] First quarter of blog posts (3)
 * [  ] Move domain
 * [  ] Migrate email

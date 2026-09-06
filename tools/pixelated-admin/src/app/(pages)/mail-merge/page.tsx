@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import nodemailer from 'nodemailer';
 import { redirect } from 'next/navigation';
-import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
+import { sendSmtpMail } from '@pixelated-tech/components/server';
 import { MailMergeClientForm } from './MailMergeClientForm';
 
 export const mailerDataDirectory = path.join(process.cwd(), 'public', 'data', 'mailer');
@@ -66,26 +65,6 @@ export async function sendMailAction(formData: FormData) {
 		return redirectWithError(`No entries found for category "${category}" and status "${statusQuery}".`);
 	}
 
-	const config = getFullPixelatedConfig() as any;
-	const smtpConfig = config?.integrations?.smtp;
-	const hasSmtpConfig = !!(smtpConfig?.smtpHost && smtpConfig?.smtpUser && smtpConfig?.smtpPass);
-
-	const transporter = hasSmtpConfig
-		? nodemailer.createTransport({
-			host: smtpConfig.smtpHost,
-			port: smtpConfig.smtpPort || 465,
-			secure: smtpConfig.smtpSecure !== false,
-			auth: {
-				user: smtpConfig.smtpUser,
-				pass: smtpConfig.smtpPass,
-			},
-		})
-		: nodemailer.createTransport({
-			streamTransport: true,
-			newline: 'unix',
-			buffer: true,
-		});
-
 	let sent = 0;
 	let failed = 0;
 
@@ -113,7 +92,7 @@ export async function sendMailAction(formData: FormData) {
 		};
 
 		try {
-			await transporter.sendMail(mailOptions);
+			await sendSmtpMail(mailOptions, { allowStreamFallback: true });
 			sent += 1;
 			entry.status = 'Emailed';
 			entry.lastModified = new Date().toISOString();

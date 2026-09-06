@@ -1,4 +1,6 @@
 export * from './aws.dynamo.integration';
+export * from './aws.route53.integration';
+export * from './aws.ses.integration';
 export * from './contentful.delivery';
 export * from './contentful.management';
 export * from './gemini-api.server';
@@ -15,6 +17,7 @@ export * from './contentful.contenttypes';
 export * from './lipsum';
 export * from './spotify.components';
 export * from './spotify.functions';
+export * from './smtp.integration';
 export * from "./wikipedia.functions";
 export * from './wordpress.functions';
 export * from './wordpress.jetpack.server';
