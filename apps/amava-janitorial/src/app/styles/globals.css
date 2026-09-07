@@ -21,6 +21,12 @@ header .menu-wrapper {
     margin: auto 10px;
 }
 
+header .logo-link {
+    aspect-ratio: 448 / 123;
+    height: 123px;
+    align-self: center;
+}
+
 @media (max-width: 767px) {
     header #header-section {
         .page-section-content {

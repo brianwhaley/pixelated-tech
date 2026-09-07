@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { getContentfulEntriesByType, type ContentfulApiType } from './contentful.delivery';
+import { getContentfulEntriesByType, type getContentfulEntriesByTypeType } from './contentful.delivery';
+import type { ContentfulConfig } from '../config/config.types';
 import { usePixelatedConfig } from '../config/config.client';
 import { PageSection } from '../structure/page-blocks';
 import './contentful.alert.css';
@@ -26,7 +27,7 @@ export function ContentfulAlerts(props: ContentfulAlertsType) {
 	const [alerts, setAlerts] = useState<any[]>([]);
 	const contentfulConfig = config?.integrations?.contentful;
 
-	const apiProps: ContentfulApiType = {
+	const apiProps: getContentfulEntriesByTypeType['apiProps'] = {
 		proxyURL: contentfulConfig?.proxyURL,
 		base_url: contentfulConfig?.base_url ?? '',
 		space_id: contentfulConfig?.space_id ?? '',

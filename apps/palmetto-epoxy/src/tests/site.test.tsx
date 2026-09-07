@@ -61,7 +61,7 @@ import HardeevilleSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/
 import HiltonHeadSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
 import OkatieSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
 import RidgelandSCServiceArea from '@/app/(pages)/service-areas/[serviceArea]/page';
-import FlooringEstimatorPage, { FlooringEstimate } from '@/app/(pages)/flooring-estimator/page';
+import FlooringEstimatorPage, { FlooringEstimate } from '@/app/(pages)/estimator/page';
 import StyleGuidePage from '@/app/(pages)/styleguide/page';
 import SubmitReviewPage from '@/app/(pages)/submitreview/page';
 import UpdatesPage from '@/app/(pages)/updates/page';

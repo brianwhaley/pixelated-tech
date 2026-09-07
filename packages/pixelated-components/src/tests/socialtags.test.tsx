@@ -22,12 +22,14 @@ describe('SocialTags', () => {
 
 		expect(screen.getByText('Follow Pixelated Technologies on Social Media')).toBeInTheDocument();
 
-		const linkedinImage = screen.getByAltText('LinkedIn') as HTMLImageElement;
+		const expectedLinkedinAlt = `${config.siteInfo.name} on ${config.siteInfo.socialProfiles[0].name}`;
+		const linkedinImage = screen.getByAltText(expectedLinkedinAlt) as HTMLImageElement;
 		expect(linkedinImage).toBeInTheDocument();
 		expect(linkedinImage.closest('a')).toHaveAttribute('href', 'https://linkedin.com/company/pixelated');
 		expect(linkedinImage.src).toContain('example.com/linkedin.png');
 
-		const facebookImage = screen.getByAltText('Facebook') as HTMLImageElement;
+		const expectedFacebookAlt = `${config.siteInfo.name} on ${config.siteInfo.socialProfiles[1].name}`;
+		const facebookImage = screen.getByAltText(expectedFacebookAlt) as HTMLImageElement;
 		expect(facebookImage).toBeInTheDocument();
 		expect(facebookImage.closest('a')).toHaveAttribute('href', 'https://facebook.com/pixelated');
 		expect(facebookImage.src).toContain('https://www.pixelated.tech/images/logos/facebook-logo.png');

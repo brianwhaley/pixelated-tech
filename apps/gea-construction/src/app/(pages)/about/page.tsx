@@ -26,7 +26,7 @@ export default function AboutPage() {
 				<Callout
 					layout="vertical"
 					subtitle="Coastal Experience"
-					img="https://images.ctfassets.net/6ewno74sai9a/4Vr5iefQH9bcUpj0WiWEMU/188621b677b8dff012353b9713373bdf/luxurious-living-room-with-ocean-view.jpg?fm=webp"
+					img="https://images.ctfassets.net/6ewno74sai9a/7CxmvI954QoGzMwMpitVQf/124ed74f77994275795be669ae4002d8/luxurious-living-room-with-ocean-view.jpg?fm=webp"
 					imgAlt="GEA Construction - Coastal Experience"
 					imgShape="square"
 				/>

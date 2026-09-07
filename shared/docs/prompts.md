@@ -30,12 +30,12 @@ Before presenting the final version of the chapter, internally audit your draft 
 
 
 ## Criteria for each individual Blog Post :
-* Each post must have between 1000 and 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences
-* ensure the content of the blog post demonstrates subject matter expertise, targets small business owners, helps convert readers to customers, and helps with search engine and answer engine optimization
-* After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.pixelated.tech/schedule
-* Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..  
-* Add links to other blog posts ( https://blog.pixelated.tech ) or other content on https://www/pixelated.tech
-* Use a tone of empathy, understanding as a small business owner myself, an expert in the field of web and marketing, and straightforward language
+* Each post must have between 1000 and 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 6 sentences
+* ensure the content of the blog post demonstrates subject matter expertise, targets consumers and small business owners, helps convert readers to customers, and helps with search engine and answer engine optimization
+* After the conclusion of each post, add a call to action to sign up for a free assessment with a link to the contact us page
+* Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced.  do not use fabricated or falsified links.  use real links to real pages.  
+* Add links to other blog posts or other content on the web site.  do not use fabricated or falsified links.  use real links to real pages.  
+* Use a tone of empathy and understanding as an expert in the field, using straightforward language
 * Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.  
 * do not use md tables, charts, formatting, or html tables
 * format the title properly, including proper punctuation and capitalization
