@@ -13,14 +13,16 @@ export default function Header() {
 	return (
 		<>
 			<PageSection columns={1} maxWidth="1440px" padding="0px" id="header-section">
-				<SmartImage
-					id="logo"
-					src="/images/amava-logo.png"
-					alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
-					aboveFold={true} 
-					width={448} /* 400 */
-					height={123} /* 110 */
-				/>
+				<a href="/" className="logo-link">
+					<SmartImage
+						id="logo"
+						src="/images/amava-logo.png"
+						alt={config?.siteInfo?.name ? `${config.siteInfo.name} Logo` : "Site Logo"}
+						aboveFold={true} 
+						width={448} /* 400 */
+						height={123} /* 110 */
+					/>
+				</a>
 
 				<MenuSimple menuItems={routes} />
 

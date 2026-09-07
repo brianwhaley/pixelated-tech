@@ -2,20 +2,12 @@ import PropTypes, { InferProps } from "prop-types";
 import { encode, decode } from 'html-entities';
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
+import type { ContentfulConfig } from '../config/config.types';
 
 const debug = false;
 
 const ctfQSParams = "?fm=webp&q=50";
 
-export type ContentfulApiType = {
-	proxyURL?: string;
-	base_url: string;
-	space_id: string;
-	environment: string;
-	delivery_access_token: string;
-	management_access_token?: string;
-	preview_access_token?: string;
-};
 
 /* ========== CALL CONTENTFUL DELIVERY API ========== */
 /**
@@ -260,7 +252,7 @@ export type ContentfulVideoMetadata = {
 	caption?: string;
 };
 
-export async function getContentfulVideoMetadata(videoUrl: string, contentfulConfig?: ContentfulApiType): Promise<ContentfulVideoMetadata | null> {
+export async function getContentfulVideoMetadata(videoUrl: string, contentfulConfig?: ContentfulConfig): Promise<ContentfulVideoMetadata | null> {
 	if (!videoUrl) {
 		return null;
 	}

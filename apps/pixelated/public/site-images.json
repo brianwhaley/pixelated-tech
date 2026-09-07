@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "imageCount": 253
+    "imageCount": 262
   },
   "images": [
     "images/brianwhaley-headshot.jpg",
@@ -81,6 +81,8 @@
     "images/logos/apple-logo.png",
     "images/logos/apple-podcast-logo.png",
     "images/logos/askmap-logo.png",
+    "images/logos/audible-logo.png",
+    "images/logos/audiobooks-logo.png",
     "images/logos/azbusinessfinder-logo.png",
     "images/logos/barnesandnoble-logo.png",
     "images/logos/biz-hwy-logo.png",
@@ -88,6 +90,10 @@
     "images/logos/blog-logo.png",
     "images/logos/blurb-logo.png",
     "images/logos/bni-logo.png",
+    "images/logos/bokus-logo.png",
+    "images/logos/bookmate-logo.png",
+    "images/logos/booksamillion-logo.png",
+    "images/logos/bookshoporg-logo.png",
     "images/logos/booktopia-logo.png",
     "images/logos/brownbook-logo.png",
     "images/logos/bubble-life-logo.png",
@@ -131,6 +137,7 @@
     "images/logos/google-plus-logo.png",
     "images/logos/google-reader-logo.png",
     "images/logos/googlemaps-logo.png",
+    "images/logos/hoopla-logo.png",
     "images/logos/hotfrog-logo.png",
     "images/logos/houzz-logo.jpg",
     "images/logos/houzz-logo.png",
@@ -154,6 +161,7 @@
     "images/logos/merchantcircle-logo.png",
     "images/logos/n49-logo.png",
     "images/logos/nextdoor-logo.png",
+    "images/logos/nextory-logo.png",
     "images/logos/overcast-logo.png",
     "images/logos/overdrive-logo.png",
     "images/logos/patch-logo.png",
@@ -175,6 +183,7 @@
     "images/logos/storeboard-logo.png",
     "images/logos/storytel-logo.png",
     "images/logos/techdirectory-logo.png",
+    "images/logos/thecitizen-logo.jpeg",
     "images/logos/themanifest-logo.png",
     "images/logos/threads-logo.png",
     "images/logos/thumbtack-logo.jpg",

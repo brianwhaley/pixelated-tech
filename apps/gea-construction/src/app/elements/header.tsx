@@ -39,7 +39,7 @@ export default function Header() {
 					height="300px"
 				>
 					<div className="hero-content centered">
-						<a href="/">
+						<a href="/" style={{width: "100%"}}>
 							<SmartImage
 								id="logo"
 								src="/images/gea-construction-logo-2-color.png"

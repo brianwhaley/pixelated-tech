@@ -41,10 +41,13 @@ export function SocialTags(props: SocialTagsType) {
 			<PageSection id="socialtag-section" columns={columns} padding={"0px"}>
 				{ socials.map((social: NonNullable<SiteInfo['socialProfiles']>[number]) => (
 					<PageGridItem key={social.name}>
-						<Callout variant="full" imgShape="squircle" layout="vertical" 
+						<Callout 
+							variant="full" 
+							imgShape="squircle" 
+							layout="vertical" 
 							url={social.url} 
 							img={social.img || getMyLogo(social.url)} 
-							imgAlt={social.name} />
+							imgAlt={siteInfo?.name ? `${siteInfo.name} on ${social.name}`: social.name} />
 					</PageGridItem>
 				))}
 			</PageSection>
@@ -98,8 +101,14 @@ function PartnersBadge({ company, name, url, img }: { company: string; name: str
 	const myimg = (img) ? img : getMyLogo(url);
 	return (
 		<PageFlexItem>
-			<Callout variant="full" imgShape="squircle" layout="vertical" 
-				url={url} img={myimg} imgAlt={`${company} on ${name}`} content={name} />
+			<Callout 
+				variant="full" 
+				imgShape="squircle" 
+				layout="vertical" 
+				url={url} 
+				img={myimg} 
+				imgAlt={`${company} on ${name}`} 
+				content={name} />
 		</PageFlexItem>
 	);
 }

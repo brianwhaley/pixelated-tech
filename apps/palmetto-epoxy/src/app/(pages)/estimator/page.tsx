@@ -6,8 +6,8 @@ import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 import { emailFormData, FormEngine } from "@pixelated-tech/components";
 import { Loading, ToggleLoading } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
-import "./flooring-estimator.css";
-import formData from "@/app/data/flooring-estimator.json";
+import "./estimator.css";
+import formData from "@/app/data/estimator.json";
 
 
 const pricing = {
@@ -36,7 +36,7 @@ const pricing = {
 };
 
 
-export default function ContactPage() {
+export default function EstimatorPage() {
 	const [estimate, setEstimate] = useState<FlooringEstimateType["estimate"] | null>(null);
 
 	const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
