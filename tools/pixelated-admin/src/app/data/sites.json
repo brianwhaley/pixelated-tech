@@ -400,7 +400,7 @@
 			"repo": "simple-day-concierge",
 			"healthCheckId": "f71e431c-e9f4-427e-8ff5-ce3fc2b7f59e",
 			"rte53HostedZoneID": "Z098617323RPXCPUAD61D",
-			"amplifyAppId": "",
+			"amplifyAppId": "d28i2addohi05n",
 			"cloudfronturl": "",
 			"url": "https://www.simpledayconcierge.com",
 			"ga4PropertyId": "539271804",
