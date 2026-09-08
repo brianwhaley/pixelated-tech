@@ -81,8 +81,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix:
         app: ${{ fromJSON(needs.detect-changes.outputs.apps) }}
+    timeout-minutes: 10
     concurrency:
       group: amplify-${{ matrix.app.name }}
       cancel-in-progress: false
@@ -101,7 +103,7 @@ jobs:
           COMMIT_ID: ${{ github.sha }}
         run: |
           set -euo pipefail
-          job_id=$(aws amplify start-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --commit-id "$COMMIT_ID" --job-type RELEASE --query 'job.summary.jobId' --output text)
+          job_id=$(timeout 120s aws amplify start-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --commit-id "$COMMIT_ID" --job-type RELEASE --query 'job.summary.jobId' --output text)
           echo "job_id=$job_id" >> "$GITHUB_OUTPUT"
           echo "Started Amplify job $job_id for $APP_ID"
 
