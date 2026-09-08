@@ -66,7 +66,7 @@ jobs:
 
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `apps=${JSON.stringify(matrix)}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_changes=${hasChanges}\n`);
-          console.log(`Global change: ${globalChange}`);
+          console.log(`Global change: ${process.env.GLOBAL_CHANGE === 'true'}`);
           console.log(`Selected apps: ${selected.map((app) => app.name).join(', ') || 'none'}`);
           NODE
 
