@@ -115,7 +115,7 @@ jobs:
         run: |
           set -euo pipefail
           while true; do
-            if ! status=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.status' --output text); then
+            if ! status=$(timeout 120s aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.status' --output text); then
               echo "Unable to read Amplify job $JOB_ID status; retrying"
               sleep 15
               continue
