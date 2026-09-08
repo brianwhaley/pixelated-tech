@@ -1,0 +1,53 @@
+name: Deploy Brianwhaley via GitHub Actions
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy-brianwhaley:
+    name: Deploy Brianwhaley
+    runs-on: ubuntu-latest
+    concurrency:
+      group: amplify-brianwhaley
+      cancel-in-progress: false
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-2
+          role-to-assume: arn:aws:iam::971579260814:role/amplify-role
+
+      - name: Start Amplify deployment
+        id: start
+        env:
+          APP_ID: d2ysf7fqwwsmjl
+          BRANCH_NAME: main
+          COMMIT_ID: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          job_id=$(aws amplify start-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --commit-id "$COMMIT_ID" --job-type RELEASE --query 'job.summary.jobId' --output text)
+          echo "job_id=$job_id" >> "$GITHUB_OUTPUT"
+          echo "Started Amplify job $job_id for $APP_ID"
+
+      - name: Wait for Amplify deployment
+        env:
+          APP_ID: d2ysf7fqwwsmjl
+          BRANCH_NAME: main
+          JOB_ID: ${{ steps.start.outputs.job_id }}
+        run: |
+          set -euo pipefail
+          while true; do
+            status=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.status' --output text)
+            echo "Amplify job $JOB_ID status: $status"
+            case "$status" in
+              SUCCEED) exit 0 ;;
+              FAILED|CANCELLED|CANCELLING) exit 1 ;;
+            esac
+            sleep 15
+          done

@@ -120,11 +120,12 @@
 		}
 	],
 	"paymentTotal": {
-		"amount": 500,
-		"isDiscounted": false,
+		"amount": 450,
+		"isDiscounted": true,
 		"description": [
 			"The proposal is for a monthly maintenance package for simplystatedwb.com as PREMIUM.",
-			"Since Simply Stated Workbook is a national brand, with national press coverage and national partners, the recommendation is to build a strong social media brand."
+			"Since Simply Stated Workbook is a national brand, with national press coverage and national partners, the recommendation is to build a strong social media brand.",
+			"Since this proposal is a part of a package, the maintenance package has been discounted."
 		]
 	}
 }

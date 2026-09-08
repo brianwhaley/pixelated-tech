@@ -41,6 +41,41 @@ describe('pixelated package-json dependency rules', () => {
 		expect(context.reports.some(r => r.messageId === 'missingDependency')).toBe(true);
 	});
 
+	it('does not report a package importing itself by its manifest name', () => {
+		const projectRoot = createTemporaryProject({
+			'package.json': JSON.stringify({ name: '@example/components', dependencies: {} }, null, 2),
+		});
+		const filePath = path.join(projectRoot, 'src', 'index.ts');
+		fs.mkdirSync(path.dirname(filePath), { recursive: true });
+		fs.writeFileSync(filePath, "import { Button } from '@example/components';\nexport { Button };");
+
+		const context = createRuleContext(filePath);
+		const visitor = plugin.rules['package-json-missing-dependency'].create(context);
+		visitor.ImportDeclaration?.({ source: { value: '@example/components' } });
+
+		fs.rmSync(projectRoot, { recursive: true, force: true });
+		expect(context.reports.some(r => r.messageId === 'missingDependency')).toBe(false);
+	});
+
+	it('reports an undeclared package passed to require.resolve', () => {
+		const projectRoot = createTemporaryProject({
+			'package.json': JSON.stringify({ dependencies: {} }, null, 2),
+		});
+		const filePath = path.join(projectRoot, 'src', 'app', 'page.ts');
+		fs.mkdirSync(path.dirname(filePath), { recursive: true });
+		fs.writeFileSync(filePath, "const entry = require.resolve('missing-package');");
+
+		const context = createRuleContext(filePath);
+		const visitor = plugin.rules['package-json-missing-dependency'].create(context);
+		visitor.CallExpression?.({
+			callee: { type: 'MemberExpression', object: { type: 'Identifier', name: 'require' }, property: { type: 'Identifier', name: 'resolve' } },
+			arguments: [{ type: 'Literal', value: 'missing-package' }],
+		});
+
+		fs.rmSync(projectRoot, { recursive: true, force: true });
+		expect(context.reports.some(r => r.messageId === 'missingDependency')).toBe(true);
+	});
+
 	it('warns when a dev dependency is imported from runtime source', () => {
 		const projectRoot = createTemporaryProject({
 			'package.json': JSON.stringify({ devDependencies: { eslint: '^9.0.0' } }, null, 2),
@@ -120,7 +155,8 @@ describe('pixelated package-json dependency rules', () => {
 
 		const filePath = path.join(projectRoot, 'next.config.ts');
 		const context = createRuleContext(filePath);
-	const visitor = plugin.rules['package-json-no-unused-dependency'].create(context);
+		const visitor = plugin.rules['package-json-no-unused-dependency'].create(context);
+		visitor['Program:exit']?.();
 		fs.rmSync(projectRoot, { recursive: true, force: true });
 		expect(context.reports.some(r => r.messageId === 'unusedDependency')).toBe(false);
 	});
@@ -135,7 +171,8 @@ describe('pixelated package-json dependency rules', () => {
 
 		const filePath = path.join(projectRoot, 'next.config.ts');
 		const context = createRuleContext(filePath);
-	const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
+		const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
+		visitor.ImportDeclaration?.({ source: { value: 'next' } });
 		fs.rmSync(projectRoot, { recursive: true, force: true });
 		expect(context.reports.some(r => r.messageId === 'prodUsedInDev')).toBe(false);
 	});
@@ -151,7 +188,8 @@ describe('pixelated package-json dependency rules', () => {
 
 		const filePath = path.join(projectRoot, 'tools/leadscraper/src/app/api/scrape-emails/route.ts');
 		const context = createRuleContext(filePath);
-	const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
+		const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
+		visitor.ImportDeclaration?.({ source: { value: 'next' } });
 		fs.rmSync(projectRoot, { recursive: true, force: true });
 		expect(context.reports.some(r => r.messageId === 'prodUsedInDev')).toBe(false);
 	});
@@ -167,7 +205,8 @@ describe('pixelated package-json dependency rules', () => {
 
 		const filePath = path.join(projectRoot, 'build', 'setup.ts');
 		const context = createRuleContext(filePath);
-	const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
+		const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
+		visitor.ImportDeclaration?.({ source: { value: 'react' } });
 		fs.rmSync(projectRoot, { recursive: true, force: true });
 		expect(context.reports.some(r => r.messageId === 'prodUsedInDev')).toBe(false);
 	});

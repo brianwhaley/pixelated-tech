@@ -14,6 +14,7 @@
     "test": "npm run test -ws",
     "test:coverage": "npm run test:coverage -ws",
     "lint": "npm run lint -ws",
+    "dependency:hygiene": "node packages/pixelated-components/src/scripts/dependency-hygiene.js",
     "generate-site-images": "node $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/generate-site-images.js\"))')",
     "config:vault": "npx tsx $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/config-vault.js\"))')",
     "config:encrypt": "npm run config:vault -- encrypt src/app/config/pixelated.config.json",

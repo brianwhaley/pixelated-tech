@@ -1,6 +1,6 @@
 {
   "name": "PixelVivid",
-  "version": "3.7.25",
+  "version": "3.7.26",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -26,7 +26,6 @@
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudwatch": "^3.1088.0",
     "@pixelated-tech/components": "*",
     "next": "^16.2.9",
     "prop-types": "15.8.1",

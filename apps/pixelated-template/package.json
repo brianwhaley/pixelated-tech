@@ -1,6 +1,6 @@
 {
   "name": "pixelated-template",
-  "version": "0.7.27",
+  "version": "0.7.28",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@pixelated-tech/components": "*",
-    "happy-dom": "^20.10.1",
     "next": "^16.2.9",
     "react": "^19.2.7"
   },

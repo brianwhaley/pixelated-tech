@@ -115,7 +115,7 @@ export function stripComments(source) {
 export function collectImportsFromSource(source) {
 	const cleaned = stripComments(source);
 	const imports = new Set();
-	const regex = /(?:import\s+(?:[^'"\n]+?\s+from\s+)?|export\s+(?:\*\s+from\s+|\{[^}]*\}\s+from\s+)?|require\(\s*|import\()(['"])([^'"\\]+)\1/g;
+	const regex = /(?:import\s+(?:[^'"\n]+?\s+from\s+)?|export\s+(?:\*\s+from\s+|\{[^}]*\}\s+from\s+)?|require(?:\.resolve)?\(\s*|import\()(['"])([^'"\\]+)\1/g;
 	let match;
 	while ((match = regex.exec(cleaned))) {
 		const specifier = match[2];
@@ -215,7 +215,10 @@ export function scanProjectImports(projectRoot) {
 	return importedPackages;
 }
 
+const runtimeImportCache = new Map();
+
 export function scanProjectRuntimeImports(projectRoot) {
+	if (runtimeImportCache.has(projectRoot)) return runtimeImportCache.get(projectRoot);
 	const importedPackages = new Set();
 	const extensions = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs', '.mts', '.cts']);
 
@@ -258,6 +261,7 @@ export function scanProjectRuntimeImports(projectRoot) {
 	}
 
 	walk(projectRoot);
+	runtimeImportCache.set(projectRoot, importedPackages);
 	return importedPackages;
 }
 
@@ -293,9 +297,6 @@ export function isDevFile(filename) {
 
 	const patterns = [
 		/(?:^|\/)scripts\//,
-		/(?:^|\/)build\//,
-		/(?:^|\/)tools\//,
-		/(?:^|\/)config\//,
 		/\b(?:jest|vite|webpack|rollup|tailwind|postcss|tsconfig|swc|vitest|eslint)\.(?:js|cjs|mjs|ts|tsx|json)$/i,
 	];
 	return patterns.some(re => re.test(relative));
