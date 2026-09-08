@@ -1,5 +1,5 @@
 import path from 'path';
-import { getContextFilename, getNearestPackageJsonPath, readPackageJson, getPackageNameFromSource, isBuiltinModule, isConfigFile, isDevFile, scanProjectRuntimeImports } from './eslint-rules-helpers.js';
+import { getContextFilename, getNearestPackageJsonPath, readPackageJson, getPackageNameFromSource, isConfigFile, isDevFile, scanProjectRuntimeImports } from './eslint-rules-helpers.js';
 
 export const packageJsonWrongDependencyTypeRule = {
 	meta: {
@@ -33,18 +33,18 @@ export const packageJsonWrongDependencyTypeRule = {
 		const fileIsDev = isDevFile(filename);
 		const runtimePackages = scanProjectRuntimeImports(path.dirname(packageJsonPath));
 
-		function getDeclaredType(name) {
-			if (categories.devDependencies.has(name)) return 'devDependencies';
-			if (categories.optionalDependencies.has(name)) return 'optionalDependencies';
-			if (categories.dependencies.has(name)) return 'dependencies';
-			if (categories.peerDependencies.has(name)) return 'peerDependencies';
-			return null;
-		}
-
 		function checkSource(node, source) {
 			const name = getPackageNameFromSource(source);
 			if (!name) return;
-			const declaredType = getDeclaredType(name);
+			const declaredType = categories.devDependencies.has(name)
+				? 'devDependencies'
+				: categories.optionalDependencies.has(name)
+					? 'optionalDependencies'
+					: categories.dependencies.has(name)
+						? 'dependencies'
+						: categories.peerDependencies.has(name)
+							? 'peerDependencies'
+							: null;
 			if (!declaredType) return;
 			if (fileIsDev) {
 				if ((declaredType === 'dependencies' || declaredType === 'optionalDependencies') && runtimePackages.has(name)) {
@@ -75,7 +75,13 @@ export const packageJsonWrongDependencyTypeRule = {
 				if (node.source) checkSource(node.source, node.source.value);
 			},
 			CallExpression(node) {
-				if (node.callee.type === 'Identifier' && node.callee.name === 'require' && node.arguments.length === 1) {
+				const isRequireCall = node.callee.type === 'Identifier' && node.callee.name === 'require';
+				const isRequireResolveCall = node.callee.type === 'MemberExpression'
+					&& node.callee.object.type === 'Identifier'
+					&& node.callee.object.name === 'require'
+					&& node.callee.property.type === 'Identifier'
+					&& node.callee.property.name === 'resolve';
+				if ((isRequireCall || isRequireResolveCall) && node.arguments.length === 1) {
 					const arg = node.arguments[0];
 					if (arg.type === 'Literal' && typeof arg.value === 'string') {
 						checkSource(node, arg.value);

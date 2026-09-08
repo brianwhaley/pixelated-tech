@@ -12,13 +12,13 @@
 		"addressCountry": "USA"
 	},
 	"proposalType": "Monthly Maintenance",
-	"maintenancePackage": "PREMIUM",
+	"maintenancePackage": "GROWTH",
 	"goal": 
 	[
 		"To keep Medicare In A Box web site healthy, engaging, and updated with regular maintenance and updates."
 	],
 	"deliverables": [
-		"Monthly PREMIUM Package for medicareinabox.org"
+		"Monthly GROWTH Package for medicareinabox.org"
 	],
 	"features": [
 		{ 
@@ -98,16 +98,7 @@
 	"milestones": [
 		{
 			"milestone": "Blog Post 1 and Social Media Post 1",
-			"date": "Week 1"
-		},{
-			"milestone": "Blog Post 2 and Social Media Post 2",
 			"date": "Week 2"
-		},{
-			"milestone": "Blog Post 3 and Social Media Post 3",
-			"date": "Week 3"
-		},{
-			"milestone": "Blog Post 4 and Social Media Post 4",
-			"date": "Week 4"
 		},{
 			"milestone": "Site Performance review and updates",
 			"date": "As Needed"
@@ -120,11 +111,12 @@
 		}
 	],
 	"paymentTotal": {
-		"amount": 500,
-		"isDiscounted": false,
+		"amount": 300,
+		"isDiscounted": true,
 		"description": [
-			"The proposal is for a monthly maintenance package for medicareinabox.org as PREMIUM.",
-			"Since Medicare In A Box is a national brand, with national press coverage and national partners, the recommendation is to build a strong social media brand."
+			"The proposal is for a monthly maintenance package for medicareinabox.org as GROWTH.",
+			"Since Medicare In A Box is a national brand, with national press coverage and national partners, the recommendation is to build a strong social media brand.",
+			"Since this proposal is a part of a package, the maintenance package has been discounted."
 		]
 	}
 }

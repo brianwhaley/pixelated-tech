@@ -19,6 +19,7 @@ export const packageJsonMissingDependencyRule = {
 		if (!packageJsonPath) return {};
 		const manifest = readPackageJson(packageJsonPath);
 		if (!manifest) return {};
+		const packageName = typeof manifest.name === 'string' ? manifest.name : null;
 
 		const declaredPackages = new Set([
 			...Object.keys(manifest.dependencies || {}),
@@ -30,6 +31,7 @@ export const packageJsonMissingDependencyRule = {
 		function checkSource(node, source) {
 			const name = getPackageNameFromSource(source);
 			if (!name) return;
+			if (name === packageName) return;
 			if (declaredPackages.has(name)) return;
 			if (isBuiltinModule(name)) return;
 			context.report({ node, messageId: 'missingDependency', data: { name } });
@@ -46,7 +48,13 @@ export const packageJsonMissingDependencyRule = {
 				if (node.source) checkSource(node.source, node.source.value);
 			},
 			CallExpression(node) {
-				if (node.callee.type === 'Identifier' && node.callee.name === 'require' && node.arguments.length === 1) {
+				const isRequireCall = node.callee.type === 'Identifier' && node.callee.name === 'require';
+				const isRequireResolveCall = node.callee.type === 'MemberExpression'
+					&& node.callee.object.type === 'Identifier'
+					&& node.callee.object.name === 'require'
+					&& node.callee.property.type === 'Identifier'
+					&& node.callee.property.name === 'resolve';
+				if ((isRequireCall || isRequireResolveCall) && node.arguments.length === 1) {
 					const arg = node.arguments[0];
 					if (arg.type === 'Literal' && typeof arg.value === 'string') {
 						checkSource(node, arg.value);

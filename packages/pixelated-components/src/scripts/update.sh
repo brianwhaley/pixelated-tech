@@ -31,6 +31,14 @@ detect_context() {
     fi
 }
 
+run_dependency_hygiene() {
+    echo ""
+    echo "================================================="
+    echo "🔎 Checking dependency hygiene in: $PWD"
+    echo "================================================="
+    node "$MONOREPO_ROOT/packages/pixelated-components/src/scripts/dependency-hygiene.js"
+}
+
 run_update_in_dir() {
     local workspace_dir="$1"
     if [ ! -f "$workspace_dir/package.json" ]; then
@@ -42,6 +50,8 @@ run_update_in_dir() {
     echo "📦 Updating dependencies in: $workspace_dir"
     echo "================================================="
     pushd "$workspace_dir" > /dev/null || return
+
+    run_dependency_hygiene
 
     local SKIP_PACKAGES=""
     local OPTIONAL_PACKAGES=""
