@@ -81,10 +81,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 14
       matrix:
         app: ${{ fromJSON(needs.detect-changes.outputs.apps) }}
-    timeout-minutes: 10
     concurrency:
       group: amplify-${{ matrix.app.name }}
       cancel-in-progress: false
@@ -109,33 +108,3 @@ jobs:
           job_id=$(timeout 120s aws amplify start-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --commit-id "$COMMIT_ID" --job-type RELEASE --query 'job.summary.jobId' --output text)
           echo "job_id=$job_id" >> "$GITHUB_OUTPUT"
           echo "Started Amplify job $job_id for $APP_ID"
-
-      - name: Wait for Amplify deployment
-        env:
-          APP_ID: ${{ matrix.app.appId }}
-          BRANCH_NAME: main
-          JOB_ID: ${{ steps.start.outputs.job_id }}
-          COMMIT_ID: ${{ github.sha }}
-          AWS_MAX_ATTEMPTS: 1
-          AWS_RETRY_MODE: standard
-          AWS_PAGER: ''
-        run: |
-          set -euo pipefail
-          while true; do
-            if ! job_info=$(timeout 30s aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.[status,commitId]' --output text); then
-              echo "Unable to read Amplify job $JOB_ID status; retrying in 15 seconds"
-              sleep 15
-              continue
-            fi
-            read -r status amplify_commit <<< "$job_info"
-            echo "Amplify job $JOB_ID status: $status, commit: $amplify_commit, expected: $COMMIT_ID"
-            if [[ "$amplify_commit" != "$COMMIT_ID" ]]; then
-              echo "Amplify job $JOB_ID is not for the requested commit"
-              exit 1
-            fi
-            case "$status" in
-              SUCCEED) exit 0 ;;
-              FAILED|CANCELLED|CANCELLING) exit 1 ;;
-            esac
-            sleep 15
-          done
