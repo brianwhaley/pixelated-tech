@@ -32,16 +32,9 @@ jobs:
             changed_files=$(git diff --name-only "$BEFORE_SHA...$COMMIT_SHA")
           fi
 
-          changed_workspaces=$(printf '%s\n' "$changed_files" | grep -E '^(apps|tools)/' | awk -F/ '{print $1 "/" $2}' | sort -u || true)
-          global_change=false
-          while IFS= read -r file; do
-            if [[ -n "$file" && ! "$file" =~ ^(apps|tools)/ ]]; then
-              global_change=true
-              break
-            fi
-          done <<< "$changed_files"
+          changed_workspaces=$(printf '%s\n' "$changed_files" | grep -E '^(apps|packages|tools)/' | awk -F/ '{print $1 "/" $2}' | sort -u || true)
 
-          CHANGED_WORKSPACES="$changed_workspaces" GLOBAL_CHANGE="$global_change" node <<'NODE'
+          CHANGED_WORKSPACES="$changed_workspaces" node <<'NODE'
           const fs = require('node:fs');
           const registry = require('./tools/pixelated-admin/src/app/data/sites.json');
 
@@ -56,9 +49,7 @@ jobs:
               appId: site.amplifyAppId,
               path: site.localPath.replace(/^.*\/pixelated-tech\//, ''),
             }));
-          const selected = process.env.GLOBAL_CHANGE === 'true'
-            ? apps
-            : apps.filter((app) => changedWorkspaces.includes(app.path));
+          const selected = apps.filter((app) => changedWorkspaces.includes(app.path));
           const hasChanges = selected.length > 0;
           const matrix = hasChanges
             ? selected
@@ -66,7 +57,7 @@ jobs:
 
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `apps=${JSON.stringify(matrix)}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_changes=${hasChanges}\n`);
-          console.log(`Global change: ${process.env.GLOBAL_CHANGE === 'true'}`);
+          console.log(`Changed workspaces: ${changedWorkspaces.join(', ') || 'none'}`);
           console.log(`Selected apps: ${selected.map((app) => app.name).join(', ') || 'none'}`);
           NODE
 
