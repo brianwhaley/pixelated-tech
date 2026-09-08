@@ -1,4 +1,4 @@
-name: Deploy Brianwhaley via GitHub Actions
+name: Deploy changed Amplify apps
 
 on:
   push:
@@ -10,11 +10,81 @@ permissions:
   id-token: write
 
 jobs:
-  deploy-brianwhaley:
-    name: Deploy Brianwhaley
+  detect-changes:
+    name: Detect changed apps
     runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select apps from changed files
+        id: select
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "$BEFORE_SHA" =~ ^0+$ ]]; then
+            changed_files=$(git diff-tree --no-commit-id --name-only -r "$COMMIT_SHA")
+          else
+            changed_files=$(git diff --name-only "$BEFORE_SHA...$COMMIT_SHA")
+          fi
+
+          changed_workspaces=$(printf '%s\n' "$changed_files" | grep -E '^(apps|tools)/' | awk -F/ '{print $1 "/" $2}' | sort -u || true)
+          global_change=false
+          while IFS= read -r file; do
+            if [[ -n "$file" && ! "$file" =~ ^(apps|tools)/ ]]; then
+              global_change=true
+              break
+            fi
+          done <<< "$changed_files"
+
+          CHANGED_WORKSPACES="$changed_workspaces" GLOBAL_CHANGE="$global_change" node <<'NODE'
+          const fs = require('node:fs');
+          const registry = require('./tools/pixelated-admin/src/app/data/sites.json');
+
+          const changedWorkspaces = (process.env.CHANGED_WORKSPACES || '')
+            .split('\n')
+            .map((file) => file.trim())
+            .filter(Boolean);
+          const apps = registry.sites
+            .filter((site) => site.amplifyAppId)
+            .map((site) => ({
+              name: site.name,
+              appId: site.amplifyAppId,
+              path: site.localPath.replace(/^.*\/pixelated-tech\//, ''),
+            }));
+          const selected = process.env.GLOBAL_CHANGE === 'true'
+            ? apps
+            : apps.filter((app) => changedWorkspaces.includes(app.path));
+          const hasChanges = selected.length > 0;
+          const matrix = hasChanges
+            ? selected
+            : [{ name: 'no-apps-changed', appId: 'none', path: '' }];
+
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `apps=${JSON.stringify(matrix)}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_changes=${hasChanges}\n`);
+          console.log(`Global change: ${globalChange}`);
+          console.log(`Selected apps: ${selected.map((app) => app.name).join(', ') || 'none'}`);
+          NODE
+
+    outputs:
+      apps: ${{ steps.select.outputs.apps }}
+      has_changes: ${{ steps.select.outputs.has_changes }}
+
+  deploy:
+    name: Deploy ${{ matrix.app.name }}
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.detect-changes.outputs.apps) }}
     concurrency:
-      group: amplify-brianwhaley
+      group: amplify-${{ matrix.app.name }}
       cancel-in-progress: false
     steps:
       - name: Configure AWS credentials
@@ -26,7 +96,7 @@ jobs:
       - name: Start Amplify deployment
         id: start
         env:
-          APP_ID: d2ysf7fqwwsmjl
+          APP_ID: ${{ matrix.app.appId }}
           BRANCH_NAME: main
           COMMIT_ID: ${{ github.sha }}
         run: |
@@ -37,13 +107,17 @@ jobs:
 
       - name: Wait for Amplify deployment
         env:
-          APP_ID: d2ysf7fqwwsmjl
+          APP_ID: ${{ matrix.app.appId }}
           BRANCH_NAME: main
           JOB_ID: ${{ steps.start.outputs.job_id }}
         run: |
           set -euo pipefail
           while true; do
-            status=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.status' --output text)
+            if ! status=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.status' --output text); then
+              echo "Unable to read Amplify job $JOB_ID status; retrying"
+              sleep 15
+              continue
+            fi
             echo "Amplify job $JOB_ID status: $status"
             case "$status" in
               SUCCEED) exit 0 ;;
