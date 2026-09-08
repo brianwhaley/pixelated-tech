@@ -162,66 +162,6 @@ check_dev_branch() {
     fi
 }
 
-prompt_remote_selection() {
-    echo "Available git remotes:" >&2
-    local remotes=($(git remote))
-    local count=${#remotes[@]}
-    local i=1
-    local default_idx=""
-
-    # If in an app/tool context, find matching remote name
-    # If we have an APP_NAME, find matching remote name
-    if [ -n "$APP_NAME" ]; then
-        for idx in "${!remotes[@]}"; do
-            if [ "${remotes[$idx]}" = "$APP_NAME" ]; then
-                default_idx=$((idx + 1))
-                break
-            fi
-        done
-    fi
-
-    for remote in "${remotes[@]}"; do
-        if [ -n "$default_idx" ] && [ $((i)) -eq "$default_idx" ]; then
-            echo "$i) $remote (default)" >&2
-        else
-            echo "$i) $remote" >&2
-        fi
-        ((i++))
-    done
-
-    # Prompt with default if found
-    local choice
-    if [ -n "$default_idx" ]; then
-        read -p "Select remote (1-$count) [default $default_idx]: " choice >&2
-        # Use default if empty input
-        if [ -z "$choice" ]; then
-            choice=$default_idx
-        fi
-    else
-        read -p "Select remote (1-$count): " choice >&2
-    fi
-
-    if [ -z "$choice" ]; then
-        echo "❌ Remote selection required" >&2
-        exit 1
-    fi
-
-    case $choice in
-        [1-9]|[1-9][0-9])
-            if [ "$choice" -le "$count" ]; then
-                echo "${remotes[$((choice-1))]}"
-            else
-                echo "❌ Invalid choice" >&2
-                exit 1
-            fi
-            ;;
-        *) 
-            echo "❌ Invalid choice" >&2
-            exit 1
-            ;;
-    esac
-}
-
 get_workspace_repository_url() {
     local package_json="$WORKSPACE_ROOT/package.json"
     if [ ! -f "$package_json" ]; then
@@ -390,33 +330,12 @@ step_check_dev_branch() {
 }
 
 step_select_remote() {
-    echo ""
-    echo "🔑 Step $((STEP_COUNT++)): Select remote..."
-    echo "================================================="
-    REMOTE_NAME=$(prompt_remote_selection)
-    echo "✅ Selected remote: $REMOTE_NAME"
-    
-    # Verify remote matches repo name
-    local remote_url
-    remote_url=$(git remote get-url "$REMOTE_NAME" 2>/dev/null || true)
-    local remote_repo
-    remote_repo=$(basename -s .git "${remote_url##*/}")
-    local local_repo
-    if [ "$WORKSPACE_ROOT" != "$MONOREPO_ROOT" ]; then
-        local_repo=$(basename "$WORKSPACE_ROOT")
-    else
-        local_repo=$(basename "$MONOREPO_ROOT")
+    REMOTE_NAME="pixelated-tech"
+    if ! git remote get-url "$REMOTE_NAME" >/dev/null 2>&1; then
+        echo "❌ Required git remote '$REMOTE_NAME' was not found"
+        exit 1
     fi
-    
-    if [ -n "$remote_repo" ] && [ "$remote_repo" != "$local_repo" ]; then
-        echo "⚠️  Warning: Remote '$REMOTE_NAME' points to '$remote_repo' but you're in '$local_repo'"
-        read -p "Proceed anyway? (y/N): " proceed
-        proceed=${proceed:-n}
-        if [[ ! "$proceed" =~ ^[Yy] ]]; then
-            echo "Aborting."
-            exit 1
-        fi
-    fi
+    echo "✅ Using remote: $REMOTE_NAME"
 }
 
 generate_sitemap_images_for_workspace() {
