@@ -1,6 +1,6 @@
 {
   "name": "AMAVA-Janitorial",
-  "version": "0.7.29",
+  "version": "0.7.30",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -40,18 +40,18 @@
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.7",
-    "@vitest/coverage-v8": "^5.0.0",
-    "@vitest/ui": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.2",
+    "@vitest/ui": "^5.0.2",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.3.4",
+    "eslint-config-next": "^16.3.6",
     "eslint-import-resolver-typescript": "^4.4.4",
     "glob": "^13.0.6",
     "html-entities": "^2.3.3",
-    "nodemailer": "^10.0.1",
+    "nodemailer": "^10.0.10",
     "react-dom": "^19.2.6",
     "sass": "^1.104.0",
     "typescript": "6.0.2",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.2"
   },
   "overrides": {},
   "deployMarker": "2026-08-05T04:05:55.698Z"

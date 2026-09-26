@@ -43,37 +43,19 @@ export async function loadSitesConfig(configPath?: string): Promise<SiteConfig[]
 }
 
 /**
- * Save sites configuration to JSON file
+ * Get normalized hostnames from site configuration.
  */
-export async function saveSitesConfig(sites: SiteConfig[], configPath?: string): Promise<void> {
-	try {
-		const sitesPath = configPath || path.join(process.cwd(), 'src/app/data/sites.json');
+export function getSitesConfigDomains(sites: SiteConfig[]): string[] {
+	return sites.map((site) => {
+		const value = String(site.url ?? '').trim().toLowerCase();
+		if (!value) return '';
 
-		// Ensure directory exists
-		const dir = path.dirname(sitesPath);
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync(dir, { recursive: true });
+		try {
+			return new URL(value.includes('://') ? value : `https://${value}`).hostname.replace(/^www\./, '');
+		} catch {
+			return '';
 		}
-
-		let fileData: any = sites;
-		if (fs.existsSync(sitesPath)) {
-			try {
-				const existingData = fs.readFileSync(sitesPath, 'utf8');
-				const parsed = JSON.parse(existingData);
-				if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-					parsed.sites = sites;
-					fileData = parsed;
-				}
-			} catch (e) {
-				// Fallback if existing file is unparseable
-			}
-		}
-
-		fs.writeFileSync(sitesPath, JSON.stringify(fileData, null, 2), 'utf8');
-	} catch (error) {
-		console.error('Error saving sites:', error);
-		throw new Error('Failed to save sites configuration', { cause: error });
-	}
+	}).filter(Boolean);
 }
 
 /**
@@ -82,82 +64,4 @@ export async function saveSitesConfig(sites: SiteConfig[], configPath?: string):
 export async function getSiteConfig(siteName: string, configPath?: string): Promise<SiteConfig | null> {
 	const sites = await loadSitesConfig(configPath);
 	return sites.find(site => site.name === siteName) || null;
-}
-
-/**
- * Validate site configuration
- */
-export function validateSiteConfig(site: SiteConfig): { valid: boolean; errors: string[] } {
-	const errors: string[] = [];
-
-	if (!site.name) {
-		errors.push('Site name is required');
-	}
-
-	if (!site.localPath) {
-		errors.push('Local path is required');
-	} else if (!fs.existsSync(site.localPath)) {
-		errors.push(`Local path does not exist: ${site.localPath}`);
-	}
-
-	// Validate Google Analytics configuration
-	if (site.ga4PropertyId && site.ga4PropertyId !== 'GA4_PROPERTY_ID_HERE') {
-		// Basic GA4 property ID validation (should start with numbers)
-		if (!/^\d+$/.test(site.ga4PropertyId)) {
-			errors.push('Invalid GA4 Property ID format');
-		}
-	}
-
-	// Validate Search Console URL
-	if (site.searchConsoleUrl) {
-		try {
-			new URL(site.searchConsoleUrl);
-		} catch {
-			errors.push('Invalid Search Console URL format');
-		}
-	}
-
-	return {
-		valid: errors.length === 0,
-		errors
-	};
-}
-
-/**
- * Add or update a site configuration
- */
-export async function upsertSiteConfig(site: SiteConfig, configPath?: string): Promise<void> {
-	const sites = await loadSitesConfig(configPath);
-	const existingIndex = sites.findIndex(s => s.name === site.name);
-
-	// Validate the site config
-	const validation = validateSiteConfig(site);
-	if (!validation.valid) {
-		throw new Error(`Invalid site configuration: ${validation.errors.join(', ')}`);
-	}
-
-	if (existingIndex >= 0) {
-		// Update existing site
-		sites[existingIndex] = { ...sites[existingIndex], ...site };
-	} else {
-		// Add new site
-		sites.push(site);
-	}
-
-	await saveSitesConfig(sites, configPath);
-}
-
-/**
- * Remove a site configuration
- */
-export async function removeSiteConfig(siteName: string, configPath?: string): Promise<boolean> {
-	const sites = await loadSitesConfig(configPath);
-	const filteredSites = sites.filter(site => site.name !== siteName);
-
-	if (filteredSites.length === sites.length) {
-		return false; // Site not found
-	}
-
-	await saveSitesConfig(filteredSites, configPath);
-	return true;
 }

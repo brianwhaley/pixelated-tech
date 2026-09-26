@@ -4,10 +4,10 @@ import { fireEvent, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { FormEngine } from '../components/sitebuilder/form/formengine';
 import { requestForm } from '../test/test-data';
-import { emailFormData } from '../components/sitebuilder/form/formsubmit';
+import { processFormData } from '../components/sitebuilder/form/formsubmit';
 
-// Integration: ensure FormEngine + emailFormData reliably drop honeypot values
-describe('FormEngine → emailFormData integration (honeypot)', () => {
+// Integration: ensure FormEngine + processFormData reliably drop honeypot values
+describe('FormEngine → processFormData integration (honeypot)', () => {
   it('drops submissions when DOM #winnie is filled (FormEngine wiring)', async () => {
     vi.stubGlobal('fetch', vi.fn());
     const mockCallback = vi.fn();
@@ -22,7 +22,7 @@ describe('FormEngine → emailFormData integration (honeypot)', () => {
     } as any;
 
     const Wrapper = () => (
-      <FormEngine id="integrationForm" name="integrationForm" formData={localForm} onSubmitHandler={(e: Event) => emailFormData(e, mockCallback as any)} />
+      <FormEngine id="integrationForm" name="integrationForm" formData={localForm} onSubmitHandler={(e: Event) => processFormData(e, mockCallback as any)} />
     );
 
     const { container } = render(<Wrapper />);
@@ -36,7 +36,7 @@ describe('FormEngine → emailFormData integration (honeypot)', () => {
     const submit = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     await act(async () => fireEvent.click(submit));
 
-    // emailFormData should have prevented network call and invoked callback
+    // processFormData should have prevented network call and invoked callback
     expect(global.fetch).not.toHaveBeenCalled();
     expect(mockCallback).toHaveBeenCalled();
   });

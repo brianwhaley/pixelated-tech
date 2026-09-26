@@ -547,7 +547,7 @@ describe('Palmetto Epoxy coverage', () => {
 	});
 
 	it('submits the flooring estimator with a non-epoxy service and unknown condition', async () => {
-		const emailSpy = vi.spyOn(PixelatedComponents, 'emailFormData').mockResolvedValue({ success: true, response: {} });
+		const emailSpy = vi.spyOn(PixelatedComponents, 'processFormData').mockResolvedValue({ success: true, response: {} });
 		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(({ onSubmitHandler }: any) => (
 			<form id="flooring-estimator-form" data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
 				<label htmlFor="project-type">Project Type</label>
@@ -574,7 +574,7 @@ describe('Palmetto Epoxy coverage', () => {
 	});
 
 	it('submits the flooring estimator and clamps total to the minimum', async () => {
-		const emailSpy = vi.spyOn(PixelatedComponents, 'emailFormData').mockResolvedValue({ success: true, response: {} });
+		const emailSpy = vi.spyOn(PixelatedComponents, 'processFormData').mockResolvedValue({ success: true, response: {} });
 		const spy = vi.spyOn(PixelatedComponents, 'FormEngine').mockImplementation(({ onSubmitHandler }: any) => (
 			<form id="flooring-estimator-form" data-testid="flooring-estimator-form" onSubmit={(event) => { event.preventDefault(); onSubmitHandler(event); }}>
 				<label htmlFor="project-type">Project Type</label>

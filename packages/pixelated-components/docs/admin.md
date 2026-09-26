@@ -125,9 +125,8 @@ Site configuration management utilities.
 ```typescript
 import {
   loadSitesConfig,
-  saveSitesConfig,
   getSiteConfig,
-  validateSiteConfig
+  getSitesConfigDomains
 } from '@pixelated-tech/components/server';
 
 // Load site configurations
@@ -136,17 +135,14 @@ const sites = await loadSitesConfig();
 // Get specific site
 const site = await getSiteConfig('my-site');
 
-// Validate site configuration
-const validation = validateSiteConfig(site);
-if (!validation.valid) {
-  console.error('Invalid site config:', validation.errors);
-}
+// Get normalized site domains
+const domains = getSitesConfigDomains(sites);
 ```
 
 #### Features
 
-- **Configuration Management**: Load and save site configurations
-- **Validation**: Comprehensive site configuration validation
+- **Configuration Management**: Load site configurations
+- **Domain Extraction**: Normalized site domains for validation and routing
 - **GA4 Integration**: Google Analytics 4 property validation
 - **Search Console**: Google Search Console URL validation
 - **File System Operations**: Safe file operations with error handling

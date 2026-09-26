@@ -219,27 +219,28 @@ describe('useFormSubmit', () => {
     expect(screen.getByTestId('error').textContent).toContain('Bad Gateway');
   });
 
-  it('emailJSON should submit regular JSON and invoke callback', async () => {
+    it('processJSON should submit regular JSON and invoke callback', async () => {
     const callback = vi.fn();
     vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
 
-    const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
-    await emailJSON({ name: 'Test' }, callback);
+      const { processJSON } = await import('../components/sitebuilder/form/formsubmit');
+      await processJSON({ name: 'Test' }, callback);
 
     expect(callback).toHaveBeenCalled();
     expect(smartFetch).toHaveBeenCalled();
+    expect(smartFetch).toHaveBeenCalledWith('https://admin.pixelated.tech/api/process-form-submit', expect.anything());
   });
 
-  it('emailJSON should bypass submission when honeypot field is present', async () => {
+    it('processJSON should bypass submission when honeypot field is present', async () => {
     const callback = vi.fn();
-    const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
-    await emailJSON({ pooh: 'spam' }, callback);
+      const { processJSON } = await import('../components/sitebuilder/form/formsubmit');
+      await processJSON({ pooh: 'spam' }, callback);
 
     expect(callback).toHaveBeenCalled();
     expect(smartFetch).not.toHaveBeenCalled();
   });
 
-  it('emailFormData should gather form data and submit successfully', async () => {
+  it('processFormData should gather form data and submit successfully', async () => {
     const callback = vi.fn();
     vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
 
@@ -262,15 +263,15 @@ describe('useFormSubmit', () => {
       preventDefault: vi.fn(),
     } as any;
 
-    const { emailFormData } = await import('../components/sitebuilder/form/formsubmit');
-    const result = await emailFormData(event, callback);
+    const { processFormData } = await import('../components/sitebuilder/form/formsubmit');
+    const result = await processFormData(event, callback);
     expect(result.success).toBe(true);
 
     expect(callback).toHaveBeenCalled();
     expect(smartFetch).toHaveBeenCalled();
   });
 
-  it('emailFormData should handle preventDefault failure in honeypot guard', async () => {
+  it('processFormData should handle preventDefault failure in honeypot guard', async () => {
     const form = document.createElement('form');
     form.id = 'spam-form-2';
     const honeypot = document.createElement('input');
@@ -286,17 +287,17 @@ describe('useFormSubmit', () => {
         .mockImplementationOnce(() => { throw new Error('fail'); }), // Second call at line 51
     } as any;
 
-    const { emailFormData } = await import('../components/sitebuilder/form/formsubmit');
-    await emailFormData(event);
+    const { processFormData } = await import('../components/sitebuilder/form/formsubmit');
+    await processFormData(event);
     expect(event.preventDefault).toHaveBeenCalled();
   });
 
-  it('emailJSON should handle fetch errors', async () => {
+    it('processJSON should handle fetch errors', async () => {
     vi.mocked(smartFetch).mockRejectedValueOnce(new Error('Fetch failed'));
     const callback = vi.fn();
-    const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
+      const { processJSON } = await import('../components/sitebuilder/form/formsubmit');
     
-    await emailJSON({ name: 'Test' }, callback);
+      await processJSON({ name: 'Test' }, callback);
     expect(callback).toHaveBeenCalled();
   });
 

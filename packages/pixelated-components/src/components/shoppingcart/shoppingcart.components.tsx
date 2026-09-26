@@ -6,7 +6,7 @@ import PropTypes, { InferProps } from 'prop-types';
 import { PageSectionHeader } from '../structure/page-blocks';
 import { FormEngine } from '../sitebuilder/form/formengine';
 import { FormButton } from '../sitebuilder/form/formcomponents';
-import { emailJSON } from "../sitebuilder/form/formsubmit";
+import { processJSON } from "../sitebuilder/form/formsubmit";
 import '../sitebuilder/form/form.css';
 import { MicroInteractions } from '../foundation/microinteractions';
 import { Modal, handleModalOpen } from '../elements/modal';
@@ -265,7 +265,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 			'domain': cartConfig?.orderDomain,
 			'orderData': JSON.stringify(orderData, null, 2),
 		};
-		emailJSON(json);
+		processJSON(json);
 		setShippingFormRevision((revision) => revision + 1);
 		lastEmailSentForOrderRef.current = emailMarker;
 	}, [progressStep, orderData, config]);
