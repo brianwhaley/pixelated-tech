@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import PropTypes, { InferProps } from "prop-types";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { emailFormData, FormEngine } from "@pixelated-tech/components";
+import { processFormData, FormEngine } from "@pixelated-tech/components";
 import { Loading, ToggleLoading } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import "./estimator.css";
@@ -96,7 +96,7 @@ export default function EstimatorPage() {
 		};
 
 		const nativeEvent = event.nativeEvent as unknown as Event;
-		const emailResult = await emailFormData(nativeEvent);
+		const emailResult = await processFormData(nativeEvent);
 		if (!emailResult.success) {
 			console.error('Flooring estimator email submission failed', emailResult.error);
 		}

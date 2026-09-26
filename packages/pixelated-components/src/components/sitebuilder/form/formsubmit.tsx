@@ -24,12 +24,7 @@ export type EmailFormDataResult = {
 	error?: Error;
 };
 
-export async function emailFormData(e: Event, callback?: (e: Event) => void): Promise<EmailFormDataResult> {
-
-	const debug = false;
-
-	// const sendmail_api = "https://nlbqdrixmj.execute-api.us-east-2.amazonaws.com/default/sendmail";
-	const sendmail_api = "https://sendmail.pixelated.tech/default/sendmail";
+export async function processFormData(e: Event, callback?: (e: Event) => void): Promise<EmailFormDataResult> {
 	const target = e.target as HTMLFormElement;
 	const myform = document.getElementById(target.id) as HTMLFormElement | null;
 
@@ -40,70 +35,34 @@ export async function emailFormData(e: Event, callback?: (e: Event) => void): Pr
 		myFormData[key] = value ;
 	}
 
-	const hpField = myform?.elements.namedItem('winnie') as HTMLInputElement;
-	const hpFieldVal = hpField?.value.toString();
-
-	// If either DOM or FormData indicate a filled honeypot, silently drop the submission.
-	if ((hpField && hpFieldVal.trim())) {
-		// Prevent native navigation where possible and mirror success path.
-		try {
-			(e as Event)?.preventDefault?.();
-		} catch (err) {
-			if (debug) console.debug('preventDefault failed in honeypot guard', err);
-		}
-		if (debug) console.info('honeypot triggered — dropping submit');
-		callback?.(e);
-		return { success: true, response: null };
-	}
-
-	myFormData.Date = new Date().toLocaleDateString() ;
-	myFormData.Status = "Submitted" ;
-	const startTime = new Date().toISOString();
-	if (debug) console.info('[emailFormData] submit-start', { sendmail_api, startTime, myFormData });
-	try {
-		const responseData = await smartFetch(sendmail_api, {
-			requestInit: {
-				method: 'POST',
-				mode: 'cors',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(myFormData),
-			}
-		});
-		const elapsedMs2 = new Date().getTime() - new Date(startTime).getTime();
-		if (debug) console.info('[emailFormData] submit-finish', { sendmail_api, elapsedMs: elapsedMs2, responseData });
-		const parsed = responseData;
-		if (debug) console.debug('emailFormData — submission data:', myFormData, 'response:', parsed);
-		callback?.(e);
-		return { success: true, response: parsed };
-	} catch (err) {
-		console.error('emailFormData error', err);
-		callback?.(e);
-		return { success: false, error: err as Error };
-	}
+	return processJSON(myFormData, () => callback?.(e));
 }
 
 
+export async function processJSON(jsonData: Record<string, unknown>, callback?: () => void): Promise<EmailFormDataResult> {
+	const debug = false;
 
-export async function emailJSON(jsonData: any, callback?: () => void) {
-	// const sendmail_api = "https://nlbqdrixmj.execute-api.us-east-2.amazonaws.com/default/sendmail";
-	const sendmail_api = "https://sendmail.pixelated.tech/default/sendmail";
-	const myJsonData: { [key: string]: any } = {};
+	const sendmail_api = "https://admin.pixelated.tech/api/process-form-submit";
+	const myJsonData: Record<string, unknown> = {};
 	for (const [key, value] of Object.entries(jsonData)) {
 		myJsonData[key] = value ;
 	}
-	// MVP honeypot guard: check both the canonical id/key 'winnie' and the
-	// FormHoneypot hard coded name 'pooh' to cover both DOM- and JSON-based calls.
-	if (myJsonData['winnie'] || myJsonData['pooh']) {
-		if (callback) callback();
-		return;
+	// Check the canonical honeypot keys plus the legacy website field convention.
+	if (
+		String(myJsonData['winnie'] ?? '').trim() ||
+		String(myJsonData['pooh'] ?? '').trim() ||
+		String(myJsonData['website'] ?? '').trim()
+	) {
+		if (debug) console.info('honeypot triggered — dropping submit');
+		callback?.();
+		return { success: true, response: null };
 	}
 	myJsonData.Date = new Date().toLocaleDateString() ;
 	myJsonData.Status = "Submitted" ;
+	const startTime = new Date().toISOString();
+	if (debug) console.info('[processJSON] submit-start', { sendmail_api, startTime, myJsonData });
 	try {
-		await smartFetch(sendmail_api, {
+		const responseData = await smartFetch(sendmail_api, {
 			requestInit: {
 				method: 'POST',
 				mode: 'cors',
@@ -114,10 +73,15 @@ export async function emailJSON(jsonData: any, callback?: () => void) {
 				body: JSON.stringify(myJsonData),
 			}
 		});
-		if (callback) callback();
+		const elapsedMs = new Date().getTime() - new Date(startTime).getTime();
+		if (debug) console.info('[processJSON] submit-finish', { sendmail_api, elapsedMs, responseData });
+		if (debug) console.debug('processJSON — submission data:', myJsonData, 'response:', responseData);
+		callback?.();
+		return { success: true, response: responseData };
 	} catch (err) {
-		console.error('emailJSON error', err);
-		if (callback) callback();
+		console.error('processJSON error', err);
+		callback?.();
+		return { success: false, error: err as Error };
 	}
 }
 
@@ -175,7 +139,7 @@ export function useFormSubmit(options: UseFormSubmitOptions = {}) {
 			setSubmitError(null);
 
 			// Submit
-			const result = await emailFormData(nativeEvent);
+			const result = await processFormData(nativeEvent);
 			setSubmitResponse(result.response);
 
 			// Handle result
