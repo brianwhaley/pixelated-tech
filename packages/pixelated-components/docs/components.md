@@ -2497,13 +2497,10 @@ Site management and configuration components.
 #### Sites Integration
 
 ```tsx
-import { loadSitesConfig, saveSitesConfig } from '@pixelated-tech/components';
+import { loadSitesConfig } from '@pixelated-tech/components/server';
 
 // Load site configuration
-const sites = loadSitesConfig();
-
-// Save site configuration
-saveSitesConfig(sites);
+const sites = await loadSitesConfig();
 ```
 
 ---

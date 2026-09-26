@@ -32,7 +32,7 @@ vi.mock('../components/shoppingcart/square.components', async () => {
 });
 
 vi.mock('../components/sitebuilder/form/formsubmit', () => ({
-	emailJSON: vi.fn(),
+	processJSON: vi.fn(),
 }));
 
 vi.mock('../components/shoppingcart/shoppingcart.functions', async () => {
@@ -136,7 +136,7 @@ describe('ShoppingCart provider selection and approval integration', () => {
 		});
 	});
 
-	it('passes orderFormName and orderDomain from shoppingcart config into emailJSON payload', async () => {
+	it('passes orderFormName and orderDomain from shoppingcart config into processJSON payload', async () => {
 		await act(async () => {
 			setShoppingState();
 			renderWithConfig({
@@ -160,9 +160,9 @@ describe('ShoppingCart provider selection and approval integration', () => {
 
 		await waitFor(async () => {
 			expect(screen.getByText(/Thank you for your payment!/i)).toBeInTheDocument();
-			const { emailJSON } = await import('../components/sitebuilder/form/formsubmit');
-			expect(emailJSON).toHaveBeenCalledTimes(1);
-			expect(emailJSON).toHaveBeenCalledWith(expect.objectContaining({
+			const { processJSON } = await import('../components/sitebuilder/form/formsubmit');
+			expect(processJSON).toHaveBeenCalledTimes(1);
+			expect(processJSON).toHaveBeenCalledWith(expect.objectContaining({
 				formName: 'Order Details',
 				domain: 'example.com',
 			}));

@@ -108,9 +108,11 @@ export default function SupermarketShenanigansPage() {
 
 					{/* <p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-november-2026-tickets-1996103206424">Nov 7, 2026 11am - 2pm - The Great Big Book Swap</a></p>
 
-    <p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-after-dark-october-2026-tickets-1996101999815">Oct 10, 2026 6:30pm - 9:30pm - The Great Big Book Swap After Dark</a></p> */}
+                    <p><a href="https://www.eventbrite.com/e/the-great-big-book-swap-after-dark-october-2026-tickets-1996101999815">Oct 10, 2026 6:30pm - 9:30pm - The Great Big Book Swap After Dark</a></p> */}
 
 					<p><a href="https://rblibrary.org/monthly-events">Sept 26, 2026 1pm - 2pm - Rockaway Borough Free Public Library</a> - <a href="https://engagedpatrons.org/EventsExtended.cfm?SiteID=2550&EventID=596650&PK=">Register Now</a></p>
+
+					<p><a href="https://www.newjerseyhills.com/the_citizen/news/denville-author-turns-supermarket-memories-into-new-book/article_93f36ad6-4d77-4533-900f-1d4dfa3e321e.html">Sept 9, 2026 - The Citizen of Morris County - Denville Author turns supermarket memories into new book</a></p>
 
 					<p><a href="https://www.bargainbooksy.com/read/genre/non-fiction/">August 20, 2026 - Featured book on Bargain Booksy - Non-Fiction</a></p>
 
