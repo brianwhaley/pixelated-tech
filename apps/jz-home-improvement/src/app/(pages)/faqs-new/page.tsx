@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { PageEngine, PageDataProvider } from '@pixelated-tech/components';
 import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
-import faqsData from '@/app/data/faqs.json';
+import faqsData from '../faqs/faqs.json';
 
 export default async function FAQPageNew() {
 	const pixelatedConfig = getFullPixelatedConfig();

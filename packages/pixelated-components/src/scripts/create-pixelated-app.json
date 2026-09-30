@@ -25,7 +25,7 @@
 			"name": "FAQs",
 			"aliases": ["faq", "faqs", "qa", "q-and-a", "frequently-asked-question", "frequently-asked-questions"],
 			"src": "../../pixelated-template/src/app/(pages)/faqs",
-			"associated_files": ["src/app/data/faqs.json"]
+			"associated_files": ["src/app/(pages)/faqs/faqs.json"]
 		},
 		{
 			"name": "Global Error",

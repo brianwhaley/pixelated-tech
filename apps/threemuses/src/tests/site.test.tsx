@@ -80,7 +80,6 @@ import LayoutClient from '@/app/elements/layout-client';
 import NotFound from '@/app/not-found';
 import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
-import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
 import BoutiquePage from '@/app/(pages)/boutique/page';
 import CartPage from '@/app/(pages)/cart/page';
 import ConsignPage from '@/app/(pages)/consign/page';
@@ -169,13 +168,6 @@ describe('ThreeMuses coverage harness', () => {
 
 	runCommonMarkdownPageCoverage({
 		pages: [
-			{
-				name: 'Blog Calendar',
-				Component: BlogCalendarPage,
-				markdownTestId: 'markdown-container',
-				loadingText: 'Loading...',
-				errorText: 'Error: Failed to load',
-			},
 			{
 				name: 'Updates',
 				Component: UpdatesPage,

@@ -164,28 +164,28 @@ describe('Site coverage', () => {
 		expect(await screen.findByTestId('blog-post-list')).not.toBeNull();
 	});
 
-	it('renders Blog Calendar page with markdown content', async () => {
-		setFileDataState({ data: 'blog calendar markdown', loading: false, error: null });
+	it('renders Blog Calendar page with calendar data', async () => {
+		setFileDataState({ data: { blogCalendar: [{ title: 'Test Calendar Entry' }] }, loading: false, error: null });
 		render(React.createElement(BlogCalendarPage));
-		expect(await screen.findByTestId('markdown')).not.toBeNull();
+		expect((await screen.findByTestId('list-items')).textContent).toBe('1');
 	});
 
-	it('renders Blog Calendar loading state', async () => {
+	it('renders Blog Calendar while loading', async () => {
 		setFileDataState({ data: null, loading: true, error: null });
 		render(React.createElement(BlogCalendarPage));
-		expect(await screen.findByText(/Loading.../i)).not.toBeNull();
+		expect((await screen.findByTestId('list-items')).textContent).toBe('0');
 	});
 
-	it('renders Blog Calendar error state', async () => {
+	it('renders Blog Calendar when data loading fails', async () => {
 		setFileDataState({ data: null, loading: false, error: 'File not found' });
 		render(React.createElement(BlogCalendarPage));
-		expect(await screen.findByText(/Error: File not found/i)).not.toBeNull();
+		expect((await screen.findByTestId('list-items')).textContent).toBe('0');
 	});
 
-	it('renders Blog Calendar with an empty markdown fallback', async () => {
+	it('renders Blog Calendar with an empty data fallback', async () => {
 		setFileDataState({ data: null, loading: false, error: null });
 		render(React.createElement(BlogCalendarPage));
-		expect(await screen.findByTestId('markdown')).not.toBeNull();
+		expect((await screen.findByTestId('list-items')).textContent).toBe('0');
 	});
 
 	it('renders NerdJokes page with installed query branch', async () => {
@@ -289,7 +289,7 @@ describe('Site coverage', () => {
 			name: 'Blog Calendar',
 			Component: BlogCalendarPage,
 			assertion: async () => {
-				await waitFor(() => expect(document.getElementById('markdown-container')).not.toBeNull());
+				await waitFor(() => expect(document.getElementById('blog-calendar-container')).not.toBeNull());
 			},
 		},
 		{

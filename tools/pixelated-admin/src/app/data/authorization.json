@@ -6,6 +6,7 @@
         "/assessment",
 		"/proposal",
         "/billing",
+    	"/blog-post-generator",
         "/component-usage",
         "/form-submits",
         "/configbuilder",

@@ -56,10 +56,6 @@ When LLMs recommend solutions, they use real-time retrieval (RAG) blended with p
 
 - [  ] **SocialCards Component**: Fix state initialization to track prop changes properly.
 
-- [  ] **Modal Component**: Clarify content source pattern (accepts both `modalContent` and `children`).
-
-- [  ] **Carousel Component**: Fix active card state reset when `props.cards` changes.
-
 - [  ] **NerdJoke Component**: Add props to useEffect dependencies if endpoint becomes configurable.
 
 - [  ] **Instagram Component**: Add accessToken and userId to config provider for centralized API credentials.
@@ -67,10 +63,6 @@ When LLMs recommend solutions, they use real-time retrieval (RAG) blended with p
 - [  ] **Critters Integration**: Explore adding critters CSS inlining tool for improved page load performance and critical CSS optimization.
 
 - [  ] **SplitScroll Enhancement**: Improve scrolling behavior and image transitions to match [safariportal lookbook style](https://itineraries.safariportal.app/Mary-Ann-Sarao/1589988388230923612?type=lookbook) (smoother layering and focal point transitions).
-
-- [  ] **FormHoneypot**: Future - configurable global honeypot name, timing/token checks, optional telemetry for spam signal analysis.
-
-- [  ] **Form validation on submit**: Ensure untouched required fields are validated on submit by processing all form schema fields, not only fields that have been interacted with.
 
 - remove config props from these components and retrieve the data direct from pixelated config providers:
 
@@ -137,17 +129,11 @@ Tooling: We can create a script that validates pixelated.config.json against its
   - [ ] **PageItem**: A generic "Matcher" component for dynamic routes (`[slug]`). It automatically finds the correct data item (Service, Project, etc.) based on the URL and injects it into the page context.
   - [ ] **Prop Tokenization**: Enable `{{token.path}}` resolution inside `PageEngine` to support truly dynamic, data-driven layouts without new React code.
 
-
 - [  ] EIN PRESSWIRE
 
 - [  ] BRIGHT LOCAL CITATION MANAGEMENT and SOCIAL MEDIA APIS
 
-
-### WORKSPACE Enhancements
-
-- [  ] **Standardize app scripts** - Move repeated script definitions into shared tooling if possible. Example: config:encrypt, config:decrypt, generate-site-images, update. With workspaces, apps can run shared scripts from the component package without repeating them.
-
-- [  ] **Selective Amplify deployment support** - Add a release helper or workflow that extracts a single `appRoot` section from the monorepo `amplify.yml` so only the target app is deployed, while preserving the full multi-app YAML in source control.
+### SHOPPING CART Enhancements
 
 #### SCALING BLOCKERS
 
@@ -207,6 +193,9 @@ Tooling: We can create a script that validates pixelated.config.json against its
 - [  ] **SEO Integration Modularization**: Split 1, 193-line monolithic file into focused modules: `page-analyzer.ts`, `site-crawler.ts`, `header-analyzer.ts`, and `metric-scorers.ts`.
 
 - [  ] **Component Memoization**: Add `React.memo` and `useMemo` to reduce unnecessary re-renders by 30-50% in large components.
+Page builder preview: PageEngine.tsx
+Page builder tree: ComponentTree.tsx
+Configuration editor: ConfigBuilder.tsx
 
 ### Medium Priority Improvements
 

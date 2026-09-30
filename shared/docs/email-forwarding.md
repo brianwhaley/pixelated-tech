@@ -317,7 +317,36 @@ Open the **Route 53 Console** and select the Hosted Zone for `clienta.com`:
    * Add a new attribute of type **String** named `targetEmail` with value set to your test destination inbox (e.g., `yourname@gmail.com`).
 
 
-### 4. Execute the End-to-End Test
+### 3. Insert Tenant Route into DynamoDB
+1. Look under IAM SMTP credentials (right underneath the Mail Manager section):
+    * IAM SMTP credentials
+    * Manual credential management. No traffic policies or rule sets.
+    * Manage existing
+    * Create IAM credentials
+2. Click Create IAM credentials under the IAM SMTP credentials header.
+3. AWS will redirect you to the IAM console to create an IAM user specifically for SMTP.
+4. Keep the default user name (or rename it to something like ses-smtp-amava) and click Create User / Create Credentials.
+5. Important: On the final screen, click Download .csv credentials or copy the SMTP Username and SMTP Password. (This is the only time AWS will show you the password).
+
+
+#### Entering Credentials into Gmail
+1. Open Gmail for amavaalpope@gmail.com:
+2. Go to Settings (gear icon) > See all settings > Accounts and Import.
+3. Under Send mail as, click Add another email address.
+4. Name: AL Pope (or your preferred display name)
+5. Email Address: alpope@amavajanitorial.com
+6. Uncheck Treat as an alias and click Next Step.
+7. Enter these details:
+    * SMTP Server: email-smtp.us-east-2.amazonaws.com (matching your Ohio / us-east-2 region shown in your console top bar)
+    * Port: 587
+    * Username: The IAM SMTP Username you generated
+    * Password: The IAM SMTP Password you generated
+    * Secured connection: TLS (Recommended)
+8. Click Add Account.
+9. Gmail will send a confirmation code to alpope@amavajanitorial.com. Since your AWS Lambda forwarder is already active, that verification email will forward right into amavaalpope@gmail.com. Click the link in that email to finish!   
+
+
+### 5. Execute the End-to-End Test
 1. From an external address, send an email to `info@clienta.com`.
 2. Inspect the **CloudWatch Logs** under the `/aws/lambda/ses-email-forwarder` log group to verify execution.
 3. Open `yourname@gmail.com` to confirm receipt:

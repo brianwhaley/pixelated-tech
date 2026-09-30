@@ -1,6 +1,6 @@
 {
   "name": "brianwhaley",
-  "version": "2.13.38",
+  "version": "2.13.39",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -42,10 +42,10 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/testing-library__react": "^10.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.70.1",
-    "@typescript-eslint/parser": "^8.70.1",
-    "@vitest/coverage-v8": "^5.0.2",
-    "@vitest/ui": "^5.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.71.0",
+    "@typescript-eslint/parser": "^8.71.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "@vitest/ui": "^5.0.3",
     "css-loader": "^7.1.4",
     "eslint": "9.39.4",
     "eslint-config-next": "^16.3.0",
@@ -56,8 +56,8 @@
     "sass-loader": "^17.0.0",
     "style-loader": "^4.0.0",
     "typescript": "6.0.2",
-    "typescript-eslint": "^8.70.1",
-    "vitest": "^5.0.2"
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
   },
   "deployMarker": "2026-09-08T04:04:04.000Z"
 }

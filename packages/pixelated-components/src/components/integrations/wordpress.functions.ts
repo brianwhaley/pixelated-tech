@@ -275,6 +275,53 @@ export async function getWordPressLastModified(props: { site: string; baseURL?: 
 	}
 }
 
+export type WordPressDraftInput = {
+	site: string;
+	apiToken: string;
+	title: string;
+	content: string;
+	baseURL?: string;
+	excerpt?: string;
+};
+
+export type WordPressDraftResponse = {
+	ID?: string | number;
+	id?: string | number;
+	status?: string;
+	URL?: string;
+	[key: string]: unknown;
+};
+
+/** Create a private draft through the authenticated WordPress.com API. */
+export async function createWordPressDraft(input: WordPressDraftInput): Promise<WordPressDraftResponse> {
+	if (!input.site || !input.apiToken || !input.title || !input.content) {
+		throw new Error('WordPress draft requires site, apiToken, title, and content');
+	}
+
+	const url = buildUrl({
+		baseUrl: input.baseURL ?? wpApiURL,
+		pathSegments: [input.site, 'posts', 'new'],
+	});
+	const body = {
+		status: 'draft',
+		title: input.title,
+		content: input.content,
+		...(input.excerpt ? { excerpt: input.excerpt } : {}),
+	};
+
+	return smartFetch(url, {
+		retries: 0,
+		requestInit: {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${input.apiToken}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(body),
+		},
+	});
+}
+
 
 
 

@@ -44,6 +44,18 @@ collect_changed_workspaces() {
         done
     fi
 }
+
+check_plaintext_configs_not_tracked() {
+    local tracked_configs
+    tracked_configs=$(git ls-files -- ':(glob)**/pixelated.config.json')
+    if [ -n "$tracked_configs" ]; then
+        echo "❌ Error: Decrypted pixelated.config.json files are tracked by Git:"
+        while IFS= read -r config_path; do
+            echo "   $config_path"
+        done <<< "$tracked_configs"
+        exit 1
+    fi
+}
 #!/bin/bash
 
 # Universal Release Script for Pixelated Projects
@@ -474,6 +486,7 @@ step_commit_changes() {
     echo "💾 Step $((STEP_COUNT++)): Commit..."
     echo "================================================="
     COMMIT_MESSAGE=$(prompt_commit_message)
+    check_plaintext_configs_not_tracked
     git add . -v
     if git diff --cached --quiet; then
         echo "ℹ️  No changes to commit"
