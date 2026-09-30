@@ -204,7 +204,7 @@ The repository defines shared standards for all customer sites and template apps
   - Replace default images with customer-branded assets
   - Update error message text to match brand voice
 - [  ] Be sure to update Contact Us form with `src/app/data/contactform.json`
-- [  ] Update `src/app/data/faqs.json` with relevant FAQs
+- [  ] Update `src/app/(pages)/faqs/faqs.json` with relevant FAQs
 - [  ] Set up Contentful for content management features
   - Common content types are Pages, Reviews, Items, PhotoAlbums, and Media (images, videos)
 - [  ] Create / Update Blog Schedule in `public/data/blogcalendar.md`

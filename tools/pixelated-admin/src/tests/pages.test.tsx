@@ -73,10 +73,11 @@ vi.mock('fs', async (importOriginal) => {
 
 vi.mock('@pixelated-tech/components', async () => {
 	const React = await vi.importActual<typeof import('react')>('react');
-	const make = (name: string) => ({ children }: any) => <div data-testid={name}>{children}</div>;
+	const make = (name: string) => ({ children, title }: any) => <div data-testid={name}>{title ?? children}</div>;
 	return {
 		__esModule: true,
 		PageSection: make('PageSection'),
+		PageTitleHeader: make('PageTitleHeader'),
 		Loading: () => <div>Loading</div>,
 		SkeletonLoading: () => <div>SkeletonLoading</div>,
 		ToggleLoading: () => null,

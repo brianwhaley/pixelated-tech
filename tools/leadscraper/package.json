@@ -1,6 +1,6 @@
 {
   "name": "leadscraper",
-  "version": "2.6.17",
+  "version": "2.6.18",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3002 --experimental-https",
@@ -28,15 +28,15 @@
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitest/coverage-v8": "^5.0.2",
-    "@vitest/ui": "^5.0.2",
+    "@vitest/coverage-v8": "^5.0.3",
+    "@vitest/ui": "^5.0.3",
     "eslint": "9.39.4",
     "eslint-config-next": "^16.2.2",
     "glob": "^13.0.6",
     "react": "^19.2.7",
     "react-dom": "^19.2.6",
     "typescript": "6.0.2",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.3"
   },
   "overrides": {},
   "deployMarker": "2026-08-05T04:05:55.813Z"

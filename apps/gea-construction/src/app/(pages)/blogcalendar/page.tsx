@@ -1,15 +1,23 @@
 "use client";
 
 import React from "react";
-import { PageSection, Markdown, useFileData } from "@pixelated-tech/components";
+import { ListItems, PageSection, PageTitleHeader, useFileData } from "@pixelated-tech/components";
+
+type BlogCalendarEntry = Record<string, unknown>;
+
+type BlogCalendarData = {
+	blogCalendar: BlogCalendarEntry[];
+};
 
 export default function BlogCalendarPage() {
-	const { data: readmeText, loading, error } = useFileData('/data/blogcalendar.md'); 
-	if (loading) return <PageSection columns={1} id="markdown-container"><div>Loading...</div></PageSection>;
-	if (error) return <PageSection columns={1} id="markdown-container"><div>Error: {error}</div></PageSection>;
+	const { data } = useFileData<BlogCalendarData>('/data/blogcalendar.json', 'json');
 	return (
-		<PageSection columns={1} id="markdown-container">
-			<Markdown markdowndata={readmeText || ''} />
-		</PageSection>
+		<>
+			<PageTitleHeader title="Blog Calendar" />
+			<br />
+			<PageSection columns={1} id="blog-calendar-container">
+				<ListItems items={data?.blogCalendar || []} />
+			</PageSection>
+		</>
 	);
 }

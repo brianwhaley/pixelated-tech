@@ -7,7 +7,7 @@ import config from '@/app/config/pixelated.config.json';
 export { config };
 
 export interface FileDataState {
-	data: string | null;
+	data: any;
 	loading: boolean;
 	error: string | null;
 }
@@ -159,7 +159,7 @@ const mockServiceAreasList = ({ serviceAreas, siteInfo, title, intro, id }: any)
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
-	useFileData: (filePath: string) => {
+	useFileData: (filePath: string, responseType: 'text' | 'json' = 'text') => {
 		if (fileDataState) {
 			return fileDataState;
 		}
@@ -175,8 +175,9 @@ const defaultMocks: Record<string, any> = {
 				error: `File not found: ${filePath}`,
 			};
 		}
+		const fileContents = fs.readFileSync(resolvedPath, 'utf-8');
 		return {
-			data: fs.readFileSync(resolvedPath, 'utf-8'),
+			data: responseType === 'json' ? JSON.parse(fileContents) : fileContents,
 			loading: false,
 			error: null,
 		};
@@ -259,6 +260,7 @@ const defaultMocks: Record<string, any> = {
 	FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
 	SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 	Markdown: mockComponent('Markdown', 'markdown'),
+	ListItems: ({ items }: any) => React.createElement('div', { 'data-testid': 'list-items' }, items.length),
 	BlogPostList: mockComponent('BlogPostList', 'blog-post-list'),
 	SchemaBlogPosting: mockComponent('SchemaBlogPosting', 'schema-blog-posting'),
 	StyleGuideUI: mockComponent('StyleGuideUI', 'styleguide-ui'),

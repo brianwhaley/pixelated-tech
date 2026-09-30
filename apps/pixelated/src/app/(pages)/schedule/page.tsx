@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import { PageTitleHeader, PageSectionHeader, PageSection, PageGridItem, FormEngine, usePixelatedConfig, FacebookPixel } from "@pixelated-tech/components";
-import formData from "@/app/data/contactform.json";
+import formData from "./contactform.json";
 import { SocialTags } from "@pixelated-tech/components";
 
 export default function SchedulePage() {
 	const pixelatedConfig = usePixelatedConfig();
 	const siteInfo = pixelatedConfig?.siteInfo ?? {};
     
-	const [bodyContent, setBodyContent] = useState<React.ReactNode>(null);
-
+	/* 
+    const [bodyContent, setBodyContent] = useState<React.ReactNode>(null);
 	useEffect(() => {
 		setBodyContent(
 			<div>
@@ -23,6 +23,7 @@ export default function SchedulePage() {
 			</div>
 		);
 	}, []);
+    */
 
 	return (
 
@@ -45,11 +46,11 @@ export default function SchedulePage() {
 						<h3>Phone: {siteInfo.telephone}</h3>
 					</div>
 				</PageGridItem>
-				<PageGridItem>
+				{ /* <PageGridItem>
 					<div suppressHydrationWarning={true}>
 						{bodyContent}
 					</div>
-				</PageGridItem>
+				</PageGridItem> */ }
 				<PageGridItem>
 					<PageSectionHeader title="Contact Us" />
 					<div style={{ margin: '0 auto', border: '2px solid var(--accent1-color)', padding: '20px', borderRadius: '20px' }}>

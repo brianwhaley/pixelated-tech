@@ -66,6 +66,14 @@ async function findMonorepoRoot(startDir) {
 	throw new Error('Unable to determine monorepo root');
 }
 
+function getTrackedPlaintextConfigs(monorepoRoot) {
+	const result = runCommand('git', ['ls-files', '--', ':(glob)**/pixelated.config.json'], { cwd: monorepoRoot, stdio: 'pipe' });
+	if (result.status !== 0) {
+		throw new Error(result.stderr || 'Unable to inspect tracked configuration files');
+	}
+	return result.stdout ? result.stdout.split('\n').filter(Boolean) : [];
+}
+
 async function findWorkspaceRoot(startDir, monorepoRoot) {
 	let current = path.resolve(startDir);
 	while (true) {
@@ -257,6 +265,13 @@ async function runWorkspacePipeline(workspaceDir) {
 async function run() {
 	const cwd = process.cwd();
 	const monorepoRoot = await findMonorepoRoot(cwd);
+	const trackedPlaintextConfigs = getTrackedPlaintextConfigs(monorepoRoot);
+	if (trackedPlaintextConfigs.length > 0) {
+		console.error('❌ Error: Decrypted pixelated.config.json files are tracked by Git:');
+		trackedPlaintextConfigs.forEach((configPath) => console.error(`   ${configPath}`));
+		process.exit(1);
+	}
+
 	const workspaceRoot = await findWorkspaceRoot(cwd, monorepoRoot);
 	const contextType = getContextType(workspaceRoot, monorepoRoot);
 	const workspaceDirs = contextType === 'root'

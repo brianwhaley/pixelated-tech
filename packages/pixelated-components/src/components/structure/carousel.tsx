@@ -114,6 +114,10 @@ export function Carousel(props: CarouselType) {
 		}
 	}, [cardIndex]);
 
+	useEffect(() => {
+		setcardIndex(0);
+	}, [props.cards]);
+
 	/* ========== DRAGGABLE HANDLER ========== */
 	if (props.draggable && props.draggable === true) {
 		if (debug) console.log('CarouselSimple: Dragging enabled');

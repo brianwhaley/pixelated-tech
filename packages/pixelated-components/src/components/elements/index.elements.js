@@ -4,6 +4,7 @@ export * from './countup';
 export * from './calendar';
 export * from './faq';
 export * from './markdown';
+export * from './listitems';
 export * from './menu-accordion';
 export * from './menu-expando';
 export * from './menu-simple';

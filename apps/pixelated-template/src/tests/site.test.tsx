@@ -100,13 +100,6 @@ describe('Pixelated Template site coverage', () => {
 	runCommonMarkdownPageCoverage({
 		pages: [
 			{
-				name: 'Blog Calendar',
-				Component: BlogCalendarPage,
-				markdownTestId: 'markdown',
-				loadingText: 'Loading...',
-				errorText: 'Error: File not found',
-			},
-			{
 				name: 'Updates',
 				Component: UpdatesPage,
 				markdownTestId: 'markdown',
@@ -221,16 +214,16 @@ describe('Pixelated Template site coverage', () => {
 
 
 	describe('Pixelated Template explicit branch coverage', () => {
-		it('renders Blog Calendar loading state', async () => {
+		it('renders Blog Calendar while loading', async () => {
 			setFileDataState({ data: null, loading: true, error: null });
 			render(<BlogCalendarPage />);
-			expect(await screen.findByText(/Loading\.\.\./i)).toBeTruthy();
+			expect((await screen.findByTestId('list-items')).textContent).toBe('0');
 		});
 
-		it('renders Blog Calendar error state', async () => {
+		it('renders Blog Calendar when data loading fails', async () => {
 			setFileDataState({ data: null, loading: false, error: 'File not found' });
 			render(<BlogCalendarPage />);
-			expect(await screen.findByText(/Error: File not found/i)).toBeTruthy();
+			expect((await screen.findByTestId('list-items')).textContent).toBe('0');
 		});
 
 		it('renders Updates loading state', async () => {

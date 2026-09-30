@@ -1,0 +1,20 @@
+.list-items {
+	--do-nothing: true;
+}
+
+.list-item {
+	margin-bottom: 1em;
+}
+
+.list-item-title {
+	font-weight: bold;
+    text-decoration: underline;
+}
+
+.list-item ul {
+	font-size: var(--font-size5);
+}
+
+.list-item li {
+	--do-nothing: true;
+}

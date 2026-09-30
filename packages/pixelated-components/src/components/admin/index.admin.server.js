@@ -31,6 +31,7 @@ export * from './auth/authentication';
 export * from './auth/auth-functions';
 export * from './auth/authorization';
 export * from './auth/auth-components';
+export * from './blog/blog-generator.server';
 
 // TODO: this doesnt belong here.  move this to the foundations server barrel file in the future.
 export * from '../foundation/cache-manager';

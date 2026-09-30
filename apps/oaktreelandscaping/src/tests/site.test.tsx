@@ -9,7 +9,6 @@ import {
 	runCommonPageCoverage,
 	runCommonElementCoverage,
 	runCommonBlogPageCoverage,
-	runCommonMarkdownPageCoverage,
 	runCommonServiceRouteCoverage,
 	runPageSmokeTests,
 } from '../../../../shared/test-utils/index.test-utils';
@@ -35,7 +34,6 @@ import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
 import AboutPage from '@/app/(pages)/about/page';
 import BlogPage from '@/app/(pages)/blog/page';
-import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
 import ContactPage from '@/app/(pages)/contact/page';
 import FaqsPage from '@/app/(pages)/faqs/page';
 import ProjectsPage from '@/app/(pages)/projects/page';
@@ -118,23 +116,6 @@ describe('Oaktree Landscaping coverage', () => {
 		mockState,
 		resetMockState,
 		blogPostListTestId: 'blog-post-list',
-	});
-
-	runCommonMarkdownPageCoverage({
-		pages: [
-			{
-				name: 'Blog Calendar',
-				Component: BlogCalendarPage,
-				markdownTestId: 'markdown',
-				loadingText: 'Loading...',
-				errorText: 'Error: Failed to load',
-			},
-		],
-		render,
-		screen,
-		waitFor,
-		setFileDataState,
-		resetFileDataState,
 	});
 
 	runCommonServiceRouteCoverage({

@@ -54,6 +54,7 @@ vi.mock('@pixelated-tech/components', async () => {
 	return {
 		__esModule: true,
 		PageSection: ({ children }: any) => <div>{children}</div>,
+		PageTitleHeader: ({ title }: any) => <h1>{title}</h1>,
 		Loading: () => <div>Loading</div>,
 		SkeletonLoading: () => <div>Skeleton</div>,
 		ToggleLoading: () => null,
@@ -325,6 +326,21 @@ describe('pixelated-admin extra coverage', () => {
 		const LayoutClient = mod.default;
 		render(<LayoutClient />);
 		expect(screen.queryByTestId('layout-client')).toBeNull();
+	});
+
+	it('renders the invoice print layout wrapper', async () => {
+		const mod = await importModule('src/app/(pages)/billing/invoice/[siteName]/[billingCycle]/layout.tsx');
+		const PrintLayout = mod.default;
+		render(PrintLayout({ children: <span>Invoice content</span> }));
+		expect(screen.getByText('Invoice content')).toBeTruthy();
+	});
+
+	it('renders the blog post generator client', async () => {
+		const mod = await importModule('src/app/(pages)/blog-post-generator/BlogPostGeneratorClient.tsx');
+		const BlogPostGeneratorClient = mod.default;
+		const action = vi.fn(async () => ({ results: [] }));
+		render(<BlogPostGeneratorClient action={action as any} sites={[{ name: 'site-a', blog_url: 'https://example.com' }]} />);
+		expect(screen.getByText('Blog Post Generator')).toBeTruthy();
 	});
 
 	it('creates standardized error responses', async () => {
