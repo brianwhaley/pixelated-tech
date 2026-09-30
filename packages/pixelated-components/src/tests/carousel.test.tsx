@@ -149,6 +149,19 @@ describe('Carousel Component', () => {
 			const firstCard = document.getElementById('c-0');
 			expect(firstCard).toHaveStyle('transform: translateX(0%)');
 		});
+
+		it('should reset the active card when cards change', () => {
+			const { rerender } = render(<Carousel cards={mockCards} />);
+			const nextButton = screen.getAllByRole('button')[2];
+
+			fireEvent.click(nextButton);
+			fireEvent.click(nextButton);
+			expect(document.getElementById('c-2')).toHaveStyle('transform: translateX(0%)');
+
+			rerender(<Carousel cards={[mockCards[0]]} />);
+
+			expect(document.getElementById('c-0')).toHaveStyle('transform: translateX(0%)');
+		});
 	});
 
 	describe('Image Styling', () => {

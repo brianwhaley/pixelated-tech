@@ -169,6 +169,10 @@ export interface AWSConfig {
 	secret_access_key?: string;
 	session_token?: string;
 	region?: string;
+    ses_iam_username?: string;
+    ses_username?: string;
+    ses_password?: string;
+
 }
 
 export interface CalendlyConfig {

@@ -1,0 +1,453 @@
+{
+  "blogCalendarConfig": {
+    "cadence": "weekly",
+    "defaultStatus": "",
+    "criteria": {
+      "contentRules": [
+        "Each post must have 800 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences",
+        "After the conclusion of each post, add a call to action to connect with us for any upcoming projects for a free estimate with a link to https://www.manningmetalworks.com/contact-us",
+        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced.",
+        "Add links to other blog posts or other content on manningmetalworks.com",
+        "Use a tone of empthy, understanding as a small business owner myself, an expert in the field of web and marketing, and straightforward language",
+        "Each blog post should target one of the services offered on the Services page",
+        "Leverage at least one primary keyword and 2 to 3 supporting keywords",
+        "Blog content should be able to be repurposed into Social media posts, Google Business Profile updates, Email newsletters, Sales talking points",
+        "No specific technique/material deep-dives: Focus on total versatility and the message that they \"can do it all.\"",
+        "Greg’s background: Highlight his time as a local firefighter (bringing tactical focus, calm under pressure, and situational awareness) rather than his nursing history.",
+        "Tim's background - dont mention specific previewous places wof employment.  Also No competitor mentions: Completely eliminate specific references to external local competitors.",
+        "24/7 services positioning: Frame this strictly as an emergency-only service for true business crises.",
+        "Cleaned headers/links: Keep links out of headers, placing contact details cleanly in the text body instead."
+      ]
+    }
+  },
+  "blogCalendar": [
+    {
+      "id": 1,
+      "targetPublishDate": "",
+      "title": "Why Local Businesses Choose Manning Metalworks",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 2,
+      "targetPublishDate": "",
+      "title": "Welding Solutions for Property Managers",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 3,
+      "targetPublishDate": "",
+      "title": "Metal Railings: Repair vs. Replacement",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 4,
+      "targetPublishDate": "",
+      "title": "Custom Metal Fabrication for Homeowners",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 5,
+      "targetPublishDate": "",
+      "title": "Mobile Welding for Construction and Contractors",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 6,
+      "targetPublishDate": "",
+      "title": "Working With Contractors: How We Partner on Jobs",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 7,
+      "targetPublishDate": "",
+      "title": "Welding Repairs for Industrial Equipment",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 8,
+      "targetPublishDate": "",
+      "title": "Year in Review: Projects We’re Proud Of",
+      "notes": [
+        "Goal: Educate new visitors, build trust, and establish authority"
+      ],
+      "status": ""
+    },
+    {
+      "id": 9,
+      "targetPublishDate": "",
+      "title": "What Does a Metal Fabrication Shop Actually Do?",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 10,
+      "targetPublishDate": "",
+      "title": "When to Repair vs. Replace Metal Structures",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 11,
+      "targetPublishDate": "",
+      "title": "Common Welding Problems Homeowners Face in NJ",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 12,
+      "targetPublishDate": "",
+      "title": "How Mobile Welding Services Save Time and Money",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 13,
+      "targetPublishDate": "",
+      "title": "Types of Metal Used in Fabrication (Steel, Aluminum, Stainless)",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 14,
+      "targetPublishDate": "",
+      "title": "How Weather Affects Metal in the Northeast",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 15,
+      "targetPublishDate": "",
+      "title": "What to Look for in a Local Welding Company",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 16,
+      "targetPublishDate": "",
+      "title": "Safety Standards in Professional Welding Projects",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 17,
+      "targetPublishDate": "",
+      "title": "Residential vs. Commercial Metal Fabrication: What’s the Difference?",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 18,
+      "targetPublishDate": "",
+      "title": "How to Prepare for an On-Site Welding Repair",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 19,
+      "targetPublishDate": "",
+      "title": "Understanding Welding Certifications and Why They Matter",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 20,
+      "targetPublishDate": "",
+      "title": "Signs You Need Immediate Metal Repair",
+      "notes": [
+        "Goal: Highlight services and real-world applications"
+      ],
+      "status": ""
+    },
+    {
+      "id": 21,
+      "targetPublishDate": "",
+      "title": "Custom Metal Fabrication for Homeowners",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 22,
+      "targetPublishDate": "",
+      "title": "Mobile Welding for Construction and Contractors",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 23,
+      "targetPublishDate": "",
+      "title": "How Structural Steel Repairs Prevent Costly Damage",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 24,
+      "targetPublishDate": "",
+      "title": "Welding Solutions for Property Managers",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 25,
+      "targetPublishDate": "",
+      "title": "Metal Railings: Repair vs. Replacement",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 26,
+      "targetPublishDate": "",
+      "title": "Fabricating Custom Brackets and Supports",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 27,
+      "targetPublishDate": "",
+      "title": "Emergency Welding Services: What Qualifies as Urgent?",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 28,
+      "targetPublishDate": "",
+      "title": "How We Handle On-Site Repairs Safely and Efficiently",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 29,
+      "targetPublishDate": "",
+      "title": "The Benefits of Hiring a Local Metal Fabricator",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 30,
+      "targetPublishDate": "",
+      "title": "How Metal Fabrication Supports Small Businesses",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 31,
+      "targetPublishDate": "",
+      "title": "Welding Repairs for Gates, Fences, and Entryways",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 32,
+      "targetPublishDate": "",
+      "title": "Behind the Scenes: A Day in the Life of a Mobile Welder",
+      "notes": [
+        "Goal: Differentiate from competitors and reinforce expertise"
+      ],
+      "status": ""
+    },
+    {
+      "id": 33,
+      "targetPublishDate": "",
+      "title": "Common Welding Myths (And the Truth)",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 34,
+      "targetPublishDate": "",
+      "title": "How Custom Fabrication Solves Unique Problems",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 35,
+      "targetPublishDate": "",
+      "title": "Choosing the Right Metal for Outdoor Structures",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 36,
+      "targetPublishDate": "",
+      "title": "Why Experience Matters in Welding Projects",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 37,
+      "targetPublishDate": "",
+      "title": "How Heat Impacts Welding and Metal Strength",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 38,
+      "targetPublishDate": "",
+      "title": "Welding Repairs for Industrial Equipment",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 39,
+      "targetPublishDate": "",
+      "title": "What Makes a Welding Job “High Quality”",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 40,
+      "targetPublishDate": "",
+      "title": "How to Extend the Life of Metal Structures",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 41,
+      "targetPublishDate": "",
+      "title": "Preventative Maintenance for Metal Installations",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 42,
+      "targetPublishDate": "",
+      "title": "Welding for Renovation and Remodel Projects",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 43,
+      "targetPublishDate": "",
+      "title": "Working With Contractors: How We Partner on Jobs",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 44,
+      "targetPublishDate": "",
+      "title": "How Proper Welding Improves Structural Safety",
+      "notes": [
+        "Goal: Capture late-year leads and reinforce local reputation"
+      ],
+      "status": ""
+    },
+    {
+      "id": 45,
+      "targetPublishDate": "",
+      "title": "Serving Morris County: Our Local Commitment",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 46,
+      "targetPublishDate": "",
+      "title": "How to Vet a Welding Company in New Jersey",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 47,
+      "targetPublishDate": "",
+      "title": "Fall Maintenance Tips for Metal Structures",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 48,
+      "targetPublishDate": "",
+      "title": "Case Study: A Recent Local Fabrication Project",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 49,
+      "targetPublishDate": "",
+      "title": "Why Local Businesses Choose Manning Metalworks",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 50,
+      "targetPublishDate": "",
+      "title": "Welding Repairs Before Winter: What to Fix Now",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 51,
+      "targetPublishDate": "",
+      "title": "How Mobile Welding Helps During Tight Deadlines",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 52,
+      "targetPublishDate": "",
+      "title": "Frequently Asked Questions About Welding Services",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 53,
+      "targetPublishDate": "",
+      "title": "Year in Review: Projects We’re Proud Of",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 54,
+      "targetPublishDate": "",
+      "title": "Top Welding Challenges We Solved This Year",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 55,
+      "targetPublishDate": "",
+      "title": "Planning Fabrication Projects for the New Year",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 56,
+      "targetPublishDate": "",
+      "title": "What Customers Should Know Before Hiring a Welder",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 57,
+      "targetPublishDate": "",
+      "title": "Emergency Repairs During Winter Months",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 58,
+      "targetPublishDate": "",
+      "title": "How Quality Fabrication Saves Money Long-Term",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 59,
+      "targetPublishDate": "",
+      "title": "Our Approach to Safety, Quality, and Craftsmanship",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 60,
+      "targetPublishDate": "",
+      "title": "Looking Ahead: Metal Fabrication Trends for 2027",
+      "notes": [],
+      "status": ""
+    }
+  ]
+}

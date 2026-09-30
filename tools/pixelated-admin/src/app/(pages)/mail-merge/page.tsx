@@ -3,6 +3,7 @@ import path from 'path';
 import { redirect } from 'next/navigation';
 import { sendSmtpMail } from '@pixelated-tech/components/server';
 import { MailMergeClientForm } from './MailMergeClientForm';
+import { PageTitleHeader } from '@pixelated-tech/components';
 
 export const mailerDataDirectory = path.join(process.cwd(), 'public', 'data', 'mailer');
 
@@ -199,59 +200,61 @@ export default async function MailMergePage({
 	}
 
 	return (
-		<section id="mail-merge" style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
-			<h1>Mail Merge</h1>
+		<>
+			<PageTitleHeader title="Mail Merge" />
+			<section id="mail-merge" style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
 
-			{resultStatus === 'sent' && (
-				<div style={{ marginBottom: '20px', padding: '16px', background: '#e6ffed', border: '1px solid #b7f5ce' }}>
-					<strong>Mail merge complete.</strong>
-					<div>Sent: {sent}</div>
-					<div>Failed: {failed}</div>
-				</div>
-			)}
+				{resultStatus === 'sent' && (
+					<div style={{ marginBottom: '20px', padding: '16px', background: '#e6ffed', border: '1px solid #b7f5ce' }}>
+						<strong>Mail merge complete.</strong>
+						<div>Sent: {sent}</div>
+						<div>Failed: {failed}</div>
+					</div>
+				)}
 
-			{resultStatus === 'error' && message && (
-				<div style={{ marginBottom: '20px', padding: '16px', background: '#fff1f0', border: '1px solid #f5c6cb', color: '#a71d2a' }}>
-					<strong>Error:</strong>
-					<div>{message}</div>
-				</div>
-			)}
+				{resultStatus === 'error' && message && (
+					<div style={{ marginBottom: '20px', padding: '16px', background: '#fff1f0', border: '1px solid #f5c6cb', color: '#a71d2a' }}>
+						<strong>Error:</strong>
+						<div>{message}</div>
+					</div>
+				)}
 
-			<form method="get" style={{ marginBottom: '24px' }}>
-				<label style={{ marginBottom: '12px' }}>
+				<form method="get" style={{ marginBottom: '24px' }}>
+					<label style={{ marginBottom: '12px' }}>
 					Mailer JSON file
-					<select name="mailerFile" defaultValue={selectedFile} style={{ padding: '10px', marginTop: '8px' }}>
-						<option value="">Select a file</option>
-						{mailerFiles.map(file => (
-							<option key={file} value={file}>
-								{file}
-							</option>
-						))}
-					</select>
-				</label>
-				<button type="submit" style={{ padding: '12px 18px' }}>
+						<select name="mailerFile" defaultValue={selectedFile} style={{ padding: '10px', marginTop: '8px' }}>
+							<option value="">Select a file</option>
+							{mailerFiles.map(file => (
+								<option key={file} value={file}>
+									{file}
+								</option>
+							))}
+						</select>
+					</label>
+					<button type="submit" style={{ padding: '12px 18px' }}>
 					Load categories
-				</button>
-			</form>
+					</button>
+				</form>
 
-			{selectedFile && (
-				<MailMergeClientForm
-					selectedFile={selectedFile}
-					selectedCategory={selectedCategory}
-					selectedStatus={selectedStatus}
-					categories={categories}
-					statuses={statuses}
-					targetCounts={targetCounts}
-					entries={entries}
-					sendMailAction={sendMailAction}
-				/>
-			)}
+				{selectedFile && (
+					<MailMergeClientForm
+						selectedFile={selectedFile}
+						selectedCategory={selectedCategory}
+						selectedStatus={selectedStatus}
+						categories={categories}
+						statuses={statuses}
+						targetCounts={targetCounts}
+						entries={entries}
+						sendMailAction={sendMailAction}
+					/>
+				)}
 
-			{selectedFile && categories.length === 0 && (
-				<div style={{ marginTop: '16px', color: '#a71d2a', background: '#fff1f0', padding: '12px', borderRadius: '6px' }}>
+				{selectedFile && categories.length === 0 && (
+					<div style={{ marginTop: '16px', color: '#a71d2a', background: '#fff1f0', padding: '12px', borderRadius: '6px' }}>
 					No categories found for {selectedFile}.
-				</div>
-			)}
-		</section>
+					</div>
+				)}
+			</section>
+		</>
 	);
 }

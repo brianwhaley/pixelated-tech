@@ -6,6 +6,7 @@ import { FormEngine } from '../components/sitebuilder/form/formengine';
 import { FormBuilder, FormBuild } from '../components/sitebuilder/form/formbuilder';
 import { FormExtractor } from '../components/sitebuilder/form/formextractor';
 import { FormSectionHeader } from '../components/sitebuilder/form/formcomponents';
+import * as fieldValidations from '../components/sitebuilder/form/formfieldvalidations';
 import {
   formCheckboxSubmitRequiredData,
   formRadioSubmitRequiredData,
@@ -260,6 +261,180 @@ describe('Form Component', () => {
       );
       const form = container.querySelector('form') as HTMLFormElement;
       expect(() => fireEvent.submit(form)).not.toThrow();
+    });
+
+    it('should reject an untouched field with an invalid custom value', async () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormInput',
+            props: {
+              id: 'telephone',
+              name: 'telephone',
+              defaultValue: 'abc',
+              required: true,
+              validate: 'isValidUSPhoneNumber',
+            },
+          },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} onSubmitHandler={mockOnSubmitHandler} />
+      );
+      const telephone = container.querySelector('input[name="telephone"]') as HTMLInputElement;
+
+      fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+
+      await waitFor(() => {
+        expect(mockOnSubmitHandler).not.toHaveBeenCalled();
+        expect(telephone.validity.customError).toBe(true);
+        expect(telephone.validationMessage).toContain('isValidUSPhoneNumber validation failed');
+      });
+    });
+
+    it('should clear the submit-time custom error when the field changes', async () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormInput',
+            props: {
+              id: 'telephone',
+              name: 'telephone',
+              defaultValue: 'abc',
+              validate: 'isValidUSPhoneNumber',
+            },
+          },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} onSubmitHandler={mockOnSubmitHandler} />
+      );
+      const telephone = container.querySelector('input[name="telephone"]') as HTMLInputElement;
+      const form = container.querySelector('form') as HTMLFormElement;
+
+      fireEvent.submit(form);
+      await waitFor(() => expect(telephone.validity.customError).toBe(true));
+
+      fireEvent.change(telephone, { target: { value: '555-555-5555' } });
+
+      expect(telephone.validity.customError).toBe(false);
+    });
+
+    it('should submit an untouched field with a valid custom value', async () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormInput',
+            props: {
+              id: 'telephone',
+              name: 'telephone',
+              defaultValue: '555-555-5555',
+              required: true,
+              validate: 'isValidUSPhoneNumber',
+            },
+          },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} onSubmitHandler={mockOnSubmitHandler} />
+      );
+
+      fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+
+      await waitFor(() => expect(mockOnSubmitHandler).toHaveBeenCalledTimes(1));
+    });
+
+    it('should validate a schema field by name when it has no id', async () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormInput',
+            props: {
+              name: 'telephone',
+              defaultValue: 'abc',
+              validate: 'isValidUSPhoneNumber',
+            },
+          },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} onSubmitHandler={mockOnSubmitHandler} />
+      );
+
+      fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+
+      await waitFor(() => expect(mockOnSubmitHandler).not.toHaveBeenCalled());
+    });
+
+    it('should validate every schema field before submitting', async () => {
+      const phoneValidation = vi.spyOn(fieldValidations, 'isValidUSPhoneNumber');
+      const zipValidation = vi.spyOn(fieldValidations, 'isValidUSZipCode');
+      const formData = {
+        fields: [
+          {
+            component: 'FormInput',
+            props: {
+              id: 'telephone',
+              name: 'telephone',
+              defaultValue: 'abc',
+              validate: 'isValidUSPhoneNumber',
+            },
+          },
+          {
+            component: 'FormInput',
+            props: {
+              id: 'zip',
+              name: 'zip',
+              defaultValue: 'invalid',
+              validate: 'isValidUSZipCode',
+            },
+          },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} onSubmitHandler={mockOnSubmitHandler} />
+      );
+
+      fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+
+      await waitFor(() => {
+        expect(mockOnSubmitHandler).not.toHaveBeenCalled();
+        expect(phoneValidation).toHaveBeenCalledTimes(1);
+        expect(zipValidation).toHaveBeenCalledTimes(1);
+      });
+      phoneValidation.mockRestore();
+      zipValidation.mockRestore();
+    });
+
+    it('should block native submission while async schema validation is pending', async () => {
+      const formData = {
+        fields: [
+          {
+            component: 'FormInput',
+            props: {
+              id: 'telephone',
+              name: 'telephone',
+              defaultValue: 'abc',
+              validate: 'isValidUSPhoneNumber',
+            },
+          },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} onSubmitHandler={mockOnSubmitHandler} />
+      );
+      const event = new Event('submit', { bubbles: true, cancelable: true });
+
+      container.querySelector('form')?.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      await waitFor(() => expect(mockOnSubmitHandler).not.toHaveBeenCalled());
     });
   });
 
@@ -535,6 +710,35 @@ describe('Form Component', () => {
       const form = container.querySelector('form') as HTMLFormElement;
       fireEvent.submit(form);
       expect(submitHandler).not.toHaveBeenCalled();
+    });
+
+    it('should set and clear custom validity for checkbox and radio groups', async () => {
+      const formData = {
+        fields: [
+          { component: 'FormCheckbox', props: { id: 'agree', name: 'agree', label: 'Agree', validate: 'isOneChecked', options: [{ value: 'yes', text: 'I agree' }] } },
+          { component: 'FormRadio', props: { id: 'choice', name: 'choice', label: 'Choose', validate: 'isOneRadioSelected', options: [{ value: 'a', text: 'A' }, { value: 'b', text: 'B' }] } },
+          { component: 'FormButton', props: { type: 'submit', text: 'Submit' } }
+        ]
+      };
+      const submitHandler = vi.fn();
+      const { container } = render(<FormEngine formData={formData as any} onSubmitHandler={submitHandler} />);
+      const form = container.querySelector('form') as HTMLFormElement;
+      const checkbox = container.querySelector('input[type="checkbox"][name="agree"]') as HTMLInputElement;
+      const radio = container.querySelector('input[type="radio"][name="choice"]') as HTMLInputElement;
+
+      fireEvent.submit(form);
+
+      await waitFor(() => {
+        expect(submitHandler).not.toHaveBeenCalled();
+        expect(checkbox.validity.customError).toBe(true);
+        expect(radio.validity.customError).toBe(true);
+      });
+
+      fireEvent.click(checkbox);
+      fireEvent.click(radio);
+
+      expect(checkbox.validity.customError).toBe(false);
+      expect(radio.validity.customError).toBe(false);
     });
 
     it('should allow toggling a checkbox option', () => {

@@ -10,14 +10,35 @@ export interface SiteConfig {
   name: string;
   /** Optional local path (may be absent for remote-only checks) */
   localPath?: string;
+  /** Optional local development port */
+  localPort?: string;
   /** Optional remote (e.g., full URL or owner/repo string) */
   remote?: string;
   /** Optional explicit repository identifier (e.g., "owner/repo" or just "repo") */
   repo?: string;
-  /** Optional explicit repo owner */
-  owner?: string;
+  /** Optional health check identifier */
+  healthCheckId?: string;
+  /** Optional Route 53 hosted zone ID */
+  rte53HostedZoneID?: string;
+  /** Optional Amplify App ID */
+  amplifyAppId?: string;
+  /** Optional CloudFront URL */
+  cloudfronturl?: string;
+  /** Optional primary site URL */
+  url?: string;
+  /** Optional blog URL */
+  blog_url?: string;
+  /** Optional blog RSS feed URL */
+  blogRss?: string;
+  /** Optional Google Analytics 4 Property ID */
   ga4PropertyId?: string;
-  searchConsoleUrl?: string;
+  /** Optional Google Search Console site URL */
+  gscSiteUrl?: string;
+  /** Optional additional metadata */
+  billing?: {
+    [key: string]: any;
+  };
+  /** Optional additional metadata container */
   [key: string]: any;
 }  
 

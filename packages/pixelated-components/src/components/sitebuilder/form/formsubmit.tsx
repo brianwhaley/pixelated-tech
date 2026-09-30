@@ -42,7 +42,8 @@ export async function processFormData(e: Event, callback?: (e: Event) => void): 
 export async function processJSON(jsonData: Record<string, unknown>, callback?: () => void): Promise<EmailFormDataResult> {
 	const debug = false;
 
-	const sendmail_api = "https://admin.pixelated.tech/api/process-form-submit";
+	const sendmail_api = "https://sendmail.pixelated.tech/default/sendmail";
+	// "https://admin.pixelated.tech/api/process-form-submit"
 	const myJsonData: Record<string, unknown> = {};
 	for (const [key, value] of Object.entries(jsonData)) {
 		myJsonData[key] = value ;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { FormValidationProvider, useFormValidation } from './formvalidator';
+import { FormValidationProvider, useFormValidation, validateField as validateFormField } from './formvalidator';
 import { FormSubmitWrapper, useFormSubmitContext } from './formsubmit';
 import { usePixelatedConfig } from '../../config/config.client';
 import { getWebMcpFieldType, applyWebMcpFormAttributes, applyWebMcpFieldAttributes } from '../../foundation/webmcp.utils';
@@ -99,7 +99,7 @@ FormEngineInner.propTypes = {
 };
 type FormEngineInnerType = InferProps<typeof FormEngineInner.propTypes>;
 function FormEngineInner(props: FormEngineInnerType) {
-	const { validateAllFields } = useFormValidation();
+	const { validateAllFields, validateField: setFieldValidity } = useFormValidation();
 	const { formRef } = props as any;
 	const siteName = usePixelatedConfig()?.siteInfo?.name;
 
@@ -190,16 +190,44 @@ function FormEngineInner(props: FormEngineInnerType) {
 		return newFields;
 	}
 
-	function handleSubmit(event: React.FormEvent) {
+	async function handleSubmit(event: React.FormEvent) {
 		// HANDLES THE FORM ACTION / FORM SUBMIT - EXPOSED EXTERNAL
 
 		const form = event.currentTarget as HTMLFormElement;
-		if (!form.checkValidity()) {
+		const schemaFields = ((props.formData as any)?.fields ?? []).filter((field: any) => {
+			const fieldProps = field.props ?? {};
+			return fieldProps.required || fieldProps.validate || fieldProps.parent?.validate;
+		});
+
+		if (schemaFields.length > 0) {
+			event.preventDefault();
+
+			for (const field of schemaFields) {
+				const fieldProps = field.props ?? {};
+				const fieldElement = Array.from(form.elements).find((element) => {
+					const control = element as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+					return control.id === fieldProps.id || control.name === fieldProps.name;
+				}) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | undefined;
+
+				if (!fieldElement) continue;
+
+				const result = await validateFormField(fieldProps, { target: fieldElement } as any);
+				fieldElement.setCustomValidity(
+					result.isValid ? '' : result.errors.join(' ')
+				);
+				const fieldId = fieldProps.id || fieldProps.name;
+				if (fieldId) {
+					setFieldValidity(fieldId, result.isValid, result.errors);
+				}
+			}
+
+			if (!form.reportValidity()) return false;
+		} else if (!form.checkValidity()) {
 			return false;
 		}
 
 		// Check if form is valid before submission
-		if (!validateAllFields()) {
+		if (schemaFields.length === 0 && !validateAllFields()) {
 			// Form has validation errors, don't submit
 			event.preventDefault();
 			return false;

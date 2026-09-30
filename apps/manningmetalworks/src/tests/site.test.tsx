@@ -34,13 +34,12 @@ import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
 import AboutUsPage from '@/app/(pages)/about-us/page';
 import BlogPage from '@/app/(pages)/blog/page';
-import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
+import UpdatesPage from '@/app/(pages)/updates/page';
 import ContactUsPage from '@/app/(pages)/contact-us/page';
 import FaqsPage from '@/app/(pages)/faqs/page';
 import GalleryPage from '@/app/(pages)/gallery/page';
 import ServicesPage from '@/app/(pages)/services/page';
 import StyleGuidePage from '@/app/(pages)/styleguide/page';
-import UpdatesPage from '@/app/(pages)/updates/page';
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
 import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/page';
 import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
@@ -161,18 +160,11 @@ describe('Manning Metalworks coverage', () => {
 	runCommonMarkdownPageCoverage({
 		pages: [
 			{
-				name: 'Blog Calendar',
-				Component: BlogCalendarPage,
-				markdownTestId: 'markdown',
-				loadingText: 'Loading...',
-				errorText: 'Error: Cannot load calendar',
-			},
-			{
 				name: 'Updates',
 				Component: UpdatesPage,
 				markdownTestId: 'markdown',
 				loadingText: 'Loading...',
-				errorText: 'Error: Failed to load',
+				errorText: 'Error: File not found',
 			},
 		],
 		render,
@@ -202,6 +194,18 @@ describe('Manning Metalworks coverage', () => {
 		screen,
 		waitFor,
 		setPixelatedConfigOverride,
+	});
+
+	it('renders Header with fallback routes when config is unavailable', () => {
+		setPixelatedConfigOverride(null);
+		render(<Header />);
+		expect(screen.getByTestId('hero')).toBeTruthy();
+	});
+
+	it('normalizes a trailing slash before rendering Footer', async () => {
+		vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/contact/' }));
+		render(await Footer());
+		expect(screen.getByTestId('business-footer')).toBeTruthy();
 	});
 
 });

@@ -124,7 +124,7 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, sit
 const defaultMocks: Record<string, any> = {
 	__esModule: true,
 	usePixelatedConfig: () => pixelatedConfigOverride === undefined ? config : pixelatedConfigOverride,
-	useFileData: (filePath: string) => {
+	useFileData: (filePath: string, responseType: 'text' | 'json' = 'text') => {
 		if (fileDataState) {
 			return fileDataState;
 		}
@@ -137,8 +137,9 @@ const defaultMocks: Record<string, any> = {
 				error: `File not found: ${filePath}`,
 			};
 		}
+		const fileData = fs.readFileSync(resolvedPath, 'utf-8');
 		return {
-			data: fs.readFileSync(resolvedPath, 'utf-8'),
+			data: responseType === 'json' ? JSON.parse(fileData) : fileData,
 			loading: false,
 			error: null,
 		};
@@ -215,6 +216,7 @@ const defaultMocks: Record<string, any> = {
 	FAQ: mockComponent('FAQ'),
 	SchemaFAQ: mockComponent('SchemaFAQ'),
 	Markdown: mockComponent('Markdown', 'markdown'),
+	ListItems: ({ items }: any) => React.createElement('div', { 'data-testid': 'list-items' }, Array.isArray(items) ? items.length : 0),
 	BlogPostList: mockComponent('BlogPostList', 'blog-post-list'),
 	SchemaBlogPosting: mockComponent('SchemaBlogPosting'),
 	FormEngine: (_props: any) => React.createElement(

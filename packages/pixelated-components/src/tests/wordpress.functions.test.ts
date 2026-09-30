@@ -15,13 +15,61 @@ const {
   photonToOriginalUrl,
   mapWordPressToBlogPosting,
   getWordPressItemImages,
-  getWordPressCategories
+  getWordPressCategories,
+  createWordPressDraft
 } = await import('../components/integrations/wordpress.functions');
 
 describe('WordPress Functions', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mockSmartFetch.mockResolvedValue({ posts: [] });
+  });
+
+  describe('createWordPressDraft', () => {
+    it('should create a draft with authenticated WordPress request data', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ ID: 42, status: 'draft' });
+
+      const result = await createWordPressDraft({
+        site: 'blog.example.com',
+        apiToken: 'token',
+        baseURL: 'https://public-api.wordpress.com/rest/v1/sites/',
+        title: 'Draft title',
+        content: '<p>Draft content</p>',
+        excerpt: 'Draft excerpt'
+      });
+
+      expect(result).toEqual({ ID: 42, status: 'draft' });
+      expect(mockSmartFetch).toHaveBeenCalledWith(
+        'https://public-api.wordpress.com/rest/v1/sites/blog.example.com/posts/new',
+        {
+          retries: 0,
+          requestInit: {
+            method: 'POST',
+            headers: {
+              Authorization: 'Bearer token',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              status: 'draft',
+              title: 'Draft title',
+              content: '<p>Draft content</p>',
+              excerpt: 'Draft excerpt'
+            })
+          }
+        }
+      );
+    });
+
+    it('should reject incomplete draft input before making a request', async () => {
+      await expect(createWordPressDraft({
+        site: 'blog.example.com',
+        apiToken: '',
+        title: 'Draft title',
+        content: 'Draft content'
+      })).rejects.toThrow('WordPress draft requires site, apiToken, title, and content');
+
+      expect(mockSmartFetch).not.toHaveBeenCalled();
+    });
   });
 
   describe('photonToOriginalUrl', () => {

@@ -3,7 +3,7 @@
 import React from 'react';
 import { PageSection, FAQ } from '@pixelated-tech/components';
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import faqsData from '@/app/data/faqs.json';
+import faqsData from './faqs.json';
 
 export default function FAQPage() {
 	return (

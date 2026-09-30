@@ -38,7 +38,6 @@ import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
 import AboutPage from '@/app/(pages)/about/page';
 import BlogPage from '@/app/(pages)/blog/page';
-import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
 import ContactPage from '@/app/(pages)/contact/page';
 import FaqsPage from '@/app/(pages)/faqs/page';
 import ProjectsPage from '@/app/(pages)/projects/page';
@@ -185,13 +184,6 @@ describe('Palmetto Epoxy coverage', () => {
 
 	runCommonMarkdownPageCoverage({
 		pages: [
-			{
-				name: 'Blog Calendar',
-				Component: BlogCalendarPage,
-				markdownTestId: 'markdown-container',
-				loadingText: 'Loading...',
-				errorText: 'Error: Calendar load failed',
-			},
 			{
 				name: 'Updates',
 				Component: UpdatesPage,

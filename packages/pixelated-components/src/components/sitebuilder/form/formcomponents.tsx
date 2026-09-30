@@ -68,6 +68,7 @@ const useFormComponent = (props: any) => {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 		// Determine the value (checkbox vs other)
 		const target = event.target;
+		target.setCustomValidity('');
 		const value = target.type === 'checkbox' ? ((target as HTMLInputElement).checked ? target.value : '') : event.target.value;
 
 		// Call custom onChange handler synchronously so controlled inputs update immediately
@@ -992,6 +993,7 @@ function FormRadioOption(props: FormRadioOptionType) {
 	const isChecked = props.parent && props.parent.checked === props.value;
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		e.target.setCustomValidity('');
 		if (props.parent && typeof props.parent.onChange === 'function') {
 			props.parent.onChange(props.value);
 		}
@@ -1118,6 +1120,7 @@ function FormCheckboxOption(props: FormCheckboxOptionType) {
 		? { checked: isChecked }
 		: { defaultChecked: Boolean(props.selected) };
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		e.target.setCustomValidity('');
 		if (props.parent && typeof props.parent.onChange === 'function') {
 			const currentChecked = props.parent.checked || [];
 			let newChecked;

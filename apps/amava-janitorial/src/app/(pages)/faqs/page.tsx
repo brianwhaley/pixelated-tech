@@ -3,7 +3,7 @@
 import React from 'react';
 import { PageSection, PageTitleHeader, FAQ } from '@pixelated-tech/components';
 import { PageHero } from '@/app/elements/page-hero';
-import faqsData from '@/app/data/faqs.json';
+import faqsData from './faqs.json';
 
 export default function FAQPage() {
 	return (

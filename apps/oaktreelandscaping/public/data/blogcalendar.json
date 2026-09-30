@@ -1,0 +1,910 @@
+{
+  "blogCalendarConfig": {
+    "cadence": "weekly",
+    "defaultStatus": "",
+    "criteria": {
+      "contentRules": [
+        "Each post must have 1500 words, with an intro, at lest 3 paragraphs of content, and conclusion / wrap up. Each paragraph must be a minimum of 5 sentences",
+        "After the conclusion of each post, add a call to action to sign up for a free quote with a link to the url https://www.oaktree-landscaping.com/contact",
+        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced.",
+        "Add links to other blog posts or other content on oaktree-landscaping.com, particularly other blog posts on https://blog.oaktree-landscaping.com",
+        "Use a tone of confidence, customer focus, and quality , an expert in the field, and straightforward language",
+        "target content relevant to both residential and commercial customers"
+      ]
+    }
+  },
+  "blogCalendar": [
+    {
+      "id": 1,
+      "targetPublishDate": "",
+      "title": "The ROI of Sustainable Landscaping for Commercial Properties",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 2,
+      "targetPublishDate": "",
+      "title": "Managing Large-Scale Irrigation for Water Conservation",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 3,
+      "targetPublishDate": "",
+      "title": "For Charleston - Historic Garden Preservation",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 4,
+      "targetPublishDate": "",
+      "title": "For Charleston - Urban Green Spaces",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 5,
+      "targetPublishDate": "",
+      "title": "For Savannah - Historic Square Maintenance",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 6,
+      "targetPublishDate": "",
+      "title": "For Savannah - Grand Estate Management",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 7,
+      "targetPublishDate": "",
+      "title": "The Spring Cleanup Checklist - De-thatching, clearing winter debris, and \"waking up\" the yard.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 8,
+      "targetPublishDate": "",
+      "title": "Bluffton Soil 101 - Why soil testing in March is the secret to a green July.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 9,
+      "targetPublishDate": "",
+      "title": "Mulching: More Than Just Looks - Why pine straw or mulch is vital for moisture retention.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 10,
+      "targetPublishDate": "",
+      "title": "Spring Planting: Color for the Coast - Top 5 annuals that thrive in Bluffton (e.g., Zinnias, Lantana).",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 11,
+      "targetPublishDate": "",
+      "title": "Irrigation System Audit - Checking for leaks and adjusting timers before the dry spell.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 12,
+      "targetPublishDate": "",
+      "title": "The \"Crape Murder\" Warning - How to properly prune Crape Myrtles without ruining them.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 13,
+      "targetPublishDate": "",
+      "title": "Turf Wars: Bermuda vs. St. Augustine - Helping clients choose the right grass for their specific lot.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 14,
+      "targetPublishDate": "",
+      "title": "Fire Ant Prevention - Early season treatments to keep the \"sting\" out of your lawn.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 15,
+      "targetPublishDate": "",
+      "title": "Native Plants of the Lowcountry - Highlighting Sabal Palmettos and Live Oaks for reliability.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 16,
+      "targetPublishDate": "",
+      "title": "Commercial Curb Appeal - How landscaping impacts property value for Bluffton businesses.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 17,
+      "targetPublishDate": "",
+      "title": "Palmetto Care & Trimming - When and how to trim \"boots\" and brown fronds correctly.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 18,
+      "targetPublishDate": "",
+      "title": "Fertilizing for Success - The right N-P-K ratios for South Carolina spring growth.",
+      "notes": [],
+      "status": "published"
+    },
+    {
+      "id": 19,
+      "targetPublishDate": "",
+      "title": "Transitioning Your Pots - Swapping winter pansies for heat-tolerant summer containers.",
+      "notes": [
+        "Focus: Dealing with extreme heat, afternoon thunderstorms, and pest pressure.*"
+      ],
+      "status": "published"
+    },
+    {
+      "id": 20,
+      "targetPublishDate": "",
+      "title": "Beating the Heat: Watering Tips - The best time of day to water to prevent evaporation and fungus.",
+      "notes": [],
+      "status": "draft"
+    },
+    {
+      "id": 21,
+      "targetPublishDate": "",
+      "title": "Chinch Bugs & Mole Crickets - How to spot the early signs of Summer’s worst lawn destroyers.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 22,
+      "targetPublishDate": "",
+      "title": "Mowing Height Matters - Why keeping your grass longer in July saves your root system.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 23,
+      "targetPublishDate": "",
+      "title": "Hurricane Season Prep - Trimming overhanging limbs to protect roofs before storm season.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 24,
+      "targetPublishDate": "",
+      "title": "Mosquito Control in the Garden - Eliminating standing water and plants that help (or hurt).",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 25,
+      "targetPublishDate": "",
+      "title": "Summer Weeds: The Sedge Fight - How to identify and treat Nut Sedge in wet Bluffton soil.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 26,
+      "targetPublishDate": "",
+      "title": "Outdoor Living: Patios & Paths - Hardscape ideas to enjoy the backyard during humid nights.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 27,
+      "targetPublishDate": "",
+      "title": "The \"Dog Days\" Recovery - How to revive a lawn that’s looking \"toasted\" in August.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 28,
+      "targetPublishDate": "",
+      "title": "Commercial Safety: Walkways - Reducing trip hazards with tight edging and debris clearing.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 29,
+      "targetPublishDate": "",
+      "title": "Heat-Hardy Shrubs - Featuring Oleander, Hibiscus, and Loropetalum.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 30,
+      "targetPublishDate": "",
+      "title": "Landscape Lighting - Improving security and beauty for long summer evenings.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 31,
+      "targetPublishDate": "",
+      "title": "Drainage Solutions - French drains and grading to handle Lowcountry \"washouts.\"",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 32,
+      "targetPublishDate": "",
+      "title": "Mid-Summer Pruning Guide - What to cut back now and what to leave alone until fall.",
+      "notes": [
+        "Focus: Recovery, aeration, and the best time for major planting.*"
+      ],
+      "status": ""
+    },
+    {
+      "id": 33,
+      "targetPublishDate": "",
+      "title": "Why Fall is for Planting - Why SC trees/shrubs prefer being planted in cooler soil.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 34,
+      "targetPublishDate": "",
+      "title": "Aeration & Overseeding - Relieving soil compaction after a busy summer of foot traffic.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 35,
+      "targetPublishDate": "",
+      "title": "Fall Cleanup: The Leaf Battle - Why leaving leaves on your lawn can cause \"Snow Mold.\"",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 36,
+      "targetPublishDate": "",
+      "title": "Winterizing Your Irrigation - Adjusting for the shorter days and cooler temperatures.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 37,
+      "targetPublishDate": "",
+      "title": "Cool Weather Color: Pansies - Planting for color that lasts through the \"winter.\"",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 38,
+      "targetPublishDate": "",
+      "title": "Deer Resistance in Bluffton - Plants that the local deer population (usually) won't eat.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 39,
+      "targetPublishDate": "",
+      "title": "The \"Brown-Out\": Dormancy - Managing expectations as warm-season grasses go to sleep.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 40,
+      "targetPublishDate": "",
+      "title": "Pruning Evergreens - Shaping Hollies and Boxwoods for a crisp winter look.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 41,
+      "targetPublishDate": "",
+      "title": "Pre-Emergent Herbicides - Stopping winter weeds (like Henbit) before they sprout.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 42,
+      "targetPublishDate": "",
+      "title": "Attracting Winter Birds - Landscaping for wildlife with berry-producing plants.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 43,
+      "targetPublishDate": "",
+      "title": "Commercial Property Prep - Preparing retail centers for holiday foot traffic.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 44,
+      "targetPublishDate": "",
+      "title": "The Beauty of Muhly Grass - Why Pink Muhly Grass is a Lowcountry fall staple.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 45,
+      "targetPublishDate": "",
+      "title": "Thanksgiving Curb Appeal - Quick tips to make the front entrance pop for visitors.",
+      "notes": [
+        "Focus: Hardscapes, tool maintenance, and big-picture design.*"
+      ],
+      "status": ""
+    },
+    {
+      "id": 46,
+      "targetPublishDate": "",
+      "title": "Frost Protection Tips - How to protect tropicals when a \"Blue Norther\" hits.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 47,
+      "targetPublishDate": "",
+      "title": "Hardscape Winter Projects - Why winter is the best time to build a fire pit or wall.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 48,
+      "targetPublishDate": "",
+      "title": "Refining Your Design - Using the dormant season to plan a total backyard overhaul.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 49,
+      "targetPublishDate": "",
+      "title": "Tool Maintenance 101 - How Oaktree keeps gear sharp (and how you can too).",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 50,
+      "targetPublishDate": "",
+      "title": "Winter Weeds to Watch - Spotting and treating Poa Annua (Annual Bluegrass).",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 51,
+      "targetPublishDate": "",
+      "title": "The Architecture of Trees - Identifying dead or dangerous limbs while leaves are gone.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 52,
+      "targetPublishDate": "",
+      "title": "Commercial ROI Review - Why professional maintenance pays for itself in asset value.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 53,
+      "targetPublishDate": "",
+      "title": "Mulching for Warmth - Insulating root systems against occasional freezes.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 54,
+      "targetPublishDate": "",
+      "title": "Planning Your Veggie Garden - Getting ready for an early March spring planting.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 55,
+      "targetPublishDate": "",
+      "title": "The Reliable Camellia - Celebrating the star of the South Carolina winter garden.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 56,
+      "targetPublishDate": "",
+      "title": "Soil pH: The Silent Killer - Why lime applications in February change your spring lawn.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 57,
+      "targetPublishDate": "",
+      "title": "Oaktree’s Year in Review - A highlight reel of local projects to build authority.",
+      "notes": [],
+      "status": ""
+    },
+    {
+      "id": 58,
+      "targetPublishDate": "",
+      "title": "Landscape Trends for 2026 - Sustainability, native plants, and smart irrigation.",
+      "notes": [
+        "**Location:** Bluffton, South Carolina",
+        "**Frequency:** 1 Post per Week (52 Total)",
+        "This 52-week calendar is designed to provide high-value, expert content that positions Oaktree Landscaping as a strategic partner for commercial property managers. Each post balances operational efficiency with aesthetic excellence to ensure a high-performing landscape year-round.",
+        "Focus: Growth, Curb Appeal, and Proactive Planning"
+      ],
+      "status": ""
+    },
+    {
+      "id": 59,
+      "targetPublishDate": "",
+      "title": "Bluffton Soil 101 - Why Soil Testing in March is the Secret to a Green July",
+      "notes": [
+        "Learn how early nutrient and pH analysis prevents summer turf failure and optimizes fertilizer spend."
+      ],
+      "status": "published"
+    },
+    {
+      "id": 60,
+      "targetPublishDate": "",
+      "title": "The \"First Impression\" Audit - A Property Manager’s Guide to Curb Appeal",
+      "notes": [
+        "A step-by-step checklist to evaluate your property’s exterior through the eyes of a high-value tenant or client."
+      ],
+      "status": ""
+    },
+    {
+      "id": 61,
+      "targetPublishDate": "",
+      "title": "Spring Irrigation Start-Ups - Preventing Costly Leaks and System Failure",
+      "notes": [
+        "Essential procedures for re-activating commercial systems while identifying minor repairs before they become emergencies."
+      ],
+      "status": ""
+    },
+    {
+      "id": 62,
+      "targetPublishDate": "",
+      "title": "Scaling Curb Appeal - How Seasonal Color Rotations Drive Retail Traffic",
+      "notes": [
+        "The science of visual marketing: using high-impact floral displays to attract and retain customers in shopping centers."
+      ],
+      "status": ""
+    },
+    {
+      "id": 63,
+      "targetPublishDate": "",
+      "title": "Mulch vs. Pine Straw - Calculating the Best ROI for Lowcountry Commercial Beds",
+      "notes": [
+        "A straightforward comparison of materials based on longevity, aesthetics, and moisture retention for South Carolina landscapes."
+      ],
+      "status": "published"
+    },
+    {
+      "id": 64,
+      "targetPublishDate": "",
+      "title": "Sustainable Weed Control - Pre-Emergent Strategies for the Eco-Conscious Campus",
+      "notes": [
+        "How to stop invasive species before they sprout using environmentally responsible, proactive methods."
+      ],
+      "status": ""
+    },
+    {
+      "id": 65,
+      "targetPublishDate": "",
+      "title": "The Psychology of Landscape - How Greenery Boosts Workplace Productivity",
+      "notes": [
+        "Exploring the \"Biophilia Effect\" and why high-quality outdoor spaces are a competitive advantage for office parks."
+      ],
+      "status": "published"
+    },
+    {
+      "id": 66,
+      "targetPublishDate": "",
+      "title": "Hardscape Refresh - Using Pressure Washing and Paver Repair as a Liability Shield",
+      "notes": [
+        "Mitigating slip-and-fall risks by restoring the safety and appearance of walkways, entries, and parking lots."
+      ],
+      "status": ""
+    },
+    {
+      "id": 67,
+      "targetPublishDate": "",
+      "title": "Native Planting for 2026 - Reducing Maintenance Overhead with Lowcountry Flora",
+      "notes": [
+        "Why switching to indigenous species is the most effective way to lower long-term water and labor costs."
+      ],
+      "status": "published"
+    },
+    {
+      "id": 68,
+      "targetPublishDate": "",
+      "title": "Designing \"Outdoor Rooms\" - Maximizing Unused Square Footage for Tenant Amenities",
+      "notes": [
+        "Turning vacant lawn areas into functional break zones, meeting spaces, and dining courtyards."
+      ],
+      "status": ""
+    },
+    {
+      "id": 69,
+      "targetPublishDate": "",
+      "title": "The Manager’s Guide to Landscape Budgeting - Strategic Planning for 2027",
+      "notes": [
+        "Expert advice on aligning landscape capital improvements with your property’s long-term financial goals."
+      ],
+      "status": ""
+    },
+    {
+      "id": 70,
+      "targetPublishDate": "",
+      "title": "Palm Care Essentials - Professional Pruning Standards for Coastal Estates",
+      "notes": [
+        "Ensuring the structural integrity and aesthetic health of Savannah and Hilton Head’s most iconic trees."
+      ],
+      "status": ""
+    },
+    {
+      "id": 71,
+      "targetPublishDate": "",
+      "title": "Pre-Season Hurricane Prep - Assessing Canopy Health and Structural Risk",
+      "notes": [
+        "Proactive tree care and debris planning to minimize property damage during the Atlantic storm season.",
+        "Focus: Water Conservation, Heat Stress, and Tenant Experience"
+      ],
+      "status": ""
+    },
+    {
+      "id": 72,
+      "targetPublishDate": "",
+      "title": "Smart Irrigation - How Weather-Based Controllers Slash Utility Bills",
+      "notes": [
+        "An analysis of cloud-connected systems that adjust watering in real-time, saving properties up to 40% on water costs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 73,
+      "targetPublishDate": "",
+      "title": "Managing Large-Scale Irrigation - Precision Delivery for Sprawling Properties",
+      "notes": [
+        "Technical strategies for maintaining uniform landscape health across multi-acre commercial developments."
+      ],
+      "status": ""
+    },
+    {
+      "id": 74,
+      "targetPublishDate": "",
+      "title": "Turf Health in 90-Degree Heat - The Science of Commercial Mowing Heights",
+      "notes": [
+        "How adjusting maintenance schedules during heat waves protects grass roots and prevents \"burnout.\""
+      ],
+      "status": ""
+    },
+    {
+      "id": 75,
+      "targetPublishDate": "",
+      "title": "Identifying \"Hot Zones\" - Solving Landscape Stress Near Asphalt and Concrete",
+      "notes": [
+        "Strategies for mitigating the \"Urban Heat Island\" effect in parking lot islands and sun-drenched entryways."
+      ],
+      "status": ""
+    },
+    {
+      "id": 76,
+      "targetPublishDate": "",
+      "title": "Water Rights & Regulations - Navigating Lowcountry Restrictions in 2026",
+      "notes": [
+        "A straightforward guide to staying compliant with Beaufort and Chatham County water ordinances."
+      ],
+      "status": ""
+    },
+    {
+      "id": 77,
+      "targetPublishDate": "",
+      "title": "Integrated Pest Management (IPM) - Protecting Your Landscape Without Heavy Chemicals",
+      "notes": [
+        "A customer-focused look at biological controls and targeted treatments that keep landscapes healthy and safe."
+      ],
+      "status": ""
+    },
+    {
+      "id": 78,
+      "targetPublishDate": "",
+      "title": "The \"Oasis\" Effect - Utilizing Water Features to Cool Commercial Courtyards",
+      "notes": [
+        "How fountains and falls improve air quality and provide natural cooling for outdoor tenant spaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 79,
+      "targetPublishDate": "",
+      "title": "Mid-Summer Safety Audit - Eliminating Trip Hazards and Overgrown Sightlines",
+      "notes": [
+        "A mid-year review of visibility at intersections and the condition of all pedestrian pathways."
+      ],
+      "status": ""
+    },
+    {
+      "id": 80,
+      "targetPublishDate": "",
+      "title": "Drought-Resistant Strategies - Transitioning High-Thirst Zones to Xeriscaping",
+      "notes": [
+        "Reducing the burden on your irrigation system by modernizing \"problem areas\" with resilient design."
+      ],
+      "status": ""
+    },
+    {
+      "id": 81,
+      "targetPublishDate": "",
+      "title": "Landscape Lighting for Security - Reducing Liability After Sunset",
+      "notes": [
+        "The intersection of aesthetics and safety: using LED technology to illuminate dark corners and entrances."
+      ],
+      "status": ""
+    },
+    {
+      "id": 82,
+      "targetPublishDate": "",
+      "title": "Summer Storm Response - Oaktree’s Emergency Debris Removal Protocol",
+      "notes": [
+        "A look at our rapid-response capabilities to keep businesses open after heavy Lowcountry thunderstorms."
+      ],
+      "status": ""
+    },
+    {
+      "id": 83,
+      "targetPublishDate": "",
+      "title": "Employee Well-being - Creating Biophilic Spaces in Healthcare and Office Settings",
+      "notes": [
+        "How specific landscape elements can reduce patient stress and improve cognitive function in the workplace."
+      ],
+      "status": ""
+    },
+    {
+      "id": 84,
+      "targetPublishDate": "",
+      "title": "Mid-Year Performance Review - Assessing Landscape ROI Against Annual Goals",
+      "notes": [
+        "A guide for property managers to evaluate their service contract and plan for the second half of the year.",
+        "Focus: Restoration, Storm Prep, and Long-term Health"
+      ],
+      "status": ""
+    },
+    {
+      "id": 85,
+      "targetPublishDate": "",
+      "title": "Fall Fertilization - Helping Turf Recover from Summer Heat Stress",
+      "notes": [
+        "Preparing root systems for dormancy by replenishing nutrients lost during the peak growing season."
+      ],
+      "status": ""
+    },
+    {
+      "id": 86,
+      "targetPublishDate": "",
+      "title": "Aeration and Overseeding - Building a Dense, Durable Winter Turf",
+      "notes": [
+        "Why mechanical aeration is essential for soil health and maintaining a professional appearance through winter."
+      ],
+      "status": ""
+    },
+    {
+      "id": 87,
+      "targetPublishDate": "",
+      "title": "Hurricane Season Peak - Tree Cabling and Hazard Mitigation Strategies",
+      "notes": [
+        "Expert techniques for stabilizing large specimen trees and protecting nearby structures from high winds."
+      ],
+      "status": ""
+    },
+    {
+      "id": 88,
+      "targetPublishDate": "",
+      "title": "Stormwater Management - Clearing Bioswales and Drains for Fall Precipitation",
+      "notes": [
+        "Ensuring your green infrastructure is ready to handle heavy rains and prevent parking lot flooding."
+      ],
+      "status": ""
+    },
+    {
+      "id": 89,
+      "targetPublishDate": "",
+      "title": "The Commercial Tree Inventory - Why Every PM Needs a Multi-Year Canopy Plan",
+      "notes": [
+        "Treating trees as long-term assets by tracking health, age, and maintenance requirements digitally."
+      ],
+      "status": ""
+    },
+    {
+      "id": 90,
+      "targetPublishDate": "",
+      "title": "Fall Color Rotations - Transitioning Entryways for the Q4 Holiday Season",
+      "notes": [
+        "Replacing summer annuals with frost-hardy varieties to maintain a vibrant, welcoming atmosphere."
+      ],
+      "status": ""
+    },
+    {
+      "id": 91,
+      "targetPublishDate": "",
+      "title": "Soil Compaction Solutions - Keeping High-Traffic Pedestrian Areas Lush",
+      "notes": [
+        "Techniques for managing \"desire paths\" and areas where heavy foot traffic degrades soil and turf."
+      ],
+      "status": ""
+    },
+    {
+      "id": 92,
+      "targetPublishDate": "",
+      "title": "Leaf Management - Preventing Drain Clogs and Slippery Walkways",
+      "notes": [
+        "Efficient removal strategies to protect site safety and prevent the decay of underlying turf."
+      ],
+      "status": ""
+    },
+    {
+      "id": 93,
+      "targetPublishDate": "",
+      "title": "Native Hardscapes - Using Local Materials for Low-Maintenance Durability",
+      "notes": [
+        "The benefits of using tabby, regional stone, and pine for paths that fit the Lowcountry aesthetic."
+      ],
+      "status": ""
+    },
+    {
+      "id": 94,
+      "targetPublishDate": "",
+      "title": "Enhancing Signage Visibility - Strategic Pruning for Brand Clarity",
+      "notes": [
+        "Ensuring that your tenants' signage is visible to passing traffic through expert canopy lifting."
+      ],
+      "status": ""
+    },
+    {
+      "id": 95,
+      "targetPublishDate": "",
+      "title": "Liability and the Lowcountry - Preventing Slip-and-Falls on Wet Organic Debris",
+      "notes": [
+        "Addressing the unique safety challenges of wet pine needles and moss on commercial walkways."
+      ],
+      "status": ""
+    },
+    {
+      "id": 96,
+      "targetPublishDate": "",
+      "title": "Transitioning to Dormancy - What to Expect as the \"Green\" Slows Down",
+      "notes": [
+        "Educating tenants and stakeholders on the natural seasonal shifts of Southern landscapes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 97,
+      "targetPublishDate": "",
+      "title": "Holiday Lighting Prep - Coordinating Professional Installs for Retail Centers",
+      "notes": [
+        "A guide to safely integrating festive displays into your existing landscape and electrical infrastructure.",
+        "Focus: Maintenance, Hardscapes, and Future Strategy"
+      ],
+      "status": ""
+    },
+    {
+      "id": 98,
+      "targetPublishDate": "",
+      "title": "Dormant Pruning - Structuring Trees for Long-term Health and Safety",
+      "notes": [
+        "Utilizing the winter months to perform heavy pruning that promotes stronger spring growth."
+      ],
+      "status": ""
+    },
+    {
+      "id": 99,
+      "targetPublishDate": "",
+      "title": "Hardscape Longevity - Protecting Masonry from Winter Moisture Damage",
+      "notes": [
+        "Strategies for sealing and maintaining stone and brick to prevent cracking and \"heaving.\""
+      ],
+      "status": ""
+    },
+    {
+      "id": 100,
+      "targetPublishDate": "",
+      "title": "Planning for 2027 - Aligning Landscape Enhancements with Property Goals",
+      "notes": [
+        "A collaborative look at how to evolve your outdoor spaces to meet shifting market demands."
+      ],
+      "status": ""
+    },
+    {
+      "id": 101,
+      "targetPublishDate": "",
+      "title": "Winter Weed Control - Managing \"Poa Annua\" Before the Spring Bloom",
+      "notes": [
+        "Aggressive strategies for keeping winter weeds from detracting from your property’s professional image."
+      ],
+      "status": ""
+    },
+    {
+      "id": 102,
+      "targetPublishDate": "",
+      "title": "Drainage Correction - Why Winter is the Ideal Time for Grading and Pipe Work",
+      "notes": [
+        "Taking advantage of dormant turf to install permanent drainage solutions with minimal disruption."
+      ],
+      "status": ""
+    },
+    {
+      "id": 103,
+      "targetPublishDate": "",
+      "title": "Sustainability Reporting - How Oaktree Helps Your Property Meet ESG Goals",
+      "notes": [
+        "Documenting water savings and carbon sequestration for corporate environmental reports."
+      ],
+      "status": ""
+    },
+    {
+      "id": 104,
+      "targetPublishDate": "",
+      "title": "Cold-Snap Protection - Safeguarding Tropicals and Irrigation from Freezes",
+      "notes": [
+        "Emergency protocols for protecting sensitive coastal plants during rare but damaging frost events."
+      ],
+      "status": ""
+    },
+    {
+      "id": 105,
+      "targetPublishDate": "",
+      "title": "Accessibility Audit - Ensuring ADA Compliance in All Outdoor Walkways",
+      "notes": [
+        "Reviewing slopes, clearances, and surfaces to ensure your landscape is inclusive and compliant."
+      ],
+      "status": ""
+    },
+    {
+      "id": 106,
+      "targetPublishDate": "",
+      "title": "The ROI of Low-Maintenance Design - Reducing Your \"Per-Square-Foot\" Cost",
+      "notes": [
+        "Analyzing the long-term savings of simplifying complex beds and modernizing maintenance-heavy zones."
+      ],
+      "status": ""
+    },
+    {
+      "id": 107,
+      "targetPublishDate": "",
+      "title": "Modernizing Your Entryway - Simple Upgrades for a 2027 Competitive Edge",
+      "notes": [
+        "High-impact, low-cost \"facelift\" ideas to keep your property looking fresh and modern."
+      ],
+      "status": ""
+    },
+    {
+      "id": 108,
+      "targetPublishDate": "",
+      "title": "Local Business Partnerships - How Your Landscape Supports the Regional Economy",
+      "notes": [
+        "A look at how Oaktree works with local growers and artisans to build community-rooted spaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 109,
+      "targetPublishDate": "",
+      "title": "Year in Review - Celebrating the 2026 Landscape Successes of Our Clients",
+      "notes": [
+        "Highlighting the properties that achieved the best aesthetic and financial results this year."
+      ],
+      "status": ""
+    },
+    {
+      "id": 110,
+      "targetPublishDate": "",
+      "title": "The 2027 Outlook - New Trends in Commercial Outdoor Space Management",
+      "notes": [
+        "Looking ahead to the next generation of smart tech and sustainable design for the Lowcountry.",
+        "**Case Studies:** Once a month, replace a standard topic with a \"Project Spotlight.\" Show a before-and-after of a local Bluffton neighborhood (like Palmetto Bluff or Sun City) to show real-world results.",
+        "**The \"Local\" Factor:** Mention specific Bluffton pests (Alligators, Chinch bugs) and weather patterns to prove you aren't a national \"cookie-cutter\" company.",
+        "**Commercial Insight:** Always include a \"Property Manager's Note\" in relevant posts to address liability, tenant safety, and ROI.",
+        "**Visuals:** Always pair these posts with high-quality photos of your actual crew and equipment to demonstrate reliability and professionalism."
+      ],
+      "status": ""
+    }
+  ]
+}

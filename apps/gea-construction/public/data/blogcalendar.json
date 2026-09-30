@@ -1,0 +1,641 @@
+{
+  "blogCalendarConfig": {
+    "cadence": "weekly",
+    "defaultStatus": "",
+    "criteria": {
+      "contentRules": [
+        "Each post must have 1000 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences",
+        "After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.geaconstruction.net/contact",
+        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..",
+        "Add links to other blog posts or other content on geaconstruction.net",
+        "Use a tone of empthy, understanding, expertise, and straightforward language"
+      ]
+    }
+  },
+  "blogCalendar": [
+    {
+      "id": 1,
+      "targetPublishDate": "",
+      "title": "Refreshing Your Home for the New Year: Quick Punch List Repairs",
+      "notes": [
+        "Handyman & Repairs",
+        "Bluffton (*The Farm at Buckwalter*)",
+        "Drywall patching, fixture updates, door alignments",
+        "Older family homes in *The Farm* experience noticeable drywall cracking and door misalignments from seasonal soil settling; this post targets quick interior tune-ups after heavy holiday foot traffic."
+      ],
+      "status": ""
+    },
+    {
+      "id": 2,
+      "targetPublishDate": "",
+      "title": "Transforming Your Master Suite: Luxury Bath Design Trends",
+      "notes": [
+        "Bathroom Remodeling",
+        "Hilton Head (*Sea Pines Resort*)",
+        "Custom tile walk-in showers & frameless glass",
+        "Many *Sea Pines* properties are older 1970s/80s builds or luxury vacation rentals needing bath overhauls from cramped tub setups to open glass enclosures that appeal to high-end renters and buyers."
+      ],
+      "status": ""
+    },
+    {
+      "id": 3,
+      "targetPublishDate": "",
+      "title": "Open-Concept Living: Kitchen Remodeling for Entertaining",
+      "notes": [
+        "Kitchen Remodeling",
+        "Beaufort (*Habersham*)",
+        "Solid hardwood cabinetry, island prep, layout expansion",
+        "*Habersham* architecture emphasizes traditional Lowcountry craftsmanship; this post details opening up traditional closed kitchen walls into open prep-and-cook spaces while respecting historical aesthetics."
+      ],
+      "status": ""
+    },
+    {
+      "id": 4,
+      "targetPublishDate": "",
+      "title": "Lowering Winter Drafts: Impact Windows vs. High-Utility Bills",
+      "notes": [
+        "Doors & Windows",
+        "Hardeeville (*Riverton Pointe*)",
+        "Energy efficiency, Low-E glass, draft elimination",
+        "Newer homes in fast-growing *Riverton Pointe* often come with builder-grade glass; this post focuses on upgrading to high-efficiency Low-E impact glass to cut winter heating and summer cooling loads."
+      ],
+      "status": ""
+    },
+    {
+      "id": 5,
+      "targetPublishDate": "",
+      "title": "Navigating Home Inspection Punch Lists Before Closing",
+      "notes": [
+        "Handyman & Repairs",
+        "Okatie (*Sun City Hilton Head*)",
+        "Real estate closing repairs, inspection compliance",
+        "With high home turnover in *Sun City*, sellers face tight closing deadlines. This post targets rapid, compliant handyman punch-list completions so local realtors can close sales on schedule."
+      ],
+      "status": ""
+    },
+    {
+      "id": 6,
+      "targetPublishDate": "",
+      "title": "Converting Outdated Tubs to Modern Walk-In Tile Showers",
+      "notes": [
+        "Bathroom Remodeling",
+        "Ridgeland (*Bayshore*)",
+        "Tub-to-shower conversions, zero-barrier accessibility",
+        "Houses in *Bayshore* built in the late 90s/early 2000s are ripe for bath updates, specifically replacing outdated fiberglass tub inserts with modern, low-threshold custom tile walk-ins."
+      ],
+      "status": ""
+    },
+    {
+      "id": 7,
+      "targetPublishDate": "",
+      "title": "Designing Your Dream Culinary Kitchen in the Lowcountry",
+      "notes": [
+        "Kitchen Remodeling",
+        "Bluffton (*Palmetto Bluff*)",
+        "Quartz countertops, high-end appliance integration",
+        "High-net-worth estate homes in *Palmetto Bluff* require commercial-grade appliances and custom quartz island designs that pass strict Architectural Review Board (ARB) internal standards."
+      ],
+      "status": ""
+    },
+    {
+      "id": 8,
+      "targetPublishDate": "",
+      "title": "Why Pre-Move-In Remodeling Saves Time and Stress",
+      "notes": [
+        "Kitchen / Bath / Repairs",
+        "Hardeeville (*Latitude Margaritaville*)",
+        "10% Pre-Move-In Discount for home buyers",
+        "Rapid growth in *Latitude Margaritaville* brings out-of-state buyers who want kitchen or bath upgrades completed *before* moving their belongings in, highlighting the **10% Pre-Move-In Discount**."
+      ],
+      "status": ""
+    },
+    {
+      "id": 9,
+      "targetPublishDate": "",
+      "title": "Stopping Wood Rot in Its Tracks: Synthetic PVC Trim Solutions",
+      "notes": [
+        "Handyman & Repairs",
+        "Hilton Head (*Hilton Head Plantation*)",
+        "Rot-proof PVC, coastal humidity defense, exterior trim",
+        "Heavily wooded, coastal properties in *Hilton Head Plantation* suffer severe exterior wood rot from salt air and shade moisture; this post highlights replacing decaying trim with permanent PVC."
+      ],
+      "status": ""
+    },
+    {
+      "id": 10,
+      "targetPublishDate": "",
+      "title": "Upgrading Interior Doors for Better Noise Reduction",
+      "notes": [
+        "Doors & Windows",
+        "Beaufort (*Dataw Island*)",
+        "Solid-core composite doors, interior hardware retrofits",
+        "Waterfront custom homes on *Dataw Island* benefit from upgrading hollow-core interior doors to heavy solid-core doors, dampening room-to-room noise for hosting visiting family."
+      ],
+      "status": ""
+    },
+    {
+      "id": 11,
+      "targetPublishDate": "",
+      "title": "Spa-Inspired Master Bathrooms: Heated Floors & Rain Showers",
+      "notes": [
+        "Bathroom Remodeling",
+        "Okatie (*Oldfield*)",
+        "Heated floor grids, multi-head rain showers, tile niches",
+        "Custom equestrian and riverfront estates in *Oldfield* lean into high-end luxury retreats; this post highlights installing radiant floor heating systems and multi-head rain showers."
+      ],
+      "status": ""
+    },
+    {
+      "id": 12,
+      "targetPublishDate": "",
+      "title": "Custom Hardwood vs. Semi-Custom Kitchen Cabinets",
+      "notes": [
+        "Kitchen Remodeling",
+        "Hilton Head (*Wexford*)",
+        "Solid wood cabinetry, soft-close hardware, custom milling",
+        "Deep-water lock harbour homes in *Wexford* demand high-end finishes; this post compares cabinet durability against coastal dampness and salt exposure for luxury yachting lifestyles."
+      ],
+      "status": ""
+    },
+    {
+      "id": 13,
+      "targetPublishDate": "",
+      "title": "Spring Real Estate Prep: Home Repairs That Boost Resale Value",
+      "notes": [
+        "Handyman & Repairs",
+        "Ridgeland (*The Enclave*)",
+        "Curb appeal, cosmetic fixes, buyer appeal",
+        "A spring guide for *The Enclave* homeowners prepping to list their homes, focusing on high-ROI touch-ups like front entryway restoration, pressure washing repair, and deck fixes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 14,
+      "targetPublishDate": "",
+      "title": "Preparing Your Windows and Doors for Coastal Storm Season",
+      "notes": [
+        "Doors & Windows",
+        "Hilton Head (*Palmetto Dunes*)",
+        "Impact-resistant coastal glass, DP ratings",
+        "Direct oceanfront properties in *Palmetto Dunes* face high wind zones; this post explains Design Pressure (DP) ratings and structural frame requirements for hurricane season prep."
+      ],
+      "status": ""
+    },
+    {
+      "id": 15,
+      "targetPublishDate": "",
+      "title": "Preventing Mold and Water Damage with Advanced Bath Systems",
+      "notes": [
+        "Bathroom Remodeling",
+        "Bluffton (*Colleton River Club*)",
+        "Schluter-KERDI waterproofing membranes, zero-rot subfloors",
+        "High coastal humidity in riverfront *Colleton River* homes makes hidden bathroom moisture destructive; this post focuses on underlying waterproofing membranes behind custom tilework."
+      ],
+      "status": ""
+    },
+    {
+      "id": 16,
+      "targetPublishDate": "",
+      "title": "Creating Seamless Indoor-Outdoor Transitions with Patio Doors",
+      "notes": [
+        "Doors & Windows",
+        "Beaufort (*Coosaw Point*)",
+        "Multi-panel bi-fold glass doors, sliding patio doors",
+        "*Coosaw Point* homes feature expansive porch vistas; this post covers replacing dated sliding glass doors with folding wall panels to blend indoor spaces with screened porches."
+      ],
+      "status": ""
+    },
+    {
+      "id": 17,
+      "targetPublishDate": "",
+      "title": "Kitchen Layout Ergonomics: Designing the Perfect Work Triangle",
+      "notes": [
+        "Kitchen Remodeling",
+        "Okatie (*Four Seasons at Carolina Oaks*)",
+        "Spatial optimization, center islands, low-VOC finishes",
+        "Modern 55+ active adult layouts in *Four Seasons* benefit from optimizing stove-sink-fridge distances and widening walkways to accommodate easy cooking and entertaining."
+      ],
+      "status": ""
+    },
+    {
+      "id": 18,
+      "targetPublishDate": "",
+      "title": "Remodeling vs. Repairing: Fixing Exterior Wood Rot",
+      "notes": [
+        "Handyman & Repairs",
+        "Hilton Head (*Spanish Wells*)",
+        "Borate preservatives, structural wood epoxies, PVC replacement",
+        "Mature oak canopies in *Spanish Wells* hold shade and ambient moisture, accelerating wood decay on fascia and porch columns; this post shows homeowners when to patch vs. replace."
+      ],
+      "status": ""
+    },
+    {
+      "id": 19,
+      "targetPublishDate": "",
+      "title": "Powder Room Makeovers: Maximizing Small Bathroom Spaces",
+      "notes": [
+        "Bathroom Remodeling",
+        "Hardeeville (*Hilton Head Lakes*)",
+        "Floating vanities, custom tile backsplashes, 7-10 day execution",
+        "Smaller guest half-baths in *Hilton Head Lakes* can be upgraded quickly; this post details fast turnarounds using wall-hung vanities to make compact footprints feel larger."
+      ],
+      "status": ""
+    },
+    {
+      "id": 20,
+      "targetPublishDate": "",
+      "title": "Upgrading Your Kitchen Backsplash: Ceramic, Glass & Stone",
+      "notes": [
+        "Kitchen Remodeling",
+        "Bluffton (*Berkeley Hall*)",
+        "Decorative tile backsplashes, low-maintenance sealants",
+        "*Berkeley Hall* luxury kitchen remodels often feature grand tile focal points behind cooking ranges; this post breaks down selecting grout sealers that resist cooking oil stains."
+      ],
+      "status": ""
+    },
+    {
+      "id": 21,
+      "targetPublishDate": "",
+      "title": "The Coastal Homeowner’s Guide to Door Weatherstripping",
+      "notes": [
+        "Doors & Windows",
+        "Ridgeland (*Hunt Club*)",
+        "Composite door frames, air-leak prevention, seals",
+        "Inland wind draftiness in rural *Hunt Club* developments can drive up energy bills; this post focuses on replacing worn door sweeps and frame seals before hot weather sets in."
+      ],
+      "status": ""
+    },
+    {
+      "id": 22,
+      "targetPublishDate": "",
+      "title": "Pre-Move-In Upgrades for Coastal Real Estate Buyers",
+      "notes": [
+        "All Services",
+        "Beaufort (*Islands of Beaufort*)",
+        "Working with local realtors, 10% Pre-Move-In Offer",
+        "Targeted at out-of-town buyers closing on waterfront properties in *Islands of Beaufort*, highlighting how performing renovations before furniture delivery prevents project delays."
+      ],
+      "status": ""
+    },
+    {
+      "id": 23,
+      "targetPublishDate": "",
+      "title": "Adding Crown Molding, Wainscoting, and Accent Walls",
+      "notes": [
+        "Handyman & Repairs",
+        "Okatie (*Lawton Station*)",
+        "Decorative trim carpentry, custom closet shelving",
+        "Modern production homes in *Lawton Station* often lack distinctive interior millwork; this post demonstrates how adding custom board-and-batten trim increases interior character."
+      ],
+      "status": ""
+    },
+    {
+      "id": 24,
+      "targetPublishDate": "",
+      "title": "Master Bath Vanity Configurations: Double Sinks & Quartz Tops",
+      "notes": [
+        "Bathroom Remodeling",
+        "Bluffton (*Belfair*)",
+        "Solid wood vanities, non-porous quartz surfaces",
+        "Remodeling primary baths in *Belfair* golf community homes, focusing on custom cabinetry configurations with dedicated makeup vanities and non-porous quartz tops."
+      ],
+      "status": ""
+    },
+    {
+      "id": 25,
+      "targetPublishDate": "",
+      "title": "The Impact of LED Task Lighting on Kitchen Workspaces",
+      "notes": [
+        "Kitchen Remodeling",
+        "Hilton Head (*Long Cove Club*)",
+        "High-efficiency LED task & accent lighting, under-cabinet light",
+        "Updating older, dim kitchen lighting schemes in *Long Cove Club* homes with layered LED configurations (under-cabinet task lights, dimmable toe-kick accents, and feature pendants)."
+      ],
+      "status": ""
+    },
+    {
+      "id": 26,
+      "targetPublishDate": "",
+      "title": "Mid-Year Home Safety Inspection: Hardware & Seals Check",
+      "notes": [
+        "Handyman & Repairs",
+        "Hardeeville (*Cobblestone at East Argent*)",
+        "Lock retrofits, caulking, minor structural touch-ups",
+        "A mid-year preventive checkup designed for new builds settling in *East Argent*, covering exterior window caulking checks, deadbolt adjustments, and hinge lubrication."
+      ],
+      "status": ""
+    },
+    {
+      "id": 27,
+      "targetPublishDate": "",
+      "title": "How Impact-Rated Windows Keep Your Home Cool in Summer",
+      "notes": [
+        "Doors & Windows",
+        "Hilton Head (*Indigo Run*)",
+        "Solar heat gain reduction, Low-E coatings, cooling bills",
+        "Addresses intense heat exposure on west-facing homes in *Indigo Run*, illustrating how Low-E glass blocks UV radiation and lowers HVAC run-time during peak July heat."
+      ],
+      "status": ""
+    },
+    {
+      "id": 28,
+      "targetPublishDate": "",
+      "title": "Easy-to-Clean Bath Surfaces: Stain-Resistant Grout and Tile",
+      "notes": [
+        "Bathroom Remodeling",
+        "Bluffton (*Hampton Lake*)",
+        "Non-porous porcelain, marble, effortless maintenance",
+        "Active families living in *Hampton Lake* tracking in sand and water need low-maintenance bathroom surfaces like epoxy grout and large-format porcelain tile."
+      ],
+      "status": ""
+    },
+    {
+      "id": 29,
+      "targetPublishDate": "",
+      "title": "Custom Pantry Solutions & Hidden Appliance Bays",
+      "notes": [
+        "Kitchen Remodeling",
+        "Beaufort (*Distant Island*)",
+        "Specialized pull-outs, custom range hoods, wine storage",
+        "Custom island kitchens on *Distant Island* frequently host large gatherings; this post covers walk-in pantry layouts and hidden appliance garages to keep counter space clear."
+      ],
+      "status": ""
+    },
+    {
+      "id": 30,
+      "targetPublishDate": "",
+      "title": "Tackling Drywall Cracks & Humidity-Induced Wall Damage",
+      "notes": [
+        "Handyman & Repairs",
+        "Ridgeland (*Log Hall Plantation*)",
+        "Premium drywall compounds, high-adhesion primers",
+        "Summer humidity surges cause structural expansion in *Log Hall Plantation* homes; this post addresses repairing tape-joint separation and ceiling drywall cracks."
+      ],
+      "status": ""
+    },
+    {
+      "id": 31,
+      "targetPublishDate": "",
+      "title": "Replacing Old Exterior Doors with Rot-Resistant Composites",
+      "notes": [
+        "Doors & Windows",
+        "Okatie (*Riverbend*)",
+        "Fiberglass door panels, heavy-duty weatherstripping",
+        "Wood front entry doors along the Okatie River deteriorate rapidly; this post covers replacing damaged wood entries with rot-proof fiberglass doors that mimic real wood grain."
+      ],
+      "status": ""
+    },
+    {
+      "id": 32,
+      "targetPublishDate": "",
+      "title": "Designing Curbless Walk-In Showers for Aging-in-Place",
+      "notes": [
+        "Bathroom Remodeling",
+        "Bluffton (*Sun City Hilton Head*)",
+        "Non-slip tiles, barrier-free entries, safety accessories",
+        "Specifically addresses *Sun City* residents wanting to eliminate shower curb trip hazards by re-pitching subfloors for zero-entry walk-in showers with stylish grab bars."
+      ],
+      "status": ""
+    },
+    {
+      "id": 33,
+      "targetPublishDate": "",
+      "title": "Durable Kitchen Countertops: Quartz vs. Marble vs. Granite",
+      "notes": [
+        "Kitchen Remodeling",
+        "Hilton Head (*Port Royal Plantation*)",
+        "Heavy culinary use durability, zero-odor materials",
+        "Oceanfront environments in *Port Royal* favor non-porous quartz surfaces over porous marble, avoiding chemical etching from salt spray and acidic citrus."
+      ],
+      "status": ""
+    },
+    {
+      "id": 34,
+      "targetPublishDate": "",
+      "title": "Realtor Punch List Execution: Closing Deals Without Delays",
+      "notes": [
+        "Handyman & Repairs",
+        "Hardeeville (*The Retreat at East Argent*)",
+        "Rapid 2 to 4-day turnarounds, inspector re-inspections",
+        "Rapid housing transactions in *East Argent* frequently stumble on inspection repair lists; this post targets sellers needing immediate professional repairs before closing."
+      ],
+      "status": ""
+    },
+    {
+      "id": 35,
+      "targetPublishDate": "",
+      "title": "Vinyl vs. Fiberglass vs. Aluminum-Clad Replacement Windows",
+      "notes": [
+        "Doors & Windows",
+        "Beaufort (*Cat Island*)",
+        "Coastal architectural styles, frame materials, durability",
+        "*Cat Island* homeowners balancing coastal salt protection with historic-looking architectural designs receive a breakdown of frame material longevity near coastal marshes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 36,
+      "targetPublishDate": "",
+      "title": "Protecting Subfloors Against Moisture and Coastal Humidity",
+      "notes": [
+        "Bathroom Remodeling",
+        "Okatie (*Eagle's Pointe*)",
+        "Subfloor leveling/reinforcement, rot prevention",
+        "Older golf community homes in *Eagle's Pointe* prone to undetected toilet or shower leaks receive guidance on inspecting and replacing rotted plywood subfloors before tiling."
+      ],
+      "status": ""
+    },
+    {
+      "id": 37,
+      "targetPublishDate": "",
+      "title": "Open Kitchen Islands: Multi-Functional Hubs for Family Living",
+      "notes": [
+        "Kitchen Remodeling",
+        "Bluffton (*Rose Dhu Creek*)",
+        "Oversized custom islands, seating overhangs",
+        "Estate properties in *Rose Dhu Creek* feature spacious footprints ideal for double-island designs or oversized prep islands with integrated sink and seating capacity."
+      ],
+      "status": ""
+    },
+    {
+      "id": 38,
+      "targetPublishDate": "",
+      "title": "Attic Access Ladders & Custom Storage Upgrades",
+      "notes": [
+        "Handyman & Repairs",
+        "Hilton Head (*Shipyard Plantation*)",
+        "Attic stairs, custom shelving, garage organization",
+        "Villa owners and single-family homeowners in *Shipyard* dealing with limited storage space receive ideas on pull-down aluminum attic stairs and elevated storage racking."
+      ],
+      "status": ""
+    },
+    {
+      "id": 39,
+      "targetPublishDate": "",
+      "title": "Lowering Home Insurance Premiums with Impact Windows",
+      "notes": [
+        "Doors & Windows",
+        "Beaufort (*Battery Point*)",
+        "Coastal insurance credits, wind resistance, storm safety",
+        "Beaufort County home insurance rates are climbing; this post explains how upgrading to wind-impact certified openings reduces annual windstorm insurance premiums."
+      ],
+      "status": ""
+    },
+    {
+      "id": 40,
+      "targetPublishDate": "",
+      "title": "Preparing Your Kitchen for Holiday Cooking & Guest Hosting",
+      "notes": [
+        "Kitchen Remodeling",
+        "Bluffton (*Hampton Hall*)",
+        "3 to 5-week remodel timelines, entertainment layouts",
+        "Targets *Hampton Hall* residents planning October kitchen renovations in order to complete double-oven installations and layout expansions well before Thanksgiving."
+      ],
+      "status": ""
+    },
+    {
+      "id": 41,
+      "targetPublishDate": "",
+      "title": "Guest Bathroom Makeovers Ahead of Holiday Visitors",
+      "notes": [
+        "Bathroom Remodeling",
+        "Hilton Head (*Windmill Harbour*)",
+        "Powder room upgrades, quick turnaround installations",
+        "*Windmill Harbour* homeowners preparing for visiting holiday guests receive a plan for quick 1-week powder room refreshers (new vanities, toilets, lighting, and tile accents)."
+      ],
+      "status": ""
+    },
+    {
+      "id": 42,
+      "targetPublishDate": "",
+      "title": "Fall Exterior Inspection: Checking Caulk, Trim, and Seals",
+      "notes": [
+        "Handyman & Repairs",
+        "Ridgeland (*Jasper Point*)",
+        "Urethane caulking, paint matching, moisture sealing",
+        "Rural *Jasper Point* homes face heavy autumnal rain; this post focuses on sealing window perimeter gaps and wood trim transitions before cold weather arrives."
+      ],
+      "status": ""
+    },
+    {
+      "id": 43,
+      "targetPublishDate": "",
+      "title": "Eliminating Drafts Before Winter: Window & Door Seals",
+      "notes": [
+        "Doors & Windows",
+        "Okatie (*Baynard Park*)",
+        "Frame flashing, low-expansion foam insulation",
+        "Highlights identifying hidden thermal leaks around older door casings in *Baynard Park*, demonstrating proper spray foam and flashing fixes to improve winter heating efficiency."
+      ],
+      "status": ""
+    },
+    {
+      "id": 44,
+      "targetPublishDate": "",
+      "title": "Modernizing Your Kitchen Lighting Before the Winter Months",
+      "notes": [
+        "Kitchen Remodeling",
+        "Beaufort (*The Hermitage*)",
+        "Under-cabinet LED strips, pendant fixture wiring",
+        "Darker autumn days in historic *The Hermitage* neighborhood showcase how layered lighting schemes transform traditional dark-wood kitchens into bright culinary spaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 45,
+      "targetPublishDate": "",
+      "title": "Freestanding Tubs vs. Custom Tiled Shower Extensions",
+      "notes": [
+        "Bathroom Remodeling",
+        "Bluffton (*Palmetto Bluff*)",
+        "Luxury soaking tubs, spacious tile enclosures",
+        "Luxury custom builds in *Palmetto Bluff* weigh removing unused soaking tubs to expand walk-in showers vs. installing architectural freestanding tubs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 46,
+      "targetPublishDate": "",
+      "title": "General Contractor vs. Multiple Subcontractors for Repairs",
+      "notes": [
+        "Handyman & Repairs",
+        "Hardeeville (*Cypress Landing*)",
+        "Single-point accountability, licensed contractor oversight",
+        "Educates *Cypress Landing* homeowners on the time and financial savings of hiring a single licensed contractor for multi-trade repairs instead of juggling disparate handyman trades."
+      ],
+      "status": ""
+    },
+    {
+      "id": 47,
+      "targetPublishDate": "",
+      "title": "Upgrading Sliding Patio Doors to Multi-Panel Bi-Fold Doors",
+      "notes": [
+        "Doors & Windows",
+        "Hilton Head (*Sea Pines Resort*)",
+        "High-end hardware, expansive marsh and ocean views",
+        "Maximizing golf course and ocean views in *Sea Pines* by replacing standard 6-foot sliding glass doors with 12-foot multi-panel folding door systems."
+      ],
+      "status": ""
+    },
+    {
+      "id": 48,
+      "targetPublishDate": "",
+      "title": "Buying a Home in Beaufort County? Claim Your 10% Discount",
+      "notes": [
+        "All Services",
+        "Okatie (*Okatie Bluffs*)",
+        "Realtor referral program, pre-move-in remodels",
+        "Connects directly with local realtors and incoming *Okatie Bluffs* buyers, outlining how to claim the **10% Pre-Move-In Discount** for home improvements scheduled prior to move-in."
+      ],
+      "status": ""
+    },
+    {
+      "id": 49,
+      "targetPublishDate": "",
+      "title": "Quick Fixture & Hardware Updates That Elevate Home Design",
+      "notes": [
+        "Handyman & Repairs",
+        "Beaufort (*Walling Grove*)",
+        "Brass plumbing fixtures, modern door levers, cabinet hardware",
+        "Small budget, high-impact fixes for *Walling Grove* homes, showing how swapping outdated chrome or builder-brass hardware for matte black or brushed bronze elevates interior spaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 50,
+      "targetPublishDate": "",
+      "title": "Designing a Low-Maintenance, Moisture-Resistant Kitchen",
+      "notes": [
+        "Kitchen Remodeling",
+        "Hardeeville (*Magnolia Park*)",
+        "Solvent-free adhesives, sealed stone, low-VOC finishes",
+        "Kitchen designs in coastal humid zones require non-warping composite cabinet boxes and low-VOC moisture-resistant sealers to prevent interior mold development."
+      ],
+      "status": ""
+    },
+    {
+      "id": 51,
+      "targetPublishDate": "",
+      "title": "Transforming Your Master Bath into a Year-Round Sanctuary",
+      "notes": [
+        "Bathroom Remodeling",
+        "Bluffton (*Cypress Ridge*)",
+        "Custom tile niches, frameless glass, spa aesthetic",
+        "End-of-year master bathroom remodeling guide for *Cypress Ridge* homeowners looking to convert builder-spec master baths into custom spa setups."
+      ],
+      "status": ""
+    },
+    {
+      "id": 52,
+      "targetPublishDate": "",
+      "title": "Planning Your Renovations: Scheduling & ROI",
+      "notes": [
+        "All Services",
+        "Hilton Head / Bluffton",
+        "ROI calculations (70%-85% recovery), project planning",
+        "A comprehensive year-end guide analyzing which renovations yielded the highest ROI in Beaufort and Jasper counties, helping homeowners budget and schedule contractor work for the upcoming year."
+      ],
+      "status": ""
+    }
+  ]
+}

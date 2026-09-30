@@ -1,0 +1,1955 @@
+{
+  "blogCalendarConfig": {
+    "cadence": "weekly",
+    "defaultStatus": "",
+    "criteria": {
+      "contentRules": [
+        "Each post must have a minimum of 1000 words, structured with a clear introductory summary (AEO optimized), at least 3 detailed body sections with subsections, and a actionable conclusion.",
+        "Each paragraph within the post must contain a minimum of 5 complete, detailed sentences.",
+        "After the conclusion of each post, include a compelling Call to Action (CTA) creating a sense of urgency to sign up for a free estimate with a link to https://www.palmetto-epoxy.com/contact.",
+        "Include statistics, industry standards (ICRI, ACI, OSHA, USDA), and authoritative web sources, linking to those sources where referenced.",
+        "Include internal links to other blog posts on https://blog.palmetto-epoxy.com (referencing the RSS feed at https://blog.palmetto-epoxy.com/feed/) and main service pages on palmetto-epoxy.com.",
+        "Use a tone of straightforward, simple language with confidence, customer focus, quality craftsmanship, and authoritative expert knowledge.",
+        "Target audience: Residential homeowners and commercial business owners/property managers in the Lowcountry (Bluffton, Hilton Head, Beaufort, Okatie), aged 35-75, high school education level or higher.",
+        "Format headers and structure to directly answer target search queries for AI Search (AEO) and featured snippets.",
+        "Structure content so each post can easily translate into a 15 to 20-minute podcast episode script, featuring host key takeaways and discussion prompts."
+      ]
+    }
+  },
+  "blogCalendar": [
+    {
+      "id": 1,
+      "targetPublishDate": "",
+      "title": "What Is Epoxy Flooring? A Homeowner's Guide for Bluffton & Hilton Head",
+      "notes": ["Published cornerstone post."],
+      "status": "published"
+    },
+    {
+      "id": 2,
+      "targetPublishDate": "",
+      "title": "Epoxy vs. Polyaspartic vs. Urethane: Which Is Right for Your Space?",
+      "notes": ["Published comparison guide."],
+      "status": "published"
+    },
+    {
+      "id": 3,
+      "targetPublishDate": "",
+      "title": "The Complete Garage Floor Installation Process: Step-by-Step",
+      "notes": ["Published process guide."],
+      "status": "published"
+    },
+    {
+      "id": 4,
+      "targetPublishDate": "",
+      "title": "How Lowcountry Humidity Affects Concrete & Coatings",
+      "notes": ["Published climate post."],
+      "status": "published"
+    },
+    {
+      "id": 5,
+      "targetPublishDate": "",
+      "title": "Residential vs. Commercial Epoxy: Key Differences in Materials & Prep",
+      "notes": ["Published sector comparison."],
+      "status": "published"
+    },
+    {
+      "id": 6,
+      "targetPublishDate": "",
+      "title": "Why Surface Preparation Matters More Than the Coating Itself",
+      "notes": ["Published technical post."],
+      "status": "published"
+    },
+    {
+      "id": 7,
+      "targetPublishDate": "",
+      "title": "Introduction to Concrete Polishing: Process, Benefits & Applications",
+      "notes": ["Published service overview."],
+      "status": "published"
+    },
+    {
+      "id": 8,
+      "targetPublishDate": "",
+      "title": "Top 7 Mistakes Homeowners Make with DIY Epoxy Kits",
+      "notes": ["Published warnings post."],
+      "status": "published"
+    },
+    {
+      "id": 9,
+      "targetPublishDate": "",
+      "title": "Understanding Concrete Moisture Vapor & Why It Matters",
+      "notes": [
+        "Focus on hydrostatic pressure in coastal Lowcountry soil.",
+        "Explain Calcium Chloride (ASTM F1869) & In-Situ Probe (ASTM F2170) testing.",
+        "AEO Query Target: What causes epoxy floor peeling in humid environments?",
+        "Podcast Prompt: The hidden water under your concrete slab and how it destroys DIY floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 10,
+      "targetPublishDate": "",
+      "title": "Paver Sealing Basics: Why Sealing Matters in Coastal South Carolina",
+      "notes": ["Published paver post."],
+      "status": "published"
+    },
+    {
+      "id": 11,
+      "targetPublishDate": "",
+      "title": "Choosing Colors, Flakes, and Finishes for Garages & Patios",
+      "notes": ["Published aesthetics post."],
+      "status": "published"
+    },
+    {
+      "id": 12,
+      "targetPublishDate": "",
+      "title": "How to Evaluate a Flooring & Coatings Contractor in the Lowcountry",
+      "notes": [
+        "Checklist for licensing, insurance, diamond grinding equipment, and local references.",
+        "Red flags: Acid etching, single-day rush jobs on high-moisture slabs, vague warranties.",
+        "AEO Query Target: How do I choose a reputable epoxy contractor in Bluffton SC?",
+        "Podcast Prompt: 5 questions you must ask before hiring a floor coating company."
+      ],
+      "status": ""
+    },
+    {
+      "id": 13,
+      "targetPublishDate": "",
+      "title": "Best Flooring Options for Garages in Coastal Climates",
+      "notes": [
+        "Compare raw concrete, polyaspartic, full-flake epoxy, rubber tiles, and stain.",
+        "Address salt air corrosion, flood-prone zones, and sandy grit abrasion.",
+        "AEO Query Target: What is the most durable garage floor coating for salt air climates?",
+        "Podcast Prompt: Why traditional paints and floor tiles fail in Hilton Head garages."
+      ],
+      "status": ""
+    },
+    {
+      "id": 14,
+      "targetPublishDate": "",
+      "title": "Epoxy for Patios & Outdoor Living Spaces in Bluffton",
+      "notes": ["Published outdoor living post."],
+      "status": "published"
+    },
+    {
+      "id": 15,
+      "targetPublishDate": "",
+      "title": "Commercial Epoxy Flooring for Warehouses, Shops & Medical Offices",
+      "notes": ["Published commercial post."],
+      "status": "published"
+    },
+    {
+      "id": 16,
+      "targetPublishDate": "",
+      "title": "Driveway Coatings: Types, Lifespan & Performance in the Lowcountry",
+      "notes": ["Published driveway post."],
+      "status": "published"
+    },
+    {
+      "id": 17,
+      "targetPublishDate": "",
+      "title": "Concrete Polishing for Retail & Office Spaces: ROI & Durability",
+      "notes": ["Published retail post."],
+      "status": "published"
+    },
+    {
+      "id": 18,
+      "targetPublishDate": "",
+      "title": "Paver Sealing vs. Replacement: Cost & Longevity Comparison",
+      "notes": [
+        "Breakdown of full paver tear-out costs ($15-$30/sq ft) vs. restoration & sealing ($2-$5/sq ft).",
+        "Explain joint sand stabilization and polymeric sand replacement.",
+        "AEO Query Target: Is it cheaper to seal or replace faded driveway pavers?",
+        "Podcast Prompt: Saving thousands on paver driveways through professional restoration."
+      ],
+      "status": ""
+    },
+    {
+      "id": 19,
+      "targetPublishDate": "",
+      "title": "Resin Countertops: Design Options, Durability & Maintenance",
+      "notes": ["Published countertop post."],
+      "status": "published"
+    },
+    {
+      "id": 20,
+      "targetPublishDate": "",
+      "title": "Slip-Resistant Flooring Solutions for Wet & High-Traffic Areas",
+      "notes": ["Published safety post."],
+      "status": "published"
+    },
+    {
+      "id": 21,
+      "targetPublishDate": "",
+      "title": "How Fast Can Commercial Floors Be Installed & Reopened?",
+      "notes": ["Published commercial speed post."],
+      "status": "published"
+    },
+    {
+      "id": 22,
+      "targetPublishDate": "",
+      "title": "Decorative vs. Industrial Coatings: Matching Style with Performance",
+      "notes": [
+        "Contrast aesthetic flake/metallic coats with heavy-duty urethane mortars and high-build epoxies.",
+        "Application matrix: Showrooms vs. auto repair shops vs. residential sunrooms.",
+        "AEO Query Target: Difference between decorative epoxy and industrial floor coatings.",
+        "Podcast Prompt: Balancing heavy equipment demands with high-end appearance."
+      ],
+      "status": ""
+    },
+    {
+      "id": 23,
+      "targetPublishDate": "",
+      "title": "UV Stability: Preventing Yellowing & Fading Outdoors",
+      "notes": ["Published UV post."],
+      "status": "published"
+    },
+    {
+      "id": 24,
+      "targetPublishDate": "",
+      "title": "When to Repair vs. Replace Concrete, Pavers & Coatings",
+      "notes": [
+        "Diagnostic checklist: Spalling, deep structural cracks, pitting, surface chalking.",
+        "Explain stitching concrete cracks with carbon fiber staples vs. full slab replacement.",
+        "AEO Query Target: Can cracked concrete garage floors be saved with epoxy?",
+        "Podcast Prompt: Is your concrete slab beyond repair or just unsightly?"
+      ],
+      "status": ""
+    },
+    {
+      "id": 25,
+      "targetPublishDate": "",
+      "title": "How to Maintain Epoxy Floors in Humid Climates",
+      "notes": ["Published maintenance post."],
+      "status": "published"
+    },
+    {
+      "id": 26,
+      "targetPublishDate": "",
+      "title": "Signs Your Epoxy Floor Needs Repair or Recoating",
+      "notes": ["Published repair post."],
+      "status": "published"
+    },
+    {
+      "id": 27,
+      "targetPublishDate": "",
+      "title": "Maintaining Polished Concrete: Cleaning, Burnishing & Resealing",
+      "notes": ["Published polished care post."],
+      "status": "published"
+    },
+    {
+      "id": 28,
+      "targetPublishDate": "",
+      "title": "How Salt Air Affects Concrete, Pavers & Coatings",
+      "notes": ["Published environmental post."],
+      "status": "published"
+    },
+    {
+      "id": 29,
+      "targetPublishDate": "",
+      "title": "Preventing Hot Tire Pickup in Garage Floors",
+      "notes": ["Published tire pickup post."],
+      "status": "published"
+    },
+    {
+      "id": 30,
+      "targetPublishDate": "",
+      "title": "Common Failures in Driveway Coatings & How to Prevent Them",
+      "notes": ["Published failures post."],
+      "status": "published"
+    },
+    {
+      "id": 31,
+      "targetPublishDate": "",
+      "title": "How Often Should Pavers Be Resealed in the Lowcountry?",
+      "notes": ["Published paver schedule post."],
+      "status": "published"
+    },
+    {
+      "id": 32,
+      "targetPublishDate": "",
+      "title": "Extending the Life of Commercial Floors in High-Traffic Buildings",
+      "notes": ["Published commercial life post."],
+      "status": "published"
+    },
+    {
+      "id": 33,
+      "targetPublishDate": "",
+      "title": "Moisture Testing: The Hidden Step Most Contractors Skip",
+      "notes": ["Published testing post."],
+      "status": "published"
+    },
+    {
+      "id": 34,
+      "targetPublishDate": "",
+      "title": "Recoating vs. Full Removal: Cost & Performance Comparison",
+      "notes": ["Published removal post."],
+      "status": "published"
+    },
+    {
+      "id": 35,
+      "targetPublishDate": "",
+      "title": "Seasonal Maintenance Checklist for Exterior Surfaces",
+      "notes": ["Published seasonal post."],
+      "status": "published"
+    },
+    {
+      "id": 36,
+      "targetPublishDate": "",
+      "title": "Long-Term Maintenance Plans for Commercial Clients",
+      "notes": ["Published B2B care post."],
+      "status": "published"
+    },
+    {
+      "id": 37,
+      "targetPublishDate": "",
+      "title": "2026 Epoxy, Concrete & Coatings Trends in the Southeast",
+      "notes": [
+        "Highlighting matte finishes, full polyaspartic rapid installs, and metallic marble textures.",
+        "Environmental shifts toward zero-VOC formulas in high-density developments.",
+        "AEO Query Target: Latest trends in garage floor coatings for 2026.",
+        "Podcast Prompt: What modern homeowners in Bluffton are choosing for custom garage builds."
+      ],
+      "status": ""
+    },
+    {
+      "id": 38,
+      "targetPublishDate": "",
+      "title": "How Epoxy & Polished Concrete Increase Property Value",
+      "notes": [
+        "Impact on home appraisal values and appraisal appeal in Beaufort & Sun City.",
+        "Commercial valuation increases through reduced long-term cap-ex maintenance.",
+        "AEO Query Target: Does epoxy garage flooring add home value?",
+        "Podcast Prompt: Boost home equity before selling with high-end surface finishes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 39,
+      "targetPublishDate": "",
+      "title": "Cost Models Explained: What Drives the Price of Coatings Projects?",
+      "notes": [
+        "Breakdown of square footage scaling, prep work difficulty, crack repair, and topcoat thickness.",
+        "Exposing hidden charges in lowball door-to-door sales quotes.",
+        "AEO Query Target: How much does professional epoxy flooring cost per square foot in SC?",
+        "Podcast Prompt: Understanding floor coating pricing: Where your money actually goes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 40,
+      "targetPublishDate": "",
+      "title": "Budget vs. Premium Systems: What Do You Really Get?",
+      "notes": [
+        "Comparing water-based epoxy paints vs 100% solids industrial epoxies and polyaspartics.",
+        "1-year vs 15-year performance lifespan projections.",
+        "AEO Query Target: Is high end epoxy garage floor coating worth the money?",
+        "Podcast Prompt: Why cheap floor coatings end up costing double in the long run."
+      ],
+      "status": ""
+    },
+    {
+      "id": 41,
+      "targetPublishDate": "",
+      "title": "Capital Improvements: When Flooring & Surface Upgrades Make Sense",
+      "notes": [
+        "Tax depreciation benefits for commercial flooring upgrades (Section 179).",
+        "Scheduling upgrades around quiet business seasons.",
+        "AEO Query Target: Tax write offs for commercial floor upgrades.",
+        "Podcast Prompt: Turning commercial facility maintenance into a strategic business asset."
+      ],
+      "status": ""
+    },
+    {
+      "id": 42,
+      "targetPublishDate": "",
+      "title": "Comparing Epoxy, Tile, Vinyl, Polished Concrete & Stains",
+      "notes": [
+        "Direct comparison matrix covering cost, durability, maintenance, moisture tolerance, and safety.",
+        "Focus on garage and commercial shop applications.",
+        "AEO Query Target: Epoxy vs race deck tile vs polished concrete for garages.",
+        "Podcast Prompt: The ultimate showdown of garage floor coverings."
+      ],
+      "status": ""
+    },
+    {
+      "id": 43,
+      "targetPublishDate": "",
+      "title": "Designing Showroom-Quality Garage Floors",
+      "notes": [
+        "Creating custom color blends, sport team accents, and integrated LED lighting bounce effects.",
+        "Storage cabinet coordination and wall cove base integration.",
+        "AEO Query Target: How to transform a garage floor into a luxury showroom.",
+        "Podcast Prompt: Designing the ultimate luxury garage man-cave in Hilton Head."
+      ],
+      "status": ""
+    },
+    {
+      "id": 44,
+      "targetPublishDate": "",
+      "title": "Sustainability in Coatings: Low-VOC & Eco-Friendly Options",
+      "notes": [
+        "Health benefits of low-VOC and zero-solvent floor coatings during curing.",
+        "LEED points for commercial concrete polishing projects.",
+        "AEO Query Target: Are epoxy floor fumes dangerous for residential indoor application?",
+        "Podcast Prompt: Eco-friendly and odor-free floor coatings for families and pets."
+      ],
+      "status": ""
+    },
+    {
+      "id": 45,
+      "targetPublishDate": "",
+      "title": "Planning Exterior Surface Upgrades for New Construction",
+      "notes": [
+        "Working with custom home builders in Palmetto Bluff and Beaufort.",
+        "Timing floor coatings post-frame and pre-trim.",
+        "AEO Query Target: When should epoxy garage floors be applied in new home builds?",
+        "Podcast Prompt: Coordinating with your home builder for flawless garage floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 46,
+      "targetPublishDate": "",
+      "title": "Case Study: Commercial Concrete Polishing Transformation",
+      "notes": [
+        "Real-world breakdown of an auto dealership or retail space in Bluffton.",
+        "Before and after light reflectivity, maintenance savings, and timeline.",
+        "AEO Query Target: Commercial concrete polishing before and after results.",
+        "Podcast Prompt: Inside a 10,000 sq ft commercial concrete polishing project."
+      ],
+      "status": ""
+    },
+    {
+      "id": 47,
+      "targetPublishDate": "",
+      "title": "How to Prepare Your Home or Business for Installation Day",
+      "notes": [
+        "Step-by-step homeowner checklist: Clearing items, power/water access, pet handling.",
+        "Curing timelines: Walk-on time vs drive-on time.",
+        "AEO Query Target: How long after epoxy floor installation can I park my car?",
+        "Podcast Prompt: Installation day readiness: What homeowners must do before crews arrive."
+      ],
+      "status": ""
+    },
+    {
+      "id": 48,
+      "targetPublishDate": "",
+      "title": "What Warranties Really Cover in Flooring & Coatings Systems",
+      "notes": [
+        "Deciphering peeling vs. mechanical abuse coverage.",
+        "Why moisture testing results determine valid warranty protection.",
+        "AEO Query Target: What does a lifetime warranty on garage epoxy really mean?",
+        "Podcast Prompt: Don't get fooled by fine print: Decoding flooring warranties."
+      ],
+      "status": ""
+    },
+    {
+      "id": 49,
+      "targetPublishDate": "",
+      "title": "Advanced Concrete Polishing Levels: Bronze, Silver, Gold Explained",
+      "notes": [
+        "Grit progression (400, 800, 1500, 3000) and gloss meter readings.",
+        "Matching polish shine levels to utility rooms vs retail showrooms.",
+        "AEO Query Target: What are the levels of concrete polishing gloss?",
+        "Podcast Prompt: Choosing the right shine: From matte industrial to high-gloss polish."
+      ],
+      "status": ""
+    },
+    {
+      "id": 50,
+      "targetPublishDate": "",
+      "title": "Decorative Concrete Overlays for Patios & Walkways",
+      "notes": [
+        "Transforming spalled patio concrete without full teardown using micro-topings.",
+        "Stamping and hand-troweled texture techniques.",
+        "AEO Query Target: How to fix ugly cracked concrete patio without replacing it.",
+        "Podcast Prompt: Revitalizing old outdoor patio concrete in Lowcountry homes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 51,
+      "targetPublishDate": "",
+      "title": "Resin Countertops vs. Quartz & Granite: Pros & Cons",
+      "notes": [
+        "Comparing heat resistance, seamless customization, scratch resistance, and cost.",
+        "Creating custom veining and faux-marble finishes.",
+        "AEO Query Target: Are epoxy countertops better than granite?",
+        "Podcast Prompt: Epoxy countertops: Affordable luxury or temporary fad?"
+      ],
+      "status": ""
+    },
+    {
+      "id": 52,
+      "targetPublishDate": "",
+      "title": "Sealing Outdoor Surfaces Before Hurricane Season",
+      "notes": [
+        "Preventing water infiltration under pavers and concrete slabs during heavy rain.",
+        "Mitigating coastal flooding salt residue damage.",
+        "AEO Query Target: How to protect driveway concrete from storm water and salt damage.",
+        "Podcast Prompt: Hurricane preparedness for your outdoor concrete and paver hardscapes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 53,
+      "targetPublishDate": "",
+      "title": "Industrial Flooring Systems for Manufacturing & Warehousing",
+      "notes": [
+        "Forklift traffic resistance, impact loads, and thermal shock coatings.",
+        "OSHA line striping and safety aisle designations.",
+        "AEO Query Target: Best heavy duty floor coatings for warehouse forklift traffic.",
+        "Podcast Prompt: Industrial floor safety and durability standards explained."
+      ],
+      "status": ""
+    },
+    {
+      "id": 54,
+      "targetPublishDate": "",
+      "title": "Designing Custom Flake & Metallic Epoxy Floors",
+      "notes": [
+        "Selecting partial, medium, or full flake broadcast distributions.",
+        "3D metallic pigment dispersion techniques for unique artistic floors.",
+        "AEO Query Target: Flake epoxy vs metallic epoxy garage floors.",
+        "Podcast Prompt: Color theory and aesthetic options for epoxy floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 55,
+      "targetPublishDate": "",
+      "title": "Paver Restoration: Cleaning, Re-Sanding & Sealing",
+      "notes": [
+        "Process of removing weed growth, efflorescence, and failing old sealer.",
+        "Compacting ASTM C144 joint sand prior to sealing.",
+        "AEO Query Target: How to fix sinking or weed-filled brick paver driveways.",
+        "Podcast Prompt: Restoring sunken, faded driveway pavers to brand-new condition."
+      ],
+      "status": ""
+    },
+    {
+      "id": 56,
+      "targetPublishDate": "",
+      "title": "Driveway Coating Design Options & Curb Appeal",
+      "notes": [
+        "Acrylic sealers vs polyaspartic coatings for residential driveways.",
+        "Enhancing neighborhood curb appeal in Gated Communities.",
+        "AEO Query Target: Can you put decorative coating on a concrete driveway?",
+        "Podcast Prompt: Maximizing exterior curb appeal in Lowcountry HOA communities."
+      ],
+      "status": ""
+    },
+    {
+      "id": 57,
+      "targetPublishDate": "",
+      "title": "Food-Safe & Chemical-Resistant Coatings for Commercial Use",
+      "notes": [
+        "USDA/FDA compliance for commercial kitchens, breweries, and food plants.",
+        "Anti-microbial additives and urethane mortar cove base installation.",
+        "AEO Query Target: Health department compliant flooring for commercial kitchens.",
+        "Podcast Prompt: Meeting health inspector standards with seamless resinous floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 58,
+      "targetPublishDate": "",
+      "title": "Managing Moisture in Slab-on-Grade Construction",
+      "notes": [
+        "Vapor barrier installation under concrete and chemical moisture mitigation primers.",
+        "Slab moisture emissions rates (MVER).",
+        "AEO Query Target: How to seal moisture coming up through concrete slab.",
+        "Podcast Prompt: Stopping moisture from rising through ground-level slabs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 59,
+      "targetPublishDate": "",
+      "title": "Phased Installations for Occupied Commercial Buildings",
+      "notes": [
+        "Night and weekend installation protocols to prevent business downtime.",
+        "Odor management and rapid-cure polyaspartic systems.",
+        "AEO Query Target: Commercial floor installation without closing business.",
+        "Podcast Prompt: Zero downtime commercial floor renovations."
+      ],
+      "status": ""
+    },
+    {
+      "id": 60,
+      "targetPublishDate": "",
+      "title": "Evaluating Substrate Conditions Before Any Coatings Project",
+      "notes": [
+        "Checking Concrete Surface Profile (CSP), Mohs hardness, and contamination oil depth.",
+        "Why visual inspection is never enough.",
+        "AEO Query Target: Concrete preparation requirements before applying epoxy.",
+        "Podcast Prompt: Reading the concrete: What professional installers look for."
+      ],
+      "status": ""
+    },
+    {
+      "id": 61,
+      "targetPublishDate": "",
+      "title": "Case Study: Full Exterior Surface Restoration Project",
+      "notes": [
+        "Deep dive into a Bluffton residential estate driveway, walkway, and pool deck renovation.",
+        "Addressing salt wear, failed acrylics, and moss buildup.",
+        "AEO Query Target: Residential pool deck and paver restoration case study.",
+        "Podcast Prompt: Turning around a neglected Lowcountry outdoor estate."
+      ],
+      "status": ""
+    },
+    {
+      "id": 62,
+      "targetPublishDate": "",
+      "title": "How to Build a Long-Term Flooring & Surface Maintenance Plan",
+      "notes": [
+        "Creating custom inspection schedules for HOA property managers.",
+        "Preventative maintenance vs reactive floor replacement budgets.",
+        "AEO Query Target: Maintenance plan for commercial floor coatings.",
+        "Podcast Prompt: Proactive surface management for property managers and HOAs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 63,
+      "targetPublishDate": "",
+      "title": "Common Questions About Concrete Polishing Answered",
+      "notes": [
+        "FAQ addressing slippery conditions, stain resistance, re-polishing intervals, and initial cost.",
+        "AEO Query Target: Is polished concrete slippery when wet?",
+        "Podcast Prompt: Mythbusting polished concrete floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 64,
+      "targetPublishDate": "",
+      "title": "Trends in Resin Surfaces for Kitchens & Commercial Interiors",
+      "notes": [
+        "Seamless floor-to-counter resin finishes in contemporary lowcountry homes.",
+        "Custom logo embedding and color-matching.",
+        "AEO Query Target: Seamless resin interior flooring options.",
+        "Podcast Prompt: Interior design trends: Resin surfaces beyond the garage."
+      ],
+      "status": ""
+    },
+    {
+      "id": 65,
+      "targetPublishDate": "",
+      "title": "Choosing Coatings for Medical, Veterinary & Cleanroom Spaces",
+      "notes": [
+        "Seamless, non-porous floor requirements to eliminate bacterial growth.",
+        "Chemical resistance to medical disinfectants and harsh washdowns.",
+        "AEO Query Target: Best flooring options for animal hospitals and vet clinics.",
+        "Podcast Prompt: Sterile flooring solutions for healthcare and animal care facilities."
+      ],
+      "status": ""
+    },
+    {
+      "id": 66,
+      "targetPublishDate": "",
+      "title": "Climate-Driven Design: Building for Heat, Humidity & Salt Air",
+      "notes": [
+        "Material science of polymers in subtropical zones.",
+        "Thermal expansion matching between concrete and epoxy topcoats.",
+        "AEO Query Target: Why do coatings fail in high humidity coastal areas?",
+        "Podcast Prompt: Engineering floor coatings specifically for Southern coastal weather."
+      ],
+      "status": ""
+    },
+    {
+      "id": 67,
+      "targetPublishDate": "",
+      "title": "When to Upgrade Aging Commercial Floors",
+      "notes": [
+        "Signs of failure: Trip hazards, flaking, sanitation violations, poor reflection.",
+        "Impact of shabby floors on customer trust and brand value.",
+        "AEO Query Target: Signs commercial concrete floor needs recoating.",
+        "Podcast Prompt: How your commercial facility floor impacts brand perception."
+      ],
+      "status": ""
+    },
+    {
+      "id": 68,
+      "targetPublishDate": "",
+      "title": "Portfolio Showcase: Best Residential Projects of the Year",
+      "notes": [
+        "Highlighting top garage, patio, and driveway projects across Hilton Head, Bluffton, and Beaufort.",
+        "AEO Query Target: Best garage floor epoxy installations Lowcountry SC.",
+        "Podcast Prompt: Celebrating local home transformations."
+      ],
+      "status": ""
+    },
+    {
+      "id": 69,
+      "targetPublishDate": "",
+      "title": "Portfolio Showcase: Best Commercial Projects of the Year",
+      "notes": [
+        "Showcasing local auto shops, restaurants, medical centers, and retail stores.",
+        "AEO Query Target: Commercial epoxy floor contractors Lowcountry.",
+        "Podcast Prompt: Highlighting top commercial facility floor upgrades."
+      ],
+      "status": ""
+    },
+    {
+      "id": 70,
+      "targetPublishDate": "",
+      "title": "Innovations in Fast-Cure & Rapid-Return Coatings",
+      "notes": [
+        "Polyaspartic polyurea chemistry that allows 1-day installation and 24-hour vehicle park-in.",
+        "AEO Query Target: Can garage floor epoxy be done in one day?",
+        "Podcast Prompt: 1-Day garage floor coating technology explained."
+      ],
+      "status": ""
+    },
+    {
+      "id": 71,
+      "targetPublishDate": "",
+      "title": "Planning Capital Improvements for the Next 5 Years",
+      "notes": [
+        "Budget planning guide for commercial facility owners and residential estate managers.",
+        "AEO Query Target: Long term facility management floor replacement cycle.",
+        "Podcast Prompt: Strategic 5-year capital improvement planning for floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 72,
+      "targetPublishDate": "",
+      "title": "How Local Experience Improves Long-Term Performance",
+      "notes": [
+        "Why out-of-state franchises fail to understand Lowcountry high water tables and sandy soil.",
+        "AEO Query Target: Local epoxy floor company vs national franchise.",
+        "Podcast Prompt: Why local Lowcountry expertise is essential for concrete coatings."
+      ],
+      "status": ""
+    },
+    {
+      "id": 73,
+      "targetPublishDate": "",
+      "title": "Complete Guide to Epoxy, Polished Concrete & Surface Coatings",
+      "notes": [
+        "Comprehensive 2,500-word cornerstone resource covering prep, installation, maintenance, and costs.",
+        "AEO Query Target: Complete guide to concrete floor coatings.",
+        "Podcast Prompt: Everything you ever wanted to know about concrete surfaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 74,
+      "targetPublishDate": "",
+      "title": "FAQs About Epoxy, Polished Concrete, Pavers & Resin Surfaces",
+      "notes": [
+        "Master list of 25 micro-answers formatted for direct Voice Search and Google snippets.",
+        "AEO Query Target: Frequently asked questions about epoxy flooring.",
+        "Podcast Prompt: Answering our listeners top 20 concrete coating questions."
+      ],
+      "status": ""
+    },
+    {
+      "id": 75,
+      "targetPublishDate": "",
+      "title": "The Economics of Surface Upgrades for Property Owners",
+      "notes": [
+        "Cost-benefit analysis showing lifecycle savings vs routine carpet/tile replacements.",
+        "AEO Query Target: Return on investment for concrete floor upgrades.",
+        "Podcast Prompt: Calculating the real lifetime ROI of concrete coatings."
+      ],
+      "status": ""
+    },
+    {
+      "id": 76,
+      "targetPublishDate": "",
+      "title": "How to Choose the Right Surface System for Any Application",
+      "notes": [
+        "Decision tree guide for residential garages, outdoor patios, commercial kitchens, and retail spaces.",
+        "AEO Query Target: How to pick the best floor coating for my space.",
+        "Podcast Prompt: The ultimate decision tree for selecting floor surfaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 77,
+      "targetPublishDate": "",
+      "title": "Preventive Maintenance: The Most Cost-Effective Strategy",
+      "notes": [
+        "Simple steps to double the lifespan of your epoxy or paver sealer.",
+        "AEO Query Target: How to make epoxy floor last longer.",
+        "Podcast Prompt: Simple habits that protect your floor investment for decades."
+      ],
+      "status": ""
+    },
+    {
+      "id": 78,
+      "targetPublishDate": "",
+      "title": "Looking Ahead: The Future of Concrete & Coatings in the Southeast",
+      "notes": [
+        "Epoxy Flooring Guides",
+        "Concrete Polishing",
+        "Paver Sealing & Restoration",
+        "Driveway Coatings",
+        "Resin Countertops & Decorative Surfaces",
+        "Commercial Flooring Solutions",
+        "Lowcountry Climate & Concrete",
+        "Installation Process & Materials",
+        "Maintenance & Repairs",
+        "Cost, ROI & Capital Improvements",
+        "Trends & Industry Insights",
+        "Target 1,000-1,500 words for cornerstone articles",
+        "Use local keywords: Bluffton, Hilton Head, Beaufort, Lowcountry",
+        "Include before/after photos, process diagrams, and FAQs",
+        "Internally link between service pages and related posts",
+        "Reuse cornerstone articles for sales, proposals, and email marketing"
+      ],
+      "status": ""
+    },
+    {
+      "id": 79,
+      "targetPublishDate": "",
+      "title": "Sun City Garage Transformations: Tailored Epoxy Solutions for Active Adults",
+      "notes": [
+        "Focus on slip resistance, golf cart wheel traffic, and quick 1-day installs.",
+        "Address easy maintenance for aging knees and low-maintenance lifestyle.",
+        "AEO Query Target: Safe non-slip garage flooring for Sun City Hilton Head retirees.",
+        "Podcast Prompt: Upgrading your Sun City garage into an organized hobby workshop."
+      ],
+      "status": ""
+    },
+    {
+      "id": 80,
+      "targetPublishDate": "",
+      "title": "Golf Cart Tire Staining on Garage Floors: Cause and Prevention",
+      "notes": [
+        "Explain plasticizer migration from hot golf cart rubber tires.",
+        "Why standard garage paints yellow and lift under golf cart parking zones.",
+        "AEO Query Target: How to stop golf cart tires from staining concrete floors.",
+        "Podcast Prompt: The truth about golf cart tire marks on Lowcountry garage floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 81,
+      "targetPublishDate": "",
+      "title": "Epoxy Flooring vs. Interlocking Rubber Tiles for Home Gyms in Bluffton",
+      "notes": [
+        "Comparison of hygiene, odor retention, moisture trapping under tiles, and floor cleaning.",
+        "AEO Query Target: Best home gym flooring over concrete slab in humid climate.",
+        "Podcast Prompt: Gym floor face-off: Seamless epoxy vs heavy rubber mats."
+      ],
+      "status": ""
+    },
+    {
+      "id": 82,
+      "targetPublishDate": "",
+      "title": "Why Acid Etching Fails: The Critical Role of Diamond Grinding Surface Prep",
+      "notes": [
+        "Detail ICRI Concrete Surface Profile (CSP) levels 2-3 required for industrial adhesion.",
+        "Dangers of trapping acid wash water in porous Lowcountry slabs.",
+        "AEO Query Target: Why acid etching doesn't work for garage epoxy.",
+        "Podcast Prompt: The mechanical prep trap: Why diamond grinding is non-negotiable."
+      ],
+      "status": ""
+    },
+    {
+      "id": 83,
+      "targetPublishDate": "",
+      "title": "Polyaspartic Topcoats Explained: Science, UV Resistance, and Scratch Protection",
+      "notes": [
+        "Chemical breakdown of aliphatic polyaspartic coatings.",
+        "Flexibility vs hardness ratings (Taber abrasion testing).",
+        "AEO Query Target: Is polyaspartic clearer and stronger than standard epoxy topcoat?",
+        "Podcast Prompt: Polymer chemistry demystified: Why topcoats matter most."
+      ],
+      "status": ""
+    },
+    {
+      "id": 84,
+      "targetPublishDate": "",
+      "title": "Coastal Pool Deck Coatings: Cool-Foot Technology & Slip Resistance",
+      "notes": [
+        "Heat-reflective pigments designed to reduce solar heat gain on bare feet.",
+        "Textured aggregates meeting ADA slip coefficient standards around swimming pools.",
+        "AEO Query Target: How to make pool deck concrete stay cool in summer heat.",
+        "Podcast Prompt: Barefoot comfort: Keeping your pool deck cool and safe."
+      ],
+      "status": ""
+    },
+    {
+      "id": 85,
+      "targetPublishDate": "",
+      "title": "Restoring Beaufort Historic Home Foundations: Breathing Room for Old Concrete",
+      "notes": [
+        "Challenges with historic, lime-rich, or un-reinforced historic concrete and brick.",
+        "Selecting breathable penetrating sealers vs vapor-blocking epoxies.",
+        "AEO Query Target: How to restore and seal old historic concrete in Beaufort SC.",
+        "Podcast Prompt: Preserving history: Floor and concrete care for historic properties."
+      ],
+      "status": ""
+    },
+    {
+      "id": 86,
+      "targetPublishDate": "",
+      "title": "Commercial Kitchen Floor Compliance: Meeting South Carolina DHEC Standards",
+      "notes": [
+        "Detailed breakdown of seamless cove bases, non-porous surfaces, and thermal washdowns.",
+        "Avoiding health code violations and closures.",
+        "AEO Query Target: SC DHEC flooring requirements for restaurant kitchens.",
+        "Podcast Prompt: Passing restaurant floor health inspections with flying colors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 87,
+      "targetPublishDate": "",
+      "title": "Auto Repair Shop Floor Solutions: Chemical Resistance Against Brake Fluid & Oil",
+      "notes": [
+        "Resisting Skydrol, battery acid, motor oil, and aggressive solvents.",
+        "Impact resistance from heavy falling drop-forged tools.",
+        "AEO Query Target: Chemical resistant floor coating for mechanic repair bays.",
+        "Podcast Prompt: Building tough floors for heavy mechanic shops and service bays."
+      ],
+      "status": ""
+    },
+    {
+      "id": 88,
+      "targetPublishDate": "",
+      "title": "Polymeric Sand vs. Traditional Sand for Lowcountry Paver Drives",
+      "notes": [
+        "Why rain and tidal washout ruin traditional sand joints.",
+        "How poly-sand locks pavers together and prevents invasive weeds.",
+        "AEO Query Target: Does polymeric sand stop weeds between pavers?",
+        "Podcast Prompt: Locking in your paver investment with proper joint sand technology."
+      ],
+      "status": ""
+    },
+    {
+      "id": 89,
+      "targetPublishDate": "",
+      "title": "The Hideaway Workshop: Transforming Small Sheds and Outbuildings with Epoxy",
+      "notes": [
+        "Moisture protection and lighting improvements for small 10x12 and 12x20 utility spaces.",
+        "Dust suppression for woodworking and tinkering.",
+        "AEO Query Target: Best floor coating for outdoor storage sheds and workshops.",
+        "Podcast Prompt: Turning tiny backyard sheds into dust-free, clean workspace havens."
+      ],
+      "status": ""
+    },
+    {
+      "id": 90,
+      "targetPublishDate": "",
+      "title": "How Light Reflectivity of Epoxy Floors Cuts Commercial Energy Bills",
+      "notes": [
+        "Calculating foot-candle light reflection gains from high-gloss epoxy.",
+        "Reducing total overhead LED fixture counts in warehouses.",
+        "AEO Query Target: Do glossy epoxy floors lower commercial lighting costs?",
+        "Podcast Prompt: Brightening up your warehouse while cutting monthly energy costs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 91,
+      "targetPublishDate": "",
+      "title": "Efflorescence Removal: Fixing White Powder Stains on Concrete and Pavers",
+      "notes": [
+        "Understanding mineral salt migration inside porous Lowcountry concrete.",
+        "Chemical neutralization and sealing preventative methods.",
+        "AEO Query Target: What is the white chalky powder on my patio pavers and how to clean it?",
+        "Podcast Prompt: Banishing white mineral stains from outdoor hardscapes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 92,
+      "targetPublishDate": "",
+      "title": "Hangar Flooring Standards: Resisting Jet Fuel, Aviation Skydrol, and Heavy Aircraft",
+      "notes": [
+        "High-performance urethane mortar and thick-film epoxy requirements.",
+        "Static dissipative options for sensitive avionics environments.",
+        "AEO Query Target: Best floor coating for private aircraft hangars in SC.",
+        "Podcast Prompt: High-flying durability: Specifying private aviation hangar floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 93,
+      "targetPublishDate": "",
+      "title": "Epoxy Floor Odor and VOC Safety: What Homeowners Need to Know",
+      "notes": [
+        "Comparing high-VOC retail paints with 100% solids industrial low-odor systems.",
+        "Safety precautions during curing around pets and children.",
+        "AEO Query Target: Is it safe to stay in house while garage epoxy cures?",
+        "Podcast Prompt: Breathable air: Safety and low-VOC technology in modern epoxies."
+      ],
+      "status": ""
+    },
+    {
+      "id": 94,
+      "targetPublishDate": "",
+      "title": "Tackling Concrete Crack Repair: Rigid Epoxies vs. Flexible Elastomeric Fillers",
+      "notes": [
+        "Why filling expansion joints with rigid epoxy causes surface cracking.",
+        "When to stitch structural cracks vs dynamic joint sealing.",
+        "AEO Query Target: Should garage floor control joints be filled before epoxy?",
+        "Podcast Prompt: Fix the crack, save the floor: Understanding joint movement."
+      ],
+      "status": ""
+    },
+    {
+      "id": 95,
+      "targetPublishDate": "",
+      "title": "Veterinary Clinic Flooring: Hygienic, Odor-Resistant, and Animal-Paws Approved",
+      "notes": [
+        "Stain resistance against animal waste, bleach, and harsh disinfectants.",
+        "Texture customization to prevent animals from slipping and panicking.",
+        "AEO Query Target: Non slip chemical resistant flooring for dog kennels.",
+        "Podcast Prompt: Creating safe, comfortable, clean floor spaces for pet care facilities."
+      ],
+      "status": ""
+    },
+    {
+      "id": 96,
+      "targetPublishDate": "",
+      "title": "Stained Concrete vs. Metallic Epoxy: Deciding on the Look for Creative Spaces",
+      "notes": [
+        "Acid stains vs dyes vs 3D metallic resin depth comparison.",
+        "Predictability of results and substrate dependency.",
+        "AEO Query Target: Difference between concrete staining and metallic epoxy.",
+        "Podcast Prompt: Artistic concrete floors: Acid stains vs 3D metallic resin."
+      ],
+      "status": ""
+    },
+    {
+      "id": 97,
+      "targetPublishDate": "",
+      "title": "Protecting Okatie Commercial Properties from High-Traffic Mud and Soil",
+      "notes": [
+        "Addressing high clay and grit content brought in from development sites.",
+        "Abrasion resistance ratings for entryway concrete.",
+        "AEO Query Target: Durable commercial entryway flooring for construction zone dust.",
+        "Podcast Prompt: Keeping Okatie commercial facilities clean despite heavy mud and clay."
+      ],
+      "status": ""
+    },
+    {
+      "id": 98,
+      "targetPublishDate": "",
+      "title": "How to Clean Oil Leaks Off Unsealed Concrete vs. Epoxy Coated Floors",
+      "notes": [
+        "Comparing permanent concrete deep-pored oil staining with wipe-clean epoxy topcoats.",
+        "Step-by-step cleaning protocols.",
+        "AEO Query Target: How to remove motor oil from epoxy garage floor.",
+        "Podcast Prompt: Never scrub motor oil again: The ultimate wipe-clean floor surface."
+      ],
+      "status": ""
+    },
+    {
+      "id": 99,
+      "targetPublishDate": "",
+      "title": "Micro-Topings & Overlays: Giving Old Outdoor Concrete a Modern Facelift",
+      "notes": [
+        "Thin-coat polymer overlays to cover discolored, pitted, or mismatched concrete pours.",
+        "Color staining and broom-finish aesthetic options.",
+        "AEO Query Target: Can you put a thin coat of concrete over old concrete?",
+        "Podcast Prompt: Concrete cosmetic surgery: The power of micro-toppings."
+      ],
+      "status": ""
+    },
+    {
+      "id": 100,
+      "targetPublishDate": "",
+      "title": "Retail Floor Aesthetics: How Polished Concrete Boosts Customer Experience",
+      "notes": [
+        "Creating modern, clean aesthetic environments in high-end Bluffton boutiques.",
+        "Acoustic and lighting gains with polished substrates.",
+        "AEO Query Target: Why do luxury retail stores use polished concrete floors?",
+        "Podcast Prompt: Crafting an upscale store vibe starting from the ground up."
+      ],
+      "status": ""
+    },
+    {
+      "id": 101,
+      "targetPublishDate": "",
+      "title": "Car Wash and Detail Bay Floor Coatings: Waterproofing and Chemical Shielding",
+      "notes": [
+        "Withstanding 24/7 standing water, heavy degreasers, and high-pressure power washing.",
+        "Sloping considerations to floor drains.",
+        "AEO Query Target: Waterproof non-slip flooring for auto detail shop.",
+        "Podcast Prompt: Built for water: Floor solutions for car washes and detail bays."
+      ],
+      "status": ""
+    },
+    {
+      "id": 102,
+      "targetPublishDate": "",
+      "title": "Why Paint Sprayers and Rollers Aren't Enough for True Industrial Epoxy",
+      "notes": [
+        "Equipment deep-dive: Dual-component proportioners, notched squeegees, and spiked shoes.",
+        "Why thick-film high-solids resin cannot be rolled like latex wall paint.",
+        "AEO Query Target: Can you apply 100 solids epoxy with a regular paint roller?",
+        "Podcast Prompt: Pro tools vs DIY paintbrushes: What it takes to lay heavy epoxy."
+      ],
+      "status": ""
+    },
+    {
+      "id": 103,
+      "targetPublishDate": "",
+      "title": "Palmetto Bluff Outdoor Living: Blending Resinous Patios with Lowcountry Nature",
+      "notes": [
+        "Custom earth-tone color palettes, stone-look blends, and seamless integration with timber landscaping.",
+        "AEO Query Target: Natural stone look outdoor epoxy coating for luxury patios.",
+        "Podcast Prompt: Harmonizing luxury hardscapes with coastal forest views."
+      ],
+      "status": ""
+    },
+    {
+      "id": 104,
+      "targetPublishDate": "",
+      "title": "OSHA Safety Line Marking on Factory and Distribution Center Concrete",
+      "notes": [
+        "Color standards for hazard zones, pedestrian walkways, and forklift aisles.",
+        "Long-lasting polyaspartic line striping vs flaking line paint.",
+        "AEO Query Target: OSHA required floor striping colors for manufacturing facilities.",
+        "Podcast Prompt: Line striping that lasts: Staying OSHA compliant on warehouse floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 105,
+      "targetPublishDate": "",
+      "title": "Paver Efflorescence vs. Sealening Cloudiness: Diagnosing White Haze",
+      "notes": [
+        "Distinguishing trapped moisture under solvent sealer from natural salt efflorescence.",
+        "How to strip or restore blushed sealer without tearing up pavers.",
+        "AEO Query Target: Why did my paver sealer turn white and cloudy?",
+        "Podcast Prompt: Unclouding your pavers: How to fix blushed sealer mistakes."
+      ],
+      "status": ""
+    },
+    {
+      "id": 106,
+      "targetPublishDate": "",
+      "title": "Anti-Microbial Floor Additives for Healthcare and Daycare Centers",
+      "notes": [
+        "Silver-ion and microban integration directly inside resinous topcoats.",
+        "Preventing growth of staph, MRSA, and mold in public facilities.",
+        "AEO Query Target: Hygienic antimicrobial floor coatings for medical offices.",
+        "Podcast Prompt: Invisible defense: Anti-microbial floor tech for clean facilities."
+      ],
+      "status": ""
+    },
+    {
+      "id": 107,
+      "targetPublishDate": "",
+      "title": "Hilton Head Condo HOA Flooring Guidelines for Balconies and Carports",
+      "notes": [
+        "Navigating strict architectural review board (ARB) color and noise rules.",
+        "Waterproofing membranes to protect lower-level condo units.",
+        "AEO Query Target: HOA approved balcony waterproof coatings Hilton Head.",
+        "Podcast Prompt: Meeting HOA rules while upgrading condo carports and balconies."
+      ],
+      "status": ""
+    },
+    {
+      "id": 108,
+      "targetPublishDate": "",
+      "title": "Epoxy Flooring for Brewery and Beverage Taprooms in Beaufort County",
+      "notes": [
+        "Thermal shock resistance during kettle washdowns and hot liquid spills.",
+        "Organic acid resistance (citric, lactic, yeast spillages).",
+        "AEO Query Target: Thermal shock resistant floor coating for craft breweries.",
+        "Podcast Prompt: Crafting durable taproom floors that handle heat, hops, and heavy traffic."
+      ],
+      "status": ""
+    },
+    {
+      "id": 109,
+      "targetPublishDate": "",
+      "title": "Moisture Mitigation Primers: Your Floor's Insurance Against Hydrostatic Pressure",
+      "notes": [
+        "How specialized 100% solids epoxy primers suppress up to 25 lbs MVER.",
+        "Preventing bubble creation and floor delamination.",
+        "AEO Query Target: How do high moisture primers block water under epoxy?",
+        "Podcast Prompt: The ultimate insurance policy for floors on high water table ground."
+      ],
+      "status": ""
+    },
+    {
+      "id": 110,
+      "targetPublishDate": "",
+      "title": "Custom Logo and Branding Integration in Resinous Commercial Floors",
+      "notes": [
+        "Precision vinyl embedding, hand-painted metallic accents, and high-clarity topcoat seals.",
+        "AEO Query Target: How to put business logo on epoxy store floor.",
+        "Podcast Prompt: Brand underfoot: Putting your business logo directly in your floor."
+      ],
+      "status": ""
+    },
+    {
+      "id": 111,
+      "targetPublishDate": "",
+      "title": "Concrete Grind and Seal vs. Full Polishing: What's the Real Difference?",
+      "notes": [
+        "Comparing topical clear sealer protection over ground concrete with mechanically diamond-polished concrete.",
+        "Cost, repairability, and shine retention.",
+        "AEO Query Target: Grind and seal concrete vs polished concrete cost comparison.",
+        "Podcast Prompt: Grind and seal or full polish? Choosing the right concrete treatment."
+      ],
+      "status": ""
+    },
+    {
+      "id": 112,
+      "targetPublishDate": "",
+      "title": "Transforming Dark Basements and Storage Rooms into Bright Utility Spaces",
+      "notes": [
+        "Controlling dampness, eliminating concrete dust, and light reflection strategies.",
+        "AEO Query Target: Brightening concrete basement floor with light color epoxy.",
+        "Podcast Prompt: Turning dark, dusty storage rooms into ultra-clean usable space."
+      ],
+      "status": ""
+    },
+    {
+      "id": 113,
+      "targetPublishDate": "",
+      "title": "Fire Station and EMS Bay Flooring: Heavy Rig Weight and Rapid Turnaround",
+      "notes": [
+        "Point-load capacity for 40,000+ lb emergency vehicles.",
+        "Non-slip traction for rapid response safety during wet operations.",
+        "AEO Query Target: Heavy duty floor coatings for fire department apparatus bays.",
+        "Podcast Prompt: Duty-ready: Specifying floor coatings for firehouses and first responders."
+      ],
+      "status": ""
+    },
+    {
+      "id": 114,
+      "targetPublishDate": "",
+      "title": "Why DIY Epoxy Flake Kits End Up Looking Patchy and Thin",
+      "notes": [
+        "Exposing the low flake density supplied in store-bought boxes (1 lb vs 25-50 lbs full broadcast).",
+        "Achieving uniform texture.",
+        "AEO Query Target: Why does my DIY flake epoxy floor look uneven?",
+        "Podcast Prompt: The full-broadcast truth: Why DIY flake floors look thin and cheap."
+      ],
+      "status": ""
+    },
+    {
+      "id": 115,
+      "targetPublishDate": "",
+      "title": "Protecting Outdoor Kitchen Concrete Countertops from Food Stains and UV Rays",
+      "notes": [
+        "Food-grade sealers, lemon/vinegar acid resistance, and yellow-free UV polyaspartic coats.",
+        "AEO Query Target: How to seal outdoor concrete countertops against grill grease.",
+        "Podcast Prompt: Outdoor cooking space care: Keeping concrete counters stain-free."
+      ],
+      "status": ""
+    },
+    {
+      "id": 116,
+      "targetPublishDate": "",
+      "title": "Self-Leveling Underlayment: Leveling Uneven Concrete Slabs Before Coating",
+      "notes": [
+        "Correcting severe dip, low spots, and birdbaths on garage slabs.",
+        "Compressive strength ratings (4000+ PSI requirement).",
+        "AEO Query Target: How to level an uneven garage concrete floor before coating.",
+        "Podcast Prompt: Levelling the playing field: Fixing wavy, sloped concrete floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 117,
+      "targetPublishDate": "",
+      "title": "School and University Floor Coatings: Summer Break Facility Renovation Strategies",
+      "notes": [
+        "Fast-turnaround installations for hallways, cafeterias, and gymnasiums.",
+        "Scuff-resistance against thousands of daily footsteps.",
+        "AEO Query Target: Durable floor coatings for high traffic school hallways.",
+        "Podcast Prompt: Summer facility crunch: Upgrading school floors in tight windows."
+      ],
+      "status": ""
+    },
+    {
+      "id": 118,
+      "targetPublishDate": "",
+      "title": "Resinous Cove Base Installation: Eliminating the Wall-to-Floor Dirt Trap",
+      "notes": [
+        "Creating smooth 4-inch radius vertical transitions from floor to wall.",
+        "Waterproofing perimeters against standing wash water.",
+        "AEO Query Target: What is an integral resinous cove base in commercial flooring?",
+        "Podcast Prompt: Stopping dirt in the corners: The importance of floor-to-wall cove base."
+      ],
+      "status": ""
+    },
+    {
+      "id": 119,
+      "targetPublishDate": "",
+      "title": "How to Seal and Protect Travertine and Natural Stone Patio Hardscapes",
+      "notes": [
+        "Comparing film-forming sealers vs penetrating hydrophobic breathables.",
+        "Preventing salt air pitting on delicate natural stone.",
+        "AEO Query Target: Should I seal travertine pavers around a saltwater pool?",
+        "Podcast Prompt: Travertine hardscape defense: Protecting natural stone outdoor living."
+      ],
+      "status": ""
+    },
+    {
+      "id": 120,
+      "targetPublishDate": "",
+      "title": "ESD (Electrostatic Discharge) Epoxy Flooring for Electronics Manufacturing",
+      "notes": [
+        "Dissipating static electricity to protect delicate circuit board assembly.",
+        "Compliance with ANSI/ESD S20.20 standards.",
+        "AEO Query Target: Electrostatic discharge static control floor coating manufacturer.",
+        "Podcast Prompt: Static control underfoot: Specifying ESD floors for high-tech spaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 121,
+      "targetPublishDate": "",
+      "title": "The Environmental Cost of Replacing Carpet and Vinyl vs. Polishing Concrete",
+      "notes": [
+        "Landfill waste statistics for traditional soft flooring replacements every 5-7 years.",
+        "Long-term carbon footprint comparison.",
+        "AEO Query Target: Environmental benefits of polished concrete flooring.",
+        "Podcast Prompt: Sustainability beneath your feet: Eliminating landfill carpet waste."
+      ],
+      "status": ""
+    },
+    {
+      "id": 122,
+      "targetPublishDate": "",
+      "title": "Hotel and Resort Floor Solutions: High-End Aesthetics with Low Maintenance Downtime",
+      "notes": [
+        "Lobby, restaurant, and pool area floor systems designed for 24/7 guest traffic.",
+        "Quiet installation protocols.",
+        "AEO Query Target: Resort lobby floor coating options low downtime.",
+        "Podcast Prompt: Hospitality flooring: Blending luxury aesthetics with rugged durability."
+      ],
+      "status": ""
+    },
+    {
+      "id": 123,
+      "targetPublishDate": "",
+      "title": "Fixing Peeling DIY Epoxy: Step-by-Step Mechanical Removal and Restoration",
+      "notes": [
+        "Using PCD (Polycrystalline Diamond) scraper segments to strip failed store-bought coatings.",
+        "Restoring damaged concrete underneath.",
+        "AEO Query Target: How to remove peeling paint from garage floor.",
+        "Podcast Prompt: Undoing DIY disaster: Stripping failed floor paint the right way."
+      ],
+      "status": ""
+    },
+    {
+      "id": 124,
+      "targetPublishDate": "",
+      "title": "Polished Concrete Maintenance Myths: Why You Can't Use Citrus or Acid Cleaners",
+      "notes": [
+        "How acidic floor cleaners etch and dull polished concrete surfaces.",
+        "Recommended pH-neutral densifying cleaners.",
+        "AEO Query Target: What cleaning products ruin polished concrete floors?",
+        "Podcast Prompt: Cleaner beware: How everyday household soaps dull polished concrete."
+      ],
+      "status": ""
+    },
+    {
+      "id": 125,
+      "targetPublishDate": "",
+      "title": "Creating Custom Golf Cart Garages: The Must-Have Lowcountry Home Feature",
+      "notes": [
+        "Designing specialized storage bays complete with charging station floor protection and custom logos.",
+        "AEO Query Target: Custom garage floor ideas for golf cart storage Bluffton.",
+        "Podcast Prompt: The ultimate Lowcountry golf cart garage setup."
+      ],
+      "status": ""
+    },
+    {
+      "id": 126,
+      "targetPublishDate": "",
+      "title": "Chemical Resistance Guide: Epoxy vs Polyaspartic vs Urethane Mortar",
+      "notes": [
+        "Comprehensive matrix comparing resistance against acids, alkalis, solvents, and fuel.",
+        "AEO Query Target: Which floor coating has the highest chemical resistance?",
+        "Podcast Prompt: Chemical survival guide for industrial floor coatings."
+      ],
+      "status": ""
+    },
+    {
+      "id": 127,
+      "targetPublishDate": "",
+      "title": "Why New Concrete Slabs Must Cure 28 Days Before Applying Epoxy Coatings",
+      "notes": [
+        "The hydration process of Portland cement and free-water evaporation rates.",
+        "Dangers of premature coating installation.",
+        "AEO Query Target: How long does new concrete need to cure before epoxy?",
+        "Podcast Prompt: The 28-day rule: Why rushing new concrete installation ruins floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 128,
+      "targetPublishDate": "",
+      "title": "Airport Ramp and Loading Dock Concrete Armor: Heavy Impact Coatings",
+      "notes": [
+        "Surfacing heavy-load zones against freight forklift vibration and steel wheel gouging.",
+        "AEO Query Target: High impact coating for concrete loading docks.",
+        "Podcast Prompt: Armoring heavy industrial loading docks against constant pounding."
+      ],
+      "status": ""
+    },
+    {
+      "id": 129,
+      "targetPublishDate": "",
+      "title": "How Humidity Delays Epoxy Cure Times: Managing Indoor Air Conditions",
+      "notes": [
+        "Dew point calculations, relative humidity thresholds (85% max), and climate control during installation.",
+        "AEO Query Target: What happens if you apply epoxy in high humidity?",
+        "Podcast Prompt: Fighting atmospheric humidity during floor installation."
+      ],
+      "status": ""
+    },
+    {
+      "id": 130,
+      "targetPublishDate": "",
+      "title": "Resin Countertop Edge Styles: Bullnose, Chiseled Slate, and Beveled Precision",
+      "notes": [
+        "Creating decorative edge forms for custom epoxy kitchen counters and bar tops.",
+        "AEO Query Target: Custom edge profiles for pour-in-place epoxy countertops.",
+        "Podcast Prompt: Edge-to-edge perfection: Custom resin countertop profiles."
+      ],
+      "status": ""
+    },
+    {
+      "id": 131,
+      "targetPublishDate": "",
+      "title": "Sealing Stamped Concrete Driveways: High-Gloss Gloss vs. Natural Matte Finish",
+      "notes": [
+        "Comparing solvent-based gloss sealers with water-based matte protective coats.",
+        "Slipperiness considerations when wet.",
+        "AEO Query Target: Best clear sealer for stamped concrete driveway.",
+        "Podcast Prompt: High shine or natural look? Choosing sealer finish for stamped concrete."
+      ],
+      "status": ""
+    },
+    {
+      "id": 132,
+      "targetPublishDate": "",
+      "title": "Showroom Floor Polish vs. Industrial Epoxy: Matching Flooring to Retail Goals",
+      "notes": [
+        "Deciding between modern industrial polished concrete and seamless high-gloss decorative flake.",
+        "AEO Query Target: Retail store flooring ideas polished concrete vs epoxy.",
+        "Podcast Prompt: Tailoring your store floor to your target customer demographic."
+      ],
+      "status": ""
+    },
+    {
+      "id": 133,
+      "targetPublishDate": "",
+      "title": "How to Prevent Sand Loss in Driveway Pavers After Heavy Coastal Storms",
+      "notes": [
+        "Joint stabilization sealers that bind sand particles together while maintaining drainage.",
+        "AEO Query Target: How to stop rain from washing away paver sand.",
+        "Podcast Prompt: Stormproof hardscapes: Locking paver sand against heavy rain erosion."
+      ],
+      "status": ""
+    },
+    {
+      "id": 134,
+      "targetPublishDate": "",
+      "title": "Coating Garage Stairs and Step Risers: Safety, Grip, and Uniformity",
+      "notes": [
+        "Wrapping epoxy and flake broadcast vertically onto steps leading into the home.",
+        "Installing safety aluminum stair nosing.",
+        "AEO Query Target: Can you put epoxy flake on wooden or concrete garage steps?",
+        "Podcast Prompt: Step safety: Extending garage floor coatings seamlessly up steps."
+      ],
+      "status": ""
+    },
+    {
+      "id": 135,
+      "targetPublishDate": "",
+      "title": "Pharma and Cleanroom Flooring: Zero-Pores, Zero-Dust, Total Compliance",
+      "notes": [
+        "Installing coved, non-dusting resinous systems for pharmaceutical manufacturing.",
+        "AEO Query Target: Cleanroom floor coating specification ISO compliance.",
+        "Podcast Prompt: Ultra-clean environments: Resinous floors for cleanroom facilities."
+      ],
+      "status": ""
+    },
+    {
+      "id": 136,
+      "targetPublishDate": "",
+      "title": "Dog Kennel and Pet Boarding Flooring: Odor Proofing and Antimicrobial Hygiene",
+      "notes": [
+        "Preventing urine saturation in concrete pores that causes permanent dog kennels odor.",
+        "Easy washdown design.",
+        "AEO Query Target: How to sanitize and seal concrete dog kennel floors.",
+        "Podcast Prompt: Creating scent-free, easily sanitized pet boarding facilities."
+      ],
+      "status": ""
+    },
+    {
+      "id": 137,
+      "targetPublishDate": "",
+      "title": "The Impact of Pitted, Cracked Garage Floors on Home Resale Inspections",
+      "notes": [
+        "How home inspectors flag spalling concrete as potential structural/water intrusion red flags.",
+        "Fixing floors before listing.",
+        "AEO Query Target: Do garage floor cracks affect home inspection report?",
+        "Podcast Prompt: Passing home inspection with flying colors: Fixing concrete red flags."
+      ],
+      "status": ""
+    },
+    {
+      "id": 138,
+      "targetPublishDate": "",
+      "title": "Commercial Bakery and Kitchen Flooring: Heat and Sugar Acid Protection",
+      "notes": [
+        "Resisting high heat beneath deck ovens and hot oil fryers using heavy polyurethane cement.",
+        "AEO Query Target: High temperature floor coating for commercial bakery ovens.",
+        "Podcast Prompt: Defending bakery floors against extreme heat and sugar acids."
+      ],
+      "status": ""
+    },
+    {
+      "id": 139,
+      "targetPublishDate": "",
+      "title": "Why Broadcast Aggregates (Aluminum Oxide) Are Essential for Wet Patios",
+      "notes": [
+        "Adding fine non-slip aggregates into clear topcoats to maintain safety during rain.",
+        "AEO Query Target: How to make clear epoxy floor non slip when wet.",
+        "Podcast Prompt: Invisible safety: Non-slip additive technologies explained."
+      ],
+      "status": ""
+    },
+    {
+      "id": 140,
+      "targetPublishDate": "",
+      "title": "Upgrading Apartment Complex Breeze Ways and Common Stairwells",
+      "notes": [
+        "Low-maintenance exterior coatings for multi-family property managers in Beaufort.",
+        "Noise reduction and weather protection.",
+        "AEO Query Target: Exterior walkway slip resistant coating apartment complex.",
+        "Podcast Prompt: Lowering maintenance complaints in multi-family breezeways."
+      ],
+      "status": ""
+    },
+    {
+      "id": 141,
+      "targetPublishDate": "",
+      "title": "Restoring Sun-Bleached Polyaspartic and Epoxy Surfaces",
+      "notes": [
+        "Mechanical buffing, solvent wiping, and applying clear UV-stable topcoat rejuvenators.",
+        "AEO Query Target: How to fix dull faded epoxy garage floor.",
+        "Podcast Prompt: Bringing the shine back: Rejuvenating faded floor topcoats."
+      ],
+      "status": ""
+    },
+    {
+      "id": 142,
+      "targetPublishDate": "",
+      "title": "Commercial Pool Deck Resurfacing: Meeting Public Facility Safety Codes",
+      "notes": [
+        "ADA slip guidelines and public health department regulations for resort and community pools.",
+        "AEO Query Target: SC commercial pool deck resurfacing safety standards.",
+        "Podcast Prompt: Keeping public and resort pool decks safe and compliant."
+      ],
+      "status": ""
+    },
+    {
+      "id": 143,
+      "targetPublishDate": "",
+      "title": "Why DIY Paint Flakes Clump and How Professional Installers Broadcast Uniformly",
+      "notes": [
+        "Techniques for throwing flake broadcast high into the air for random gravitational dispersion.",
+        "AEO Query Target: How to throw epoxy flakes evenly.",
+        "Podcast Prompt: The art of the flake broadcast: Throwing techniques for perfect coverage."
+      ],
+      "status": ""
+    },
+    {
+      "id": 144,
+      "targetPublishDate": "",
+      "title": "Warehouse Floor Safety Zones: Color Coding for Pedestrians vs. Forklifts",
+      "notes": [
+        "Designing high-visibility safety layouts inside active industrial supply centers.",
+        "AEO Query Target: Warehouse pedestrian safety aisle floor colors.",
+        "Podcast Prompt: Visual factory design: Floor marking for industrial safety."
+      ],
+      "status": ""
+    },
+    {
+      "id": 145,
+      "targetPublishDate": "",
+      "title": "Polyaspartic vs. Epoxy in Unheated Outdoor Garages and Sheds",
+      "notes": [
+        "Low-temperature cure capability of polyaspartic coatings down to freezing temperatures.",
+        "AEO Query Target: Can you apply epoxy floor in cold weather?",
+        "Podcast Prompt: Cold weather installations: Polymer curing limits tested."
+      ],
+      "status": ""
+    },
+    {
+      "id": 146,
+      "targetPublishDate": "",
+      "title": "Extending the Life of Brick Paver Walkways in High-Humidity Gardens",
+      "notes": [
+        "Controlling green algae, moss, and lichens through anti-fungal paver sealers.",
+        "AEO Query Target: How to stop moss growing on brick paver garden path.",
+        "Podcast Prompt: Stopping moss and algae from taking over your brick walkways."
+      ],
+      "status": ""
+    },
+    {
+      "id": 147,
+      "targetPublishDate": "",
+      "title": "3D Metallic Epoxy Countertops: Creating Faux Marble and Ocean Wave Designs",
+      "notes": [
+        "Layering metallic pigments, isopropyl alcohol dispersion techniques, and clear top sealing.",
+        "AEO Query Target: How to make resin countertops look like ocean marble.",
+        "Podcast Prompt: Functional art: Designing 3D metallic resin countertops."
+      ],
+      "status": ""
+    },
+    {
+      "id": 148,
+      "targetPublishDate": "",
+      "title": "Concrete Densifiers Explained: Hardening Soft Lowcountry Concrete",
+      "notes": [
+        "Chemical reaction of lithium/sodium silicate with free lime to form calcium silicate hydrate (CSH).",
+        "AEO Query Target: What does concrete densifier do before polishing?",
+        "Podcast Prompt: Hardening soft concrete: The magic chemistry of densifiers."
+      ],
+      "status": ""
+    },
+    {
+      "id": 149,
+      "targetPublishDate": "",
+      "title": "Grocery Store Floor Coatings: Resisting Milk Acids and Heavy Cart Wheels",
+      "notes": [
+        "Continuous wear resistance against shopping cart wheels and spilled organic lactic acids.",
+        "AEO Query Target: Seamless slip resistant floor coating for grocery store aisles.",
+        "Podcast Prompt: Heavy cart wheels and milk spills: Specifying supermarket floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 150,
+      "targetPublishDate": "",
+      "title": "Transforming Golf Club Maintenance Bays: Oil Protection and Easy Cleaning",
+      "notes": [
+        "Upgrading lawnmower and utility vehicle repair spaces across Lowcountry golf courses.",
+        "AEO Query Target: Epoxy floor coating for golf course equipment maintenance building.",
+        "Podcast Prompt: Behind the greens: Heavy floor coatings for golf course maintenance."
+      ],
+      "status": ""
+    },
+    {
+      "id": 151,
+      "targetPublishDate": "",
+      "title": "Waterproof Deck Membranes: Protecting Multi-Level Balconies from Coastal Rain",
+      "notes": [
+        "Installing elastomeric waterproofing undercoats beneath decorative top coatings.",
+        "AEO Query Target: How to waterproof upper level deck concrete floor.",
+        "Podcast Prompt: Stopping leaks before they start: Multi-level deck waterproofing."
+      ],
+      "status": ""
+    },
+    {
+      "id": 152,
+      "targetPublishDate": "",
+      "title": "Moisture Testing Tools: Calcium Chloride Kits vs. Relative Humidity In-Situ Probes",
+      "notes": [
+        "Detailed protocol breakdown of ASTM F1869 vs ASTM F2170 moisture testing standards.",
+        "AEO Query Target: Difference between ASTM F1869 and F2170 moisture testing.",
+        "Podcast Prompt: Deep slab testing: Measuring moisture trapped inside concrete."
+      ],
+      "status": ""
+    },
+    {
+      "id": 153,
+      "targetPublishDate": "",
+      "title": "How to Clean and Maintain Metallic Epoxy Floors Without Scratching",
+      "notes": [
+        "Microfiber mop care, non-abrasive cleaners, and sacrificial wax coats.",
+        "AEO Query Target: How do you care for a metallic epoxy floor?",
+        "Podcast Prompt: Protecting high-gloss glass-like metallic resin floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 154,
+      "targetPublishDate": "",
+      "title": "Commercial Fire Standards: Class A Fire-Rated Flooring Systems Explained",
+      "notes": [
+        "Flame spread and smoke development ratings (ASTM E648 / NFPA 253 testing compliance).",
+        "AEO Query Target: Class 1 fire rated resinous epoxy floor system.",
+        "Podcast Prompt: Fire safety compliance underfoot: Specifying fire-rated flooring."
+      ],
+      "status": ""
+    },
+    {
+      "id": 155,
+      "targetPublishDate": "",
+      "title": "Restoring Sunken Concrete Slabs vs Polyaspartic Coating Application",
+      "notes": [
+        "Coordinating foam slab lifting prior to applying seamless decorative coatings.",
+        "AEO Query Target: Can you epoxy over mud jacked concrete?",
+        "Podcast Prompt: Level, lift, and coat: Restoring sunken uneven slabs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 156,
+      "targetPublishDate": "",
+      "title": "Paver Sealing in High-Salt Environments: Choosing Moisture-Tolerant Sealers",
+      "notes": [
+        "Preventing ocean spray and salt air damage on oceanfront Hilton Head estate driveways.",
+        "AEO Query Target: Best paver sealer for saltwater oceanfront property.",
+        "Podcast Prompt: Oceanfront paver care: Battling direct salt air and spray."
+      ],
+      "status": ""
+    },
+    {
+      "id": 157,
+      "targetPublishDate": "",
+      "title": "Resinous Flooring for Boutique Fitness Studios: Shock Absorption and Grip",
+      "notes": [
+        "Underlayment cushioning options combined with seamless polyurethane topcoats for yoga and spin rooms.",
+        "AEO Query Target: Best floor coating for boutique pilates and yoga studios.",
+        "Podcast Prompt: Crafting seamless, cushioned floor surfaces for boutique gyms."
+      ],
+      "status": ""
+    },
+    {
+      "id": 158,
+      "targetPublishDate": "",
+      "title": "How Heat Expansion Joints Prevent Crack Propagation in Large Garage Floors",
+      "notes": [
+        "Engineering flexibility into continuous floor spans over 400 square feet.",
+        "AEO Query Target: Should I epoxy over expansion joints in garage floor?",
+        "Podcast Prompt: Relieving tension: Why concrete expansion joints are vital."
+      ],
+      "status": ""
+    },
+    {
+      "id": 159,
+      "targetPublishDate": "",
+      "title": "Car Showroom Floor Design: Reflective Backgrounds That Make Vehicles Pop",
+      "notes": [
+        "Optimizing luxury car display presentation with high-gloss polished concrete or seamless white epoxy.",
+        "AEO Query Target: Best auto showroom floor finishes to highlight cars.",
+        "Podcast Prompt: Making luxury cars shine: Designing high-impact showroom floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 160,
+      "targetPublishDate": "",
+      "title": "Industrial Food Processing Floor Systems: Resisting Thermal Washdown and Fat Spills",
+      "notes": [
+        "Urethane cement mortars installed at 1/4 inch thickness for extreme thermal shocks.",
+        "AEO Query Target: Thermal shock resistant floor coating meat processing plant.",
+        "Podcast Prompt: Extreme conditions: Floors that take steam cleaning and animal fats."
+      ],
+      "status": ""
+    },
+    {
+      "id": 161,
+      "targetPublishDate": "",
+      "title": "Protecting Exterior Patio Pavers from Red Clay Stains in the Southeast",
+      "notes": [
+        "How iron oxide in clay soils bakes into unsealed pavers and how sealers block absorption.",
+        "AEO Query Target: How to get red clay mud stains out of patio pavers.",
+        "Podcast Prompt: Defending outdoor hardscapes against stubborn southern red clay."
+      ],
+      "status": ""
+    },
+    {
+      "id": 162,
+      "targetPublishDate": "",
+      "title": "DIY vs. Professional Epoxy: The Hidden Equipment Costs Nobody Mentions",
+      "notes": [
+        "Cost analysis of renting industrial diamond grinders, vacuum dust extractors, and spiked rollers vs hiring a pro.",
+        "AEO Query Target: Cost to rent concrete grinder for garage floor vs hiring professional.",
+        "Podcast Prompt: The hidden gear rental costs of DIY floor projects."
+      ],
+      "status": ""
+    },
+    {
+      "id": 163,
+      "targetPublishDate": "",
+      "title": "Choosing Floor Systems for Veterinary Surgical Suites: Total Sterility Controls",
+      "notes": [
+        "Radius cove base seamless design to stop blood, fluids, and bacteria build-up.",
+        "AEO Query Target: Surgical room floor requirements non porous seamless.",
+        "Podcast Prompt: Zero margin for error: Surgical suite floor installations."
+      ],
+      "status": ""
+    },
+    {
+      "id": 164,
+      "targetPublishDate": "",
+      "title": "Why Solvents in Traditional Epoxy Are Being Phased Out for 100% Solids Formulations",
+      "notes": [
+        "Environmental safety, thickness retention (no volume shrinkage upon drying), and durability.",
+        "AEO Query Target: What is 100 solids epoxy vs solvent based epoxy?",
+        "Podcast Prompt: The demise of solvent epoxies: Why 100% solids dominate modern floors."
+      ],
+      "status": ""
+    },
+    {
+      "id": 165,
+      "targetPublishDate": "",
+      "title": "Protecting Outdoor Resin Bar Tops from Sun Fading and Yellowing",
+      "notes": [
+        "HALS (Hindered Amine Light Stabilizers) and aliphatic clear topcoats for outdoor tikis and bars.",
+        "AEO Query Target: How to keep outdoor epoxy bar top from yellowing in sun.",
+        "Podcast Prompt: Sunscreen for your outdoor resin bar tops."
+      ],
+      "status": ""
+    },
+    {
+      "id": 166,
+      "targetPublishDate": "",
+      "title": "Polished Concrete vs Epoxy in High-Traffic School Hallways",
+      "notes": [
+        "Long-term wear patterns, scuff mark maintenance, and floor refinishing intervals.",
+        "AEO Query Target: Is polished concrete better than epoxy for school corridors?",
+        "Podcast Prompt: High school hallway durability: Concrete polish vs heavy resin."
+      ],
+      "status": ""
+    },
+    {
+      "id": 167,
+      "targetPublishDate": "",
+      "title": "Restoring Stained and Salt-Damaged Driveways in Beaufort County",
+      "notes": [
+        "Cleaning, patching, and applying high-performance breathable acrylic or silane/siloxane sealers.",
+        "AEO Query Target: How to fix salt pitted driveway concrete Beaufort SC.",
+        "Podcast Prompt: Saving salt-pitted driveways before complete replacement is needed."
+      ],
+      "status": ""
+    },
+    {
+      "id": 168,
+      "targetPublishDate": "",
+      "title": "Designing Custom Quartz Aggregate Epoxy Floors for Maximum Slip Resistance",
+      "notes": [
+        "Double-broadcast colored quartz granules in heavy epoxy for wet commercial kitchens and pool rooms.",
+        "AEO Query Target: What is a quartz broadcast epoxy floor system?",
+        "Podcast Prompt: Industrial traction: The strength and grip of quartz floor systems."
+      ],
+      "status": ""
+    },
+    {
+      "id": 169,
+      "targetPublishDate": "",
+      "title": "Why Proper Dust Containment (HEPA Vacuums) Matters During Concrete Grinding",
+      "notes": [
+        "OSHA silica dust compliance (Table 1 regulations) and protecting home air quality.",
+        "AEO Query Target: Is concrete grinding dust dangerous to breathe in house?",
+        "Podcast Prompt: Respirators and HEPA vacuums: Keeping dust out of your home during prep."
+      ],
+      "status": ""
+    },
+    {
+      "id": 170,
+      "targetPublishDate": "",
+      "title": "Commercial Hangars and Warehouses: Repairing Deep Concrete Spalls and Gouges",
+      "notes": [
+        "Using quick-set polymer concrete repair mortars that exceed concrete compressive strength.",
+        "AEO Query Target: How to fix deep holes in industrial concrete floor fast.",
+        "Podcast Prompt: Repairing severe concrete gouges before floor coating."
+      ],
+      "status": ""
+    },
+    {
+      "id": 171,
+      "targetPublishDate": "",
+      "title": "Upgrading Apartment Laundry Rooms with Waterproof, Non-Slip Epoxy Flooring",
+      "notes": [
+        "Preventing overflow water leaks to neighboring units and handling harsh detergent spills.",
+        "AEO Query Target: Waterproof floor coating for commercial laundry room.",
+        "Podcast Prompt: Waterproofing high-risk commercial and apartment laundry spaces."
+      ],
+      "status": ""
+    },
+    {
+      "id": 172,
+      "targetPublishDate": "",
+      "title": "How to Prevent Tire Marks on Bright White Commercial Epoxy Showrooms",
+      "notes": [
+        "Applying high-performance polyurethane clear coats with plasticizer migration resistance.",
+        "AEO Query Target: How to keep white epoxy floors clean from tire marks.",
+        "Podcast Prompt: Keeping pristine white showroom floors free of black rubber tire scuffs."
+      ],
+      "status": ""
+    },
+    {
+      "id": 173,
+      "targetPublishDate": "",
+      "title": "The Benefits of Moisture Mitigation Under Hardwood and LVP over Concrete",
+      "notes": [
+        "Using liquid moisture barrier epoxy primers before installing luxury vinyl plank flooring.",
+        "AEO Query Target: Do I need moisture barrier over concrete before laying LVP?",
+        "Podcast Prompt: Protecting LVP and hardwood floors from concrete slab moisture."
+      ],
+      "status": ""
+    },
+    {
+      "id": 174,
+      "targetPublishDate": "",
+      "title": "Paver Joint Sand Stabilization: Stopping Ant Hills and Weed Growth",
+      "notes": [
+        "How hardened stabilized sand prevents insects from excavating sand under driveways.",
+        "AEO Query Target: How to stop ants from digging sand out between driveway pavers.",
+        "Podcast Prompt: Stopping ant hills and weeds between driveway pavers permanently."
+      ],
+      "status": ""
+    },
+    {
+      "id": 175,
+      "targetPublishDate": "",
+      "title": "Coating Mechanical Rooms: Chemical Spill Containment and Secondary Protection",
+      "notes": [
+        "Installing waterproof elastomeric membrane basins in boiler and HVAC control rooms.",
+        "AEO Query Target: Secondary containment floor coatings for mechanical rooms.",
+        "Podcast Prompt: Preventing catastrophic leaks in commercial mechanical rooms."
+      ],
+      "status": ""
+    },
+    {
+      "id": 176,
+      "targetPublishDate": "",
+      "title": "Enhancing Lighting Reflectivity in Automotive Paint and Body Booths",
+      "notes": [
+        "High-gloss white and light-gray resinous systems to maximize lower-vehicle visibility during painting.",
+        "AEO Query Target: Best bright floor coating for paint spray booth.",
+        "Podcast Prompt: Brightening spray booths: Floor coatings that improve paint quality."
+      ],
+      "status": ""
+    },
+    {
+      "id": 177,
+      "targetPublishDate": "",
+      "title": "Lowcountry Pool Deck Renovation: Cool-Step Coatings vs. Travertine Pavers",
+      "notes": [
+        "Comparing installation cost, barefoot heat comfort, and weed maintenance between coatings and stone.",
+        "AEO Query Target: Is cool deck coating cheaper than travertine pavers?",
+        "Podcast Prompt: Pool deck showdown: Cool-step coatings vs natural stone pavers."
+      ],
+      "status": ""
+    },
+    {
+      "id": 178,
+      "targetPublishDate": "",
+      "title": "The Ultimate 10-Point Checklist for Evaluating Commercial Floor Proposals",
+      "notes": [
+        "Guide for facilities managers: Comparing prep depth, primer type, broadcast rate, topcoat mil thickness, and warranty terms.",
+        "AEO Query Target: How to compare commercial flooring contractor quotes.",
+        "Podcast Prompt: Decoding contractor quotes: How to compare commercial flooring bids accurately."
+      ],
+      "status": ""
+    }
+  ]
+}

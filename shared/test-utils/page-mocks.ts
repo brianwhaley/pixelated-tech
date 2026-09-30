@@ -91,7 +91,7 @@ export const resetGoogleReviewsResponse = () => {
 let contentfulEntriesResponse: any = { items: [], includes: { Asset: [] } };
 let contentfulEntryResponse: any = null;
 let contentfulImagesResponse: any[] = [];
-let buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
+let buildEventSchemaOverride: ((event: any) => any) | undefined;
 
 export const setContentfulEntriesResponse = (response: any) => {
 	contentfulEntriesResponse = response;
@@ -103,28 +103,14 @@ export const setContentfulImagesResponse = (response: any[]) => {
 	contentfulImagesResponse = response;
 };
 export const setBuildEventSchema = (fn: (event: any) => any) => {
-	buildEventSchemaImpl = fn;
+	buildEventSchemaOverride = fn;
 };
 export const resetContentfulMocks = () => {
 	contentfulEntriesResponse = { items: [], includes: { Asset: [] } };
 	contentfulEntryResponse = null;
 	contentfulImagesResponse = [];
-	buildEventSchemaImpl = (event: any) => ({ title: event.fields.title });
+	buildEventSchemaOverride = undefined;
 };
-
-const readPublicData = (filePath: string): string | null => {
-	const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
-	const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
-	if (!fs.existsSync(resolvedPath)) {
-		return null;
-	}
-	return fs.readFileSync(resolvedPath, 'utf-8');
-};
-
-const toKebabCase = (value: string) => value
-	.replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-	.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
-	.toLowerCase();
 
 const mockComponent = (name: string, testId?: string) => ({ children, title, content, site, posts, markdowndata, faqsData, className, id, style, onSubmitHandler, ...restProps }: any) => {
 	const textContent = title ??
@@ -135,7 +121,12 @@ const mockComponent = (name: string, testId?: string) => ({ children, title, con
 			(faqsData ? `faqs:${Array.isArray(faqsData.mainEntity) ? faqsData.mainEntity.length : 0}` :
 				undefined));
 
-	const componentProps: any = { 'data-testid': testId ?? toKebabCase(name) };
+	const componentProps: any = {
+		'data-testid': testId ?? name
+			.replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+			.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
+			.toLowerCase(),
+	};
 	if (className) componentProps.className = className;
 	if (id) componentProps.id = id;
 	if (style) componentProps.style = style;
@@ -163,40 +154,24 @@ const mockServicesList = ({ services, siteInfo, title, intro, id }: any) => {
 	);
 };
 
-const mockServiceDetail = ({ service, title, id }: any) => {
-	return React.createElement(
-		'div',
-		{ 'data-testid': 'servicedetailpage', id },
-		title ?? service?.name ?? 'Service Detail',
-	);
-};
-
-const contentfulValueToSlug = ({ value }: any) =>
-	encode(
-		String(value ?? '')
-			.trim()
-			.toLowerCase()
-			.replace(/\s+/g, '-'),
-	);
-
 export function createPageComponentMocks(baseConfig: any = undefined, overrides: Record<string, any> = {}) {
-	const usePixelatedConfig = () => pixelatedConfigOverride === undefined ? baseConfig : pixelatedConfigOverride;
-
 	const defaultMocks: Record<string, any> = {
 		__esModule: true,
-		usePixelatedConfig,
-		useFileData: (filePath: string) => {
+		usePixelatedConfig: () => pixelatedConfigOverride === undefined ? baseConfig : pixelatedConfigOverride,
+		useFileData: (filePath: string, responseType: 'text' | 'json' = 'text') => {
 			if (fileDataState) {
 				return fileDataState;
 			}
 			if (mockState.fileData !== undefined && mockState.fileData !== null) {
 				return mockState.fileData;
 			}
-			const data = readPublicData(filePath);
+			const normalized = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+			const resolvedPath = path.resolve(process.cwd(), 'public', normalized);
+			const fileData = fs.existsSync(resolvedPath) ? fs.readFileSync(resolvedPath, 'utf-8') : null;
 			return {
-				data,
+				data: responseType === 'json' && fileData !== null ? JSON.parse(fileData) : fileData,
 				loading: false,
-				error: data === null ? `File not found: ${filePath}` : null,
+				error: fileData === null ? `File not found: ${filePath}` : null,
 			};
 		},
 		getCachedWordPressItems: async () => mockState.wordpressPosts,
@@ -211,7 +186,7 @@ export function createPageComponentMocks(baseConfig: any = undefined, overrides:
 		getContentfulEntriesByType: async () => contentfulEntriesResponse,
 		getContentfulEntryByField: async () => contentfulEntryResponse,
 		getContentfulImagesFromEntries: async () => contentfulImagesResponse,
-		buildEventSchema: (event: any) => buildEventSchemaImpl(event),
+		buildEventSchema: (event: any) => buildEventSchemaOverride?.(event) ?? { title: event.fields.title },
 		getGravatarProfile: async () => null,
 		handleModalOpen: () => null,
 		GetFlickrData: async () => [],
@@ -238,8 +213,17 @@ export function createPageComponentMocks(baseConfig: any = undefined, overrides:
 		ServiceAreas: mockComponent('ServiceAreas', 'service-areas'),
 		ServiceAreaDetail: mockComponent('ServiceAreaDetail', 'serviceareadetailpage'),
 		ServiceCard: mockComponent('ServiceCard'),
-		ServiceDetail: mockServiceDetail,
-		contentfulValueToSlug,
+		ServiceDetail: ({ service, title, id }: any) => React.createElement(
+			'div',
+			{ 'data-testid': 'servicedetailpage', id },
+			title ?? service?.name ?? 'Service Detail',
+		),
+		contentfulValueToSlug: ({ value }: any) => encode(
+			String(value ?? '')
+				.trim()
+				.toLowerCase()
+				.replace(/\s+/g, '-'),
+		),
 		capitalizeWords: (value: string) => String(value ?? '')
 			.trim()
 			.replace(/[-_]+/g, ' ')
@@ -262,6 +246,7 @@ export function createPageComponentMocks(baseConfig: any = undefined, overrides:
 		FAQAccordion: mockComponent('FAQAccordion', 'faq-accordion'),
 		SchemaFAQ: mockComponent('SchemaFAQ', 'schema-faq'),
 		Markdown: mockComponent('Markdown', 'markdown'),
+		ListItems: ({ items }: any) => React.createElement('div', { 'data-testid': 'list-items' }, Array.isArray(items) ? items.length : 0),
 		BlogPostList: mockComponent('BlogPostList', 'blog-post-list'),
 		StyleGuideUI: mockComponent('StyleGuideUI', 'styleguide-ui'),
 		Calendly: mockComponent('Calendly', 'calendly'),
