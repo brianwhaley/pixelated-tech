@@ -1,0 +1,125 @@
+{
+  "properties": {
+    "name": "supermarket-shenanigans-arc",
+    "id": "supermarket-shenanigans-arc-form",
+    "toggleLoading": true,
+    "openModal": true,
+    "resetForm": true
+  },
+  "fields": [
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "from",
+        "name": "from",
+        "value": "brian@brianwhaley.com"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "to",
+        "name": "to",
+        "value": "brian@brianwhaley.com"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "subject",
+        "name": "subject",
+        "value": "Supermarket Shenanigans Author Review Copy Request"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "domain",
+        "name": "domain",
+        "value": "brianwhaley.com"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "formName",
+        "name": "formName",
+        "value": "supermarket-shenanigans-arc"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "arcRequestId",
+        "name": "arcRequestId",
+        "value": ""
+      }
+    },
+    {
+      "component": "FormHoneypot",
+      "props": {}
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "email",
+        "id": "email",
+        "name": "email",
+        "defaultValue": null,
+        "autoComplete": "email",
+        "size": "40",
+        "display": "vertical",
+        "required": "required",
+        "label": "Email Address (required) : ",
+        "validate": "isValidEmailAddress",
+        "tooltip": "Please enter the email address where the download link should be sent"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "downloadCode",
+        "name": "downloadCode",
+        "defaultValue": null,
+        "autoComplete": "off",
+        "size": "40",
+        "display": "vertical",
+        "label": "Download Code (optional) : ",
+        "tooltip": "Enter a download code if one was provided to you"
+      }
+    },
+    {
+      "component": "FormSelect",
+      "props": {
+        "id": "format",
+        "name": "format",
+        "defaultValue": "",
+        "multiple": null,
+        "required": "required",
+        "display": "vertical",
+        "label": "File Format (required) : ",
+        "tooltip": "Please select EPUB or PDF",
+        "options": [
+          { "value": "", "text": "Select a format", "disabled": "disabled" },
+          { "value": "epub", "text": "EPUB" },
+          { "value": "pdf", "text": "PDF" }
+        ]
+      }
+    },
+    {
+      "component": "FormButton",
+      "props": {
+        "type": "submit",
+        "id": "submit",
+        "text": "Request Download Link"
+      }
+    }
+  ]
+}
