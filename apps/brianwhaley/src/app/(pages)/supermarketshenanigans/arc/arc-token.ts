@@ -8,6 +8,7 @@ const ARC_ALLOWED_VALUES: { allowedEmails: string[]; allowedDownloadCodes: strin
 	"allowedDownloadCodes": [
 		"FamilyShenanigans",
 		"ARCShenanigans",
+		"VROShenanigans",
 		"LibraryThingShenanigans"
 	]
 };

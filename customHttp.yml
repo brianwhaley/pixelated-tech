@@ -21,13 +21,19 @@ applications:
         headers: *asset_headers
 
       - pattern: "/supermarketshenanigans/arc/download*"
-        headers: &arc_download_headers
+        headers: &nocache_headers
           - key: "Cache-Control"
-            value: "private, no-store, max-age=0, must-revalidate"
+            value: "private, no-store, no-cache, max-age=0, s-maxage=0, must-revalidate"
           - key: "Pragma"
             value: "no-cache"
           - key: "Expires"
             value: "0"
+
+      - pattern: "/api/auth/*"
+        headers: *nocache_headers
+
+      - pattern: "/api/auth/**/*"
+        headers: *nocache_headers
 
       - pattern: "**/*"
         headers: &page_headers
@@ -73,22 +79,16 @@ applications:
   - appRoot: apps/threemuses
     customHeaders:
       - pattern: "/events/report"
-        headers: &report_headers
-          - key: "Cache-Control"
-            value: "no-store, no-cache, max-age=0, s-maxage=0, must-revalidate"
-          - key: "Pragma"
-            value: "no-cache"
-          - key: "Expires"
-            value: "0"
+        headers: *nocache_headers
 
       - pattern: "/events/report/"
-        headers: *report_headers
+        headers: *nocache_headers
 
       - pattern: "/events/report/*"
-        headers: *report_headers
+        headers: *nocache_headers
 
       - pattern: "/events/report*"
-        headers: *report_headers
+        headers: *nocache_headers
 
       - pattern: "/_next/static/**/*"
         headers: *static_headers

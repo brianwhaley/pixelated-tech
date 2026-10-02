@@ -244,10 +244,6 @@
 				"companyName": "Oaktree Landscaping, LLC",
 				"address": "26504 Whyte Hardee Boulevard, Hardeeville, SC 29927",
 				"notes": {
-					"2026-12": "Thank you for your scheduled payment!",
-					"2026-11": "Thank you for your scheduled payment!",
-					"2026-10": "Thank you for your scheduled payment!",
-					"2026-09": "Thank you for your scheduled payment!",
 					"2026-08": "Thank you for your scheduled payment!",
 					"2026-07": "Thank you for your scheduled payment!",
 					"2026-06": "Thank you for your scheduled payment!",
@@ -311,6 +307,12 @@
 				"address": "116 Beckenridge Circle, Bluffton, SC 29909",
 				"notes": {},
 				"additionalInvoiceItems": {
+					"2026-09": [
+						{
+							"amount": 296.76,
+							"description": "Reimbursement for Facebook Advertising for August 2026, as requested. 24,905 impressions to 6,526 people."
+						}
+					],
 					"2026-08": [
 						{
 							"amount": 299.06,
