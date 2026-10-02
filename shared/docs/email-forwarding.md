@@ -317,7 +317,7 @@ Open the **Route 53 Console** and select the Hosted Zone for `clienta.com`:
    * Add a new attribute of type **String** named `targetEmail` with value set to your test destination inbox (e.g., `yourname@gmail.com`).
 
 
-### 3. Insert Tenant Route into DynamoDB
+### 3. IAM SMTP CREDENTIALS SETTINGS
 1. Look under IAM SMTP credentials (right underneath the Mail Manager section):
     * IAM SMTP credentials
     * Manual credential management. No traffic policies or rule sets.
