@@ -6,24 +6,14 @@
  * Note: This makes external HTTP requests and should only be used server-side
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import puppeteer from 'puppeteer';
 import { smartFetch } from '../../foundation/smartfetch';
+import seoMetricsConfig from './seo-metrics.config.json';
 import {
 	EXCLUDED_URL_PATTERNS,
 	EXCLUDED_FILE_EXTENSIONS,
 	EXCLUDED_DIRECTORY_NAMES
 } from './seo-constants';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const seoMetricsConfig = JSON.parse(
-	fs.readFileSync(path.join(__dirname, 'seo-metrics.config.json'), 'utf8')
-);
-
 interface SEOMetricConfig {
   id: string;
   title: string;

@@ -2,8 +2,6 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 
-// Mocks: useFileData and smartFetch from @pixelated-tech/components
-const manifest = { files: ['sample-assessment.json'] };
 const sampleAssessment = {
 	companyName: 'Test Co',
 	companyContact: 'Owner',
@@ -37,10 +35,12 @@ vi.mock('@pixelated-tech/components', async () => {
 	return {
 		__esModule: true,
 		...actual,
-		useFileData: () => ({ data: manifest, loading: false, error: null }),
-		smartFetch: async (_url: string) => currentSample,
 	};
 });
+
+vi.mock('@pixelated-tech/components/adminclient', () => ({
+	useAdminFileData: () => ({ files: ['sample-assessment.json'], selectedFile: 'sample-assessment.json', setSelectedFile: vi.fn(), data: currentSample, loading: false, error: null }),
+}));
 
 describe('Assessment page', () => {
 	beforeEach(() => {
@@ -48,8 +48,8 @@ describe('Assessment page', () => {
 	});
 
 	it('renders selection and loads assessment', async () => {
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
-		const { container } = render(<Page />);
+		const { default: Page } = await import('../../src/app/(pages)/assessment/assessment-template');
+		const { container } = render(<Page files={['sample-assessment.json']} />);
 		await waitFor(() => expect(container.querySelector('#selection-section')).toBeTruthy());
 		// After fetch the assessment should render title
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
@@ -59,16 +59,16 @@ describe('Assessment page', () => {
 
 	it('shows no website message when none provided', async () => {
 		currentSample = { ...sampleAssessment, websiteDomain: {} } as any;
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
-		const { container } = render(<Page />);
+		const { default: Page } = await import('../../src/app/(pages)/assessment/assessment-template');
+		const { container } = render(<Page files={['sample-assessment.json']} />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
 		expect(container).toHaveTextContent('No current website domain provided.');
 	});
 
 	it('renders existingSite strengths when present', async () => {
 		currentSample = { ...sampleAssessment, existingSite: [{ url: 'https://x', strengths: ['s1'], areasForImprovement: [] }] } as any;
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
-		const { container } = render(<Page />);
+		const { default: Page } = await import('../../src/app/(pages)/assessment/assessment-template');
+		const { container } = render(<Page files={['sample-assessment.json']} />);
 		await waitFor(() => expect(container.querySelector('#marketing-analysis-section')).toBeTruthy());
 		expect(container).toHaveTextContent('Strengths');
 		expect(container).toHaveTextContent('s1');
@@ -76,16 +76,16 @@ describe('Assessment page', () => {
 
 	it('does not show typography additional notes when none are provided', async () => {
 		currentSample = { ...sampleAssessment, visualDesign: { ...sampleAssessment.visualDesign, additionalNotes: [] } } as any;
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
-		const { container } = render(<Page />);
+		const { default: Page } = await import('../../src/app/(pages)/assessment/assessment-template');
+		const { container } = render(<Page files={['sample-assessment.json']} />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
 		expect(container).not.toHaveTextContent('Additional Notes');
 	});
 
 	it('does not show recommended keywords when the keywords list is empty', async () => {
 		currentSample = { ...sampleAssessment, keywords: [] } as any;
-		const { default: Page } = await import('../../src/app/(pages)/assessment/page');
-		const { container } = render(<Page />);
+		const { default: Page } = await import('../../src/app/(pages)/assessment/assessment-template');
+		const { container } = render(<Page files={['sample-assessment.json']} />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
 		expect(container).not.toHaveTextContent('Recommended Keywords');
 	});

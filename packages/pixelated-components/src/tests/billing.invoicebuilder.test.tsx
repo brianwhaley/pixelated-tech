@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { InvoiceBuilder } from '@/components/admin/billing/billing.invoicebuilder';
+import { MonthlyInvoiceBuilder } from '@/components/admin/billing/billing.invoicebuilder';
 import { notFound } from 'next/navigation';
 import { loadBillingConfigData } from '@/components/admin/billing/billing.server';
 import { compileInvoiceData } from '@/components/admin/billing/billing.functions';
@@ -29,7 +29,7 @@ describe('InvoiceBuilder', () => {
 	beforeEach(() => {
 		vi.mocked(loadBillingConfigData).mockResolvedValue({
 			sites: [
-				{ name: 'example-site', billing: { plan: 'standard' }, blogRss: 'https://example.com/blog' }
+				{ name: 'example-site', monthlyBilling: { tier: 'standard' }, blogRss: 'https://example.com/blog' }
 			],
 			subscriptions: [],
 			paymentInfo: {},
@@ -45,7 +45,7 @@ describe('InvoiceBuilder', () => {
 	});
 
 	it('renders invoice view when site is found and billing enabled', async () => {
-		const result = await InvoiceBuilder({ siteName: 'example-site', billingCycle: '2026-01' });
+		const result = await MonthlyInvoiceBuilder({ siteName: 'example-site', billingCycle: '2026-01' });
 		expect(result).toBeDefined();
 		expect(loadBillingConfigData).toHaveBeenCalledWith('2026-01', 'example-site');
 		expect(getLiveBillingStats).toHaveBeenCalled();
@@ -54,13 +54,13 @@ describe('InvoiceBuilder', () => {
 
 	it('calls notFound when site is missing or has no billing', async () => {
 		vi.mocked(loadBillingConfigData).mockResolvedValue({
-			sites: [{ name: 'other-site', billing: undefined }],
+			sites: [{ name: 'other-site', monthlyBilling: undefined }],
 			subscriptions: [],
 			paymentInfo: {},
 			formCompletions: [],
 			enhancements: {}
 		});
-		await InvoiceBuilder({ siteName: 'example-site', billingCycle: '2026-01' });
+		await MonthlyInvoiceBuilder({ siteName: 'example-site', billingCycle: '2026-01' });
 		expect(notFound).toHaveBeenCalled();
 	});
 });

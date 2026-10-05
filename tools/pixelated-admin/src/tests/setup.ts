@@ -70,8 +70,8 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 		clientId: (TEST_CONFIG.integrations as any).google.client_id,
 		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
 	}),
-	InvoiceBuilder: ({ siteName, billingCycle }: any) => ({
-		dataTestId: 'InvoiceBuilder',
+	MonthlyInvoiceBuilder: ({ siteName, billingCycle }: any) => ({
+		dataTestId: 'MonthlyInvoiceBuilder',
 		siteName,
 		billingCycle,
 	}),

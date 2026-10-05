@@ -9,7 +9,7 @@ export function VisualDesignStyles() {
 	const resolvedVisualDesign = getFullPixelatedConfig()?.visualdesign;
 	if (!resolvedVisualDesign) return null;
 
-	// Validate visualdesign early so invalid siteconfig.json fails fast
+	// Validate visualdesign early so invalid pixelated.config.json fails fast
 	assertVisualDesign(resolvedVisualDesign);
 	const tokens: Record<string, any> = resolvedVisualDesign as any;
 

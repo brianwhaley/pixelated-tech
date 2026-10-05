@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { pixelatedConfig } from '../test/test-data';
 import { getAllRoutes } from '../components/foundation/metadata.functions';
 
-describe('siteconfig.json — integration smoke', () => {
-  it('uses canonical siteInfo from src/data/siteconfig.json', () => {
+describe('pixelated.config.json — integration smoke', () => {
+  it('uses canonical siteInfo from pixelated.config.json', () => {
     expect(pixelatedConfig.siteInfo?.name).toBe('Pixelated Technologies');
   });
 

@@ -78,37 +78,52 @@
 	"paymentInfo": {
 		"method": "Zelle is the preferred method of payment.",
 		"details": "Please send Zelle payments to brian@pixelated.tech or to (973) 710-8008.",
-		"terms": "Full and Final Payment is due within 5 business days of the end of each month and receipt of invoice.  Thank you for your business!",
+		"terms": "Full and Final Payment is due within 5 business days of the receipt of invoice.  Thank you for your business!",
 		"fromEmail": "\"Pixelated Technologies\" <billing@pixelated.tech>"
 	},
 	"sites": [
 		{
-			"name": "AMAVA Janitorial",
+			"name": "amava-janitorial",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/amava-janitorial",
 			"localPort": "3014",
 			"remote": "amava-janitorial",
 			"repo": "amava-janitorial",
-			"healthCheckId": "",
-			"rte53HostedZoneID": "",
+			"healthCheckId": "40485447-73a7-4cbf-939b-9296051ee399",
+			"rte53HostedZoneID": "Z06892133DO1DP8TJO0CI",
 			"amplifyAppId": "d1rbu53fslcy38",
-			"cloudfronturl": "",
+			"cloudfronturl": "d2wnhp5u0zbu4y.cloudfront.net",
 			"url": "https://www.amavajanitorial.com",
 			"blog_url": "https://amavajanitorial.wpcomstaging.com",
 			"blogRss": "https://amavajanitorial.wpcomstaging.com/feed",
-			"ga4PropertyId": "",
+			"ga4PropertyId": "407017441",
 			"gscSiteUrl": "https://www.amavajanitorial.com",
-			"billing": {
+			"googleMapsPlaceId": "",
+			"monthlyBilling": {
 				"tier": "growth",
 				"price": 250.00,
 				"email": "al@amavajanitorial.com",
 				"companyName": "AMAVA Janitorial",
-				"address": "",
+				"address": "115 North Franklin Turnpike Suite 258, Mahwah, NJ 07430",
 				"notes": {
 					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
 					"2026-09": "Since AMAVA Janitorial was launched in September, billing for maintenance will begin starting in October, and will be billed $250 monthly at the end of each month.  Thank you!"
 				},
 				"additionalInvoiceItems": {}
-			}
+			},
+			"adHocBilling": [
+				{
+					"invoiceNumber": "INV-20261004-AMAVA-001",
+					"invoiceDate": "2026-10-04",
+					"dueDate": "2026-10-09",
+					"items": [
+					{
+						"description": "Completion of Web Site Development and launch of the new site",
+						"amount": 1250
+					}
+					],
+					"note": "Thank you!"
+				}
+			]
 		},
 		{
 			"name": "brianwhaley",
@@ -139,7 +154,7 @@
 			"blogRss": "https://geaconstruction.wpcomstaging.com/feed",
 			"ga4PropertyId": "",
 			"gscSiteUrl": "sc-domain:geaconstruction.net",
-			"billing": {
+			"monthlyBilling": {
 				"tier": "growth",
 				"price": 250.00,
 				"email": "nick@geaconstruction.net",
@@ -209,7 +224,7 @@
 			"ga4PropertyId": "530408436",
 			"gscSiteUrl": "",
 			"googleMapsPlaceId": "ChIJ66eRE3qnw4kRD79U7II0QoQ",
-			"billing": {
+			"monthlyBilling": {
 				"tier": "growth",
 				"price": 150.00,
 				"email": "greg@manningmetalworks.com",
@@ -237,7 +252,7 @@
 			"blogRss": "https://blog.oaktree-landscaping.com/feed/",
 			"ga4PropertyId": "516538573",
 			"gscSiteUrl": "sc-domain:oaktree-landscaping.com",
-			"billing": {
+			"monthlyBilling": {
 				"tier": "essential",
 				"price": 100.00,
 				"email": "cwoods@live.com",
@@ -268,7 +283,7 @@
 			"ga4PropertyId": "",
 			"gscSiteUrl": "",
 			"blogRss": "",
-			"billing": {
+			"monthlyBilling": {
 				"tier": "premium",
 				"price": 400.00,
 				"email": "yon.lucas@palmetto2step.com",
@@ -299,7 +314,7 @@
 			"blogRss": "https://blog.palmetto-epoxy.com/feed/",
 			"ga4PropertyId": "492316713",
 			"gscSiteUrl": "sc-domain:palmetto-epoxy.com",
-			"billing": {
+			"monthlyBilling": {
 				"tier": "premium",
 				"price": 200.00,
 				"email": "palmettoepoxy@gmail.com, marthaaberle21@gmail.com",
@@ -419,7 +434,7 @@
 			"ga4PropertyId": "539271804",
 			"gscSiteUrl": "https://www.simpledayconcierge.com",
 			"googleMapsPlaceId": "",
-			"billing": {
+			"monthlyBilling": {
 				"tier": "essential",
 				"price": 100.00,
 				"email": "patti@simpledayconcierge.com, joe@simpledayconcierge.com",
@@ -437,62 +452,6 @@
 				}	
 			}
 		},
-
-
-
-
-		{
-			"name": "medicare-in-a-box",
-			"localPath": "",
-			"localPort": "",
-			"remote": "medicare-in-a-box",
-			"repo": "medicare-in-a-box",
-			"healthCheckId": "",
-			"rte53HostedZoneID": "",
-			"amplifyAppId": "",
-			"cloudfronturl": "",
-			"url": "https://www.medicareinabox.org",
-			"ga4PropertyId": "",
-			"gscSiteUrl": "https://www.medicareinabox.org",
-			"googleMapsPlaceId": "",
-			"billing": {
-				"tier": "premium",
-				"price": 500.00,
-				"email": "priscilla@simplystatedrs.com",
-				"companyName": "Medicare in a Box",
-				"address": "PO Box 1260, Bluffton, SC 29910",
-				"notes": {},
-				"additionalInvoiceItems": {}	
-			}
-		},
-		{
-			"name": "Simply Stated Workbook",
-			"localPath": "",
-			"localPort": "",
-			"remote": "",
-			"repo": "",
-			"healthCheckId": "",
-			"rte53HostedZoneID": "",
-			"amplifyAppId": "",
-			"cloudfronturl": "",
-			"url": "https://www.simplystatedwb.com",
-			"ga4PropertyId": "",
-			"gscSiteUrl": "https://www.simplystatedwb.com",
-			"googleMapsPlaceId": "",
-			"billing": {
-				"tier": "premium",
-				"price": 500.00,
-				"email": "priscilla@simplystatedrs.com",
-				"companyName": "Simply Stated Workbook",
-				"address": "PO Box 1260, Bluffton, SC 29910",
-				"notes": {},
-				"additionalInvoiceItems": {}	
-			}
-		},
-
-
-
-
 		{
 			"name": "threemuses",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/threemuses",
@@ -509,7 +468,7 @@
 			"ga4PropertyId": "530365008",
 			"gscSiteUrl": "https://www.thethreemusesofbluffton.com",
 			"googleMapsPlaceId": "",
-			"billing": {
+			"monthlyBilling": {
 				"email": "info@thethreemusesofbluffton.com",
 				"companyName": "The Three Muses of Bluffton",
 				"address": "1460 Fording Island Road, Bluffton, SC 29910",

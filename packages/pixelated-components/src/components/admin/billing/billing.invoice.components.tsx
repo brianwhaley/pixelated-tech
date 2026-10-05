@@ -7,18 +7,19 @@ import { SiteHealthGoogleAnalytics } from '../site-health/site-health-google-ana
 import { SiteHealthCloudwatch } from '../site-health/site-health-cloudwatch';
 import './billing.css';
 
-interface InvoiceViewProps {
+interface InvoiceTemplateProps {
 	invoice: InvoiceData;
 	onBack?: () => void;
 }
 
-export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => {
+export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({ invoice, onBack }) => {
 	// Guard against completely empty or broken invoices
 	if (!invoice) return <div data-testid="invoice-error">Invoice data missing</div>;
 
 	const formCompletions = invoice.formCompletions ?? [];
-	const shouldRenderAnalytics = !!invoice.ga4PropertyId && invoice.ga4PropertyId !== 'GA4_PROPERTY_ID_HERE';
-	const shouldRenderCloudwatch = !!invoice.siteName;
+	const shouldRenderSiteHealth = invoice.showSiteHealth !== false;
+	const shouldRenderAnalytics = shouldRenderSiteHealth && !!invoice.ga4PropertyId && invoice.ga4PropertyId !== 'GA4_PROPERTY_ID_HERE';
+	const shouldRenderCloudwatch = shouldRenderSiteHealth && !!invoice.siteName;
 	const invoiceEndDate = (() => {
 		const [year, month] = invoice.billingMonth.split('-').map((value) => Number(value));
 		return new Date(Date.UTC(year, month, 0)).toISOString().split('T')[0];
@@ -64,7 +65,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 						<h3>Project Details:</h3>
 						<p className="company-title">{invoice.siteName}</p>
 						<p className="card-details"><a href={invoice.siteUrl} target="_blank" rel="noopener noreferrer" className="post-link">{invoice.siteUrl}</a></p>
-						<p className="card-details">Billing Cycle: {invoice.billingMonth}</p>
+						{invoice.showBillingCycle !== false && <p className="card-details">Billing Cycle: {invoice.billingMonth}</p>}
 					</div>
 				</div>
 
@@ -206,4 +207,4 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({ invoice, onBack }) => 
 		</div>
 	);
 };
-export default InvoiceView;
+export default InvoiceTemplate;

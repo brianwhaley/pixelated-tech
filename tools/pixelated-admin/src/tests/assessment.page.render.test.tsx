@@ -40,7 +40,7 @@ const sampleAssessment = {
 	logo: [{ url: '/logo.png', altText: 'Company logo' }],
 };
 
-let mockUseFileDataResult: any = null;
+let mockUseAdminFileDataResult: any = null;
 
 vi.mock('@pixelated-tech/components', async (importOriginal) => {
 	const actual = await importOriginal();
@@ -48,13 +48,15 @@ vi.mock('@pixelated-tech/components', async (importOriginal) => {
 		__esModule: true,
 		...actual,
 		PageSection: ({ children }: any) => <div>{children}</div>,
-		useFileData: () => mockUseFileDataResult,
-		smartFetch: async () => sampleAssessment,
 		SmartImage: ({ alt }: any) => <img alt={alt} />,
-		generateGoogleFontsUrl: () => '',
+		generateGoogleFontsUrl: (fonts: string[]) => `https://fonts.googleapis.com/css2?family=${fonts[0]}`,
 		contrastyColor: () => '#ffffff',
 	};
 });
+
+vi.mock('@pixelated-tech/components/adminclient', () => ({
+	useAdminFileData: () => mockUseAdminFileDataResult,
+}));
 
 describe('Assessment page', () => {
 	beforeEach(() => {
@@ -62,21 +64,26 @@ describe('Assessment page', () => {
 	});
 
 	it('renders assessment content when manifest and assessment data are available', async () => {
-		mockUseFileDataResult = { data: { files: ['assessment.json'] }, loading: false, error: null };
-		const Page = (await import('@/app/(pages)/assessment/page')).default;
-		render(<Page />);
+		mockUseAdminFileDataResult = { files: ['assessment.json'], selectedFile: 'assessment.json', setSelectedFile: vi.fn(), data: sampleAssessment, loading: false, error: null };
+		const Page = (await import('@/app/(pages)/assessment/assessment-template')).default;
+		render(<Page files={['assessment.json']} />);
 
 		await waitFor(() => expect(screen.getByText('Assessment')).toBeTruthy());
 		expect(screen.getByText('FOR: Example Corp')).toBeTruthy();
 		expect(screen.getByText('Some Local Competitors')).toBeTruthy();
 		expect(screen.getByText('No current website domain provided.')).toBeTruthy();
+		expect(screen.getByTestId('header-font-sample')).toHaveStyle({ fontFamily: 'Inter' });
+		expect(screen.getByTestId('body-font-sample')).toHaveStyle({ fontFamily: 'Arial' });
+		expect(document.querySelectorAll('link[rel="stylesheet"]')).toHaveLength(2);
+		expect(document.querySelector('link[href*="Inter"]')).toBeTruthy();
+		expect(document.querySelector('link[href*="Arial"]')).toBeTruthy();
 	});
 
 	it('renders an error message when the manifest fails to load', async () => {
-		mockUseFileDataResult = { data: null, loading: false, error: 'Failed to load' };
-		const Page = (await import('@/app/(pages)/assessment/page')).default;
-		render(<Page />);
+		mockUseAdminFileDataResult = { files: [], selectedFile: null, setSelectedFile: vi.fn(), data: null, loading: false, error: 'Failed to load' };
+		const Page = (await import('@/app/(pages)/assessment/assessment-template')).default;
+		render(<Page files={[]} />);
 
-		await waitFor(() => expect(screen.getByText('Error loading assessment manifest: Failed to load')).toBeTruthy());
+		await waitFor(() => expect(screen.getByText('Error loading assessment files: Failed to load')).toBeTruthy());
 	});
 });
