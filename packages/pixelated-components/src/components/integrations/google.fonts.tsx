@@ -13,7 +13,7 @@ const getSingleFontUrl = (family: string): string => {
 
 /**
  * Component to handle Google Fonts imports.
- * Extracts fonts from visualdesign configuration provided in siteconfig.json.
+ * Extracts fonts from visualdesign configuration provided in pixelated.config.json.
  * Outputs preconnect and one stylesheet link per font for reliability.
  */
 GoogleFonts.propTypes = {

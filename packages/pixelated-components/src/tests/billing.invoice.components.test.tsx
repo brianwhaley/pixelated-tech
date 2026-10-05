@@ -14,9 +14,9 @@ vi.mock('../components/admin/site-health/site-health-cloudwatch', () => ({
 	),
 }));
 
-import { InvoiceView } from '../components/admin/billing/billing.invoice.components';
+import { InvoiceTemplate } from '../components/admin/billing/billing.invoice.components';
 
-describe('InvoiceView Component', () => {
+describe('InvoiceTemplate Component', () => {
 	const mockInvoice = {
 		invoiceNumber: 'INV-001',
 		invoiceDate: '2026-06-18',
@@ -36,7 +36,7 @@ describe('InvoiceView Component', () => {
 	};
 
 	it('renders correctly with html content', () => {
-		render(<InvoiceView invoice={mockInvoice} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={mockInvoice} html="<h1>Mock HTML</h1>" />);
 		
 		expect(screen.getByTestId('invoice-preview-container')).toBeInTheDocument();
 		expect(screen.queryByTestId('back-btn')).not.toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('InvoiceView Component', () => {
 			posts: [],
 		};
 
-		render(<InvoiceView invoice={invoiceWithoutExtras as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithoutExtras as any} html="<h1>Mock HTML</h1>" />);
 
 		expect(screen.getByTestId('invoice-preview-container')).toBeInTheDocument();
 		expect(screen.queryByText('Published Content')).not.toBeInTheDocument();
@@ -58,7 +58,7 @@ describe('InvoiceView Component', () => {
 
 	it('renders back button and fires onBack callback', () => {
 		const onBackMock = vi.fn();
-		render(<InvoiceView invoice={mockInvoice} html="<h1>Mock HTML</h1>" onBack={onBackMock} />);
+		render(<InvoiceTemplate invoice={mockInvoice} html="<h1>Mock HTML</h1>" onBack={onBackMock} />);
 		
 		const backBtn = screen.getByTestId('back-btn');
 		expect(backBtn).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('InvoiceView Component', () => {
 			],
 		};
 
-		render(<InvoiceView invoice={invoiceWithPosts as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithPosts as any} html="<h1>Mock HTML</h1>" />);
 
 		expect(screen.getByText('Published Content')).toBeInTheDocument();
 		expect(screen.getByText('Post One')).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe('InvoiceView Component', () => {
 			note: ['First note line.', 'Second note line.', 'Third note line.'],
 		};
 
-		render(<InvoiceView invoice={invoiceWithNoteList as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithNoteList as any} html="<h1>Mock HTML</h1>" />);
 
 		expect(screen.getByText('NOTE:')).toBeInTheDocument();
 		expect(screen.getByText('First note line.')).toBeInTheDocument();
@@ -111,7 +111,7 @@ describe('InvoiceView Component', () => {
 			enhancements: ['Added schema markup', 'Published press release'],
 		};
 
-		render(<InvoiceView invoice={invoiceWithEnhancements as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithEnhancements as any} html="<h1>Mock HTML</h1>" />);
 
 		expect(screen.getByText('Enhancements')).toBeInTheDocument();
 		expect(screen.getByText('Added schema markup')).toBeInTheDocument();
@@ -119,7 +119,7 @@ describe('InvoiceView Component', () => {
 	});
 
 	it('does not render enhancements section when there are no enhancements', () => {
-		render(<InvoiceView invoice={mockInvoice} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={mockInvoice} html="<h1>Mock HTML</h1>" />);
 		expect(screen.queryByText('Enhancements')).not.toBeInTheDocument();
 	});
 
@@ -129,7 +129,7 @@ describe('InvoiceView Component', () => {
 			ga4PropertyId: '123456789',
 		};
 
-		render(<InvoiceView invoice={invoiceWithAnalytics as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithAnalytics as any} html="<h1>Mock HTML</h1>" />);
 		expect(screen.getByTestId('ga-card')).toBeInTheDocument();
 		expect(screen.getByTestId('cloudwatch-card')).toBeInTheDocument();
 	});
@@ -140,7 +140,7 @@ describe('InvoiceView Component', () => {
 			ga4PropertyId: undefined,
 		};
 
-		render(<InvoiceView invoice={invoiceWithoutAnalytics as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithoutAnalytics as any} html="<h1>Mock HTML</h1>" />);
 		expect(screen.queryByTestId('ga-card')).not.toBeInTheDocument();
 	});
 
@@ -150,13 +150,35 @@ describe('InvoiceView Component', () => {
 			ga4PropertyId: undefined,
 		};
 
-		render(<InvoiceView invoice={invoiceWithoutAnalytics as any} html="<h1>Mock HTML</h1>" />);
+		render(<InvoiceTemplate invoice={invoiceWithoutAnalytics as any} html="<h1>Mock HTML</h1>" />);
 		expect(screen.queryByTestId('ga-card')).not.toBeInTheDocument();
 		expect(screen.getByTestId('cloudwatch-card')).toBeInTheDocument();
 	});
 
+	it('hides both site health cards when site health is disabled', () => {
+		const invoiceWithoutSiteHealth = {
+			...mockInvoice,
+			ga4PropertyId: '123456789',
+			showSiteHealth: false,
+		};
+
+		render(<InvoiceTemplate invoice={invoiceWithoutSiteHealth as any} html="<h1>Mock HTML</h1>" />);
+		expect(screen.queryByTestId('ga-card')).not.toBeInTheDocument();
+		expect(screen.queryByTestId('cloudwatch-card')).not.toBeInTheDocument();
+	});
+
+	it('hides the billing cycle for ad hoc invoices', () => {
+		const adHocInvoice = {
+			...mockInvoice,
+			showBillingCycle: false,
+		};
+
+		render(<InvoiceTemplate invoice={adHocInvoice as any} html="<h1>Mock HTML</h1>" />);
+		expect(screen.queryByText('Billing Cycle: 2026-06')).not.toBeInTheDocument();
+	});
+
 	it('renders error if invoice is missing', () => {
-		render(<InvoiceView invoice={null as any} html="" />);
+		render(<InvoiceTemplate invoice={null as any} html="" />);
 		expect(screen.getByTestId('invoice-error')).toBeInTheDocument();
 	});
 });

@@ -11,15 +11,16 @@ import {
 	listPixelatedFormSubmissionReportRows,
 	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE
 } from '../../integrations/aws.dynamo.integration';
-import { loadBillingData } from './billing.functions';
+import { compileAdHocInvoiceData, loadBillingData } from './billing.functions';
+import { AdHocInvoiceConfig, GeneratedInvoiceResult, SiteConfig } from './billing.types';
 
 export async function loadBillingConfigData(month?: string, siteName?: string) {
 	const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
 	const billingData = loadBillingData(sitesPath);
 
 	let formCompletions: Array<{ submitAt: string; formName: string; email: string }> = [];
-	if (month) {
-		const site = siteName ? billingData.sites.find((s) => s.name === siteName) : undefined;
+	if (month && siteName) {
+		const site = billingData.sites.find((s) => s.name === siteName);
 		const source = site?.url || site?.blogRss;
 		let domain: string | undefined;
 		if (source) {
@@ -63,6 +64,84 @@ export async function loadBillingConfigData(month?: string, siteName?: string) {
 	};
 }
 
+export async function loadAdHocBillingConfigData() {
+	const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
+	const billingData = loadBillingData(sitesPath);
+
+	return {
+		invoiceNumbers: billingData.sites.flatMap((site) => site.adHocBilling?.map((invoice) => invoice.invoiceNumber) || []),
+		paymentInfo: billingData.paymentInfo,
+	};
+}
+
+export async function generateAdHocInvoice(
+	invoiceNumber: string,
+	previewOnly = false
+): Promise<GeneratedInvoiceResult> {
+	const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
+	const billingData = loadBillingData(sitesPath);
+	const matches = billingData.sites.flatMap((candidate) =>
+		candidate.adHocBilling
+			?.filter((candidateInvoice) => candidateInvoice.invoiceNumber === invoiceNumber)
+			.map((candidateInvoice) => ({ site: candidate as SiteConfig, invoice: candidateInvoice })) || []
+	);
+	if (matches.length > 1) {
+		throw new Error(`Ad hoc invoice number ${invoiceNumber} is configured for more than one site.`);
+	}
+	const match = matches[0];
+	const site = match?.site;
+	const invoice = match?.invoice;
+
+	if (!site || !invoice) {
+		throw new Error(`Ad hoc invoice ${invoiceNumber} was not found.`);
+	}
+
+	const invoiceData = compileAdHocInvoiceData(site, invoice, billingData.paymentInfo);
+	if (previewOnly) {
+		return {
+			siteName: site.name,
+			email: invoiceData.email,
+			pdfPath: '',
+			invoiceData,
+			success: true,
+		};
+	}
+
+	const publicInvoicesDir = path.join(process.cwd(), 'public', 'invoices');
+	fs.mkdirSync(publicInvoicesDir, { recursive: true });
+	const config = getFullPixelatedConfig() as any;
+	const internalToken = config?.integrations?.puppeteer?.internalToken;
+	if (!internalToken) throw new Error('Missing internal Puppeteer token in pixelated.config.json');
+
+	const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+	try {
+		const page = await browser.newPage();
+		const headersList = await headers();
+		const origin = headersList.get('x-origin') || headersList.get('origin') || undefined;
+		const host = headersList.get('host');
+		const protocol = headersList.get('x-forwarded-proto') || undefined;
+		const baseUrl = origin ?? (host ? `${protocol ?? 'https'}://${host}` : undefined);
+		if (!baseUrl) throw new Error('Unable to determine base URL for puppeteer invoice generation');
+		const localUrl = `${baseUrl}/billing/invoice/adhoc/${encodeURIComponent(site.name)}/${encodeURIComponent(invoiceNumber)}?token=${encodeURIComponent(internalToken)}`;
+		const response = await page.goto(localUrl, { waitUntil: 'networkidle0' });
+		if (!response || response.status() >= 400) {
+			throw new Error(`Ad hoc invoice print route returned HTTP ${response?.status() ?? 'unknown'}.`);
+		}
+
+		const pdfFileName = `${invoiceNumber}.pdf`;
+		await page.pdf({
+			path: path.join(publicInvoicesDir, pdfFileName),
+			format: 'letter',
+			printBackground: true,
+			margin: { top: '0.4in', right: '0.4in', bottom: '0.4in', left: '0.4in' },
+		});
+
+		return { siteName: site.name, pdfPath: `/invoices/${pdfFileName}`, email: invoiceData.email, success: true };
+	} finally {
+		await browser.close();
+	}
+}
+
 export async function generateInvoicePdfsForSites(targetSites: string[], billingMonth: string, previewOnly: boolean = false): Promise<any[]> {
 	const publicInvoicesDir = path.join(process.cwd(), 'public', 'invoices');
 	if (!previewOnly && !fs.existsSync(publicInvoicesDir)) {
@@ -88,7 +167,7 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 
 		for (const siteName of targetSites) {
 			const site = billingData.sites.find((s) => s.name === siteName);
-			if (!site || !site.billing) {
+			if (!site || !site.monthlyBilling) {
 				results.push({
 					siteName,
 					success: false,
@@ -125,7 +204,7 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 				if (previewOnly) {
 					results.push({
 						siteName,
-						email: site.billing.email,
+						email: site.monthlyBilling.email,
 						pdfPath: '',
 						invoiceData: compiledInvoice,
 						success: true,
@@ -162,14 +241,14 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 				results.push({
 					siteName,
 					pdfPath: `/invoices/${pdfFileName}`,
-					email: site.billing.email,
+					email: site.monthlyBilling.email,
 					success: true,
 				});
 			} catch (innerError) {
 				console.error(`Failed generating invoice for site: ${siteName}:`, innerError);
 				results.push({
 					siteName,
-					email: site.billing.email,
+					email: site.monthlyBilling.email,
 					pdfPath: '',
 					success: false,
 					message: (innerError as Error).message,
@@ -185,7 +264,7 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 	return results;
 }
 
-export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPath: string; email: string }[]): Promise<string[]> {
+export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPath: string; email: string; subject?: string; text?: string }[]): Promise<string[]> {
 	let fromEmail = '"Pixelated Technologies" <billing@pixelated.tech>';
 	try {
 		const sitesPath = path.join(process.cwd(), 'src/app/data/sites.json');
@@ -218,8 +297,8 @@ export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPat
 			const mailOptions = {
 				from: fromEmail,
 				to: targetEmail,
-				subject: `Invoice for ${inv.siteName} - ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}`,
-				text: `Hi,\n\nPlease find attached your monthly subscription service invoice for ${inv.siteName}.\n\nThank you for your business!\n\nBest regards,\nPixelated Technologies\n\n\n`,
+				subject: inv.subject || `Invoice for ${inv.siteName} - ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}`,
+				text: inv.text || `Hi,\n\nPlease find attached your monthly subscription service invoice for ${inv.siteName}.\n\nThank you for your business!\n\nBest regards,\nPixelated Technologies\n\n\n`,
 				attachments: [
 					{
 						filename: path.basename(pdfFullPath),

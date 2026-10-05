@@ -2,13 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { SiteConfig, Subscriptions, PaymentInfo, InvoiceData, GeneratedInvoiceResult, BlogPostBilling, SocialReferrerBilling } from './billing.types';
-import { smartFetch } from '../../foundation/smartfetch';
 import { ToggleLoading } from '../../foundation/loading';
-import InvoiceView from './billing.invoice.components';
-import { loadBillingConfigData } from './billing.server';
+import InvoiceTemplate from './billing.invoice.components';
+import { dispatchInvoiceEmails, generateAdHocInvoice, generateInvoicePdfsForSites, loadAdHocBillingConfigData, loadBillingConfigData } from './billing.server';
 import './billing.css';
 
-export const BillingDashboard: React.FC = () => {
+export const MonthlyBillingDashboard: React.FC = () => {
 	const [sites, setSites] = useState<SiteConfig[]>([]);
 	const [subscriptions, setSubscriptions] = useState<Subscriptions>({});
 	const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>({ method: '', details: '', terms: '' });
@@ -46,7 +45,7 @@ export const BillingDashboard: React.FC = () => {
 				setPaymentInfo(response.paymentInfo || { method: '', details: '', terms: '' });
 				setFormCompletions(response.formCompletions || []);
 
-				const billableSites = (response.sites as SiteConfig[]).filter(site => !!site.billing);
+				const billableSites = (response.sites as SiteConfig[]).filter(site => !!site.monthlyBilling);
 				const preselected: { [name: string]: boolean } = {};
 				billableSites.forEach(s => {
 					preselected[s.name] = true;
@@ -61,7 +60,7 @@ export const BillingDashboard: React.FC = () => {
 		fetchSites();
 	}, [monthStr]);
 
-	const billableSites = sites.filter(site => !!site.billing);
+	const billableSites = sites.filter(site => !!site.monthlyBilling);
 
 	const handleSiteCheckboxChange = (name: string) => {
 		setSelectedSites(prev => ({
@@ -94,32 +93,20 @@ export const BillingDashboard: React.FC = () => {
 		}
 
 		try {
-			// Call the generation backend endpoint
-			const response = await smartFetch('/api/billing/generate', {
-				timeout: 90000, // Extend timeout to 90 seconds (since Puppeteer launches & renders takes longer than the default 10s)
-				requestInit: {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						sites: selectedList.map(s => s.name),
-						billingMonth: monthStr
-					})
-				}
-			});
-
-			if (response && response.success && Array.isArray(response.results)) {
-				setGeneratedInvoices(response.results);
+			const results = await generateInvoicePdfsForSites(selectedList.map((site) => site.name), monthStr);
+			if (Array.isArray(results)) {
+				setGeneratedInvoices(results);
 				
 				// Automatically select all successfully generated files for email dispatch by default
 				const emailSelections: { [name: string]: boolean } = {};
-				response.results.forEach((inv: GeneratedInvoiceResult) => {
+				results.forEach((inv: GeneratedInvoiceResult) => {
 					if (inv.success) {
 						emailSelections[inv.siteName] = true;
 					}
 				});
 				setSelectedForEmail(emailSelections);
 			} else {
-				throw new Error(response?.message || 'Invalid API generation response structure');
+				throw new Error('Invalid invoice generation response structure');
 			}
 		} catch (error) {
 			console.error('Invoices generation failed:', error);
@@ -158,25 +145,15 @@ export const BillingDashboard: React.FC = () => {
 		}
 
 		try {
-			const response = await smartFetch('/api/billing/email', {
-				timeout: 60000, // Extend timeout to 60 seconds (since SMTP dispatching takes longer than the default 10s)
-				requestInit: {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						invoices: targets.map(t => ({
-							siteName: t.siteName,
-							pdfPath: t.pdfPath,
-							email: t.email
-						}))
-					})
-				}
-			});
-
-			if (response && response.success && Array.isArray(response.logs)) {
-				setEmailLogs(response.logs);
+			const logs = await dispatchInvoiceEmails(targets.map((target) => ({
+				siteName: target.siteName,
+				pdfPath: target.pdfPath,
+				email: target.email,
+			})));
+			if (Array.isArray(logs)) {
+				setEmailLogs(logs);
 			} else {
-				throw new Error(response?.message || 'Invalid response from mailing API');
+				throw new Error('Invalid response from mailing action');
 			}
 		} catch (error) {
 			console.error('Email dispatch failed:', error);
@@ -193,28 +170,12 @@ export const BillingDashboard: React.FC = () => {
 		
 		try {
 			ToggleLoading({ show: true });
-			// Request live/mock data from the backend simulation or wp.com so that preview matches real PDF closely
-			const statsResponse = await smartFetch('/api/billing/generate', {
-				timeout: 90000,
-				requestInit: {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						sites: [siteName],
-						billingMonth: monthStr,
-						previewOnly: true // Custom flag could be handled by the route, or we can just fetch the raw items here
-					})
-				}
-			});
-			
-			// For preview, we just use the raw compiled invoice data if returned, otherwise fallback to basic compilation
-			let compiled = null;
-			if (statsResponse && Array.isArray(statsResponse.results) && statsResponse.results[0]?.invoiceData) {
-				compiled = statsResponse.results[0].invoiceData;
+			const results = await generateInvoicePdfsForSites([siteName], monthStr, true);
+			if (results[0]?.invoiceData) {
+				setPreviewInvoice({ data: results[0].invoiceData });
 			} else {
-				throw new Error("Unable to preview invoice: backend API did not return compiled data.");
+				throw new Error('Unable to preview invoice: billing action did not return compiled data.');
 			}
-			setPreviewInvoice({ data: compiled });
 		} catch (e) {
 			console.error("Preview failed to fetch live data:", e);
 			alert(`Preview failed: ${(e as Error).message}`);
@@ -228,7 +189,7 @@ export const BillingDashboard: React.FC = () => {
 	}
 
 	if (previewInvoice) {
-		return <InvoiceView invoice={previewInvoice.data} onBack={() => setPreviewInvoice(null)} />;
+		return <InvoiceTemplate invoice={previewInvoice.data} onBack={() => setPreviewInvoice(null)} />;
 	}
 
 	const allSitesChecked = billableSites.length > 0 && billableSites.every(s => !!selectedSites[s.name]);
@@ -303,15 +264,15 @@ export const BillingDashboard: React.FC = () => {
 							<tbody>
 								{billableSites.map(site => {
 									const isChecked = !!selectedSites[site.name];
-									const tierName = site.billing!.tier;
+									const tierName = site.monthlyBilling!.tier;
 									let normalizedTier = tierName.toLowerCase();
 									if (normalizedTier === 'premier') normalizedTier = 'premium';
 									if (normalizedTier === 'standard') normalizedTier = 'growth';
 
 									const subPrice = (subscriptions[normalizedTier] || subscriptions[tierName])?.price || 0;
-									const finalPrice = site.billing!.priceOverride !== undefined 
-										? site.billing!.priceOverride 
-										: (site.billing!.price !== undefined ? site.billing!.price : subPrice);
+									const finalPrice = site.monthlyBilling!.priceOverride !== undefined
+										? site.monthlyBilling!.priceOverride
+										: (site.monthlyBilling!.price !== undefined ? site.monthlyBilling!.price : subPrice);
 
 									return (
 										<tr key={site.name} className="hover-row">
@@ -323,16 +284,16 @@ export const BillingDashboard: React.FC = () => {
 												/>
 											</td>
 											<td className="site-project-col">
-												<div className="company-name">{site.billing!.companyName}</div>
+												<div className="company-name">{site.monthlyBilling!.companyName}</div>
 												<div className="site-details">{site.name} ({site.url})</div>
 											</td>
 											<td className="billing-tier-col">
-												<span className="tier-badge">{site.billing!.tier}</span>
+												<span className="tier-badge">{site.monthlyBilling!.tier}</span>
 												<span className="tier-price">${finalPrice.toFixed(2)}/mo</span>
 											</td>
 											<td className="client-contact-col">
-												<div>{site.billing!.email}</div>
-												<div className="client-address">{site.billing!.address}</div>
+												<div>{site.monthlyBilling!.email}</div>
+												<div className="client-address">{site.monthlyBilling!.address}</div>
 											</td>
 											<td className="right-align">
 												<button
@@ -452,4 +413,121 @@ export const BillingDashboard: React.FC = () => {
 		</div>
 	);
 };
-export default BillingDashboard;
+
+export const AdHocBillingDashboard: React.FC = () => {
+	const [invoiceNumbers, setInvoiceNumbers] = useState<string[]>([]);
+	const [selectedInvoiceNumber, setSelectedInvoiceNumber] = useState('');
+	const [previewInvoice, setPreviewInvoice] = useState<InvoiceData | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [working, setWorking] = useState(false);
+	const [generatedInvoice, setGeneratedInvoice] = useState<GeneratedInvoiceResult | null>(null);
+	const [emailLogs, setEmailLogs] = useState<string[]>([]);
+	const [error, setError] = useState('');
+
+	useEffect(() => {
+		loadAdHocBillingConfigData()
+			.then((data) => {
+				setInvoiceNumbers(data.invoiceNumbers);
+				setSelectedInvoiceNumber(data.invoiceNumbers[0] || '');
+			})
+			.catch((loadError) => setError((loadError as Error).message))
+			.finally(() => setLoading(false));
+	}, []);
+
+	const handleInvoiceChange = (invoiceNumber: string) => {
+		setSelectedInvoiceNumber(invoiceNumber);
+		setPreviewInvoice(null);
+		setGeneratedInvoice(null);
+		setEmailLogs([]);
+	};
+
+	const handlePreview = async () => {
+		if (!selectedInvoiceNumber) return;
+		setWorking(true);
+		setError('');
+		try {
+			const response = await generateAdHocInvoice(selectedInvoiceNumber, true);
+			setPreviewInvoice(response.invoiceData || null);
+		} catch (previewError) {
+			setError((previewError as Error).message);
+		} finally {
+			setWorking(false);
+		}
+	};
+
+	const handleGeneratePdf = async () => {
+		if (!selectedInvoiceNumber) return;
+		setWorking(true);
+		setError('');
+		setGeneratedInvoice(null);
+		setEmailLogs([]);
+		try {
+			const generated = await generateAdHocInvoice(selectedInvoiceNumber);
+			setGeneratedInvoice(generated);
+		} catch (generationError) {
+			setError((generationError as Error).message);
+		} finally {
+			setWorking(false);
+		}
+	};
+
+	const handleEmailInvoice = async () => {
+		if (!generatedInvoice?.success) return;
+		setWorking(true);
+		setError('');
+		try {
+			const logs = await dispatchInvoiceEmails([{
+				siteName: generatedInvoice.siteName,
+				pdfPath: generatedInvoice.pdfPath,
+				email: generatedInvoice.email,
+				subject: `Invoice ${selectedInvoiceNumber} for ${generatedInvoice.siteName}`,
+				text: `Hi,\n\nPlease find attached invoice ${selectedInvoiceNumber} for ${generatedInvoice.siteName}.\n\nThank you for your business!\n\nBest regards,\nPixelated Technologies`,
+			}]);
+			setEmailLogs(logs);
+		} catch (emailError) {
+			setError((emailError as Error).message);
+		} finally {
+			setWorking(false);
+		}
+	};
+
+	if (loading) return <div className="billing-loading-msg">Loading ad hoc invoices...</div>;
+	if (previewInvoice) return <InvoiceTemplate invoice={previewInvoice} onBack={() => setPreviewInvoice(null)} />;
+
+	return (
+		<div className="billing-dashboard-wrapper">
+			<div className="billing-control-card">
+				<h3>Ad Hoc Invoice</h3>
+				<div className="billing-date-selectors">
+					<div>
+						<label htmlFor="adhoc-invoice">Invoice Number</label>
+						<select id="adhoc-invoice" value={selectedInvoiceNumber} onChange={(event) => handleInvoiceChange(event.target.value)}>
+							{invoiceNumbers.map((invoiceNumber) => <option key={invoiceNumber} value={invoiceNumber}>{invoiceNumber}</option>)}
+						</select>
+					</div>
+				</div>
+
+				{invoiceNumbers.length === 0 && <div className="billing-error-msg">No ad hoc invoices configured in sites.json.</div>}
+				{error && <div className="billing-error-msg">{error}</div>}
+				<div>
+					<button onClick={handlePreview} disabled={working || !selectedInvoiceNumber}>Preview Invoice</button>
+					<button onClick={handleGeneratePdf} disabled={working || !selectedInvoiceNumber} className="generate-invoices-btn">
+						{working ? 'Generating PDF...' : 'Generate PDF'}
+					</button>
+					<button onClick={handleEmailInvoice} disabled={working || !generatedInvoice?.success} className="email-invoices-btn">
+						{working ? 'Emailing Invoice...' : 'Email Invoice'}
+					</button>
+				</div>
+				{generatedInvoice?.success && (
+					<div className="billing-email-logs">
+						<p>PDF: <a href={generatedInvoice.pdfPath} target="_blank" rel="noopener noreferrer">{generatedInvoice.pdfPath}</a></p>
+						<p>Email: {generatedInvoice.email}</p>
+						{emailLogs.map((log) => <div key={log}>{log}</div>)}
+					</div>
+				)}
+			</div>
+		</div>
+	);
+};
+
+export default MonthlyBillingDashboard;

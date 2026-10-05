@@ -5,6 +5,8 @@ import {
 	SiteConfig, 
 	InvoiceData, 
 	InvoiceItem,
+	AdHocInvoiceConfig,
+	PaymentInfo,
 	BlogPostBilling,
 	SocialReferrerBilling,
 	FormCompletion,
@@ -50,7 +52,7 @@ export function compileInvoiceData(
 	formCompletions: FormCompletion[] = [],
 	enhancements: Record<string, string[]> = {}
 ): InvoiceData {
-	if (!site.billing) {
+	if (!site.monthlyBilling) {
 		throw new Error(`Site ${site.name} is not a billable account.`);
 	}
 
@@ -63,7 +65,7 @@ export function compileInvoiceData(
 	const dueDate = due.toISOString().split('T')[0];
 
 	const invoiceNumber = `INV-${year}${month}-${site.name.toUpperCase()}`;
-	const tierName = site.billing.tier;
+	const tierName = site.monthlyBilling.tier;
 	
 	// Normalize some legacy names (e.g. premier -> premium, standard -> growth)
 	let normalizedTier = tierName.toLowerCase();
@@ -72,15 +74,15 @@ export function compileInvoiceData(
 
 	const subTier = subscriptions[normalizedTier] || subscriptions[tierName] || { price: 0, services: [] };
 	
-	const basePrice = site.billing.priceOverride !== undefined && site.billing.priceOverride !== null
-		? site.billing.priceOverride
-		: (site.billing.price !== undefined && site.billing.price !== null
-			? site.billing.price
+	const basePrice = site.monthlyBilling.priceOverride !== undefined && site.monthlyBilling.priceOverride !== null
+		? site.monthlyBilling.priceOverride
+		: (site.monthlyBilling.price !== undefined && site.monthlyBilling.price !== null
+			? site.monthlyBilling.price
 			: subTier.price);
 
 	const servicesList = Array.isArray(subTier.services) ? subTier.services : [];
 
-	const rawAdditionalItems = site.billing.additionalInvoiceItems?.[billingMonth];
+	const rawAdditionalItems = site.monthlyBilling.additionalInvoiceItems?.[billingMonth];
 	const additionalInvoiceItems = rawAdditionalItems
 		? (Array.isArray(rawAdditionalItems) ? rawAdditionalItems : [rawAdditionalItems])
 		: [];
@@ -117,9 +119,9 @@ export function compileInvoiceData(
 		invoiceDate,
 		dueDate,
 		billingMonth,
-		companyName: site.billing.companyName,
-		address: site.billing.address,
-		email: site.billing.email,
+		companyName: site.monthlyBilling.companyName,
+		address: site.monthlyBilling.address,
+		email: site.monthlyBilling.email,
 		siteName: site.name,
 		siteUrl: site.url,
 		ga4PropertyId,
@@ -135,9 +137,41 @@ export function compileInvoiceData(
 	};
 }
 
+export function compileAdHocInvoiceData(
+	site: SiteConfig,
+	invoice: AdHocInvoiceConfig,
+	paymentInfo: PaymentInfo
+): InvoiceData {
+	if (!site.adHocBilling?.some((item) => item.invoiceNumber === invoice.invoiceNumber)) {
+		throw new Error(`Ad hoc invoice ${invoice.invoiceNumber} is not configured for ${site.name}.`);
+	}
+
+	return {
+		invoiceNumber: invoice.invoiceNumber,
+		invoiceDate: invoice.invoiceDate,
+		dueDate: invoice.dueDate,
+		billingMonth: invoice.invoiceDate.slice(0, 7),
+		companyName: site.monthlyBilling?.companyName || site.name,
+		address: site.monthlyBilling?.address || '',
+		email: site.monthlyBilling?.email || '',
+		siteName: site.name,
+		siteUrl: site.url,
+		ga4PropertyId: undefined,
+		showSiteHealth: false,
+		showBillingCycle: false,
+		tier: 'ad hoc',
+		items: invoice.items,
+		totalOwed: Math.round(invoice.items.reduce((total, item) => total + item.amount, 0) * 100) / 100,
+		paymentInfo,
+		posts: [],
+		socialReferrers: [],
+		note: invoice.note,
+	};
+}
+
 /**
  * Helper to retrieve a billing note for a given billing month (YYYY-MM).
- * Strict behavior: `billingMonth` must be provided. If `site.billing.notes` exists
+ * Strict behavior: `billingMonth` must be provided. If `site.monthlyBilling.notes` exists
  * return the matching note string or empty string when missing. Do not fallback.
  */
 export function getBillingNote(site: SiteConfig, billingMonth: string): string | string[] | undefined {
@@ -145,10 +179,10 @@ export function getBillingNote(site: SiteConfig, billingMonth: string): string |
 		throw new Error('billingMonth is required to retrieve billing note');
 	}
 
-	const billing = site?.billing;
-	if (!billing) return undefined;
+	const monthlyBilling = site?.monthlyBilling;
+	if (!monthlyBilling) return undefined;
 
-	const notes = billing.notes;
+	const notes = monthlyBilling.notes;
 	if (notes && typeof notes === 'object') {
 		const monthNote = notes[billingMonth] as string | string[] | undefined;
 		if (typeof monthNote === 'string' || Array.isArray(monthNote)) {

@@ -51,6 +51,26 @@ div .color-palette-item {
     text-align: center;
 }
 
+.typography-samples {
+    margin-top: 12px;
+    text-align: left;
+}
+
+.typography-sample {
+    border-left: 4px solid currentColor;
+    padding: 12px 16px;
+    background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.typography-sample-header {
+    font-size: 1.6em;
+    font-weight: 700;
+}
+
+.typography-sample-body {
+    font-size: 1.05em;
+}
+
 @media print {
     .sidepanel-portal-root, 
     .sidepanel,

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { loadBillingData, compileInvoiceData } from '../components/admin/billing/billing.functions';
+import { compileAdHocInvoiceData, compileInvoiceData, getBillingNote, loadBillingData } from '../components/admin/billing/billing.functions';
 import fs from 'fs';
 import { generateInvoicePdfsForSites, dispatchInvoiceEmails, loadBillingConfigData } from '../components/admin/billing/billing.server';
 import puppeteer from 'puppeteer';
@@ -105,6 +105,20 @@ describe('Billing Functions', () => {
 			expect(() => loadBillingData('/fake/path.json')).toThrow('Failed to load billing configuration');
 		});
 
+		it('does not query DynamoDB without a site name', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+				subscriptions: {},
+				paymentInfo: { method: '', details: '', terms: '' },
+				sites: [{ name: 'palmetto-epoxy', url: 'https://www.palmetto-epoxy.com' }]
+			}));
+
+			const result = await loadBillingConfigData('2026-06');
+
+			expect(dynamoIntegration.listPixelatedFormSubmissionReportRows).not.toHaveBeenCalled();
+			expect(result.formCompletions).toEqual([]);
+		});
+
 		it('loads site-specific form completions by domain without filtering by form name', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
@@ -114,7 +128,7 @@ describe('Billing Functions', () => {
 					{
 						name: 'palmetto-epoxy',
 						url: 'https://www.palmetto-epoxy.com',
-						billing: { tier: 'premium', email: 'x@y.com', companyName: 'Palmetto Epoxy', address: '116 Beckenridge Circle' }
+						monthlyBilling: { tier: 'premium', email: 'x@y.com', companyName: 'Palmetto Epoxy', address: '116 Beckenridge Circle' }
 					}
 				]
 			}));
@@ -138,6 +152,28 @@ describe('Billing Functions', () => {
 	});
 
 	describe('compileInvoiceData', () => {
+		describe('compileAdHocInvoiceData', () => {
+			it('compiles the selected configured invoice', () => {
+				const site = {
+					name: 'AMAVA Janitorial',
+					url: 'https://www.amavajanitorial.com',
+					monthlyBilling: { tier: 'growth', email: 'al@example.com', companyName: 'AMAVA Janitorial', address: '123 Main St' },
+					adHocBilling: [{ invoiceNumber: 'INV-AMAVA-001', invoiceDate: '2026-10-04', dueDate: '2026-10-09', items: [{ description: 'Launch', amount: 1250 }] }],
+				};
+
+				const invoice = compileAdHocInvoiceData(site, site.adHocBilling[0], { method: 'Cash', details: 'Details', terms: 'Terms' });
+				expect(invoice.invoiceNumber).toBe('INV-AMAVA-001');
+				expect(invoice.totalOwed).toBe(1250);
+				expect(invoice.billingMonth).toBe('2026-10');
+				expect(invoice.showBillingCycle).toBe(false);
+			});
+
+			it('rejects an invoice number not configured for the site', () => {
+				const site = { name: 'AMAVA Janitorial', url: 'https://example.com', adHocBilling: [] };
+				expect(() => compileAdHocInvoiceData(site, { invoiceNumber: 'missing', invoiceDate: '2026-10-04', dueDate: '2026-10-09', items: [] }, { method: '', details: '', terms: '' })).toThrow('not configured');
+			});
+		});
+
 		const mockSubscriptions = {
 			standard: { price: 100, services: ['Hosting'] },
 			premium: { price: 300, services: ['Hosting', 'SEO'] }
@@ -148,7 +184,7 @@ describe('Billing Functions', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				billing: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+				monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 			};
 
 			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], []);
@@ -161,7 +197,7 @@ describe('Billing Functions', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				billing: { tier: 'premium', priceOverride: 150, email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+				monthlyBilling: { tier: 'premium', priceOverride: 150, email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 			};
 
 			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], [], [], { '2026-06': ['Added website accessibility enhancements', 'Updated local SEO schema'] });
@@ -173,7 +209,7 @@ describe('Billing Functions', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				billing: {
+				monthlyBilling: {
 					tier: 'premier',
 					price: 250,
 					email: 'test@test.com',
@@ -198,7 +234,7 @@ describe('Billing Functions', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				billing: {
+				monthlyBilling: {
 					tier: 'premier',
 					price: 250,
 					email: 'test@test.com',
@@ -229,7 +265,7 @@ describe('Billing Functions', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				billing: { tier: 'premier', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+				monthlyBilling: { tier: 'premier', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 			};
 
 			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], []);
@@ -252,7 +288,7 @@ describe('Billing Functions', () => {
 					name: 'testsite',
 					url: 'https://testsite.com',
 					blogRss: 'https://blog.testsite.com/feed',
-					billing: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+					monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
 			vi.mocked(getFullPixelatedConfig).mockReturnValue({
@@ -304,7 +340,7 @@ describe('Billing Functions', () => {
 				sites: [{
 					name: 'testsite',
 					url: 'https://testsite.com',
-					billing: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+					monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
 			vi.mocked(getFullPixelatedConfig).mockReturnValue({} as any);
@@ -330,7 +366,7 @@ describe('Billing Functions', () => {
 				sites: [{
 					name: 'testsite',
 					url: 'https://testsite.com',
-					billing: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+					monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
 			vi.mocked(getFullPixelatedConfig).mockReturnValue({

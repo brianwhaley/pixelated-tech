@@ -271,7 +271,7 @@ export async function generateSitemap(originInput?: string): Promise<MetadataRou
 			sitemapEntries.push(...(await createPageURLs(flat, origin)));
 		}
 	}
-	// Dynamic service and service-area pages from optional siteconfig.json data
+	// Dynamic service and service-area pages from optional pixelated.config.json data
 	if (resolvedConfig.siteConfig) {
 		sitemapEntries.push(...(await createSiteConfigURLs(resolvedConfig.siteConfig, origin)));
 	}

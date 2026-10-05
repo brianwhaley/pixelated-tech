@@ -60,6 +60,24 @@ describe('WordPress Functions', () => {
       );
     });
 
+    it('should convert Markdown content to HTML before sending it', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ ID: 43, status: 'draft' });
+
+      await createWordPressDraft({
+        site: 'blog.example.com',
+        apiToken: 'token',
+        title: 'Markdown draft',
+        content: '# Heading\n\nA paragraph with [a link](https://example.com).\n\n- First item\n- Second item',
+      });
+
+      const request = mockSmartFetch.mock.calls[0][1];
+      const body = JSON.parse(String(request?.requestInit?.body));
+      expect(body.content).toContain('<h1>Heading</h1>');
+      expect(body.content).toContain('<p>A paragraph with <a href="https://example.com">a link</a>.</p>');
+      expect(body.content).toContain('<ul>');
+      expect(body.content).not.toContain('# Heading');
+    });
+
     it('should reject incomplete draft input before making a request', async () => {
       await expect(createWordPressDraft({
         site: 'blog.example.com',

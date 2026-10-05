@@ -10,11 +10,11 @@ import { FormEngine } from '../form/formengine';
 import { FormValidationProvider } from '../form/formvalidator';
 import * as FC from '../form/formcomponents';
 import type { RouteType, SiteConfigType, SiteInfoType, VisualDesignType } from '../../config/config.types';
+import { usePixelatedConfig } from '../../config/config.client';
 import siteInfoForm from './siteinfo-form.json';
 import visualDesignForm from './visualdesignform.json';
 import routesForm from './routes-form.json';
 import servicesForm from './services-form.json';
-import defaultConfigData from '../../../data/siteconfig.json';
 import './ConfigBuilder.css';
 
 const debug = false;
@@ -127,13 +127,14 @@ ConfigBuilder.propTypes = {
 export type ConfigBuilderType = InferProps<typeof ConfigBuilder.propTypes>;
 export function ConfigBuilder(props: ConfigBuilderType) {
 	const { initialConfig, onSave } = props;
+	const pixelatedConfig = usePixelatedConfig() ?? {};
 	const defaultConfig: SiteConfigType = {
 		siteInfo: {
-			...defaultConfigData.siteInfo as SiteInfoType,
-			services: (defaultConfigData.siteInfo as any).services || []
+			...pixelatedConfig.siteInfo as SiteInfoType,
+			services: (pixelatedConfig.siteInfo as any)?.services || []
 		},
 		routes: [], // Start with empty routes, the JSON structure is different
-		visualdesign: defaultConfigData.visualdesign as VisualDesignType
+		visualdesign: pixelatedConfig.visualdesign as VisualDesignType
 	};
 
 	const [config, setConfig] = useState<SiteConfigType>({

@@ -8,8 +8,6 @@ describe('targeted import-only coverage for many modules', () => {
 		'@/app/(pages)/contentful-migrate/page',
 		'@/app/(pages)/site-health/page',
 		'@/app/api/auth/[...nextauth]/route',
-		'@/app/api/billing/email/route',
-		'@/app/api/billing/generate/route',
 		'@/app/api/pagebuilder/delete/route',
 		'@/app/api/pagebuilder/load/route',
 		'@/app/api/pagebuilder/save/route',

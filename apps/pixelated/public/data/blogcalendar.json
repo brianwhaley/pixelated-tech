@@ -3,41 +3,38 @@
 		"cadence": "weekly",
 		"defaultStatus": "",
 		"criteria": {
-			"tone": "Clear, practical, straightforward, plain language, technically authoritative, and accessible, empathetic and understanding.  Target an education level of high school graduate or below.",
-			"audience": [
-				"Small business owners",
-				"Local service businesses",
-				"Nonprofit and professional service organizations",
-				"Business teams evaluating websites, marketing, and custom technology"
-			],
-			"contentRules": [
-				"Each post must have an introductory paragraph, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 6 sentences.",
-				"Ensure the content of the blog post demonstrates subject matter expertise, helps convert readers to customers, and helps with search engine and answer engine optimization.",
-				"After the conclusion of each post, add a call to action to sign up for a free assessment with a link to the contact us page.",
-				"Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced.  Do not use fabricated or falsified links.  Use real links to real pages.",
+			"subjectiveCriteria": [
+				"Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+				"Target an education level of high school graduate or below.",
+				"Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+				"Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+				"Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+				"Place the source link in the same paragraph as the statistic or factual claim it supports.",
+				"Use real, working URLs. Do not use placeholder links.",
 				"Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
 				"Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
-				"Use plain language",
-				"the blog post must make sense when read aloud, or if used as a script for a podcast.",
-				"Include a concise answer near the beginning",
-				"Use descriptive H2 headings",
-				"Include practical steps, examples, or a checklist",
-				"Mention the name of the company naturally without unsupported claims",
+				"The blog post must make sense when read aloud, or if used as a script for a podcast.",
 				"Do not use text or html based tables, charts, or other formatting.",
-				"Format the title properly, including proper punctuation and capitalization",
-				"Do not invent prices, statistics, laws, results, client details, or product features",
+				"Do not invent metrics, prices, statistics, laws, results, client details, or product features",
 				"Do not provide individualized legal, financial, medical, or cybersecurity advice",
-				"Return the content in a format suitable for WordPress."
-			],
-			"seoRules": [
 				"Optimize for search and answer engines",
-				"Use short paragraphs and scannable lists",
-				"Use appropriate locations - Denville, Bluffton, New Jersey, or South Carolina naturally when relevant",
-				"Use accurate technical terminology with plain-language explanations"
+				"End the article with a Call to Action (CTA) to contact us."
 			],
-			"articleLength": {
-				"minimumWords": 1000,
-				"maximumWords": 1500
+			"objectiveCriteria": {
+				"require_minimum_words": 1000,
+				"require_maximum_words": 1500,
+				"require_intro_paragraph": true,
+				"require_conclusion_paragraph": true,
+				"require_call_to_action": true,
+				"require_minimum_body_paragraphs": 3,
+				"require_minimum_paragraph_sentences": 6,
+				"require_minimum_internal_links": 2,
+				"require_minimum_external_links": 2,
+				"required_call_to_action_link": "https://www.pixelated.tech/contact",
+				"required_call_to_action_heading": "Ready for your free assessment?"
+			},
+			"unusedCriteria": {
+				"require_wordpress_blocks": false
 			}
 		}
 	},
@@ -166,7 +163,7 @@
 			"notes": [
 				"In this technical authority post, we explain why Pixelated Tech utilizes the Next.js framework. We break down \"Server-Side Rendering\" and \"Static Site Generation\" in simple terms, explaining how these technologies make websites significantly faster and more SEO-friendly than traditional WordPress sites. We show how this technical edge translates to a better user experience and higher search rankings. This demonstrates our innovation and commitment to using \"cutting-edge\" tools rather than relying on outdated industry standards. It positions the client’s site as a modern, future-proofed business tool."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 15,
@@ -211,7 +208,7 @@
 			"notes": [
 				"That little padlock icon in the browser bar is a major signal of trust. We explain what an SSL certificate is and why Google now marks sites without them as \"Not Secure.\" This warning can scare away up to 90% of your visitors before they even see your content. We discuss the SEO benefits of HTTPS and why Pixelated Tech includes security as a standard feature, not an add-on. For businesses handling any customer data, it’s a critical requirement to prevent data theft and maintain professional credibility."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 20,
@@ -256,7 +253,7 @@
 			"notes": [
 				"The digital landscape moves fast. We look at upcoming trends like \"Voice Search,\" \"Augmented Reality\" in shopping, and the shift toward even more personalized user experiences. By staying ahead of the curve, we show our innovation and ensure our clients' sites don't become obsolete in 18 months. We discuss how Pixelated Technologies monitors these trends to give our Denville and Bluffton clients a competitive edge. This post demonstrates our role as a long-term technology partner, not just a one-time vendor."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 25,
@@ -283,7 +280,7 @@
 			"notes": [
 				"UX design isn't just about how a site looks; it's about how it feels and functions. We explain the science of \"frictionless\" design—making it as easy as possible for a customer to find what they need and take action. We look at common UX mistakes, like hard-to-find contact info or confusing navigation menus. By improving UX, you directly improve your conversion rate. This post demonstrates our subject matter expertise in the intersection of design and psychology, showing how we build sites that work for human beings."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 28,
@@ -292,7 +289,7 @@
 			"notes": [
 				"When off-the-shelf software doesn't fit your workflow, a custom web app is the answer. We discuss how we build specialized tools—like custom booking systems or client portals—that solve specific business problems. These tools increase efficiency by automating repetitive tasks, saving hours of manual labor every week. For a growing small business in Bluffton, custom technology is the secret to scaling without exponentially increasing your headcount. We share examples of how our custom Node.js applications have transformed local business operations."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 29,
@@ -301,7 +298,7 @@
 			"notes": [
 				"Video is the most engaging form of content on the web. We discuss how to use video on your website—from hero background videos to customer testimonials—to keep visitors on your site longer. We explain the technical side of video, such as \"lazy loading\" to ensure it doesn't slow down your site speed. We encourage Denville owners to use simple smartphone videos to introduce their team, which builds human connection and trust. Video is a powerful tool for storytelling and demonstrating subject matter expertise."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 30,
@@ -319,7 +316,7 @@
 			"notes": [
 				"Why do people look for reviews? Because they want to know others have succeeded with you. We discuss the various forms of \"social proof,\" including star ratings, video testimonials, and \"as seen in\" logos. We show how to strategically place these on your site to overcome \"buyer's remorse\" or hesitation. For a small business, local testimonials from Denville neighbors are worth their weight in gold. We provide tips on how to ask for reviews and how to display them for maximum impact on your credibility."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 32,
@@ -355,7 +352,7 @@
 			"notes": [
 				"Your domain name is your digital address. We provide tips for picking a name that is memorable, SEO-friendly, and brand-consistent. We discuss the pros and cons of different extensions (.com vs .net vs .tech) and the importance of \"brand protection\"—buying similar domains so others can't. For a local business, sometimes including your city name (like https://www.google.com/search?q=DenvillePlumbing.com) can give a small SEO boost. It’s the first step in building a long-term digital identity that is easy for your customers to find and share."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 36,
@@ -373,7 +370,7 @@
 			"notes": [
 				"\"I think people like our homepage\" is not a strategy. We discuss how to use data to validate your business decisions. We show how \"Heatmaps\" and \"A/B Testing\" allow you to see exactly where users are clicking and what is causing them to leave. By following the data, you can make incremental changes that lead to massive improvements in conversion over time. Data-driven design is at the heart of our innovation at Pixelated Tech, ensuring every pixel on your site has a specific purpose."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 38,
@@ -382,7 +379,7 @@
 			"notes": [
 				"How do you capture leads from people who aren't ready to buy yet? Through \"Gated Content\" like whitepapers, e-books, or exclusive checklists. We discuss how to create a high-value \"Lead Magnet\" that encourages visitors to exchange their email for your expertise. This allows you to build a relationship over time through email marketing. We look at examples of successful lead magnets for different industries, from real estate to professional services in New Jersey. It’s a long-game strategy that builds a massive pipeline of potential customers."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 39,
@@ -391,7 +388,7 @@
 			"notes": [
 				"With the rise of Alexa and Siri, more people are searching with their voices. We discuss how voice search queries are different—longer, more conversational, and often phrased as questions. We explain how to optimize your content to answer these \"who, what, where\" questions to capture this growing market. For a local Bluffton shop, being the answer to \"Where is the best pizza near me?\" is essential. We show how to structure your site data so that voice assistants can easily find and read your information."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 40,
@@ -400,7 +397,7 @@
 			"notes": [
 				"What steps does a customer take from realizing they have a problem to hiring you? We break down the \"Customer Journey\" and discuss how your website should support each stage: Awareness, Consideration, and Decision. We look at how to create content that speaks to each phase, from educational blogs to detailed service pages and reviews. By mapping this journey, you ensure that you are providing the right information at the right time. This client-centric approach is what separates a \"pretty\" site from a successful sales tool."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 41,
@@ -409,7 +406,7 @@
 			"notes": [
 				"For our medical and dental clients in Denville and Bluffton, website security isn't just a best practice—it's federal law. We discuss the basics of HIPAA compliance for web forms, email, and hosting. We explain how we secure sensitive patient data to prevent breaches and ensure our clients stay in the good graces of regulators. This post demonstrates our specialized subject matter expertise in a high-stakes industry and builds trust with professional service providers who need a developer who understands their unique regulatory landscape."
 			],
-			"status": "draft"
+			"status": ""
 		},
 		{
 			"id": 42,

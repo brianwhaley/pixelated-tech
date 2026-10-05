@@ -52,8 +52,7 @@ export async function generateHumansTxt(opts: GenerateHumansTxtType = {}) {
 	const cwd = opts.cwd ?? process.cwd();
 	const pkg = opts.pkg ?? (await safeJSON(cwd + '/package.json')) ?? {};
 	const fullConfig = getFullPixelatedConfig();
-	const interimConfig = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(cwd + '/src/app/data/siteconfig.json')) ?? {};
-	const configData = opts.siteConfig ?? interimConfig;
+	const configData = opts.siteConfig ?? fullConfig;
 	const site = configData.siteInfo ?? {};
 	const pageEntries = [
 		...(await createPageURLs(Array.isArray(configData.routes) ? configData.routes : [])),
@@ -120,8 +119,7 @@ generateSecurityTxt.propTypes = {};
 export type GenerateSecurityTxtType = InferProps<typeof generateSecurityTxt.propTypes>;
 export async function generateSecurityTxt(props: GenerateSecurityTxtType = {}) {
 	const fullConfig = getFullPixelatedConfig();
-	const data = Object.keys(fullConfig || {}).length > 0 ? fullConfig : (await safeJSON(process.cwd() + '/src/app/data/siteconfig.json')) ?? {};
-	const siteInfo = data.siteInfo ?? {};
+	const siteInfo = (fullConfig.siteInfo ?? {}) as { email?: string | null };
 
 	const lines: string[] = [
 		'# Contact methods for security researchers',

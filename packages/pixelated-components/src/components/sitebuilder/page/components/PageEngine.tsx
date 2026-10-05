@@ -29,7 +29,7 @@ export function usePageData() {
  * PageDataProvider — Wraps the PageEngine to provide a unified data context.
  * 
  * @param {object} [props.data] - Additional static data to inject.
- * @param {object} [props.siteConfig] - The site-specific configuration (siteconfig.json).
+ * @param {object} [props.siteConfig] - The site-specific configuration (pixelated.config.json).
  */
 PageDataProvider.propTypes = {
 	siteConfig: PropTypes.object,

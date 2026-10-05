@@ -2,7 +2,6 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 
-const manifest = { files: ['sample-proposal.json'] };
 const sampleProposal = {
 	proposalType: 'Web Site Build',
 	date: '2025-01-01',
@@ -22,10 +21,12 @@ vi.mock('@pixelated-tech/components', async () => {
 	return {
 		__esModule: true,
 		...actual,
-		useFileData: () => ({ data: manifest, loading: false, error: null }),
-		smartFetch: async (_url: string) => sampleProposal,
 	};
 });
+
+vi.mock('@pixelated-tech/components/adminclient', () => ({
+	useAdminFileData: () => ({ files: ['sample-proposal.json'], selectedFile: 'sample-proposal.json', setSelectedFile: vi.fn(), data: sampleProposal, loading: false, error: null }),
+}));
 
 describe('Proposal page', () => {
 	beforeEach(() => {
@@ -33,8 +34,8 @@ describe('Proposal page', () => {
 	});
 
 	it('renders and displays proposal fields', async () => {
-		const { default: Page } = await import('../../src/app/(pages)/proposal/page.tsx');
-		const { container } = render(<Page />);
+		const { default: Page } = await import('../../src/app/(pages)/proposal/proposal-template');
+		const { container } = render(<Page files={['sample-proposal.json']} />);
 		await waitFor(() => expect(container.querySelector('#title-section')).toBeTruthy());
 		expect(container).toHaveTextContent('Proposal - Web Site Build');
 		expect(container).toHaveTextContent('Client Co');
