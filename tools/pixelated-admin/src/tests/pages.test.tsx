@@ -95,7 +95,7 @@ vi.mock('@pixelated-tech/components', async () => {
 				if (commitField?.props?.onChange) commitField.props.onChange('deploy message');
 			}, []);
 			return (
-				<form onSubmit={(event) => { event.preventDefault(); onSubmitHandler?.(new FormData(event.currentTarget as HTMLFormElement)); }}>
+				<form onSubmit={(event) => { event.preventDefault(); onSubmitHandler?.(event); }}>
 					{formData.fields.map((field: any) => {
 						const fieldElement = (() => {
 							if (field.component === 'FormSelect') {
@@ -183,6 +183,18 @@ describe('pixelated-admin page components', () => {
 			}
 		});
 	}
+
+	it('submits blog post generator form data from the submit target', async () => {
+		const mod = await importModule('src/app/(pages)/blog-post-generator/BlogPostGeneratorClient.tsx');
+		const BlogPostGeneratorClient = mod.default;
+		const action = vi.fn(async () => ({ results: [] }));
+		render(<BlogPostGeneratorClient action={action as any} sites={[{ name: 'site-a', blog_url: 'https://example.com' }]} />);
+
+		fireEvent.submit(screen.getByRole('button', { name: /Generate drafts/i }).closest('form') as HTMLFormElement);
+
+		await waitFor(() => expect(action).toHaveBeenCalled());
+		expect(action.mock.calls[0][1]).toBeInstanceOf(FormData);
+	});
 
 	it('shows an error when component usage fetch returns non-ok', async () => {
 		mockSmartFetch.mockImplementation(async (url: unknown) => {

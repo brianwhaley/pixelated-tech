@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { InvoiceView } from './billing.invoice.components';
+import { InvoiceTemplate } from './billing.invoice.components';
 import { loadBillingConfigData } from './billing.server';
 import { compileInvoiceData } from './billing.functions';
+import { compileAdHocInvoiceData } from './billing.functions';
 import { getLiveBillingStats } from '../../integrations/wordpress.jetpack.server';
 import { getFullPixelatedConfig } from '../../config/config';
 
@@ -13,13 +14,13 @@ interface InvoiceBuilderProps {
   billingCycle: string;
 }
 
-export async function InvoiceBuilder({ siteName, billingCycle }: InvoiceBuilderProps) {
+export async function MonthlyInvoiceBuilder({ siteName, billingCycle }: InvoiceBuilderProps) {
 	const billingData = await loadBillingConfigData(billingCycle, siteName);
 	const config = getFullPixelatedConfig() as any;
 	const wpToken = config?.integrations?.wordpress?.apiToken;
 
 	const site = billingData.sites.find((s) => s.name === siteName);
-	if (!site || !site.billing) {
+	if (!site || !site.monthlyBilling) {
 		return notFound();
 	}
 
@@ -46,7 +47,25 @@ export async function InvoiceBuilder({ siteName, billingCycle }: InvoiceBuilderP
 
 	return (
 		<div className="print-invoice-page">
-			<InvoiceView invoice={compiledInvoice} />
+			<InvoiceTemplate invoice={compiledInvoice} />
+		</div>
+	);
+}
+
+interface AdHocInvoiceBuilderProps {
+	siteName: string;
+	invoiceNumber: string;
+}
+
+export async function AdHocInvoiceBuilder({ siteName, invoiceNumber }: AdHocInvoiceBuilderProps) {
+	const billingData = await loadBillingConfigData();
+	const site = billingData.sites.find((candidate) => candidate.name === siteName);
+	const invoice = site?.adHocBilling?.find((candidate) => candidate.invoiceNumber === invoiceNumber);
+	if (!site || !invoice) return notFound();
+
+	return (
+		<div className="print-invoice-page">
+			<InvoiceTemplate invoice={compileAdHocInvoiceData(site, invoice, billingData.paymentInfo)} />
 		</div>
 	);
 }

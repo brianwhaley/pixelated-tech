@@ -35,7 +35,10 @@ export interface SiteConfig {
   /** Optional Google Search Console site URL */
   gscSiteUrl?: string;
   /** Optional additional metadata */
-  billing?: {
+  monthlyBilling?: {
+    [key: string]: any;
+  };
+  adHocBilling?: {
     [key: string]: any;
   };
   /** Optional additional metadata container */

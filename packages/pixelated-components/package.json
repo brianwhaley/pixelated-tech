@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.21.41",
+	"version": "3.21.42",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -92,16 +92,17 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-amplify": "^3.1143.0",
-		"@aws-sdk/client-dynamodb": "^3.1143.0",
-		"@aws-sdk/client-iam": "^3.1143.0",
-		"@aws-sdk/client-sesv2": "^3.1143.0",
+		"@aws-sdk/client-amplify": "^3.1146.0",
+		"@aws-sdk/client-dynamodb": "^3.1146.0",
+		"@aws-sdk/client-iam": "^3.1146.0",
+		"@aws-sdk/client-sesv2": "^3.1146.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.7",
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
-		"nodemailer": "^10.0.13",
+		"marked": "^18.0.14",
+		"nodemailer": "^10.0.14",
 		"prop-types": "^15.8.1",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
@@ -166,11 +167,11 @@
 		"flatted": "^3.4.2"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1143.0",
-		"@aws-sdk/client-route-53": "^3.1143.0",
+		"@aws-sdk/client-cloudwatch": "^3.1146.0",
+		"@aws-sdk/client-route-53": "^3.1146.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
-		"googleapis": "^182.0.0",
+		"googleapis": "^183.0.0",
 		"md5": "^2.3.0",
 		"puppeteer": "^25.12.0",
 		"recharts": "^3.10.1"

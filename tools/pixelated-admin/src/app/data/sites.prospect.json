@@ -1,0 +1,200 @@
+{
+	"sites": [
+		{
+			"name": "",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "michaelp@amavajanitorial.com",
+				"companyName": "Flooring",
+				"address": "",
+				"notes": {},
+				"additionalInvoiceItems": {}	
+			}
+		},
+		{
+			"name": "medicare-in-a-box",
+			"localPath": "",
+			"localPort": "",
+			"remote": "medicare-in-a-box",
+			"repo": "medicare-in-a-box",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.medicareinabox.org",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.medicareinabox.org",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "priscilla@simplystatedrs.com",
+				"companyName": "Medicare in a Box",
+				"address": "PO Box 1260, Bluffton, SC 29910",
+				"notes": {},
+				"additionalInvoiceItems": {}	
+			}
+		},
+		{
+			"name": "Simply Stated Workbook",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.simplystatedwb.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.simplystatedwb.com",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "priscilla@simplystatedrs.com",
+				"companyName": "Simply Stated Workbook",
+				"address": "PO Box 1260, Bluffton, SC 29910",
+				"notes": {},
+				"additionalInvoiceItems": {}	
+			}
+		},
+		{
+			"name": "Birdie Box",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.bookbirdiebox.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "Birdie Box",
+				"address": "",
+				"notes": {"contactName": "Luke Sadler"},
+				"additionalInvoiceItems": {}	
+			}
+		},
+		{
+			"name": "TCC",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://tcchiltonhead.com/",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "",
+				"address": "",
+				"notes": {"contactName": "Luke Sadler"},
+				"additionalInvoiceItems": {}	
+			}
+		},
+		{
+			"name": "The Bluffton Collective",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.facebook.com/TheBlufftonCollective",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "",
+				"address": "",
+				"notes": {"contactName": "Luke Sadler"},
+				"additionalInvoiceItems": {}	
+			}
+		},
+
+
+		{
+			"name": "Cherry Blossom Accounting",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "",
+				"address": "",
+				"notes": {"contactName": "Katie Coupland"},
+				"additionalInvoiceItems": {}	
+			}
+		},
+
+
+		{
+			"name": "Finer Hardwood Floors / Exclusive Hardwood Floors",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.facebook.com/finerinc/",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "",
+				"address": "",
+				"notes": {"contactName": "Rolando"},
+				"additionalInvoiceItems": {}	
+			}
+		}
+	]
+}

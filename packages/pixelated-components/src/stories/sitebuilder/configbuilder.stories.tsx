@@ -70,7 +70,7 @@ export const ConfigBuilderUI = {
 			}
 		},
 		onSave: (config: any) => {
-			downloadJsonFile(config, 'siteconfig.json');
+			downloadJsonFile(config, 'pixelated.config.json');
 		}
 	},
 };

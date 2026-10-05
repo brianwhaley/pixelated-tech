@@ -1,7 +1,7 @@
 'use client';
 
-import { startTransition, useActionState } from 'react';
-import { FormEngine, PageSection, PageTitleHeader } from '@pixelated-tech/components';
+import { startTransition, useActionState, useEffect } from 'react';
+import { FormEngine, Loading, PageSection, PageTitleHeader, ToggleLoading } from '@pixelated-tech/components';
 import type { BlogGenerationResult } from '@pixelated-tech/components/adminserver';
 import blogPostGeneratorFormData from './blogpostgeneratorform.json';
 
@@ -16,7 +16,10 @@ type BlogGenerationAction = (
 ) => Promise<BlogGenerationResult>;
 
 export default function BlogPostGeneratorClient({ action, sites }: { action: BlogGenerationAction; sites: BlogSite[] }) {
-	const [result, formAction] = useActionState(action, null);
+	const [result, formAction, isPending] = useActionState(action, null);
+	useEffect(() => {
+		ToggleLoading({ show: isPending });
+	}, [isPending]);
 	const formData = {
 		...blogPostGeneratorFormData,
 		fields: blogPostGeneratorFormData.fields.map((field) =>
@@ -34,12 +37,13 @@ export default function BlogPostGeneratorClient({ action, sites }: { action: Blo
 	};
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const submittedFormData = new FormData(event.currentTarget);
+		const submittedFormData = new FormData(event.target as HTMLFormElement);
 		startTransition(() => formAction(submittedFormData));
 	};
 
 	return (
 		<>
+			<Loading />
 			<PageTitleHeader title="Blog Post Generator" />
 			<PageSection columns={1} maxWidth="768px" id="blog-generator-section">
 				<FormEngine onSubmitHandler={handleSubmit} method="post" formData={formData as any} />

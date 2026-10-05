@@ -14,7 +14,7 @@ export interface PaymentInfo {
 	fromEmail?: string;
 }
 
-export interface SiteBillingConfig {
+export interface MonthlyBillingConfig {
 	tier: string;
 	priceOverride?: number;
 	price?: number; // Support direct "price" key in json
@@ -31,11 +31,20 @@ export interface AdditionalInvoiceItem {
 	description: string;
 }
 
+export interface AdHocInvoiceConfig {
+	invoiceNumber: string;
+	invoiceDate: string;
+	dueDate: string;
+	items: InvoiceItem[];
+	note?: string | string[];
+}
+
 export interface SiteConfig {
 	name: string;
 	url: string;
 	blogRss?: string;
-	billing?: SiteBillingConfig;
+	monthlyBilling?: MonthlyBillingConfig;
+	adHocBilling?: AdHocInvoiceConfig[];
 	[key: string]: any;
 }
 
@@ -81,6 +90,8 @@ export interface InvoiceData {
 	siteName: string;
 	siteUrl: string;
 	ga4PropertyId?: string;
+	showSiteHealth?: boolean;
+	showBillingCycle?: boolean;
 	tier: string;
 	items: InvoiceItem[];
 	totalOwed: number;

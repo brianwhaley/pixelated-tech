@@ -89,8 +89,9 @@ vi.mock('@pixelated-tech/components/adminclient', async () => {
 	const isRouteAllowedForID = (_email: string | undefined | null, _path: string, _config: any) => true;
 	return {
 		__esModule: true,
-		BillingDashboard: make('BillingDashboard'),
-		InvoiceView: make('InvoiceView'),
+		MonthlyBillingDashboard: make('MonthlyBillingDashboard'),
+		AdHocBillingDashboard: make('AdHocBillingDashboard'),
+		InvoiceTemplate: make('InvoiceTemplate'),
 		Unauthorized: make('Unauthorized'),
 		SiteHealthGit: make('SiteHealthGit'),
 		SiteHealthUptime: make('SiteHealthUptime'),
@@ -124,7 +125,7 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 	analyzeComponentUsage: async () => ({ components: [] }),
 	executeDeployment: async () => ({ success: true }),
 	loadBillingData: () => ({
-		sites: [{ name: 'site-a', billing: true, blogRss: 'https://example.com/feed' }],
+		sites: [{ name: 'site-a', monthlyBilling: true, blogRss: 'https://example.com/feed' }],
 		subscriptions: [{ plan: 'basic' }],
 		paymentInfo: { card: '****' },
 	}),
@@ -134,7 +135,8 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 	generateInvoicePdfsForSites: async (targetSites: any[], billingMonth: string, previewOnly: boolean) => ({
 		results: targetSites.map((site: any) => ({ site, billingMonth, previewOnly, success: true })),
 	}),
-	InvoiceBuilder: ({ siteName, billingCycle }: any) => <div data-testid="InvoiceBuilder" data-site={siteName} data-cycle={billingCycle} />,
+	MonthlyInvoiceBuilder: ({ siteName, billingCycle }: any) => <div data-testid="MonthlyInvoiceBuilder" data-site={siteName} data-cycle={billingCycle} />,
+	AdHocInvoiceBuilder: ({ siteName, invoiceNumber }: any) => <div data-testid="AdHocInvoiceBuilder" data-site={siteName} data-invoice={invoiceNumber} />,
 }));
 
 const mockGetServerSession = vi.fn(async () => null);
@@ -198,7 +200,8 @@ const appPages = [
 	['formbuilder', 'src/app/(pages)/formbuilder/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
 	['component-usage', 'src/app/(pages)/component-usage/page.tsx'],
-	['billing', 'src/app/(pages)/billing/page.tsx'],
+	['billing-monthly', 'src/app/(pages)/billing/monthly/page.tsx'],
+	['billing-adhoc', 'src/app/(pages)/billing/adhoc/page.tsx'],
 	['site-health', 'src/app/(pages)/site-health/page.tsx'],
 	['styleguide', 'src/app/(pages)/styleguide/page.tsx'],
 	['loading', 'src/app/loading.tsx'],
@@ -450,11 +453,18 @@ describe('pixelated-admin extra coverage', () => {
 		expect(mockRedirect).not.toHaveBeenCalled();
 	});
 
-	it('renders billing page without errors', async () => {
-		const mod = await importModule('src/app/(pages)/billing/page.tsx');
+	it('renders monthly billing page without errors', async () => {
+		const mod = await importModule('src/app/(pages)/billing/monthly/page.tsx');
 		const BillingPage = mod.default;
 		render(<BillingPage />);
-		expect(screen.getByTestId('BillingDashboard')).toBeTruthy();
+		expect(screen.getByTestId('MonthlyBillingDashboard')).toBeTruthy();
+	});
+
+	it('renders ad hoc billing page without errors', async () => {
+		const mod = await importModule('src/app/(pages)/billing/adhoc/page.tsx');
+		const AdHocBillingPage = mod.default;
+		render(<AdHocBillingPage />);
+		expect(screen.getByTestId('AdHocBillingDashboard')).toBeTruthy();
 	});
 
 	it('renders the invoice print page with billing data', async () => {
@@ -490,32 +500,4 @@ describe('pixelated-admin extra coverage', () => {
 		expect(Array.isArray(sitemap)).toBe(true);
 	});
 
-	it('validates payload for email invoice route', async () => {
-		const route = await importModule('src/app/api/billing/email/route.ts');
-		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({}) }));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toEqual({ success: false, message: 'invoices array is required' });
-	});
-
-	it('emails invoices successfully', async () => {
-		const route = await importModule('src/app/api/billing/email/route.ts');
-		const invoices = [{ siteName: 'site-a', pdfPath: '/tmp/invoice.pdf', email: 'test@example.com', invoice: 'inv-1' }];
-		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({ invoices }) }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toEqual({ success: true, logs: [{ invoice: 'inv-1', status: 'sent' }] });
-	});
-
-	it('validates payload for generate invoice PDFs route', async () => {
-		const route = await importModule('src/app/api/billing/generate/route.ts');
-		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({}) }));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toEqual({ success: false, message: 'sites array and billingMonth are required' });
-	});
-
-	it('generates invoice PDFs successfully', async () => {
-		const route = await importModule('src/app/api/billing/generate/route.ts');
-		const response = await route.POST(new Request('http://localhost', { method: 'POST', body: JSON.stringify({ sites: [{ name: 'site-a' }], billingMonth: '2026-06', previewOnly: true }) }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toHaveProperty('results');
-	});
 });

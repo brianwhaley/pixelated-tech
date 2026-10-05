@@ -3,6 +3,7 @@ import PropTypes, { InferProps } from "prop-types";
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
 import { decode } from 'html-entities';
+import { marked } from 'marked';
 import { CacheManager, type CacheMode } from '../foundation/cache-manager';
 import { getDomain } from '../foundation/utilities';
 
@@ -305,7 +306,7 @@ export async function createWordPressDraft(input: WordPressDraftInput): Promise<
 	const body = {
 		status: 'draft',
 		title: input.title,
-		content: input.content,
+		content: marked.parse(input.content, { async: false }),
 		...(input.excerpt ? { excerpt: input.excerpt } : {}),
 	};
 

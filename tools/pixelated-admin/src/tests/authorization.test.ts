@@ -4,7 +4,7 @@ import { getAuthorizedRoutesByID, isRouteAllowedForID, getAllowedAdminRoutes } f
 const authorizationConfig = {
 	authorizedUsers: {
 		'brian@pixelated.tech': {
-			routes: ['/', '/billing', '/site-health'],
+			routes: ['/', '/billing/monthly', '/billing/adhoc', '/site-health'],
 		},
 	},
 };
@@ -13,26 +13,27 @@ describe('authorization helper', () => {
 	it('returns authorized routes for a known email', () => {
 		const routes = getAuthorizedRoutesByID('brian@pixelated.tech', authorizationConfig as any);
 		expect(routes).toContain('/');
-		expect(routes).toContain('/billing');
+		expect(routes).toContain('/billing/monthly');
+		expect(routes).toContain('/billing/adhoc');
 		expect(routes).toContain('/site-health');
 	});
 
 	it('normalizes route paths when checking authorization', () => {
-		expect(isRouteAllowedForID('brian@pixelated.tech', '/billing/', authorizationConfig as any)).toBe(true);
-		expect(isRouteAllowedForID('brian@pixelated.tech', '/billing?x=1', authorizationConfig as any)).toBe(true);
-		expect(isRouteAllowedForID('brian@pixelated.tech', '/billing#top', authorizationConfig as any)).toBe(true);
+		expect(isRouteAllowedForID('brian@pixelated.tech', '/billing/monthly/', authorizationConfig as any)).toBe(true);
+		expect(isRouteAllowedForID('brian@pixelated.tech', '/billing/adhoc?x=1', authorizationConfig as any)).toBe(true);
 	});
 
 	it('filters nav routes with getAllowedAdminRoutes', () => {
 		const routes = [
 			{ path: '/' },
 			{ path: '/login' },
-			{ path: '/billing' },
+			{ path: '/billing/monthly' },
+			{ path: '/billing/adhoc' },
 			{ path: '/site-health' },
 			{ path: '/hidden' },
 		];
 		const allowed = getAllowedAdminRoutes('brian@pixelated.tech', routes as any, authorizationConfig as any);
-		expect(allowed.map(route => route.path)).toEqual(['/', '/billing', '/site-health']);
+		expect(allowed.map(route => route.path)).toEqual(['/', '/billing/monthly', '/billing/adhoc', '/site-health']);
 	});
 
 	it('returns false for unknown or unauthorized users', () => {

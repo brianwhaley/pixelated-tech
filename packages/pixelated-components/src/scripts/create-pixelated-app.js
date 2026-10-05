@@ -248,7 +248,7 @@ export const TOKEN_MAP = {
 	"__EMAIL_ADDRESS__": '' 
 };
 
-// Helper: add a route entry to the siteconfig.json structure for a newly created page
+// Helper: add a route entry to the pixelated.config.json structure for a newly created page
 export function addRouteEntry(siteConfig, pageSlug, displayName, rootDisplayName) {
 	if (!siteConfig || !Array.isArray(siteConfig.routes)) return false;
 	const candidatePath = `/${pageSlug}`;
