@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
-import { PageTitleHeader, PageSection } from "../structure/page-blocks";
+import { PageSection } from "../structure/page-blocks";
 import { getFullPixelatedConfig } from "../config/config";
 import type { VisualDesign } from "../config/config.types";
 import { createPageURLs, createSiteConfigServiceAreaURLs, createSiteConfigServiceURLs } from "./sitemap";
@@ -37,8 +37,6 @@ export async function StyleGuideUI() {
 
 	return (
 		<div className="styleguide-ui">
-			<PageTitleHeader title="Style Guide" />
-
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="colors-section">
 				<h2>Color Palette</h2>
 				<div className="color-swatch-grid">

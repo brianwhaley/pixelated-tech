@@ -103,14 +103,13 @@ function getContextType(workspaceRoot, monorepoRoot) {
 
 	const relative = path.relative(monorepoRoot, workspaceRoot).replace(/\\/g, '/');
 	if (relative.startsWith('apps/')) return 'app';
-	if (relative.startsWith('tools/')) return 'tool';
 	if (relative.startsWith('packages/')) return 'package';
 	return 'standalone';
 }
 
 async function listWorkspaceDirs(monorepoRoot) {
 	const workspaceDirs = [];
-	for (const group of ['packages', 'apps', 'tools']) {
+	for (const group of ['packages', 'apps']) {
 		const groupDir = path.join(monorepoRoot, group);
 		try {
 			const entries = await fs.readdir(groupDir, { withFileTypes: true });

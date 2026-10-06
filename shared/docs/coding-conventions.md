@@ -1,6 +1,6 @@
 # Coding Conventions
 
-This document outlines the coding standards and conventions used in the pixelated-components project.
+This document outlines the coding standards and conventions used across the Pixelated Technologies monorepo, including client applications, Pixelated Admin, shared packages, and the `pixelated-components` library.
 
 ## AI Agent & Code Review Discipline
 
@@ -13,6 +13,10 @@ This document outlines the coding standards and conventions used in the pixelate
 - Verify changes work by running tests before recommending them
 
 Example: Don't say "vitest v8 doesn't support coverage thresholds" — test it first or link to the actual vitest docs proving it.
+
+## Documentation source of truth
+
+When documentation conflicts with an active script, shared configuration, validator, schema, or implementation, the active repository artifact is authoritative. Update the documentation to match verified behavior; do not preserve a conflicting instruction for historical convenience.
 
 ## Terminal Command Output - CRITICAL Rule for AI Agents
 
@@ -46,6 +50,28 @@ Example: Don't say "vitest v8 doesn't support coverage thresholds" — test it f
 ### Indentation
 - Use tabs for indentation with tab size 4
 - Do not use spaces for indentation
+
+## Shared-First Architecture
+
+All platform work follows this order: reuse an existing component, harness, fixture, data object, script, or test case first; if it needs more capability, extend or enhance the shared object and update its affected consumers as part of that work; create a net-new feature only when extending the existing capability is not viable.
+
+- Search existing applications, shared packages, components, integrations, schemas, configuration accessors, and test utilities before creating new code.
+- Prefer extending or composing an existing shared capability over creating a local duplicate.
+- Keep individual site applications thin: site-specific code should primarily compose shared capabilities with client-specific routes, content, styling, configuration, and behavior.
+- Move genuinely reusable behavior into the correct shared package through an approved platform change; do not force one-off behavior into shared abstractions without evidence of reuse.
+- Use shared tests and fixtures before creating local test infrastructure when the behavior is reusable.
+- Prefer configuration and data-driven behavior over repeated branching when it reduces duplication and remains easy to validate.
+- Do not add abstractions, dependencies, APIs, or configuration solely because reuse is theoretically possible.
+- Site-specific work belongs in the target application. Cross-site components, packages, schemas, integrations, admin capabilities, and testing infrastructure belong in their owning shared boundary.
+
+## Abstraction Discipline
+
+- Prefer clear, direct code over helpers, normalizers, wrappers, adapters, and generic utility layers.
+- Do not create a helper or normalizer for a single call site unless the logic is genuinely complex, domain-significant, or materially easier to test in isolation.
+- Before creating an abstraction, search for multiple real consumers and confirm that the abstraction removes meaningful duplication rather than hiding simple logic.
+- Keep one-use transformations close to the code that uses them so the data flow remains readable.
+- Do not create generic `utils` files as dumping grounds for unrelated functions.
+- When an abstraction is justified, give it a specific domain name, a small public surface, clear ownership, and focused tests.
 
 ## TypeScript & React
 
@@ -92,7 +118,7 @@ export function Component(props: ComponentType) { ... }
 
 ### Service File Naming
 - Use descriptive names: `gemini-api.ts`, `analytics-service.ts`
-- Place in appropriate directories (utilities, services, etc.)
+- Place services and integrations in the owning package's established directory and server/client boundary; do not assume a generic `utilities/` or `services/` directory exists
 - Export functions and types clearly
 
 ### Error Handling
@@ -112,7 +138,7 @@ Exception (allowed env usage — single, narrowly-scoped):
 > ⚠️ Migration rule: any existing `process.env` references (other than `PIXELATED_CONFIG_KEY`) must include a migration PR that maps the value into `pixelated.config.json` and updates `config.types.ts` (no silent roll-forwards).
 
 Enforcement & best practices:
-- Wrap any dev-only env reads in clear helpers and document them in `/docs`.
+- Wrap any dev-only env reads in clear helpers and document them in `shared/docs`.
 - Add a CI check that reports any new references to `process.env` in `src/components` (denylist) unless explicitly approved.
 - Temporary security dependencies (e.g., `fast-xml-parser`) are flagged by the ESLint rule `pixelated/no-temp-dependency` (severity: **error**). This rule inspects the project's `package-lock.json` and errors the build when a configured temporary dependency remains; remove the dependency and update the rule options when the transient issue is resolved. If the lockfile no longer contains vulnerable versions but the dependency is still pinned via `overrides`/`resolutions` in `package.json`, the rule will also error and require removal of the override so the dependency graph is normalized.
 - Hardcoded configuration values are prevented by the ESLint rule `pixelated/no-hardcoded-config-keys` (severity: **error**). This rule detects hardcoded Pixelated-specific configuration keys (e.g., `space_id`, `api_key`, `access_token`, etc.) and enforces their use via the config provider instead. **SECRET keys** (API tokens, encryption keys, credentials) are reported with heightened messaging; **non-secret config keys** are reported with standard messaging. Migration: any hardcoded config keys must be moved to `pixelated.config.json`, `pixelated.config.json.enc` (for secrets), or accessed via `usePixelatedConfig()` / `getFullPixelatedConfig()`. Example fix: replace `const base_url = 'https://cdn.contentful.com'` with `const base_url = config.base_url || 'https://cdn.contentful.com'` (where `config` comes from the provider).
@@ -140,10 +166,20 @@ const clientCfg = getClientOnlyPixelatedConfig(cfg);
 
 ## Testing
 
+### Shared-first testing
+- Shared testing harnesses, fixtures, mock factories, validators, and reusable test cases are the first line of defense for behavior used across sites, packages, or tools.
+- Before creating a local test helper or fixture, search `shared/test-utils`, the owning package's shared test directory, and existing tests for an established pattern.
+- Extend the shared harness when setup, assertions, fixtures, or contract behavior has multiple real consumers.
+- Individual sites should create local tests for site composition, content, configuration, or a genuinely one-off feature only when no shared contract exists.
+- Do not copy shared helpers into individual apps. Improve the shared helper or its contract when reuse is expected.
+
 ### Test File Structure
-- Place tests in the `src/tests` directory: `component-name.test.tsx`
-- Use descriptive test names
-- Test both success and error cases
+- Place test specifications in `src/tests` using names such as `component-name.test.tsx`.
+- Place reusable package-local setup, fixtures, helpers, and mock factories in `src/test`.
+- Place cross-workspace reusable harnesses in `shared/test-utils`.
+- Place Storybook stories and interaction tests in `src/stories`.
+- Keep test names descriptive and cover success, error, loading, empty, and accessibility states when they apply.
+- Keep test specifications out of runtime directories such as `src/app`, `src/pages`, and `public`.
 
 ## Documentation
 
@@ -197,26 +233,26 @@ Acceptance criteria:
 
 Code coverage thresholds enforce quality gates during releases:
 
-**Thresholds** (configured in [vitest.config.ts](../vitest.config.ts)):
-- **Lines**: 60% minimum (global, per-file, per-function)
-- **Functions**: 60% minimum (global, per-file, per-function)
-- **Branches**: 60% minimum (global, per-file, per-function)
-- **Statements**: 60% minimum (global, per-file, per-function)
+**Thresholds** (configured in `shared/configs/vitest.config.base.ts`):
+- **Lines**: 85% minimum
+- **Functions**: 85% minimum
+- **Branches**: 73% minimum
+- **Statements**: 85% minimum
 
-**Only .ts, .tsx, and .js files are counted** (.css, .scss, .json, build scripts, and test files are excluded).
+**TypeScript and TSX files under `src` are counted by the shared config**. Declarations, stories, styles, data, scripts, and test helper directories are excluded.
 
 **When coverage is enforced:**
-- `npm run test:coverage` – Manual coverage check with report (shows HTML report in `coverage/` directory)
-- `npm run release:prep` – Fails immediately if coverage drops below thresholds; prevents build/deployment
-- `npm run release` (in release.sh) – Conditional check: runs only if `src/tests/` or `src/test/` directory exists
+- `npm run test:coverage` runs the workspace's coverage suite.
+- `npm run test:coverage -ws` runs coverage across workspaces that expose the script.
+- `npm run release:prep` runs the repository release-preparation checks.
 
-**Adjusting thresholds:**
-Edit `COVERAGE_THRESHOLDS` constants at the top of [vitest.config.ts](../vitest.config.ts). Changes take effect immediately on next run.
+**Coverage thresholds are immutable:**
+Never adjust the coverage thresholds under any circumstances. Do not lower them, weaken them, bypass them, or change the shared configuration to make a failing test or release check pass. Fix the implementation or add the missing shared and local test coverage instead.
 
 **Development workflow:**
-- `npm test` – Fast test run (no coverage check, development-friendly)
-- `npm run test:coverage` – Full coverage report with enforcement (use frequently before release)
-- `npm run release:prep` – Final gate before production (must pass coverage to proceed)
+- Run the narrowest relevant shared or workspace test first.
+- Run `npm run test:coverage` when changing shared behavior or before release.
+- Run `npm run release:prep` as the final release-preparation check.
 
 ## Versioning & releases — Semantic Versioning
 - This project follows [Semantic Versioning 2.0.0](https://semver.org/): `MAJOR.MINOR.PATCH`.

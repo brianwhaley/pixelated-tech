@@ -2,11 +2,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PageTitleHeader, getContentfulEntriesByType } from "@pixelated-tech/components";
+import { getContentfulEntriesByType } from "@pixelated-tech/components";
 import { HubspotTrackingCode /* , getHubspotFormSubmissions */ } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
 import { Table } from "@pixelated-tech/components";
 import { Loading, usePixelatedConfig } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
 import formData from "@/app/data/requestform.json";
 import "./requests.css";
 
@@ -63,10 +64,11 @@ export default function Requests() {
 
 	return (
 		<>
+			<PageTitleHeader title="Custom Sunglass Requests" />
 			<section id="custom-request-section">
 				<div className="section-container">
 					<HubspotTrackingCode />
-					<PageTitleHeader title="Request Your Custom Sunglasses" />
+					<PageSectionHeader title="Request Your Custom Sunglasses" />
 					<div className="new-request-form-wrapper">
 						<FormEngine formData={formData} />
 					</div>
@@ -76,7 +78,7 @@ export default function Requests() {
 
 			<section style={{backgroundColor: "var(--accent2-color)"}} id="request-list-section">
 				<div className="section-container">
-					<PageTitleHeader title="Custom Sunglass Request Work List" />
+					<PageSectionHeader title="Custom Sunglass Request Work List" />
 					{ customRequests.length > 0 ? (
 						<Table data={customRequests} id="customRequests" sortable={true}/>
 					) : (

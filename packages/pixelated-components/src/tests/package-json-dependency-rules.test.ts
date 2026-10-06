@@ -177,16 +177,16 @@ describe('pixelated package-json dependency rules', () => {
 		expect(context.reports.some(r => r.messageId === 'prodUsedInDev')).toBe(false);
 	});
 
-	it('does not report next imported from a tools package runtime file as dev-only', () => {
+	it('does not report next imported from an app package runtime file as dev-only', () => {
 		const projectRoot = createTemporaryProject({
 			'package.json': JSON.stringify({}, null, 2),
-			'tools/leadscraper/package.json': JSON.stringify({
+			'apps/leadscraper/package.json': JSON.stringify({
 				dependencies: { next: '^15.0.0' },
 			}, null, 2),
-			'tools/leadscraper/src/app/api/scrape-emails/route.ts': "import { NextRequest, NextResponse } from 'next/server';",
+			'apps/leadscraper/src/app/api/scrape-emails/route.ts': "import { NextRequest, NextResponse } from 'next/server';",
 		});
 
-		const filePath = path.join(projectRoot, 'tools/leadscraper/src/app/api/scrape-emails/route.ts');
+		const filePath = path.join(projectRoot, 'apps/leadscraper/src/app/api/scrape-emails/route.ts');
 		const context = createRuleContext(filePath);
 		const visitor = plugin.rules['package-json-wrong-dependency-type'].create(context);
 		visitor.ImportDeclaration?.({ source: { value: 'next' } });

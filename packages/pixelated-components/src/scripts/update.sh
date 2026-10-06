@@ -24,7 +24,7 @@ detect_context() {
     WORKSPACE_ROOT=$(find_workspace_root)
     if [ "$WORKSPACE_ROOT" = "$MONOREPO_ROOT" ]; then
         CONTEXT_TYPE="root"
-        WORKSPACE_DIRS=("$MONOREPO_ROOT" "$MONOREPO_ROOT/packages/*" "$MONOREPO_ROOT/apps/*" "$MONOREPO_ROOT/tools/*")
+        WORKSPACE_DIRS=("$MONOREPO_ROOT" "$MONOREPO_ROOT/packages/*" "$MONOREPO_ROOT/apps/*")
     else
         CONTEXT_TYPE="workspace"
         WORKSPACE_DIRS=("$WORKSPACE_ROOT")

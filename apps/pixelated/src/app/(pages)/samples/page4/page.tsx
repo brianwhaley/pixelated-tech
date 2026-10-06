@@ -9,6 +9,7 @@ import React, { useEffect } from "react";
 import { MicroInteractions, SmartImage } from "@pixelated-tech/components";
 import { MenuSimple, MenuAccordion, MenuAccordionButton } from "@pixelated-tech/components";
 import { PageSection } from "@pixelated-tech/components";
+import { PageTitleHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
 import { SocialTags } from "@pixelated-tech/components";
@@ -58,6 +59,9 @@ export default function SamplePage4() {
 			</nav>
 
 			<main>
+				<PageTitleHeader title="Velocity Cycling" />
+				<PageSectionHeader title="Where the Pedal Meets the Road" />
+				<br />
 				<PageSectionHeader title="Featured Bicycles" />
 				<PageSection id="featured-section" columns={1} maxWidth="100%" padding="20px">
 					<div className="row-3col">
@@ -135,7 +139,6 @@ export default function SamplePage4() {
 					<Callout 
 						layout="horizontal"
 						variant="boxed"
-						imgShape="squircle"
 						img="https://media.istockphoto.com/id/578086382/photo/mountain-biker-silhouette.jpg?s=612x612&w=0&k=20&c=8oEfIudClsxrchJEFJX2ohq-YUcQxB4kKB0LuGsff3o="
 						title="About Us"
 						subtitle="Passionate About Cycling and Community"

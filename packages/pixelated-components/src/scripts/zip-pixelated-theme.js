@@ -39,8 +39,8 @@ export function zipPixelatedTheme(inputPath, zipName = 'Pixelated.zip') {
 		// If path provided, use it as-is
 		themeDir = path.resolve(process.cwd(), inputPath);
 	} else {
-		// Try monorepo path first (../../tools/pixelated-blog-wp-theme from repo root)
-		const monoRepoThemePath = path.resolve(scriptDir, '..', '..', '..', '..', 'tools', 'pixelated-blog-wp-theme');
+		// Try monorepo path first (../../packages/pixelated-blog-wp-theme from repo root)
+		const monoRepoThemePath = path.resolve(scriptDir, '..', '..', '..', '..', 'packages', 'pixelated-blog-wp-theme');
 		// Fallback to standalone path (../pixelated-blog-wp-theme)
 		const standaloneThemePath = path.resolve(scriptDir, '..', '..', '..', 'pixelated-blog-wp-theme');
 		

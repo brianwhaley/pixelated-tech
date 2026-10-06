@@ -1,4 +1,4 @@
-# Detect changed workspaces (apps/packages/tools) since a base ref
+# Detect changed workspaces (apps/packages) since a base ref
 get_changed_workspaces() {
     # Usage: get_changed_workspaces <base_ref>
     local base_ref="$1"
@@ -22,7 +22,7 @@ get_changed_workspaces() {
         git diff --name-only
         git ls-files --others --exclude-standard
     } | \
-        grep -E '^(apps|packages|tools)/' | \
+        grep -E '^(apps|packages)/' | \
         awk -F/ '{print $1"/"$2}' | sort -u
 }
 
@@ -129,11 +129,6 @@ detect_context() {
         WORKSPACE_TYPE="app"
         WORKSPACE_NAME=$(basename "$WORKSPACE_ROOT")
         APP_NAME="$WORKSPACE_NAME"
-    elif [[ "$relative_path" == tools/* ]]; then
-        CONTEXT_TYPE="tool"
-        WORKSPACE_TYPE="tool"
-        WORKSPACE_NAME=$(basename "$WORKSPACE_ROOT")
-        APP_NAME="$WORKSPACE_NAME"
     elif [[ "$relative_path" == packages/* ]]; then
         WORKSPACE_TYPE="package"
         WORKSPACE_NAME=$(basename "$WORKSPACE_ROOT")
@@ -149,7 +144,7 @@ detect_context() {
     fi
 
     if [ "$CONTEXT_TYPE" = "root" ]; then
-        WORKSPACE_DIRS=("$MONOREPO_ROOT" "$MONOREPO_ROOT/packages/*" "$MONOREPO_ROOT/apps/*" "$MONOREPO_ROOT/tools/*")
+        WORKSPACE_DIRS=("$MONOREPO_ROOT" "$MONOREPO_ROOT/packages/*" "$MONOREPO_ROOT/apps/*")
     else
         WORKSPACE_DIRS=("$WORKSPACE_ROOT")
     fi
@@ -610,21 +605,19 @@ step_git_subtree_deploy() {
     echo ""
     echo "🚀 Step $((STEP_COUNT++)): Git Subtree Push (if applicable)..."
     echo "================================================="
-    if [ "$CONTEXT_TYPE" != "app" ] && [ "$CONTEXT_TYPE" != "tool" ]; then
-        echo "ℹ️  Not an app/tool - skipping git subtree push"
+    if [ "$CONTEXT_TYPE" != "app" ]; then
+        echo "ℹ️  Not an app - skipping git subtree push"
         return
     fi
     
     local APP_TYPE
     if [[ "$WORKSPACE_ROOT" == "$MONOREPO_ROOT"/apps/* ]]; then
         APP_TYPE="apps"
-    elif [[ "$WORKSPACE_ROOT" == "$MONOREPO_ROOT"/tools/* ]]; then
-        APP_TYPE="tools"
     else
         return
     fi
     
-    echo "📤 Deploying app/tool via git subtree push..."
+    echo "📤 Deploying app via git subtree push..."
     
     local repository_url
     repository_url=$(get_workspace_repository_url 2>/dev/null || true)
@@ -721,7 +714,7 @@ run_full_workflow() {
 run_monorepo_workflow() {
     echo ""
     echo "================================================="
-    echo "🚀 MONOREPO RELEASE: Deploy apps/tools via git subtree"
+    echo "🚀 MONOREPO RELEASE: Deploy apps via git subtree"
     echo "================================================="
 
     cd "$MONOREPO_ROOT"
@@ -781,12 +774,10 @@ run_monorepo_workflow() {
         local app_path=""
         if [ -d "apps/$remote" ]; then
             app_path="apps/$remote"
-        elif [ -d "tools/$remote" ]; then
-            app_path="tools/$remote"
         elif [ -d "packages/$remote" ]; then
             app_path="packages/$remote"
         else
-            echo "❌ Could not find app/tool folder for '$remote'"
+            echo "❌ Could not find app or package folder for '$remote'"
             failed+=("$remote (folder not found)")
             continue
         fi

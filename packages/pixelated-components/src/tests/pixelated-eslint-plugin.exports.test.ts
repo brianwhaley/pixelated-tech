@@ -9,7 +9,7 @@ describe('ESLint Plugin Exports', () => {
     });
 
     it('exports new rules and exposes them in the recommended config (regression)', () => {
-      const expected = ['validate-test-locations', 'no-process-env', 'no-debug-true', 'file-name-kebab-case', 'class-name-kebab-case', 'required-schemas'];
+      const expected = ['validate-test-locations', 'no-process-env', 'no-debug-true', 'file-name-kebab-case', 'class-name-kebab-case', 'required-schemas', 'enforce-single-h1', 'no-skipped-heading-levels', 'prefer-semantic-html', 'require-img-alt'];
       for (const r of expected) {
         expect(plugin.rules && (plugin.rules as any)[r], `rule ${r} is exported`).toBeDefined();
         expect(plugin.configs, 'configs present').toBeDefined();

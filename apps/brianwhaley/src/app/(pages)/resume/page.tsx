@@ -1,3 +1,5 @@
+/* eslint-disable pixelated/enforce-single-h1 */
+
 "use client";
 
 import React, { useState, useEffect } from "react";

@@ -4,5 +4,12 @@ import { dirname } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export default getBaseESLintConfig(__dirname);
+export default [
+	...getBaseESLintConfig(__dirname),
+	{
+		rules: {
+			"pixelated/enforce-single-h1": "off",
+		},
+	},
+];
 

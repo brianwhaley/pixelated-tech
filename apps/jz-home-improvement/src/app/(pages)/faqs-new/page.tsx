@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { PageEngine, PageDataProvider } from '@pixelated-tech/components';
 import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
+import { PageTitleHeader } from '@pixelated-tech/components';
 import faqsData from '../faqs/faqs.json';
 
 export default async function FAQPageNew() {
@@ -13,8 +14,11 @@ export default async function FAQPageNew() {
 	const pageData = JSON.parse(fileContent);
 
 	return (
-		<PageDataProvider siteConfig={pixelatedConfig} data={{ faqsData }}>
-			<PageEngine pageData={pageData} />
-		</PageDataProvider>
+		<>
+			<PageTitleHeader title="FAQs" />
+			<PageDataProvider siteConfig={pixelatedConfig} data={{ faqsData }}>
+				<PageEngine pageData={pageData} />
+			</PageDataProvider>
+		</>
 	);
 }

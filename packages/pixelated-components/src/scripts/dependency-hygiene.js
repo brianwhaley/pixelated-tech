@@ -41,14 +41,13 @@ function getContextType(workspaceRoot, monorepoRoot) {
 	if (workspaceRoot === monorepoRoot) return 'root';
 	const relative = path.relative(monorepoRoot, workspaceRoot).replace(/\\/g, '/');
 	if (relative.startsWith('apps/')) return 'app';
-	if (relative.startsWith('tools/')) return 'tool';
 	if (relative.startsWith('packages/')) return 'package';
 	return 'workspace';
 }
 
 function listWorkspaceDirs(monorepoRoot) {
 	const result = [];
-	for (const group of ['packages', 'apps', 'tools']) {
+	for (const group of ['packages', 'apps']) {
 		const groupDir = path.join(monorepoRoot, group);
 		if (!fs.existsSync(groupDir)) continue;
 		for (const entry of fs.readdirSync(groupDir, { withFileTypes: true })) {
