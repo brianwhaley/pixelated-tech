@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { PageSection, PageGridItem, PageSectionHeader, BusinessFooter } from "@pixelated-tech/components";
+import { PageTitleHeader } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { BlogPostList } from '@pixelated-tech/components';
 import { MicroInteractions } from '@pixelated-tech/components';
@@ -18,7 +19,7 @@ export default function Home() {
     
 	return (
 		<>
-
+			<PageTitleHeader title="Welcome to Oaktree Landscaping" />
 			<PageSection columns={1} maxWidth="1024px" padding="20px" id="home-section">
 				<Callout 
 					variant="split"
@@ -26,7 +27,6 @@ export default function Home() {
 					// img="https://www.bednarlandscape.com/wp-content/uploads/2023/12/bednar-portfolio-07.jpg"
 					img="https://images.ctfassets.net/h791s4nkwi9z/4O8TMN4425q2m6TMjq3Dca/0d60ed6dc4dfbb30837b755a4420d5ac/natural-grass-close-up.jpg?fm=webp"
 					aboveFold={true}
-					title="Welcome to Oaktree Landscaping"
 					subtitle="Outstanding Landscapes and Breathtaking Results"
 					content="With over 7 years of experience in the landscape industry, 
 					our company has become a trusted name in creating exquisite 

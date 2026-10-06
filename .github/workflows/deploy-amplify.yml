@@ -32,11 +32,11 @@ jobs:
             changed_files=$(git diff --name-only "$BEFORE_SHA...$COMMIT_SHA")
           fi
 
-          changed_workspaces=$(printf '%s\n' "$changed_files" | grep -E '^(apps|packages|tools)/' | awk -F/ '{print $1 "/" $2}' | sort -u || true)
+          changed_workspaces=$(printf '%s\n' "$changed_files" | grep -E '^(apps|packages)/' | awk -F/ '{print $1 "/" $2}' | sort -u || true)
 
           CHANGED_WORKSPACES="$changed_workspaces" node <<'NODE'
           const fs = require('node:fs');
-          const registry = require('./tools/pixelated-admin/src/app/data/sites.json');
+          const registry = require('./apps/pixelated-admin/src/app/data/sites.json');
 
           const changedWorkspaces = (process.env.CHANGED_WORKSPACES || '')
             .split('\n')

@@ -32,6 +32,10 @@ header {
     position: relative;
 }
 
+:nth-child(1 of .page-section-header){
+    margin: 0px;
+}
+
 .page-section-header {
     margin-bottom: 0px;
 }

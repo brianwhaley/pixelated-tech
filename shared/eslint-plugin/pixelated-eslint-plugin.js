@@ -25,11 +25,16 @@ import { noHardcodedConfigKeysRule } from './rules/no-hardcoded-config-keys.js';
 import { noGenericCtaTextRule } from './rules/no-generic-cta-text.js';
 import { noDirectFetchRule } from './rules/no-direct-fetch.js';
 import { noSingleUseHelpersRule } from './rules/no-single-use-helpers.js';
+import { enforceSingleH1Rule } from './rules/enforce-single-h1.js';
+import { noSkippedHeadingLevelsRule } from './rules/no-skipped-heading-levels.js';
+import { preferSemanticHtmlRule } from './rules/prefer-semantic-html.js';
+import { requireImgAltRule } from './rules/require-img-alt.js';
 
 export default {
 	rules: {
 		'class-name-kebab-case': classNameKebabCaseRule,
-        'enforce-target-blank-rel': enforceTargetBlankRelRule,
+		'enforce-target-blank-rel': enforceTargetBlankRelRule,
+		'enforce-single-h1': enforceSingleH1Rule,
 		'file-name-kebab-case': fileNameKebabCaseRule,
 		'no-debug-true': noDebugTrueRule,
 		'no-direct-fetch': noDirectFetchRule,
@@ -39,6 +44,7 @@ export default {
 		'no-low-information-copy': noLowInformationCopyRule,
 		'no-process-env': noProcessEnvRule,
 		'no-raw-img': noRawImgRule,
+		'no-skipped-heading-levels': noSkippedHeadingLevelsRule,
 		'no-stale-override': noStaleOverrideRule,
 		'no-single-use-helpers': noSingleUseHelpersRule,
 		'no-temp-dependency': noTempDependencyRule,
@@ -46,8 +52,10 @@ export default {
 		'package-json-no-unused-dependency': packageJsonNoUnusedDependencyRule,
 		'package-json-wrong-dependency-type': packageJsonWrongDependencyTypeRule,
 		'prop-types-inferprops': propTypesInferPropsRule,
+		'prefer-semantic-html': preferSemanticHtmlRule,
 		'require-contentful-image-webp': requireContentfulImageWebpRule,
 		'require-section-ids': requireSectionIdsRule,
+		'require-img-alt': requireImgAltRule,
 		'required-files': requiredFilesRule,
 		'required-proptypes-jsdoc': propTypesJsdocRule,
 		'required-schemas': requiredSchemasRule,
@@ -59,7 +67,8 @@ export default {
 		recommended: {
 			rules: {
 				'pixelated/class-name-kebab-case': 'error',
-                'pixelated/enforce-target-blank-rel': 'error',
+				'pixelated/enforce-target-blank-rel': 'error',
+				'pixelated/enforce-single-h1': 'error',
 				'pixelated/file-name-kebab-case': 'off',
 				'pixelated/no-debug-true': 'warn',
 				'pixelated/no-direct-fetch': 'error',
@@ -69,6 +78,8 @@ export default {
 				'pixelated/no-low-information-copy': ['warn', { threshold: 1.5 }],
 				'pixelated/no-process-env': ['error', { allowed: ALLOWED_ENV_VARS }],
 				'pixelated/no-raw-img': 'warn',
+				'pixelated/no-skipped-heading-levels': 'error',
+				'pixelated/prefer-semantic-html': 'error',
 				'pixelated/no-single-use-helpers': 'error',
 				'pixelated/no-stale-override': 'error',
 				'pixelated/no-temp-dependency': 'error',
@@ -78,6 +89,7 @@ export default {
 				'pixelated/prop-types-inferprops': 'error',
 				'pixelated/require-contentful-image-webp': 'warn',
 				'pixelated/require-section-ids': 'error',
+				'pixelated/require-img-alt': 'error',
 				'pixelated/required-faq': 'warn',
 				'pixelated/required-schemas': 'warn',
 				'pixelated/required-files': 'warn',

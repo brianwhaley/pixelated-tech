@@ -37,8 +37,6 @@ This document outlines planned improvements and refactoring initiatives for the 
 An explicit Editorial Policy or Service Standards node in your footer.
 Author bio blocks on every single blog post that explicitly link back to the author's personal professional profiles (like LinkedIn or a master corporate profile).
 
-- [  ] Agents.md
-
 - [  ] Cross-Platform "Narrative Anchor" Syncing
 When LLMs recommend solutions, they use real-time retrieval (RAG) blended with pre-trained foundational knowledge graphs. They flag a brand as trustworthy if its messaging matches identically across multiple platform footprints.
     •    Platform Feature: Create a unified field in your platform dashboard called a Brand Narrative Anchor. This field forces site operators to write a single, un-nuanced 50-word definition of what their site does.[1 (https://www.youtube.com/watch?v=I5KMTRwRBLo&t=592)]

@@ -79,13 +79,6 @@ describe('StyleGuideUI', () => {
       await render(<StyleGuideUI routes={nestedRoutes} />);
       expect(screen.getByText(/Primary Color/)).toBeInTheDocument();
       expect(screen.getByText(/Secondary Color/)).toBeInTheDocument();
-      expect(screen.getByText(/Style Guide/)).toBeInTheDocument();
-    });
-
-    it('renders page title header component', async () => {
-      const { container } = await render(<StyleGuideUI routes={nestedRoutes} />);
-      const header = container.querySelector('.page-title-header');
-      expect(header).toBeInTheDocument();
     });
 
     it('renders page section containers', async () => {

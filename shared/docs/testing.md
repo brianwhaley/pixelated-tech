@@ -1,109 +1,83 @@
-# 🧪 Testing Documentation
+# Testing Documentation
 
-This document describes the current testing setup and standards for the Pixelated monorepo.
-It reflects the actual commands, validators, and coverage enforcement used in the repo today.
+Shared testing harnesses, tools, fixtures, and test cases are the first line of defense across the Pixelated monorepo. When behavior is shared by multiple sites, packages, or tools, the test helpers and contract tests belong in the shared boundary so every consumer exercises the same expectations. Individual sites should add local tests only for genuinely site-specific behavior or a one-off feature that has no reusable contract.
 
 ## What is implemented in this repo
 
-- The monorepo uses Vitest for unit/integration testing and ESLint for linting.
-- `packages/pixelated-components` is the primary shared component package with an enforced test workflow.
-- The root workspace exposes workspace-wide commands using `-ws`.
-- `packages/pixelated-components/src/scripts/test-validator.js` is the real validator used before running Vitest.
+- The monorepo uses Vitest for test execution, `jsdom` for DOM-oriented tests, React Testing Library for component rendering, and the V8 provider for coverage.
+- `shared/configs/vitest.config.base.ts` provides the common Vitest configuration used by the root, applications, tools, and shared packages.
+- `shared/test-utils` contains reusable renderers, page runners, mocks, setup, headers, and coverage helpers for cross-workspace tests.
+- Package-local shared test helpers live in `src/test`; test specifications live in `src/tests`; Storybook stories and interaction tests live in `src/stories`.
+- `packages/pixelated-components/src/scripts/test-validator.js` checks test placement and focused tests, and measures reuse of shared test utilities, render harnesses, configuration factories, test data, fixtures, data factories, assertions, and inline data.
+- Root workspace scripts expose `npm run test -ws`, `npm run test:coverage -ws`, and `npm run lint -ws`; workspaces may add package-specific validation commands.
+
+## Shared-first testing
+
+Testing work follows the platform order: reuse an existing component, harness, fixture, data object, script, or test case first; if it needs more capability, extend or enhance the shared object and update its affected consumers as part of that work; create a net-new test capability only when extending the existing one is not viable.
+
+Before creating a local test or helper, inspect `shared/test-utils`, `packages/pixelated-components/src/test`, existing shared fixtures, and neighboring tests for an established pattern. Extend a shared harness when the setup, assertions, fixtures, or behavior will be used by more than one consumer. Keep reusable test cases close to the shared capability they protect, and keep site tests focused on composition, configuration, content, and client-specific behavior.
+
+When creating test data, start with the closest existing data object or fixture and add or override only the fields required for the test. Do not immediately create a new data object when an existing object can be extended to represent the case.
+
+Do not copy a shared mock, fixture builder, renderer, or assertion helper into an individual app. If the shared helper is difficult to use, improve the shared helper or its public test contract instead. A local helper is appropriate when the behavior is intentionally private to one app and extracting it would add more abstraction than reuse.
 
 ## Current commands
 
-### Root-level commands
+### Root workspace
 
 - `npm run test -ws`
 - `npm run test:coverage -ws`
 - `npm run lint -ws`
-- `npm run release:prep` — runs the prep workflow from the root via `packages/pixelated-components/src/scripts/release.sh --prep`.
+- `npm run release:prep`
 
-### Shared component package commands (`packages/pixelated-components`)
+### Shared component package
 
-- `npm run test:validator` — validates test file placement and focused tests.
-- `npm run test` — runs `npm run test:validator && vitest run --silent`.
-- `npm run test:coverage` — runs `npm run test:validator && vitest run --coverage`.
-- `npm run test:watch` — runs `vitest` in watch mode.
+From `packages/pixelated-components`:
 
-Other packages may have their own test scripts, but the shared component package is the example of the current enforced standard.
+- `npm run test:validator` validates test placement, focused tests, and shared-helper usage.
+- `npm run test` runs the validator and the Vitest suite.
+- `npm run test:coverage` runs the validator and the coverage suite.
+- `npm run test:watch` starts Vitest watch mode.
 
-## Standards
+Other workspaces may expose additional commands, but their tests should use the shared harnesses and conventions whenever the behavior is reusable.
 
-### Toolchain
+## Toolchain and coverage
 
-- Vitest 4.x is the standard test runner.
-- `jsdom` is the default environment for React and DOM-related tests.
+- Vitest is the repository test runner. The shared component package currently uses Vitest 5.
+- `jsdom` is the default environment for React and DOM tests.
 - `@testing-library/react` is the preferred library for component rendering and assertions.
-- Coverage runs through the `v8` provider via `@vitest/coverage-v8`.
+- Coverage uses the V8 provider.
 
-### Coverage enforcement
+The active shared thresholds are defined in `shared/configs/vitest.config.base.ts`:
 
-The real thresholds are defined in `packages/pixelated-components/vitest.config.ts`:
+- Statements: 85%
+- Branches: 73%
+- Functions: 85%
+- Lines: 85%
 
-- `lines: 73.75`
-- `functions: 75.25`
-- `branches: 62`
-- `statements: 71.5`
+**Coverage thresholds are immutable:** Never lower, weaken, bypass, or otherwise change the thresholds to make a failing test or release check pass. Fix the implementation or add the missing shared and local test coverage instead.
 
-Coverage applies to component source files under `src/components/**/*.{ts,tsx,js}` and excludes:
+The shared configuration includes TypeScript and TSX source under `src`, and excludes declarations, stories, styles, data, scripts, and test helper directories. Change the shared config when the platform-wide policy changes; do not document a second set of thresholds in an individual app.
 
-- `node_modules/`
-- `dist/`
-- `**/*.stories.ts`
-- `**/*.stories.tsx`
-- `**/*.css`
-- `**/data/**`
-- `**/scripts/**`
-- `**/test/**`
-- `**/tests/**`
+## Test layout
 
-### Validator behavior
+- `src/tests` contains test specifications and integration tests.
+- `src/test` contains shared setup, fixtures, helpers, utilities, and mock factories.
+- `shared/test-utils` contains harnesses intended for reuse across workspaces.
+- `src/stories` contains Storybook stories and interaction tests.
 
-The real validation script in `packages/pixelated-components/src/scripts/test-validator.js` enforces:
+Keep test specifications out of runtime directories such as `src/app`, `src/pages`, and `public`. Follow the existing workspace layout when a package has an established local convention.
 
-- No focused tests: `describe.only`, `it.only`, `test.only`, `fit`, `fdescribe`, `vi.only`.
-- No local `./test-utils` or `../tests/test-utils` imports when shared helpers already exist in `src/test/test-utils`.
-- Test files are placed in the intended test folders, not scattered in runtime code.
+## Test design
 
-## Expected file layout
+- Test shared behavior at the shared boundary before testing site composition.
+- Prefer deterministic tests that do not depend on live networks, wall-clock timing, or external services.
+- Add success, error, loading, empty, and accessibility cases where the capability exposes those states.
+- Reuse shared fixtures and contract cases across representative consumers.
+- Add a local test for a site-only route, content rule, integration, or visual composition when no shared contract exists.
+- Promote a local test and its fixture into shared coverage when a second real consumer appears.
+- Keep tests readable and specific; do not create generic test utilities without multiple real consumers.
 
-- `src/tests` — test specs and integration tests, typically `*.test.ts`, `*.test.tsx`, or `*.spec.tsx`.
-- `src/test` — shared setup, fixtures, helpers, utilities, and mock factories.
-- `src/stories` — Storybook stories and interaction/play tests.
+## Validation expectations
 
-Do not place component test specs inside runtime directories like `src/app`, `src/pages`, `public`, or other unrelated source folders for shared packages.
-
-## Practical guidance
-
-- Keep tests deterministic and fast.
-- Avoid network and timing dependencies in unit tests.
-- Prefer shared helper modules from `src/test`.
-- Keep tests close to the code under test when appropriate.
-- Always run `npm run test:validator` before `vitest run` in the shared component package.
-
-## Real next steps
-
-1. Standardize `test:validator` across all workspaces.
-   - Add the validator script to apps/tools/packages that do not yet have it.
-   - Use the same focused-test and helper import rules everywhere.
-
-2. Add `test:coverage` to any workspace that currently only has `eslint --fix`.
-   - Make `npm run test:coverage -ws` the default CI coverage command.
-
-3. Document exact test file naming and folder expectations in the contributor guide.
-   - `src/tests/**/*.test.tsx`
-   - `src/test/**` for shared helpers only
-   - `src/stories/**` for Storybook and interaction examples
-
-4. Make the root CI flow explicit.
-   - `npm run lint -ws`
-   - `npm run test -ws`
-   - `npm run test:coverage -ws`
-   - `npm run release:prep`
-
-5. Keep coverage thresholds locked in `packages/pixelated-components/vitest.config.ts` and review them periodically.
-
----
-
-See the [main README](../README.md) for general project information and contribution guidelines.
+Run the narrowest relevant workspace test first, then the shared package tests when a shared capability or harness changes. For cross-workspace changes, run the affected app tests and the root workspace checks before release. Focused tests must not be committed; shared validators should reject focused test modifiers and misplaced test files.

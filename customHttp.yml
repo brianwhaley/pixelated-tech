@@ -64,7 +64,7 @@ applications:
   - appRoot: apps/pixelated
     customHeaders: *default_headers
 
-  - appRoot: tools/pixelated-admin
+  - appRoot: apps/pixelated-admin
     customHeaders: *default_headers
 
   - appRoot: packages/pixelated-components

@@ -57,7 +57,7 @@ applications:
   - appRoot: apps/pixelated
     frontend: *shared_frontend
 
-  - appRoot: tools/pixelated-admin
+  - appRoot: apps/pixelated-admin
     frontend: *shared_frontend
 
   - appRoot: packages/pixelated-components

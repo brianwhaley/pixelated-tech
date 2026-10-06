@@ -12,6 +12,7 @@ import { Callout } from "@pixelated-tech/components";
 import { PageSectionHeader } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
 import { SocialTags } from "@pixelated-tech/components";
+import { PageTitleHeader } from "@pixelated-tech/components";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "./page3.css";
 
@@ -57,7 +58,7 @@ export default function SamplePage3() {
 			</header>
 
 			<main>
-
+				<PageTitleHeader title="Welcome to The Linen Table" />
 				<section id="main-section" className="">
 					<Callout 
 						variant="split"
