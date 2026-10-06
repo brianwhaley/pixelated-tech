@@ -23,11 +23,15 @@ applications:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'echo "Creating deployment artifact without Next.js cache..."'
+            - 'rm -rf "$AMPLIFY_MONOREPO_APP_ROOT/.next-deploy"'
+            - 'mkdir -p "$AMPLIFY_MONOREPO_APP_ROOT/.next-deploy"'
+            - 'cp -R "$AMPLIFY_MONOREPO_APP_ROOT/.next/." "$AMPLIFY_MONOREPO_APP_ROOT/.next-deploy/"'
+            - 'rm -rf "$AMPLIFY_MONOREPO_APP_ROOT/.next-deploy/cache"'
       artifacts:
-        baseDirectory: .next
+        baseDirectory: .next-deploy
         files:
           - '**/*'
-          - '!cache/**/*'
       cache:
         paths:
           - .next/cache/**/*
