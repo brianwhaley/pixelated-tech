@@ -27,6 +27,7 @@ applications:
         baseDirectory: .next
         files:
           - '**/*'
+          - '!cache/**/*'
       cache:
         paths:
           - .next/cache/**/*
@@ -88,6 +89,7 @@ applications:
         baseDirectory: .next
         files:
           - '**/*'
+          - '!cache/**/*'
       cache:
         paths:
           - .next/cache/**/*
