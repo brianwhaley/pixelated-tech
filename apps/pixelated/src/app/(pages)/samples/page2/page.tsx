@@ -12,6 +12,7 @@ import { Callout } from "@pixelated-tech/components";
 import { Tiles } from "@pixelated-tech/components";
 import { MicroInteractions } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
+import { PageTitleHeader } from "@pixelated-tech/components";
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "./page2.css";
 import { SocialTags } from "@pixelated-tech/components";
@@ -96,7 +97,7 @@ export default function SamplePage2() {
 			</header>
 
 			<main>
-
+				<PageTitleHeader title="Welcome to Momento Studios" />
 				<section id="main-callout-section">
 					<Callout 
 						img="https://i.pinimg.com/736x/dd/13/83/dd1383bd7db545d6ef29dbe078cf73b4.jpg"

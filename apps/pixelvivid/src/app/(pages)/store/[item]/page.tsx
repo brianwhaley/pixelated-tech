@@ -3,6 +3,7 @@
 import React, { use } from 'react';
 import { EbayItemDetail, usePixelatedConfig } from "@pixelated-tech/components";
 import { ContentfulItemDetail } from "@pixelated-tech/components";
+import { PageTitleHeader } from "@pixelated-tech/components";
 
 export function isNumeric(value: any) {
 	return !isNaN(parseFloat(value)) && isFinite(value);
@@ -36,6 +37,7 @@ export default function EbayItem({params}: { params: Promise<{ item: string }> }
 	
 	return (
 		<>
+			<PageTitleHeader title="Item Detail" />
 			<section id="ebay-item-section">
 				<div className="section-container">
 					{ isNumeric(item) && item.length == 12 

@@ -1,17 +1,7 @@
 
 # SEO Rules
 
-
-
 ## SEO LINTING / TESTING
-
-seo/enforce-single-h1: Flag pages (/app/page.tsx or top-level components) that have zero or multiple <h1> tags. Every indexable page should have exactly one <h1>.
-
-seo/no-skipped-heading-levels: Ensure headings follow strict sequential order (e.g., an <h3> cannot appear directly after an <h2> without an <h2> parent, and an <h4> shouldn't jump right after an <h2>).
-
-seo/prefer-semantic-html: Flag layout-heavy <div> elements with click handlers or headings inside them, suggesting <main>, <article>, <section>, <nav>, or <header>.
-
-seo/require-img-alt: Require alt attributes on all standard <img> or <SmartImage> tags.
 
 Advanced rule: Flag non-descriptive alt text (e.g., alt="image", alt="photo", alt="icon", or alt="" unless marked aria-hidden="true" for decorative icons).
 

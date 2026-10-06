@@ -22,6 +22,13 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.1;
 }
 
+.page-title-header {
+    font-variant-caps: normal !important;
+    font-variant: normal !important;
+    font-feature-settings: normal !important;
+    padding: 30px 0 0 0 ;
+}
+
 
 
 .negative-image {

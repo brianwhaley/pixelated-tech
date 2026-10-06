@@ -1,5 +1,8 @@
 # Multi-Tenant Email Forwarding Architecture on AWS
 
+- **Owner:** Pixelated Technologies platform operations
+- **Last reviewed:** 2026-10-05
+
 A multi-tenant email forwarding architecture on AWS relies on **Amazon Route 53** as the authoritative DNS entry point, **Amazon SES** for inbound reception and outbound dispatch, **Amazon S3** for payload buffering, **AWS Lambda (Node.js)** for header transformation, and **Amazon DynamoDB** for tenant routing rules.
 
 ---

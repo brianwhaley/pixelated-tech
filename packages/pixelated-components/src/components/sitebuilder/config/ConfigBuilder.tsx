@@ -552,7 +552,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 									id="siteinfo"
 								/>
 								<div className="address-section">
-									<h4>Address</h4>
+									<h3>Address</h3>
 									<div className="field-group">
 										<label htmlFor="street-address">Street Address</label>
 										<input
@@ -605,7 +605,7 @@ export function ConfigBuilder(props: ConfigBuilderType) {
 									</div>
 								</div>
 								<div className="social-links-section">
-									<h4>Social Links</h4>
+									<h3>Social Links</h3>
 									{socialLinks.map((link, index) => (
 										<div key={index} className="field-group social-link-item">
 											<input

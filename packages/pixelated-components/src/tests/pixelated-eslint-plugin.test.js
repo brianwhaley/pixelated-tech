@@ -47,6 +47,72 @@ describe('pixelated-eslint-plugin', () => {
 		expect(plugin.configs).toBeDefined();
 	});
 
+	it('requires exactly one h1 or PageTitleHeader in page files', () => {
+		const linter = new Linter({ configType: 'flat' });
+		const config = {
+			languageOptions: { parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } } },
+			plugins: { pixelated: plugin },
+			rules: { 'pixelated/enforce-single-h1': 'error' },
+		};
+		const noHeading = verifyWithFilename(linter, `export default function Page(){ return <main />; }`, config, 'src/app/page.tsx');
+		const twoHeadings = verifyWithFilename(linter, `export default function Page(){ return (<><h1>One</h1><h1>Two</h1></>); }`, config, 'src/app/page.tsx');
+		const oneHeading = verifyWithFilename(linter, `export default function Page(){ return <h1>One</h1>; }`, config, 'src/app/page.tsx');
+		const onePageTitleHeader = verifyWithFilename(linter, `export default function Page(){ return <PageTitleHeader title="One" />; }`, config, 'src/app/page.tsx');
+		const headingAndPageTitleHeader = verifyWithFilename(linter, `export default function Page(){ return (<><h1>One</h1><PageTitleHeader title="Two" /></>); }`, config, 'src/app/page.tsx');
+		const componentWithoutHeading = verifyWithFilename(linter, `export function Card(){ return <div />; }`, config, 'src/components/card.tsx');
+
+		expect(noHeading.some(message => message.ruleId === 'pixelated/enforce-single-h1')).toBe(true);
+		expect(twoHeadings.some(message => message.ruleId === 'pixelated/enforce-single-h1')).toBe(true);
+		expect(oneHeading.some(message => message.ruleId === 'pixelated/enforce-single-h1')).toBe(false);
+		expect(onePageTitleHeader.some(message => message.ruleId === 'pixelated/enforce-single-h1')).toBe(false);
+		expect(headingAndPageTitleHeader.some(message => message.ruleId === 'pixelated/enforce-single-h1')).toBe(true);
+		expect(componentWithoutHeading.some(message => message.ruleId === 'pixelated/enforce-single-h1')).toBe(false);
+	});
+
+	it('rejects skipped heading levels', () => {
+		const linter = new Linter({ configType: 'flat' });
+		const code = `export default function Page(){ return (<><h1>One</h1><h3>Three</h3></>); }`;
+		const messages = linter.verify(code, {
+			languageOptions: { parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } } },
+			plugins: { pixelated: plugin },
+			rules: { 'pixelated/no-skipped-heading-levels': 'error' },
+		});
+		expect(messages.some(message => message.ruleId === 'pixelated/no-skipped-heading-levels')).toBe(true);
+	});
+
+	it('allows adjacent heading levels and level decreases', () => {
+		const linter = new Linter({ configType: 'flat' });
+		const code = `export default function Page(){ return (<><h1>One</h1><h2>Two</h2><h3>Three</h3><h2>Two</h2></>); }`;
+		const messages = linter.verify(code, {
+			languageOptions: { parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } } },
+			plugins: { pixelated: plugin },
+			rules: { 'pixelated/no-skipped-heading-levels': 'error' },
+		});
+		expect(messages.some(message => message.ruleId === 'pixelated/no-skipped-heading-levels')).toBe(false);
+	});
+
+	it('rejects divs with semantic tag ids or class names', () => {
+		const linter = new Linter({ configType: 'flat' });
+		const code = `export default function Page(){ return (<><div id="section" /><div className="layout nav" /><div className="section-wrapper" /></>); }`;
+		const messages = linter.verify(code, {
+			languageOptions: { parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } } },
+			plugins: { pixelated: plugin },
+			rules: { 'pixelated/prefer-semantic-html': 'error' },
+		});
+		expect(messages.filter(message => message.ruleId === 'pixelated/prefer-semantic-html')).toHaveLength(2);
+	});
+
+	it('requires alt attributes on img and SmartImage', () => {
+		const linter = new Linter({ configType: 'flat' });
+		const code = `export default function Page(){ return (<><img src="image.jpg" /><SmartImage src="image.jpg" /><img src="decorative.jpg" alt="" /></>); }`;
+		const messages = linter.verify(code, {
+			languageOptions: { parserOptions: { ecmaVersion: 2022, sourceType: 'module', ecmaFeatures: { jsx: true } } },
+			plugins: { pixelated: plugin },
+			rules: { 'pixelated/require-img-alt': 'error' },
+		});
+		expect(messages.filter(message => message.ruleId === 'pixelated/require-img-alt')).toHaveLength(2);
+	});
+
 	it('warns when a top-level <section> has no id', async () => {
 		const linter = new Linter({ configType: 'flat' });
 		const code = `export default function Page(){ return (<><section>Hi</section></>); }`;

@@ -58,6 +58,7 @@ export default [
 				'react/prop-types': 'off', // We use our own propTypes system
 				'react/display-name': 'off',
 				...pixelatedPlugin.configs.recommended.rules,
+				'pixelated/enforce-single-h1': 'off',
 			},
 		settings: {
 			react: {

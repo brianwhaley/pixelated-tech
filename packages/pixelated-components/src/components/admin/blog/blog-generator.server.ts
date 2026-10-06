@@ -9,6 +9,8 @@ import { getSiteConfig } from '../sites/sites.integration';
 import { createWordPressDraft } from '../../integrations/wordpress.functions';
 import { measureBlogArticle, normalizeObjectiveCriteria, validateBlogArticle, type BlogArticleMetrics, type BlogCriteria } from './blog-generator.validation';
 
+const debug = false;
+
 export type BlogCalendarEntry = {
 	id: number;
 	targetPublishDate: string;
@@ -125,15 +127,17 @@ async function requestGeminiText(apiKey: string, prompt: string, options: Gemini
 			...(options.responseSchema ? { responseSchema: options.responseSchema } : {}),
 		},
 	};
-	console.info('========== GEMINI REQUEST METADATA ==========', JSON.stringify({
-		model: 'gemini-2.5-flash',
-		temperature: requestBody.generationConfig.temperature,
-		maxOutputTokens: requestBody.generationConfig.maxOutputTokens,
-		responseMimeType: options.responseMimeType,
-		hasResponseSchema: Boolean(options.responseSchema),
-		hasSystemInstruction: Boolean(options.systemInstruction),
-	}));
-	console.info('========== GEMINI REQUEST PROMPT ==========', prompt);
+	if (debug) {
+		console.info('========== GEMINI REQUEST METADATA ==========', JSON.stringify({
+			model: 'gemini-2.5-flash',
+			temperature: requestBody.generationConfig.temperature,
+			maxOutputTokens: requestBody.generationConfig.maxOutputTokens,
+			responseMimeType: options.responseMimeType,
+			hasResponseSchema: Boolean(options.responseSchema),
+			hasSystemInstruction: Boolean(options.systemInstruction),
+		}));
+		console.info('========== GEMINI REQUEST PROMPT ==========', prompt);
+	}
 	const response = await smartFetch(url, {
 		timeout: 120000,
 		retries: 0,
@@ -144,25 +148,27 @@ async function requestGeminiText(apiKey: string, prompt: string, options: Gemini
 		},
 	});
 	const candidates = Array.isArray(response.candidates) ? response.candidates : [];
-	console.info('========== GEMINI RESPONSE METADATA ==========', JSON.stringify({
-		responseId: response.responseId,
-		modelVersion: response.modelVersion,
-		usageMetadata: response.usageMetadata,
-		promptFeedback: response.promptFeedback,
-		candidateCount: candidates.length,
-		candidates: candidates.map((candidate: { finishReason?: string; finishMessage?: string; safetyRatings?: unknown; citationMetadata?: unknown; content?: { parts?: Array<{ text?: string }> } }, index: number) => ({
-			index,
-			finishReason: candidate.finishReason,
-			finishMessage: candidate.finishMessage,
-			safetyRatings: candidate.safetyRatings,
-			citationMetadata: candidate.citationMetadata,
-			contentPartCount: candidate.content?.parts?.length || 0,
-			contentTextLength: candidate.content?.parts?.reduce((length, part) => length + (part.text?.length || 0), 0) || 0,
-		})),
-	}));
+	if (debug) {
+		console.info('========== GEMINI RESPONSE METADATA ==========', JSON.stringify({
+			responseId: response.responseId,
+			modelVersion: response.modelVersion,
+			usageMetadata: response.usageMetadata,
+			promptFeedback: response.promptFeedback,
+			candidateCount: candidates.length,
+			candidates: candidates.map((candidate: { finishReason?: string; finishMessage?: string; safetyRatings?: unknown; citationMetadata?: unknown; content?: { parts?: Array<{ text?: string }> } }, index: number) => ({
+				index,
+				finishReason: candidate.finishReason,
+				finishMessage: candidate.finishMessage,
+				safetyRatings: candidate.safetyRatings,
+				citationMetadata: candidate.citationMetadata,
+				contentPartCount: candidate.content?.parts?.length || 0,
+				contentTextLength: candidate.content?.parts?.reduce((length, part) => length + (part.text?.length || 0), 0) || 0,
+			})),
+		}));
+	}
 	const responseText = candidates[0]?.content?.parts?.map((part: { text?: string }) => part.text || '').join('').trim();
 	if (!responseText) throw new Error('Gemini returned no response content');
-	console.info('========== GEMINI RESPONSE ==========', responseText);
+	if (debug) console.info('========== GEMINI RESPONSE ==========', responseText);
 	return responseText;
 }
 
@@ -294,11 +300,13 @@ export async function generateBlogPostsFromCalendar(
 	for (const entry of entries) {
 		try {
 			let generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey);
-			console.info('[blog-generator] Gemini article accepted for draft', JSON.stringify({
-				calendarId: entry.id,
-				title: entry.title,
-				articleLength: generatedArticle.article.length,
-			}));
+			if (debug) {
+				console.info('[blog-generator] Gemini article accepted for draft', JSON.stringify({
+					calendarId: entry.id,
+					title: entry.title,
+					articleLength: generatedArticle.article.length,
+				}));
+			}
 			/*
 			 * Legacy criteria validation and repair flow. Draft creation now requires
 			 * only a valid JSON response containing a non-empty article string.
