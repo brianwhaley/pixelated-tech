@@ -14,6 +14,11 @@ This document outlines the coding standards and conventions used across the Pixe
 
 Example: Don't say "vitest v8 doesn't support coverage thresholds" — test it first or link to the actual vitest docs proving it.
 
+### Deployment and Release Boundaries
+
+- Agents must not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly requests that deployment or release action.
+- Building, testing, validating, and preparing release artifacts do not constitute permission to deploy or publish them.
+
 ## Documentation source of truth
 
 When documentation conflicts with an active script, shared configuration, validator, schema, or implementation, the active repository artifact is authoritative. Update the documentation to match verified behavior; do not preserve a conflicting instruction for historical convenience.
