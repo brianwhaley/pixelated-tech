@@ -19,6 +19,11 @@ Build the smallest site-specific implementation that satisfies the approved asse
 - Prefer less duplicated code, more appropriate configuration, smaller bundles, faster builds, and fewer dependencies.
 - Do not turn a site build into an unapproved platform rewrite.
 
+## Deployment Boundary
+
+- Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly requests that deployment or release action.
+- Builds, tests, validation, and release-preparation checks are preparation only and do not grant permission to deploy or publish.
+
 ## Repository-Wide Awareness
 
 Before implementing a feature, inspect the monorepo for relevant prior art:

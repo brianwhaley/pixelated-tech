@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.21.43",
+	"version": "3.21.44",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -92,17 +92,17 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-amplify": "^3.1146.0",
-		"@aws-sdk/client-dynamodb": "^3.1146.0",
-		"@aws-sdk/client-iam": "^3.1146.0",
-		"@aws-sdk/client-sesv2": "^3.1146.0",
+		"@aws-sdk/client-amplify": "^3.1147.0",
+		"@aws-sdk/client-dynamodb": "^3.1147.0",
+		"@aws-sdk/client-iam": "^3.1147.0",
+		"@aws-sdk/client-sesv2": "^3.1147.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.7",
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
 		"marked": "^18.1.0",
-		"nodemailer": "^10.0.15",
+		"nodemailer": "^10.0.16",
 		"prop-types": "^15.8.1",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
@@ -110,8 +110,8 @@
 		"vitest": "^5.0.3"
 	},
 	"devDependencies": {
-		"@babel/parser": "^8.0.6",
-		"@babel/preset-env": "^8.0.6",
+		"@babel/parser": "^8.0.7",
+		"@babel/preset-env": "^8.0.7",
 		"@babel/preset-react": "^8.0.1",
 		"@eslint/js": "9.39.4",
 		"@storybook/addon-a11y": "^10.6.1",
@@ -167,8 +167,8 @@
 		"flatted": "^3.4.2"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1146.0",
-		"@aws-sdk/client-route-53": "^3.1146.0",
+		"@aws-sdk/client-cloudwatch": "^3.1147.0",
+		"@aws-sdk/client-route-53": "^3.1147.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^183.0.0",

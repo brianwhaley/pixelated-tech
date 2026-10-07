@@ -42,6 +42,11 @@ Use local repository information only for:
 
 Use the existing project corpus as a reference for patterns and quality. Do not copy private contact information, unsupported claims, or unrelated client strategy into a new artifact.
 
+## Deployment Boundary
+
+- Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly requests that deployment or release action.
+- Research, artifact creation, validation, and local rendering are preparation only and do not grant permission to deploy or publish.
+
 ## Evidence Rules
 
 Separate verified facts, client-provided facts, sourced research, recommendations, and unknowns.
