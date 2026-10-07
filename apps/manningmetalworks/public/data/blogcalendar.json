@@ -3,21 +3,39 @@
     "cadence": "weekly",
     "defaultStatus": "",
     "criteria": {
-      "contentRules": [
-        "Each post must have 800 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences",
-        "After the conclusion of each post, add a call to action to connect with us for any upcoming projects for a free estimate with a link to https://www.manningmetalworks.com/contact-us",
-        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced.",
-        "Add links to other blog posts or other content on manningmetalworks.com",
-        "Use a tone of empthy, understanding as a small business owner myself, an expert in the field of web and marketing, and straightforward language",
-        "Each blog post should target one of the services offered on the Services page",
-        "Leverage at least one primary keyword and 2 to 3 supporting keywords",
-        "Blog content should be able to be repurposed into Social media posts, Google Business Profile updates, Email newsletters, Sales talking points",
-        "No specific technique/material deep-dives: Focus on total versatility and the message that they \"can do it all.\"",
-        "Greg’s background: Highlight his time as a local firefighter (bringing tactical focus, calm under pressure, and situational awareness) rather than his nursing history.",
-        "Tim's background - dont mention specific previewous places wof employment.  Also No competitor mentions: Completely eliminate specific references to external local competitors.",
-        "24/7 services positioning: Frame this strictly as an emergency-only service for true business crises.",
-        "Cleaned headers/links: Keep links out of headers, placing contact details cleanly in the text body instead."
-      ]
+      "subjectiveCriteria": [
+        "Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+        "Target an education level of high school graduate or below.",
+        "Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+        "Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+        "Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+        "Place the source link in the same paragraph as the statistic or factual claim it supports.",
+        "Use real, working URLs. Do not use placeholder links.",
+        "Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
+        "Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
+        "The blog post must make sense when read aloud, or if used as a script for a podcast.",
+        "Do not use text or html based tables, charts, or other formatting.",
+        "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
+        "Do not provide individualized legal, financial, medical, or cybersecurity advice",
+        "Optimize for search and answer engines",
+        "End the article with a Call to Action (CTA) to contact us."
+      ],
+      "objectiveCriteria": {
+        "require_minimum_words": 800,
+        "require_maximum_words": 1200,
+        "require_intro_paragraph": true,
+        "require_conclusion_paragraph": true,
+        "require_call_to_action": true,
+        "require_minimum_body_paragraphs": 3,
+        "require_minimum_paragraph_sentences": 6,
+        "require_minimum_internal_links": 2,
+        "require_minimum_external_links": 2,
+        "required_call_to_action_link": "https://www.manningmetalworks.com/contact-us",
+        "required_call_to_action_heading": "Schedule an appointment today"
+      },
+      "unusedCriteria": {
+        "require_wordpress_blocks": false
+      }
     }
   },
   "blogCalendar": [
@@ -73,7 +91,7 @@
     {
       "id": 8,
       "targetPublishDate": "",
-      "title": "Year in Review: Projects We’re Proud Of",
+      "title": "Year in Review: Projects We're Proud Of",
       "notes": [
         "Goal: Educate new visitors, build trust, and establish authority"
       ],
