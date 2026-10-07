@@ -1,0 +1,31 @@
+is it possible to take an uploaded excel file, generate labels from the data in the xls via shipstation, and auto print them to a printer in a client's office
+
+Yes, it is possible, but it requires a mix of standard ShipStation features and a little bit of custom integration depending on how "hands-off" you want the process to be.
+
+Because ShipStation cannot natively watch a folder for an Excel file and trigger a print job instantly without human intervention, achieving this requires a specific architecture.
+
+Here is exactly how this workflow can be built:
+
+1. Feeding the Data into ShipStation
+
+ShipStation needs the Excel data converted into actual orders before it can generate labels. You have two primary methods to do this:
+
+The Manual Method (CSV Import): You convert the Excel file into a standard CSV format. The client logs into ShipStation, clicks Import Orders, and uploads the file.
+
+The Automated Method (API): You build a lightweight script (e.g., in Python or Node.js) or use an integration tool like Zapier. The script automatically reads the Excel file and pushes the details straight into ShipStation via the ShipStation API.
+
+2. Auto-Printing to the Client's Office Printer
+
+To bypass downloading PDFs and manually hitting print, you must use ShipStation's native cloud-printing utility:
+
+Install ShipStation Connect: You must install the ShipStation Connect desktop application directly onto a computer inside the client's office that is connected to their label printer.
+
+Register the Device: Once logged into ShipStation Connect on that local machine, it registers that office printer to the ShipStation cloud account.
+
+3. Making the Printing "Automatic"
+
+Once the orders are imported and the printer is linked, you can execute the printing in two ways:
+
+One-Click Bulk Printing (Standard): After the spreadsheet is uploaded, the client selects all the newly imported orders on their ShipStation dashboard and clicks Create + Print Labels. The cloud instantly routes the print job straight to their physical office printer via ShipStation Connect.
+
+Hands-Free Automation (Custom API + ShipStation Connect): If you want the client to literally do nothing but upload a file, you have to use the ShipStation API. Your custom script creates the order via the API, triggers the label creation, and programmatically sends the print job directly to the designated shipstation_connect printer ID.

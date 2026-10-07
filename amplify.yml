@@ -9,8 +9,9 @@ applications:
           commands:
             - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum "$REPO_ROOT/amplify.yml" || true'
-            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Pre-build resolved paths:"; for path in "$REPO_ROOT" "$APP_ROOT" "$REPO_ROOT/.next" "$APP_ROOT/.next" "$APP_ROOT/.next/cache" "$APP_ROOT/.next-deploy"; do if [ -e "$path" ]; then echo "EXISTS $path"; du -sh "$path" || true; else echo "MISSING $path"; fi; done; echo "Pre-build Admin top-level sizes:"; du -sh "$APP_ROOT"/* || true'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Pre-build resolved paths:"; for path in "$REPO_ROOT" "$APP_ROOT" "$REPO_ROOT/.next" "$APP_ROOT/.next" "$APP_ROOT/.next/cache" "$APP_ROOT/next-deploy"; do if [ -e "$path" ]; then echo "EXISTS $path"; du -sh "$path" || true; else echo "MISSING $path"; fi; done; echo "Pre-build application top-level sizes:"; du -sh "$APP_ROOT"/* || true'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Removing restored repository-root Next.js cache: $REPO_ROOT/.next"; rm -rf "$REPO_ROOT/.next"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Removing restored standalone deployment artifact: $APP_ROOT/next-deploy"; rm -rf "$APP_ROOT/next-deploy"'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; cd "$REPO_ROOT" && npm install --force && cd "$APP_ROOT"'
         build:
@@ -28,6 +29,7 @@ applications:
             - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; cd "$REPO_ROOT" && npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; STANDALONE_APP_ROOT="$APP_ROOT/.next/standalone/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Preparing standalone deployment artifact: $APP_ROOT/next-deploy"; cd "$APP_ROOT" && rm -rf next-deploy && mkdir -p next-deploy && cp -R .next/standalone/node_modules next-deploy/ && cp -R .next/standalone/packages next-deploy/ && cp -R "$STANDALONE_APP_ROOT/." next-deploy/ && mkdir -p next-deploy/.next && cp -R .next/static next-deploy/.next/ && cp -R public next-deploy/'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Removing deploy-excluded Next.js cache: $APP_ROOT/.next/cache"; rm -rf "$APP_ROOT/.next/cache"'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Repository root size:"; du -sh "$REPO_ROOT" || true; echo "Repository root node_modules size:"; du -sh "$REPO_ROOT/node_modules" || true; echo "Application root size:"; du -sh "$APP_ROOT" || true; echo "Application node_modules size:"; du -sh "$APP_ROOT/node_modules" || true; echo "Application .next size:"; du -sh "$APP_ROOT/.next" || true'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; NEXT_ROOT="$APP_ROOT/.next"; echo "Resolved diagnostic paths:"; for path in "$REPO_ROOT" "$APP_ROOT" "$REPO_ROOT/node_modules" "$APP_ROOT/node_modules" "$NEXT_ROOT" "$NEXT_ROOT/static" "$NEXT_ROOT/server" "$NEXT_ROOT/standalone"; do if [ -e "$path" ]; then echo "EXISTS $path"; else echo "MISSING $path"; fi; done'
@@ -36,10 +38,9 @@ applications:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Discovered .next directories:"; find "$REPO_ROOT" -type d -name .next -prune -exec du -sh {} \; || true'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Candidate artifact paths:"; for candidate in "$REPO_ROOT/.next" "$APP_ROOT/.next" "$APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done; cd "$APP_ROOT"'
       artifacts:
-        baseDirectory: $AMPLIFY_MONOREPO_APP_ROOT/.next
+        baseDirectory: next-deploy
         files:
           - '**/*'
-          - '!cache/**/*'
 
   - appRoot: apps/brianwhaley
     frontend: *shared_frontend
