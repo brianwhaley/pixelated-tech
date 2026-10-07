@@ -6,7 +6,6 @@
 .env.*.local
 .idea/
 .next/
-next-deploy/
 .pnp.*
 .pnpm-debug.log*
 .turbo/
