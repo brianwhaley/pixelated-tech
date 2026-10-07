@@ -9,6 +9,7 @@ applications:
           commands:
             - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum "$REPO_ROOT/amplify.yml" || true'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Pre-build resolved paths:"; for path in "$REPO_ROOT" "$APP_ROOT" "$REPO_ROOT/.next" "$APP_ROOT/.next" "$APP_ROOT/.next/cache" "$APP_ROOT/.next-deploy"; do if [ -e "$path" ]; then echo "EXISTS $path"; du -sh "$path" || true; else echo "MISSING $path"; fi; done; echo "Pre-build Admin top-level sizes:"; du -sh "$APP_ROOT"/* || true'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; cd "$REPO_ROOT" && npm install --force && cd "$APP_ROOT"'
         build:
