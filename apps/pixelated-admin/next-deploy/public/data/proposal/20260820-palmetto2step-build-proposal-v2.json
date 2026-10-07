@@ -1,0 +1,83 @@
+{
+	"companyName": "Palmetto 2 Step",
+	"companyContact": "Yon Lucas",
+	"date": "August 20, 2026",
+	"email": "yon.lucas@palmetto2step.com",
+	"phone": "(854) 683-5154",
+	"address": {
+		"streetAddress": "158 Tanners Run",
+		"addressLocality": "Bluffton",
+		"addressRegion": "SC",
+		"postalCode": "29910",
+		"addressCountry": "USA"
+	},
+	"proposalType": "Web Site Build",
+	"maintenancePackage": "",
+	"goal": 
+	[
+		"To enhance the existing web presence for Palmetto 2 Step on the GoDaddy platform"
+	],
+	"deliverables": [
+		"Additional pages for the palmetto2step.com web site"
+	],
+	"features": [
+		{
+			"feature": "Content Adjustments",
+			"description": [
+				"Additional Logo Versions - small version, horizontal version",
+				"Logo file size and webp format optimization",
+				"Investigate / fix caching for HTML and Font files (if possible on GoDaddy)"
+			]
+		},{
+			"feature": "Blog",
+			"description": [
+				"52 week Blog Calendar with topics and titles for each week"
+			]
+		},{
+			"feature": "Social Media Accounts",
+			"description": [
+				"Create new social media accounts:",
+				"Google Business (verify), Facebook (created), Instagram (created), Threads, Nextdoor",
+				"Links of new / existing social media accounts added to the web site"
+
+			]
+		},{
+			"feature": "Other Tools",
+			"description": [
+				"Google Analytics (verify)",
+				"Google Search Console setup and implementation"
+			]
+		},{
+			"feature": "Citation Management",
+			"description": [
+				"Create new citations on roughly 30-35 relevant business directories",
+				"Links of new / existing citations added to the web site and to localbusiness schema"
+
+			]
+		},{
+			"feature": "Press Release",
+			"description": [
+				"Write and distribute press a release to relevant media outlets regarding the launch of Palmetto 2 Step",
+				"Links of press releases added to the web site"
+
+			]
+		}
+	],
+	"startDate": "9/28/2026",
+	"milestones": [
+		{
+			"milestone": "52 week blog calendar - palmetto2step.com",
+			"date": "10/9/2026"
+		},{
+			"milestone": "Social Media Accounts, Citation Management, Press Release",
+			"date": "10/16/2026"
+		}
+	],
+	"paymentTotal": {
+		"amount": 500,
+		"isDiscounted": true,
+		"description": [
+			"Pricing focused on marketing aspects of the palmetto2step web site on the GoDaddy platform"
+		]
+	}
+}

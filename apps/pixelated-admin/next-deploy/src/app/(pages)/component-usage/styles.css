@@ -1,0 +1,70 @@
+/* Styles for the Component Usage Analytics Table */
+
+#component-usage-table {
+  border-collapse: collapse;
+}
+
+#component-usage-table th,
+#component-usage-table td {
+  border: 1px solid #ddd;
+}
+
+#component-usage-table th {
+  height: 180px;
+  vertical-align: bottom;
+  text-align: center;
+  padding: 10px 5px;
+  position: relative;
+  background-color: #f8fafc;
+}
+
+#component-usage-table th span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: left;
+}
+
+/* First column (Component name) should not be rotated or centered in specific way */
+#component-usage-table th:first-child {
+  height: auto;
+  vertical-align: middle;
+  text-align: left;
+  padding: 12px;
+  background-color: #f8fafc;
+}
+
+#component-usage-table th:first-child span {
+  transform: none;
+  position: static;
+  display: inline;
+  width: auto;
+}
+
+/* All td except first should be centered */
+#component-usage-table td {
+  text-align: center;
+  padding: 8px 12px;
+}
+
+#component-usage-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Styling for totals row/column */
+#component-usage-table tr:last-child {
+  background-color: #f1f5f9;
+}
+
+#component-usage-table td:last-child {
+  background-color: #f8fafc;
+  border-left: 2px solid #cbd5e1;
+}
+
+.text-green-600 {
+	color: #16a34a;
+	font-weight: 900;
+}
