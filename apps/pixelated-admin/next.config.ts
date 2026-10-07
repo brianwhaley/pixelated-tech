@@ -4,6 +4,8 @@ import { getBaseNextConfig } from '../../shared/configs/next.config.base';
 
 const nextConfig: NextConfig = {
 	...getBaseNextConfig(),
+	// Admin deployment tracing is intentionally narrower than the shared monorepo root.
+	// Keep this app-specific until every server route has been verified after deployment.
 	outputFileTracingRoot: path.resolve(__dirname),
 	serverExternalPackages: ['ssh2'],
 	env: {

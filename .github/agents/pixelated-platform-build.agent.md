@@ -32,6 +32,11 @@ Platform Build may own work in:
 
 Individual application pages, client-specific content, branding, routes, and one-off behavior belong to Site Build unless a shared capability is required.
 
+## Deployment Boundary
+
+- Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly requests that deployment or release action.
+- Builds, tests, validation, and release-preparation checks are preparation only and do not grant permission to deploy or publish.
+
 ## Repository-Wide Discovery
 
 Before editing:

@@ -86,6 +86,33 @@ describe('generateBlogPostsFromCalendar', () => {
 		expect(mockCreateWordPressDraft).toHaveBeenCalledOnce();
 	});
 
+	it('aggregates Gemini token usage for the generation run', async () => {
+		mockSmartFetch
+			.mockResolvedValueOnce({
+				usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 40, totalTokenCount: 140 },
+				candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }],
+			})
+			.mockResolvedValueOnce({
+				usageMetadata: { promptTokenCount: 200, candidatesTokenCount: 60, totalTokenCount: 260, thoughtsTokenCount: 10, cachedContentTokenCount: 5 },
+				candidates: [{ content: { parts: [{ text: geminiArticle('three four') }] } }],
+			});
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		const formData = new FormData();
+		formData.set('count', '2');
+		const result = await generateBlogPostsFromCalendar(calendar, formData);
+
+		expect(result.usage).toEqual({
+			model: 'gemini-2.5-flash',
+			requestCount: 2,
+			promptTokenCount: 300,
+			candidatesTokenCount: 100,
+			totalTokenCount: 400,
+			thoughtsTokenCount: 10,
+			cachedContentTokenCount: 5,
+		});
+	});
+
 	it('preserves renamed objective keys in the prompt and normalizes them locally', async () => {
 		const snakeCaseCalendar = {
 			...calendar,

@@ -57,6 +57,9 @@ applications:
   - appRoot: apps/pixelated
     frontend: *shared_frontend
 
+  # Admin has isolated tracing and artifact cleanup because its deployment previously
+  # included stale monorepo Next.js output. Keep the shared frontend anchor unchanged
+  # unless another app demonstrates the same artifact problem.
   - appRoot: apps/pixelated-admin
     frontend:
       phases:
@@ -67,6 +70,7 @@ applications:
             - 'echo "Admin preBuild PWD: $(pwd)"'
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Admin artifact app root: $APP_ROOT"'
+            # Amplify can restore repository-level build output before this phase.
             - 'echo "Removing restored repository-root Next.js cache: $REPO_ROOT/.next"; rm -rf "$REPO_ROOT/.next"'
             - 'test ! -e "$REPO_ROOT/.next" || { echo "Repository-root .next remains after preBuild cleanup: $REPO_ROOT/.next"; exit 1; }'
             - 'echo "Removing all repository Next.js caches"; find "$REPO_ROOT" -type d -path "*/.next/cache" -prune -exec rm -rf {} +'

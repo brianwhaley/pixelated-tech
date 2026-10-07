@@ -37,6 +37,10 @@
 3. **Actionable Next Steps** - Suggest what to do, but don't do it unless instructed
 4. **Code Only When Asked** - Wait for explicit implementation requests
 
+### Deployment and Release Boundaries
+- Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly asks for that deployment or release action.
+- Builds, tests, validation, and release-preparation checks do not grant permission to deploy or publish.
+
 ### Terminal Command Output - CRITICAL
 **🚫 NEVER pipe command output to files or use grep/tail/head to filter results**
 

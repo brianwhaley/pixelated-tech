@@ -28,6 +28,16 @@ export type BlogCalendarData = {
 	blogCalendar: BlogCalendarEntry[];
 };
 
+export type GeminiUsage = {
+	model: string;
+	requestCount: number;
+	promptTokenCount: number;
+	candidatesTokenCount: number;
+	totalTokenCount: number;
+	thoughtsTokenCount: number;
+	cachedContentTokenCount: number;
+};
+
 export type BlogGenerationResult = {
 	calendar: BlogCalendarData;
 	results: Array<{
@@ -37,6 +47,7 @@ export type BlogGenerationResult = {
 		wordpressPostId?: string | number;
 		error?: string;
 	}>;
+	usage: GeminiUsage;
 };
 
 type ArticleSelfAssessment = {
@@ -51,6 +62,7 @@ type ArticleSelfAssessment = {
 type GeneratedArticle = {
 	article: string;
 	selfAssessment: ArticleSelfAssessment;
+	usage: Omit<GeminiUsage, 'model' | 'requestCount'>;
 };
 
 type ArticleRepairRequest = {
@@ -64,6 +76,11 @@ type GeminiRequestOptions = {
 	responseMimeType?: string;
 	responseSchema?: unknown;
 	systemInstruction?: string;
+};
+
+type GeminiTextResponse = {
+	text: string;
+	usage: Omit<GeminiUsage, 'model' | 'requestCount'>;
 };
 
 const articleMetricsSchema = {
@@ -111,7 +128,7 @@ const articleResponseSchema = {
 	required: ['article', 'selfAssessment'],
 };
 
-async function requestGeminiText(apiKey: string, prompt: string, options: GeminiRequestOptions = {}): Promise<string> {
+async function requestGeminiText(apiKey: string, prompt: string, options: GeminiRequestOptions = {}): Promise<GeminiTextResponse> {
 	const url = buildUrl({
 		baseUrl: 'https://generativelanguage.googleapis.com',
 		pathSegments: ['v1beta', 'models', 'gemini-2.5-flash:generateContent'],
@@ -169,7 +186,18 @@ async function requestGeminiText(apiKey: string, prompt: string, options: Gemini
 	const responseText = candidates[0]?.content?.parts?.map((part: { text?: string }) => part.text || '').join('').trim();
 	if (!responseText) throw new Error('Gemini returned no response content');
 	if (debug) console.info('========== GEMINI RESPONSE ==========', responseText);
-	return responseText;
+	const usageMetadata = response.usageMetadata as Record<string, unknown> | undefined;
+	const tokenCount = (value: unknown): number => typeof value === 'number' && Number.isFinite(value) ? value : 0;
+	return {
+		text: responseText,
+		usage: {
+			promptTokenCount: tokenCount(usageMetadata?.promptTokenCount),
+			candidatesTokenCount: tokenCount(usageMetadata?.candidatesTokenCount),
+			totalTokenCount: tokenCount(usageMetadata?.totalTokenCount),
+			thoughtsTokenCount: tokenCount(usageMetadata?.thoughtsTokenCount),
+			cachedContentTokenCount: tokenCount(usageMetadata?.cachedContentTokenCount),
+		},
+	};
 }
 
 function extractJsonObject(responseText: string): string {
@@ -197,7 +225,7 @@ function extractJsonObject(responseText: string): string {
 	throw new Error('Gemini article response did not contain a complete JSON object');
 }
 
-function parseGeneratedArticle(responseText: string): GeneratedArticle {
+function parseGeneratedArticle(responseText: string): Omit<GeneratedArticle, 'usage'> {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(extractJsonObject(responseText));
@@ -248,12 +276,16 @@ async function generateArticle(entry: BlogCalendarEntry, calendar: BlogCalendarD
 			'Return only the corrected JSON object. Preserve valid content, fix every listed failure, and reevaluate both criteria arrays.',
 		] : []),
 	].join('\n\n');
-	return parseGeneratedArticle(await requestGeminiText(apiKey, basePrompt, {
+	const geminiResponse = await requestGeminiText(apiKey, basePrompt, {
 		maxOutputTokens: 32768,
 		responseMimeType: 'application/json',
 		responseSchema: articleResponseSchema,
 		systemInstruction: 'You are a professional WordPress blog editor. Return only the requested JSON object. Silently review and revise before returning it.',
-	}));
+	});
+	return {
+		...parseGeneratedArticle(geminiResponse.text),
+		usage: geminiResponse.usage,
+	};
 }
 
 export async function generateBlogPostsFromCalendar(
@@ -296,10 +328,25 @@ export async function generateBlogPostsFromCalendar(
 	};
 	const entries = updatedCalendar.blogCalendar.filter((entry) => entry.status === '').slice(0, count);
 	const results: BlogGenerationResult['results'] = [];
+	const usage: GeminiUsage = {
+		model: 'gemini-2.5-flash',
+		requestCount: 0,
+		promptTokenCount: 0,
+		candidatesTokenCount: 0,
+		totalTokenCount: 0,
+		thoughtsTokenCount: 0,
+		cachedContentTokenCount: 0,
+	};
 
 	for (const entry of entries) {
 		try {
 			let generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey);
+			usage.requestCount += 1;
+			usage.promptTokenCount += generatedArticle.usage.promptTokenCount;
+			usage.candidatesTokenCount += generatedArticle.usage.candidatesTokenCount;
+			usage.totalTokenCount += generatedArticle.usage.totalTokenCount;
+			usage.thoughtsTokenCount += generatedArticle.usage.thoughtsTokenCount;
+			usage.cachedContentTokenCount += generatedArticle.usage.cachedContentTokenCount;
 			if (debug) {
 				console.info('[blog-generator] Gemini article accepted for draft', JSON.stringify({
 					calendarId: entry.id,
@@ -371,5 +418,5 @@ export async function generateBlogPostsFromCalendar(
 		}
 	}
 
-	return { calendar: updatedCalendar, results };
+	return { calendar: updatedCalendar, results, usage };
 }
