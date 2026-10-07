@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "name": "blog-post-generator",
+    "id": "blog-post-generator-form"
+  },
+  "fields": [
+    {
+      "component": "FormSelect",
+      "props": {
+        "id": "blog-site",
+        "name": "siteName",
+        "label": "Site",
+        "required": "required",
+        "options": []
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "id": "blog-count",
+        "name": "count",
+        "type": "number",
+        "label": "Number of draft blog posts",
+        "min": "1",
+        "defaultValue": "1",
+        "required": "required"
+      }
+    },
+    {
+      "component": "FormButton",
+      "props": {
+        "id": "blog-submit",
+        "type": "submit",
+        "text": "Generate drafts"
+      }
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+/* Styles for the Component Usage Analytics Table */
+
+#component-usage-table {
+  border-collapse: collapse;
+}
+
+#component-usage-table th,
+#component-usage-table td {
+  border: 1px solid #ddd;
+}
+
+#component-usage-table th {
+  height: 180px;
+  vertical-align: bottom;
+  text-align: center;
+  padding: 10px 5px;
+  position: relative;
+  background-color: #f8fafc;
+}
+
+#component-usage-table th span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: left;
+	font-size: 1.1rem;
+
+}
+
+/* First column (Component name) should not be rotated or centered in specific way */
+#component-usage-table th:first-child {
+  height: auto;
+  text-align: left;
+  padding: 12px;
+  background-color: #f8fafc;
+}
+
+#component-usage-table th:first-child span {
+  writing-mode: unset;
+  transform: none;
+  position: static;
+  display: inline;
+  width: auto;
+}
+
+/* All td except first should be centered */
+#component-usage-table td {
+  text-align: center;
+  padding: 8px 12px;
+}
+
+#component-usage-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Styling for totals row/column */
+#component-usage-table tr:last-child {
+  background-color: #f1f5f9;
+}
+
+#component-usage-table td:last-child {
+  background-color: #f8fafc;
+  border-left: 2px solid #cbd5e1;
+}
+
+.usage-check-mark {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.usage-legend-label {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+/* Semantic Layout Classes */
+.usage-page-wrapper {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 2rem;
+}
+
+.usage-page-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.usage-page-title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #111827;
+}
+
+.usage-status-container {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.usage-status-text {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.usage-error-message {
+  color: #dc2626;
+  text-align: center;
+  padding: 1rem;
+  font-weight: 500;
+}
+
+.usage-table-card {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.usage-legend {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
