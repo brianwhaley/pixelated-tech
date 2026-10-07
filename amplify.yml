@@ -26,6 +26,7 @@ applications:
             - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; cd "$REPO_ROOT" && npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Removing deploy-excluded Next.js cache: $APP_ROOT/.next/cache"; rm -rf "$APP_ROOT/.next/cache"'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Repository root size:"; du -sh "$REPO_ROOT" || true; echo "Repository root node_modules size:"; du -sh "$REPO_ROOT/node_modules" || true; echo "Application root size:"; du -sh "$APP_ROOT" || true; echo "Application node_modules size:"; du -sh "$APP_ROOT/node_modules" || true; echo "Application .next size:"; du -sh "$APP_ROOT/.next" || true'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; NEXT_ROOT="$APP_ROOT/.next"; echo "Resolved diagnostic paths:"; for path in "$REPO_ROOT" "$APP_ROOT" "$REPO_ROOT/node_modules" "$APP_ROOT/node_modules" "$NEXT_ROOT" "$NEXT_ROOT/static" "$NEXT_ROOT/server" "$NEXT_ROOT/standalone"; do if [ -e "$path" ]; then echo "EXISTS $path"; else echo "MISSING $path"; fi; done'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; NEXT_ROOT="$APP_ROOT/.next"; echo "Next.js directory sizes:"; for path in "$NEXT_ROOT" "$NEXT_ROOT/static" "$NEXT_ROOT/server" "$NEXT_ROOT/standalone"; do if [ -e "$path" ]; then du -sh "$path"; else echo "MISSING $path"; fi; done; echo "Next.js files larger than 10 MB:"; if [ -d "$NEXT_ROOT" ]; then find "$NEXT_ROOT" -type f -size +10M -exec du -h {} \; || true; else echo "MISSING $NEXT_ROOT"; fi'
@@ -36,6 +37,7 @@ applications:
         baseDirectory: .next
         files:
           - '**/*'
+          - '!cache/**/*'
       cache:
         paths:
           - .next/cache/**/*
