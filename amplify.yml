@@ -7,41 +7,31 @@ applications:
       phases:
         preBuild:
           commands:
-            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
-            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
-            - 'echo "preBuild PWD: $(pwd)"'
-            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Build commit: $(git rev-parse HEAD)"'
-            - 'echo "amplify.yml checksum:"; sha256sum "$REPO_ROOT/amplify.yml" || true'
-            - 'echo "Removing restored repository-root Next.js cache: $REPO_ROOT/.next"'
-            - 'rm -rf "$REPO_ROOT/.next"'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd "$REPO_ROOT" && npm ci'
+            - 'cd ../../ && pwd'
+            - 'npm install --force'
         build:
           commands:
-            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
-            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
-            - 'echo "build PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w packages/pixelated-components'
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'npm run build -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
             # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
-            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
-            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
-            - 'cd "$REPO_ROOT";'
-            - 'echo "postBuild PWD: $(pwd)"'
-            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
-            - 'npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
         baseDirectory: .next
         files:
           - '**/*'
+      cache:
+        paths:
+          - .next/cache/**/*
+          - .next/static/**/*
+          - node_modules/**/*
 
   - appRoot: apps/brianwhaley
     frontend: *shared_frontend
@@ -69,11 +59,60 @@ applications:
 
   - appRoot: apps/pixelated-admin
     frontend:
-      <<: *shared_frontend
+      phases:
+        preBuild:
+          commands:
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "Admin preBuild PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Admin artifact app root: $APP_ROOT"'
+            - 'echo "Removing restored repository-root Next.js cache: $REPO_ROOT/.next"; rm -rf "$REPO_ROOT/.next"'
+            - 'echo "Removing all repository Next.js caches"; find "$REPO_ROOT" -type d -path "*/.next/cache" -prune -exec rm -rf {} +'
+            - 'if [ -e "$APP_ROOT/.next/cache" ]; then echo "Admin cache still present after preBuild cleanup"; exit 1; else echo "Admin cache absent after preBuild cleanup"; fi'
+            - 'echo "Installing dependencies for Admin: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'cd "$REPO_ROOT" && npm ci'
+        build:
+          commands:
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'cd "$REPO_ROOT"'
+            - 'echo "Admin build PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Admin artifact app root: $APP_ROOT"'
+            - 'echo "Building shared components for Admin ..."'
+            - 'npm run build -w packages/pixelated-components'
+            - 'echo "Decrypting Admin config ..."; npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Building Admin ..."'
+            - 'npm run build -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'if [ -d "$REPO_ROOT/.next/cache" ]; then echo "Repository-root build recreated cache:"; du -sh "$REPO_ROOT/.next/cache"; else echo "Repository-root build produced no cache"; fi'
+            - 'if [ -d "$APP_ROOT/.next/cache" ]; then echo "Admin build recreated cache:"; du -sh "$APP_ROOT/.next/cache"; else echo "Admin build produced no cache"; fi'
+        postBuild:
+          commands:
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'cd "$REPO_ROOT"'
+            - 'echo "Admin postBuild PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Admin artifact app root: $APP_ROOT"'
+            - 'npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'if [ -e "$REPO_ROOT/.next/cache" ]; then echo "Removing repository-root Next.js cache: $REPO_ROOT/.next/cache"; rm -rf "$REPO_ROOT/.next/cache"; else echo "No repository-root Next.js cache found"; fi'
+            - 'test ! -e "$REPO_ROOT/.next/cache" && echo "Repository-root cache confirmed absent"'
+            - 'echo "Removing Admin build cache before artifact packaging: $APP_ROOT/.next/cache"'
+            - 'rm -rf "$APP_ROOT/.next/cache"'
+            - 'test ! -e "$APP_ROOT/.next/cache" && echo "Cache confirmed absent"'
+            - 'echo ".next directory sizes:"; find "$APP_ROOT/.next" -type d -exec du -sb {} \;'
+            - 'echo "Files larger than 10 MB:"; find "$APP_ROOT/.next" -type f -size +10M -exec du -h {} \;'
       artifacts:
         baseDirectory: .next
         files:
-          - '**/*'
+          - '*'
+          - 'server/**/*'
+          - 'static/**/*'
+          - '!cache/**/*'
+          - '!dev/**/*'
+          - '!diagnostics/**/*'
+          - '!types/**/*'
 
   - appRoot: packages/pixelated-components
     frontend:
