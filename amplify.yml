@@ -18,10 +18,10 @@ applications:
             - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
-            # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
-        postBuild:
           commands:
             - 'echo "Calling Config Vault postbuild ..."'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing build Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after build cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
         baseDirectory: .next
@@ -69,7 +69,8 @@ applications:
             - 'echo "Admin artifact app root: $APP_ROOT"'
             - 'echo "Removing restored repository-root Next.js cache: $REPO_ROOT/.next"; rm -rf "$REPO_ROOT/.next"'
             - 'echo "Removing all repository Next.js caches"; find "$REPO_ROOT" -type d -path "*/.next/cache" -prune -exec rm -rf {} +'
-            - 'if [ -e "$APP_ROOT/.next/cache" ]; then echo "Admin cache still present after preBuild cleanup"; exit 1; else echo "Admin cache absent after preBuild cleanup"; fi'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing preBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after preBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'echo "Installing dependencies for Admin: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'cd "$REPO_ROOT" && npm ci'
         build:
@@ -85,6 +86,8 @@ applications:
             - 'echo "Decrypting Admin config ..."; npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building Admin ..."'
             - 'npm run build -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing build Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after build cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'if [ -d "$REPO_ROOT/.next/cache" ]; then echo "Repository-root build recreated cache:"; du -sh "$REPO_ROOT/.next/cache"; else echo "Repository-root build produced no cache"; fi'
             - 'if [ -d "$APP_ROOT/.next/cache" ]; then echo "Admin build recreated cache:"; du -sh "$APP_ROOT/.next/cache"; else echo "Admin build produced no cache"; fi'
         postBuild:
@@ -96,13 +99,11 @@ applications:
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Admin artifact app root: $APP_ROOT"'
             - 'npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'if [ -e "$REPO_ROOT/.next/cache" ]; then echo "Removing repository-root Next.js cache: $REPO_ROOT/.next/cache"; rm -rf "$REPO_ROOT/.next/cache"; else echo "No repository-root Next.js cache found"; fi'
-            - 'test ! -e "$REPO_ROOT/.next/cache" && echo "Repository-root cache confirmed absent"'
-            - 'echo "Removing Admin build cache before artifact packaging: $APP_ROOT/.next/cache"'
-            - 'rm -rf "$APP_ROOT/.next/cache"'
-            - 'test ! -e "$APP_ROOT/.next/cache" && echo "Cache confirmed absent"'
-            - 'echo ".next directory sizes:"; find "$APP_ROOT/.next" -type d -exec du -sb {} \;'
-            - 'echo "Files larger than 10 MB:"; find "$APP_ROOT/.next" -type f -size +10M -exec du -h {} \;'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing postBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after postBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
+            - 'echo "Repository top-level directory sizes:"; find "$REPO_ROOT" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
+            - 'echo "Admin app top-level directory sizes:"; find "$APP_ROOT" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
+            - 'echo "Admin .next top-level directory sizes:"; find "$APP_ROOT/.next" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
       artifacts:
         baseDirectory: .next
         files:
