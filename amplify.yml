@@ -36,7 +36,7 @@ applications:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Discovered .next directories:"; find "$REPO_ROOT" -type d -name .next -prune -exec du -sh {} \; || true'
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Candidate artifact paths:"; for candidate in "$REPO_ROOT/.next" "$APP_ROOT/.next" "$APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done; cd "$APP_ROOT"'
       artifacts:
-        baseDirectory: .next
+        baseDirectory: $AMPLIFY_MONOREPO_APP_ROOT/.next
         files:
           - '**/*'
           - '!cache/**/*'
