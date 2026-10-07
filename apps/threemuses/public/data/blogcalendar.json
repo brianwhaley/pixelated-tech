@@ -3,16 +3,39 @@
     "cadence": "weekly",
     "defaultStatus": "",
     "criteria": {
-      "contentRules": [
-        "Each post must have between 800 and 1000 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences",
-        "After the conclusion of each post, add a call to action to visit the store on the /store page, check out the events on the /events page, review the packages on /dancewear page, sign up for our blog newsletter, or to stop by our store.",
-        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..",
-        "Add links to other blog posts or other content on thethreemusesofbluffton web site",
-        "do not use md tables, md formatting, or html tables",
-        "format the title properly, including proper punctuation and capitalization",
-        "uses blog section subtitles as appropriate",
-        "Use a tone of empthy, understanding as a small business owner, and a sense of community.  Target those of all ages, with a high school education."
-      ]
+      "subjectiveCriteria": [
+        "Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+        "Target an education level of high school graduate or below.",
+        "Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+        "Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+        "Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+        "Place the source link in the same paragraph as the statistic or factual claim it supports.",
+        "Use real, working URLs. Do not use placeholder links.",
+        "Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
+        "Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
+        "The blog post must make sense when read aloud, or if used as a script for a podcast.",
+        "Do not use text or html based tables, charts, or other formatting.",
+        "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
+        "Do not provide individualized legal, financial, medical, or cybersecurity advice",
+        "Optimize for search and answer engines",
+        "End the article with a Call to Action (CTA) to contact us."
+      ],
+      "objectiveCriteria": {
+        "require_minimum_words": 800,
+        "require_maximum_words": 1200,
+        "require_intro_paragraph": true,
+        "require_conclusion_paragraph": true,
+        "require_call_to_action": true,
+        "require_minimum_body_paragraphs": 3,
+        "require_minimum_paragraph_sentences": 6,
+        "require_minimum_internal_links": 2,
+        "require_minimum_external_links": 2,
+        "required_call_to_action_link": "https://www.thethreemusesofbluffton.com/contact-us",
+        "required_call_to_action_heading": "Connect with our Creative Lowcountry Community!"
+      },
+      "unusedCriteria": {
+        "require_wordpress_blocks": false
+      }
     }
   },
   "blogCalendar": [
@@ -21,369 +44,372 @@
       "targetPublishDate": "",
       "title": "The Legend of the Three Muses: The story behind our Bluffton shop.",
       "notes": [],
-      "status": ""
+      "status": "deferred"
     },
     {
       "id": 2,
       "targetPublishDate": "",
-      "title": "Dancewear: Choosing your first pair of ballet shoes (Flat vs. Split sole).",
-      "notes": [],
-      "status": ""
+      "title": "Choosing your first pair of ballet shoes (Flat vs. Split sole).",
+      "notes": ["Dancewear"],
+      "status": "deferred"
     },
     {
       "id": 3,
       "targetPublishDate": "",
-      "title": "Sewing: Why \"Learning to Sew\" is the ultimate 2026 New Year's Resolution.",
-      "notes": [],
-      "status": ""
+      "title": "Why \"Learning to Sew\" is the ultimate 2026 New Year's Resolution.",
+      "notes": ["Sewing"],
+      "status": "deferred"
     },
     {
       "id": 4,
       "targetPublishDate": "",
-      "title": "Boutique: Refreshing your space: Handcrafted boutique decor for the New Year.",
-      "notes": [],
-      "status": ""
+      "title": "Refreshing your space: Handcrafted boutique decor for the New Year.",
+      "notes": ["Boutique"],
+      "status": "deferred"
     },
     {
       "id": 5,
       "targetPublishDate": "",
-      "title": "Studio: Meet the Team: The hands behind the alterations.",
-      "notes": [],
-      "status": ""
+      "title": "Meet the Team: The hands behind the alterations.",
+      "notes": ["Studio"],
+      "status": "deferred"
     },
     {
       "id": 6,
       "targetPublishDate": "",
-      "title": "Dancewear: The Anatomy of a Pointe Shoe: What every dancer should know.",
-      "notes": [],
-      "status": ""
+      "title": "The Anatomy of a Pointe Shoe: What every dancer should know.",
+      "notes": ["Dancewear"],
+      "status": "deferred"
     },
     {
       "id": 7,
       "targetPublishDate": "",
-      "title": "Sewing: 5 Common Alterations that will make your wardrobe feel brand new.",
-      "notes": [],
-      "status": ""
+      "title": "5 Common Alterations that will make your wardrobe feel brand new.",
+      "notes": ["Sewing"],
+      "status": "deferred"
     },
     {
       "id": 8,
       "targetPublishDate": "",
-      "title": "Boutique: Valentine’s Day Gift Guide: Custom treasures for someone special.",
-      "notes": [],
-      "status": ""
+      "title": "Valentine's Day Gift Guide: Custom treasures for someone special.",
+      "notes": ["Boutique"],
+      "status": "deferred"
     },
     {
       "id": 9,
       "targetPublishDate": "",
-      "title": "Studio: FAQ: Everything you need to know about our sewing class levels.",
-      "notes": [],
-      "status": ""
+      "title": "FAQ: Everything you need to know about our sewing class levels.",
+      "notes": ["Studio"],
+      "status": "deferred"
     },
     {
       "id": 10,
       "targetPublishDate": "",
-      "title": "Dancewear: Spring Recital Prep: Keeping your tights snag-free.",
-      "notes": [],
-      "status": ""
+      "title": "Spring Recital Prep: Keeping your tights snag-free.",
+      "notes": ["Dancewear"],
+      "status": "deferred"
     },
     {
       "id": 11,
       "targetPublishDate": "",
-      "title": "Sewing: Sewing Machine Basics: What to bring to your first class.",
-      "notes": [],
-      "status": ""
+      "title": "Sewing Machine Basics: What to bring to your first class.",
+      "notes": ["Sewing"],
+      "status": "deferred"
     },
     {
       "id": 12,
       "targetPublishDate": "",
-      "title": "Boutique: Local Spotlight: Why we love being a part of the Bluffton community.",
-      "notes": [],
-      "status": ""
+      "title": "Local Spotlight: Why we love being a part of the Bluffton community.",
+      "notes": ["Boutique"],
+      "status": "deferred"
     },
     {
       "id": 13,
       "targetPublishDate": "",
-      "title": "Studio: March Madness: A look at our busiest alteration month.",
+      "title": "March Madness: A look at our busiest alteration month.",
       "notes": [
-        "Focus: Recitals, prom alterations, and Mother’s Day."
+        "Focus: Recitals, prom alterations, and Mother’s Day.",
+        "Studio"
       ],
-      "status": ""
+      "status": "deferred"
     },
     {
       "id": 14,
       "targetPublishDate": "",
-      "title": "Dancewear: The Stage Makeup Kit: Essentials for every young dancer.",
-      "notes": [],
-      "status": ""
+      "title": "The Stage Makeup Kit: Essentials for every young dancer.",
+      "notes": ["Dancewear"],
+      "status": "deferred"
     },
     {
       "id": 15,
       "targetPublishDate": "",
-      "title": "Sewing: Prom & Gala Season: When to book your alterations (The 4-week rule).",
-      "notes": [],
-      "status": ""
+      "title": "Prom & Gala Season: When to book your alterations (The 4-week rule).",
+      "notes": ["Sewing"],
+      "status": "deferred"
     },
     {
       "id": 16,
       "targetPublishDate": "",
-      "title": "Boutique: Spring Arrivals: Floral prints and custom boutique accessories.",
-      "notes": [],
-      "status": ""
+      "title": "Spring Arrivals: Floral prints and custom boutique accessories.",
+      "notes": ["Boutique"],
+      "status": "deferred"
     },
     {
       "id": 17,
       "targetPublishDate": "",
-      "title": "Studio: How to measure yourself correctly for custom orders.",
-      "notes": [],
+      "title": "How to measure yourself correctly for custom orders.",
+      "notes": ["Studio"],
       "status": "published"
     },
     {
       "id": 18,
       "targetPublishDate": "",
-      "title": "Dancewear: Pointe Shoe Ribbon Styles: How to sew them like a pro.",
-      "notes": [],
+      "title": "Pointe Shoe Ribbon Styles: How to sew them like a pro.",
+      "notes": ["Dancewear"],
       "status": "published"
     },
     {
       "id": 19,
       "targetPublishDate": "",
-      "title": "Sewing: Upcycling 101: Turning an old dress into a new favorite.",
-      "notes": [],
+      "title": "Upcycling 101: Turning an old dress into a new favorite.",
+      "notes": ["Sewing"],
       "status": "published"
     },
     {
       "id": 20,
       "targetPublishDate": "",
-      "title": "Boutique: The Mother’s Day Gift Guide: Hand-stitched elegance.",
-      "notes": [],
-      "status": ""
+      "title": "The Mother’s Day Gift Guide: Hand-stitched elegance.",
+      "notes": ["Boutique"],
+      "status": "deferred"
     },
     {
       "id": 21,
       "targetPublishDate": "",
-      "title": "Studio: A Day in the Life: Behind the scenes at The Three Muses.",
-      "notes": [],
-      "status": ""
+      "title": "A Day in the Life: Behind the scenes at The Three Muses.",
+      "notes": ["Studio"],
+      "status": "deferred"
     },
     {
       "id": 22,
       "targetPublishDate": "",
-      "title": "Dancewear: Transitioning to Pointe: Is your dancer ready?",
-      "notes": [],
+      "title": "Transitioning to Pointe: Is your dancer ready?",
+      "notes": ["Dancewear"],
       "status": "published"
     },
     {
       "id": 23,
       "targetPublishDate": "",
-      "title": "Sewing: The Art of the Hem: Why professional tailoring beats DIY.",
-      "notes": [],
+      "title": "The Art of the Hem: Why professional tailoring beats DIY.",
+      "notes": ["Sewing"],
       "status": "published"
     },
     {
       "id": 24,
       "targetPublishDate": "",
-      "title": "Boutique: Graduation Gifts: Unique keepsakes for the Class of 2026.",
-      "notes": [],
-      "status": ""
+      "title": "Graduation Gifts: Unique keepsakes for the Class of 2026.",
+      "notes": ["Boutique"],
+      "status": "deferred"
     },
     {
       "id": 25,
       "targetPublishDate": "",
-      "title": "Studio: Summer Class Schedule Release! (What’s coming up).",
-      "notes": [],
+      "title": "Summer Class Schedule Release! (What’s coming up).",
+      "notes": ["Studio"],
       "status": "published"
     },
     {
       "id": 26,
       "targetPublishDate": "",
-      "title": "Dancewear: Summer Intensive Essentials: Packing your dance bag.",
+      "title": "Summer Intensive Essentials: Packing your dance bag.",
       "notes": [
-        "Focus: Summer sewing camps, new dance season registration, and teacher gifts."
+        "Focus: Summer sewing camps, new dance season registration, and teacher gifts.",
+        "Dancewear"
       ],
       "status": "published"
     },
     {
       "id": 27,
       "targetPublishDate": "",
-      "title": "Sewing: Summer Sewing Camp Highlights: What our students are making.",
-      "notes": [],
+      "title": "Summer Sewing Camp Highlights: What our students are making.",
+      "notes": ["Sewing"],
       "status": "published"
     },
     {
       "id": 28,
       "targetPublishDate": "",
-      "title": "Boutique: The Perfect Hostess Gift for those Bluffton summer parties.",
-      "notes": [],
+      "title": "The Perfect Hostess Gift for those Bluffton summer parties.",
+      "notes": ["Boutique"],
       "status": "published"
     },
     {
       "id": 29,
       "targetPublishDate": "",
-      "title": "Studio: Organizing your craft space: Tips from Sewing’s corner.",
-      "notes": [],
+      "title": "Organizing your craft space: Tips from Sewing’s corner.",
+      "notes": ["Studio"],
       "status": "published"
     },
     {
       "id": 30,
       "targetPublishDate": "",
-      "title": "Dancewear: Back-to-Dance: The 2026 Dress Code Guide for local studios.",
-      "notes": [],
+      "title": "Back-to-Dance: The 2026 Dress Code Guide for local studios.",
+      "notes": ["Dancewear"],
       "status": "published"
     },
     {
       "id": 31,
       "targetPublishDate": "",
-      "title": "Sewing: Alterations for Kids: Saving money on school uniforms.",
-      "notes": [],
+      "title": "Alterations for Kids: Saving money on school uniforms.",
+      "notes": ["Sewing"],
       "status": "published"
     },
     {
       "id": 32,
       "targetPublishDate": "",
-      "title": "Boutique: Personalized \"Teacher Treats\" for the first week of school.",
-      "notes": [],
+      "title": "Personalized \"Teacher Treats\" for the first week of school.",
+      "notes": ["Boutique"],
       "status": "published"
     },
     {
       "id": 33,
       "targetPublishDate": "",
-      "title": "Studio: How we choose our Boutique brands: Quality over quantity.",
-      "notes": [],
+      "title": "How we choose our Boutique brands: Quality over quantity.",
+      "notes": ["Studio"],
       "status": "published"
     },
     {
       "id": 34,
       "targetPublishDate": "",
-      "title": "Dancewear: Breaking in your new shoes: Tips for a pain-free start.",
-      "notes": [],
+      "title": "Breaking in your new shoes: Tips for a pain-free start.",
+      "notes": ["Dancewear"],
       "status": "published"
     },
     {
       "id": 35,
       "targetPublishDate": "",
-      "title": "Sewing: Advanced Sewing: Introduction to working with delicate fabrics.",
-      "notes": [],
+      "title": "Advanced Sewing: Introduction to working with delicate fabrics.",
+      "notes": ["Sewing"],
       "status": "published"
     },
     {
       "id": 36,
       "targetPublishDate": "",
-      "title": "Boutique: Labor Day Weekend: Transitioning your boutique finds to Fall.",
-      "notes": [],
+      "title": "Labor Day Weekend: Transitioning your boutique finds to Fall.",
+      "notes": ["Boutique"],
       "status": "published"
     },
     {
       "id": 37,
       "targetPublishDate": "",
-      "title": "Studio: FAQ: \"Can this be fixed?\" — A guide to garment repair.",
-      "notes": [],
+      "title": "FAQ: \"Can this be fixed?\" — A guide to garment repair.",
+      "notes": ["Studio"],
       "status": "published"
     },
     {
       "id": 38,
       "targetPublishDate": "",
-      "title": "Dancewear: Nutcracker Audition Season: Standing out in the crowd.",
-      "notes": [],
+      "title": "Nutcracker Audition Season: Standing out in the crowd.",
+      "notes": ["Dancewear"],
       "status": "published"
     },
     {
       "id": 39,
       "targetPublishDate": "",
-      "title": "Sewing: Custom Halloween Costumes: Starting your project early.",
+      "title": "Custom Halloween Costumes: Starting your project early.",
       "notes": [
-        "Focus: Holiday performances, gift-giving, and festive decor."
+        "Focus: Holiday performances, gift-giving, and festive decor.",
+        "Sewing"
       ],
       "status": "published"
     },
     {
       "id": 40,
       "targetPublishDate": "",
-      "title": "Boutique: Falling for Bluffton: Autumn boutique favorites.",
-      "notes": [],
+      "title": "Falling for Bluffton: Autumn boutique favorites.",
+      "notes": ["Boutique"],
       "status": ""
     },
     {
       "id": 41,
       "targetPublishDate": "",
-      "title": "Studio: Community Spotlight: Local dance schools we support.",
-      "notes": [],
+      "title": "Community Spotlight: Local dance schools we support.",
+      "notes": ["Studio"],
       "status": ""
     },
     {
       "id": 42,
       "targetPublishDate": "",
-      "title": "Dancewear: Cold weather dancewear: Layering without losing line.",
-      "notes": [],
+      "title": "Cold weather dancewear: Layering without losing line.",
+      "notes": ["Dancewear"],
       "status": ""
     },
     {
       "id": 43,
       "targetPublishDate": "",
-      "title": "Sewing: Creating your own Holiday Table Runners (Free sewing pattern).",
-      "notes": [],
+      "title": "Creating your own Holiday Table Runners (Free sewing pattern).",
+      "notes": ["Sewing"],
       "status": ""
     },
     {
       "id": 44,
       "targetPublishDate": "",
-      "title": "Boutique: Early Bird Holiday Shopping: The \"Three Muses\" Gift Box.",
-      "notes": [],
+      "title": "Early Bird Holiday Shopping: The \"Three Muses\" Gift Box.",
+      "notes": ["Boutique"],
       "status": ""
     },
     {
       "id": 45,
       "targetPublishDate": "",
-      "title": "Studio: Small Business Saturday: Celebrating local craft.",
-      "notes": [],
+      "title": "Small Business Saturday: Celebrating local craft.",
+      "notes": ["Studio"],
       "status": ""
     },
     {
       "id": 46,
       "targetPublishDate": "",
-      "title": "Dancewear: The Nutcracker Gift Guide: Charms, ornaments, and more.",
-      "notes": [],
+      "title": "The Nutcracker Gift Guide: Charms, ornaments, and more.",
+      "notes": ["Dancewear"],
       "status": ""
     },
     {
       "id": 47,
       "targetPublishDate": "",
-      "title": "Sewing: Last-minute alterations: Getting your holiday attire ready.",
-      "notes": [],
+      "title": "Last-minute alterations: Getting your holiday attire ready.",
+      "notes": ["Sewing"],
       "status": ""
     },
     {
       "id": 48,
       "targetPublishDate": "",
-      "title": "Boutique: Stocking Stuffer Saturday: Tiny treasures from the boutique.",
-      "notes": [],
+      "title": "Stocking Stuffer Saturday: Tiny treasures from the boutique.",
+      "notes": ["Boutique"],
       "status": ""
     },
     {
       "id": 49,
       "targetPublishDate": "",
-      "title": "Studio: Reflecting on a year of Grace, Craft, and Celebration.",
-      "notes": [],
+      "title": "Reflecting on a year of Grace, Craft, and Celebration.",
+      "notes": ["Studio"],
       "status": ""
     },
     {
       "id": 50,
       "targetPublishDate": "",
-      "title": "Dancewear: New Year, New Shoes: Scheduling your January fitting.",
-      "notes": [],
+      "title": "New Year, New Shoes: Scheduling your January fitting.",
+      "notes": ["Dancewear"],
       "status": ""
     },
     {
       "id": 51,
       "targetPublishDate": "",
-      "title": "Boutique: Hostess gifts for New Year's Eve.",
-      "notes": [],
+      "title": "Hostess gifts for New Year's Eve.",
+      "notes": ["Boutique"],
       "status": ""
     },
     {
       "id": 52,
       "targetPublishDate": "",
-      "title": "Sewing: Setting your 2027 Sewing Goals.",
-      "notes": [],
+      "title": "Setting your 2027 Sewing Goals.",
+      "notes": ["Sewing"],
       "status": ""
     }
   ]

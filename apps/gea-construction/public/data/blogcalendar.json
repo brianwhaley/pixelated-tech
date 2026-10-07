@@ -3,13 +3,39 @@
     "cadence": "weekly",
     "defaultStatus": "",
     "criteria": {
-      "contentRules": [
-        "Each post must have 1000 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up.  Each paragraph must be a minimum of 5 sentences",
-        "After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.geaconstruction.net/contact",
-        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced..",
-        "Add links to other blog posts or other content on geaconstruction.net",
-        "Use a tone of empthy, understanding, expertise, and straightforward language"
-      ]
+      "subjectiveCriteria": [
+        "Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+        "Target an education level of high school graduate or below.",
+        "Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+        "Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+        "Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+        "Place the source link in the same paragraph as the statistic or factual claim it supports.",
+        "Use real, working URLs. Do not use placeholder links.",
+        "Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
+        "Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
+        "The blog post must make sense when read aloud, or if used as a script for a podcast.",
+        "Do not use text or html based tables, charts, or other formatting.",
+        "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
+        "Do not provide individualized legal, financial, medical, or cybersecurity advice",
+        "Optimize for search and answer engines",
+        "End the article with a Call to Action (CTA) to contact us."
+      ],
+      "objectiveCriteria": {
+        "require_minimum_words": 800,
+        "require_maximum_words": 1200,
+        "require_intro_paragraph": true,
+        "require_conclusion_paragraph": true,
+        "require_call_to_action": true,
+        "require_minimum_body_paragraphs": 3,
+        "require_minimum_paragraph_sentences": 6,
+        "require_minimum_internal_links": 2,
+        "require_minimum_external_links": 2,
+        "required_call_to_action_link": "https://www.geaconstruction.net/contact",
+        "required_call_to_action_heading": "Schedule your free assessment"
+      },
+      "unusedCriteria": {
+        "require_wordpress_blocks": false
+      }
     }
   },
   "blogCalendar": [

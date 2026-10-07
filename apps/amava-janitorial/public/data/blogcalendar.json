@@ -1,16 +1,41 @@
 {
   "blogCalendarConfig": {
     "cadence": "weekly",
-    "defaultStatus": "scheduled",
+    "defaultStatus": "",
     "criteria": {
-      "contentRules": [
-        "Each post must have 1500 words, with an intro, at least 3 body paragraphs, and conclusion / wrap up. Each paragraph must be a minimum of 5 sentences.",
-        "After the conclusion of each post, add a call to action to sign up for a free assessment with a link to https://www.pixelated.tech/schedule",
-        "Each blog post should include statistics and authoritative web sources, and add links to those sources where referenced.",
-        "Add links to other blog posts or other content on pixelated.tech",
-        "Use a tone of empathy, understanding as a commercial facility specialist, an expert in commercial janitorial and maintenance, and straightforward language.",
-        "Address B2B decision-makers, facility managers, property managers, and business owners to generate leads, convert customers, establish urgency, answer key industry FAQs, and serve as reusable podcast topics."
-      ]
+      "subjectiveCriteria": [
+        "Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+        "Target an education level of high school graduate or below.",
+        "Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+        "Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+        "Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+        "Place the source link in the same paragraph as the statistic or factual claim it supports.",
+        "Use real, working URLs. Do not use placeholder links.",
+        "Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
+        "Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
+        "The blog post must make sense when read aloud, or if used as a script for a podcast.",
+        "Do not use text or html based tables, charts, or other formatting.",
+        "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
+        "Do not provide individualized legal, financial, medical, or cybersecurity advice",
+        "Optimize for search and answer engines",
+        "End the article with a Call to Action (CTA) to contact us."
+      ],
+      "objectiveCriteria": {
+        "require_minimum_words": 800,
+        "require_maximum_words": 1200,
+        "require_intro_paragraph": true,
+        "require_conclusion_paragraph": true,
+        "require_call_to_action": true,
+        "require_minimum_body_paragraphs": 3,
+        "require_minimum_paragraph_sentences": 6,
+        "require_minimum_internal_links": 2,
+        "require_minimum_external_links": 2,
+        "required_call_to_action_link": "https://www.amavajanitorial.com/contact",
+        "required_call_to_action_heading": "Schedule your free assessment"
+      },
+      "unusedCriteria": {
+        "require_wordpress_blocks": false
+      }
     }
   },
   "blogCalendar": [
@@ -21,7 +46,7 @@
       "notes": [
         "Targets commercial business owners and office managers struggling with high employee absenteeism and declining productivity. Explores how inadequate cleaning protocols contribute to sick building syndrome and cross-contamination. Addresses key FAQs around ROI on commercial cleaning services versus basic in-house janitorial work. Provides actionable insights into infection control and environmental health to drive immediate booking of a facility assessment. Reusable for podcast discussions on workforce productivity and environmental hygiene."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 2,
@@ -30,7 +55,7 @@
       "notes": [
         "Drives high conversion by addressing the primary financial and operational debate faced by facility directors. Explores hidden labor liabilities, equipment maintenance, workers' compensation insurance, and supply chain overhead associated with in-house cleaning crews. Explains how consolidating cleaning under a single specialized vendor reduces administrative friction and operational risk. Answers common industry FAQs regarding quality assurance, supervisor oversight, and contract flexibility. Reusable for a podcast debate on operational lean strategies."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 3,
@@ -39,7 +64,7 @@
       "notes": [
         "Focuses on preventive asset protection for commercial real estate owners, corporate offices, and retail facilities. Discusses floor stripping, waxing, stone polishing, and hot-water extraction techniques that prevent premature surface replacement. Highlights industry statistics on slip-and-fall claims and how proper floor maintenance mitigates legal liabilities. Answers FAQs regarding foot-traffic durability, chemical safety, and after-hours service scheduling. Great podcast episode for facilities management and risk reduction."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 4,
@@ -48,7 +73,7 @@
       "notes": [
         "Targets healthcare administrators, surgical centers, outpatient clinics, and dental offices requiring strict pathogen containment. Covers CDC, OSHA, and EPA guidelines for hospital-grade disinfectants and surface dwell times to eliminate healthcare-associated infections (HAIs). Establishes deep subject matter expertise by detailing touchpoint sanitization and biohazard compliance. Addresses urgent FAQs about cross-contamination prevention during cold and flu seasons. Ideal podcast topic for medical facility operations."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 5,
@@ -57,7 +82,7 @@
       "notes": [
         "Targets general contractors, property developers, and commercial real estate brokers facing strict move-in deadlines. Explains the three-phase post-construction process: rough clean, deep clean, and final polish touch-up. Emphasizes fine dust containment, HVAC filter safety, and window scraping protocols to pass tenant walkthrough inspections. Answers industry FAQs regarding timeline turnarounds and safety compliance on active job sites. Reusable for a podcast on commercial real estate handoffs."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 6,
@@ -66,7 +91,7 @@
       "notes": [
         "Addresses the recurring administrative headache of ordering, auditing, and restocking facility paper products, hand soaps, and liners. Demonstrates how vendor-managed inventory (VMI) cuts procurement costs and prevents embarrassing stockouts during high-volume business hours. Answers FAQs regarding automated usage audits, eco-friendly dispensers, and single-invoice consolidation. Creates a strong sense of urgency by showing how supply failures harm tenant retention. Perfect podcast topic on office operations optimization."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 7,
@@ -75,7 +100,7 @@
       "notes": [
         "Targets sustainability officers, corporate executives, and eco-conscious office complexes seeking LEED certification points. Explores EPA Safer Choice and Green Seal products, HEPA-filtered vacuum technology, and non-toxic sanitizing agents that improve indoor air quality (IAQ). Cites statistics on volatile organic compounds (VOCs) and employee respiratory wellness. Answers FAQs regarding green product efficacy vs. traditional heavy chemicals. Reusable for podcasts on ESG (Environmental, Social, and Governance) office strategies."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 8,
@@ -84,7 +109,7 @@
       "notes": [
         "Helps commercial property managers understand the distinct roles and combined value of day porters and evening cleaning crews. Analyzes high-traffic touchpoint maintenance, continuous spill response, restroom monitoring, and lobby readiness during peak operational hours. Answers FAQs on security clearance, shift coordination, and custom scope creation. Drives conversions by helping owners eliminate coverage gaps. Reusable as a podcast episode on custom facility staffing."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 9,
@@ -93,7 +118,7 @@
       "notes": [
         "Creates seasonal urgency for building managers in regions subject to harsh winter weather. Focuses on entrance matting systems, floor sealant protection, ice-melt residue neutralization, and high-frequency floor scrubbing. Cites slip-and-fall litigation costs and property damage data caused by corrosive salt tracking. Answers FAQs on winter janitorial frequencies and immediate emergency response. Reusable for winter facility preparedness podcasts."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 10,
@@ -102,7 +127,7 @@
       "notes": [
         "Targets luxury office spaces, law firms, financial institutions, and corporate headquarters. Analyzes the psychological impact of lobby maintenance, glass clarity, dust-free fixtures, and pristine floor finishes on high-value client perception. Answers FAQs on customized quality assurance checklists and unannounced supervisor audits. Converts readers by linking facility aesthetics directly to business credibility. Excellent podcast topic on brand perception in physical spaces."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 11,
@@ -111,7 +136,7 @@
       "notes": [
         "Targets commercial property managers and leasing agents battling high vacancy rates. Explores how immaculate common areas, pristine elevator cars, and hygienic shared restrooms boost tenant renewal rates. Provides data on tenant satisfaction surveys and lease turnover costs. Addresses FAQs concerning after-hours key access, security protocol compliance, and tenant feedback management. Reusable for podcast conversations on commercial asset management."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 12,
@@ -120,7 +145,7 @@
       "notes": [
         "Targets logistics managers, fulfillment center directors, and industrial plant owners. Addresses specialized challenges such as concrete dust accumulation, heavy grease removal, breakroom sanitation, and floor scrubber operations in active machinery zones. Highlights OSHA safety standards and dust explosion prevention measures. Answers FAQs regarding off-peak shift cleaning and heavy-duty degreasing. Reusable for industrial operations podcasts."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 13,
@@ -129,7 +154,7 @@
       "notes": [
         "Educates facility executives on how to read, compare, and audit commercial cleaning proposals. Exposes common industry traps like hidden line items, vague scope descriptions, and lack of supervisor oversight. Answers critical FAQs about transparent billing, custom contract clauses, and key performance indicators (KPIs). Creates trust and positions AMAVA as an honest, straightforward market leader. Reusable for a podcast on B2B procurement best practices."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 14,
@@ -138,7 +163,7 @@
       "notes": [
         "Creates immediate seasonal urgency around viral transmission in open-plan offices, call centers, and tech hubs. Outlines high-frequency touchpoint sanitization routines targeting door handles, elevator buttons, shared keyboards, and conference room tables. Incorporates EPA-registered pathogen efficacy guidelines. Answers FAQs regarding electrostatic spraying and non-disruptive cleaning schedules. Ideal for a podcast episode on corporate risk management."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 15,
@@ -147,7 +172,7 @@
       "notes": [
         "Targets private school administrators, university facility directors, and daycare managers. Discusses non-toxic sanitization, cafeteria surface management, gymnasium floor care, and mass-absenteeism prevention. References public health data on germ spread in educational environments. Answers FAQs on after-hours access, background-checked personnel, and specialized holiday deep-cleaning. Great podcast topic on community health and safety."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 16,
@@ -156,7 +181,7 @@
       "notes": [
         "Targets retail store owners, auto dealership managers, and boutique chains. Explores the direct link between pristine display floors, spotless glass entryways, sanitized fitting rooms, and customer spending habits. Cites retail consumer behavior studies regarding store cleanliness. Addresses FAQs on quick emergency spill response and flexible opening-hour coverage. Reusable for retail leadership podcasts."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 17,
@@ -165,7 +190,7 @@
       "notes": [
         "Targets restaurant groups, corporate cafeterias, and food production facility operations managers. Covers heavy grease removal, tile and grout deep restoration, walk-in cooler sanitation, and food-safe sanitizing agents. Highlights FDA/USDA compliance guidelines and foodborne illness risk mitigation. Answers FAQs about night-shift deep cleans and health inspector prep. Perfect podcast topic on food service operational safety."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 18,
@@ -174,7 +199,7 @@
       "notes": [
         "Demonstrates AMAVA's proprietary quality control frameworks, including routine supervisor field inspections and digital reporting portals. Explains how consistent audit systems hold cleaning teams accountable and prevent service quality degradation over time. Answers FAQs about tracking service requests, resolving issues within 24 hours, and transparent client reporting. Reusable for a podcast on operational excellence."
       ],
-      "status": "scheduled"
+      "status": "draft"
     },
     {
       "id": 19,
@@ -183,7 +208,7 @@
       "notes": [
         "Targets health club owners, boutique fitness studios, and athletic facility directors. Focuses on locker room sanitation, rubber floor scrubbing, turf care, and anti-microbial treatments for shared workout gear. Cites sports medicine statistics on staph, MRSA, and fungal infections in athletic spaces. Answers FAQs regarding continuous daytime porter coverage and odor neutralization. Reusable for sports facility management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 20,
@@ -192,7 +217,7 @@
       "notes": [
         "Targets commercial property managers looking to preserve building exterior assets and improve indoor lighting environments. Covers interior/exterior glass cleaning, atrium maintenance, high-reach dusting, and pressure washing entryway sidewalks. Answers FAQs on safety certifications, lift operations, and weather cancellation policies. Reusable as a podcast guide to exterior building maintenance."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 21,
@@ -201,7 +226,7 @@
       "notes": [
         "Targets event space coordinators, convention center directors, and venue operators requiring rapid, high-volume cleaning turnarounds. Discusses trash collection, seating area sanitization, carpet stain removal, and restroom restoration under strict time constraints. Answers FAQs on scalable emergency staffing and overnight operations. Excellent podcast topic on venue event operations."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 22,
@@ -210,7 +235,7 @@
       "notes": [
         "Creates seasonal urgency for spring building overhauls. Outlines a comprehensive checklist covering HVAC vent cleaning, high-dusting, carpet extraction, hard floor stripping, and window washing. Explains how post-winter deep cleans extend building asset lifespans. Answers FAQs on scheduling around business disruptions and multi-phase execution. Reusable for seasonal facility maintenance podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 23,
@@ -219,7 +244,7 @@
       "notes": [
         "Educates property owners on the critical importance of hiring fully insured, bonded, and vetted janitorial providers. Explores general liability limits, workers' compensation coverage, property damage protection, and background checks. Answers FAQs about COI issuance, risk transfer, and liability protection during off-hours operations. Converts risk-averse executives looking for secure partners. Reusable for risk management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 24,
@@ -228,7 +253,7 @@
       "notes": [
         "Focuses on specialized hard-surface restoration for high-use commercial restrooms, locker rooms, and cafeterias. Explains how high-pressure extraction, deep acid scrubbers, and grout sealants eliminate foul odors and persistent staining. Cites statistics on public restroom hygiene perception. Answers FAQs on sealant drying times and long-term care plans. Reusable for commercial property maintenance podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 25,
@@ -237,7 +262,7 @@
       "notes": [
         "Helps small to medium commercial enterprises scale their cleaning budgets efficiently. Compares daily, 3x-weekly, and weekly cleaning frequencies based on square footage, headcount, and facility type. Answers FAQs regarding customized scope adjustments as companies expand or adopt hybrid work models. Converts cost-conscious owners seeking flexible contracts. Reusable for corporate finance and growth podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 26,
@@ -246,7 +271,7 @@
       "notes": [
         "Demystifies advanced disinfection technology for large office towers, warehouses, and educational campuses. Explains how charged particulate misting coats hard-to-reach surfaces and eliminates pathogens efficiently without soaking sensitive electronics. Answers FAQs regarding chemical safety, re-entry times, and emergency outbreak responses. Reusable for tech-driven facility innovation podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 27,
@@ -255,7 +280,7 @@
       "notes": [
         "Focuses on preventative maintenance for corporate office carpets and building corridors. Explores encapsulation, bonnet cleaning, and deep hot-water extraction techniques to prevent fiber degradation and stubborn staining. Cites cost comparisons between routine maintenance and total carpet replacement. Answers FAQs on drying times and allergen removal. Reusable for asset management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 28,
@@ -264,7 +289,7 @@
       "notes": [
         "Targets hotel general managers, resort operators, and hospitality directors. Explores how outsourced janitorial and day porter services alleviate labor shortages in room turnarounds, lobby maintenance, and back-of-house operations. Answers FAQs on staff training, background screening, and seamless team integration. Reusable for hospitality management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 29,
@@ -273,7 +298,7 @@
       "notes": [
         "Helps corporate offices implement effective waste diversion and recycling programs through their custodial operations. Covers centralized waste station management, organic waste sorting, and cardboard compaction routines. Cites environmental compliance statistics and corporate sustainability targets. Answers FAQs regarding tenant participation and janitorial handling protocols. Reusable for corporate sustainability podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 30,
@@ -282,7 +307,7 @@
       "notes": [
         "Targets property managers overseeing multi-building office parks, shopping centers, and mixed-use developments. Discusses continuous trash removal, elevator track cleaning, stairwell maintenance, and parking deck portering. Answers FAQs on multi-zone coverage, supervisor routing, and tenant complaint resolution. Reusable for commercial real estate podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 31,
@@ -291,7 +316,7 @@
       "notes": [
         "Creates urgency around disaster recovery and contingency planning. Details 24/7 emergency response protocols for water extraction, spill containment, biohazard remediation, and post-incident sanitization. Answers FAQs on response times, insurance documentation, and emergency retainer agreements. Drives immediate conversions for peace-of-mind service contracts. Reusable for risk resilience podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 32,
@@ -300,7 +325,7 @@
       "notes": [
         "Addresses indoor environmental quality by linking surface dust management with HVAC air register maintenance. Discusses how dust accumulation on high vents falls onto clean surfaces and degrades air filtration systems. Cites EPA research on indoor air pollution and productivity loss. Answers FAQs on high-reach dusting equipment and filter replacement cycles. Reusable for building wellness podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 33,
@@ -309,7 +334,7 @@
       "notes": [
         "Targets branch managers, security officers, and financial hub directors. Focuses on rigorous background checks, keycard access protocols, vault/teller area security guidelines, and pristine customer lobby upkeep. Answers FAQs on off-hours security clearance, supervised cleaning, and confidential waste handling. Reusable for financial security and operations podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 34,
@@ -318,7 +343,7 @@
       "notes": [
         "Targets IT directors, data center managers, and high-tech facility engineers. Discusses anti-static equipment, HEPA vacuuming, non-conductive cleaning agents, and particulate control in raised-floor environments. Cites tech downtime costs caused by dust accumulation in server hardware. Answers FAQs on specialized staff certifications and cleanroom compliance. Reusable for IT infrastructure podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 35,
@@ -327,7 +352,7 @@
       "notes": [
         "Creates summer urgency for educational facility administrators. Outlines intense summer maintenance schedules including gymnasium wood floor refinishing, terrazzo polishing, desk sanitization, and locker deep cleans. Answers FAQs on project timelines and multi-crew coordination. Reusable for campus administration podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 36,
@@ -336,7 +361,7 @@
       "notes": [
         "Highlights washroom cleanliness as the single most critical factor in overall facility ratings. Details touchless dispenser hardware, odor control systems, automated soap/paper restocking, and deep sanitization routines. Cites national consumer survey data on public restroom perceptions. Answers FAQs on odor elimination vs. masking. Reusable for customer experience podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 37,
@@ -345,7 +370,7 @@
       "notes": [
         "Demonstrates AMAVA's expanded service offerings including light repairs, bulb replacements, drywall touch-ups, and door hardware adjustments. Shows how bundling light maintenance with cleaning saves vendor management time and emergency service calls. Answers FAQs on labor qualifications and service request dispatching. Reusable for streamlined facility management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 38,
@@ -354,7 +379,7 @@
       "notes": [
         "Directly targets business owners dissatisfied with their current cleaning provider but hesitant to switch due to transition headaches. Outlines AMAVA's seamless onboarding process, including site walkthroughs, key handovers, scope customization, and initial deep cleans. Answers FAQs on contract termination notices and key handoffs. Converts leads ready to change vendors. Reusable for vendor management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 39,
@@ -363,7 +388,7 @@
       "notes": [
         "Provides expert advice on handling unexpected contamination incidents safely and legally. Discusses bloodborne pathogen standards, certified PPE usage, regulated waste disposal, and deep sanitization protocols. Answers FAQs regarding emergency outbreak response, workplace safety compliance, and documentation for HR. Reusable for corporate safety and HR risk podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 40,
@@ -372,7 +397,7 @@
       "notes": [
         "Encourages mid-year operational check-ins for facility managers and financial controllers. Guides readers through evaluating service performance, identifying unaddressed building wear, and adjusting scopes for upcoming budget cycles. Answers FAQs on contract optimization and scope scaling. Reusable for mid-year business review podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 41,
@@ -381,7 +406,7 @@
       "notes": [
         "Targets auto group owners and general managers. Details floor burnishing for showroom tile, service bay degreasing, glass cleaning for vehicle displays, and customer lounge sanitation. Cites studies on high-end retail buying environments. Answers FAQs about scheduling around dealership hours and heavy vehicle traffic. Reusable for automotive dealership operations podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 42,
@@ -390,7 +415,7 @@
       "notes": [
         "Educates facility managers on advanced janitorial technology and cross-contamination prevention. Explains how color-coded microfiber systems and split-bucket technology isolate pathogens between restrooms, breakrooms, and office desks. Answers FAQs on cleaning equipment hygiene and laundry sanitization standards. Reusable for modern janitorial tech podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 43,
@@ -399,7 +424,7 @@
       "notes": [
         "Targets municipal facility managers, civic department heads, and public works directors. Focuses on compliance, security clearance verification, prevailing wage adherence, and consistent public lobby maintenance. Answers FAQs on bidding processes, municipal contract execution, and public safety protocols. Reusable for public sector facility management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 44,
@@ -408,7 +433,7 @@
       "notes": [
         "Targets high-end commercial properties, executive suites, and historic buildings with custom wood, bamboo, or terrazzo flooring. Discusses pH-neutral cleaning agents, protective oiling, precision buffing, and moisture damage prevention. Answers FAQs on preserving delicate floor finishes without chemical buildup. Reusable for commercial interior architecture maintenance podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 45,
@@ -417,7 +442,7 @@
       "notes": [
         "Addresses modern workplace trends where office occupancy fluctuates throughout the week. Explores flexible, usage-based janitorial scopes that shift deep cleaning to low-density days while maintaining daily high-touch sanitization. Cites corporate workplace research on office utilization patterns. Answers FAQs on dynamic staffing and contract flexibility. Reusable for workplace strategy podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 46,
@@ -426,7 +451,7 @@
       "notes": [
         "Creates late-summer urgency for autumn preparedness. Focuses on entrance walk-off matting, outdoor entryway power washing, leaf and debris clearance near door seals, and indoor air filtration checks. Answers FAQs on weather-driven scope adjustments. Reusable for seasonal building management podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 47,
@@ -435,7 +460,7 @@
       "notes": [
         "Targets HR directors, office managers, and flexible workspace operators. Addresses germ accumulation on shared desk spaces, monitors, phone handsets, and conference room equipment. Highlights statistics on workplace keyboard bacterial counts. Answers FAQs about safe chemical usage on electronic equipment. Reusable for modern HR and office operations podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     },
     {
       "id": 48,
@@ -444,7 +469,7 @@
       "notes": [
         "Serves as the ultimate annual planning guide for commercial facility directors and business executives. Guides readers through complete facility audits, long-term asset protection planning, consumable supply budgeting, and contractor performance reviews. Answers FAQs on locking in multi-year service agreements and custom service level agreements (SLAs). Converts decision-makers ready for complete facility management peace of mind. Reusable for annual business strategy podcasts."
       ],
-      "status": "scheduled"
+      "status": ""
     }
   ]
 }

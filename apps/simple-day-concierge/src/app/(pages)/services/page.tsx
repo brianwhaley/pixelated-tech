@@ -20,7 +20,7 @@ export default function ServicesPage() {
 				variant="grid"
 				boxShape="bevel"
 				layout="horizontal"
-				direction="left"
+				// direction="left" // blank allows the component to alternate
 				gridColumns={{ left: 1, right: 3 }}
 				imgShape="bevel"
 			/>
