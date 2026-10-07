@@ -8,7 +8,7 @@ applications:
         preBuild:
           commands:
             - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum amplify.yml'
+            - 'echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum ../../amplify.yml || true'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'cd ../../ && npm install --force && cd "$AMPLIFY_MONOREPO_APP_ROOT"'
         build:
@@ -26,14 +26,14 @@ applications:
             - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'echo "Repository root size:"; du -sh .'
-            - 'echo "Repository root node_modules size:"; du -sh node_modules'
-            - 'echo "Application root size:"; du -sh "$AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Application node_modules size:"; du -sh "$AMPLIFY_MONOREPO_APP_ROOT/node_modules"'
-            - 'echo "Application .next size:"; du -sh "$AMPLIFY_MONOREPO_APP_ROOT/.next"'
-            - 'echo "Top-level repository directory sizes:"; du -sh -- *'
-            - 'echo "Discovered .next directories:"; find . -type d -name .next -prune -exec du -sh {} \;'
-            - 'echo "Candidate artifact paths:"; for candidate in .next "$AMPLIFY_MONOREPO_APP_ROOT/.next" "$AMPLIFY_MONOREPO_APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done'
+            - 'echo "Repository root size:"; du -sh ../.. || true'
+            - 'echo "Repository root node_modules size:"; du -sh ../../node_modules || true'
+            - 'echo "Application root size:"; du -sh "../../$AMPLIFY_MONOREPO_APP_ROOT" || true'
+            - 'echo "Application node_modules size:"; du -sh "../../$AMPLIFY_MONOREPO_APP_ROOT/node_modules" || true'
+            - 'echo "Application .next size:"; du -sh "../../$AMPLIFY_MONOREPO_APP_ROOT/.next" || true'
+            - 'echo "Top-level repository directory sizes:"; cd ../.. && du -sh -- * || true'
+            - 'echo "Discovered .next directories:"; find ../.. -type d -name .next -prune -exec du -sh {} \; || true'
+            - 'echo "Candidate artifact paths:"; for candidate in ../../.next "../../$AMPLIFY_MONOREPO_APP_ROOT/.next" "../../$AMPLIFY_MONOREPO_APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done'
       artifacts:
         baseDirectory: .next
         files:
