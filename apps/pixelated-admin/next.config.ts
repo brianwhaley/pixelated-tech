@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
-import path from "path";
 import { getBaseNextConfig } from '../../shared/configs/next.config.base';
 
 const nextConfig: NextConfig = {
 	...getBaseNextConfig(),
-	outputFileTracingRoot: path.resolve(__dirname, '../../'),
 	serverExternalPackages: ['ssh2'],
 	env: {
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,

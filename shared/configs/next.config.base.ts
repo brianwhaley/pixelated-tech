@@ -9,7 +9,6 @@ import path from "path";
  */
 export function getBaseNextConfig(): NextConfig {
 	return {
-		output: 'standalone',
 		experimental: {
 			optimizeCss: false,
 			externalDir: true,

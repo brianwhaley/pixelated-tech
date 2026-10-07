@@ -1,13 +1,13 @@
 {
   "name": "pixelated-admin",
-  "version": "1.9.61",
+  "version": "1.9.62",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
     "build": "npm run clean && NODE_ENV=production next build --webpack",
     "start": "npm run clean && next build --webpack && next start",
     "lint": "eslint --fix",
-    "clean": "rm -rf .next && rm -rf out && rm -rf next-deploy",
+    "clean": "rm -rf .next && rm -rf out",
     "test": "vitest run --silent",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -63,5 +63,5 @@
     "vitest": "^5.0.3"
   },
   "overrides": {},
-  "deployMarker": "2026-10-07T13:26:00.000Z"
+  "deployMarker": "2026-10-07T13:45:42.000Z"
 }
