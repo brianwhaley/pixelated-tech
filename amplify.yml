@@ -40,9 +40,6 @@ applications:
         files:
           - '**/*'
           - '!cache/**/*'
-      cache:
-        paths:
-          - node_modules/**/*
 
   - appRoot: apps/brianwhaley
     frontend: *shared_frontend
