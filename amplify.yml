@@ -8,32 +8,30 @@ applications:
         preBuild:
           commands:
             - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum ../../amplify.yml || true'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum "$REPO_ROOT/amplify.yml" || true'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../../ && npm install --force && cd "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; cd "$REPO_ROOT" && npm install --force && cd "$APP_ROOT"'
         build:
           commands:
             - 'echo "build PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../.. && npm run build -w packages/pixelated-components'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; cd "$REPO_ROOT" && npm run build -w packages/pixelated-components'
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../.. && npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; cd "$REPO_ROOT" && npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../.. && npm run build -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; cd "$REPO_ROOT" && npm run build -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
             - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
-            - 'cd ../.. && npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Repository root size:"; du -sh ../.. || true'
-            - 'echo "Repository root node_modules size:"; du -sh ../../node_modules || true'
-            - 'echo "Application root size:"; du -sh "../../$AMPLIFY_MONOREPO_APP_ROOT" || true'
-            - 'echo "Application node_modules size:"; du -sh "../../$AMPLIFY_MONOREPO_APP_ROOT/node_modules" || true'
-            - 'echo "Application .next size:"; du -sh "../../$AMPLIFY_MONOREPO_APP_ROOT/.next" || true'
-            - 'echo "Top-level repository directory sizes:"; cd ../.. && du -sh -- * || true'
-            - 'echo "Discovered .next directories:"; find ../.. -type d -name .next -prune -exec du -sh {} \; || true'
-            - 'echo "Candidate artifact paths:"; for candidate in ../../.next "../../$AMPLIFY_MONOREPO_APP_ROOT/.next" "../../$AMPLIFY_MONOREPO_APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; cd "$REPO_ROOT" && npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Repository root size:"; du -sh "$REPO_ROOT" || true; echo "Repository root node_modules size:"; du -sh "$REPO_ROOT/node_modules" || true; echo "Application root size:"; du -sh "$APP_ROOT" || true; echo "Application node_modules size:"; du -sh "$APP_ROOT/node_modules" || true; echo "Application .next size:"; du -sh "$APP_ROOT/.next" || true'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; NEXT_ROOT="$APP_ROOT/.next"; echo "Resolved diagnostic paths:"; for path in "$REPO_ROOT" "$APP_ROOT" "$REPO_ROOT/node_modules" "$APP_ROOT/node_modules" "$NEXT_ROOT" "$NEXT_ROOT/static" "$NEXT_ROOT/server" "$NEXT_ROOT/standalone"; do if [ -e "$path" ]; then echo "EXISTS $path"; else echo "MISSING $path"; fi; done'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; NEXT_ROOT="$APP_ROOT/.next"; echo "Next.js directory sizes:"; for path in "$NEXT_ROOT" "$NEXT_ROOT/static" "$NEXT_ROOT/server" "$NEXT_ROOT/standalone"; do if [ -e "$path" ]; then du -sh "$path"; else echo "MISSING $path"; fi; done; echo "Next.js files larger than 10 MB:"; if [ -d "$NEXT_ROOT" ]; then find "$NEXT_ROOT" -type f -size +10M -exec du -h {} \; || true; else echo "MISSING $NEXT_ROOT"; fi'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Top-level repository directory sizes:"; cd "$REPO_ROOT" && du -sh -- * || true'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; echo "Discovered .next directories:"; find "$REPO_ROOT" -type d -name .next -prune -exec du -sh {} \; || true'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; echo "Candidate artifact paths:"; for candidate in "$REPO_ROOT/.next" "$APP_ROOT/.next" "$APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done; cd "$APP_ROOT"'
       artifacts:
         baseDirectory: .next
         files:
