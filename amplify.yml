@@ -7,11 +7,13 @@ applications:
       phases:
         preBuild:
           commands:
+            - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Build commit: $(git rev-parse HEAD)"; echo "amplify.yml checksum:"; sha256sum amplify.yml'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../../ && pwd'
-            - 'npm install --force'
+            - 'cd ../../ && npm install --force && cd "$AMPLIFY_MONOREPO_APP_ROOT"'
         build:
           commands:
+            - 'echo "build PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w packages/pixelated-components'
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
@@ -21,16 +23,24 @@ applications:
             # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
+            - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'echo "Removing Next.js build cache before Amplify packages the SSR artifact..."'
-            - 'rm -rf "$AMPLIFY_MONOREPO_APP_ROOT/.next/cache"'
+            - 'echo "Repository root size:"; du -sh .'
+            - 'echo "Repository root node_modules size:"; du -sh node_modules'
+            - 'echo "Application root size:"; du -sh "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Application node_modules size:"; du -sh "$AMPLIFY_MONOREPO_APP_ROOT/node_modules"'
+            - 'echo "Application .next size:"; du -sh "$AMPLIFY_MONOREPO_APP_ROOT/.next"'
+            - 'echo "Top-level repository directory sizes:"; du -sh -- *'
+            - 'echo "Discovered .next directories:"; find . -type d -name .next -prune -exec du -sh {} \;'
+            - 'echo "Candidate artifact paths:"; for candidate in .next "$AMPLIFY_MONOREPO_APP_ROOT/.next" "$AMPLIFY_MONOREPO_APP_ROOT"; do if [ -e "$candidate" ]; then du -sh "$candidate"; else echo "MISSING $candidate"; fi; done'
       artifacts:
         baseDirectory: .next
         files:
           - '**/*'
       cache:
         paths:
+          - .next/cache/**/*
           - .next/static/**/*
           - node_modules/**/*
 
@@ -66,11 +76,12 @@ applications:
       phases:
         preBuild:
           commands:
+            - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../../ && pwd'
-            - 'npm install --force'
+            - 'cd ../../ && npm install --force && cd "$AMPLIFY_MONOREPO_APP_ROOT"'
         build:
           commands:
+            - 'echo "build PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w packages/pixelated-components'
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
@@ -83,6 +94,7 @@ applications:
             - 'NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
+            - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
