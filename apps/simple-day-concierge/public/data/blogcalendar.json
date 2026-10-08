@@ -18,7 +18,8 @@
         "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
         "Do not provide individualized legal, financial, medical, or cybersecurity advice",
         "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
+        "End the article with a Call to Action (CTA) to contact us.",
+        "Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
       ],
       "objectiveCriteria": {
         "require_minimum_words": 800,

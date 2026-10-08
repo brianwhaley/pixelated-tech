@@ -18,7 +18,8 @@
         "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
         "Do not provide individualized legal, financial, medical, or cybersecurity advice",
         "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
+        "End the article with a Call to Action (CTA) to contact us.",
+        "Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
       ],
       "objectiveCriteria": {
         "require_minimum_words": 800,
@@ -162,7 +163,7 @@
     {
       "id": 11,
       "targetPublishDate": "",
-      "title": "Spa-Inspired Master Bathrooms: Heated Floors & Rain Showers",
+      "title": "Spa-Inspired Master Bathrooms: Heated Floors and Rain Showers",
       "notes": [
         "Bathroom Remodeling",
         "Okatie (*Oldfield*)",
@@ -270,7 +271,7 @@
     {
       "id": 20,
       "targetPublishDate": "",
-      "title": "Upgrading Your Kitchen Backsplash: Ceramic, Glass & Stone",
+      "title": "Upgrading Your Kitchen Backsplash: Ceramic, Glass and Stone",
       "notes": [
         "Kitchen Remodeling",
         "Bluffton (*Berkeley Hall*)",
@@ -318,7 +319,7 @@
     {
       "id": 24,
       "targetPublishDate": "",
-      "title": "Master Bath Vanity Configurations: Double Sinks & Quartz Tops",
+      "title": "Master Bath Vanity Configurations: Double Sinks and Quartz Tops",
       "notes": [
         "Bathroom Remodeling",
         "Bluffton (*Belfair*)",
@@ -342,7 +343,7 @@
     {
       "id": 26,
       "targetPublishDate": "",
-      "title": "Mid-Year Home Safety Inspection: Hardware & Seals Check",
+      "title": "Mid-Year Home Safety Inspection: Hardware and Seals Check",
       "notes": [
         "Handyman & Repairs",
         "Hardeeville (*Cobblestone at East Argent*)",
@@ -378,7 +379,7 @@
     {
       "id": 29,
       "targetPublishDate": "",
-      "title": "Custom Pantry Solutions & Hidden Appliance Bays",
+      "title": "Custom Pantry Solutions and Hidden Appliance Bays",
       "notes": [
         "Kitchen Remodeling",
         "Beaufort (*Distant Island*)",
@@ -390,7 +391,7 @@
     {
       "id": 30,
       "targetPublishDate": "",
-      "title": "Tackling Drywall Cracks & Humidity-Induced Wall Damage",
+      "title": "Tackling Drywall Cracks and Humidity-Induced Wall Damage",
       "notes": [
         "Handyman & Repairs",
         "Ridgeland (*Log Hall Plantation*)",
@@ -486,7 +487,7 @@
     {
       "id": 38,
       "targetPublishDate": "",
-      "title": "Attic Access Ladders & Custom Storage Upgrades",
+      "title": "Attic Access Ladders and Custom Storage Upgrades",
       "notes": [
         "Handyman & Repairs",
         "Hilton Head (*Shipyard Plantation*)",
@@ -510,7 +511,7 @@
     {
       "id": 40,
       "targetPublishDate": "",
-      "title": "Preparing Your Kitchen for Holiday Cooking & Guest Hosting",
+      "title": "Preparing Your Kitchen for Holiday Cooking and Guest Hosting",
       "notes": [
         "Kitchen Remodeling",
         "Bluffton (*Hampton Hall*)",
@@ -546,7 +547,7 @@
     {
       "id": 43,
       "targetPublishDate": "",
-      "title": "Eliminating Drafts Before Winter: Window & Door Seals",
+      "title": "Eliminating Drafts Before Winter: Window and Door Seals",
       "notes": [
         "Doors & Windows",
         "Okatie (*Baynard Park*)",
@@ -618,7 +619,7 @@
     {
       "id": 49,
       "targetPublishDate": "",
-      "title": "Quick Fixture & Hardware Updates That Elevate Home Design",
+      "title": "Quick Fixture and Hardware Updates That Elevate Home Design",
       "notes": [
         "Handyman & Repairs",
         "Beaufort (*Walling Grove*)",
@@ -654,7 +655,7 @@
     {
       "id": 52,
       "targetPublishDate": "",
-      "title": "Planning Your Renovations: Scheduling & ROI",
+      "title": "Planning Your Renovations: Scheduling and ROI",
       "notes": [
         "All Services",
         "Hilton Head / Bluffton",

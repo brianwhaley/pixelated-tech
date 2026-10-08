@@ -18,7 +18,8 @@
         "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
         "Do not provide individualized legal, financial, medical, or cybersecurity advice",
         "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
+        "End the article with a Call to Action (CTA) to contact us.",
+        "Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
       ],
       "objectiveCriteria": {
         "require_minimum_words": 800,
@@ -95,49 +96,193 @@
       "notes": [
         "Goal: Educate new visitors, build trust, and establish authority"
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 207,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, modern commercial office space looking impeccably clean and organized, with natural light streaming in. The image should convey professionalism, health, and a positive work environment. There might be a blurred, diverse professional cleaning team member in the background or foreground, subtly indicating ongoing maintenance without being the main focus. The overall mood should be optimistic and reflect a year of successful projects.",
+      "imageSearchTerms": [
+        "clean modern office",
+        "professional janitorial services",
+        "sparkling commercial space",
+        "healthy workplace environment",
+        "office cleaning success"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-3",
+        "title": "Modern Office Interior with Bright and Clean Design Spacious Room with Elegant Furniture Professional Space",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-office-interior-with-bright-clean-design-spacious-room-with-elegant-furniture-professional-space_219069652.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/219069652?lang=en",
+        "provider": "hujur1100",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "226"
     },
     {
       "id": 9,
       "targetPublishDate": "",
       "title": "What Does a Metal Fabrication Shop Actually Do?",
       "notes": [],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 208,
+      "imageStatus": "selected",
+      "imageBrief": "A clean, well-lit photograph inside a modern metal fabrication shop, showcasing various stages of work. It should feature skilled workers (wearing appropriate safety gear like welding masks or safety glasses) engaged in tasks such as welding, cutting metal with a plasma cutter, or operating a bending machine. The focus is on demonstrating the precision and technology involved, with visible metal sheets, tools, and perhaps a finished or semi-finished product in the background. The overall impression should be one of professionalism, expertise, and industrial capability.",
+      "imageSearchTerms": [
+        "metal fabrication shop",
+        "welding workshop",
+        "industrial metalwork",
+        "precision metal manufacturing",
+        "fabricator at work"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-31",
+        "title": "Wire bending machine demonstrates precision in metal fabrication at a manufacturing facility",
+        "detailUrl": "https://www.magnific.com/premium-photo/wire-bending-machine-demonstrates-precision-metal-fabrication-manufacturing-facility_418674745.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/418674745?lang=en",
+        "provider": "olegdoroshin",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "224"
     },
     {
       "id": 10,
       "targetPublishDate": "",
       "title": "When to Repair vs. Replace Metal Structures",
       "notes": [],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 209,
+      "imageStatus": "selected",
+      "imageBrief": "A stock photograph depicting a close-up of an industrial metal structure showing signs of both minor surface rust and more significant structural fatigue. One side of the image could show a newly repaired or reinforced section, while another part shows the older, damaged material. The overall impression should convey the complexity of deciding between repair and replacement, perhaps with a focus on both the challenge and the solution.",
+      "imageSearchTerms": [
+        "metal structure repair",
+        "industrial corrosion",
+        "structural integrity",
+        "metal fatigue",
+        "construction maintenance",
+        "steel beam damage",
+        "welding repair",
+        "metal replacement"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-5",
+        "title": "Male worker wearing protective clothing and beam roof repair welding industrial construction",
+        "detailUrl": "https://www.magnific.com/premium-photo/male-worker-wearing-protective-clothing-beam-roof-repair-welding-industrial-construction_26507997.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/26507997?lang=en",
+        "provider": "noomcpk",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "222"
     },
     {
       "id": 11,
       "targetPublishDate": "",
       "title": "Common Welding Problems Homeowners Face in NJ",
       "notes": [],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 210,
+      "imageStatus": "selected",
+      "imageBrief": "A close-up, realistic stock photo showing a homeowner wearing safety goggles and welding gloves, carefully inspecting a freshly welded joint on a metal object (perhaps a small fence gate or a piece of outdoor furniture) in a garage or workshop setting. The focus should be on the weld, which shows some minor imperfections, suggesting the challenges of DIY. The lighting should be natural, highlighting the texture of the metal and the weld bead.",
+      "imageSearchTerms": [
+        "homeowner welding problems",
+        "DIY welding mistakes",
+        "bad weld close up",
+        "welding imperfections",
+        "garage welding project",
+        "home repair metal",
+        "welder safety gear",
+        "welding inspection"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-41",
+        "title": "Handyman sparks and tools for welding or cutting metal at night in workshop with angle grinder Home renovation creativity and construction worker or carpenter with repair or project in garage",
+        "detailUrl": "https://www.magnific.com/premium-photo/handyman-sparks-tools-welding-cutting-metal-night-workshop-with-angle-grinder-home-renovation-creativity-construction-worker-carpenter-with-repair-project-garage_251503805.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/251503805?lang=en",
+        "provider": "The Yuri Arcurs Collection",
+        "orientation": "vertical"
+      },
+      "wordpressMediaId": "220"
     },
     {
       "id": 12,
       "targetPublishDate": "",
       "title": "How Mobile Welding Services Save Time and Money",
       "notes": [],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 211,
+      "imageStatus": "selected",
+      "imageBrief": "A professional mobile welding technician, wearing appropriate safety gear (welding helmet, gloves), is actively performing a repair on a piece of industrial equipment or a large metal structure outdoors or in a workshop setting. The mobile welding truck, equipped with welding apparatus, is visible in the background, suggesting on-site service. The scene should convey efficiency, expertise, and convenience.",
+      "imageSearchTerms": [
+        "mobile welding service",
+        "on-site welding",
+        "welder at work",
+        "industrial repair",
+        "fabrication on location",
+        "welding truck",
+        "professional welder"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-28",
+        "title": "Welder used grinding stone on steel in factory with sparks welding process at the industrial work",
+        "detailUrl": "https://www.magnific.com/premium-photo/welder-used-grinding-stone-steel-factory-with-sparks-welding-process-industrial-work_127482217.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/127482217?lang=en",
+        "provider": "user6699736",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "218"
     },
     {
       "id": 13,
       "targetPublishDate": "",
       "title": "Types of Metal Used in Fabrication (Steel, Aluminum, Stainless)",
       "notes": [],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 212,
+      "imageStatus": "selected",
+      "imageBrief": "A high-angle shot showing a clean, well-lit metal fabrication workshop. In the foreground, hands (wearing appropriate safety gloves) are working on a piece of metal, possibly welding or grinding, with sparks or light visible. In the background, stacks of different metal sheets (steel, aluminum, stainless steel) are neatly organized, with clear visual distinctions between them (e.g., color, finish). The overall impression should be one of precision, craftsmanship, and organized industrial work.",
+      "imageSearchTerms": [
+        "metal fabrication workshop",
+        "industrial metalworking",
+        "steel aluminum stainless sheets",
+        "welding grinding metal",
+        "modern manufacturing",
+        "precision metalwork",
+        "diverse metal types"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-35",
+        "title": "Industrial worker using angle grinder grinding metal on welding seams. Worker working with angle grinder and has sparks. Tool for cut steel. Safety in industrial workplace. Metal factory industry.",
+        "detailUrl": "https://www.magnific.com/premium-photo/industrial-worker-using-angle-grinder-grinding-metal-welding-seams-worker-working-with-angle-grinder-has-sparks-tool-cut-steel-safety-industrial-workplace-metal-factory-industry_20088217.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/20088217?lang=en",
+        "provider": "fahroni",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "216"
     },
     {
       "id": 14,
       "targetPublishDate": "",
       "title": "How Weather Affects Metal in the Northeast",
       "notes": [],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 213,
+      "imageStatus": "selected",
+      "imageBrief": "A realistic stock photograph depicting a metal structure, such as a bridge railing, fence, or part of a building facade, in a typical harsh Northeast winter environment. The image should show signs of the weather's impact, like ice, snow, or subtle hints of weathering/corrosion, but not be overly dramatic or destructive. The focus should be on the resilience and challenge of metal in such conditions.",
+      "imageSearchTerms": [
+        "Northeast winter metal structure",
+        "corroded metal snow",
+        "icy metal bridge railing",
+        "weathered steel cold climate",
+        "metal corrosion winter",
+        "snowy industrial metal"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-24",
+        "title": "Snow crust and frozen crust on metal railings Suspension bridge over railway tracks Harsh arctic climate Abnormally low air temperatures Frosty morning Weather forecast High snow cover",
+        "detailUrl": "https://www.magnific.com/premium-photo/snow-crust-frozen-crust-metal-railings-suspension-bridge-railway-tracks-harsh-arctic-climate-abnormally-low-air-temperatures-frosty-morning-weather-forecast-high-snow-cover_135317614.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/135317614?lang=en",
+        "provider": "Karjalainen",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "214"
     },
     {
       "id": 15,
@@ -156,7 +301,7 @@
     {
       "id": 17,
       "targetPublishDate": "",
-      "title": "Residential vs. Commercial Metal Fabrication: What’s the Difference?",
+      "title": "Residential vs. Commercial Metal Fabrication: What is the Difference?",
       "notes": [],
       "status": ""
     },
@@ -314,7 +459,7 @@
     {
       "id": 39,
       "targetPublishDate": "",
-      "title": "What Makes a Welding Job “High Quality”",
+      "title": "What Makes a Welding Job High Quality",
       "notes": [],
       "status": ""
     },
@@ -414,7 +559,7 @@
     {
       "id": 53,
       "targetPublishDate": "",
-      "title": "Year in Review: Projects We’re Proud Of",
+      "title": "Year in Review: Projects We are Proud Of",
       "notes": [],
       "status": "draft"
     },

@@ -147,11 +147,13 @@ Create a proposal using the appropriate existing blank template:
 4. Present a concise research summary, assumptions, risks, and proposed strategy.
 5. Wait for user approval before writing JSON artifacts.
 6. Create the assessment and proposal artifacts.
-7. Parse and validate every generated JSON file.
-8. Run focused admin tests.
-9. Start the local Pixelated Admin app on an available port when needed.
-10. Open `/assessment` and `/proposal`, select the generated files, and verify that the artifacts render correctly.
-11. Report files created, validation results, rendering results, unresolved questions, and any claims that require client verification.
+- When adding or changing executable validation, parsing, or artifact-generation behavior, create or update the focused tests in the same change; testing should be assumed rather than separately requested.
+7. Create or update focused tests for any new executable behavior introduced by the workflow.
+8. Parse and validate every generated JSON file.
+9. Run focused admin tests.
+10. Start the local Pixelated Admin app on an available port when needed.
+11. Open `/assessment` and `/proposal`, select the generated files, and verify that the artifacts render correctly.
+12. Report files created, validation results, rendering results, unresolved questions, and any claims that require client verification.
 
 ## Local Validation
 

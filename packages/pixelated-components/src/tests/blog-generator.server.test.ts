@@ -6,21 +6,37 @@ vi.mock('../components/config/config', () => ({
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn(),
 }));
+vi.mock('../components/admin/sites/sites.integration', () => ({
+	getSiteConfig: vi.fn(),
+}));
 vi.mock('../components/integrations/wordpress.functions', () => ({
 	createWordPressDraft: vi.fn(),
+	updateWordPressDraft: vi.fn(),
+	uploadWordPressMedia: vi.fn(),
+}));
+vi.mock('../components/integrations/magnific.server', () => ({
+	findMagnificStockImage: vi.fn(),
+	prepareMagnificStockImage: vi.fn(),
 }));
 
 const { getFullPixelatedConfig } = await import('../components/config/config');
 const { smartFetch } = await import('../components/foundation/smartfetch');
-const { createWordPressDraft } = await import('../components/integrations/wordpress.functions');
+const { getSiteConfig } = await import('../components/admin/sites/sites.integration');
+const { createWordPressDraft, updateWordPressDraft, uploadWordPressMedia } = await import('../components/integrations/wordpress.functions');
+const { findMagnificStockImage, prepareMagnificStockImage } = await import('../components/integrations/magnific.server');
 const { generateBlogPostsFromCalendar } = await import('../components/admin/blog/blog-generator.server');
 const { measureBlogArticle, validateBlogArticle } = await import('../components/admin/blog/blog-generator.validation');
 
 const mockGetFullPixelatedConfig = vi.mocked(getFullPixelatedConfig);
 const mockSmartFetch = vi.mocked(smartFetch);
+const mockGetSiteConfig = vi.mocked(getSiteConfig);
 const mockCreateWordPressDraft = vi.mocked(createWordPressDraft);
+const mockUpdateWordPressDraft = vi.mocked(updateWordPressDraft);
+const mockUploadWordPressMedia = vi.mocked(uploadWordPressMedia);
+const mockFindMagnificStockImage = vi.mocked(findMagnificStockImage);
+const mockPrepareMagnificStockImage = vi.mocked(prepareMagnificStockImage);
 
-function geminiArticle(article: string, metrics?: Record<string, number>) {
+function geminiArticle(article: string, metrics?: Record<string, number>, image?: { imageBrief: string; imageSearchTerms: string[]; imageAltText: string }) {
 	return JSON.stringify({
 		article,
 		selfAssessment: {
@@ -28,6 +44,7 @@ function geminiArticle(article: string, metrics?: Record<string, number>) {
 			metrics: metrics || {},
 			failures: [],
 		},
+		...(image || {}),
 	});
 }
 
@@ -48,6 +65,7 @@ const calendar = {
 describe('generateBlogPostsFromCalendar', () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
+		mockGetSiteConfig.mockResolvedValue({ blog_url: 'https://blog.example.com' });
 		mockGetFullPixelatedConfig.mockReturnValue({
 			integrations: {
 				googleGemini: { api_key: 'gemini-key' },
@@ -63,7 +81,7 @@ describe('generateBlogPostsFromCalendar', () => {
 		const result = await generateBlogPostsFromCalendar(calendar, new FormData());
 
 		expect(result.results).toEqual([
-			{ calendarId: 1, title: 'First topic', status: 'draft', wordpressPostId: 101 },
+			{ calendarId: 1, title: 'First topic', status: 'draft', wordpressPostId: 101, imageStatus: 'not-found' },
 		]);
 		expect(result.calendar.blogCalendar[0].status).toBe('draft');
 		expect(result.calendar.blogCalendar[0].wordpressPostId).toBe(101);
@@ -84,6 +102,168 @@ describe('generateBlogPostsFromCalendar', () => {
 
 		expect(result.results[0]).toMatchObject({ calendarId: 1, status: 'draft', wordpressPostId: 101 });
 		expect(mockCreateWordPressDraft).toHaveBeenCalledOnce();
+	});
+
+	it('updates an existing WordPress draft instead of creating a duplicate', async () => {
+		const existingCalendar = {
+			...calendar,
+			blogCalendar: calendar.blogCalendar.map((entry) => entry.id === 1 ? { ...entry, wordpressPostId: 501 } : entry),
+		};
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockUpdateWordPressDraft.mockResolvedValue({ ID: 501, status: 'draft' });
+
+		const result = await generateBlogPostsFromCalendar(existingCalendar, new FormData());
+
+		expect(mockCreateWordPressDraft).not.toHaveBeenCalled();
+		expect(mockUpdateWordPressDraft).toHaveBeenCalledWith(501, expect.objectContaining({
+			title: 'First topic',
+			content: 'one two',
+		}));
+		expect(result.results[0]).toMatchObject({ wordpressPostId: 501, status: 'draft' });
+	});
+
+	it('matches a selected draft by title when the calendar has no WordPress ID', async () => {
+		const formData = new FormData();
+		formData.set('operation', 'update');
+		formData.set('draftIds', '501');
+		formData.set('updateMode', 'both');
+		mockSmartFetch
+			.mockResolvedValueOnce({ posts: [{ ID: 501, title: 'First topic' }] })
+			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockUpdateWordPressDraft.mockResolvedValue({ ID: 501, status: 'draft' });
+
+		const result = await generateBlogPostsFromCalendar(calendar, formData);
+
+		expect(mockCreateWordPressDraft).not.toHaveBeenCalled();
+		expect(mockUpdateWordPressDraft).toHaveBeenCalledWith(501, expect.objectContaining({ title: 'First topic' }));
+		expect(result.calendar.blogCalendar).toContainEqual(expect.objectContaining({ id: 1, wordpressPostId: 501 }));
+	});
+
+	it('persists image metadata when updating a legacy draft with no prior image fields', async () => {
+		const legacyCalendar = {
+			...calendar,
+			blogCalendar: [{ ...calendar.blogCalendar[0], wordpressPostId: 501 }],
+		};
+		const formData = new FormData();
+		formData.set('operation', 'update');
+		formData.set('draftIds', '501');
+		formData.set('updateMode', 'image');
+		mockGetFullPixelatedConfig.mockReturnValue({
+			integrations: {
+				googleGemini: { api_key: 'gemini-key' },
+				magnific: { apiKey: 'magnific-key' },
+				cloudinary: { product_env: 'test-cloud' },
+				wordpress: { site: 'blog.example.com', apiToken: 'wp-token', baseURL: 'https://wp.example/' },
+			},
+		});
+		mockSmartFetch
+			.mockResolvedValueOnce({ posts: [{ ID: 501, title: 'First topic' }] })
+			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two', undefined, {
+				imageBrief: 'A realistic basement waterproofing photograph',
+				imageSearchTerms: ['basement waterproofing'],
+				imageAltText: 'A dry basement protected from water damage',
+			}) }] } }] });
+		mockFindMagnificStockImage.mockResolvedValue({
+			id: 'resource-7',
+			title: 'Dry basement',
+			sourceUrl: 'https://stock.example/image.jpg',
+			detailUrl: 'https://stock.example/image',
+			licenseUrl: 'https://stock.example/license',
+			provider: 'Stock Provider',
+		});
+		mockPrepareMagnificStockImage.mockResolvedValue({
+			id: 'resource-7',
+			title: 'Dry basement',
+			sourceUrl: 'https://stock.example/image.jpg',
+			detailUrl: 'https://stock.example/image',
+			licenseUrl: 'https://stock.example/license',
+			provider: 'Stock Provider',
+			buffer: Buffer.from('webp'),
+			mimeType: 'image/webp',
+			width: 1200,
+			height: 800,
+		});
+		mockUploadWordPressMedia.mockResolvedValue({ media: [{ ID: 707, URL: 'https://wp.example/image.webp', mime_type: 'image/webp' }] });
+		mockUpdateWordPressDraft.mockResolvedValue({ ID: 501, status: 'draft' });
+
+		const result = await generateBlogPostsFromCalendar(legacyCalendar, formData);
+		const updatedEntry = result.calendar.blogCalendar[0];
+
+		expect(updatedEntry).toMatchObject({
+			wordpressPostId: 501,
+			imageStatus: 'selected',
+			imageBrief: 'A realistic basement waterproofing photograph',
+			imageSearchTerms: ['basement waterproofing'],
+			wordpressMediaId: 707,
+			magnificImage: {
+				id: 'resource-7',
+				title: 'Dry basement',
+				detailUrl: 'https://stock.example/image',
+				licenseUrl: 'https://stock.example/license',
+				provider: 'Stock Provider',
+			},
+		});
+		expect(mockUpdateWordPressDraft).toHaveBeenCalledWith(501, expect.objectContaining({ featuredImageId: 707 }));
+	});
+
+	it('uploads a selected stock image and attaches it to the draft', async () => {
+		mockGetFullPixelatedConfig.mockReturnValue({
+			integrations: {
+				googleGemini: { api_key: 'gemini-key' },
+				magnific: { apiKey: 'magnific-key' },
+				cloudinary: { product_env: 'test-cloud' },
+				wordpress: { site: 'blog.example.com', apiToken: 'wp-token', baseURL: 'https://wp.example/' },
+			},
+		});
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two', undefined, {
+			imageBrief: 'A realistic basement waterproofing photograph',
+			imageSearchTerms: ['basement waterproofing'],
+			imageAltText: 'A dry basement protected from water damage',
+		}) }] } }] });
+		mockFindMagnificStockImage.mockResolvedValue({ id: 'resource-7', title: 'Dry basement', sourceUrl: 'https://stock.example/image.jpg', detailUrl: 'https://stock.example/image', licenseUrl: 'https://stock.example/license', provider: 'Stock Provider' });
+		mockPrepareMagnificStockImage.mockResolvedValue({
+			id: 'resource-7', title: 'Dry basement', sourceUrl: 'https://stock.example/image.jpg', detailUrl: 'https://stock.example/image', licenseUrl: 'https://stock.example/license', provider: 'Stock Provider',
+			buffer: Buffer.from('webp'), mimeType: 'image/webp', width: 1200, height: 800,
+		});
+		mockUploadWordPressMedia.mockResolvedValue({ media: [{ ID: 707, URL: 'https://wp.example/image.webp', mime_type: 'image/webp' }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		const result = await generateBlogPostsFromCalendar(calendar, new FormData());
+
+		expect(mockFindMagnificStockImage).toHaveBeenCalledWith('magnific-key', {
+			title: 'First topic',
+			imageBrief: 'A realistic basement waterproofing photograph',
+			searchTerms: ['basement waterproofing'],
+		});
+		expect(mockUploadWordPressMedia).toHaveBeenCalledWith(expect.objectContaining({
+			filename: 'blog-1.webp',
+			mimeType: 'image/webp',
+			altText: 'A dry basement protected from water damage',
+			caption: 'Dry basement',
+			description: 'Featured stock photograph for "First topic".',
+		}));
+		expect(mockCreateWordPressDraft).toHaveBeenCalledWith(expect.objectContaining({ featuredImageId: 707 }));
+		expect(result.calendar.blogCalendar[0]).toMatchObject({ imageStatus: 'selected', wordpressMediaId: 707, magnificImage: expect.objectContaining({ id: 'resource-7', detailUrl: 'https://stock.example/image' }) });
+	});
+
+	it('creates a draft without media when Magnific has no suitable stock match', async () => {
+		mockGetFullPixelatedConfig.mockReturnValue({
+			integrations: {
+				googleGemini: { api_key: 'gemini-key' },
+				magnific: { apiKey: 'magnific-key' },
+				wordpress: { site: 'blog.example.com', apiToken: 'wp-token', baseURL: 'https://wp.example/' },
+			},
+		});
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two', undefined, { imageBrief: 'A stock photograph', imageSearchTerms: ['stock photo'], imageAltText: 'A stock photograph' }) }] } }] });
+		mockFindMagnificStockImage.mockResolvedValue(null);
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		const result = await generateBlogPostsFromCalendar(calendar, new FormData());
+
+		expect(mockPrepareMagnificStockImage).not.toHaveBeenCalled();
+		expect(mockUploadWordPressMedia).not.toHaveBeenCalled();
+		expect(mockCreateWordPressDraft).toHaveBeenCalledWith(expect.not.objectContaining({ featuredImageId: expect.anything() }));
+		expect(result.results[0]).toMatchObject({ status: 'draft', imageStatus: 'not-found' });
 	});
 
 	it('aggregates Gemini token usage for the generation run', async () => {

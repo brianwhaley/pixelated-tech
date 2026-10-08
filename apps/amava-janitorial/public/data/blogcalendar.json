@@ -18,7 +18,8 @@
         "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
         "Do not provide individualized legal, financial, medical, or cybersecurity advice",
         "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
+        "End the article with a Call to Action (CTA) to contact us.",
+        "Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
       ],
       "objectiveCriteria": {
         "require_minimum_words": 800,
@@ -46,7 +47,26 @@
       "notes": [
         "Targets commercial business owners and office managers struggling with high employee absenteeism and declining productivity. Explores how inadequate cleaning protocols contribute to sick building syndrome and cross-contamination. Addresses key FAQs around ROI on commercial cleaning services versus basic in-house janitorial work. Provides actionable insights into infection control and environmental health to drive immediate booking of a facility assessment. Reusable for podcast discussions on workforce productivity and environmental hygiene."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 47,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, modern, and clean office environment, possibly showing a few employees working comfortably and productively. The scene should convey professionalism, health, and a positive atmosphere, contrasting implicitly with the idea of an \"unhealthy workspace.\"",
+      "imageSearchTerms": [
+        "clean modern office",
+        "productive healthy workspace",
+        "employees thriving office",
+        "hygienic commercial space",
+        "bright contemporary office"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-3",
+        "title": "Modern Office Interior with Bright and Clean Design Spacious Room with Elegant Furniture Professional Space",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-office-interior-with-bright-clean-design-spacious-room-with-elegant-furniture-professional-space_219069652.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/219069652?lang=en",
+        "provider": "hujur1100",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "73"
     },
     {
       "id": 2,
@@ -55,7 +75,26 @@
       "notes": [
         "Drives high conversion by addressing the primary financial and operational debate faced by facility directors. Explores hidden labor liabilities, equipment maintenance, workers' compensation insurance, and supply chain overhead associated with in-house cleaning crews. Explains how consolidating cleaning under a single specialized vendor reduces administrative friction and operational risk. Answers common industry FAQs regarding quality assurance, supervisor oversight, and contract flexibility. Reusable for a podcast debate on operational lean strategies."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 48,
+      "imageStatus": "selected",
+      "imageBrief": "A split image or a composite image showing two contrasting scenes. On one side, a property manager looking stressed amidst paperwork and a jumbled closet of old cleaning supplies and equipment. On the other side, the same property manager looking calm and organized, perhaps shaking hands with a professional-looking cleaning service representative in a clean, well-maintained office environment. The image should convey the ease and professionalism of outsourcing versus the burden of in-house management.",
+      "imageSearchTerms": [
+        "outsourcing vs in-house cleaning",
+        "property manager stress relief",
+        "professional janitorial service",
+        "facility management solutions",
+        "cost benefit analysis cleaning"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-18",
+        "title": "Always stressed Crazy director hold laptop on head Bearded man screaming in pain Headache attack Got stressed at work Business stress management Running business is stressful",
+        "detailUrl": "https://www.magnific.com/premium-photo/always-stressed-crazy-director-hold-laptop-head-bearded-man-screaming-pain-headache-attack-got-stressed-work-business-stress-management-running-business-is-stressful_26425592.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/26425592?lang=en",
+        "provider": "romeo22",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "75"
     },
     {
       "id": 3,
@@ -64,16 +103,58 @@
       "notes": [
         "Focuses on preventive asset protection for commercial real estate owners, corporate offices, and retail facilities. Discusses floor stripping, waxing, stone polishing, and hot-water extraction techniques that prevent premature surface replacement. Highlights industry statistics on slip-and-fall claims and how proper floor maintenance mitigates legal liabilities. Answers FAQs regarding foot-traffic durability, chemical safety, and after-hours service scheduling. Great podcast episode for facilities management and risk reduction."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 49,
+      "imageStatus": "selected",
+      "imageBrief": "A professional commercial cleaning team member is diligently polishing a high-traffic hard surface floor, such as marble or VCT, in a modern office lobby or retail space. The floor should reflect light, showing a clear shine, and the environment should convey cleanliness and professionalism. The person should be focused on their task, wearing appropriate work attire.",
+      "imageSearchTerms": [
+        "commercial floor polishing",
+        "professional floor care",
+        "hard surface restoration",
+        "office floor cleaning",
+        "janitorial services",
+        "polished floor reflection"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-2",
+        "title": "Worker polishing hard floor with high speed polishing machine cleaning floor with machine floor care",
+        "detailUrl": "https://www.magnific.com/premium-photo/worker-polishing-hard-floor-with-high-speed-polishing-machine-cleaning-floor-with-machine-floor-care_252200334.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/252200334?lang=en",
+        "provider": "Achmad Khoeron",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "77"
     },
     {
       "id": 4,
       "targetPublishDate": "2026-10-27",
-      "title": "Terminal Cleaning & Disinfection in Medical Facilities: Navigating Strict Compliance Standards",
+      "title": "Terminal Cleaning and Disinfection in Medical Facilities: Navigating Strict Compliance Standards",
       "notes": [
         "Targets healthcare administrators, surgical centers, outpatient clinics, and dental offices requiring strict pathogen containment. Covers CDC, OSHA, and EPA guidelines for hospital-grade disinfectants and surface dwell times to eliminate healthcare-associated infections (HAIs). Establishes deep subject matter expertise by detailing touchpoint sanitization and biohazard compliance. Addresses urgent FAQs about cross-contamination prevention during cold and flu seasons. Ideal podcast topic for medical facility operations."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 50,
+      "imageStatus": "selected",
+      "imageBrief": "A professional cleaning crew member, wearing appropriate personal protective equipment (PPE) such as gloves and a mask, is meticulously cleaning a surface in a modern, brightly lit medical examination room. The room is empty of patients but contains typical medical equipment like an examination bed and a monitor. The cleaner is focused on their task, demonstrating attention to detail and adherence to strict hygiene protocols. The image should convey professionalism, safety, and a sterile environment.",
+      "imageSearchTerms": [
+        "medical facility cleaning",
+        "hospital disinfection",
+        "terminal cleaning healthcare",
+        "professional medical cleaner",
+        "sterile environment hospital",
+        "infection control cleaning",
+        "PPE cleaning medical",
+        "healthcare hygiene"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-13",
+        "title": "Hospital biohazard and people cleaning with disinfection for contamination safety or protocol Medical red tape and work with PPE in ward for healthcare compliance sanitation or infection control",
+        "detailUrl": "https://www.magnific.com/premium-photo/hospital-biohazard-people-cleaning-with-disinfection-contamination-safety-protocol-medical-red-tape-work-with-ppe-ward-healthcare-compliance-sanitation-infection-control_375286128.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/375286128?lang=en",
+        "provider": "The Yuri Arcurs Collection",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "109"
     },
     {
       "id": 5,
@@ -82,7 +163,27 @@
       "notes": [
         "Targets general contractors, property developers, and commercial real estate brokers facing strict move-in deadlines. Explains the three-phase post-construction process: rough clean, deep clean, and final polish touch-up. Emphasizes fine dust containment, HVAC filter safety, and window scraping protocols to pass tenant walkthrough inspections. Answers industry FAQs regarding timeline turnarounds and safety compliance on active job sites. Reusable for a podcast on commercial real estate handoffs."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 52,
+      "imageStatus": "selected",
+      "imageBrief": "A brightly lit, modern commercial office interior that has just been professionally cleaned after construction. The space is pristine, with gleaming floors, large clean windows showing a clear view outside, and minimalist furniture or fixtures. In the background, slightly out of focus, a cleaning crew member in uniform is performing a final touch-up, perhaps wiping a surface or inspecting a window. The overall impression is one of freshness, readiness, and high quality, emphasizing the transition from a dusty construction site to a tenant-ready environment.",
+      "imageSearchTerms": [
+        "post construction cleaning",
+        "commercial building clean",
+        "tenant ready office space",
+        "pristine commercial interior",
+        "construction cleanup crew",
+        "professional cleaning service"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-51",
+        "title": "Professional cleaning service person using vacuum cleaner in office",
+        "detailUrl": "https://www.magnific.com/free-photo/professional-cleaning-service-person-using-vacuum-cleaner-office_48048605.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/48048605?lang=en",
+        "provider": "magnific",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "79"
     },
     {
       "id": 6,
@@ -91,7 +192,27 @@
       "notes": [
         "Addresses the recurring administrative headache of ordering, auditing, and restocking facility paper products, hand soaps, and liners. Demonstrates how vendor-managed inventory (VMI) cuts procurement costs and prevents embarrassing stockouts during high-volume business hours. Answers FAQs regarding automated usage audits, eco-friendly dispensers, and single-invoice consolidation. Creates a strong sense of urgency by showing how supply failures harm tenant retention. Perfect podcast topic on office operations optimization."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 53,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, clean, and fully stocked commercial restroom, emphasizing modern fixtures and dispensers. The image should convey a sense of order and readiness, with no visible clutter or disarray. A subtle detail like a neatly organized cleaning cart or a reflection of a well-maintained hallway could be in the background, suggesting efficient facility management.",
+      "imageSearchTerms": [
+        "clean commercial restroom",
+        "well stocked public bathroom",
+        "modern facility washroom",
+        "restroom supplies management",
+        "janitorial service",
+        "hygiene solutions"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-1",
+        "title": "Automated chrome faucets installed along a white countertop with an orange glass wall highlighting modern hygiene solutions in a clean commercial public restroom or corporate facility",
+        "detailUrl": "https://www.magnific.com/premium-photo/automated-chrome-faucets-installed-along-white-countertop-with-orange-glass-wall-highlighting-modern-hygiene-solutions-clean-commercial-public-restroom-corporate-facility_433329373.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/433329373?lang=en",
+        "provider": "aileenchik",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "81"
     },
     {
       "id": 7,
@@ -100,7 +221,28 @@
       "notes": [
         "Targets sustainability officers, corporate executives, and eco-conscious office complexes seeking LEED certification points. Explores EPA Safer Choice and Green Seal products, HEPA-filtered vacuum technology, and non-toxic sanitizing agents that improve indoor air quality (IAQ). Cites statistics on volatile organic compounds (VOCs) and employee respiratory wellness. Answers FAQs regarding green product efficacy vs. traditional heavy chemicals. Reusable for podcasts on ESG (Environmental, Social, and Governance) office strategies."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 54,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, modern, and clean office interior with natural light, showing an open-plan workspace or a conference room. The focus should be on a sense of freshness and good air quality, without explicitly showing cleaning products or people cleaning. Perhaps a strategically placed green plant or a subtle element suggesting sustainability. The overall mood should be professional, serene, and inviting.",
+      "imageSearchTerms": [
+        "modern office clean",
+        "sustainable office interior",
+        "healthy workplace environment",
+        "green office design",
+        "bright open office",
+        "indoor air quality office",
+        "eco-friendly workspace"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-52",
+        "title": "Low angle of assette Air Conditioner on ceiling in modern light office or apartment with green ficus plant leaves Indoor air quality",
+        "detailUrl": "https://www.magnific.com/premium-photo/low-angle-assette-air-conditioner-ceiling-modern-light-office-apartment-with-green-ficus-plant-leaves-indoor-air-quality_29845978.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/29845978?lang=en",
+        "provider": "kirayan",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "83"
     },
     {
       "id": 8,
@@ -109,7 +251,27 @@
       "notes": [
         "Helps commercial property managers understand the distinct roles and combined value of day porters and evening cleaning crews. Analyzes high-traffic touchpoint maintenance, continuous spill response, restroom monitoring, and lobby readiness during peak operational hours. Answers FAQs on security clearance, shift coordination, and custom scope creation. Drives conversions by helping owners eliminate coverage gaps. Reusable as a podcast episode on custom facility staffing."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 55,
+      "imageStatus": "selected",
+      "imageBrief": "A split image or a composite image showing two distinct scenes. On one side, a professional day porter in a clean uniform is actively wiping down a high-touch surface (like an elevator button panel or a lobby desk) in a busy, well-lit commercial building during the day, with people subtly in the background. On the other side, a professional janitorial staff member is performing a deep cleaning task (like mopping a floor or using a floor buffer) in a quiet, empty commercial office space at night, with office cubicles or conference rooms visible in the background.",
+      "imageSearchTerms": [
+        "day porter cleaning lobby",
+        "janitorial staff night cleaning",
+        "commercial cleaning services day night",
+        "facility management cleaning crew",
+        "daytime cleaning staff",
+        "night shift janitor"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-32",
+        "title": "Professional cleaning staff sanitizing desks in a modern corporate office at night",
+        "detailUrl": "https://www.magnific.com/premium-photo/professional-cleaning-staff-sanitizing-desks-modern-corporate-office-night_431372781.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/431372781?lang=en",
+        "provider": "hassan27534",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "85"
     },
     {
       "id": 9,
@@ -118,7 +280,26 @@
       "notes": [
         "Creates seasonal urgency for building managers in regions subject to harsh winter weather. Focuses on entrance matting systems, floor sealant protection, ice-melt residue neutralization, and high-frequency floor scrubbing. Cites slip-and-fall litigation costs and property damage data caused by corrosive salt tracking. Answers FAQs on winter janitorial frequencies and immediate emergency response. Reusable for winter facility preparedness podcasts."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 56,
+      "imageStatus": "selected",
+      "imageBrief": "A professional, clean, well-maintained commercial building entrance during winter, with snow outside and a clear, dry, welcoming matting system inside. The image should convey safety and preparedness, not active chaos.",
+      "imageSearchTerms": [
+        "commercial building winter entrance matting",
+        "clean office lobby snow outside",
+        "winter facility management safety",
+        "janitorial winter preparedness",
+        "commercial property winter ready"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-7",
+        "title": "Street with houses cold weather Snow day in winter Building in city center covered with snow",
+        "detailUrl": "https://www.magnific.com/premium-photo/street-with-houses-cold-weather-snow-day-winter-building-city-center-covered-with-snow_83865028.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/83865028?lang=en",
+        "provider": "satura86",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "87"
     },
     {
       "id": 10,
@@ -127,7 +308,26 @@
       "notes": [
         "Targets luxury office spaces, law firms, financial institutions, and corporate headquarters. Analyzes the psychological impact of lobby maintenance, glass clarity, dust-free fixtures, and pristine floor finishes on high-value client perception. Answers FAQs on customized quality assurance checklists and unannounced supervisor audits. Converts readers by linking facility aesthetics directly to business credibility. Excellent podcast topic on brand perception in physical spaces."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 59,
+      "imageStatus": "selected",
+      "imageBrief": "A modern, luxurious office lobby. The space is immaculately clean, with polished marble or hardwood floors reflecting light, gleaming glass partitions, and dust-free, sophisticated furniture. A subtle, high-end design aesthetic is visible, emphasizing order and professionalism. The lighting is bright and inviting. The image should convey a sense of calm, precision, and high standards. No people are visible, or they are blurred in the background, to focus on the environment itself.",
+      "imageSearchTerms": [
+        "luxury office lobby clean",
+        "modern corporate reception area pristine",
+        "high-end building entrance polished",
+        "immaculate financial institution lobby",
+        "sparkling corporate headquarters interior"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-8",
+        "title": "Modern corporate reception area with sleek desk chairs and plants in a spacious lightfilled office lobby 3D Rendering",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-corporate-reception-area-with-sleek-desk-chairs-plants-spacious-lightfilled-office-lobby-3d-rendering_402165607.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/402165607?lang=en",
+        "provider": "Who is Danny",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "89"
     },
     {
       "id": 11,
@@ -136,7 +336,26 @@
       "notes": [
         "Targets commercial property managers and leasing agents battling high vacancy rates. Explores how immaculate common areas, pristine elevator cars, and hygienic shared restrooms boost tenant renewal rates. Provides data on tenant satisfaction surveys and lease turnover costs. Addresses FAQs concerning after-hours key access, security protocol compliance, and tenant feedback management. Reusable for podcast conversations on commercial asset management."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 57,
+      "imageStatus": "selected",
+      "imageBrief": "A modern, clean office building lobby with natural light, showing a well-maintained reception desk, polished floors, and subtle decorative elements. The space should appear inviting and professional, perhaps with a glimpse of an elevator bank or a hallway in the background, all sparkling clean.",
+      "imageSearchTerms": [
+        "clean office lobby",
+        "modern commercial building interior",
+        "luxury office common area",
+        "pristine building entrance",
+        "professional office reception"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-2",
+        "title": "Modern business lobby interior with reception counter city view and clean design concept of luxury office space 3D Rendering",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-business-lobby-interior-with-reception-counter-city-view-clean-design-concept-luxury-office-space-3d-rendering_255797821.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/255797821?lang=en",
+        "provider": "Who is Danny",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "91"
     },
     {
       "id": 12,
@@ -145,7 +364,30 @@
       "notes": [
         "Targets logistics managers, fulfillment center directors, and industrial plant owners. Addresses specialized challenges such as concrete dust accumulation, heavy grease removal, breakroom sanitation, and floor scrubber operations in active machinery zones. Highlights OSHA safety standards and dust explosion prevention measures. Answers FAQs regarding off-peak shift cleaning and heavy-duty degreasing. Reusable for industrial operations podcasts."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 58,
+      "imageStatus": "selected",
+      "imageBrief": "A realistic, professional stock photo depicting a clean and organized industrial warehouse or factory floor. The image should feature a modern, large-scale facility with high ceilings, concrete floors, and visible industrial equipment (e.g., forklifts, shelving, production lines) in the background, but the foreground should emphasize cleanliness. A professional cleaning crew member (wearing appropriate PPE) operating a large, ride-on floor scrubber or other industrial cleaning equipment could be subtly visible, showcasing active cleaning without being the sole focus. The overall impression should be efficiency, safety, and a well-maintained environment.",
+      "imageSearchTerms": [
+        "industrial cleaning",
+        "warehouse janitorial services",
+        "factory floor cleaning",
+        "commercial cleaning industrial",
+        "logistics center clean",
+        "fulfillment center hygiene",
+        "industrial safety cleaning",
+        "floor scrubber warehouse",
+        "concrete floor cleaning industrial"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-23",
+        "title": "Industrial worker cleaning concrete floor with broom during routine sanitation and maintenance at factory facility",
+        "detailUrl": "https://www.magnific.com/premium-photo/industrial-worker-cleaning-concrete-floor-with-broom-routine-sanitation-maintenance-factory-facility_433075816.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/433075816?lang=en",
+        "provider": "zblaster",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "93"
     },
     {
       "id": 13,
@@ -154,7 +396,26 @@
       "notes": [
         "Educates facility executives on how to read, compare, and audit commercial cleaning proposals. Exposes common industry traps like hidden line items, vague scope descriptions, and lack of supervisor oversight. Answers critical FAQs about transparent billing, custom contract clauses, and key performance indicators (KPIs). Creates trust and positions AMAVA as an honest, straightforward market leader. Reusable for a podcast on B2B procurement best practices."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 60,
+      "imageStatus": "selected",
+      "imageBrief": "A professional, clean, and modern office environment. A facility manager or executive (diverse representation) is reviewing a document or tablet with a focused expression, possibly pointing to a specific section, while a cleaning supervisor (also professional and diverse) stands nearby, ready to discuss. The background subtly shows a clean office space or a cleaning team in action, indicating the context of commercial cleaning. The overall impression should be one of collaboration, clarity, and attention to detail.",
+      "imageSearchTerms": [
+        "facility manager reviewing cleaning contract",
+        "commercial cleaning proposal discussion",
+        "executive and cleaning supervisor meeting",
+        "transparent cleaning service agreement",
+        "detailed scope of work review office"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-17",
+        "title": "Young female manager in a stylish business suit using tablet to coordinate professional office cleaning tasks assign work to cleaning team",
+        "detailUrl": "https://www.magnific.com/premium-photo/young-female-manager-stylish-business-suit-using-tablet-coordinate-professional-office-cleaning-tasks-assign-work-cleaning-team_431261129.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/431261129?lang=en",
+        "provider": "AlexFotolabs",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "95"
     },
     {
       "id": 14,
@@ -163,7 +424,29 @@
       "notes": [
         "Creates immediate seasonal urgency around viral transmission in open-plan offices, call centers, and tech hubs. Outlines high-frequency touchpoint sanitization routines targeting door handles, elevator buttons, shared keyboards, and conference room tables. Incorporates EPA-registered pathogen efficacy guidelines. Answers FAQs regarding electrostatic spraying and non-disruptive cleaning schedules. Ideal for a podcast episode on corporate risk management."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 61,
+      "imageStatus": "selected",
+      "imageBrief": "A modern, brightly lit open-plan office setting during off-hours or with minimal people. A professional cleaning crew member, wearing gloves and a face mask, is diligently using a spray bottle and microfiber cloth to wipe down a shared desk or conference table, focusing on high-touch surfaces. The scene should convey thoroughness and professionalism in commercial disinfection.",
+      "imageSearchTerms": [
+        "office cleaning",
+        "commercial disinfection",
+        "high-touch surface cleaning",
+        "flu season office",
+        "janitorial services",
+        "workplace sanitization",
+        "professional cleaning crew",
+        "modern office hygiene"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-77",
+        "title": "Workplace hygiene is everybodys business High angle shot of two young woman cleaning a modern office",
+        "detailUrl": "https://www.magnific.com/premium-photo/workplace-hygiene-is-everybodys-business-high-angle-shot-two-young-woman-cleaning-modern-office_27365492.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/27365492?lang=en",
+        "provider": "The Yuri Arcurs Collection",
+        "orientation": "vertical"
+      },
+      "wordpressMediaId": "97"
     },
     {
       "id": 15,
@@ -172,7 +455,27 @@
       "notes": [
         "Targets private school administrators, university facility directors, and daycare managers. Discusses non-toxic sanitization, cafeteria surface management, gymnasium floor care, and mass-absenteeism prevention. References public health data on germ spread in educational environments. Answers FAQs on after-hours access, background-checked personnel, and specialized holiday deep-cleaning. Great podcast topic on community health and safety."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 62,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, clean, and modern school hallway or classroom. The image should convey a sense of safety, cleanliness, and a positive learning environment. No people should be visible, or if they are, they should be blurred or in the background, focusing on the pristine environment. The focus should be on cleanliness and order.",
+      "imageSearchTerms": [
+        "clean school hallway",
+        "disinfected classroom",
+        "modern university interior",
+        "hygienic daycare",
+        "empty clean school",
+        "bright learning environment"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-1",
+        "title": "Empty office hallway with minimalist teal sofas and white walls creating a clean professional environment for a modern business waiting room or a quiet school educational institution",
+        "detailUrl": "https://www.magnific.com/premium-photo/empty-office-hallway-with-minimalist-teal-sofas-white-walls-creating-clean-professional-environment-modern-business-waiting-room-quiet-school-educational-institution_431701824.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/431701824?lang=en",
+        "provider": "aileenchik",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "99"
     },
     {
       "id": 16,
@@ -181,7 +484,27 @@
       "notes": [
         "Targets retail store owners, auto dealership managers, and boutique chains. Explores the direct link between pristine display floors, spotless glass entryways, sanitized fitting rooms, and customer spending habits. Cites retail consumer behavior studies regarding store cleanliness. Addresses FAQs on quick emergency spill response and flexible opening-hour coverage. Reusable for retail leadership podcasts."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 63,
+      "imageStatus": "selected",
+      "imageBrief": "A high-angle wide shot of a modern, well-lit car showroom or retail store interior. The floors are highly polished and reflective, creating a sense of spaciousness and luxury. Display vehicles or merchandise are immaculately arranged, and the overall environment exudes cleanliness and professionalism. The image should be bright and inviting, focusing on the pristine state of the business space.",
+      "imageSearchTerms": [
+        "retail store clean interior",
+        "auto showroom spotless",
+        "boutique sparkling",
+        "janitorial retail",
+        "pristine customer experience",
+        "clean commercial space"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-51",
+        "title": "Clean bright coworking office interior with furniture equipment and other items Workplace and commercial space concept 3D Rendering",
+        "detailUrl": "https://www.magnific.com/premium-photo/clean-bright-coworking-office-interior-with-furniture-equipment-other-items-workplace-commercial-space-concept-3d-rendering_39464423.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/39464423?lang=en",
+        "provider": "Who is Danny",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "101"
     },
     {
       "id": 17,
@@ -190,7 +513,27 @@
       "notes": [
         "Targets restaurant groups, corporate cafeterias, and food production facility operations managers. Covers heavy grease removal, tile and grout deep restoration, walk-in cooler sanitation, and food-safe sanitizing agents. Highlights FDA/USDA compliance guidelines and foodborne illness risk mitigation. Answers FAQs about night-shift deep cleans and health inspector prep. Perfect podcast topic on food service operational safety."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 64,
+      "imageStatus": "selected",
+      "imageBrief": "A professional-looking commercial kitchen, clean and gleaming, with an emphasis on stainless steel surfaces and equipment. The image should convey a sense of meticulous hygiene and readiness for health inspection, possibly with a subtle focus on a clean floor or a shining counter.",
+      "imageSearchTerms": [
+        "commercial kitchen cleaning",
+        "restaurant hygiene",
+        "food service sanitation",
+        "professional kitchen clean",
+        "stainless steel kitchen clean",
+        "health inspection ready kitchen"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-21",
+        "title": "Health inspection or people in cafe with clipboard hygiene or food safety in checklist Sanitation review or inspector in kitchen with writing quality control or compliance in restaurant service",
+        "detailUrl": "https://www.magnific.com/premium-photo/health-inspection-people-cafe-with-clipboard-hygiene-food-safety-checklist-sanitation-review-inspector-kitchen-with-writing-quality-control-compliance-restaurant-service_424189723.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/424189723?lang=en",
+        "provider": "The Yuri Arcurs Collection",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "103"
     },
     {
       "id": 18,
@@ -199,7 +542,26 @@
       "notes": [
         "Demonstrates AMAVA's proprietary quality control frameworks, including routine supervisor field inspections and digital reporting portals. Explains how consistent audit systems hold cleaning teams accountable and prevent service quality degradation over time. Answers FAQs about tracking service requests, resolving issues within 24 hours, and transparent client reporting. Reusable for a podcast on operational excellence."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 65,
+      "imageStatus": "selected",
+      "imageBrief": "A professional facility manager, holding a digital tablet, inspects a clean, modern office hallway with bright lighting and well-maintained surfaces, symbolizing quality assurance audits in facility management.",
+      "imageSearchTerms": [
+        "facility management quality control",
+        "commercial cleaning audit",
+        "supervisor inspection tablet",
+        "modern building maintenance",
+        "professional janitorial services"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-28",
+        "title": "Warehouse mature woman and tablet as supervisor on logistic quality control or stock management Engineer tech and maintenance in freight supply chain or factory at shipping company in inspection",
+        "detailUrl": "https://www.magnific.com/premium-photo/warehouse-mature-woman-tablet-as-supervisor-logistic-quality-control-stock-management-engineer-tech-maintenance-freight-supply-chain-factory-shipping-company-inspection_380299882.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/380299882?lang=en",
+        "provider": "The Yuri Arcurs Collection",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "105"
     },
     {
       "id": 19,
@@ -208,7 +570,26 @@
       "notes": [
         "Targets health club owners, boutique fitness studios, and athletic facility directors. Focuses on locker room sanitation, rubber floor scrubbing, turf care, and anti-microbial treatments for shared workout gear. Cites sports medicine statistics on staph, MRSA, and fungal infections in athletic spaces. Answers FAQs regarding continuous daytime porter coverage and odor neutralization. Reusable for sports facility management podcasts."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 66,
+      "imageStatus": "selected",
+      "imageBrief": "A professional-looking stock photo showing a clean, well-maintained fitness center. The image should convey a sense of hygiene and modern facilities, possibly with a cleaning professional in the background (discreetly) or sparkling equipment. Focus on bright, inviting spaces.",
+      "imageSearchTerms": [
+        "clean fitness center",
+        "hygienic gym equipment",
+        "modern health club sanitation",
+        "professional gym cleaning",
+        "sparkling workout facility"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-34",
+        "title": "Gym person or bottle with equipment for cleaning hygiene or health to reduce bacteria for workout Fitness club hands or janitor with gloves for virus safety wipes dust or liquid spray with cloth",
+        "detailUrl": "https://www.magnific.com/premium-photo/gym-person-bottle-with-equipment-cleaning-hygiene-health-reduce-bacteria-workout-fitness-club-hands-janitor-with-gloves-virus-safety-wipes-dust-liquid-spray-with-cloth_400473878.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/400473878?lang=en",
+        "provider": "The Yuri Arcurs Collection",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "107"
     },
     {
       "id": 20,

@@ -78,6 +78,7 @@ vi.mock('@pixelated-tech/components', async () => {
 		__esModule: true,
 		PageSection: make('PageSection'),
 		PageTitleHeader: make('PageTitleHeader'),
+		Tab: ({ tabs }: any) => <div data-testid="Tab">{tabs?.map((tab: any) => <div key={tab.id}>{tab.content}</div>)}</div>,
 		Loading: () => <div>Loading</div>,
 		SkeletonLoading: () => <div>SkeletonLoading</div>,
 		ToggleLoading: () => null,
@@ -196,6 +197,29 @@ describe('pixelated-admin page components', () => {
 		expect(action.mock.calls[0][1]).toBeInstanceOf(FormData);
 	});
 
+	it('clears the previous calendar when switching update sites', async () => {
+		const mod = await importModule('src/app/(pages)/blog-post-generator/BlogPostGeneratorClient.tsx');
+		const BlogPostGeneratorClient = mod.default;
+		const action = vi.fn(async () => ({ calendar: { blogCalendar: [] }, results: [] }));
+		const getExistingDraftsAction = vi.fn(async () => [{ id: 213, title: 'Manning draft' }]);
+		render(<BlogPostGeneratorClient action={action as any} getExistingDraftsAction={getExistingDraftsAction as any} sites={[{ name: 'site-a' }, { name: 'site-b' }]} />);
+
+		fireEvent.submit(screen.getByRole('button', { name: /Generate drafts/i }).closest('form') as HTMLFormElement);
+		await waitFor(() => expect(screen.getByRole('button', { name: /Download updated calendar JSON/i })).toBeTruthy());
+
+		fireEvent.change(document.getElementById('update-blog-site') as HTMLSelectElement, { target: { value: 'site-b' } });
+		expect(screen.queryByRole('button', { name: /Download updated calendar JSON/i })).toBeNull();
+		fireEvent.click(screen.getByRole('button', { name: /View Existing Drafts/i }));
+		await waitFor(() => expect(screen.getByText(/Manning draft/i)).toBeTruthy());
+		fireEvent.click(screen.getByRole('checkbox'));
+		fireEvent.click(screen.getByRole('button', { name: /Update Drafts/i }));
+
+		await waitFor(() => expect(action).toHaveBeenCalledTimes(2));
+		const updateFormData = action.mock.calls[1][1] as FormData;
+		expect(updateFormData.get('siteName')).toBe('site-b');
+		expect(updateFormData.get('calendarJson')).toBeNull();
+	});
+
 	it('shows an error when component usage fetch returns non-ok', async () => {
 		mockSmartFetch.mockImplementation(async (url: unknown) => {
 			if (String(url).includes('/api/component-usage')) {
@@ -247,11 +271,33 @@ describe('pixelated-admin page components', () => {
 
 	it('downloads pixelated.config.json from the config builder page', async () => {
 		const createObjectURLSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob://123' as any);
+		vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
 		const mod = await importModule('src/app/(pages)/configbuilder/page.tsx');
 		const Page = mod.default;
 		render(<Page />);
 		fireEvent.click(screen.getByRole('button', { name: /Save Config/i }));
 		await waitFor(() => expect(createObjectURLSpy).toHaveBeenCalled());
+	});
+
+	it('renders the assessment page', async () => {
+		const mod = await importModule('src/app/(pages)/assessment/page.tsx');
+		const Page = mod.default;
+		render(await Page());
+		expect(screen.getByText('Assessment')).toBeInTheDocument();
+	});
+
+	it('renders the proposal page', async () => {
+		const mod = await importModule('src/app/(pages)/proposal/page.tsx');
+		const Page = mod.default;
+		render(await Page());
+		expect(screen.getByText('Proposal')).toBeInTheDocument();
+	});
+
+	it('renders an ad-hoc invoice page', async () => {
+		const mod = await importModule('src/app/(pages)/billing/invoice/adhoc/[siteName]/[invoiceNumber]/page.tsx');
+		const Page = mod.default;
+		render(await Page({ params: Promise.resolve({ siteName: 'site-a', invoiceNumber: 'INV-1' }) }));
+		expect(screen.getByText('Ad-Hoc Invoice')).toBeInTheDocument();
 	});
 
 	it('renders login page and normalizes callbackUrl for login redirects', async () => {
