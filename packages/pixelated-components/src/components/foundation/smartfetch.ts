@@ -40,7 +40,7 @@
 
 import type { CacheManager } from '../foundation/cache-manager';
 
-export type ResponseType = 'json' | 'text' | 'blob' | 'ok' | 'status';
+export type ResponseType = 'json' | 'text' | 'blob' | 'arrayBuffer' | 'ok' | 'status';
 export type CacheStrategy = 'none' | 'next' | 'local' | 'both';
 
 export interface SmartFetchProxyOptions {
@@ -281,7 +281,7 @@ export async function smartFetch(
 		const errorMessage = `[smartFetch] ${hostname}: ${lastError?.message || 'Unknown error'}`;
 		const error = new Error(errorMessage);
 
-		if (debug) console.error(errorMessage);
+		console.error(errorMessage);
 		onError?.(error);
 		onComplete?.();
 

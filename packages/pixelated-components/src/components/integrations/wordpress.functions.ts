@@ -283,6 +283,30 @@ export type WordPressDraftInput = {
 	content: string;
 	baseURL?: string;
 	excerpt?: string;
+	featuredImageId?: string | number;
+};
+
+export type WordPressDraftUpdateInput = Omit<WordPressDraftInput, 'title' | 'content'> & {
+	title?: string;
+	content?: string;
+};
+
+export type WordPressMediaUploadInput = {
+	site: string;
+	apiToken: string;
+	baseURL?: string;
+	filename: string;
+	buffer: Buffer;
+	mimeType: string;
+	title: string;
+	altText: string;
+	caption: string;
+	description: string;
+};
+
+export type WordPressMediaUploadResponse = {
+	media?: Array<{ ID?: string | number; id?: string | number; URL?: string; mime_type?: string; alt?: string }>;
+	errors?: unknown[];
 };
 
 export type WordPressDraftResponse = {
@@ -292,6 +316,37 @@ export type WordPressDraftResponse = {
 	URL?: string;
 	[key: string]: unknown;
 };
+
+export async function uploadWordPressMedia(input: WordPressMediaUploadInput): Promise<WordPressMediaUploadResponse> {
+	if (!input.site || !input.apiToken || !input.filename || !input.buffer.length) {
+		throw new Error('WordPress media upload requires site, apiToken, filename, and image data');
+	}
+	const url = buildUrl({
+		baseUrl: input.baseURL ?? wpApiURL,
+		pathSegments: [input.site, 'media', 'new'],
+	});
+	const form = new FormData();
+	const imageBytes = new Uint8Array(input.buffer.length);
+	imageBytes.set(input.buffer);
+	form.append('media[]', new Blob([imageBytes.buffer], { type: input.mimeType }), input.filename);
+	form.append('attrs[0][title]', input.title);
+	form.append('attrs[0][alt]', input.altText);
+	form.append('attrs[0][caption]', input.caption);
+	form.append('attrs[0][description]', input.description);
+	const response = await smartFetch(url, {
+		timeout: 60000,
+		retries: 0,
+		requestInit: {
+			method: 'POST',
+			headers: { Authorization: `Bearer ${input.apiToken}` },
+			body: form,
+		},
+	});
+	if (Array.isArray(response.errors) && response.errors.length > 0) {
+		throw new Error('WordPress media upload failed');
+	}
+	return response as WordPressMediaUploadResponse;
+}
 
 /** Create a private draft through the authenticated WordPress.com API. */
 export async function createWordPressDraft(input: WordPressDraftInput): Promise<WordPressDraftResponse> {
@@ -308,6 +363,38 @@ export async function createWordPressDraft(input: WordPressDraftInput): Promise<
 		title: input.title,
 		content: marked.parse(input.content, { async: false }),
 		...(input.excerpt ? { excerpt: input.excerpt } : {}),
+		...(input.featuredImageId !== undefined ? { featured_image: input.featuredImageId } : {}),
+	};
+
+	return smartFetch(url, {
+		retries: 0,
+		requestInit: {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${input.apiToken}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(body),
+		},
+	});
+}
+
+/** Update an existing private draft through the authenticated WordPress.com API. */
+export async function updateWordPressDraft(postId: string | number, input: WordPressDraftUpdateInput): Promise<WordPressDraftResponse> {
+	if (postId === '' || postId === undefined || postId === null || !input.site || !input.apiToken || (!input.title && !input.content && input.featuredImageId === undefined)) {
+		throw new Error('WordPress draft update requires postId, site, apiToken, and at least one update field');
+	}
+
+	const url = buildUrl({
+		baseUrl: input.baseURL ?? wpApiURL,
+		pathSegments: [input.site, 'posts', String(postId)],
+	});
+	const body = {
+		status: 'draft',
+		...(input.title ? { title: input.title } : {}),
+		...(input.content ? { content: marked.parse(input.content, { async: false }) } : {}),
+		...(input.excerpt ? { excerpt: input.excerpt } : {}),
+		...(input.featuredImageId !== undefined ? { featured_image: input.featuredImageId } : {}),
 	};
 
 	return smartFetch(url, {

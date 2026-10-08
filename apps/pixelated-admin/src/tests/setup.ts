@@ -75,6 +75,9 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 		siteName,
 		billingCycle,
 	}),
+	AdHocInvoiceBuilder: () => null,
+	getAdminDataDirectory: () => '/tmp/admin-data',
+	getAdminDataFiles: async () => [],
 	CacheManager: class {
 		constructor() {}
 		get() { return null; }

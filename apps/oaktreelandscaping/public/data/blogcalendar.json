@@ -18,7 +18,8 @@
         "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
         "Do not provide individualized legal, financial, medical, or cybersecurity advice",
         "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
+        "End the article with a Call to Action (CTA) to contact us.",
+        "Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
       ],
       "objectiveCriteria": {
         "require_minimum_words": 800,
@@ -84,7 +85,7 @@
     {
       "id": 7,
       "targetPublishDate": "",
-      "title": "The Spring Cleanup Checklist - De-thatching, clearing winter debris, and \"waking up\" the yard.",
+      "title": "The Spring Cleanup Checklist - De-thatching, clearing winter debris, and waking up the yard.",
       "notes": [],
       "status": "published"
     },
@@ -119,7 +120,7 @@
     {
       "id": 12,
       "targetPublishDate": "",
-      "title": "The \"Crape Murder\" Warning - How to properly prune Crape Myrtles without ruining them.",
+      "title": "The Crape Murder Warning - How to properly prune Crape Myrtles without ruining them.",
       "notes": [],
       "status": "published"
     },
@@ -133,7 +134,7 @@
     {
       "id": 14,
       "targetPublishDate": "",
-      "title": "Fire Ant Prevention - Early season treatments to keep the \"sting\" out of your lawn.",
+      "title": "Fire Ant Prevention - Early season treatments to keep the sting out of your lawn.",
       "notes": [],
       "status": "published"
     },
@@ -154,7 +155,7 @@
     {
       "id": 17,
       "targetPublishDate": "",
-      "title": "Palmetto Care & Trimming - When and how to trim \"boots\" and brown fronds correctly.",
+      "title": "Palmetto Care and Trimming - When and how to trim boots and brown fronds correctly.",
       "notes": [],
       "status": "published"
     },
@@ -184,7 +185,7 @@
     {
       "id": 21,
       "targetPublishDate": "",
-      "title": "Chinch Bugs & Mole Crickets - How to spot the early signs of Summer’s worst lawn destroyers.",
+      "title": "Chinch Bugs and Mole Crickets - How to spot the early signs of Summer’s worst lawn destroyers.",
       "notes": [],
       "status": ""
     },
@@ -219,14 +220,14 @@
     {
       "id": 26,
       "targetPublishDate": "",
-      "title": "Outdoor Living: Patios & Paths - Hardscape ideas to enjoy the backyard during humid nights.",
+      "title": "Outdoor Living: Patios and Paths - Hardscape ideas to enjoy the backyard during humid nights.",
       "notes": [],
       "status": ""
     },
     {
       "id": 27,
       "targetPublishDate": "",
-      "title": "The \"Dog Days\" Recovery - How to revive a lawn that’s looking \"toasted\" in August.",
+      "title": "The Dog Days Recovery - How to revive a lawn that’s looking toasted in August.",
       "notes": [],
       "status": ""
     },
@@ -254,7 +255,7 @@
     {
       "id": 31,
       "targetPublishDate": "",
-      "title": "Drainage Solutions - French drains and grading to handle Lowcountry \"washouts.\"",
+      "title": "Drainage Solutions - French drains and grading to handle Lowcountry washouts.",
       "notes": [],
       "status": ""
     },
@@ -277,14 +278,14 @@
     {
       "id": 34,
       "targetPublishDate": "",
-      "title": "Aeration & Overseeding - Relieving soil compaction after a busy summer of foot traffic.",
+      "title": "Aeration and Overseeding - Relieving soil compaction after a busy summer of foot traffic.",
       "notes": [],
       "status": ""
     },
     {
       "id": 35,
       "targetPublishDate": "",
-      "title": "Fall Cleanup: The Leaf Battle - Why leaving leaves on your lawn can cause \"Snow Mold.\"",
+      "title": "Fall Cleanup: The Leaf Battle - Why leaving leaves on your lawn can cause Snow Mold.",
       "notes": [],
       "status": ""
     },
@@ -298,7 +299,7 @@
     {
       "id": 37,
       "targetPublishDate": "",
-      "title": "Cool Weather Color: Pansies - Planting for color that lasts through the \"winter.\"",
+      "title": "Cool Weather Color: Pansies - Planting for color that lasts through the winter.",
       "notes": [],
       "status": ""
     },
@@ -312,7 +313,7 @@
     {
       "id": 39,
       "targetPublishDate": "",
-      "title": "The \"Brown-Out\": Dormancy - Managing expectations as warm-season grasses go to sleep.",
+      "title": "The Brown-Out: Dormancy - Managing expectations as warm-season grasses go to sleep.",
       "notes": [],
       "status": ""
     },
@@ -363,7 +364,7 @@
     {
       "id": 46,
       "targetPublishDate": "",
-      "title": "Frost Protection Tips - How to protect tropicals when a \"Blue Norther\" hits.",
+      "title": "Frost Protection Tips - How to protect tropicals when a Blue Norther hits.",
       "notes": [],
       "status": ""
     },
@@ -468,7 +469,7 @@
     {
       "id": 60,
       "targetPublishDate": "",
-      "title": "The \"First Impression\" Audit - A Property Manager’s Guide to Curb Appeal",
+      "title": "The First Impression Audit - A Property Manager’s Guide to Curb Appeal",
       "notes": [
         "A step-by-step checklist to evaluate your property’s exterior through the eyes of a high-value tenant or client."
       ],
@@ -540,7 +541,7 @@
     {
       "id": 68,
       "targetPublishDate": "",
-      "title": "Designing \"Outdoor Rooms\" - Maximizing Unused Square Footage for Tenant Amenities",
+      "title": "Designing Outdoor Rooms - Maximizing Unused Square Footage for Tenant Amenities",
       "notes": [
         "Turning vacant lawn areas into functional break zones, meeting spaces, and dining courtyards."
       ],
@@ -604,7 +605,7 @@
     {
       "id": 75,
       "targetPublishDate": "",
-      "title": "Identifying \"Hot Zones\" - Solving Landscape Stress Near Asphalt and Concrete",
+      "title": "Identifying Hot Zones - Solving Landscape Stress Near Asphalt and Concrete",
       "notes": [
         "Strategies for mitigating the \"Urban Heat Island\" effect in parking lot islands and sun-drenched entryways."
       ],
@@ -613,7 +614,7 @@
     {
       "id": 76,
       "targetPublishDate": "",
-      "title": "Water Rights & Regulations - Navigating Lowcountry Restrictions in 2026",
+      "title": "Water Rights and Regulations - Navigating Lowcountry Restrictions in 2026",
       "notes": [
         "A straightforward guide to staying compliant with Beaufort and Chatham County water ordinances."
       ],
@@ -631,7 +632,7 @@
     {
       "id": 78,
       "targetPublishDate": "",
-      "title": "The \"Oasis\" Effect - Utilizing Water Features to Cool Commercial Courtyards",
+      "title": "The Oasis Effect - Utilizing Water Features to Cool Commercial Courtyards",
       "notes": [
         "How fountains and falls improve air quality and provide natural cooling for outdoor tenant spaces."
       ],
@@ -794,7 +795,7 @@
     {
       "id": 96,
       "targetPublishDate": "",
-      "title": "Transitioning to Dormancy - What to Expect as the \"Green\" Slows Down",
+      "title": "Transitioning to Dormancy - What to Expect as the Green Slows Down",
       "notes": [
         "Educating tenants and stakeholders on the natural seasonal shifts of Southern landscapes."
       ],
@@ -840,7 +841,7 @@
     {
       "id": 101,
       "targetPublishDate": "",
-      "title": "Winter Weed Control - Managing \"Poa Annua\" Before the Spring Bloom",
+      "title": "Winter Weed Control - Managing Poa Annua Before the Spring Bloom",
       "notes": [
         "Aggressive strategies for keeping winter weeds from detracting from your property’s professional image."
       ],
@@ -885,7 +886,7 @@
     {
       "id": 106,
       "targetPublishDate": "",
-      "title": "The ROI of Low-Maintenance Design - Reducing Your \"Per-Square-Foot\" Cost",
+      "title": "The ROI of Low-Maintenance Design - Reducing Your Per-Square-Foot Cost",
       "notes": [
         "Analyzing the long-term savings of simplifying complex beds and modernizing maintenance-heavy zones."
       ],

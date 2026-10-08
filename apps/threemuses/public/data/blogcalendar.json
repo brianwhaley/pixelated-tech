@@ -1,416 +1,758 @@
 {
-  "blogCalendarConfig": {
-    "cadence": "weekly",
-    "defaultStatus": "",
-    "criteria": {
-      "subjectiveCriteria": [
-        "Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
-        "Target an education level of high school graduate or below.",
-        "Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
-        "Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
-        "Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
-        "Place the source link in the same paragraph as the statistic or factual claim it supports.",
-        "Use real, working URLs. Do not use placeholder links.",
-        "Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
-        "Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
-        "The blog post must make sense when read aloud, or if used as a script for a podcast.",
-        "Do not use text or html based tables, charts, or other formatting.",
-        "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
-        "Do not provide individualized legal, financial, medical, or cybersecurity advice",
-        "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
-      ],
-      "objectiveCriteria": {
-        "require_minimum_words": 800,
-        "require_maximum_words": 1200,
-        "require_intro_paragraph": true,
-        "require_conclusion_paragraph": true,
-        "require_call_to_action": true,
-        "require_minimum_body_paragraphs": 3,
-        "require_minimum_paragraph_sentences": 6,
-        "require_minimum_internal_links": 2,
-        "require_minimum_external_links": 2,
-        "required_call_to_action_link": "https://www.thethreemusesofbluffton.com/contact-us",
-        "required_call_to_action_heading": "Connect with our Creative Lowcountry Community!"
-      },
-      "unusedCriteria": {
-        "require_wordpress_blocks": false
-      }
-    }
-  },
-  "blogCalendar": [
-    {
-      "id": 1,
-      "targetPublishDate": "",
-      "title": "The Legend of the Three Muses: The story behind our Bluffton shop.",
-      "notes": [],
-      "status": ""
-    },
-    {
-      "id": 2,
-      "targetPublishDate": "",
-      "title": "Choosing your first pair of ballet shoes (Flat vs. Split sole).",
-      "notes": ["Dancewear"],
-      "status": ""
-    },
-    {
-      "id": 3,
-      "targetPublishDate": "",
-      "title": "Why \"Learning to Sew\" is the ultimate 2026 New Year's Resolution.",
-      "notes": ["Sewing"],
-      "status": ""
-    },
-    {
-      "id": 4,
-      "targetPublishDate": "",
-      "title": "Refreshing your space: Handcrafted boutique decor for the New Year.",
-      "notes": ["Boutique"],
-      "status": ""
-    },
-    {
-      "id": 5,
-      "targetPublishDate": "",
-      "title": "Meet the Team: The hands behind the alterations.",
-      "notes": ["Studio"],
-      "status": ""
-    },
-    {
-      "id": 6,
-      "targetPublishDate": "",
-      "title": "The Anatomy of a Pointe Shoe: What every dancer should know.",
-      "notes": ["Dancewear"],
-      "status": ""
-    },
-    {
-      "id": 7,
-      "targetPublishDate": "",
-      "title": "5 Common Alterations that will make your wardrobe feel brand new.",
-      "notes": ["Sewing"],
-      "status": ""
-    },
-    {
-      "id": 8,
-      "targetPublishDate": "",
-      "title": "Valentine's Day Gift Guide: Custom treasures for someone special.",
-      "notes": ["Boutique"],
-      "status": ""
-    },
-    {
-      "id": 9,
-      "targetPublishDate": "",
-      "title": "FAQ: Everything you need to know about our sewing class levels.",
-      "notes": ["Studio"],
-      "status": ""
-    },
-    {
-      "id": 10,
-      "targetPublishDate": "",
-      "title": "Spring Recital Prep: Keeping your tights snag-free.",
-      "notes": ["Dancewear"],
-      "status": ""
-    },
-    {
-      "id": 11,
-      "targetPublishDate": "",
-      "title": "Sewing Machine Basics: What to bring to your first class.",
-      "notes": ["Sewing"],
-      "status": ""
-    },
-    {
-      "id": 12,
-      "targetPublishDate": "",
-      "title": "Local Spotlight: Why we love being a part of the Bluffton community.",
-      "notes": ["Boutique"],
-      "status": ""
-    },
-    {
-      "id": 13,
-      "targetPublishDate": "",
-      "title": "March Madness: A look at our busiest alteration month.",
-      "notes": [
-        "Focus: Recitals, prom alterations, and Mother’s Day.",
-        "Studio"
-      ],
-      "status": ""
-    },
-    {
-      "id": 14,
-      "targetPublishDate": "",
-      "title": "The Stage Makeup Kit: Essentials for every young dancer.",
-      "notes": ["Dancewear"],
-      "status": ""
-    },
-    {
-      "id": 15,
-      "targetPublishDate": "",
-      "title": "Prom & Gala Season: When to book your alterations (The 4-week rule).",
-      "notes": ["Sewing"],
-      "status": ""
-    },
-    {
-      "id": 16,
-      "targetPublishDate": "",
-      "title": "Spring Arrivals: Floral prints and custom boutique accessories.",
-      "notes": ["Boutique"],
-      "status": ""
-    },
-    {
-      "id": 17,
-      "targetPublishDate": "",
-      "title": "How to measure yourself correctly for custom orders.",
-      "notes": ["Studio"],
-      "status": "published"
-    },
-    {
-      "id": 18,
-      "targetPublishDate": "",
-      "title": "Pointe Shoe Ribbon Styles: How to sew them like a pro.",
-      "notes": ["Dancewear"],
-      "status": "published"
-    },
-    {
-      "id": 19,
-      "targetPublishDate": "",
-      "title": "Upcycling 101: Turning an old dress into a new favorite.",
-      "notes": ["Sewing"],
-      "status": "published"
-    },
-    {
-      "id": 20,
-      "targetPublishDate": "",
-      "title": "The Mother’s Day Gift Guide: Hand-stitched elegance.",
-      "notes": ["Boutique"],
-      "status": ""
-    },
-    {
-      "id": 21,
-      "targetPublishDate": "",
-      "title": "A Day in the Life: Behind the scenes at The Three Muses.",
-      "notes": ["Studio"],
-      "status": ""
-    },
-    {
-      "id": 22,
-      "targetPublishDate": "",
-      "title": "Transitioning to Pointe: Is your dancer ready?",
-      "notes": ["Dancewear"],
-      "status": "published"
-    },
-    {
-      "id": 23,
-      "targetPublishDate": "",
-      "title": "The Art of the Hem: Why professional tailoring beats DIY.",
-      "notes": ["Sewing"],
-      "status": "published"
-    },
-    {
-      "id": 24,
-      "targetPublishDate": "",
-      "title": "Graduation Gifts: Unique keepsakes for the Class of 2026.",
-      "notes": ["Boutique"],
-      "status": ""
-    },
-    {
-      "id": 25,
-      "targetPublishDate": "",
-      "title": "Summer Class Schedule Release! (What’s coming up).",
-      "notes": ["Studio"],
-      "status": "published"
-    },
-    {
-      "id": 26,
-      "targetPublishDate": "",
-      "title": "Summer Intensive Essentials: Packing your dance bag.",
-      "notes": [
-        "Focus: Summer sewing camps, new dance season registration, and teacher gifts.",
-        "Dancewear"
-      ],
-      "status": "published"
-    },
-    {
-      "id": 27,
-      "targetPublishDate": "",
-      "title": "Summer Sewing Camp Highlights: What our students are making.",
-      "notes": ["Sewing"],
-      "status": "published"
-    },
-    {
-      "id": 28,
-      "targetPublishDate": "",
-      "title": "The Perfect Hostess Gift for those Bluffton summer parties.",
-      "notes": ["Boutique"],
-      "status": "published"
-    },
-    {
-      "id": 29,
-      "targetPublishDate": "",
-      "title": "Organizing your craft space: Tips from Sewing’s corner.",
-      "notes": ["Studio"],
-      "status": "published"
-    },
-    {
-      "id": 30,
-      "targetPublishDate": "",
-      "title": "Back-to-Dance: The 2026 Dress Code Guide for local studios.",
-      "notes": ["Dancewear"],
-      "status": "published"
-    },
-    {
-      "id": 31,
-      "targetPublishDate": "",
-      "title": "Alterations for Kids: Saving money on school uniforms.",
-      "notes": ["Sewing"],
-      "status": "published"
-    },
-    {
-      "id": 32,
-      "targetPublishDate": "",
-      "title": "Personalized \"Teacher Treats\" for the first week of school.",
-      "notes": ["Boutique"],
-      "status": "published"
-    },
-    {
-      "id": 33,
-      "targetPublishDate": "",
-      "title": "How we choose our Boutique brands: Quality over quantity.",
-      "notes": ["Studio"],
-      "status": "published"
-    },
-    {
-      "id": 34,
-      "targetPublishDate": "",
-      "title": "Breaking in your new shoes: Tips for a pain-free start.",
-      "notes": ["Dancewear"],
-      "status": "published"
-    },
-    {
-      "id": 35,
-      "targetPublishDate": "",
-      "title": "Advanced Sewing: Introduction to working with delicate fabrics.",
-      "notes": ["Sewing"],
-      "status": "published"
-    },
-    {
-      "id": 36,
-      "targetPublishDate": "",
-      "title": "Labor Day Weekend: Transitioning your boutique finds to Fall.",
-      "notes": ["Boutique"],
-      "status": "published"
-    },
-    {
-      "id": 37,
-      "targetPublishDate": "",
-      "title": "FAQ: \"Can this be fixed?\" — A guide to garment repair.",
-      "notes": ["Studio"],
-      "status": "published"
-    },
-    {
-      "id": 38,
-      "targetPublishDate": "",
-      "title": "Nutcracker Audition Season: Standing out in the crowd.",
-      "notes": ["Dancewear"],
-      "status": "published"
-    },
-    {
-      "id": 39,
-      "targetPublishDate": "",
-      "title": "Custom Halloween Costumes: Starting your project early.",
-      "notes": [
-        "Focus: Holiday performances, gift-giving, and festive decor.",
-        "Sewing"
-      ],
-      "status": "published"
-    },
-    {
-      "id": 40,
-      "targetPublishDate": "",
-      "title": "Falling for Bluffton: Autumn boutique favorites.",
-      "notes": ["Boutique"],
-      "status": "draft"
-    },
-    {
-      "id": 41,
-      "targetPublishDate": "",
-      "title": "Community Spotlight: Local dance schools we support.",
-      "notes": ["Studio"],
-      "status": "draft"
-    },
-    {
-      "id": 42,
-      "targetPublishDate": "",
-      "title": "Cold weather dancewear: Layering without losing line.",
-      "notes": ["Dancewear"],
-      "status": "draft"
-    },
-    {
-      "id": 43,
-      "targetPublishDate": "",
-      "title": "Creating your own Holiday Table Runners (Free sewing pattern).",
-      "notes": ["Sewing"],
-      "status": "draft"
-    },
-    {
-      "id": 44,
-      "targetPublishDate": "",
-      "title": "Early Bird Holiday Shopping: The \"Three Muses\" Gift Box.",
-      "notes": ["Boutique"],
-      "status": "draft"
-    },
-    {
-      "id": 45,
-      "targetPublishDate": "",
-      "title": "Small Business Saturday: Celebrating local craft.",
-      "notes": ["Studio"],
-      "status": "draft"
-    },
-    {
-      "id": 46,
-      "targetPublishDate": "",
-      "title": "The Nutcracker Gift Guide: Charms, ornaments, and more.",
-      "notes": ["Dancewear"],
-      "status": "draft"
-    },
-    {
-      "id": 47,
-      "targetPublishDate": "",
-      "title": "Last-minute alterations: Getting your holiday attire ready.",
-      "notes": ["Sewing"],
-      "status": "draft"
-    },
-    {
-      "id": 48,
-      "targetPublishDate": "",
-      "title": "Stocking Stuffer Saturday: Tiny treasures from the boutique.",
-      "notes": ["Boutique"],
-      "status": "draft"
-    },
-    {
-      "id": 49,
-      "targetPublishDate": "",
-      "title": "Reflecting on a year of Grace, Craft, and Celebration.",
-      "notes": ["Studio"],
-      "status": "draft"
-    },
-    {
-      "id": 50,
-      "targetPublishDate": "",
-      "title": "New Year, New Shoes: Scheduling your January fitting.",
-      "notes": ["Dancewear"],
-      "status": "draft"
-    },
-    {
-      "id": 51,
-      "targetPublishDate": "",
-      "title": "Hostess gifts for New Year's Eve.",
-      "notes": ["Boutique"],
-      "status": "draft"
-    },
-    {
-      "id": 52,
-      "targetPublishDate": "",
-      "title": "Setting your 2027 Sewing Goals.",
-      "notes": ["Sewing"],
-      "status": "draft"
-    }
-  ]
+	"blogCalendarConfig": {
+		"cadence": "weekly",
+		"defaultStatus": "",
+		"criteria": {
+			"subjectiveCriteria": [
+				"Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+				"Target an education level of high school graduate or below.",
+				"Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+				"Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+				"Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+				"Place the source link in the same paragraph as the statistic or factual claim it supports.",
+				"Use real, working URLs. Do not use placeholder links.",
+				"Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
+				"Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
+				"The blog post must make sense when read aloud, or if used as a script for a podcast.",
+				"Do not use text or html based tables, charts, or other formatting.",
+				"Do not invent metrics, prices, statistics, laws, results, client details, or product features",
+				"Do not provide individualized legal, financial, medical, or cybersecurity advice",
+				"Optimize for search and answer engines",
+				"End the article with a Call to Action (CTA) to contact us.",
+				"Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
+			],
+			"objectiveCriteria": {
+				"require_minimum_words": 800,
+				"require_maximum_words": 1200,
+				"require_intro_paragraph": true,
+				"require_conclusion_paragraph": true,
+				"require_call_to_action": true,
+				"require_minimum_body_paragraphs": 3,
+				"require_minimum_paragraph_sentences": 6,
+				"require_minimum_internal_links": 2,
+				"require_minimum_external_links": 2,
+				"required_call_to_action_link": "https://www.thethreemusesofbluffton.com/contact-us",
+				"required_call_to_action_heading": "Connect with our Creative Lowcountry Community!"
+			},
+			"unusedCriteria": {
+				"require_wordpress_blocks": false
+			}
+		}
+	},
+	"blogCalendar": [
+		{
+			"id": 1,
+			"targetPublishDate": "",
+			"title": "The Legend of the Three Muses: The story behind our Bluffton shop.",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 2,
+			"targetPublishDate": "",
+			"title": "Choosing your first pair of ballet shoes (Flat vs. Split sole).",
+			"notes": [
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 3,
+			"targetPublishDate": "",
+			"title": "Why Learning to Sew is the ultimate 2026 New Year's Resolution.",
+			"notes": [
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 4,
+			"targetPublishDate": "",
+			"title": "Refreshing your space: Handcrafted boutique decor for the New Year.",
+			"notes": [
+				"Boutique"
+			],
+			"status": ""
+		},
+		{
+			"id": 5,
+			"targetPublishDate": "",
+			"title": "Meet the Team: The hands behind the alterations.",
+			"notes": [
+				"Studio"
+			],
+			"status": ""
+		},
+		{
+			"id": 6,
+			"targetPublishDate": "",
+			"title": "The Anatomy of a Pointe Shoe: What every dancer should know.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 7,
+			"targetPublishDate": "",
+			"title": "5 Common Alterations that will make your wardrobe feel brand new.",
+			"notes": [
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 8,
+			"targetPublishDate": "",
+			"title": "Valentine's Day Gift Guide: Custom treasures for someone special.",
+			"notes": [
+				"Boutique"
+			],
+			"status": ""
+		},
+		{
+			"id": 9,
+			"targetPublishDate": "",
+			"title": "FAQ: Everything you need to know about our sewing class levels.",
+			"notes": [
+				"Studio"
+			],
+			"status": ""
+		},
+		{
+			"id": 10,
+			"targetPublishDate": "",
+			"title": "Spring Recital Prep: Keeping your tights snag-free.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 11,
+			"targetPublishDate": "",
+			"title": "Sewing Machine Basics: What to bring to your first class.",
+			"notes": [
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 12,
+			"targetPublishDate": "",
+			"title": "Local Spotlight: Why we love being a part of the Bluffton community.",
+			"notes": [
+				"Boutique"
+			],
+			"status": ""
+		},
+		{
+			"id": 13,
+			"targetPublishDate": "",
+			"title": "March Madness: A look at our busiest alteration month.",
+			"notes": [
+				"Focus: Recitals, prom alterations, and Mother’s Day.",
+				"Studio"
+			],
+			"status": ""
+		},
+		{
+			"id": 14,
+			"targetPublishDate": "",
+			"title": "The Stage Makeup Kit: Essentials for every young dancer.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 15,
+			"targetPublishDate": "",
+			"title": "Prom and Gala Season: When to book your alterations (The 4-week rule).",
+			"notes": [
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 16,
+			"targetPublishDate": "",
+			"title": "Spring Arrivals: Floral prints and custom boutique accessories.",
+			"notes": [
+				"Boutique"
+			],
+			"status": ""
+		},
+		{
+			"id": 17,
+			"targetPublishDate": "",
+			"title": "How to measure yourself correctly for custom orders.",
+			"notes": [
+				"Studio"
+			],
+			"status": "published"
+		},
+		{
+			"id": 18,
+			"targetPublishDate": "",
+			"title": "Pointe Shoe Ribbon Styles: How to sew them like a pro.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "published"
+		},
+		{
+			"id": 19,
+			"targetPublishDate": "",
+			"title": "Upcycling 101: Turning an old dress into a new favorite.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "published"
+		},
+		{
+			"id": 20,
+			"targetPublishDate": "",
+			"title": "The Mother's Day Gift Guide: Hand-stitched elegance.",
+			"notes": [
+				"Boutique"
+			],
+			"status": ""
+		},
+		{
+			"id": 21,
+			"targetPublishDate": "",
+			"title": "A Day in the Life: Behind the scenes at The Three Muses.",
+			"notes": [
+				"Studio"
+			],
+			"status": ""
+		},
+		{
+			"id": 22,
+			"targetPublishDate": "",
+			"title": "Transitioning to Pointe: Is your dancer ready?",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "published"
+		},
+		{
+			"id": 23,
+			"targetPublishDate": "",
+			"title": "The Art of the Hem: Why professional tailoring beats DIY.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "published"
+		},
+		{
+			"id": 24,
+			"targetPublishDate": "",
+			"title": "Graduation Gifts: Unique keepsakes for the Class of 2026.",
+			"notes": [
+				"Boutique"
+			],
+			"status": ""
+		},
+		{
+			"id": 25,
+			"targetPublishDate": "",
+			"title": "Summer Class Schedule Release! (What’s coming up).",
+			"notes": [
+				"Studio"
+			],
+			"status": "published"
+		},
+		{
+			"id": 26,
+			"targetPublishDate": "",
+			"title": "Summer Intensive Essentials: Packing your dance bag.",
+			"notes": [
+				"Focus: Summer sewing camps, new dance season registration, and teacher gifts.",
+				"Dancewear"
+			],
+			"status": "published"
+		},
+		{
+			"id": 27,
+			"targetPublishDate": "",
+			"title": "Summer Sewing Camp Highlights: What our students are making.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "published"
+		},
+		{
+			"id": 28,
+			"targetPublishDate": "",
+			"title": "The Perfect Hostess Gift for those Bluffton summer parties.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "published"
+		},
+		{
+			"id": 29,
+			"targetPublishDate": "",
+			"title": "Organizing your craft space: Tips from Sewing’s corner.",
+			"notes": [
+				"Studio"
+			],
+			"status": "published"
+		},
+		{
+			"id": 30,
+			"targetPublishDate": "",
+			"title": "Back-to-Dance: The 2026 Dress Code Guide for local studios.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "published"
+		},
+		{
+			"id": 31,
+			"targetPublishDate": "",
+			"title": "Alterations for Kids: Saving money on school uniforms.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "published"
+		},
+		{
+			"id": 32,
+			"targetPublishDate": "",
+			"title": "Personalized Teacher Treats for the first week of school.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "published"
+		},
+		{
+			"id": 33,
+			"targetPublishDate": "",
+			"title": "How we choose our Boutique brands: Quality over quantity.",
+			"notes": [
+				"Studio"
+			],
+			"status": "published"
+		},
+		{
+			"id": 34,
+			"targetPublishDate": "",
+			"title": "Breaking in your new shoes: Tips for a pain-free start.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "published"
+		},
+		{
+			"id": 35,
+			"targetPublishDate": "",
+			"title": "Advanced Sewing: Introduction to working with delicate fabrics.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "published"
+		},
+		{
+			"id": 36,
+			"targetPublishDate": "",
+			"title": "Labor Day Weekend: Transitioning your boutique finds to Fall.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "published"
+		},
+		{
+			"id": 37,
+			"targetPublishDate": "",
+			"title": "FAQ: Can this be fixed? A guide to garment repair.",
+			"notes": [
+				"Studio"
+			],
+			"status": "published"
+		},
+		{
+			"id": 38,
+			"targetPublishDate": "",
+			"title": "Nutcracker Audition Season: Standing out in the crowd.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "published"
+		},
+		{
+			"id": 39,
+			"targetPublishDate": "",
+			"title": "Custom Halloween Costumes: Starting your project early.",
+			"notes": [
+				"Focus: Holiday performances, gift-giving, and festive decor.",
+				"Sewing"
+			],
+			"status": "published"
+		},
+		{
+			"id": 40,
+			"targetPublishDate": "",
+			"title": "Falling for Bluffton: Autumn boutique favorites.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "draft",
+			"wordpressPostId": 262,
+			"imageStatus": "selected",
+			"imageBrief": "A cozy and inviting autumn scene in Bluffton, South Carolina, featuring the exterior of a charming local boutique. The storefront is tastefully decorated with subtle fall elements like small pumpkins, gourds, or autumn foliage in planters. Warm, natural light illuminates the scene, highlighting the shop's unique character and the welcoming atmosphere of a Lowcountry fall day. The image should evoke a sense of local charm and seasonal beauty.",
+			"imageSearchTerms": [
+				"Bluffton SC autumn boutique storefront",
+				"Lowcountry fall shopping",
+				"charming small town fall boutique exterior",
+				"cozy South Carolina autumn street",
+				"boutique exterior fall decor"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-42",
+				"title": "Pumpkin decoration outdoors Stylish autumn decor of exterior building Pumpkins decor of street",
+				"detailUrl": "https://www.magnific.com/premium-photo/pumpkin-decoration-outdoors-stylish-autumn-decor-exterior-building-pumpkins-decor-street_36249727.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/36249727?lang=en",
+				"provider": "sonjachnyj",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "274"
+		},
+		{
+			"id": 41,
+			"targetPublishDate": "",
+			"title": "Community Spotlight: Local dance schools we support.",
+			"notes": [
+				"Studio"
+			],
+			"status": "draft",
+			"wordpressPostId": 263,
+			"imageStatus": "selected",
+			"imageBrief": "A vibrant, dynamic stock photograph capturing a diverse group of children and adults of various ages dancing together in a spacious, well-lit studio or community center. Some individuals might be performing ballet, others jazz or hip-hop, showcasing a range of dance styles. The atmosphere should be joyful and energetic, emphasizing community, learning, and the physical benefits of dance. The background should be slightly blurred to keep focus on the dancers but suggest a clean, inviting studio environment.",
+			"imageSearchTerms": [
+				"diverse dance class community",
+				"children and adults dancing together",
+				"joyful dance studio",
+				"group dance fitness",
+				"community dance program",
+				"multi-generational dance"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-6",
+				"title": "Team ballet dancers and class with teacher for performance routine or choreography in studio Young people community or group of performers with coach in ballerina academy for art dance or talent",
+				"detailUrl": "https://www.magnific.com/premium-photo/team-ballet-dancers-class-with-teacher-performance-routine-choreography-studio-young-people-community-group-performers-with-coach-ballerina-academy-art-dance-talent_358100986.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/358100986?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "276"
+		},
+		{
+			"id": 42,
+			"targetPublishDate": "",
+			"title": "Cold weather dancewear: Layering without losing line.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "draft",
+			"wordpressPostId": 264,
+			"imageStatus": "selected",
+			"imageBrief": "A female dancer, appearing graceful and warm, is stretching or practicing in a slightly cool-toned dance studio. She is wearing multiple layers of dancewear, such as a leotard, tights, leg warmers, and a fitted wrap or shrug. The layers are subtle and do not obscure her body's lines, highlighting how layering can be achieved without bulk. The studio should have natural light, suggesting a calm, focused atmosphere. The dancer should be in motion or a poised stance, emphasizing fluidity.",
+			"imageSearchTerms": [
+				"dancer cold weather layering",
+				"ballet dancer warm up studio",
+				"graceful dancer winter practice",
+				"dancewear layering elegant",
+				"female dancer stretching warm clothes"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-20",
+				"title": "Group ballet and dancer for fitness in studio for bar stretching balance exercise and body flexibility Creative people and warm up with training talent or performance together in dancing class",
+				"detailUrl": "https://www.magnific.com/premium-photo/group-ballet-dancer-fitness-studio-bar-stretching-balance-exercise-body-flexibility-creative-people-warm-up-with-training-talent-performance-together-dancing-class_361147828.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/361147828?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "278"
+		},
+		{
+			"id": 43,
+			"targetPublishDate": "",
+			"title": "Creating your own Holiday Table Runners (Free sewing pattern).",
+			"notes": [
+				"Sewing"
+			],
+			"status": "draft"
+		},
+		{
+			"id": 44,
+			"targetPublishDate": "",
+			"title": "Early Bird Holiday Shopping: The Three Muses Gift Box.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "draft",
+			"wordpressPostId": 265,
+			"imageStatus": "selected",
+			"imageBrief": "A beautifully arranged gift box from a boutique, featuring artisanal products like a small jar of gourmet food, a piece of handcrafted jewelry, and a scented candle, all nestled on natural shredded paper. The box is open, showcasing the contents, and is placed on a rustic wooden surface with soft, warm lighting that suggests a cozy holiday atmosphere. A hint of festive decor, like a subtle evergreen sprig or a few pinecones, is in the blurred background.",
+			"imageSearchTerms": [
+				"boutique gift box",
+				"artisanal holiday gifts",
+				"curated gift set",
+				"luxury gift box open",
+				"stress-free holiday shopping",
+				"early bird gifts",
+				"handcrafted local products",
+				"cozy festive gifts"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-73",
+				"title": "Beautifully wrapped holiday gifts set among pine branches and cones create a cozy festive atmosphere",
+				"detailUrl": "https://www.magnific.com/premium-photo/beautifully-wrapped-holiday-gifts-set-pine-branches-cones-create-cozy-festive-atmosphere_273829137.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/273829137?lang=en",
+				"provider": "lk360606",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "280"
+		},
+		{
+			"id": 45,
+			"targetPublishDate": "",
+			"title": "Small Business Saturday: Celebrating local craft.",
+			"notes": [
+				"Studio"
+			],
+			"status": "draft",
+			"wordpressPostId": 266,
+			"imageStatus": "selected",
+			"imageBrief": "A realistic stock photograph depicting an artisan actively engaged in their craft within a well-lit studio. The image should convey creativity and the hands-on nature of handmade goods. For example, a potter at a wheel, a painter with a canvas, or a textile artist at a loom.",
+			"imageSearchTerms": [
+				"artisan studio",
+				"craft workshop",
+				"handmade goods",
+				"local artist working",
+				"pottery studio",
+				"textile artist",
+				"small business owner craft"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-15",
+				"title": "Woman ceramic product and shelf in workshop creative studio and manufacturing startup Female small business owner pottery designer and artist working with sculpture creativity and craft process",
+				"detailUrl": "https://www.magnific.com/premium-photo/woman-ceramic-product-shelf-workshop-creative-studio-manufacturing-startup-female-small-business-owner-pottery-designer-artist-working-with-sculpture-creativity-craft-process_40694850.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/40694850?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "282"
+		},
+		{
+			"id": 46,
+			"targetPublishDate": "",
+			"title": "The Nutcracker Gift Guide: Charms, ornaments, and more.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "draft",
+			"wordpressPostId": 267,
+			"imageStatus": "selected",
+			"imageBrief": "A beautifully arranged flat lay or tabletop shot showcasing a variety of Nutcracker-themed gifts. This could include a delicate ballet slipper charm on a chain, a festive Nutcracker soldier ornament, a small, elegant music box, a themed dance bag, and a cozy pair of leg warmers, all artfully displayed on a soft, holiday-themed background (e.g., a subtle red or green fabric, or a wooden surface with a sprig of evergreen). The lighting should be warm and inviting, highlighting the intricate details of each item.",
+			"imageSearchTerms": [
+				"Nutcracker gifts",
+				"ballet holiday gifts",
+				"dance Christmas ornaments",
+				"Nutcracker charms",
+				"dancewear gift guide",
+				"holiday flat lay ballet"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-51",
+				"title": "Pink pointe shoes inside pine cone wreath on white wood Flat lay holiday composition for greeting",
+				"detailUrl": "https://www.magnific.com/premium-photo/pink-pointe-shoes-inside-pine-cone-wreath-white-wood-flat-lay-holiday-composition-greeting_428128007.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/428128007?lang=en",
+				"provider": "user11849519",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "284"
+		},
+		{
+			"id": 47,
+			"targetPublishDate": "",
+			"title": "Last-minute alterations: Getting your holiday attire ready.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "draft",
+			"wordpressPostId": 268,
+			"imageStatus": "selected",
+			"imageBrief": "A close-up shot of hands, possibly a woman's, carefully mending a seam on a festive holiday garment (e.g., a sequined dress or velvet jacket) with a needle and thread. The background is softly blurred, hinting at a cozy, home setting with holiday decorations. The focus is on the intricate detail of the sewing, showing precision and care.",
+			"imageSearchTerms": [
+				"holiday sewing alteration",
+				"last minute mending",
+				"festive outfit repair",
+				"hand sewing holiday dress",
+				"DIY holiday fashion fix",
+				"sewing needle thread holiday",
+				"clothing repair christmas"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-37",
+				"title": "Seamstresses sew fabric by hand sweep away details of future outfit Work process crafting workplace needle with thread",
+				"detailUrl": "https://www.magnific.com/premium-photo/seamstresses-sew-fabric-by-hand-sweep-away-details-future-outfit-work-process-crafting-workplace-needle-with-thread_222442145.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/222442145?lang=en",
+				"provider": "vailery",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "286"
+		},
+		{
+			"id": 48,
+			"targetPublishDate": "",
+			"title": "Stocking Stuffer Saturday: Tiny treasures from the boutique.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "draft",
+			"wordpressPostId": 269,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting close-up shot of a hand placing a small, beautifully wrapped gift into a festive Christmas stocking. The stocking is made of cozy fabric, perhaps knitted or felt, with subtle holiday patterns. In the background, out of focus, there are hints of other small, charming boutique items and soft, twinkling lights, suggesting a cozy shopping environment or a home decorated for the holidays. The focus is on the act of giving a thoughtful, tiny treasure.",
+			"imageSearchTerms": [
+				"stocking stuffer boutique",
+				"small holiday gifts",
+				"unique Christmas presents",
+				"hand placing gift stocking",
+				"boutique holiday shopping",
+				"thoughtful small gifts"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-45",
+				"title": "Satisfied with purchase Shopping concept Woman hold shopping bag and gift box Fashion boutique Shopping discount special offer Shopping always good idea Girl buy gift for holiday Birthday girl",
+				"detailUrl": "https://www.magnific.com/premium-photo/satisfied-with-purchase-shopping-concept-woman-hold-shopping-bag-gift-box-fashion-boutique-shopping-discount-special-offer-shopping-always-good-idea-girl-buy-gift-holiday-birthday-girl_25904338.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/25904338?lang=en",
+				"provider": "romeo22",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "288"
+		},
+		{
+			"id": 49,
+			"targetPublishDate": "",
+			"title": "Reflecting on a year of Grace, Craft, and Celebration.",
+			"notes": [
+				"Studio"
+			],
+			"status": "draft",
+			"wordpressPostId": 270,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting stock photograph capturing the essence of a vibrant art studio. The image should show a diverse group of adults (2-4 people) engaged in various crafts, such as painting, pottery, or drawing, in a well-lit, organized studio space. There should be natural light, art supplies visible, and a sense of community and focused creativity. The people should be smiling or concentrating, conveying a positive and welcoming atmosphere.",
+			"imageSearchTerms": [
+				"art studio community",
+				"adult art class",
+				"creative workshop",
+				"people crafting together",
+				"art therapy group",
+				"bluffton art studio",
+				"lowcountry art"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-22",
+				"title": "Creative friends group and art studio for canvas bonding and happy for paint class learning People smile and acrylic artwork for talent artistic project and workshop for hobby or passion",
+				"detailUrl": "https://www.magnific.com/premium-photo/creative-friends-group-art-studio-canvas-bonding-happy-paint-class-learning-people-smile-acrylic-artwork-talent-artistic-project-workshop-hobby-passion_316490439.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/316490439?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "290"
+		},
+		{
+			"id": 50,
+			"targetPublishDate": "",
+			"title": "New Year, New Shoes: Scheduling your January fitting.",
+			"notes": [
+				"Dancewear"
+			],
+			"status": "draft",
+			"wordpressPostId": 271,
+			"imageStatus": "selected",
+			"imageBrief": "A brightly lit, clean dancewear store interior with a focus on a wall display of various dance shoes (ballet slippers, pointe shoes, jazz shoes). A friendly, professional store associate is kneeling, helping a young dancer (wearing dance attire like tights) try on a shoe. The scene should convey expertise, comfort, and the excitement of finding the right fit. The background should be slightly blurred to keep focus on the fitting interaction.",
+			"imageSearchTerms": [
+				"dance shoe fitting",
+				"dancewear store",
+				"ballet shoes fitting",
+				"professional shoe fitting",
+				"young dancer trying on shoes",
+				"dance shop interior",
+				"expert assistance dance shoes"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-25",
+				"title": "Ballerina puts on pointe shoes on leg in dance class classical ballet dancer woman in dance studio",
+				"detailUrl": "https://www.magnific.com/premium-photo/ballerina-puts-pointe-shoes-leg-dance-class-classical-ballet-dancer-woman-dance-studio_137905778.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/137905778?lang=en",
+				"provider": "zavalishina",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "292"
+		},
+		{
+			"id": 51,
+			"targetPublishDate": "",
+			"title": "Hostess gifts for New Year's Eve.",
+			"notes": [
+				"Boutique"
+			],
+			"status": "draft",
+			"wordpressPostId": 272,
+			"imageStatus": "selected",
+			"imageBrief": "A beautifully arranged flat lay or close-up shot of several elegant, boutique-style hostess gifts suitable for New Year's Eve. Items could include a small, artisanal scented candle, a beautifully packaged gourmet food item (like specialty chocolates or a unique jam), a decorative ceramic piece, and perhaps a small, high-quality tea towel or a unique bottle opener. The setting should evoke a festive yet sophisticated atmosphere, possibly with subtle hints of New Year's Eve decor like a glittery ribbon or a small, elegant party favor in the background. The lighting should be soft and inviting.",
+			"imageSearchTerms": [
+				"New Year's Eve hostess gifts",
+				"boutique gifts flat lay",
+				"elegant holiday gifts",
+				"artisan gourmet gifts",
+				"thoughtful party favors",
+				"luxury hostess gifts",
+				"small business gifts"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-5",
+				"title": "Excited and surprised young women opening New Year gifts together",
+				"detailUrl": "https://www.magnific.com/premium-photo/excited-surprised-young-women-opening-new-year-gifts-together_22318671.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/22318671?lang=en",
+				"provider": "yakobchuk",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "294"
+		},
+		{
+			"id": 52,
+			"targetPublishDate": "",
+			"title": "Setting your 2027 Sewing Goals.",
+			"notes": [
+				"Sewing"
+			],
+			"status": "draft",
+			"wordpressPostId": 273,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting stock photo showing a person's hands actively engaged in sewing. Perhaps their hands are guiding fabric under a sewing machine needle, or they are hand-stitching a detail. The setting should feel cozy and creative, possibly with fabric scraps, thread spools, and a pattern nearby, suggesting active work on a project and the joy of creation. The focus should be on the hands and the craft, conveying dedication and the process of achieving a goal.",
+			"imageSearchTerms": [
+				"sewing hands",
+				"person sewing machine",
+				"crafting project focus",
+				"sewing goals planning",
+				"creative hobby hands",
+				"fabric craft workspace"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-46",
+				"title": "Hands woman and embroidery with sewing at house for creative decoration design of handmade ornament as tradition Person designer and fabric frame canvas for cross art pattern process as hobby",
+				"detailUrl": "https://www.magnific.com/premium-photo/hands-woman-embroidery-with-sewing-house-creative-decoration-design-handmade-ornament-as-tradition-person-designer-fabric-frame-canvas-cross-art-pattern-process-as-hobby_255335631.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/255335631?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "296"
+		}
+	]
 }

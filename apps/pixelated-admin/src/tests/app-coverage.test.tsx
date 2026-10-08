@@ -59,6 +59,7 @@ vi.mock('@pixelated-tech/components', async () => {
 		SkeletonLoading: () => <div>Skeleton</div>,
 		ToggleLoading: () => null,
 		Table: ({ children }: any) => <table>{children}</table>,
+		Tab: ({ tabs }: any) => <div data-testid="Tab">{tabs?.map((tab: any) => <div key={tab.id}>{tab.content}</div>)}</div>,
 		smartFetch: (...args: any[]) => mockSmartFetch(...args),
 		ConfigBuilder: ({ children }: any) => <div>{children}</div>,
 		FormBuilder: ({ children }: any) => <div>{children}</div>,

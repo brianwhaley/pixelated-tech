@@ -16,7 +16,9 @@ const {
   mapWordPressToBlogPosting,
   getWordPressItemImages,
   getWordPressCategories,
-  createWordPressDraft
+  createWordPressDraft,
+  updateWordPressDraft,
+  uploadWordPressMedia
 } = await import('../components/integrations/wordpress.functions');
 
 describe('WordPress Functions', () => {
@@ -87,6 +89,61 @@ describe('WordPress Functions', () => {
       })).rejects.toThrow('WordPress draft requires site, apiToken, title, and content');
 
       expect(mockSmartFetch).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('updateWordPressDraft', () => {
+    it('updates an existing draft through the authenticated WordPress request', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ ID: 42, status: 'draft' });
+
+      await updateWordPressDraft(42, {
+        site: 'blog.example.com',
+        apiToken: 'token',
+        baseURL: 'https://public-api.wordpress.com/rest/v1/sites/',
+        title: 'Updated draft title',
+        content: 'Updated draft content',
+        featuredImageId: 707,
+      });
+
+      expect(mockSmartFetch).toHaveBeenCalledWith(
+        'https://public-api.wordpress.com/rest/v1/sites/blog.example.com/posts/42',
+        expect.objectContaining({
+          retries: 0,
+          requestInit: expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({
+              status: 'draft',
+              title: 'Updated draft title',
+              content: '<p>Updated draft content</p>\n',
+              featured_image: 707,
+            }),
+          }),
+        })
+      );
+    });
+  });
+
+  describe('uploadWordPressMedia', () => {
+    it('sends alt text, caption, and description in the media attributes', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ media: [{ ID: 707 }] });
+
+      await uploadWordPressMedia({
+        site: 'blog.example.com',
+        apiToken: 'token',
+        filename: 'featured.webp',
+        buffer: Buffer.from('image-data'),
+        mimeType: 'image/webp',
+        title: 'Sustainable server technology',
+        altText: 'Energy-efficient server room',
+        caption: 'Server room powered by renewable energy',
+        description: 'Featured stock photograph for "Sustainable server technology".',
+      });
+
+      const request = mockSmartFetch.mock.calls[0][1];
+      const form = request?.requestInit?.body as FormData;
+      expect(form.get('attrs[0][alt]')).toBe('Energy-efficient server room');
+      expect(form.get('attrs[0][caption]')).toBe('Server room powered by renewable energy');
+      expect(form.get('attrs[0][description]')).toBe('Featured stock photograph for "Sustainable server technology".');
     });
   });
 

@@ -18,7 +18,8 @@
         "Do not invent metrics, prices, statistics, laws, results, client details, or product features",
         "Do not provide individualized legal, financial, medical, or cybersecurity advice",
         "Optimize for search and answer engines",
-        "End the article with a Call to Action (CTA) to contact us."
+        "End the article with a Call to Action (CTA) to contact us.",
+        "Blog post titles must not contain quote marks or ampersands; use plain wording and the word and instead."
       ],
       "objectiveCriteria": {
         "require_minimum_words": 800,
@@ -42,7 +43,7 @@
     {
       "id": 1,
       "targetPublishDate": "",
-      "title": "What Is Epoxy Flooring? A Homeowner's Guide for Bluffton & Hilton Head",
+      "title": "What Is Epoxy Flooring? A Homeowner's Guide for Bluffton and Hilton Head",
       "notes": ["Published cornerstone post."],
       "status": "published"
     },
@@ -63,75 +64,118 @@
     {
       "id": 4,
       "targetPublishDate": "",
-      "title": "How Lowcountry Humidity Affects Concrete & Coatings",
-      "notes": ["Published climate post."],
+      "title": "How Lowcountry Humidity Affects Concrete and Coatings",
+      "notes": [
+        "Published climate post."
+      ],
       "status": "published"
     },
     {
       "id": 5,
       "targetPublishDate": "",
-      "title": "Residential vs. Commercial Epoxy: Key Differences in Materials & Prep",
-      "notes": ["Published sector comparison."],
+      "title": "Residential vs. Commercial Epoxy: Key Differences in Materials and Prep",
+      "notes": [
+        "Published sector comparison."
+      ],
       "status": "published"
     },
     {
       "id": 6,
       "targetPublishDate": "",
       "title": "Why Surface Preparation Matters More Than the Coating Itself",
-      "notes": ["Published technical post."],
+      "notes": [
+        "Published technical post."
+      ],
       "status": "published"
     },
     {
       "id": 7,
       "targetPublishDate": "",
-      "title": "Introduction to Concrete Polishing: Process, Benefits & Applications",
-      "notes": ["Published service overview."],
+      "title": "Introduction to Concrete Polishing: Process, Benefits and Applications",
+      "notes": [
+        "Published service overview."
+      ],
       "status": "published"
     },
     {
       "id": 8,
       "targetPublishDate": "",
       "title": "Top 7 Mistakes Homeowners Make with DIY Epoxy Kits",
-      "notes": ["Published warnings post."],
+      "notes": [
+        "Published warnings post."
+      ],
       "status": "published"
     },
     {
       "id": 9,
       "targetPublishDate": "",
-      "title": "Understanding Concrete Moisture Vapor & Why It Matters",
+      "title": "Understanding Concrete Moisture Vapor and Why It Matters",
       "notes": [
         "Focus on hydrostatic pressure in coastal Lowcountry soil.",
         "Explain Calcium Chloride (ASTM F1869) & In-Situ Probe (ASTM F2170) testing.",
         "AEO Query Target: What causes epoxy floor peeling in humid environments?",
         "Podcast Prompt: The hidden water under your concrete slab and how it destroys DIY floors."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 411,
+      "imageStatus": "selected",
+      "imageBrief": "A professional-looking image showing a construction worker or technician using a moisture meter on a concrete slab, possibly with a floor covering partially removed or prepared. The focus should be on the testing process or the concrete surface, conveying a sense of precision and assessment.",
+      "imageSearchTerms": [
+        "concrete moisture testing",
+        "concrete slab inspection",
+        "moisture meter concrete",
+        "construction moisture assessment",
+        "flooring technician concrete"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-21",
+        "title": "Moisture Probe and Tape Measure on Concrete Surface for Flooring Quality Control",
+        "detailUrl": "https://www.magnific.com/premium-photo/moisture-probe-tape-measure-concrete-surface-flooring-quality-control_428356966.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/428356966?lang=en",
+        "provider": "talexey",
+        "orientation": "vertical"
+      },
+      "wordpressMediaId": "452"
     },
     {
       "id": 10,
       "targetPublishDate": "",
       "title": "Paver Sealing Basics: Why Sealing Matters in Coastal South Carolina",
-      "notes": ["Published paver post."],
+      "notes": [
+        "Published paver post."
+      ],
       "status": "published"
     },
     {
       "id": 11,
       "targetPublishDate": "",
-      "title": "Choosing Colors, Flakes, and Finishes for Garages & Patios",
-      "notes": ["Published aesthetics post."],
+      "title": "Choosing Colors, Flakes, and Finishes for Garages and Patios",
+      "notes": [
+        "Published aesthetics post."
+      ],
       "status": "published"
     },
     {
       "id": 12,
       "targetPublishDate": "",
-      "title": "How to Evaluate a Flooring & Coatings Contractor in the Lowcountry",
+      "title": "How to Evaluate a Flooring and Coatings Contractor in the Lowcountry",
       "notes": [
         "Checklist for licensing, insurance, diamond grinding equipment, and local references.",
         "Red flags: Acid etching, single-day rush jobs on high-moisture slabs, vague warranties.",
         "AEO Query Target: How do I choose a reputable epoxy contractor in Bluffton SC?",
         "Podcast Prompt: 5 questions you must ask before hiring a floor coating company."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 412,
+      "imageStatus": "not-found",
+      "imageBrief": "A professional contractor discussing project details and showing flooring samples to a homeowner on-site, possibly in a bright, modern living space or garage in a Lowcountry-style home. The setting should subtly suggest the coastal region, perhaps through natural light or architectural details.",
+      "imageSearchTerms": [
+        "Flooring contractor consultation homeowner Lowcountry",
+        "epoxy flooring expert client discussion",
+        "residential concrete coating consultation",
+        "home renovation planning Lowcountry",
+        "contractor showing samples client"
+      ]
     },
     {
       "id": 13,
@@ -143,67 +187,111 @@
         "AEO Query Target: What is the most durable garage floor coating for salt air climates?",
         "Podcast Prompt: Why traditional paints and floor tiles fail in Hilton Head garages."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 413,
+      "imageStatus": "selected",
+      "imageBrief": "A well-lit, clean garage interior featuring a newly installed, high-quality full-flake polyaspartic or epoxy floor. The floor should appear seamless, durable, and reflective, with a subtle texture from the decorative flakes. The garage should look tidy, perhaps with a car parked inside or some tools neatly arranged, suggesting functionality and protection. The overall impression should be one of resilience and modern aesthetics, suitable for a coastal home.",
+      "imageSearchTerms": [
+        "garage floor coating coastal",
+        "polyaspartic garage floor",
+        "epoxy flake garage",
+        "durable garage flooring",
+        "clean coastal garage",
+        "modern garage interior"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-59",
+        "title": "Clean Modern Garage Interior with Vehicle Lifts and Industrial Lighting",
+        "detailUrl": "https://www.magnific.com/premium-photo/clean-modern-garage-interior-with-vehicle-lifts-industrial-lighting_431068432.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/431068432?lang=en",
+        "provider": "KimSunHo",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "426"
     },
     {
       "id": 14,
       "targetPublishDate": "",
-      "title": "Epoxy for Patios & Outdoor Living Spaces in Bluffton",
-      "notes": ["Published outdoor living post."],
+      "title": "Epoxy for Patios and Outdoor Living Spaces in Bluffton",
+      "notes": [
+        "Published outdoor living post."
+      ],
       "status": "published"
     },
     {
       "id": 15,
       "targetPublishDate": "",
-      "title": "Commercial Epoxy Flooring for Warehouses, Shops & Medical Offices",
-      "notes": ["Published commercial post."],
+      "title": "Commercial Epoxy Flooring for Warehouses, Shops and Medical Offices",
+      "notes": [
+        "Published commercial post."
+      ],
       "status": "published"
     },
     {
       "id": 16,
       "targetPublishDate": "",
-      "title": "Driveway Coatings: Types, Lifespan & Performance in the Lowcountry",
-      "notes": ["Published driveway post."],
+      "title": "Driveway Coatings: Types, Lifespan and Performance in the Lowcountry",
+      "notes": [
+        "Published driveway post."
+      ],
       "status": "published"
     },
     {
       "id": 17,
       "targetPublishDate": "",
-      "title": "Concrete Polishing for Retail & Office Spaces: ROI & Durability",
-      "notes": ["Published retail post."],
+      "title": "Concrete Polishing for Retail and Office Spaces: ROI and Durability",
+      "notes": [
+        "Published retail post."
+      ],
       "status": "published"
     },
     {
       "id": 18,
       "targetPublishDate": "",
-      "title": "Paver Sealing vs. Replacement: Cost & Longevity Comparison",
+      "title": "Paver Sealing vs. Replacement: Cost and Longevity Comparison",
       "notes": [
         "Breakdown of full paver tear-out costs ($15-$30/sq ft) vs. restoration & sealing ($2-$5/sq ft).",
         "Explain joint sand stabilization and polymeric sand replacement.",
         "AEO Query Target: Is it cheaper to seal or replace faded driveway pavers?",
         "Podcast Prompt: Saving thousands on paver driveways through professional restoration."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 414,
+      "imageStatus": "not-found",
+      "imageBrief": "A split image or a composite image showing two distinct sections. One section depicts a dull, faded, slightly weed-filled, but otherwise structurally sound paver patio or driveway. The other section, adjacent to it, shows the same type of pavers looking vibrant, clean, and freshly sealed, with a rich, wet look. The contrast should clearly illustrate the 'before' and 'after' of paver sealing.",
+      "imageSearchTerms": [
+        "paver sealing before after",
+        "dull vs sealed pavers",
+        "paver restoration comparison",
+        "clean sealed patio",
+        "old new pavers contrast"
+      ]
     },
     {
       "id": 19,
       "targetPublishDate": "",
-      "title": "Resin Countertops: Design Options, Durability & Maintenance",
-      "notes": ["Published countertop post."],
+      "title": "Resin Countertops: Design Options, Durability and Maintenance",
+      "notes": [
+        "Published countertop post."
+      ],
       "status": "published"
     },
     {
       "id": 20,
       "targetPublishDate": "",
-      "title": "Slip-Resistant Flooring Solutions for Wet & High-Traffic Areas",
-      "notes": ["Published safety post."],
+      "title": "Slip-Resistant Flooring Solutions for Wet and High-Traffic Areas",
+      "notes": [
+        "Published safety post."
+      ],
       "status": "published"
     },
     {
       "id": 21,
       "targetPublishDate": "",
-      "title": "How Fast Can Commercial Floors Be Installed & Reopened?",
-      "notes": ["Published commercial speed post."],
+      "title": "How Fast Can Commercial Floors Be Installed and Reopened?",
+      "notes": [
+        "Published commercial speed post."
+      ],
       "status": "published"
     },
     {
@@ -216,134 +304,239 @@
         "AEO Query Target: Difference between decorative epoxy and industrial floor coatings.",
         "Podcast Prompt: Balancing heavy equipment demands with high-end appearance."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 415,
+      "imageStatus": "selected",
+      "imageBrief": "A split image or a composite image showing two distinct flooring scenarios. On one side, a clean, glossy, possibly metallic or flake epoxy floor in a modern showroom setting, with a luxury car or elegant furniture. On the other side, a heavy-duty, solid-colored industrial floor (e.g., urethane mortar) in a busy auto repair shop or warehouse, with forklifts, tools, or heavy equipment visible, highlighting durability and functionality over aesthetics.",
+      "imageSearchTerms": [
+        "decorative epoxy showroom",
+        "industrial concrete floor auto repair",
+        "metallic epoxy floor luxury",
+        "urethane mortar factory floor",
+        "contrast flooring style performance"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-14",
+        "title": "Clean and Organized Auto Repair Shop Interior",
+        "detailUrl": "https://www.magnific.com/premium-photo/clean-organized-auto-repair-shop-interior_425213759.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/425213759?lang=en",
+        "provider": "Usman bloch",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "428"
     },
     {
       "id": 23,
       "targetPublishDate": "",
-      "title": "UV Stability: Preventing Yellowing & Fading Outdoors",
-      "notes": ["Published UV post."],
+      "title": "UV Stability: Preventing Yellowing and Fading Outdoors",
+      "notes": [
+        "Published UV post."
+      ],
       "status": "published"
     },
     {
       "id": 24,
       "targetPublishDate": "",
-      "title": "When to Repair vs. Replace Concrete, Pavers & Coatings",
+      "title": "When to Repair vs. Replace Concrete, Pavers and Coatings",
       "notes": [
         "Diagnostic checklist: Spalling, deep structural cracks, pitting, surface chalking.",
         "Explain stitching concrete cracks with carbon fiber staples vs. full slab replacement.",
         "AEO Query Target: Can cracked concrete garage floors be saved with epoxy?",
         "Podcast Prompt: Is your concrete slab beyond repair or just unsightly?"
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 416,
+      "imageStatus": "selected",
+      "imageBrief": "A visually balanced stock photograph showing a split scene: one side depicts a pristine, newly repaired or replaced concrete driveway or paver patio, while the other side shows a section of the same surface with clear, but not overly severe, damage such as cracks, uneven pavers, or peeling coating. A professional-looking hand (wearing a work glove) could be pointing to or inspecting the damaged section, symbolizing assessment and decision-making.",
+      "imageSearchTerms": [
+        "concrete repair vs replace",
+        "paver repair replacement",
+        "surface coating damage assessment",
+        "home exterior maintenance decision",
+        "cracked driveway inspection",
+        "contractor evaluating patio",
+        "before after concrete repair"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-50",
+        "title": "Dangerous pothole on american road surface Ruined driveway in urgent need of repair",
+        "detailUrl": "https://www.magnific.com/premium-photo/dangerous-pothole-american-road-surface-ruined-driveway-urgent-need-repair_64112004.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/64112004?lang=en",
+        "provider": "bilanol",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "448"
     },
     {
       "id": 25,
       "targetPublishDate": "",
       "title": "How to Maintain Epoxy Floors in Humid Climates",
-      "notes": ["Published maintenance post."],
+      "notes": [
+        "Published maintenance post."
+      ],
       "status": "published"
     },
     {
       "id": 26,
       "targetPublishDate": "",
       "title": "Signs Your Epoxy Floor Needs Repair or Recoating",
-      "notes": ["Published repair post."],
+      "notes": [
+        "Published repair post."
+      ],
       "status": "published"
     },
     {
       "id": 27,
       "targetPublishDate": "",
-      "title": "Maintaining Polished Concrete: Cleaning, Burnishing & Resealing",
-      "notes": ["Published polished care post."],
+      "title": "Maintaining Polished Concrete: Cleaning, Burnishing and Resealing",
+      "notes": [
+        "Published polished care post."
+      ],
       "status": "published"
     },
     {
       "id": 28,
       "targetPublishDate": "",
-      "title": "How Salt Air Affects Concrete, Pavers & Coatings",
-      "notes": ["Published environmental post."],
+      "title": "How Salt Air Affects Concrete, Pavers and Coatings",
+      "notes": [
+        "Published environmental post."
+      ],
       "status": "published"
     },
     {
       "id": 29,
       "targetPublishDate": "",
       "title": "Preventing Hot Tire Pickup in Garage Floors",
-      "notes": ["Published tire pickup post."],
+      "notes": [
+        "Published tire pickup post."
+      ],
       "status": "published"
     },
     {
       "id": 30,
       "targetPublishDate": "",
-      "title": "Common Failures in Driveway Coatings & How to Prevent Them",
-      "notes": ["Published failures post."],
+      "title": "Common Failures in Driveway Coatings and How to Prevent Them",
+      "notes": [
+        "Published failures post."
+      ],
       "status": "published"
     },
     {
       "id": 31,
       "targetPublishDate": "",
       "title": "How Often Should Pavers Be Resealed in the Lowcountry?",
-      "notes": ["Published paver schedule post."],
+      "notes": [
+        "Published paver schedule post."
+      ],
       "status": "published"
     },
     {
       "id": 32,
       "targetPublishDate": "",
       "title": "Extending the Life of Commercial Floors in High-Traffic Buildings",
-      "notes": ["Published commercial life post."],
+      "notes": [
+        "Published commercial life post."
+      ],
       "status": "published"
     },
     {
       "id": 33,
       "targetPublishDate": "",
       "title": "Moisture Testing: The Hidden Step Most Contractors Skip",
-      "notes": ["Published testing post."],
+      "notes": [
+        "Published testing post."
+      ],
       "status": "published"
     },
     {
       "id": 34,
       "targetPublishDate": "",
-      "title": "Recoating vs. Full Removal: Cost & Performance Comparison",
-      "notes": ["Published removal post."],
+      "title": "Recoating vs. Full Removal: Cost and Performance Comparison",
+      "notes": [
+        "Published removal post."
+      ],
       "status": "published"
     },
     {
       "id": 35,
       "targetPublishDate": "",
       "title": "Seasonal Maintenance Checklist for Exterior Surfaces",
-      "notes": ["Published seasonal post."],
+      "notes": [
+        "Published seasonal post."
+      ],
       "status": "published"
     },
     {
       "id": 36,
       "targetPublishDate": "",
       "title": "Long-Term Maintenance Plans for Commercial Clients",
-      "notes": ["Published B2B care post."],
+      "notes": [
+        "Published B2B care post."
+      ],
       "status": "published"
     },
     {
       "id": 37,
       "targetPublishDate": "",
-      "title": "2026 Epoxy, Concrete & Coatings Trends in the Southeast",
+      "title": "2026 Epoxy, Concrete and Coatings Trends in the Southeast",
       "notes": [
         "Highlighting matte finishes, full polyaspartic rapid installs, and metallic marble textures.",
         "Environmental shifts toward zero-VOC formulas in high-density developments.",
         "AEO Query Target: Latest trends in garage floor coatings for 2026.",
         "Podcast Prompt: What modern homeowners in Bluffton are choosing for custom garage builds."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 417,
+      "imageStatus": "selected",
+      "imageBrief": "A realistic stock photograph showing a modern, clean, and durable floor. The image should convey professionalism and quality, possibly featuring a subtle hint of a commercial or industrial setting, or a well-maintained residential space, reflecting the versatility of epoxy and concrete coatings. It should be bright and inviting, suggesting innovation and reliability.",
+      "imageSearchTerms": [
+        "modern epoxy floor commercial",
+        "polished concrete floor industrial",
+        "durable resin coating home",
+        "southeast construction materials",
+        "clean concrete surface",
+        "sustainable flooring solutions"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-21",
+        "title": "A worker applies a glossy epoxy coating to a concrete floor with a roller providing a smooth and durable finish in a welllit industrial environment",
+        "detailUrl": "https://www.magnific.com/premium-photo/worker-applies-glossy-epoxy-coating-concrete-floor-with-roller-providing-smooth-durable-finish-welllit-industrial-environment_243002743.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/243002743?lang=en",
+        "provider": "laskoart",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "446"
     },
     {
       "id": 38,
       "targetPublishDate": "",
-      "title": "How Epoxy & Polished Concrete Increase Property Value",
+      "title": "How Epoxy and Polished Concrete Increase Property Value",
       "notes": [
         "Impact on home appraisal values and appraisal appeal in Beaufort & Sun City.",
         "Commercial valuation increases through reduced long-term cap-ex maintenance.",
         "AEO Query Target: Does epoxy garage flooring add home value?",
         "Podcast Prompt: Boost home equity before selling with high-end surface finishes."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 418,
+      "imageStatus": "selected",
+      "imageBrief": "A high-angle, well-lit shot of a modern, open-plan living space or a light commercial showroom featuring a seamless, light grey polished concrete floor. The floor should appear clean, reflective, and durable, extending into the background, possibly with subtle natural light streaming in from a large window. The focus should be on the floor's aesthetic appeal and quality.",
+      "imageSearchTerms": [
+        "modern polished concrete floor living room",
+        "sleek epoxy floor commercial space",
+        "durable concrete flooring interior design",
+        "industrial chic home flooring",
+        "high-gloss concrete floor residential"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-5",
+        "title": "Modern Style empty concrete room with nature view 3d renderThere are polished concrete floor wall and ceilingThere are large window look out to see the garden viewsunlight shining into the room",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-style-empty-concrete-room-with-nature-view-3d-renderthere-are-polished-concrete-floor-wall-ceilingthere-are-large-window-look-out-see-garden-viewsunlight-shining-into-room_138494465.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/138494465?lang=en",
+        "provider": "onzon",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "444"
     },
     {
       "id": 39,
@@ -355,7 +548,26 @@
         "AEO Query Target: How much does professional epoxy flooring cost per square foot in SC?",
         "Podcast Prompt: Understanding floor coating pricing: Where your money actually goes."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 419,
+      "imageStatus": "selected",
+      "imageBrief": "A stock photograph showing a professional worker in protective gear operating a floor grinder on a concrete surface, creating a smooth, prepped area. The image should convey professionalism, specialized equipment, and the importance of surface preparation in flooring projects. The setting could be a garage, workshop, or light industrial space.",
+      "imageSearchTerms": [
+        "epoxy floor preparation",
+        "concrete grinding professional",
+        "floor prep equipment",
+        "industrial floor coating surface preparation",
+        "concrete restoration worker"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-13",
+        "title": "Professional concrete floor grinder vacuum cleaner connected to the grinder industrial concrete floor grinding",
+        "detailUrl": "https://www.magnific.com/premium-photo/professional-concrete-floor-grinder-vacuum-cleaner-connected-grinder-industrial-concrete-floor-grinding_34844630.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/34844630?lang=en",
+        "provider": "vladyslavhoroshevych",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "430"
     },
     {
       "id": 40,
@@ -367,31 +579,89 @@
         "AEO Query Target: Is high end epoxy garage floor coating worth the money?",
         "Podcast Prompt: Why cheap floor coatings end up costing double in the long run."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 420,
+      "imageStatus": "selected",
+      "imageBrief": "A split image or a visually contrasting image showing two sections of a garage floor. One side is a chipped, peeling, dull, and worn-out floor, possibly with visible concrete underneath, representing a failed budget coating. The other side is a pristine, glossy, smooth, and vibrant garage floor with a high-quality finish, representing a premium epoxy or polyaspartic coating.",
+      "imageSearchTerms": [
+        "garage floor comparison",
+        "worn vs new garage floor",
+        "peeling epoxy floor",
+        "premium garage coating",
+        "durable concrete floor",
+        "before after garage floor"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-42",
+        "title": "A worker applies a glossy epoxy coating to a concrete floor with a roller providing a smooth and durable finish in a welllit industrial environment",
+        "detailUrl": "https://www.magnific.com/premium-photo/worker-applies-glossy-epoxy-coating-concrete-floor-with-roller-providing-smooth-durable-finish-welllit-industrial-environment_243002743.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/243002743?lang=en",
+        "provider": "laskoart",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "432"
     },
     {
       "id": 41,
       "targetPublishDate": "",
-      "title": "Capital Improvements: When Flooring & Surface Upgrades Make Sense",
+      "title": "Capital Improvements: When Flooring and Surface Upgrades Make Sense",
       "notes": [
         "Tax depreciation benefits for commercial flooring upgrades (Section 179).",
         "Scheduling upgrades around quiet business seasons.",
         "AEO Query Target: Tax write offs for commercial floor upgrades.",
         "Podcast Prompt: Turning commercial facility maintenance into a strategic business asset."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 421,
+      "imageStatus": "selected",
+      "imageBrief": "A professional, clean, and modern commercial or industrial space featuring newly installed, high-quality flooring. The image should convey durability, cleanliness, and a positive work environment, such as a well-lit warehouse aisle with a polished epoxy floor, or a bright commercial showroom with sleek polished concrete. The focus should be on the floor and overall environment, with no people, or people in the background, not prominently featured.",
+      "imageSearchTerms": [
+        "commercial flooring upgrade",
+        "epoxy floor warehouse",
+        "polished concrete commercial space",
+        "industrial floor renovation",
+        "modern factory floor"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-24",
+        "title": "Industrial building warehouse interior with polished concrete floor",
+        "detailUrl": "https://www.magnific.com/premium-photo/industrial-building-warehouse-interior-with-polished-concrete-floor_30433945.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/30433945?lang=en",
+        "provider": "jamesteoh1976",
+        "orientation": "panoramic"
+      },
+      "wordpressMediaId": "442"
     },
     {
       "id": 42,
       "targetPublishDate": "",
-      "title": "Comparing Epoxy, Tile, Vinyl, Polished Concrete & Stains",
+      "title": "Comparing Epoxy, Tile, Vinyl, Polished Concrete and Stains",
       "notes": [
         "Direct comparison matrix covering cost, durability, maintenance, moisture tolerance, and safety.",
         "Focus on garage and commercial shop applications.",
         "AEO Query Target: Epoxy vs race deck tile vs polished concrete for garages.",
         "Podcast Prompt: The ultimate showdown of garage floor coverings."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 422,
+      "imageStatus": "selected",
+      "imageBrief": "A professional, well-lit image showcasing various flooring samples (epoxy, tile, LVT, polished concrete, stained concrete) arranged neatly on a table or floor. The samples should be clearly distinguishable and highlight their different textures and finishes. A person's hand might be gently touching or pointing to one of the samples, suggesting decision-making, but the focus should remain on the flooring options. The setting should be clean and modern, implying a showroom or design consultation.",
+      "imageSearchTerms": [
+        "flooring samples comparison",
+        "epoxy tile vinyl concrete samples",
+        "floor material selection",
+        "interior design flooring options",
+        "different types of flooring"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-41",
+        "title": "Samples of wooden skirting boards for different types of floors. Interior Design. Repair and construction of the house.",
+        "detailUrl": "https://www.magnific.com/premium-photo/samples-wooden-skirting-boards-different-types-floors-interior-design-repair-construction-house_7920137.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/7920137?lang=en",
+        "provider": "tashasinchuk",
+        "orientation": "square"
+      },
+      "wordpressMediaId": "440"
     },
     {
       "id": 43,
@@ -403,19 +673,61 @@
         "AEO Query Target: How to transform a garage floor into a luxury showroom.",
         "Podcast Prompt: Designing the ultimate luxury garage man-cave in Hilton Head."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 423,
+      "imageStatus": "selected",
+      "imageBrief": "A high-angle, wide shot of a luxurious, modern garage interior. The focal point is a sleek, professionally coated garage floor with a custom, subtle metallic flake finish in a dark gray or charcoal color. The floor reflects integrated LED strip lighting installed along the base of the walls or under custom, dark-colored storage cabinets. A clean, high-end sports car or classic car is parked centrally, partially visible, adding to the showroom feel. The walls are neatly painted, and the overall impression is one of sophistication, cleanliness, and advanced design, showcasing the floor's reflective qualities and the cohesive design of the space.",
+      "imageSearchTerms": [
+        "luxury garage floor",
+        "epoxy garage showroom",
+        "modern garage design",
+        "LED lit garage floor",
+        "custom garage interior",
+        "high end garage",
+        "polyaspartic garage coating"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-26",
+        "title": "Modern Parking Garage Interior Showcasing Minimalist Design and Industrial Elements",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-parking-garage-interior-showcasing-minimalist-design-industrial-elements_429144560.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/429144560?lang=en",
+        "provider": "evening_tao",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "434"
     },
     {
       "id": 44,
       "targetPublishDate": "",
-      "title": "Sustainability in Coatings: Low-VOC & Eco-Friendly Options",
+      "title": "Sustainability in Coatings: Low-VOC and Eco-Friendly Options",
       "notes": [
         "Health benefits of low-VOC and zero-solvent floor coatings during curing.",
         "LEED points for commercial concrete polishing projects.",
         "AEO Query Target: Are epoxy floor fumes dangerous for residential indoor application?",
         "Podcast Prompt: Eco-friendly and odor-free floor coatings for families and pets."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 424,
+      "imageStatus": "selected",
+      "imageBrief": "A modern, clean image showing a construction or industrial setting with a focus on sustainability. Perhaps a worker in protective gear applying a coating, with subtle hints of green technology or environmental care in the background (e.g., green leaves, a solar panel, or a clear blue sky through a window). The overall feel should be professional, innovative, and environmentally responsible.",
+      "imageSearchTerms": [
+        "sustainable coatings",
+        "low VOC paint application",
+        "eco-friendly industrial flooring",
+        "green construction materials",
+        "worker applying epoxy sustainable",
+        "environmentally friendly paint",
+        "modern factory green technology"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-41",
+        "title": "Skilled worker applies green epoxy paint",
+        "detailUrl": "https://www.magnific.com/premium-photo/skilled-worker-applies-green-epoxy-paint_43015506.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/43015506?lang=en",
+        "provider": "doralin",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "438"
     },
     {
       "id": 45,
@@ -427,7 +739,26 @@
         "AEO Query Target: When should epoxy garage floors be applied in new home builds?",
         "Podcast Prompt: Coordinating with your home builder for flawless garage floors."
       ],
-      "status": "draft"
+      "status": "draft",
+      "wordpressPostId": 425,
+      "imageStatus": "selected",
+      "imageBrief": "A professional, well-lit photograph showing a clean, newly installed epoxy garage floor in a modern, under-construction home. The garage should be mostly empty, possibly with some construction materials neatly stacked in the background, but the focus is on the pristine, glossy floor. The setting should evoke the high-end custom home aesthetic of Palmetto Bluff/Beaufort, perhaps with a glimpse of the exterior or surrounding natural light.",
+      "imageSearchTerms": [
+        "new home construction garage epoxy floor",
+        "luxury garage floor coating installation",
+        "modern custom home garage",
+        "concrete floor finishing construction site",
+        "fresh epoxy garage floor"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-42",
+        "title": "New polished concrete floor covered with a layer of yellow epoxy resin",
+        "detailUrl": "https://www.magnific.com/premium-photo/new-polished-concrete-floor-covered-with-layer-yellow-epoxy-resin_43015799.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/43015799?lang=en",
+        "provider": "doralin",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "436"
     },
     {
       "id": 46,
@@ -456,7 +787,7 @@
     {
       "id": 48,
       "targetPublishDate": "",
-      "title": "What Warranties Really Cover in Flooring & Coatings Systems",
+      "title": "What Warranties Really Cover in Flooring and Coatings Systems",
       "notes": [
         "Deciphering peeling vs. mechanical abuse coverage.",
         "Why moisture testing results determine valid warranty protection.",
@@ -480,7 +811,7 @@
     {
       "id": 50,
       "targetPublishDate": "",
-      "title": "Decorative Concrete Overlays for Patios & Walkways",
+      "title": "Decorative Concrete Overlays for Patios and Walkways",
       "notes": [
         "Transforming spalled patio concrete without full teardown using micro-topings.",
         "Stamping and hand-troweled texture techniques.",
@@ -492,7 +823,7 @@
     {
       "id": 51,
       "targetPublishDate": "",
-      "title": "Resin Countertops vs. Quartz & Granite: Pros & Cons",
+      "title": "Resin Countertops vs. Quartz and Granite: Pros and Cons",
       "notes": [
         "Comparing heat resistance, seamless customization, scratch resistance, and cost.",
         "Creating custom veining and faux-marble finishes.",
@@ -516,7 +847,7 @@
     {
       "id": 53,
       "targetPublishDate": "",
-      "title": "Industrial Flooring Systems for Manufacturing & Warehousing",
+      "title": "Industrial Flooring Systems for Manufacturing and Warehousing",
       "notes": [
         "Forklift traffic resistance, impact loads, and thermal shock coatings.",
         "OSHA line striping and safety aisle designations.",
@@ -528,7 +859,7 @@
     {
       "id": 54,
       "targetPublishDate": "",
-      "title": "Designing Custom Flake & Metallic Epoxy Floors",
+      "title": "Designing Custom Flake and Metallic Epoxy Floors",
       "notes": [
         "Selecting partial, medium, or full flake broadcast distributions.",
         "3D metallic pigment dispersion techniques for unique artistic floors.",
@@ -540,7 +871,7 @@
     {
       "id": 55,
       "targetPublishDate": "",
-      "title": "Paver Restoration: Cleaning, Re-Sanding & Sealing",
+      "title": "Paver Restoration: Cleaning, Re-Sanding and Sealing",
       "notes": [
         "Process of removing weed growth, efflorescence, and failing old sealer.",
         "Compacting ASTM C144 joint sand prior to sealing.",
@@ -552,7 +883,7 @@
     {
       "id": 56,
       "targetPublishDate": "",
-      "title": "Driveway Coating Design Options & Curb Appeal",
+      "title": "Driveway Coating Design Options and Curb Appeal",
       "notes": [
         "Acrylic sealers vs polyaspartic coatings for residential driveways.",
         "Enhancing neighborhood curb appeal in Gated Communities.",
@@ -564,7 +895,7 @@
     {
       "id": 57,
       "targetPublishDate": "",
-      "title": "Food-Safe & Chemical-Resistant Coatings for Commercial Use",
+      "title": "Food-Safe and Chemical-Resistant Coatings for Commercial Use",
       "notes": [
         "USDA/FDA compliance for commercial kitchens, breweries, and food plants.",
         "Anti-microbial additives and urethane mortar cove base installation.",
@@ -624,7 +955,7 @@
     {
       "id": 62,
       "targetPublishDate": "",
-      "title": "How to Build a Long-Term Flooring & Surface Maintenance Plan",
+      "title": "How to Build a Long-Term Flooring and Surface Maintenance Plan",
       "notes": [
         "Creating custom inspection schedules for HOA property managers.",
         "Preventative maintenance vs reactive floor replacement budgets.",
@@ -647,7 +978,7 @@
     {
       "id": 64,
       "targetPublishDate": "",
-      "title": "Trends in Resin Surfaces for Kitchens & Commercial Interiors",
+      "title": "Trends in Resin Surfaces for Kitchens and Commercial Interiors",
       "notes": [
         "Seamless floor-to-counter resin finishes in contemporary lowcountry homes.",
         "Custom logo embedding and color-matching.",
@@ -659,7 +990,7 @@
     {
       "id": 65,
       "targetPublishDate": "",
-      "title": "Choosing Coatings for Medical, Veterinary & Cleanroom Spaces",
+      "title": "Choosing Coatings for Medical, Veterinary and Cleanroom Spaces",
       "notes": [
         "Seamless, non-porous floor requirements to eliminate bacterial growth.",
         "Chemical resistance to medical disinfectants and harsh washdowns.",
@@ -671,7 +1002,7 @@
     {
       "id": 66,
       "targetPublishDate": "",
-      "title": "Climate-Driven Design: Building for Heat, Humidity & Salt Air",
+      "title": "Climate-Driven Design: Building for Heat, Humidity and Salt Air",
       "notes": [
         "Material science of polymers in subtropical zones.",
         "Thermal expansion matching between concrete and epoxy topcoats.",
@@ -717,7 +1048,7 @@
     {
       "id": 70,
       "targetPublishDate": "",
-      "title": "Innovations in Fast-Cure & Rapid-Return Coatings",
+      "title": "Innovations in Fast-Cure and Rapid-Return Coatings",
       "notes": [
         "Polyaspartic polyurea chemistry that allows 1-day installation and 24-hour vehicle park-in.",
         "AEO Query Target: Can garage floor epoxy be done in one day?",
@@ -750,7 +1081,7 @@
     {
       "id": 73,
       "targetPublishDate": "",
-      "title": "Complete Guide to Epoxy, Polished Concrete & Surface Coatings",
+      "title": "Complete Guide to Epoxy, Polished Concrete and Surface Coatings",
       "notes": [
         "Comprehensive 2,500-word cornerstone resource covering prep, installation, maintenance, and costs.",
         "AEO Query Target: Complete guide to concrete floor coatings.",
@@ -761,7 +1092,7 @@
     {
       "id": 74,
       "targetPublishDate": "",
-      "title": "FAQs About Epoxy, Polished Concrete, Pavers & Resin Surfaces",
+      "title": "FAQs About Epoxy, Polished Concrete, Pavers and Resin Surfaces",
       "notes": [
         "Master list of 25 micro-answers formatted for direct Voice Search and Google snippets.",
         "AEO Query Target: Frequently asked questions about epoxy flooring.",
@@ -805,7 +1136,7 @@
     {
       "id": 78,
       "targetPublishDate": "",
-      "title": "Looking Ahead: The Future of Concrete & Coatings in the Southeast",
+      "title": "Looking Ahead: The Future of Concrete and Coatings in the Southeast",
       "notes": [
         "Epoxy Flooring Guides",
         "Concrete Polishing",
@@ -888,7 +1219,7 @@
     {
       "id": 84,
       "targetPublishDate": "",
-      "title": "Coastal Pool Deck Coatings: Cool-Foot Technology & Slip Resistance",
+      "title": "Coastal Pool Deck Coatings: Cool-Foot Technology and Slip Resistance",
       "notes": [
         "Heat-reflective pigments designed to reduce solar heat gain on bare feet.",
         "Textured aggregates meeting ADA slip coefficient standards around swimming pools.",
@@ -924,7 +1255,7 @@
     {
       "id": 87,
       "targetPublishDate": "",
-      "title": "Auto Repair Shop Floor Solutions: Chemical Resistance Against Brake Fluid & Oil",
+      "title": "Auto Repair Shop Floor Solutions: Chemical Resistance Against Brake Fluid and Oil",
       "notes": [
         "Resisting Skydrol, battery acid, motor oil, and aggressive solvents.",
         "Impact resistance from heavy falling drop-forged tools.",
@@ -1068,7 +1399,7 @@
     {
       "id": 99,
       "targetPublishDate": "",
-      "title": "Micro-Topings & Overlays: Giving Old Outdoor Concrete a Modern Facelift",
+      "title": "Micro-Topings and Overlays: Giving Old Outdoor Concrete a Modern Facelift",
       "notes": [
         "Thin-coat polymer overlays to cover discolored, pitted, or mismatched concrete pours.",
         "Color staining and broom-finish aesthetic options.",

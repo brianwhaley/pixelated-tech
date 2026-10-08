@@ -1,0 +1,16 @@
+.blog-draft-list {
+	--do-nothing: true;
+}
+
+.blog-draft-item {
+    padding-bottom: 10px;
+}
+
+.blog-draft-label {
+	font-size: var(--font-size4);
+}
+
+.blog-draft-modified {
+	margin-left: 35px;
+	font-size: var(--font-size6);
+}

@@ -80,6 +80,7 @@ describe('gemini-api.server', () => {
 
 		expect((smartFetch as any).mock.calls[0][0]).toContain('v1beta/models/gemini-2.5-flash:generateContent');
 		expect((smartFetch as any).mock.calls[0][0]).toContain('key=test-key');
+		expect((smartFetch as any).mock.calls[0][1].timeout).toBe(60000);
 	});
 
 	it('should return an error if no API key is configured', async () => {

@@ -59,7 +59,7 @@ Do not create an abstraction merely because reuse is theoretically possible.
 ## Shared Capability Rules
 
 - Use the existing component, package, schema, integration, and export conventions.
-- Add shared tests before or alongside shared implementation.
+- Add shared tests before or alongside shared implementation. Treat focused tests as part of every new function, integration, server action, and platform feature; create or update them in the same change without waiting for a separate request, including applicable success, error, empty, validation, and contract-boundary cases.
 - Keep public APIs small, explicit, typed, and backwards-compatible where possible.
 - Separate client and server code using the repository's established boundaries.
 - Do not duplicate components, APIs, config readers, schemas, or test harnesses across packages.
@@ -107,7 +107,7 @@ The canonical runtime configuration is `pixelated.config.json` and its establish
 3. Present the proposed architecture, public API, affected packages/apps, migration plan, risks, and validation plan.
 4. Wait for approval before editing when the architecture or compatibility impact is not already approved.
 5. Implement the smallest reusable capability in the correct shared location.
-6. Add or update shared tests before adding application-specific adaptations.
+6. Add or update shared tests before adding application-specific adaptations; tests are required deliverables for new behavior.
 7. Update exports, schemas, config types, documentation, and migrations as required.
 8. Validate the changed package immediately, then validate affected applications.
 9. Run focused tests before broader package or workspace tests.

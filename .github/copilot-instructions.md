@@ -396,6 +396,9 @@ test('renders correctly', () => {
 });
 ```
 
+### Test-by-Default Rule
+Testing is part of implementation, not a follow-up task. When adding or changing a function, server action, integration, component, or user-facing feature, create or update the focused test in the same change without waiting for the user to request it. Cover the successful path and applicable error, empty, validation, and integration-boundary cases with deterministic mocks or fixtures, then run the narrowest relevant test before broader validation.
+
 ## Deployment & Publishing
 - Published to npm as `@pixelated-tech/components`
 - Uses TypeScript declarations and ESM exports

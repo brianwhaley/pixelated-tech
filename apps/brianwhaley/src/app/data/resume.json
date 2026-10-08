@@ -938,7 +938,7 @@
 						"location": [ {
 							"type": [ "h-card" ],
 							"properties": {
-								"org": [ "Preparing for PMI’s PMP Certification Exam - PMI 2 Day Super-Intensive Course, Boston University Education Affiliate, Bill Ruggles, BMS" ],
+								"org": [ "Preparing for PMI's PMP Certification Exam - PMI 2 Day Super-Intensive Course, Boston University Education Affiliate, Bill Ruggles, BMS" ],
 								"url": [ ],
 								"tel": [ ],
 								"street-address": [ ],
@@ -984,7 +984,7 @@
 					"properties": {
 						"name": [ ],
 						"start": [ "2023-12-05T09:00:00" ],
-						"end": [ "Present" ],
+						"end": [ "2025-10-15T17:00:00" ],
 						"summary": [ ],
 						"description": [ ],
 						"location": [{
@@ -1275,6 +1275,16 @@
 							}
 						}],
 						"projects" : [
+							{
+								"type": [ "h-card" ],
+								"properties": {
+									"name": [ "Amava Janitorial Web Site" ],
+									"url": [ "https://www.amavajanitorial.com/" ],
+									"photo": [ "https://farm66.static.flickr.com/65535/55576999621_cf1c285085_b.jpg" ],
+									"note": [  ],
+									"x-note": [ "October 2, 2026" ]
+								}
+							},
 							{
 								"type": [ "h-card" ],
 								"properties": {
@@ -1957,7 +1967,7 @@
 							"The Design Thinking Certificate Program at Rutgers, in connection with the Rutgers Center for Innovation Education and the Rutgers Professional Science Master's Degree, focuses on teaching innovative thinking as a means of designing products and services that manage complexity, serve human needs, and are sustainable to both businesses and the people they serve. Students work in small teams to complete a project from beginning to end, with guidance from professional designers and educators. " ],
 						"description": [
 							"Membership on the Advisory Council is by invitation only, and is based upon personal and professional accomplishments",
-							"The Council meets once a quarter to discuss the curricula of our Rutgers’ Design Thinking program and to assign mentorships for future class participants",
+							"The Council meets once a quarter to discuss the curricula of our Rutgers' Design Thinking program and to assign mentorships for future class participants",
 							"Chaired the Marketing Committee, focusing on increased program awareness, networking of committee members and students, lead generation, thought leadership, and social media presence",
 							"Technology Stack includes Weebly, Google Analytics, HTML5, CSS3, JavaScript",
 							"See more at: http://designthinking.rutgers.edu/" ],

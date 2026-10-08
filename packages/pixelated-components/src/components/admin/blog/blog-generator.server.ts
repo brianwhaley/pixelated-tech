@@ -6,10 +6,23 @@ import { getFullPixelatedConfig } from '../../config/config';
 import { smartFetch } from '../../foundation/smartfetch';
 import { buildUrl } from '../../foundation/urlbuilder';
 import { getSiteConfig } from '../sites/sites.integration';
-import { createWordPressDraft } from '../../integrations/wordpress.functions';
-import { measureBlogArticle, normalizeObjectiveCriteria, validateBlogArticle, type BlogArticleMetrics, type BlogCriteria } from './blog-generator.validation';
+import { createWordPressDraft, updateWordPressDraft, uploadWordPressMedia, type WordPressDraftResponse } from '../../integrations/wordpress.functions';
+import { findMagnificStockImage, prepareMagnificStockImage, type MagnificStockImage } from '../../integrations/magnific.server';
+import { normalizeObjectiveCriteria, type BlogArticleMetrics, type BlogCriteria } from './blog-generator.validation';
 
 const debug = false;
+
+function normalizeBlogTitle(title: string): string {
+	return title
+		.replace(/<[^>]*>/g, '')
+		.replace(/&#8220;|&#8221;|&ldquo;|&rdquo;/g, '"')
+		.replace(/&#8216;|&#8217;|&lsquo;|&rsquo;/g, "'")
+		.replace(/&quot;/g, '"')
+		.replace(/&amp;/g, '&')
+		.replace(/\s+/g, ' ')
+		.trim()
+		.toLowerCase();
+}
 
 export type BlogCalendarEntry = {
 	id: number;
@@ -18,6 +31,11 @@ export type BlogCalendarEntry = {
 	notes: string[];
 	status: string;
 	wordpressPostId?: string | number;
+	imageStatus?: 'selected' | 'not-found';
+	imageBrief?: string;
+	imageSearchTerms?: string[];
+	magnificImage?: Omit<MagnificStockImage, 'sourceUrl'>;
+	wordpressMediaId?: string | number;
 };
 
 export type BlogCalendarData = {
@@ -45,9 +63,18 @@ export type BlogGenerationResult = {
 		title: string;
 		status: 'draft' | 'failed';
 		wordpressPostId?: string | number;
+		imageStatus?: 'selected' | 'not-found';
 		error?: string;
 	}>;
 	usage: GeminiUsage;
+};
+
+export type ExistingWordPressDraft = {
+	id: string | number;
+	title: string;
+	modified?: string;
+	url?: string;
+	featuredImage?: string;
 };
 
 type ArticleSelfAssessment = {
@@ -62,6 +89,9 @@ type ArticleSelfAssessment = {
 type GeneratedArticle = {
 	article: string;
 	selfAssessment: ArticleSelfAssessment;
+	imageBrief: string;
+	imageSearchTerms: string[];
+	imageAltText: string;
 	usage: Omit<GeminiUsage, 'model' | 'requestCount'>;
 };
 
@@ -82,6 +112,40 @@ type GeminiTextResponse = {
 	text: string;
 	usage: Omit<GeminiUsage, 'model' | 'requestCount'>;
 };
+
+export async function getExistingWordPressDrafts(siteName: string): Promise<ExistingWordPressDraft[]> {
+	const config = getFullPixelatedConfig();
+	const wordpress = config.integrations?.wordpress;
+	const site = await getSiteConfig(siteName);
+	const blogUrl = String(site?.blog_url || '').trim();
+	const wordpressSite = blogUrl ? new URL(blogUrl).hostname : wordpress?.site;
+	if (!wordpress?.apiToken || !wordpressSite) throw new Error('WordPress site is not configured');
+	const url = buildUrl({
+		baseUrl: wordpress.baseURL ?? 'https://public-api.wordpress.com/rest/v1/sites/',
+		pathSegments: [wordpressSite, 'posts'],
+		params: { status: 'draft', number: 100 },
+	});
+	const response = await smartFetch(url, {
+		timeout: 60000,
+		retries: 0,
+		requestInit: { headers: { Authorization: `Bearer ${wordpress.apiToken}` } },
+	});
+	const posts = response && typeof response === 'object' && Array.isArray((response as { posts?: unknown[] }).posts)
+		? (response as { posts: Array<Record<string, unknown>> }).posts
+		: [];
+	return posts.flatMap((post) => {
+		const id = post.ID ?? post.id;
+		const title = typeof post.title === 'string' ? post.title.replace(/<[^>]*>/g, '').trim() : '';
+		if ((typeof id !== 'string' && typeof id !== 'number') || !title) return [];
+		return [{
+			id,
+			title,
+			modified: typeof post.modified === 'string' ? post.modified : undefined,
+			url: typeof post.URL === 'string' ? post.URL : undefined,
+			featuredImage: typeof post.featured_image === 'string' ? post.featured_image : undefined,
+		}];
+	});
+}
 
 const articleMetricsSchema = {
 	type: 'OBJECT',
@@ -124,10 +188,12 @@ const articleResponseSchema = {
 			},
 			required: ['passed', 'metrics', 'failures'],
 		},
+		imageBrief: { type: 'STRING' },
+		imageSearchTerms: { type: 'ARRAY', items: { type: 'STRING' } },
+		imageAltText: { type: 'STRING' },
 	},
-	required: ['article', 'selfAssessment'],
+	required: ['article', 'selfAssessment', 'imageBrief', 'imageSearchTerms', 'imageAltText'],
 };
-
 async function requestGeminiText(apiKey: string, prompt: string, options: GeminiRequestOptions = {}): Promise<GeminiTextResponse> {
 	const url = buildUrl({
 		baseUrl: 'https://generativelanguage.googleapis.com',
@@ -235,13 +301,18 @@ function parseGeneratedArticle(responseText: string): Omit<GeneratedArticle, 'us
 	if (!parsed || typeof parsed !== 'object' || typeof (parsed as { article?: unknown }).article !== 'string') {
 		throw new Error('Gemini article response did not contain an article');
 	}
-	const response = parsed as { article: string; selfAssessment?: ArticleSelfAssessment };
+	const response = parsed as { article: string; selfAssessment?: ArticleSelfAssessment; imageBrief?: string; imageSearchTerms?: string[]; imageAltText?: string };
 	if (!response.article.trim()) {
 		throw new Error('Gemini article response contained an empty article');
 	}
 	return {
 		article: response.article.trim(),
 		selfAssessment: response.selfAssessment || {},
+		imageBrief: response.imageBrief?.trim() || '',
+		imageSearchTerms: Array.isArray(response.imageSearchTerms)
+			? response.imageSearchTerms.filter((term): term is string => typeof term === 'string' && term.trim().length > 0).map((term) => term.trim())
+			: [],
+		imageAltText: response.imageAltText?.trim() || response.imageBrief?.trim() || '',
 	};
 }
 
@@ -263,7 +334,8 @@ async function generateArticle(entry: BlogCalendarEntry, calendar: BlogCalendarD
 		`Objective criteria, evaluate each in order:\n${objectivePrompt}`,
 		`Subjective criteria, evaluate each in order:\n${subjectivePrompt}`,
 		'Use the criteria lists above to write the article and to set the two ordered pass/fail arrays in selfAssessment.metrics. Do not provide evidence text.',
-		'Return exactly two top-level JSON properties: article and selfAssessment.',
+		'Return exactly five top-level JSON properties: article, selfAssessment, imageBrief, imageSearchTerms, and imageAltText.',
+		'imageBrief must describe a realistic stock photograph suitable for the article. imageSearchTerms must contain concise stock-photo search terms. Do not request or describe an AI-generated image. imageAltText must be accessible alternative text for the selected stock image.',
 		'The article property must contain the complete article body as Markdown. The application will convert it to HTML before sending it to WordPress.',
 		'The selfAssessment property must contain passed, metrics, and failures. Metrics must include the measured counts plus objectiveCriteriaPassed and subjectiveCriteriaPassed arrays in the same order as the criteria lists.',
 		'Failures must be a short array of strings. Set passed to true only when every objective and subjective criterion passes.',
@@ -292,14 +364,21 @@ export async function generateBlogPostsFromCalendar(
 	calendarOrFormData: BlogCalendarData | FormData,
 	providedFormData?: FormData
 ): Promise<BlogGenerationResult> {
-	const calendarProvided = providedFormData !== undefined;
 	const formData = providedFormData || calendarOrFormData as FormData;
+	const submittedCalendarJson = formData instanceof FormData ? formData.get('calendarJson') : null;
+	const calendarProvided = providedFormData !== undefined || typeof submittedCalendarJson === 'string' && submittedCalendarJson.trim().length > 0;
 	const requestedCount = Number.parseInt(String(formData.get('count') || '1'), 10);
 	const count = Number.isFinite(requestedCount) && requestedCount > 0 ? requestedCount : 1;
+	const operation = String(formData.get('operation') || 'generate');
+	const updateMode = String(formData.get('updateMode') || 'both');
+	const selectedDraftIds = new Set(String(formData.get('draftIds') || '').split(',').map((id) => id.trim()).filter(Boolean));
+	const isUpdate = operation === 'update' && selectedDraftIds.size > 0;
 	const siteName = String(formData.get('siteName') || '').trim();
 	const config = getFullPixelatedConfig();
 	const geminiApiKey = config.integrations?.googleGemini?.api_key;
 	const wordpress = config.integrations?.wordpress;
+	const magnific = config.integrations?.magnific;
+	const cloudinary = config.integrations?.cloudinary;
 	const site = siteName ? await getSiteConfig(siteName) : null;
 	const configuredBlogUrl = String(site?.blog_url || '').trim();
 	const blogUrl = configuredBlogUrl;
@@ -310,7 +389,15 @@ export async function generateBlogPostsFromCalendar(
 	if (!wordpressSite) throw new Error('WordPress site is not configured');
 	let calendar: BlogCalendarData | undefined;
 	if (calendarProvided) {
-		calendar = calendarOrFormData as BlogCalendarData;
+		if (providedFormData !== undefined) {
+			calendar = calendarOrFormData as BlogCalendarData;
+		} else {
+			try {
+				calendar = JSON.parse(String(submittedCalendarJson)) as BlogCalendarData;
+			} catch (error) {
+				throw new Error('Submitted blog calendar JSON is invalid', { cause: error });
+			}
+		}
 	} else {
 		if (!site || !blogUrl) throw new Error('Site blog URL is not configured');
 		if (!site.localPath) throw new Error('Site local path is not configured');
@@ -326,7 +413,31 @@ export async function generateBlogPostsFromCalendar(
 		...calendar,
 		blogCalendar: calendar.blogCalendar.map((entry) => ({ ...entry })),
 	};
-	const entries = updatedCalendar.blogCalendar.filter((entry) => entry.status === '').slice(0, count);
+	if (isUpdate) {
+		const existingDrafts = await getExistingWordPressDrafts(siteName);
+		let syntheticCalendarId = updatedCalendar.blogCalendar.reduce((highest, entry) => Math.max(highest, entry.id), 0) + 1;
+		for (const draft of existingDrafts) {
+			if (!selectedDraftIds.has(String(draft.id))) continue;
+			const matchingEntry = updatedCalendar.blogCalendar.find((entry) => String(entry.wordpressPostId) === String(draft.id))
+				|| updatedCalendar.blogCalendar.find((entry) => normalizeBlogTitle(entry.title) === normalizeBlogTitle(draft.title));
+			if (matchingEntry) {
+				matchingEntry.wordpressPostId = draft.id;
+				continue;
+			}
+			updatedCalendar.blogCalendar.push({
+				id: syntheticCalendarId++,
+				targetPublishDate: '',
+				title: draft.title,
+				notes: [],
+				status: 'draft',
+				wordpressPostId: draft.id,
+			});
+		}
+	}
+	const entries = (isUpdate
+		? updatedCalendar.blogCalendar.filter((entry) => entry.wordpressPostId !== undefined && selectedDraftIds.has(String(entry.wordpressPostId)))
+		: updatedCalendar.blogCalendar.filter((entry) => entry.status === '')
+	).slice(0, isUpdate ? selectedDraftIds.size : count);
 	const results: BlogGenerationResult['results'] = [];
 	const usage: GeminiUsage = {
 		model: 'gemini-2.5-flash',
@@ -340,7 +451,7 @@ export async function generateBlogPostsFromCalendar(
 
 	for (const entry of entries) {
 		try {
-			let generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey);
+			const generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey);
 			usage.requestCount += 1;
 			usage.promptTokenCount += generatedArticle.usage.promptTokenCount;
 			usage.candidatesTokenCount += generatedArticle.usage.candidatesTokenCount;
@@ -396,18 +507,75 @@ export async function generateBlogPostsFromCalendar(
 			}
 			if (validationErrors.length > 0) throw new Error(`Blog article failed criteria validation: ${validationErrors.join('; ')}`);
 			*/
-			const draft = await createWordPressDraft({
+			let imageStatus: 'selected' | 'not-found' = 'not-found';
+			let magnificImage: MagnificStockImage | null = null;
+			let wordpressMediaId: string | number | undefined;
+			const shouldUpdateContent = !isUpdate || updateMode === 'content' || updateMode === 'both';
+			const shouldUpdateImage = !isUpdate || updateMode === 'image' || updateMode === 'both';
+			if (shouldUpdateImage && magnific?.apiKey && generatedArticle.imageSearchTerms.length > 0) {
+				magnificImage = await findMagnificStockImage(magnific.apiKey, {
+					title: entry.title,
+					imageBrief: generatedArticle.imageBrief,
+					searchTerms: generatedArticle.imageSearchTerms,
+				});
+				if (magnificImage) {
+					if (!cloudinary?.product_env) throw new Error('Cloudinary image transformation is not configured');
+					const preparedImage = await prepareMagnificStockImage(magnificImage, cloudinary);
+					const media = await uploadWordPressMedia({
+						site: wordpressSite,
+						apiToken: wordpress.apiToken,
+						baseURL: wordpress.baseURL,
+						filename: `blog-${entry.id}.webp`,
+						buffer: preparedImage.buffer,
+						mimeType: preparedImage.mimeType,
+						title: entry.title,
+						altText: generatedArticle.imageAltText || generatedArticle.imageBrief || `${entry.title} featured image`,
+						caption: magnificImage.title,
+						description: `Featured stock photograph for "${entry.title}".`,
+					});
+					wordpressMediaId = media.media?.[0]?.ID ?? media.media?.[0]?.id;
+					if (wordpressMediaId === undefined) throw new Error('WordPress media response did not include a media ID');
+					imageStatus = 'selected';
+				}
+			}
+			const draftInput = {
 				site: wordpressSite,
 				apiToken: wordpress.apiToken,
 				baseURL: wordpress.baseURL,
 				title: entry.title,
-				content: generatedArticle.article,
-			});
-			const wordpressPostId = draft.ID ?? draft.id;
+				featuredImageId: wordpressMediaId,
+			};
+			let draft: WordPressDraftResponse;
+			if (entry.wordpressPostId !== undefined) {
+				draft = await updateWordPressDraft(entry.wordpressPostId, {
+					...draftInput,
+					...(shouldUpdateContent ? { content: generatedArticle.article } : {}),
+				});
+			} else {
+				draft = await createWordPressDraft({
+					...draftInput,
+					content: generatedArticle.article,
+				});
+			}
+			const wordpressPostId = draft.ID ?? draft.id ?? entry.wordpressPostId;
 			if (wordpressPostId === undefined) throw new Error('WordPress draft response did not include a post ID');
 			entry.status = 'draft';
 			entry.wordpressPostId = wordpressPostId;
-			results.push({ calendarId: entry.id, title: entry.title, status: 'draft', wordpressPostId });
+			entry.imageStatus = imageStatus;
+			entry.imageBrief = generatedArticle.imageBrief;
+			entry.imageSearchTerms = generatedArticle.imageSearchTerms;
+			if (magnificImage) {
+				entry.magnificImage = {
+					id: magnificImage.id,
+					title: magnificImage.title,
+					detailUrl: magnificImage.detailUrl,
+					licenseUrl: magnificImage.licenseUrl,
+					provider: magnificImage.provider,
+					orientation: magnificImage.orientation,
+				};
+			}
+			entry.wordpressMediaId = wordpressMediaId ?? entry.wordpressMediaId;
+			results.push({ calendarId: entry.id, title: entry.title, status: 'draft', wordpressPostId, imageStatus });
 		} catch (error) {
 			results.push({
 				calendarId: entry.id,
