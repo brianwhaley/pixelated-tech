@@ -310,6 +310,12 @@ export interface InstagramConfig {
 	userId?: string;
 }
 
+export interface MagnificConfig {
+	apiKeyName?: string;
+	apiKey: string;
+	webhookSigningSecret?: string;
+}
+
 export interface NextAuthConfig {
 	secret: string;
 	/** Optional explicit URLs for different environments. Use `local_url`, `dev_url`, and/or `prod_url`. */
@@ -441,6 +447,7 @@ export interface IntegrationsConfig {
 	googleSearchConsole?: GoogleSearchConsoleConfig;
 	hubspot?: HubspotConfig;
 	instagram?: InstagramConfig;
+	magnific?: MagnificConfig;
 	nextAuth?: NextAuthConfig;
 	paypal?: PaypalConfig;
 	puppeteer?: PuppeteerConfig;
@@ -492,6 +499,10 @@ export const SECRET_CONFIG_KEYS = {
 		],
 		googleGemini: [
 			'api_key'
+		],
+		magnific: [
+			'apiKey',
+			'webhookSigningSecret'
 		],
 		instagram: [
 			'accessToken'

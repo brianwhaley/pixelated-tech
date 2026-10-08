@@ -71,6 +71,20 @@ describe('smartFetch', () => {
 	});
 
 	describe('error handling', () => {
+		it('should log final failures even when debug is disabled', async () => {
+			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+			global.fetch = vi.fn(() => Promise.reject(new Error('Network failure'))) as any;
+
+			await expect(
+				smartFetch('https://api.example.com/data', {
+					retries: 0,
+				})
+			).rejects.toThrow('Network failure');
+
+			expect(consoleErrorSpy).toHaveBeenCalledWith('[smartFetch] api.example.com: Network failure');
+			consoleErrorSpy.mockRestore();
+		});
+
 		it('should throw error for HTTP error status', async () => {
 			global.fetch = vi.fn(() =>
 				Promise.resolve({

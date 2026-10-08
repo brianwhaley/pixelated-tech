@@ -48,6 +48,7 @@ Record platform opportunities without silently implementing them in shared packa
 - Use existing shared components before creating local components.
 - Use shared hooks, utilities, schemas, integrations, form components, config accessors, and test helpers before creating local equivalents.
 - Use shared tests and fixtures before creating new local test infrastructure.
+- Treat focused tests as part of every new function or site feature. Create or update them in the same change without waiting for a separate request, covering applicable success, error, empty, validation, and user-workflow states.
 - Do not create a reusable library, shared package, component-library feature, or platform API as part of ordinary site work unless explicitly approved.
 - Do not add an API route when an existing integration, shared service, server function, or configuration-driven solution is sufficient.
 - Keep local code focused on composition, content, routes, styling, and client-specific behavior.
@@ -84,8 +85,8 @@ Use the repository's canonical configuration system:
 4. Present the implementation approach, affected files, reuse decisions, assumptions, and validation plan.
 5. Wait for approval before editing when scope or architecture is not already approved.
 6. Implement the smallest local change that satisfies the approved scope.
-7. Reuse shared components and test utilities before adding local equivalents.
-8. Validate the changed slice immediately after each substantive edit.
+7. Reuse shared components and test utilities before adding local equivalents, and create or update focused tests alongside the feature.
+8. Validate the changed slice immediately after each substantive edit, starting with the narrowest relevant test.
 9. Run focused tests, lint, type checks, and builds appropriate to the touched app or package.
 10. Verify responsive behavior, accessibility, forms, links, SEO metadata, structured data, loading/error states, and performance when relevant.
 11. Report platform opportunities separately from completed site work.

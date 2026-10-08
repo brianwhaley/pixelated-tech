@@ -7,11 +7,21 @@ applications:
       phases:
         preBuild:
           commands:
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "preBuild PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'cd ../../ && pwd'
             - 'npm install --force'
         build:
           commands:
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "build PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w packages/pixelated-components'
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
@@ -21,6 +31,11 @@ applications:
             # 'npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "postBuild PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
@@ -67,9 +82,9 @@ applications:
           commands:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
             - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
-            - 'echo "Admin preBuild PWD: $(pwd)"'
+            - 'echo "preBuild PWD: $(pwd)"'
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Admin artifact app root: $APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             # Amplify can restore repository-level build output before this phase.
             - 'echo "Removing restored repository-root Next.js cache: $REPO_ROOT/.next"; rm -rf "$REPO_ROOT/.next"'
             - 'test ! -e "$REPO_ROOT/.next" || { echo "Repository-root .next remains after preBuild cleanup: $REPO_ROOT/.next"; exit 1; }'
@@ -83,11 +98,11 @@ applications:
           commands:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
             - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
-            - 'cd "$REPO_ROOT"'
-            - 'echo "Admin build PWD: $(pwd)"'
+            - 'echo "build PWD: $(pwd)"'
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Admin artifact app root: $APP_ROOT"'
-            - 'echo "Building shared components for Admin ..."'
+            - 'echo "Artifact app root: $APP_ROOT"'
+            - 'cd "$REPO_ROOT"'
+            - 'echo "Building shared components..."'
             - 'npm run build -w packages/pixelated-components'
             - 'echo "Decrypting Admin config ..."; npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building Admin ..."'
@@ -101,10 +116,10 @@ applications:
           commands:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
             - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
-            - 'cd "$REPO_ROOT"'
-            - 'echo "Admin postBuild PWD: $(pwd)"'
+            - 'echo "postBuild PWD: $(pwd)"'
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'echo "Admin artifact app root: $APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
+            - 'cd "$REPO_ROOT"'
             - 'npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing postBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
             - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after postBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
@@ -128,12 +143,21 @@ applications:
       phases:
         preBuild:
           commands:
-            - 'echo "preBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "preBuild PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             - 'echo "Installing dependencies for monorepo: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'cd ../../ && npm install --force && cd "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'cd ../../ && pwd'
+            - 'npm install --force'
         build:
           commands:
-            - 'echo "build PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "build PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'npm run build -w packages/pixelated-components'
             - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
@@ -146,14 +170,17 @@ applications:
             - 'NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook -w $AMPLIFY_MONOREPO_APP_ROOT'
         postBuild:
           commands:
-            - 'echo "postBuild PWD: $(pwd)"; echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'echo "postBuild PWD: $(pwd)"'
+            - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'echo "Artifact app root: $APP_ROOT"'
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
         baseDirectory: .next
         files:
           - '**/*'
-          - '!cache/**/*'
       cache:
         paths:
           - .next/cache/**/*

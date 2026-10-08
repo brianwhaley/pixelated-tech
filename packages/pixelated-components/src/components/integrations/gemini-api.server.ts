@@ -69,6 +69,7 @@ export async function generateAiRecommendations(
 			params: { key: finalApiKey },
 		});
 		const response = await smartFetch(url, {
+			timeout: 60000,
 			requestInit: {
 				method: 'POST',
 				headers: {

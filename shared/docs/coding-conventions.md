@@ -186,6 +186,11 @@ const clientCfg = getClientOnlyPixelatedConfig(cfg);
 - Keep test names descriptive and cover success, error, loading, empty, and accessibility states when they apply.
 - Keep test specifications out of runtime directories such as `src/app`, `src/pages`, and `public`.
 
+### Test-by-Default Feature Work
+- Treat tests as part of every new function, server action, integration, component, and user-facing feature; create or update the focused test in the same change without waiting for a separate request.
+- Cover the normal path and applicable error, empty, validation, and integration-boundary behavior with deterministic mocks or fixtures.
+- Run the narrowest relevant test immediately after implementation, then broaden validation when the change affects shared behavior.
+
 ## Documentation
 
 ### Code Comments
