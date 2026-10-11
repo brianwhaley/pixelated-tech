@@ -6,11 +6,67 @@ import { getFullPixelatedConfig } from '../../config/config';
 import { smartFetch } from '../../foundation/smartfetch';
 import { buildUrl } from '../../foundation/urlbuilder';
 import { getSiteConfig } from '../sites/sites.integration';
-import { createWordPressDraft, updateWordPressDraft, uploadWordPressMedia, type WordPressDraftResponse } from '../../integrations/wordpress.functions';
+import { createWordPressDraft, updateWordPressDraft, uploadWordPressMedia, type WordPressBlogLink, type WordPressDraftResponse } from '../../integrations/wordpress.functions';
+import { getWordPressFeedLinks } from '../../integrations/wordpress.server';
+import { googleSearchWithGeminiGrounding, type GoogleSearchResult } from '../../integrations/gemini.search.server';
 import { findMagnificStockImage, prepareMagnificStockImage, type MagnificStockImage } from '../../integrations/magnific.server';
-import { normalizeObjectiveCriteria, type BlogArticleMetrics, type BlogCriteria } from './blog-generator.validation';
 
 const debug = false;
+
+/*
+ * Historical note (2026-10-11T02:23:55Z): Post-generation validation of Gemini
+ * blog drafts was removed. It was not proven to improve results, increased
+ * complexity and maintenance burden by roughly 10x, and made the workflow
+ * confusing. Recreating this functionality requires explicit approval from
+ * Brian Whaley before implementation.
+ */
+
+
+type BlogCriteria = {
+	subjectiveCriteria?: string[];
+	objectiveCriteria?: {
+		[key: string]: number | boolean | string | undefined;
+		minimumWords?: number;
+		maximumWords?: number;
+		requireIntroParagraph?: boolean;
+		requireConclusionParagraph?: boolean;
+		requireCallToAction?: boolean;
+		minimumBodyParagraphs?: number;
+		minimumParagraphSentences?: number;
+		minimumBlogLinks?: number;
+		minimumSiteLinks?: number;
+		minimumExternalLinks?: number;
+		requiredCallToActionLink?: string;
+		requireWordPressBlocks?: boolean;
+		requiredCallToActionHeading?: string;
+	};
+};
+
+function normalizeObjectiveCriteria(objective: BlogCriteria['objectiveCriteria'] = {}): NonNullable<BlogCriteria['objectiveCriteria']> {
+	return {
+		...objective,
+		minimumWords: objective.minimumWords ?? objective.minimum_words as number | undefined
+			?? objective.require_minimum_words as number | undefined,
+		maximumWords: objective.maximumWords ?? objective.maximum_words as number | undefined
+			?? objective.require_maximum_words as number | undefined,
+		requireIntroParagraph: objective.requireIntroParagraph ?? objective.require_intro_paragraph as boolean | undefined,
+		requireConclusionParagraph: objective.requireConclusionParagraph ?? objective.require_conclusion_paragraph as boolean | undefined,
+		requireCallToAction: objective.requireCallToAction ?? objective.require_call_to_action as boolean | undefined,
+		minimumBodyParagraphs: objective.minimumBodyParagraphs ?? objective.minimum_body_paragraphs as number | undefined
+			?? objective.require_minimum_body_paragraphs as number | undefined,
+		minimumParagraphSentences: objective.minimumParagraphSentences ?? objective.minimum_paragraph_sentences as number | undefined
+			?? objective.require_minimum_paragraph_sentences as number | undefined,
+		minimumBlogLinks: objective.minimumBlogLinks ?? objective.minimum_blog_links as number | undefined
+			?? objective.require_minimum_blog_links as number | undefined,
+		minimumSiteLinks: objective.minimumSiteLinks ?? objective.minimum_site_links as number | undefined
+			?? objective.require_minimum_site_links as number | undefined,
+		minimumExternalLinks: objective.minimumExternalLinks ?? objective.minimum_external_links as number | undefined
+			?? objective.require_minimum_external_links as number | undefined,
+		requiredCallToActionLink: objective.requiredCallToActionLink ?? objective.required_call_to_action_link as string | undefined,
+		requireWordPressBlocks: objective.requireWordPressBlocks ?? objective.require_wordpress_blocks as boolean | undefined,
+		requiredCallToActionHeading: objective.requiredCallToActionHeading ?? objective.required_call_to_action_heading as string | undefined,
+	};
+}
 
 function normalizeBlogTitle(title: string): string {
 	return title
@@ -22,6 +78,37 @@ function normalizeBlogTitle(title: string): string {
 		.replace(/\s+/g, ' ')
 		.trim()
 		.toLowerCase();
+}
+
+type SiteLink = {
+	title: string;
+	url: string;
+};
+
+async function getSiteLinks(site: { localPath?: string } | null): Promise<SiteLink[]> {
+	if (!site?.localPath) return [];
+	try {
+		const configPath = path.join(site.localPath, 'src', 'app', 'config', 'pixelated.config.json');
+		const config = JSON.parse(await readFile(configPath, 'utf8')) as { routes?: unknown; siteInfo?: { url?: unknown } };
+		if (!Array.isArray(config.routes) || typeof config.siteInfo?.url !== 'string' || !config.siteInfo.url.trim()) return [];
+		const siteUrl = new URL(config.siteInfo.url);
+		return config.routes.flatMap((route): SiteLink[] => {
+			if (!route || typeof route !== 'object') return [];
+			const item = route as { name?: unknown; path?: unknown; routes?: unknown };
+			if (item.routes || typeof item.name !== 'string' || typeof item.path !== 'string' || !item.path.trim()) return [];
+			try {
+				const routeUrl = new URL(item.path, siteUrl);
+				const url = new URL(`${routeUrl.pathname}${routeUrl.search}${routeUrl.hash}`, siteUrl).toString();
+				if (!['http:', 'https:'].includes(new URL(url).protocol)) return [];
+				return [{ title: item.name, url }];
+			} catch {
+				return [];
+			}
+		});
+	} catch (error) {
+		console.error('[blog-generator] Unable to load site-link catalog', error);
+		return [];
+	}
 }
 
 export type BlogCalendarEntry = {
@@ -79,7 +166,7 @@ export type ExistingWordPressDraft = {
 
 type ArticleSelfAssessment = {
 	passed?: boolean;
-	metrics?: Partial<BlogArticleMetrics> & {
+	metrics?: Record<string, unknown> & {
 		objectiveCriteriaPassed?: boolean[];
 		subjectiveCriteriaPassed?: boolean[];
 	};
@@ -95,12 +182,6 @@ type GeneratedArticle = {
 	usage: Omit<GeminiUsage, 'model' | 'requestCount'>;
 };
 
-type ArticleRepairRequest = {
-	article: string;
-	errors: string[];
-	selfAssessment: ArticleSelfAssessment;
-};
-
 type GeminiRequestOptions = {
 	maxOutputTokens?: number;
 	responseMimeType?: string;
@@ -111,6 +192,52 @@ type GeminiRequestOptions = {
 type GeminiTextResponse = {
 	text: string;
 	usage: Omit<GeminiUsage, 'model' | 'requestCount'>;
+};
+
+const articleMetricsSchema = {
+	type: 'OBJECT',
+	properties: {
+		wordCount: { type: 'INTEGER' },
+		paragraphsIncluded: { type: 'INTEGER' },
+		bodyParagraphsIncluded: { type: 'INTEGER' },
+		contentParagraphSentenceCounts: { type: 'ARRAY', items: { type: 'INTEGER' } },
+		introductionIncluded: { type: 'BOOLEAN' },
+		conclusionIncluded: { type: 'BOOLEAN' },
+		listBlocksIncluded: { type: 'INTEGER' },
+		listItemsIncluded: { type: 'INTEGER' },
+		h2HeadingsIncluded: { type: 'INTEGER' },
+		blogLinksIncluded: { type: 'INTEGER' },
+		siteLinksIncluded: { type: 'INTEGER' },
+		externalLinksIncluded: { type: 'INTEGER' },
+		sentenceCount: { type: 'INTEGER' },
+		callToActionIncluded: { type: 'BOOLEAN' },
+		requiredCallToActionHeadingIncluded: { type: 'BOOLEAN' },
+		requiredCallToActionLinkIncluded: { type: 'BOOLEAN' },
+		wordpressBlocksIncluded: { type: 'BOOLEAN' },
+		objectiveCriteriaPassed: { type: 'ARRAY', items: { type: 'BOOLEAN' } },
+		subjectiveCriteriaPassed: { type: 'ARRAY', items: { type: 'BOOLEAN' } },
+	},
+	required: ['wordCount', 'paragraphsIncluded', 'bodyParagraphsIncluded', 'contentParagraphSentenceCounts', 'introductionIncluded', 'conclusionIncluded', 'listBlocksIncluded', 'listItemsIncluded', 'h2HeadingsIncluded', 'blogLinksIncluded', 'siteLinksIncluded', 'externalLinksIncluded', 'sentenceCount', 'callToActionIncluded', 'requiredCallToActionHeadingIncluded', 'requiredCallToActionLinkIncluded', 'wordpressBlocksIncluded', 'objectiveCriteriaPassed', 'subjectiveCriteriaPassed'],
+};
+
+const articleResponseSchema = {
+	type: 'OBJECT',
+	properties: {
+		article: { type: 'STRING' },
+		selfAssessment: {
+			type: 'OBJECT',
+			properties: {
+				passed: { type: 'BOOLEAN' },
+				metrics: articleMetricsSchema,
+				failures: { type: 'ARRAY', items: { type: 'STRING' } },
+			},
+			required: ['passed', 'metrics', 'failures'],
+		},
+		imageBrief: { type: 'STRING' },
+		imageSearchTerms: { type: 'ARRAY', items: { type: 'STRING' } },
+		imageAltText: { type: 'STRING' },
+	},
+	required: ['article', 'selfAssessment', 'imageBrief', 'imageSearchTerms', 'imageAltText'],
 };
 
 export async function getExistingWordPressDrafts(siteName: string): Promise<ExistingWordPressDraft[]> {
@@ -147,53 +274,6 @@ export async function getExistingWordPressDrafts(siteName: string): Promise<Exis
 	});
 }
 
-const articleMetricsSchema = {
-	type: 'OBJECT',
-	properties: {
-		wordCount: { type: 'INTEGER' },
-		paragraphsIncluded: { type: 'INTEGER' },
-		bodyParagraphsIncluded: { type: 'INTEGER' },
-		contentParagraphSentenceCounts: { type: 'ARRAY', items: { type: 'INTEGER' } },
-		introductionIncluded: { type: 'BOOLEAN' },
-		conclusionIncluded: { type: 'BOOLEAN' },
-		listBlocksIncluded: { type: 'INTEGER' },
-		listItemsIncluded: { type: 'INTEGER' },
-		h2HeadingsIncluded: { type: 'INTEGER' },
-		internalLinksIncluded: { type: 'INTEGER' },
-		externalLinksIncluded: { type: 'INTEGER' },
-		sentenceCount: { type: 'INTEGER' },
-		callToActionIncluded: { type: 'BOOLEAN' },
-		requiredCallToActionHeadingIncluded: { type: 'BOOLEAN' },
-		requiredCallToActionLinkIncluded: { type: 'BOOLEAN' },
-		wordpressBlocksIncluded: { type: 'BOOLEAN' },
-		objectiveCriteriaPassed: { type: 'ARRAY', items: { type: 'BOOLEAN' } },
-		subjectiveCriteriaPassed: { type: 'ARRAY', items: { type: 'BOOLEAN' } },
-	},
-	required: ['wordCount', 'paragraphsIncluded', 'bodyParagraphsIncluded', 'contentParagraphSentenceCounts', 'introductionIncluded', 'conclusionIncluded', 'listBlocksIncluded', 'listItemsIncluded', 'h2HeadingsIncluded', 'internalLinksIncluded', 'externalLinksIncluded', 'sentenceCount', 'callToActionIncluded', 'requiredCallToActionHeadingIncluded', 'requiredCallToActionLinkIncluded', 'wordpressBlocksIncluded', 'objectiveCriteriaPassed', 'subjectiveCriteriaPassed'],
-};
-
-const articleResponseSchema = {
-	type: 'OBJECT',
-	properties: {
-		article: { type: 'STRING' },
-		selfAssessment: {
-			type: 'OBJECT',
-			properties: {
-				passed: { type: 'BOOLEAN' },
-				metrics: articleMetricsSchema,
-				failures: {
-					type: 'ARRAY',
-					items: { type: 'STRING' },
-				},
-			},
-			required: ['passed', 'metrics', 'failures'],
-		},
-		imageBrief: { type: 'STRING' },
-		imageSearchTerms: { type: 'ARRAY', items: { type: 'STRING' } },
-		imageAltText: { type: 'STRING' },
-	},
-	required: ['article', 'selfAssessment', 'imageBrief', 'imageSearchTerms', 'imageAltText'],
-};
 async function requestGeminiText(apiKey: string, prompt: string, options: GeminiRequestOptions = {}): Promise<GeminiTextResponse> {
 	const url = buildUrl({
 		baseUrl: 'https://generativelanguage.googleapis.com',
@@ -306,7 +386,7 @@ function parseGeneratedArticle(responseText: string): Omit<GeneratedArticle, 'us
 		throw new Error('Gemini article response contained an empty article');
 	}
 	return {
-		article: response.article.trim(),
+		article: response.article.trim().replace(/\[((?:https?:\/\/)[^\]\s]+)\](?!\()/gi, '[$1]($1)'),
 		selfAssessment: response.selfAssessment || {},
 		imageBrief: response.imageBrief?.trim() || '',
 		imageSearchTerms: Array.isArray(response.imageSearchTerms)
@@ -316,7 +396,7 @@ function parseGeneratedArticle(responseText: string): Omit<GeneratedArticle, 'us
 	};
 }
 
-async function generateArticle(entry: BlogCalendarEntry, calendar: BlogCalendarData, apiKey: string, repair?: ArticleRepairRequest): Promise<GeneratedArticle> {
+async function generateArticle(entry: BlogCalendarEntry, calendar: BlogCalendarData, apiKey: string, blogLinkCatalog: WordPressBlogLink[] = [], siteLinkCatalog: SiteLink[] = [], externalSearchCatalog: GoogleSearchResult[] = []): Promise<GeneratedArticle> {
 	const criteria = calendar.blogCalendarConfig?.criteria || {};
 	const objectiveCriteria = criteria.objectiveCriteria || {};
 	const normalizedObjectiveCriteria = normalizeObjectiveCriteria(objectiveCriteria);
@@ -324,6 +404,9 @@ async function generateArticle(entry: BlogCalendarEntry, calendar: BlogCalendarD
 	const minimumWords = normalizedObjectiveCriteria.minimumWords ?? 1000;
 	const maximumWords = normalizedObjectiveCriteria.maximumWords ?? 1500;
 	const targetWords = Math.round((minimumWords + maximumWords) / 2);
+	const minimumBlogLinks = normalizedObjectiveCriteria.minimumBlogLinks ?? 0;
+	const minimumSiteLinks = normalizedObjectiveCriteria.minimumSiteLinks ?? 0;
+	const minimumExternalLinks = normalizedObjectiveCriteria.minimumExternalLinks ?? 0;
 	const objectivePrompt = Object.entries(objectiveCriteria).map(([name, value], index) => `${index + 1}. ${name}: ${String(value)}`).join('\n');
 	const subjectivePrompt = subjectiveCriteria.map((criterion, index) => `- ${index + 1}. ${criterion}`).join('\n');
 	const basePrompt = [
@@ -335,19 +418,30 @@ async function generateArticle(entry: BlogCalendarEntry, calendar: BlogCalendarD
 		`Subjective criteria, evaluate each in order:\n${subjectivePrompt}`,
 		'Use the criteria lists above to write the article and to set the two ordered pass/fail arrays in selfAssessment.metrics. Do not provide evidence text.',
 		'Return exactly five top-level JSON properties: article, selfAssessment, imageBrief, imageSearchTerms, and imageAltText.',
-		'imageBrief must describe a realistic stock photograph suitable for the article. imageSearchTerms must contain concise stock-photo search terms. Do not request or describe an AI-generated image. imageAltText must be accessible alternative text for the selected stock image.',
+		'Respond ONLY with raw JSON, starting with { and ending with }. You MUST return your response exclusively as a valid, raw JSON object. Do NOT wrap the response in markdown code blocks like ```json ... ```. Do NOT include any introductory or trailing conversational text outside the JSON object. Ensure all internal and external link strings are valid JSON strings inside the output structure.',
+		`Include at least ${minimumBlogLinks} relevant blog links, at least ${minimumSiteLinks} relevant site links, and at least ${minimumExternalLinks} relevant external links in the Markdown article when those minimums are greater than zero. External links must use real, authoritative URLs; never invent URLs or merely name a source without linking it.`,
+		'imageBrief must describe a realistic stock photograph suitable for the article. imageSearchTerms must contain at least three concise stock-photo search terms. Do not request or describe an AI-generated image. imageAltText must be accessible alternative text for the selected stock image.',
 		'The article property must contain the complete article body as Markdown. The application will convert it to HTML before sending it to WordPress.',
 		'The selfAssessment property must contain passed, metrics, and failures. Metrics must include the measured counts plus objectiveCriteriaPassed and subjectiveCriteriaPassed arrays in the same order as the criteria lists.',
 		'Failures must be a short array of strings. Set passed to true only when every objective and subjective criterion passes.',
 		'Do not include <!DOCTYPE html>, <html>, <head>, or <body> tags; Markdown code fences; a separate title; or an # h1 heading.',
-		'Use standard Markdown headings, paragraphs, lists, and links. Never use placeholder links such as href="#".',
-		...(repair ? [
-			'Revise the article below instead of starting over with a different topic.',
-			`Validation failures to fix: ${repair.errors.join('; ')}`,
-			`Article to repair:\n${repair.article}`,
-			'Return only the corrected JSON object. Preserve valid content, fix every listed failure, and reevaluate both criteria arrays.',
-		] : []),
+		blogLinkCatalog.length > 0
+			? `Blog-link rules: You may link only to posts in the following published-post array. Use the exact title and exact URL from the array. Never fabricate, modify, infer, shorten, or search for a blog URL. If no post is relevant, do not add a blog link. Published-post array:
+${JSON.stringify(blogLinkCatalog)}`
+			: 'Blog-link rules: No published-post array was provided, so do not add blog links. Never fabricate or infer a blog URL.',
+		siteLinkCatalog.length > 0
+			? `Site-link rules: You may link only to pages in the following site-page array. Use the exact title and exact URL from the array. Never fabricate, modify, infer, shorten, or search for a site URL. If no page is relevant, do not add a site link. Site-page array:
+${JSON.stringify(siteLinkCatalog)}`
+			: 'Site-link rules: No site-page array was provided, so do not add site links. Never fabricate or infer a site URL.',
+		externalSearchCatalog.length > 0
+			? `External-source rules: You may link only to exact URLs in the following Google search-result array. Match the source title and snippet to the claim. Never invent, guess, reconstruct, shorten, modify, or search for another URL. If no supplied result supports a claim, omit the external link and unsupported statistic. Google search-result array:
+${JSON.stringify(externalSearchCatalog)}`
+			: 'External-source rules: No Google search-result array was provided, so do not add external links or unsupported sourced claims. Never fabricate or infer an external URL.',
+		'Use standard Markdown headings, paragraphs, lists, and links. Every source URL must use the complete Markdown link form [source name](https://example.com/source). Never write a bare bracketed URL such as [https://example.com/source], never put a URL in square brackets by itself, and never use placeholder links such as href="#".',
 	].join('\n\n');
+	if (debug) {
+		console.info('[blog-generator] Gemini prompt', basePrompt);
+	}
 	const geminiResponse = await requestGeminiText(apiKey, basePrompt, {
 		maxOutputTokens: 32768,
 		responseMimeType: 'application/json',
@@ -438,6 +532,23 @@ export async function generateBlogPostsFromCalendar(
 		? updatedCalendar.blogCalendar.filter((entry) => entry.wordpressPostId !== undefined && selectedDraftIds.has(String(entry.wordpressPostId)))
 		: updatedCalendar.blogCalendar.filter((entry) => entry.status === '')
 	).slice(0, isUpdate ? selectedDraftIds.size : count);
+	const fetchedBlogLinkCatalog = site?.blogRss
+		? await getWordPressFeedLinks(site.blogRss, 100)
+		: [];
+	const blogLinkCatalog = fetchedBlogLinkCatalog.length > 5 ? fetchedBlogLinkCatalog : [];
+	const siteLinkCatalog = await getSiteLinks(site);
+	if (debug) {
+		console.info('[blog-generator] WordPress blog-link catalog', JSON.stringify({
+			feedUrl: site?.blogRss || null,
+			availableCount: fetchedBlogLinkCatalog.length,
+			includedCount: blogLinkCatalog.length,
+			links: blogLinkCatalog,
+		}));
+		console.info('[blog-generator] Site-link catalog', JSON.stringify({
+			count: siteLinkCatalog.length,
+			links: siteLinkCatalog,
+		}));
+	}
 	const results: BlogGenerationResult['results'] = [];
 	const usage: GeminiUsage = {
 		model: 'gemini-2.5-flash',
@@ -448,10 +559,45 @@ export async function generateBlogPostsFromCalendar(
 		thoughtsTokenCount: 0,
 		cachedContentTokenCount: 0,
 	};
+	let processedEntryCount = 0;
 
 	for (const entry of entries) {
 		try {
-			const generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey);
+			const cleanTitle = entry.title
+				.replace(/[^\w\s-]/g, ' ')
+				.replace(/\s+/g, ' ')
+				.trim();
+			const noteSnippet = entry.notes.length > 0
+				? entry.notes[0]
+					.replace(/[^\w\s-]/g, ' ')
+					.replace(/\s+/g, ' ')
+					.trim()
+				: '';
+			const shortNoteKeywords = noteSnippet
+				.split(/(?:[.;!?]|\b(?:and|or|with|for|in|at)\b)/i)[0]
+				.split(/\s+/)
+				.slice(0, 6)
+				.join(' ');
+			const combinedSearchCriteria = `${cleanTitle} ${shortNoteKeywords}`.trim();
+			const searchCriteria = combinedSearchCriteria ? [combinedSearchCriteria] : [];
+			const externalSearchCatalog = geminiApiKey
+				? await googleSearchWithGeminiGrounding({
+					apiKey: geminiApiKey,
+					criteria: searchCriteria,
+					count: 10,
+					debug,
+				})
+				: [];
+			if (debug) {
+				console.info('[blog-generator] Google external search results', JSON.stringify({
+					calendarId: entry.id,
+					title: entry.title,
+					criteria: searchCriteria,
+					count: externalSearchCatalog.length,
+					results: externalSearchCatalog,
+				}, null, 2));
+			}
+			const generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey, blogLinkCatalog, siteLinkCatalog, externalSearchCatalog);
 			usage.requestCount += 1;
 			usage.promptTokenCount += generatedArticle.usage.promptTokenCount;
 			usage.candidatesTokenCount += generatedArticle.usage.candidatesTokenCount;
@@ -464,59 +610,27 @@ export async function generateBlogPostsFromCalendar(
 					title: entry.title,
 					articleLength: generatedArticle.article.length,
 				}));
-			}
-			/*
-			 * Legacy criteria validation and repair flow. Draft creation now requires
-			 * only a valid JSON response containing a non-empty article string.
-			let validationErrors: string[] = [];
-			let bestArticle = generatedArticle.article;
-			let bestSelfAssessment = generatedArticle.selfAssessment;
-			let bestValidationErrors: string[] | undefined;
-			for (let repairAttempt = 0; repairAttempt <= 2; repairAttempt += 1) {
 				console.info('[blog-generator] Gemini article output', JSON.stringify({
 					calendarId: entry.id,
 					title: entry.title,
-					attempt: repairAttempt + 1,
+					attempt: 1,
 					article: generatedArticle.article,
 					geminiReportedMetrics: generatedArticle.selfAssessment.metrics,
 				}));
-				validationErrors = validateBlogArticle(generatedArticle.article, updatedCalendar.blogCalendarConfig?.criteria, wordpressSite);
-				console.info('[blog-generator] Gemini article evaluation', JSON.stringify({
-					calendarId: entry.id,
-					title: entry.title,
-					attempt: repairAttempt + 1,
-					validationErrors,
-					geminiReportedMetrics: generatedArticle.selfAssessment.metrics,
-					localMetrics: measureBlogArticle(generatedArticle.article, wordpressSite, updatedCalendar.blogCalendarConfig?.criteria),
-				}));
-				if (bestValidationErrors === undefined || validationErrors.length < bestValidationErrors.length) {
-					bestArticle = generatedArticle.article;
-					bestSelfAssessment = generatedArticle.selfAssessment;
-					bestValidationErrors = validationErrors;
-				}
-				if (validationErrors.length === 0 || repairAttempt === 2) break;
-				generatedArticle = await generateArticle(entry, updatedCalendar, geminiApiKey, {
-					article: bestArticle,
-					errors: bestValidationErrors,
-					selfAssessment: bestSelfAssessment,
-				});
 			}
-			if (bestValidationErrors) {
-				generatedArticle = { article: bestArticle, selfAssessment: bestSelfAssessment };
-				validationErrors = bestValidationErrors;
-			}
-			if (validationErrors.length > 0) throw new Error(`Blog article failed criteria validation: ${validationErrors.join('; ')}`);
-			*/
 			let imageStatus: 'selected' | 'not-found' = 'not-found';
 			let magnificImage: MagnificStockImage | null = null;
 			let wordpressMediaId: string | number | undefined;
 			const shouldUpdateContent = !isUpdate || updateMode === 'content' || updateMode === 'both';
 			const shouldUpdateImage = !isUpdate || updateMode === 'image' || updateMode === 'both';
-			if (shouldUpdateImage && magnific?.apiKey && generatedArticle.imageSearchTerms.length > 0) {
+			const imageSearchTerms = generatedArticle.imageSearchTerms.length > 0
+				? generatedArticle.imageSearchTerms
+				: [entry.title, generatedArticle.imageBrief].filter((term) => term.trim().length > 0);
+			if (shouldUpdateImage && magnific?.apiKey && imageSearchTerms.length > 0) {
 				magnificImage = await findMagnificStockImage(magnific.apiKey, {
 					title: entry.title,
 					imageBrief: generatedArticle.imageBrief,
-					searchTerms: generatedArticle.imageSearchTerms,
+					searchTerms: imageSearchTerms,
 				});
 				if (magnificImage) {
 					if (!cloudinary?.product_env) throw new Error('Cloudinary image transformation is not configured');
@@ -543,6 +657,7 @@ export async function generateBlogPostsFromCalendar(
 				apiToken: wordpress.apiToken,
 				baseURL: wordpress.baseURL,
 				title: entry.title,
+				...(entry.targetPublishDate ? { date: `${entry.targetPublishDate}T10:00:00` } : {}),
 				featuredImageId: wordpressMediaId,
 			};
 			let draft: WordPressDraftResponse;
@@ -563,7 +678,7 @@ export async function generateBlogPostsFromCalendar(
 			entry.wordpressPostId = wordpressPostId;
 			entry.imageStatus = imageStatus;
 			entry.imageBrief = generatedArticle.imageBrief;
-			entry.imageSearchTerms = generatedArticle.imageSearchTerms;
+			entry.imageSearchTerms = imageSearchTerms;
 			if (magnificImage) {
 				entry.magnificImage = {
 					id: magnificImage.id,
@@ -583,6 +698,9 @@ export async function generateBlogPostsFromCalendar(
 				status: 'failed',
 				error: error instanceof Error ? error.message : 'Unable to generate blog post',
 			});
+		} finally {
+			processedEntryCount += 1;
+			console.info(`[blog-generator] ${processedEntryCount}/${entries.length} ${results.at(-1)?.status === 'draft' ? 'completed' : 'failed'}: ${entry.title}`);
 		}
 	}
 

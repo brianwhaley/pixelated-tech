@@ -78,6 +78,7 @@ vi.mock('@pixelated-tech/components', async () => {
 		__esModule: true,
 		PageSection: make('PageSection'),
 		PageTitleHeader: make('PageTitleHeader'),
+		Accordion: ({ items }: any) => <div data-testid="Accordion">{items?.map((item: any) => <div key={item.title}><h3>{item.title}</h3>{item.content}</div>)}</div>,
 		Tab: ({ tabs }: any) => <div data-testid="Tab">{tabs?.map((tab: any) => <div key={tab.id}>{tab.content}</div>)}</div>,
 		Loading: () => <div>Loading</div>,
 		SkeletonLoading: () => <div>SkeletonLoading</div>,
@@ -188,12 +189,13 @@ describe('pixelated-admin page components', () => {
 	it('submits blog post generator form data from the submit target', async () => {
 		const mod = await importModule('src/app/(pages)/blog-post-generator/BlogPostGeneratorClient.tsx');
 		const BlogPostGeneratorClient = mod.default;
-		const action = vi.fn(async () => ({ results: [] }));
+		const action = vi.fn(async () => ({ calendar: { blogCalendar: [] }, results: [] }));
 		render(<BlogPostGeneratorClient action={action as any} sites={[{ name: 'site-a', blog_url: 'https://example.com' }]} />);
 
 		fireEvent.submit(screen.getByRole('button', { name: /Generate drafts/i }).closest('form') as HTMLFormElement);
 
 		await waitFor(() => expect(action).toHaveBeenCalled());
+		await waitFor(() => expect(screen.getByText(/"blogCalendar"/)).toBeTruthy());
 		expect(action.mock.calls[0][1]).toBeInstanceOf(FormData);
 	});
 
@@ -206,9 +208,11 @@ describe('pixelated-admin page components', () => {
 
 		fireEvent.submit(screen.getByRole('button', { name: /Generate drafts/i }).closest('form') as HTMLFormElement);
 		await waitFor(() => expect(screen.getByRole('button', { name: /Download updated calendar JSON/i })).toBeTruthy());
+		expect(document.querySelector('.blog-json-template')).toBeTruthy();
 
 		fireEvent.change(document.getElementById('update-blog-site') as HTMLSelectElement, { target: { value: 'site-b' } });
 		expect(screen.queryByRole('button', { name: /Download updated calendar JSON/i })).toBeNull();
+		expect(document.querySelector('.blog-json-template')).toBeNull();
 		fireEvent.click(screen.getByRole('button', { name: /View Existing Drafts/i }));
 		await waitFor(() => expect(screen.getByText(/Manning draft/i)).toBeTruthy());
 		fireEvent.click(screen.getByRole('checkbox'));
