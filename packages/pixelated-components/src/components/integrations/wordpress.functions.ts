@@ -49,6 +49,35 @@ export type BlogPostType = {
 	attachments?: Record<string, any>;
 };
 
+export type WordPressBlogLink = {
+	title: string;
+	url: string;
+};
+
+function normalizeMarkdownLinks(markdown: string): string {
+	return markdown.replace(/\[((?:https?:\/\/)[^\]\s]+)\](?!\()/gi, '[$1]($1)');
+}
+
+export function htmlToWordPressBlocks(html: string): string {
+	if (!html.trim() || /<!--\s*wp:/i.test(html)) return html;
+	return html.replace(/<(h[1-6]|p|ul|ol|blockquote|pre)\b[^>]*>[\s\S]*?<\/\1>|<hr\b[^>]*\/?>/gi, (block) => {
+		const tag = block.match(/^<(h[1-6]|p|ul|ol|blockquote|pre|hr)\b/i)?.[1]?.toLowerCase();
+		if (!tag) return block;
+		if (tag.startsWith('h')) {
+			const level = Number(tag.slice(1));
+			return `<!-- wp:heading {"level":${level}} -->${block}<!-- /wp:heading -->`;
+		}
+		if (tag === 'ul' || tag === 'ol') {
+			const attributes = tag === 'ol' ? ' {"ordered":true}' : '';
+			return `<!-- wp:list${attributes} -->${block}<!-- /wp:list -->`;
+		}
+		if (tag === 'blockquote') return `<!-- wp:quote -->${block}<!-- /wp:quote -->`;
+		if (tag === 'pre') return `<!-- wp:code -->${block}<!-- /wp:code -->`;
+		if (tag === 'hr') return `<!-- wp:separator -->${block}<!-- /wp:separator -->`;
+		return `<!-- wp:paragraph -->${block}<!-- /wp:paragraph -->`;
+	});
+}
+
 
 /* ========================================
 	BLOG POSTING SCHEMA FUNCTIONS
@@ -282,6 +311,7 @@ export type WordPressDraftInput = {
 	title: string;
 	content: string;
 	baseURL?: string;
+	date?: string;
 	excerpt?: string;
 	featuredImageId?: string | number;
 };
@@ -361,7 +391,8 @@ export async function createWordPressDraft(input: WordPressDraftInput): Promise<
 	const body = {
 		status: 'draft',
 		title: input.title,
-		content: marked.parse(input.content, { async: false }),
+		content: htmlToWordPressBlocks(marked.parse(normalizeMarkdownLinks(input.content), { async: false })),
+		...(input.date ? { date: input.date } : {}),
 		...(input.excerpt ? { excerpt: input.excerpt } : {}),
 		...(input.featuredImageId !== undefined ? { featured_image: input.featuredImageId } : {}),
 	};
@@ -381,7 +412,7 @@ export async function createWordPressDraft(input: WordPressDraftInput): Promise<
 
 /** Update an existing private draft through the authenticated WordPress.com API. */
 export async function updateWordPressDraft(postId: string | number, input: WordPressDraftUpdateInput): Promise<WordPressDraftResponse> {
-	if (postId === '' || postId === undefined || postId === null || !input.site || !input.apiToken || (!input.title && !input.content && input.featuredImageId === undefined)) {
+	if (postId === '' || postId === undefined || postId === null || !input.site || !input.apiToken || (!input.title && !input.content && input.date === undefined && input.featuredImageId === undefined)) {
 		throw new Error('WordPress draft update requires postId, site, apiToken, and at least one update field');
 	}
 
@@ -392,7 +423,8 @@ export async function updateWordPressDraft(postId: string | number, input: WordP
 	const body = {
 		status: 'draft',
 		...(input.title ? { title: input.title } : {}),
-		...(input.content ? { content: marked.parse(input.content, { async: false }) } : {}),
+		...(input.content ? { content: htmlToWordPressBlocks(marked.parse(normalizeMarkdownLinks(input.content), { async: false })) } : {}),
+		...(input.date ? { date: input.date } : {}),
 		...(input.excerpt ? { excerpt: input.excerpt } : {}),
 		...(input.featuredImageId !== undefined ? { featured_image: input.featuredImageId } : {}),
 	};

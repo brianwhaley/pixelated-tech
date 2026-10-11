@@ -1,5 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+vi.mock('fs/promises', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('fs/promises')>();
+	const mockedReadFile = vi.fn();
+	return {
+		...actual,
+		readFile: mockedReadFile,
+		default: { ...actual.default, readFile: mockedReadFile },
+	};
+});
 vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: vi.fn(),
 }));
@@ -14,27 +23,39 @@ vi.mock('../components/integrations/wordpress.functions', () => ({
 	updateWordPressDraft: vi.fn(),
 	uploadWordPressMedia: vi.fn(),
 }));
+vi.mock('../components/integrations/wordpress.server', () => ({
+	getWordPressFeedLinks: vi.fn(),
+}));
 vi.mock('../components/integrations/magnific.server', () => ({
 	findMagnificStockImage: vi.fn(),
 	prepareMagnificStockImage: vi.fn(),
 }));
+vi.mock('../components/integrations/gemini.search.server', async (importOriginal) => ({
+	...(await importOriginal<typeof import('../components/integrations/gemini.search.server')>()),
+	googleSearchWithGeminiGrounding: vi.fn(),
+}));
 
 const { getFullPixelatedConfig } = await import('../components/config/config');
+const { readFile } = await import('fs/promises');
 const { smartFetch } = await import('../components/foundation/smartfetch');
 const { getSiteConfig } = await import('../components/admin/sites/sites.integration');
 const { createWordPressDraft, updateWordPressDraft, uploadWordPressMedia } = await import('../components/integrations/wordpress.functions');
+const { getWordPressFeedLinks } = await import('../components/integrations/wordpress.server');
 const { findMagnificStockImage, prepareMagnificStockImage } = await import('../components/integrations/magnific.server');
+const { googleSearchWithGeminiGrounding } = await import('../components/integrations/gemini.search.server');
 const { generateBlogPostsFromCalendar } = await import('../components/admin/blog/blog-generator.server');
-const { measureBlogArticle, validateBlogArticle } = await import('../components/admin/blog/blog-generator.validation');
 
 const mockGetFullPixelatedConfig = vi.mocked(getFullPixelatedConfig);
+const mockReadFile = vi.mocked(readFile);
 const mockSmartFetch = vi.mocked(smartFetch);
 const mockGetSiteConfig = vi.mocked(getSiteConfig);
 const mockCreateWordPressDraft = vi.mocked(createWordPressDraft);
+const mockGetWordPressFeedLinks = vi.mocked(getWordPressFeedLinks);
 const mockUpdateWordPressDraft = vi.mocked(updateWordPressDraft);
 const mockUploadWordPressMedia = vi.mocked(uploadWordPressMedia);
 const mockFindMagnificStockImage = vi.mocked(findMagnificStockImage);
 const mockPrepareMagnificStockImage = vi.mocked(prepareMagnificStockImage);
+const mockGoogleSearchWithGeminiGrounding = vi.mocked(googleSearchWithGeminiGrounding);
 
 function geminiArticle(article: string, metrics?: Record<string, number>, image?: { imageBrief: string; imageSearchTerms: string[]; imageAltText: string }) {
 	return JSON.stringify({
@@ -66,6 +87,9 @@ describe('generateBlogPostsFromCalendar', () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
 		mockGetSiteConfig.mockResolvedValue({ blog_url: 'https://blog.example.com' });
+		mockReadFile.mockResolvedValue('');
+		mockGetWordPressFeedLinks.mockResolvedValue([]);
+		mockGoogleSearchWithGeminiGrounding.mockResolvedValue([]);
 		mockGetFullPixelatedConfig.mockReturnValue({
 			integrations: {
 				googleGemini: { api_key: 'gemini-key' },
@@ -94,6 +118,34 @@ describe('generateBlogPostsFromCalendar', () => {
 		expect(secondResult.results.every((item) => item.status === 'draft')).toBe(true);
 	});
 
+	it('normalizes require_minimum calendar criteria into the Gemini prompt', async () => {
+		const configuredCalendar = {
+			...calendar,
+			blogCalendarConfig: {
+				criteria: {
+					subjectiveCriteria: [],
+					objectiveCriteria: {
+						require_minimum_words: 800,
+						require_maximum_words: 1200,
+						require_minimum_blog_links: 3,
+						require_minimum_site_links: 2,
+						require_minimum_external_links: 4,
+					},
+				},
+			},
+		};
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		await generateBlogPostsFromCalendar(configuredCalendar, new FormData());
+
+		const prompt = JSON.parse(String(mockSmartFetch.mock.calls[0][1]?.requestInit?.body)).contents[0].parts[0].text;
+		expect(prompt).toContain('between 800 and 1200 words');
+		expect(prompt).toContain('at least 3 relevant blog links');
+		expect(prompt).toContain('at least 2 relevant site links');
+		expect(prompt).toContain('at least 4 relevant external links');
+	});
+
 	it('sends a generated article to WordPress when its configured criteria pass', async () => {
 		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
 		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
@@ -102,6 +154,32 @@ describe('generateBlogPostsFromCalendar', () => {
 
 		expect(result.results[0]).toMatchObject({ calendarId: 1, status: 'draft', wordpressPostId: 101 });
 		expect(mockCreateWordPressDraft).toHaveBeenCalledOnce();
+	});
+
+	it('sends the target publish date at 10am while keeping the post as a draft', async () => {
+		const datedCalendar = {
+			...calendar,
+			blogCalendar: calendar.blogCalendar.map((entry) => entry.id === 1 ? { ...entry, targetPublishDate: '2026-10-13' } : entry),
+		};
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		await generateBlogPostsFromCalendar(datedCalendar, new FormData());
+
+		expect(mockCreateWordPressDraft).toHaveBeenCalledWith(expect.objectContaining({
+			date: '2026-10-13T10:00:00',
+		}));
+	});
+
+	it('normalizes bare external URLs before storing the generated article', async () => {
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('Source: [https://www.sba.gov/].') }] } }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		await generateBlogPostsFromCalendar(calendar, new FormData());
+
+		expect(mockCreateWordPressDraft).toHaveBeenCalledWith(expect.objectContaining({
+			content: 'Source: [https://www.sba.gov/](https://www.sba.gov/).',
+		}));
 	});
 
 	it('updates an existing WordPress draft instead of creating a duplicate', async () => {
@@ -266,6 +344,27 @@ describe('generateBlogPostsFromCalendar', () => {
 		expect(result.results[0]).toMatchObject({ status: 'draft', imageStatus: 'not-found' });
 	});
 
+	it('uses fallback image terms when Gemini returns no image search terms', async () => {
+		mockGetFullPixelatedConfig.mockReturnValue({
+			integrations: {
+				googleGemini: { api_key: 'gemini-key' },
+				magnific: { apiKey: 'magnific-key' },
+				wordpress: { site: 'blog.example.com', apiToken: 'wp-token', baseURL: 'https://wp.example/' },
+			},
+		});
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two', undefined, { imageBrief: 'A stock photograph', imageSearchTerms: [], imageAltText: 'A stock photograph' }) }] } }] });
+		mockFindMagnificStockImage.mockResolvedValue(null);
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		await generateBlogPostsFromCalendar(calendar, new FormData());
+
+		expect(mockFindMagnificStockImage).toHaveBeenCalledWith('magnific-key', {
+			title: 'First topic',
+			imageBrief: 'A stock photograph',
+			searchTerms: ['First topic', 'A stock photograph'],
+		});
+	});
+
 	it('aggregates Gemini token usage for the generation run', async () => {
 		mockSmartFetch
 			.mockResolvedValueOnce({
@@ -291,6 +390,138 @@ describe('generateBlogPostsFromCalendar', () => {
 			thoughtsTokenCount: 10,
 			cachedContentTokenCount: 5,
 		});
+	});
+
+	it('fetches the configured site blog-link catalog once and includes it in every Gemini prompt when it exceeds five posts', async () => {
+		mockGetSiteConfig.mockResolvedValue({
+			blog_url: 'https://www.thethreemusesofbluffton.com',
+			blogRss: 'https://www.thethreemusesofbluffton.com/feed/',
+		});
+		mockGetWordPressFeedLinks.mockResolvedValue(Array.from({ length: 6 }, (_, index) => ({
+			title: index === 0 ? 'Creative Workshops in Bluffton' : `Published post ${index + 1}`,
+			url: index === 0
+				? 'https://www.thethreemusesofbluffton.com/blog/creative-workshops/'
+				: `https://www.thethreemusesofbluffton.com/blog/published-post-${index + 1}/`,
+		})));
+		mockSmartFetch
+			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] })
+			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('three four') }] } }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		const formData = new FormData();
+		formData.set('siteName', 'threemuses');
+		formData.set('count', '2');
+		const result = await generateBlogPostsFromCalendar(calendar, formData);
+
+		expect(result.results).toHaveLength(2);
+		expect(mockGetWordPressFeedLinks).toHaveBeenCalledOnce();
+		expect(mockGetWordPressFeedLinks).toHaveBeenCalledWith('https://www.thethreemusesofbluffton.com/feed/', 100);
+		const prompts = mockSmartFetch.mock.calls.map((call) => JSON.parse(String(call[1]?.requestInit?.body)).contents[0].parts[0].text);
+		expect(prompts).toHaveLength(2);
+		for (const prompt of prompts) {
+			expect(prompt).toContain('Use the exact title and exact URL from the array');
+			expect(prompt).toContain('https://www.thethreemusesofbluffton.com/blog/creative-workshops/');
+		}
+	});
+
+	it('omits a blog-link catalog of five or fewer posts from every Gemini prompt', async () => {
+		mockGetSiteConfig.mockResolvedValue({
+			blog_url: 'https://www.thethreemusesofbluffton.com',
+			blogRss: 'https://www.thethreemusesofbluffton.com/feed/',
+		});
+		mockGetWordPressFeedLinks.mockResolvedValue(Array.from({ length: 5 }, (_, index) => ({
+			title: `Published post ${index + 1}`,
+			url: `https://www.thethreemusesofbluffton.com/blog/published-post-${index + 1}/`,
+		})));
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		const formData = new FormData();
+		formData.set('siteName', 'threemuses');
+		formData.set('count', '1');
+		await generateBlogPostsFromCalendar(calendar, formData);
+
+		const prompt = JSON.parse(String(mockSmartFetch.mock.calls[0][1]?.requestInit?.body)).contents[0].parts[0].text;
+		expect(prompt).toContain('Blog-link rules: No published-post array was provided');
+		expect(prompt).not.toContain('Published post 1');
+	});
+
+	it('uses the SimpleMenu route criteria for the site-link catalog', async () => {
+		mockGetSiteConfig.mockResolvedValue({
+			blog_url: 'https://www.thethreemusesofbluffton.com',
+			localPath: '/site/threemuses',
+		});
+		mockReadFile.mockResolvedValue(JSON.stringify({
+			siteInfo: { url: 'https://www.thethreemusesofbluffton.com' },
+			routes: [
+				{ name: 'Home', path: '/' },
+				{ name: 'About', path: '/about' },
+				{ name: 'Services', routes: [{ name: 'Cleaning', path: '/services/cleaning' }] },
+				{ name: 'Hidden page', path: '/hidden', hidden: true },
+			],
+		}));
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		const formData = new FormData();
+		formData.set('siteName', 'threemuses');
+		formData.set('count', '1');
+		await generateBlogPostsFromCalendar(calendar, formData);
+
+		const prompt = JSON.parse(String(mockSmartFetch.mock.calls[0][1]?.requestInit?.body)).contents[0].parts[0].text;
+		expect(prompt).toContain('Site-link rules: You may link only to pages');
+		expect(prompt).toContain('https://www.thethreemusesofbluffton.com/');
+		expect(prompt).toContain('https://www.thethreemusesofbluffton.com/about');
+		expect(prompt).toContain('https://www.thethreemusesofbluffton.com/hidden');
+		expect(prompt).not.toContain('/services/cleaning');
+	});
+
+	it('prefetches Google results before creating a draft and supplies exact sources to Gemini', async () => {
+		mockGetFullPixelatedConfig.mockReturnValue({
+			integrations: {
+				google: { api_key: 'google-key' },
+				googleGemini: { api_key: 'gemini-key' },
+				wordpress: { site: 'blog.example.com', apiToken: 'wp-token', baseURL: 'https://wp.example/' },
+			},
+		});
+		mockSmartFetch
+			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
+		mockGoogleSearchWithGeminiGrounding.mockResolvedValueOnce([{ title: 'SBA guidance', url: 'https://www.sba.gov/article', snippet: 'Official small business guidance.' }]);
+		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
+
+		await generateBlogPostsFromCalendar(calendar, new FormData());
+
+		expect(mockGoogleSearchWithGeminiGrounding).toHaveBeenCalledWith({ apiKey: 'gemini-key', criteria: ['First topic First note'], count: 10, debug: false });
+		const prompt = JSON.parse(String(mockSmartFetch.mock.calls[0][1]?.requestInit?.body)).contents[0].parts[0].text;
+		expect(prompt).toContain('link only to exact URLs in the following Google search-result array');
+		expect(prompt).toContain('https://www.sba.gov/article');
+		expect(mockCreateWordPressDraft).toHaveBeenCalledOnce();
+	});
+
+	it('uses the same Google source prefetch for content updates', async () => {
+		mockGetFullPixelatedConfig.mockReturnValue({
+			integrations: {
+				google: { api_key: 'google-key' },
+				googleGemini: { api_key: 'gemini-key' },
+				wordpress: { site: 'blog.example.com', apiToken: 'wp-token', baseURL: 'https://wp.example/' },
+			},
+		});
+		const formData = new FormData();
+		formData.set('operation', 'update');
+		formData.set('draftIds', '501');
+		formData.set('updateMode', 'content');
+		mockSmartFetch
+			.mockResolvedValueOnce({ posts: [{ ID: 501, title: 'First topic' }] })
+			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('updated article') }] } }] });
+		mockGoogleSearchWithGeminiGrounding.mockResolvedValueOnce([{ title: 'EPA guidance', url: 'https://www.epa.gov/article', snippet: 'Official environmental guidance.' }]);
+		mockUpdateWordPressDraft.mockResolvedValue({ ID: 501, status: 'draft' });
+
+		await generateBlogPostsFromCalendar(calendar, formData);
+
+		expect(mockGoogleSearchWithGeminiGrounding).toHaveBeenCalledWith({ apiKey: 'gemini-key', criteria: ['First topic First note'], count: 10, debug: false });
+		const prompt = JSON.parse(String(mockSmartFetch.mock.calls[1][1]?.requestInit?.body)).contents[0].parts[0].text;
+		expect(prompt).toContain('https://www.epa.gov/article');
+		expect(mockUpdateWordPressDraft).toHaveBeenCalledWith(501, expect.objectContaining({ content: 'updated article' }));
 	});
 
 	it('preserves renamed objective keys in the prompt and normalizes them locally', async () => {
@@ -320,7 +551,7 @@ describe('generateBlogPostsFromCalendar', () => {
 		expect(prompt).not.toContain('minimumWords');
 	});
 
-	it('accepts a fenced JSON response and sends the response schema', async () => {
+	it('accepts a fenced JSON response while using Google Search grounding', async () => {
 		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: `Here is the article:\n\`\`\`json\n${geminiArticle('one two')}\n\`\`\`` }] } }] });
 		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
 
@@ -329,206 +560,21 @@ describe('generateBlogPostsFromCalendar', () => {
 		expect(result.results[0].status).toBe('draft');
 		expect(mockSmartFetch.mock.calls[0][1]).toMatchObject({ timeout: 120000, retries: 0 });
 		const requestBody = JSON.parse(String(mockSmartFetch.mock.calls[0][1]?.requestInit?.body));
+		expect(requestBody).not.toHaveProperty('tools');
 		expect(requestBody.generationConfig.responseMimeType).toBe('application/json');
-		expect(requestBody.generationConfig.responseSchema).toMatchObject({
-			type: 'OBJECT',
-			properties: { article: { type: 'STRING' }, selfAssessment: { type: 'OBJECT' } },
-		});
-		expect(requestBody.generationConfig.responseSchema.properties.selfAssessment.properties.metrics.required).toEqual(expect.arrayContaining([
-			'wordCount', 'paragraphsIncluded', 'bodyParagraphsIncluded', 'contentParagraphSentenceCounts',
-			'introductionIncluded', 'conclusionIncluded',
-			'callToActionIncluded', 'requiredCallToActionHeadingIncluded', 'requiredCallToActionLinkIncluded',
-			'wordpressBlocksIncluded', 'objectiveCriteriaPassed', 'subjectiveCriteriaPassed',
-		]));
+		expect(requestBody.generationConfig.responseSchema).toEqual(expect.objectContaining({ type: 'OBJECT' }));
+		expect(requestBody.contents[0].parts[0].text).toContain('Respond ONLY with raw JSON, starting with { and ending with }.');
+		expect(requestBody.contents[0].parts[0].text).toContain('Do NOT wrap the response in markdown code blocks like ```json ... ```.');
 	});
 
-	it('creates a draft without criteria repair when the JSON article is valid', async () => {
-		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('too many words in this article') }] } }] });
+	it('creates a draft when the generated article meets configured criteria', async () => {
+		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two') }] } }] });
 		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
 
 		const result = await generateBlogPostsFromCalendar(calendar, new FormData());
 
 		expect(result.results[0]).toMatchObject({ calendarId: 1, status: 'draft', wordpressPostId: 101 });
 		expect(mockSmartFetch).toHaveBeenCalledTimes(1);
-		expect(mockCreateWordPressDraft).toHaveBeenCalledOnce();
-		expect(mockCreateWordPressDraft.mock.calls[0][0].content).toBe('too many words in this article');
-	});
-
-	/*
-	it('keeps the best candidate when a later repair is worse', async () => {
-		mockSmartFetch
-			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two three four five') }] } }] })
-			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one') }] } }] })
-			.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one') }] } }] });
-
-		const result = await generateBlogPostsFromCalendar(calendar, new FormData());
-
-		expect(result.results[0].status).toBe('failed');
-		expect(result.results[0].error).toContain('maximum is 4');
-		expect(result.results[0].error).not.toContain('minimum is 2');
-		expect(mockCreateWordPressDraft).not.toHaveBeenCalled();
-	});
-	*/
-
-	it('reports paragraph, sentence, CTA, and link failures together', () => {
-		const errors = validateBlogArticle(
-			'<p>Short.</p><p>Also short.</p><p><a href="#">Contact us</a></p>',
-			{
-				objectiveCriteria: {
-					minimumWords: 20,
-					requireIntroParagraph: true,
-					requireConclusionParagraph: true,
-					requireCallToAction: true,
-					minimumBodyParagraphs: 3,
-					minimumParagraphSentences: 2,
-					minimumInternalLinks: 2,
-					minimumExternalLinks: 1,
-					requiredCallToActionLink: 'https://example.com/contact',
-					requireWordPressBlocks: true,
-					requiredCallToActionHeading: 'Call to Action',
-				},
-			},
-			'example.com'
-		);
-
-		expect(errors).toEqual(expect.arrayContaining([
-			'WordPress block markup is missing',
-			'word count is 5; minimum is 20',
-			'required call to action heading is missing: Call to Action',
-			'body paragraph count is 0; minimum is 3',
-			'content paragraph 1 has 1 sentences; minimum is 2',
-			'content paragraph 2 has 1 sentences; minimum is 2',
-			'internal link count is 0; minimum is 2',
-			'external link count is 0; minimum is 1',
-			'call to action is missing required link https://example.com/contact',
-		]));
-	});
-
-	it('uses local metrics even when Gemini reports different values', async () => {
-		mockSmartFetch.mockResolvedValueOnce({ candidates: [{ content: { parts: [{ text: geminiArticle('one two', {
-			wordCount: 999,
-			paragraphsIncluded: 99,
-		}) }] } }] });
-		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
-
-		const result = await generateBlogPostsFromCalendar(calendar, new FormData());
-
-		expect(result.results[0].status).toBe('draft');
-		expect(measureBlogArticle('one two', 'blog.example.com')).toEqual({
-			wordCount: 2,
-			paragraphsIncluded: 0,
-			bodyParagraphsIncluded: 0,
-			contentParagraphSentenceCounts: [],
-			introductionIncluded: false,
-			conclusionIncluded: false,
-			listBlocksIncluded: 0,
-			listItemsIncluded: 0,
-			h2HeadingsIncluded: 0,
-			internalLinksIncluded: 0,
-			externalLinksIncluded: 0,
-			sentenceCount: 0,
-			callToActionIncluded: false,
-			requiredCallToActionHeadingIncluded: false,
-			requiredCallToActionLinkIncluded: false,
-			wordpressBlocksIncluded: false,
-		});
-	});
-
-	it('accepts Gutenberg blocks, HTML links, and a separate CTA heading', () => {
-		const article = [
-			'<!-- wp:paragraph --><p>Introduction sentence. Another sentence.</p><!-- /wp:paragraph -->',
-			'<!-- wp:paragraph --><p>Body sentence. Another sentence.</p><!-- /wp:paragraph -->',
-			'<!-- wp:heading --><h2>Call to Action</h2><!-- /wp:heading -->',
-			'<!-- wp:paragraph --><p>Sign up for an assessment. <a href="https://www.pixelated.tech/contact">Contact us</a>. <a href="https://source.example/fact">Source</a>.</p><!-- /wp:paragraph -->',
-		].join('');
-
-		expect(validateBlogArticle(article, {
-			objectiveCriteria: {
-				minimumWords: 1,
-				maximumWords: 100,
-				requireCallToAction: true,
-				requireWordPressBlocks: true,
-				requiredCallToActionHeading: 'Call to Action',
-				minimumInternalLinks: 1,
-				minimumExternalLinks: 1,
-				requiredCallToActionLink: 'https://www.pixelated.tech/contact',
-			},
-		}, 'www.pixelated.tech')).toEqual([]);
-	});
-
-	it('reports missing measurable content requirements', () => {
-		const errors = validateBlogArticle(
-			'<!-- wp:paragraph --><p>This article explains the topic clearly.</p><!-- /wp:paragraph -->',
-			{
-				objectiveCriteria: {
-					minimumWords: 20,
-					requireIntroParagraph: true,
-					requireConclusionParagraph: true,
-					requireCallToAction: true,
-					minimumBodyParagraphs: 1,
-					minimumParagraphSentences: 2,
-					minimumInternalLinks: 1,
-					requireWordPressBlocks: true,
-				},
-			},
-			'example.com'
-		);
-
-		expect(errors).toEqual(expect.arrayContaining([
-			'word count is 6; minimum is 20',
-			'body paragraph count is 0; minimum is 1',
-			'content paragraph 1 has 1 sentences; minimum is 2',
-			'call to action paragraph is missing',
-			'internal link count is 0; minimum is 1',
-		]));
-	});
-
-	it('accepts the measurable content requirements', () => {
-		const article = [
-			'<!-- wp:paragraph --><p>In short, a clear website helps customers understand what a business offers.</p><!-- /wp:paragraph -->',
-			'<!-- wp:heading {"level":2} --><h2>Why this matters</h2><!-- /wp:heading -->',
-			'<!-- wp:paragraph --><p>Pixelated Tech explains the approach with practical examples.</p><!-- /wp:paragraph -->',
-			'<!-- wp:heading {"level":2} --><h2>Practical steps</h2><!-- /wp:heading -->',
-			'<!-- wp:list --><ul><li>Start with a clear goal.</li></ul><!-- /wp:list -->',
-		].join('');
-
-		expect(validateBlogArticle(article, {
-			objectiveCriteria: {
-				minimumWords: 1,
-				maximumWords: 100,
-				requireWordPressBlocks: true,
-			},
-		}, 'example.com')).toEqual([]);
-		expect(measureBlogArticle(article, 'example.com')).toMatchObject({
-			paragraphsIncluded: 2,
-			listBlocksIncluded: 1,
-			listItemsIncluded: 1,
-		});
-	});
-
-	it('creates a draft when configured content criteria fail', async () => {
-		mockSmartFetch.mockResolvedValue({ candidates: [{ content: { parts: [{ text: geminiArticle('<p>one two</p>') }] } }] });
-		mockCreateWordPressDraft.mockResolvedValue({ ID: 101, status: 'draft' });
-
-		const strictCalendar = {
-			...calendar,
-			blogCalendarConfig: {
-				criteria: {
-					...calendar.blogCalendarConfig.criteria,
-					objectiveCriteria: {
-						...calendar.blogCalendarConfig.criteria.objectiveCriteria,
-						requireIntroParagraph: true,
-						requireConclusionParagraph: true,
-						requireCallToAction: true,
-						minimumBodyParagraphs: 1,
-						minimumParagraphSentences: 2,
-					},
-				},
-			},
-		};
-		const result = await generateBlogPostsFromCalendar(strictCalendar, new FormData());
-
-		expect(result.results[0]).toMatchObject({ status: 'draft', wordpressPostId: 101 });
 		expect(mockCreateWordPressDraft).toHaveBeenCalledOnce();
 	});
 

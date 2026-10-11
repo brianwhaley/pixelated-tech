@@ -29,7 +29,8 @@
         "require_call_to_action": true,
         "require_minimum_body_paragraphs": 3,
         "require_minimum_paragraph_sentences": 6,
-        "require_minimum_internal_links": 2,
+        "require_minimum_blog_links": 3,
+        "require_minimum_site_links": 2,
         "require_minimum_external_links": 2,
         "required_call_to_action_link": "https://www.geaconstruction.net/contact",
         "required_call_to_action_heading": "Schedule your free assessment"
@@ -50,7 +51,27 @@
         "Drywall patching, fixture updates, door alignments",
         "Older family homes in *The Farm* experience noticeable drywall cracking and door misalignments from seasonal soil settling; this post targets quick interior tune-ups after heavy holiday foot traffic."
       ],
-      "status": ""
+      "status": "draft",
+      "wordpressPostId": 60,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, clean interior shot of a living room or hallway in a well-maintained older family home. The focus is on subtle details like a freshly painted wall, a newly installed light fixture, or a perfectly aligned door frame, conveying a sense of a recent, impactful refresh. The overall atmosphere should be inviting and well-cared-for.",
+      "imageSearchTerms": [
+        "home refresh interior",
+        "drywall repair subtle",
+        "door alignment home",
+        "bluffton home interior",
+        "new year home maintenance",
+        "updated fixtures"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-21",
+        "title": "Installer Checking Smart Door Sensor Alignment with Smartphone in Home Entryway",
+        "detailUrl": "https://www.magnific.com/premium-photo/installer-checking-smart-door-sensor-alignment-with-smartphone-home-entryway_428407104.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/428407104?lang=en",
+        "provider": "talexey",
+        "orientation": "vertical"
+      },
+      "wordpressMediaId": "59"
     },
     {
       "id": 2,
@@ -62,7 +83,26 @@
         "Custom tile walk-in showers & frameless glass",
         "Many *Sea Pines* properties are older 1970s/80s builds or luxury vacation rentals needing bath overhauls from cramped tub setups to open glass enclosures that appeal to high-end renters and buyers."
       ],
-      "status": ""
+      "status": "draft",
+      "wordpressPostId": 72,
+      "imageStatus": "not-found",
+      "imageBrief": "A modern, luxurious master bathroom with a large custom tile walk-in shower featuring a frameless glass enclosure. The bathroom should have a clean, sophisticated aesthetic with high-end finishes. Natural light should be present, highlighting the spaciousness and elegant design. The overall impression should be one of a serene, spa-like retreat.",
+      "imageSearchTerms": [
+        "luxury master bathroom",
+        "frameless glass shower",
+        "custom tile walk-in shower",
+        "spa-like bathroom",
+        "modern bathroom design"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-41",
+        "title": "Modern bathroom with spa like ambiance featuring sleek wooden countertop stone sinks candles and walk in shower",
+        "detailUrl": "https://www.magnific.com/premium-photo/modern-bathroom-with-spa-like-ambiance-featuring-sleek-wooden-countertop-stone-sinks-candles-walk-shower_417339072.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/417339072?lang=en",
+        "provider": "kenchiro75",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "71"
     },
     {
       "id": 3,
@@ -74,7 +114,25 @@
         "Solid hardwood cabinetry, island prep, layout expansion",
         "*Habersham* architecture emphasizes traditional Lowcountry craftsmanship; this post details opening up traditional closed kitchen walls into open prep-and-cook spaces while respecting historical aesthetics."
       ],
-      "status": ""
+      "status": "draft",
+      "wordpressPostId": 76,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, inviting open-concept kitchen seamlessly connected to a living or dining area in a traditional-style home. The kitchen features solid hardwood cabinetry, a large central island with seating, and elegant, yet functional, design elements that hint at Lowcountry craftsmanship. Guests are subtly visible enjoying the integrated space, perhaps chatting with someone at the island.",
+      "imageSearchTerms": [
+        "Open concept kitchen entertaining",
+        "traditional hardwood kitchen island",
+        "Lowcountry kitchen design",
+        "elegant kitchen remodel"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-16",
+        "title": "Traditional large Lshaped kitchen with large island and kitchen appliances",
+        "detailUrl": "https://www.magnific.com/premium-photo/traditional-large-lshaped-kitchen-with-large-island-kitchen-appliances_260570597.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/260570597?lang=en",
+        "provider": "sanchopancho1990",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "75"
     },
     {
       "id": 4,
@@ -86,7 +144,24 @@
         "Energy efficiency, Low-E glass, draft elimination",
         "Newer homes in fast-growing *Riverton Pointe* often come with builder-grade glass; this post focuses on upgrading to high-efficiency Low-E impact glass to cut winter heating and summer cooling loads."
       ],
-      "status": ""
+      "status": "draft",
+      "wordpressPostId": 78,
+      "imageStatus": "selected",
+      "imageBrief": "A bright, inviting interior of a modern home in a sunny, low-country setting, with a large, clear window showing a peaceful outdoor scene. The window should appear clean, well-sealed, and allow ample natural light without glare, suggesting energy efficiency and comfort.",
+      "imageSearchTerms": [
+        "modern home interior window low-e glass",
+        "energy efficient window view",
+        "bright living room impact windows hardeeville"
+      ],
+      "magnificImage": {
+        "id": "magnific-resource-18",
+        "title": "work in progress on environmentally friendly and energy efficient roof window against blue sky. Room under construction with wooden beams, boards and windows view from inside",
+        "detailUrl": "https://www.magnific.com/premium-photo/work-progress-environmentally-friendly-energy-efficient-roof-window-against-blue-sky-room-construction-with-wooden-beams-boards-windows-view-from-inside_71842438.htm",
+        "licenseUrl": "https://www.magnific.com/profile/license/pdf/71842438?lang=en",
+        "provider": "dotshock",
+        "orientation": "horizontal"
+      },
+      "wordpressMediaId": "77"
     },
     {
       "id": 5,

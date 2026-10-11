@@ -16,6 +16,7 @@ const {
   mapWordPressToBlogPosting,
   getWordPressItemImages,
   getWordPressCategories,
+  htmlToWordPressBlocks,
   createWordPressDraft,
   updateWordPressDraft,
   uploadWordPressMedia
@@ -54,12 +55,28 @@ describe('WordPress Functions', () => {
             body: JSON.stringify({
               status: 'draft',
               title: 'Draft title',
-              content: '<p>Draft content</p>',
+              content: '<!-- wp:paragraph --><p>Draft content</p><!-- /wp:paragraph -->',
               excerpt: 'Draft excerpt'
             })
           }
         }
       );
+    });
+
+    it('sets the requested date without changing draft status', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ ID: 45, status: 'draft' });
+
+      await createWordPressDraft({
+        site: 'blog.example.com',
+        apiToken: 'token',
+        title: 'Dated draft',
+        content: 'Draft content',
+        date: '2026-10-13T10:00:00',
+      });
+
+      const request = mockSmartFetch.mock.calls[0][1];
+      const body = JSON.parse(String(request?.requestInit?.body));
+      expect(body).toMatchObject({ status: 'draft', date: '2026-10-13T10:00:00' });
     });
 
     it('should convert Markdown content to HTML before sending it', async () => {
@@ -74,10 +91,30 @@ describe('WordPress Functions', () => {
 
       const request = mockSmartFetch.mock.calls[0][1];
       const body = JSON.parse(String(request?.requestInit?.body));
-      expect(body.content).toContain('<h1>Heading</h1>');
-      expect(body.content).toContain('<p>A paragraph with <a href="https://example.com">a link</a>.</p>');
-      expect(body.content).toContain('<ul>');
+      expect(body.content).toContain('<!-- wp:heading {"level":1} --><h1>Heading</h1><!-- /wp:heading -->');
+      expect(body.content).toContain('<!-- wp:paragraph --><p>A paragraph with <a href="https://example.com">a link</a>.</p><!-- /wp:paragraph -->');
+      expect(body.content).toContain('<!-- wp:list --><ul>');
       expect(body.content).not.toContain('# Heading');
+    });
+
+    it('converts HTML elements to Gutenberg blocks without changing links', () => {
+      expect(htmlToWordPressBlocks('<p>Read <a href="https://example.com">the source</a>.</p>')).toBe('<!-- wp:paragraph --><p>Read <a href="https://example.com">the source</a>.</p><!-- /wp:paragraph -->');
+    });
+
+    it('converts a bare bracketed URL into a valid link', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ ID: 44, status: 'draft' });
+
+      await createWordPressDraft({
+        site: 'blog.example.com',
+        apiToken: 'token',
+        title: 'Bare URL draft',
+        content: 'The source is [https://www.sba.gov/].',
+      });
+
+      const request = mockSmartFetch.mock.calls[0][1];
+      const body = JSON.parse(String(request?.requestInit?.body));
+      expect(body.content).toContain('href="https://www.sba.gov/"');
+      expect(body.content).not.toContain('%5D');
     });
 
     it('should reject incomplete draft input before making a request', async () => {
@@ -114,12 +151,26 @@ describe('WordPress Functions', () => {
             body: JSON.stringify({
               status: 'draft',
               title: 'Updated draft title',
-              content: '<p>Updated draft content</p>\n',
+              content: '<!-- wp:paragraph --><p>Updated draft content</p><!-- /wp:paragraph -->\n',
               featured_image: 707,
             }),
           }),
         })
       );
+    });
+
+    it('allows updating only the target date while retaining draft status', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ ID: 42, status: 'draft' });
+
+      await updateWordPressDraft(42, {
+        site: 'blog.example.com',
+        apiToken: 'token',
+        date: '2026-10-13T10:00:00',
+      });
+
+      const request = mockSmartFetch.mock.calls[0][1];
+      const body = JSON.parse(String(request?.requestInit?.body));
+      expect(body).toEqual({ status: 'draft', date: '2026-10-13T10:00:00' });
     });
   });
 

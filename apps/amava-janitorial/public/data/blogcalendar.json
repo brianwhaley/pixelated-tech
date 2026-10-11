@@ -29,7 +29,8 @@
         "require_call_to_action": true,
         "require_minimum_body_paragraphs": 3,
         "require_minimum_paragraph_sentences": 6,
-        "require_minimum_internal_links": 2,
+        "require_minimum_blog_links": 3,
+        "require_minimum_site_links": 2,
         "require_minimum_external_links": 2,
         "required_call_to_action_link": "https://www.amavajanitorial.com/contact",
         "required_call_to_action_heading": "Schedule your free assessment"

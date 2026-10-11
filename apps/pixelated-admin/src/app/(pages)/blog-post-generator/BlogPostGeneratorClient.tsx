@@ -1,7 +1,7 @@
 'use client';
 
 import { startTransition, useActionState, useEffect, useRef, useState, useTransition } from 'react';
-import { FormEngine, Loading, PageSection, PageTitleHeader, Tab, ToggleLoading } from '@pixelated-tech/components';
+import { Accordion, FormEngine, Loading, PageSection, PageTitleHeader, Tab, ToggleLoading } from '@pixelated-tech/components';
 import type { BlogGenerationResult, ExistingWordPressDraft } from '@pixelated-tech/components/adminserver';
 import blogPostGeneratorFormData from './blogpostgeneratorform.json';
 import "./blog-post-generator.css";
@@ -120,7 +120,7 @@ export default function BlogPostGeneratorClient({ action, getExistingDraftsActio
 			{sites.map((site) => <option key={site.name} value={site.name}>{site.name}</option>)}
 		</select>
 		<br />
-		<button type="button" class="button" onClick={handleViewExistingDrafts} disabled={isDraftsPending}>
+		<button type="button" className="button" onClick={handleViewExistingDrafts} disabled={isDraftsPending}>
 			{isDraftsPending ? 'Loading drafts...' : 'View Existing Drafts'}
 		</button>
 		<br /><br />
@@ -150,7 +150,7 @@ export default function BlogPostGeneratorClient({ action, getExistingDraftsActio
 				<label><input type="radio" name="updateMode" value="image" checked={updateMode === 'image'} onChange={() => setUpdateMode('image')} /> Update Image</label>
 				<label><input type="radio" name="updateMode" value="both" checked={updateMode === 'both'} onChange={() => setUpdateMode('both')} /> Update Both</label>
 			</fieldset>
-			<button type="button" class="button" onClick={handleUpdateDrafts} disabled={selectedDraftIds.length === 0 || isPending}>Update Drafts</button>
+			<button type="button" className="button" onClick={handleUpdateDrafts} disabled={selectedDraftIds.length === 0 || isPending}>Update Drafts</button>
 		</>}
 		{!isDraftsPending && drafts.length === 0 && !draftsError && <p>No existing drafts found for this site.</p>}
 	</section>;
@@ -194,9 +194,15 @@ export default function BlogPostGeneratorClient({ action, getExistingDraftsActio
 								</a></li>
 							</ul>
 						</section>}
-						<button type="button" class="button" onClick={() => latestCalendar && downloadCalendarJson(latestCalendar.calendar, 'latest')}>
-							Download updated calendar JSON
-						</button>
+						{latestCalendar && <>
+							<Accordion items={[{
+								title: 'Updated blog calendar JSON',
+								content: <pre className="blog-json-template"><code>{JSON.stringify(latestCalendar.calendar, null, 2)}</code></pre>,
+							}]} />
+							<button type="button" className="button" onClick={() => downloadCalendarJson(latestCalendar.calendar, 'latest')}>
+								Download updated calendar JSON
+							</button>
+						</>}
 					</>
 				)}
 			</PageSection>

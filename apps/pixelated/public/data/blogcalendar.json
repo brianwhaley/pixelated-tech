@@ -6,10 +6,10 @@
 			"subjectiveCriteria": [
 				"Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
 				"Target an education level of high school graduate or below.",
-				"Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
-				"Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+				"Include at least four relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+				"Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source in the same sentence as the statistic.",
 				"Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
-				"Place the source link in the same paragraph as the statistic or factual claim it supports.",
+				"Place the source link in the same sentence as the statistic or factual claim it supports; naming a source without linking it does not satisfy this criterion.",
 				"Use real, working URLs. Do not use placeholder links.",
 				"Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
 				"Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
@@ -29,8 +29,9 @@
 				"require_call_to_action": true,
 				"require_minimum_body_paragraphs": 3,
 				"require_minimum_paragraph_sentences": 6,
-				"require_minimum_internal_links": 2,
-				"require_minimum_external_links": 2,
+				"require_minimum_blog_links": 3,
+				"require_minimum_site_links": 2,
+				"require_minimum_external_links": 4,
 				"required_call_to_action_link": "https://www.pixelated.tech/contact",
 				"required_call_to_action_heading": "Ready for your free assessment?"
 			},
@@ -673,7 +674,26 @@
 			"notes": [
 				"Why are most bank sites blue? Why is \"Sale\" text usually red? We dive into the psychology of color and how it influences buyer behavior. We discuss how to pick a color palette that aligns with your brand's \"vibe\"—whether it's the trustworthiness of navy or the energy of bright orange. For local NJ/SC businesses, your colors can even reflect your regional identity. We show how our design process includes this psychological analysis to ensure your site is not just pretty, but emotionally resonant with your target audience."
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 1509,
+			"imageStatus": "selected",
+			"imageBrief": "A realistic stock photograph showing a web designer or marketing professional looking at a screen with a colorful website design, perhaps with color swatches or a mood board visible nearby. The image should convey thoughtfulness and strategic design.",
+			"imageSearchTerms": [
+				"web design color psychology",
+				"brand color strategy",
+				"designer choosing colors",
+				"website color palette",
+				"marketing color impact"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-36",
+				"title": "Cropped image of interior designer team recommends color by using color palette while laptop displayed UI and UX designs for mobiles app and website Creative design and business concept Variegated",
+				"detailUrl": "https://www.magnific.com/premium-photo/cropped-image-interior-designer-team-recommends-color-by-using-color-palette-while-laptop-displayed-ui-ux-designs-mobiles-app-website-creative-design-business-concept-variegated_126791565.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/126791565?lang=en",
+				"provider": "Frolopiaton Palm",
+				"orientation": "panoramic"
+			},
+			"wordpressMediaId": "1508"
 		},
 		{
 			"id": 55,
@@ -691,7 +711,27 @@
 			"notes": [
 				"What's the difference between a $10/month host and a $100/month managed service? We break down the technical differences: performance, security updates, and support. Managed hosting is like having a private concierge for your website—someone who fixes things before you even know they're broken. For a busy small business owner, the time saved and the security provided by managed hosting far outweigh the cost. We show why Pixelated Tech recommends high-end hosting to protect our clients' investments and ensure 99.9% uptime."
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 1511,
+			"imageStatus": "selected",
+			"imageBrief": "A realistic stock photograph depicting a small business owner looking relieved and focused on their laptop, perhaps in a modern, clean office or cafe setting. In the background, subtle visual cues could suggest complex IT infrastructure being handled by others, such as blurred servers or a small team collaborating. The overall mood should convey peace of mind and efficiency, contrasting the stress of managing IT themselves.",
+			"imageSearchTerms": [
+				"small business owner peace of mind",
+				"managed IT services relief",
+				"business owner focused on work",
+				"website hosting solutions",
+				"entrepreneur working efficiently",
+				"digital peace of mind"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-2",
+				"title": "Woman relax and thinking by window at coffee shop for morning reflection and daydreaming of future Calm peace and owner with idea by glass at cafe for small business inspiration and store growth",
+				"detailUrl": "https://www.magnific.com/premium-photo/woman-relax-thinking-by-window-coffee-shop-morning-reflection-daydreaming-future-calm-peace-owner-with-idea-by-glass-cafe-small-business-inspiration-store-growth_375839911.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/375839911?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "1510"
 		},
 		{
 			"id": 57,
@@ -700,7 +740,27 @@
 			"notes": [
 				"An FAQ page isn't just for customer service; it's a powerful SEO tool. By answering the specific questions people type into Google, you can capture \"long-tail\" search traffic. We discuss how to use \"Schema Markup\" to make your FAQs appear directly on the search results page, increasing your click-through rate. For a Bluffton business, this means being the direct answer to \"How much does [Service] cost in South Carolina?\" We provide a guide for brainstorming the best questions to feature on your site to drive both trust and traffic."
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 1514,
+			"imageStatus": "selected",
+			"imageBrief": "A focused business professional, likely a small business owner or marketing manager, thoughtfully reviewing an FAQ section displayed on a laptop screen. The setting is a modern, clean office or co-working space, suggesting an environment of strategic planning and digital organization. The person might be making notes or pondering, indicating a process of problem-solving and website content strategy.",
+			"imageSearchTerms": [
+				"business owner reviewing FAQ page",
+				"marketing strategy laptop",
+				"website content planning",
+				"SEO optimization FAQ",
+				"customer support strategy digital",
+				"small business website strategy"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-11",
+				"title": "Website business and planning with laptop screen in office for branding marketing strategy and idea Research technology and growth with computer on desk for digital information and media",
+				"detailUrl": "https://www.magnific.com/premium-photo/website-business-planning-with-laptop-screen-office-branding-marketing-strategy-idea-research-technology-growth-with-computer-desk-digital-information-media_44157176.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/44157176?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "panoramic"
+			},
+			"wordpressMediaId": "1513"
 		},
 		{
 			"id": 58,
@@ -709,7 +769,11 @@
 			"notes": [
 				"National chains have bigger budgets, but you have the local advantage. We discuss how small businesses can win by being more personal, more responsive, and more \"local\" in their digital presence. We look at \"Geo-Targeting\" in ads and the importance of having a local phone number and address on every page. By leaning into your Denville or Bluffton identity, you build a type of loyalty that national brands can't buy. We show how we help our clients position themselves as the \"local experts\" in their specific industry."
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 1517,
+			"imageStatus": "not-found",
+			"imageBrief": "A vibrant, eye-level shot of a bustling main street in a charming small town (like Denville, NJ or Bluffton, SC). The focus should be on the storefronts of independent local businesses, perhaps with a friendly shop owner waving from a doorway or a small group of diverse people interacting cheerfully. The national chain store logos should be blurred or subtly in the background, out of focus, emphasizing the local businesses in the foreground. The overall mood is warm, welcoming, and community-focused.",
+			"imageSearchTerms": []
 		},
 		{
 			"id": 59,

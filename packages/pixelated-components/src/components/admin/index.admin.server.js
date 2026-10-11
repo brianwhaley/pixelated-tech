@@ -31,7 +31,6 @@ export * from './auth/authentication';
 export * from './auth/auth-functions';
 export * from './auth/authorization';
 export * from './auth/auth-components';
-export * from './blog/blog-generator.validation';
 export * from './blog/blog-generator.server';
 export * from './filedata/filedata.functions';
 export * from './filedata/filedata.server';

@@ -14,7 +14,7 @@ import {
 } from './smartmediautils';
 import { SchemaVideoObject } from '../foundation/schema';
 
-const debug = true;
+const debug = false;
 
 
 export type SmartVideoVariant = 'cloudinary' | 'html';

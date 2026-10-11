@@ -35,7 +35,6 @@ export * from './site-health/site-health-utils';
 export * from './auth/auth-components';
 export * from './auth/auth-functions';
 export * from './auth/authorization';
-export * from './blog/blog-generator.validation';
 
 export * from './filedata/filedata.components';
 export * from './filedata/filedata.functions';
