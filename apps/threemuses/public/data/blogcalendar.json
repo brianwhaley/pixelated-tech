@@ -29,7 +29,8 @@
 				"require_call_to_action": true,
 				"require_minimum_body_paragraphs": 3,
 				"require_minimum_paragraph_sentences": 6,
-				"require_minimum_internal_links": 2,
+				"require_minimum_blog_links": 3,
+				"require_minimum_site_links": 2,
 				"require_minimum_external_links": 2,
 				"required_call_to_action_link": "https://www.thethreemusesofbluffton.com/contact-us",
 				"required_call_to_action_heading": "Connect with our Creative Lowcountry Community!"
@@ -45,7 +46,26 @@
 			"targetPublishDate": "",
 			"title": "The Legend of the Three Muses: The story behind our Bluffton shop.",
 			"notes": [],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 316,
+			"imageStatus": "selected",
+			"imageBrief": "A warm and inviting photograph of the exterior of a charming local shop, with a sign clearly visible that says \"The Three Muses of Bluffton.\" The shop should have a welcoming facade, perhaps with some greenery or artistic elements, reflecting a creative and community-focused atmosphere. The lighting should be soft, suggesting a pleasant Lowcountry day.",
+			"imageSearchTerms": [
+				"Bluffton local shop exterior",
+				"charming artisan store front",
+				"creative community hub",
+				"Lowcountry art shop",
+				"boutique with welcoming facade"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-5",
+				"title": "a store front with a green awning that says open",
+				"detailUrl": "https://www.magnific.com/premium-photo/store-front-with-green-awning-that-says-open_395699278.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/395699278?lang=en",
+				"provider": "XIGE",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "315"
 		},
 		{
 			"id": 2,
@@ -54,7 +74,26 @@
 			"notes": [
 				"Dancewear"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 318,
+			"imageStatus": "not-found",
+			"imageBrief": "A close-up, eye-level shot of two pairs of ballet shoes, one with a flat sole and one with a split sole, laid side-by-side on a clean, light-colored wooden dance studio floor. The lighting should be soft and natural, highlighting the texture of the canvas or leather and the distinct sole designs. The background should be slightly blurred to keep focus on the shoes, suggesting a spacious studio environment.",
+			"imageSearchTerms": [
+				"ballet shoes flat sole split sole",
+				"beginner ballet shoes",
+				"dance studio footwear",
+				"ballet shoe comparison",
+				"ballet slippers"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-21",
+				"title": "Ballet dancer's feet on studio floor. Teenage dancer puts on ballet pointe shoes copyspace.",
+				"detailUrl": "https://www.magnific.com/premium-photo/ballet-dancer-s-feet-studio-floor-teenage-dancer-puts-ballet-pointe-shoes-copyspace_7139934.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/7139934?lang=en",
+				"provider": "dingomar",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "317"
 		},
 		{
 			"id": 3,
@@ -63,7 +102,26 @@
 			"notes": [
 				"Sewing"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 320,
+			"imageStatus": "selected",
+			"imageBrief": "A bright, inviting image of a person happily sewing on a modern sewing machine. The scene should convey a sense of calm and creativity, perhaps with colorful fabrics, threads, and a completed or in-progress project visible. The person could be smiling or focused, demonstrating enjoyment in the craft. The background should be a tidy, well-lit crafting space, suggesting a productive hobby.",
+			"imageSearchTerms": [
+				"sewing machine happy person",
+				"creative sewing hobby",
+				"woman sewing home studio",
+				"sustainable fashion DIY",
+				"mindful crafting sewing"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-26",
+				"title": "Portrait happy woman tailor dressmaker posing at workplace with electric sewing machine textile repair Smiling female fashion designer enjoy art work fabric clothes creation process at home studio",
+				"detailUrl": "https://www.magnific.com/premium-photo/portrait-happy-woman-tailor-dressmaker-posing-workplace-with-electric-sewing-machine-textile-repair-smiling-female-fashion-designer-enjoy-art-work-fabric-clothes-creation-process-home-studio_272582059.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/272582059?lang=en",
+				"provider": "kostikova",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "319"
 		},
 		{
 			"id": 4,
@@ -72,7 +130,24 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": ""
+			"status": "deferred",
+			"wordpressPostId": 322,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting living room scene with a mix of handcrafted and unique boutique decor elements. Focus on natural textures, soft lighting, and a few distinct artisanal pieces like a ceramic vase with dried flowers, a hand-woven throw blanket over a sofa, and perhaps a small wooden sculpture or a piece of framed abstract art. The overall feeling should be cozy, personalized, and refreshed.",
+			"imageSearchTerms": [
+				"Handcrafted home decor living room",
+				"Boutique interior design cozy",
+				"Artisan home accents New Year refresh"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-3",
+				"title": "Professional Cozy Living Room Decor with Rustic and Modern Elements Featuring Orange Sofa Knit Throws Macrame Wall Hanging and Natural Wood Accents",
+				"detailUrl": "https://www.magnific.com/premium-photo/professional-cozy-living-room-decor-with-rustic-modern-elements-featuring-orange-sofa-knit-throws-macrame-wall-hanging-natural-wood-accents_430622898.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/430622898?lang=en",
+				"provider": "zahzie462",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "321"
 		},
 		{
 			"id": 5,
@@ -81,7 +156,26 @@
 			"notes": [
 				"Studio"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 324,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting, and professional photo of a sewing studio. It should feature a diverse team of tailors or seamstresses, possibly with one or two individuals actively working on a garment with a sewing machine or hand-stitching, showcasing skilled hands and focused expressions. The background should be a clean, organized studio environment with rolls of fabric, threads, and tailoring tools visible, suggesting craftsmanship and attention to detail. The overall mood should be one of expertise, passion, and collaborative effort.",
+			"imageSearchTerms": [
+				"sewing studio team",
+				"tailoring workshop",
+				"alterations specialists",
+				"seamstress at work",
+				"fashion alteration studio"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-39",
+				"title": "Tailoring of clothes. Seamstresses at work in workshop sewing clothes on sewing machine, side view. Dressmakers sews clothes in atelier. Two women seamstress. Dressmaking in sewing business.",
+				"detailUrl": "https://www.magnific.com/premium-photo/tailoring-clothes-seamstresses-work-workshop-sewing-clothes-sewing-machine-side-view-dressmakers-sews-clothes-atelier-two-women-seamstress-dressmaking-sewing-business_21243488.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/21243488?lang=en",
+				"provider": "lenblr",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "323"
 		},
 		{
 			"id": 6,
@@ -90,7 +184,25 @@
 			"notes": [
 				"Dancewear"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 326,
+			"imageStatus": "selected",
+			"imageBrief": "A close-up, high-quality, professional stock photograph of a pair of well-worn pink satin pointe shoes with ribbons tied, resting on a polished wooden ballet studio floor. The image should highlight the texture of the satin, the worn platform, and the shape of the shoe, conveying both the beauty and the demanding nature of ballet.",
+			"imageSearchTerms": [
+				"pointe shoes worn",
+				"ballet shoes close up",
+				"dance studio pointe",
+				"worn ballet slippers"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-26",
+				"title": "Close up of dancer's feet in pointe shoes on wooden floor in dance studio classroom",
+				"detailUrl": "https://www.magnific.com/premium-photo/close-up-dancer-s-feet-pointe-shoes-wooden-floor-dance-studio-classroom_427957686.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/427957686?lang=en",
+				"provider": "utaem2022",
+				"orientation": "square"
+			},
+			"wordpressMediaId": "325"
 		},
 		{
 			"id": 7,
@@ -99,7 +211,26 @@
 			"notes": [
 				"Sewing"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 354,
+			"imageStatus": "selected",
+			"imageBrief": "A neatly organized closet with a mix of classic and modern clothing items. A person's hands are shown, possibly holding up a garment that has been recently altered, or perhaps a measuring tape near a garment. The overall impression should be one of quality, care, and renewed style through thoughtful adjustments.",
+			"imageSearchTerms": [
+				"clothing alterations",
+				"tailoring wardrobe",
+				"fashion refresh",
+				"sustainable fashion",
+				"well-fitting clothes"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-14",
+				"title": "I have exactly what you are looking for handsome sartor with tape measure male beauty and fashion bearded man tailoring clothes formal and office wardrobe tailor designing male jacket",
+				"detailUrl": "https://www.magnific.com/premium-photo/i-have-exactly-what-you-are-looking-handsome-sartor-with-tape-measure-male-beauty-fashion-bearded-man-tailoring-clothes-formal-office-wardrobe-tailor-designing-male-jacket_33777621.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/33777621?lang=en",
+				"provider": "romeo22",
+				"orientation": "panoramic"
+			},
+			"wordpressMediaId": "353"
 		},
 		{
 			"id": 8,
@@ -108,7 +239,7 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": ""
+			"status": "deferred"
 		},
 		{
 			"id": 9,
@@ -117,7 +248,26 @@
 			"notes": [
 				"Studio"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 356,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting image of a sewing studio or classroom. It should show a clean, well-lit space with a few sewing machines, spools of colorful thread, fabric scraps, and perhaps some half-finished projects. There should be a sense of creativity and learning, possibly with an instructor gently guiding a student, but not overtly staged. The focus should be on the tools and environment of sewing.",
+			"imageSearchTerms": [
+				"sewing class studio",
+				"sewing workshop",
+				"craft studio interior",
+				"creative learning space",
+				"sewing machine close up fabric"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-3",
+				"title": "Fashion designer young man and creative student in a workshop to stitch clothes Factory worker tailor and apprentice learning sewing machine skills in a textile startup and manufacturing studio",
+				"detailUrl": "https://www.magnific.com/premium-photo/fashion-designer-young-man-creative-student-workshop-stitch-clothes-factory-worker-tailor-apprentice-learning-sewing-machine-skills-textile-startup-manufacturing-studio_30139063.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/30139063?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "355"
 		},
 		{
 			"id": 10,
@@ -126,7 +276,26 @@
 			"notes": [
 				"Dancewear"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 358,
+			"imageStatus": "selected",
+			"imageBrief": "A close-up, well-lit shot of a dancer's lower legs and feet, clad in perfectly smooth, light-colored dance tights, free of any snags or runs. The background is softly blurred, suggesting a dance studio or stage environment, with the focus sharply on the pristine condition of the hosiery.",
+			"imageSearchTerms": [
+				"snag-free dance tights",
+				"dancer legs smooth tights",
+				"pristine ballet tights",
+				"dance recital preparation",
+				"perfect dance hosiery"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-31",
+				"title": "Ballet dance and form with women in class for theatre performance recital or rehearsal together Preparation skill and technique with ballerina group in studio for art creative or expression",
+				"detailUrl": "https://www.magnific.com/premium-photo/ballet-dance-form-with-women-class-theatre-performance-recital-rehearsal-together-preparation-skill-technique-with-ballerina-group-studio-art-creative-expression_377517583.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/377517583?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "357"
 		},
 		{
 			"id": 11,
@@ -135,7 +304,26 @@
 			"notes": [
 				"Sewing"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 360,
+			"imageStatus": "selected",
+			"imageBrief": "A clear, inviting image of a sewing machine on a clean workspace, surrounded by essential sewing notions like thread spools, fabric scissors, a tape measure, and a pincushion with colorful pins. The lighting should be bright and natural, creating a welcoming and organized atmosphere, suitable for a beginner's class.",
+			"imageSearchTerms": [
+				"sewing machine workspace",
+				"beginner sewing supplies",
+				"sewing class tools",
+				"organized sewing table",
+				"sewing notions flat lay"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-32",
+				"title": "A sewing machine on a wooden table with fabric and thread organized in a basket",
+				"detailUrl": "https://www.magnific.com/premium-photo/sewing-machine-wooden-table-with-fabric-thread-organized-basket_411243037.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/411243037?lang=en",
+				"provider": "fabrikasimf",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "359"
 		},
 		{
 			"id": 12,
@@ -144,17 +332,36 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": ""
+			"status": "deferred"
 		},
 		{
 			"id": 13,
 			"targetPublishDate": "",
 			"title": "March Madness: A look at our busiest alteration month.",
 			"notes": [
-				"Focus: Recitals, prom alterations, and Mother’s Day.",
+				"Focus: Recitals, prom alterations, and Mother's Day.",
 				"Studio"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 362,
+			"imageStatus": "selected",
+			"imageBrief": "A bustling, well-lit alterations studio or sewing workshop. The scene should show various garments in different stages of alteration, such as a prom dress on a mannequin, a dance costume hanging on a rack, and a smart casual dress laid out on a work table. A sewing machine might be visible in the background, or close-up hands working diligently on a garment. The overall impression should be one of organized activity, skilled craftsmanship, and a vibrant, productive environment.",
+			"imageSearchTerms": [
+				"alterations studio busy",
+				"tailor workshop garments",
+				"sewing studio spring season",
+				"seamstress working prom recital",
+				"garment alterations professional"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-11",
+				"title": "A tailor in a sewing workshop at work. His Studio is Sunny. Colored fabrics, garments are visible.",
+				"detailUrl": "https://www.magnific.com/premium-photo/tailor-sewing-workshop-work-his-studio-is-sunny-colored-fabrics-garments-are-visible_21957867.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/21957867?lang=en",
+				"provider": "maryna_alex",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "361"
 		},
 		{
 			"id": 14,
@@ -163,7 +370,26 @@
 			"notes": [
 				"Dancewear"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 364,
+			"imageStatus": "selected",
+			"imageBrief": "A stock photograph showing a close-up of a young female dancer, perhaps pre-teen or early teen, smiling confidently with subtle, appropriate stage makeup applied. She should be looking slightly off-camera or directly at the camera. The background should be softly blurred, hinting at a stage or backstage environment, but not distracting. The focus should be on her face, showcasing the effect of the makeup without it being overly dramatic or adult.",
+			"imageSearchTerms": [
+				"young dancer stage makeup",
+				"preteen dance performance",
+				"ballet stage beauty",
+				"confident girl dancer makeup",
+				"backstage dancer portrait"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-23",
+				"title": "Ballerina sitting on the floor in a studio or on a stage in a pose during dance Young ballet dancer with her hand up while dancing or posing during theatre performance of beauty grace and elegant",
+				"detailUrl": "https://www.magnific.com/premium-photo/ballerina-sitting-floor-studio-stage-pose-dance-young-ballet-dancer-with-her-hand-up-while-dancing-posing-theatre-performance-beauty-grace-elegant_33081192.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/33081192?lang=en",
+				"provider": "The Yuri Arcurs Collection",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "363"
 		},
 		{
 			"id": 15,
@@ -172,7 +398,26 @@
 			"notes": [
 				"Sewing"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 366,
+			"imageStatus": "selected",
+			"imageBrief": "A close-up shot of a seamstress's hands meticulously working on a formal gown (perhaps a prom dress or a gala dress) with a measuring tape, pins, and thread visible. The focus should be on the detailed work, not necessarily the face of the person. The dress should look elegant and sophisticated, not cheap or overly youthful.",
+			"imageSearchTerms": [
+				"seamstress formal gown alterations",
+				"tailor working on prom dress",
+				"dress fitting pins measuring tape",
+				"elegant dress alteration studio",
+				"hands sewing formal wear"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-21",
+				"title": "Closeup of tailoring a tailored suit on a male model hands with measuring tape pins fastening jacket on male model Semifinished suit on mannequin inside building",
+				"detailUrl": "https://www.magnific.com/premium-photo/closeup-tailoring-tailored-suit-male-model-hands-with-measuring-tape-pins-fastening-jacket-male-model-semifinished-suit-mannequin-inside-building_126413808.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/126413808?lang=en",
+				"provider": "feepikcontributorthailand",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "365"
 		},
 		{
 			"id": 16,
@@ -181,7 +426,7 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": ""
+			"status": "deferred"
 		},
 		{
 			"id": 17,
@@ -217,7 +462,7 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": ""
+			"status": "deferred"
 		},
 		{
 			"id": 21,
@@ -226,7 +471,26 @@
 			"notes": [
 				"Studio"
 			],
-			"status": ""
+			"status": "draft",
+			"wordpressPostId": 368,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting photo of a bright, organized sewing studio. The image should show a workbench with sewing machines, colorful fabrics, threads, and various crafting tools. Sunlight should stream through a window, highlighting a creative, active atmosphere, possibly with a hint of unfinished projects or a mannequin in the background. The focus should be on the tools and materials of a creative studio.",
+			"imageSearchTerms": [
+				"sewing studio interior",
+				"craft workshop space",
+				"textile art studio",
+				"sewing machine workbench",
+				"creative space organized"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-1",
+				"title": "Interior Of Fashion Design Studio With Sewing Machine And Mannequin",
+				"detailUrl": "https://www.magnific.com/premium-photo/interior-fashion-design-studio-with-sewing-machine-mannequin_377788543.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/377788543?lang=en",
+				"provider": "korrawinj",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "367"
 		},
 		{
 			"id": 22,
@@ -253,12 +517,12 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": ""
+			"status": "deferred"
 		},
 		{
 			"id": 25,
 			"targetPublishDate": "",
-			"title": "Summer Class Schedule Release! (What’s coming up).",
+			"title": "Summer Class Schedule Release! (What's coming up).",
 			"notes": [
 				"Studio"
 			],
@@ -295,7 +559,7 @@
 		{
 			"id": 29,
 			"targetPublishDate": "",
-			"title": "Organizing your craft space: Tips from Sewing’s corner.",
+			"title": "Organizing your craft space: Tips from Sewing's corner.",
 			"notes": [
 				"Studio"
 			],
@@ -399,16 +663,14 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": "draft",
+			"status": "deferred",
 			"wordpressPostId": 262,
-			"imageStatus": "selected",
-			"imageBrief": "A cozy and inviting autumn scene in Bluffton, South Carolina, featuring the exterior of a charming local boutique. The storefront is tastefully decorated with subtle fall elements like small pumpkins, gourds, or autumn foliage in planters. Warm, natural light illuminates the scene, highlighting the shop's unique character and the welcoming atmosphere of a Lowcountry fall day. The image should evoke a sense of local charm and seasonal beauty.",
+			"imageStatus": "not-found",
+			"imageBrief": "A charming autumn scene in Bluffton, perhaps showcasing a boutique storefront with fall decor, or a person strolling through Old Town Bluffton with shopping bags, dressed in stylish fall attire. Emphasize warm, inviting colors and a cozy, yet fashionable, atmosphere.",
 			"imageSearchTerms": [
-				"Bluffton SC autumn boutique storefront",
-				"Lowcountry fall shopping",
-				"charming small town fall boutique exterior",
-				"cozy South Carolina autumn street",
-				"boutique exterior fall decor"
+				"Bluffton autumn boutique",
+				"fall shopping lowcountry",
+				"charming small town fall fashion"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-42",
@@ -429,15 +691,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 263,
-			"imageStatus": "selected",
-			"imageBrief": "A vibrant, dynamic stock photograph capturing a diverse group of children and adults of various ages dancing together in a spacious, well-lit studio or community center. Some individuals might be performing ballet, others jazz or hip-hop, showcasing a range of dance styles. The atmosphere should be joyful and energetic, emphasizing community, learning, and the physical benefits of dance. The background should be slightly blurred to keep focus on the dancers but suggest a clean, inviting studio environment.",
+			"imageStatus": "not-found",
+			"imageBrief": "A vibrant, dynamic photo capturing the joy and energy of a diverse group of children or young adults dancing in a studio or on a stage. The image should convey community, creativity, and the positive atmosphere of dance education. Focus on natural movement and happy expressions, perhaps with a soft focus background to highlight the dancers.",
 			"imageSearchTerms": [
-				"diverse dance class community",
-				"children and adults dancing together",
-				"joyful dance studio",
-				"group dance fitness",
-				"community dance program",
-				"multi-generational dance"
+				"diverse kids dancing studio",
+				"community dance class joy",
+				"young dancers group happy",
+				"lowcountry dance school children",
+				"arts education studio"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-6",
@@ -458,14 +719,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 264,
-			"imageStatus": "selected",
-			"imageBrief": "A female dancer, appearing graceful and warm, is stretching or practicing in a slightly cool-toned dance studio. She is wearing multiple layers of dancewear, such as a leotard, tights, leg warmers, and a fitted wrap or shrug. The layers are subtle and do not obscure her body's lines, highlighting how layering can be achieved without bulk. The studio should have natural light, suggesting a calm, focused atmosphere. The dancer should be in motion or a poised stance, emphasizing fluidity.",
+			"imageStatus": "not-found",
+			"imageBrief": "A dancer, possibly in a studio or warming up, wearing multiple layers of dancewear such as a leotard, leg warmers, and a fitted knit top. The image should convey warmth and readiness for movement, with clear lines despite the layering. The background should be a subtle, artistic studio setting. The dancer should be in a graceful, stretching, or warm-up pose.",
 			"imageSearchTerms": [
-				"dancer cold weather layering",
-				"ballet dancer warm up studio",
-				"graceful dancer winter practice",
-				"dancewear layering elegant",
-				"female dancer stretching warm clothes"
+				"dancer layering warm up",
+				"ballet dancer cold weather",
+				"contemporary dancer winter studio",
+				"dancewear layers movement",
+				"flexible dancer warm clothes"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-20",
@@ -493,19 +754,16 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": "draft",
+			"status": "deferred",
 			"wordpressPostId": 265,
-			"imageStatus": "selected",
-			"imageBrief": "A beautifully arranged gift box from a boutique, featuring artisanal products like a small jar of gourmet food, a piece of handcrafted jewelry, and a scented candle, all nestled on natural shredded paper. The box is open, showcasing the contents, and is placed on a rustic wooden surface with soft, warm lighting that suggests a cozy holiday atmosphere. A hint of festive decor, like a subtle evergreen sprig or a few pinecones, is in the blurred background.",
+			"imageStatus": "not-found",
+			"imageBrief": "A warm, inviting image of a tastefully arranged open gift box with artisanal products (e.g., small candle, handcrafted soap, a decorative item) on a rustic wooden table or background, perhaps with soft holiday-themed lighting or hints of greenery. It should evoke a sense of thoughtful gifting, quality, and calm, early holiday preparation.",
 			"imageSearchTerms": [
 				"boutique gift box",
-				"artisanal holiday gifts",
-				"curated gift set",
-				"luxury gift box open",
-				"stress-free holiday shopping",
-				"early bird gifts",
-				"handcrafted local products",
-				"cozy festive gifts"
+				"luxury curated gifts",
+				"early holiday shopping",
+				"artisanal products",
+				"thoughtful giving"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-73",
@@ -524,18 +782,17 @@
 			"notes": [
 				"Studio"
 			],
-			"status": "draft",
+			"status": "deferred",
 			"wordpressPostId": 266,
-			"imageStatus": "selected",
-			"imageBrief": "A realistic stock photograph depicting an artisan actively engaged in their craft within a well-lit studio. The image should convey creativity and the hands-on nature of handmade goods. For example, a potter at a wheel, a painter with a canvas, or a textile artist at a loom.",
+			"imageStatus": "not-found",
+			"imageBrief": "A warm, inviting photograph of a local artist's studio, showcasing various handcrafted items like pottery, paintings, or textiles, with tools and materials visible in the background, suggesting ongoing creative work. The lighting should be soft and natural, emphasizing the authenticity and craft of the space. The artist may or may not be present, but the focus is on the studio environment and the finished/in-progress pieces.",
 			"imageSearchTerms": [
 				"artisan studio",
-				"craft workshop",
-				"handmade goods",
-				"local artist working",
-				"pottery studio",
-				"textile artist",
-				"small business owner craft"
+				"local craft workshop",
+				"handmade goods creative space",
+				"pottery studio interior",
+				"artist at work",
+				"small business craft"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-15",
@@ -554,17 +811,16 @@
 			"notes": [
 				"Dancewear"
 			],
-			"status": "draft",
+			"status": "deferred",
 			"wordpressPostId": 267,
-			"imageStatus": "selected",
-			"imageBrief": "A beautifully arranged flat lay or tabletop shot showcasing a variety of Nutcracker-themed gifts. This could include a delicate ballet slipper charm on a chain, a festive Nutcracker soldier ornament, a small, elegant music box, a themed dance bag, and a cozy pair of leg warmers, all artfully displayed on a soft, holiday-themed background (e.g., a subtle red or green fabric, or a wooden surface with a sprig of evergreen). The lighting should be warm and inviting, highlighting the intricate details of each item.",
+			"imageStatus": "not-found",
+			"imageBrief": "A festive and elegant flat lay image capturing the spirit of The Nutcracker and gift-giving. It should feature elements like a small wooden Nutcracker figurine, delicate ballet slippers, a sparkling snowflake ornament, and a charm bracelet with a tiny ballet slipper charm, all arranged artfully on a soft, light-colored fabric with subtle holiday lighting in the background. The focus is on gifts and the ballet's magic.",
 			"imageSearchTerms": [
-				"Nutcracker gifts",
-				"ballet holiday gifts",
-				"dance Christmas ornaments",
-				"Nutcracker charms",
-				"dancewear gift guide",
-				"holiday flat lay ballet"
+				"Nutcracker ballet gifts",
+				"ballet themed holiday",
+				"Nutcracker charm ornament",
+				"dance Christmas gifts",
+				"festive ballet decor"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-51",
@@ -585,16 +841,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 268,
-			"imageStatus": "selected",
-			"imageBrief": "A close-up shot of hands, possibly a woman's, carefully mending a seam on a festive holiday garment (e.g., a sequined dress or velvet jacket) with a needle and thread. The background is softly blurred, hinting at a cozy, home setting with holiday decorations. The focus is on the intricate detail of the sewing, showing precision and care.",
+			"imageStatus": "not-found",
+			"imageBrief": "A close-up, warm-toned photograph of hands performing a last-minute sewing alteration on a piece of elegant holiday clothing, perhaps a sequined dress or a velvet jacket. The hands are holding a needle and thread, with pins visible in the fabric. The background is softly blurred with festive lights or decor, suggesting a holiday setting. The focus should be on the detailed work of the hands and fabric, conveying a sense of practical skill and calm under pressure.",
 			"imageSearchTerms": [
-				"holiday sewing alteration",
-				"last minute mending",
-				"festive outfit repair",
-				"hand sewing holiday dress",
-				"DIY holiday fashion fix",
-				"sewing needle thread holiday",
-				"clothing repair christmas"
+				"last minute sewing",
+				"holiday outfit alteration",
+				"hand sewing close up",
+				"festive clothing repair",
+				"sewing for holidays"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-37",
@@ -613,17 +867,16 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": "draft",
+			"status": "deferred",
 			"wordpressPostId": 269,
-			"imageStatus": "selected",
-			"imageBrief": "A warm, inviting close-up shot of a hand placing a small, beautifully wrapped gift into a festive Christmas stocking. The stocking is made of cozy fabric, perhaps knitted or felt, with subtle holiday patterns. In the background, out of focus, there are hints of other small, charming boutique items and soft, twinkling lights, suggesting a cozy shopping environment or a home decorated for the holidays. The focus is on the act of giving a thoughtful, tiny treasure.",
+			"imageStatus": "not-found",
+			"imageBrief": "A beautifully arranged flat lay or close-up shot of several small, unique, and aesthetically pleasing boutique items that would make ideal stocking stuffers. Items should include a mix of categories like a small artisanal candle, a unique piece of jewelry, gourmet chocolate, a decorative keychain, a specialized beauty product, or a miniature notebook and pen, all with attractive packaging. The background should be subtly festive, perhaps with soft holiday lighting or natural textures, emphasizing quality and charm.",
 			"imageSearchTerms": [
-				"stocking stuffer boutique",
-				"small holiday gifts",
-				"unique Christmas presents",
-				"hand placing gift stocking",
-				"boutique holiday shopping",
-				"thoughtful small gifts"
+				"boutique stocking stuffers",
+				"unique small gifts holiday",
+				"artisanal mini presents",
+				"luxury stocking fillers",
+				"holiday gift flat lay"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-45",
@@ -644,16 +897,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 270,
-			"imageStatus": "selected",
-			"imageBrief": "A warm, inviting stock photograph capturing the essence of a vibrant art studio. The image should show a diverse group of adults (2-4 people) engaged in various crafts, such as painting, pottery, or drawing, in a well-lit, organized studio space. There should be natural light, art supplies visible, and a sense of community and focused creativity. The people should be smiling or concentrating, conveying a positive and welcoming atmosphere.",
+			"imageStatus": "not-found",
+			"imageBrief": "A warm, inviting art studio scene. Focus on natural light, various art supplies such as paints, brushes, clay, and yarn, and perhaps a few unfinished or finished art pieces. It should convey creativity, community, and a sense of calm. No people in the image.",
 			"imageSearchTerms": [
-				"art studio community",
-				"adult art class",
-				"creative workshop",
-				"people crafting together",
-				"art therapy group",
-				"bluffton art studio",
-				"lowcountry art"
+				"art studio interior",
+				"creative workspace",
+				"craft workshop supplies",
+				"artist studio light",
+				"empty art studio"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-22",
@@ -674,16 +925,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 271,
-			"imageStatus": "selected",
-			"imageBrief": "A brightly lit, clean dancewear store interior with a focus on a wall display of various dance shoes (ballet slippers, pointe shoes, jazz shoes). A friendly, professional store associate is kneeling, helping a young dancer (wearing dance attire like tights) try on a shoe. The scene should convey expertise, comfort, and the excitement of finding the right fit. The background should be slightly blurred to keep focus on the fitting interaction.",
+			"imageStatus": "not-found",
+			"imageBrief": "A vibrant and clean image showing a pair of new, well-fitted ballet pointe shoes or jazz shoes resting on a polished studio floor, perhaps with a blurred background of a dancer stretching or a dance studio setting. The focus should be on the shoes, highlighting their quality and readiness for use.",
 			"imageSearchTerms": [
-				"dance shoe fitting",
-				"dancewear store",
-				"ballet shoes fitting",
-				"professional shoe fitting",
-				"young dancer trying on shoes",
-				"dance shop interior",
-				"expert assistance dance shoes"
+				"dance shoes fitting",
+				"new ballet pointe shoes",
+				"dance studio footwear",
+				"jazz shoes studio",
+				"professional dance shoes"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-25",
@@ -702,18 +951,15 @@
 			"notes": [
 				"Boutique"
 			],
-			"status": "draft",
+			"status": "deferred",
 			"wordpressPostId": 272,
-			"imageStatus": "selected",
-			"imageBrief": "A beautifully arranged flat lay or close-up shot of several elegant, boutique-style hostess gifts suitable for New Year's Eve. Items could include a small, artisanal scented candle, a beautifully packaged gourmet food item (like specialty chocolates or a unique jam), a decorative ceramic piece, and perhaps a small, high-quality tea towel or a unique bottle opener. The setting should evoke a festive yet sophisticated atmosphere, possibly with subtle hints of New Year's Eve decor like a glittery ribbon or a small, elegant party favor in the background. The lighting should be soft and inviting.",
+			"imageStatus": "not-found",
+			"imageBrief": "A festive, elegant scene suitable for New Year's Eve, featuring a beautifully wrapped, boutique-style hostess gift (e.g., a candle, a small gourmet item, or a decorative piece) on a polished table surface. The background subtly hints at a celebration with blurred lights or a decorated setting, but the main focus is on the thoughtfully presented gift, conveying quality and care.",
 			"imageSearchTerms": [
-				"New Year's Eve hostess gifts",
-				"boutique gifts flat lay",
-				"elegant holiday gifts",
-				"artisan gourmet gifts",
-				"thoughtful party favors",
-				"luxury hostess gifts",
-				"small business gifts"
+				"New Year's Eve hostess gift",
+				"boutique gift elegant",
+				"thoughtful festive present",
+				"luxury small business gift"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-5",
@@ -734,15 +980,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 273,
-			"imageStatus": "selected",
-			"imageBrief": "A warm, inviting stock photo showing a person's hands actively engaged in sewing. Perhaps their hands are guiding fabric under a sewing machine needle, or they are hand-stitching a detail. The setting should feel cozy and creative, possibly with fabric scraps, thread spools, and a pattern nearby, suggesting active work on a project and the joy of creation. The focus should be on the hands and the craft, conveying dedication and the process of achieving a goal.",
+			"imageStatus": "not-found",
+			"imageBrief": "A bright, inviting image of a well-organized and inspiring sewing space. It should feature a sewing machine, colorful fabrics, threads, and tools neatly arranged on a clean work surface. The overall impression should be one of creativity, focus, and potential.",
 			"imageSearchTerms": [
-				"sewing hands",
-				"person sewing machine",
-				"crafting project focus",
-				"sewing goals planning",
-				"creative hobby hands",
-				"fabric craft workspace"
+				"sewing goals",
+				"organized sewing room",
+				"crafting inspiration",
+				"sewing machine workspace",
+				"creative hobby"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-46",
@@ -753,6 +998,1266 @@
 				"orientation": "horizontal"
 			},
 			"wordpressMediaId": "296"
+		},
+		{
+			"id": 53,
+			"targetPublishDate": "10/13/2026",
+			"title": "Cozy Fall Crochet: Beginner projects to start this weekend",
+			"notes": [
+				"Crochet",
+				"Seasonal: Fall kickoff"
+			],
+			"status": "draft",
+			"wordpressPostId": 370,
+			"imageStatus": "selected",
+			"imageBrief": "A warm and inviting flat lay scene featuring a pair of hands holding a crochet hook and working on a small, cozy project like a mug cozy or a small piece of a scarf. The background should include elements that evoke autumn, such as a pumpkin spice latte in a mug, a few scattered autumn leaves, a soft throw blanket, and a skein of warm-colored yarn (e.g., rust, cream, or deep green). The lighting should be soft and natural, creating a comfortable and relaxing atmosphere, perfect for a cozy fall weekend craft.",
+			"imageSearchTerms": [
+				"cozy fall crochet",
+				"beginner crochet project",
+				"autumn crafting flat lay",
+				"hands crocheting yarn",
+				"fall craft hobby"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-27",
+				"title": "Autumn herbarium flat lay with human hands sticking leaves writing name on craft paper cards",
+				"detailUrl": "https://www.magnific.com/premium-photo/autumn-herbarium-flat-lay-with-human-hands-sticking-leaves-writing-name-craft-paper-cards_32436141.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/32436141?lang=en",
+				"provider": "yrabota",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "369"
+		},
+		{
+			"id": 54,
+			"targetPublishDate": "10/20/2026",
+			"title": "Embroidery Basics: Essential stitches for custom hand-stitched autumn decor",
+			"notes": [
+				"Embroidery",
+				"Seasonal: Late October home decor"
+			],
+			"status": "draft",
+			"wordpressPostId": 372,
+			"imageStatus": "selected",
+			"imageBrief": "A top-down shot of hands holding an embroidery hoop with a partially stitched autumn-themed design (e.g., a pumpkin or fall leaf) on natural fabric. Skeins of colorful embroidery floss in fall colors (orange, red, gold, brown) are neatly arranged around the hoop, along with a needle and small scissors. The background is a rustic wooden surface, softly blurred.",
+			"imageSearchTerms": [
+				"hand embroidery autumn",
+				"fall decor stitching",
+				"embroidery supplies fall colors",
+				"beginner embroidery autumn project",
+				"diy autumn craft"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-41",
+				"title": "Autumn craft from dried leaves diy fall crafts for adults fall nature collage female hands drawing",
+				"detailUrl": "https://www.magnific.com/premium-photo/autumn-craft-from-dried-leaves-diy-fall-crafts-adults-fall-nature-collage-female-hands-drawing_32238343.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/32238343?lang=en",
+				"provider": "irrmago",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "371"
+		},
+		{
+			"id": 55,
+			"targetPublishDate": "",
+			"title": "Choosing the Right Needlepoint Canvas Mesh and Fiber for Beginners",
+			"notes": [
+				"Needlepoint",
+				"Evergreen skill builder"
+			],
+			"status": "draft",
+			"wordpressPostId": 374,
+			"imageStatus": "selected",
+			"imageBrief": "A well-lit, close-up shot of a person's hands delicately working on a needlepoint project. The hands are holding a tapestry needle threaded with colorful yarn, stitching into a piece of canvas. The canvas shows a partially completed, vibrant design. The background is softly blurred to keep the focus on the crafting hands and materials.",
+			"imageSearchTerms": [
+				"needlepoint beginner hands",
+				"needlepoint canvas fiber",
+				"crafting hands close up",
+				"needlepoint project in progress",
+				"colorful yarn needlepoint"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-30",
+				"title": "Hands Crafting Crochet Pattern with Colorful Yarn Close Up",
+				"detailUrl": "https://www.magnific.com/premium-photo/hands-crafting-crochet-pattern-with-colorful-yarn-close-up_392382643.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/392382643?lang=en",
+				"provider": "nick7634",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "373"
+		},
+		{
+			"id": 56,
+			"targetPublishDate": "11/03/2026",
+			"title": "Handmade Thanksgiving Table Linens: Sewing custom cloth napkins and mats",
+			"notes": [
+				"Sewing",
+				"Quilting",
+				"Target: 2 weeks before Thanksgiving"
+			],
+			"status": "draft",
+			"wordpressPostId": 376,
+			"imageStatus": "selected",
+			"imageBrief": "A beautifully styled Thanksgiving table setting featuring handmade cloth napkins and quilted placemats in warm autumn colors. The table should have a festive, inviting feel with a mix of traditional and modern elements. Focus on the texture and detail of the linens, perhaps with a soft focus on a pumpkin or a decorative centerpiece in the background. The lighting should be warm and inviting.",
+			"imageSearchTerms": [
+				"Thanksgiving table setting handmade",
+				"cloth napkins placemats autumn",
+				"quilted table linens holiday"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-5",
+				"title": "Autumn, fall thanksgiving table decoration, handmade centrepiece",
+				"detailUrl": "https://www.magnific.com/premium-photo/autumn-fall-thanksgiving-table-decoration-handmade-centrepiece_11378956.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/11378956?lang=en",
+				"provider": "netrun78",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "375"
+		},
+		{
+			"id": 57,
+			"targetPublishDate": "11/10/2026",
+			"title": "Cozy Winter Knitting: Quick Chunky Yarn Scarf and Beanie Projects",
+			"notes": [
+				"Knitting",
+				"Seasonal: Winter prep"
+			],
+			"status": "draft",
+			"wordpressPostId": 378,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting close-up of a person's hands gently holding a half-finished chunky knit scarf, with a ball of cozy, thick yarn and large knitting needles visible in the background on a rustic wooden surface. The setting suggests a comfortable home environment, perhaps by a window with soft natural light, conveying a sense of warmth, creativity, and relaxation during winter.",
+			"imageSearchTerms": [
+				"chunky knit scarf",
+				"knitting hands winter",
+				"cozy yarn project",
+				"bulky yarn needles",
+				"handmade winter accessories"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-17",
+				"title": "Close up view of fmale hands doing knit work with red wool Handmade and hand craft clothes production in indoor hobby leisure activity Woman working with knitting needles Diy winter activity indoor",
+				"detailUrl": "https://www.magnific.com/premium-photo/close-up-view-fmale-hands-doing-knit-work-with-red-wool-handmade-hand-craft-clothes-production-indoor-hobby-leisure-activity-woman-working-with-knitting-needles-diy-winter-activity-indoor_30540464.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/30540464?lang=en",
+				"provider": "simonapilolla",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "377"
+		},
+		{
+			"id": 58,
+			"targetPublishDate": "",
+			"title": "Understanding Stretch Textiles: Sourcing specialty fabrics for dancewear",
+			"notes": [
+				"Specialty Fabrics",
+				"Dancewear",
+				"Technical fabric guide"
+			],
+			"status": "draft",
+			"wordpressPostId": 380,
+			"imageStatus": "selected",
+			"imageBrief": "A close-up shot of various colorful stretch fabrics, possibly folded or draped, showing their texture and elasticity. The fabrics could include different blends like nylon/spandex, polyester/spandex, and cotton/spandex, perhaps with some mesh or velvet textures visible. The focus should be on the quality and variety of the textiles, suggesting craftsmanship and attention to detail.",
+			"imageSearchTerms": [
+				"stretch fabric rolls",
+				"technical textiles dancewear",
+				"colorful spandex fabric",
+				"fabric swatches activewear",
+				"textile sourcing studio"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-44",
+				"title": "Close up of neutral fabric swatches hanging in fashion studio Natural textile texture Sustainable clothing design ethical sourcing and conscious material selection Sustainable fashion materials",
+				"detailUrl": "https://www.magnific.com/premium-photo/close-up-neutral-fabric-swatches-hanging-fashion-studio-natural-textile-texture-sustainable-clothing-design-ethical-sourcing-conscious-material-selection-sustainable-fashion-materials_428940549.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/428940549?lang=en",
+				"provider": "fahroni",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "379"
+		},
+		{
+			"id": 59,
+			"targetPublishDate": "11/24/2026",
+			"title": "Handcrafted Holiday Ornaments: Quick embroidery and needlepoint gift ideas",
+			"notes": [
+				"Embroidery",
+				"Needlepoint",
+				"Target: 1 month before Christmas"
+			],
+			"status": "draft",
+			"wordpressPostId": 382,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting image of a crafting scene. Focus on hands working on a small embroidery or needlepoint ornament, surrounded by colorful threads, needles, and perhaps a cup of warm tea, evoking a cozy holiday crafting atmosphere. The background should be slightly blurred to keep the focus on the crafting.",
+			"imageSearchTerms": [
+				"holiday embroidery ornament",
+				"needlepoint Christmas craft",
+				"handmade gift crafting",
+				"cozy winter needlework",
+				"DIY Christmas decorations"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-35",
+				"title": "Cozy composition with a cup of coffee threads and a knitted element",
+				"detailUrl": "https://www.magnific.com/free-photo/cozy-composition-with-cup-coffee-threads-knitted-element_88033372.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/88033372?lang=en",
+				"provider": "pvproductions",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "381"
+		},
+		{
+			"id": 60,
+			"targetPublishDate": "12/01/2026",
+			"title": "Warm Layering for Dancers: Knitted and crocheted leg warmers and wraps",
+			"notes": [
+				"Knitting",
+				"Crochet",
+				"Dancewear",
+				"Seasonal: Winter studio comfort"
+			],
+			"status": "draft",
+			"wordpressPostId": 384,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting image of a dancer's studio corner during winter. Focus on a pair of beautifully knitted or crocheted leg warmers draped over a ballet barre or neatly folded on a bench next to ballet shoes. The background should be softly lit, suggesting a cozy, comfortable atmosphere, perhaps with a window showing a hint of a frosty outdoor scene. The emphasis is on comfort, warmth, and the handmade aesthetic.",
+			"imageSearchTerms": [
+				"dancer knitted leg warmers",
+				"winter dance studio comfort",
+				"crocheted ballet accessories",
+				"warm dancewear handmade",
+				"cozy dance studio scene"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-1",
+				"title": "Young woman ballerina stretching and training at barre in dance studio ballet and dancer concept",
+				"detailUrl": "https://www.magnific.com/premium-photo/young-woman-ballerina-stretching-training-barre-dance-studio-ballet-dancer-concept_51932214.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/51932214?lang=en",
+				"provider": "satura86",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "383"
+		},
+		{
+			"id": 61,
+			"targetPublishDate": "12/08/2026",
+			"title": "Heirloom Christmas Stockings: Stitching needlepoint and quilted treasures",
+			"notes": [
+				"Needlepoint",
+				"Quilting",
+				"Target: Holiday gift prep"
+			],
+			"status": "draft",
+			"wordpressPostId": 386,
+			"imageStatus": "selected",
+			"imageBrief": "A warm, inviting scene showcasing two handcrafted Christmas stockings hanging by a fireplace. One stocking is clearly needlepointed with a classic festive design (e.g., Santa or a reindeer), and the other is a quilted patchwork design, both appearing lovingly made and ready for the holidays. The fireplace should have a gentle glow, and perhaps a few subtle holiday decorations are visible in the background, emphasizing tradition and comfort.",
+			"imageSearchTerms": [
+				"heirloom Christmas stockings",
+				"needlepoint stocking fireplace",
+				"quilted Christmas stocking handmade",
+				"festive handmade holiday decor",
+				"cozy Christmas hearth craft"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-13",
+				"title": "Four velvet stockings hang on a marble fireplace with nutcrackers above The scene offers a cozy",
+				"detailUrl": "https://www.magnific.com/premium-photo/four-velvet-stockings-hang-marble-fireplace-with-nutcrackers-scene-offers-cozy_428128025.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/428128025?lang=en",
+				"provider": "user11849519",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "385"
+		},
+		{
+			"id": 62,
+			"targetPublishDate": "",
+			"title": "Quilting 101: Master the block method for cozy lap blankets",
+			"notes": [
+				"Quilting",
+				"Evergreen beginner technique"
+			],
+			"status": "draft",
+			"wordpressPostId": 388,
+			"imageStatus": "selected",
+			"imageBrief": "A warm and inviting close-up shot of a partially completed quilted lap blanket, showing several fabric blocks sewn together, with a rotary cutter, an acrylic ruler, and a stack of colorful fabric squares visible in the background, suggesting a work in progress. The lighting should be soft and natural, emphasizing the texture of the fabric and the cozy feel of the quilt.",
+			"imageSearchTerms": [
+				"quilting in progress",
+				"quilting supplies",
+				"fabric blocks",
+				"handmade quilt",
+				"sewing hobby"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-32",
+				"title": "Colorful handmade patchwork quilt with floral and geometric patterns in a star design created in a bright vibrant style",
+				"detailUrl": "https://www.magnific.com/premium-photo/colorful-handmade-patchwork-quilt-with-floral-geometric-patterns-star-design-created-bright-vibrant-style_427503191.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/427503191?lang=en",
+				"provider": "catocala7",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "387"
+		},
+		{
+			"id": 63,
+			"targetPublishDate": "",
+			"title": "Caring for Specialty Fabrics: How to wash and store silk, velvet, and lace",
+			"notes": [
+				"Specialty Fabrics",
+				"Studio care tips"
+			],
+			"status": "draft",
+			"wordpressPostId": 390,
+			"imageStatus": "selected",
+			"imageBrief": "A close-up, well-lit shot of various delicate fabrics (silk, velvet, lace) draped artfully together, perhaps on a clean, light-colored surface or mannequin. The fabrics should show their distinct textures clearly. The overall mood should be elegant and gentle, suggesting care and luxury.",
+			"imageSearchTerms": [
+				"delicate fabrics",
+				"silk velvet lace textiles",
+				"fabric care",
+				"luxury textiles",
+				"sewing materials"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-31",
+				"title": "Elegant Black and Gold Fabric with Intricate Lace Design Perfect for Fashion Textiles Backgrounds or Creative Projects Displaying Luxury and Style",
+				"detailUrl": "https://www.magnific.com/premium-photo/elegant-black-gold-fabric-with-intricate-lace-design-perfect-fashion-textiles-backgrounds-creative-projects-displaying-luxury-style_416995939.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/416995939?lang=en",
+				"provider": "EverydayStudioArt",
+				"orientation": "horizontal"
+			},
+			"wordpressMediaId": "389"
+		},
+		{
+			"id": 64,
+			"targetPublishDate": "12/29/2026",
+			"title": "Organizing Your Sewing and Craft Studio for a Creative New Year",
+			"notes": [
+				"Studio",
+				"Seasonal: Year-end workspace reset"
+			],
+			"status": "draft",
+			"wordpressPostId": 392,
+			"imageStatus": "selected",
+			"imageBrief": "A brightly lit, organized sewing and craft studio. The image should feature various craft supplies neatly arranged in clear containers, on shelves, and pegboards. A sewing machine should be visible on a clean workspace, surrounded by well-organized tools and fabric rolls. The overall impression should be one of calm, order, and creative potential.",
+			"imageSearchTerms": [
+				"organized craft studio",
+				"sewing room organization",
+				"tidy creative space",
+				"craft supplies storage",
+				"sewing machine workspace"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-33",
+				"title": "Yarn storage organization textile hobby supplies contemporary cupboard shelves with decor pictures and lamp Craft sewing knitting art work accessories cabinet wool needlecraft accuracy arrangement",
+				"detailUrl": "https://www.magnific.com/premium-photo/yarn-storage-organization-textile-hobby-supplies-contemporary-cupboard-shelves-with-decor-pictures-lamp-craft-sewing-knitting-art-work-accessories-cabinet-wool-needlecraft-accuracy-arrangement_272875557.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/272875557?lang=en",
+				"provider": "kostikova",
+				"orientation": "vertical"
+			},
+			"wordpressMediaId": "391"
+		},
+		{
+			"id": 65,
+			"targetPublishDate": "",
+			"title": "Tap Shoes and Character Shoes: Fitting and maintaining performance footwear",
+			"notes": [
+				"Dancewear",
+				"Footwear maintenance"
+			],
+			"status": ""
+		},
+		{
+			"id": 66,
+			"targetPublishDate": "",
+			"title": "Introduction to Counted Cross Stitch and Needlepoint Techniques",
+			"notes": [
+				"Needlepoint",
+				"Evergreen craft spotlight"
+			],
+			"status": ""
+		},
+		{
+			"id": 67,
+			"targetPublishDate": "",
+			"title": "Mastering the Crochet Granny Square: Unlimited project potential",
+			"notes": [
+				"Crochet",
+				"Skill-building series"
+			],
+			"status": ""
+		},
+		{
+			"id": 68,
+			"targetPublishDate": "01/26/2027",
+			"title": "Hand-Stitched Valentine Gifts: Embroidered motifs and felt hearts",
+			"notes": [
+				"Embroidery",
+				"Target: 2 weeks before Valentine's Day"
+			],
+			"status": ""
+		},
+		{
+			"id": 69,
+			"targetPublishDate": "",
+			"title": "Choosing the Right Thread and Needle Pairings for Specialty Fabrics",
+			"notes": [
+				"Specialty Fabrics",
+				"Sewing",
+				"Technical reference"
+			],
+			"status": ""
+		},
+		{
+			"id": 70,
+			"targetPublishDate": "",
+			"title": "The Art of Garment Fitting: Adjusting patterns for a custom silhouette",
+			"notes": [
+				"Sewing",
+				"Studio"
+			],
+			"status": ""
+		},
+		{
+			"id": 71,
+			"targetPublishDate": "",
+			"title": "Knitting vs Crochet: Finding the perfect fiber art craft for you",
+			"notes": [
+				"Knitting",
+				"Crochet",
+				"Evergreen comparison guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 72,
+			"targetPublishDate": "02/23/2027",
+			"title": "Preparing Dance Costumes for Spring Recital and Competition Season",
+			"notes": [
+				"Dancewear",
+				"Studio",
+				"Seasonal: Early spring preparation"
+			],
+			"status": ""
+		},
+		{
+			"id": 73,
+			"targetPublishDate": "",
+			"title": "Understanding Batting and Backing: Essential quilting layering tips",
+			"notes": [
+				"Quilting",
+				"Fabric knowledge"
+			],
+			"status": ""
+		},
+		{
+			"id": 74,
+			"targetPublishDate": "",
+			"title": "Ribbon and Trim embellishments for Custom Dance Leotards",
+			"notes": [
+				"Dancewear",
+				"Specialty Fabrics",
+				"Customization"
+			],
+			"status": ""
+		},
+		{
+			"id": 75,
+			"targetPublishDate": "03/16/2027",
+			"title": "Bright Floral Embroidery: Stitching spring blooms on cotton linens",
+			"notes": [
+				"Embroidery",
+				"Seasonal: Spring kickoff"
+			],
+			"status": ""
+		},
+		{
+			"id": 76,
+			"targetPublishDate": "",
+			"title": "Lightweight Knits and Openwork Crochet for Spring Wardrobes",
+			"notes": [
+				"Knitting",
+				"Crochet",
+				"Seasonal attire"
+			],
+			"status": ""
+		},
+		{
+			"id": 77,
+			"targetPublishDate": "",
+			"title": "Needlepoint Finishing Techniques: How to turn canvas work into pillows",
+			"notes": [
+				"Needlepoint",
+				"Studio techniques"
+			],
+			"status": ""
+		},
+		{
+			"id": 78,
+			"targetPublishDate": "04/06/2027",
+			"title": "Sewing Custom Easter Baskets and Fabric Spring Decor",
+			"notes": [
+				"Sewing",
+				"Target: 2 weeks before Easter"
+			],
+			"status": ""
+		},
+		{
+			"id": 79,
+			"targetPublishDate": "",
+			"title": "Working with Tulle and Netting: Tutu maintenance and creation tips",
+			"notes": [
+				"Dancewear",
+				"Specialty Fabrics",
+				"Garment care"
+			],
+			"status": ""
+		},
+		{
+			"id": 80,
+			"targetPublishDate": "04/20/2027",
+			"title": "Memory Quilts: Preserving special moments and milestone t-shirts",
+			"notes": [
+				"Quilting",
+				"Studio sentiment projects"
+			],
+			"status": ""
+		},
+		{
+			"id": 81,
+			"targetPublishDate": "04/27/2027",
+			"title": "Handmade Mother's Day Gifts: Embroidered pouches and knitted accessories",
+			"notes": [
+				"Embroidery",
+				"Knitting",
+				"Target: 2 weeks before Mother's Day"
+			],
+			"status": ""
+		},
+		{
+			"id": 82,
+			"targetPublishDate": "",
+			"title": "Breathable Fabrics for Warm Weather Dance Wear and Practice Gear",
+			"notes": [
+				"Dancewear",
+				"Specialty Fabrics"
+			],
+			"status": ""
+		},
+		{
+			"id": 83,
+			"targetPublishDate": "",
+			"title": "Summer Cotton Crochet: Lightweight market totes and sun hats",
+			"notes": [
+				"Crochet",
+				"Seasonal: Warm weather gear"
+			],
+			"status": ""
+		},
+		{
+			"id": 84,
+			"targetPublishDate": "05/18/2027",
+			"title": "Recital Survival Kit: Dancewear spares and emergency quick fixes",
+			"notes": [
+				"Dancewear",
+				"Studio",
+				"Seasonal: Late May recital push"
+			],
+			"status": ""
+		},
+		{
+			"id": 85,
+			"targetPublishDate": "",
+			"title": "Precision Rotary Cutting and Pressing Techniques for Quilters",
+			"notes": [
+				"Quilting",
+				"Studio skills"
+			],
+			"status": ""
+		},
+		{
+			"id": 86,
+			"targetPublishDate": "",
+			"title": "Handling Metallic Fibers and Beads in Fine Embroidery Work",
+			"notes": [
+				"Embroidery",
+				"Specialty Fabrics"
+			],
+			"status": ""
+		},
+		{
+			"id": 87,
+			"targetPublishDate": "06/08/2027",
+			"title": "Summer Crafting on the Go: Portable needlepoint and embroidery projects",
+			"notes": [
+				"Needlepoint",
+				"Embroidery",
+				"Seasonal: Summer travel craft"
+			],
+			"status": ""
+		},
+		{
+			"id": 88,
+			"targetPublishDate": "",
+			"title": "Selecting High-Grade Mesh and Lycra for Competitive Dance Outfits",
+			"notes": [
+				"Specialty Fabrics",
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 89,
+			"targetPublishDate": "",
+			"title": "Beginner Sewing Projects for Kids: Fun summer camp skills",
+			"notes": [
+				"Sewing",
+				"Studio kids education"
+			],
+			"status": ""
+		},
+		{
+			"id": 90,
+			"targetPublishDate": "07/06/2027",
+			"title": "Cozy Up for Christmas in July: Starting long-term quilting projects early",
+			"notes": [
+				"Quilting",
+				"Seasonal: Summer holiday prep"
+			],
+			"status": ""
+		},
+		{
+			"id": 91,
+			"targetPublishDate": "",
+			"title": "Proper Footwear Fitting for Hip Hop, Jazz, and Contemporary Dance",
+			"notes": [
+				"Dancewear",
+				"Footwear guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 92,
+			"targetPublishDate": "",
+			"title": "Fixing Dropped Stitches and Common Mistakes in Knitting",
+			"notes": [
+				"Knitting",
+				"Troubleshooting guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 93,
+			"targetPublishDate": "",
+			"title": "Sourcing and Sewing Natural Linen and Silk Fabrics",
+			"notes": [
+				"Specialty Fabrics",
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 94,
+			"targetPublishDate": "08/03/2027",
+			"title": "Back-to-Studio Dance Checklist: Leotards, tights, shoes, and bags",
+			"notes": [
+				"Dancewear",
+				"Target: 2-3 weeks before school/dance season starts"
+			],
+			"status": ""
+		},
+		{
+			"id": 95,
+			"targetPublishDate": "08/10/2027",
+			"title": "Customizing School Backpacks and Pencil Pouches with Hand Embroidery",
+			"notes": [
+				"Embroidery",
+				"Sewing",
+				"Seasonal: Back to school"
+			],
+			"status": ""
+		},
+		{
+			"id": 96,
+			"targetPublishDate": "",
+			"title": "Stitching Geometric Patterns: Modern needlepoint design trends",
+			"notes": [
+				"Needlepoint",
+				"Design inspiration"
+			],
+			"status": ""
+		},
+		{
+			"id": 97,
+			"targetPublishDate": "",
+			"title": "The Secrets to Perfectly Finished Seams: French seams and serging",
+			"notes": [
+				"Sewing",
+				"Studio techniques"
+			],
+			"status": ""
+		},
+		{
+			"id": 98,
+			"targetPublishDate": "09/07/2027",
+			"title": "Preparing Custom Dance Warm-Ups for Cool Autumn Mornings",
+			"notes": [
+				"Dancewear",
+				"Knitting",
+				"Seasonal: Fall transition"
+			],
+			"status": ""
+		},
+		{
+			"id": 99,
+			"targetPublishDate": "",
+			"title": "Mastering Blocking Techniques for Knitted and Crocheted Garments",
+			"notes": [
+				"Knitting",
+				"Crochet",
+				"Garment care"
+			],
+			"status": ""
+		},
+		{
+			"id": 100,
+			"targetPublishDate": "09/21/2027",
+			"title": "Fall Quilt Along: Choosing warm autumn color palettes and patterns",
+			"notes": [
+				"Quilting",
+				"Seasonal: Early fall decor"
+			],
+			"status": ""
+		},
+		{
+			"id": 101,
+			"targetPublishDate": "",
+			"title": "Working with Velvet and Satin: Cutting and pressing delicate specialty textiles",
+			"notes": [
+				"Specialty Fabrics",
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 102,
+			"targetPublishDate": "10/05/2027",
+			"title": "DIY Fabric Trick-or-Treat Bags and Custom Halloween Accessories",
+			"notes": [
+				"Sewing",
+				"Embroidery",
+				"Target: 3 weeks before Halloween"
+			],
+			"status": ""
+		},
+		{
+			"id": 103,
+			"targetPublishDate": "",
+			"title": "Nurturing Mindful Wellness Through Hand Embroidery and Needlework",
+			"notes": [
+				"Embroidery",
+				"Needlepoint",
+				"Wellness and crafting"
+			],
+			"status": ""
+		},
+		{
+			"id": 104,
+			"targetPublishDate": "",
+			"title": "Caring for Dance Shoes: Cleaning canvas, leather, and satin footwear",
+			"notes": [
+				"Dancewear",
+				"Footwear maintenance"
+			],
+			"status": ""
+		},
+		{
+			"id": 105,
+			"targetPublishDate": "11/02/2027",
+			"title": "Handmade Quilted Table Runners for Autumn and Thanksgiving Hosting",
+			"notes": [
+				"Quilting",
+				"Sewing",
+				"Target: 3 weeks before Thanksgiving"
+			],
+			"status": ""
+		},
+		{
+			"id": 106,
+			"targetPublishDate": "11/16/2027",
+			"title": "Knitting Thick Wool Blankets: Cozy additions for winter homes",
+			"notes": [
+				"Knitting",
+				"Seasonal: Cold weather home"
+			],
+			"status": ""
+		},
+		{
+			"id": 107,
+			"targetPublishDate": "",
+			"title": "Selecting High-Stretch Threads for Performance Wear",
+			"notes": [
+				"Specialty Fabrics",
+				"Sewing",
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 108,
+			"targetPublishDate": "12/07/2027",
+			"title": "Stitching Custom Christmas Tree Skirts with Applique and Quilting",
+			"notes": [
+				"Quilting",
+				"Sewing",
+				"Target: Holiday home decor"
+			],
+			"status": ""
+		},
+		{
+			"id": 109,
+			"targetPublishDate": "",
+			"title": "Needlepoint Belt and Key Fob Canvas Finishing",
+			"notes": [
+				"Needlepoint",
+				"Crafting techniques"
+			],
+			"status": ""
+		},
+		{
+			"id": 110,
+			"targetPublishDate": "12/28/2027",
+			"title": "New Year Workspace Organization: Sorting yarn, thread, and fabric stashes",
+			"notes": [
+				"Studio",
+				"Seasonal: New Year reset"
+			],
+			"status": ""
+		},
+		{
+			"id": 111,
+			"targetPublishDate": "",
+			"title": "Choosing Proper Support Undergarments for Dance Costumes",
+			"notes": [
+				"Dancewear",
+				"Fitting and support"
+			],
+			"status": ""
+		},
+		{
+			"id": 112,
+			"targetPublishDate": "",
+			"title": "Crochet Lace Trim: Adding delicate borders to sewn garments",
+			"notes": [
+				"Crochet",
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 113,
+			"targetPublishDate": "",
+			"title": "Understanding Fabric Grainlines and Bias Cuts for Fluid Drape",
+			"notes": [
+				"Specialty Fabrics",
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 114,
+			"targetPublishDate": "02/01/2028",
+			"title": "Sweetheart Stitches: Embroidered linen napkins for Valentine hosting",
+			"notes": [
+				"Embroidery",
+				"Target: 2 weeks before Valentine's Day"
+			],
+			"status": ""
+		},
+		{
+			"id": 115,
+			"targetPublishDate": "",
+			"title": "How to Properly Store and Organize Dancewear Between Performance Seasons",
+			"notes": [
+				"Dancewear",
+				"Studio storage tips"
+			],
+			"status": ""
+		},
+		{
+			"id": 116,
+			"targetPublishDate": "",
+			"title": "Cable Knitting Secrets: Creating textured sweaters and throws",
+			"notes": [
+				"Knitting",
+				"Intermediate skill building"
+			],
+			"status": ""
+		},
+		{
+			"id": 117,
+			"targetPublishDate": "",
+			"title": "Quilting with Repurposed Denim and Durable Fabrics",
+			"notes": [
+				"Quilting",
+				"Upcycling"
+			],
+			"status": ""
+		},
+		{
+			"id": 118,
+			"targetPublishDate": "03/14/2028",
+			"title": "Spring Recital Countdown: Last-minute costume alterations and fitting checks",
+			"notes": [
+				"Dancewear",
+				"Studio",
+				"Seasonal: Spring recital prep"
+			],
+			"status": ""
+		},
+		{
+			"id": 119,
+			"targetPublishDate": "",
+			"title": "Stitching Natural Botanicals: Thread painting embroidery techniques",
+			"notes": [
+				"Embroidery",
+				"Artistic techniques"
+			],
+			"status": ""
+		},
+		{
+			"id": 120,
+			"targetPublishDate": "",
+			"title": "Working with Sheer Organza and Chiffon for Stage Skirts",
+			"notes": [
+				"Specialty Fabrics",
+				"Dancewear"
+			],
+			"status": ""
+		},
+		{
+			"id": 121,
+			"targetPublishDate": "04/04/2028",
+			"title": "Spring Pastel Crochet: Light shawls and springtime throws",
+			"notes": [
+				"Crochet",
+				"Seasonal: Spring home"
+			],
+			"status": ""
+		},
+		{
+			"id": 122,
+			"targetPublishDate": "",
+			"title": "Needlepoint Stitch Directory: Exploring decorative canvas stitches",
+			"notes": [
+				"Needlepoint",
+				"Reference guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 123,
+			"targetPublishDate": "04/25/2028",
+			"title": "Handcrafted Gifts for Grads and Teachers: Custom stitched keepsakes",
+			"notes": [
+				"Embroidery",
+				"Sewing",
+				"Target: 2-3 weeks before graduation season"
+			],
+			"status": ""
+		},
+		{
+			"id": 124,
+			"targetPublishDate": "",
+			"title": "Essential Sewing Machine Foot Attachments for Specialty Hemming",
+			"notes": [
+				"Sewing",
+				"Studio tools"
+			],
+			"status": ""
+		},
+		{
+			"id": 125,
+			"targetPublishDate": "",
+			"title": "Choosing Tights for Every Dance Style: Matte, convertible, and stirrup options",
+			"notes": [
+				"Dancewear",
+				"Product fitting guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 126,
+			"targetPublishDate": "05/30/2028",
+			"title": "Summer Sewing Camp Essentials: Creative skills for young makers",
+			"notes": [
+				"Sewing",
+				"Studio",
+				"Seasonal: Early summer camp push"
+			],
+			"status": ""
+		},
+		{
+			"id": 127,
+			"targetPublishDate": "",
+			"title": "Knitting with Plant Fibers: Cotton, linen, and bamboo yarns for summer",
+			"notes": [
+				"Knitting",
+				"Fiber guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 128,
+			"targetPublishDate": "",
+			"title": "Designing Custom Quilt Borders and Binding Finishings",
+			"notes": [
+				"Quilting",
+				"Finishing techniques"
+			],
+			"status": ""
+		},
+		{
+			"id": 129,
+			"targetPublishDate": "",
+			"title": "Caring for Performance Rhinestones and Beaded Garments",
+			"notes": [
+				"Specialty Fabrics",
+				"Dancewear",
+				"Maintenance"
+			],
+			"status": ""
+		},
+		{
+			"id": 130,
+			"targetPublishDate": "07/11/2028",
+			"title": "Beat the Summer Heat: Relaxing indoor needlepoint and embroidery projects",
+			"notes": [
+				"Needlepoint",
+				"Embroidery",
+				"Seasonal: Mid-summer relaxation"
+			],
+			"status": ""
+		},
+		{
+			"id": 131,
+			"targetPublishDate": "",
+			"title": "How to Measure Dancers for Tailored Performance Costumes",
+			"notes": [
+				"Dancewear",
+				"Studio",
+				"Measurement guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 132,
+			"targetPublishDate": "",
+			"title": "Crochet Amigurumi Basics: Crafting soft plush toys and gifts",
+			"notes": [
+				"Crochet",
+				"Skill building"
+			],
+			"status": ""
+		},
+		{
+			"id": 133,
+			"targetPublishDate": "08/15/2028",
+			"title": "Back to School Alterations: Tailoring pants, skirts, and uniforms",
+			"notes": [
+				"Sewing",
+				"Studio",
+				"Target: 2 weeks before school starts"
+			],
+			"status": ""
+		},
+		{
+			"id": 134,
+			"targetPublishDate": "",
+			"title": "Selecting the Right Scissors and Shears for Delicate Textiles",
+			"notes": [
+				"Specialty Fabrics",
+				"Studio tool guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 135,
+			"targetPublishDate": "",
+			"title": "Precision Piecing: Achieving sharp points in quilt blocks",
+			"notes": [
+				"Quilting",
+				"Skill building"
+			],
+			"status": ""
+		},
+		{
+			"id": 136,
+			"targetPublishDate": "09/12/2028",
+			"title": "Nutcracker Role Auditions: Dressing for confidence and movement",
+			"notes": [
+				"Dancewear",
+				"Seasonal: Early autumn auditions"
+			],
+			"status": ""
+		},
+		{
+			"id": 137,
+			"targetPublishDate": "",
+			"title": "Embroidered Monograms: Adding personal touches to handmade linens",
+			"notes": [
+				"Embroidery",
+				"Customization"
+			],
+			"status": ""
+		},
+		{
+			"id": 138,
+			"targetPublishDate": "",
+			"title": "Knitting Cozy Socks: Cuff-down vs toe-up techniques",
+			"notes": [
+				"Knitting",
+				"Skill building"
+			],
+			"status": ""
+		},
+		{
+			"id": 139,
+			"targetPublishDate": "10/10/2028",
+			"title": "Fall Sewing Workshop Showcase: Student garments and creative projects",
+			"notes": [
+				"Studio",
+				"Sewing",
+				"Seasonal community showcase"
+			],
+			"status": ""
+		},
+		{
+			"id": 140,
+			"targetPublishDate": "",
+			"title": "Handling Stretchy Spandex Seams Without Puckering",
+			"notes": [
+				"Specialty Fabrics",
+				"Dancewear",
+				"Sewing technical"
+			],
+			"status": ""
+		},
+		{
+			"id": 141,
+			"targetPublishDate": "",
+			"title": "Needlepoint Thread Choices: Wool, silk, and cotton floss comparisons",
+			"notes": [
+				"Needlepoint",
+				"Material guide"
+			],
+			"status": ""
+		},
+		{
+			"id": 142,
+			"targetPublishDate": "11/07/2028",
+			"title": "Handmade Holiday Tablecloths and Quilted Runners for Gathering",
+			"notes": [
+				"Quilting",
+				"Sewing",
+				"Target: 2 weeks before Thanksgiving"
+			],
+			"status": ""
+		},
+		{
+			"id": 143,
+			"targetPublishDate": "",
+			"title": "Crocheting Soft Winter Cowls and Infinity Scarves",
+			"notes": [
+				"Crochet",
+				"Winter accessories"
+			],
+			"status": ""
+		},
+		{
+			"id": 144,
+			"targetPublishDate": "",
+			"title": "Building a Long-Lasting Dancewear Capsule Wardrobe for Studio Rehearsals",
+			"notes": [
+				"Dancewear",
+				"Wardrobe tips"
+			],
+			"status": ""
+		},
+		{
+			"id": 145,
+			"targetPublishDate": "12/05/2028",
+			"title": "Handmade Holiday Gifts: Fast embroidery and needlepoint ideas",
+			"notes": [
+				"Embroidery",
+				"Needlepoint",
+				"Target: 3 weeks before Christmas"
+			],
+			"status": ""
+		},
+		{
+			"id": 146,
+			"targetPublishDate": "",
+			"title": "Caring for Antique Quilts and Hand-Stitched Heirloom Textiles",
+			"notes": [
+				"Quilting",
+				"Textile care"
+			],
+			"status": ""
+		},
+		{
+			"id": 147,
+			"targetPublishDate": "12/26/2028",
+			"title": "Reflecting on a Creative Year in the Studio and Setting Craft Goals",
+			"notes": [
+				"Studio",
+				"Seasonal: Year-end reflection"
+			],
+			"status": ""
+		},
+		{
+			"id": 148,
+			"targetPublishDate": "",
+			"title": "Working with Faux Fur and Fleece in Winter Garments",
+			"notes": [
+				"Specialty Fabrics",
+				"Sewing"
+			],
+			"status": ""
+		},
+		{
+			"id": 149,
+			"targetPublishDate": "",
+			"title": "Anatomy of a Dance Bag: Organizing gear for rehearsal efficiency",
+			"notes": [
+				"Dancewear",
+				"Studio tips"
+			],
+			"status": ""
+		},
+		{
+			"id": 150,
+			"targetPublishDate": "",
+			"title": "Mastering French Knots and Satin Stitch in Advanced Hand Embroidery",
+			"notes": [
+				"Embroidery",
+				"Skill building"
+			],
+			"status": ""
+		},
+		{
+			"id": 151,
+			"targetPublishDate": "",
+			"title": "Knitting Cozy Slippers and House Socks for Cold Evenings",
+			"notes": [
+				"Knitting",
+				"Winter projects"
+			],
+			"status": ""
+		},
+		{
+			"id": 152,
+			"targetPublishDate": "",
+			"title": "Selecting the Right Stabilizer for Machine and Hand Embroidery",
+			"notes": [
+				"Embroidery",
+				"Specialty Fabrics"
+			],
+			"status": ""
 		}
 	]
 }
