@@ -19,12 +19,14 @@ body {
         SOCIAL TAGS 
 ======================================== */
 
-
-#social-section .page-section-content,
-#socialtag-section .page-section-content {
-    .callout .callout-image,
-    .callout .callout-image img {
-        clip-path: none !important;
+#social-section, #socialtag-section {
+    max-width: 768px;
+    margin: 0 auto;
+    .page-section-content {
+        .callout .callout-image,
+        .callout .callout-image img {
+            clip-path: none !important;
+        }
     }
 }
 
@@ -51,23 +53,26 @@ body {
         MENU 
 ======================================== */
 
-.menu-item {
-	height: 40px;
-}
+#navigation-section { 
+    .menu-item {
+        height: 40px;
+    }
 
-.menu-item a {
-    background-color: var(--primary-color);
-    color: contrast-color(var(--primary-color)) !important;
-}
+    .menu-item a {
+        background-color: var(--primary-color);
+        color: contrast-color(var(--primary-color)) !important;
+    }
 
-.menu-item a:hover {
-    background-color: var(--secondary-color);
-    color: contrast-color(var(--secondary-color)) !important;
-}
+    .menu-item a:hover {
+        background-color: var(--secondary-color);
+        color: contrast-color(var(--secondary-color)) !important;
+    }
 
-.menu-item a.selected {
-    background-color: var(--tertiary-color);
-    color: contrast-color(var(--tertiary-color)) !important;
+    .menu-item a.selected {
+        background-color: var(--tertiary-color);
+        color: contrast-color(var(--tertiary-color)) !important;
+    }
+
 }
 
 

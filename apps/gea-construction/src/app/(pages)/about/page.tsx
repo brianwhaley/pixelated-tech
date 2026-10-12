@@ -19,7 +19,7 @@ export default function AboutPage() {
 				<Callout
 					layout="vertical"
 					subtitle="Firefighter Heritage"
-					img="https://images.ctfassets.net/6ewno74sai9a/4ew1smDiPqpwE3vuE9eHzY/9177ab3ab695c7a4ca8017b37877a5a2/firefighter-protective-gear-battles-raging-inferno.jpg?fm=webp"
+					img="https://images.ctfassets.net/6ewno74sai9a/519uU7o3nNH1IBsvkwrjhy/f47eff05f00816a7006fe0f2479354bf/rolled-fire-hoses-arranged-rows-glove-compartment-fire-truck.jpg?fm=webp"
 					imgAlt="GEA Construction - Firefighter Heritage"
 					imgShape="square"
 				/>
