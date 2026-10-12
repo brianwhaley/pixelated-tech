@@ -171,6 +171,13 @@ const clientCfg = getClientOnlyPixelatedConfig(cfg);
 
 ## Testing
 
+### Test Results Are Not the Source of Truth
+- Do not delete or substantially change working code merely to satisfy brittle or outdated tests.
+- Testing is validation, not the source of truth. Tests are often brittle, outdated, or disconnected from the current intended behavior.
+- A failing, missing, or low-coverage test is not by itself evidence that application code needs to be changed, removed, or weakened.
+- Treat the current source code, explicit user intent, and established behavior as authoritative when interpreting test results.
+- When tests conflict with the code or user intent, investigate the conflict and ask before making destructive or behavior-changing edits.
+
 ### Shared-first testing
 - Shared testing harnesses, fixtures, mock factories, validators, and reusable test cases are the first line of defense for behavior used across sites, packages, or tools.
 - Before creating a local test helper or fixture, search `shared/test-utils`, the owning package's shared test directory, and existing tests for an established pattern.

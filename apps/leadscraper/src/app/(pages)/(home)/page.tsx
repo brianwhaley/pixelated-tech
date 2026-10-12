@@ -11,6 +11,7 @@ export default function Home() {
 			<PageSection columns={1}id="links-section">
 				<PageGridItem>
 					<ul>
+						<li><a href="/domain-scraper">Domain Scraper</a></li>
 						<li><a href="/api/scrape-emails">Scrape List for Emails</a></li>
 						<li><a href="/api/scrape-websites">Scrape List for Websites</a></li>
 						<li><a href="/api/scrape-google-places">Scrape Google Places</a></li>

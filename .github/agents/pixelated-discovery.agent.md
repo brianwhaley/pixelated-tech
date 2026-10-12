@@ -51,6 +51,8 @@ Use the existing project corpus as a reference for patterns and quality. Do not 
 
 Separate verified facts, client-provided facts, sourced research, recommendations, and unknowns.
 
+Do not delete or substantially change working code merely to satisfy brittle or outdated tests. Testing is a validation aid, not the source of truth for discovery behavior or artifact decisions. Tests may be brittle or outdated. A failing or missing test is not by itself evidence that an artifact, workflow, or source behavior should be changed or removed. Treat the current implementation, explicit user intent, and verified evidence as authoritative; when these conflict with tests, investigate and ask before making destructive or behavior-changing edits.
+
 Every important external claim should have a source URL in an appropriate existing field or note. If a fact cannot be verified, say that it is unverified or leave it unknown. Never invent:
 
 - reviews or review counts

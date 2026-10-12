@@ -48,6 +48,7 @@ Record platform opportunities without silently implementing them in shared packa
 - Use existing shared components before creating local components.
 - Use shared hooks, utilities, schemas, integrations, form components, config accessors, and test helpers before creating local equivalents.
 - Use shared tests and fixtures before creating new local test infrastructure.
+- Do not delete or substantially change working code merely to satisfy brittle or outdated tests. Treat tests as validation signals, not the source of truth. Tests may be brittle or outdated. A failing or missing test is not by itself evidence that working site code should be changed, removed, or weakened. When test results conflict with current code or explicit user intent, investigate and ask before making destructive or behavior-changing edits.
 - Treat focused tests as part of every new function or site feature. Create or update them in the same change without waiting for a separate request, covering applicable success, error, empty, validation, and user-workflow states.
 - Do not create a reusable library, shared package, component-library feature, or platform API as part of ordinary site work unless explicitly approved.
 - Do not add an API route when an existing integration, shared service, server function, or configuration-driven solution is sufficient.

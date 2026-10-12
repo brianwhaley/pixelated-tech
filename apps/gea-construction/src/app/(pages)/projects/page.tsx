@@ -1,0 +1,72 @@
+import React from "react";
+import { getContentfulEntriesByType, getContentfulImagesFromEntries, ProjectsClient, PageTitleHeader, ProjectTilesType } from "@pixelated-tech/components";
+import { PageSection } from "@pixelated-tech/components";
+import { getFullPixelatedConfig } from "@pixelated-tech/components/server";
+
+export default async function ProjectsPage() {
+	const pixelatedConfig = getFullPixelatedConfig();
+	const apiProps = {
+		base_url: pixelatedConfig.integrations?.contentful?.base_url ?? "",
+		space_id: pixelatedConfig.integrations?.contentful?.space_id ?? "",
+		environment: pixelatedConfig.integrations?.contentful?.environment ?? "",
+		delivery_access_token: pixelatedConfig.integrations?.contentful?.delivery_access_token ?? "",
+	};
+
+	const contentType = "7eOfbgd5Yj8L0YGGZwoVVc"; // "5yLwz568n8n0BwOzHYda0W";
+	const typeCards = await getContentfulEntriesByType({ apiProps, contentType });
+	const projectCards: ProjectTilesType[] = [];
+	let cardCount = 0;
+	for (const card of typeCards.items) {
+		if (card.sys.contentType.sys.id == contentType) {
+			cardCount++;
+			let images: any[] = [];
+			if (card.fields.images && card.fields.images.length > 0) {
+				images = await getContentfulImagesFromEntries({ images: [...card.fields.images], assets: typeCards.includes?.Asset ?? [] });
+				images = images.map((img: any, index: number) => ({
+					index: 100 * cardCount + index,
+					cardIndex: index,
+					cardLength: images.length,
+					image: img.image,
+					imageAlt: img.imageAlt ?? "",
+				}));
+			}
+			projectCards.push({
+				title: card.fields.title ?? "",
+				description: card.fields.description ?? "",
+				tileCards: images ?? [],
+			});
+		}
+	}
+
+	// projectCards.sort((a, b) => (a.title > b.title ? -1 : 1));
+
+	projectCards.sort((a, b) => {
+		const aIsNum = /^\d/.test(a.title);
+		const bIsNum = /^\d/.test(b.title);
+		// 1. If one starts with a number and the other doesn't
+		if (aIsNum && !bIsNum) return -1; // 'a' (number) comes first
+		if (!aIsNum && bIsNum) return 1;  // 'b' (number) comes first
+		// 2. If both are the same type, sort descending
+		if (aIsNum && bIsNum) {
+			// For numeric value comparison (e.g., 30 > 10 > 2)
+			return parseFloat(b.title) - parseFloat(a.title);
+		}
+		// For alphabetical descending (e.g., banana > apple)
+		return b.title.localeCompare(a.title);
+	});
+
+	return (
+		<>
+			<PageTitleHeader title="GEA Construction Projects" />
+			<PageSection columns={1} maxWidth="1024px" id="blog-section">
+				<ProjectsClient 
+					projects={projectCards} 
+					modalOnClick={true} 
+					showOverlay={true}
+				/>
+			</PageSection>
+		</>
+	);
+}
+
+

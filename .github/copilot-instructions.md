@@ -182,6 +182,8 @@ npm run build-webpack  # Webpack-based build for complex scenarios
 ### Testing Tools & Coverage
 Comprehensive testing setup with Vitest and strict coverage requirements:
 
+**Do not delete or substantially change working code merely to satisfy brittle or outdated tests.** Testing is validation, not the source of truth. Tests are often brittle, outdated, or disconnected from the current intended behavior. A failing or missing test is not, by itself, evidence that the application code should be changed, removed, or weakened. Treat the current source code, explicit user intent, and established behavior as authoritative. When tests conflict with those sources, investigate and ask the user before making destructive or behavior-changing edits.
+
 ```bash
 npm run test           # Single test run (fast, no coverage)
 npm run test:watch    # Interactive dashboard at http://localhost:51204
