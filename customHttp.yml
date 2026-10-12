@@ -55,9 +55,6 @@ applications:
   - appRoot: apps/manningmetalworks
     customHeaders: *default_headers
 
-  - appRoot: apps/oaktreelandscaping
-    customHeaders: *default_headers
-
   - appRoot: apps/palmetto-epoxy
     customHeaders: *default_headers
 

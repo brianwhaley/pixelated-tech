@@ -59,6 +59,7 @@ Do not create an abstraction merely because reuse is theoretically possible.
 ## Shared Capability Rules
 
 - Use the existing component, package, schema, integration, and export conventions.
+- Do not delete or substantially change working code merely to satisfy brittle or outdated tests. Treat tests as validation signals, not the source of truth. Tests may be brittle or outdated. A failing or missing test is not by itself evidence that working code should be changed, removed, or weakened. When test results conflict with current code or explicit user intent, investigate and ask before making destructive or behavior-changing edits.
 - Add shared tests before or alongside shared implementation. Treat focused tests as part of every new function, integration, server action, and platform feature; create or update them in the same change without waiting for a separate request, including applicable success, error, empty, validation, and contract-boundary cases.
 - Keep public APIs small, explicit, typed, and backwards-compatible where possible.
 - Separate client and server code using the repository's established boundaries.

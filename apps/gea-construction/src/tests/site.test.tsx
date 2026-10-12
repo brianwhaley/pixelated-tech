@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { runCommonPageCoverage, runCommonElementCoverage, /* runCommonBlogPageCoverage, */ runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
-import { config as pixelatedConfig, /* createPageComponentMocks, */ /* mockState, */ resetMockState, resetFileDataState, /* setFileDataState, */ setPixelatedConfigOverride } from '@/tests/page-mocks';
+import { config as pixelatedConfig, /* createPageComponentMocks, */ /* mockState, */ resetMockState, resetFileDataState, setContentfulEntriesResponse, setContentfulImagesResponse, setFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
 
 pixelatedConfig.siteInfo.url = 'https://example.com';
@@ -17,6 +17,8 @@ import LayoutClient from '@/app/elements/layout-client';
 import NotFound from '@/app/not-found';
 import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
+import BlogCalendarPage from '@/app/(pages)/blogcalendar/page';
+import ProjectsPage from '@/app/(pages)/projects/page';
 /* import BlogPage from '@/app/(pages)/blog/page'; */
 /* import PodcastPage from '@/app/(pages)/podcast/page'; */
 import ServiceAreasPage from '@/app/(pages)/service-areas/page';
@@ -73,7 +75,7 @@ describe('Pixelated Template site coverage', () => {
 
 	runCommonPageCoverage({
 		appRoot,
-		ignoredPageTypes: ['blogcalendar', 'updates', 'podcast', 'projects'],
+		ignoredPageTypes: ['updates', 'podcast'],
 		routeOverrides: {
 			partners: 'realtor-partner-program',
 		},
@@ -254,7 +256,7 @@ describe('Pixelated Template site coverage', () => {
 			nextUrl: { pathname: '/test', search: '?a=1', origin: undefined, href: 'https://example.com/test?a=1' },
 			headers: new Headers({}),
 			url: 'https://example.com/test?a=1',
-		} as any);
+		} as any) as any;
 		expect(result.request.headers.get('x-origin')).toBe('https://example.com');
 	});
 
@@ -263,7 +265,7 @@ describe('Pixelated Template site coverage', () => {
 			nextUrl: { pathname: '/test', search: '?a=1', origin: 'https://example.com', href: undefined },
 			headers: new Headers({}),
 			url: 'https://example.com/test?a=1',
-		} as any);
+		} as any) as any;
 		expect(result.request.headers.get('x-url')).toBe('https://example.com/test?a=1');
 	});
 
@@ -278,6 +280,93 @@ describe('Pixelated Template site coverage', () => {
 		render(<ServiceAreasPage />);
 		expect(screen.getByTestId('page-title-header')).not.toBeNull();
 		expect(screen.getByText(/This site serves targeted geographic areas/i)).not.toBeNull();
+	});
+
+	it('renders Blog Calendar page with calendar data', () => {
+		setFileDataState({ data: { blogCalendar: [{ title: 'Test Calendar Entry' }] } as any, loading: false, error: null });
+		render(<BlogCalendarPage />);
+		expect(screen.getByTestId('list-items')).toHaveTextContent('1');
+	});
+
+	it('renders Blog Calendar page with an empty data fallback', () => {
+		setFileDataState({ data: null, loading: false, error: null });
+		render(<BlogCalendarPage />);
+		expect(screen.getByTestId('list-items')).toHaveTextContent('0');
+	});
+
+	it('renders Blog Calendar page while loading or when data fails', () => {
+		setFileDataState({ data: null, loading: true, error: null });
+		render(<BlogCalendarPage />);
+		expect(screen.getByTestId('list-items')).toHaveTextContent('0');
+
+		setFileDataState({ data: null, loading: false, error: 'File not found' });
+		render(<BlogCalendarPage />);
+		expect(screen.getAllByTestId('list-items')).toHaveLength(2);
+	});
+
+	describe('GEA Construction projects page', () => {
+		const projectsContentType = '7eOfbgd5Yj8L0YGGZwoVVc';
+
+		it('renders matching project entries and image data through ProjectsClient', async () => {
+			setContentfulEntriesResponse({
+				items: [
+					{
+						sys: { contentType: { sys: { id: projectsContentType } } },
+						fields: {
+							title: '10 Project',
+							description: 'Tenth project',
+							images: [{ sys: { id: 'project-image' } }],
+						},
+					},
+					{
+						sys: { contentType: { sys: { id: 'other-type' } } },
+						fields: {
+							title: 'Ignored Project',
+							description: 'Ignored project',
+							images: [],
+						},
+					},
+				],
+				includes: { Asset: [{ sys: { id: 'project-image' } }] },
+			});
+			setContentfulImagesResponse([{ image: '/images/project.jpg', imageAlt: 'Project image' }]);
+
+			const pageElement = await ProjectsPage();
+			render(pageElement);
+
+			expect(screen.getByTestId('page-title-header')).toHaveTextContent('GEA Construction Projects');
+			expect(screen.getByTestId('projects-client')).toHaveTextContent('1');
+		});
+
+		it('sorts numeric and alphabetic project titles while handling empty images', async () => {
+			setContentfulEntriesResponse({
+				items: [
+					{
+						sys: { contentType: { sys: { id: projectsContentType } } },
+						fields: { title: '2 Project', description: 'Second project', images: [] },
+					},
+					{
+						sys: { contentType: { sys: { id: projectsContentType } } },
+						fields: { title: '10 Project', description: 'Tenth project', images: [] },
+					},
+					{
+						sys: { contentType: { sys: { id: projectsContentType } } },
+						fields: { title: 'Apple Project', description: 'Apple project', images: [] },
+					},
+					{
+						sys: { contentType: { sys: { id: projectsContentType } } },
+						fields: { title: 'Banana Project', description: 'Banana project', images: [] },
+					},
+				],
+				includes: { Asset: [] },
+			});
+			setContentfulImagesResponse([]);
+
+			const pageElement = await ProjectsPage();
+			render(pageElement);
+
+			expect(screen.getByTestId('projects-client')).toHaveTextContent('4');
+		});
 	});
 
 

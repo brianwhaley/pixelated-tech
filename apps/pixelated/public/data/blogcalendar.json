@@ -168,7 +168,14 @@
 			"status": "draft",
 			"wordpressPostId": 1405,
 			"wordpressMediaId": "1496",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A visually appealing graphic representing fast data transfer and optimized web performance. It should show elements like a stylized network, glowing data streams, or a laptop screen displaying a rapidly loading page, conveying speed and efficiency. The style should be modern and clean.",
+			"imageSearchTerms": [
+				"fast website performance",
+				"web optimization",
+				"next.js speed",
+				"data flow speed"
+			]
 		},
 		{
 			"id": 15,
@@ -216,7 +223,13 @@
 			"status": "draft",
 			"wordpressPostId": 1414,
 			"wordpressMediaId": "1494",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A stock photograph depicting a web browser window displaying a website with a prominent padlock icon in the address bar, symbolizing security, and a contrasting small 'Not Secure' warning visible on a different browser window or tab in the background, to illustrate the core topic of the article.",
+			"imageSearchTerms": [
+				"SSL certificate padlock",
+				"Not Secure website warning",
+				"web browser security lock"
+			]
 		},
 		{
 			"id": 20,
@@ -264,7 +277,15 @@
 			"status": "draft",
 			"wordpressPostId": 1415,
 			"wordpressMediaId": "1492",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A modern, professional stock photograph showing a diverse team of web developers or strategists collaborating around a table, looking at various digital screens (laptops, tablets) displaying abstract future web interfaces, data visualizations, or augmented reality concepts. The atmosphere should be forward-thinking and innovative, conveying a sense of planning and staying ahead of technological trends. The setting is a clean, contemporary office space.",
+			"imageSearchTerms": [
+				"future web trends team",
+				"digital innovation collaboration",
+				"web development strategy meeting",
+				"augmented reality web design",
+				"personalized user experience development"
+			]
 		},
 		{
 			"id": 25,
@@ -294,7 +315,15 @@
 			"status": "draft",
 			"wordpressPostId": 1416,
 			"wordpressMediaId": "1490",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A high-angle shot showing a person's hands interacting with a clean, modern tablet interface. The tablet displays a website with clear navigation and well-organized content. The background is slightly blurred, suggesting a workspace or collaborative environment. The focus is on the seamless interaction between user and device, emphasizing ease of use and thoughtful design.",
+			"imageSearchTerms": [
+				"user experience design",
+				"frictionless interface",
+				"digital interaction",
+				"intuitive website",
+				"web design psychology"
+			]
 		},
 		{
 			"id": 28,
@@ -306,7 +335,15 @@
 			"status": "draft",
 			"wordpressPostId": 1417,
 			"wordpressMediaId": "1488",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A modern, well-lit office or co-working space with a diverse team of professionals collaborating around a large monitor displaying a complex, custom-built web application dashboard. The atmosphere should convey innovation, efficiency, and teamwork, with a focus on digital solutions. The people should appear engaged and productive, possibly pointing at the screen or discussing. The setting should feel professional and organized, but not overly sterile.",
+			"imageSearchTerms": [
+				"custom web app development team",
+				"business software solution collaboration",
+				"digital workflow efficiency",
+				"scaling business technology",
+				"node.js development office"
+			]
 		},
 		{
 			"id": 29,
@@ -318,7 +355,14 @@
 			"status": "draft",
 			"wordpressPostId": 1418,
 			"wordpressMediaId": "1486",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A wide, dynamic shot of a person watching a video on a laptop or tablet, with subtle motion blur or graphic elements suggesting video playback. The setting is a modern, professional home office or a co-working space, with natural light. The person is engaged, perhaps smiling slightly. The focus is on the interaction with the digital content, conveying engagement and modern technology. Avoid overly staged or artificial poses.",
+			"imageSearchTerms": [
+				"video content engagement",
+				"person watching video laptop",
+				"digital marketing motion",
+				"business video strategy"
+			]
 		},
 		{
 			"id": 30,
@@ -338,8 +382,24 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1419,
-			"wordpressMediaId": "1484",
-			"imageStatus": "selected"
+			"wordpressMediaId": "1527",
+			"imageStatus": "not-found",
+			"imageBrief": "A stock photo depicting various forms of social proof visually integrated, such as a hand holding a phone displaying a 5-star review, with blurred backgrounds showing a subtle overlay of \"as seen in\" logos, and possibly a small group of diverse people smiling, representing happy customers. It should convey trust and validation in an online context.",
+			"imageSearchTerms": [
+				"social proof",
+				"online reviews",
+				"customer testimonials",
+				"trust marketing",
+				"star ratings"
+			],
+			"magnificImage": {
+				"id": "magnific-resource-17",
+				"title": "Person holding smartphone with online reviews and customer feedback icons representing digital marketing and reputation management",
+				"detailUrl": "https://www.magnific.com/premium-photo/person-holding-smartphone-with-online-reviews-customer-feedback-icons-representing-digital-marketing-reputation-management_420650878.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/420650878?lang=en",
+				"provider": "user21016237",
+				"orientation": "horizontal"
+			}
 		},
 		{
 			"id": 32,
@@ -378,7 +438,14 @@
 			"status": "draft",
 			"wordpressPostId": 1420,
 			"wordpressMediaId": "1482",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A person, possibly a small business owner, looking thoughtfully at a computer screen displaying various domain name options and a search bar. The background should be a modern, clean office or home office setting, conveying a sense of decision-making and digital planning. The image should be professional and approachable, not overly technical.",
+			"imageSearchTerms": [
+				"choosing domain name",
+				"business website planning",
+				"digital identity decision",
+				"entrepreneur laptop"
+			]
 		},
 		{
 			"id": 36,
@@ -411,7 +478,15 @@
 			"status": "draft",
 			"wordpressPostId": 1422,
 			"wordpressMediaId": "1478",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A professional, clean, and inviting stock photo depicting a digital concept related to lead generation or content exchange. It should show a person, perhaps a small business owner or professional, interacting with a digital device (tablet or laptop) where content is being presented, with a subtle overlay or graphic suggesting information exchange or a \"gate.\" The overall feel should be trustworthy and modern.",
+			"imageSearchTerms": [
+				"gated content lead generation",
+				"digital content exchange",
+				"lead magnet business",
+				"online valuable resource",
+				"email signup form digital"
+			]
 		},
 		{
 			"id": 39,
@@ -423,7 +498,15 @@
 			"status": "draft",
 			"wordpressPostId": 1423,
 			"wordpressMediaId": "1476",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A stock photograph depicting a person speaking into a smart home device (like an Alexa or Google Home speaker) in a modern, uncluttered home or office setting. The person should appear natural and engaged in conversation with the device, perhaps with a subtle glow around the device to signify its active state. The image should convey the ease and commonality of voice interaction.",
+			"imageSearchTerms": [
+				"voice search",
+				"smart speaker",
+				"conversational AI",
+				"person talking to device",
+				"voice assistant"
+			]
 		},
 		{
 			"id": 40,
@@ -435,7 +518,14 @@
 			"status": "draft",
 			"wordpressPostId": 1424,
 			"wordpressMediaId": "1474",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A visually engaging stock photograph depicting a metaphorical journey. It could show a winding path or a series of interconnected thought bubbles or sticky notes on a whiteboard, representing different stages of a customer's decision-making process. The image should convey planning, understanding, and progression, possibly with subtle digital elements or a person thoughtfully looking at a diagram.",
+			"imageSearchTerms": [
+				"customer journey map",
+				"user experience path",
+				"marketing strategy planning",
+				"business process diagram"
+			]
 		},
 		{
 			"id": 41,
@@ -447,7 +537,15 @@
 			"status": "draft",
 			"wordpressPostId": 1425,
 			"wordpressMediaId": "1464",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A stock photograph depicting a secure digital environment for a healthcare clinic. The image should feature a computer screen displaying a secure website or data interface, with subtle visual cues suggesting medical or dental practice (e.g., a doctor's coat in the background, a stethoscope on a desk, or a clinic logo). The overall tone should convey professionalism, security, and trust. The setting could be a clean, modern office space.",
+			"imageSearchTerms": [
+				"HIPAA compliance healthcare",
+				"secure medical data",
+				"clinic website security",
+				"digital patient privacy",
+				"encrypted health information"
+			]
 		},
 		{
 			"id": 42,
@@ -468,7 +566,14 @@
 			"status": "draft",
 			"wordpressPostId": 1426,
 			"wordpressMediaId": "1462",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A modern, professional stock photograph showing a person using a tablet or smartphone to schedule an appointment online, with a clean, uncluttered interface visible on the screen. The background should subtly suggest a business environment, such as a salon, office, or service vehicle, without being overly specific. The image should convey ease of use and efficiency.",
+			"imageSearchTerms": [
+				"online booking",
+				"appointment scheduling app",
+				"digital calendar mobile",
+				"seamless booking experience"
+			]
 		},
 		{
 			"id": 44,
@@ -489,7 +594,18 @@
 			"status": "draft",
 			"wordpressPostId": 1427,
 			"wordpressMediaId": "1460",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A visually engaging image showing the concept of personalization and data. Perhaps a person interacting with a digital interface (like a laptop or tablet) where different content elements (e.g., product recommendations, news feeds) are subtly changing or highlighted, suggesting an adaptive experience. The background could have abstract data streams, glowing lines, or subtle AI-related graphics to convey technology without being overly robotic. The scene should feel modern, approachable, and relevant to business or marketing.",
+			"imageSearchTerms": [
+				"AI content personalization",
+				"dynamic website experience",
+				"data driven marketing",
+				"customer segmentation",
+				"digital personalization",
+				"adaptive content",
+				"AI marketing",
+				"personalized user interface"
+			]
 		},
 		{
 			"id": 46,
@@ -501,7 +617,15 @@
 			"status": "draft",
 			"wordpressPostId": 1428,
 			"wordpressMediaId": "1458",
-			"imageStatus": "selected"
+			"imageStatus": "not-found",
+			"imageBrief": "A professional stock photograph showing a person, likely a small business owner, looking at a digital marketing dashboard or analytics on a tablet or laptop. The image should convey a sense of strategic planning, precision, and understanding of data rather than confusion. Perhaps there's a subtle background element suggesting local business or digital growth, but the focus should be on the focused individual and the digital interface. The overall tone should be modern and insightful.",
+			"imageSearchTerms": [
+				"paid social strategy",
+				"digital marketing analytics",
+				"targeted advertising",
+				"business owner data",
+				"social media campaign management"
+			]
 		},
 		{
 			"id": 47,
@@ -521,25 +645,24 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1434,
-			"imageStatus": "selected",
-			"imageBrief": "A visually appealing stock photograph that symbolizes the connection between technology, efficiency, and environmental sustainability. The image should feature elements of clean energy or nature alongside subtle digital or web development motifs. Perhaps a modern data center or server rack with a subtle green glow, juxtaposed with a natural element like a leaf or a clean energy source (solar panel, wind turbine) in the background or foreground, suggesting harmony between tech and nature. It should convey a sense of innovation and responsibility.",
+			"imageStatus": "not-found",
+			"imageBrief": "A tranquil coastal scene with a subtle overlay of digital elements or a clean, modern website interface rendered semi-transparently over a nature background, symbolizing the harmony between technology and environment.",
 			"imageSearchTerms": [
-				"green web",
+				"green web development",
 				"sustainable technology",
-				"eco friendly data center",
-				"digital sustainability",
-				"web energy efficiency",
-				"nature technology blend"
+				"eco-friendly internet",
+				"coastal small business digital",
+				"clean code nature"
 			],
 			"magnificImage": {
-				"id": "magnific-resource-22",
-				"title": "Engineer in data center using renewable solar and wind energy sources to power crypto mining operations Expert working with eco friendly server clusters preventing significant environmental impact",
-				"detailUrl": "https://www.magnific.com/premium-photo/engineer-data-center-using-renewable-solar-wind-energy-sources-power-crypto-mining-operations-expert-working-with-eco-friendly-server-clusters-preventing-significant-environmental-impact_128607446.htm",
-				"licenseUrl": "https://www.magnific.com/profile/license/pdf/128607446?lang=en",
-				"provider": "DC Studio",
-				"orientation": "horizontal"
+				"id": "magnific-resource-28",
+				"title": "Vintage Light bulb of eco friendly Environmental technology and Sustainable development save planet",
+				"detailUrl": "https://www.magnific.com/premium-photo/vintage-light-bulb-eco-friendly-environmental-technology-sustainable-development-save-planet_28076415.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/28076415?lang=en",
+				"provider": "everythingpossible",
+				"orientation": "panoramic"
 			},
-			"wordpressMediaId": "1455"
+			"wordpressMediaId": "1528"
 		},
 		{
 			"id": 49,
@@ -559,14 +682,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1436,
-			"imageStatus": "selected",
-			"imageBrief": "A diverse group of small business owners (e.g., a cafe owner, a retail shop owner, and a service provider) are gathered around a modern tablet or laptop in a bright, contemporary co-working space or a stylish office. They are engaged in a discussion about technology and business growth, with a sense of collaboration and optimism. The image should convey professionalism, local community connection, and forward-thinking digital transformation.",
+			"imageStatus": "not-found",
+			"imageBrief": "A candid, professional photograph capturing the essence of small business growth through technology. It should feature a diverse small business owner (or a small team) in a modern, well-lit setting, perhaps interacting with a digital device like a laptop or tablet, with subtle visual cues indicating progress, innovation, or local community connection. The image should convey forward-thinking and success without being overly staged.",
 			"imageSearchTerms": [
-				"small business tech review",
-				"local entrepreneurs technology",
-				"digital growth collaboration",
-				"small business innovation",
-				"community business tech solutions"
+				"small business technology growth",
+				"local business digital transformation",
+				"entrepreneur tech success",
+				"community business innovation",
+				"modern small business owner working"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-1",
@@ -587,17 +710,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1438,
-			"imageStatus": "selected",
-			"imageBrief": "A visually appealing and professional image showing website performance or speed. It should convey a sense of efficiency, technology, and success. Perhaps a laptop screen displaying a fast-loading website, with elements of data visualization or speed metrics subtly integrated, and a background that suggests a modern business environment. The overall tone should be professional and forward-thinking.",
+			"imageStatus": "not-found",
+			"imageBrief": "A visually striking stock photograph depicting a digital speed concept. It could feature a website loading bar moving rapidly, a stylized graph showing performance metrics ascending, or a blurred background of a city street with a focused, sharp overlay representing fast data transfer. The image should convey speed, precision, and high performance without being overly technical or abstract.",
 			"imageSearchTerms": [
-				"website speed optimization",
+				"website speed performance",
 				"core web vitals",
 				"fast loading website",
-				"digital performance",
-				"next.js technology",
-				"seo advantage",
-				"web development efficiency",
-				"bluffton business technology"
+				"digital optimization",
+				"speed metrics graph"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-5",
@@ -618,24 +738,24 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1440,
-			"imageStatus": "selected",
-			"imageBrief": "A warm, inviting image depicting a local business owner (e.g., a baker, a shopkeeper) interacting positively with a customer or a community member in a charming, small-town setting. The background should subtly suggest a local business environment (e.g., a storefront, a community board). The image should convey connection, community, and digital integration without being overly technical.",
+			"imageStatus": "not-found",
+			"imageBrief": "A vibrant, eye-level stock photograph showing a close-up of a diverse group of hands holding small, interconnected wooden blocks or puzzle pieces, symbolizing community, collaboration, and building connections. The background is slightly blurred, suggesting a bustling local town square or a community event, but the focus remains on the hands and the interlocking pieces. The lighting is warm and inviting.",
 			"imageSearchTerms": [
-				"local business owner community",
-				"small town business connection",
-				"digital marketing local support",
-				"friendly neighborhood shop",
-				"local entrepreneur networking"
+				"community connection",
+				"local collaboration",
+				"interconnected hands",
+				"puzzle pieces together",
+				"local business networking"
 			],
 			"magnificImage": {
-				"id": "magnific-resource-9",
-				"title": "Proud small business owner smiling in front of new shop location during daytime",
-				"detailUrl": "https://www.magnific.com/premium-photo/proud-small-business-owner-smiling-front-new-shop-location-daytime_269880582.htm",
-				"licenseUrl": "https://www.magnific.com/profile/license/pdf/269880582?lang=en",
-				"provider": "Lizbond",
+				"id": "magnific-resource-14",
+				"title": "Cafe owner explains menu to customers at counter in modern coffee shop Small business",
+				"detailUrl": "https://www.magnific.com/premium-photo/cafe-owner-explains-menu-customers-counter-modern-coffee-shop-small-business_419538377.htm",
+				"licenseUrl": "https://www.magnific.com/profile/license/pdf/419538377?lang=en",
+				"provider": "artitwpd",
 				"orientation": "horizontal"
 			},
-			"wordpressMediaId": "1449"
+			"wordpressMediaId": "1529"
 		},
 		{
 			"id": 53,
@@ -646,16 +766,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1454,
-			"imageStatus": "selected",
-			"imageBrief": "A stock photograph depicting a secure e-commerce environment. The image should feature elements like a laptop or tablet displaying an online store interface, overlaid with digital security icons such as a padlock, shield, or encrypted data symbols. The overall impression should be one of protection, reliability, and modern technology. The setting could be a clean, professional workspace, implying a business owner confidently managing their online sales.",
+			"imageStatus": "not-found",
+			"imageBrief": "A visually appealing stock photograph depicting digital security and e-commerce. The image should feature elements like a laptop or tablet displaying an online store interface, overlaid with security icons such as a padlock, shield, or secure data transfer symbols. The background could be a modern, clean office or a stylized representation of data flow, suggesting protection and trust in online transactions. The overall mood should convey safety, reliability, and technological advancement.",
 			"imageSearchTerms": [
 				"e-commerce security",
-				"online store protection",
-				"data encryption",
-				"cybersecurity for business",
-				"secure online shopping",
-				"digital padlock e-commerce",
-				"payment security website"
+				"online payment protection",
+				"cybersecurity padlock shopping cart",
+				"secure online transactions",
+				"digital sales protection"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-25",
@@ -676,14 +794,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1509,
-			"imageStatus": "selected",
-			"imageBrief": "A realistic stock photograph showing a web designer or marketing professional looking at a screen with a colorful website design, perhaps with color swatches or a mood board visible nearby. The image should convey thoughtfulness and strategic design.",
+			"imageStatus": "not-found",
+			"imageBrief": "A visually appealing stock photograph showing a subtle representation of web design and color psychology. It should feature a computer screen or tablet displaying a colorful, well-designed website interface, with abstract color swatches or a color wheel subtly integrated into the background or foreground, suggesting the thoughtful selection of a color palette. The overall mood should be professional and insightful, not overly abstract or cartoonish.",
 			"imageSearchTerms": [
-				"web design color psychology",
-				"brand color strategy",
-				"designer choosing colors",
+				"color psychology web design",
 				"website color palette",
-				"marketing color impact"
+				"digital design color theory",
+				"emotional design colors",
+				"brand colors online"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-36",
@@ -713,15 +831,13 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1511,
-			"imageStatus": "selected",
-			"imageBrief": "A realistic stock photograph depicting a small business owner looking relieved and focused on their laptop, perhaps in a modern, clean office or cafe setting. In the background, subtle visual cues could suggest complex IT infrastructure being handled by others, such as blurred servers or a small team collaborating. The overall mood should convey peace of mind and efficiency, contrasting the stress of managing IT themselves.",
+			"imageStatus": "not-found",
+			"imageBrief": "A stock photograph depicting a clear visual contrast between a disorganized, cluttered server rack with tangled wires, representing unmanaged hosting, and a clean, organized, well-maintained server rack or data center environment, representing managed hosting. The image should convey professionalism and reliability for the managed side, and potential chaos or complexity for the unmanaged side.",
 			"imageSearchTerms": [
-				"small business owner peace of mind",
-				"managed IT services relief",
-				"business owner focused on work",
-				"website hosting solutions",
-				"entrepreneur working efficiently",
-				"digital peace of mind"
+				"managed vs unmanaged hosting",
+				"server rack organized vs messy",
+				"data center comparison",
+				"web hosting services"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-2",
@@ -742,15 +858,14 @@
 			],
 			"status": "draft",
 			"wordpressPostId": 1514,
-			"imageStatus": "selected",
-			"imageBrief": "A focused business professional, likely a small business owner or marketing manager, thoughtfully reviewing an FAQ section displayed on a laptop screen. The setting is a modern, clean office or co-working space, suggesting an environment of strategic planning and digital organization. The person might be making notes or pondering, indicating a process of problem-solving and website content strategy.",
+			"imageStatus": "not-found",
+			"imageBrief": "A stock photograph showing a person, possibly a small business owner or marketer, looking thoughtfully at a computer screen displaying a website with a prominent FAQ section. The setting could be a modern office or co-working space, with a clean and professional aesthetic. The person should appear engaged and focused, perhaps with a notepad or coffee nearby, suggesting strategic planning. The image should convey the idea of solving problems and improving online presence.",
 			"imageSearchTerms": [
-				"business owner reviewing FAQ page",
-				"marketing strategy laptop",
-				"website content planning",
-				"SEO optimization FAQ",
-				"customer support strategy digital",
-				"small business website strategy"
+				"FAQ page strategy",
+				"SEO website optimization",
+				"business owner thinking",
+				"customer support digital",
+				"website content planning"
 			],
 			"magnificImage": {
 				"id": "magnific-resource-11",
@@ -772,8 +887,12 @@
 			"status": "draft",
 			"wordpressPostId": 1517,
 			"imageStatus": "not-found",
-			"imageBrief": "A vibrant, eye-level shot of a bustling main street in a charming small town (like Denville, NJ or Bluffton, SC). The focus should be on the storefronts of independent local businesses, perhaps with a friendly shop owner waving from a doorway or a small group of diverse people interacting cheerfully. The national chain store logos should be blurred or subtly in the background, out of focus, emphasizing the local businesses in the foreground. The overall mood is warm, welcoming, and community-focused.",
-			"imageSearchTerms": []
+			"imageBrief": "A vibrant, warm image depicting a small, locally-owned business, such as a cozy cafe or boutique, with a friendly owner or staff member interacting positively with a customer. The scene should convey a sense of community, personal touch, and a welcoming atmosphere, highlighting the unique advantages of local businesses. The image should feature local signage or elements that suggest a specific community setting, without being overly generic.",
+			"imageSearchTerms": [
+				"local business owner customer interaction",
+				"small town shop friendly service",
+				"community business support local"
+			]
 		},
 		{
 			"id": 59,

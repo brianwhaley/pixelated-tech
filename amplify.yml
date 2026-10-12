@@ -63,9 +63,6 @@ applications:
   - appRoot: apps/manningmetalworks
     frontend: *shared_frontend
 
-  - appRoot: apps/oaktreelandscaping
-    frontend: *shared_frontend
-
   - appRoot: apps/palmetto-epoxy
     frontend: *shared_frontend
 
