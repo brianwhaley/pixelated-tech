@@ -103,9 +103,13 @@ function importModule(filePath: string) {
 	return import(pathToFileURL(filePath).href);
 }
 
-function safeRenderComponent(Component: any) {
+async function safeRenderComponent(Component: any) {
 	expect(Component).toBeDefined();
-	render(React.createElement(Component));
+	if (Component.constructor.name === 'AsyncFunction') {
+		render(await Component({}));
+	} else {
+		render(React.createElement(Component));
+	}
 }
 
 function getExportedFunction(importedModule: any, names: string[]) {
@@ -184,7 +188,7 @@ export function runCommonPageCoverage({
 				if (verifyPageRender) {
 					it(`renders the ${pageType.name} page without throwing`, async () => {
 						const importedModule = await importModule(filePathForChecks);
-						safeRenderComponent(importedModule.default);
+						await safeRenderComponent(importedModule.default);
 						if (pageRenderAssertion) {
 							await pageRenderAssertion(pageType.routeSegment);
 						}
@@ -209,14 +213,14 @@ export function runCommonPageCoverage({
 				const filePath = findAppModule(appRoot, commonElementPaths.GlobalError);
 				expect(filePath).not.toBeNull();
 				const importedModule = await importModule(filePath!);
-				safeRenderComponent(importedModule.default);
+				await safeRenderComponent(importedModule.default);
 			});
 
 			it('renders the loading component', async () => {
 				const filePath = findAppModule(appRoot, commonElementPaths.Loading);
 				expect(filePath).not.toBeNull();
 				const importedModule = await importModule(filePath!);
-				safeRenderComponent(importedModule.default);
+				await safeRenderComponent(importedModule.default);
 			});
 
 			it('returns manifest metadata', async () => {
@@ -253,7 +257,7 @@ export function runCommonPageCoverage({
 				const filePath = findAppModule(appRoot, commonElementPaths.NotFound);
 				expect(filePath).not.toBeNull();
 				const importedModule = await importModule(filePath!);
-				safeRenderComponent(importedModule.default);
+				await safeRenderComponent(importedModule.default);
 			});
 
 			it('renders layout client without error', async () => {
@@ -261,7 +265,7 @@ export function runCommonPageCoverage({
 				expect(filePath).not.toBeNull();
 				const importedModule = await importModule(filePath!);
 				const LayoutClientComponent = importedModule.default ?? importedModule.LayoutClient ?? importedModule.layoutClient;
-				safeRenderComponent(LayoutClientComponent);
+				await safeRenderComponent(LayoutClientComponent);
 			});
 
 			const socialTagsFilePath = findAppModule(appRoot, commonElementPaths.SocialTags);
@@ -270,7 +274,7 @@ export function runCommonPageCoverage({
 			} else {
 				it('renders social tags section', async () => {
 					const importedModule = await importModule(socialTagsFilePath);
-					safeRenderComponent(importedModule.default);
+					await safeRenderComponent(importedModule.default);
 				});
 			}
 

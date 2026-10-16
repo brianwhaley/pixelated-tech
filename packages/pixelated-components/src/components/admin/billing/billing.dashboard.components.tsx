@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { SiteConfig, Subscriptions, PaymentInfo, InvoiceData, GeneratedInvoiceResult, BlogPostBilling, SocialReferrerBilling } from './billing.types';
+import React, { useState, useEffect, useMemo } from 'react';
+import { SiteConfig, Subscriptions, PaymentInfo, InvoiceData, GeneratedInvoiceResult, BillingSummary } from './billing.types';
 import { ToggleLoading } from '../../foundation/loading';
 import InvoiceTemplate from './billing.invoice.components';
+import { getBillingSummary, getMonthlyBillingPrice, isMonthlyBillingActive } from './billing.functions';
 import { dispatchInvoiceEmails, generateAdHocInvoice, generateInvoicePdfsForSites, loadAdHocBillingConfigData, loadBillingConfigData } from './billing.server';
 import './billing.css';
 
@@ -45,7 +46,7 @@ export const MonthlyBillingDashboard: React.FC = () => {
 				setPaymentInfo(response.paymentInfo || { method: '', details: '', terms: '' });
 				setFormCompletions(response.formCompletions || []);
 
-				const billableSites = (response.sites as SiteConfig[]).filter(site => !!site.monthlyBilling);
+				const billableSites = (response.sites as SiteConfig[]).filter(site => isMonthlyBillingActive(site, monthStr));
 				const preselected: { [name: string]: boolean } = {};
 				billableSites.forEach(s => {
 					preselected[s.name] = true;
@@ -60,7 +61,15 @@ export const MonthlyBillingDashboard: React.FC = () => {
 		fetchSites();
 	}, [monthStr]);
 
-	const billableSites = sites.filter(site => !!site.monthlyBilling);
+	const billableSites = sites.filter(site => isMonthlyBillingActive(site, monthStr));
+	const selectedSiteNames = useMemo(
+		() => new Set(billableSites.filter((site) => !!selectedSites[site.name]).map((site) => site.name)),
+		[billableSites, selectedSites]
+	);
+	const billingSummary = useMemo(
+		() => getBillingSummary(billableSites, selectedSiteNames, subscriptions, monthStr),
+		[billableSites, selectedSiteNames, subscriptions, monthStr]
+	);
 
 	const handleSiteCheckboxChange = (name: string) => {
 		setSelectedSites(prev => ({
@@ -197,6 +206,14 @@ export const MonthlyBillingDashboard: React.FC = () => {
 
 	const allEmailsChecked = generatedInvoices.length > 0 && generatedInvoices.every(inv => !inv.success || !!selectedForEmail[inv.siteName]);
 	const someEmailsChecked = generatedInvoices.some(inv => inv.success && !!selectedForEmail[inv.siteName]) && !allEmailsChecked;
+	const selectedMonthLabel = new Date(selectedYear, selectedMonth - 1, 1).toLocaleString('en-US', {
+		month: 'long',
+		year: 'numeric'
+	});
+	const formatCurrency = (amount: number) => amount.toLocaleString('en-US', {
+		style: 'currency',
+		currency: 'USD'
+	});
 
 	return (
 		<div className="billing-dashboard-wrapper">
@@ -239,6 +256,8 @@ export const MonthlyBillingDashboard: React.FC = () => {
 					</div>
 				</div>
 
+				<BillingSummaryPanel billingMonthLabel={selectedMonthLabel} summary={billingSummary} formatCurrency={formatCurrency} />
+
 				{/* Sites table list */}
 				{billableSites.length === 0 ? (
 					<div className="billing-error-msg">No billable sites configured in sites.json. Add billing structures to sites.json first.</div>
@@ -264,15 +283,7 @@ export const MonthlyBillingDashboard: React.FC = () => {
 							<tbody>
 								{billableSites.map(site => {
 									const isChecked = !!selectedSites[site.name];
-									const tierName = site.monthlyBilling!.tier;
-									let normalizedTier = tierName.toLowerCase();
-									if (normalizedTier === 'premier') normalizedTier = 'premium';
-									if (normalizedTier === 'standard') normalizedTier = 'growth';
-
-									const subPrice = (subscriptions[normalizedTier] || subscriptions[tierName])?.price || 0;
-									const finalPrice = site.monthlyBilling!.priceOverride !== undefined
-										? site.monthlyBilling!.priceOverride
-										: (site.monthlyBilling!.price !== undefined ? site.monthlyBilling!.price : subPrice);
+									const finalPrice = getMonthlyBillingPrice(site, subscriptions);
 
 									return (
 										<tr key={site.name} className="hover-row">
@@ -413,6 +424,45 @@ export const MonthlyBillingDashboard: React.FC = () => {
 		</div>
 	);
 };
+
+interface BillingSummaryPanelProps {
+	billingMonthLabel: string;
+	summary: BillingSummary;
+	formatCurrency: (amount: number) => string;
+}
+
+const BillingSummaryPanel: React.FC<BillingSummaryPanelProps> = ({ billingMonthLabel, summary, formatCurrency }) => (
+	<section id="billing-summary-section" className="billing-summary-panel" aria-labelledby="billing-summary-heading">
+		<h4 id="billing-summary-heading">Summary for {billingMonthLabel}</h4>
+		<div className="billing-summary-grid">
+			<div className="billing-summary-metric">
+				<span className="billing-summary-label">Billable sites</span>
+				<strong className="billing-summary-value">{summary.billableSiteCount}</strong>
+			</div>
+			<div className="billing-summary-metric">
+				<span className="billing-summary-label">Selected sites</span>
+				<strong className="billing-summary-value">{summary.selectedSiteCount}</strong>
+			</div>
+			<div className="billing-summary-metric">
+				<span className="billing-summary-label">Recurring subscriptions</span>
+				<strong className="billing-summary-value">{formatCurrency(summary.selectedSitesRecurringTotal)}</strong>
+			</div>
+			<div className="billing-summary-metric">
+				<span className="billing-summary-label">Additional charges</span>
+				<strong className="billing-summary-value">{formatCurrency(summary.selectedSitesAdditionalTotal)}</strong>
+			</div>
+			<div className="billing-summary-metric billing-summary-total">
+				<span className="billing-summary-label">Total to invoice</span>
+				<strong className="billing-summary-value">{formatCurrency(summary.selectedSitesTotal)}</strong>
+			</div>
+		</div>
+		{summary.selectedSiteCount !== summary.billableSiteCount && (
+			<p className="billing-summary-note">
+				All billable sites total: {formatCurrency(summary.allSitesTotal)}
+			</p>
+		)}
+	</section>
+);
 
 export const AdHocBillingDashboard: React.FC = () => {
 	const [invoiceNumbers, setInvoiceNumbers] = useState<string[]>([]);

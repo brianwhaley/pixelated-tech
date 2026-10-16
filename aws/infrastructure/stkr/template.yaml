@@ -1,0 +1,365 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing STKR Slack image-sharing service.
+
+Resources:
+  StkrExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: stkr-role-k73ky253
+      Path: /service-role/
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayPushToCloudWatchLogs
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+        - arn:aws:iam::aws:policy/AmazonSESFullAccess
+        - arn:aws:iam::aws:policy/CloudWatchFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  StkrApiGatewayAccount:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn: !GetAtt StkrExecutionRole.Arn
+
+  StkrFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: stkr
+      CodeUri: ../../services/stkr/
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt StkrExecutionRole.Arn
+
+  StkrApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: stkr
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  StkrApiResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId: !GetAtt StkrApi.RootResourceId
+      PathPart: stkr
+      RestApiId: !Ref StkrApi
+
+  StkrApiGetMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StkrFunction.Arn}:${!stageVariables.ENV}/invocations
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          StatusCode: '200'
+      ResourceId: !Ref StkrApiResource
+      RestApiId: !Ref StkrApi
+
+  StkrApiPostMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StkrFunction.Arn}:${!stageVariables.ENV}/invocations
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          StatusCode: '200'
+      ResourceId: !Ref StkrApiResource
+      RestApiId: !Ref StkrApi
+
+  StkrApiDeploymentDevPrivate:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+      - StkrApiGetMethod
+      - StkrApiPostMethod
+    Properties:
+      Description: stkr and stkrupload with post
+      RestApiId: !Ref StkrApi
+
+  StkrApiDeploymentProd:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+      - StkrApiGetMethod
+      - StkrApiPostMethod
+    Properties:
+      Description: Created by AWS Lambda
+      RestApiId: !Ref StkrApi
+
+  StkrApiStageDev:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId: !Ref StkrApiDeploymentDevPrivate
+      Description: dev
+      RestApiId: !Ref StkrApi
+      StageName: dev
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          LoggingLevel: INFO
+          MetricsEnabled: true
+      AccessLogSetting:
+        DestinationArn: !GetAtt StkrApiDevAccessLogGroup.Arn
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
+
+  StkrApiStagePrivate:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId: !Ref StkrApiDeploymentDevPrivate
+      RestApiId: !Ref StkrApi
+      StageName: private
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          LoggingLevel: INFO
+          MetricsEnabled: true
+      AccessLogSetting:
+        DestinationArn: !GetAtt StkrApiPrivateAccessLogGroup.Arn
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
+
+  StkrApiStageProd:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId: !Ref StkrApiDeploymentProd
+      RestApiId: !Ref StkrApi
+      StageName: prod
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          LoggingLevel: ERROR
+          MetricsEnabled: true
+      AccessLogSetting:
+        DestinationArn: !GetAtt StkrApiProdAccessLogGroup.Arn
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
+
+  StkrApiDevAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/stkr/dev
+      RetentionInDays: 30
+
+  StkrApiPrivateAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/stkr/private
+      RetentionInDays: 30
+
+  StkrApiProdAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/stkr/prod
+      RetentionInDays: 30
+
+  StkrApiPermissionAny:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref StkrFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${StkrApi}/*/*/stkr
+
+  StkrApiPermissionPost:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref StkrFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${StkrApi}/*/POST/stkr
+
+  StkrApiPermissionPostDuplicate:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref StkrFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${StkrApi}/*/POST/stkr
+
+  StkrApiPermissionGet:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref StkrFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${StkrApi}/*/GET/stkr
+
+  StkrApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: stkr.pixelated.tech
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+      SecurityPolicy: TLS_1_2
+
+  StkrApiDevBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BasePath: dev
+      DomainName: !Ref StkrApiDomain
+      RestApiId: !Ref StkrApi
+      Stage: dev
+
+  StkrApiPrivateBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BasePath: private
+      DomainName: !Ref StkrApiDomain
+      RestApiId: !Ref StkrApi
+      Stage: private
+
+  StkrApiProdBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BasePath: prod
+      DomainName: !Ref StkrApiDomain
+      RestApiId: !Ref StkrApi
+      Stage: prod
+
+  StkrLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/stkr
+      RetentionInDays: 30
+
+  StkrBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: stkr-bucket
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  StkrTokensTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: stkr-tokens
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: team_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: team_id
+          KeyType: HASH
+
+  StkrImagesTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: stkr-images
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: team_id
+          AttributeType: S
+        - AttributeName: stkr_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: team_id
+          KeyType: HASH
+        - AttributeName: stkr_id
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: team_id-index
+          KeySchema:
+            - AttributeName: team_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  StkrLogsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: stkr-logs
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: team_id
+          AttributeType: S
+        - AttributeName: log_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: team_id
+          KeyType: HASH
+        - AttributeName: log_id
+          KeyType: RANGE

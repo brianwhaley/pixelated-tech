@@ -29,7 +29,7 @@ describe('InvoiceBuilder', () => {
 	beforeEach(() => {
 		vi.mocked(loadBillingConfigData).mockResolvedValue({
 			sites: [
-				{ name: 'example-site', monthlyBilling: { tier: 'standard' }, blogRss: 'https://example.com/blog' }
+				{ name: 'example-site', monthlyBilling: { tier: 'growth' }, blogRss: 'https://example.com/blog' }
 			],
 			subscriptions: [],
 			paymentInfo: {},

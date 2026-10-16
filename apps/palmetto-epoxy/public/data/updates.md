@@ -1,5 +1,42 @@
 # Palmetto Epoxy -- Updates
 
+## 2026-10-13 META AD AUDIENCE
+
+### INCOME
+* Demographics > Financial > Income > Household income: top 5% of ZIP codes (US)
+* Demographics > Financial > Income > Household income: top 10% of ZIP codes (US)
+* Demographics > Financial > Income > Household income: top 10%-25% of ZIP codes (US)
+
+### LOCATIONS
+* Beaufort, South Carolina + 25mi
+* Bluffton, South Carolina + 25mi
+* Hardeeville, South Carolina + 25mi
+* Hilton Head Island, South Carolina + 25mi
+* Okatie, South Carolina + 25mi
+* Ridgeland, South Carolina + 25mi
+
+### DETAILED TARGETING
+* Interests > Additional interests > Backyard (gardening)
+* Interests > Additional interests > Building (architecture)
+* Interests > Additional interests > Floor (construction)
+* Interests > Additional interests > Flooring (industrial materials & equipment)
+* Interests > Additional interests > Garden (home & garden)
+* Interests > Additional interests > Garden design (gardening)
+* Interests > Additional interests > Home (home & garden)
+* Interests > Additional interests > Home construction (construction)
+* Interests > Additional interests > Home repair (home improvement)
+* Interests > Additional interests > Landscape architecture (gardening)
+* Interests > Additional interests > Landscape design (gardening)
+* Interests > Additional interests > Landscaping (gardening)
+* Interests > Additional interests > Luxury vehicle (vehicles)
+* Interests > Additional interests > Patio (gardening)
+* Interests > Additional interests > Renovation (construction)
+* Interests > Additional interests > Sports car (vehicle)
+* Interests > Hobbies and activities > Home and garden > Gardening (outdoor activities)
+* Interests > Hobbies and activities > Home and garden > Home improvement (home & garden)
+
+
+
 ## 2026-08-19 UPDATE
 * [ x ] Redid the Projects section
 * [ X ] Palmetto Epoxy Email Addresses for Dennis and Martha

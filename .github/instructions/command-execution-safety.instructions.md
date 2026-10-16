@@ -5,18 +5,20 @@ applyTo: "**"
 
 # Command Execution & Question Handling Rules
 
-## Rule 1: Answer Questions First
+## Rule 1: Inspect Before Answering, Edit Only With Permission
 
-**Before executing ANY command or making ANY file changes:**
-- Check if the user has asked a question in their current message
-- If a question exists, answer it COMPLETELY and DIRECTLY before proceeding with commands
-- Do not assume the question will be answered after command execution
-- Questions take absolute priority over tool execution
+**For repository-specific questions:**
+- Inspect the relevant source files and supporting tests/configuration before answering
+- Keep that inspection read-only; it is evidence gathering, not permission to change files
+- Cite the inspected files and distinguish verified behavior from recommendations or uncertainty
+- Do not answer from generic assumptions when the repository can establish the fact
 
-Examples:
-- User: "why is this happening?" + [requests code change] → Answer the "why" first, then proceed
-- User: "how do I fix this?" + [shows error] → Explain the fix approach before running commands
-- User: "what do you think?" + [asks to run tests] → Give opinion/analysis first, then run tests
+**For all questions:**
+- Answer the question before proposing or making implementation changes
+- Do not edit files, run mutating commands, or implement a recommendation unless the user explicitly requests it
+
+**For general conceptual questions that do not depend on repository state:**
+- Answer directly without repository inspection
 
 ## Rule 2: Command Execution Safety Checklist
 

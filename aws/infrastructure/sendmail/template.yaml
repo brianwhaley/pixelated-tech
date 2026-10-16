@@ -1,0 +1,224 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing sendmail API and form submission Lambdas.
+
+Parameters:
+  SmtpUser:
+    Type: String
+    Description: SMTP username supplied to the sendmail Lambda at deploy time.
+  SmtpPassword:
+    Type: String
+    NoEcho: true
+    Description: SMTP password supplied to the sendmail Lambda at deploy time.
+
+Resources:
+  SendmailExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: sendmail_execution_role
+      Path: /service-role/
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess_v2
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  FormSubmissionTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: PixelatedFormSubmissionsTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: domain
+          AttributeType: S
+        - AttributeName: submissionId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: domain
+          KeyType: HASH
+        - AttributeName: submissionId
+          KeyType: RANGE
+
+  SendmailFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: sendmail
+      CodeUri: ../../services/sendmail/
+      Handler: src/index.handler
+      Runtime: nodejs24.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt SendmailExecutionRole.Arn
+      Environment:
+        Variables:
+          SMTP_USER: !Ref SmtpUser
+          SMTP_PASSWORD: !Ref SmtpPassword
+
+  FormSubmit2DBFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: formSubmit2DB
+      CodeUri: ../../services/form-submit-2db/
+      Handler: src/index.handler
+      Runtime: nodejs24.x
+      Architectures:
+        - arm64
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt SendmailExecutionRole.Arn
+
+  SendmailApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: sendmail
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  SendmailApiResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId: !GetAtt SendmailApi.RootResourceId
+      PathPart: sendmail
+      RestApiId: !Ref SendmailApi
+
+  SendmailApiMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendmailFunction.Arn}/invocations
+      ResourceId: !Ref SendmailApiResource
+      RestApiId: !Ref SendmailApi
+
+  SendmailApiOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            StatusCode: '200'
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
+          StatusCode: '200'
+      ResourceId: !Ref SendmailApiResource
+      RestApiId: !Ref SendmailApi
+
+  SendmailApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+      - SendmailApiMethod
+      - SendmailApiOptionsMethod
+    Properties:
+      RestApiId: !Ref SendmailApi
+
+  SendmailApiStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId: !Ref SendmailApiDeployment
+      RestApiId: !Ref SendmailApi
+      StageName: default
+      MethodSettings:
+        - HttpMethod: '*'
+          ResourcePath: '/*'
+          MetricsEnabled: true
+          LoggingLevel: INFO
+          ThrottlingBurstLimit: 5000
+          ThrottlingRateLimit: 10000
+
+  SendmailApiPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SendmailFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${SendmailApi}/*/*/sendmail
+
+  SendmailApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: sendmail.pixelated.tech
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+      SecurityPolicy: TLS_1_2
+
+  SendmailApiBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BasePath: default
+      DomainName: !Ref SendmailApiDomain
+      RestApiId: !Ref SendmailApi
+      Stage: default
+
+  SendmailLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/sendmail
+      RetentionInDays: 30
+
+  FormSubmit2DBLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/formSubmit2DB
+      RetentionInDays: 30

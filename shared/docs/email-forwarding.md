@@ -5,6 +5,14 @@
 
 A multi-tenant email forwarding architecture on AWS relies on **Amazon Route 53** as the authoritative DNS entry point, **Amazon SES** for inbound reception and outbound dispatch, **Amazon S3** for payload buffering, **AWS Lambda (Node.js)** for header transformation, and **Amazon DynamoDB** for tenant routing rules.
 
+## Current Deployment
+
+The shared platform infrastructure is managed from the monorepo. Use [`aws/infrastructure/email-forwarding/template.yaml`](../../aws/infrastructure/email-forwarding/template.yaml) for the CloudFormation definition and [`aws/services/email-forwarder/src/index.mjs`](../../aws/services/email-forwarder/src/index.mjs) for the Lambda source. Build and package with SAM, then deploy through a reviewed CloudFormation change set.
+
+The shared identity, platform DNS records, S3 bucket, DynamoDB table, Lambda, execution role, log group, receipt rule set, and Lambda invoke permission are already adopted by the `pixelated-email-forwarding` stack. The existing SES receipt rule remains account-managed because AWS does not support importing `AWS::SES::ReceiptRule`.
+
+The manual shared-infrastructure steps below are retained as historical reference only. Do not recreate these resources through the AWS console.
+
 ---
 
 ## Architectural Workflow
@@ -18,7 +26,7 @@ A multi-tenant email forwarding architecture on AWS relies on **Amazon Route 53*
 
 ---
 
-## Step 1: Create the DynamoDB Routing Table
+## Historical Step 1: Create the DynamoDB Routing Table
 
 1. Open the **DynamoDB Console** and choose **Create table**.
 2. Set **Table name** to `PixelatedEmailRouting`.
@@ -27,7 +35,7 @@ A multi-tenant email forwarding architecture on AWS relies on **Amazon Route 53*
 
 ---
 
-## Step 2: Create the S3 Inbound Storage Bucket
+## Historical Step 2: Create the S3 Inbound Storage Bucket
 
 1. Open the **S3 Console** and click **Create bucket**.
 2. Enter a unique bucket name (e.g., `pixelated-email-inbound-storage-bucket`).
@@ -62,7 +70,7 @@ A multi-tenant email forwarding architecture on AWS relies on **Amazon Route 53*
 
 ---
 
-## Step 3: Create the Node.js Header-Rewriting Lambda
+## Historical Step 3: Create the Node.js Header-Rewriting Lambda
 
 1. Open the **Lambda Console** and select **Create function**.
 2. Name the function `pixelated-ses-email-forwarder` and select runtime **Node.js 24.x**.
@@ -255,7 +263,7 @@ export const handler = async (event) => {
 
 ---
 
-## Step 4: Configure the Global SES Inbound Catch-All Rule
+## Historical Step 4: Configure the Global SES Inbound Catch-All Rule
 
 ### 1. Configure the Global SES Inbound Catch-All Rule
 
@@ -278,7 +286,7 @@ export const handler = async (event) => {
 5. Custom MAIL FROM Domain: 🚫 Skip It
 6. DMARC Policy:  Publish It
 7. Email Certificates (S/MIME): 🚫 Skip It
-8. Create The Inbound MX Record for forwarding.pixelated.tech in Route 53 (Crucial for receiving email):Record name: Enter forwarding (so it applies to forwarding.pixelated.tech).Record type: MX Value: 10 ://amazonaws.com
+8. Create the inbound MX record for `forwarding.pixelated.tech` in Route 53: `10 inbound-smtp.us-east-2.amazonaws.com`.
 9. A Critical Verification Pro-TipBecause you are verifying a subdomain (forwarding.pixelated.tech) inside the root hosted zone (pixelated.tech), ensure you append the word forwarding to the prefix of every record name you create in Route 53. If you leave the record name blank, the records will mistakenly apply to your root domain (pixelated.tech) instead of your platform forwarding domain, keeping the status stuck in pending.Once Route 53 saves these changes, AWS SES will automatically detect the records over the next few minutes, and the status badge will update to a green Verified.While DNS propagates, would you like to:Seed the first DynamoDB routing test row so you are ready to send an email the second it verifies?Review how to handle production sandbox mode limits if this is a brand new AWS account?
 
 

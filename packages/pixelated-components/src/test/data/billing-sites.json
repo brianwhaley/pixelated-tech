@@ -1,0 +1,41 @@
+[
+  {
+    "name": "growth-site",
+    "url": "https://growth.example.com",
+    "monthlyBilling": {
+      "tier": "growth",
+      "email": "growth@example.com",
+      "companyName": "Growth Site",
+      "address": "1 Main St",
+      "additionalInvoiceItems": {
+        "2026-10": {
+          "description": "Enhancement",
+          "amount": 25
+        }
+      }
+    }
+  },
+  {
+    "name": "premium-site",
+    "url": "https://premium.example.com",
+    "monthlyBilling": {
+      "tier": "premium",
+      "priceOverride": 450,
+      "email": "premium@example.com",
+      "companyName": "Premium Site",
+      "address": "2 Main St",
+      "additionalInvoiceItems": {
+        "2026-10": [
+          {
+            "description": "Build payment",
+            "amount": 100
+          },
+          {
+            "description": "Extra work",
+            "amount": 50
+          }
+        ]
+      }
+    }
+  }
+]

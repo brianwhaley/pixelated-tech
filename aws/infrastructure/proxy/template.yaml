@@ -1,0 +1,208 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing proxy API and Lambda service.
+
+Resources:
+  ProxyExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: proxy-role
+      Path: /service-role/
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+
+  ProxyFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: proxy
+      CodeUri: ../../services/proxy/
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt ProxyExecutionRole.Arn
+
+  ProxyApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: proxy
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  ProxyApiResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId: !GetAtt ProxyApi.RootResourceId
+      PathPart: proxy
+      RestApiId: !Ref ProxyApi
+
+  ProxyApiAnyMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      RequestParameters:
+        method.request.querystring.url: true
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        TimeoutInMillis: 29000
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProxyFunction.Arn}/invocations
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Credentials: false
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
+            method.response.header.Access-Control-Expose-Headers: false
+          StatusCode: '200'
+      ResourceId: !Ref ProxyApiResource
+      RestApiId: !Ref ProxyApi
+
+  ProxyApiOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Credentials: "'true'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Expose-Headers: "'*'"
+            StatusCode: '200'
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Credentials: false
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
+            method.response.header.Access-Control-Expose-Headers: false
+          StatusCode: '200'
+      ResourceId: !Ref ProxyApiResource
+      RestApiId: !Ref ProxyApi
+
+  ProxyApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+      - ProxyApiAnyMethod
+      - ProxyApiOptionsMethod
+    Properties:
+      Description: added ANY method
+      RestApiId: !Ref ProxyApi
+
+  ProxyApiStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId: !Ref ProxyApiDeployment
+      Description: Created by AWS Lambda
+      MethodSettings:
+        - HttpMethod: '*'
+          ResourcePath: '/*'
+          MetricsEnabled: true
+          LoggingLevel: INFO
+          ThrottlingBurstLimit: 5000
+          ThrottlingRateLimit: 10000
+      RestApiId: !Ref ProxyApi
+      StageName: prod
+
+  ProxyApiPermissionAny:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ProxyFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/*/proxy
+
+  ProxyApiPermissionGet:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ProxyFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/GET/proxy
+
+  ProxyApiPermissionAnyDuplicate:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ProxyFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/*/proxy
+
+  ProxyApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: proxy.pixelated.tech
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+      SecurityPolicy: TLS_1_2
+
+  ProxyApiBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BasePath: prod
+      DomainName: !Ref ProxyApiDomain
+      RestApiId: !Ref ProxyApi
+      Stage: prod
+
+  ProxyLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/proxy
+      RetentionInDays: 30

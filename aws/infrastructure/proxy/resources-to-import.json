@@ -1,0 +1,111 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "ProxyExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "proxy-role"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "ProxyFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "proxy"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::RestApi",
+    "LogicalResourceId": "ProxyApi",
+    "ResourceIdentifier": {
+      "RestApiId": "0ji26a93f3"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "ProxyApiResource",
+    "ResourceIdentifier": {
+      "RestApiId": "0ji26a93f3",
+      "ResourceId": "5h3s4o"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "ProxyApiAnyMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "0ji26a93f3",
+      "ResourceId": "5h3s4o",
+      "HttpMethod": "ANY"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "ProxyApiOptionsMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "0ji26a93f3",
+      "ResourceId": "5h3s4o",
+      "HttpMethod": "OPTIONS"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Deployment",
+    "LogicalResourceId": "ProxyApiDeployment",
+    "ResourceIdentifier": {
+      "DeploymentId": "p5mfxw",
+      "RestApiId": "0ji26a93f3"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Stage",
+    "LogicalResourceId": "ProxyApiStage",
+    "ResourceIdentifier": {
+      "StageName": "prod",
+      "RestApiId": "0ji26a93f3"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "ProxyApiPermissionAny",
+    "ResourceIdentifier": {
+      "FunctionName": "proxy",
+      "Id": "lambda-8edde93c-459e-4525-b4b8-6864b7f9d5f6"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "ProxyApiPermissionGet",
+    "ResourceIdentifier": {
+      "FunctionName": "proxy",
+      "Id": "4eac9900-df9c-5f00-b568-89311140fbd8"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "ProxyApiPermissionAnyDuplicate",
+    "ResourceIdentifier": {
+      "FunctionName": "proxy",
+      "Id": "2f3dd4d8-7635-532e-92f9-6425e2802faa"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::DomainName",
+    "LogicalResourceId": "ProxyApiDomain",
+    "ResourceIdentifier": {
+      "DomainName": "proxy.pixelated.tech"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::BasePathMapping",
+    "LogicalResourceId": "ProxyApiBasePathMapping",
+    "ResourceIdentifier": {
+      "DomainName": "proxy.pixelated.tech",
+      "BasePath": "prod"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "ProxyLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/proxy"
+    }
+  }
+]

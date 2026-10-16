@@ -1,0 +1,243 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "TechJokesRole",
+    "ResourceIdentifier": {
+      "RoleName": "tech-jokes-role"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesScheduleTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-schedule"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesTagsTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-tags"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesTokensTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-tokens"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesLogsTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-logs"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "NerdjokesFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "nerdjokes"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "NerdjokesSkillFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "nerdjokes-skill"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Alias",
+    "LogicalResourceId": "NerdjokesDevAlias",
+    "ResourceIdentifier": {
+      "AliasArn": "arn:aws:lambda:us-east-2:971579260814:function:nerdjokes:DEV"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Alias",
+    "LogicalResourceId": "NerdjokesProdAlias",
+    "ResourceIdentifier": {
+      "AliasArn": "arn:aws:lambda:us-east-2:971579260814:function:nerdjokes:PROD"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Alias",
+    "LogicalResourceId": "NerdjokesSkillDevAlias",
+    "ResourceIdentifier": {
+      "AliasArn": "arn:aws:lambda:us-east-2:971579260814:function:nerdjokes-skill:DEV"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Alias",
+    "LogicalResourceId": "NerdjokesSkillProdAlias",
+    "ResourceIdentifier": {
+      "AliasArn": "arn:aws:lambda:us-east-2:971579260814:function:nerdjokes-skill:PROD"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::RestApi",
+    "LogicalResourceId": "NerdjokesApi",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "NerdjokesApiResource",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "ResourceId": "mdm482"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "NerdjokesApiAnyMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "ResourceId": "mdm482",
+      "HttpMethod": "ANY"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "NerdjokesApiGetMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "ResourceId": "mdm482",
+      "HttpMethod": "GET"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "NerdjokesApiPostMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "ResourceId": "mdm482",
+      "HttpMethod": "POST"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Deployment",
+    "LogicalResourceId": "NerdjokesApiDevDeployment",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "DeploymentId": "dkxfea"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Stage",
+    "LogicalResourceId": "NerdjokesApiDevStage",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "StageName": "dev"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Deployment",
+    "LogicalResourceId": "NerdjokesApiProdDeployment",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "DeploymentId": "gseoj8"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Stage",
+    "LogicalResourceId": "NerdjokesApiProdStage",
+    "ResourceIdentifier": {
+      "RestApiId": "vvqyc1xpw6",
+      "StageName": "prod"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::DomainName",
+    "LogicalResourceId": "NerdjokesApiDomain",
+    "ResourceIdentifier": {
+      "DomainName": "nerdjokes.pixelated.tech"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::BasePathMapping",
+    "LogicalResourceId": "NerdjokesApiDevBasePathMapping",
+    "ResourceIdentifier": {
+      "DomainName": "nerdjokes.pixelated.tech",
+      "BasePath": "dev"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::BasePathMapping",
+    "LogicalResourceId": "NerdjokesApiProdBasePathMapping",
+    "ResourceIdentifier": {
+      "DomainName": "nerdjokes.pixelated.tech",
+      "BasePath": "prod"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "NerdjokesApiPermission",
+    "ResourceIdentifier": {
+      "FunctionName": "nerdjokes",
+      "Id": "lambda-91d48202-5993-4afd-ad96-c0b4e32376d4"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "NerdjokesSkillPermission",
+    "ResourceIdentifier": {
+      "FunctionName": "nerdjokes-skill",
+      "Id": "lambda-981a2571-f63a-47d2-956e-08b5cf9b06f9"
+    }
+  },
+  {
+    "ResourceType": "AWS::Events::Rule",
+    "LogicalResourceId": "NerdjokesHourlyRule",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:events:us-east-2:971579260814:rule/nerdjokes-hourly"
+    }
+  },
+  {
+    "ResourceType": "AWS::Events::Rule",
+    "LogicalResourceId": "NerdjokesDevHourlyRule",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:events:us-east-2:971579260814:rule/nerdJokes-Dev-Hourly"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "NerdjokesHourlyPermission",
+    "ResourceIdentifier": {
+      "FunctionName": "arn:aws:lambda:us-east-2:971579260814:function:nerdjokes:PROD",
+      "Id": "AWSEvents_nerdjokes-hourly_Id5758349330411"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "NerdjokesDevHourlyPermission",
+    "ResourceIdentifier": {
+      "FunctionName": "arn:aws:lambda:us-east-2:971579260814:function:nerdjokes:DEV",
+      "Id": "AWSEvents_nerdJokes-Dev-Hourly_Id3075386668690"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/nerdjokes"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesSkillLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/nerdjokes-skill"
+    }
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "FacialRecognitionExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "pixelated-facial-recognition-role-508d9e73"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "FacialRecognitionFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "pixelated-facial-recognition"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "FacialRecognitionInvokePermission",
+    "ResourceIdentifier": {
+      "FunctionName": "pixelated-facial-recognition",
+      "Id": "lambda-f5323e68-c456-4ed1-90a6-066e467d0f16"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "FacialRecognitionLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/pixelated-facial-recognition"
+    }
+  },
+  {
+    "ResourceType": "AWS::S3::Bucket",
+    "LogicalResourceId": "PixelatedPhotosBucket",
+    "ResourceIdentifier": {
+      "BucketName": "pixelated-photos"
+    }
+  },
+  {
+    "ResourceType": "AWS::S3::Bucket",
+    "LogicalResourceId": "CustomLabelsBucket",
+    "ResourceIdentifier": {
+      "BucketName": "custom-labels-console-us-east-2-93cfc48e5c"
+    }
+  }
+]

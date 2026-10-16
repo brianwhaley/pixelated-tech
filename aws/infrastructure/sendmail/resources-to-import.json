@@ -1,0 +1,116 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "SendmailExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "sendmail_execution_role"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "FormSubmissionTable",
+    "ResourceIdentifier": {
+      "TableName": "PixelatedFormSubmissionsTable"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "SendmailFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "sendmail"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "FormSubmit2DBFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "formSubmit2DB"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::RestApi",
+    "LogicalResourceId": "SendmailApi",
+    "ResourceIdentifier": {
+      "RestApiId": "nlbqdrixmj"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "SendmailApiResource",
+    "ResourceIdentifier": {
+      "RestApiId": "nlbqdrixmj",
+      "ResourceId": "cxjqjg"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "SendmailApiMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "nlbqdrixmj",
+      "ResourceId": "cxjqjg",
+      "HttpMethod": "ANY"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "SendmailApiOptionsMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "nlbqdrixmj",
+      "ResourceId": "cxjqjg",
+      "HttpMethod": "OPTIONS"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Deployment",
+    "LogicalResourceId": "SendmailApiDeployment",
+    "ResourceIdentifier": {
+      "RestApiId": "nlbqdrixmj",
+      "DeploymentId": "1z6n5b"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Stage",
+    "LogicalResourceId": "SendmailApiStage",
+    "ResourceIdentifier": {
+      "RestApiId": "nlbqdrixmj",
+      "StageName": "default"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "SendmailApiPermission",
+    "ResourceIdentifier": {
+      "FunctionName": "sendmail",
+      "Id": "lambda-ae932ed7-2a59-42aa-9e27-2ebd561ccce3"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::DomainName",
+    "LogicalResourceId": "SendmailApiDomain",
+    "ResourceIdentifier": {
+      "DomainName": "sendmail.pixelated.tech"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::BasePathMapping",
+    "LogicalResourceId": "SendmailApiBasePathMapping",
+    "ResourceIdentifier": {
+      "DomainName": "sendmail.pixelated.tech",
+      "BasePath": "default"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "SendmailLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/sendmail"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "FormSubmit2DBLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/formSubmit2DB"
+    }
+  }
+]

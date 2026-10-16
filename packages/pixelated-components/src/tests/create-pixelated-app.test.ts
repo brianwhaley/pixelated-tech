@@ -83,6 +83,14 @@ describe('create-pixelated-app template mapping', () => {
   });
 
   describe('findTemplateForSlug - Direct Matches', () => {
+    it.each(['projects', 'portfolio', 'case-studies', 'our-work'])('maps %s to Projects, not Gallery', (slug) => {
+      expect(findTemplateForSlug(manifest, slug)?.name).toBe('Projects');
+    });
+
+    it.each(['gallery', 'photo-gallery', 'image-gallery', 'photos'])('maps %s to Gallery, not Projects', (slug) => {
+      expect(findTemplateForSlug(manifest, slug)?.name).toBe('Gallery');
+    });
+
     it('finds the Services template by alias', async () => {
       const tmpl = findTemplateForSlug(manifest, 'services');
       expect(tmpl).toBeTruthy();

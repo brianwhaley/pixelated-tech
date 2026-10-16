@@ -28,12 +28,12 @@ describe('MonthlyBillingDashboard Component', () => {
 		// Mock default billing config fetch
 		vi.mocked(loadBillingConfigData).mockResolvedValue({
 			sites: [
-				{ name: 'billable1', url: 'https://b1.com', monthlyBilling: { tier: 'standard', email: 'b1@test.com', companyName: 'Billable One', address: '123 Test Ln' } },
+				{ name: 'billable1', url: 'https://b1.com', monthlyBilling: { tier: 'growth', email: 'b1@test.com', companyName: 'Billable One', address: '123 Test Ln' } },
 				{ name: 'billable2', url: 'https://b2.com', monthlyBilling: { tier: 'premium', email: 'b2@test.com', priceOverride: 500, companyName: 'Billable Two', address: '456 Test Ave' } },
 				{ name: 'non-billable', url: 'https://nobill.com' }
 			],
 			subscriptions: {
-				standard: { price: 200, services: [] },
+				growth: { price: 200, services: [] },
 				premium: { price: 400, services: [] }
 			},
 			paymentInfo: { method: 'Cash', details: '', terms: '' },
@@ -57,6 +57,21 @@ describe('MonthlyBillingDashboard Component', () => {
 		expect(screen.getByText('billable1 (https://b1.com)')).toBeInTheDocument();
 		expect(screen.getByText('billable2 (https://b2.com)')).toBeInTheDocument();
 		expect(screen.queryByText('non-billable (https://nobill.com)')).not.toBeInTheDocument();
+	});
+
+	it('displays the selected-month billing summary and updates selected totals', async () => {
+		render(<MonthlyBillingDashboard />);
+		await waitFor(() => expect(screen.queryByText('Loading billing metadata details...')).not.toBeInTheDocument());
+
+		expect(screen.getByText('Billable sites')).toBeInTheDocument();
+		expect(screen.getByText('Selected sites')).toBeInTheDocument();
+		expect(screen.getAllByText('$700.00')).toHaveLength(2);
+
+		const siteCheckboxes = screen.getAllByRole('checkbox');
+		fireEvent.click(siteCheckboxes[1]);
+
+		expect(screen.getAllByText('$500.00')).toHaveLength(2);
+		expect(screen.getByText(/All billable sites total: \$700\.00/)).toBeInTheDocument();
 	});
 
 	it('toggles selection of all sites', async () => {

@@ -1,124 +1,79 @@
-"use client";
+import React from 'react';
+import { getContentfulEntriesByType, getContentfulImagesFromEntries, ProjectsClient, PageTitleHeader } from '@pixelated-tech/components';
+import type { ProjectTilesType } from '@pixelated-tech/components';
+import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
+import sampleProjects from './projects.json';
 
-import { PageTitleHeader, PageSection, PageSectionHeader } from "@pixelated-tech/components";
-import { Tiles } from "@pixelated-tech/components";
-import { usePixelatedConfig } from "@pixelated-tech/components";
+export default async function ProjectsPage() {
+	const config = getFullPixelatedConfig();
+	const siteName = config?.siteInfo?.name || '__SITE_NAME__';
+	const contentful = config?.integrations?.contentful;
+	let projects: ProjectTilesType[] = sampleProjects;
+	let usingSampleContent = true;
 
-export default function AboutPage() {
-	const config = usePixelatedConfig();
-	const siteInfo = config?.siteInfo;
-	const siteName = siteInfo?.name || "__SITE_NAME__";
+	if (!contentful?.base_url || !contentful.space_id || !contentful.environment || !contentful.delivery_access_token || !contentful.projectsContentType) {
+		console.warn('[Projects] Contentful configuration is incomplete. Showing sample projects.');
+	} else {
+		try {
+			const entries = await getContentfulEntriesByType({
+				apiProps: {
+					base_url: contentful.base_url,
+					space_id: contentful.space_id,
+					environment: contentful.environment,
+					delivery_access_token: contentful.delivery_access_token,
+				},
+				contentType: contentful.projectsContentType,
+			});
+			if (!Array.isArray(entries?.items)) throw new Error('Invalid Contentful entries response.');
+			const fetchedProjects: ProjectTilesType[] = [];
+			let nextImageIndex = 0;
+			for (const entry of entries.items) {
+				if (entry.sys?.contentType?.sys?.id !== contentful.projectsContentType) continue;
+				if (typeof entry.fields?.title !== 'string' || typeof entry.fields?.description !== 'string') {
+					throw new Error('Project entries must include text title and description fields.');
+				}
+				const images = await getContentfulImagesFromEntries({
+					images: entry.fields.images ?? [],
+					assets: entries.includes?.Asset ?? [],
+				});
+				if (images.length === 0) {
+					console.warn('[Projects] A Contentful project has no resolved images. Skipping this project.');
+					continue;
+				}
+				fetchedProjects.push({
+					title: entry.fields.title,
+					description: entry.fields.description,
+					tileCards: images.map((image, index) => ({
+						index: nextImageIndex++,
+						cardIndex: index,
+						cardLength: images.length,
+						image: image.image,
+						imageAlt: image.imageAlt ?? entry.fields.title,
+					})),
+				});
+			}
+			if (fetchedProjects.length > 0) {
+				fetchedProjects.sort((a, b) => {
+					const aIsNum = /^\d/.test(a.title);
+					const bIsNum = /^\d/.test(b.title);
+					if (aIsNum !== bIsNum) return aIsNum ? -1 : 1;
+					return aIsNum ? parseFloat(b.title) - parseFloat(a.title) : b.title.localeCompare(a.title);
+				});
+				projects = fetchedProjects;
+				usingSampleContent = false;
+			} else {
+				console.warn('[Projects] Contentful returned no projects. Showing sample projects.');
+			}
+		} catch (error) {
+			console.error('[Projects] Unable to load Contentful projects. Showing sample projects.', error);
+		}
+	}
 
-	const project1 = [
-		{
-			index: 0, cardIndex: 0, cardLength: 9,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 1",
-		},
-		{
-			index: 1, cardIndex: 1, cardLength: 9,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 2",
-		},
-		{
-			index: 2, cardIndex: 2, cardLength: 9,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 3",
-		}, 
-		{
-			index: 3, cardIndex: 3, cardLength: 9,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 4",
-		},
-		{
-			index: 4, cardIndex: 4, cardLength: 9,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 5",
-		},
-		{
-			index: 5, cardIndex: 5, cardLength: 9,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 6",
-		}];
-
-	const project2 = [
-		{
-			index: 0, cardIndex: 0, cardLength: 3,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 7",
-		},
-		{
-			index: 1, cardIndex: 1, cardLength: 3,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 8",
-		},
-		{
-			index: 2, cardIndex: 2, cardLength: 3,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 9",
-		}];
-
-	const project3 = [
-		{
-			index: 0, cardIndex: 0, cardLength: 6,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 10",
-		},
-		{
-			index: 1, cardIndex: 1, cardLength: 6,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 11",
-		},
-		{
-			index: 2, cardIndex: 2, cardLength: 6,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 12",
-		},
-		{
-			index: 3, cardIndex: 3, cardLength: 6,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 13",
-		},
-		{
-			index: 4, cardIndex: 4, cardLength: 6,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 14",
-		},
-		{
-			index: 5, cardIndex: 5, cardLength: 6,
-			image: "https://www.pixelated.tech/images/icons/placeholder.png",
-			imageAlt: "Project Photo 15",
-		}];
-
-    
 	return (
 		<>
-
 			<PageTitleHeader title={`${siteName} Projects`} />
-
-			<PageSection columns={1} maxWidth="1024px" padding="20px" id="colors-section">
-				<PageSectionHeader title="Our Projects" />
-
-				<h3>Project 1</h3>
-				<p>Project 1 was a really great project. Lots of people worked on it,
-					and it turned out to be a beautiful.  It was the most beautiful
-					project anyone had ever seen.</p>
-				<Tiles cards={project1} rowCount={3}/>
-
-				<h3>Project 2</h3>
-				<p>Project 2 was even better than project 1.  It had all the same
-					features as project 1, but it was bigger and better in every way.
-					Everyone who saw it said it was the best project they had ever seen.</p>
-				<Tiles cards={project2} rowCount={3}/>
-
-				<h3>Project 3</h3>
-				<p>If you thought Project 2 was good, wait until you see Project 3.
-					Project 3 took everything that was great about Project 2 and made
-					it even better.  It was the pinnacle of all projects, and everyone
-					who saw it was blown away by its beauty and grandeur.</p>
-				<Tiles cards={project3} rowCount={3}/>
-			</PageSection>
-
+			{usingSampleContent && <p role="status">Sample projects are shown because live content is unavailable.</p>}
+			<ProjectsClient projects={projects} modalOnClick={true} showOverlay={true} />
 		</>
 	);
 }

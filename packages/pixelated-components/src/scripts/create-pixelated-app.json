@@ -28,6 +28,11 @@
 			"associated_files": ["src/app/(pages)/faqs/faqs.json"]
 		},
 		{
+			"name": "Gallery",
+			"aliases": ["gallery", "photo-gallery", "image-gallery", "photos"],
+			"src": "../../pixelated-template/src/app/(pages)/gallery"
+		},
+		{
 			"name": "Global Error",
 			"aliases": ["global-error", "globalerror", "error-boundary"],
 			"action": "ignore"
@@ -64,7 +69,7 @@
 		},
 		{
 			"name": "Projects",
-			"aliases": ["gallery", "project", "projects", "portfolio", "work", "our-work", 
+			"aliases": ["project", "projects", "portfolio", "work", "our-work",
 				"our-projects", "our-project", "case-studies", "examples", "showcase", "samples"],
 			"src": "../../pixelated-template/src/app/(pages)/projects"
 		},

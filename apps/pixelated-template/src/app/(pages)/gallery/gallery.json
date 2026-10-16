@@ -1,0 +1,5 @@
+[
+	{ "index": 0, "cardIndex": 0, "cardLength": 3, "image": "/images/pix-bg-512.jpg", "imageAlt": "Sample gallery image 1" },
+	{ "index": 1, "cardIndex": 1, "cardLength": 3, "image": "/images/pix-bg-512.jpg", "imageAlt": "Sample gallery image 2" },
+	{ "index": 2, "cardIndex": 2, "cardLength": 3, "image": "/images/pix-bg-512.jpg", "imageAlt": "Sample gallery image 3" }
+]

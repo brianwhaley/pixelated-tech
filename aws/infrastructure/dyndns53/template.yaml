@@ -1,0 +1,206 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing dyndns53 Route 53 update service.
+
+Parameters:
+  DyndnsUsername:
+    Type: String
+    NoEcho: true
+  DyndnsPassword:
+    Type: String
+    NoEcho: true
+
+Resources:
+  DyndnsExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: dyndns53_execution_role
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AmazonRoute53FullAccess
+
+  DyndnsFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: dyndns53_lambda
+      CodeUri: ../../services/dyndns53/src/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt DyndnsExecutionRole.Arn
+      Environment:
+        Variables:
+          DYNDNS_USERNAME: !Ref DyndnsUsername
+          DYNDNS_PASSWORD: !Ref DyndnsPassword
+
+  DyndnsApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: dyndns53
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  DyndnsNicResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId: !GetAtt DyndnsApi.RootResourceId
+      PathPart: nic
+      RestApiId: !Ref DyndnsApi
+
+  DyndnsUpdateResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId: !Ref DyndnsNicResource
+      PathPart: update
+      RestApiId: !Ref DyndnsApi
+
+  DyndnsGetMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.header.Authorization: false
+        method.request.querystring.hostname: false
+        method.request.querystring.myip: false
+        method.request.querystring.offline: false
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DyndnsFunction.Arn}/invocations
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        ContentHandling: CONVERT_TO_TEXT
+        TimeoutInMillis: 29000
+        RequestTemplates:
+          application/json: |-
+            #set($allParams = $input.params())
+            {
+            "body-json" : $input.json('$'),
+            #foreach($type in $allParams.keySet())
+                #set($params = $allParams.get($type))
+            "$type" : {
+                #foreach($paramName in $params.keySet())
+                "$paramName" : "$util.escapeJavaScript($params.get($paramName))"
+                    #if($foreach.hasNext),#end
+                #end
+            },
+            #end
+            "context" : {
+                "http-method" : "$context.httpMethod",
+                "stage" : "$context.stage",
+                "source-ip" : "$context.identity.sourceIp",
+                "request-id" : "$context.requestId",
+                "resource-id" : "$context.resourceId",
+                "resource-path" : "$context.resourcePath"
+                }
+            }
+        IntegrationResponses:
+          - StatusCode: '200'
+            ResponseTemplates:
+              application/json: "$input.path('$.response')"
+          - StatusCode: '400'
+            SelectionPattern: '.*"status"\s*:\s*400.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+          - StatusCode: '401'
+            SelectionPattern: '.*"status"\s*:\s*401.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+          - StatusCode: '403'
+            SelectionPattern: '.*"status"\s*:\s*403.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+          - StatusCode: '404'
+            SelectionPattern: '.*"status"\s*:\s*404.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: 400
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: 401
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: 403
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: 404
+          ResponseModels:
+            text/plain: Empty
+      ResourceId: !Ref DyndnsUpdateResource
+      RestApiId: !Ref DyndnsApi
+
+  DyndnsDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+      - DyndnsGetMethod
+    Properties:
+      RestApiId: !Ref DyndnsApi
+
+  DyndnsStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId: !Ref DyndnsDeployment
+      RestApiId: !Ref DyndnsApi
+      StageName: v1
+      MethodSettings:
+        - ResourcePath: '/*'
+          HttpMethod: '*'
+          MetricsEnabled: true
+          LoggingLevel: INFO
+          DataTraceEnabled: false
+          ThrottlingBurstLimit: 5000
+          ThrottlingRateLimit: 10000
+          CachingEnabled: false
+          CacheTtlInSeconds: 300
+          CacheDataEncrypted: false
+
+  DyndnsApiPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref DyndnsFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${DyndnsApi}/*/GET/nic/update
+
+  DyndnsLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/dyndns53_lambda
+      RetentionInDays: 30

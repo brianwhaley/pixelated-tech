@@ -10,7 +10,9 @@ import {
 	BlogPostBilling,
 	SocialReferrerBilling,
 	FormCompletion,
-	GeneratedInvoiceResult
+	GeneratedInvoiceResult,
+	BillingSummary,
+	Subscriptions
 } from './billing.types';
 import { getOriginFromHeaders } from '../../foundation/sitemap';
 
@@ -39,14 +41,87 @@ export function loadBillingData(configPath?: string): SitesJsonData {
 	}
 }
 
+function roundCurrency(amount: number): number {
+	return Math.round(amount * 100) / 100;
+}
+
+export function getMonthlyBillingPrice(site: SiteConfig, subscriptions: Subscriptions): number {
+	if (!site.monthlyBilling) {
+		throw new Error(`Site ${site.name} is not a billable account.`);
+	}
+
+	const { priceOverride, price, tier } = site.monthlyBilling;
+	if (priceOverride !== undefined && priceOverride !== null) return priceOverride;
+	if (price !== undefined && price !== null) return price;
+
+	const subscription = subscriptions[tier];
+	return subscription?.price || 0;
+}
+
+export function isMonthlyBillingActive(site: SiteConfig, billingMonth: string): boolean {
+	if (!site.monthlyBilling) return false;
+
+	const { billingStartMonth, billingEndMonth } = site.monthlyBilling;
+	return (!billingStartMonth || billingMonth >= billingStartMonth)
+		&& (!billingEndMonth || billingMonth <= billingEndMonth);
+}
+
+export function getAdditionalInvoiceItems(site: SiteConfig, billingMonth: string): InvoiceItem[] {
+	const rawAdditionalItems = site.monthlyBilling?.additionalInvoiceItems?.[billingMonth];
+	const additionalInvoiceItems = rawAdditionalItems
+		? (Array.isArray(rawAdditionalItems) ? rawAdditionalItems : [rawAdditionalItems])
+		: [];
+
+	return additionalInvoiceItems.map((item) => ({
+		description: item.description,
+		amount: item.amount
+	}));
+}
+
+export function getBillingSummary(
+	sites: SiteConfig[],
+	selectedSiteNames: Set<string>,
+	subscriptions: Subscriptions,
+	billingMonth: string
+): BillingSummary {
+	const billableSites = sites.filter((site) => !!site.monthlyBilling);
+	const allSitesRecurringTotal = billableSites.reduce(
+		(total, site) => total + getMonthlyBillingPrice(site, subscriptions),
+		0
+	);
+	const selectedSites = billableSites.filter((site) => selectedSiteNames.has(site.name));
+	const selectedSitesRecurringTotal = selectedSites.reduce(
+		(total, site) => total + getMonthlyBillingPrice(site, subscriptions),
+		0
+	);
+	const getAdditionalTotal = (billingSites: SiteConfig[]) => billingSites.reduce(
+		(total, site) => total + getAdditionalInvoiceItems(site, billingMonth)
+			.reduce((itemTotal, item) => itemTotal + item.amount, 0),
+		0
+	);
+	const allSitesAdditionalTotal = getAdditionalTotal(billableSites);
+	const selectedSitesAdditionalTotal = getAdditionalTotal(selectedSites);
+
+	return {
+		billableSiteCount: billableSites.length,
+		selectedSiteCount: selectedSites.length,
+		allSitesRecurringTotal: roundCurrency(allSitesRecurringTotal),
+		selectedSitesRecurringTotal: roundCurrency(selectedSitesRecurringTotal),
+		allSitesAdditionalTotal: roundCurrency(allSitesAdditionalTotal),
+		selectedSitesAdditionalTotal: roundCurrency(selectedSitesAdditionalTotal),
+		allSitesTotal: roundCurrency(allSitesRecurringTotal + allSitesAdditionalTotal),
+		selectedSitesTotal: roundCurrency(selectedSitesRecurringTotal + selectedSitesAdditionalTotal)
+	};
+}
+
 /**
  * Compiles comprehensive metrics and totals into structured invoice data
  */
 export function compileInvoiceData(
 	site: SiteConfig,
 	billingMonth: string, // YYYY-MM
-	subscriptions: any,
-	paymentInfo: any,
+	subscriptions: Subscriptions,
+	paymentInfo: PaymentInfo,
 	posts: BlogPostBilling[] = [],
 	socialReferrers: SocialReferrerBilling[] = [],
 	formCompletions: FormCompletion[] = [],
@@ -54,6 +129,9 @@ export function compileInvoiceData(
 ): InvoiceData {
 	if (!site.monthlyBilling) {
 		throw new Error(`Site ${site.name} is not a billable account.`);
+	}
+	if (!isMonthlyBillingActive(site, billingMonth)) {
+		throw new Error(`Site ${site.name} is not billable for ${billingMonth}.`);
 	}
 
 	const [year, month] = billingMonth.split('-');
@@ -66,31 +144,11 @@ export function compileInvoiceData(
 
 	const invoiceNumber = `INV-${year}${month}-${site.name.toUpperCase()}`;
 	const tierName = site.monthlyBilling.tier;
-	
-	// Normalize some legacy names (e.g. premier -> premium, standard -> growth)
-	let normalizedTier = tierName.toLowerCase();
-	if (normalizedTier === 'premier') normalizedTier = 'premium';
-	if (normalizedTier === 'standard') normalizedTier = 'growth';
-
-	const subTier = subscriptions[normalizedTier] || subscriptions[tierName] || { price: 0, services: [] };
-	
-	const basePrice = site.monthlyBilling.priceOverride !== undefined && site.monthlyBilling.priceOverride !== null
-		? site.monthlyBilling.priceOverride
-		: (site.monthlyBilling.price !== undefined && site.monthlyBilling.price !== null
-			? site.monthlyBilling.price
-			: subTier.price);
+	const subTier = subscriptions[tierName] || { price: 0, services: [] };
+	const basePrice = getMonthlyBillingPrice(site, subscriptions);
 
 	const servicesList = Array.isArray(subTier.services) ? subTier.services : [];
-
-	const rawAdditionalItems = site.monthlyBilling.additionalInvoiceItems?.[billingMonth];
-	const additionalInvoiceItems = rawAdditionalItems
-		? (Array.isArray(rawAdditionalItems) ? rawAdditionalItems : [rawAdditionalItems])
-		: [];
-
-	const additionalItems: InvoiceItem[] = additionalInvoiceItems.map((item) => ({
-		description: item.description,
-		amount: item.amount
-	}));
+	const additionalItems = getAdditionalInvoiceItems(site, billingMonth);
 
 	const subscriptionItem: InvoiceItem = {
 		description: `Monthly Subscription Service: ${tierName.toUpperCase()} Plan` + 
@@ -107,7 +165,7 @@ export function compileInvoiceData(
 		subscriptionItem
 	];
 
-	const totalOwed = Math.round(items.reduce((acc, item) => acc + item.amount, 0) * 100) / 100;
+	const totalOwed = roundCurrency(items.reduce((acc, item) => acc + item.amount, 0));
 	const ga4PropertyId = typeof site.ga4PropertyId === 'string' && site.ga4PropertyId.trim() && site.ga4PropertyId !== 'GA4_PROPERTY_ID_HERE'
 		? site.ga4PropertyId.trim()
 		: undefined;
