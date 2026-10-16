@@ -1,0 +1,16 @@
+[
+  {
+    "ResourceType": "AWS::S3::Bucket",
+    "LogicalResourceId": "SamCliSourceBucket",
+    "ResourceIdentifier": {
+      "BucketName": "pixelated-sam-source-bucket"
+    }
+  },
+  {
+    "ResourceType": "AWS::S3::BucketPolicy",
+    "LogicalResourceId": "SamCliSourceBucketBucketPolicy",
+    "ResourceIdentifier": {
+      "Bucket": "pixelated-sam-source-bucket"
+    }
+  }
+]

@@ -136,7 +136,9 @@ The canonical runtime configuration is `pixelated.config.json` and its establish
 
 ## Evidence-Based Answers
 
-- Before answering any question, verify the answer against the most relevant available evidence. For repository questions, inspect the relevant source, configuration, tests, and command output first; for external questions, use authoritative documentation or current research.
+- For repository-specific questions, inspect the relevant source, configuration, tests, and command output read-only before answering. Do not edit files or implement a recommendation unless the user explicitly requests implementation.
+- Answer first using verified evidence; a question is not permission to make code changes.
+- For external questions, use authoritative documentation or current research before answering.
 - State the verified conclusion directly before discussing alternatives or uncertainty.
 - Do not answer with abstract possibilities about what might be happening when the repository can establish the fact.
 - Distinguish verified facts, hypotheses, and unresolved questions explicitly.

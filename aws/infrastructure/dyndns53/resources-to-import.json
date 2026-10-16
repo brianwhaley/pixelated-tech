@@ -1,0 +1,79 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "DyndnsExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "dyndns53_execution_role"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "DyndnsFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "dyndns53_lambda"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::RestApi",
+    "LogicalResourceId": "DyndnsApi",
+    "ResourceIdentifier": {
+      "RestApiId": "z95605yah6"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "DyndnsNicResource",
+    "ResourceIdentifier": {
+      "RestApiId": "z95605yah6",
+      "ResourceId": "4y7hne"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "DyndnsUpdateResource",
+    "ResourceIdentifier": {
+      "RestApiId": "z95605yah6",
+      "ResourceId": "fx3uo0"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "DyndnsGetMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "z95605yah6",
+      "ResourceId": "fx3uo0",
+      "HttpMethod": "GET"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Deployment",
+    "LogicalResourceId": "DyndnsDeployment",
+    "ResourceIdentifier": {
+      "RestApiId": "z95605yah6",
+      "DeploymentId": "l6lrl8"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Stage",
+    "LogicalResourceId": "DyndnsStage",
+    "ResourceIdentifier": {
+      "RestApiId": "z95605yah6",
+      "StageName": "v1"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "DyndnsApiPermission",
+    "ResourceIdentifier": {
+      "FunctionName": "dyndns53_lambda",
+      "Id": "51d7c338-f1ec-4827-a801-6e336acd2362"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "DyndnsLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/dyndns53_lambda"
+    }
+  }
+]

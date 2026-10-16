@@ -2,6 +2,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Projects configuration
+
+The Projects page reads `integrations.contentful.projectsContentType` from
+`src/app/config/pixelated.config.json`. Its value preserves this site's existing
+Contentful project content-type ID. Missing or blank values produce an explicit
+configuration error. After editing the configuration, run `npm run config:encrypt`
+to synchronize the encrypted configuration before deployment.
+
 First, run the development server:
 
 ```bash

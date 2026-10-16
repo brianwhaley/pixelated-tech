@@ -79,6 +79,7 @@ import mockGoogleAnalyticsData from './data/mock-google-analytics-data.json';
 import mockAxeCoreResponse from './data/mock-axe-core-response.json';
 import mockCloudwatchData from './data/mock-cloudwatch-data.json';
 import formDefinition from './data/form-definition.json';
+import billingSites from './data/billing-sites.json';
 import checkoutPersonalInfo from '../components/shoppingcart/checkout.personal.info.json';
 import checkoutDiscountInfo from '../components/shoppingcart/checkout.discount.info.json';
 import uspsGenericShippingInfo from '../components/shoppingcart/usps.generic.shipping.info.json';
@@ -101,6 +102,7 @@ export const mockEbayApiProps = pixelatedConfig.integrations?.ebay as any;
 
 // --- TEST FIXTURES ---
 export {
+	billingSites,
 	faqTestData,
 	recipes,
 	resume,

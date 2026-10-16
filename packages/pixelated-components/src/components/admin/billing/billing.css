@@ -62,6 +62,53 @@
 	width: 100px;
 }
 
+.billing-summary-panel {
+	background-color: #f8fafc;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
+	padding: 16px;
+	margin-bottom: 24px;
+}
+
+.billing-summary-panel h4 {
+	margin: 0 0 16px 0;
+	font-size: 16px;
+	color: #0f172a;
+}
+
+.billing-summary-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 12px;
+}
+
+.billing-summary-metric {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.billing-summary-label {
+	font-size: 12px;
+	color: #64748b;
+}
+
+.billing-summary-value {
+	font-size: 18px;
+	color: #0f172a;
+}
+
+.billing-summary-total {
+	padding-left: 12px;
+	border-left: 3px solid #0070f3;
+}
+
+.billing-summary-note {
+	margin: 16px 0 0;
+	font-size: 13px;
+	color: #475569;
+}
+
 .billing-error-msg {
 	color: #ef4444;
 	font-weight: bold;

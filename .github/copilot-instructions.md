@@ -1,8 +1,15 @@
 ## AI Agent Communication Guidelines
 
 ### When to Answer vs. When to Code
-**Answer questions directly** - Do not write code unless specifically asked to implement something. Users ask questions to get information, not code implementations.
-"If a message contains a question, the agent MUST provide a text-only answer and wait for user confirmation before calling any editing tools or terminal commands."
+**Answer questions directly, after verifying repository-specific claims** - Do not write code unless specifically asked to implement something. Users ask questions to get information, not code implementations.
+
+For questions about this repository, its applications, pages, components, configuration, or existing behavior:
+- Inspect the relevant source code and supporting tests/configuration before answering. This inspection is read-only and is required for an evidence-based answer.
+- Do not provide generic recommendations when the repository can establish the current behavior.
+- Cite the relevant files and distinguish verified facts from recommendations, hypotheses, and unresolved questions.
+- A question does not grant permission to edit files, run mutating commands, or implement a recommendation.
+
+For general conceptual questions that do not depend on repository state, answer directly without repository inspection.
 
 **Common Question Patterns:**
 - "How does X work?" → Explain the concept, don't rewrite the code
@@ -32,10 +39,11 @@
 - Copilot Agents are not to use Python or automation scripts to make code changes; perform edits manually using the editor and file tools.  
 
 ### Question-Answering Priority
-1. **Direct Answers First** - Provide the requested information immediately
-2. **Contextual Examples** - Reference existing code when relevant
-3. **Actionable Next Steps** - Suggest what to do, but don't do it unless instructed
-4. **Code Only When Asked** - Wait for explicit implementation requests
+1. **Evidence First for Repository Questions** - Inspect the relevant repository files read-only before answering
+2. **Direct Answers** - State the verified conclusion clearly
+3. **Contextual Evidence** - Cite the relevant files, tests, configuration, or documentation
+4. **Actionable Next Steps** - Suggest what to do, but do not do it unless instructed
+5. **Code Only When Asked** - Wait for an explicit implementation request before editing
 
 ### Deployment and Release Boundaries
 - Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly asks for that deployment or release action.

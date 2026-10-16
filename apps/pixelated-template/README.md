@@ -94,6 +94,41 @@ For detailed instructions on adapting this template to your project, see [FEATUR
 3. **Replace Content**: Update page components in `src/app/(pages)/` with your content
 4. **Add Assets**: Place images and other assets in the `public/` directory
 
+## Projects and Gallery offerings
+
+The site creator offers these as independent pages. Select `projects`, `gallery`,
+or both. `portfolio`, `work`, and `case-studies` remain Projects aliases;
+`photo-gallery`, `image-gallery`, and `photos` select Gallery. Existing client
+pages are not migrated or renamed.
+
+- **Projects** (`/projects`) loads Contentful entries and renders each project's
+  title, description, and image set using `ProjectsClient`. Configure
+  `integrations.contentful` in `src/app/config/pixelated.config.json` with
+  `base_url`, `space_id`, `environment`, `delivery_access_token`, and
+  `projectsContentType`. The content type must have text `title` and
+  `description` fields and an `images` field containing asset references.
+  Numeric-leading titles sort numerically descending before other titles,
+  which sort alphabetically descending, matching the GEA Projects example.
+  Entries without resolved images are skipped; if none remain, samples are shown.
+  Contentful credentials are read only on the server.
+- **Gallery** (`/gallery`) loads a Flickr album into a flat three-column image
+  grid. Configure `integrations.flickr.urlProps.api_key`, `user_id`,
+  `photoset_id`, and optionally `photoSize`. This page uses
+  `flickr.photosets.getPhotos`, matching the PixelVivid Gallery example,
+  and shows a loading indicator while fetching.
+
+Both pages prioritize live integrations. Missing configuration, fetch failures,
+and empty results activate their co-located sample JSON
+(`projects/projects.json` or `gallery/gallery.json`). Sample content is visibly
+labeled and the reason is logged; it is not presented as live client work.
+The sample images use the template's existing local image asset. Page folders,
+including fallback data, are copied together even when an alias changes the
+route name.
+
+Use the canonical configuration vault workflow (`npm run config:encrypt`) after
+editing configuration; do not add environment-variable credentials. Do not copy
+GEA's content-type ID or PixelVivid's album ID into a new client site.
+
 ## Available Scripts
 
 ```bash

@@ -27,7 +27,7 @@ describe('InvoiceTemplate Component', () => {
 		email: 'test@test.com',
 		siteName: 'Test Site',
 		siteUrl: 'https://test.com',
-		tier: 'standard',
+		tier: 'growth',
 		items: [{ description: 'Test Plan', amount: 150 }],
 		totalOwed: 150,
 		paymentInfo: { method: 'Cash', details: 'Hand over', terms: 'Net 30' },
