@@ -11,7 +11,7 @@ import {
 	listPixelatedFormSubmissionReportRows,
 	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE
 } from '../../integrations/aws.dynamo.integration';
-import { compileAdHocInvoiceData, loadBillingData } from './billing.functions';
+import { compileAdHocInvoiceData, isMonthlyBillingActive, loadBillingData } from './billing.functions';
 import { AdHocInvoiceConfig, GeneratedInvoiceResult, SiteConfig } from './billing.types';
 
 export async function loadBillingConfigData(month?: string, siteName?: string) {
@@ -174,6 +174,16 @@ export async function generateInvoicePdfsForSites(targetSites: string[], billing
 					email: '',
 					pdfPath: '',
 					message: `Site ${siteName} not found or has no billing setup.`,
+				});
+				continue;
+			}
+			if (!isMonthlyBillingActive(site, billingMonth)) {
+				results.push({
+					siteName,
+					success: false,
+					email: site.monthlyBilling.email,
+					pdfPath: '',
+					message: `Site ${siteName} is not billable for ${billingMonth}.`,
 				});
 				continue;
 			}

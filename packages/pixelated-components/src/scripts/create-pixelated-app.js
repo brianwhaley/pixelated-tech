@@ -562,39 +562,45 @@ async function main() {
 					process.exit(1);
 				}
 				const pagesDir = path.join(destPath, 'src', 'app', '(pages)');
+				const templatePagesHome = path.join(templatePath, 'src', 'app', '(pages)', '(home)');
 				const wantedSlugs = new Set(wantedPages.map(p => p.slug));
 
-				// Process wanted pages: rename templates or create custom pages
+				// Copy from the original template so multiple aliases can use the same offering.
 				for (const p of wantedPages) {
 					if (p.isTemplate) {
 						// Get the actual template folder name (e.g., "about")
 						const templateFolderName = path.basename(p.matchedTemplate.src);
-						const oldPath = path.join(pagesDir, templateFolderName);
 						const newPath = path.join(pagesDir, p.slug);
 						
-						// Rename if user requested a different name
+						// Copy to the alias route if the user requested a different name.
 						if (templateFolderName !== p.slug) {
 							try {
-								await fs.rename(oldPath, newPath);
-								console.log(`Renamed ${templateFolderName} → ${p.slug}`);
+								await copyTemplateForPage(templatePath, p.matchedTemplate.src, templatePagesHome, newPath);
+								console.log(`Copied ${templateFolderName} → ${p.slug}`);
 								
 								// Update component name in page.tsx
 								const pageFile = path.join(newPath, 'page.tsx');
 								let content = await fs.readFile(pageFile, 'utf8');
 								const compName = p.displayName.replace(/[^a-zA-Z0-9]+/g, ' ').split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('') + 'Page';
-								content = content.replace(/export default function\s+\w+\s*\(/, `export default function ${compName}(`);
+								content = content.replace(/export default (async\s+)?function\s+\w+\s*\(/, (_match, asyncKeyword = '') => `export default ${asyncKeyword}function ${compName}(`);
 								await fs.writeFile(pageFile, content, 'utf8');
 								console.log(` - Updated component name to ${compName}`);
 								
 								// Update route path in pixelated.config.json
 								const route = pixelatedConfig.routes.find(r => r.path === `/${templateFolderName}`);
 								if (route) {
-									route.path = `/${p.slug}`;
-									route.name = p.displayName.split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-									console.log(` - Updated route path to /${p.slug}`);
+									pixelatedConfig.routes.push({
+										...route,
+										path: `/${p.slug}`,
+										name: p.displayName.split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
+										title: `${rootDisplayName} - ${p.displayName}`,
+									});
+									console.log(` - Added route path /${p.slug}`);
+								} else {
+									throw new Error(`Missing route metadata for ${templateFolderName}`);
 								}
 							} catch (e) {
-								console.error(`❌ Failed to rename ${templateFolderName} to ${p.slug}:`, e?.message || e);
+								console.error(`❌ Failed to copy ${templateFolderName} to ${p.slug}:`, e?.message || e);
 								process.exit(1);
 							}
 						}
@@ -609,7 +615,7 @@ async function main() {
 							const pageFile = path.join(targetDir, 'page.tsx');
 							let content = await fs.readFile(pageFile, 'utf8');
 							const compName = p.displayName.replace(/[^a-zA-Z0-9]+/g, ' ').split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('') + 'Page';
-							content = content.replace(/export default function\s+\w+\s*\(/, `export default function ${compName}(`);
+							content = content.replace(/export default (async\s+)?function\s+\w+\s*\(/, (_match, asyncKeyword = '') => `export default ${asyncKeyword}function ${compName}(`);
 							await fs.writeFile(pageFile, content, 'utf8');
 							console.log(` - Updated component name to ${compName}`);
 							
@@ -759,4 +765,3 @@ if (typeof process !== 'undefined' && new URL(import.meta.url).pathname === proc
 	// CLI entry point: run the interactive main flow
 	main();
 }
-

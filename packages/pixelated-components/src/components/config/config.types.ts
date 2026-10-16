@@ -196,6 +196,8 @@ export interface ContentfulConfig {
 	delivery_access_token?: string;
 	management_access_token?: string;
 	preview_access_token?: string;
+	/** Contentful content type with title, description, and images fields for the Projects page. */
+	projectsContentType?: string;
 	sitemapContentType?: string;
 	sitemapField?: string;
 	sitemapRoutePrefix?: string;

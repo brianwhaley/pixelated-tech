@@ -8,6 +8,7 @@ import React from 'react';
 import { runCommonPageCoverage, runCommonElementCoverage, /* runCommonBlogPageCoverage, */ runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
 import { config as pixelatedConfig, /* createPageComponentMocks, */ /* mockState, */ resetMockState, resetFileDataState, setContentfulEntriesResponse, setContentfulImagesResponse, setFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
+import * as serverComponents from '@pixelated-tech/components/server';
 
 pixelatedConfig.siteInfo.url = 'https://example.com';
 import Header from '@/app/elements/header';
@@ -61,6 +62,7 @@ const appRoot = path.resolve(__dirname, '..', '..');
 
 describe('Pixelated Template site coverage', () => {
 	beforeEach(() => {
+		vi.spyOn(serverComponents, 'getFullPixelatedConfig').mockReturnValue(pixelatedConfig);
 		resetMockState();
 		setPixelatedConfigOverride(pixelatedConfig);
 		routeParams.serviceArea = initialServiceAreaSlug;
@@ -306,6 +308,35 @@ describe('Pixelated Template site coverage', () => {
 
 	describe('GEA Construction projects page', () => {
 		const projectsContentType = '7eOfbgd5Yj8L0YGGZwoVVc';
+
+		it('uses the configured project content type rather than a hardcoded ID', async () => {
+			vi.mocked(serverComponents.getFullPixelatedConfig).mockReturnValue({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					contentful: { ...pixelatedConfig.integrations.contentful, projectsContentType: 'configured-projects' },
+				},
+			});
+			setContentfulEntriesResponse({
+				items: [
+					{ sys: { contentType: { sys: { id: 'configured-projects' } } }, fields: { title: 'Configured project', description: '', images: [] } },
+					{ sys: { contentType: { sys: { id: projectsContentType } } }, fields: { title: 'Old type', description: '', images: [] } },
+				],
+			});
+			render(await ProjectsPage());
+			expect(screen.getByTestId('projects-client')).toHaveTextContent('1');
+		});
+
+		it.each([undefined, '', '   '])('reports a missing project content type (%s)', async (projectsContentType) => {
+			vi.mocked(serverComponents.getFullPixelatedConfig).mockReturnValue({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					contentful: { ...pixelatedConfig.integrations.contentful, projectsContentType },
+				},
+			});
+			await expect(ProjectsPage()).rejects.toThrow('Contentful projectsContentType is missing');
+		});
 
 		it('renders matching project entries and image data through ProjectsClient', async () => {
 			setContentfulEntriesResponse({

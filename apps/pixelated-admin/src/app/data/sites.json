@@ -20,12 +20,10 @@
 				"Storage of scalable content and images in Contentful Content Management System",
 				"Distribution of images in Cloudinary Content Delivery System",
 				"Hosting, Domain, and Template usage costs for Blog on WordPress platform",
-
 				"Maintenance of media distribution networks and headless content management infrastructure (Cloudinary and Contentful)",
 				"Maintenance of Wordpress Blog Site, Wordpress Themes and Plugins, and Gravatar Profile, as applicable",
 				"Performance optimization and caching improvements",
 				"Quarterly strategy calls to discuss site performance, regional competitor audits, and improvements",
-
 				"One (1) website content update per month, as needed",
 				"One (1) Blog Post per month, optimized for local search authority",
 				"A content calendar outlining monthly blog topics and posting schedule",
@@ -41,12 +39,10 @@
 				"Storage of scalable content and images in Contentful Content Management System",
 				"Distribution of images in Cloudinary Content Delivery System",
 				"Hosting, Domain, and Template usage costs for Blog on WordPress platform",
-
 				"Maintenance of media distribution networks and headless content management infrastructure (Cloudinary and Contentful)",
 				"Maintenance of Wordpress Blog Site, Wordpress Themes and Plugins, and Gravatar Profile, as applicable",
 				"Performance optimization and caching improvements",
 				"Monthly strategy calls to discuss deep-funnel conversion metrics, search trends, and site performance improvements",
-
 				"Three (3) website content updates per month, as needed.",
 				"Four (4) rich-text authority Blog Posts or News Updates per month, as needed.",
 				"A content calendar outlining monthly blog topics and posting schedule",
@@ -101,8 +97,10 @@
 			"monthlyBilling": {
 				"tier": "growth",
 				"price": 250.00,
+				"billingStartMonth": "2026-10",
 				"email": "al@amavajanitorial.com",
 				"companyName": "AMAVA Janitorial",
+				"companyContact": "Al Pope",
 				"address": "115 North Franklin Turnpike Suite 258, Mahwah, NJ 07430",
 				"notes": {
 					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
@@ -116,10 +114,10 @@
 					"invoiceDate": "2026-10-04",
 					"dueDate": "2026-10-09",
 					"items": [
-					{
-						"description": "Completion of Web Site Development and launch of the new site",
-						"amount": 1250
-					}
+						{
+							"description": "Completion of Web Site Development and launch of the new site",
+							"amount": 1250
+						}
 					],
 					"note": "Thank you!"
 				}
@@ -157,8 +155,10 @@
 			"monthlyBilling": {
 				"tier": "growth",
 				"price": 250.00,
+				"billingStartMonth": "2026-10",
 				"email": "nick@geaconstruction.net",
 				"companyName": "GEA Construction, LLC",
+				"companyContact": "Nicholas Warchal",
 				"address": "117 Beckenridge Circle, Bluffton, SC 29910",
 				"notes": {
 					"2026-10": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
@@ -227,8 +227,10 @@
 			"monthlyBilling": {
 				"tier": "growth",
 				"price": 150.00,
+				"billingStartMonth": "2026-06",
 				"email": "greg@manningmetalworks.com",
 				"companyName": "Manning Metalworks, LLC",
+				"companyContact": "Greg Manning",
 				"address": "24 West Hanover Avenue, Morris Plains, NJ 07950",
 				"notes": {
 					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
@@ -243,10 +245,14 @@
 			"localPort": "3007",
 			"remote": "oaktreelandscaping",
 			"repo": "oaktreelandscaping",
-			"healthCheckId": "a98e1373-2f41-45f6-89d2-5ff71c60c238",
-			"rte53HostedZoneID": "Z090252537LBFHFBEKHQY",
-			"amplifyAppId": "dc5rw5lojrc0t",
-			"cloudfronturl": "d3l4lk6rr1n1rq.cloudfront.net",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"healthCheckId_OLD": "a98e1373-2f41-45f6-89d2-5ff71c60c238",
+			"rte53HostedZoneID_OLD": "Z090252537LBFHFBEKHQY",
+			"amplifyAppId_OLD": "dc5rw5lojrc0t",
+			"cloudfronturl_OLD": "d3l4lk6rr1n1rq.cloudfront.net",
 			"url": "https://www.oaktree-landscaping.com",
 			"blog_url": "https://blog.oaktree-landscaping.com/",
 			"blogRss": "https://blog.oaktree-landscaping.com/feed/",
@@ -255,8 +261,11 @@
 			"monthlyBilling": {
 				"tier": "essential",
 				"price": 100.00,
+				"billingStartMonth": "2025-12",
+				"billingEndMonth": "2026-09",
 				"email": "oaktreelandscaper@gmail.com, reneadame1783@gmail.com, cwoods@live.com",
 				"companyName": "Oaktree Landscaping, LLC",
+				"companyContact": "Christine Woods",
 				"address": "26504 Whyte Hardee Boulevard, Hardeeville, SC 29927",
 				"notes": {
 					"2026-08": "Thank you for your scheduled payment!",
@@ -267,38 +276,6 @@
 				"additionalInvoiceItems": {}
 			}
 		},
-
-
-		{
-			"name": "palmetto2step",
-			"localPath": "",
-			"localPort": "",
-			"remote": "",
-			"repo": "",
-			"healthCheckId": "",
-			"rte53HostedZoneID": "",
-			"amplifyAppId": "",
-			"cloudfronturl": "",
-			"url": "https://www.palmetto2step.com",
-			"ga4PropertyId": "",
-			"gscSiteUrl": "",
-			"blogRss": "",
-			"monthlyBilling": {
-				"tier": "premium",
-				"price": 400.00,
-				"email": "yon.lucas@palmetto2step.com",
-				"companyName": "Palmetto 2 Step",
-				"address": "158 Tanners Run, Bluffton, SC 299010",
-				"notes": {
-					"2026-10": "Since Blog was launched at the beginning of October, billing for maintenance will begin starting in October, and will be billed monthly at the end of each month.  Thank you!"
-				},
-				"additionalInvoiceItems": {
-					"2026-10": []
-				}	
-			}
-		},
-
-
 		{
 			"name": "palmetto-epoxy",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/palmetto-epoxy",
@@ -317,8 +294,10 @@
 			"monthlyBilling": {
 				"tier": "premium",
 				"price": 200.00,
+				"billingStartMonth": "2025-05",
 				"email": "palmettoepoxy@gmail.com, marthaaberle21@gmail.com",
 				"companyName": "Palmetto Epoxy",
+				"companyContact": "Dennis Aberle",
 				"address": "116 Beckenridge Circle, Bluffton, SC 29909",
 				"notes": {},
 				"additionalInvoiceItems": {
@@ -344,7 +323,7 @@
 							"description": "Reimbursement for Facebook Advertising for July 2026, as requested. 13,588 impressions to 5,664 people."
 						}
 					]
-				}	
+				}
 			}
 		},
 		{
@@ -437,8 +416,10 @@
 			"monthlyBilling": {
 				"tier": "essential",
 				"price": 100.00,
+				"billingStartMonth": "2026-07",
 				"email": "patti@simpledayconcierge.com, joe@simpledayconcierge.com",
 				"companyName": "Simple Day Concierge",
+				"companyContact": "Joe Jadevaia",
 				"address": "124 McIntosh Drive, Mahwah, NJ 07430",
 				"notes": {
 					"2026-06": "Since Simple Day Concierge was launched in June, billing for maintenance will begin starting in July, and will be billed $100 monthly at the end of each month.  Thank you!",
@@ -449,7 +430,7 @@
 						"amount": 100.00,
 						"description": "Tri Fold Brochure Design for Simple Day Concierge, as requested."
 					}
-				}	
+				}
 			}
 		},
 		{
@@ -471,15 +452,17 @@
 			"monthlyBilling": {
 				"email": "info@thethreemusesofbluffton.com",
 				"companyName": "The Three Muses of Bluffton",
+				"companyContact": "Katie Coupland",
 				"address": "1460 Fording Island Road, Bluffton, SC 29910",
 				"tier": "premium",
 				"price": 250.00,
+				"billingStartMonth": "2026-08",
 				"notes": {
-					"2026-07": [ 
+					"2026-07": [
 						"Added Boutique Store and Shopping Cart Integraation",
 						"Added Featured Items to Home Page an Boutique Page",
 						"Added Sewing Machine advertiting to Sewing page",
-						"Added Gallery page, integrates with Contentful Images", 
+						"Added Gallery page, integrates with Contentful Images",
 						"Added Studio Specials Page with 5 studio specials"
 					],
 					"2026-06": "This is your first monthly maintenance payment.  If you have any questions, don't hesitate to reach out to me.  Thank you!",
@@ -498,7 +481,8 @@
 						{
 							"amount": 500.00,
 							"description": "Payment #4 of 5 for Initial Build of The Three Muses of Bluffton website"
-						},{
+						},
+						{
 							"amount": 250.00,
 							"description": "Monthly Maintenance Fee Overdue for June 2026"
 						}
@@ -507,7 +491,270 @@
 						"amount": 500.00,
 						"description": "Payment #5 of 5 for Initial Build of The Three Muses of Bluffton website"
 					}
-				}	
+				}
+			}
+		}
+	],
+	"prospects": [
+		{
+			"name": "MGT Services",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 450.00,
+				"email": "michaelp@amavajanitorial.com",
+				"companyName": "MGT Services",
+				"companyContact": "Michael Pope",
+				"address": "",
+				"notes": {},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "palmetto2step",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.palmetto2step.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"blogRss": "",
+			"monthlyBilling": {
+				"tier": "premium",
+				"price": 400.00,
+				"billingStartMonth": "2026-10",
+				"email": "yon.lucas@palmetto2step.com",
+				"companyName": "Palmetto 2 Step",
+				"companyContact": "Yon Lucas",
+				"address": "158 Tanners Run, Bluffton, SC 299010",
+				"notes": {
+					"2026-10": "Since Blog was launched at the beginning of October, billing for maintenance will begin starting in October, and will be billed monthly at the end of each month.  Thank you!"
+				},
+				"additionalInvoiceItems": {
+					"2026-10": []
+				}
+			}
+		},
+		{
+			"name": "Marvelous Painting",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "Marvelous Painting",
+				"companyContact": "Madan Mohan",
+				"address": "16 Chaucer Ct., Basking Ridge NJ 07920-2574",
+				"notes": {},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "medicare-in-a-box",
+			"localPath": "",
+			"localPort": "",
+			"remote": "medicare-in-a-box",
+			"repo": "medicare-in-a-box",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.medicareinabox.org",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.medicareinabox.org",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "priscilla@simplystatedrs.com",
+				"companyName": "Medicare in a Box",
+				"companyContact": "Priscilla Johnson",
+				"address": "PO Box 1260, Bluffton, SC 29910",
+				"notes": {},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "Simply Stated Workbook",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.simplystatedwb.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "https://www.simplystatedwb.com",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "priscilla@simplystatedrs.com",
+				"companyName": "Simply Stated Workbook",
+				"companyContact": "Priscilla Johnson",
+				"address": "PO Box 1260, Bluffton, SC 29910",
+				"notes": {},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "Birdie Box",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.bookbirdiebox.com",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "Birdie Box",
+				"companyContact": "Luke Sadler",
+				"address": "",
+				"notes": {
+					"contactName": "Luke Sadler"
+				},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "TCC",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://tcchiltonhead.com/",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "TCC",
+				"companyContact": "Luke Sadler",
+				"address": "",
+				"notes": {
+					"contactName": "Luke Sadler"
+				},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "The Bluffton Collective",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.facebook.com/TheBlufftonCollective",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "The Bluffton Collective",
+				"companyContact": "Luke Sadler",
+				"address": "",
+				"notes": {},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "Cherry Blossom Accounting",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "Cherry Blossom Accounting",
+				"companyContact": "Katie Coupland",
+				"address": "",
+				"notes": {
+					"contactName": "Katie Coupland"
+				},
+				"additionalInvoiceItems": {}
+			}
+		},
+		{
+			"name": "Finer Hardwood Floors / Exclusive Hardwood Floors",
+			"localPath": "",
+			"localPort": "",
+			"remote": "",
+			"repo": "",
+			"healthCheckId": "",
+			"rte53HostedZoneID": "",
+			"amplifyAppId": "",
+			"cloudfronturl": "",
+			"url": "https://www.facebook.com/finerinc/",
+			"ga4PropertyId": "",
+			"gscSiteUrl": "",
+			"googleMapsPlaceId": "",
+			"billing": {
+				"tier": "premium",
+				"price": 500.00,
+				"email": "",
+				"companyName": "Finer Hardwood Floors / Exclusive Hardwood Floors",
+				"companyContact": "Rolando",
+				"address": "",
+				"notes": {},
+				"additionalInvoiceItems": {}
 			}
 		}
 	]

@@ -167,6 +167,7 @@ describe('PixelVivid coverage', () => {
 	runCommonPageCoverage({
 		appRoot,
 		ignoredPageTypes: ['blog', 'blogcalendar', 'partners', 'podcast', 'projects', 'updates'],
+		routeOverrides: { gallery: 'customsgallery' },
 
 		Header,
 		Nav,

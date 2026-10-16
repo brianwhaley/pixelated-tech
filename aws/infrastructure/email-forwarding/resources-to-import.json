@@ -1,0 +1,58 @@
+[
+  {
+    "ResourceType": "AWS::SES::EmailIdentity",
+    "LogicalResourceId": "PlatformEmailIdentity",
+    "ResourceIdentifier": {
+      "EmailIdentity": "forwarding.pixelated.tech"
+    }
+  },
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "EmailForwarderExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "pixelated-ses-email-forwarder-role-xj3xcfkz"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "EmailForwarder",
+    "ResourceIdentifier": {
+      "FunctionName": "pixelated-ses-email-forwarder"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "EmailForwarderLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/pixelated-ses-email-forwarder"
+    }
+  },
+  {
+    "ResourceType": "AWS::S3::Bucket",
+    "LogicalResourceId": "EmailInboundBucket",
+    "ResourceIdentifier": {
+      "BucketName": "pixelated-email-inbound-storage-bucket"
+    }
+  },
+  {
+    "ResourceType": "AWS::S3::BucketPolicy",
+    "LogicalResourceId": "EmailInboundBucketPolicy",
+    "ResourceIdentifier": {
+      "Bucket": "pixelated-email-inbound-storage-bucket"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "EmailRoutingTable",
+    "ResourceIdentifier": {
+      "TableName": "PixelatedEmailRouting"
+    }
+  },
+  {
+    "ResourceType": "AWS::SES::ReceiptRuleSet",
+    "LogicalResourceId": "EmailReceivingRuleSet",
+    "ResourceIdentifier": {
+      "RuleSetName": "PixelatedEmailReceivingRuleset"
+    }
+  }
+]

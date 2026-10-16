@@ -24,6 +24,7 @@ import {
 	setContentfulImagesResponse,
 } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
+import * as serverComponents from '@pixelated-tech/components/server';
 
 import Header from '@/app/elements/header';
 import Nav from '@/app/elements/nav';
@@ -61,6 +62,10 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('Oaktree Landscaping coverage', () => {
+	beforeEach(() => {
+		vi.spyOn(serverComponents, 'getFullPixelatedConfig').mockReturnValue(pixelatedConfig);
+	});
+
 	runCommonPageCoverage({
 		appRoot,
 		ignoredPageTypes: [
@@ -139,6 +144,35 @@ describe('Oaktree Landscaping coverage', () => {
 			resetMockState();
 			resetFileDataState();
 			setPixelatedConfigOverride(undefined);
+		});
+
+		it('uses the configured project content type rather than a hardcoded ID', async () => {
+			vi.mocked(serverComponents.getFullPixelatedConfig).mockReturnValue({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					contentful: { ...pixelatedConfig.integrations.contentful, projectsContentType: 'configured-projects' },
+				},
+			});
+			setContentfulEntriesResponse({
+				items: [
+					{ sys: { contentType: { sys: { id: 'configured-projects' } } }, fields: { title: 'Configured project', description: '', images: [] } },
+					{ sys: { contentType: { sys: { id: '4upe5EGYMjJulOSqyXJsuw' } } }, fields: { title: 'Old type', description: '', images: [] } },
+				],
+			});
+			render(await ProjectsPage());
+			expect(screen.getByTestId('projects-client').textContent).toBe('1');
+		});
+
+		it.each([undefined, '', '   '])('reports a missing project content type (%s)', async (projectsContentType) => {
+			vi.mocked(serverComponents.getFullPixelatedConfig).mockReturnValue({
+				...pixelatedConfig,
+				integrations: {
+					...pixelatedConfig.integrations,
+					contentful: { ...pixelatedConfig.integrations.contentful, projectsContentType },
+				},
+			});
+			await expect(ProjectsPage()).rejects.toThrow('Contentful projectsContentType is missing');
 		});
 
 		it('renders the Projects page with matching Contentful entries and images', async () => {

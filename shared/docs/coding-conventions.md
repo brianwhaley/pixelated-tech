@@ -5,6 +5,8 @@ This document outlines the coding standards and conventions used across the Pixe
 ## AI Agent & Code Review Discipline
 
 **For AI agents and code reviewers:**
+- Separate evidence gathering from implementation: for repository-specific questions, inspect the relevant source, tests, and configuration read-only before answering; do not edit files unless the user explicitly requests implementation.
+- A question is not permission to implement a recommendation. Answer first using verified repository evidence, then wait for an explicit implementation request.
 - Never recommend changes based on assumptions about library/framework behavior
 - All claims must be backed by actual code analysis, testing, or documentation
 - Always provide documentation URLs when claiming something about a tool or library

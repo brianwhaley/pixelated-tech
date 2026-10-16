@@ -1,11 +1,11 @@
+export type BillingTier = 'essential' | 'growth' | 'premium';
+
 export interface SubscriptionTier {
 	price: number;
 	services: string[];
 }
 
-export interface Subscriptions {
-	[tier: string]: SubscriptionTier;
-}
+export type Subscriptions = Partial<Record<BillingTier, SubscriptionTier>>;
 
 export interface PaymentInfo {
 	method: string;
@@ -15,9 +15,11 @@ export interface PaymentInfo {
 }
 
 export interface MonthlyBillingConfig {
-	tier: string;
+	tier: BillingTier;
 	priceOverride?: number;
 	price?: number; // Support direct "price" key in json
+	billingStartMonth?: string;
+	billingEndMonth?: string;
 	email: string;
 	companyName: string;
 	address: string;
@@ -79,6 +81,17 @@ export interface InvoiceItem {
 	amount: number;
 }
 
+export interface BillingSummary {
+	billableSiteCount: number;
+	selectedSiteCount: number;
+	allSitesRecurringTotal: number;
+	selectedSitesRecurringTotal: number;
+	allSitesAdditionalTotal: number;
+	selectedSitesAdditionalTotal: number;
+	allSitesTotal: number;
+	selectedSitesTotal: number;
+}
+
 export interface InvoiceData {
 	invoiceNumber: string;
 	invoiceDate: string;
@@ -92,7 +105,7 @@ export interface InvoiceData {
 	ga4PropertyId?: string;
 	showSiteHealth?: boolean;
 	showBillingCycle?: boolean;
-	tier: string;
+	tier: BillingTier | 'ad hoc';
 	items: InvoiceItem[];
 	totalOwed: number;
 	paymentInfo: PaymentInfo;

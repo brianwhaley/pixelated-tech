@@ -14,6 +14,14 @@ A modern, production-ready starter template for building responsive web applicat
 
 ## Quick Start
 
+### Projects configuration
+
+The Projects page reads `integrations.contentful.projectsContentType` from
+`src/app/config/pixelated.config.json`. Its value preserves this site's existing
+Contentful project content-type ID. Missing or blank values produce an explicit
+configuration error. After editing the configuration, run `npm run config:encrypt`
+to synchronize the encrypted configuration before deployment.
+
 ### Using Degit (Recommended)
 
 ```bash

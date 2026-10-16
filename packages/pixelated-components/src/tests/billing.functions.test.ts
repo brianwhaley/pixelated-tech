@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { compileAdHocInvoiceData, compileInvoiceData, getBillingNote, loadBillingData } from '../components/admin/billing/billing.functions';
+import { compileAdHocInvoiceData, compileInvoiceData, getAdditionalInvoiceItems, getBillingNote, getBillingSummary, getMonthlyBillingPrice, isMonthlyBillingActive, loadBillingData } from '../components/admin/billing/billing.functions';
 import fs from 'fs';
 import { generateInvoicePdfsForSites, dispatchInvoiceEmails, loadBillingConfigData } from '../components/admin/billing/billing.server';
 import puppeteer from 'puppeteer';
@@ -7,6 +7,7 @@ import nodemailer from 'nodemailer';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { getLiveBillingStats } from '../components/integrations/wordpress.jetpack.server';
 import * as dynamoIntegration from '../components/integrations/aws.dynamo.integration';
+import { billingSites } from '../test/test-data';
 
 const mockSend = vi.hoisted(() => vi.fn());
 
@@ -84,10 +85,86 @@ describe('Billing Functions', () => {
 		vi.mocked(dynamoIntegration.listPixelatedFormSubmissionReportRows).mockResolvedValue([]);
 	});
 
+	describe('billing summary calculations', () => {
+		const subscriptions = {
+			growth: { price: 300, services: [] },
+			premium: { price: 500, services: [] }
+		};
+		const sites = billingSites;
+
+		it('resolves site pricing using canonical tier names and overrides', () => {
+			expect(getMonthlyBillingPrice(sites[0], subscriptions)).toBe(300);
+			expect(getMonthlyBillingPrice(sites[1], subscriptions)).toBe(450);
+		});
+
+		it('checks monthly billing boundaries inclusively', () => {
+			const site = {
+				...sites[0],
+				monthlyBilling: {
+					...sites[0].monthlyBilling,
+					billingStartMonth: '2026-10',
+					billingEndMonth: '2026-12'
+				}
+			};
+
+			expect(isMonthlyBillingActive(site, '2026-09')).toBe(false);
+			expect(isMonthlyBillingActive(site, '2026-10')).toBe(true);
+			expect(isMonthlyBillingActive(site, '2026-12')).toBe(true);
+			expect(isMonthlyBillingActive(site, '2027-01')).toBe(false);
+		});
+
+		it('treats a missing end month as ongoing billing', () => {
+			const site = {
+				...sites[0],
+				monthlyBilling: {
+					...sites[0].monthlyBilling,
+					billingStartMonth: '2026-10'
+				}
+			};
+
+			expect(isMonthlyBillingActive(site, '2027-01')).toBe(true);
+		});
+
+		it('rejects invoice compilation outside the active billing range', () => {
+			const site = {
+				...sites[0],
+				monthlyBilling: {
+					...sites[0].monthlyBilling,
+					billingStartMonth: '2026-10'
+				}
+			};
+
+			expect(() => compileInvoiceData(site, '2026-09', subscriptions, { method: 'Zelle', details: 'Send to Zelle', terms: 'Net 30' }, [], [])).toThrow(
+				'is not billable for 2026-09'
+			);
+		});
+
+		it('normalizes month-specific additional invoice items', () => {
+			expect(getAdditionalInvoiceItems(sites[0], '2026-10')).toEqual([
+				{ description: 'Enhancement', amount: 25 }
+			]);
+			expect(getAdditionalInvoiceItems(sites[0], '2026-09')).toEqual([]);
+			expect(getAdditionalInvoiceItems(sites[1], '2026-10')).toHaveLength(2);
+		});
+
+		it('calculates all-site and selected-site totals', () => {
+			expect(getBillingSummary(sites, new Set(['growth-site']), subscriptions, '2026-10')).toEqual({
+				billableSiteCount: 2,
+				selectedSiteCount: 1,
+				allSitesRecurringTotal: 750,
+				selectedSitesRecurringTotal: 300,
+				allSitesAdditionalTotal: 175,
+				selectedSitesAdditionalTotal: 25,
+				allSitesTotal: 925,
+				selectedSitesTotal: 325
+			});
+		});
+	});
+
 	describe('loadBillingData', () => {
 		it('loads valid billing configuration successfully', () => {
 			const mockData = {
-				subscriptions: { standard: { price: 200, services: ['Test'] } },
+				subscriptions: { growth: { price: 200, services: ['Test'] } },
 				paymentInfo: { method: 'Cash', details: 'Hand it over', terms: 'Now' },
 				sites: [{ name: 'testsite', url: 'https://testsite.com' }]
 			};
@@ -95,7 +172,7 @@ describe('Billing Functions', () => {
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify(mockData));
 
 			const result = loadBillingData('/fake/path.json');
-			expect(result.subscriptions.standard.price).toBe(200);
+			expect(result.subscriptions.growth.price).toBe(200);
 			expect(result.paymentInfo.method).toBe('Cash');
 			expect(result.sites.length).toBe(1);
 		});
@@ -175,22 +252,22 @@ describe('Billing Functions', () => {
 		});
 
 		const mockSubscriptions = {
-			standard: { price: 100, services: ['Hosting'] },
+			growth: { price: 100, services: ['Hosting'] },
 			premium: { price: 300, services: ['Hosting', 'SEO'] }
 		};
 		const mockPayment = { method: 'Zelle', details: 'Send to Zelle', terms: 'Net 30' };
 
-		it('compiles invoice correctly for standard tier without overrides', () => {
+		it('compiles invoice correctly for growth tier without overrides', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+				monthlyBilling: { tier: 'growth', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 			};
 
 			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], []);
 			expect(data.invoiceNumber).toBe('INV-202606-TESTSITE');
 			expect(data.totalOwed).toBe(100);
-			expect(data.items[0].description).toContain('STANDARD Plan');
+			expect(data.items[0].description).toContain('GROWTH Plan');
 		});
 
 		it('compiles invoice correctly applying legacy price overrides', () => {
@@ -210,7 +287,7 @@ describe('Billing Functions', () => {
 				name: 'testsite',
 				url: 'https://testsite.com',
 				monthlyBilling: {
-					tier: 'premier',
+					tier: 'premium',
 					price: 250,
 					email: 'test@test.com',
 					companyName: 'Test Inc',
@@ -235,7 +312,7 @@ describe('Billing Functions', () => {
 				name: 'testsite',
 				url: 'https://testsite.com',
 				monthlyBilling: {
-					tier: 'premier',
+					tier: 'premium',
 					price: 250,
 					email: 'test@test.com',
 					companyName: 'Test Inc',
@@ -261,15 +338,15 @@ describe('Billing Functions', () => {
 			expect(data.totalOwed).toBe(326.75);
 		});
 
-		it('normalizes tier names properly', () => {
+		it('uses canonical tier names properly', () => {
 			const site = {
 				name: 'testsite',
 				url: 'https://testsite.com',
-				monthlyBilling: { tier: 'premier', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+				monthlyBilling: { tier: 'premium', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 			};
 
 			const data = compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], []);
-			expect(data.items[0].amount).toBe(300); // Because 'premier' normalizes to 'premium'
+			expect(data.items[0].amount).toBe(300);
 		});
 
 		it('throws an error if site is not billable', () => {
@@ -282,13 +359,13 @@ describe('Billing Functions', () => {
 		it('generates PDF buffer via Puppeteer and returns success object', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-				subscriptions: { standard: { price: 200, services: [] } },
+				subscriptions: { growth: { price: 200, services: [] } },
 				paymentInfo: {},
 				sites: [{
 					name: 'testsite',
 					url: 'https://testsite.com',
 					blogRss: 'https://blog.testsite.com/feed',
-					monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+					monthlyBilling: { tier: 'growth', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
 			vi.mocked(getFullPixelatedConfig).mockReturnValue({
@@ -321,7 +398,7 @@ describe('Billing Functions', () => {
 		it('skips site if missing from configuration', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-				subscriptions: { standard: { price: 200, services: [] } },
+				subscriptions: { growth: { price: 200, services: [] } },
 				paymentInfo: {},
 				sites: []
 			}));
@@ -335,12 +412,12 @@ describe('Billing Functions', () => {
 		it('handles puppeteer errors gracefully', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-				subscriptions: { standard: { price: 200, services: [] } },
+				subscriptions: { growth: { price: 200, services: [] } },
 				paymentInfo: {},
 				sites: [{
 					name: 'testsite',
 					url: 'https://testsite.com',
-					monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+					monthlyBilling: { tier: 'growth', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
 			vi.mocked(getFullPixelatedConfig).mockReturnValue({} as any);
@@ -361,12 +438,12 @@ describe('Billing Functions', () => {
 		it('handles preview mode and returns compiled invoice data', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true);
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-				subscriptions: { standard: { price: 200, services: [] } },
+				subscriptions: { growth: { price: 200, services: [] } },
 				paymentInfo: {},
 				sites: [{
 					name: 'testsite',
 					url: 'https://testsite.com',
-					monthlyBilling: { tier: 'standard', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
+					monthlyBilling: { tier: 'growth', email: 'test@test.com', companyName: 'Test Inc', address: '123 Test St' }
 				}]
 			}));
 			vi.mocked(getFullPixelatedConfig).mockReturnValue({

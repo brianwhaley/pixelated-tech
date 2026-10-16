@@ -1,0 +1,13 @@
+{
+  "name": "@pixelated-tech/nerdjokes-skill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build": "node --check index.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1692.0"
+  }
+}

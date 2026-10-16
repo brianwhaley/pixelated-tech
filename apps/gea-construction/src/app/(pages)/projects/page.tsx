@@ -12,7 +12,10 @@ export default async function ProjectsPage() {
 		delivery_access_token: pixelatedConfig.integrations?.contentful?.delivery_access_token ?? "",
 	};
 
-	const contentType = "7eOfbgd5Yj8L0YGGZwoVVc"; // "5yLwz568n8n0BwOzHYda0W";
+	const contentType = pixelatedConfig.integrations?.contentful?.projectsContentType;
+	if (!contentType?.trim()) {
+		throw new Error("Contentful projectsContentType is missing from pixelated.config.json.");
+	}
 	const typeCards = await getContentfulEntriesByType({ apiProps, contentType });
 	const projectCards: ProjectTilesType[] = [];
 	let cardCount = 0;
@@ -68,5 +71,4 @@ export default async function ProjectsPage() {
 		</>
 	);
 }
-
 
