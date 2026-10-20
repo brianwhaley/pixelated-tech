@@ -1,4 +1,4 @@
-import { DynamoDBClient, PutItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { DeleteItemCommand, DynamoDBClient, PutItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { getFullPixelatedConfig } from '../config/config';
 
 export const DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE = 'PixelatedFormSubmissionsTable';
@@ -127,5 +127,27 @@ export async function putDynamoStringItem(tableName: string, item: Record<string
 	return client.send(new PutItemCommand({
 		TableName: tableName,
 		Item: Object.fromEntries(Object.entries(item).map(([key, value]) => [key, { S: value }])),
+	}));
+}
+
+export async function listDynamoStringItems(tableName: string) {
+	const client = new DynamoDBClient(getDynamoConfig());
+	const items: Array<Record<string, string>> = [];
+	let exclusiveStartKey: Record<string, any> | undefined;
+	do {
+		const response = await client.send(new ScanCommand({ TableName: tableName, ExclusiveStartKey: exclusiveStartKey }));
+		for (const item of response.Items || []) {
+			items.push(Object.fromEntries(Object.entries(item).map(([key, value]) => [key, value.S || ''])));
+		}
+		exclusiveStartKey = response.LastEvaluatedKey;
+	} while (exclusiveStartKey);
+	return items;
+}
+
+export async function deleteDynamoStringItem(tableName: string, key: Record<string, string>) {
+	const client = new DynamoDBClient(getDynamoConfig());
+	return client.send(new DeleteItemCommand({
+		TableName: tableName,
+		Key: Object.fromEntries(Object.entries(key).map(([name, value]) => [name, { S: value }])),
 	}));
 }

@@ -187,7 +187,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       FunctionName: !Ref NerdjokesFunction
-      FunctionVersion: '9'
+      FunctionVersion: '$LATEST'
       Name: PROD
 
   NerdjokesSkillDevAlias:
@@ -205,7 +205,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       FunctionName: !Ref NerdjokesSkillFunction
-      FunctionVersion: '3'
+      FunctionVersion: '$LATEST'
       Name: PROD
 
   NerdjokesApi:
@@ -342,6 +342,31 @@ Resources:
         ENV: PROD
         VERIFICATION_TOKEN: !Ref ProdVerificationToken
 
+  NerdjokesApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+      - NerdjokesApiProdStage
+    Properties:
+      AlarmName: Pixelated Nerdjokes API 5XX Errors Alarm
+      AlarmDescription: Alerts when the nerdjokes production API Gateway stage returns a server error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+        - Name: ApiName
+          Value: nerdjokes
+        - Name: Stage
+          Value: prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
   NerdjokesApiDevAccessLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
@@ -406,7 +431,6 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       Action: lambda:InvokeFunction
-      EventSourceToken: !Ref AlexaEventSourceToken
       FunctionName: !Ref NerdjokesSkillFunction
       Principal: alexa-appkit.amazon.com
 
@@ -495,3 +519,83 @@ Resources:
     Properties:
       LogGroupName: /aws/lambda/nerdjokes-skill
       RetentionInDays: 30
+
+  NerdjokesErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Verification Failed|NerdJokes Error|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref NerdjokesLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated Nerdjokes Errors Metric
+          MetricNamespace: Pixelated/Nerdjokes
+          MetricValue: '1'
+          DefaultValue: 0
+
+  NerdjokesErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Nerdjokes Errors Alarm
+      AlarmDescription: Alerts when the nerdjokes Lambda emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/Nerdjokes
+      MetricName: Pixelated Nerdjokes Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  NerdjokesErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Nerdjokes Errors Query
+      LogGroupNames:
+        - !Ref NerdjokesLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(error|failed|exception|verification failed|nerdjokes error|task timed out|runtime\.exiterror)/
+        | sort @timestamp desc
+
+  NerdjokesSkillErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|CALL LAMBDA|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref NerdjokesSkillLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated Nerdjokes Skill Errors Metric
+          MetricNamespace: Pixelated/NerdjokesSkill
+          MetricValue: '1'
+          DefaultValue: 0
+
+  NerdjokesSkillErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Nerdjokes Skill Errors Alarm
+      AlarmDescription: Alerts when the nerdjokes skill Lambda emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/NerdjokesSkill
+      MetricName: Pixelated Nerdjokes Skill Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  NerdjokesSkillErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Nerdjokes Skill Errors Query
+      LogGroupNames:
+        - !Ref NerdjokesSkillLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(call lambda.*error|error code|error message|error stack|task timed out|runtime\.exiterror)/
+        | sort @timestamp desc

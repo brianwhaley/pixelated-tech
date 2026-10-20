@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import path from 'path';
-import { pathToFileURL } from 'url';
+import { pathToFileURL } from 'node:url';
 
 // Ensure server module provides StyleGuideUI for page rendering
 vi.mock('@pixelated-tech/components/server', () => ({

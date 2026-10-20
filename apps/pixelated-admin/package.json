@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.9.72",
+  "version": "1.10.0",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -8,6 +8,9 @@
     "start": "npm run clean && next build --webpack && next start",
     "lint": "eslint --fix",
     "clean": "rm -rf .next && rm -rf out",
+    "json2csv": "node src/app/scripts/json-to-csv.js",
+    "search-public": "node src/app/scripts/search-public.js",
+    "cleanup-one-row": "bash src/app/scripts/cleanup-one-row.sh",
     "test": "vitest run --silent",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -34,11 +37,13 @@
     "globals": "^17.13.0",
     "next": "^16.3.2",
     "next-auth": "^4.24.15",
-    "nodemailer": "^10.1.1",
+    "nodemailer": "^10.1.7",
     "prop-types": "^15.8.1",
+    "puppeteer": "^25.0.2",
     "react": "^19.2.7"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "9.39.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^7.0.1",
@@ -49,6 +54,8 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19",
     "@types/ssh2": "^1.15.6",
+    "@typescript-eslint/eslint-plugin": "^8.72.0",
+    "@typescript-eslint/parser": "^8.72.0",
     "@vitejs/plugin-react": "^6.0.3",
     "@vitest/coverage-v8": "^5.0.5",
     "@vitest/ui": "^5.0.5",

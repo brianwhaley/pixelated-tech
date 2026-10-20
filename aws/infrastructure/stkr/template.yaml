@@ -182,6 +182,31 @@ Resources:
         Format: >-
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
+  StkrApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+      - StkrApiStageProd
+    Properties:
+      AlarmName: Pixelated STKR API 5XX Errors Alarm
+      AlarmDescription: Alerts when the STKR production API Gateway stage returns a server error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+        - Name: ApiName
+          Value: stkr
+        - Name: Stage
+          Value: prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
   StkrApiDevAccessLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
@@ -295,6 +320,46 @@ Resources:
     Properties:
       LogGroupName: /aws/lambda/stkr
       RetentionInDays: 30
+
+  StkrErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref StkrLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated STKR Errors Metric
+          MetricNamespace: Pixelated/STKR
+          MetricValue: '1'
+          DefaultValue: 0
+
+  StkrErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated STKR Errors Alarm
+      AlarmDescription: Alerts when the STKR Lambda emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/STKR
+      MetricName: Pixelated STKR Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  StkrErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated STKR Errors Query
+      LogGroupNames:
+        - !Ref StkrLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(error|failed|exception|task timed out|runtime\.exiterror)/
+        | sort @timestamp desc
 
   StkrBucket:
     Type: AWS::S3::Bucket

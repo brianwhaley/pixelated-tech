@@ -1,7 +1,7 @@
 /* eslint-disable pixelated/no-hardcoded-config-keys */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import path from 'path';
-import { pathToFileURL } from 'url';
+import { pathToFileURL } from 'node:url';
 
 const mockNextAuthHandler = vi.fn(async (_req: Request, _context: any) => {
 	return new Response('auth handler', {
@@ -1004,6 +1004,84 @@ describe('pixelated-admin API routes', () => {
 		const route = await importModule('src/app/api/site-health/uptime/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
+	});
+
+	it('covers on-site SEO cache hits, cache bypass, and thrown errors', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		const admin = await import('@pixelated-tech/components/adminserver');
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
+		vi.spyOn(admin, 'performOnSiteSEOAnalysis').mockResolvedValue({ status: 'success', data: { score: 90 } } as any);
+		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
+		await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		const cached = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		expect(cached.status).toBe(200);
+		const bypassed = await route.GET(makeGetRequest('/', { siteName: 'test', cache: 'false' }));
+		expect(bypassed.status).toBe(200);
+
+		vi.spyOn(server, 'getSiteConfig').mockRejectedValue(new Error('seo config failure'));
+		const failed = await route.GET(makeGetRequest('/', { siteName: 'failed', cache: 'false' }));
+		expect(failed.status).toBe(200);
+		expect(await failed.json()).toMatchObject({ success: false, error: 'seo config failure' });
+	});
+
+	it('covers axe cache hits and expired-cache recovery', async () => {
+		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
+		const first = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		expect(first.status).toBe(200);
+		const cached = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		expect(cached.headers.get('x-axe-cache-hit')).toBe('1');
+		const bypassed = await route.GET(makeGetRequest('/', { siteName: 'test', cache: 'false' }));
+		expect(bypassed.headers.get('x-axe-cache-hit')).toBe('0');
+	});
+
+	it('covers security cache, missing path, and analyzer success branches', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'missing-path', localPath: '/definitely/missing-path', url: 'https://example.com' } as any);
+		const route = await importModule('src/app/api/site-health/security/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'missing-path' }));
+		expect(response.status).toBe(200);
+		expect(await response.json()).toMatchObject({ status: 'Unknown' });
+
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'nocache', url: 'https://example.com' } as any);
+		const uncached = await route.GET(makeGetRequest('/', { siteName: 'nocache', cache: 'false' }));
+		expect(uncached.status).toBe(200);
+	});
+
+	it('covers uptime cache hit and cache-disabled success branches', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		const admin = await import('@pixelated-tech/components/adminserver');
+		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'cached', healthCheckId: 'hc-123', url: 'https://example.com' } as any);
+		vi.spyOn(admin, 'checkUptimeHealth').mockResolvedValue({ data: { status: 'Healthy' } } as any);
+		const route = await importModule('src/app/api/site-health/uptime/route.ts');
+		await route.GET(makeGetRequest('/', { siteName: 'cached' }));
+		const cached = await route.GET(makeGetRequest('/', { siteName: 'cached' }));
+		expect(cached.status).toBe(200);
+		const uncached = await route.GET(makeGetRequest('/', { siteName: 'cached', cache: 'false' }));
+		expect(uncached.status).toBe(200);
+	});
+
+	it('covers core vitals desktop strategy and analyzer fallback data', async () => {
+		const admin = await import('@pixelated-tech/components/adminserver');
+		vi.spyOn(admin, 'performCoreWebVitalsAnalysis').mockRejectedValue(new Error('analysis unavailable'));
+		const route = await importModule('src/app/api/site-health/core-web-vitals/route.ts');
+		const response = await route.GET(makeGetRequest('/', { siteName: 'test', strategy: 'desktop', cache: 'false' }));
+		expect(response.status).toBe(200);
+		expect(await response.json()).toMatchObject({ success: true, data: [{ status: 'error', error: 'analysis unavailable' }] });
+	});
+
+	it('covers search console missing credentials and thrown integration errors', async () => {
+		const server = await import('@pixelated-tech/components/server');
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: {} });
+		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
+		const missing = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		expect(missing.status).toBe(500);
+
+		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { googleSearchConsole: { serviceAccountKey: 'key' } } });
+		const admin = await import('@pixelated-tech/components/adminserver');
+		vi.spyOn(admin, 'getSearchConsoleData').mockRejectedValue(new Error('search unavailable'));
+		const thrown = await route.GET(makeGetRequest('/', { siteName: 'test' }));
+		expect(thrown.status).toBe(500);
+		expect(await thrown.json()).toMatchObject({ success: false, error: 'search unavailable' });
 	});
 
 	it('returns pagebuilder route import response for delete route', async () => {

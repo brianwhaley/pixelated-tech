@@ -4,7 +4,7 @@ const CRYPTO = require('crypto');
 var AWS = require("./aws");
 var Message = require("./message");
 
-const log = true ;
+const log = false ;
 
 module.exports = class Joke {
 
@@ -357,8 +357,8 @@ module.exports = class Joke {
     
     
     async sendJokeError(event){
-        if(log) console.log("SEND JOKE ERROR ");
-        var returntext = "NerdJokes Error: " + event.error + "\n";
+        console.log("SEND JOKE WARNING : ", JSON.stringify(event.error));
+        var returntext = "NerdJokes Warning: " + event.error + "\n";
         if(event.error == "channel_not_found"){
             returntext += "You have tried to send a NerdJoke in a channel that NerdJokes is not a member. \n" + 
                 "Please add NerdJokes to this channel by typing '/invite @NerdJokes' or try using another channel. ";

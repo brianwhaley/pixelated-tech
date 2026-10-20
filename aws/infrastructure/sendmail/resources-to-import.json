@@ -21,13 +21,6 @@
     }
   },
   {
-    "ResourceType": "AWS::Lambda::Function",
-    "LogicalResourceId": "FormSubmit2DBFunction",
-    "ResourceIdentifier": {
-      "FunctionName": "formSubmit2DB"
-    }
-  },
-  {
     "ResourceType": "AWS::ApiGateway::RestApi",
     "LogicalResourceId": "SendmailApi",
     "ResourceIdentifier": {
@@ -104,13 +97,6 @@
     "LogicalResourceId": "SendmailLogGroup",
     "ResourceIdentifier": {
       "LogGroupName": "/aws/lambda/sendmail"
-    }
-  },
-  {
-    "ResourceType": "AWS::Logs::LogGroup",
-    "LogicalResourceId": "FormSubmit2DBLogGroup",
-    "ResourceIdentifier": {
-      "LogGroupName": "/aws/lambda/formSubmit2DB"
     }
   }
 ]

@@ -14,7 +14,6 @@ REPOS=(
     "brianwhaley"
     "informationfocus"
 	"jz-home-improvement"
-	"leadscraper"
 	"manningmetalworks"
     "oaktreelandscaping"
     "palmetto-epoxy"
