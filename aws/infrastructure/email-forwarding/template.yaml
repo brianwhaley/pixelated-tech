@@ -140,6 +140,50 @@ Resources:
       LogGroupName: /aws/lambda/pixelated-ses-email-forwarder
       RetentionInDays: 30
 
+  PixelatedEmailForwardingErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|No forward mapping|no forward mapping|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref EmailForwarderLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated Email Forwarding Errors Metric
+          MetricNamespace: Pixelated/EmailForwarding
+          MetricValue: '1'
+          DefaultValue: 0
+
+  PixelatedEmailForwardErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AlarmName: Pixelated Email Forward Errors Alarm
+      AlarmDescription: Alerts when the SES email forwarder emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/EmailForwarding
+      MetricName: Pixelated Email Forwarding Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  PixelatedEmailForwardingErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Email Forwarding Errors Query
+      LogGroupNames:
+        - !Ref EmailForwarderLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(error|failed|exception|no forward mapping)/
+        | sort @timestamp desc
+
   EmailInboundBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
@@ -156,6 +200,11 @@ Resources:
         IgnorePublicAcls: true
         BlockPublicPolicy: true
         RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireInboundEmailObjects
+            Status: Enabled
+            ExpirationInDays: 30
 
   EmailInboundBucketPolicy:
     Type: AWS::S3::BucketPolicy

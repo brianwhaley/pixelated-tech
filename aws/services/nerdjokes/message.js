@@ -3,7 +3,7 @@ console.log('Loading Message class');
 const HTTPS = require('https');
 const QS = require('querystring');
 
-const log = true ;
+const log = false ;
 
 module.exports = class Message {
 
@@ -116,10 +116,10 @@ module.exports = class Message {
                 });
             });
             request.on("error", function (error) { 
-                console.log("SLACK API POST ERROR : ", JSON.stringify(error));
-                console.log("SLACK API POST ERROR Code : ", JSON.stringify(error.code));
-                console.log("SLACK API POST ERROR Message : ", JSON.stringify(error.message));
-                console.log("SLACK API POST ERROR Stack : ", JSON.stringify(error.stack));
+                console.log("SLACK API POST WARNING : ", JSON.stringify(error));
+                console.log("SLACK API POST WARNING Code : ", JSON.stringify(error.code));
+                console.log("SLACK API POST WARNING Message : ", JSON.stringify(error.message));
+                console.log("SLACK API POST WARNING Stack : ", JSON.stringify(error.stack));
                 reject(error);
             });
             request.write(JSON.stringify(this.message));
@@ -153,14 +153,21 @@ module.exports = class Message {
                 });
                 res.on("end", function () {
                     if(log) console.log("SLACK API GET - Response Results", retJSON.toString());
-                    resolve(JSON.parse(retJSON));
+                    try {
+                        resolve(JSON.parse(retJSON));
+                    } catch(error) {
+                        console.log("SLACK API GET JSON WARNING : ", JSON.stringify(error));
+                        console.log("SLACK API GET JSON WARNING Message : ", JSON.stringify(error.message));
+                        console.log("SLACK API GET JSON WARNING Stack : ", JSON.stringify(error.stack));
+                        reject(error);
+                    }
                 });
             });
             request.on("error", function (error) { 
-                console.log("SLACK API GET ERROR : ", JSON.stringify(error));
-                console.log("SLACK API GET ERROR Code : ", JSON.stringify(error.code));
-                console.log("SLACK API GET ERROR Message : ", JSON.stringify(error.message));
-                console.log("SLACK API GET ERROR Stack : ", JSON.stringify(error.stack));
+                console.log("SLACK API GET WARNING : ", JSON.stringify(error));
+                console.log("SLACK API GET WARNING Code : ", JSON.stringify(error.code));
+                console.log("SLACK API GET WARNING Message : ", JSON.stringify(error.message));
+                console.log("SLACK API GET WARNING Stack : ", JSON.stringify(error.stack));
                 reject(error);
             });
             request.end();

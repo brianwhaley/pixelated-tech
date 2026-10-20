@@ -147,6 +147,31 @@ Resources:
       RestApiId: !Ref ProxyApi
       StageName: prod
 
+  ProxyApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+      - ProxyApiStage
+    Properties:
+      AlarmName: Pixelated Proxy API 5XX Errors Alarm
+      AlarmDescription: Alerts when the proxy production API Gateway stage returns a server error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+        - Name: ApiName
+          Value: proxy
+        - Name: Stage
+          Value: prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
   ProxyApiPermissionAny:
     Type: AWS::Lambda::Permission
     DeletionPolicy: Retain
@@ -206,3 +231,43 @@ Resources:
     Properties:
       LogGroupName: /aws/lambda/proxy
       RetentionInDays: 30
+
+  ProxyErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Content-Type header|No URL|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref ProxyLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated Proxy Errors Metric
+          MetricNamespace: Pixelated/Proxy
+          MetricValue: '1'
+          DefaultValue: 0
+
+  ProxyErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Proxy Errors Alarm
+      AlarmDescription: Alerts when the proxy Lambda emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/Proxy
+      MetricName: Pixelated Proxy Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  ProxyErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Proxy Errors Query
+      LogGroupNames:
+        - !Ref ProxyLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(error|failed|exception|content-type header|no url|task timed out|runtime\.exiterror)/
+        | sort @timestamp desc

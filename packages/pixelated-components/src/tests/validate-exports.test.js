@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import os from 'os';
 import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'fs';
 import { spawnSync } from 'child_process';

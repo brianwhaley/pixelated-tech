@@ -11,6 +11,7 @@ export default [
 		rules: {
 			"pixelated/enforce-single-h1": "off",
 			"pixelated/no-single-use-helpers": "off",
+			"pixelated/no-process-env": "off",
 		},
 	},
 ];

@@ -196,19 +196,6 @@
 			"gscSiteUrl": "sc-domain:jzhomeimprovement.com"
 		},
 		{
-			"name": "leadscraper",
-			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/leadscraper",
-			"localPort": "3002",
-			"remote": "leadscraper",
-			"repo": "leadscraper",
-			"healthCheckId": "",
-			"rte53HostedZoneID": "",
-			"amplifyAppId": "",
-			"cloudfronturl": "",
-			"ga4PropertyId": "GA4_PROPERTY_ID_HERE",
-			"gscSiteUrl": "sc-domain:leadscraper.com"
-		},
-		{
 			"name": "manningmetalworks",
 			"localPath": "/Volumes/btw_x10pro/Git/pixelated-tech/apps/manningmetalworks",
 			"localPort": "3010",

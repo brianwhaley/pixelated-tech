@@ -48,7 +48,7 @@ import { exec as execCb } from 'child_process';
 import { promisify } from 'util';
 import readline from 'readline/promises';
 import { stdin as input, stdout as output } from 'process';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import { AmplifyClient, CreateAppCommand, CreateBranchCommand, UpdateAppCommand, UpdateBranchCommand } from '@aws-sdk/client-amplify';
 
 const __filename = fileURLToPath(import.meta.url);

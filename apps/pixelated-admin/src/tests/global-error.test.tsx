@@ -9,7 +9,7 @@ vi.mock('@pixelated-tech/components', async (importOriginal) => {
 		GlobalErrorUI: ({ reset, siteInfo }: any) => (
 			<div>
 				<div>Something went wrong</div>
-				<button onClick={() => reset && reset()}>Try again</button>
+				<button onClick={() => reset && reset()}>Retry loading the error page</button>
 				<div>{siteInfo?.title}</div>
 			</div>
 		),
@@ -25,7 +25,7 @@ describe('GlobalError', () => {
 	it('renders reset button when provided', () => {
 		const reset = vi.fn();
 		const { getByText } = render(<GlobalError error={new Error('boom')} reset={reset} /> as any);
-		const btn = getByText('Try again');
+		const btn = getByText('Retry loading the error page');
 		expect(btn).toBeTruthy();
 	});
 });

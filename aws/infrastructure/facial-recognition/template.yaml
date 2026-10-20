@@ -57,6 +57,46 @@ Resources:
       LogGroupName: /aws/lambda/pixelated-facial-recognition
       RetentionInDays: 30
 
+  FacialRecognitionErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|analyze image|unexpected state|Timeout waiting|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref FacialRecognitionLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated Facial Recognition Errors Metric
+          MetricNamespace: Pixelated/FacialRecognition
+          MetricValue: '1'
+          DefaultValue: 0
+
+  FacialRecognitionErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Facial Recognition Errors Alarm
+      AlarmDescription: Alerts when the facial-recognition Lambda emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/FacialRecognition
+      MetricName: Pixelated Facial Recognition Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  FacialRecognitionErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Facial Recognition Errors Query
+      LogGroupNames:
+        - !Ref FacialRecognitionLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(error|failed|exception|couldn.t analyze image|unexpected state|timeout waiting|task timed out|runtime\.exiterror)/
+        | sort @timestamp desc
+
   PixelatedPhotosBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain

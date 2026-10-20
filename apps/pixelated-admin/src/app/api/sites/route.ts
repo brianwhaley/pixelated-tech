@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { loadSitesConfig } from '@pixelated-tech/components/server';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

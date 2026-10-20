@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 const sampleAssessment = {
 	companyName: 'Example Corp',
@@ -85,5 +85,29 @@ describe('Assessment page', () => {
 		render(<Page files={[]} />);
 
 		await waitFor(() => expect(screen.getByText('Error loading assessment files: Failed to load')).toBeTruthy());
+	});
+
+	it('renders fallback sections for sparse assessment data', async () => {
+		mockUseAdminFileDataResult = {
+			files: ['sparse.json', 'other.json'],
+			selectedFile: 'sparse.json',
+			setSelectedFile: vi.fn(),
+			loading: false,
+			error: null,
+			data: {
+				...sampleAssessment,
+				phone: undefined,
+				primaryAudience: [], secondaryAudience: [], marketOverview: '', currentSocialMedia: [], currentAdvertisingPartners: [], currentEarnedMedia: [],
+				similarCompanyNames: [], competitors: [], existingSite: undefined, references: [], currentBusinessPlan: [], nextSteps: [],
+				logo: [{ url: '', altText: '' }], websiteDomain: {}, informationArchitecture: [], proposedSocialMediaAccounts: [], differentiation: [], keywords: [],
+				visualDesign: { ...sampleAssessment.visualDesign, headerFont: '"Arial", sans-serif', bodyFont: 'Arial' },
+			} as any,
+		};
+		const Page = (await import('@/app/(pages)/assessment/assessment-template')).default;
+		render(<Page files={['sparse.json', 'other.json']} />);
+		fireEvent.change(screen.getByRole('combobox'), { target: { value: 'other.json' } });
+		expect(screen.getByText('No existing site information available.')).toBeTruthy();
+		expect(screen.getByText('No references available.')).toBeTruthy();
+		expect(screen.getByText('No current logo provided.')).toBeTruthy();
 	});
 });

@@ -6,8 +6,10 @@ import { SESClient, SendRawEmailCommand, SendEmailCommand } from "@aws-sdk/clien
 // Configuration Constants
 const AWS_REGION = "us-east-2";
 const TABLE_NAME = "PixelatedEmailRouting";
-const S3_BUCKET = "pixelated-email-inbound-storage-bucket";
-const FORWARDING_DOMAIN = "forwarding.pixelated.tech";
+const S3_BUCKET = process.env.S3_BUCKET || "pixelated-email-inbound-storage-bucket";
+const FORWARDING_DOMAIN = process.env.FORWARDING_DOMAIN || "forwarding.pixelated.tech";
+// 10 MB (10,485,760 bytes), maximum size for SES email messages
+const MAX_SES_SIZE = 10 * 1024 * 1024;
 
 // Initialize AWS SDK Clients
 const s3 = new S3Client({ region: AWS_REGION });
@@ -35,16 +37,51 @@ function safeReplyToAddress(raw) {
 	return email ? `"${name}" <${email}>` : `"Platform Relay" <relay@${FORWARDING_DOMAIN}>`;
 }
 
+function describeError(error) {
+	const errorName = error?.name || error?.code || "UnknownError";
+	const errorMessage = error?.message || String(error);
+	const statusCode = error?.$metadata?.httpStatusCode;
+	const isMalformedInput = /parameter list|mime|filename|boundary|header/i.test(errorMessage);
+	const isPermanent = /InvalidParameterValue|InvalidRecipient|MessageRejected/i.test(errorName);
+	const isTransient = statusCode >= 500 || /Throttl|Timeout|ServiceUnavailable|InternalFailure/i.test(errorName);
+
+	let classification = "dependency_or_unknown";
+	if (isMalformedInput) classification = "permanent_malformed_input";
+	else if (isPermanent) classification = "permanent_ses_rejection";
+	else if (isTransient) classification = "transient";
+
+	return { errorName, errorMessage, statusCode, classification };
+}
+
 export const handler = async (event) => {
 	// FIX: Array index access required for SES payloads
-	const record = event.Records?.[0];
+	const record = event?.Records?.[0];
 	if (!record || !record.ses) {
-		console.error("Invalid or empty SES event structure received.");
+		console.error("Invalid SES event", { classification: "invalid_event" });
 		return;
 	}
 
-	const messageId = record.ses.mail.messageId;
-	const recipients = record.ses.receipt.recipients || [];
+	const messageId = record.ses.mail?.messageId;
+	const recipients = record.ses.receipt?.recipients || [];
+	const missingConfiguration = Object.entries({ AWS_REGION, TABLE_NAME, S3_BUCKET, FORWARDING_DOMAIN })
+		.filter(([, value]) => !value)
+		.map(([name]) => name);
+
+	if (missingConfiguration.length) {
+		console.error("Email forwarder configuration missing", {
+			missingConfiguration,
+			classification: "configuration_error"
+		});
+		return;
+	}
+	if (!messageId) {
+		console.error("SES event missing message ID", { classification: "invalid_event" });
+		return;
+	}
+	if (!recipients.length) {
+		console.warn("SES event has no recipients", { messageId, classification: "empty_recipient_list" });
+		return;
+	}
 
 	// Fetch the raw email payload once per message execution to save performance
 	let rawEmail = "";
@@ -57,12 +94,15 @@ export const handler = async (event) => {
 			})
 		);
 	} catch (s3Error) {
-		console.error(`S3 Fetch Failed for MessageID ${messageId}:`, s3Error);
+		console.error("S3 fetch failed", { messageId, ...describeError(s3Error) });
 		return; // Exit early if the raw email cannot be retrieved
+	}
+	if (!s3Response.Body || typeof s3Response.Body.transformToString !== "function") {
+		console.error("S3 object body missing", { messageId, classification: "invalid_s3_object" });
+		return;
 	}
 
 	// 10 MB Size Guard
-	const MAX_SES_SIZE = 10485760; 
 	if (s3Response.ContentLength > MAX_SES_SIZE) {
 		const sizeMB = (s3Response.ContentLength / (1024 * 1024)).toFixed(2);
 		console.warn(`[SIZE EXCEEDED] Message ${messageId} is ${sizeMB} MB, exceeding the 10 MB SES limit.`);
@@ -107,13 +147,28 @@ export const handler = async (event) => {
 						})
 					);
 					console.log(`Sent size alert notification to recipient ${destination}`);
+				} else {
+					console.warn("No forward mapping for oversized message", {
+						messageId,
+						originalRecipient: normalizedRecipient,
+						classification: "unmapped_recipient"
+					});
 				}
 			} catch (notifyError) {
-				console.error(`Failed to send size alert to recipient for ${originalRecipient}:`, notifyError);
+				console.error("Size alert delivery failed", {
+					messageId,
+					originalRecipient,
+					...describeError(notifyError)
+				});
 			}
 		}
 		// Auto-purge oversized object from S3
-		await s3.send(new DeleteObjectCommand({ Bucket: S3_BUCKET, Key: messageId }));
+		try {
+			await s3.send(new DeleteObjectCommand({ Bucket: S3_BUCKET, Key: messageId }));
+			console.log(`Deleted oversized raw email ${messageId} from S3 bucket.`);
+		} catch (deleteError) {
+			console.error("Oversized email cleanup failed", { messageId, ...describeError(deleteError) });
+		}
 		return;
 	}
 
@@ -123,12 +178,12 @@ export const handler = async (event) => {
 	// Iterate over each targeted platform recipient
 	let sentSuccessfully = false;
 	for (const originalRecipient of recipients) {
+		let destination = null;
 		try {
 			const normalizedRecipient = originalRecipient.toLowerCase();
 			const domainCatchAll = "@" + normalizedRecipient.split("@")[1];
 
 			// 1. Resolve forward target from DynamoDB
-			let destination = null;
 			const ddbResult = await ddb.send(
 				new GetCommand({
 					TableName: TABLE_NAME,
@@ -149,7 +204,11 @@ export const handler = async (event) => {
 			}
 
 			if (!destination) {
-				console.warn(`No forward mapping found for: ${normalizedRecipient}`);
+				console.warn("No forward mapping", {
+					messageId,
+					originalRecipient: normalizedRecipient,
+					classification: "unmapped_recipient"
+				});
 				continue;
 			}
 
@@ -196,7 +255,12 @@ export const handler = async (event) => {
 			sentSuccessfully = true;
 		} catch (recipientError) {
 			// Non-restrictive handling: If one client's routing crashes, don't break other recipients
-			console.error(`Error processing recipient ${originalRecipient}:`, recipientError);
+			console.error("Email forwarding failed", {
+				messageId,
+				originalRecipient,
+				destination,
+				...describeError(recipientError)
+			});
 		}
 	}
 	if (sentSuccessfully) {
@@ -209,7 +273,7 @@ export const handler = async (event) => {
 			);
 			console.log(`Deleted raw email ${messageId} from S3 bucket.`);
 		} catch (deleteError) {
-			console.error(`Failed to delete S3 object ${messageId}:`, deleteError);
+			console.error("S3 cleanup failed", { messageId, ...describeError(deleteError) });
 		}
 	}
 };

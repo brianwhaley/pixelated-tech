@@ -122,7 +122,7 @@ export function zipPixelatedTheme(inputPath, zipName = 'Pixelated.zip') {
 }
 
 // CLI (ESM-friendly)
-import { pathToFileURL } from 'url';
+import { pathToFileURL } from 'node:url';
 const entryUrl = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
 if (entryUrl && entryUrl === import.meta.url) {
 	(async () => {
