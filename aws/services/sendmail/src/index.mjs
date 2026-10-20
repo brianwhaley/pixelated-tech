@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
-import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { randomUUID } from "node:crypto";
 
 const debug = false;
 const smtpUser = process.env.SMTP_USER;
@@ -19,7 +21,7 @@ const transporter = nodemailer.createTransport({
 	}
 });
 
-const lambdaClient = new LambdaClient({});
+const dynamodb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
 export const handler = async (event) => {
 	try {
@@ -45,17 +47,18 @@ export const handler = async (event) => {
 		const formName = body?.formName ?? "contact-form";
 
 		try {
-			if (debug) console.log("Invoking formSubmit2DB for storage");
-			const dbParams = {
-				FunctionName: "formSubmit2DB",
-				InvocationType: "Event",
-				Payload: JSON.stringify({ domain, formName, formData: body })
-			};
-			lambdaClient.send(new InvokeCommand(dbParams)).catch((dbError) => {
-				console.error("Async DB invoke failed:", dbError);
+			body.domain = domain;
+			body.formName = formName;
+			body.submissionId = randomUUID();
+			body.timestamp = new Date().toISOString();
+			dynamodb.send(new PutCommand({
+				TableName: "PixelatedFormSubmissionsTable",
+				Item: body,
+			})).catch((dbError) => {
+				console.error("Async DynamoDB write failed:", dbError);
 			});
 		} catch (dbError) {
-			console.error("Error invoking formSubmit2DB:", dbError);
+			console.error("Error starting asynchronous DynamoDB write:", dbError);
 		}
 
 		let bodyText = "<h2>Form Details</h2>";

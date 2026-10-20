@@ -13,6 +13,8 @@
         "/configbuilder",
         "/contentful-migrate",
         "/email-forwarding",
+        "/lead-scraper",
+        "/domain-scraper",
         "/formbuilder",
         "/humans.txt",
         "/login",

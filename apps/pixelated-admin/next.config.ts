@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 	// Admin deployment tracing is intentionally narrower than the shared monorepo root.
 	// Keep this app-specific until every server route has been verified after deployment.
 	outputFileTracingRoot: path.resolve(__dirname),
-	serverExternalPackages: ['ssh2'],
+	serverExternalPackages: ['ssh2', 'puppeteer'],
 	env: {
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 	},
@@ -38,6 +38,19 @@ const nextConfig: NextConfig = {
 	},
 	async redirects() {
 		return [];
+	},
+	webpack: (config: any) => {
+		config.resolve = config.resolve ?? {};
+		config.resolve.fallback = {
+			...config.resolve.fallback,
+			fs: false,
+			path: false,
+		};
+		config.resolve.alias = {
+			...config.resolve.alias,
+			'@': path.resolve(__dirname, 'src'),
+		};
+		return config;
 	},
 };
 

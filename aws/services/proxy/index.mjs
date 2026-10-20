@@ -4,15 +4,21 @@ import fetch from "node-fetch";
 
 const debug = false;
 
-export const handler = async (event, _context, _callback) => {
+export const handler = async (event) => {
 	/* if(event.requestContext.httpMethod != 'GET'){
         return returnResponse({error: true, message: 'Method not allowed!'});
     } else */
-	if(event.queryStringParameters.url && event.queryStringParameters.url.stack && event.queryStringParameters.url.message) {
-		return returnResponse({error: true, message: 'No URL!'});
-	} else {
-		return returnResponse( await getResponse(event) ) ;
-	} 
+	const queryStringParameters = event?.queryStringParameters ?? {};
+	const targetUrl = queryStringParameters.url;
+	if (typeof targetUrl !== "string" || targetUrl.trim() === "") {
+		return returnResponse({error: true, message: "A URL query parameter is required."}, 400);
+	}
+	try {
+		new URL(targetUrl);
+	} catch {
+		return returnResponse({error: true, message: "The URL query parameter is invalid."}, 400);
+	}
+	return returnResponse(await getResponse(event));
 	// return returnResponse(event.queryStringParameters) ;
 	// callback(null, response);
 };
@@ -87,10 +93,10 @@ const getResponse = async function (event) {
 	return responseBody;
 };
 
-const returnResponse = async function (responseBody) {
+const returnResponse = async function (responseBody, statusCode = 200) {
 	const response = {
 		"isBase64Encoded": false,
-		"statusCode": 200,
+		"statusCode": statusCode,
 		"headers": {
 			"Content-Type": responseContentType,
 			"Access-Control-Allow-Credentials": true ,

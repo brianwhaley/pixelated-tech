@@ -5,7 +5,7 @@ var Joke = require("./joke");
 var Schedule = require("./schedule");
 var Message = require("./message");
 
-const log = true ;
+const log = false ;
 const log_event = false ;
 
 module.exports = class Event {
@@ -245,7 +245,12 @@ module.exports = class Event {
                 proj_expr: "access_token"
             });
             if(log) console.log("GET ACCESS TOKEN - Auth Results : ", getAuth);
-            b_token = await getAuth.Items[0].access_token;
+            const authRecord = getAuth && getAuth.Items && getAuth.Items[0];
+            if(!authRecord || !authRecord.access_token) {
+                console.log("NERDJOKES ACCESS TOKEN NOT FOUND FOR TEAM: " + this.team_id);
+                return null;
+            }
+            b_token = authRecord.access_token;
             if(log) console.log("GET ACCESS TOKEN - Access Token : ", b_token);
             return b_token;
         }
@@ -264,7 +269,12 @@ module.exports = class Event {
                 proj_expr: "user_token"
             });
             if(log) console.log("GET USER TOKEN - Auth Results : ", getAuth);
-            u_token = await getAuth.Items[0].user_token;
+            const authRecord = getAuth && getAuth.Items && getAuth.Items[0];
+            if(!authRecord || !authRecord.user_token) {
+                console.log("NERDJOKES USER TOKEN NOT FOUND FOR TEAM: " + this.team_id);
+                return null;
+            }
+            u_token = authRecord.user_token;
             if(log) console.log("GET USER TOKEN - USER Token : ", u_token);
             return u_token;
         }

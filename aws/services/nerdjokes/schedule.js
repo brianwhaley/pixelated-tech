@@ -3,7 +3,7 @@ console.log('Loading Schedule class');
 var AWS = require("./aws");
 var Message = require("./message");
 
-const log = true ;
+const log = false ;
 
 module.exports = class Schedule {
 

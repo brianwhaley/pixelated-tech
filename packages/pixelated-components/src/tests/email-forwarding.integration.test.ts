@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
+	deleteDynamoStringItem: vi.fn(),
+	listDynamoStringItems: vi.fn(),
 	putDynamoStringItem: vi.fn(),
 	getHostedZoneIdForDomain: vi.fn(),
 	getRoute53RecordValues: vi.fn(),
@@ -11,6 +13,8 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('../components/integrations/aws.dynamo.integration', () => ({
+	deleteDynamoStringItem: mocks.deleteDynamoStringItem,
+	listDynamoStringItems: mocks.listDynamoStringItems,
 	putDynamoStringItem: mocks.putDynamoStringItem,
 }));
 
@@ -30,8 +34,13 @@ vi.mock('../components/integrations/smtp.integration', () => ({
 }));
 
 import {
+	addEmailForwardingRoute,
+	deleteEmailForwardingRoute,
+	getEmailForwardingRoutes,
 	getEmailForwardingDomainStatus,
+	listEmailForwardingDomains,
 	onboardEmailForwardingDomain,
+	saveEmailForwardingCatchAll,
 	sendEmailForwardingTestEmail,
 } from '../components/admin/email-forwarding/email-forwarding.integration';
 
@@ -41,6 +50,7 @@ describe('email forwarding integration', () => {
 		mocks.getHostedZoneIdForDomain.mockResolvedValue('Z123');
 		mocks.getSesEmailIdentity.mockResolvedValue({ VerificationStatus: 'PENDING', DkimAttributes: { Status: 'PENDING', Tokens: ['abc', 'def'] } });
 		mocks.getRoute53RecordValues.mockResolvedValue([]);
+		mocks.listDynamoStringItems.mockResolvedValue([]);
 	});
 
 	it('onboards a domain with SES identity, Route 53 records, and DynamoDB catch-all', async () => {
@@ -100,6 +110,40 @@ describe('email forwarding integration', () => {
 	it('gets SES forwarding status', async () => {
 		await expect(getEmailForwardingDomainStatus('example.com')).resolves.toMatchObject({ domain: 'example.com', identityStatus: 'PENDING', dkimStatus: 'PENDING' });
 		expect(mocks.getSesEmailIdentity).toHaveBeenCalledWith('us-east-2', 'example.com');
+	});
+
+	it('lists domains from catch-all routes', async () => {
+		mocks.listDynamoStringItems.mockResolvedValue([
+			{ recipient: '@zeta.com', targetEmail: 'zeta@example.com' },
+			{ recipient: 'info@alpha.com', targetEmail: 'alpha@example.com' },
+			{ recipient: '@alpha.com', targetEmail: 'alpha@example.com' },
+		]);
+
+		await expect(listEmailForwardingDomains()).resolves.toEqual(['alpha.com', 'zeta.com']);
+	});
+
+	it('lists catch-all and exact routes for a domain', async () => {
+		mocks.listDynamoStringItems.mockResolvedValue([
+			{ recipient: '@example.com', targetEmail: 'catchall@example.net' },
+			{ recipient: 'info@example.com', targetEmail: 'info@example.net' },
+			{ recipient: 'other@another.com', targetEmail: 'other@example.net' },
+		]);
+
+		await expect(getEmailForwardingRoutes('example.com')).resolves.toEqual({
+			domain: 'example.com',
+			catchAllTargetEmail: 'catchall@example.net',
+			forwardingRoutes: [{ recipient: 'info@example.com', targetEmail: 'info@example.net' }],
+		});
+	});
+
+	it('saves and deletes forwarding routes', async () => {
+		await saveEmailForwardingCatchAll('Example.com', 'catchall@example.net');
+		await addEmailForwardingRoute('example.com', 'info', 'info@example.net');
+		await deleteEmailForwardingRoute('example.com', 'info@example.com');
+
+		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: '@example.com', targetEmail: 'catchall@example.net' });
+		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: 'info@example.com', targetEmail: 'info@example.net' });
+		expect(mocks.deleteDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: 'info@example.com' });
 	});
 
 	it('sends an email forwarding test email', async () => {

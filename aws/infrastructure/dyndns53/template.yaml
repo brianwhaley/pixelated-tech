@@ -187,6 +187,31 @@ Resources:
           CacheTtlInSeconds: 300
           CacheDataEncrypted: false
 
+  DyndnsApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+      - DyndnsStage
+    Properties:
+      AlarmName: Pixelated Dyndns53 API 5XX Errors Alarm
+      AlarmDescription: Alerts when the dyndns53 production API Gateway stage returns a server error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+        - Name: ApiName
+          Value: dyndns53
+        - Name: Stage
+          Value: v1
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
   DyndnsApiPermission:
     Type: AWS::Lambda::Permission
     DeletionPolicy: Retain
@@ -204,3 +229,43 @@ Resources:
     Properties:
       LogGroupName: /aws/lambda/dyndns53_lambda
       RetentionInDays: 30
+
+  DyndnsErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Authorization|Malformed|Invalid IP|Headers|password|Task timed out|Runtime.ExitError%'
+      LogGroupName: !Ref DyndnsLogGroup
+      MetricTransformations:
+        - MetricName: Pixelated Dyndns53 Errors Metric
+          MetricNamespace: Pixelated/Dyndns53
+          MetricValue: '1'
+          DefaultValue: 0
+
+  DyndnsErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Dyndns53 Errors Alarm
+      AlarmDescription: Alerts when the dyndns53 Lambda emits an application or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+      Namespace: Pixelated/Dyndns53
+      MetricName: Pixelated Dyndns53 Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  DyndnsErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Dyndns53 Errors Query
+      LogGroupNames:
+        - !Ref DyndnsLogGroup
+      QueryString: |
+        fields @timestamp, @message, @logStream
+        | filter @message like /(?i)(authorization required|bad username|malformed basicauth|invalid ip|headers not populated|multiple existing records|error|failed|exception|task timed out|runtime\.exiterror)/
+        | sort @timestamp desc

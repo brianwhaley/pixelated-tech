@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 const mockSmartFetch = vi.fn();
 
@@ -46,5 +46,28 @@ describe('Site Health page behavior', () => {
 		render(<Page />);
 		expect(screen.getByText('Site Health')).toBeTruthy();
 		await waitFor(() => expect(mockSmartFetch).toHaveBeenCalled());
+	});
+
+	it('renders the loaded dashboard and handles filters', async () => {
+		mockSmartFetch.mockResolvedValue({ ok: true, json: async () => [{ name: 'test-site' }, { name: 'second-site' }] });
+		const Page = (await import('@/app/(pages)/site-health/page')).default;
+		render(<Page />);
+		await waitFor(() => expect(screen.getByLabelText('Select Site')).toBeTruthy());
+		fireEvent.change(screen.getByLabelText('Select Site'), { target: { value: 'second-site' } });
+		fireEvent.change(screen.getByLabelText('Start Date'), { target: { value: '2026-01-01' } });
+		fireEvent.change(screen.getByLabelText('End Date'), { target: { value: '2026-02-01' } });
+		expect(screen.getByText('second site')).toBeTruthy();
+	});
+
+	it('finishes loading when the sites request fails or returns non-ok', async () => {
+		mockSmartFetch.mockRejectedValueOnce(new Error('offline'));
+		const Page = (await import('@/app/(pages)/site-health/page')).default;
+		const { unmount } = render(<Page />);
+		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
+		unmount();
+
+		mockSmartFetch.mockResolvedValueOnce({ ok: false, json: async () => [] });
+		render(<Page />);
+		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
 	});
 });
