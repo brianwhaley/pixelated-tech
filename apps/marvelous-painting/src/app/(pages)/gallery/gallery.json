@@ -1,0 +1,15 @@
+[
+	{ "index": 0, "cardIndex": 0, "cardLength": 13, "image": "/images/marquee.webp", "imageAlt": "Marvelous Painting project detail" },
+	{ "index": 1, "cardIndex": 1, "cardLength": 13, "image": "/images/Exterior-painters-in-new-jersey1.webp", "imageAlt": "Exterior painting project in New Jersey" },
+	{ "index": 2, "cardIndex": 2, "cardLength": 13, "image": "/images/Interior-Painting-Services-in-New-Jersey2.webp", "imageAlt": "Interior painting project in New Jersey" },
+	{ "index": 3, "cardIndex": 3, "cardLength": 13, "image": "/images/Crown-Molding-Wainscoting.webp", "imageAlt": "Crown molding and wainscoting project" },
+	{ "index": 4, "cardIndex": 4, "cardLength": 13, "image": "/images/Deck-Staining.webp", "imageAlt": "Deck staining project" },
+	{ "index": 5, "cardIndex": 5, "cardLength": 13, "image": "/images/work1.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 6, "cardIndex": 6, "cardLength": 13, "image": "/images/work2.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 7, "cardIndex": 7, "cardLength": 13, "image": "/images/work3.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 8, "cardIndex": 8, "cardLength": 13, "image": "/images/work4.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 9, "cardIndex": 9, "cardLength": 13, "image": "/images/work5.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 10, "cardIndex": 10, "cardLength": 13, "image": "/images/work6.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 11, "cardIndex": 11, "cardLength": 13, "image": "/images/work7.webp", "imageAlt": "Completed Marvelous Painting project" },
+	{ "index": 12, "cardIndex": 12, "cardLength": 13, "image": "/images/work8.webp", "imageAlt": "Completed Marvelous Painting project" }
+]

@@ -19,6 +19,18 @@ Build the smallest site-specific implementation that satisfies the approved asse
 - Prefer less duplicated code, more appropriate configuration, smaller bundles, faster builds, and fewer dependencies.
 - Do not turn a site build into an unapproved platform rewrite.
 
+## General Guidance for New Sites
+
+- Base every new site on `apps/pixelated-template`. Use `packages/pixelated-components/src/scripts/create-pixelated-app.js` to scaffold the initial site when it is appropriate for the requested workflow.
+- When an existing website is available, begin with a content audit and carry forward accurate existing content, including text, images, videos, testimonials, services, service areas, licenses, certifications, company history, achievements, and other established trust signals. Download approved media into the target app's `public/images` or another appropriate public asset directory when local assets are needed.
+- Be sure to update basic site info, routes, visual design, services, and service areas in the pixelated.config.json file.
+- Preserve existing-site claims only when they can be verified from the source website or approved discovery artifacts. Do not invent, embellish, or transfer claims that are unsupported, expired, or clearly unrelated to the current business.
+- Create a proposal for blog topics based on the services offered and add the approved topics to the target site's `public/data/blogcalendar.json`, using the existing `blogCalendarConfig` and `blogCalendar` structure and service-based categories in each entry.
+- Build FAQs from common industry questions and the competitors identified in the approved assessment. Adapt them to the client's verified services and avoid presenting competitor claims, guarantees, or unsupported business-specific answers as facts.
+- Build pages by composing existing components from the `@pixelated-tech/components` library before creating local page components or patterns.
+- Implement contact-us forms with the shared `FormEngine` and JSON form definitions, such as `src/app/data/contactform.json`, rather than hand-built form markup or parallel form systems.
+- Preserve existing public URLs whenever practical. When a route must change, either retain a compatibility route or add an explicit redirect in `next.config.ts`; review the existing site's important URLs and validate redirect coverage before removing or renaming pages.
+
 ## Deployment Boundary
 
 - Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly requests that deployment or release action.
@@ -78,14 +90,31 @@ Use the repository's canonical configuration system:
 - Do not add unsupported claims, invented content, unapproved services, pricing, warranties, reviews, certifications, or business outcomes.
 - Preserve existing user changes and avoid destructive migrations.
 
+## Mandatory Approval Gate
+
+Before implementation:
+
+1. Inspect the current repository state and gather the relevant evidence.
+2. Explain the proposed implementation, including files and systems affected, resources to create, update, or remove, permission and behavior changes, architectural decisions, deployment order, and validation plan.
+3. Present the proposal and wait for the user's approval.
+4. Until approval is received, do not make any changes anywhere:
+	- Do not edit, create, delete, rename, move, or format anything.
+	- Do not modify source code, documentation, configuration, infrastructure, generated artifacts, dependencies, tests, repositories, branches, commits, databases, AWS resources, or external systems.
+	- Do not run commands or tools that can mutate state.
+	- Read-only inspection and validation are allowed.
+5. Approval is approval, whether the user says "go," "yes," "implement it," or equivalent.
+6. Implement the approved directions and architectural discussion exactly.
+7. Never implement, modify, remove, replace, or otherwise change anything outside the scope of the explicit directions or architectural discussion without explicit approval for that specific change.
+8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
+9. If the user says "stop," immediately stop all tool use and make no further changes.
+
 ## Implementation Workflow
 
 1. Identify the target app, approved scope, routes, data sources, and acceptance criteria.
 2. Read the relevant app files, shared components, config types, schemas, tests, and prior implementations.
 3. Perform the Platform Opportunity Review and classify reuse, local work, and shared opportunities.
 4. Present the implementation approach, affected files, reuse decisions, assumptions, and validation plan.
-5. Wait for approval before editing when scope or architecture is not already approved.
-6. Implement the smallest local change that satisfies the approved scope.
+5. Implement the smallest local change that satisfies the approved scope after the Mandatory Approval Gate has been satisfied.
 7. Reuse shared components and test utilities before adding local equivalents, and create or update focused tests alongside the feature.
 8. Validate the changed slice immediately after each substantive edit, starting with the narrowest relevant test.
 9. Run focused tests, lint, type checks, and builds appropriate to the touched app or package.

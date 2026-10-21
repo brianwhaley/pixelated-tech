@@ -4,6 +4,20 @@ import fetch from "node-fetch";
 
 const debug = false;
 
+const getRequestDiagnostics = (event, url) => {
+	let targetHost = 'unknown';
+	try {
+		targetHost = new URL(url).hostname;
+	} catch {
+		targetHost = 'invalid';
+	}
+	return {
+		requestId: event?.requestContext?.requestId,
+		method: event?.httpMethod,
+		targetHost
+	};
+};
+
 export const handler = async (event) => {
 	/* if(event.requestContext.httpMethod != 'GET'){
         return returnResponse({error: true, message: 'Method not allowed!'});
@@ -66,6 +80,13 @@ const getResponse = async function (event) {
 			mode: 'cors',
 			body: (event.body) ? event.body : null
 		});
+		if (!response.ok) {
+			console.error('Proxy upstream response was not successful', {
+				...getRequestDiagnostics(event, url),
+				status: response.status,
+				statusText: response.statusText
+			});
+		}
 		// responseBody = await response.text();
 
 		if ( debug ) console.log("RESPONSE : " , response);
@@ -83,10 +104,14 @@ const getResponse = async function (event) {
 				responseBody = await response.text();
 			}
 		} else {
-			console.log('Content-Type header is not set.');
+			console.error('Proxy upstream response is missing Content-Type', getRequestDiagnostics(event, url));
 		}
 	} catch (e) {
-		console.log('Error', e);
+		console.error('Proxy upstream fetch failed', {
+			...getRequestDiagnostics(event, url),
+			errorName: e?.name,
+			errorMessage: e?.message
+		});
 		responseBody = {...e};
 	}
 	if ( debug ) console.log('RESPONSE BODY : ', responseContentType, " : ", responseBody);
@@ -94,6 +119,13 @@ const getResponse = async function (event) {
 };
 
 const returnResponse = async function (responseBody, statusCode = 200) {
+	if (typeof responseBody !== 'string') {
+		console.error('Proxy response body is not API Gateway compatible', {
+			bodyType: responseBody === null ? 'null' : typeof responseBody,
+			contentType: responseContentType,
+			statusCode
+		});
+	}
 	const response = {
 		"isBase64Encoded": false,
 		"statusCode": statusCode,

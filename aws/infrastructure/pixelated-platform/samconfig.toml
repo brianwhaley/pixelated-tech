@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "pixelated-platform"
+region = "us-east-2"
+s3_bucket = "pixelated-sam-artifacts"
+resolve_s3 = false
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"

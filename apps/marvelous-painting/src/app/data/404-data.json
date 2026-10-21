@@ -1,0 +1,10 @@
+{
+    "images" : [
+
+		{   "img": "https://www.pixelated.tech/images/icons/placeholder.png", 
+			"text": "Page Not Found.",
+			"description": "Page Not Found" 
+        }
+
+	]
+}

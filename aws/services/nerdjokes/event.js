@@ -374,13 +374,15 @@ module.exports = class Event {
     		itemsArray.push(newitem);
     	}
         if(log) console.log("CLEAN UNINSTALL - App Uninstalled - Items", itemsArray);
-    	var params = {
-        	RequestItems : { [ddbc.jokesScheduleDB] : itemsArray }
-    	};
-        if(log) console.log("CLEAN UNINSTALL - App Uninstalled - Params", params);
-    	await ddbc.batchDeleteFromDynamo({
-        	params: params
-        });
+        if(itemsArray.length > 0){
+            var params = {
+                RequestItems : { [ddbc.jokesScheduleDB] : itemsArray }
+            };
+            if(log) console.log("CLEAN UNINSTALL - App Uninstalled - Params", params);
+            await ddbc.batchDeleteFromDynamo({
+                params: params
+            });
+        }
         
         // ==#####== DELETE TOKEN ==#####==
         await ddbc.deleteFromDynamo( {

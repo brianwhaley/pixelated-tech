@@ -4,6 +4,24 @@ This document outlines the coding standards and conventions used across the Pixe
 
 ## AI Agent & Code Review Discipline
 
+### Mandatory Approval Gate
+
+Before implementation:
+
+1. Inspect the current repository state and gather the relevant evidence.
+2. Explain the proposed implementation, including files and systems affected, resources to create, update, or remove, permission and behavior changes, architectural decisions, deployment order, and validation plan.
+3. Present the proposal and wait for the user's approval.
+4. Until approval is received, do not make any changes anywhere:
+  - Do not edit, create, delete, rename, move, or format anything.
+  - Do not modify source code, documentation, configuration, infrastructure, generated artifacts, dependencies, tests, repositories, branches, commits, databases, AWS resources, or external systems.
+  - Do not run commands or tools that can mutate state.
+  - Read-only inspection and validation are allowed.
+5. Approval is approval, whether the user says "go," "yes," "implement it," or equivalent.
+6. Implement the approved directions and architectural discussion exactly.
+7. Never implement, modify, remove, replace, or otherwise change anything outside the scope of the explicit directions or architectural discussion without explicit approval for that specific change.
+8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
+9. If the user says "stop," immediately stop all tool use and make no further changes.
+
 **For AI agents and code reviewers:**
 - Separate evidence gathering from implementation: for repository-specific questions, inspect the relevant source, tests, and configuration read-only before answering; do not edit files unless the user explicitly requests implementation.
 - A question is not permission to implement a recommendation. Answer first using verified repository evidence, then wait for an explicit implementation request.

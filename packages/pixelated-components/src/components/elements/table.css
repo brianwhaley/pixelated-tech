@@ -15,12 +15,14 @@ table.pix-table {
 		color: #369;
 		text-decoration: none;
 		white-space: nowrap;
+        vertical-align: top;
 	}
 	th:hover {
 		text-decoration: underline;
 	}
 	td {
 		padding: 5px;
+        vertical-align: top;
 	}
 } 
 

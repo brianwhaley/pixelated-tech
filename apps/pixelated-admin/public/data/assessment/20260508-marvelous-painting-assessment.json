@@ -1,0 +1,272 @@
+{
+  "companyName": "Marvelous Painting",
+  "companyContact": "Madan Mohan",
+  "date": "May 8, 2026",
+  "email": "info@marvelouspainting.com",
+  "phone": "908-647-3010",
+  "address": {
+    "streetAddress": "16 Chaucer Ct.",
+    "addressLocality": "Basking Ridge",
+    "addressRegion": "New Jersey",
+    "postalCode": "07920",
+    "addressCountry": "US"
+  },
+  "primaryAudience": [
+    "Residential and commercial customers seeking painting, power washing, remodeling, and renovation services in Northern New Jersey.",
+    "Homeowners seeking interior painting, kitchen renovations, coffered ceilings, custom carpentry, crown molding, wainscoting, and related interior projects during the winter months.",
+    "Homeowners seeking exterior painting, power washing, deck and patio construction, deck staining, and outdoor improvements during the summer months.",
+    "Homeowners who value artisanal quality, personalized service, strong project photography, and a high-touch experience."
+  ],
+  "secondaryAudience": [
+    "Local residential and commercial referral partners.",
+    "Community organizations, clubs, nonprofits, hobbyists, and enthusiasts connected to the service area.",
+    "Existing customers who can provide reviews, referrals, appreciation letters, project photography, and repeat work."
+  ],
+  "marketOverview": [
+    "Northern New Jersey represents an active residential home improvement market with aging housing stock, high homeowner occupancy, and above-average household income.",
+    "Homeowners increasingly view remodeling as a lifestyle investment, prioritizing comfort, energy efficiency, and aesthetics in addition to resale value.",
+    "Regional competitors commonly share professionally designed websites, strong photo galleries, consistent Google reviews, clear service explanations, and trust-focused messaging.",
+    "Reported regional project trends include painting, landscaping and outdoor living, and bathroom remodeling as high-demand categories. The assessment notes that all market statistics should be verified before publication.",
+    "The assessment identifies an opportunity for Marvelous Painting to differentiate through artisanal quality, personalized service, high-end finishes, local project evidence, and a broader renovation and remodeling presence."
+  ],
+  "currentSocialMedia": [
+    "Yelp - https://www.yelp.com/biz/marvelous-painting-and-carpentry-bernards - unclaimed, 6 reviews, 3.0 stars",
+    "MapQuest - https://www.mapquest.com/us/new-jersey/marvelous-painting-434184379",
+    "Instagram - https://www.instagram.com/marvelouspaintingllc/",
+    "Facebook - https://www.facebook.com/marvelous.homeimprovements.94 - nearly empty profile with 1 photo and no reviews",
+    "Google Business Profile - https://share.google/FtzhWJxBZi73iTO3W",
+    "Birdeye - https://reviews.birdeye.com/marvelous-painting-166703696148891",
+    "Nextdoor - https://nextdoor.com/pages/marvelous-painting-1/ - unclaimed, 6 likes, good reviews",
+    "Thumbtack - no obvious profile"
+  ],
+  "currentAdvertisingPartners": [
+    "No current advertising partners were identified."
+  ],
+  "currentEarnedMedia": [
+    "No current earned media was identified."
+  ],
+  "existingSite": [
+    {
+      "url": "https://www.marvelouspainting.com/",
+      "strengths": [
+        "The existing information architecture is sound and includes About Us, Services and service subpages, Painting Process, Appreciation Letters, Reviews, Service Areas, Gallery, and Contact Us.",
+        "Individual pages for cities, towns, and services create a useful local-search foundation.",
+        "The site contains strong imagery from recent projects, although some images are cropped awkwardly."
+      ],
+      "areasForImprovement": [
+        "Modernize the design, reduce dense content, add white space, and feature the brand more prominently.",
+        "Replace outdated Bootstrap, jQuery, and static HTML implementation with a scalable modern platform.",
+        "Expand beyond painting to better represent decks, cabinetry, crown molding, wainscoting, kitchen remodeling, and renovation goals.",
+        "Remove stale coronavirus content.",
+        "Improve header structure and navigation usability.",
+        "Add missing content and modern SEO and AEO features, including richer schema coverage and stronger use of Appreciation Letters.",
+        "Reduce obvious keyword stuffing that may negatively affect search performance.",
+        "Resolve mobile layout issues affecting the Gallery and Appreciation Letters sections.",
+        "Coordinate branding, colors, typography, imagery, and other visual elements."
+      ]
+    }
+  ],
+  "similarCompanyNames": [
+    {
+      "name": "Marvelous Painting Services",
+      "urls": ["https://www.marvelouspaintingservices.com/"],
+      "summary": "Florida painting company with a similar name."
+    },
+    {
+      "name": "Marvelous Painting",
+      "urls": ["https://www.marvelouspaints.com/"],
+      "summary": "Florida painting company with the same name."
+    },
+    {
+      "name": "Marvellous Painting",
+      "urls": ["https://www.yelp.com/biz/marvellous-painting-newport-news"],
+      "summary": "Virginia painting company using a closely related spelling."
+    },
+    {
+      "name": "Marvelous Painting",
+      "urls": ["https://www.homeadvisor.com/rated.MarvelousPainting.9811452.html"],
+      "summary": "Oregon painting listing with the same name."
+    },
+    {
+      "name": "Marvelous Painting",
+      "urls": ["https://www.marvelouspaint.net/"],
+      "summary": "Wisconsin painting company with a similar name."
+    },
+    {
+      "name": "Marvelous Painting Custom Finishing",
+      "urls": ["https://www.facebook.com/p/Marvelous-Painting-Custom-Finishes-LLC-100088396042317/"],
+      "summary": "Florida custom finishing company with a similar name."
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Magnolia Home Remodeling Group",
+      "urls": ["https://magnoliahomeremodeling.com/"],
+      "summary": "Union and Morris County competitor emphasizing family ownership and a diverse interior and exterior portfolio."
+    },
+    {
+      "name": "JMC Design | Build | Remodel",
+      "urls": ["https://www.jmchomeremodeling.com/"],
+      "summary": "Parsippany and Morris County luxury-market competitor differentiated by a high-end showroom and lifetime workmanship messaging."
+    },
+    {
+      "name": "Monk's Home Improvements",
+      "urls": ["https://monkshomeimprovements.com/", "https://monkshomeimprovements.com/sitemap_index.xml"],
+      "summary": "Morristown competitor with strong local visibility, custom carpentry and painting services, showrooms, an active blog, and a comprehensive projects section."
+    }
+  ],
+  "currentState": [
+    "Marvelous Painting has served the community for more than 25 years.",
+    "The company began with painting services, expanded into exterior services, and later grew into renovations including kitchens, bathrooms, decks, crown molding, wainscoting, and custom carpentry.",
+    "The business goal is to grow its renovation and remodeling work, particularly kitchen projects.",
+    "Larger competitors have broad services and strong digital footprints with regularly updated websites and comprehensive social media activity.",
+    "The current digital presence is stronger in painting than in the renovation and remodeling categories the business wants to grow."
+  ],
+  "nextSteps": [
+    "Rebuild the website to describe the full business and differentiate Marvelous Painting from competitors.",
+    "Create a usable, findable site structure covering the comprehensive service set.",
+    "Organize the photo gallery by service and showcase strong project results.",
+    "Gather and publish reviews and appreciation letters from existing customers.",
+    "Improve local and regional SEO and answer-engine visibility.",
+    "Demonstrate subject-matter expertise, relevance, authority, credibility, and customer focus.",
+    "Build a targeted social media presence focused on findability, early decision-making, and ratings.",
+    "Explore digital advertising, traditional advertising, earned media, and community partnerships."
+  ],
+  "aboutPixelated": [
+    "Pixelated Technologies is a digital services company specializing in web development, social media marketing, search engine optimization, content management, eCommerce, and small-business modernization.",
+    "Pixelated Technologies uses AI tools as collaboration and acceleration tools throughout content, design, coding, creative, and maintenance work, not as a substitute for client decision-making.",
+    "Pixelated Technologies offers an all-inclusive flat-fee model combining custom development, design, domain and image licensing, content creation, SEO, analytics, accessibility, page speed, content management, and distribution."
+  ],
+  "visualDesign": {
+    "primary": "#042366",
+    "secondary": "#757575",
+    "tertiary": "#382D30",
+    "accent1": "#C7D1E8",
+    "accent2": "#FFFFFF",
+    "accent3": "#1F2D4D",
+    "headerFont": {
+      "name": "Patua One",
+      "url": "https://fonts.google.com/specimen/Patua+One"
+    },
+    "bodyFont": {
+      "name": "Open Sans",
+      "url": "https://fonts.google.com/specimen/Open+Sans"
+    },
+    "additionalNotes": [
+      "Use an elegant, sophisticated palette with ample white space and subdued backgrounds.",
+      "Use primary blue for the logo, primary headers, and formal borders; gray for background and clean space; deep charcoal-brown and light blue for backgrounds, borders, and accents.",
+      "Balance a traditional, authoritative serif display treatment with modern, accessible sans-serif body text.",
+      "Use large margins and generous padding to express exclusivity, reduce information overload, and make the typography and logo the visual heroes.",
+      "Use thin charcoal or blue borders, restrained ghost buttons, clean top-right navigation, and minimal line-art icons.",
+      "Use high-resolution project photography and a gallery-first visual approach."
+    ]
+  },
+  "websiteDomain": {
+    "currentUrls": ["https://www.marvelouspainting.com/"],
+    "proposedUrls": ["https://www.marvelouspainting.com/"]
+  },
+  "informationArchitecture": [
+    {
+      "route": "/",
+      "title": "Home Page",
+      "notes": ["Header with logo and navigation.", "Full-width high-resolution image or video hero.", "Marvelous Quality Commitment.", "Services, service areas, recent projects, testimonials, and footer.", "Move the painting process to its own page."]
+    },
+    {
+      "route": "/about-us",
+      "title": "About Us",
+      "notes": ["Narrative company story, mission, team portraits and expertise, and latest news or updates."]
+    },
+    {
+      "route": "/services",
+      "title": "Services",
+      "notes": ["Interior Painting, Exterior Painting, Deck and Outdoor, Custom Carpentry including crown molding and wainscoting, and Remodel/Renovation.", "Break individual services into dedicated pages."]
+    },
+    {
+      "route": "/our-process",
+      "title": "Our Process",
+      "notes": ["Explain paint preparation, deck and outdoor preparation, design and build for remodeling and renovation, and other service-specific processes."]
+    },
+    {
+      "route": "/testimonials",
+      "title": "Testimonials",
+      "notes": ["Use case studies, scenario cards, appreciation letters, review links, and a testimonial carousel."]
+    },
+    {
+      "route": "/service-areas",
+      "title": "Service Areas",
+      "notes": ["Create pages for towns served with location-specific work examples and reviews."]
+    },
+    {
+      "route": "/gallery",
+      "title": "Gallery",
+      "notes": ["Use visual storytelling rather than a basic photo grid, with high-resolution interiors, kitchens, backyards, twilight scenes, and serene home environments."]
+    },
+    {
+      "route": "/faqs",
+      "title": "Frequently Asked Questions",
+      "notes": ["Cover service logistics, geographic range, estimates, billing, preparation, materials, and delivery time using accordion sections."]
+    },
+    {
+      "route": "/blog",
+      "title": "Updates and Briefings",
+      "notes": ["Use articles for finished projects, subject-matter expertise, team members, customer spotlights, and social sharing."]
+    },
+    {
+      "route": "/contact-us",
+      "title": "Contact Us",
+      "notes": ["Provide a minimal inquiry form, direct phone and email, service area information, and an integrated map."]
+    }
+  ],
+  "blogRoute": {
+    "enabled": true,
+    "route": "/blog"
+  },
+  "blogCalendarConfig": {
+    "cadence": "weekly",
+    "defaultStatus": "planned",
+    "criteria": {
+      "contentRules": ["Optimize each post for local SEO, service keywords, and a clear call to action.", "Review every post with the client before publication.", "Rotate painting, remodeling, renovation, seasonal, project, team, and local-community themes across 52 weeks."]
+    }
+  },
+  "blogCalendar": [],
+  "proposedSocialMediaAccounts": [
+    "Google Business Profile",
+    "Facebook",
+    "Instagram",
+    "X / Twitter",
+    "Nextdoor",
+    "Yelp",
+    "Reddit",
+    "Pinterest",
+    "The Knot"
+  ],
+  "differentiation": [
+    "Compete on artisanal quality, personalized service, and high-end finishes rather than low-price or high-volume positioning.",
+    "Use dedicated local landing pages for towns and cities served.",
+    "Adopt a gallery-first approach with high-resolution local project photography and project stories.",
+    "Use Appreciation Letters and verified reviews as high-value trust and SEO content.",
+    "Position renovation and remodeling, especially kitchen work, alongside the established painting expertise.",
+    "Build a refined, high-touch brand experience that feels like an invitation rather than a sales pitch."
+  ],
+  "keywords": [
+    "Cabinet refinishing Basking Ridge",
+    "Wainscoting and crown molding installation NJ",
+    "Custom texture painting",
+    "Decorative finishes for homes",
+    "Deck staining and restoration",
+    "Interior painting Northern New Jersey",
+    "Exterior painting Northern New Jersey",
+    "Kitchen remodeling Basking Ridge",
+    "Custom carpentry Basking Ridge",
+    "Home renovation Morris County"
+  ],
+  "currentBusinessPlan": [
+    "Maintain and strengthen the established painting business while expanding into renovation and remodeling.",
+    "Use the website and social media as the foundation for visibility, engagement, trust, and growth.",
+    "Build community relationships with local businesses, organizations, nonprofits, clubs, hobbyists, and referral partners.",
+    "Start advertising small and hyperlocal, then expand through social, Google, Yelp, Nextdoor, Reddit, print, directories, chambers, and earned media.",
+    "Consider a review and referral program for previous and new customers, subject to appropriate program terms and platform policies.",
+    "Use traditional media and local publications as credibility-building introductions that send prospects to the website and social channels."
+  ],
+  "logo": []
+}

@@ -19,8 +19,6 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess
-        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
 
   ProxyFunction:
     Type: AWS::Serverless::Function
@@ -146,6 +144,10 @@ Resources:
           ThrottlingRateLimit: 10000
       RestApiId: !Ref ProxyApi
       StageName: prod
+      AccessLogSetting:
+        DestinationArn: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/apigateway/proxy
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
   ProxyApi5xxAlarm:
     Type: AWS::CloudWatch::Alarm

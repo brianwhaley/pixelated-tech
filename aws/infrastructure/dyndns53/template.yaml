@@ -186,6 +186,10 @@ Resources:
           CachingEnabled: false
           CacheTtlInSeconds: 300
           CacheDataEncrypted: false
+      AccessLogSetting:
+        DestinationArn: !GetAtt DyndnsApiAccessLogGroup.Arn
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
   DyndnsApi5xxAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -211,6 +215,14 @@ Resources:
       Threshold: 0
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: notBreaching
+
+  DyndnsApiAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/dyndns53/v1
+      RetentionInDays: 30
 
   DyndnsApiPermission:
     Type: AWS::Lambda::Permission

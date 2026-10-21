@@ -548,18 +548,34 @@
 			"rte53HostedZoneID": "",
 			"amplifyAppId": "",
 			"cloudfronturl": "",
-			"url": "",
+			"url": "https://www.marvelouspainting.com/",
 			"ga4PropertyId": "",
 			"gscSiteUrl": "",
 			"googleMapsPlaceId": "",
 			"billing": {
 				"tier": "premium",
 				"price": 500.00,
-				"email": "",
+				"email": "info@marvelouspainting.com",
 				"companyName": "Marvelous Painting",
 				"companyContact": "Madan Mohan",
 				"address": "16 Chaucer Ct., Basking Ridge NJ 07920-2574",
-				"notes": {},
+				"notes": {
+					"socials": {
+						"Yelp": "https://www.yelp.com/biz/marvelous-painting-and-carpentry-bernards",
+						"Birdeye": "https://reviews.birdeye.com/marvelous-painting-166703696148891"
+					},
+					"emails": [
+						"info@marvelouspainting.com",
+						"marvelouspainting@hotmail.com",
+						"marveloushomeimprovements@gmail.com"
+					],
+					"phones": [
+						"908-647-3010",
+						"908-790-9069",
+						"973-635-6350",
+						"908-723-1533"
+					]
+				},
 				"additionalInvoiceItems": {}
 			}
 		},
@@ -633,15 +649,17 @@
 				"email": "",
 				"companyName": "Birdie Box",
 				"companyContact": "Luke Sadler",
-				"address": "",
+				"address": "39 Whispering Oaks Circle, Okatie, SC 29909",
 				"notes": {
-					"contactName": "Luke Sadler"
+					"contactName": "Luke Sadler",
+					"Bizapedia": "https://www.bizapedia.com/sc/birdie-box-llc.html",
+					"Facebook": "https://www.facebook.com/luke.sadler.547"
 				},
 				"additionalInvoiceItems": {}
 			}
 		},
 		{
-			"name": "TCC",
+			"name": "TCC - Traveling Country Club",
 			"localPath": "",
 			"localPort": "",
 			"remote": "",
@@ -688,7 +706,7 @@
 				"companyName": "The Bluffton Collective",
 				"companyContact": "Luke Sadler",
 				"address": "",
-				"notes": {},
+				"notes": {"phone": "(850) 584-4852"},
 				"additionalInvoiceItems": {}
 			}
 		},

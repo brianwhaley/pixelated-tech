@@ -1,0 +1,17 @@
+[
+	{
+		"title": "Sample Project 2",
+		"description": "An example completed project. Configure Contentful to replace this sample with your work.",
+		"tileCards": [
+			{ "index": 0, "cardIndex": 0, "cardLength": 2, "image": "/images/pix-bg-512.jpg", "imageAlt": "Sample project overview" },
+			{ "index": 1, "cardIndex": 1, "cardLength": 2, "image": "/images/pix-bg-512.jpg", "imageAlt": "Sample project detail" }
+		]
+	},
+	{
+		"title": "Sample Project 1",
+		"description": "A second example showing how each project groups its own description and images.",
+		"tileCards": [
+			{ "index": 2, "cardIndex": 0, "cardLength": 1, "image": "/images/pix-bg-512.jpg", "imageAlt": "Second sample project overview" }
+		]
+	}
+]
