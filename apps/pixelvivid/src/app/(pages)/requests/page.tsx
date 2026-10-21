@@ -1,66 +1,64 @@
- 
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { getContentfulEntriesByType } from "@pixelated-tech/components";
-import { HubspotTrackingCode /* , getHubspotFormSubmissions */ } from "@pixelated-tech/components";
+import React from "react";
+import { HubspotTrackingCode } from "@pixelated-tech/components";
 import { FormEngine } from "@pixelated-tech/components";
 import { Table } from "@pixelated-tech/components";
-import { Loading, usePixelatedConfig } from "@pixelated-tech/components";
 import { PageTitleHeader, PageSectionHeader } from "@pixelated-tech/components";
+import {
+	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
+	listPixelatedFormSubmissionReportRows,
+} from "@pixelated-tech/components/server";
 import formData from "@/app/data/requestform.json";
 import "./requests.css";
 
-export default function Requests() {
-	const pixelatedConfig = usePixelatedConfig();
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
-	if (!pixelatedConfig) {
-		return <Loading />;
-	}
+type CustomRequestType = {
+	name: string;
+	source: string;
+	description: string;
+	status: string;
+	requestDate: string;
+};
 
-	/* MANAGE CONTENTFUL CUSTOM REQUESTDATA FETCHING */
+export default async function Requests() {
+	let customRequests: CustomRequestType[] = [];
+	let requestLoadError = false;
 
-	type CustomRequestType = {
-		name: string;
-		source: string;
-		description: string; 
-		email?: string; // Optional property
-		phone?: string; // Optional property
-		status: string;
-		requestDate: Date;
-	};
+	try {
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
+			domain: "pixelvivid.com",
+			formName: "custom-request",
+		});
 
-	const [ customRequests , setCustomRequests ] = useState<CustomRequestType[]>([]);
-	const apiProps = {
-		base_url: pixelatedConfig?.integrations?.contentful?.base_url || "",
-		space_id: pixelatedConfig?.integrations?.contentful?.space_id || "",
-		environment: pixelatedConfig?.integrations?.contentful?.environment || "",
-		delivery_access_token: pixelatedConfig?.integrations?.contentful?.delivery_access_token || "",
-	};
-	useEffect(() => {
-		async function getCustomRequests() {
-			const contentType = "customRequest"; 
-			const customRequestEntries = await getContentfulEntriesByType({ apiProps: apiProps, contentType: contentType }); 
-			const items = customRequestEntries.items.filter((card: any) => card.sys.contentType.sys.id === contentType);
-			const entriesJSON = items.map(function (card: any) {
+		customRequests = rows
+			.filter((row) => {
+				const status = String(row.Status ?? row.status ?? "").trim().toLowerCase();
+				return status !== "submitted" && status !== "completed";
+			})
+			.map((row) => {
+				const firstName = String(row.firstname ?? "").trim();
+				const lastNameInitial = String(row.lastname ?? "").trim().charAt(0);
+				const rawRequestDate = String(row.timestamp ?? row.created_at ?? "");
+				const parsedRequestDate = new Date(rawRequestDate);
+				const formattedRequestDate = Number.isNaN(parsedRequestDate.getTime())
+					? rawRequestDate
+					: `${parsedRequestDate.getUTCFullYear()}-${String(parsedRequestDate.getUTCMonth() + 1).padStart(2, "0")}-${String(parsedRequestDate.getUTCDate()).padStart(2, "0")}`;
 				return {
-					name: card.fields.name,
-					source: card.fields.source,
-					description: card.fields.description,
-					// email: card.fields.email,
-					// phone: card.fields.phone,
-					status: card.fields.status,
-					requestDate: card.fields.requestDate,
+					name: `${firstName}${lastNameInitial ? ` ${lastNameInitial}.` : ""}`.trim(),
+					source: String(row.source ?? ""),
+					description: String(row.message ?? ""),
+					status: String(row.Status ?? row.status ?? ""),
+					requestDate: formattedRequestDate,
 				};
 			});
-			entriesJSON.sort(function (a: any, b: any) { return a.requestDate > b.requestDate ? 1 : -1; });
-			setCustomRequests(entriesJSON);
-		}
-		getCustomRequests();
-	}, []);
 
-
-	/* RENDER THE COMPONENT */
+		customRequests.sort((left, right) => left.requestDate.localeCompare(right.requestDate));
+	} catch (error) {
+		console.error("Unable to load custom requests:", error);
+		requestLoadError = true;
+	}
 
 	return (
 		<>
@@ -79,7 +77,9 @@ export default function Requests() {
 			<section style={{backgroundColor: "var(--accent2-color)"}} id="request-list-section">
 				<div className="section-container">
 					<PageSectionHeader title="Custom Sunglass Request Work List" />
-					{ customRequests.length > 0 ? (
+					{ requestLoadError ? (
+						<p>Unable to load custom requests.</p>
+					) : customRequests.length > 0 ? (
 						<Table data={customRequests} id="customRequests" sortable={true}/>
 					) : (
 						<p>No custom requests found.</p>

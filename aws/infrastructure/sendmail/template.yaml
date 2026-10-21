@@ -2,15 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Existing sendmail API and form submission persistence.
 
-Parameters:
-  SmtpUser:
-    Type: String
-    Description: SMTP username supplied to the sendmail Lambda at deploy time.
-  SmtpPassword:
-    Type: String
-    NoEcho: true
-    Description: SMTP password supplied to the sendmail Lambda at deploy time.
-
 Resources:
   SendmailExecutionRole:
     Type: AWS::IAM::Role
@@ -30,9 +21,7 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess_v2
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
   FormSubmissionTable:
@@ -67,10 +56,6 @@ Resources:
       MemorySize: 128
       Timeout: 10
       Role: !GetAtt SendmailExecutionRole.Arn
-      Environment:
-        Variables:
-          SMTP_USER: !Ref SmtpUser
-          SMTP_PASSWORD: !Ref SmtpPassword
 
   SendmailApi:
     Type: AWS::ApiGateway::RestApi
@@ -178,8 +163,6 @@ Resources:
         LogGroup: !Ref SendmailLogGroup
       Environment:
         Variables:
-          SMTP_USER: !Ref SmtpUser
-          SMTP_PASSWORD: !Ref SmtpPassword
           S3_BUCKET: pixelated-sendmail-bucket
 
   SendmailS3InvokePermission:
@@ -225,7 +208,7 @@ Resources:
         RequestTemplates:
           application/json: $input.body
         Type: AWS
-        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:s3:path/pixelated-sendmail-bucket/sendmail/{requestId}.json
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:s3:path/pixelated-sendmail-bucket/{requestId}.json
       MethodResponses:
         - ResponseModels:
             application/json: Empty
@@ -293,6 +276,10 @@ Resources:
           LoggingLevel: INFO
           ThrottlingBurstLimit: 5000
           ThrottlingRateLimit: 10000
+      AccessLogSetting:
+        DestinationArn: !GetAtt SendmailApiAccessLogGroup.Arn
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
   SendmailApi5xxAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -350,6 +337,14 @@ Resources:
       DomainName: !Ref SendmailApiDomain
       RestApiId: !Ref SendmailApi
       Stage: default
+
+  SendmailApiAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/sendmail/default
+      RetentionInDays: 30
 
   SendmailLogGroup:
     Type: AWS::Logs::LogGroup

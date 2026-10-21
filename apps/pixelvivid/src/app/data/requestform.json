@@ -94,13 +94,13 @@
             "component" : "FormInput",
             "props" : {
                 "type" : "tel",
-                "id" : "phone",
-                "name" : "phone",
+                "id" : "telephone",
+                "name" : "telephone",
                 "defaultValue" : null,
 				"size" : "40",
 				"display" : "horizontal",
 				"required" : "required",
-				"label" : "Phone : ",
+				"label" : "Telephone : ",
 				"validate" : "isValidUSPhoneNumber",
 				"tooltip" : "Please type in your Phone Number"
             }

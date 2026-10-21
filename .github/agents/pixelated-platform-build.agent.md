@@ -101,13 +101,30 @@ The canonical runtime configuration is `pixelated.config.json` and its establish
 - Measure or validate performance claims instead of assuming an implementation is faster or smaller.
 - Avoid adding configuration or abstractions that increase cognitive load without reducing meaningful duplication.
 
+## Mandatory Approval Gate
+
+Before implementation:
+
+1. Inspect the current repository state and gather the relevant evidence.
+2. Explain the proposed implementation, including files and systems affected, resources to create, update, or remove, permission and behavior changes, architectural decisions, deployment order, and validation plan.
+3. Present the proposal and wait for the user's approval.
+4. Until approval is received, do not make any changes anywhere:
+	- Do not edit, create, delete, rename, move, or format anything.
+	- Do not modify source code, documentation, configuration, infrastructure, generated artifacts, dependencies, tests, repositories, branches, commits, databases, AWS resources, or external systems.
+	- Do not run commands or tools that can mutate state.
+	- Read-only inspection and validation are allowed.
+5. Approval is approval, whether the user says "go," "yes," "implement it," or equivalent.
+6. Implement the approved directions and architectural discussion exactly.
+7. Never implement, modify, remove, replace, or otherwise change anything outside the scope of the explicit directions or architectural discussion without explicit approval for that specific change.
+8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
+9. If the user says "stop," immediately stop all tool use and make no further changes.
+
 ## Implementation Workflow
 
 1. Identify the requested capability, owning boundary, consumers, compatibility requirements, and acceptance criteria.
 2. Search the entire monorepo for existing implementations, consumers, tests, and related patterns.
 3. Present the proposed architecture, public API, affected packages/apps, migration plan, risks, and validation plan.
-4. Wait for approval before editing when the architecture or compatibility impact is not already approved.
-5. Implement the smallest reusable capability in the correct shared location.
+4. Implement the smallest reusable capability in the correct shared location after the Mandatory Approval Gate has been satisfied.
 6. Add or update shared tests before adding application-specific adaptations; tests are required deliverables for new behavior.
 7. Update exports, schemas, config types, documentation, and migrations as required.
 8. Validate the changed package immediately, then validate affected applications.

@@ -21,7 +21,6 @@ import {
 	resetPixelatedConfigOverride,
 	resetMockState,
 	resetContentfulMocks,
-	setContentfulEntriesResponse,
 	createPageComponentMocks,
 } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
@@ -85,6 +84,8 @@ import * as CalloutLibrary from '@/app/elements/calloutlibrary';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
+
+const listRequestsMock = vi.spyOn(serverComponents, 'listPixelatedFormSubmissionReportRows').mockResolvedValue([]);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -397,29 +398,48 @@ describe('PixelVivid coverage', () => {
 			expect(screen.getAllByTestId('loading').length).toBeGreaterThan(0);
 		});
 
-		it('renders Requests loading fallback without config', () => {
-			setPixelatedConfigOverride(null);
-			render(<Requests />);
-			expect(screen.getAllByTestId('loading').length).toBeGreaterThan(0);
-		});
+		it('renders approved DynamoDB custom requests', async () => {
+			listRequestsMock.mockResolvedValueOnce([
+				{
+					domain: 'pixelvivid.com',
+					formName: 'custom-request',
+					Status: 'Approved',
+					firstname: 'Test',
+					lastname: 'Request',
+					source: 'Website',
+					message: 'Test description',
+					email: 'test@example.com',
+					timestamp: '2026-01-01T00:00:00.000Z',
+				},
+				{
+					domain: 'pixelvivid.com',
+					formName: 'custom-request',
+					Status: 'Submitted',
+					firstname: 'Pending',
+				},
+				{
+					domain: 'pixelvivid.com',
+					formName: 'custom-request',
+					Status: 'Completed',
+					firstname: 'Finished',
+				},
+			] as any);
 
-		it('renders Requests page with custom requests entries', async () => {
-			setContentfulEntriesResponse({
-				items: [
-					{
-						sys: { contentType: { sys: { id: 'customRequest' } } },
-						fields: {
-							name: 'Test Request',
-							source: 'Website',
-							description: 'Test description',
-							status: 'open',
-							requestDate: new Date('2026-01-01'),
-						},
-					},
-				],
+			const page = await Requests();
+			render(page);
+
+			await waitFor(() => expect(screen.getByTestId('table')).not.toBeNull());
+			expect(screen.getByTestId('table').textContent).toContain('Test R.');
+			expect(screen.getByTestId('table').textContent).toContain('2026-01-01');
+			expect(screen.getByTestId('table').textContent).not.toContain('Test Request');
+			expect(screen.getByTestId('table').textContent).not.toContain('test@example.com');
+			expect(screen.getByTestId('table').textContent).not.toContain('Pending');
+			expect(screen.getByTestId('table').textContent).not.toContain('Finished');
+			expect(listRequestsMock).toHaveBeenCalledWith({
+				tableName: 'PixelatedFormSubmissionsTable',
+				domain: 'pixelvivid.com',
+				formName: 'custom-request',
 			});
-			render(<Requests />);
-			await waitFor(() => expect(screen.getAllByTestId('table').length).toBeGreaterThan(0));
 		});
 
 		it('submits the preorder form and renders the success modal', async () => {
@@ -446,6 +466,8 @@ describe('PixelVivid coverage', () => {
 		});
 
 		afterEach(() => {
+			listRequestsMock.mockReset();
+			listRequestsMock.mockResolvedValue([]);
 			resetPixelatedConfigOverride();
 			resetMockState();
 			resetContentfulMocks();
