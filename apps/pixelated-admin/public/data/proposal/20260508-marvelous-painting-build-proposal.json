@@ -1,0 +1,95 @@
+{
+  "companyName": "Marvelous Painting",
+  "companyContact": "Madan Mohan, Individually and on behalf of RS Marvelous Painting Corp LLC",
+  "date": "May 8, 2026",
+  "email": "info@marvelouspainting.com",
+  "phone": "908-647-3010",
+  "address": {
+    "streetAddress": "16 Chaucer Ct.",
+    "addressLocality": "Basking Ridge",
+    "addressRegion": "New Jersey",
+    "postalCode": "07920",
+    "addressCountry": "US"
+  },
+  "proposalType": "Web Site Build",
+  "maintenancePackage": "",
+  "goal": [
+    "Rebuild the Marvelous Painting website using the Pixelated Platform of features and host it on Amazon Web Services."
+  ],
+  "deliverables": [
+    "Newly created website for Marvelous Painting.",
+    "Hosting for the marvelouspainting.com domain."
+  ],
+  "features": [
+    {
+      "feature": "Web Site",
+      "description": [
+        "Home Page",
+        "About Us",
+        "Services",
+        "Our Process",
+        "Testimonials",
+        "Service Area",
+        "Gallery",
+        "Frequently Asked Questions",
+        "Blog",
+        "Contact Us"
+      ]
+    },
+    {
+      "feature": "Content Management",
+      "description": [
+        "Storage of scalable content and images in Contentful Content Management System.",
+        "Hosting, domain, and template usage costs for the Blog on the WordPress platform.",
+        "Stock photography usage and licensing."
+      ]
+    },
+    {
+      "feature": "SEO / AEO",
+      "description": [
+        "Foundational files including sitemap.xml, robots.txt, not-found.html, manifest.webmanifest, humans.txt, security.txt, well-known.txt, loading page, global errors page, and style guide page.",
+        "Schemas including Blog Posting, Breadcrumbs, FAQs, LocalBusiness, Podcast if used, Product, Recipe, Review, Services, and Website."
+      ]
+    },
+    {
+      "feature": "Hosting",
+      "description": [
+        "Hosting via Amazon Web Services including AWS Amplify, AWS CloudFront CDN, AWS Route 53 DNS with SSL certificate, and AWS CloudWatch logging.",
+        "Distribution of images through the Cloudinary Content Delivery System."
+      ]
+    },
+    {
+      "feature": "Social Media Accounts",
+      "description": [
+        "Create new social media accounts for Google Business, Facebook, Instagram, Twitter, Nextdoor, Yelp, and Reddit.",
+        "Add links for new and existing social media accounts to the website."
+      ]
+    }
+  ],
+  "startDate": "6/1/2026",
+  "milestones": [
+    {
+      "milestone": "Information Architecture and design agreement",
+      "date": "6/1/2026"
+    },
+    {
+      "milestone": "Initial Site Build",
+      "date": "6/15/2026"
+    },
+    {
+      "milestone": "New Social Media accounts created",
+      "date": "6/30/2026"
+    }
+  ],
+  "paymentTotal": {
+    "amount": 4000,
+    "isDiscounted": false,
+    "description": [
+      "Total initial website-build fee is $4,000.",
+      "The fee includes the website structure, design, content management setup, SEO/AEO foundational files and schemas, hosting configuration, image distribution, and creation of the listed social media accounts.",
+      "Payments requested via Zelle to brian@pixelated.tech or 973-710-8008.",
+      "Payment is due within 5 business days of receipt of invoice.",
+      "In the event of default, Client is responsible for all collection costs and attorney fees."
+    ]
+  }
+}

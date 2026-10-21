@@ -86,7 +86,7 @@ why would the props be optional, with a fallbeck to getting them direclty? that 
 
 - [  ] **GDPR Compliance Toolkit**: Automated cookie consent, data mapping, and privacy policy generation
 
-- [  ] **API Gateway**: Unified API management for connecting to CRM, email marketing, payment processors, and other business tools
+- [ IP ] **API Gateway**: Unified API management for connecting to CRM, email marketing, payment processors, and other business tools via pixelated admin, needs rationalization
 
 - [  ] **Webhook Automation**: Event-driven automation for form submissions, new content, user registrations, and business workflows
 

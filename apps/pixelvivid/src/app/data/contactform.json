@@ -99,7 +99,7 @@
 		{
 			"component" : "FormInput",
 			"props" : {
-				"type" : "text",
+				"type" : "tel",
 				"id" : "telephone",
 				"name" : "telephone",
 				"defaultValue" : null,
