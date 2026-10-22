@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
-import { loadManifest, findTemplateForSlug, findPixelatedConfigJsonFile, addRouteEntry } from '../scripts/create-pixelated-app.js';
+import { loadManifest, findTemplateForSlug, findPixelatedConfigJsonFile, addRouteEntry, getSiteDomain, patchSitePackageJson, patchSiteReadme, findUnresolvedTemplateTokens } from '../scripts/create-pixelated-app.js';
 
 interface Route {
   name: string;
@@ -390,5 +390,44 @@ describe('route management', () => {
       expect(typeof route.description).toMatch(/string|undefined/);
       expect(typeof route.keywords).toMatch(/string|undefined/);
     });
+  });
+});
+
+describe('scaffold contract', () => {
+  it('derives the site domain from a site URL', () => {
+    expect(getSiteDomain('https://www.example.com')).toBe('example.com');
+    expect(getSiteDomain('https://example.com/path')).toBe('example.com');
+    expect(getSiteDomain('')).toBe('');
+  });
+
+  it('patches copied package metadata and removes the template repository', async () => {
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-package-'));
+    await fs.writeFile(path.join(tmp, 'package.json'), JSON.stringify({
+      name: 'pixelated-template',
+      description: 'template',
+      repository: { type: 'git', url: 'https://github.com/brianwhaley/pixelated-template.git' }
+    }), 'utf8');
+
+    const packageJson = await patchSitePackageJson(tmp, 'new-site', 'New Site');
+    expect(packageJson.name).toBe('new-site');
+    expect(packageJson.description).toBe('New Site website');
+    expect(packageJson.repository).toBeUndefined();
+  });
+
+  it('updates the generated README title', async () => {
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-readme-'));
+    await fs.writeFile(path.join(tmp, 'README.md'), '# Pixelated Template\n\nTemplate details.', 'utf8');
+
+    expect(await patchSiteReadme(tmp, 'New Site')).toBe(true);
+    expect(await fs.readFile(path.join(tmp, 'README.md'), 'utf8')).toContain('# New Site');
+  });
+
+  it('finds unresolved template tokens while ignoring generated output', async () => {
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-tokens-'));
+    await fs.writeFile(path.join(tmp, 'page.tsx'), 'const name = "__SITE_NAME__";', 'utf8');
+    await fs.mkdir(path.join(tmp, '.next'));
+    await fs.writeFile(path.join(tmp, '.next', 'generated.js'), 'const ignored = "__NEXT_INTERNAL__";', 'utf8');
+
+    expect(await findUnresolvedTemplateTokens(tmp)).toEqual(['__SITE_NAME__']);
   });
 });

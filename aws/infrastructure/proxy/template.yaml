@@ -237,7 +237,7 @@ Resources:
   ProxyErrorsMetricFilter:
     Type: AWS::Logs::MetricFilter
     Properties:
-      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Content-Type header|No URL|Task timed out|Runtime.ExitError%'
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Content-Type header|No URL|Task timed out|Runtime.ExitError|proxy_error%'
       LogGroupName: !Ref ProxyLogGroup
       MetricTransformations:
         - MetricName: Pixelated Proxy Errors Metric
@@ -271,5 +271,5 @@ Resources:
         - !Ref ProxyLogGroup
       QueryString: |
         fields @timestamp, @message, @logStream
-        | filter @message like /(?i)(error|failed|exception|content-type header|no url|task timed out|runtime\.exiterror)/
+        | filter @message like /(?i)(error|failed|exception|content-type header|no url|task timed out|runtime\.exiterror|proxy_error)/
         | sort @timestamp desc

@@ -13,7 +13,7 @@
 				"type" : "hidden",
 				"id" : "from",
 				"name" : "from",
-				"value" : "palmettoepoxy@gmail.com"
+				"value" : "info@palmetto-epoxy.com"
 			}
 		},{
 			"component" : "FormInput",
@@ -21,7 +21,7 @@
 				"type" : "hidden",
 				"id" : "to",
 				"name" : "to",
-				"value" : "palmettoepoxy@gmail.com, marthaaberle21@gmail.com"
+				"value" : "info@palmetto-epoxy.com, martha@palmetto-epoxy.com"
 			}
 		},{
 			"component" : "FormInput",

@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Brian Whaley site-owned Amplify, Route 53, and uptime resources.
+
+Parameters:
+  AmplifyAppId:
+    Type: String
+    Default: d2ysf7fqwwsmjl
+    Description: Existing Brian Whaley Amplify app.
+
+Resources:
+  BrianWhaleyHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: brianwhaley.com.
+
+  BrianWhaleyHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: 443
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: www.brianwhaley.com
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: true
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  BrianWhaleyAmplifyApp:
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: brianwhaley
+      Platform: WEB_COMPUTE
+      Repository: https://github.com/brianwhaley/pixelated-tech
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  BrianWhaleyProductionBranch:
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref AmplifyAppId
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  BrianWhaleyDomain:
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref AmplifyAppId
+      DomainName: brianwhaley.com
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+        - BranchName: main
+          Prefix: www

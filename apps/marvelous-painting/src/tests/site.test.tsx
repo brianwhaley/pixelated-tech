@@ -6,6 +6,7 @@ import React from 'react';
 import { runCommonPageCoverage, runCommonElementCoverage, runCommonMarkdownPageCoverage, runCommonPodcastPageCoverage, runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
 import { config as pixelatedConfig, createPageComponentMocks, mockState, resetMockState, resetFileDataState, setFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
+import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 
 vi.mock('@pixelated-tech/components', async () => ({
 	__esModule: true,
@@ -212,7 +213,7 @@ describe('Pixelated Template site coverage', () => {
 	});
 
 	it('renders Footer fallback when config is unavailable', async () => {
-		setPixelatedConfigOverride(null);
+		vi.mocked(getFullPixelatedConfig).mockReturnValueOnce({ siteInfo: {} } as any);
 		render(await Footer());
 		expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
 		expect(screen.getByText(/Marvelous Painting/)).not.toBeNull();

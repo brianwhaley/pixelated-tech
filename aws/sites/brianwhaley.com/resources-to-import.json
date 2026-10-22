@@ -1,0 +1,37 @@
+[
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "BrianWhaleyAmplifyApp",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:amplify:us-east-2:971579260814:apps/d2ysf7fqwwsmjl"
+    }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "BrianWhaleyProductionBranch",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:amplify:us-east-2:971579260814:apps/d2ysf7fqwwsmjl/branches/main"
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "BrianWhaleyHostedZone",
+    "ResourceIdentifier": {
+      "Id": "Z25HMP58CYXTT0"
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "BrianWhaleyHealthCheck",
+    "ResourceIdentifier": {
+      "HealthCheckId": "8907c3f0-265e-4942-8bbc-767b4bc03ea9"
+    }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "BrianWhaleyDomain",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:amplify:us-east-2:971579260814:apps/d2ysf7fqwwsmjl/domains/brianwhaley.com"
+    }
+  }
+]
