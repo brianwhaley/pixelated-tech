@@ -242,11 +242,67 @@ async function replacePlaceholders(rootDir, replacements) {
 }
 
 // Token map used by the CLI: literal marker (e.g., "__SITE_NAME__") -> replacement value (populate during interactive prompts)
-export const TOKEN_MAP = { 
-	"__SITE_NAME__": '', 
-	"__SITE_URL__": '', 
-	"__EMAIL_ADDRESS__": '' 
+export const TOKEN_MAP = {
+	"__SITE_NAME__": '',
+	"__SITE_URL__": '',
+	"__SITE_DOMAIN__": '',
+	"__EMAIL_ADDRESS__": ''
 };
+
+export function getSiteDomain(siteUrl) {
+	if (!siteUrl) return '';
+	try {
+		return new URL(siteUrl).hostname.replace(/^www\./i, '');
+	} catch {
+		return '';
+	}
+}
+
+export async function patchSitePackageJson(sitePath, siteName, siteDisplayName) {
+	const packagePath = path.join(sitePath, 'package.json');
+	if (!(await exists(packagePath))) return null;
+	const packageJson = JSON.parse(await fs.readFile(packagePath, 'utf8'));
+	packageJson.name = siteName;
+	packageJson.description = `${siteDisplayName} website`;
+	if (packageJson.repository?.url?.includes('pixelated-template')) {
+		delete packageJson.repository;
+	}
+	await fs.writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
+	return packageJson;
+}
+
+export async function patchSiteReadme(sitePath, siteDisplayName) {
+	const readmePath = path.join(sitePath, 'README.md');
+	if (!(await exists(readmePath))) return false;
+	const readme = await fs.readFile(readmePath, 'utf8');
+	const updatedReadme = readme.replace(/^# Pixelated Template$/m, `# ${siteDisplayName}`);
+	if (updatedReadme === readme) return false;
+	await fs.writeFile(readmePath, updatedReadme, 'utf8');
+	return true;
+}
+
+export async function findUnresolvedTemplateTokens(rootDir) {
+	const unresolved = new Set();
+	const tokenPattern = /__[A-Z][A-Z0-9_]+__/g;
+	const ignoreDirs = new Set(['.git', 'node_modules', 'dist', 'coverage', '.next']);
+	async function walk(directory) {
+		const items = await fs.readdir(directory, { withFileTypes: true });
+		for (const item of items) {
+			if (item.isDirectory()) {
+				if (!ignoreDirs.has(item.name)) await walk(path.join(directory, item.name));
+				continue;
+			}
+			try {
+				const content = await fs.readFile(path.join(directory, item.name), 'utf8');
+				for (const token of content.match(tokenPattern) || []) unresolved.add(token);
+			} catch {
+				// Ignore binary and unreadable files.
+			}
+		}
+	}
+	await walk(rootDir);
+	return [...unresolved].sort();
+}
 
 // Helper: add a route entry to the pixelated.config.json structure for a newly created page
 export function addRouteEntry(siteConfig, pageSlug, displayName, rootDisplayName) {
@@ -482,6 +538,9 @@ async function main() {
 		if (filesCopied < totalFiles) filesCopied = totalFiles;
 		spinner.stop();
 		console.log(`✅ Template files copied (${filesCopied} files).`);
+		const patchedPackage = await patchSitePackageJson(destPath, siteName, rootDisplayName);
+		if (patchedPackage) console.log(`✅ package.json updated for ${siteName}.`);
+		if (await patchSiteReadme(destPath, rootDisplayName)) console.log('✅ README.md title updated.');
 
 		// Remove git history
 		const gitDir = path.join(destPath, '.git');
@@ -691,6 +750,7 @@ async function main() {
 		const replacements = {};
 		if (rootDisplayName) replacements.SITE_NAME = rootDisplayName;
 		if (siteUrl) replacements.SITE_URL = siteUrl;
+		if (siteUrl) replacements.SITE_DOMAIN = getSiteDomain(siteUrl);
 		if (emailAddress) replacements.EMAIL_ADDRESS = emailAddress;
 		if (Object.keys(replacements).length) {
 			const replArray = [];
@@ -710,6 +770,10 @@ async function main() {
 			} catch (e) {
 				console.warn('⚠️ Failed to replace placeholders in site copy:', e?.message || e);
 			}
+		}
+		const unresolvedTokens = await findUnresolvedTemplateTokens(destPath);
+		if (unresolvedTokens.length) {
+			throw new Error(`Unresolved template tokens: ${unresolvedTokens.join(', ')}`);
 		}
 
 

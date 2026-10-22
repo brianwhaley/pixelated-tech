@@ -35,6 +35,7 @@ import ServiceAreaDetailPage from '@/app/(pages)/service-areas/[serviceArea]/pag
 import ServiceDetailPage from '@/app/(pages)/services/[service]/page';
 import StyleGuidePage from '@/app/(pages)/styleguide/page';
 import ProjectsPage from '@/app/(pages)/projects/page';
+import TermsPage from '@/app/(pages)/terms/page';
 import { proxy } from '@/proxy';
 import { GET as humansGET } from '@/app/humans.txt/route';
 import { GET as securityGET } from '@/app/security.txt/route';
@@ -335,6 +336,72 @@ describe('JZ Home Improvement coverage', () => {
 			const pageElement = await ProjectsPage();
 			render(pageElement);
 			expect(screen.getByTestId('projects-client').textContent).toBe('2');
+		});
+
+		it('uses fallback values for optional project fields and Contentful assets', async () => {
+			setContentfulEntriesResponse({
+				items: [
+					{
+						sys: { contentType: { sys: { id: '5yLwz568n8n0BwOzHYda0W' } } },
+						fields: { images: [{ sys: { id: 'img-1' } }] },
+					},
+				],
+			});
+			setContentfulImagesResponse([{ image: '/images/project.jpg' }]);
+
+			const pageElement = await ProjectsPage();
+			render(pageElement);
+
+			expect(screen.getByTestId('projects-client').textContent).toBe('1');
+		});
+	});
+
+	describe('JZ Home Improvement fallback branch coverage', () => {
+		afterEach(() => {
+			routeParams.serviceArea = 'union-nj';
+			routeParams.service = 'kitchens';
+			resetPixelatedConfigOverride();
+		});
+
+		it('renders terms defaults when site information is unavailable', () => {
+			setPixelatedConfigOverride(null);
+			render(<TermsPage />);
+
+			expect(screen.getByText(/Legal Entity Name: AMAVA Janitorial/)).toBeTruthy();
+			expect(screen.getByText(/Corporate \/ Yard Address: Address not available/)).toBeTruthy();
+			expect(screen.getByText(/Active Legal Governing State: State not available/)).toBeTruthy();
+		});
+
+		it('renders service route defaults when params are not strings', () => {
+			routeParams.serviceArea = undefined;
+			routeParams.service = undefined;
+
+			render(<ServiceAreaDetailPage />);
+			expect(screen.getByText('Service Area')).toBeTruthy();
+			expect(screen.getByText('Service area not found. Please return to the service areas list and choose another region.')).toBeTruthy();
+
+			render(<ServiceDetailPage />);
+			expect(screen.getByText('Service')).toBeTruthy();
+			expect(screen.getByText('Service not found. Please return to the services list and choose another option.')).toBeTruthy();
+		});
+
+		it('renders the header with fallback routes', () => {
+			setPixelatedConfigOverride({});
+			render(<Header />);
+
+			expect(screen.getByTestId('menu-accordion')).toBeTruthy();
+		});
+
+		it('renders the footer with missing and trailing-slash paths', async () => {
+			vi.mocked(headers).mockResolvedValueOnce(new Headers());
+			const missingPathFooter = await Footer();
+			render(missingPathFooter);
+
+			vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/contact/' }));
+			const trailingPathFooter = await Footer();
+			render(trailingPathFooter);
+
+			expect(screen.getAllByTestId('pixelated-footer')).toHaveLength(2);
 		});
 	});
 

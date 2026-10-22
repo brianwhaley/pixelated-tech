@@ -1,4 +1,19 @@
 import React from 'react';
+import rawConfig from '../../packages/pixelated-components/src/config/pixelated.config.json';
+import type { PixelatedConfig } from '@pixelated-tech/components';
+
+const sensitiveKeyPattern = /(access.?token|api.?key|client.?secret|password|private.?key|secret|token)/i;
+
+function sanitizeConfigValue(value: unknown, key = ''): unknown {
+	if (sensitiveKeyPattern.test(key)) return `test-${key}`;
+	if (Array.isArray(value)) return value.map((item) => sanitizeConfigValue(item));
+	if (value && typeof value === 'object') {
+		return Object.fromEntries(Object.entries(value).map(([entryKey, entryValue]) => [entryKey, sanitizeConfigValue(entryValue, entryKey)]));
+	}
+	return value;
+}
+
+const testPixelatedConfig = sanitizeConfigValue(rawConfig) as PixelatedConfig;
 
 export function createServerMocks() {
 	return {
@@ -14,7 +29,7 @@ export function createServerMocks() {
 		VisualDesignStyles: () => null,
 		StyleGuideUI: () => React.createElement('div', { id: 'colors-section' }, 'Style Guide UI'),
 		PixelatedServerConfigProvider: ({ children }: any) => React.createElement('div', { 'data-testid': 'server-config-provider' }, children),
-		getFullPixelatedConfig: () => ({}),
+		getFullPixelatedConfig: vi.fn(() => structuredClone(testPixelatedConfig)),
 		buildSitemapConfig: () => ({ sitemap: true }),
 		generateSitemap: async () => [{ url: 'https://example.com/sitemap.xml' }],
 		generateSitemapJson: async () => ({ urlset: [{ loc: 'https://example.com/sitemap.xml' }] }),

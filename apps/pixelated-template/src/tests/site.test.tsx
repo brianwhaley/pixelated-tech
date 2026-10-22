@@ -178,7 +178,8 @@ describe('Pixelated Template site coverage', () => {
 		setPixelatedConfigOverride(null);
 		render(await Footer());
 		expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
-		expect(screen.getByText(/__SITE_NAME__/)).not.toBeNull();
+		expect(screen.getByText(/Pixelated Technologies/)).not.toBeNull();
+		expect(screen.queryByText(/__SITE_NAME__/)).toBeNull();
 	});
 
 	it('proxies request headers with fallback origin when nextUrl.origin is unavailable', () => {

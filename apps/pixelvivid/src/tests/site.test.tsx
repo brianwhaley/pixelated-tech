@@ -319,6 +319,13 @@ describe('PixelVivid coverage', () => {
 			expect(root.props?.children).toBeTruthy();
 		});
 
+		it('does not request eBay metadata for a Contentful store item', async () => {
+			vi.mocked(serverComponents.getEbayItem).mockClear();
+			vi.mocked(headers).mockResolvedValueOnce(new Headers({ 'x-path': '/store/custom-item', 'x-origin': 'https://example.com', 'x-url': 'https://example.com/store/custom-item' }));
+			await RootLayout({ children: React.createElement('div', { 'data-testid': 'child' }) });
+			expect(serverComponents.getEbayItem).not.toHaveBeenCalled();
+		});
+
 		it('renders robots route for localhost host', async () => {
 			vi.mocked(headers).mockResolvedValueOnce(new Headers({ host: 'localhost' }));
 			const result = await robots();

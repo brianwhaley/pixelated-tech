@@ -277,7 +277,7 @@ Resources:
           ThrottlingBurstLimit: 5000
           ThrottlingRateLimit: 10000
       AccessLogSetting:
-        DestinationArn: !GetAtt SendmailApiAccessLogGroup.Arn
+        DestinationArn: !GetAtt SendmailApiAccessLogGroupV2.Arn
         Format: >-
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
@@ -344,6 +344,14 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       LogGroupName: /aws/apigateway/sendmail/default
+      RetentionInDays: 30
+
+  SendmailApiAccessLogGroupV2:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/sendmail/access
       RetentionInDays: 30
 
   SendmailLogGroup:

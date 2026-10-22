@@ -25,19 +25,20 @@ export const handler = async (event) => {
 	const queryStringParameters = event?.queryStringParameters ?? {};
 	const targetUrl = queryStringParameters.url;
 	if (typeof targetUrl !== "string" || targetUrl.trim() === "") {
-		return returnResponse({error: true, message: "A URL query parameter is required."}, 400);
+		return returnResponse(JSON.stringify({error: true, message: "A URL query parameter is required."}), 400);
 	}
 	try {
 		new URL(targetUrl);
 	} catch {
-		return returnResponse({error: true, message: "The URL query parameter is invalid."}, 400);
+		return returnResponse(JSON.stringify({error: true, message: "The URL query parameter is invalid."}), 400);
 	}
-	return returnResponse(await getResponse(event));
+	const upstreamResponse = await getResponse(event);
+	return returnResponse(upstreamResponse.body, upstreamResponse.statusCode);
 	// return returnResponse(event.queryStringParameters) ;
 	// callback(null, response);
 };
 
-let responseContentType ;
+let responseContentType = 'application/json';
 
 const getResponse = async function (event) {
 
@@ -53,6 +54,7 @@ const getResponse = async function (event) {
 	if(url == undefined){ url = ''; }
 
 	let responseBody = null;
+	let responseStatusCode = 502;
     
 	const myHeaders = { ...event.headers } ;
 	// myHeaders.accept = '*/*'; 
@@ -80,6 +82,7 @@ const getResponse = async function (event) {
 			mode: 'cors',
 			body: (event.body) ? event.body : null
 		});
+		responseStatusCode = response.status;
 		if (!response.ok) {
 			console.error('Proxy upstream response was not successful', {
 				...getRequestDiagnostics(event, url),
@@ -112,10 +115,10 @@ const getResponse = async function (event) {
 			errorName: e?.name,
 			errorMessage: e?.message
 		});
-		responseBody = {...e};
+		responseBody = JSON.stringify({error: true, message: e?.message || 'Upstream fetch failed.'});
 	}
 	if ( debug ) console.log('RESPONSE BODY : ', responseContentType, " : ", responseBody);
-	return responseBody;
+	return {body: responseBody, statusCode: responseStatusCode};
 };
 
 const returnResponse = async function (responseBody, statusCode = 200) {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'fs/promises';
 import path from 'path';
-import { spawnSync } from 'child_process';
+import { spawn, spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { patchConfigLastModified } from './update-sitemap-lastmodified.js';
 
@@ -94,6 +94,99 @@ async function readPackageJson(pkgDir) {
 	const pkgPath = path.join(pkgDir, 'package.json');
 	const file = await fs.readFile(pkgPath, 'utf8');
 	return JSON.parse(file);
+}
+
+async function validateJsonFiles(workspaceDir) {
+	const invalidFiles = [];
+	const ignoredDirectories = new Set(['.git', 'node_modules', '.next', 'coverage', 'dist', 'out']);
+	async function walk(directory) {
+		const entries = await fs.readdir(directory, { withFileTypes: true });
+		for (const entry of entries) {
+			const entryPath = path.join(directory, entry.name);
+			if (entry.isDirectory()) {
+				if (!ignoredDirectories.has(entry.name)) await walk(entryPath);
+				continue;
+			}
+			if (!entry.name.endsWith('.json')) continue;
+			try {
+				JSON.parse(await fs.readFile(entryPath, 'utf8'));
+			} catch (error) {
+				invalidFiles.push(`${path.relative(workspaceDir, entryPath)}: ${error.message}`);
+			}
+		}
+	}
+	await walk(workspaceDir);
+	return invalidFiles;
+}
+
+async function findStaticAppRoutes(workspaceDir) {
+	const appDir = path.join(workspaceDir, 'src', 'app');
+	const routes = [];
+	if (!(await existsFile(appDir))) return routes;
+	async function walk(directory, segments = []) {
+		const entries = await fs.readdir(directory, { withFileTypes: true });
+		for (const entry of entries) {
+			const entryPath = path.join(directory, entry.name);
+			if (entry.isDirectory()) {
+				if (entry.name.startsWith('[')) continue;
+				await walk(entryPath, entry.name.startsWith('(') ? segments : [...segments, entry.name]);
+				continue;
+			}
+			if (!/^(page|route)\.(tsx?|jsx?)$/.test(entry.name)) continue;
+			const route = `/${segments.join('/')}`.replace(/\/+/g, '/') || '/';
+			if (!routes.includes(route)) routes.push(route);
+		}
+	}
+	await walk(appDir);
+	return routes.sort();
+}
+
+async function runRouteSmokeStep(workspaceDir) {
+	const routes = await findStaticAppRoutes(workspaceDir);
+	if (routes.length === 0) return { status: 'skipped', label: 'Route Smoke', detail: 'No static App Router routes found' };
+	const port = 3100 + (process.pid % 1000);
+	const server = spawn('npm', ['exec', '--', 'next', 'start', '--port', String(port)], {
+		cwd: workspaceDir,
+		stdio: ['ignore', 'pipe', 'pipe']
+	});
+	let output = '';
+	server.stdout.on('data', (chunk) => { output += chunk.toString(); });
+	server.stderr.on('data', (chunk) => { output += chunk.toString(); });
+	try {
+		let ready = false;
+		const startedAt = Date.now();
+		while (Date.now() - startedAt < 30000) {
+			ready = output.includes('Ready in');
+			if (ready) break;
+			await new Promise((resolve) => setTimeout(resolve, 100));
+		}
+		if (!ready) return { status: 'failed', label: 'Route Smoke', detail: `Server did not become ready. ${output}` };
+		const failures = [];
+		for (const route of routes) {
+			try {
+				const response = await fetch(`http://127.0.0.1:${port}${route}`, {
+					redirect: 'manual',
+					signal: AbortSignal.timeout(10000)
+				});
+				if (response.status >= 500) failures.push(`${route} returned ${response.status}`);
+				if (response.status >= 300 && response.status < 400 && !response.headers.get('location')) {
+					failures.push(`${route} returned ${response.status} without a Location header`);
+				}
+			} catch (error) {
+				failures.push(`${route} request failed: ${error.message}`);
+			}
+		}
+		if (failures.length) return { status: 'failed', label: 'Route Smoke', detail: failures.join('\n') };
+		return { status: 'success', label: `Route Smoke (${routes.length} routes)` };
+	} finally {
+		server.kill('SIGTERM');
+	}
+}
+
+async function runJsonValidationStep(workspaceDir) {
+	const invalidFiles = await validateJsonFiles(workspaceDir);
+	if (invalidFiles.length) return { status: 'failed', label: 'JSON Validation', detail: invalidFiles.join('\n') };
+	return { status: 'success', label: 'JSON Validation' };
 }
 
 function getContextType(workspaceRoot, monorepoRoot) {
@@ -223,14 +316,23 @@ async function runWorkspacePipeline(workspaceDir) {
 	const pkgJson = await readPackageJson(workspaceDir);
 	const workspaceName = pkgJson.name || path.basename(workspaceDir);
 	const steps = {
+		json: { label: 'JSON Validation', status: 'skipped' },
 		update: { label: 'Update', status: 'skipped' },
 		patchConfig: { label: 'Patch Config lastModified', status: 'skipped' },
 		lint: { label: 'Lint', status: 'skipped' },
 		test: { label: 'Test', status: 'skipped' },
 		build: { label: 'Build', status: 'skipped' },
+		routes: { label: 'Route Smoke', status: 'skipped' },
 		images: { label: 'Generate Images', status: 'skipped' },
 	};
 
+	steps.json = await runJsonValidationStep(workspaceDir);
+	if (steps.json.status === 'failed') {
+		for (const stepName of ['update', 'lint', 'test', 'build', 'routes', 'images']) {
+			steps[stepName] = { status: 'skipped', label: steps[stepName].label, detail: 'Skipped because JSON validation failed' };
+		}
+		return { name: workspaceName, dir: workspaceDir, steps };
+	}
 	steps.update = await runUpdateStep(workspaceDir, pkgJson);
 	steps.patchConfig = await patchConfigLastModified(workspaceDir);
 	if (steps.patchConfig.status !== 'skipped') {
@@ -251,9 +353,14 @@ async function runWorkspacePipeline(workspaceDir) {
 	} else {
 		steps.build = await runBuildStep(workspaceDir, pkgJson);
 	}
+	if (steps.build.status !== 'success') {
+		steps.routes = { status: 'skipped', label: 'Route Smoke', detail: 'Skipped because build did not complete successfully' };
+	} else {
+		steps.routes = await runRouteSmokeStep(workspaceDir);
+	}
 
-	if (steps.build.status === 'failed') {
-		steps.images = { status: 'skipped', label: 'Generate Images', detail: 'Skipped because build failed' };
+	if (steps.build.status !== 'success' || steps.routes.status === 'failed') {
+		steps.images = { status: 'skipped', label: 'Generate Images', detail: 'Skipped because build or route smoke failed' };
 	} else {
 		steps.images = await runGenerateImagesStep(workspaceDir, pkgJson);
 	}
