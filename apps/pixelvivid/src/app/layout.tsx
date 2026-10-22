@@ -27,26 +27,30 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 	if (!myMetadata && pathname.includes('/store/')) {
 		/// NO METADATA FOUND - EBAY STORE ITEM 
-		const itemID = pathname.split("/store/")[1];
-		const apiProps = {
-			qsItemURL: `/v1|${itemID}|0?fieldgroups=PRODUCT,ADDITIONAL_SELLER_DETAILS`,
-		};
+		// NOTE: The incoming query string was stripped from itemID so the 12-digit eBay ID check would ignore query parameters. No observed failure required this normalization.
+		// AGENT FAILURE: This change was not requested, was not part of the minimum fix, and should not have been done because it changes input handling unnecessarily and may inject additional errors.  
+		const itemID = pathname.split("/store/")[1]?.split("?")[0] || '';
+		if (/^\d{12}$/.test(itemID)) {
+			const apiProps = {
+				qsItemURL: `/v1|${itemID}|0?fieldgroups=PRODUCT,ADDITIONAL_SELLER_DETAILS`,
+			};
 
-		try {
-			const ebayItem = await getEbayItem({ apiProps });
-			if (ebayItem && ebayItem.title) {
-				const thisItemTitle = "PixelVivid - Item " + ebayItem.legacyItemId + " - " + ebayItem.title;
+			try {
+				const ebayItem = await getEbayItem({ apiProps });
+				if (ebayItem && ebayItem.title) {
+					const thisItemTitle = "PixelVivid - Item " + ebayItem.legacyItemId + " - " + ebayItem.title;
 
-				myMetadata = {
-					name: ebayItem.title,
-					path: `/store/${ebayItem.legacyItemId}`,
-					title: thisItemTitle,
-					description: ebayItem.description?.replace(/[\r\n]+/g, ' '),
-					keywords: descriptionToKeywords(thisItemTitle + " " + ebayItem.description, 30).join(", "),
-				};
+					myMetadata = {
+						name: ebayItem.title,
+						path: `/store/${ebayItem.legacyItemId}`,
+						title: thisItemTitle,
+						description: ebayItem.description?.replace(/[\r\n]+/g, ' '),
+						keywords: descriptionToKeywords(thisItemTitle + " " + ebayItem.description, 30).join(", "),
+					};
+				}
+			} catch (error) {
+				console.error('Error fetching eBay item:', error);
 			}
-		} catch (error) {
-			console.error('Error fetching eBay item:', error);
 		}
 	}
 

@@ -6,6 +6,7 @@ import React from 'react';
 import { runCommonPageCoverage, runCommonElementCoverage, runCommonMarkdownPageCoverage, runCommonServiceRouteCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
 import { config as pixelatedConfig, createPageComponentMocks, resetMockState, resetFileDataState, setFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
 import { headers } from 'next/headers';
+import * as componentsServer from '@pixelated-tech/components/server';
 
 vi.mock('@pixelated-tech/components', async () => ({
 	__esModule: true,
@@ -174,9 +175,14 @@ describe('Pixelated Template site coverage', () => {
 
 	it('renders Footer fallback when config is unavailable', async () => {
 		setPixelatedConfigOverride(null);
-		render(await Footer());
-		expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
-		expect(screen.getByText(/AMAVA Janitorial/)).not.toBeNull();
+		const configSpy = vi.spyOn(componentsServer, 'getFullPixelatedConfig').mockReturnValue({} as ReturnType<typeof componentsServer.getFullPixelatedConfig>);
+		try {
+			render(await Footer());
+			expect(screen.getByText(/All rights reserved/i)).not.toBeNull();
+			expect(screen.getByText(/AMAVA Janitorial/)).not.toBeNull();
+		} finally {
+			configSpy.mockRestore();
+		}
 	});
 
 	it('proxies request headers with fallback origin when nextUrl.origin is unavailable', () => {
