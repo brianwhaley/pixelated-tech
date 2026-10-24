@@ -16,15 +16,16 @@ const FeedbackGallery = () => {
 
 	useEffect(() => {
 		async function getFeedbackCards() {
-			if (!config?.contentful) return;
+			if (!config?.integrations?.contentful) return;
+			const contentful = config.integrations.contentful;
 			const contentType = "feedback"; 
 			const typeCards = await getContentfulEntriesByType({ 
 				apiProps: {
-					base_url: config.contentful.base_url,
-					space_id: config.contentful.space_id,
-					environment: config.contentful.environment,
-					delivery_access_token: config.contentful.delivery_access_token,
-					proxyURL: config.contentful.proxyURL,
+					base_url: contentful.base_url,
+					space_id: contentful.space_id,
+					environment: contentful.environment,
+					delivery_access_token: contentful.delivery_access_token,
+					proxyURL: contentful.proxyURL,
 				}, 
 				contentType: contentType 
 			}); 
@@ -56,4 +57,4 @@ const FeedbackGallery = () => {
 	);
 };
 
-export const Contentful = () => <FeedbackGallery />;
+export const ContentfulBasicStory = () => <FeedbackGallery />;

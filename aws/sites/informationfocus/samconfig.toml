@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "informationfocus-site"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-bucket"
+resolve_s3 = false
+confirm_changeset = true
+parameter_overrides = "SiteName=informationfocus DomainName=informationfocus.net HealthCheckDomainName=www.informationfocus.net ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d3b88mjowtjcve EnableDeployment=true"

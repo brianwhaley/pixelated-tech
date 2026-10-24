@@ -1,14 +1,14 @@
 {
-	"companyName": "MGT Services",
+	"companyName": "MGT Pro Services",
 	"companyContact": "Michael Pope",
 	"date": "October 3, 2026",
-	"email": "",
-	"phone": "",
+	"email": "ma6919@aol.com, jennifer020404@aol.com",
+	"phone": "(302) 430-4449, (551) 427-9392",
 	"address": {
-		"streetAddress": "",
-		"addressLocality": "Greenville",
+		"streetAddress": "215 Harlequin Drive",
+		"addressLocality": "Moore",
 		"addressRegion": "South Carolina",
-		"postalCode": "",
+		"postalCode": "29369",
 		"addressCountry": "US"
 	},
 	"primaryAudience": [
@@ -215,7 +215,18 @@
 			"None"
 		],
 		"proposedUrls": [
-			"https://www.mgtservices.com"
+			"MGT Pro Services - mgtproservices.com (RECOMMENDED)",
+			"MGT Pro Solutions - mgtprosolutions.com",
+			"MGT Pro Contracting - mgtprocontracting.com",
+			"MGT Restoration - mgtrestoration.com",
+			"MGT Projects - mgtprojects.com",
+			"NOTE: Hyphenated names create verbal friction and email deliverability issues",
+			"NOTE: The Phone Test: Say out loud: \"Send an email to info@ [Domain Name] .com.\"",
+			"NOTE: Truck Wrap & Yard Sign Visibility: Short, high-contrast words are easier to read quickly",
+			"NOTE: B2B vs. B2C Appeal: Words bridge the gap naturally between residential and commercial",
+			"MGT Enterprises - mgt-enterprises.com",
+			"MGT Concepts - mgt-concepts.com",
+			"MGT Elite - mgt-elite.com"
 		]
 	},
 	"logo": [

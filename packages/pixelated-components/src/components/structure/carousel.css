@@ -55,6 +55,55 @@
 	
 }
 
+.carousel-container.continuous .carousel-cards-container {
+	display: flex;
+	align-items: stretch;
+}
+
+.carousel-container.continuous .carousel-track {
+	--carousel-time-per-image: 3s;
+	display: flex;
+	height: 100%;
+	width: max-content;
+	animation: carousel-continuous calc(var(--carousel-items) * var(--carousel-time-per-image)) linear infinite;
+}
+
+.carousel-container.continuous .carousel-card-wrapper {
+	position: relative;
+	top: auto;
+	right: auto;
+	bottom: auto;
+	left: auto;
+	flex: 0 0 400px;
+	height: 100%;
+}
+
+.carousel-container.continuous .carousel-card {
+	height: 100%;
+}
+
+.carousel-container.continuous .carousel-card-image img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+    padding: 5px; 
+}
+
+@keyframes carousel-continuous {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.carousel-container.continuous .carousel-card-wrapper {
+		flex-basis: 300px;
+	}
+}
+
 /* .carousel-card {
 	width: 100%;
 	height: 100%;

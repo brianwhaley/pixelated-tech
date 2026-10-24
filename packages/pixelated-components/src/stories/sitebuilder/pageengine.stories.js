@@ -1,9 +1,9 @@
 import React from 'react';
-import { PageEngine } from '@/components/sitebuilder/page/components/PageEngine';
+import { PageEngine } from '../../components/sitebuilder/page/components/PageEngine';
 import '@/css/pixelated.global.css';
 
 export default {
-	title: 'SiteBuilder/Page Engine',
+	title: 'SiteBuilder/Page',
 	component: PageEngine,
 	parameters: {
 		layout: 'fullscreen',

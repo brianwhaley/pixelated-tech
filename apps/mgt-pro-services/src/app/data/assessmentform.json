@@ -1,0 +1,234 @@
+{
+  "properties": {
+    "name": "request-an-assessment",
+    "id": "request-an-assessment-form",
+    "toggleLoading": true,
+    "openModal": true,
+    "resetForm": true
+  },
+  "fields": [
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "from",
+        "name": "from",
+        "value": "ma6919@aol.com"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "to",
+        "name": "to",
+        "value": "ma6919@aol.com"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "subject",
+        "name": "subject",
+        "value": "MGT Pro Services Assessment Request"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "domain",
+        "name": "domain",
+        "value": "MGT Pro Services"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "hidden",
+        "id": "formName",
+        "name": "formName",
+        "value": "request-an-assessment"
+      }
+    },
+    {
+      "component": "FormHoneypot",
+      "props": {}
+    },
+    {
+      "component": "FormSectionHeader",
+      "props": {
+        "title": "Project Information",
+        "text": "Share the details that will help MGT Pro Services understand your project before an assessment.",
+        "className": "form-section-header"
+      }
+    },
+    {
+      "component": "FormSelect",
+      "props": {
+        "id": "project-type",
+        "name": "project-type",
+        "defaultValue": "",
+        "display": "vertical",
+        "required": "required",
+        "label": "Project Type (required): ",
+        "options": [
+          { "value": "", "text": "Select a project type", "disabled": "disabled" },
+          { "value": "residential-floor-coating", "text": "Residential floor coating" },
+          { "value": "commercial-floor-coating", "text": "Commercial floor coating" },
+          { "value": "home-renovation", "text": "Home renovation" },
+          { "value": "other", "text": "Other project" }
+        ]
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "project-location",
+        "name": "project-location",
+        "autoComplete": "address-level2",
+        "display": "vertical",
+        "required": "required",
+        "label": "Project City or County (required): ",
+        "tooltip": "Tell us where the project is located."
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "project-size",
+        "name": "project-size",
+        "display": "vertical",
+        "label": "Approximate Project Size: ",
+        "tooltip": "Include square footage or a rough description if you know it."
+      }
+    },
+    {
+      "component": "FormSelect",
+      "props": {
+        "id": "surface-condition",
+        "name": "surface-condition",
+        "defaultValue": "",
+        "display": "vertical",
+        "label": "Existing Surface Condition: ",
+        "options": [
+          { "value": "", "text": "Select a condition", "disabled": "disabled" },
+          { "value": "new-or-clean", "text": "New or clean concrete" },
+          { "value": "worn-or-stained", "text": "Worn, stained, or cracked" },
+          { "value": "existing-coating", "text": "Existing coating or flooring" },
+          { "value": "unknown", "text": "Not sure" }
+        ]
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "intended-use",
+        "name": "intended-use",
+        "display": "vertical",
+        "label": "Intended Use: ",
+        "tooltip": "For example: garage, workshop, warehouse, retail space, office, gym, or patio."
+      }
+    },
+    {
+      "component": "FormSelect",
+      "props": {
+        "id": "desired-finish",
+        "name": "desired-finish",
+        "defaultValue": "",
+        "display": "vertical",
+        "label": "Desired Finish or Priority: ",
+        "options": [
+          { "value": "", "text": "Select a priority", "disabled": "disabled" },
+          { "value": "decorative", "text": "Decorative appearance" },
+          { "value": "durability", "text": "Durability and traffic" },
+          { "value": "maintenance", "text": "Maintenance and cleaning" },
+          { "value": "not-sure", "text": "Not sure yet" }
+        ]
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "timeline",
+        "name": "timeline",
+        "display": "vertical",
+        "label": "Desired Timeline: ",
+        "tooltip": "Tell us about any target dates, access limits, or operating schedules."
+      }
+    },
+    {
+      "component": "FormSectionHeader",
+      "props": {
+        "title": "Contact Information",
+        "text": "Provide a way for MGT Pro Services to follow up about your assessment request.",
+        "className": "form-section-header"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "firstname",
+        "name": "firstname",
+        "autoComplete": "given-name",
+        "display": "vertical",
+        "required": "required",
+        "label": "First Name (required): "
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "text",
+        "id": "lastname",
+        "name": "lastname",
+        "autoComplete": "family-name",
+        "display": "vertical",
+        "required": "required",
+        "label": "Last Name (required): "
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "email",
+        "id": "email",
+        "name": "email",
+        "autoComplete": "email",
+        "display": "vertical",
+        "required": "required",
+        "label": "Email Address (required): ",
+        "validate": "isValidEmailAddress"
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "tel",
+        "id": "telephone",
+        "name": "telephone",
+        "autoComplete": "tel",
+        "display": "vertical",
+        "required": "required",
+        "label": "Phone Number (required): "
+      }
+    },
+    {
+      "component": "FormInput",
+      "props": {
+        "type": "textarea",
+        "id": "message",
+        "name": "message",
+        "display": "vertical",
+        "required": "required",
+        "label": "Tell Us About the Project (required): "
+      }
+    }
+  ]
+}

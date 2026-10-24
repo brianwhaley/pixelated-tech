@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy.parameters]
 stack_name = "pixelated-facial-recognition"
 region = "us-east-2"
-s3_bucket = "pixelated-sam-artifacts"
+s3_bucket = "pixelated-sam-source-container"
 resolve_s3 = false
 confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM"

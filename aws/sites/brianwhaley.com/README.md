@@ -36,7 +36,11 @@ This site currently has no confirmed site-owned SNS topic or subscription, API G
 
 ## Validation and adoption
 
-1. Run `sam validate --template-file template.yaml`.
+1. Run `sam validate --template-file ../amplify-site/template.yaml`.
 2. Validate CloudFormation import support and resource identifiers. The import manifest intentionally excludes the Route 53 record resources listed above.
 3. Create an import change set for review only.
 4. Execute adoption only after the change set has been inspected and explicitly approved.
+
+## Shared template
+
+This stack uses `../amplify-site/template.yaml` as its canonical template and the generic `Site*` logical resource IDs. The local Brian-specific template has been retired.

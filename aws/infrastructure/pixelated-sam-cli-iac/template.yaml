@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Version-controlled SAM deployment artifact infrastructure.
+
+Metadata:
+  SamCliInfo:
+    version: 1.169.0
+
+Resources:
+  PixelatedSamSourceContainer:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: pixelated-sam-source-container
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: ManagedStackSource
+          Value: AwsSamCli
+      VersioningConfiguration:
+        Status: Enabled
+
+  PixelatedSamSourceContainerPolicy:
+    Type: AWS::S3::BucketPolicy
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Bucket: !Ref PixelatedSamSourceContainer
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: serverlessrepo.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub arn:${AWS::Partition}:s3:::${PixelatedSamSourceContainer}/*
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+
+Outputs:
+  SourceBucket:
+    Description: SAM deployment artifact bucket name.
+    Value: !Ref PixelatedSamSourceContainer

@@ -1,8 +1,8 @@
 import React from 'react';
-import { ContentfulReviewsCarousel } from '@/components/integrations/contentful.reviews.components';
+import { ContentfulReviewsCarousel } from '../../components/integrations/contentful.reviews.components';
 
 export default {
-	title: 'Integrations/Contentful Reviews',
+	title: 'Integrations/Contentful',
 	component: ContentfulReviewsCarousel,
 	argTypes: {
 		reviewContentType: { control: 'text' },
@@ -36,5 +36,5 @@ export default {
 
 const Template = (args: any) => <ContentfulReviewsCarousel {...args} />;
 
-export const Default: any = Template.bind({});
-Default.storyName = 'Contentful Reviews Carousel';
+export const ContentfulReviewsStory: any = Template.bind({});
+ContentfulReviewsStory.storyName = 'Contentful Reviews Carousel';

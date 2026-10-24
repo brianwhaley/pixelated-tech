@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormEngine } from '@/components/sitebuilder/form/formengine';
+import { FormEngine } from '../../components/sitebuilder/form/formengine';
 import data from '@/data/form.json';
 import '@/css/pixelated.global.css';
 
@@ -22,7 +22,7 @@ function FormEngineWithJSONPropertiesStory() {
 }
 
 export default {
-	title: 'SiteBuilder/Form Engine',
+	title: 'SiteBuilder/Form',
 	component: FormEngine,
 };
 

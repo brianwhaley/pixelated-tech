@@ -8,14 +8,19 @@
 // are present on the same page.
 import React, { useId, useState } from 'react';
 import PropTypes, { InferProps } from "prop-types";
-import type { CarouselCardType } from "../structure/carousel";
 import { Loading } from "../foundation/loading";
 import { SmartImage } from "./smartimage";
 import { Modal, handleModalOpen } from "./modal";
 import { PageSection, PageSectionHeader } from "../structure/page-blocks";
 import { usePixelatedConfig } from '../config/config.client';
+import type { MediaCardType } from '../structure/carousel';
 import "../../css/pixelated.grid.scss";
 import "./tiles.css";
+
+export type TileCardType = MediaCardType & {
+	variant?: 'caption' | 'overlay';
+	imgClick?: (...args: unknown[]) => void;
+};
 
 export const TilesVariants = [ 'caption', 'overlay' ] as const;
 export type TilesVariantType = typeof TilesVariants[number] | undefined;

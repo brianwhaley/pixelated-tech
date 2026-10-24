@@ -1,31 +1,31 @@
 {
-	"companyName": "MGT Services",
+	"companyName": "MGT Pro Services",
 	"companyContact": "Michael Pope",
 	"date": "October 3, 2026",
-	"email": "",
-	"phone": "",
+	"email": "ma6919@aol.com, jennifer020404@aol.com",
+	"phone": "(302) 430-4449, (551) 427-9392",
 	"address": {
-		"streetAddress": "",
-		"addressLocality": "Greenville",
+		"streetAddress": "215 Harlequin Drive",
+		"addressLocality": "Moore",
 		"addressRegion": "South Carolina",
-		"postalCode": "",
+		"postalCode": "29369",
 		"addressCountry": "US"
 	},
 	"proposalType": "Web Site Build",
 	"maintenancePackage": "",
 	"goal": [
-		"To design and build a modern, professional, and technically credible flooring and concrete-coatings web presence for MGT Services."
+		"To design and build a modern, professional, and technically credible flooring and concrete-coatings web presence for MGT Pro Services."
 	],
 	"deliverables": [
-		"Newly redesigned web site for mgtservices.com",
-		"The features listed below apply to the web site - mgtservices.com"
+		"Newly redesigned web site for mgtproservices.com",
+		"The features listed below apply to the web site - mgtproservices.com"
 	],
 	"features": [
 		{
 			"feature": "Web Site",
 			"description": [
 				"Home Page",
-				"About MGT Services",
+				"About MGT Pro Services",
 				"Residential Floor Coatings",
 				"Commercial Floor Coatings",
 				"Coating Systems",
@@ -68,17 +68,17 @@
 			]
 		}
 	],
-	"startDate": "10/12/2026",
+	"startDate": "11/1/2026",
 	"milestones": [
 		{
 			"milestone": "Information Architecture and design agreement",
-			"date": "10/16/2026"
+			"date": "11/6/2026"
 		},{
-			"milestone": "Initial Site Build - mgtservices.com",
-			"date": "10/23/2026"
+			"milestone": "Initial Site Build - mgtproservices.com",
+			"date": "11/20/2026"
 		},{
-			"milestone": "Site Launch and New Social Media accounts created - mgtservices.com",
-			"date": "10/30/2026"
+			"milestone": "Site Launch and New Social Media accounts created - mgtproservices.com",
+			"date": "December 2026 TBD"
 		}
 	],
 	"paymentTotal": {
@@ -88,6 +88,13 @@
 			"Initial base pricing for the MGT Services website build is $3000.",
 			"Promotional discounted website-build price is $2500.",
 			"Initial build includes the website structure, design, content management setup, SEO foundational files, hosting configuration, and creation of new social media accounts."
+		]
+	},
+	"paymentSchedule": {
+		"paymentScheduleType": "custom",
+		"paymentScheduleDetails": [
+			"No initial deposit required.",
+			"Full and final payment of $2500 due upon completion of the website build, social media accounts creation, and web site launch."
 		]
 	}
 }

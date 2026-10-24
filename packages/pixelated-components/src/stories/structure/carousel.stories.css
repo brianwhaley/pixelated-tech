@@ -5,3 +5,17 @@
 .carousel-card-image {
     height: 475px;
 }
+
+.carousel-container.continuous .carousel-card-wrapper {
+    flex-basis: 475px;
+}
+
+@media screen and (max-width: 480px) {
+    .carousel-container.continuous .carousel-card-image {
+        height: 300px;
+    }
+
+    .carousel-container.continuous .carousel-card-wrapper {
+        flex-basis: 300px;
+    }
+}

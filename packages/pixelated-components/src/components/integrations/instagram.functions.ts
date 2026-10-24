@@ -6,7 +6,7 @@
 
 import { smartFetch } from '../foundation/smartfetch';
 import { buildUrl } from '../foundation/urlbuilder';
-import type { CarouselCardType } from '../structure/carousel';
+import type { MediaCardType } from '../structure/carousel';
 import { getFullPixelatedConfig } from '../config/config';
 
 export type InstagramMedia = {
@@ -75,7 +75,7 @@ export async function getInstagramMedia(params: {
  * Convert Instagram media to Tiles/Carousel compatible format
  * @param media - Array of Instagram media items
  * @param options - Transformation options
- * @returns Array of CarouselCardType for use in Tiles or Carousel
+ * @returns Array of MediaCardType for use in Tiles or Carousel
  */
 export async function instagramMediaToTiles(
 	media: InstagramMedia[],
@@ -84,7 +84,7 @@ export async function instagramMediaToTiles(
 		includeVideos?: boolean; // Include VIDEO type items (default true)
 		includeCaptions?: boolean; // Use caption as bodyText (default true)
 	}
-): Promise<CarouselCardType[]> {
+): Promise<MediaCardType[]> {
 	const { useThumbnails = true, includeVideos = true, includeCaptions = true } = options ?? {};
 	
 	return media
@@ -117,7 +117,7 @@ export async function instagramMediaToTiles(
  * @param userId - Instagram Business Account ID
  * @param limit - Number of posts (default 12)
  * @param options - Transformation options
- * @returns Promise of CarouselCardType array ready for Tiles/Carousel
+ * @returns Promise of MediaCardType array ready for Tiles/Carousel
  */
 export async function getInstagramTiles(params?: {
 	accessToken?: string;
@@ -126,7 +126,7 @@ export async function getInstagramTiles(params?: {
 	useThumbnails?: boolean;
 	includeVideos?: boolean;
 	includeCaptions?: boolean;
-}): Promise<CarouselCardType[]> {
+}): Promise<MediaCardType[]> {
 	const { accessToken, userId, limit = 12, useThumbnails, includeVideos, includeCaptions } = params ?? {};
 	
 	const media = await getInstagramMedia({ accessToken, userId, limit });

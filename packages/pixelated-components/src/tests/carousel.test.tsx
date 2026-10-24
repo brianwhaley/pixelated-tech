@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Carousel, CarouselCardType } from '../components/structure/carousel';
+import { Carousel, CarouselCardType, carouselVariants } from '../components/structure/carousel';
 import {
 		mockCarouselCards as carouselMockCards,
 } from '@/test/test-data';
@@ -44,6 +44,22 @@ describe('Carousel Component', () => {
 			const { container } = render(<Carousel cards={mockCards} />);
 			const images = container.querySelectorAll('img');
 			expect(images.length).toBe(3);
+		});
+
+		it('should use stack as the default variant', () => {
+			const { container } = render(<Carousel cards={mockCards} />);
+			expect(container.querySelector('.carousel-container')).toHaveClass('stack');
+			expect(container.querySelector('.carousel-track')).not.toBeInTheDocument();
+		});
+
+		it('should render the continuous variant as a track', () => {
+			const { container } = render(<Carousel cards={mockCards} variant="continuous" />);
+			const track = container.querySelector('.carousel-track');
+			expect(container.querySelector('.carousel-container')).toHaveClass('continuous');
+			expect(track).toBeInTheDocument();
+			expect(track).toHaveStyle('--carousel-items: 3');
+			expect(container.querySelectorAll('.carousel-card-wrapper')).toHaveLength(mockCards.length * 2);
+			expect(container.querySelector('.carousel-buttons')).not.toBeInTheDocument();
 		});
 
 		it('should render carousel control buttons', () => {
@@ -786,6 +802,10 @@ describe('Carousel Behavior - Real Tests', () => {
 });
 
 describe('Carousel PropTypes Validation - Real Tests', () => {
+	it('should expose supported variants', () => {
+		expect(carouselVariants).toEqual(['stack', 'continuous']);
+	});
+
 	it('should have expected propTypes', () => {
 		expect(Carousel.propTypes).toBeDefined();
 	});
@@ -800,5 +820,9 @@ describe('Carousel PropTypes Validation - Real Tests', () => {
 
 	it('should include imgFit prop', () => {
 		expect(Carousel.propTypes?.imgFit).toBeDefined();
+	});
+
+	it('should include variant prop', () => {
+		expect(Carousel.propTypes?.variant).toBeDefined();
 	});
 });

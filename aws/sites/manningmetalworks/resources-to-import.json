@@ -1,0 +1,27 @@
+[
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "SiteAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d18f6u8y7ml0iy" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "SiteProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d18f6u8y7ml0iy/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "SiteHostedZone",
+    "ResourceIdentifier": { "Id": "Z00866083BPRQNMPMM8WB" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "SiteHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "0572653a-c645-4487-848c-1f936f10e5f9" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "SiteDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d18f6u8y7ml0iy/domains/manningmetalworks.com" }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "SiteAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/dcz8ugp3v037z" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "SiteProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/dcz8ugp3v037z/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "SiteHostedZone",
+    "ResourceIdentifier": { "Id": "Z098617323RPXCPUAD61D" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "SiteHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "f71e431c-e9f4-427e-8ff5-ce3fc2b7f59e" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "SiteDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/dcz8ugp3v037z/domains/simpledayconcierge.com" }
+  }
+]

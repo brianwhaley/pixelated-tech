@@ -1,4 +1,4 @@
-import { ConfigBuilder } from '@/components/sitebuilder/config/ConfigBuilder';
+import { ConfigBuilder } from '../../components/sitebuilder/config/ConfigBuilder';
 
 // Function to download JSON file
 const downloadJsonFile = (data: any, filename: string) => {
@@ -17,7 +17,7 @@ const downloadJsonFile = (data: any, filename: string) => {
 };
 
 export default {
-	title: 'SiteBuilder/Config Builder',
+	title: 'SiteBuilder/Config',
 	component: ConfigBuilder
 };
 

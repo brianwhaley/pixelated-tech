@@ -5,7 +5,8 @@ stack_name = "pixelated-email-forwarding"
 region = "us-east-2"
 capabilities = "CAPABILITY_NAMED_IAM"
 confirm_changeset = true
-resolve_s3 = true
+s3_bucket = "pixelated-sam-source-bucket"
+resolve_s3 = false
 # Shared platform DNS and SES identity. Tenant domains are onboarded separately.
 parameter_overrides = "PlatformHostedZoneId=Z3VWI30LVBBD2X PlatformDomain=forwarding.pixelated.tech"
 # SES rule-set activation remains a separate post-adoption operation.
