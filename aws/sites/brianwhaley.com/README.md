@@ -6,7 +6,7 @@ This stack is the site-owned lifecycle boundary for `brianwhaley.com`.
 
 - Route 53 public hosted zone `Z25HMP58CYXTT0`
 - Route 53 HTTPS health check `8907c3f0-265e-4942-8bbc-767b4bc03ea9`
-- Amplify app `d2ysf7fqwwsmjl` in `us-east-2`
+- Amplify app `d1l3sfqu84bo71` in `us-east-1`
 - Amplify production branch `main`
 - Amplify custom domain association for `brianwhaley.com`
 
@@ -37,8 +37,8 @@ This site currently has no confirmed site-owned SNS topic or subscription, API G
 ## Validation and adoption
 
 1. Run `sam validate --template-file ../amplify-site/template.yaml`.
-2. Validate CloudFormation import support and resource identifiers. The import manifest intentionally excludes the Route 53 record resources listed above.
-3. Create an import change set for review only.
+2. Validate CloudFormation import support and resource identifiers in `us-east-1`. The import manifest intentionally excludes the Route 53 record resources listed above.
+3. Create an import change set for `brianwhaley-com-site` in `us-east-1` for review only.
 4. Execute adoption only after the change set has been inspected and explicitly approved.
 
 ## Shared template
