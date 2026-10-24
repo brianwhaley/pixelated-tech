@@ -1,0 +1,409 @@
+{
+	"blogCalendarConfig": {
+		"cadence": "weekly",
+		"defaultStatus": "",
+		"criteria": {
+			"subjectiveCriteria": [
+				"Use clear, plain, practical, straightforward language, technically authoritative, and accessible, empathetic and understanding.",
+				"Target an education level of high school graduate or below.",
+				"Include at least two relevant, authoritative external sources, such as official documentation, government agencies, universities, or recognized research organizations.",
+				"Include at least two factual statistics when appropriate. Every statistic must have a direct link to its original authoritative source.",
+				"Never invent statistics, citations, URLs, research findings, or source claims. If a reliable source cannot be verified, omit the statistic.",
+				"Place the source link in the same paragraph as the statistic or factual claim it supports.",
+				"Use real, working URLs. Do not use placeholder links.",
+				"Add links to other blog posts or other content on the web site.  Do not use fabricated or falsified links.  Use real links to real pages.",
+				"Content is becoming repetitive.  Ensure you vary your language, tropes, analogies, phrases, starts, finishes, etc. between posts.",
+				"The blog post must make sense when read aloud, or if used as a script for a podcast.",
+				"Do not use text or html based tables, charts, or other formatting.",
+				"Do not invent metrics, prices, statistics, laws, results, client details, or product features",
+				"Do not provide individualized legal, financial, medical, or cybersecurity advice",
+				"Optimize for search and answer engines",
+				"End the article with a Call to Action (CTA) to contact us.",
+				"Blog post titles must not contain quote marks or ampersands; use plain text and the word and instead."
+			],
+			"objectiveCriteria": {
+				"require_minimum_words": 800,
+				"require_maximum_words": 1200,
+				"require_intro_paragraph": true,
+				"require_conclusion_paragraph": true,
+				"require_call_to_action": true,
+				"require_minimum_body_paragraphs": 3,
+				"require_minimum_paragraph_sentences": 6,
+				"require_minimum_blog_links": 3,
+				"require_minimum_site_links": 2,
+				"require_minimum_external_links": 2,
+				"required_call_to_action_link": "https://www.mgtproservices.com/contact",
+				"required_call_to_action_heading": "Schedule Your Free Assessment Today"
+			},
+			"unusedCriteria": {
+				"require_wordpress_blocks": false
+			}
+		}
+	},
+	"blogCalendar": [
+		{
+			"id": 1,
+			"targetPublishDate": "",
+			"title": "Epoxy vs. polyaspartic vs. polyurea: which coating fits a Greenville-area project?",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 2,
+			"targetPublishDate": "",
+			"title": "Why concrete preparation determines whether a floor coating lasts",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 3,
+			"targetPublishDate": "",
+			"title": "What diamond grinding does before a coating is installed",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 4,
+			"targetPublishDate": "",
+			"title": "How moisture testing protects basement and garage floor projects",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 5,
+			"targetPublishDate": "",
+			"title": "Garage floor coating options for Greenville homeowners",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 6,
+			"targetPublishDate": "",
+			"title": "Choosing a flake blend for a residential garage",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 7,
+			"targetPublishDate": "",
+			"title": "Solid-color, flake, quartz, and metallic finishes compared",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 8,
+			"targetPublishDate": "",
+			"title": "What homeowners should move or repair before installation",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 9,
+			"targetPublishDate": "",
+			"title": "Return-to-service timing: walking, moving items, and parking",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 10,
+			"targetPublishDate": "",
+			"title": "How to maintain a polyaspartic or epoxy floor",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 11,
+			"targetPublishDate": "",
+			"title": "Common causes of peeling and failed garage coatings",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 12,
+			"targetPublishDate": "",
+			"title": "When an existing coating should be removed instead of covered",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 13,
+			"targetPublishDate": "",
+			"title": "Basement floor coatings and moisture-sensitive slabs",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 14,
+			"targetPublishDate": "",
+			"title": "Patio and porch coatings for Upstate South Carolina weather",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 15,
+			"targetPublishDate": "",
+			"title": "Outdoor UV exposure and why system selection matters",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 16,
+			"targetPublishDate": "",
+			"title": "Slip resistance for wet porches, pool areas, and service spaces",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 17,
+			"targetPublishDate": "",
+			"title": "Workshop floors that balance durability and cleanability",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 18,
+			"targetPublishDate": "",
+			"title": "Concrete crack repair before coating: what to expect",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 19,
+			"targetPublishDate": "",
+			"title": "A Greenville garage project briefing from assessment to finished floor",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 20,
+			"targetPublishDate": "",
+			"title": "How finish color and flake size affect a garage space",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 21,
+			"targetPublishDate": "",
+			"title": "What a written coating estimate should include",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 22,
+			"targetPublishDate": "",
+			"title": "Questions to ask a flooring contractor before signing",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 23,
+			"targetPublishDate": "",
+			"title": "Flooring considerations for a Taylors or Greer workshop",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 24,
+			"targetPublishDate": "",
+			"title": "Flooring considerations for a Simpsonville or Mauldin home project",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 25,
+			"targetPublishDate": "",
+			"title": "Commercial floor coatings for automotive shops",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 26,
+			"targetPublishDate": "",
+			"title": "Warehouse and light-industrial floor coating considerations",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 27,
+			"targetPublishDate": "",
+			"title": "Planning commercial flooring around business downtime",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 28,
+			"targetPublishDate": "",
+			"title": "Slip resistance and maintenance in commercial spaces",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 29,
+			"targetPublishDate": "",
+			"title": "Chemical exposure and selecting a commercial coating system",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 30,
+			"targetPublishDate": "",
+			"title": "Flooring for gyms, studios, and high-foot-traffic spaces",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 31,
+			"targetPublishDate": "",
+			"title": "Retail and showroom floors: appearance, traffic, and maintenance",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 32,
+			"targetPublishDate": "",
+			"title": "Food-service flooring: sanitation, traction, and downtime questions",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 33,
+			"targetPublishDate": "",
+			"title": "Questions facility managers should answer before a coating assessment",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 34,
+			"targetPublishDate": "",
+			"title": "A commercial project briefing with documented preparation and scheduling",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 35,
+			"targetPublishDate": "",
+			"title": "When a business should repair, resurface, or replace a concrete floor",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 36,
+			"targetPublishDate": "",
+			"title": "How maintenance teams can extend the life of a coated floor",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 37,
+			"targetPublishDate": "",
+			"title": "Fall garage and porch preparation in the Greenville area",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 38,
+			"targetPublishDate": "",
+			"title": "Rain, humidity, and scheduling exterior concrete work",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 39,
+			"targetPublishDate": "",
+			"title": "Preparing a garage floor before winter storage and vehicle use",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 40,
+			"targetPublishDate": "",
+			"title": "Home gym and workshop flooring ideas for Upstate homes",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 41,
+			"targetPublishDate": "",
+			"title": "A year-end project review using real MGT work and lessons learned",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 42,
+			"targetPublishDate": "",
+			"title": "What homeowners should know about winter cure conditions",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 43,
+			"targetPublishDate": "",
+			"title": "Spring cleaning and the right time to evaluate a garage floor",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 44,
+			"targetPublishDate": "",
+			"title": "Driveway, porch, and patio coating questions for spring projects",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 45,
+			"targetPublishDate": "",
+			"title": "How to compare coating samples in your actual lighting",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 46,
+			"targetPublishDate": "",
+			"title": "Local project spotlight with customer-approved before-and-after evidence",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 47,
+			"targetPublishDate": "",
+			"title": "Flooring for builders, remodelers, and real estate preparation",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 48,
+			"targetPublishDate": "",
+			"title": "How realtors can explain coated garage floors to buyers",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 49,
+			"targetPublishDate": "",
+			"title": "Concrete coating myths that deserve a more accurate answer",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 50,
+			"targetPublishDate": "",
+			"title": "MGT assessment checklist for residential and commercial customers",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 51,
+			"targetPublishDate": "",
+			"title": "What MGT learned from the year's projects and customer questions",
+			"notes": [],
+			"status": ""
+		},
+		{
+			"id": 52,
+			"targetPublishDate": "",
+			"title": "Planning next year's flooring improvements in Greenville and the Upstate",
+			"notes": [],
+			"status": ""
+		}
+	]
+}

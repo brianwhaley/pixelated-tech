@@ -3,7 +3,7 @@ import { ContentfulItems } from '@/components/integrations/contentful.items.comp
 import '@/css/pixelated.global.css';
 
 export default {
-	title: 'Integrations/Contentful Items',
+	title: 'Integrations/Contentful',
 	component: ContentfulItems,
 };
 

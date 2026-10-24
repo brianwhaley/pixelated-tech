@@ -17,7 +17,6 @@ async function runScaffolder(script, pagesInput) {
 		['Proceed? (Y/n)', 'y'],
 		['Pages you want', pagesInput],
 		['Proceed with these pages?', 'y'],
-		['Create an AWS Amplify app', 'n'],
 	];
 	const proc = spawn(process.execPath, [script], { stdio: 'pipe' });
 	let output = '';
@@ -69,7 +68,10 @@ describe('Projects and Gallery scaffold selection', () => {
 			await fs.mkdir(scripts, { recursive: true });
 			await fs.mkdir(configDir, { recursive: true });
 			await fs.mkdir(path.join(pages, '(home)'), { recursive: true });
-			await fs.writeFile(path.join(workspace, 'package.json'), '{"type":"module"}');
+			await fs.writeFile(path.join(workspace, 'package.json'), JSON.stringify({
+				type: 'module',
+				scripts: { 'release:prep': 'node -e "process.exit(0)"' },
+			}));
 			await fs.symlink(path.join(repoRoot, 'node_modules'), path.join(workspace, 'node_modules'), 'dir');
 			for (const file of ['create-pixelated-app.js', 'create-pixelated-app.json']) {
 				await fs.copyFile(path.join(scriptDir, file), path.join(scripts, file));
@@ -87,7 +89,7 @@ describe('Projects and Gallery scaffold selection', () => {
 
 			const result = await runScaffolder(path.join(scripts, 'create-pixelated-app.js'), selection);
 			expect(result.code).toBe(0);
-			expect(result.answered).toBe(7);
+			expect(result.answered).toBe(6);
 			expect(result.errors).toBe('');
 			expect(result.output).toContain('Done.');
 			const destination = path.join(workspace, 'apps/example-site');

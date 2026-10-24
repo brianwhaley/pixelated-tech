@@ -33,6 +33,10 @@ type ProposalData = {
         isDiscounted: boolean; 
         description: string[] 
     };
+	paymentSchedule?: {
+		paymentScheduleType: 'milestone' | 'custom';
+		paymentScheduleDetails?: string[];
+	};
 };
 
 function renderList(items: string[]) {
@@ -108,7 +112,7 @@ function Proposal(props: { proposal: ProposalData }) {
 	const milestonePercent = Math.floor(((1 - initialDeposit) * 100 / milestonesCount) / 5) * 5; // rounded down to nearest 5%
 	const milestonePayment = milestonePercent / 100; // decimal per milestone
 	const lastMilestonePayment = 1 - initialDeposit - (milestonePayment * (milestonesCount - 1)); // remaining percentage for last milestone
-
+	const paymentScheduleType = proposal.paymentSchedule?.paymentScheduleType ?? 'milestone';
 
 	return (
 		<>
@@ -212,9 +216,17 @@ function Proposal(props: { proposal: ProposalData }) {
 				<ul>
 					{proposal.proposalType == "Web Site Build" && (
 						<>
-							<li>Initial Deposit: {(initialDeposit * 100).toFixed(0)}% due upon signing.</li>
-							<li>Additional payments of {(milestonePayment * 100).toFixed(0)}% due on completions of each Milestone.</li>
-							<li>The final Milestone payments will be {(lastMilestonePayment * 100).toFixed(0)}%, due on completions of the final Milestone.</li>
+							{paymentScheduleType == 'custom' ? (
+								proposal.paymentSchedule?.paymentScheduleDetails?.map((detail, index) => (
+									<li key={index}>{detail}</li>
+								))
+							) : (
+								<>
+									<li>Initial Deposit: {(initialDeposit * 100).toFixed(0)}% due upon signing.</li>
+									<li>Additional payments of {(milestonePayment * 100).toFixed(0)}% due on completions of each Milestone.</li>
+									<li>The final Milestone payments will be {(lastMilestonePayment * 100).toFixed(0)}%, due on completions of the final Milestone.</li>
+								</>
+							)}
 							<li>Invoices for {proposal.proposalType} will be issued upon completion for services rendered. </li>
 							<li>Payment is due within 5 business days of the receipt of invoice.</li>
 						</>
@@ -252,7 +264,7 @@ function Proposal(props: { proposal: ProposalData }) {
 				{proposal.proposalType != "Security System Installation" && (
 					<>
 						<h2>{sectionCounter += 1}. OWNERSHIP, COPYRIGHT & CLIENT COOPERATION</h2>
-						<p>Upon full payment, Client owns final website, content, and code.  Developer retains rights to pre-existing tools and component libraries.  Client responsible for providing necessary materials and content to build the website (e.g. company logo, contact information, social media profiles, testimonials, product/service descriptions, staff profiles, customer lists, etc.) within two weeks of request.  Client shall approve development version of the site before going live (including design, information architecture, and content).</p>
+						<p>Upon full payment, Client owns final website, domain, email addresses, content, and code.  Developer retains rights to pre-existing tools and component libraries.  Client responsible for providing necessary materials and content to build the website (e.g. company logo, contact information, social media profiles, testimonials, product/service descriptions, staff profiles, customer lists, etc.) within two weeks of request.  Client shall approve development version of the site before going live (including design, information architecture, and content).</p>
 					</>
 				)}
 				{proposal.proposalType == "Security System Installation" && (
@@ -276,7 +288,7 @@ function Proposal(props: { proposal: ProposalData }) {
 
 			<PageSection id="proposal-termination-section" className="no-break" columns={1} maxWidth="1024px">
 				<h2>{sectionCounter+=1}. TERMINATION</h2>
-				<p>Either party can terminate with 5 days written notice. All work completed up to termination is billed based upon completed or partially completed milestones above. Any disputes shall be resolved under New Jersey state law.</p>
+				<p>Either party can terminate with 5 days written notice. All work completed up to termination is billed based upon completed or partially completed milestones above. Web site assets and related materials will be delivered to Client within 5 business days of written request. Any disputes shall be resolved under New Jersey state law.</p>
 			</PageSection>
 
 			<PageSection id="proposal-parties-section" className="no-break" columns={1} maxWidth="1024px">

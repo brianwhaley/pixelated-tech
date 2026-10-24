@@ -51,6 +51,9 @@ applications:
   - appRoot: apps/brianwhaley
     frontend: *shared_frontend
 
+  - appRoot: apps/mgt-pro-services
+    frontend: *shared_frontend
+
   - appRoot: apps/informationfocus
     frontend: *shared_frontend
 
@@ -175,7 +178,7 @@ applications:
             - 'echo "Calling Config Vault postbuild ..."'
             - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
       artifacts:
-        baseDirectory: .next
+        baseDirectory: storybook-static
         files:
           - '**/*'
       cache:

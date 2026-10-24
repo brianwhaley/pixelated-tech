@@ -23,13 +23,13 @@ Build the smallest site-specific implementation that satisfies the approved asse
 
 - Base every new site on `apps/pixelated-template`. Use `packages/pixelated-components/src/scripts/create-pixelated-app.js` to scaffold the initial site when it is appropriate for the requested workflow.
 - When an existing website is available, begin with a content audit and carry forward accurate existing content, including text, images, videos, testimonials, services, service areas, licenses, certifications, company history, achievements, and other established trust signals. Download approved media into the target app's `public/images` or another appropriate public asset directory when local assets are needed.
-- Be sure to update basic site info, routes, visual design, services, and service areas in the pixelated.config.json file.
+- Be sure to update detailed site info, routes, visual design, services, and service areas in the pixelated.config.json file from the assessment.
 - Preserve existing-site claims only when they can be verified from the source website or approved discovery artifacts. Do not invent, embellish, or transfer claims that are unsupported, expired, or clearly unrelated to the current business.
-- Create a proposal for blog topics based on the services offered and add the approved topics to the target site's `public/data/blogcalendar.json`, using the existing `blogCalendarConfig` and `blogCalendar` structure and service-based categories in each entry.
+- If a Blog Calendar is already included in the assessment, update the target site's `public/data/blogcalendar.json` with that information.  If not, create blog topics based on the services offered and replace the content in the target site's `public/data/blogcalendar.json`, using the existing `blogCalendarConfig` and `blogCalendar` structure and service-based categories in each entry.
 - Build FAQs from common industry questions and the competitors identified in the approved assessment. Adapt them to the client's verified services and avoid presenting competitor claims, guarantees, or unsupported business-specific answers as facts.
-- Build pages by composing existing components from the `@pixelated-tech/components` library before creating local page components or patterns.
-- Implement contact-us forms with the shared `FormEngine` and JSON form definitions, such as `src/app/data/contactform.json`, rather than hand-built form markup or parallel form systems.
-- Preserve existing public URLs whenever practical. When a route must change, either retain a compatibility route or add an explicit redirect in `next.config.ts`; review the existing site's important URLs and validate redirect coverage before removing or renaming pages.
+- Build pages by composing existing components from the `@pixelated-tech/components` library.  Examine competitor content and other sites within the repository to build pages that complement the client's verified offerings and maintain a consistent user experience.
+- Implement contact-us forms with the shared `FormEngine` and JSON form definitions, such as `src/app/data/contactform.json`.  Do not hand-built form markup or parallel form systems.  Examine other sites for examples and best practices to ensure consistency and proper functionality.
+- If there is an existing site, map existing site URLs to the target app's routes based on the assessment and proposal. When a route must change, add an explicit redirect in `next.config.ts`.
 
 ## Deployment Boundary
 

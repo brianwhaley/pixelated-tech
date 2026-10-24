@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "simple-day-concierge-site"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-bucket"
+resolve_s3 = false
+confirm_changeset = true
+parameter_overrides = "SiteName=simple-day-concierge DomainName=simpledayconcierge.com HealthCheckDomainName=www.simpledayconcierge.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=dcz8ugp3v037z EnableDeployment=true"

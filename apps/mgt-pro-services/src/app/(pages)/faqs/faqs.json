@@ -1,0 +1,50 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "MGT Pro Services FAQs",
+  "description": "Frequently asked questions about MGT Pro Services residential floor coatings, commercial floor coatings, and home renovation assessments.",
+  "author": {
+    "@type": "Organization",
+    "name": "Mgt Pro Services",
+    "url": "https://www.mgtproservices.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Mgt Pro Services",
+    "url": "https://www.mgtproservices.com"
+  },
+  "datePublished": "2023-10-01",
+  "dateModified": "2026-01-04",
+  "inLanguage": "en-US",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Mgt Pro Services",
+    "url": "https://www.mgtproservices.com"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.mgtproservices.com/faqs"
+  },
+  "mainEntity": [
+    { "@type": "Question", "name": "What services does MGT Pro Services provide?", "category": "Services", "acceptedAnswer": { "@type": "Answer", "text": "MGT Pro Services provides residential floor coating assessments, commercial floor coating assessments, and selected home renovation assessments. The scope and fit of each project are confirmed before work is proposed." } },
+    { "@type": "Question", "name": "What residential spaces can be considered for floor coatings?", "category": "Residential Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Garages, basements, workshops, patios, porches, and other suitable residential concrete spaces can be considered. The slab condition, moisture, use, access, and finish goals affect whether a coating system is appropriate." } },
+    { "@type": "Question", "name": "Do you install polyaspartic flooring?", "category": "Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Polyaspartic flooring can be considered where it fits the substrate, use, schedule, and project requirements. The recommended system is determined after an assessment rather than assumed from the room type alone." } },
+    { "@type": "Question", "name": "What is reviewed before a floor coating recommendation?", "category": "Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "The review can include concrete condition, cracks, moisture, surface preparation needs, traffic, chemicals, temperature, access, maintenance expectations, and the desired appearance." } },
+    { "@type": "Question", "name": "Can you assess an existing coated or painted concrete floor?", "category": "Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Existing coatings, paint, repairs, contamination, and surface condition should be reviewed before deciding whether removal, preparation, repair, recoating, or another approach is suitable." } },
+    { "@type": "Question", "name": "What commercial spaces can be considered for floor coatings?", "category": "Commercial Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Automotive spaces, warehouses, retail areas, offices, gyms, food-service environments, and other concrete floors can be discussed during an assessment. Final suitability depends on operations and site conditions." } },
+    { "@type": "Question", "name": "Can you work around an operating business?", "category": "Commercial Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Operating hours, access, shutdown windows, ventilation, staging, and customer or employee movement are part of commercial project planning. The workable schedule is confirmed during assessment and scope development." } },
+    { "@type": "Question", "name": "Do you coat warehouse and industrial floors?", "category": "Commercial Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Warehouse and industrial floors can be considered when the slab, traffic, equipment, and operating conditions are reviewed. A site assessment is needed before a system or performance expectation is discussed." } },
+    { "@type": "Question", "name": "Can a retail or office floor be evaluated?", "category": "Commercial Floor Coatings", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Retail and office spaces can be evaluated for appearance, foot traffic, access, existing flooring, maintenance, and the timing requirements of the business." } },
+    { "@type": "Question", "name": "Do you provide home renovations?", "category": "Home Renovations", "acceptedAnswer": { "@type": "Answer", "text": "MGT Pro Services accepts requests for selected home renovation projects. Scope, materials, trade coordination, schedule, and capabilities are confirmed before any renovation work is proposed." } },
+    { "@type": "Question", "name": "Can you renovate any room or home?", "category": "Home Renovations", "acceptedAnswer": { "@type": "Answer", "text": "Not every project is necessarily a fit. The property, requested scope, access, materials, schedule, and required trades are reviewed before MGT Pro Services confirms whether it can assist." } },
+    { "@type": "Question", "name": "How do I request an assessment?", "category": "Getting Started", "acceptedAnswer": { "@type": "Answer", "text": "Use the contact form or request-an-assessment page to share the project type, location, space, approximate size, existing conditions, intended use, and preferred timing. Unknown details can be left blank or discussed during follow-up." } },
+    { "@type": "Question", "name": "Do you need photos before an assessment?", "category": "Getting Started", "acceptedAnswer": { "@type": "Answer", "text": "Photos can help explain the current condition, but they may not replace an in-person or project-specific review. Share available photos and describe any cracks, moisture, peeling, stains, repairs, or access limitations." } },
+    { "@type": "Question", "name": "Do you provide project pricing online?", "category": "Getting Started", "acceptedAnswer": { "@type": "Answer", "text": "No fixed price is published because scope depends on the surface, preparation, materials, access, schedule, and project requirements. Pricing discussions should follow a project assessment." } },
+    { "@type": "Question", "name": "How long does a floor coating project take?", "category": "Process and Timeline", "acceptedAnswer": { "@type": "Answer", "text": "Timing varies with surface preparation, repairs, coating system, size, access, cure requirements, and site use. A project-specific schedule can be discussed after the conditions and scope are reviewed." } },
+    { "@type": "Question", "name": "What areas of South Carolina do you serve?", "category": "Service Areas", "acceptedAnswer": { "@type": "Answer", "text": "The current service-area focus includes Greenville, Spartanburg, Union, Newberry, Fairfield, and Richland counties, including markets such as Greenville, Taylors, Greer, Mauldin, Simpsonville, Easley, Spartanburg, Columbia, Winnsboro, Ridgeway, Newberry, Prosperity, Union, and Jonesville." } },
+    { "@type": "Question", "name": "Do you serve high-value residential neighborhoods?", "category": "Service Areas", "acceptedAnswer": { "@type": "Answer", "text": "Residential requests can be considered across the listed South Carolina markets, including established and higher-value neighborhoods. The property location and requested work are reviewed as part of the assessment." } },
+    { "@type": "Question", "name": "Do you serve commercial complexes and business parks?", "category": "Service Areas", "acceptedAnswer": { "@type": "Answer", "text": "Commercial properties, multi-tenant complexes, warehouses, offices, retail locations, and business parks can be considered in the listed service areas. Access, operating conditions, and project fit must be reviewed." } },
+    { "@type": "Question", "name": "Can you assess a project outside the listed counties?", "category": "Service Areas", "acceptedAnswer": { "@type": "Answer", "text": "Requests outside the current service-area focus can be submitted for review. Availability and travel requirements are confirmed before an assessment or scope is scheduled." } },
+    { "@type": "Question", "name": "What should I include in my request?", "category": "Getting Started", "acceptedAnswer": { "@type": "Answer", "text": "Include your location, project type, space or surface, approximate dimensions if known, current condition, intended use, access constraints, and preferred timing. Leaving unknown fields blank is acceptable." } }
+  ]
+}

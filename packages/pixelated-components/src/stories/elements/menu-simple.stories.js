@@ -3,7 +3,7 @@ const allRoutes = [];
 import '@/css/pixelated.global.css';
 
 export default {
-	title: 'General/Menu Simple',
+	title: 'General/Menu',
 	component: MenuSimple
 };
 

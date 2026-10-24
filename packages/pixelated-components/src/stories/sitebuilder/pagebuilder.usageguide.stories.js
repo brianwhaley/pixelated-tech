@@ -1,8 +1,8 @@
 import React from 'react';
-import { PageBuilderUI } from '@/components/sitebuilder/page/components/PageBuilderUI';
+import { PageBuilderUI } from '../../components/sitebuilder/page/components/PageBuilderUI';
 
 export default {
-	title: 'SiteBuilder/Page Builder Usage Guide',
+	title: 'SiteBuilder/Page',
 	component: PageBuilderUI,
 	parameters: {
 		layout: 'fullscreen',

@@ -5,7 +5,7 @@ import '@/css/pixelated.global.css';
 const allRoutes = [];
 
 export default {
-	title: 'General/Menu Expando',
+	title: 'General/Menu',
 	component: MenuExpando
 };
 

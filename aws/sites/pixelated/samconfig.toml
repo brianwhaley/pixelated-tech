@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "pixelated-site"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-bucket"
+resolve_s3 = false
+confirm_changeset = true
+parameter_overrides = "SiteName=pixelated DomainName=pixelated.tech HealthCheckDomainName=www.pixelated.tech ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d17myuvb07hqxo EnableDeployment=true"
