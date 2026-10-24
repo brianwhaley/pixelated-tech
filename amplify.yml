@@ -128,7 +128,7 @@ applications:
             - 'echo "Admin app top-level directory sizes:"; find "$APP_ROOT" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
             - 'echo "Admin .next top-level directory sizes:"; find "$APP_ROOT/.next" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
       artifacts:
-        baseDirectory: apps/pixelated-admin/.next
+        baseDirectory: .next
         files:
           - 'server/**/*'
           - 'static/**/*'
