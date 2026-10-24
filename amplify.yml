@@ -128,13 +128,15 @@ applications:
             - 'echo "Admin app top-level directory sizes:"; find "$APP_ROOT" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
             - 'echo "Admin .next top-level directory sizes:"; find "$APP_ROOT/.next" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
       artifacts:
-        baseDirectory: .next
+        baseDirectory: apps/pixelated-admin/.next
         files:
-          - '**/*'
-          - '!cache/**/*'
-          - '!dev/**/*'
-          - '!diagnostics/**/*'
-          - '!types/**/*'
+          - 'server/**/*'
+          - 'static/**/*'
+          - '*.json'
+          - '*.js'
+          - 'BUILD_ID'
+          - 'trace'
+          - 'trace-build'
 
   - appRoot: packages/pixelated-components
     frontend:
