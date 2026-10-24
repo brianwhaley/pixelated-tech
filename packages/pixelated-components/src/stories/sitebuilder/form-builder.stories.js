@@ -1,8 +1,8 @@
-import { FormBuilder } from '@/components/sitebuilder/form/formbuilder';
+import { FormBuilder } from '../../components/sitebuilder/form/formbuilder';
 import '@/css/pixelated.global.css';
 
 export default {
-	title: 'SiteBuilder/Form Builder',
+	title: 'SiteBuilder/Form',
 	component: FormBuilder
 };
 

@@ -1,0 +1,169 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Site-owned Amplify, Route 53, and uptime resources.
+
+Parameters:
+  SiteName:
+    Type: String
+    Description: Amplify application name and site identifier.
+
+  DomainName:
+    Type: String
+    Description: Public apex domain name without a trailing period.
+
+  HealthCheckDomainName:
+    Type: String
+    Description: Fully qualified hostname monitored by the Route 53 health check.
+
+  HealthCheckType:
+    Type: String
+    Default: HTTPS
+    AllowedValues:
+      - HTTP
+      - HTTPS
+    Description: Protocol used by the Route 53 health check.
+
+  HealthCheckPort:
+    Type: Number
+    Default: 443
+    MinValue: 1
+    MaxValue: 65535
+    Description: Port used by the Route 53 health check.
+
+  EnableSNI:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Whether the Route 53 health check uses TLS server name indication.
+
+  ManageHostedZone:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Whether this stack owns the Route 53 hosted zone.
+
+  IncludeWww:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Whether to associate the www subdomain with the Amplify domain.
+
+  Repository:
+    Type: String
+    Default: https://github.com/brianwhaley/pixelated-tech
+    Description: Source repository used by Amplify.
+
+  ExistingAmplifyAppId:
+    Type: String
+    Default: ''
+    Description: Existing Amplify app ID. Leave empty to provision a new app.
+
+  AccessToken:
+    Type: String
+    Default: ''
+    NoEcho: true
+    Description: GitHub access token required only when provisioning a new app.
+
+  EnableDeployment:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Whether this stack should create or adopt site resources.
+
+Conditions:
+  DeploymentEnabled: !Equals [!Ref EnableDeployment, 'true']
+  HealthCheckSNIEnabled: !And
+    - !Equals [!Ref HealthCheckType, HTTPS]
+    - !Equals [!Ref EnableSNI, 'true']
+  HasExistingAmplifyApp: !Not [!Equals [!Ref ExistingAmplifyAppId, '']]
+  HasAccessToken: !Not [!Equals [!Ref AccessToken, '']]
+  SiteHostedZoneManaged: !And
+    - !Condition DeploymentEnabled
+    - !Equals [!Ref ManageHostedZone, 'true']
+  WwwIncluded: !Equals [!Ref IncludeWww, 'true']
+
+Resources:
+  SiteHostedZone:
+    Condition: SiteHostedZoneManaged
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub '${DomainName}.'
+
+  SiteHealthCheck:
+    Condition: DeploymentEnabled
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: !Ref HealthCheckPort
+        Type: !Ref HealthCheckType
+        ResourcePath: /
+        FullyQualifiedDomainName: !Ref HealthCheckDomainName
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: !If [HealthCheckSNIEnabled, true, !Ref AWS::NoValue]
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  SiteAmplifyApp:
+    Condition: DeploymentEnabled
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref SiteName
+      Platform: WEB_COMPUTE
+      Repository: !Ref Repository
+      AccessToken: !If [HasAccessToken, !Ref AccessToken, !Ref AWS::NoValue]
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  SiteProductionBranch:
+    Condition: DeploymentEnabled
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !If [HasExistingAmplifyApp, !Ref ExistingAmplifyAppId, !GetAtt SiteAmplifyApp.AppId]
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  SiteDomain:
+    Condition: DeploymentEnabled
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !If [HasExistingAmplifyApp, !Ref ExistingAmplifyAppId, !GetAtt SiteAmplifyApp.AppId]
+      DomainName: !Ref DomainName
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+        - !If
+          - WwwIncluded
+          - BranchName: main
+            Prefix: www
+          - !Ref AWS::NoValue
+

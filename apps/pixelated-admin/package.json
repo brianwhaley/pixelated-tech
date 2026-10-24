@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -63,7 +63,7 @@
     "eslint-config-next": "^16.3.2",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "glob": "^13.0.6",
-    "googleapis": "^187.0.0",
+    "googleapis": "^188.0.0",
     "jsdom": "^29.1.1",
     "react-dom": "^19.2.6",
     "sass": "^1.103.1",

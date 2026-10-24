@@ -1,0 +1,27 @@
+[
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "SiteAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d17myuvb07hqxo" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "SiteProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d17myuvb07hqxo/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "SiteHostedZone",
+    "ResourceIdentifier": { "Id": "Z3VWI30LVBBD2X" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "SiteHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "92f4a0d8-db33-4115-9a20-71886509eb9b" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "SiteDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d17myuvb07hqxo/domains/pixelated.tech" }
+  }
+]

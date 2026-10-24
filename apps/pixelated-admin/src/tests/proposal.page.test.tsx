@@ -16,6 +16,8 @@ const sampleProposal = {
 	paymentTotal: { amount: 1000, description: ['desc'] },
 };
 
+let activeProposal = sampleProposal;
+
 vi.mock('@pixelated-tech/components', async () => {
 	const actual = await vi.importActual<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
 	return {
@@ -25,12 +27,13 @@ vi.mock('@pixelated-tech/components', async () => {
 });
 
 vi.mock('@pixelated-tech/components/adminclient', () => ({
-	useAdminFileData: () => ({ files: ['sample-proposal.json'], selectedFile: 'sample-proposal.json', setSelectedFile: vi.fn(), data: sampleProposal, loading: false, error: null }),
+	useAdminFileData: () => ({ files: ['sample-proposal.json'], selectedFile: 'sample-proposal.json', setSelectedFile: vi.fn(), data: activeProposal, loading: false, error: null }),
 }));
 
 describe('Proposal page', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		activeProposal = sampleProposal;
 	});
 
 	it('renders and displays proposal fields', async () => {
@@ -40,6 +43,26 @@ describe('Proposal page', () => {
 		expect(container).toHaveTextContent('Proposal - Web Site Build');
 		expect(container).toHaveTextContent('Client Co');
 		expect(container).toHaveTextContent('$1,000');
+		expect(container).toHaveTextContent('Initial Deposit: 25% due upon signing.');
+	});
+
+	it('renders custom website payment schedule details and shared terms', async () => {
+		activeProposal = {
+			...sampleProposal,
+			paymentSchedule: {
+				paymentScheduleType: 'custom',
+				paymentScheduleDetails: ['No initial deposit required.', 'Full payment due upon delivery.'],
+			},
+		};
+		const { default: Page } = await import('../../src/app/(pages)/proposal/proposal-template');
+		const { container } = render(<Page files={['sample-proposal.json']} />);
+
+		await waitFor(() => expect(container.querySelector('#proposal-payment-section')).toBeTruthy());
+		expect(container).toHaveTextContent('No initial deposit required.');
+		expect(container).toHaveTextContent('Full payment due upon delivery.');
+		expect(container).not.toHaveTextContent('Initial Deposit: 25% due upon signing.');
+		expect(container).toHaveTextContent('Invoices for Web Site Build will be issued upon completion for services rendered.');
+		expect(container).toHaveTextContent('Payment is due within 5 business days of the receipt of invoice.');
 	});
 
 	// branch tests for Monthly Maintenance can be added later; keeping tests focused for now

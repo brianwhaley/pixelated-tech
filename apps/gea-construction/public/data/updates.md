@@ -1,18 +1,45 @@
-# __SITE-NAME__ -- Updates
+# GEA Construction -- Updates
+
+## 2026-10-22
+* [ x ] Launch the Site
+* [ x ] Finalize payment today 10/22 or tomorrow 10/23
+* [ x ] Upgrade to Premium Maintenance
+* [ x ] perrmits submitted, results tbd
+* [ x ] confirm mail list with wife for realtors at Enel Volkers
+* [  ] Projects - TBD from Nick
+* [ x ] set up meeting with Nick on Saturday 9am
 
 ## 2026-03-28 - BUILD - TO DO 
 * [ x ] Sign Web Build Proposal
 * [  ] Photos for the site
 * [  ] Curator.io - Instagram Gallery - Home Page 
 * [  ] Curator.io - Instagram Gallery - Gallery Page
-* [  ] About Us - Photo - Katie
-* [  ] About Us - Photo - Kathy
-* [  ] VisualDesign section of routes.json - colors, fonts
+* [  ] About Us Photo
+* [ X ] Site Info in Pixelated Config
+* [ X ] VisualDesign section in Pixelated Config
+* [ X ] Services / Service Areas in Pixelated Config
+* [ X ] Routes in Pixelated Config
+* [ x ] Build out all pages
+* [ x ] Test Contact Us Form
+* [ x ] FAQs Page
+* [ x ] Email Forwarder
+* [ x ] Blog Calendar
+* [  ] Google Business Profile
 * [  ] X / Twitter Account
+* [ x ] Facebook Account
+* [ x ] Instagram Account
+* [ x ] Threads Account
 * [  ] Yelp Account
-* [  ] Nextdoor Account
+* [ X ] Nextdoor Account
 * [  ] Reddit Account
-* [  ] Sign Up for Jetpack
+* [ X ] Sign Up for Jetpack
 * [ x ] Contentful
 * [ x ] Cloudinary
-* [  ] First month of blog posts (4)
+* [ x ] Google Analytics
+* [ x ] Google Search COnsole
+* [ x ] Goole PageSpeed Test
+* [  ] Press Release
+* [  ] Citation Management via BrightLocal
+* [ X ] Update sites.json in pixelated-admin
+* [ X ] CloudFormation scripts for amplify, route53, cloudwatch
+* [ X ] First month of blog posts (4)

@@ -1,33 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Tiles } from "@/components/elements/tiles";
-import { FlickrWrapper } from "@/components/integrations/flickr";
-import { usePixelatedConfig } from '@/components/config/config.client';
+import { GenerateFlickrCards } from "@/components/integrations/flickr";
+import flickrFixture from '../../test/data/flickr-pixelatedviewsgallery.json';
 import '@/css/pixelated.global.css';
-
-// Single-flight Flickr loader shared by all stories (fetch once per Storybook session).
-// Returns a promise that resolves to an array of tile-like card objects or [] on failure.
-let _flickrPromise = null;
-function fetchFlickrOnce(cfg) {
-	if (_flickrPromise) return _flickrPromise;
-	_flickrPromise = new Promise(async (resolve) => {
-		if (!cfg || !cfg.flickr) return resolve([]);
-		const props = {
-			method: 'flickr.photosets.getPhotos',
-			api_key: cfg.flickr.urlProps.api_key,
-			user_id: cfg.flickr.urlProps.user_id,
-			photoset_id: '72157712416706518',
-			photoSize: 'Large',
-			callback: (cards) => resolve(cards || []),
-		};
-		try {
-			await FlickrWrapper(props);
-		} catch (err) {
-			// swallow network errors in Storybook — fall back to sample data
-			resolve([]);
-		}
-	});
-	return _flickrPromise;
-};
 
 export default {
 	title: 'General/Tiles',
@@ -55,16 +30,12 @@ const sampleTiles = [
 	}, 
 ];
 
+const flickrTiles = GenerateFlickrCards({
+	flickrImages: flickrFixture.photos?.photo ?? [],
+	photoSize: 'Large',
+}) ?? [];
+
 const FlickrTiles = () => {
-	const [ flickrCards, setFlickrCards ] = useState([]);
-	const config = usePixelatedConfig();
-
-	useEffect(() => {
-		let mounted = true;
-		fetchFlickrOnce(config).then(cards => { if (mounted) setFlickrCards(cards); }).catch(() => { if (mounted) setFlickrCards([]); });
-		return () => { mounted = false; };
-	}, [config]); 
-
 	return (
 		<>
 			<section id="customflickrtiles-section">
@@ -75,7 +46,7 @@ const FlickrTiles = () => {
 
 			<section id="flickrtiles-section">
 				<div className='section-container'>
-					<Tiles cards={flickrCards} rowCount={3}/>
+					<Tiles cards={flickrTiles} rowCount={3}/>
 				</div>
 			</section>
 		</>
@@ -87,18 +58,9 @@ export const TilesStory = () => <FlickrTiles />;
 // Playground: use the same Flickr data as the FlickrTiles story so reviewers can
 // interact with live/gallery data via the playground panel.
 export const TilesPlayground = () => {
-  const [ flickrCards, setFlickrCards ] = useState([]);
-  const config = usePixelatedConfig();
-
-  useEffect(() => {
-    let mounted = true;
-    fetchFlickrOnce(config).then(cards => { if (mounted) setFlickrCards(cards); }).catch(() => { if (mounted) setFlickrCards([]); });
-    return () => { mounted = false; };
-  }, [config]);
-
   return (
     <div style={{ padding: 20 }}>
-      <Tiles cards={flickrCards.length ? flickrCards : sampleTiles} rowCount={3} />
+			<Tiles cards={flickrTiles.length ? flickrTiles : sampleTiles} rowCount={3} />
     </div>
   );
 };
@@ -106,16 +68,7 @@ export const TilesPlayground = () => {
 TilesPlayground.storyName = 'Tiles — playground';
 
 export const Caption = () => {
-  const [ cards, setCards ] = useState([]);
-  const config = usePixelatedConfig();
-
-  useEffect(() => {
-    let mounted = true;
-    fetchFlickrOnce(config).then(c => { if (mounted) setCards(c); }).catch(() => { if (mounted) setCards([]); });
-    return () => { mounted = false; };
-  }, [config]);
-
-  const tilesForCaption = (cards && cards.length) ? cards : sampleTiles;
+	const tilesForCaption = flickrTiles.length ? flickrTiles : sampleTiles;
 
   return (
     <div style={{ padding: 20 }}>

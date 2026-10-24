@@ -43,6 +43,9 @@ applications:
   - appRoot: apps/brianwhaley
     customHeaders: *default_headers
 
+  - appRoot: apps/mgt-pro-services
+    customHeaders: *default_headers
+
   - appRoot: apps/informationfocus
     customHeaders: *default_headers
 

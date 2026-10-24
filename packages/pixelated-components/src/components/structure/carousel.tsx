@@ -23,6 +23,9 @@ function capitalize(str: string) {
 	return str && String(str[0]).toUpperCase() + String(str).slice(1);
 }
 
+export const carouselVariants = ['stack', 'continuous'] as const;
+export type CarouselVariantType = typeof carouselVariants[number];
+
 
 /* ========== CAROUSEL ========== */
 /**
@@ -41,6 +44,7 @@ function capitalize(str: string) {
  * @param {string} [props.subHeaderText] - Optional card subtitle text.
  * @param {string} [props.bodyText] - Optional card body content.
  * @param {boolean} [props.draggable] - Enable swipe/drag interactions on touch devices.
+ * @param {oneOf} [props.variant] - Rendering variation: 'stack' or 'continuous'.
  */
 Carousel.propTypes = {
 /** Array of card objects used to render slides. */
@@ -72,10 +76,13 @@ Carousel.propTypes = {
 	).isRequired,
 	/** Enable swipe/drag interactions on touch and pointer devices. */
 	draggable: PropTypes.bool,
-	imgFit: PropTypes.oneOf(['contain', 'cover', 'fill'])
+	imgFit: PropTypes.oneOf(['contain', 'cover', 'fill']),
+	/** Rendering variation for the carousel. */
+	variant: PropTypes.oneOf([...carouselVariants])
 };
 export type CarouselType = InferProps<typeof Carousel.propTypes>;
 export function Carousel(props: CarouselType) {
+	const variant = props.variant || 'stack';
 	const debug = false;
 	let timer = useRef<ReturnType<typeof setTimeout>>(null);
 	const [ cardIndex, setcardIndex ] = useState(0);
@@ -109,17 +116,17 @@ export function Carousel(props: CarouselType) {
 	};
 
 	useEffect(() => {
-		if (typeof document !== 'undefined') {
+		if (variant === 'stack' && typeof document !== 'undefined') {
 			startTimer();
 		}
-	}, [cardIndex]);
+	}, [cardIndex, variant]);
 
 	useEffect(() => {
 		setcardIndex(0);
 	}, [props.cards]);
 
 	/* ========== DRAGGABLE HANDLER ========== */
-	if (props.draggable && props.draggable === true) {
+	if (variant === 'stack' && props.draggable && props.draggable === true) {
 		if (debug) console.log('CarouselSimple: Dragging enabled');
 		DragHandler({
 			activeIndex: cardIndex, 
@@ -132,27 +139,35 @@ export function Carousel(props: CarouselType) {
 	}
 
 	if (props.cards && props.cards.length > 0) {
+		const cards = props.cards as CarouselCardType[];
+		const cardsToRender = variant === 'continuous' ? [...cards, ...cards] : cards;
+		const trackStyle = {
+			'--carousel-items': cards.length,
+		} as React.CSSProperties;
+		const renderedCards = cardsToRender.map((card, i) => (
+			<CarouselCard
+				key={`${variant}-${i}`}
+				index={i}
+				cardIndex={cardIndex}
+				cardLength={cardsToRender.length}
+				link={card.link}
+				linkTarget={card.linkTarget || '_self'}
+				image={card.image}
+				imageAlt={card.imageAlt}
+				imgFit={(props.imgFit || 'fill') as 'contain' | 'cover' | 'fill'}	
+				headerText={card.headerText}	 
+				subHeaderText={card.subHeaderText} 
+				bodyText={card.bodyText}
+				variant={variant}
+			/>
+		));
+
 		return (
-			<div className="carousel-container" suppressHydrationWarning>
+			<div className={`carousel-container ${variant}`} suppressHydrationWarning>
 				<div className="carousel-cards-container">
-					{ (props.cards as CarouselCardType[]).map((card, i) => (
-						<CarouselCard
-							key={i}
-							index={i}
-							cardIndex={cardIndex}
-							cardLength={props.cards.length}
-							link={card.link}
-							linkTarget={card.linkTarget || '_self'}
-							image={card.image}
-							imageAlt={card.imageAlt}
-							imgFit={(props.imgFit || 'fill') as 'contain' | 'cover' | 'fill'}	
-							headerText={card.headerText} 	
-							subHeaderText={card.subHeaderText} 
-							bodyText={card.bodyText}
-						/>
-					))}
+					{variant === 'continuous' ? <div className="carousel-track" style={trackStyle}>{renderedCards}</div> : renderedCards}
 				</div>
-				<div className="carousel-buttons">
+				{variant === 'stack' ? <div className="carousel-buttons">
 					<CarouselButton
 						clickFunction={ previousCard }
 						glyph='&#9664;' />
@@ -162,7 +177,7 @@ export function Carousel(props: CarouselType) {
 					<CarouselButton
 						clickFunction={ nextCard }
 						glyph='&#9654;' />
-				</div>
+				</div> : null}
 				
 			</div>
 		);
@@ -194,6 +209,7 @@ export function Carousel(props: CarouselType) {
  * @param {string} [props.headerText] - Optional header/title text for the card.
  * @param {string} [props.subHeaderText] - Optional subtitle text for the card.
  * @param {string} [props.bodyText] - Optional body content for the card.
+ * @param {oneOf} [props.variant] - Rendering variation for the card.
  */
 CarouselCard.propTypes = {
 	/** Zero-based index of this card within the carousel. */
@@ -208,20 +224,22 @@ CarouselCard.propTypes = {
 	headerText: PropTypes.string,
 	subHeaderText: PropTypes.string,
 	bodyText: PropTypes.string,
+	/** Rendering variation for the card. */
+	variant: PropTypes.oneOf([...carouselVariants]),
 };
 export type CarouselCardType = InferProps<typeof CarouselCard.propTypes>;
 export function CarouselCard( props: CarouselCardType ) {
-	const myZindex = props.cardLength - props.index;
-	const styles: React.CSSProperties = {
-		zIndex: myZindex
-	};
-	styles.transition = 'all 1.0s ease 0.1s';
-	if (props.index > props.cardIndex) {
-		styles.transform = 'translateX(100%)';
-	} else if (props.index === props.cardIndex) {
-		styles.transform = 'translateX(0%)';
-	} else if (props.index < props.cardIndex) {
-		styles.transform = 'translateX(-100%)';
+	const styles: React.CSSProperties = {};
+	if (props.variant !== 'continuous') {
+		styles.zIndex = props.cardLength - props.index;
+		styles.transition = 'all 1.0s ease 0.1s';
+		if (props.index > props.cardIndex) {
+			styles.transform = 'translateX(100%)';
+		} else if (props.index === props.cardIndex) {
+			styles.transform = 'translateX(0%)';
+		} else if (props.index < props.cardIndex) {
+			styles.transform = 'translateX(-100%)';
+		}
 	}
 	const imgFit = props.imgFit ? "img" + capitalize(props.imgFit) : 'imgFill';
 	const config = usePixelatedConfig();	
@@ -256,6 +274,11 @@ export function CarouselCard( props: CarouselCardType ) {
 }
 // REMOVED PROPTYPE AS TYPESCRIPT TYPE COVERS THIS
 
+
+export type MediaCardType = Omit<
+    InferProps<typeof CarouselCard.propTypes>,
+    'variant'
+>;
 
 
 /* ========== CAROUSEL  ARROW ========== */

@@ -4,7 +4,7 @@ import '@/css/pixelated.global.css';
 import './carousel.stories.css';
 
 export default {
-	title: 'General/Carousel Reviews',
+	title: 'General/Carousel',
 	component: Carousel,
 };
 

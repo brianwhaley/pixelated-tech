@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
-import { loadManifest, findTemplateForSlug, findPixelatedConfigJsonFile, addRouteEntry, getSiteDomain, patchSitePackageJson, patchSiteReadme, findUnresolvedTemplateTokens } from '../scripts/create-pixelated-app.js';
+import { loadManifest, findTemplateForSlug, findPixelatedConfigJsonFile, addRouteEntry, getSiteDomain, patchSitePackageJson, patchSiteReadme, findUnresolvedTemplateTokens, pruneGeneratedTests } from '../scripts/create-pixelated-app.js';
 
 interface Route {
   name: string;
@@ -429,5 +429,33 @@ describe('scaffold contract', () => {
     await fs.writeFile(path.join(tmp, '.next', 'generated.js'), 'const ignored = "__NEXT_INTERNAL__";', 'utf8');
 
     expect(await findUnresolvedTemplateTokens(tmp)).toEqual(['__SITE_NAME__']);
+  });
+
+  it('prunes coverage for optional routes removed during scaffolding', async () => {
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'pixelated-test-pruning-'));
+    const testsDir = path.join(tmp, 'src', 'tests');
+    await fs.mkdir(testsDir, { recursive: true });
+    await fs.writeFile(path.join(testsDir, 'site.test.tsx'), [
+      "import PodcastPage from '@/app/(pages)/podcast/page';",
+      "import UpdatesPage from '@/app/(pages)/updates/page';",
+      "import { runCommonMarkdownPageCoverage, runCommonPodcastPageCoverage } from 'shared';",
+      'runCommonMarkdownPageCoverage({ Component: UpdatesPage });',
+      'runCommonPodcastPageCoverage({ Component: PodcastPage });',
+    ].join('\n'), 'utf8');
+    await fs.writeFile(path.join(testsDir, 'projects-gallery.test.tsx'), [
+      "describe('Contentful Projects offering', () => {});",
+      "import GalleryPage from '@/app/(pages)/gallery/page';",
+      'const flickr = vi.fn();',
+      "describe('Flickr Gallery offering', () => {});",
+    ].join('\n'), 'utf8');
+
+    await pruneGeneratedTests(tmp, ['podcast', 'updates', 'gallery'], ['projects']);
+
+    const siteTest = await fs.readFile(path.join(testsDir, 'site.test.tsx'), 'utf8');
+    const projectsTest = await fs.readFile(path.join(testsDir, 'projects-gallery.test.tsx'), 'utf8');
+    expect(siteTest).not.toContain('PodcastPage');
+    expect(siteTest).not.toContain('UpdatesPage');
+    expect(projectsTest).not.toContain('GalleryPage');
+    expect(projectsTest).toContain('Contentful Projects offering');
   });
 });

@@ -1,0 +1,37 @@
+"use client";
+
+import React, { useMemo } from 'react';
+import { useParams } from 'next/navigation';
+import { PageTitleHeader, PageSection, ServiceAreaDetail, contentfulValueToSlug, usePixelatedConfig } from '@pixelated-tech/components';
+
+export default function ServiceAreaDetailPage() {
+	const params = useParams();
+	const serviceAreaSlug = typeof params?.serviceArea === 'string' ? params.serviceArea : '';
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+
+	const activeServiceArea = useMemo(() => {
+		const serviceAreas = (siteInfo as any)?.serviceAreas || [];
+		return serviceAreas.find((area: any) => {
+			const slug = area.slug ? contentfulValueToSlug({ value: area.slug }) : contentfulValueToSlug({ value: area.name });
+			return slug === serviceAreaSlug;
+		});
+	}, [siteInfo, serviceAreaSlug]);
+
+	return (
+		<>
+			<PageTitleHeader title={activeServiceArea?.name ? `${activeServiceArea.name}` : 'Service Area'} />
+			<PageSection columns={1} maxWidth="1024px" id="service-area-detail-wrapper">
+				{activeServiceArea ? (
+					<ServiceAreaDetail
+						serviceAreaSlug={serviceAreaSlug}
+						siteInfo={siteInfo as any}
+						serviceAreaPathPrefix="/service-areas"
+					/>
+				) : (
+					<p>Service area not found. Please return to the service areas list and choose another region.</p>
+				)}
+			</PageSection>
+		</>
+	);
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "SiteAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d2iyovuwvycoj0" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "SiteProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d2iyovuwvycoj0/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "SiteHostedZone",
+    "ResourceIdentifier": { "Id": "Z06892133DO1DP8TJO0CI" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "SiteHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "40485447-73a7-4cbf-939b-9296051ee399" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "SiteDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d2iyovuwvycoj0/domains/amavajanitorial.com" }
+  }
+]

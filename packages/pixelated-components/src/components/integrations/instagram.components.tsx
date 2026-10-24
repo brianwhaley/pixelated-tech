@@ -5,7 +5,7 @@ import PropTypes, { InferProps } from 'prop-types';
 import { getInstagramTiles } from './instagram.functions';
 import { usePixelatedConfig } from "../config/config.client";
 import { Tiles } from '../elements/tiles';
-import type { CarouselCardType } from '../structure/carousel';
+import type { MediaCardType } from '../structure/carousel';
 
 /**
  * InstagramTiles — Fetch Instagram media and render as tiles.
@@ -31,7 +31,7 @@ InstagramTiles.propTypes = {
 export type InstagramTilesType = InferProps<typeof InstagramTiles.propTypes>;
 export function InstagramTiles(props: InstagramTilesType) {
 	const config = usePixelatedConfig();
-	const [tiles, setTiles] = useState<CarouselCardType[]>([]);
+	const [tiles, setTiles] = useState<MediaCardType[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 

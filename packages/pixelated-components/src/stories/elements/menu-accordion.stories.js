@@ -8,7 +8,7 @@ const allRoutes = [];
 // const menuItems = getAccordionMenuData(allRoutes);
 
 export default {
-	title: 'General/Menu Accordion',
+	title: 'General/Menu',
 	component: MenuAccordion
 };
 

@@ -3,20 +3,34 @@
 ## 2026-03-28 - BUILD - TO DO 
 * [  ] Sign Web Build Proposal
 * [  ] Photos for the site
-* [  ] Photos for Gallery
 * [  ] Curator.io - Instagram Gallery - Home Page 
 * [  ] Curator.io - Instagram Gallery - Gallery Page
-* [  ] About Us - Photo
-* [  ] About Us - Photo - Others?
-* [  ] VisualDesign section of routes.json - colors, fonts
-* [  ] Facebook account
-* [  ] Instagram account
-* [  ] Threads account
+* [  ] About Us Photo
+* [  ] Site Info in Pixelated Config
+* [  ] VisualDesign section in Pixelated Config
+* [  ] Services / Service Areas in Pixelated Config
+* [  ] Routes in Pixelated Config
+* [  ] Build out all pages
+* [  ] Test Contact Us Form
+* [  ] FAQs Page
+* [  ] Email Forwarder
+* [  ] Blog Calendar
+* [  ] Google Business Profile
+* [  ] X / Twitter Account
+* [  ] Facebook Account
+* [  ] Instagram Account
+* [  ] Threads Account
+* [  ] Yelp Account
 * [  ] Nextdoor Account
-* [  ] Set up wordpress blog
+* [  ] Reddit Account
 * [  ] Sign Up for Jetpack
 * [  ] Contentful
 * [  ] Cloudinary
-* [  ] First quarter of blog posts (3)
-* [  ] Move dmain
-* [  ] Migrate email
+* [  ] Google Analytics
+* [  ] Google Search COnsole
+* [  ] Goole PageSpeed Test
+* [  ] Press Release
+* [  ] Citation Management via BrightLocal
+* [  ] Update sites.json in pixelated-admin
+* [  ] CloudFormation scripts for amplify, route53, cloudwatch
+* [  ] First month of blog posts (4)

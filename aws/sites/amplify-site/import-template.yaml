@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Temporary generic import template for existing site resources.
+
+Parameters:
+  SiteName:
+    Type: String
+  DomainName:
+    Type: String
+  HealthCheckDomainName:
+    Type: String
+  HealthCheckType:
+    Type: String
+    Default: HTTPS
+    AllowedValues:
+      - HTTP
+      - HTTPS
+  HealthCheckPort:
+    Type: Number
+    Default: 443
+    MinValue: 1
+    MaxValue: 65535
+  EnableSNI:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  ManageHostedZone:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  IncludeWww:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  Repository:
+    Type: String
+  ExistingAmplifyAppId:
+    Type: String
+    Default: ''
+  AccessToken:
+    Type: String
+    Default: ''
+    NoEcho: true
+  EnableDeployment:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+
+Conditions:
+  DeploymentEnabled: !Equals [!Ref EnableDeployment, 'true']
+  HealthCheckSNIEnabled: !And
+    - !Equals [!Ref HealthCheckType, HTTPS]
+    - !Equals [!Ref EnableSNI, 'true']
+  HasExistingAmplifyApp: !Not [!Equals [!Ref ExistingAmplifyAppId, '']]
+  HasAccessToken: !Not [!Equals [!Ref AccessToken, '']]
+  SiteHostedZoneManaged: !And
+    - !Condition DeploymentEnabled
+    - !Equals [!Ref ManageHostedZone, 'true']
+  WwwIncluded: !Equals [!Ref IncludeWww, 'true']
+
+Resources:
+  BootstrapPlaceholder:
+    Type: AWS::SNS::Topic
+    DeletionPolicy: Delete
+
+  SiteHostedZone:
+    Condition: SiteHostedZoneManaged
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub '${DomainName}.'
+
+  SiteHealthCheck:
+    Condition: DeploymentEnabled
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: !Ref HealthCheckPort
+        Type: !Ref HealthCheckType
+        ResourcePath: /
+        FullyQualifiedDomainName: !Ref HealthCheckDomainName
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: !If [HealthCheckSNIEnabled, true, !Ref AWS::NoValue]
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  SiteAmplifyApp:
+    Condition: DeploymentEnabled
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref SiteName
+      Platform: WEB_COMPUTE
+      Repository: !Ref Repository
+      AccessToken: !If [HasAccessToken, !Ref AccessToken, !Ref AWS::NoValue]
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  SiteProductionBranch:
+    Condition: DeploymentEnabled
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !If [HasExistingAmplifyApp, !Ref ExistingAmplifyAppId, !GetAtt SiteAmplifyApp.AppId]
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  SiteDomain:
+    Condition: DeploymentEnabled
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !If [HasExistingAmplifyApp, !Ref ExistingAmplifyAppId, !GetAtt SiteAmplifyApp.AppId]
+      DomainName: !Ref DomainName
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+        - !If
+          - WwwIncluded
+          - BranchName: main
+            Prefix: www
+          - !Ref AWS::NoValue
