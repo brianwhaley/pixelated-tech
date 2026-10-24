@@ -2,8 +2,8 @@ version = 0.1
 
 [default.deploy.parameters]
 stack_name = "pixelated-admin-site"
-region = "us-east-2"
+region = "us-east-1"
 s3_bucket = "pixelated-sam-source-bucket"
 resolve_s3 = false
 confirm_changeset = true
-parameter_overrides = "SiteName=pixelated-admin DomainName=admin.pixelated.tech HealthCheckDomainName=admin.pixelated.tech ManageHostedZone=false IncludeWww=false Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d1otn7ep5wx13i EnableDeployment=true"
+parameter_overrides = "SiteName=pixelated-admin DomainName=admin.pixelated.tech HealthCheckDomainName=admin.pixelated.tech ManageHostedZone=false IncludeWww=false Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId= EnableDeployment=true"
