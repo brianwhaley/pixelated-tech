@@ -90,8 +90,8 @@ applications:
             - 'test ! -e "$REPO_ROOT/.next" || { echo "Repository-root .next remains after preBuild cleanup: $REPO_ROOT/.next"; exit 1; }'
             - 'echo "Removing all repository Next.js caches"; find "$REPO_ROOT" -type d -path "*/.next/cache" -prune -exec rm -rf {} +'
             - 'REMAINING_CACHE="$(find "$REPO_ROOT" -type d -path "*/.next/cache" -print -quit)"; test -z "$REMAINING_CACHE" || { echo "Next.js cache remains after preBuild cleanup: $REMAINING_CACHE"; exit 1; }'
-            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing preBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
-            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after preBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types; do echo "Removing preBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after preBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'echo "Installing dependencies for Admin: $AMPLIFY_MONOREPO_APP_ROOT ..."'
             - 'cd "$REPO_ROOT" && npm ci'
         build:
@@ -107,8 +107,8 @@ applications:
             - 'echo "Decrypting Admin config ..."; npm run config:decrypt -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Building Admin ..."'
             - 'npm run build -w "$AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing build Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
-            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after build cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types; do echo "Removing build Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after build cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'REMAINING_CACHE="$(find "$REPO_ROOT" -type d -path "*/.next/cache" -print -quit)"; test -z "$REMAINING_CACHE" || { echo "Next.js cache remains after build cleanup: $REMAINING_CACHE"; exit 1; }'
             - 'if [ -d "$REPO_ROOT/.next/cache" ]; then echo "Repository-root build recreated cache:"; du -sh "$REPO_ROOT/.next/cache"; else echo "Repository-root build produced no cache"; fi'
             - 'if [ -d "$APP_ROOT/.next/cache" ]; then echo "Admin build recreated cache:"; du -sh "$APP_ROOT/.next/cache"; else echo "Admin build produced no cache"; fi'
@@ -121,8 +121,8 @@ applications:
             - 'echo "Artifact app root: $APP_ROOT"'
             - 'cd "$REPO_ROOT"'
             - 'npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
-            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing postBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
-            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after postBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types; do echo "Removing postBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
+            - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after postBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'REMAINING_CACHE="$(find "$REPO_ROOT" -type d -path "*/.next/cache" -print -quit)"; test -z "$REMAINING_CACHE" || { echo "Next.js cache remains after postBuild cleanup: $REMAINING_CACHE"; exit 1; }'
             - 'echo "Repository top-level directory sizes:"; find "$REPO_ROOT" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
             - 'echo "Admin app top-level directory sizes:"; find "$APP_ROOT" -mindepth 1 -maxdepth 1 -exec du -sb {} \;'
@@ -130,9 +130,7 @@ applications:
       artifacts:
         baseDirectory: .next
         files:
-          - '*'
-          - 'server/**/*'
-          - 'static/**/*'
+          - '**/*'
           - '!cache/**/*'
           - '!dev/**/*'
           - '!diagnostics/**/*'
@@ -154,29 +152,27 @@ applications:
         build:
           commands:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
-            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/packages/pixelated-components"; export APP_ROOT;'
             - 'echo "build PWD: $(pwd)"'
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Artifact app root: $APP_ROOT"'
-            - 'echo "Building shared components: $AMPLIFY_MONOREPO_APP_ROOT ..."'
+            - 'echo "Building shared components: packages/pixelated-components ..."'
             - 'npm run build -w packages/pixelated-components'
-            - 'echo "Decrypting config: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'npm run config:decrypt -w $AMPLIFY_MONOREPO_APP_ROOT'
-            - 'echo "Building Next.js app: $AMPLIFY_MONOREPO_APP_ROOT ..."'
-            - 'npm run build -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'echo "Decrypting config: packages/pixelated-components ..."'
+            - 'npm run config:decrypt -w packages/pixelated-components'
             # npm run generate-site-images -w $AMPLIFY_MONOREPO_APP_ROOT
             # BUILD STORYBOOK WITH EXTRA MEMORY TO AVOID CI OOM
             - 'echo "Building Storybook with extra memory to avoid CI OOM ..."'
-            - 'NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'NODE_OPTIONS=--max-old-space-size=8192 npm run buildStorybook -w packages/pixelated-components'
         postBuild:
           commands:
             - 'REPO_ROOT="$(git rev-parse --show-toplevel)"; export REPO_ROOT;'
-            - 'APP_ROOT="$REPO_ROOT/$AMPLIFY_MONOREPO_APP_ROOT"; export APP_ROOT;'
+            - 'APP_ROOT="$REPO_ROOT/packages/pixelated-components"; export APP_ROOT;'
             - 'echo "postBuild PWD: $(pwd)"'
             - 'echo "AMPLIFY_MONOREPO_APP_ROOT: $AMPLIFY_MONOREPO_APP_ROOT"'
             - 'echo "Artifact app root: $APP_ROOT"'
-            - 'echo "Calling Config Vault postbuild ..."'
-            - 'npm run config:postbuild -w $AMPLIFY_MONOREPO_APP_ROOT'
+            - 'echo "Calling Config Vault postbuild for packages/pixelated-components ..."'
+            - 'npm run config:postbuild -w packages/pixelated-components'
       artifacts:
         baseDirectory: storybook-static
         files:
