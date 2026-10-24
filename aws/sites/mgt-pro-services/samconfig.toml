@@ -2,8 +2,8 @@ version = 0.1
 
 [default.deploy.parameters]
 stack_name = "mgt-pro-services-site"
-region = "us-east-2"
+region = "us-east-1"
 s3_bucket = "pixelated-sam-source-bucket"
 resolve_s3 = false
 confirm_changeset = true
-parameter_overrides = "SiteName=mgt-pro-services DomainName=mgtproservices.com HealthCheckDomainName=www.mgtproservices.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId= EnableDeployment=true"
+parameter_overrides = "SiteName=mgt-pro-services DomainName=mgtproservices.com HealthCheckDomainName=www.mgtproservices.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d15jra3opz3qto EnableDeployment=true"
