@@ -1,0 +1,122 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "TechJokesRole",
+    "ResourceIdentifier": {
+      "RoleName": "tech-jokes-role"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesScheduleTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-schedule"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesTagsTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-tags"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesTokensTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-tokens"
+    }
+  },
+  {
+    "ResourceType": "AWS::DynamoDB::Table",
+    "LogicalResourceId": "NerdjokesLogsTable",
+    "ResourceIdentifier": {
+      "TableName": "nerdjokes-logs"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "NerdjokesFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "nerdjokes"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "NerdjokesSkillFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "nerdjokes-skill"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::RestApi",
+    "LogicalResourceId": "NerdjokesApi",
+    "ResourceIdentifier": {
+      "RestApiId": "e3mum5cn7l"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "NerdjokesApiResource",
+    "ResourceIdentifier": {
+      "RestApiId": "e3mum5cn7l",
+      "ResourceId": "5t0hmy"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::DomainName",
+    "LogicalResourceId": "NerdjokesApiDomain",
+    "ResourceIdentifier": {
+      "DomainName": "nerdjokes.pixelated.tech"
+    }
+  },
+  {
+    "ResourceType": "AWS::Events::Rule",
+    "LogicalResourceId": "NerdjokesHourlyRule",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:events:us-east-1:971579260814:rule/nerdjokes-hourly"
+    }
+  },
+  {
+    "ResourceType": "AWS::Events::Rule",
+    "LogicalResourceId": "NerdjokesDevHourlyRule",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:events:us-east-1:971579260814:rule/nerdJokes-Dev-Hourly"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/nerdjokes"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesSkillLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/nerdjokes-skill"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesApiDevAccessLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/apigateway/nerdjokes/dev"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesApiProdAccessLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/apigateway/nerdjokes/prod"
+    }
+  }
+]

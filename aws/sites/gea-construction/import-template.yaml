@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Initial import template for GEA Construction site resources.
+
+Parameters:
+  ExistingAmplifyAppId:
+    Type: String
+    Default: dxphtyl33w6ra
+
+Resources:
+  SiteHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: geaconstruction.net.
+
+  SiteAmplifyApp:
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: gea-construction
+      Platform: WEB_COMPUTE
+      Repository: https://github.com/brianwhaley/pixelated-tech
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  SiteProductionBranch:
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref ExistingAmplifyAppId
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  SiteDomain:
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref ExistingAmplifyAppId
+      DomainName: geaconstruction.net
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+        - BranchName: main
+          Prefix: www

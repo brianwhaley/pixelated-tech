@@ -1,0 +1,744 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing Nerd Jokes Slack and Alexa infrastructure.
+Parameters:
+  DevClientId:
+    Type: String
+  DevClientSecret:
+    Type: String
+    NoEcho: true
+  DevVerificationToken:
+    Type: String
+    NoEcho: true
+  ProdClientId:
+    Type: String
+  ProdClientSecret:
+    Type: String
+    NoEcho: true
+  ProdVerificationToken:
+    Type: String
+    NoEcho: true
+  AlexaEventSourceToken:
+    Type: String
+    NoEcho: true
+  TechJokesRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/tech-jokes-role
+  ManageExecutionRole:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+    - 'true'
+    - 'false'
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+Conditions:
+  ManageExecutionRoleCondition:
+    Fn::Equals:
+    - Ref: ManageExecutionRole
+    - 'true'
+Resources:
+  TechJokesRole:
+    Type: AWS::IAM::Role
+    Condition: ManageExecutionRoleCondition
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: tech-jokes-role
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+      - arn:aws:iam::aws:policy/AmazonSESFullAccess
+      - arn:aws:iam::aws:policy/CloudWatchFullAccess
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+    Metadata:
+      SamResourceId: TechJokesRole
+  NerdjokesTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: nerdjokes
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      - AttributeName: put_date
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      GlobalSecondaryIndexes:
+      - IndexName: put_date-index
+        KeySchema:
+        - AttributeName: put_date
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+    Metadata:
+      SamResourceId: NerdjokesTable
+  NerdjokesScheduleTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: nerdjokes-schedule
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: team_id
+        AttributeType: S
+      - AttributeName: channel_id
+        AttributeType: S
+      - AttributeName: gmt_hour
+        AttributeType: N
+      KeySchema:
+      - AttributeName: team_id
+        KeyType: HASH
+      - AttributeName: channel_id
+        KeyType: RANGE
+      GlobalSecondaryIndexes:
+      - IndexName: gmt_hour-index
+        KeySchema:
+        - AttributeName: gmt_hour
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+    Metadata:
+      SamResourceId: NerdjokesScheduleTable
+  NerdjokesTagsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: nerdjokes-tags
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: tag
+        AttributeType: S
+      KeySchema:
+      - AttributeName: tag
+        KeyType: HASH
+    Metadata:
+      SamResourceId: NerdjokesTagsTable
+  NerdjokesTokensTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: nerdjokes-tokens
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: team_id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: team_id
+        KeyType: HASH
+    Metadata:
+      SamResourceId: NerdjokesTokensTable
+  NerdjokesLogsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: nerdjokes-logs
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: team_id
+        AttributeType: S
+      - AttributeName: log_id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: team_id
+        KeyType: HASH
+      - AttributeName: log_id
+        KeyType: RANGE
+    Metadata:
+      SamResourceId: NerdjokesLogsTable
+  NerdjokesFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: nerdjokes
+      CodeUri: s3://pixelated-sam-source-container/503d4736e125950c527e48e3d3635bd6
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures:
+      - x86_64
+      MemorySize: 256
+      Timeout: 6
+      Role: arn:aws:iam::971579260814:role/tech-jokes-role
+    Metadata:
+      SamResourceId: NerdjokesFunction
+  NerdjokesSkillFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: nerdjokes-skill
+      CodeUri: s3://pixelated-sam-source-container/d17f5a1adac1b0bd4d0649310b9c964b
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 3
+      Role: arn:aws:iam::971579260814:role/tech-jokes-role
+    Metadata:
+      SamResourceId: NerdjokesSkillFunction
+  NerdjokesDevAlias:
+    Type: AWS::Lambda::Alias
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName:
+        Ref: NerdjokesFunction
+      FunctionVersion: $LATEST
+      Name: DEV
+    Metadata:
+      SamResourceId: NerdjokesDevAlias
+  NerdjokesProdAlias:
+    Type: AWS::Lambda::Alias
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName:
+        Ref: NerdjokesFunction
+      FunctionVersion: $LATEST
+      Name: PROD
+    Metadata:
+      SamResourceId: NerdjokesProdAlias
+  NerdjokesSkillDevAlias:
+    Type: AWS::Lambda::Alias
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName:
+        Ref: NerdjokesSkillFunction
+      FunctionVersion: $LATEST
+      Name: DEV
+    Metadata:
+      SamResourceId: NerdjokesSkillDevAlias
+  NerdjokesSkillProdAlias:
+    Type: AWS::Lambda::Alias
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName:
+        Ref: NerdjokesSkillFunction
+      FunctionVersion: $LATEST
+      Name: PROD
+    Metadata:
+      SamResourceId: NerdjokesSkillProdAlias
+  NerdjokesApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: nerdjokes
+      EndpointConfiguration:
+        Types:
+        - REGIONAL
+    Metadata:
+      SamResourceId: NerdjokesApi
+  NerdjokesApiResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+        - NerdjokesApi
+        - RootResourceId
+      PathPart: nerdjokes
+      RestApiId:
+        Ref: NerdjokesApi
+    Metadata:
+      SamResourceId: NerdjokesApiResource
+  NerdjokesApiAnyMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: AWS_IAM
+      HttpMethod: ANY
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NerdjokesFunction.Arn}/invocations
+      ResourceId:
+        Ref: NerdjokesApiResource
+      RestApiId:
+        Ref: NerdjokesApi
+    Metadata:
+      SamResourceId: NerdjokesApiAnyMethod
+  NerdjokesApiGetMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:nerdjokes:${!stageVariables.ENV}/invocations
+      ResourceId:
+        Ref: NerdjokesApiResource
+      RestApiId:
+        Ref: NerdjokesApi
+    Metadata:
+      SamResourceId: NerdjokesApiGetMethod
+  NerdjokesApiPostMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:nerdjokes:${!stageVariables.ENV}/invocations
+      ResourceId:
+        Ref: NerdjokesApiResource
+      RestApiId:
+        Ref: NerdjokesApi
+    Metadata:
+      SamResourceId: NerdjokesApiPostMethod
+  NerdjokesApiDevDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - NerdjokesApiAnyMethod
+    - NerdjokesApiGetMethod
+    - NerdjokesApiPostMethod
+    Properties:
+      RestApiId:
+        Ref: NerdjokesApi
+    Metadata:
+      SamResourceId: NerdjokesApiDevDeployment
+  NerdjokesApiDevStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId:
+        Ref: NerdjokesApiDevDeployment
+      RestApiId:
+        Ref: NerdjokesApi
+      StageName: dev
+      MethodSettings:
+      - ResourcePath: /*
+        HttpMethod: '*'
+        LoggingLevel: INFO
+        MetricsEnabled: true
+      AccessLogSetting:
+        DestinationArn:
+          Fn::GetAtt:
+          - NerdjokesApiDevAccessLogGroup
+          - Arn
+        Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}'
+      Variables:
+        CLIENT_ID:
+          Ref: DevClientId
+        CLIENT_SECRET:
+          Ref: DevClientSecret
+        ENV: DEV
+        VERIFICATION_TOKEN:
+          Ref: DevVerificationToken
+    Metadata:
+      SamResourceId: NerdjokesApiDevStage
+  NerdjokesApiProdDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - NerdjokesApiAnyMethod
+    - NerdjokesApiGetMethod
+    - NerdjokesApiPostMethod
+    Properties:
+      RestApiId:
+        Ref: NerdjokesApi
+    Metadata:
+      SamResourceId: NerdjokesApiProdDeployment
+  NerdjokesApiProdStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId:
+        Ref: NerdjokesApiProdDeployment
+      RestApiId:
+        Ref: NerdjokesApi
+      StageName: prod
+      MethodSettings:
+      - ResourcePath: /*
+        HttpMethod: '*'
+        LoggingLevel: ERROR
+        MetricsEnabled: true
+      AccessLogSetting:
+        DestinationArn:
+          Fn::GetAtt:
+          - NerdjokesApiProdAccessLogGroup
+          - Arn
+        Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}'
+      Variables:
+        CLIENT_ID:
+          Ref: ProdClientId
+        CLIENT_SECRET:
+          Ref: ProdClientSecret
+        ENV: PROD
+        VERIFICATION_TOKEN:
+          Ref: ProdVerificationToken
+    Metadata:
+      SamResourceId: NerdjokesApiProdStage
+  NerdjokesApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+    - NerdjokesApiProdStage
+    Properties:
+      AlarmName: Pixelated Nerdjokes API 5XX Errors Alarm
+      AlarmDescription: Alerts when the nerdjokes production API Gateway stage returns
+        a server error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+      - Name: ApiName
+        Value: nerdjokes
+      - Name: Stage
+        Value: prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: NerdjokesApi5xxAlarm
+  NerdjokesApiDevAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/nerdjokes/dev
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: NerdjokesApiDevAccessLogGroup
+  NerdjokesApiProdAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/nerdjokes/prod
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: NerdjokesApiProdAccessLogGroup
+  NerdjokesApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: nerdjokes.pixelated.tech
+      EndpointConfiguration:
+        Types:
+        - REGIONAL
+      RegionalCertificateArn:
+        Ref: CertificateArn
+      SecurityPolicy: TLS_1_2
+    Metadata:
+      SamResourceId: NerdjokesApiDomain
+  NerdjokesApiDevBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - NerdjokesApiDevStage
+    Properties:
+      BasePath: dev
+      DomainName:
+        Ref: NerdjokesApiDomain
+      RestApiId:
+        Ref: NerdjokesApi
+      Stage: dev
+    Metadata:
+      SamResourceId: NerdjokesApiDevBasePathMapping
+  NerdjokesApiProdBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - NerdjokesApiProdStage
+    Properties:
+      BasePath: prod
+      DomainName:
+        Ref: NerdjokesApiDomain
+      RestApiId:
+        Ref: NerdjokesApi
+      Stage: prod
+    Metadata:
+      SamResourceId: NerdjokesApiProdBasePathMapping
+  NerdjokesApiPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: NerdjokesFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NerdjokesApi}/*/*/nerdjokes
+    Metadata:
+      SamResourceId: NerdjokesApiPermission
+  NerdjokesApiDevAliasPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: NerdjokesDevAlias
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NerdjokesApi}/*/*/nerdjokes
+    Metadata:
+      SamResourceId: NerdjokesApiDevAliasPermission
+  NerdjokesApiProdAliasPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: NerdjokesProdAlias
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NerdjokesApi}/*/*/nerdjokes
+    Metadata:
+      SamResourceId: NerdjokesApiProdAliasPermission
+  NerdjokesSkillPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: NerdjokesSkillFunction
+      Principal: alexa-appkit.amazon.com
+    Metadata:
+      SamResourceId: NerdjokesSkillPermission
+  NerdjokesHourlyRule:
+    Type: AWS::Events::Rule
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: nerdjokes-hourly
+      ScheduleExpression: cron(0 0-23 * * ? *)
+      State: ENABLED
+      Targets:
+      - Arn:
+          Fn::Sub: arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:nerdjokes:PROD
+        Id: Id5758349330411
+        Input:
+          Fn::Sub: "{\n  \"httpMethod\": \"POST\",\n  \"headers\": {\"Content-Type\"\
+            : \"application/x-www-form-urlencoded\"},\n  \"queryStringParameters\"\
+            : null,\n  \"stageVariables\": {\n    \"CLIENT_SECRET\": \"${ProdClientSecret}\"\
+            ,\n    \"VERIFICATION_TOKEN\": \"${ProdVerificationToken}\",\n    \"ENV\"\
+            : \"PROD\",\n    \"CLIENT_ID\": \"${ProdClientId}\"\n  },\n  \"body\"\
+            : \"command=%2Fnerdjokes&text=runschedule\"\n}\n"
+    Metadata:
+      SamResourceId: NerdjokesHourlyRule
+  NerdjokesDevHourlyRule:
+    Type: AWS::Events::Rule
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: nerdJokes-Dev-Hourly
+      ScheduleExpression: cron(0-59 0-23 * * ? *)
+      State: DISABLED
+      Targets:
+      - Arn:
+          Fn::Sub: arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:nerdjokes:DEV
+        Id: Id3075386668690
+        Input:
+          Fn::Sub: "{\n  \"httpMethod\": \"POST\",\n  \"headers\": {\"Content-Type\"\
+            : \"application/x-www-form-urlencoded\"},\n  \"queryStringParameters\"\
+            : null,\n  \"stageVariables\": {\n    \"CLIENT_SECRET\": \"${DevClientSecret}\"\
+            ,\n    \"VERIFICATION_TOKEN\": \"${DevVerificationToken}\",\n    \"ENV\"\
+            : \"DEV\",\n    \"CLIENT_ID\": \"${DevClientId}\"\n  },\n  \"body\": \"\
+            command=%2Fnerdjokesdev&text=runschedule\"\n}\n"
+    Metadata:
+      SamResourceId: NerdjokesDevHourlyRule
+  NerdjokesHourlyPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: NerdjokesProdAlias
+      Principal: events.amazonaws.com
+      SourceArn:
+        Fn::GetAtt:
+        - NerdjokesHourlyRule
+        - Arn
+    Metadata:
+      SamResourceId: NerdjokesHourlyPermission
+  NerdjokesDevHourlyPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: NerdjokesDevAlias
+      Principal: events.amazonaws.com
+      SourceArn:
+        Fn::GetAtt:
+        - NerdjokesDevHourlyRule
+        - Arn
+    Metadata:
+      SamResourceId: NerdjokesDevHourlyPermission
+  NerdjokesLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/nerdjokes
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: NerdjokesLogGroup
+  NerdjokesSkillLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/nerdjokes-skill
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: NerdjokesSkillLogGroup
+  NerdjokesErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Verification
+        Failed|NerdJokes Error|Task timed out|Runtime.ExitError%'
+      LogGroupName:
+        Ref: NerdjokesLogGroup
+      MetricTransformations:
+      - MetricName: Pixelated Nerdjokes Errors Metric
+        MetricNamespace: Pixelated/Lambda
+        MetricValue: '1'
+        DefaultValue: 0
+    Metadata:
+      SamResourceId: NerdjokesErrorsMetricFilter
+  NerdjokesErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Nerdjokes Errors Alarm
+      AlarmDescription: Alerts when the nerdjokes Lambda emits an application or runtime
+        error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: Pixelated/Lambda
+      MetricName: Pixelated Nerdjokes Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: NerdjokesErrorsAlarm
+  NerdjokesErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Nerdjokes Errors Query
+      LogGroupNames:
+      - Ref: NerdjokesLogGroup
+      QueryString: 'fields @timestamp, @message, @logStream
+
+        | filter @message like /(?i)(error|failed|exception|verification failed|nerdjokes
+        error|task timed out|runtime\.exiterror)/
+
+        | sort @timestamp desc
+
+        '
+    Metadata:
+      SamResourceId: NerdjokesErrorsQuery
+  NerdjokesSkillErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|CALL
+        LAMBDA|Task timed out|Runtime.ExitError%'
+      LogGroupName:
+        Ref: NerdjokesSkillLogGroup
+      MetricTransformations:
+      - MetricName: Pixelated Nerdjokes Skill Errors Metric
+        MetricNamespace: Pixelated/Lambda
+        MetricValue: '1'
+        DefaultValue: 0
+    Metadata:
+      SamResourceId: NerdjokesSkillErrorsMetricFilter
+  NerdjokesSkillErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Nerdjokes Skill Errors Alarm
+      AlarmDescription: Alerts when the nerdjokes skill Lambda emits an application
+        or runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: Pixelated/Lambda
+      MetricName: Pixelated Nerdjokes Skill Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: NerdjokesSkillErrorsAlarm
+  NerdjokesSkillErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Nerdjokes Skill Errors Query
+      LogGroupNames:
+      - Ref: NerdjokesSkillLogGroup
+      QueryString: 'fields @timestamp, @message, @logStream
+
+        | filter @message like /(?i)(call lambda.*error|error code|error message|error
+        stack|task timed out|runtime\.exiterror)/
+
+        | sort @timestamp desc'
+    Metadata:
+      SamResourceId: NerdjokesSkillErrorsQuery

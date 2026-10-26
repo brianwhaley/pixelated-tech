@@ -2,87 +2,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Shared account-level configurations.
 
 Resources:
-  AmplifyRole:
-    Type: AWS::IAM::Role
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      RoleName: amplify-role
-      Path: /
-      Description: Allows Amplify and the main GitHub Actions deployment workflow to access AWS resources.
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: amplify.amazonaws.com
-            Action: sts:AssumeRole
-          - Effect: Allow
-            Principal:
-              Federated: arn:aws:iam::971579260814:oidc-provider/token.actions.githubusercontent.com
-            Action: sts:AssumeRoleWithWebIdentity
-            Condition:
-              StringEquals:
-                token.actions.githubusercontent.com:aud: sts.amazonaws.com
-                token.actions.githubusercontent.com:sub: repo:brianwhaley/pixelated-tech:ref:refs/heads/main
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AdministratorAccess-Amplify
-
-  BudgetRole:
-    Type: AWS::IAM::Role
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      RoleName: budget-role
-      Path: /
-      Description: Allows AWS Budgets to create and manage AWS resources on your behalf.
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: budgets.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AdministratorAccess
-
-  ApiGatewayCloudWatchRole:
-    Type: AWS::IAM::Role
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      RoleName: pixelated-api-gateway-role
-      Path: /service-role/
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: apigateway.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
-
   ApiGatewayAccount:
     Type: AWS::ApiGateway::Account
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
-      CloudWatchRoleArn: !GetAtt ApiGatewayCloudWatchRole.Arn
-
-Outputs:
-  AmplifyRoleArn:
-    Description: Existing Amplify and GitHub Actions deployment role ARN.
-    Value: !GetAtt AmplifyRole.Arn
-    Export:
-      Name: PixelatedAmplifyRoleArn
-
-  BudgetRoleArn:
-    Description: Existing AWS Budgets service role ARN.
-    Value: !GetAtt BudgetRole.Arn
-    Export:
-      Name: PixelatedBudgetRoleArn
-
-  ApiGatewayCloudWatchRoleArn:
-    Description: Shared account-level API Gateway CloudWatch logging role ARN.
-    Value: !GetAtt ApiGatewayCloudWatchRole.Arn
-    Export:
-      Name: PixelatedApiGatewayCloudWatchRoleArn
+      CloudWatchRoleArn: arn:aws:iam::971579260814:role/service-role/pixelated-api-gateway-role

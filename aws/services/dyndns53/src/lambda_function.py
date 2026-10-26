@@ -60,8 +60,8 @@ class AbuseException(Exception):
 conf = {
 	f"{DDNS_USERNAME}:{DDNS_PASSWORD}": {
 		"hosts": {
-			"home.pixelated.tech.": {
-				"aws_region": "us-east-2",
+				"dyn.pixelated.tech.": {
+				"aws_region": "us-east-1",
 				"zone_id": "Z3VWI30LVBBD2X",
 				"record": {
 					"ttl": 60,
@@ -84,7 +84,7 @@ def _parse_ip(ipstring):
 	raise BadAgentException("Invalid IP string: {}".format(ipstring))
 
 
-client53 = boto3.client("route53", "us-east-2")
+client53 = boto3.client("route53", "us-east-1")
 
 
 def r53_upsert(host, hostconf, ip):

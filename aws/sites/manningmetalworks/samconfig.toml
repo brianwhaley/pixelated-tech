@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy.parameters]
 stack_name = "manningmetalworks-site"
 region = "us-east-1"
-s3_bucket = "pixelated-sam-source-bucket"
+s3_bucket = "pixelated-sam-source-container"
 resolve_s3 = false
 confirm_changeset = true
 parameter_overrides = "SiteName=manningmetalworks DomainName=manningmetalworks.com HealthCheckDomainName=www.manningmetalworks.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d18f6u8y7ml0iy EnableDeployment=true"

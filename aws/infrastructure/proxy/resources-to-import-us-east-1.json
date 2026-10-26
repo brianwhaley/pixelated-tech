@@ -1,0 +1,131 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "ProxyExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "proxy-role-us-east-1"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Function",
+    "LogicalResourceId": "ProxyFunction",
+    "ResourceIdentifier": {
+      "FunctionName": "proxy"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::RestApi",
+    "LogicalResourceId": "ProxyApi",
+    "ResourceIdentifier": {
+      "RestApiId": "ms23i0eg65"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Resource",
+    "LogicalResourceId": "ProxyApiResource",
+    "ResourceIdentifier": {
+      "RestApiId": "ms23i0eg65",
+      "ResourceId": "29fgfq"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "ProxyApiAnyMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "ms23i0eg65",
+      "ResourceId": "29fgfq",
+      "HttpMethod": "ANY"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Method",
+    "LogicalResourceId": "ProxyApiOptionsMethod",
+    "ResourceIdentifier": {
+      "RestApiId": "ms23i0eg65",
+      "ResourceId": "29fgfq",
+      "HttpMethod": "OPTIONS"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Deployment",
+    "LogicalResourceId": "ProxyApiDeployment",
+    "ResourceIdentifier": {
+      "RestApiId": "ms23i0eg65",
+      "DeploymentId": "f4yzug"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::Stage",
+    "LogicalResourceId": "ProxyApiStage",
+    "ResourceIdentifier": {
+      "RestApiId": "ms23i0eg65",
+      "StageName": "prod"
+    }
+  },
+  {
+    "ResourceType": "AWS::CloudWatch::Alarm",
+    "LogicalResourceId": "ProxyApi5xxAlarm",
+    "ResourceIdentifier": {
+      "AlarmName": "Pixelated Proxy API 5XX Errors Alarm"
+    }
+  },
+  {
+    "ResourceType": "AWS::Lambda::Permission",
+    "LogicalResourceId": "ProxyApiPermissionAny",
+    "ResourceIdentifier": {
+      "FunctionName": "proxy",
+      "Id": "apigateway-diagnostic-ms23i0eg65"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::DomainName",
+    "LogicalResourceId": "ProxyApiDomain",
+    "ResourceIdentifier": {
+      "DomainName": "proxy.pixelated.tech"
+    }
+  },
+  {
+    "ResourceType": "AWS::ApiGateway::BasePathMapping",
+    "LogicalResourceId": "ProxyApiBasePathMapping",
+    "ResourceIdentifier": {
+      "DomainName": "proxy.pixelated.tech",
+      "BasePath": "prod"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "ProxyLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/proxy"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "ProxyApiLogGroup",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/apigateway/proxy"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::MetricFilter",
+    "LogicalResourceId": "ProxyErrorsMetricFilter",
+    "ResourceIdentifier": {
+      "LogGroupName": "/aws/lambda/proxy",
+      "FilterName": "Pixelated Proxy Errors Metric Filter"
+    }
+  },
+  {
+    "ResourceType": "AWS::CloudWatch::Alarm",
+    "LogicalResourceId": "ProxyErrorsAlarm",
+    "ResourceIdentifier": {
+      "AlarmName": "Pixelated Proxy Errors Alarm"
+    }
+  },
+  {
+    "ResourceType": "AWS::Logs::QueryDefinition",
+    "LogicalResourceId": "ProxyErrorsQuery",
+    "ResourceIdentifier": {
+      "QueryDefinitionId": "233c6c28-f6fc-470b-98d6-2dd78959007b"
+    }
+  }
+]

@@ -4,7 +4,7 @@ import { getFullPixelatedConfig } from '../config/config';
 function getRoute53Client() {
 	const aws = getFullPixelatedConfig()?.integrations?.aws;
 	return new Route53Client({
-		region: 'us-east-2',
+		region: 'us-east-1',
 		credentials: (aws?.access_key_id && aws?.secret_access_key) ? {
 			accessKeyId: aws.access_key_id,
 			secretAccessKey: aws.secret_access_key,

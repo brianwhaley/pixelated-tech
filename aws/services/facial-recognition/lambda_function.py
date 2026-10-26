@@ -8,9 +8,7 @@ from botocore.exceptions import ClientError
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-project_arn = 'arn:aws:rekognition:us-east-2:971579260814:project/pixelated-photos-labels/1'
-# model_arn = environ['MODEL_ARN']
-model_arn = 'arn:aws:rekognition:us-east-2:971579260814:project/pixelated-photos-labels/version/pixelated-photos-labels.2025-03-16T02.42.08/1742107328567'
+model_arn = environ.get('MODEL_ARN', 'arn:aws:rekognition:us-east-2:971579260814:project/pixelated-photos-labels/version/pixelated-photos-labels.2025-03-16T02.42.08/1742107328567')
 model_version = (model_arn.split("version/", 1)[1]).rpartition('/')[0]
 min_confidence = int(environ.get('CONFIDENCE', 50))
 s3_client = boto3.client('s3')

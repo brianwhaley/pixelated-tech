@@ -3,6 +3,7 @@
 import fetch from "node-fetch";
 
 const debug = false;
+const UPSTREAM_FETCH_TIMEOUT_MS = 8_000;
 
 const getRequestDiagnostics = (event, url) => {
 	let targetHost = 'unknown';
@@ -80,15 +81,21 @@ const getResponse = async function (event) {
 			method: event.httpMethod,
 			headers: myHeaders,
 			mode: 'cors',
-			body: (event.body) ? event.body : null
+			body: (event.body) ? event.body : null,
+			signal: AbortSignal.timeout(UPSTREAM_FETCH_TIMEOUT_MS)
 		});
 		responseStatusCode = response.status;
 		if (!response.ok) {
-			console.error('Proxy upstream response was not successful', {
+			const responseDetails = {
 				...getRequestDiagnostics(event, url),
 				status: response.status,
 				statusText: response.statusText
-			});
+			};
+			if (response.status >= 400 && response.status < 500) {
+				console.warn('Proxy upstream response was not successful', responseDetails);
+			} else {
+				console.error('Proxy upstream response was not successful', responseDetails);
+			}
 		}
 		// responseBody = await response.text();
 
@@ -110,12 +117,18 @@ const getResponse = async function (event) {
 			console.error('Proxy upstream response is missing Content-Type', getRequestDiagnostics(event, url));
 		}
 	} catch (e) {
+		const isTimeout = e?.name === 'TimeoutError' || e?.name === 'AbortError';
+		responseStatusCode = isTimeout ? 504 : 502;
 		console.error('Proxy upstream fetch failed', {
 			...getRequestDiagnostics(event, url),
+			isTimeout,
 			errorName: e?.name,
 			errorMessage: e?.message
 		});
-		responseBody = JSON.stringify({error: true, message: e?.message || 'Upstream fetch failed.'});
+		responseBody = JSON.stringify({
+			error: true,
+			message: isTimeout ? 'The upstream request timed out.' : (e?.message || 'Upstream fetch failed.')
+		});
 	}
 	if ( debug ) console.log('RESPONSE BODY : ', responseContentType, " : ", responseBody);
 	return {body: responseBody, statusCode: responseStatusCode};

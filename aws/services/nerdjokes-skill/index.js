@@ -1,44 +1,38 @@
 const AWS = require("aws-sdk");
-AWS.config.update({region: 'us-east-2'});
 const LAMBDA = new AWS.Lambda();
 const CRYPTO = require('crypto');
 const log = true;
 const firstRequest = "Would you like to hear a nerd joke?";
 const subsequentRequest = "Would you like to hear another nerd joke?";
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, context) => {
     if(log) console.log("NERD JOKE SKILL - Event Type : ", event.request.type);
     switch (event.request.type) {
         case "LaunchRequest":
-            LaunchHandler(context);
-            break;
+            return LaunchHandler();
         case "IntentRequest":
             switch (event.request.intent.name) {
                 case "NerdJoke":
-                    await NerdJokeHandler(context);
-                    break;
+                    return NerdJokeHandler();
                 case "AMAZON.FallbackIntent":
-                    FallbackHandler(context);
-                    break;
+                    return FallbackHandler();
                 case "AMAZON.HelpIntent":
-                    HelpHandler(context);
-                    break;
+                    return HelpHandler();
                 case "AMAZON.CancelIntent":
                 case "AMAZON.StopIntent":
-                    StopHandler(context);
-                    break;
+                    return StopHandler();
             }
         break;
     }
 };
 
-var LaunchHandler = (context) => {
+var LaunchHandler = () => {
     if(log) console.log("NERD JOKE SKILL - Launch Handler");
-    context.succeed(generateResponse(buildSpeechletResponse("Welcome to Nerd Jokes.  " + firstRequest , false)));
+    return generateResponse(buildSpeechletResponse("Welcome to Nerd Jokes.  " + firstRequest , false));
 };
 
 
-var NerdJokeHandler = async (context) => {
+var NerdJokeHandler = async () => {
     if(log) console.log("NERD JOKE SKILL - Nerd Joke Handler");
     var joke = await getJoke();
     if(log) console.log("RECEIVED Joke : ", joke);
@@ -46,30 +40,30 @@ var NerdJokeHandler = async (context) => {
     if(log) console.log("RECEIVED Payload: ", jokePayload);
     var jokeBody = JSON.parse(jokePayload.body);
     if(log) console.log("RECEIVED Body : ", jokeBody);
-    context.succeed(generateResponse(buildJokeSpeechletResponse(jokeBody, false)));
+    return generateResponse(buildJokeSpeechletResponse(jokeBody, false));
 };
 
 
-var FallbackHandler = (context) => {
+var FallbackHandler = () => {
     if(log) console.log("NERD JOKE SKILL - Fallback Handler");
-    context.succeed(generateResponse(buildSpeechletResponse(firstRequest, false)));
+    return generateResponse(buildSpeechletResponse(firstRequest, false));
 };
 
 
-var HelpHandler = (context) => {
+var HelpHandler = () => {
     if(log) console.log("NERD JOKE SKILL - Help Handler");
-    context.succeed(generateResponse(buildSpeechletResponse(`
+    return generateResponse(buildSpeechletResponse(`
     Thanks for using Nerd Jokes version ${process.env.AWS_LAMBDA_FUNCTION_VERSION}.  
     There is not a lot to do with this skill, just a bunch of nerd jokes.  
     Would you like to hear a Nerd Joke?  
     Just say yes, or no.
-    `, false)));
+    `, false));
 };
 
 
-var StopHandler = (context) => {
+var StopHandler = () => {
     if(log) console.log("NERD JOKE SKILL - Stop Handler");
-    context.succeed(generateResponse(buildSpeechletResponse("Thanks for listening to some nerd jokes.", true)));
+    return generateResponse(buildSpeechletResponse("Thanks for listening to some nerd jokes.", true));
 };
 
 

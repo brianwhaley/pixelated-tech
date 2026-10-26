@@ -22,10 +22,29 @@ Parameters:
   AlexaEventSourceToken:
     Type: String
     NoEcho: true
+  TechJokesRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/tech-jokes-role
+  ManageExecutionRole:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+
+Conditions:
+  ManageExecutionRoleCondition: !Equals [!Ref ManageExecutionRole, 'true']
 
 Resources:
   TechJokesRole:
     Type: AWS::IAM::Role
+    Condition: ManageExecutionRoleCondition
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -155,7 +174,7 @@ Resources:
         - x86_64
       MemorySize: 256
       Timeout: 6
-      Role: !GetAtt TechJokesRole.Arn
+      Role: !If [ManageExecutionRoleCondition, !GetAtt TechJokesRole.Arn, !Ref TechJokesRoleArn]
 
   NerdjokesSkillFunction:
     Type: AWS::Serverless::Function
@@ -170,7 +189,7 @@ Resources:
         - x86_64
       MemorySize: 128
       Timeout: 3
-      Role: !GetAtt TechJokesRole.Arn
+      Role: !If [ManageExecutionRoleCondition, !GetAtt TechJokesRole.Arn, !Ref TechJokesRoleArn]
 
   NerdjokesDevAlias:
     Type: AWS::Lambda::Alias
@@ -351,7 +370,7 @@ Resources:
       AlarmDescription: Alerts when the nerdjokes production API Gateway stage returns a server error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+        - !Ref AlarmTopicArn
       Namespace: AWS/ApiGateway
       MetricName: 5XXError
       Dimensions:
@@ -392,13 +411,15 @@ Resources:
       EndpointConfiguration:
         Types:
           - REGIONAL
-      RegionalCertificateArn: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+      RegionalCertificateArn: !Ref CertificateArn
       SecurityPolicy: TLS_1_2
 
   NerdjokesApiDevBasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+    DependsOn:
+      - NerdjokesApiDevStage
     Properties:
       BasePath: dev
       DomainName: !Ref NerdjokesApiDomain
@@ -409,6 +430,8 @@ Resources:
     Type: AWS::ApiGateway::BasePathMapping
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+    DependsOn:
+      - NerdjokesApiProdStage
     Properties:
       BasePath: prod
       DomainName: !Ref NerdjokesApiDomain
@@ -422,6 +445,26 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref NerdjokesFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NerdjokesApi}/*/*/nerdjokes
+
+  NerdjokesApiDevAliasPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref NerdjokesDevAlias
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NerdjokesApi}/*/*/nerdjokes
+
+  NerdjokesApiProdAliasPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref NerdjokesProdAlias
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${NerdjokesApi}/*/*/nerdjokes
 
@@ -527,7 +570,7 @@ Resources:
       LogGroupName: !Ref NerdjokesLogGroup
       MetricTransformations:
         - MetricName: Pixelated Nerdjokes Errors Metric
-          MetricNamespace: Pixelated/Nerdjokes
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
@@ -538,8 +581,8 @@ Resources:
       AlarmDescription: Alerts when the nerdjokes Lambda emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/Nerdjokes
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Nerdjokes Errors Metric
       Statistic: Sum
       Period: 300
@@ -567,7 +610,7 @@ Resources:
       LogGroupName: !Ref NerdjokesSkillLogGroup
       MetricTransformations:
         - MetricName: Pixelated Nerdjokes Skill Errors Metric
-          MetricNamespace: Pixelated/NerdjokesSkill
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
@@ -578,8 +621,8 @@ Resources:
       AlarmDescription: Alerts when the nerdjokes skill Lambda emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/NerdjokesSkill
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Nerdjokes Skill Errors Metric
       Statistic: Sum
       Period: 300

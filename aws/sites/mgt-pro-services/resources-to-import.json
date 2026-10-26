@@ -1,0 +1,37 @@
+[
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "SiteAmplifyApp",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d15jra3opz3qto"
+    }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "SiteProductionBranch",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d15jra3opz3qto/branches/main"
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "SiteHostedZone",
+    "ResourceIdentifier": {
+      "Id": "Z05663391Z0QBRXGDUBGF"
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "SiteHealthCheck",
+    "ResourceIdentifier": {
+      "HealthCheckId": "00a26e73-37dc-4b36-a28b-8b7c2fcc0776"
+    }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "SiteDomain",
+    "ResourceIdentifier": {
+      "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d15jra3opz3qto/domains/mgtproservices.com"
+    }
+  }
+]

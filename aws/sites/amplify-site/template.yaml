@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Site-owned Amplify, Route 53, and uptime resources.
+Description: Reusable per-site Amplify, Route 53 health check, and domain resources.
 
 Parameters:
   SiteName:
@@ -43,7 +43,7 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
-    Description: Whether this stack owns the Route 53 hosted zone.
+    Description: Whether this site stack owns the Route 53 hosted zone. Set false when a shared-hosted-zone stack owns it.
 
   IncludeWww:
     Type: String
@@ -88,7 +88,6 @@ Conditions:
     - !Condition DeploymentEnabled
     - !Equals [!Ref ManageHostedZone, 'true']
   WwwIncluded: !Equals [!Ref IncludeWww, 'true']
-
 Resources:
   SiteHostedZone:
     Condition: SiteHostedZoneManaged
@@ -123,6 +122,28 @@ Resources:
           - us-east-1
           - us-west-1
           - us-west-2
+
+  SiteHealthCheckAlarm:
+    Condition: DeploymentEnabled
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub '${SiteName} Health Check Alarm'
+      AlarmDescription: !Sub 'Required alarm for the Route 53 health check for ${HealthCheckDomainName}; alerts when the endpoint is unhealthy.'
+      ActionsEnabled: true
+      AlarmActions:
+        - arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+      Namespace: AWS/Route53
+      MetricName: HealthCheckStatus
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref SiteHealthCheck
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 3
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
 
   SiteAmplifyApp:
     Condition: DeploymentEnabled
@@ -160,10 +181,8 @@ Resources:
       DomainName: !Ref DomainName
       SubDomainSettings:
         - BranchName: main
-          Prefix: ''
         - !If
           - WwwIncluded
           - BranchName: main
             Prefix: www
           - !Ref AWS::NoValue
-

@@ -1,0 +1,16 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "AmplifyRole",
+    "ResourceIdentifier": {
+      "RoleName": "amplify-role"
+    }
+  },
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "ApiGatewayCloudWatchRole",
+    "ResourceIdentifier": {
+      "RoleName": "pixelated-api-gateway-role"
+    }
+  }
+]

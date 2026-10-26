@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "palmetto-epoxy-site"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-container"
+resolve_s3 = false
+confirm_changeset = true
+parameter_overrides = "SiteName=palmetto-epoxy DomainName=palmetto-epoxy.com HealthCheckDomainName=www.palmetto-epoxy.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d2a3t2kmvfcrzm EnableDeployment=true"

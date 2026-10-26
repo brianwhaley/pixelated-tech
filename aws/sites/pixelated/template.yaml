@@ -1,0 +1,280 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation ownership for pixelated.tech and its Admin and Storybook Amplify sites.
+
+Parameters:
+  Repository:
+    Type: String
+    Default: https://github.com/brianwhaley/pixelated-tech
+
+  PixelatedAppId:
+    Type: String
+    Default: d17myuvb07hqxo
+
+  AdminAppId:
+    Type: String
+    Default: d1g0f5i72xm6e5
+
+  ComponentsAppId:
+    Type: String
+    Default: d2tr2va8nnxmoh
+
+  CloudWatchAlarmsTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+
+Resources:
+  PixelatedCloudWatchAlarmsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: brian.whaley@gmail.com
+      Protocol: email
+      TopicArn: !Ref CloudWatchAlarmsTopicArn
+
+  PixelatedHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: pixelated.tech.
+
+  PixelatedHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: 443
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: www.pixelated.tech
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: true
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  PixelatedHealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: pixelated Health Check Alarm
+      AlarmDescription: Alerts when the Route 53 health check for www.pixelated.tech is unhealthy.
+      ActionsEnabled: true
+      AlarmActions:
+        - !Ref CloudWatchAlarmsTopicArn
+      Namespace: AWS/Route53
+      MetricName: HealthCheckStatus
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref PixelatedHealthCheck
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 3
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
+
+  PixelatedAmplifyApp:
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: pixelated
+      Platform: WEB_COMPUTE
+      Repository: !Ref Repository
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  PixelatedProductionBranch:
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref PixelatedAppId
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  PixelatedDomain:
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref PixelatedAppId
+      DomainName: pixelated.tech
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+        - BranchName: main
+          Prefix: www
+
+  AdminHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: 443
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: admin.pixelated.tech
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: true
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  AdminHealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: pixelated-admin Health Check Alarm
+      AlarmDescription: Alerts when the Route 53 health check for admin.pixelated.tech is unhealthy.
+      ActionsEnabled: true
+      AlarmActions:
+        - !Ref CloudWatchAlarmsTopicArn
+      Namespace: AWS/Route53
+      MetricName: HealthCheckStatus
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref AdminHealthCheck
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 3
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
+
+  AdminAmplifyApp:
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: pixelated-admin
+      Platform: WEB_COMPUTE
+      Repository: !Ref Repository
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  AdminProductionBranch:
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref AdminAppId
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  AdminDomain:
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref AdminAppId
+      DomainName: admin.pixelated.tech
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+
+  ComponentsHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: 80
+        Type: HTTP
+        ResourcePath: /
+        FullyQualifiedDomainName: storybook.pixelated.tech
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: false
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  ComponentsHealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: pixelated-components Health Check Alarm
+      AlarmDescription: Alerts when the Route 53 health check for storybook.pixelated.tech is unhealthy.
+      ActionsEnabled: true
+      AlarmActions:
+        - !Ref CloudWatchAlarmsTopicArn
+      Namespace: AWS/Route53
+      MetricName: HealthCheckStatus
+      Dimensions:
+        - Name: HealthCheckId
+          Value: !Ref ComponentsHealthCheck
+      Statistic: Minimum
+      Period: 60
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 3
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
+
+  ComponentsAmplifyApp:
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: pixelated-components
+      Platform: WEB_COMPUTE
+      Repository: !Ref Repository
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  ComponentsProductionBranch:
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref ComponentsAppId
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  ComponentsDomain:
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref ComponentsAppId
+      DomainName: storybook.pixelated.tech
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''

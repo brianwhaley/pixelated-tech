@@ -1,0 +1,9 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "DyndnsExecutionRole",
+    "ResourceIdentifier": {
+      "RoleName": "dyndns53_execution_role"
+    }
+  }
+]

@@ -1,9 +1,10 @@
 version = 0.1
 
 [default.deploy.parameters]
-stack_name = "pixelated-dyndns53"
-region = "us-east-2"
-s3_bucket = "pixelated-sam-artifacts"
+stack_name = "pixelated-dyndns53-east1"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-container"
 resolve_s3 = false
 confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "DyndnsExecutionRoleArn=arn:aws:iam::971579260814:role/dyndns53_execution_role ManageExecutionRole=true AlarmTopicArn=arn:aws:sns:us-east-1:971579260814:CloudWatch_Alarms"

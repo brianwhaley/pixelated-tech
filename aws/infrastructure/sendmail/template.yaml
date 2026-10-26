@@ -2,13 +2,50 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Existing sendmail API and form submission persistence.
 
+Parameters:
+  CreateExecutionRole:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  ExecutionRoleName:
+    Type: String
+    Default: sendmail_execution_role
+  ExecutionRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/service-role/sendmail_execution_role
+  BucketName:
+    Type: String
+    Default: pixelated-sendmail-bucket
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+  SmtpUser:
+    Type: String
+    Default: ''
+  SmtpPassword:
+    Type: String
+    NoEcho: true
+    Default: ''
+
+Conditions:
+  CreateExecutionRoleCondition: !Equals [!Ref CreateExecutionRole, 'true']
+  ConfigureSmtp: !And
+    - !Not [!Equals [!Ref SmtpUser, '']]
+    - !Not [!Equals [!Ref SmtpPassword, '']]
+
 Resources:
   SendmailExecutionRole:
+    Condition: CreateExecutionRoleCondition
     Type: AWS::IAM::Role
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      RoleName: sendmail_execution_role
+      RoleName: !Ref ExecutionRoleName
       Path: /service-role/
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -55,7 +92,13 @@ Resources:
         - x86_64
       MemorySize: 128
       Timeout: 10
-      Role: !GetAtt SendmailExecutionRole.Arn
+      Role: !If [CreateExecutionRoleCondition, !GetAtt SendmailExecutionRole.Arn, !Ref ExecutionRoleArn]
+      Environment: !If
+        - ConfigureSmtp
+        - Variables:
+            SMTP_USER: !Ref SmtpUser
+            SMTP_PASSWORD: !Ref SmtpPassword
+        - !Ref AWS::NoValue
 
   SendmailApi:
     Type: AWS::ApiGateway::RestApi
@@ -86,8 +129,21 @@ Resources:
       HttpMethod: ANY
       Integration:
         IntegrationHttpMethod: POST
-        Type: AWS_PROXY
-        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendmailFunction.Arn}/invocations
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: '{"message":"Forbidden"}'
+            StatusCode: '403'
+        RequestTemplates:
+          application/json: '{"statusCode":403}'
+        Type: MOCK
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: false
+          StatusCode: '403'
       ResourceId: !Ref SendmailApiResource
       RestApiId: !Ref SendmailApi
 
@@ -129,7 +185,7 @@ Resources:
     DependsOn:
       - SendmailS3InvokePermission
     Properties:
-      BucketName: pixelated-sendmail-bucket
+      BucketName: !Ref BucketName
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -144,6 +200,11 @@ Resources:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
             Function: !GetAtt SendmailS3Function.Arn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: ''
 
   SendmailS3Function:
     Type: AWS::Serverless::Function
@@ -158,12 +219,17 @@ Resources:
         - x86_64
       MemorySize: 128
       Timeout: 30
-      Role: !GetAtt SendmailExecutionRole.Arn
+      Role: !If [CreateExecutionRoleCondition, !GetAtt SendmailExecutionRole.Arn, !Ref ExecutionRoleArn]
       LoggingConfig:
         LogGroup: !Ref SendmailLogGroup
-      Environment:
-        Variables:
-          S3_BUCKET: pixelated-sendmail-bucket
+      Environment: !If
+        - ConfigureSmtp
+        - Variables:
+            S3_BUCKET: !Ref BucketName
+            SMTP_USER: !Ref SmtpUser
+            SMTP_PASSWORD: !Ref SmtpPassword
+        - Variables:
+            S3_BUCKET: !Ref BucketName
 
   SendmailS3InvokePermission:
     Type: AWS::Lambda::Permission
@@ -174,7 +240,7 @@ Resources:
       FunctionName: !Ref SendmailS3Function
       Principal: s3.amazonaws.com
       SourceAccount: !Ref AWS::AccountId
-      SourceArn: !Sub arn:${AWS::Partition}:s3:::pixelated-sendmail-bucket
+      SourceArn: !Sub arn:${AWS::Partition}:s3:::${BucketName}
 
   SendmailS3ApiResource:
     Type: AWS::ApiGateway::Resource
@@ -194,10 +260,11 @@ Resources:
       AuthorizationType: NONE
       HttpMethod: POST
       Integration:
-        Credentials: !GetAtt SendmailExecutionRole.Arn
+        Credentials: !If [CreateExecutionRoleCondition, !GetAtt SendmailExecutionRole.Arn, !Ref ExecutionRoleArn]
         IntegrationHttpMethod: PUT
         IntegrationResponses:
           - StatusCode: '200'
+            SelectionPattern: '2\d{2}'
             ResponseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             ResponseTemplates:
@@ -208,7 +275,7 @@ Resources:
         RequestTemplates:
           application/json: $input.body
         Type: AWS
-        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:s3:path/pixelated-sendmail-bucket/{requestId}.json
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:s3:path/${BucketName}/{requestId}.json
       MethodResponses:
         - ResponseModels:
             application/json: Empty
@@ -249,7 +316,7 @@ Resources:
       ResourceId: !Ref SendmailS3ApiResource
       RestApiId: !Ref SendmailApi
 
-  SendmailApiDeploymentV4:
+  SendmailApiDeploymentV6:
     Type: AWS::ApiGateway::Deployment
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
@@ -259,6 +326,7 @@ Resources:
       - SendmailS3ApiMethod
       - SendmailS3ApiOptionsMethod
     Properties:
+      Description: Sendmail API deployment with S3 response mapping
       RestApiId: !Ref SendmailApi
 
   SendmailApiStage:
@@ -266,7 +334,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      DeploymentId: !Ref SendmailApiDeploymentV4
+      DeploymentId: !Ref SendmailApiDeploymentV6
       RestApiId: !Ref SendmailApi
       StageName: default
       MethodSettings:
@@ -283,6 +351,8 @@ Resources:
 
   SendmailApi5xxAlarm:
     Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     DependsOn:
       - SendmailApiStage
     Properties:
@@ -290,7 +360,7 @@ Resources:
       AlarmDescription: Alerts when the sendmail production API Gateway stage returns a server error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+        - !Ref AlarmTopicArn
       Namespace: AWS/ApiGateway
       MetricName: 5XXError
       Dimensions:
@@ -325,7 +395,7 @@ Resources:
       EndpointConfiguration:
         Types:
           - REGIONAL
-      RegionalCertificateArn: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+      RegionalCertificateArn: !Ref CertificateArn
       SecurityPolicy: TLS_1_2
 
   SendmailApiBasePathMapping:
@@ -364,24 +434,28 @@ Resources:
 
   SendmailErrorsMetricFilter:
     Type: AWS::Logs::MetricFilter
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|SMTP_USER|Bad Request|DynamoDB write failed|Internal server error|Task timed out|Runtime.ExitError%'
       LogGroupName: !Ref SendmailLogGroup
       MetricTransformations:
         - MetricName: Pixelated Sendmail Errors Metric
-          MetricNamespace: Pixelated/Sendmail
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
   SendmailErrorsAlarm:
     Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AlarmName: Pixelated Sendmail Errors Alarm
       AlarmDescription: Alerts when the sendmail Lambda emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/Sendmail
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Sendmail Errors Metric
       Statistic: Sum
       Period: 300
@@ -393,6 +467,8 @@ Resources:
 
   SendmailErrorsQuery:
     Type: AWS::Logs::QueryDefinition
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Name: Pixelated Sendmail Errors Query
       LogGroupNames:

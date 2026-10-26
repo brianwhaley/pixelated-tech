@@ -6,6 +6,7 @@ This stack is the site-owned lifecycle boundary for `brianwhaley.com`.
 
 - Route 53 public hosted zone `Z25HMP58CYXTT0`
 - Route 53 HTTPS health check `8907c3f0-265e-4942-8bbc-767b4bc03ea9`
+- CloudWatch health-check alarm using the shared `pixelated-cloudwatch-alarms` SNS topic in `us-east-1`
 - Amplify app `d1l3sfqu84bo71` in `us-east-1`
 - Amplify production branch `main`
 - Amplify custom domain association for `brianwhaley.com`
@@ -32,7 +33,7 @@ The existing Amplify secret environment variable is intentionally not copied int
 
 Secrets, Amplify environment variables, and registrar contact information are not copied into the repository or managed by this stack.
 
-This site currently has no confirmed site-owned SNS topic or subscription, API Gateway, Lambda function, S3 bucket, DynamoDB table, EventBridge rule, Secrets Manager secret, or SSM parameter. These resources are intentionally absent from the template. If live discovery finds one associated with Brian Whaley, it must be reported and reviewed before being added.
+This site has no SNS topic or subscription, API Gateway, Lambda function, S3 bucket, DynamoDB table, EventBridge rule, Secrets Manager secret, or SSM parameter managed by this stack. The health-check alarm is required for every deployed site stack and publishes to the shared `pixelated-cloudwatch-alarms` topic.
 
 ## Validation and adoption
 
