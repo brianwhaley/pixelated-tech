@@ -5,7 +5,7 @@ import { getHostedZoneIdForDomain, getRoute53RecordValues, upsertRoute53Records 
 import { createSesEmailIdentity, getSesEmailIdentity } from '../../integrations/aws.ses.integration';
 import { sendSmtpEmail } from '../../integrations/smtp.integration';
 
-const AWS_REGION = [String.fromCharCode(117, 115), 'east', '2'].join('-');
+const AWS_REGION = 'us-east-1';
 const ROUTING_TABLE = 'PixelatedEmailRouting';
 const FORWARDING_TEST_FROM = 'brian.whaley@gmail.com';
 const TENANT_MX_VALUE = `10 inbound-smtp.${AWS_REGION}.amazonaws.com`;
@@ -53,6 +53,13 @@ function normalizeRecipientAddress(recipientInput: string, domain: string) {
 	return recipient;
 }
 
+function getItemDomain(item: Record<string, string>) {
+	if (item.domain?.trim()) return item.domain.trim().toLowerCase();
+	const value = (item.recipient || '').trim().toLowerCase();
+	const domain = value.startsWith('@') ? value.slice(1) : value.slice(value.lastIndexOf('@') + 1);
+	return domain.includes('.') ? domain : '';
+}
+
 function getMergedTxtValues(existingValues: string[]) {
 	const spfIndex = existingValues.findIndex((value) => value.replace(/^"|"$/g, '').startsWith('v=spf1'));
 	if (spfIndex === -1) return [...existingValues, '"v=spf1 include:amazonses.com ~all"'];
@@ -64,11 +71,33 @@ function getMergedTxtValues(existingValues: string[]) {
 	});
 }
 
-function getTenantRecords(domain: string, dkimTokens: string[], txtValues: string[], includeDmarc: boolean) {
+function getDmarcValue(existingValues: string[]) {
+	if (existingValues.length > 1) throw new Error('Multiple DMARC records found; resolve the DNS records before onboarding.');
+	if (existingValues.length === 0) return DMARC_VALUE;
+
+	const originalValue = existingValues[0].trim();
+	const existingValue = originalValue.replace(/^"|"$/g, '').trim();
+	const versionMatch = existingValue.match(/(?:^|;)\s*v\s*=\s*([^;]*)/i);
+	const policyMatch = existingValue.match(/(?:^|;)\s*p\s*=\s*([^;]*)/i);
+	const validVersion = versionMatch?.[1].trim().toLowerCase() === 'dmarc1';
+	const validPolicy = ['none', 'quarantine', 'reject'].includes(policyMatch?.[1].trim().toLowerCase() || '');
+	if (validVersion && validPolicy) return existingValues[0];
+
+	let repairedValue = existingValue;
+	if (!validVersion) {
+		repairedValue = versionMatch ? repairedValue.replace(/(^|;)(\s*)v\s*=\s*[^;]*/i, '$1$2v=DMARC1') : `v=DMARC1; ${repairedValue}`;
+	}
+	if (!validPolicy) {
+		repairedValue = policyMatch ? repairedValue.replace(/(^|;)(\s*)p\s*=\s*[^;]*/i, '$1$2p=none') : `${repairedValue.replace(/\s*$/, '')}; p=none;`;
+	}
+	return originalValue.startsWith('"') && originalValue.endsWith('"') ? `"${repairedValue}"` : repairedValue;
+}
+
+function getTenantRecords(domain: string, dkimTokens: string[], txtValues: string[], dmarcValue: string) {
 	return [
 		{ name: domain, type: 'MX' as const, ttl: 300, values: [TENANT_MX_VALUE] },
 		{ name: domain, type: 'TXT' as const, ttl: 300, values: txtValues },
-		...(includeDmarc ? [{ name: `_dmarc.${domain}`, type: 'TXT' as const, ttl: 300, values: [DMARC_VALUE] }] : []),
+		{ name: `_dmarc.${domain}`, type: 'TXT' as const, ttl: 300, values: [dmarcValue] },
 		...dkimTokens.map((token) => ({
 			name: `${token}._domainkey.${domain}`,
 			type: 'CNAME' as const,
@@ -94,9 +123,9 @@ export async function onboardEmailForwardingDomain(domainInput: string, targetEm
 	const hostedZoneId = await getHostedZoneIdForDomain(domain);
 	const txtValues = getMergedTxtValues(await getRoute53RecordValues(hostedZoneId, domain, 'TXT'));
 	const dmarcValues = await getRoute53RecordValues(hostedZoneId, `_dmarc.${domain}`, 'TXT');
-	if (dmarcValues.length > 0 && !overwriteDmarc) throw new Error(`DMARC already exists for ${domain}: ${dmarcValues.join(', ')}`);
-	await upsertRoute53Records(hostedZoneId, getTenantRecords(domain, dkimTokens, txtValues, dmarcValues.length === 0 || overwriteDmarc));
-	await putDynamoStringItem(ROUTING_TABLE, { recipient: `@${domain}`, targetEmail });
+	await upsertRoute53Records(hostedZoneId, getTenantRecords(domain, dkimTokens, txtValues, getDmarcValue(dmarcValues)));
+	await putDynamoStringItem(ROUTING_TABLE, { recipient: `@${domain}`, targetEmail, domain });
+	await putDynamoStringItem(ROUTING_TABLE, { recipient: `@${domain}`, targetEmail, domain }, AWS_REGION);
 
 	return {
 		domain,
@@ -108,18 +137,18 @@ export async function onboardEmailForwardingDomain(domainInput: string, targetEm
 }
 
 export async function listEmailForwardingDomains(): Promise<string[]> {
-	const items = await listDynamoStringItems(ROUTING_TABLE);
+	const items = await listDynamoStringItems(ROUTING_TABLE, AWS_REGION);
 	return [...new Set(items
-		.map((item) => item.recipient?.trim().toLowerCase() || '')
-		.filter((recipient) => recipient.startsWith('@') && recipient.length > 1)
-		.map((recipient) => recipient.slice(1)))].sort();
+		.filter((item) => item.recipient?.trim().startsWith('@'))
+		.map((item) => getItemDomain(item))
+		.filter(Boolean))].sort();
 }
 
 export async function getEmailForwardingRoutes(domainInput: string): Promise<EmailForwardingDomain> {
 	const domain = normalizeDomain(domainInput);
-	const items = await listDynamoStringItems(ROUTING_TABLE);
+	const items = await listDynamoStringItems(ROUTING_TABLE, AWS_REGION);
 	const routes = items
-		.filter((item) => item.recipient?.toLowerCase().endsWith(`@${domain}`))
+		.filter((item) => getItemDomain(item) === domain)
 		.map((item) => ({ recipient: item.recipient.toLowerCase(), targetEmail: item.targetEmail.toLowerCase() }))
 		.sort((left, right) => left.recipient.localeCompare(right.recipient));
 	const catchAll = routes.find((route) => route.recipient === `@${domain}`);
@@ -133,7 +162,7 @@ export async function getEmailForwardingRoutes(domainInput: string): Promise<Ema
 export async function saveEmailForwardingCatchAll(domainInput: string, targetEmailInput: string): Promise<EmailForwardingResult> {
 	const domain = normalizeDomain(domainInput);
 	const targetEmail = normalizeEmail(targetEmailInput, 'target email');
-	await putDynamoStringItem(ROUTING_TABLE, { recipient: `@${domain}`, targetEmail });
+	await putDynamoStringItem(ROUTING_TABLE, { recipient: `@${domain}`, targetEmail, domain }, AWS_REGION);
 	return { domain, targetEmail, message: `Catch-all forwarding saved for ${domain}.` };
 }
 
@@ -141,14 +170,14 @@ export async function addEmailForwardingRoute(domainInput: string, recipientInpu
 	const domain = normalizeDomain(domainInput);
 	const recipient = normalizeRecipientAddress(recipientInput, domain);
 	const targetEmail = normalizeEmail(targetEmailInput, 'target email');
-	await putDynamoStringItem(ROUTING_TABLE, { recipient, targetEmail });
+	await putDynamoStringItem(ROUTING_TABLE, { recipient, targetEmail, domain }, AWS_REGION);
 	return { domain, targetEmail, message: `Forwarding address ${recipient} saved.` };
 }
 
 export async function deleteEmailForwardingRoute(domainInput: string, recipientInput: string): Promise<EmailForwardingResult> {
 	const domain = normalizeDomain(domainInput);
 	const recipient = normalizeRecipientAddress(recipientInput, domain);
-	await deleteDynamoStringItem(ROUTING_TABLE, { recipient });
+	await deleteDynamoStringItem(ROUTING_TABLE, { recipient }, AWS_REGION);
 	return { domain, targetEmail: '', message: `Forwarding address ${recipient} deleted.` };
 }
 

@@ -2,13 +2,24 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Existing proxy API and Lambda service.
 
+Parameters:
+  ProxyRoleName:
+    Type: String
+    Default: proxy-role
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+
 Resources:
   ProxyExecutionRole:
     Type: AWS::IAM::Role
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      RoleName: proxy-role
+      RoleName: !Ref ProxyRoleName
       Path: /service-role/
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -32,7 +43,7 @@ Resources:
       Architectures:
         - x86_64
       MemorySize: 128
-      Timeout: 3
+      Timeout: 10
       Role: !GetAtt ProxyExecutionRole.Arn
 
   ProxyApi:
@@ -117,7 +128,7 @@ Resources:
       ResourceId: !Ref ProxyApiResource
       RestApiId: !Ref ProxyApi
 
-  ProxyApiDeployment:
+  ProxyApiDeploymentRefresh:
     Type: AWS::ApiGateway::Deployment
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
@@ -125,7 +136,7 @@ Resources:
       - ProxyApiAnyMethod
       - ProxyApiOptionsMethod
     Properties:
-      Description: added ANY method
+      Description: proxy API and Lambda integration
       RestApiId: !Ref ProxyApi
 
   ProxyApiStage:
@@ -133,7 +144,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      DeploymentId: !Ref ProxyApiDeployment
+      DeploymentId: !Ref ProxyApiDeploymentRefresh
       Description: Created by AWS Lambda
       MethodSettings:
         - HttpMethod: '*'
@@ -145,12 +156,14 @@ Resources:
       RestApiId: !Ref ProxyApi
       StageName: prod
       AccessLogSetting:
-        DestinationArn: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/apigateway/proxy
+        DestinationArn: !GetAtt ProxyApiLogGroup.Arn
         Format: >-
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
   ProxyApi5xxAlarm:
     Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     DependsOn:
       - ProxyApiStage
     Properties:
@@ -158,7 +171,7 @@ Resources:
       AlarmDescription: Alerts when the proxy production API Gateway stage returns a server error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+        - !Ref AlarmTopicArn
       Namespace: AWS/ApiGateway
       MetricName: 5XXError
       Dimensions:
@@ -184,26 +197,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/*/proxy
 
-  ProxyApiPermissionGet:
-    Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref ProxyFunction
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/GET/proxy
-
-  ProxyApiPermissionAnyDuplicate:
-    Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref ProxyFunction
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/*/proxy
-
   ProxyApiDomain:
     Type: AWS::ApiGateway::DomainName
     DeletionPolicy: Retain
@@ -213,7 +206,7 @@ Resources:
       EndpointConfiguration:
         Types:
           - REGIONAL
-      RegionalCertificateArn: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+      RegionalCertificateArn: !Ref CertificateArn
       SecurityPolicy: TLS_1_2
 
   ProxyApiBasePathMapping:
@@ -234,26 +227,38 @@ Resources:
       LogGroupName: /aws/lambda/proxy
       RetentionInDays: 30
 
+  ProxyApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/proxy
+      RetentionInDays: 30
+
   ProxyErrorsMetricFilter:
     Type: AWS::Logs::MetricFilter
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Content-Type header|No URL|Task timed out|Runtime.ExitError|proxy_error%'
       LogGroupName: !Ref ProxyLogGroup
       MetricTransformations:
         - MetricName: Pixelated Proxy Errors Metric
-          MetricNamespace: Pixelated/Proxy
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
   ProxyErrorsAlarm:
     Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       AlarmName: Pixelated Proxy Errors Alarm
       AlarmDescription: Alerts when the proxy Lambda emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/Proxy
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Proxy Errors Metric
       Statistic: Sum
       Period: 300
@@ -265,6 +270,8 @@ Resources:
 
   ProxyErrorsQuery:
     Type: AWS::Logs::QueryDefinition
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Name: Pixelated Proxy Errors Query
       LogGroupNames:

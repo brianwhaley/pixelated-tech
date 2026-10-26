@@ -46,10 +46,6 @@ Conditions:
   WwwIncluded: !Equals [!Ref IncludeWww, 'true']
 
 Resources:
-  BootstrapPlaceholder:
-    Type: AWS::SNS::Topic
-    DeletionPolicy: Delete
-
   SiteHostedZone:
     Condition: SiteHostedZoneManaged
     Type: AWS::Route53::HostedZone

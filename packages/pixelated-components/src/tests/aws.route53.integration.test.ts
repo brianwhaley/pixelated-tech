@@ -14,7 +14,7 @@ vi.mock('@aws-sdk/client-route-53', () => ({
 }));
 
 vi.mock('../components/config/config', () => ({
-	getFullPixelatedConfig: () => ({ integrations: { aws: { region: 'us-east-2', access_key_id: 'key', secret_access_key: 'secret', session_token: 'token' } } }),
+	getFullPixelatedConfig: () => ({ integrations: { aws: { region: 'us-east-1', access_key_id: 'key', secret_access_key: 'secret', session_token: 'token' } } }),
 }));
 
 import { getHostedZoneIdForDomain, getRoute53RecordValues, upsertRoute53Records } from '../components/integrations/aws.route53.integration';

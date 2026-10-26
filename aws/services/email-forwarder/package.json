@@ -5,7 +5,8 @@
   "type": "module",
   "main": "src/index.mjs",
   "scripts": {
-    "build": "node --check src/index.mjs",
+    "build": "node --check src/index.mjs && node --check src/backfill-domain.mjs",
+    "backfill:domain": "node src/backfill-domain.mjs",
     "test": "node --test"
   },
   "dependencies": {

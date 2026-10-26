@@ -1,0 +1,67 @@
+[
+  {
+    "ResourceType": "AWS::Route53::HostedZone",
+    "LogicalResourceId": "PixelatedHostedZone",
+    "ResourceIdentifier": { "Id": "Z3VWI30LVBBD2X" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "PixelatedHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "92f4a0d8-db33-4115-9a20-71886509eb9b" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "PixelatedAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d17myuvb07hqxo" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "PixelatedProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d17myuvb07hqxo/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "PixelatedDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d17myuvb07hqxo/domains/pixelated.tech" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "AdminHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "87fde80b-6a16-4a61-bd4d-43050634e2af" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "AdminAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d1g0f5i72xm6e5" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "AdminProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d1g0f5i72xm6e5/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "AdminDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d1g0f5i72xm6e5/domains/admin.pixelated.tech" }
+  },
+  {
+    "ResourceType": "AWS::Route53::HealthCheck",
+    "LogicalResourceId": "ComponentsHealthCheck",
+    "ResourceIdentifier": { "HealthCheckId": "865c6d61-e882-4386-9d35-a275ebefd587" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::App",
+    "LogicalResourceId": "ComponentsAmplifyApp",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d2tr2va8nnxmoh" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Branch",
+    "LogicalResourceId": "ComponentsProductionBranch",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d2tr2va8nnxmoh/branches/main" }
+  },
+  {
+    "ResourceType": "AWS::Amplify::Domain",
+    "LogicalResourceId": "ComponentsDomain",
+    "ResourceIdentifier": { "Arn": "arn:aws:amplify:us-east-1:971579260814:apps/d2tr2va8nnxmoh/domains/storybook.pixelated.tech" }
+  }
+]

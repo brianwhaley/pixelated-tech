@@ -21,7 +21,7 @@ The manual shared-infrastructure steps below are retained as historical referenc
 * **Edge Reception & Verification (Amazon SES Inbound):** SES receives the SMTP handshake. It checks whether the destination domain matches an active, verified SES identity corresponding to the Route 53 zone. If verified, the active SES Receipt Rule triggers two actions: it streams the raw, unmodified MIME email message into Amazon S3, and fires an asynchronous event invocation to AWS Lambda.
 * **Storage Buffering (Amazon S3):** Acts as a durable, temporary storage buffer for incoming emails. Storing the raw `.eml` payload directly in S3 avoids Lambda's synchronous execution size caps (SES payload limits are truncated at 150 KB if piped directly to Lambda).
 * **Routing Resolution & Header Rewriting (AWS Lambda via Node.js):** The Lambda function extracts the recipient address from the SES event payload and queries DynamoDB. Upon locating the destination mapping, Lambda pulls the raw `.eml` object from S3. To prevent upstream SPF and DKIM failures at destination providers like Gmail or Outlook, Lambda strips original DKIM signatures, sets `Reply-To` to the original sender, and rewrites the `From` and `Return-Path` headers to use a platform-owned, verified sending identity.
-* **Mapping Store (Amazon DynamoDB):** An on-demand table storing recipient keys (supporting exact email addresses like `contact@tenant.com` or domain catch-alls like `@tenant.com`) mapped to destination targets (e.g., personal or business inboxes).
+* **Mapping Store (Amazon DynamoDB):** An on-demand table storing recipient keys (supporting exact email addresses like `contact@tenant.com` or domain catch-alls like `@tenant.com`) mapped to destination targets (e.g., personal or business inboxes). New routing items also store a normalized `domain` attribute for filtering and indexing; readers derive it from `recipient` for older items that do not have the attribute.
 * **Outbound Dispatch (Amazon SES Outbound):** Lambda calls the SES `SendRawEmail` API to dispatch the rewritten message to the final destination address.
 
 ---
@@ -38,7 +38,7 @@ The manual shared-infrastructure steps below are retained as historical referenc
 ## Historical Step 2: Create the S3 Inbound Storage Bucket
 
 1. Open the **S3 Console** and click **Create bucket**.
-2. Enter a unique bucket name (e.g., `pixelated-email-inbound-storage-bucket`).
+2. Enter the bucket name `pixelated-email-inbound-storage-container`.
 3. Keep default settings (**Block all public access** enabled) and create the bucket.
 4. Open the created bucket, navigate to **Permissions**, locate **Bucket policy**, and click **Edit**.
 5. Insert the following policy to permit SES to store inbound messages (replace `YOUR_ACCOUNT_ID` and `YOUR_BUCKET_NAME`):
@@ -54,13 +54,13 @@ The manual shared-infrastructure steps below are retained as historical referenc
         "Service": "ses.amazonaws.com"
       },
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::pixelated-email-inbound-storage-bucket/*",
+      "Resource": "arn:aws:s3:::pixelated-email-inbound-storage-container/*",
       "Condition": {
         "StringEquals": {
           "aws:SourceAccount": "971579260814"
         },
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:ses:us-east-2:971579260814:receipt-rule-set/*"
+          "aws:SourceArn": "arn:aws:ses:us-east-1:971579260814:receipt-rule-set/*"
         }
       }
     }
@@ -77,7 +77,7 @@ The manual shared-infrastructure steps below are retained as historical referenc
 3. Under **Configuration > General configuration**, edit and set **Timeout** to `30 seconds` and **Memory** to `256 MB`.
 4. Under **Configuration > Permissions**, select the IAM execution role and ensure it has policies granting:
    * `ses:SendRawEmail`
-   * `s3:GetObject` on `arn:aws:s3:::pixelated-email-inbound-storage-bucket/*`
+  * `s3:GetObject` on `arn:aws:s3:::pixelated-email-inbound-storage-container/*`
    * `dynamodb:GetItem` on the `PixelatedEmailRouting` table ARN
 
 ```json
@@ -87,7 +87,7 @@ The manual shared-infrastructure steps below are retained as historical referenc
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:us-east-2:971579260814:*"
+      "Resource": "arn:aws:logs:us-east-1:971579260814:*"
     },
     {
       "Effect": "Allow",
@@ -96,7 +96,7 @@ The manual shared-infrastructure steps below are retained as historical referenc
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:us-east-2:971579260814:log-group:/aws/lambda/pixelated-ses-email-forwarder:*"
+        "arn:aws:logs:us-east-1:971579260814:log-group:/aws/lambda/pixelated-ses-email-forwarder:*"
       ]
     },
     {
@@ -106,13 +106,13 @@ The manual shared-infrastructure steps below are retained as historical referenc
         "s3:GetObject",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::pixelated-email-inbound-storage-bucket/*"
+      "Resource": "arn:aws:s3:::pixelated-email-inbound-storage-container/*"
     },
     {
       "Sid": "PixelatedDynamoDBReadAccess",
       "Effect": "Allow",
       "Action": "dynamodb:GetItem",
-      "Resource": "arn:aws:dynamodb:us-east-2:971579260814:table/PixelatedEmailRouting"
+      "Resource": "arn:aws:dynamodb:us-east-1:971579260814:table/PixelatedEmailRouting"
     },
     {
       "Sid": "PixelatedSESOutboundAccess",
@@ -123,9 +123,7 @@ The manual shared-infrastructure steps below are retained as historical referenc
   ]
 }
 ```
-5. Under **Configuration > Environment variables**, add:
-   * `S3_BUCKET`: `pixelated-email-inbound-storage-bucket`
-   * `FORWARDING_DOMAIN`: `forwarding.pixelated.tech` (a verified root or subdomain you manage)
+5. No Lambda environment variables are required. The deployed forwarder uses the explicit east-one constants in `src/index.mjs`.
 6. In `index.mjs`, replace everything and paste the following code:
 
 ```javascript
@@ -135,9 +133,9 @@ import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { SESClient, SendRawEmailCommand } from "@aws-sdk/client-ses";
 
 // Configuration Constants
-const AWS_REGION = "us-east-2";
+const AWS_REGION = "us-east-1";
 const TABLE_NAME = "PixelatedEmailRouting";
-const S3_BUCKET = "pixelated-email-inbound-storage-bucket";
+const S3_BUCKET = "pixelated-email-inbound-storage-container";
 const FORWARDING_DOMAIN = "forwarding.pixelated.tech";
 
 // Initialize AWS SDK Clients
@@ -273,7 +271,7 @@ export const handler = async (event) => {
     * **Rule name:** `PixelatedEmailReceivingRule` Status is Enabled, TLS is unchecked (not required) and Spam and Virus Scanning is Enabled
     * **Recipient conditions:** Leave empty so the rule evaluates all verified domains on the account. 
 4. Add two actions in order: 
-    * **Action 1 (S3):** Select the bucket created in Step 2 (`pixelated-email-inbound-storage-bucket`). 
+    * **Action 1 (S3):** Select the bucket created in Step 2 (`pixelated-email-inbound-storage-container`).
     * **Action 2 (Lambda):** Select `pixelated-ses-email-forwarder` with **Invocation type** set to `Event`. 
 5. Save the rule.  Be sure to Add Permissions if prompted
 
@@ -286,7 +284,7 @@ export const handler = async (event) => {
 5. Custom MAIL FROM Domain: 🚫 Skip It
 6. DMARC Policy:  Publish It
 7. Email Certificates (S/MIME): 🚫 Skip It
-8. Create the inbound MX record for `forwarding.pixelated.tech` in Route 53: `10 inbound-smtp.us-east-2.amazonaws.com`.
+8. Create the inbound MX record for `forwarding.pixelated.tech` in Route 53: `10 inbound-smtp.us-east-1.amazonaws.com`.
 9. A Critical Verification Pro-TipBecause you are verifying a subdomain (forwarding.pixelated.tech) inside the root hosted zone (pixelated.tech), ensure you append the word forwarding to the prefix of every record name you create in Route 53. If you leave the record name blank, the records will mistakenly apply to your root domain (pixelated.tech) instead of your platform forwarding domain, keeping the status stuck in pending.Once Route 53 saves these changes, AWS SES will automatically detect the records over the next few minutes, and the status badge will update to a green Verified.While DNS propagates, would you like to:Seed the first DynamoDB routing test row so you are ready to send an email the second it verifies?Review how to handle production sandbox mode limits if this is a brand new AWS account?
 
 
@@ -315,7 +313,7 @@ Open the **Route 53 Console** and select the Hosted Zone for `clienta.com`:
 * **Create Inbound MX Record:**
   * **Record name:** Leave empty (root `@`).
   * **Record type:** `MX`
-  * **Value:** `10 inbound-smtp.us-east-2.amazonaws.com` .
+  * **Value:** `10 inbound-smtp.us-east-1.amazonaws.com` .
 * **Create SPF TXT Record:**
   * **Record name:** Leave empty (root `@`).
   * **Record type:** `TXT`
@@ -329,6 +327,21 @@ Open the **Route 53 Console** and select the Hosted Zone for `clienta.com`:
 
 
 ### 3. IAM SMTP CREDENTIALS SETTINGS
+
+#### Current AWS setup
+
+The SES SMTP credentials for this forwarding system are already provisioned in the `us-east-1` account:
+
+* **IAM user:** `pixelated-ses-smtp-user`
+* **IAM group:** `AWSSESSendingGroupDoNotRename`
+* **Permission:** The user inherits the inline `AmazonSesSendingAccess` policy through that group.
+* **SMTP endpoint:** `email-smtp.us-east-1.amazonaws.com`
+* **Port:** `587` with TLS
+
+The SMTP password is secret and is not stored in this documentation. AWS displays it only when the credentials are created. If it is no longer available, create a new SMTP credential or access key for the existing IAM user.
+
+#### Create or rotate SMTP credentials
+
 1. Look under IAM SMTP credentials (right underneath the Mail Manager section):
     * IAM SMTP credentials
     * Manual credential management. No traffic policies or rule sets.
@@ -348,7 +361,7 @@ Open the **Route 53 Console** and select the Hosted Zone for `clienta.com`:
 5. Email Address: alpope@amavajanitorial.com
 6. Uncheck Treat as an alias and click Next Step.
 7. Enter these details:
-    * SMTP Server: email-smtp.us-east-2.amazonaws.com (matching your Ohio / us-east-2 region shown in your console top bar)
+    * SMTP Server: email-smtp.us-east-1.amazonaws.com (matching the us-east-1 region shown in your console top bar)
     * Port: 587
     * Username: The IAM SMTP Username you generated
     * Password: The IAM SMTP Password you generated

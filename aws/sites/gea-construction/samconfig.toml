@@ -1,0 +1,9 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "gea-construction-site"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-container"
+resolve_s3 = false
+confirm_changeset = true
+parameter_overrides = "SiteName=gea-construction DomainName=geaconstruction.net HealthCheckDomainName=www.geaconstruction.net ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=dxphtyl33w6ra EnableDeployment=true"

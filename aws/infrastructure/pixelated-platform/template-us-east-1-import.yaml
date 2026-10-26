@@ -1,0 +1,176 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Regional platform configuration for us-east-1.
+Parameters:
+  ApiGatewayCloudWatchRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/service-role/pixelated-api-gateway-role
+  ManageCloudWatchAlarmsTopic:
+    Type: String
+    AllowedValues:
+    - 'true'
+    - 'false'
+    Default: 'false'
+    Description: Whether this stack adopts the existing east-one shared alarm topic.
+  ImportCloudWatchAlarmsTopic:
+    Type: String
+    AllowedValues:
+    - 'true'
+    - 'false'
+    Default: 'false'
+    Description: Temporary condition used only while importing the existing topic.
+  ManageBudget:
+    Type: String
+    AllowedValues:
+    - 'true'
+    - 'false'
+    Default: 'false'
+    Description: Whether this stack manages the shared account budget after migration.
+Conditions:
+  ManageCloudWatchAlarmsTopic:
+    Fn::Equals:
+    - Ref: ManageCloudWatchAlarmsTopic
+    - 'true'
+  ImportCloudWatchAlarmsTopic:
+    Fn::Equals:
+    - Ref: ImportCloudWatchAlarmsTopic
+    - 'true'
+  ManageBudget:
+    Fn::Equals:
+    - Ref: ManageBudget
+    - 'true'
+Resources:
+  SharedWildcardCertificate:
+    Type: AWS::CertificateManager::Certificate
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: '*.pixelated.tech'
+      SubjectAlternativeNames:
+      - pixelated.tech
+      ValidationMethod: DNS
+    Metadata:
+      SamResourceId: SharedWildcardCertificate
+  ApiGatewayAccount:
+    Type: AWS::ApiGateway::Account
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      CloudWatchRoleArn:
+        Ref: ApiGatewayCloudWatchRoleArn
+    Metadata:
+      SamResourceId: ApiGatewayAccount
+  CloudWatchAlarmsTopic:
+    Type: AWS::SNS::Topic
+    Condition: ImportCloudWatchAlarmsTopic
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TopicName: pixelated-cloudwatch-alarms
+      DisplayName: Pixelated CloudWatch Alarms
+    Metadata:
+      SamResourceId: CloudWatchAlarmsTopic
+  BudgetNotificationTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+      - Fn::Sub: arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Sid: DefaultOwnerAccess
+          Principal:
+            AWS: '*'
+          Action:
+          - sns:GetTopicAttributes
+          - sns:SetTopicAttributes
+          - sns:AddPermission
+          - sns:RemovePermission
+          - sns:DeleteTopic
+          - sns:Subscribe
+          - sns:ListSubscriptionsByTopic
+          - sns:Publish
+          Resource:
+            Fn::Sub: arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
+          Condition:
+            StringEquals:
+              AWS:SourceOwner:
+                Ref: AWS::AccountId
+        - Effect: Allow
+          Sid: AllowBudgetsPublish
+          Principal:
+            Service: budgets.amazonaws.com
+          Action: sns:Publish
+          Resource:
+            Fn::Sub: arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
+          Condition:
+            StringEquals:
+              aws:SourceAccount:
+                Ref: AWS::AccountId
+  SecurityHub:
+    Type: AWS::SecurityHub::Hub
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ControlFindingGenerator: SECURITY_CONTROL
+      EnableDefaultStandards: false
+    Metadata:
+      SamResourceId: SecurityHub
+  SecurityHubCisStandard:
+    Type: AWS::SecurityHub::Standard
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn: SecurityHub
+    Properties:
+      StandardsArn: arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0
+    Metadata:
+      SamResourceId: SecurityHubCisStandard
+  SecurityHubAwsFoundationalStandard:
+    Type: AWS::SecurityHub::Standard
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn: SecurityHub
+    Properties:
+      StandardsArn: arn:aws:securityhub:us-east-1::standards/aws-foundational-security-best-practices/v/1.0.0
+    Metadata:
+      SamResourceId: SecurityHubAwsFoundationalStandard
+  BudgetRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: budget-role
+      Path: /
+      Description: Allows AWS Budgets to create and manage AWS resources on your behalf.
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: budgets.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AdministratorAccess
+    Metadata:
+      SamResourceId: BudgetRole
+  Budget:
+    Type: AWS::Budgets::Budget
+    Condition: ManageBudget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetName: pixelated-budget
+        BudgetLimit:
+          Amount: 1
+          Unit: USD
+        BudgetType: COST
+        TimeUnit: MONTHLY
+Outputs:
+  CloudWatchAlarmsTopicArn:
+    Condition: ManageCloudWatchAlarmsTopic
+    Description: Shared east-one CloudWatch alarm topic ARN.
+    Value:
+      Fn::GetAtt:
+      - CloudWatchAlarmsTopic
+      - TopicArn

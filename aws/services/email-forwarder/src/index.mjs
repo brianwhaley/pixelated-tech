@@ -4,10 +4,10 @@ import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { SESClient, SendRawEmailCommand, SendEmailCommand } from "@aws-sdk/client-ses";
 
 // Configuration Constants
-const AWS_REGION = "us-east-2";
+const AWS_REGION = "us-east-1";
 const TABLE_NAME = "PixelatedEmailRouting";
-const S3_BUCKET = process.env.S3_BUCKET || "pixelated-email-inbound-storage-bucket";
-const FORWARDING_DOMAIN = process.env.FORWARDING_DOMAIN || "forwarding.pixelated.tech";
+const S3_BUCKET = "pixelated-email-inbound-storage-container";
+const FORWARDING_DOMAIN = "forwarding.pixelated.tech";
 // 10 MB (10,485,760 bytes), maximum size for SES email messages
 const MAX_SES_SIZE = 10 * 1024 * 1024;
 
@@ -63,17 +63,6 @@ export const handler = async (event) => {
 
 	const messageId = record.ses.mail?.messageId;
 	const recipients = record.ses.receipt?.recipients || [];
-	const missingConfiguration = Object.entries({ AWS_REGION, TABLE_NAME, S3_BUCKET, FORWARDING_DOMAIN })
-		.filter(([, value]) => !value)
-		.map(([name]) => name);
-
-	if (missingConfiguration.length) {
-		console.error("Email forwarder configuration missing", {
-			missingConfiguration,
-			classification: "configuration_error"
-		});
-		return;
-	}
 	if (!messageId) {
 		console.error("SES event missing message ID", { classification: "invalid_event" });
 		return;

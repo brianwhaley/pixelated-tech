@@ -59,12 +59,13 @@ describe('email forwarding integration', () => {
 		expect(result).toMatchObject({ domain: 'example.com', targetEmail: 'target@example.com', identityStatus: 'PENDING', dkimStatus: 'PENDING' });
 		expect(mocks.getHostedZoneIdForDomain).toHaveBeenCalledWith('example.com');
 		expect(mocks.upsertRoute53Records).toHaveBeenCalledWith('Z123', expect.arrayContaining([
-			{ name: 'example.com', type: 'MX', ttl: 300, values: ['10 inbound-smtp.us-east-2.amazonaws.com'] },
+			{ name: 'example.com', type: 'MX', ttl: 300, values: ['10 inbound-smtp.us-east-1.amazonaws.com'] },
 			{ name: 'example.com', type: 'TXT', ttl: 300, values: ['"v=spf1 include:amazonses.com ~all"'] },
 			{ name: '_dmarc.example.com', type: 'TXT', ttl: 300, values: ['"v=DMARC1; p=none;"'] },
 			{ name: 'abc._domainkey.example.com', type: 'CNAME', ttl: 300, values: ['abc.dkim.amazonses.com'] },
 		]));
-		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: '@example.com', targetEmail: 'target@example.com' });
+		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: '@example.com', targetEmail: 'target@example.com', domain: 'example.com' });
+		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: '@example.com', targetEmail: 'target@example.com', domain: 'example.com' }, 'us-east-1');
 	});
 
 	it('creates the SES identity when it is missing', async () => {
@@ -74,7 +75,7 @@ describe('email forwarding integration', () => {
 
 		await onboardEmailForwardingDomain('example.com', 'target@example.com');
 
-		expect(mocks.createSesEmailIdentity).toHaveBeenCalledWith('us-east-2', 'example.com');
+		expect(mocks.createSesEmailIdentity).toHaveBeenCalledWith('us-east-1', 'example.com');
 	});
 
 	it('merges SES into an existing SPF value and preserves other TXT values', async () => {
@@ -89,34 +90,37 @@ describe('email forwarding integration', () => {
 		]));
 	});
 
-	it('stops when DMARC exists and overwrite is not requested', async () => {
-		mocks.getRoute53RecordValues.mockResolvedValueOnce([]).mockResolvedValueOnce(['"v=DMARC1; p=quarantine;"']);
+	it('leaves a valid DMARC record unchanged', async () => {
+		const existingDmarc = '"v=DMARC1; p=quarantine; rua=mailto:reports@example.com;"';
+		mocks.getRoute53RecordValues.mockResolvedValueOnce([]).mockResolvedValueOnce([existingDmarc]);
 
-		await expect(onboardEmailForwardingDomain('example.com', 'target@example.com')).rejects.toThrow('DMARC already exists for example.com: "v=DMARC1; p=quarantine;"');
-		expect(mocks.upsertRoute53Records).not.toHaveBeenCalled();
-		expect(mocks.putDynamoStringItem).not.toHaveBeenCalled();
-	});
-
-	it('overwrites an existing DMARC record only when requested', async () => {
-		mocks.getRoute53RecordValues.mockResolvedValueOnce([]).mockResolvedValueOnce(['"v=DMARC1; p=quarantine;"']);
-
-		await onboardEmailForwardingDomain('example.com', 'target@example.com', true);
+		await onboardEmailForwardingDomain('example.com', 'target@example.com');
 
 		expect(mocks.upsertRoute53Records.mock.calls[0][1]).toEqual(expect.arrayContaining([
-			{ name: '_dmarc.example.com', type: 'TXT', ttl: 300, values: ['"v=DMARC1; p=none;"'] },
+			{ name: '_dmarc.example.com', type: 'TXT', ttl: 300, values: [existingDmarc] },
+		]));
+	});
+
+	it('repairs invalid DMARC version and policy without changing other tags', async () => {
+		mocks.getRoute53RecordValues.mockResolvedValueOnce([]).mockResolvedValueOnce(['"v=DMARC2; p=invalid; rua=mailto:reports@example.com;"']);
+
+		await onboardEmailForwardingDomain('example.com', 'target@example.com');
+
+		expect(mocks.upsertRoute53Records.mock.calls[0][1]).toEqual(expect.arrayContaining([
+			{ name: '_dmarc.example.com', type: 'TXT', ttl: 300, values: ['"v=DMARC1; p=none; rua=mailto:reports@example.com;"'] },
 		]));
 	});
 
 	it('gets SES forwarding status', async () => {
 		await expect(getEmailForwardingDomainStatus('example.com')).resolves.toMatchObject({ domain: 'example.com', identityStatus: 'PENDING', dkimStatus: 'PENDING' });
-		expect(mocks.getSesEmailIdentity).toHaveBeenCalledWith('us-east-2', 'example.com');
+		expect(mocks.getSesEmailIdentity).toHaveBeenCalledWith('us-east-1', 'example.com');
 	});
 
 	it('lists domains from catch-all routes', async () => {
 		mocks.listDynamoStringItems.mockResolvedValue([
-			{ recipient: '@zeta.com', targetEmail: 'zeta@example.com' },
+			{ recipient: '@zeta.com', targetEmail: 'zeta@example.com', domain: 'zeta.com' },
 			{ recipient: 'info@alpha.com', targetEmail: 'alpha@example.com' },
-			{ recipient: '@alpha.com', targetEmail: 'alpha@example.com' },
+			{ recipient: '@alpha.com', targetEmail: 'alpha@example.com', domain: 'alpha.com' },
 		]);
 
 		await expect(listEmailForwardingDomains()).resolves.toEqual(['alpha.com', 'zeta.com']);
@@ -124,7 +128,7 @@ describe('email forwarding integration', () => {
 
 	it('lists catch-all and exact routes for a domain', async () => {
 		mocks.listDynamoStringItems.mockResolvedValue([
-			{ recipient: '@example.com', targetEmail: 'catchall@example.net' },
+			{ recipient: '@example.com', targetEmail: 'catchall@example.net', domain: 'example.com' },
 			{ recipient: 'info@example.com', targetEmail: 'info@example.net' },
 			{ recipient: 'other@another.com', targetEmail: 'other@example.net' },
 		]);
@@ -141,9 +145,9 @@ describe('email forwarding integration', () => {
 		await addEmailForwardingRoute('example.com', 'info', 'info@example.net');
 		await deleteEmailForwardingRoute('example.com', 'info@example.com');
 
-		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: '@example.com', targetEmail: 'catchall@example.net' });
-		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: 'info@example.com', targetEmail: 'info@example.net' });
-		expect(mocks.deleteDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: 'info@example.com' });
+		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: '@example.com', targetEmail: 'catchall@example.net', domain: 'example.com' }, 'us-east-1');
+		expect(mocks.putDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: 'info@example.com', targetEmail: 'info@example.net', domain: 'example.com' }, 'us-east-1');
+		expect(mocks.deleteDynamoStringItem).toHaveBeenCalledWith('PixelatedEmailRouting', { recipient: 'info@example.com' }, 'us-east-1');
 	});
 
 	it('sends an email forwarding test email', async () => {

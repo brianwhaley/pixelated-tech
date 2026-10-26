@@ -1,0 +1,10 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "pixelated-sendmail"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-container"
+resolve_s3 = false
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "CreateExecutionRole=true ExecutionRoleName=sendmail_execution_role BucketName=pixelated-sendmail-east1-bucket CertificateArn=arn:aws:acm:us-east-1:971579260814:certificate/fcbcbe4a-0a02-4fe4-9ab3-c412da614f0d AlarmTopicArn=arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms"

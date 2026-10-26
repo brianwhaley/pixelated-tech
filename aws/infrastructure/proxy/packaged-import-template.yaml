@@ -1,0 +1,329 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing proxy API and Lambda service.
+Parameters:
+  ProxyRoleName:
+    Type: String
+    Default: proxy-role
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+Resources:
+  ProxyExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName:
+        Ref: ProxyRoleName
+      Path: /service-role/
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: ProxyExecutionRole
+  ProxyFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: proxy
+      CodeUri: s3://pixelated-sam-source-container/a0f75036205973a7cdbd010695a0919c
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - ProxyExecutionRole
+        - Arn
+    Metadata:
+      SamResourceId: ProxyFunction
+  ProxyApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: proxy
+      EndpointConfiguration:
+        Types:
+        - REGIONAL
+    Metadata:
+      SamResourceId: ProxyApi
+  ProxyApiResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+        - ProxyApi
+        - RootResourceId
+      PathPart: proxy
+      RestApiId:
+        Ref: ProxyApi
+    Metadata:
+      SamResourceId: ProxyApiResource
+  ProxyApiAnyMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      RequestParameters:
+        method.request.querystring.url: true
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        TimeoutInMillis: 29000
+        Type: AWS_PROXY
+        Uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProxyFunction.Arn}/invocations
+      MethodResponses:
+      - ResponseParameters:
+          method.response.header.Access-Control-Allow-Credentials: false
+          method.response.header.Access-Control-Allow-Headers: false
+          method.response.header.Access-Control-Allow-Methods: false
+          method.response.header.Access-Control-Allow-Origin: false
+          method.response.header.Access-Control-Expose-Headers: false
+        StatusCode: '200'
+      ResourceId:
+        Ref: ProxyApiResource
+      RestApiId:
+        Ref: ProxyApi
+    Metadata:
+      SamResourceId: ProxyApiAnyMethod
+  ProxyApiOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Credentials: '''true'''
+            method.response.header.Access-Control-Allow-Headers: '''*'''
+            method.response.header.Access-Control-Allow-Methods: '''DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'''
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+            method.response.header.Access-Control-Expose-Headers: '''*'''
+          StatusCode: '200'
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        ResponseParameters:
+          method.response.header.Access-Control-Allow-Credentials: false
+          method.response.header.Access-Control-Allow-Headers: false
+          method.response.header.Access-Control-Allow-Methods: false
+          method.response.header.Access-Control-Allow-Origin: false
+          method.response.header.Access-Control-Expose-Headers: false
+        StatusCode: '200'
+      ResourceId:
+        Ref: ProxyApiResource
+      RestApiId:
+        Ref: ProxyApi
+    Metadata:
+      SamResourceId: ProxyApiOptionsMethod
+  ProxyApiDeploymentRefresh:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - ProxyApiAnyMethod
+    - ProxyApiOptionsMethod
+    Properties:
+      Description: proxy API and Lambda integration
+      RestApiId:
+        Ref: ProxyApi
+    Metadata:
+      SamResourceId: ProxyApiDeploymentRefresh
+  ProxyApiStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId:
+        Ref: ProxyApiDeploymentRefresh
+      Description: Created by AWS Lambda
+      MethodSettings:
+      - HttpMethod: '*'
+        ResourcePath: /*
+        MetricsEnabled: true
+        LoggingLevel: INFO
+        ThrottlingBurstLimit: 5000
+        ThrottlingRateLimit: 10000
+      RestApiId:
+        Ref: ProxyApi
+      StageName: prod
+      AccessLogSetting:
+        DestinationArn:
+          Fn::GetAtt:
+          - ProxyApiLogGroup
+          - Arn
+        Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}'
+    Metadata:
+      SamResourceId: ProxyApiStage
+  ProxyApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - ProxyApiStage
+    Properties:
+      AlarmName: Pixelated Proxy API 5XX Errors Alarm
+      AlarmDescription: Alerts when the proxy production API Gateway stage returns
+        a server error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+      - Name: ApiName
+        Value: proxy
+      - Name: Stage
+        Value: prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: ProxyApi5xxAlarm
+  ProxyApiPermissionAny:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: ProxyFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ProxyApi}/*/*/proxy
+    Metadata:
+      SamResourceId: ProxyApiPermissionAny
+  ProxyApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DomainName: proxy.pixelated.tech
+      EndpointConfiguration:
+        Types:
+        - REGIONAL
+      RegionalCertificateArn:
+        Ref: CertificateArn
+      SecurityPolicy: TLS_1_2
+    Metadata:
+      SamResourceId: ProxyApiDomain
+  ProxyApiBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BasePath: prod
+      DomainName:
+        Ref: ProxyApiDomain
+      RestApiId:
+        Ref: ProxyApi
+      Stage: prod
+    Metadata:
+      SamResourceId: ProxyApiBasePathMapping
+  ProxyLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/proxy
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: ProxyLogGroup
+  ProxyApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/proxy
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: ProxyApiLogGroup
+  ProxyErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Content-Type
+        header|No URL|Task timed out|Runtime.ExitError|proxy_error%'
+      LogGroupName:
+        Ref: ProxyLogGroup
+      MetricTransformations:
+      - MetricName: Pixelated Proxy Errors Metric
+        MetricNamespace: Pixelated/Lambda
+        MetricValue: '1'
+        DefaultValue: 0
+    Metadata:
+      SamResourceId: ProxyErrorsMetricFilter
+  ProxyErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AlarmName: Pixelated Proxy Errors Alarm
+      AlarmDescription: Alerts when the proxy Lambda emits an application or runtime
+        error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: Pixelated/Lambda
+      MetricName: Pixelated Proxy Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: ProxyErrorsAlarm
+  ProxyErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: Pixelated Proxy Errors Query
+      LogGroupNames:
+      - Ref: ProxyLogGroup
+      QueryString: 'fields @timestamp, @message, @logStream
+
+        | filter @message like /(?i)(error|failed|exception|content-type header|no
+        url|task timed out|runtime\.exiterror|proxy_error)/
+
+        | sort @timestamp desc
+
+        '
+    Metadata:
+      SamResourceId: ProxyErrorsQuery

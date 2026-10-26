@@ -1,0 +1,30 @@
+[
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "AmplifyRole",
+    "ResourceIdentifier": {
+      "RoleName": "amplify-role"
+    }
+  },
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "ApiGatewayCloudWatchRole",
+    "ResourceIdentifier": {
+      "RoleName": "pixelated-api-gateway-role"
+    }
+  },
+  {
+    "ResourceType": "AWS::SNS::Topic",
+    "LogicalResourceId": "CloudWatchAlarmsTopic",
+    "ResourceIdentifier": {
+      "TopicArn": "arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms"
+    }
+  },
+  {
+    "ResourceType": "AWS::IAM::Role",
+    "LogicalResourceId": "BudgetRole",
+    "ResourceIdentifier": {
+      "RoleName": "budget-role"
+    }
+  }
+]

@@ -1,0 +1,352 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing Pixelated SES email forwarding infrastructure.
+Parameters:
+  PlatformHostedZoneId:
+    Type: AWS::Route53::HostedZone::Id
+    Default: Z3VWI30LVBBD2X
+    Description: Route 53 hosted zone containing pixelated.tech.
+  PlatformDomain:
+    Type: String
+    Default: forwarding.pixelated.tech
+    Description: Shared SES identity and inbound address for the forwarding platform.
+  InboundBucketName:
+    Type: String
+    Default: pixelated-email-inbound-storage-bucket
+    Description: S3 bucket used to store inbound email.
+  ExecutionRoleName:
+    Type: String
+    Default: pixelated-ses-email-forwarder-role-xj3xcfkz
+    Description: Account-global IAM role name used by the forwarder Lambda.
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+    Description: SNS topic receiving email-forwarding alarms.
+  RoutingTableName:
+    Type: String
+    Default: PixelatedEmailRouting
+    Description: DynamoDB table containing recipient forwarding mappings.
+  ManagePlatformDnsRecords:
+    Type: String
+    AllowedValues:
+    - 'true'
+    - 'false'
+    Default: 'true'
+    Description: Whether this stack owns the shared platform Route 53 records.
+Conditions:
+  ManagePlatformDns:
+    Fn::Equals:
+    - Ref: ManagePlatformDnsRecords
+    - 'true'
+Resources:
+  PlatformEmailIdentity:
+    Type: AWS::SES::EmailIdentity
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      EmailIdentity:
+        Ref: PlatformDomain
+      DkimSigningAttributes:
+        NextSigningKeyLength: RSA_2048_BIT
+    Metadata:
+      SamResourceId: PlatformEmailIdentity
+  PlatformDkimRecord1:
+    Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HostedZoneId:
+        Ref: PlatformHostedZoneId
+      Name:
+        Fn::GetAtt:
+        - PlatformEmailIdentity
+        - DkimDNSTokenName1
+      Type: CNAME
+      TTL: 1800
+      ResourceRecords:
+      - Fn::GetAtt:
+        - PlatformEmailIdentity
+        - DkimDNSTokenValue1
+    Metadata:
+      SamResourceId: PlatformDkimRecord1
+  PlatformDkimRecord2:
+    Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HostedZoneId:
+        Ref: PlatformHostedZoneId
+      Name:
+        Fn::GetAtt:
+        - PlatformEmailIdentity
+        - DkimDNSTokenName2
+      Type: CNAME
+      TTL: 1800
+      ResourceRecords:
+      - Fn::GetAtt:
+        - PlatformEmailIdentity
+        - DkimDNSTokenValue2
+    Metadata:
+      SamResourceId: PlatformDkimRecord2
+  PlatformDkimRecord3:
+    Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HostedZoneId:
+        Ref: PlatformHostedZoneId
+      Name:
+        Fn::GetAtt:
+        - PlatformEmailIdentity
+        - DkimDNSTokenName3
+      Type: CNAME
+      TTL: 1800
+      ResourceRecords:
+      - Fn::GetAtt:
+        - PlatformEmailIdentity
+        - DkimDNSTokenValue3
+    Metadata:
+      SamResourceId: PlatformDkimRecord3
+  PlatformDmarcRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HostedZoneId:
+        Ref: PlatformHostedZoneId
+      Name:
+        Fn::Sub: _dmarc.${PlatformDomain}
+      Type: TXT
+      TTL: 300
+      ResourceRecords:
+      - '"v=DMARC1; p=none;"'
+    Metadata:
+      SamResourceId: PlatformDmarcRecord
+  PlatformInboundMxRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HostedZoneId:
+        Ref: PlatformHostedZoneId
+      Name:
+        Ref: PlatformDomain
+      Type: MX
+      TTL: 300
+      ResourceRecords:
+      - Fn::Sub: 10 inbound-smtp.${AWS::Region}.amazonaws.com
+    Metadata:
+      SamResourceId: PlatformInboundMxRecord
+  EmailForwarderExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName:
+        Ref: ExecutionRoleName
+      Path: /service-role/
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonSESFullAccess
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+    Metadata:
+      SamResourceId: EmailForwarderExecutionRole
+  EmailForwarder:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: pixelated-ses-email-forwarder
+      CodeUri: s3://pixelated-sam-source-container/5a5e516e50fd8fce44625592b76a1210
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures:
+      - x86_64
+      MemorySize: 512
+      Timeout: 30
+      Role:
+        Fn::GetAtt:
+        - EmailForwarderExecutionRole
+        - Arn
+    Metadata:
+      SamResourceId: EmailForwarder
+  EmailForwarderSesPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: EmailForwarder
+      Action: lambda:InvokeFunction
+      Principal: ses.amazonaws.com
+      SourceAccount:
+        Ref: AWS::AccountId
+      SourceArn:
+        Fn::Sub: arn:${AWS::Partition}:ses:${AWS::Region}:${AWS::AccountId}:receipt-rule-set/PixelatedEmailReceivingRuleset:receipt-rule/PixelatedEmailReceivingRule
+    Metadata:
+      SamResourceId: EmailForwarderSesPermission
+  EmailForwarderLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/pixelated-ses-email-forwarder
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: EmailForwarderLogGroup
+  PixelatedEmailForwardingErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|No
+        forward mapping|no forward mapping|Task timed out|Runtime.ExitError%'
+      LogGroupName:
+        Ref: EmailForwarderLogGroup
+      MetricTransformations:
+      - MetricName: Pixelated Email Forwarding Errors Metric
+        MetricNamespace: Pixelated/Lambda
+        MetricValue: '1'
+        DefaultValue: 0
+    Metadata:
+      SamResourceId: PixelatedEmailForwardingErrorsMetricFilter
+  PixelatedEmailForwardErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AlarmName: Pixelated Email Forward Errors Alarm
+      AlarmDescription: Alerts when the SES email forwarder emits an application or
+        runtime error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: Pixelated/Lambda
+      MetricName: Pixelated Email Forwarding Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: PixelatedEmailForwardErrorsAlarm
+  PixelatedEmailForwardingErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Email Forwarding Errors Query
+      LogGroupNames:
+      - Ref: EmailForwarderLogGroup
+      QueryString: 'fields @timestamp, @message, @logStream
+
+        | filter @message like /(?i)(error|failed|exception|no forward mapping)/
+
+        | sort @timestamp desc
+
+        '
+    Metadata:
+      SamResourceId: PixelatedEmailForwardingErrorsQuery
+  EmailInboundBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName:
+        Ref: InboundBucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - BucketKeyEnabled: true
+          ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+        - Id: ExpireInboundEmailObjects
+          Status: Enabled
+          ExpirationInDays: 30
+    Metadata:
+      SamResourceId: EmailInboundBucket
+  EmailInboundBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Bucket:
+        Ref: EmailInboundBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: AllowSESPuts
+          Effect: Allow
+          Principal:
+            Service: ses.amazonaws.com
+          Action: s3:PutObject
+          Resource:
+            Fn::Sub: arn:${AWS::Partition}:s3:::${EmailInboundBucket}/*
+          Condition:
+            StringEquals:
+              aws:SourceAccount:
+                Ref: AWS::AccountId
+            ArnLike:
+              aws:SourceArn:
+                Fn::Sub: arn:${AWS::Partition}:ses:${AWS::Region}:${AWS::AccountId}:receipt-rule-set/*
+    Metadata:
+      SamResourceId: EmailInboundBucketPolicy
+  EmailRoutingTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName:
+        Ref: RoutingTableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: recipient
+        AttributeType: S
+      KeySchema:
+      - AttributeName: recipient
+        KeyType: HASH
+    Metadata:
+      SamResourceId: EmailRoutingTable
+  EmailReceivingRuleSet:
+    Type: AWS::SES::ReceiptRuleSet
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RuleSetName: PixelatedEmailReceivingRuleset
+    Metadata:
+      SamResourceId: EmailReceivingRuleSet
+Outputs:
+  EmailForwarderArn:
+    Value:
+      Fn::GetAtt:
+      - EmailForwarder
+      - Arn
+  EmailInboundBucketName:
+    Value:
+      Ref: EmailInboundBucket
+  EmailRoutingTableName:
+    Value:
+      Ref: EmailRoutingTable
+  EmailReceivingRuleSetName:
+    Value:
+      Ref: EmailReceivingRuleSet
+  PlatformEmailIdentityName:
+    Value:
+      Ref: PlatformEmailIdentity

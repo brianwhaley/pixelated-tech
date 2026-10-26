@@ -1,0 +1,10 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "pixelated-email-forwarding"
+region = "us-east-1"
+s3_bucket = "pixelated-sam-source-container"
+resolve_s3 = false
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "PlatformHostedZoneId=Z3VWI30LVBBD2X PlatformDomain=forwarding.pixelated.tech InboundBucketName=pixelated-email-inbound-storage-container ExecutionRoleName=pixelated-ses-email-forwarder-role-us-east-1 AlarmTopicArn=arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms RoutingTableName=PixelatedEmailRouting ManagePlatformDnsRecords=false"

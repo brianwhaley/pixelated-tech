@@ -1,0 +1,52 @@
+[
+  {
+    "ResourceType": "AWS::Route53::RecordSet",
+    "LogicalResourceId": "PlatformDkimRecord1",
+    "ResourceIdentifier": {
+      "HostedZoneId": "Z3VWI30LVBBD2X",
+      "Name": "45sb7r27q44iptlfzjxieylxfkbrsxni._domainkey.forwarding.pixelated.tech.",
+      "Type": "CNAME",
+      "SetIdentifier": ""
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::RecordSet",
+    "LogicalResourceId": "PlatformDkimRecord2",
+    "ResourceIdentifier": {
+      "HostedZoneId": "Z3VWI30LVBBD2X",
+      "Name": "zpejfaxwxtx32kuiorldnxh7dyi4oo27._domainkey.forwarding.pixelated.tech.",
+      "Type": "CNAME",
+      "SetIdentifier": ""
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::RecordSet",
+    "LogicalResourceId": "PlatformDkimRecord3",
+    "ResourceIdentifier": {
+      "HostedZoneId": "Z3VWI30LVBBD2X",
+      "Name": "45zu6yzixozrvgdvvi5hosqz5w5eozra._domainkey.forwarding.pixelated.tech.",
+      "Type": "CNAME",
+      "SetIdentifier": ""
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::RecordSet",
+    "LogicalResourceId": "PlatformDmarcRecord",
+    "ResourceIdentifier": {
+      "HostedZoneId": "Z3VWI30LVBBD2X",
+      "Name": "_dmarc.forwarding.pixelated.tech.",
+      "Type": "TXT",
+      "SetIdentifier": ""
+    }
+  },
+  {
+    "ResourceType": "AWS::Route53::RecordSet",
+    "LogicalResourceId": "PlatformInboundMxRecord",
+    "ResourceIdentifier": {
+      "HostedZoneId": "Z3VWI30LVBBD2X",
+      "Name": "forwarding.pixelated.tech.",
+      "Type": "MX",
+      "SetIdentifier": ""
+    }
+  }
+]

@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy.parameters]
 stack_name = "threemuses-site"
 region = "us-east-1"
-s3_bucket = "pixelated-sam-source-bucket"
+s3_bucket = "pixelated-sam-source-container"
 resolve_s3 = false
 confirm_changeset = true
 parameter_overrides = "SiteName=threemuses DomainName=thethreemusesofbluffton.com HealthCheckDomainName=www.thethreemusesofbluffton.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d1n9z3u3n9j9tp EnableDeployment=true"
