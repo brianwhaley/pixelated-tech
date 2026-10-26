@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy.parameters]
 stack_name = "jz-home-improvement-site"
 region = "us-east-1"
-s3_bucket = "pixelated-sam-source-bucket"
+s3_bucket = "pixelated-sam-source-container"
 resolve_s3 = false
 confirm_changeset = true
 parameter_overrides = "SiteName=jz-home-improvement DomainName=jzhomeimprovement.com HealthCheckDomainName=www.jzhomeimprovement.com ManageHostedZone=true IncludeWww=true Repository=https://github.com/brianwhaley/pixelated-tech ExistingAmplifyAppId=d4ugyf7rptyy EnableDeployment=true"

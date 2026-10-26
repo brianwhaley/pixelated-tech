@@ -77,13 +77,13 @@ function normalizeDynamoItem(item: Record<string, any>) {
 }
 
 
-function getDynamoConfig() {
+function getDynamoConfig(region?: string) {
 	const config = getFullPixelatedConfig();
 	const aws = config?.integrations?.aws;
 	if (!aws?.region) {
 		throw new Error('AWS region is missing from pixelated.config.json.');
 	}
-	const clientConfig: Record<string, any> = { region: aws.region };
+	const clientConfig: Record<string, any> = { region: region || aws.region };
 	if (aws.access_key_id && aws.secret_access_key) {
 		clientConfig.credentials = {
 			accessKeyId: aws.access_key_id,
@@ -122,16 +122,16 @@ export async function listPixelatedFormSubmissionReportRows(options: PixelatedFo
 	});
 }
 
-export async function putDynamoStringItem(tableName: string, item: Record<string, string>) {
-	const client = new DynamoDBClient(getDynamoConfig());
+export async function putDynamoStringItem(tableName: string, item: Record<string, string>, region?: string) {
+	const client = new DynamoDBClient(getDynamoConfig(region));
 	return client.send(new PutItemCommand({
 		TableName: tableName,
 		Item: Object.fromEntries(Object.entries(item).map(([key, value]) => [key, { S: value }])),
 	}));
 }
 
-export async function listDynamoStringItems(tableName: string) {
-	const client = new DynamoDBClient(getDynamoConfig());
+export async function listDynamoStringItems(tableName: string, region?: string) {
+	const client = new DynamoDBClient(getDynamoConfig(region));
 	const items: Array<Record<string, string>> = [];
 	let exclusiveStartKey: Record<string, any> | undefined;
 	do {
@@ -144,8 +144,8 @@ export async function listDynamoStringItems(tableName: string) {
 	return items;
 }
 
-export async function deleteDynamoStringItem(tableName: string, key: Record<string, string>) {
-	const client = new DynamoDBClient(getDynamoConfig());
+export async function deleteDynamoStringItem(tableName: string, key: Record<string, string>, region?: string) {
+	const client = new DynamoDBClient(getDynamoConfig(region));
 	return client.send(new DeleteItemCommand({
 		TableName: tableName,
 		Key: Object.fromEntries(Object.entries(key).map(([name, value]) => [name, { S: value }])),

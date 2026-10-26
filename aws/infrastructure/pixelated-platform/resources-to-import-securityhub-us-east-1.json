@@ -1,0 +1,23 @@
+[
+  {
+    "ResourceType": "AWS::SecurityHub::Hub",
+    "LogicalResourceId": "SecurityHub",
+    "ResourceIdentifier": {
+      "ARN": "arn:aws:securityhub:us-east-1:971579260814:hub/default"
+    }
+  },
+  {
+    "ResourceType": "AWS::SecurityHub::Standard",
+    "LogicalResourceId": "SecurityHubCisStandard",
+    "ResourceIdentifier": {
+      "StandardsSubscriptionArn": "arn:aws:securityhub:us-east-1:971579260814:subscription/cis-aws-foundations-benchmark/v/1.2.0"
+    }
+  },
+  {
+    "ResourceType": "AWS::SecurityHub::Standard",
+    "LogicalResourceId": "SecurityHubAwsFoundationalStandard",
+    "ResourceIdentifier": {
+      "StandardsSubscriptionArn": "arn:aws:securityhub:us-east-1:971579260814:subscription/aws-foundational-security-best-practices/v/1.0.0"
+    }
+  }
+]

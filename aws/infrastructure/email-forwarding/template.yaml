@@ -12,6 +12,32 @@ Parameters:
     Type: String
     Default: forwarding.pixelated.tech
     Description: Shared SES identity and inbound address for the forwarding platform.
+  InboundBucketName:
+    Type: String
+    Default: pixelated-email-inbound-storage-bucket
+    Description: S3 bucket used to store inbound email.
+  ExecutionRoleName:
+    Type: String
+    Default: pixelated-ses-email-forwarder-role-xj3xcfkz
+    Description: Account-global IAM role name used by the forwarder Lambda.
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+    Description: SNS topic receiving email-forwarding alarms.
+  RoutingTableName:
+    Type: String
+    Default: PixelatedEmailRouting
+    Description: DynamoDB table containing recipient forwarding mappings.
+  ManagePlatformDnsRecords:
+    Type: String
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'false'
+    Description: Whether this stack owns the shared platform Route 53 records.
+
+Conditions:
+  ManagePlatformDns: !Equals [!Ref ManagePlatformDnsRecords, 'true']
 
 Resources:
   # Shared platform identity. Every tenant uses this verified identity for outbound relay.
@@ -26,6 +52,7 @@ Resources:
 
   PlatformDkimRecord1:
     Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -38,6 +65,7 @@ Resources:
 
   PlatformDkimRecord2:
     Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -50,6 +78,7 @@ Resources:
 
   PlatformDkimRecord3:
     Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -62,6 +91,7 @@ Resources:
 
   PlatformDmarcRecord:
     Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -74,6 +104,7 @@ Resources:
 
   PlatformInboundMxRecord:
     Type: AWS::Route53::RecordSet
+    Condition: ManagePlatformDns
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -89,7 +120,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      RoleName: pixelated-ses-email-forwarder-role-xj3xcfkz
+      RoleName: !Ref ExecutionRoleName
       Path: /service-role/
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -118,10 +149,6 @@ Resources:
       MemorySize: 512
       Timeout: 30
       Role: !GetAtt EmailForwarderExecutionRole.Arn
-      Environment:
-        Variables:
-          S3_BUCKET: pixelated-email-inbound-storage-bucket
-          FORWARDING_DOMAIN: forwarding.pixelated.tech
 
   EmailForwarderSesPermission:
     Type: AWS::Lambda::Permission
@@ -149,7 +176,7 @@ Resources:
       LogGroupName: !Ref EmailForwarderLogGroup
       MetricTransformations:
         - MetricName: Pixelated Email Forwarding Errors Metric
-          MetricNamespace: Pixelated/EmailForwarding
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
@@ -162,8 +189,8 @@ Resources:
       AlarmDescription: Alerts when the SES email forwarder emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/EmailForwarding
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Email Forwarding Errors Metric
       Statistic: Sum
       Period: 300
@@ -189,7 +216,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      BucketName: pixelated-email-inbound-storage-bucket
+      BucketName: !Ref InboundBucketName
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - BucketKeyEnabled: true
@@ -232,7 +259,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      TableName: PixelatedEmailRouting
+      TableName: !Ref RoutingTableName
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: recipient

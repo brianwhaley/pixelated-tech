@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Initial import template for Amava Janitorial site resources.
+
+Parameters:
+  ExistingAmplifyAppId:
+    Type: String
+    Default: d2iyovuwvycoj0
+
+Resources:
+  SiteHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: amavajanitorial.com.
+
+  SiteHealthCheck:
+    Type: AWS::Route53::HealthCheck
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      HealthCheckConfig:
+        Port: 443
+        Type: HTTPS
+        ResourcePath: /
+        FullyQualifiedDomainName: www.amavajanitorial.com
+        RequestInterval: 30
+        FailureThreshold: 3
+        MeasureLatency: false
+        Inverted: false
+        EnableSNI: true
+        Regions:
+          - ap-northeast-1
+          - ap-southeast-1
+          - ap-southeast-2
+          - eu-west-1
+          - sa-east-1
+          - us-east-1
+          - us-west-1
+          - us-west-2
+
+  SiteAmplifyApp:
+    Type: AWS::Amplify::App
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: amava-janitorial
+      Platform: WEB_COMPUTE
+      Repository: https://github.com/brianwhaley/pixelated-tech
+      IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  SiteProductionBranch:
+    Type: AWS::Amplify::Branch
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref ExistingAmplifyAppId
+      BranchName: main
+      Stage: PRODUCTION
+      EnableAutoBuild: false
+      EnablePerformanceMode: false
+      EnablePullRequestPreview: false
+      Framework: Next.js - SSR
+
+  SiteDomain:
+    Type: AWS::Amplify::Domain
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AppId: !Ref ExistingAmplifyAppId
+      DomainName: amavajanitorial.com
+      SubDomainSettings:
+        - BranchName: main
+          Prefix: ''
+        - BranchName: main
+          Prefix: www

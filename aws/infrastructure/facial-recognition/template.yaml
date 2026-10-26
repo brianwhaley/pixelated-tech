@@ -2,6 +2,24 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Existing S3-triggered Rekognition custom-label Lambda.
 
+Parameters:
+  ModelArn:
+    Type: String
+    Default: arn:aws:rekognition:us-east-2:971579260814:project/pixelated-photos-labels/version/pixelated-photos-labels.2025-03-16T02.42.08/1742107328567
+    Description: Rekognition Custom Labels project version ARN for this region.
+  PhotosBucketName:
+    Type: String
+    Default: pixelated-photos
+    Description: S3 bucket receiving photos for recognition.
+  CustomLabelsBucketName:
+    Type: String
+    Default: custom-labels-console-us-east-2-93cfc48e5c
+    Description: S3 bucket used by the Rekognition Custom Labels console.
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+    Description: SNS topic receiving facial-recognition alarms.
+
 Resources:
   FacialRecognitionExecutionRole:
     Type: AWS::IAM::Role
@@ -37,6 +55,9 @@ Resources:
       MemorySize: 128
       Timeout: 3
       Role: !GetAtt FacialRecognitionExecutionRole.Arn
+      Environment:
+        Variables:
+          MODEL_ARN: !Ref ModelArn
 
   FacialRecognitionInvokePermission:
     Type: AWS::Lambda::Permission
@@ -47,7 +68,7 @@ Resources:
       FunctionName: !Ref FacialRecognitionFunction
       Principal: s3.amazonaws.com
       SourceAccount: !Ref AWS::AccountId
-      SourceArn: arn:aws:s3:::pixelated-photos
+      SourceArn: !Sub arn:${AWS::Partition}:s3:::${PhotosBucketName}
 
   FacialRecognitionLogGroup:
     Type: AWS::Logs::LogGroup
@@ -64,7 +85,7 @@ Resources:
       LogGroupName: !Ref FacialRecognitionLogGroup
       MetricTransformations:
         - MetricName: Pixelated Facial Recognition Errors Metric
-          MetricNamespace: Pixelated/FacialRecognition
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
@@ -75,8 +96,8 @@ Resources:
       AlarmDescription: Alerts when the facial-recognition Lambda emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/FacialRecognition
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Facial Recognition Errors Metric
       Statistic: Sum
       Period: 300
@@ -104,7 +125,7 @@ Resources:
     DependsOn:
       - FacialRecognitionInvokePermission
     Properties:
-      BucketName: pixelated-photos
+      BucketName: !Ref PhotosBucketName
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -120,4 +141,4 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      BucketName: custom-labels-console-us-east-2-93cfc48e5c
+      BucketName: !Ref CustomLabelsBucketName

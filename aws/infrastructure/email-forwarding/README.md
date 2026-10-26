@@ -1,10 +1,10 @@
 # Email Forwarding Infrastructure
 
-This SAM template describes the currently deployed Pixelated email-forwarding resources in `us-east-2`:
+This SAM template describes the Pixelated email-forwarding resources deployed in `us-east-1`. The original `us-east-2` forwarding stack has been decommissioned:
 
 - `pixelated-ses-email-forwarder` Lambda
-- Existing Lambda execution role `pixelated-ses-email-forwarder-role-xj3xcfkz`
-- `pixelated-email-inbound-storage-bucket` S3 bucket
+- East-one Lambda execution role `pixelated-ses-email-forwarder-role-us-east-1`
+- `pixelated-email-inbound-storage-container` S3 bucket
 - `PixelatedEmailRouting` DynamoDB table
 - `PixelatedEmailReceivingRuleset` SES receipt rule set
 - `PixelatedEmailReceivingRule` SES receipt rule and its CloudFormation-managed Lambda invoke permission
@@ -18,9 +18,11 @@ The SES identity, DKIM records, DMARC record, and platform MX record are shared 
 
 Tenant-specific SES identities, tenant-domain DKIM records, tenant-domain MX/SPF records, and DynamoDB routing items remain outside this stack and should be provisioned during tenant onboarding.
 
-The existing Route 53 MX record for `forwarding.pixelated.tech` was observed as `10 ://amazonaws.com`, which was malformed. It now has the intended value: `10 inbound-smtp.us-east-2.amazonaws.com`.
+The Route 53 MX record for `forwarding.pixelated.tech` now targets `10 inbound-smtp.us-east-1.amazonaws.com`. The east-one SES identity is verified and its three DKIM records are published.
 
-CloudFormation can import and manage the SES receipt rule set, but AWS does not support importing `AWS::SES::ReceiptRule`. The receipt rule remains account-managed, while its Lambda invoke permission is now managed by `EmailForwarderSesPermission` in this stack. SES activation is a separate account-level operation; `PixelatedEmailReceivingRuleset` remains the active rule set.
+The platform DKIM, DMARC, and MX records are declared in this stack with `ManagePlatformDnsRecords=true`. Because those records already exist, adopt them through a reviewed CloudFormation import change set using `resources-to-import-dns-us-east-1.json` before running a normal stack update.
+
+CloudFormation can create and manage the SES receipt rule set, but AWS does not support importing `AWS::SES::ReceiptRule`. The east-one receipt rule remains account-managed, while its Lambda invoke permission is managed by `EmailForwarderSesPermission` in this stack. SES activation is a separate account-level operation; `PixelatedEmailReceivingRuleset` is active in `us-east-1`.
 
 The execution role is intentionally defined with the permissions currently attached in AWS. All four are AWS-managed policies; no customer-managed IAM policy is attached:
 
@@ -38,16 +40,15 @@ The named resources were adopted into the CloudFormation stack before the normal
 The AWS CLI can validate the CloudFormation syntax, and SAM CLI transforms and packages the local `CodeUri` deployment artifact.
 
 ```text
-aws cloudformation validate-template \
-  --template-body file://aws/infrastructure/email-forwarding/template.yaml \
-  --region us-east-2
+sam validate --template-file aws/infrastructure/email-forwarding/template.yaml
 ```
 
 After SAM CLI is installed, the normal packaging flow will be:
 
 ```text
 sam build --template-file aws/infrastructure/email-forwarding/template.yaml
-sam deploy --config-file aws/infrastructure/email-forwarding/samconfig.toml
+sam deploy --config-file aws/infrastructure/email-forwarding/samconfig-us-east-1.toml \
+  --template-file aws/infrastructure/email-forwarding/template.yaml
 ```
 
-The first production operation was a CloudFormation resource import/adoption procedure, not a fresh stack deployment. The import template omitted Route 53 records and outputs because CloudFormation import could not safely adopt or modify those items in that operation; they were restored in the subsequent normal update. The existing SES receipt rule remains account-managed because CloudFormation cannot import `AWS::SES::ReceiptRule`.
+The first production operation was a CloudFormation resource import/adoption procedure, not a fresh stack deployment. The existing SES receipt rule remains account-managed because CloudFormation cannot import `AWS::SES::ReceiptRule`.

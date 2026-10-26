@@ -9,10 +9,26 @@ Parameters:
   DyndnsPassword:
     Type: String
     NoEcho: true
+  DyndnsExecutionRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/dyndns53_execution_role
+  ManageExecutionRole:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+
+Conditions:
+  ManageExecutionRoleCondition: !Equals [!Ref ManageExecutionRole, 'true']
 
 Resources:
   DyndnsExecutionRole:
     Type: AWS::IAM::Role
+    Condition: ManageExecutionRoleCondition
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
@@ -42,7 +58,7 @@ Resources:
         - x86_64
       MemorySize: 128
       Timeout: 3
-      Role: !GetAtt DyndnsExecutionRole.Arn
+      Role: !Ref DyndnsExecutionRoleArn
       Environment:
         Variables:
           DYNDNS_USERNAME: !Ref DyndnsUsername
@@ -200,7 +216,7 @@ Resources:
       AlarmDescription: Alerts when the dyndns53 production API Gateway stage returns a server error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+        - !Ref AlarmTopicArn
       Namespace: AWS/ApiGateway
       MetricName: 5XXError
       Dimensions:
@@ -249,7 +265,7 @@ Resources:
       LogGroupName: !Ref DyndnsLogGroup
       MetricTransformations:
         - MetricName: Pixelated Dyndns53 Errors Metric
-          MetricNamespace: Pixelated/Dyndns53
+          MetricNamespace: Pixelated/Lambda
           MetricValue: '1'
           DefaultValue: 0
 
@@ -260,8 +276,8 @@ Resources:
       AlarmDescription: Alerts when the dyndns53 Lambda emits an application or runtime error.
       ActionsEnabled: true
       AlarmActions:
-        - arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
-      Namespace: Pixelated/Dyndns53
+        - !Ref AlarmTopicArn
+      Namespace: Pixelated/Lambda
       MetricName: Pixelated Dyndns53 Errors Metric
       Statistic: Sum
       Period: 300
