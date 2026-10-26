@@ -181,8 +181,7 @@ applications:
           - '**/*'
       cache:
         paths:
-          - .next/cache/**/*
-          - .next/static/**/*
+          - node_modules/.cache/**/*
           - node_modules/**/*
 
   - appRoot: apps/pixelvivid
