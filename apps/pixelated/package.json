@@ -1,6 +1,6 @@
 {
   "name": "pixelatedtech",
-  "version": "4.11.39",
+  "version": "4.11.40",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -65,5 +65,5 @@
     "vitest": "^5.0.5",
     "webpack-dev-server": "^6.0.0"
   },
-  "deployMarker": "2026-10-07T04:05:55.721Z"
+  "deployMarker": "2026-10-26T04:05:55.721Z"
 }
