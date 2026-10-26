@@ -251,7 +251,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       Name: pixelated-components
-      Platform: WEB_COMPUTE
+      Platform: WEB
       Repository: !Ref Repository
       IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
 
@@ -266,7 +266,6 @@ Resources:
       EnableAutoBuild: false
       EnablePerformanceMode: false
       EnablePullRequestPreview: false
-      Framework: Next.js - SSR
 
   ComponentsDomain:
     Type: AWS::Amplify::Domain
