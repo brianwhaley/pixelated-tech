@@ -1,12 +1,29 @@
 import React from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
 import { renderWithProviders } from '../test/test-utils';
-import { FacebookPixel } from '../components/integrations/facebookpixel';
+import { captureFacebookAttributionData, FacebookPixel, getFacebookAttributionData } from '../components/integrations/facebookpixel';
 
 describe('FacebookPixel component', () => {
 	afterEach(() => {
 		document.head.innerHTML = '';
 		document.body.innerHTML = '';
+		window.sessionStorage.clear();
+		document.cookie = '_fbc=; Max-Age=0; path=/';
+	});
+
+	it('captures campaign parameters and persists the Facebook click identifier', () => {
+		window.history.replaceState({}, '', '/contact?fbclid=click-123&utm_campaign=spring');
+
+		expect(captureFacebookAttributionData()).toEqual({
+			fbclid: 'click-123',
+			utm_campaign: 'spring',
+		});
+		expect(getFacebookAttributionData()).toEqual({
+			fbclid: 'click-123',
+			utm_campaign: 'spring',
+		});
+		expect(document.cookie).toContain('_fbc=fb.1.');
+		expect(document.cookie).toContain('click-123');
 	});
 
 	it('injects the Facebook Pixel init script and tracks PageView by default', async () => {
