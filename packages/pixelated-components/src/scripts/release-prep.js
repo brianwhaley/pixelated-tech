@@ -211,7 +211,7 @@ function getContextType(workspaceRoot, monorepoRoot) {
 
 async function listWorkspaceDirs(monorepoRoot) {
 	const workspaceDirs = [];
-	for (const group of ['packages', 'apps']) {
+	for (const group of ['packages', 'apps', 'aws/services']) {
 		const groupDir = path.join(monorepoRoot, group);
 		try {
 			const entries = await fs.readdir(groupDir, { withFileTypes: true });

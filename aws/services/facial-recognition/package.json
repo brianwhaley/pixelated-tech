@@ -1,0 +1,9 @@
+{
+  "name": "@pixelated-tech/facial-recognition",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --fix",
+    "test": "python3 -m unittest test_lambda.py"
+  }
+}

@@ -33,10 +33,10 @@ Parameters:
       - 'false'
   AlarmTopicArn:
     Type: String
-    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+    Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
   CertificateArn:
     Type: String
-    Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+    Default: arn:aws:acm:us-east-1:971579260814:certificate/fcbcbe4a-0a02-4fe4-9ab3-c412da614f0d
 
 Conditions:
   ManageExecutionRoleCondition: !Equals [!Ref ManageExecutionRole, 'true']

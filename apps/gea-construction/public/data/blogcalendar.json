@@ -43,7 +43,7 @@
   "blogCalendar": [
     {
       "id": 1,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-12-15",
       "title": "Refreshing Your Home for the New Year: Quick Punch List Repairs",
       "notes": [
         "Handyman & Repairs",
@@ -51,7 +51,7 @@
         "Drywall patching, fixture updates, door alignments",
         "Older family homes in *The Farm* experience noticeable drywall cracking and door misalignments from seasonal soil settling; this post targets quick interior tune-ups after heavy holiday foot traffic."
       ],
-      "status": "draft",
+      "status": "scheduled",
       "wordpressPostId": 60,
       "imageStatus": "selected",
       "imageBrief": "A bright, clean interior shot of a living room or hallway in a well-maintained older family home. The focus is on subtle details like a freshly painted wall, a newly installed light fixture, or a perfectly aligned door frame, conveying a sense of a recent, impactful refresh. The overall atmosphere should be inviting and well-cared-for.",
@@ -75,7 +75,7 @@
     },
     {
       "id": 2,
-      "targetPublishDate": "",
+      "targetPublishDate": "2027-01-05",
       "title": "Transforming Your Master Suite: Luxury Bath Design Trends",
       "notes": [
         "Bathroom Remodeling",
@@ -83,7 +83,7 @@
         "Custom tile walk-in showers & frameless glass",
         "Many *Sea Pines* properties are older 1970s/80s builds or luxury vacation rentals needing bath overhauls from cramped tub setups to open glass enclosures that appeal to high-end renters and buyers."
       ],
-      "status": "draft",
+      "status": "scheduled",
       "wordpressPostId": 72,
       "imageStatus": "not-found",
       "imageBrief": "A modern, luxurious master bathroom with a large custom tile walk-in shower featuring a frameless glass enclosure. The bathroom should have a clean, sophisticated aesthetic with high-end finishes. Natural light should be present, highlighting the spaciousness and elegant design. The overall impression should be one of a serene, spa-like retreat.",
@@ -106,7 +106,7 @@
     },
     {
       "id": 3,
-      "targetPublishDate": "",
+      "targetPublishDate": "2027-01-12",
       "title": "Open-Concept Living: Kitchen Remodeling for Entertaining",
       "notes": [
         "Kitchen Remodeling",
@@ -114,7 +114,7 @@
         "Solid hardwood cabinetry, island prep, layout expansion",
         "*Habersham* architecture emphasizes traditional Lowcountry craftsmanship; this post details opening up traditional closed kitchen walls into open prep-and-cook spaces while respecting historical aesthetics."
       ],
-      "status": "draft",
+      "status": "scheduled",
       "wordpressPostId": 76,
       "imageStatus": "selected",
       "imageBrief": "A bright, inviting open-concept kitchen seamlessly connected to a living or dining area in a traditional-style home. The kitchen features solid hardwood cabinetry, a large central island with seating, and elegant, yet functional, design elements that hint at Lowcountry craftsmanship. Guests are subtly visible enjoying the integrated space, perhaps chatting with someone at the island.",
@@ -136,7 +136,7 @@
     },
     {
       "id": 4,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-11-24",
       "title": "Lowering Winter Drafts: Impact Windows vs. High-Utility Bills",
       "notes": [
         "Doors & Windows",
@@ -144,7 +144,7 @@
         "Energy efficiency, Low-E glass, draft elimination",
         "Newer homes in fast-growing *Riverton Pointe* often come with builder-grade glass; this post focuses on upgrading to high-efficiency Low-E impact glass to cut winter heating and summer cooling loads."
       ],
-      "status": "draft",
+      "status": "scheduled",
       "wordpressPostId": 78,
       "imageStatus": "selected",
       "imageBrief": "A bright, inviting interior of a modern home in a sunny, low-country setting, with a large, clear window showing a peaceful outdoor scene. The window should appear clean, well-sealed, and allow ample natural light without glare, suggesting energy efficiency and comfort.",
@@ -165,7 +165,7 @@
     },
     {
       "id": 5,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-11-10",
       "title": "Navigating Home Inspection Punch Lists Before Closing",
       "notes": [
         "Handyman & Repairs",
@@ -173,11 +173,12 @@
         "Real estate closing repairs, inspection compliance",
         "With high home turnover in *Sun City*, sellers face tight closing deadlines. This post targets rapid, compliant handyman punch-list completions so local realtors can close sales on schedule."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 99
     },
     {
       "id": 6,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-12-22",
       "title": "Converting Outdated Tubs to Modern Walk-In Tile Showers",
       "notes": [
         "Bathroom Remodeling",
@@ -185,11 +186,12 @@
         "Tub-to-shower conversions, zero-barrier accessibility",
         "Houses in *Bayshore* built in the late 90s/early 2000s are ripe for bath updates, specifically replacing outdated fiberglass tub inserts with modern, low-threshold custom tile walk-ins."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 101
     },
     {
       "id": 7,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-12-01",
       "title": "Designing Your Dream Culinary Kitchen in the Lowcountry",
       "notes": [
         "Kitchen Remodeling",
@@ -197,11 +199,12 @@
         "Quartz countertops, high-end appliance integration",
         "High-net-worth estate homes in *Palmetto Bluff* require commercial-grade appliances and custom quartz island designs that pass strict Architectural Review Board (ARB) internal standards."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 103
     },
     {
       "id": 8,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-11-03",
       "title": "Why Pre-Move-In Remodeling Saves Time and Stress",
       "notes": [
         "Kitchen / Bath / Repairs",
@@ -209,11 +212,12 @@
         "10% Pre-Move-In Discount for home buyers",
         "Rapid growth in *Latitude Margaritaville* brings out-of-state buyers who want kitchen or bath upgrades completed *before* moving their belongings in, highlighting the **10% Pre-Move-In Discount**."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 105
     },
     {
       "id": 9,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-12-08",
       "title": "Stopping Wood Rot in Its Tracks: Synthetic PVC Trim Solutions",
       "notes": [
         "Handyman & Repairs",
@@ -221,11 +225,12 @@
         "Rot-proof PVC, coastal humidity defense, exterior trim",
         "Heavily wooded, coastal properties in *Hilton Head Plantation* suffer severe exterior wood rot from salt air and shade moisture; this post highlights replacing decaying trim with permanent PVC."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 107
     },
     {
       "id": 10,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-12-29",
       "title": "Upgrading Interior Doors for Better Noise Reduction",
       "notes": [
         "Doors & Windows",
@@ -233,11 +238,12 @@
         "Solid-core composite doors, interior hardware retrofits",
         "Waterfront custom homes on *Dataw Island* benefit from upgrading hollow-core interior doors to heavy solid-core doors, dampening room-to-room noise for hosting visiting family."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 109
     },
     {
       "id": 11,
-      "targetPublishDate": "",
+      "targetPublishDate": "2026-11-17",
       "title": "Spa-Inspired Master Bathrooms: Heated Floors and Rain Showers",
       "notes": [
         "Bathroom Remodeling",
@@ -245,11 +251,12 @@
         "Heated floor grids, multi-head rain showers, tile niches",
         "Custom equestrian and riverfront estates in *Oldfield* lean into high-end luxury retreats; this post highlights installing radiant floor heating systems and multi-head rain showers."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 111
     },
     {
       "id": 12,
-      "targetPublishDate": "",
+      "targetPublishDate": "2027-01-05",
       "title": "Custom Hardwood vs. Semi-Custom Kitchen Cabinets",
       "notes": [
         "Kitchen Remodeling",
@@ -257,7 +264,8 @@
         "Solid wood cabinetry, soft-close hardware, custom milling",
         "Deep-water lock harbour homes in *Wexford* demand high-end finishes; this post compares cabinet durability against coastal dampness and salt exposure for luxury yachting lifestyles."
       ],
-      "status": ""
+      "status": "scheduled",
+      "wordpressPostId": 113
     },
     {
       "id": 13,
@@ -358,7 +366,7 @@
     {
       "id": 21,
       "targetPublishDate": "",
-      "title": "The Coastal Homeowner’s Guide to Door Weatherstripping",
+      "title": "The Coastal Homeowner's Guide to Door Weatherstripping",
       "notes": [
         "Doors & Windows",
         "Ridgeland (*Hunt Club*)",

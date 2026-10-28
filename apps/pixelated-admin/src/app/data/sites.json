@@ -51,6 +51,13 @@
     }
   },
   "enhancements": {
+	"2026-10": [
+      "Migrated entire AWS Infrastructure stack from US East 2 to US East 1 using CloudFormation IAC to increase reliability and feature set.",
+	  "Created CloudWatch Alarms for all Amplify, Lambda, API Gateway, and HealthCheck objects",
+	  "Improved reliability of form data capture with durable storage at the API level to ensure delivery of form submissions.",
+	  "Migrated all sites from ImprovMX to AWS SES for email forwarding, including admin page.",
+	  "Merged Admin and Lead Generator apps"
+    ],
     "2026-09": [
       "Enhancement of Social Media and Partner tags for image storage and performance."
     ],

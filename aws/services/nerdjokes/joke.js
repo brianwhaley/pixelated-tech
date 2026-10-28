@@ -8,8 +8,9 @@ const log = false ;
 
 module.exports = class Joke {
 
-    constructor(){
+    constructor(ddbc){
         if(log) console.log("JOKE CONSTRUCTOR");
+        this.ddbc = ddbc;
         this.id ;
         this.question ;
         this.answer ;
@@ -23,17 +24,27 @@ module.exports = class Joke {
         if(log) console.log("JOKE LOAD");
         const rnd = this.getGUID();
         if(log) console.log("JOKE LOAD - GUID : ", rnd);
-        var ddbc = new AWS.DDBCLIENT();
-        const myjoke = await ddbc.scanFromDynamo({
+        var ddbc = this.ddbc || new AWS.DDBCLIENT();
+        const scanParams = {
             tablename: ddbc.jokesDB,
-            start_key: { "id": rnd } , 
             limit: 1
+        };
+        let myjoke = await ddbc.scanFromDynamo({
+            ...scanParams,
+            start_key: { "id": rnd }
         });
+        if (!myjoke?.Items?.length) {
+            myjoke = await ddbc.scanFromDynamo(scanParams);
+        }
+        const joke = myjoke?.Items?.[0];
+        if (!joke) {
+            throw new Error(`No jokes available in DynamoDB table: ${ddbc.jokesDB}`);
+        }
         if(log) console.log("JOKE LOAD - Joke : ", myjoke);
-        this.raw = myjoke.Items[0] ;
-        this.id = myjoke.Items[0].id ;
-        this.question = myjoke.Items[0].question ;
-        this.answer = myjoke.Items[0].answer ;
+        this.raw = joke;
+        this.id = joke.id;
+        this.question = joke.question;
+        this.answer = joke.answer;
         return;
     }
 

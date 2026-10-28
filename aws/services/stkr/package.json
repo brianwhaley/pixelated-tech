@@ -2,5 +2,13 @@
   "name": "@pixelated-tech/stkr",
   "version": "1.0.0",
   "private": true,
-  "description": "Recovered STKR Slack image-sharing Lambda service"
+  "description": "Recovered STKR Slack image-sharing Lambda service",
+  "scripts": {
+    "build": "node --check index.js",
+    "lint": "eslint --fix",
+    "test": "node --test stkr.test.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1692.0"
+  }
 }

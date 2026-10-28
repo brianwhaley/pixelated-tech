@@ -1,6 +1,6 @@
 {
   "name": "AMAVA-Janitorial",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "^16.4.3",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "glob": "^13.0.6",
+    "glob": "^14.0.3",
     "html-entities": "^2.3.3",
     "nodemailer": "^10.2.1",
     "react-dom": "^19.2.6",
