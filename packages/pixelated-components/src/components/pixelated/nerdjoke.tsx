@@ -64,7 +64,7 @@ export function NerdJoke(props: NerdJokeType) {
 			}
 		}, TIME_LIMIT * 1000);
 
-		const myURL = "https://vvqyc1xpw6.execute-api.us-east-2.amazonaws.com/prod/nerdjokes?";
+		const myURL = "https://nerdjokes.pixelated.tech/prod/nerdjokes?";
 		const myURLProps = { command: "%2Fnerdjokes", text: "getjokejson" };
 		try {
 			const url = myURL + "command=" + myURLProps.command + "&text=" + myURLProps.text;

@@ -66,7 +66,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 	// Content Security Policy (CSP)
 	// Includes all discovered domains in the workspace: HubSpot, Gravatar, Flickr, Contentful, Cloudinary, eBay, and Google Analytics + Search.
-	const scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://*.googletagmanager.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hsforms.net https://*.hscollectedforms.net https://*.hs-banner.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://*.hsappstatic.net https://assets.calendly.com https://cdn.jsdelivr.net https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com https://cdn.curator.io https://connect.facebook.net https://*.cloudflareinsights.com";
+	const scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://*.googletagmanager.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hsforms.net https://*.hscollectedforms.net https://*.hs-banner.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://*.hsappstatic.net https://assets.calendly.com https://cdn.jsdelivr.net https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com https://cdn.curator.io https://*.facebook.com https://*.facebook.net https://*.cloudflareinsights.com";
 	
 	const csp = [
 		"default-src 'self'",

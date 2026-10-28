@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default [
 	...getBaseESLintConfig(__dirname),
 	{
-		files: ["src/**/*.{js,mjs,cjs}"],
+		files: ["**/*.{js,mjs,cjs}"],
 		rules: {
 			"pixelated/enforce-single-h1": "off",
 			"pixelated/no-process-env": "off",

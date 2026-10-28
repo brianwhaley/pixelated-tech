@@ -7,7 +7,8 @@
   "scripts": {
     "build": "node --check src/index.mjs && node --check src/backfill-domain.mjs",
     "backfill:domain": "node src/backfill-domain.mjs",
-    "test": "node --test"
+    "lint": "eslint --fix",
+    "test": "node --test email-forwarder.test.js"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1150.0",
