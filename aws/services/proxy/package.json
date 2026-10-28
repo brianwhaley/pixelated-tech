@@ -1,6 +1,14 @@
 {
   "name": "@pixelated-tech/proxy",
   "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "build": "node --check index.mjs",
+    "lint": "eslint --fix",
+    "test": "node --test proxy.test.mjs"
+  },
   "dependencies": {
     "node-fetch": "^3.3.0"
   }

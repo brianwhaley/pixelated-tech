@@ -5,7 +5,9 @@
   "type": "module",
   "main": "index.mjs",
   "scripts": {
-    "build": "node --check index.mjs"
+    "build": "node --check index.mjs",
+    "lint": "eslint --fix",
+    "test": "node --test sendmail-s3.test.js"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1150.0",

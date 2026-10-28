@@ -3,7 +3,7 @@
 import fetch from "node-fetch";
 
 const debug = false;
-const UPSTREAM_FETCH_TIMEOUT_MS = 8_000;
+const UPSTREAM_FETCH_TIMEOUT_MS = 20_000;
 
 const getRequestDiagnostics = (event, url) => {
 	let targetHost = 'unknown';

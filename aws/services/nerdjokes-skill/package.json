@@ -5,7 +5,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "node --check index.js"
+    "build": "node --check index.js",
+    "lint": "eslint --fix",
+    "test": "node --test nerdjokes-skill.test.js"
   },
   "dependencies": {
     "aws-sdk": "^2.1692.0"

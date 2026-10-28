@@ -5,7 +5,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "node --check index.js && node --check aws.js && node --check event.js && node --check joke.js && node --check message.js && node --check schedule.js"
+    "build": "node --check index.js && node --check aws.js && node --check event.js && node --check joke.js && node --check message.js && node --check schedule.js",
+    "lint": "eslint --fix",
+    "test": "node --test nerdjokes.test.js"
   },
   "dependencies": {
     "aws-sdk": "^2.1692.0"

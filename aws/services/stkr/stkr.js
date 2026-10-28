@@ -1,48 +1,46 @@
 console.log('Loading Stkr class');
 
-var AWS = require("./aws");
-
 const log = true ;
 
 module.exports = class Stkr {
 
-    constructor(){
-        if(log) console.log("STKR CONSTRUCTOR");
-        this.email = "stkr@pixelated.tech" ;
-        this.email_link = `<mailto:${this.email}|${this.email}>` ;
-        this.stkr_url = "https://pixelated.tech/stkr.html" ;
-        this.maxImages = 50;
-        this.maxFileSize = 200;
-        this.stkr_id;
-        this.image_list = [];
-        this.image_list_count ;
-        this.image_name;
-        this.image_url;
-        this.image_type;
-        this.image_buffer; 
-        this.image_buffer_size;
-        return this ;
-    }
+	constructor(){
+		if(log) console.log("STKR CONSTRUCTOR");
+		this.email = "stkr@pixelated.tech" ;
+		this.email_link = `<mailto:${this.email}|${this.email}>` ;
+		this.stkr_url = "https://pixelated.tech/stkr.html" ;
+		this.maxImages = 50;
+		this.maxFileSize = 200;
+		this.stkr_id;
+		this.image_list = [];
+		this.image_list_count ;
+		this.image_name;
+		this.image_url;
+		this.image_type;
+		this.image_buffer; 
+		this.image_buffer_size;
+		return this ;
+	}
     
     
-    // ========================================
-    //              SHARED FUNCTIONS
-    // ========================================
+	// ========================================
+	//              SHARED FUNCTIONS
+	// ========================================
     
     
-    sortByProperty(property){
-        if(log) console.log("STKR - SORT BY PROPERTY ");
-        return function(a,b){  
-            if(a[property] > b[property])  
-                return 1;  
-            else if(a[property] < b[property])  
-                return -1;
-            return 0;  
-        }; 
-    }
+	sortByProperty(property){
+		if(log) console.log("STKR - SORT BY PROPERTY ");
+		return function(a,b){  
+			if(a[property] > b[property])  
+				return 1;  
+			else if(a[property] < b[property])  
+				return -1;
+			return 0;  
+		}; 
+	}
     
     
-    /*
+	/*
     
     
     async urlExists(url) {}

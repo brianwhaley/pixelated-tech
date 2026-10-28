@@ -43,7 +43,7 @@ Resources:
       Architectures:
         - x86_64
       MemorySize: 128
-      Timeout: 10
+      Timeout: 25
       Role: !GetAtt ProxyExecutionRole.Arn
 
   ProxyApi:
