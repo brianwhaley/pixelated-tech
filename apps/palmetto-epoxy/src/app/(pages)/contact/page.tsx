@@ -2,30 +2,22 @@
 
 import React from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { FacebookPixel, FormEngine, FormSubmitWrapper } from "@pixelated-tech/components";
+import { FacebookPixel, FormEngine, FormSubmitWrapper, getFacebookAttributionData } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 
 import formData from "@/app/data/contactform.json";
 
 // const calendarID = "1b783753ce78e200e6e505694b0610c48c8b5ca756f4d71986c4f7de97caaa13%40group.calendar.google.com";
 
-const trackLead = (_event?: Event, response?: unknown) => {
+const trackLead = () => {
 	if (typeof window === "undefined") return;
 	const fbq = (window as Window & {
 		fbq?: (...args: unknown[]) => void;
 	}).fbq;
-	console.info("[Palmetto Epoxy] Form success callback fired", {
-		eventName: "ContactSubmitted",
-		fbqAvailable: typeof fbq === "function",
-		response,
-	});
-	if (typeof fbq !== "function") {
-		console.error("[Palmetto Epoxy] Facebook Pixel is unavailable");
-		return;
-	}
-	fbq("trackCustom", "ContactSubmit");
-	fbq("track", "Lead");
-	console.info("[Palmetto Epoxy] Facebook event call completed", "ContactSubmitted");
+	if (typeof fbq !== "function") return;
+	const attributionData = getFacebookAttributionData();
+	fbq("trackCustom", "ContactSubmit", attributionData);
+	fbq("track", "Lead", attributionData);
 };
 
 export default function ContactPage() {

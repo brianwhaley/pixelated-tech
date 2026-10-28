@@ -85,7 +85,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 		"media-src 'self' https://*.ctfassets.net https://res.cloudinary.com",
 
-		"frame-src 'self' https://calendly.com https://*.hubspot.com https://*.googletagmanager.com https://*.adtrafficquality.google https://*.google.com https://*.calendly.com https://*.hsforms.net https://*.paypal.com https://*.paypalobjects.com https://syndicatedsearch.goog",
+		"frame-src 'self' https://calendly.com https://*.hubspot.com https://*.googletagmanager.com https://*.adtrafficquality.google https://*.google.com https://*.calendly.com https://*.hsforms.net https://*.paypal.com https://*.paypalobjects.com https://syndicatedsearch.goog https://*.facebook.com https://*.facebook.net",
 
 		"frame-ancestors 'none'",
 
