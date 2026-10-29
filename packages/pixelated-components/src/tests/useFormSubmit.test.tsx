@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '../test/test-utils';
 import { screen, fireEvent, waitFor, renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { useFormSubmit, FormSubmitWrapper, useFormSubmitContext } from '../components/sitebuilder/form/formsubmit';
+import { useFormSubmit } from '../components/sitebuilder/form/formsubmit';
 import { FormValidationProvider } from '../components/sitebuilder/form/formvalidator';
 
 // Mock smartFetch
@@ -271,6 +271,33 @@ describe('useFormSubmit', () => {
     expect(smartFetch).toHaveBeenCalled();
   });
 
+  it('processFormData should include query parameters without overwriting form fields', async () => {
+    vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+    window.history.pushState({}, '', '?utm_source=google&email=query@example.com&fbclid=test-click');
+
+    const form = document.createElement('form');
+    form.id = 'query-form';
+    const email = document.createElement('input');
+    email.name = 'email';
+    email.value = 'form@example.com';
+    form.appendChild(email);
+    document.body.appendChild(form);
+
+    const event = {
+      target: form,
+      preventDefault: vi.fn(),
+    } as any;
+
+    const { processFormData } = await import('../components/sitebuilder/form/formsubmit');
+    await processFormData(event, undefined, { sendQueryParams: true });
+
+    const request = vi.mocked(smartFetch).mock.calls[0][1] as any;
+    const submittedData = JSON.parse(request.requestInit.body);
+    expect(submittedData.email).toBe('form@example.com');
+    expect(submittedData.utm_source).toBe('google');
+    expect(submittedData.fbclid).toBe('test-click');
+  });
+
   it('processFormData should handle preventDefault failure in honeypot guard', async () => {
     const form = document.createElement('form');
     form.id = 'spam-form-2';
@@ -299,39 +326,6 @@ describe('useFormSubmit', () => {
     
       await processJSON({ name: 'Test' }, callback);
     expect(callback).toHaveBeenCalled();
-  });
-
-  describe('FormSubmitWrapper and context', () => {
-    it('FormSubmitWrapper provides context and renders helpers', () => {
-      const Child = () => {
-        const { isSubmitting } = useFormSubmitContext();
-        return <div data-testid="child">{String(isSubmitting)}</div>;
-      };
-
-      render(
-        <FormSubmitWrapper>
-          <Child />
-        </FormSubmitWrapper>
-      );
-
-      expect(screen.getByTestId('child')).toBeInTheDocument();
-      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
-      expect(screen.getByTestId('modal-component')).toBeInTheDocument();
-    });
-
-    it('useFormSubmitContext throws error when used outside provider', () => {
-      const Consumer = () => {
-        useFormSubmitContext();
-        return null;
-      };
-
-      // Suppress console error for expected throw
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
-      expect(() => render(<Consumer />)).toThrow('useFormSubmitContext must be used within FormSubmitWrapper');
-      
-      consoleSpy.mockRestore();
-    });
   });
 
   describe('Lifecycle and options coverage', () => {

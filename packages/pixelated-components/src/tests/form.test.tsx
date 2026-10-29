@@ -7,6 +7,12 @@ import { FormBuilder, FormBuild } from '../components/sitebuilder/form/formbuild
 import { FormExtractor } from '../components/sitebuilder/form/formextractor';
 import { FormSectionHeader } from '../components/sitebuilder/form/formcomponents';
 import * as fieldValidations from '../components/sitebuilder/form/formfieldvalidations';
+
+vi.mock('../components/foundation/smartfetch', () => ({
+  smartFetch: vi.fn(),
+}));
+
+import { smartFetch } from '../components/foundation/smartfetch';
 import {
   formCheckboxSubmitRequiredData,
   formRadioSubmitRequiredData,
@@ -94,6 +100,26 @@ describe('Form Component', () => {
         <FormEngine formData={formData as any} />
       );
       expect(container.querySelector('form')).toBeInTheDocument();
+    });
+
+    it('should not pass submission options to the DOM form element', () => {
+      const formData = {
+        properties: { sendQueryParams: true },
+        fields: [],
+      };
+      const { container } = render(<FormEngine formData={formData as any} />);
+      expect(container.querySelector('form')).not.toHaveAttribute('sendQueryParams');
+    });
+
+    it('should let an explicit sendQueryParams prop override schema properties', () => {
+      const formData = {
+        properties: { sendQueryParams: true },
+        fields: [],
+      };
+      const { container } = render(
+        <FormEngine formData={formData as any} sendQueryParams={false} />
+      );
+      expect(container.querySelector('form')).not.toHaveAttribute('sendQueryParams');
     });
   });
 
@@ -225,6 +251,46 @@ describe('Form Component', () => {
   });
 
   describe('FormEngine Form Submission', () => {
+   it('should call onSuccess after a default submission succeeds', async () => {
+     vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+     const onSuccess = vi.fn();
+     const formData = {
+       properties: { id: 'default-submit-form', openModal: false, resetForm: false, toggleLoading: false },
+       fields: [
+         { component: 'FormInput', props: { name: 'email', defaultValue: 'user@example.com' } },
+         { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+       ],
+     };
+
+     const { container } = render(<FormEngine formData={formData as any} onSuccess={onSuccess} />);
+     fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+
+     await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+     expect(smartFetch).toHaveBeenCalled();
+   });
+
+    it('should exclude query parameters when an explicit false prop overrides the schema', async () => {
+      vi.mocked(smartFetch).mockResolvedValueOnce({ success: true });
+      window.history.pushState({}, '', '?utm_source=google');
+      const formData = {
+        properties: { id: 'query-override-form', openModal: false, resetForm: false, toggleLoading: false, sendQueryParams: true },
+        fields: [
+          { component: 'FormInput', props: { name: 'email', defaultValue: 'user@example.com' } },
+          { component: 'FormButton', props: { type: 'submit', label: 'Submit' } },
+        ],
+      };
+
+      const { container } = render(
+        <FormEngine formData={formData as any} sendQueryParams={false} />
+      );
+      fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+
+      await waitFor(() => expect(smartFetch).toHaveBeenCalled());
+      const request = vi.mocked(smartFetch).mock.calls[0][1] as any;
+      const submittedData = JSON.parse(request.requestInit.body);
+      expect(submittedData.utm_source).toBeUndefined();
+    });
+
     it('should call onSubmitHandler when form is submitted', () => {
       const formData = {
         fields: [
