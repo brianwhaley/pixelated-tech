@@ -2,12 +2,8 @@
 
 import React, { useCallback, useState } from 'react';
 import type { FormEvent } from 'react';
-import { createContext, useContext } from 'react';
-import PropTypes, { InferProps } from 'prop-types';
 import { ToggleLoading } from '../../foundation/loading';
 import { handleModalOpen } from '../../elements/modal';
-import { Loading } from '../../foundation/loading';
-import { Modal } from '../../elements/modal';
 import { smartFetch } from '../../foundation/smartfetch';
 
 /* 
@@ -24,7 +20,15 @@ export type EmailFormDataResult = {
 	error?: Error;
 };
 
-export async function processFormData(e: Event, callback?: (e: Event) => void): Promise<EmailFormDataResult> {
+export type ProcessFormDataOptions = {
+	sendQueryParams?: boolean;
+};
+
+export async function processFormData(
+	e: Event,
+	callback?: (e: Event) => void,
+	options: ProcessFormDataOptions = {},
+): Promise<EmailFormDataResult> {
 	const target = e.target as HTMLFormElement;
 	const myform = document.getElementById(target.id) as HTMLFormElement | null;
 
@@ -33,6 +37,11 @@ export async function processFormData(e: Event, callback?: (e: Event) => void): 
 	const formData = new FormData(myform as HTMLFormElement);
 	for (const [key, value] of formData.entries()) {
 		myFormData[key] = value ;
+	}
+	if (options.sendQueryParams && typeof window !== 'undefined') {
+		for (const [key, value] of new URLSearchParams(window.location.search)) {
+			if (!(key in myFormData)) myFormData[key] = value;
+		}
 	}
 
 	return processJSON(myFormData, () => callback?.(e));
@@ -100,6 +109,7 @@ export type UseFormSubmitOptions = {
 	toggleLoading?: boolean;
 	openModal?: boolean;
 	resetForm?: boolean;
+	sendQueryParams?: boolean;
 	
 	// Modal content
 	modalContent?: React.ReactNode;
@@ -116,6 +126,7 @@ export function useFormSubmit(options: UseFormSubmitOptions = {}) {
 		toggleLoading = true,
 		openModal = true,
 		resetForm = true,
+		sendQueryParams = false,
 		modalContent = DEFAULT_MODAL_CONTENT,
 		onStart,
 		onSuccess,
@@ -140,7 +151,7 @@ export function useFormSubmit(options: UseFormSubmitOptions = {}) {
 			setSubmitError(null);
 
 			// Submit
-			const result = await processFormData(nativeEvent);
+			const result = await processFormData(nativeEvent, undefined, { sendQueryParams });
 			setSubmitResponse(result.response);
 
 			// Handle result
@@ -188,68 +199,4 @@ export function useFormSubmit(options: UseFormSubmitOptions = {}) {
 		handleSubmit,
 		modalContent: modalContent as NonNullable<React.ReactNode>,
 	};
-}
-
-/* ===== FORM SUBMIT WRAPPER ===== */
-
-type FormSubmitContextType = {
-	handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
-	isSubmitting: boolean;
-};
-
-const FormSubmitContext = createContext<FormSubmitContextType | undefined>(undefined);
-
-/**
- * FormSubmitWrapper — Encapsulates form submission lifecycle (loading, modal, submit handling)
- * 
- * Internally calls useFormSubmit() and manages Loading/Modal display.
- * FormEngine components within should call useFormSubmitContext() to access handleSubmit.
- */
-export type FormSubmitWrapperProps = UseFormSubmitOptions & {
-	children: React.ReactNode;
-};
-
-FormSubmitWrapper.propTypes = {
-	/** Enable/disable loading spinner during submission (default: true) */
-	toggleLoading: PropTypes.bool,
-	/** Enable/disable thank you modal after submission (default: true) */
-	openModal: PropTypes.bool,
-	/** Enable/disable form reset after submission (default: true) */
-	resetForm: PropTypes.bool,
-	/** Custom content to display in thank you modal */
-	modalContent: PropTypes.node,
-	/** Callback invoked at start of submission */
-	onStart: PropTypes.func,
-	/** Callback invoked on successful submission */
-	onSuccess: PropTypes.func,
-	/** Callback invoked on submission error */
-	onError: PropTypes.func,
-	/** Callback invoked at end of submission lifecycle */
-	onFinally: PropTypes.func,
-	/** Form components to render within the wrapper */
-	children: PropTypes.node.isRequired,
-};
-export type FormSubmitWrapperType = InferProps<typeof FormSubmitWrapper.propTypes>;
-export function FormSubmitWrapper(props: FormSubmitWrapperType) {
-	const { children, ...options } = props;
-	const { handleSubmit, isSubmitting, modalContent } = useFormSubmit(options as UseFormSubmitOptions);
-
-	return (
-		<FormSubmitContext.Provider value={{ handleSubmit, isSubmitting }}>
-			<Loading />
-			<Modal modalContent={modalContent} />
-			{children}
-		</FormSubmitContext.Provider>
-	);
-}
-
-/**
- * Hook to access form submission context within FormSubmitWrapper
- */
-export function useFormSubmitContext() {
-	const context = useContext(FormSubmitContext);
-	if (!context) {
-		throw new Error('useFormSubmitContext must be used within FormSubmitWrapper');
-	}
-	return context;
 }

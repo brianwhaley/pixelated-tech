@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.9",
+	"version": "3.22.10",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -100,7 +100,7 @@
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
 		"marked": "^18.1.2",
-		"nodemailer": "^10.2.1",
+		"nodemailer": "^10.3.1",
 		"prop-types": "^15.8.1",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",
@@ -108,7 +108,7 @@
 		"vitest": "^5.0.5"
 	},
 	"devDependencies": {
-		"@babel/parser": "^8.0.8",
+		"@babel/parser": "^8.0.10",
 		"@babel/preset-env": "^8.0.7",
 		"@babel/preset-react": "^8.0.1",
 		"@eslint/js": "9.39.4",
@@ -151,7 +151,7 @@
 		"node-fetch": "^3.3.2",
 		"null-loader": "^4.0.1",
 		"react-test-renderer": "^19.3.1",
-		"sass": "^1.106.1",
+		"sass": "^1.107.0",
 		"sass-loader": "^17.1.0",
 		"storybook": "^10.6.5",
 		"style-loader": "^4.0.0",

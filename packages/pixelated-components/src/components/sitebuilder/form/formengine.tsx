@@ -3,8 +3,10 @@
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { FormValidationProvider, useFormValidation, validateField as validateFormField } from './formvalidator';
-import { FormSubmitWrapper, useFormSubmitContext } from './formsubmit';
+import { useFormSubmit } from './formsubmit';
 import { usePixelatedConfig } from '../../config/config.client';
+import { Loading } from '../../foundation/loading';
+import { Modal } from '../../elements/modal';
 import { getWebMcpFieldType, applyWebMcpFormAttributes, applyWebMcpFieldAttributes } from '../../foundation/webmcp.utils';
 
 import * as FC from './formcomponents';
@@ -29,13 +31,14 @@ Generate all the elements to display a form */
  * FormEngine — Render a form defined by a JSON `formData` schema. Converts `formData.fields` to React components and manages submission handling and validation.
  *
  * Can be used in two ways:
- * 1. JSON-driven (recommended): formData.properties defines form behavior. Wrap in FormSubmitWrapper or use alone (defaults apply)
+ * 1. JSON-driven (recommended): formData.properties defines form behavior and uses the default submission lifecycle
  * 2. Code-driven (backwards compatible): Pass name, id, onSubmitHandler as props
  *
  * @param {string} [props.name] - Form HTML name attribute. Falls back to formData.properties.name
  * @param {string} [props.id] - Form HTML id attribute. Falls back to formData.properties.id
  * @param {string} [props.method] - HTTP method for form submission (default: 'post').
- * @param {function} [props.onSubmitHandler] - Optional submit handler invoked with the submit event.
+ * @param {function} [props.onSubmitHandler] - Optional custom submit handler invoked with the submit event.
+ * @param {function} [props.onSuccess] - Optional callback invoked after a successful default submission.
  * @param {object} [props.formData] - JSON schema describing fields (object with `fields` array and optional `properties` object).
  */
 FormEngine.propTypes = {
@@ -49,27 +52,20 @@ FormEngine.propTypes = {
 	onFieldChange: PropTypes.func,
 	/** HTTP method (e.g., 'post') */
 	method: PropTypes.string,
-	/** Submit handler called when the form is valid and submitted. Falls back to FormSubmitWrapper context if available */
+	/** Custom submit handler called when the form is valid and submitted */
 	onSubmitHandler: PropTypes.func,
+	/** Callback invoked after a successful default submission */
+	onSuccess: PropTypes.func,
+	/** Controls whether query-string parameters are included in submissions */
+	sendQueryParams: PropTypes.bool,
 	/** JSON schema describing form fields and submission properties */
 	formData: PropTypes.object.isRequired
 };
 export type FormEngineType = InferProps<typeof FormEngine.propTypes>;
 export function FormEngine(props: FormEngineType) {
-	// Check if form should use internal FormSubmitWrapper
-	const hasJsonProperties = (props.formData as any)?.properties;
-	const hasNoSubmitHandler = !props.onSubmitHandler;
-	const shouldUseFormSubmitWrapper = hasJsonProperties && hasNoSubmitHandler;
-
 	return (
 		<FormValidationProvider>
-			{shouldUseFormSubmitWrapper ? (
-				<FormSubmitWrapper {...(props.formData as any).properties}>
-					<FormEngineInner {...(props as any)} />
-				</FormSubmitWrapper>
-			) : (
-				<FormEngineInner {...(props as any)} />
-			)}
+			<FormEngineInner {...(props as any)} />
 		</FormValidationProvider>
 	);
 }
@@ -92,8 +88,12 @@ FormEngineInner.propTypes = {
 	onFieldChange: PropTypes.func,
 	/** HTTP method */
 	method: PropTypes.string,
-	/** Submit handler */
+	/** Custom submit handler */
 	onSubmitHandler: PropTypes.func,
+	/** Callback invoked after a successful default submission */
+	onSuccess: PropTypes.func,
+	/** Controls whether query-string parameters are included in submissions */
+	sendQueryParams: PropTypes.bool,
 	/** JSON form schema */
 	formData: PropTypes.object.isRequired
 };
@@ -102,21 +102,18 @@ function FormEngineInner(props: FormEngineInnerType) {
 	const { validateAllFields, validateField: setFieldValidity } = useFormValidation();
 	const { formRef } = props as any;
 	const siteName = usePixelatedConfig()?.siteInfo?.name;
-
-	// Try to get handleSubmit from FormSubmitWrapper context
-	let contextSubmitHandler: ((event: React.FormEvent<HTMLFormElement>) => Promise<void>) | undefined;
-	try {
-		const context = useFormSubmitContext();
-		contextSubmitHandler = context?.handleSubmit;
-	} catch (e) {
-		// Not inside FormSubmitWrapper - use provided handler
-	}
+	const formProperties = (props.formData as any)?.properties;
+	const shouldUseDefaultSubmit = Boolean(formProperties && !props.onSubmitHandler);
+	const sendQueryParams = props.sendQueryParams ?? formProperties?.sendQueryParams;
+	const { handleSubmit: defaultSubmitHandler, modalContent } = useFormSubmit(
+		shouldUseDefaultSubmit ? { ...formProperties, sendQueryParams, onSuccess: props.onSuccess } : {}
+	);
 
 	function generateFormProps(props: any) {
 		// GENERATE PROPS TO RENDER THE FORM CONTAINER, INTERNAL FUNCTION
 		if (debug) console.log("Generating Form Props");
 		// Create a clean copy without non-serializable properties
-		const { formData, onSubmitHandler, formRef, onFieldChange, ...formProps } = props;
+		const { formData, onSubmitHandler, onSuccess, formRef, onFieldChange, sendQueryParams, ...formProps } = props;
 		
 		// Extract name/id from properties with fallback to props
 		if (!formProps.name && (formData as any)?.properties?.name) {
@@ -233,8 +230,7 @@ function FormEngineInner(props: FormEngineInnerType) {
 			return false;
 		}
 
-		// Try context handler first (from FormSubmitWrapper), then props handler
-		const handler = contextSubmitHandler || props.onSubmitHandler;
+		const handler = shouldUseDefaultSubmit ? defaultSubmitHandler : props.onSubmitHandler;
 		if (handler) {
 			event.preventDefault();
 			handler(event as any);
@@ -243,13 +239,17 @@ function FormEngineInner(props: FormEngineInnerType) {
 	}
 
 	return (
-		<form ref={formRef} 
-			{...generateFormProps(props)} 
-			onSubmit={(event) => { handleSubmit(event); }} 
-			suppressHydrationWarning >
-			{generateNewFields({ 
-				formData: props.formData, 
-				onFieldChange: props.onFieldChange })}
-		</form>
+		<>
+			{shouldUseDefaultSubmit && <Loading />}
+			{shouldUseDefaultSubmit && <Modal modalContent={modalContent} />}
+			<form ref={formRef}
+				{...generateFormProps(props)}
+				onSubmit={(event) => { handleSubmit(event); }}
+				suppressHydrationWarning >
+				{generateNewFields({
+					formData: props.formData,
+					onFieldChange: props.onFieldChange })}
+			</form>
+		</>
 	);
 }

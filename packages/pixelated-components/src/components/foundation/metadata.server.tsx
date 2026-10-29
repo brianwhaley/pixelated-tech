@@ -12,6 +12,10 @@ export type GenerateMetaTagsProps = {
 	title: string;
 	description: string;
 	keywords: string;
+	robots?: {
+		index?: boolean;
+		follow?: boolean;
+	};
 	origin: string;
 	url: string;
 };
@@ -48,6 +52,7 @@ async function getPageMetaTagsProps(): Promise<GenerateMetaTagsProps> {
 		title: metadata?.title ?? '',
 		description: metadata?.description ?? '',
 		keywords: metadata?.keywords ?? '',
+		robots: metadata?.robots,
 		origin,
 		url,
 	};
@@ -55,7 +60,8 @@ async function getPageMetaTagsProps(): Promise<GenerateMetaTagsProps> {
 
 export async function generateMetaTags() {
 	const metaTagsProps = await getPageMetaTagsProps();
-	const { title, description, keywords, origin, url } = metaTagsProps;
+	const { title, description, keywords, robots, origin, url } = metaTagsProps;
+	const robotsContent = `${robots?.index === false ? 'noindex' : 'index'}, ${robots?.follow === false ? 'nofollow' : 'follow'}`;
 	const siteInfo = getFullPixelatedConfig().siteInfo as SiteInfo;
 
 	let newOrigin: string | undefined;
@@ -95,7 +101,7 @@ export async function generateMetaTags() {
 			<meta name="publisher" content={site_name} />
 			<meta name='rating' content='General' />
 			<meta name='reply-to' content={email ?? undefined} />
-			<meta name="robots" content="index, follow" />
+			<meta name="robots" content={robotsContent} />
 			<meta name="theme-color" content={siteInfo.theme_color ?? undefined} />
 			<meta name='url' content={url} />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
