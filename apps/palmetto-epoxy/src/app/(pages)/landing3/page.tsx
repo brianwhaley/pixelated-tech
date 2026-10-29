@@ -8,7 +8,7 @@ import { PageSection, PageSectionHeader, PageGridItem } from "@pixelated-tech/co
 import { FacebookPixel, FormEngine, getFacebookAttributionData } from "@pixelated-tech/components";
 import formData from "@/app/data/contactform.json";
 
-formData.fields.find((field) => field.props?.name === "to")!.props.value = "brian.whaley@gmail.com";
+// formData.fields.find((field) => field.props?.name === "to")!.props.value = "brian.whaley@gmail.com";
 
 export default function Landing3Page() {
     
