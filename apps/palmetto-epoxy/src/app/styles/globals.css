@@ -360,3 +360,60 @@ section[id$="-service-section"] > div:first-child {
         }
     }
 }
+
+
+
+
+/* ===== LANDING PAGE # 3 ===== */
+
+#landing3-page {
+    position: relative;
+    z-index: 1;
+}
+
+#landing3-page:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url('/images/splatter.jpg');
+    background-size: cover; 
+    background-position: center;
+    opacity: 0.5; 
+}
+
+#landing-3-section { 
+    .page-section-content {
+        display: grid;
+        align-items: start !important;
+        justify-items: start !important;
+    }
+    .carousel-container {
+        background-color: white !important;
+    }
+    .contact-us-wrapper {
+        background-color: white !important;
+        border-radius: 20px;
+        border: 2px solid #ccc;
+        padding: 0 20px;
+    }.callout {
+        margin-bottom: 20px;
+    }
+    .callout-image { 
+        aspect-ratio: 3 / 2;
+        background: transparent;
+
+        img {
+            border: 2px solid #ccc;
+            border-radius: 20px 100px 100px 20px;
+            -moz-border-radius: 20px 100px 100px 20px;
+            -webkit-border-radius: 20px 100px 100px 20px;
+        }
+    }
+}
+
+.bullet{
+    border-radius: 20px 100px 100px 20px;
+    -moz-border-radius: 20px 100px 100px 20px;
+    -webkit-border-radius: 20px 100px 100px 20px;
+ }

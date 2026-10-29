@@ -10,8 +10,7 @@ import '@/css/pixelated.global.css';
  * - name, id: Form identity
  * - toggleLoading, openModal, resetForm: Behavior flags
  * 
- * FormEngine automatically wraps itself in FormSubmitWrapper,
- * handling all submission lifecycle internally.
+ * FormEngine handles the default submission lifecycle internally.
  */
 function FormEngineWithJSONPropertiesStory() {
 	return (

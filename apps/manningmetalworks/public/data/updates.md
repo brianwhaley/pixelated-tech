@@ -1,5 +1,14 @@
 # Manning Metalworks -- Updates
 
+## 2026-10-28 
+* [  ] New Location Blog Post
+* [  ] Remove Instagram based page and replace with gallery page, possible upgrade to Projects page once the photos are organized enough
+* [  ] Create a pricing page, focus on "example" type pricing, with "starting at" laguage, covering the spectrum of pricing
+* [  ] Press release for new location 
+* [  ] Contact local media to get local coverage of metalworks shop. and cool projects
+* [  ] Release for new book - The Digital Small Business
+
+
 ## 2026-06-02
 * [ X ] Brian to Set up ImprovMX for manningmetalworks.com email addresses
 * [ x ] Services: https://www.manningmetalworks.com/services
@@ -11,7 +20,6 @@
 * [ x ] Add Dover, New Providence, and Wharton Service Areas
 * [  ] Add images to Instagram
 * [  ] Mailing list for commercial work
-
 
 
 ## 2026-05-09 Launch Activities

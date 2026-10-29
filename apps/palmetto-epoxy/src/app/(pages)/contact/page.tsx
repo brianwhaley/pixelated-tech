@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { FacebookPixel, FormEngine, FormSubmitWrapper, getFacebookAttributionData } from "@pixelated-tech/components";
+import { FacebookPixel, FormEngine, getFacebookAttributionData } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 
 import formData from "@/app/data/contactform.json";
@@ -34,9 +34,7 @@ export default function ContactPage() {
 						Epoxy Flooring! 
 						<br /><br /><br /><br />
 					</div>
-					<FormSubmitWrapper onSuccess={trackLead}>
-						<FormEngine formData={formData} onSubmitHandler={() => undefined} />
-					</FormSubmitWrapper>
+					<FormEngine formData={formData} onSuccess={trackLead} />
 				</PageGridItem>
 				{ /* <PageGridItem>
 					<iframe src={`https://calendar.google.com/calendar/embed?src=${calendarID}&mode=WEEK`} style={{ border: 0 }} width="100%" height="600px" frameBorder="0" scrolling="no"></iframe>

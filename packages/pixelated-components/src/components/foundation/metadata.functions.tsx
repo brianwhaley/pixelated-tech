@@ -80,6 +80,10 @@ export type Metadata = {
 	title?: string;
 	description?: string;
 	keywords?: string;
+	robots?: {
+		index?: boolean;
+		follow?: boolean;
+	};
 	[key: string]: any;
 };
 

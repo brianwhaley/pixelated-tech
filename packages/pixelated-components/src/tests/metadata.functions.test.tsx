@@ -292,6 +292,26 @@ describe('Metadata Functions', () => {
 			expect(result).toContain('property="og:url" content="https://example.com/test"');
 		});
 
+		it('should render route-specific robots directives', async () => {
+			setupHeaders('/private', 'https://example.com', 'https://example.com/private');
+			mockGetFullPixelatedConfig.mockReturnValue({
+				siteInfo: mockSiteInfo,
+				routes: [
+					{ path: '/private', robots: { index: false, follow: true } },
+				],
+			} as any);
+
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('name="robots" content="noindex, follow"');
+		});
+
+		it('should default routes to index and follow', async () => {
+			setupHeaders('/test', 'https://example.com', 'https://example.com/test');
+
+			const result = renderToStaticMarkup(await generateMetaTags());
+			expect(result).toContain('name="robots" content="index, follow"');
+		});
+
 		it('should handle missing optional props for an unknown path', async () => {
 			setupHeaders('/unknown', 'https://example.com', 'https://example.com/unknown');
 

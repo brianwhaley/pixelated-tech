@@ -1215,6 +1215,20 @@ describe('Sitemap Helper Functions', () => {
 			expect(urls.length).toBe(uniqueUrls.size);
 		});
 
+		it('should omit noindex routes from the sitemap', async () => {
+			const routes = [
+				{ path: '/public' },
+				{ path: '/landing3', robots: { index: false, follow: true } },
+			];
+			vi.mocked(metadataModule.getAllRoutes).mockReturnValue(routes);
+
+			const result = await createPageURLs(routes, 'https://example.com');
+
+			expect(result.map((entry: SitemapEntry) => entry.url)).toEqual([
+				'https://example.com/public',
+			]);
+		});
+
 		it('should handle empty config', async () => {
 			const mockBuildSitemapConfig = vi.spyOn(sitemapModule, 'buildSitemapConfig').mockReturnValue({});
 			const result = await generateSitemap('https://example.com');

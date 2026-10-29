@@ -75,15 +75,31 @@ const getResponse = async function (event) {
 	delete myHeaders['X-Forwarded-Proto'];
 
 	if ( debug ) console.log("MY NEW HEADERS : ", myHeaders);
+	let response;
 	try {
 		console.log('FETCHING URL via ', event.httpMethod, ' : ', url);
-		const response = await fetch(url, {
+		response = await fetch(url, {
 			method: event.httpMethod,
 			headers: myHeaders,
 			mode: 'cors',
 			body: (event.body) ? event.body : null,
 			signal: AbortSignal.timeout(UPSTREAM_FETCH_TIMEOUT_MS)
 		});
+	} catch (e) {
+		const isTimeout = e?.name === 'TimeoutError' || e?.name === 'AbortError' || e?.code === 'ETIMEDOUT';
+		responseStatusCode = isTimeout ? 504 : 502;
+		console.warn('Proxy upstream request did not complete', {
+			...getRequestDiagnostics(event, url),
+			isTimeout
+		});
+		responseBody = JSON.stringify({
+			error: true,
+			message: isTimeout ? 'The upstream request timed out.' : (e?.message || 'Upstream request did not complete.')
+		});
+		return {body: responseBody, statusCode: responseStatusCode};
+	}
+
+	try {
 		responseStatusCode = response.status;
 		if (!response.ok) {
 			const responseDetails = {
@@ -114,20 +130,21 @@ const getResponse = async function (event) {
 				responseBody = await response.text();
 			}
 		} else {
+			// Future considerations: handle 204 responses without treating a missing content type as an error,
+			// distinguish invalid JSON and response-body read failures, and include Retry-After for 429 responses.
+			// Redirects currently need no special handling because fetch follows them by default.
 			console.error('Proxy upstream response is missing Content-Type', getRequestDiagnostics(event, url));
 		}
 	} catch (e) {
-		const isTimeout = e?.name === 'TimeoutError' || e?.name === 'AbortError';
-		responseStatusCode = isTimeout ? 504 : 502;
-		console.error('Proxy upstream fetch failed', {
+		// Future consideration: classify unknown exceptions separately after observed upstream failure patterns are known.
+		console.error('Proxy response processing failed', {
 			...getRequestDiagnostics(event, url),
-			isTimeout,
 			errorName: e?.name,
 			errorMessage: e?.message
 		});
 		responseBody = JSON.stringify({
 			error: true,
-			message: isTimeout ? 'The upstream request timed out.' : (e?.message || 'Upstream fetch failed.')
+			message: e?.message || 'Proxy response processing failed.'
 		});
 	}
 	if ( debug ) console.log('RESPONSE BODY : ', responseContentType, " : ", responseBody);

@@ -399,6 +399,9 @@ export async function createPageURLs(routes: Route[], origin?: string) {
 		if (route.path.substring(0, 4).toLowerCase() === 'http') {
 			continue;
 		}
+		if (route.robots?.index === false) {
+			continue;
+		}
 		const base = origin ? `${origin}` : '';
 		const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
 		sitemap.push({
