@@ -141,21 +141,21 @@ getContentfulContentType.propTypes = {
 		base_url: PropTypes.string,
 		space_id: PropTypes.string,
 		environment: PropTypes.string,
-		access_token: PropTypes.string,
+		delivery_access_token: PropTypes.string,
 	}).isRequired,
 	/** Content type ID to retrieve */
 	contentType: PropTypes.string.isRequired,
 };
 export type getContentfulContentTypeType = InferProps<typeof getContentfulContentType.propTypes>;
 export async function getContentfulContentType(props: getContentfulContentTypeType) {
-	const { base_url, space_id, environment, access_token } = props.apiProps;
+	const { base_url, space_id, environment, delivery_access_token } = props.apiProps;
 	if (!base_url || !space_id || !environment) {
 		throw new Error('Contentful API properties not configured: base_url, space_id, or environment');
 	}
 	const full_url = buildUrl({
 		baseUrl: base_url,
 		pathSegments: ['spaces', space_id as string, 'environments', environment as string, 'content_types', props.contentType],
-		params: { access_token }
+		params: { access_token: delivery_access_token }
 	});
 	return await callContentfulDeliveryAPI({ full_url });
 }
@@ -438,17 +438,79 @@ getContentfulAssets.propTypes = {
 		base_url: PropTypes.string,
 		space_id: PropTypes.string,
 		environment: PropTypes.string,
-		access_token: PropTypes.string,
+		delivery_access_token: PropTypes.string,
 	}).isRequired,
 };
 export type getContentfulAssetsType = InferProps<typeof getContentfulAssets.propTypes>;
 export async function getContentfulAssets(props: getContentfulAssetsType){
-	const { base_url, space_id, environment, access_token } = props.apiProps;
-	const full_url = base_url + 
-		"/spaces/" + space_id + 
-		"/environments/" + environment + 
-		"/assets?access_token=" + access_token ;
+	const { base_url, space_id, environment, delivery_access_token } = props.apiProps;
+	const full_url = buildUrl({
+		baseUrl: base_url as string,
+		pathSegments: ['spaces', space_id as string, 'environments', environment as string, 'assets'],
+		params: { access_token: delivery_access_token }
+	});
 	return await callContentfulDeliveryAPI({ full_url });
+}
+
+
+
+
+/* ========== GET CONTENTFUL ASSETS BY TAG ========== */
+/**
+ * getContentfulAssetsByTag — Fetch asset records matching a Contentful tag ID.
+ *
+ * @param {shape} [props.apiProps] - Contentful API configuration object.
+ * @param {string} [props.tag] - Contentful tag ID to filter by.
+ * @param {string} [props.orderBy] - Contentful asset field to sort by; defaults to title.
+ */
+getContentfulAssetsByTag.propTypes = {
+/** Contentful API configuration */
+	apiProps: PropTypes.shape({
+		proxyURL: PropTypes.string,
+		base_url: PropTypes.string.isRequired,
+		space_id: PropTypes.string.isRequired,
+		environment: PropTypes.string.isRequired,
+		delivery_access_token: PropTypes.string.isRequired,
+	}).isRequired,
+	/** Contentful tag ID */
+	tag: PropTypes.string.isRequired,
+	/** Contentful asset field used for ordering */
+	orderBy: PropTypes.string,
+};
+export type getContentfulAssetsByTagType = InferProps<typeof getContentfulAssetsByTag.propTypes>;
+export async function getContentfulAssetsByTag(props: getContentfulAssetsByTagType) {
+	const { base_url, space_id, environment, delivery_access_token } = props.apiProps;
+	const orderBy = props.orderBy ?? 'title';
+	const fieldName = orderBy.startsWith('fields.') ? orderBy.slice('fields.'.length) : orderBy;
+	if (!base_url || !space_id || !environment || !delivery_access_token || !props.tag) {
+		if (debug) console.warn('getContentfulAssetsByTag: missing required Contentful configuration or tag. Skipping fetch.');
+		return null;
+	}
+
+	const full_url = buildUrl({
+		baseUrl: base_url,
+		pathSegments: ['spaces', space_id, 'environments', environment, 'assets'],
+		params: {
+			access_token: delivery_access_token,
+			'metadata.tags.sys.id[in]': props.tag,
+		}
+	});
+	const response: any = await callContentfulDeliveryAPI({ full_url });
+	if (!Array.isArray(response?.items)) {
+		return response;
+	}
+
+	return {
+		...response,
+		items: response.items
+			.map((item: any, index: number) => ({ item, index }))
+			.sort((a: any, b: any) => {
+				const aValue = String(a.item?.fields?.[fieldName] ?? '');
+				const bValue = String(b.item?.fields?.[fieldName] ?? '');
+				return aValue.localeCompare(bValue, undefined, { numeric: true, sensitivity: 'base' }) || a.index - b.index;
+			})
+			.map(({ item }: { item: any }) => item),
+	};
 }
 
 
@@ -468,7 +530,7 @@ getContentfulAssetURLs.propTypes = {
 		base_url: PropTypes.string,
 		space_id: PropTypes.string,
 		environment: PropTypes.string,
-		access_token: PropTypes.string,
+		delivery_access_token: PropTypes.string,
 	}).isRequired,
 };
 export type getContentfulAssetURLsType = InferProps<typeof getContentfulAssetURLs.propTypes>;

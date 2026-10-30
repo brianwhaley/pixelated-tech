@@ -103,7 +103,7 @@ export function buildSitemapConfig(
 			base_url: contentful.base_url ?? '',
 			space_id: contentful.space_id ?? '',
 			environment: contentful.environment ?? '',
-			access_token: contentful.delivery_access_token ?? '',
+			delivery_access_token: contentful.delivery_access_token ?? '',
 		};
 
 		const sitemapProps = [
@@ -735,7 +735,7 @@ export async function createContentfulPageBuilderURLs(props: createContentfulPag
  * @param {string} [props.base_url] - Contentful base API URL.
  * @param {string} [props.space_id] - Contentful space id.
  * @param {string} [props.environment] - Contentful environment.
- * @param {string} [props.access_token] - Access token to read assets from Contentful.
+ * @param {string} [props.delivery_access_token] - Delivery API access token to read assets from Contentful.
  * @param {string} [props.origin] - Origin used to convert relative asset paths to absolute URLs.
  */
 createContentfulAssetURLs.propTypes = {
@@ -749,8 +749,8 @@ createContentfulAssetURLs.propTypes = {
 		space_id: PropTypes.string.isRequired,
 		/** Contentful environment */
 		environment: PropTypes.string.isRequired,
-		/** Access token to read assets */
-		access_token: PropTypes.string.isRequired,
+		/** Delivery API access token to read assets */
+		delivery_access_token: PropTypes.string.isRequired,
 	}).isRequired,
 	/** Origin used to convert relative URLs to absolute */
 	origin: PropTypes.string,

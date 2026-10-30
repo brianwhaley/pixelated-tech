@@ -75,9 +75,9 @@ https://nextjs.org/docs/messages/react-hydration-error
 
 https://github.com/aws-amplify/amplify-hosting/issues/3398
 
-aws amplify update-app --app-id d1bwvapspanbnf --platform WEB_DYNAMIC --region us-east-2
+aws amplify update-app --app-id d1bwvapspanbnf --platform WEB_DYNAMIC --region us-east-1
 
-aws amplify update-branch --app-id d1bwvapspanbnf --branch-name dev --framework 'Next.js - SSR' --region us-east-2
+aws amplify update-branch --app-id d1bwvapspanbnf --branch-name dev --framework 'Next.js - SSR' --region us-east-1
 
 ## ===== REMOVE REDIRECTS AND REWRITES FOR REACT APP =====
 Source Address: </^[^c.]+$|\.(?!(css|gif|ico|jpg|jpeg|json|js|less|map|md|png|svg|txt|ttf|woff)$)([^.]+$)/>

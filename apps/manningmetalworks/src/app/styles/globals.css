@@ -119,3 +119,22 @@ html, body { padding: 0; margin: 0; }
 .crt-feed div[data-position="2"] {
 	display: none;
 }
+
+
+
+
+/* ========================================
+	HOME PAGE Styles
+ ======================================== */
+ #home-section { 
+    .carousel-container {
+        height: 300px;
+        border: 0px;
+        .carousel-cards-container {
+            height: 300px;
+            .carousel-card-wrapper {
+                flex: 0 0 300px;
+            }
+        }
+    }
+ }

@@ -2,6 +2,7 @@ import React from 'react';
 import fs from 'node:fs';
 import path from 'node:path';
 import { encode } from 'html-entities';
+import { vi } from 'vitest';
 
 export interface FileDataState {
 	data: string | null;
@@ -186,6 +187,7 @@ export function createPageComponentMocks(baseConfig: any = undefined, overrides:
 		getContentfulEntriesByType: async () => contentfulEntriesResponse,
 		getContentfulEntryByField: async () => contentfulEntryResponse,
 		getContentfulImagesFromEntries: async () => contentfulImagesResponse,
+		getContentfulAssetsByTag: vi.fn(async () => ({ items: [] })),
 		buildEventSchema: (event: any) => buildEventSchemaOverride?.(event) ?? { title: event.fields.title },
 		getGravatarProfile: async () => null,
 		handleModalOpen: () => null,
