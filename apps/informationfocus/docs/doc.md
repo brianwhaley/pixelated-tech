@@ -49,14 +49,14 @@ git push informationfocus dev:main
 
 https://github.com/aws-amplify/amplify-hosting/issues/3398
 
-aws amplify update-app --app-id d1p5oldpldjwqc --platform WEB_DYNAMIC --region us-east-2
+aws amplify update-app --app-id d1p5oldpldjwqc --platform WEB_DYNAMIC --region us-east-1
 
-aws amplify update-branch --app-id d1p5oldpldjwqc --branch-name dev --framework 'Next.js - SSR' --region us-east-2
+aws amplify update-branch --app-id d1p5oldpldjwqc --branch-name dev --framework 'Next.js - SSR' --region us-east-1
 
-aws amplify update-branch --app-id d1p5oldpldjwqc --branch-name main --framework 'Next.js - SSR' --region us-east-2
+aws amplify update-branch --app-id d1p5oldpldjwqc --branch-name main --framework 'Next.js - SSR' --region us-east-1
 
 REVERT COMMAND: 
-aws amplify update-app --appId d1p5oldpldjwqc --region us-east-2 --platform WEB_DYNAMIC
+aws amplify update-app --appId d1p5oldpldjwqc --region us-east-1 --platform WEB_DYNAMIC
 
 , {
     "source": "</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf|map|json)$)([^.]+$)/>",

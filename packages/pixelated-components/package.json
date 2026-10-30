@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.10",
+	"version": "3.22.11",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -92,8 +92,8 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-dynamodb": "^3.1159.0",
-		"@aws-sdk/client-sesv2": "^3.1159.0",
+		"@aws-sdk/client-dynamodb": "^3.1160.0",
+		"@aws-sdk/client-sesv2": "^3.1160.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.8",
@@ -165,8 +165,8 @@
 		"flatted": "^3.4.2"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1159.0",
-		"@aws-sdk/client-route-53": "^3.1159.0",
+		"@aws-sdk/client-cloudwatch": "^3.1160.0",
+		"@aws-sdk/client-route-53": "^3.1160.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^188.0.0",

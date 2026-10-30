@@ -340,6 +340,8 @@ The SES SMTP credentials for this forwarding system are already provisioned in t
 
 The SMTP password is secret and is not stored in this documentation. AWS displays it only when the credentials are created. If it is no longer available, create a new SMTP credential or access key for the existing IAM user.
 
+NOTE: Swotching regions for AWS SES required a new IAM user to be created.  I deleted the old one and recreated with the same name.  Then i used the new Access Key and Secret Access Key for Googke Send Mail As setup. 
+
 #### Create or rotate SMTP credentials
 
 1. Look under IAM SMTP credentials (right underneath the Mail Manager section):

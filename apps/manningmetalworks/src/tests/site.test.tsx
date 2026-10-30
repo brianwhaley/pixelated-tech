@@ -1,7 +1,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import React from 'react';
-import { describe, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { getContentfulAssetsByTag } from '@pixelated-tech/components';
 import {
 	render,
 	screen,
@@ -96,13 +97,6 @@ describe('Manning Metalworks coverage', () => {
 
 	runPageSmokeTests([
 		{
-			name: 'Home',
-			Component: Home,
-			assertion: async () => {
-				await waitFor(() => expect(screen.getByTestId('page-title-header')).toBeTruthy());
-			},
-		},
-		{
 			name: 'About Us',
 			Component: AboutUsPage,
 			assertion: async () => {
@@ -131,13 +125,6 @@ describe('Manning Metalworks coverage', () => {
 			},
 		},
 		{
-			name: 'Gallery',
-			Component: GalleryPage,
-			assertion: async () => {
-				await waitFor(() => expect(screen.getByTestId('page-title-header')).toBeTruthy());
-			},
-		},
-		{
 			name: 'Style Guide',
 			Component: StyleGuidePage,
 			assertion: async () => {
@@ -145,6 +132,45 @@ describe('Manning Metalworks coverage', () => {
 			},
 		},
 	]);
+
+	it('renders the Contentful continuous gallery carousel on the home page', async () => {
+		vi.mocked(getContentfulAssetsByTag).mockResolvedValueOnce({
+			items: [{
+				fields: {
+					title: 'Fabricated stair rail',
+					file: {
+						url: '//images.ctfassets.net/example/gallery.jpg',
+						contentType: 'image/jpeg',
+					},
+				},
+			}],
+		} as any);
+
+		render(await Home());
+
+		expect(getContentfulAssetsByTag).toHaveBeenCalledWith(expect.objectContaining({ tag: 'gallery' }));
+		expect(screen.getByTestId('carousel')).toHaveAttribute('variant', 'continuous');
+	});
+
+	it('renders the Contentful-tagged gallery', async () => {
+		vi.mocked(getContentfulAssetsByTag).mockResolvedValueOnce({
+			items: [{
+				fields: {
+					title: 'Fabricated stair rail',
+					file: {
+						url: '//images.ctfassets.net/example/gallery.jpg',
+						contentType: 'image/jpeg',
+					},
+				},
+			}],
+		} as any);
+
+		render(await GalleryPage());
+
+		expect(getContentfulAssetsByTag).toHaveBeenCalledWith(expect.objectContaining({ tag: 'gallery' }));
+		expect(screen.getByTestId('page-title-header')).toBeTruthy();
+		expect(screen.getByTestId('tiles')).toBeTruthy();
+	});
 
 
 	runCommonBlogPageCoverage({
