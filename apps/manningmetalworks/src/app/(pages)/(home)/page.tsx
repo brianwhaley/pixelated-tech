@@ -1,10 +1,8 @@
-"use client";
-
-import { PageGridItem, PageSection, PageTitleHeader, PageSectionHeader } from '@pixelated-tech/components';
+import { getContentfulAssetsByTag, normalizeContentfulAssetUrl, PageGridItem, PageSection, PageTitleHeader, PageSectionHeader, Carousel, type CarouselCardType } from '@pixelated-tech/components';
+import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 import { Callout } from '@pixelated-tech/components';
 import { SmartImage } from '@pixelated-tech/components';
 import { BlogPostList } from "@pixelated-tech/components";
-import Script from "next/script";
 
 /* 
 Alternative Tag Lines
@@ -15,7 +13,29 @@ Alternative Tag Lines
 "Forging Relationships Through Quality Fabrication and Expert Repair."
 */
  
-export default function Home() {
+export default async function Home() {
+	const pixelatedConfig = getFullPixelatedConfig();
+	const contentful = pixelatedConfig.integrations?.contentful;
+	const assets = await getContentfulAssetsByTag({
+		apiProps: {
+			base_url: contentful?.base_url ?? '',
+			space_id: contentful?.space_id ?? '',
+			environment: contentful?.environment ?? '',
+			delivery_access_token: contentful?.delivery_access_token ?? '',
+		},
+		tag: 'gallery',
+	});
+	const imageAssets = Array.isArray(assets?.items)
+		? assets.items.filter((asset: any) => asset.fields?.file?.contentType?.startsWith('image/'))
+		: [];
+	const galleryCards: CarouselCardType[] = imageAssets.map((asset: any, index: number) => ({
+		index,
+		cardIndex: 0,
+		cardLength: imageAssets.length,
+		image: `${normalizeContentfulAssetUrl(asset.fields.file.url)}?fm=webp&q=50`,
+		imageAlt: asset.fields.description || asset.fields.title || 'Manning Metalworks project',
+	}));
+
 	return (
 		<>
 			<PageSection columns={1} maxWidth="1024px" id="home-section">
@@ -99,14 +119,7 @@ export default function Home() {
 
 			<PageSection columns={1} maxWidth="1024px" id="home-section">
 				<PageSectionHeader title="Recent Gallery Photos" />
-				<div id="curator-feed-carousel" 
-					style={{ maxWidth: "95vw", overflow: "hidden"}}
-				/>
-				<Script
-					// src="https://cdn.curator.io/published/1f7987eb-3e2a-406e-84c2-4571b6ff18f7.js"
-					src="https://cdn.curator.io/published/019ec07b-3fcf-468f-ab7b-d48c013ee3af_egk9qy4w.js"
-					strategy="afterInteractive"
-				/>
+				<Carousel cards={galleryCards} variant="continuous" imgFit="cover" />
 			</PageSection>
 
 		</>

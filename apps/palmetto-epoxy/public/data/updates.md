@@ -2,11 +2,11 @@
 
 ## 2026-10-28 Updates
 * [  ] Contact someone at Sun City West to help recommend Palmetto Epoxy
-* [  ] possibly run an ad for Sun CIty West
+* [  ] possibly run an ad for Sun City West
 * [  ] Write a blog post about Sun CIty West
 * [  ] Do a mailer for Sun City West
 * [  ] Analytics to se which ad targeting is better
-* [  ] Build a Landing Page for each ad
+* [ x ] Build a Landing Page for each ad
 
 ## 2026-10-13 META AD AUDIENCE
 

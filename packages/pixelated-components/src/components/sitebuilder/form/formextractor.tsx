@@ -143,7 +143,6 @@ FormExtractEngine.propTypes = {
 export type FormExtractEngineType = InferProps<typeof FormExtractEngine.propTypes>;
 export function FormExtractEngine(props: FormExtractEngineType) {
 	const proxy = 'https://proxy.pixelated.tech/prod/proxy?url=';
-	// const proxy = "https://x3cf4kv0nk.execute-api.us-east-2.amazonaws.com/prod/proxy?url=";
 	// const proxy = "https://thingproxy.freeboard.io/fetch/";
 	const [ url, setURL ] = useState<string | null | undefined>(props.url);
 	const [ htmlPaste, setHtmlPaste ] = useState<string | null | undefined>(props.htmlPaste);

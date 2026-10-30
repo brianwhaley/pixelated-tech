@@ -812,7 +812,7 @@ describe('Sitemap Helper Functions', () => {
 
 				expect(sitemapConfig.contentful).toMatchObject({
 					space_id: 'space-id',
-					access_token: 'token',
+					delivery_access_token: 'token',
 					sitemapContentType: 'event',
 					sitemapField: 'id',
 					sitemapRoutePrefix: '/events'

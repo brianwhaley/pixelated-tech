@@ -172,7 +172,7 @@ describe('Contentful Delivery API', () => {
 			base_url: 'https://api.contentful.com',
 			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			access_token: mockContentfulApiProps.delivery_access_token
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		it('should fetch content type definition', async () => {
@@ -713,6 +713,72 @@ describe('Contentful Delivery API', () => {
 			const callUrl = (global.fetch as any).mock.calls[0][0];
 			expect(callUrl).toContain('/assets');
 		});
+
+		it('should filter assets by Contentful tag ID', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => ({ items: [] })
+			});
+
+			await contentfulModule.getContentfulAssetsByTag({
+				apiProps: mockContentfulApiProps as any,
+				tag: 'gallery',
+			});
+
+			const callUrl = (global.fetch as any).mock.calls[0][0];
+			expect(callUrl).toContain('metadata.tags.sys.id%5Bin%5D=gallery');
+			expect(callUrl).toContain(`access_token=${mockContentfulApiProps.delivery_access_token}`);
+			expect(callUrl).not.toContain('order=');
+		});
+
+		it('should sort assets by title by default', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => ({ items: [
+					{ fields: { title: 'Zinc railing' } },
+					{ fields: { title: 'Aluminum railing' } },
+				] })
+			});
+
+			const result = await contentfulModule.getContentfulAssetsByTag({
+				apiProps: mockContentfulApiProps as any,
+				tag: 'gallery',
+			});
+
+			expect(result?.items.map((item: any) => item.fields.title)).toEqual(['Aluminum railing', 'Zinc railing']);
+		});
+
+		it('should support a custom asset ordering field', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => ({ items: [
+					{ fields: { title: 'First', description: 'Zinc' } },
+					{ fields: { title: 'Second', description: 'Aluminum' } },
+				] })
+			});
+
+			const result = await contentfulModule.getContentfulAssetsByTag({
+				apiProps: mockContentfulApiProps as any,
+				tag: 'gallery',
+				orderBy: 'description',
+			});
+
+			expect(result?.items.map((item: any) => item.fields.description)).toEqual(['Aluminum', 'Zinc']);
+		});
+
+		it('should return null when tagged asset configuration is incomplete', async () => {
+			const result = await contentfulModule.getContentfulAssetsByTag({
+				apiProps: {
+					base_url: '',
+					space_id: '',
+					environment: '',
+					delivery_access_token: '',
+				} as any,
+				tag: 'gallery',
+			});
+
+			expect(result).toBeNull();
+		});
 	});
 
 	describe('getContentfulAssetURLs', () => {
@@ -720,7 +786,7 @@ describe('Contentful Delivery API', () => {
 			base_url: 'https://api.contentful.com',
 			space_id: mockContentfulApiProps.space_id,
 			environment: 'master',
-			access_token: mockContentfulApiProps.delivery_access_token
+			delivery_access_token: mockContentfulApiProps.delivery_access_token
 		};
 
 		const mockAssets = {

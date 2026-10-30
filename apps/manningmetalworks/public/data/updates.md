@@ -1,12 +1,13 @@
 # Manning Metalworks -- Updates
 
 ## 2026-10-28 
-* [  ] New Location Blog Post
-* [  ] Remove Instagram based page and replace with gallery page, possible upgrade to Projects page once the photos are organized enough
+* [ x ] New Location Blog Post
+* [ x ] Remove Instagram based page and replace with gallery page, possible upgrade to Projects page once the photos are organized enough
 * [  ] Create a pricing page, focus on "example" type pricing, with "starting at" laguage, covering the spectrum of pricing
 * [  ] Press release for new location 
 * [  ] Contact local media to get local coverage of metalworks shop. and cool projects
 * [  ] Release for new book - The Digital Small Business
+* [  ] Add new Case Study to the book regarding Manning Metalworks
 
 
 ## 2026-06-02

@@ -1,20 +1,34 @@
-"use client";
+import { getContentfulAssetsByTag, normalizeContentfulAssetUrl, PageSection, PageTitleHeader, Tiles } from '@pixelated-tech/components';
+import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 
-import React from "react";
-import Script from "next/script";
-import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 
-export default function Instagram() {
+export default async function GalleryPage() {
+	const pixelatedConfig = getFullPixelatedConfig();
+	const contentful = pixelatedConfig.integrations?.contentful;
+	const assets = await getContentfulAssetsByTag({
+		apiProps: {
+			base_url: contentful?.base_url ?? '',
+			space_id: contentful?.space_id ?? '',
+			environment: contentful?.environment ?? '',
+			delivery_access_token: contentful?.delivery_access_token ?? '',
+		},
+		tag: 'gallery',
+	});
+	const imageAssets = Array.isArray(assets?.items)
+		? assets.items.filter((asset: any) => asset.fields?.file?.contentType?.startsWith('image/'))
+		: [];
+	const galleryCards = imageAssets.map((asset: any, index: number) => ({
+		index,
+		cardLength: imageAssets.length,
+		image: `${normalizeContentfulAssetUrl(asset.fields.file.url)}?fm=webp&q=50`,
+		imageAlt: asset.fields.description || asset.fields.title || 'Manning Metalworks project',
+	}));
+
 	return (
 		<>
 			<PageTitleHeader title="Manning Metalworks Gallery" />
-			<PageSection columns={1} id="instagram-section">
-				<div id="curator-feed-default-feed-layout" />
-				<Script
-					// src="https://cdn.curator.io/published/a997f463-40a0-49e8-9f34-3de237b3fc5b.js"
-					src="https://cdn.curator.io/published/019ec07b-3fcf-468f-ab7b-d48c013ee3af.js"
-					strategy="afterInteractive"
-				/>
+			<PageSection columns={1} maxWidth="1024px" id="gallery-section">
+				<Tiles cards={galleryCards} rowCount={3} modalOnClick={true} showOverlay={false} />
 			</PageSection>
 		</>
 	);

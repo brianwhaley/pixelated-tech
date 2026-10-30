@@ -60,6 +60,10 @@
 	align-items: stretch;
 }
 
+.carousel-container.continuous {
+	overflow: hidden;
+}
+
 .carousel-container.continuous .carousel-track {
 	--carousel-time-per-image: 3s;
 	display: flex;
