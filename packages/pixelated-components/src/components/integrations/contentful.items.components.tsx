@@ -363,6 +363,10 @@ export function ContentfulItemDetail(props: ContentfulItemDetailType)  {
 			itemQuantity: 1,
 			itemInventory: thisItem.fields.quantity,
 			itemCost: thisItem.fields.price,
+			itemIsShippable: thisItem.fields.isShippable !== false,
+			itemWeight: typeof thisItem.fields.weight === 'number' ? thisItem.fields.weight : Number(thisItem.fields.weight ?? 0),
+			itemWeightUnit: thisItem.fields.weightUnit || 'lb',
+			itemType: 'product',
 		};
 		
 		shoppingCartItem.itemURL = itemURL;
