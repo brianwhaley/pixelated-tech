@@ -95,6 +95,7 @@ describe('handlePixelatedProxy', () => {
         expect(csp).toContain("https://*.cloudflareinsights.com");
         // Ensure PayPal is explicitly allowed in frame-src (fixes PayPal SDK framing + cardfields stylesheet)
         expect(csp).toMatch(/frame-src[^;]*https:\/\/\*\.paypal\.com/);
+        expect(csp).toMatch(/frame-src[^;]*https:\/\/\*\.squarecdn\.com/);
         // Ensure syndicated search is allowed in frame-src
         expect(csp).toMatch(/frame-src[^;]*https:\/\/syndicatedsearch\.goog/);
     });
