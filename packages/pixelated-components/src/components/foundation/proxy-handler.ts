@@ -81,7 +81,8 @@ export function handlePixelatedProxy(req: NextRequest) {
 
 		"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.google.com https://www.paypalobjects.com https://*.squarecdn.com https://cdn.curator.io",
 
-		"font-src 'self' data: https://fonts.gstatic.com",
+		// Square fonts are served from squarecdn.com and d1g145x70srn7h.cloudfront.net
+		"font-src 'self' data: https://fonts.gstatic.com https://*.squarecdn.com https://d1g145x70srn7h.cloudfront.net",
 
 		"media-src 'self' https://*.ctfassets.net https://res.cloudinary.com",
 
