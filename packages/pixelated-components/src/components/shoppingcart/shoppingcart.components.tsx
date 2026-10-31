@@ -293,7 +293,7 @@ export function ShoppingCart(props: ShoppingCartType) {
 
 	function onShippingSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		const form = event.currentTarget as HTMLFormElement;
+		const form = event.target as HTMLFormElement;
 		const formObject = Object.fromEntries(new FormData(form));
 		setShippingInfo({
 			...(formObject as unknown as ShippingInfoType),
