@@ -1,5 +1,77 @@
 # The Three Muses of Bluffton -- Updates
 
+## 2026-10-07
+* [ x ] Kathy had rotator cuff surgery
+* [ x ] No classes until after Jan 1
+* [ x ] Sun CIty blast for seamstress job opening
+* [  ] Get into the studios
+    * [  ] Advertisements To them
+    * [  ] Joint advertising with studios?
+    * [  ] Partnerships
+    * [ x ] One pager to drop off at the studios
+    * [ x ] katie to send over a list of local studios
+    * [ x ] add all studios to wordpress jetpack newsletter subscription
+    * [ x ] add all studios to facebook account
+    * [ x ] blog post with local studio names
+* [  ] Fabrics still in the works, stretching into the new year
+
+### LOCATIONS
+
+Georgia:
+Richmond Hill (+25 mi)
+Savannah (+25 mi) 
+
+South Carolina:
+Beaufort (+25 mi), 
+Bluffton (+25 mi), 
+Charleston (+25 mi), 
+Mount Pleasant (+25 mi), 
+Summerville (+25 mi) 
+
+### STUDENTS / PRACTITIONERS
+
+Demographics > Education > Fields of study
+Choreography
+Contemporary dance
+Dancing
+Modern dance
+
+Interests > Additional interests
+American Ballet Theatre (dance company)
+Broadway theatre (performing arts)
+Classical ballet (dance)
+Contemporary dance (dance)
+Jazz dance (dance)
+Modern dance (dance)
+New York City Ballet (dance company)
+Tap dance
+
+Demographics > Work > Job titles
+Ballerina
+Dancing
+Modern Dancer
+Performer/Choreographer
+
+Demographics > Parents > All Parents
+
+### OWNERS / TEACHER
+
+Demographics > Work > Job titles
+Ballet Instructor
+Ballet master
+Ballet Teacher
+Choreography
+Dance Instructor/Choreographer
+Dance Teacher and Choreographer
+Teacher/Choreographer
+Theatre director
+Theatre practitioner
+
+Interests > Additional interests
+Dance studio (dance)
+
+
+
 ## 2026-08-05 Updates
 * IDEA - Studio Owner Open House.  Advertise with emails, cold calls, mailed invitation like a wedding.  Offer similar to Entertainment Book or SERG Discount Card.  
 * Possible partner with trainer for Conditioning Equipment for Dancers

@@ -9,14 +9,14 @@
 * [  ] About Us - Photo
 * [  ] About Us - Photo - Others?
 * [ X ] VisualDesign section of routes.json - colors, fonts
-* [  ] Facebook account
-* [  ] Instagram account
-* [  ] Threads account
-* [  ] Nextdoor Account
+* [ X ] Facebook account
+* [ X ] Instagram account
+* [ X ] Threads account
+* [ X ] Nextdoor Account
 * [ X ] Set up wordpress blog
 * [  ] Sign Up for Jetpack
 * [ X ] Contentful
 * [ X ] Cloudinary
-* [  ] First quarter of blog posts (3)
-* [  ] Move domain
-* [  ] Migrate email
+* [ X ] First quarter of blog posts (3)
+* [ X ] Move domain
+* [ X ] Migrate email
