@@ -20,7 +20,16 @@ vi.mock('../components/structure/carousel', () => ({
 }));
 
 vi.mock('../components/shoppingcart/shoppingcart.components', () => ({
-	AddToCartButton: ({ item }: any) => <button data-testid="add-to-cart">Add</button>
+	AddToCartButton: ({ item }: any) => (
+		<button
+			data-testid="add-to-cart"
+			data-itemisshippable={String(item?.itemIsShippable)}
+			data-itemweight={item?.itemWeight}
+			data-itemweightunit={item?.itemWeightUnit}
+		>
+			Add
+		</button>
+	)
 }));
 
 import { ContentfulItemHeader, ContentfulItemDetail } from '../components/integrations/contentful.items.components';
@@ -47,7 +56,16 @@ describe('Contentful item detail tests', () => {
 	});
 
 	it('should fetch item detail and render carousel when entry exists', async () => {
-		vi.mocked(delivery.getContentfulEntryByEntryID).mockResolvedValueOnce(mockContentfulItemsDetail.mockContentfulEntry);
+		const detailEntry = {
+			...mockContentfulItemsDetail.mockContentfulEntry,
+			fields: {
+				...mockContentfulItemsDetail.mockContentfulEntry.fields,
+				isShippable: true,
+				weight: 1,
+				weightUnit: 'lb',
+			},
+		};
+		vi.mocked(delivery.getContentfulEntryByEntryID).mockResolvedValueOnce(detailEntry);
 
 		vi.mocked(delivery.getContentfulEntriesByType).mockResolvedValueOnce(mockContentfulItemsDetail.mockContentfulEntries);
 
@@ -69,6 +87,9 @@ describe('Contentful item detail tests', () => {
 			expect(screen.getByTestId('carousel')).toBeInTheDocument();
 			expect(screen.getByText('Detailed Product')).toBeInTheDocument();
 			expect(screen.getByText(/\$79.99 USD/)).toBeInTheDocument();
+			expect(screen.getByTestId('add-to-cart')).toHaveAttribute('data-itemisshippable', 'true');
+			expect(screen.getByTestId('add-to-cart')).toHaveAttribute('data-itemweight', '1');
+			expect(screen.getByTestId('add-to-cart')).toHaveAttribute('data-itemweightunit', 'lb');
 		});
 	});
 });
