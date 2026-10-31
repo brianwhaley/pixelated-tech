@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import { render } from '../test/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 import { FormEngine } from '../components/sitebuilder/form/formengine';
@@ -32,5 +32,35 @@ describe('FormEngine — default method and submit hardening', () => {
 
     fireEvent.submit(form);
     expect(handler).toHaveBeenCalled();
+  });
+
+  it('keeps the submitted form available through event.target after async validation', async () => {
+    const formData = {
+      fields: [{
+        component: 'FormInput',
+        props: {
+          id: 'name',
+          name: 'name',
+          type: 'text',
+          required: true,
+        },
+      }],
+    } as any;
+    const handler = vi.fn((event: React.FormEvent<HTMLFormElement>) => {
+      const submittedForm = event.target as HTMLFormElement;
+      expect(submittedForm).toBeInstanceOf(HTMLFormElement);
+      expect(new FormData(submittedForm).get('name')).toBe('Jane');
+    });
+
+    const { container } = render(
+      <FormEngine id="f3" name="f3" formData={formData} onSubmitHandler={handler} />
+    );
+
+    const form = container.querySelector('form') as HTMLFormElement;
+    const input = form.elements.namedItem('name') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: 'Jane' } });
+    fireEvent.submit(form);
+
+    await waitFor(() => expect(handler).toHaveBeenCalled());
   });
 });
