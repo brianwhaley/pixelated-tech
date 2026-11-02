@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.17",
+	"version": "3.22.18",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -105,7 +105,7 @@
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",
 		"typescript": "6.0.2",
-		"vitest": "^5.0.5"
+		"vitest": "^5.1.0"
 	},
 	"devDependencies": {
 		"@babel/parser": "^8.0.10",
@@ -128,8 +128,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.72.1",
 		"@typescript-eslint/parser": "^8.72.1",
 		"@vitejs/plugin-react": "^6.1.2",
-		"@vitest/coverage-v8": "^5.0.5",
-		"@vitest/ui": "^5.0.5",
+		"@vitest/coverage-v8": "^5.1.0",
+		"@vitest/ui": "^5.1.0",
 		"ajv": "^8.20.0",
 		"ajv-keywords": "^5.1.0",
 		"babel-loader": "^10.1.1",
@@ -169,7 +169,7 @@
 		"@aws-sdk/client-route-53": "^3.1160.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
-		"googleapis": "^188.0.0",
+		"googleapis": "^189.0.0",
 		"md5": "^2.3.0",
 		"puppeteer": "^25.16.0",
 		"recharts": "^3.10.1"

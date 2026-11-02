@@ -73,12 +73,22 @@ async function main() {
 			missingModules.push(`${runtimeModule}: ${error instanceof Error ? error.message : error}`);
 		}
 	}
+	let configError = '';
+	try {
+		const config = JSON.parse(await fs.readFile(path.join(stagingRoot, 'pixelated.config.json'), 'utf8'));
+		if (!config.siteInfo || !config.integrations?.nextAuth?.secret) {
+			configError = 'pixelated.config.json is missing siteInfo or integrations.nextAuth.secret';
+		}
+	} catch (error) {
+		configError = error instanceof Error ? error.message : String(error);
+	}
 
 	console.log(`Amplify artifact staging root: ${stagingRoot}`);
 	console.log(`Amplify artifact size: ${artifactBytes} bytes`);
 	console.log(`Amplify artifact size limit: ${maxArtifactBytes} bytes`);
 	console.log(`Runtime modules checked: ${runtimeModules.length}`);
 	console.log(`Runtime modules missing: ${missingModules.length}`);
+	console.log(`Artifact-root config: ${configError ? 'invalid' : 'valid'}`);
 
 	if (missingModules.length > 0) {
 		console.error('\nRuntime modules missing from the staged Amplify artifact:');
@@ -89,8 +99,11 @@ async function main() {
 	if (artifactBytes > maxArtifactBytes) {
 		console.error('\nThe staged Amplify artifact exceeds the 220 MiB limit.');
 	}
+	if (configError) {
+		console.error(`\nThe staged Amplify artifact config is invalid: ${configError}`);
+	}
 
-	if (missingModules.length > 0 || artifactBytes > maxArtifactBytes) {
+	if (missingModules.length > 0 || artifactBytes > maxArtifactBytes || configError) {
 		process.exitCode = 1;
 		return;
 	}
