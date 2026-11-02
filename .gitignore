@@ -1,6 +1,7 @@
 
 .cache/
 .DS_Store
+.amplify-artifact/
 .env
 .env.local
 .env.*.local

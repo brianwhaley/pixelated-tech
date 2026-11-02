@@ -8,14 +8,13 @@ const repositoryRoot = path.resolve(appRoot, '../..');
 const buildRoot = path.join(appRoot, '.next');
 
 const runtimePackages = [
-	'next',
-	'@next/env',
 	'@swc/helpers',
-	'baseline-browser-mapping',
-	'caniuse-lite',
-	'postcss',
-	'styled-jsx',
 	'tslib',
+];
+const runtimeFiles = [
+	'next/dist/server/app-render/async-local-storage.js',
+	'next/dist/server/app-render/dynamic-access-async-storage-instance.js',
+	'next/dist/server/app-render/dynamic-access-async-storage.external.js',
 ];
 
 async function pathExists(filePath) {
@@ -43,6 +42,19 @@ async function main() {
 		await fs.mkdir(path.dirname(targetPath), { recursive: true });
 		await fs.cp(sourcePath, targetPath, { recursive: true, force: true });
 		console.log(`Packaged ${packageName} into ${path.relative(appRoot, targetPath)}`);
+	}
+
+	for (const runtimeFile of runtimeFiles) {
+		const sourcePath = path.join(repositoryRoot, 'node_modules', runtimeFile);
+		const targetPath = path.join(buildRoot, 'node_modules', runtimeFile);
+
+		if (!(await pathExists(sourcePath))) {
+			throw new Error(`Missing runtime file source: ${sourcePath}`);
+		}
+
+		await fs.mkdir(path.dirname(targetPath), { recursive: true });
+		await fs.cp(sourcePath, targetPath, { force: true });
+		console.log(`Packaged ${runtimeFile} into ${path.relative(appRoot, targetPath)}`);
 	}
 }
 

@@ -6,6 +6,7 @@ const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(scriptDirectory, '..');
 const buildRoot = path.join(appRoot, '.next');
 const requiredServerFilesPath = path.join(buildRoot, 'required-server-files.json');
+const maxArtifactBytes = 230686720;
 
 async function pathExists(filePath) {
 	try {
@@ -16,14 +17,16 @@ async function pathExists(filePath) {
 	}
 }
 
-async function collectFiles(directory) {
+async function collectFiles(directory, excludedDirectories = new Set()) {
 	const entries = await fs.readdir(directory, { withFileTypes: true });
 	const files = [];
 
 	for (const entry of entries) {
 		const entryPath = path.join(directory, entry.name);
 		if (entry.isDirectory()) {
-			files.push(...await collectFiles(entryPath));
+			if (!excludedDirectories.has(entry.name)) {
+				files.push(...await collectFiles(entryPath, excludedDirectories));
+			}
 		} else {
 			files.push(entryPath);
 		}
@@ -61,11 +64,17 @@ async function main() {
 	const filesToCheck = new Set([...tracedFiles, ...requiredFiles]);
 	const missingFiles = [];
 	const runtimeFiles = [
+		'node_modules/next/dist/server/app-render/async-local-storage.js',
+		'node_modules/next/dist/server/app-render/dynamic-access-async-storage-instance.js',
 		'node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js',
 		'node_modules/@swc/helpers/esm/_interop_require_default.js',
 		'node_modules/tslib/tslib.js',
 	];
 	const missingRuntimeFiles = [];
+	let artifactBytes = 0;
+	for (const artifactFile of await collectFiles(buildRoot, new Set(['cache']))) {
+		artifactBytes += (await fs.stat(artifactFile)).size;
+	}
 
 	for (const filePath of filesToCheck) {
 		if (!(await pathExists(filePath))) {
@@ -88,6 +97,8 @@ async function main() {
 	console.log(`Missing source files: ${missingFiles.length}`);
 	console.log(`@swc/helpers traced: ${swcHelperIsTraced ? 'yes' : 'no'}`);
 	console.log(`Missing physical runtime files: ${missingRuntimeFiles.length}`);
+	console.log(`Artifact size: ${artifactBytes} bytes`);
+	console.log(`Artifact size limit: ${maxArtifactBytes} bytes`);
 
 	if (missingFiles.length > 0) {
 		console.error('\nMissing files referenced by the generated trace:');
@@ -106,8 +117,11 @@ async function main() {
 		}
 		console.error('\nRun `npm run prepare:artifact -w apps/pixelated-admin` before verification.');
 	}
+	if (artifactBytes > maxArtifactBytes) {
+		console.error('\nThe deployable .next artifact exceeds Amplify\'s 220 MiB limit.');
+	}
 
-	if (missingFiles.length > 0 || !swcHelperIsTraced || missingRuntimeFiles.length > 0) {
+	if (missingFiles.length > 0 || !swcHelperIsTraced || missingRuntimeFiles.length > 0 || artifactBytes > maxArtifactBytes) {
 		process.exitCode = 1;
 		return;
 	}
