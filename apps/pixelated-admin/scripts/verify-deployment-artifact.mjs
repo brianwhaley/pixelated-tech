@@ -61,6 +61,7 @@ async function main() {
 	const filesToCheck = new Set([...tracedFiles, ...requiredFiles]);
 	const missingFiles = [];
 	const runtimeFiles = [
+		'node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js',
 		'node_modules/@swc/helpers/esm/_interop_require_default.js',
 		'node_modules/tslib/tslib.js',
 	];

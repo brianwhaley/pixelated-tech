@@ -8,7 +8,13 @@ const repositoryRoot = path.resolve(appRoot, '../..');
 const buildRoot = path.join(appRoot, '.next');
 
 const runtimePackages = [
+	'next',
+	'@next/env',
 	'@swc/helpers',
+	'baseline-browser-mapping',
+	'caniuse-lite',
+	'postcss',
+	'styled-jsx',
 	'tslib',
 ];
 
