@@ -60,6 +60,11 @@ async function main() {
 		.map((requiredFile) => path.resolve(appRoot, requiredFile));
 	const filesToCheck = new Set([...tracedFiles, ...requiredFiles]);
 	const missingFiles = [];
+	const runtimeFiles = [
+		'node_modules/@swc/helpers/esm/_interop_require_default.js',
+		'node_modules/tslib/tslib.js',
+	];
+	const missingRuntimeFiles = [];
 
 	for (const filePath of filesToCheck) {
 		if (!(await pathExists(filePath))) {
@@ -69,6 +74,11 @@ async function main() {
 
 	const swcHelperPath = path.resolve(appRoot, '../../node_modules/@swc/helpers/esm/_interop_require_default.js');
 	const swcHelperIsTraced = [...tracedFiles].some((filePath) => filePath === swcHelperPath);
+	for (const runtimeFile of runtimeFiles) {
+		if (!(await pathExists(path.join(buildRoot, runtimeFile)))) {
+			missingRuntimeFiles.push(runtimeFile);
+		}
+	}
 
 	console.log(`Artifact root: ${buildRoot}`);
 	console.log(`Trace manifests: ${manifestPaths.length}`);
@@ -76,6 +86,7 @@ async function main() {
 	console.log(`Required server files: ${requiredFiles.length}`);
 	console.log(`Missing source files: ${missingFiles.length}`);
 	console.log(`@swc/helpers traced: ${swcHelperIsTraced ? 'yes' : 'no'}`);
+	console.log(`Missing physical runtime files: ${missingRuntimeFiles.length}`);
 
 	if (missingFiles.length > 0) {
 		console.error('\nMissing files referenced by the generated trace:');
@@ -87,8 +98,15 @@ async function main() {
 	if (!swcHelperIsTraced) {
 		console.error('\nThe runtime SWC helper is not present in any generated trace manifest.');
 	}
+	if (missingRuntimeFiles.length > 0) {
+		console.error('\nMissing physical runtime files from the deployable .next artifact:');
+		for (const missingRuntimeFile of missingRuntimeFiles) {
+			console.error(`- ${missingRuntimeFile}`);
+		}
+		console.error('\nRun `npm run prepare:artifact -w apps/pixelated-admin` before verification.');
+	}
 
-	if (missingFiles.length > 0 || !swcHelperIsTraced) {
+	if (missingFiles.length > 0 || !swcHelperIsTraced || missingRuntimeFiles.length > 0) {
 		process.exitCode = 1;
 		return;
 	}

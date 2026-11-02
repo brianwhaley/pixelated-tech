@@ -121,6 +121,7 @@ applications:
             - 'echo "Artifact app root: $APP_ROOT"'
             - 'cd "$REPO_ROOT"'
             - 'npm run config:postbuild -w "$AMPLIFY_MONOREPO_APP_ROOT"'
+            - 'npm run prepare:artifact -w "$AMPLIFY_MONOREPO_APP_ROOT"'
             - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do echo "Removing postBuild Next.js directory: $NEXT_ROOT/$NEXT_FOLDER"; rm -rf "$NEXT_ROOT/$NEXT_FOLDER"; done; done'
             - 'for NEXT_ROOT in "$REPO_ROOT/.next" "$APP_ROOT/.next"; do for NEXT_FOLDER in cache dev diagnostics types trace trace-build; do test ! -e "$NEXT_ROOT/$NEXT_FOLDER" || { echo "Next.js directory remains after postBuild cleanup: $NEXT_ROOT/$NEXT_FOLDER"; exit 1; }; done; done'
             - 'REMAINING_CACHE="$(find "$REPO_ROOT" -type d -path "*/.next/cache" -print -quit)"; test -z "$REMAINING_CACHE" || { echo "Next.js cache remains after postBuild cleanup: $REMAINING_CACHE"; exit 1; }'
