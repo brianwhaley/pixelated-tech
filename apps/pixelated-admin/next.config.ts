@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
 	// Admin deployment tracing is intentionally narrower than the shared monorepo root.
 	// Keep this app-specific until every server route has been verified after deployment.
 	outputFileTracingRoot: path.resolve(__dirname),
+	outputFileTracingIncludes: {
+		'/**': [
+			'./src/app/config/pixelated.config.json.enc',
+			'../../node_modules/@swc/helpers/**/*',
+			'../../node_modules/tslib/**/*',
+		],
+	},
 	serverExternalPackages: ['ssh2', 'puppeteer'],
 	env: {
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
