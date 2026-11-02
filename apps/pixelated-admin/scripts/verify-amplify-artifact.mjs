@@ -10,9 +10,17 @@ const buildRoot = path.join(appRoot, '.next');
 const maxArtifactBytes = 230686720;
 const excludedDirectories = new Set(['cache', 'dev', 'diagnostics', 'types']);
 const runtimeModules = [
+	'next/dist/build/adapter/setup-node-env.external.js',
+	'next/dist/compiled/next-server/app-route.runtime.prod.js',
+	'next/dist/server/node-environment.js',
+	'next/dist/server/node-environment-baseline.js',
 	'next/dist/server/app-render/dynamic-access-async-storage.external.js',
 	'@swc/helpers/esm/_interop_require_default.js',
 	'tslib/tslib.js',
+];
+const routeModules = [
+	'server/app/manifest.webmanifest/route.js',
+	'server/app/api/auth/[...nextauth]/route.js',
 ];
 
 async function collectFiles(directory) {
@@ -73,6 +81,14 @@ async function main() {
 			missingModules.push(`${runtimeModule}: ${error instanceof Error ? error.message : error}`);
 		}
 	}
+	const routeErrors = [];
+	for (const routeModule of routeModules) {
+		try {
+			stagedRequire(path.join(stagingRoot, routeModule));
+		} catch (error) {
+			routeErrors.push(`${routeModule}: ${error instanceof Error ? error.message : error}`);
+		}
+	}
 	let configError = '';
 	try {
 		const config = JSON.parse(await fs.readFile(path.join(stagingRoot, 'pixelated.config.json'), 'utf8'));
@@ -88,6 +104,8 @@ async function main() {
 	console.log(`Amplify artifact size limit: ${maxArtifactBytes} bytes`);
 	console.log(`Runtime modules checked: ${runtimeModules.length}`);
 	console.log(`Runtime modules missing: ${missingModules.length}`);
+	console.log(`Route bundles checked: ${routeModules.length}`);
+	console.log(`Route bundle errors: ${routeErrors.length}`);
 	console.log(`Artifact-root config: ${configError ? 'invalid' : 'valid'}`);
 
 	if (missingModules.length > 0) {
@@ -102,8 +120,14 @@ async function main() {
 	if (configError) {
 		console.error(`\nThe staged Amplify artifact config is invalid: ${configError}`);
 	}
+	if (routeErrors.length > 0) {
+		console.error('\nStaged route bundles failed to load:');
+		for (const routeError of routeErrors) {
+			console.error(`- ${routeError}`);
+		}
+	}
 
-	if (missingModules.length > 0 || artifactBytes > maxArtifactBytes || configError) {
+	if (missingModules.length > 0 || routeErrors.length > 0 || artifactBytes > maxArtifactBytes || configError) {
 		process.exitCode = 1;
 		return;
 	}
