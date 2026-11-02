@@ -56,6 +56,14 @@ async function main() {
 		await fs.cp(sourcePath, targetPath, { force: true });
 		console.log(`Packaged ${runtimeFile} into ${path.relative(appRoot, targetPath)}`);
 	}
+
+	const configSourcePath = path.join(buildRoot, 'server', 'pixelated.config.json');
+	const configTargetPath = path.join(buildRoot, 'pixelated.config.json');
+	if (!(await pathExists(configSourcePath))) {
+		throw new Error(`Missing decrypted deployment config: ${configSourcePath}`);
+	}
+	await fs.cp(configSourcePath, configTargetPath, { force: true });
+	console.log(`Packaged deployment config into ${path.relative(appRoot, configTargetPath)}`);
 }
 
 main().catch((error) => {
