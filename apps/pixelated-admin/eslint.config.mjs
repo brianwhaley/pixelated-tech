@@ -7,6 +7,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default [
 	...getBaseESLintConfig(__dirname),
 	{
+		ignores: [".amplify-artifact/**"],
+	},
+	{
 		rules: {
 			"pixelated/package-json-no-unused-dependency": "off",
 		},
