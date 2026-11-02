@@ -12,9 +12,43 @@ const runtimePackages = [
 	'tslib',
 ];
 const runtimeFiles = [
+	'next/dist/build/adapter/setup-node-env.external.js',
+	'next/dist/compiled/next-server/app-route.runtime.prod.js',
+	'next/dist/server/node-environment.js',
+	'next/dist/server/node-environment-baseline.js',
+	'next/dist/server/patch-error-inspect.js',
+	'next/dist/server/lib/source-maps.js',
+	'next/dist/server/lib/lru-cache.js',
+	'next/dist/server/lib/parse-stack.js',
+	'next/dist/server/dev/browser-logs/file-logger.js',
+	'next/dist/client/lib/console.js',
+	'next/dist/lib/is-error.js',
+	'next/dist/shared/lib/is-plain-object.js',
+	'next/dist/server/runtime-reacts.external.js',
 	'next/dist/server/app-render/async-local-storage.js',
+	'next/dist/server/app-render/work-async-storage.external.js',
+	'next/dist/server/app-render/work-async-storage-instance.js',
+	'next/dist/server/app-render/dynamic-rendering.js',
+	'next/dist/client/components/hooks-server-context.js',
+	'next/dist/client/components/static-generation-bailout.js',
+	'next/dist/server/app-render/console-async-storage.external.js',
+	'next/dist/server/app-render/console-async-storage-instance.js',
+	'next/dist/server/app-render/work-unit-async-storage.external.js',
+	'next/dist/server/app-render/work-unit-async-storage-instance.js',
+	'next/dist/shared/lib/invariant-error.js',
+	'next/dist/lib/picocolors.js',
 	'next/dist/server/app-render/dynamic-access-async-storage-instance.js',
 	'next/dist/server/app-render/dynamic-access-async-storage.external.js',
+];
+const runtimeDirectories = [
+	'next/dist/compiled/@opentelemetry/api',
+	'next/dist/compiled/source-map',
+	'next/dist/compiled/stacktrace-parser',
+	'next/dist/client',
+	'next/dist/lib',
+	'next/dist/server',
+	'next/dist/shared',
+	'next/dist/server/node-environment-extensions',
 ];
 
 async function pathExists(filePath) {
@@ -55,6 +89,19 @@ async function main() {
 		await fs.mkdir(path.dirname(targetPath), { recursive: true });
 		await fs.cp(sourcePath, targetPath, { force: true });
 		console.log(`Packaged ${runtimeFile} into ${path.relative(appRoot, targetPath)}`);
+	}
+
+	for (const runtimeDirectory of runtimeDirectories) {
+		const sourcePath = path.join(repositoryRoot, 'node_modules', runtimeDirectory);
+		const targetPath = path.join(buildRoot, 'node_modules', runtimeDirectory);
+
+		if (!(await pathExists(sourcePath))) {
+			throw new Error(`Missing runtime directory source: ${sourcePath}`);
+		}
+
+		await fs.mkdir(path.dirname(targetPath), { recursive: true });
+		await fs.cp(sourcePath, targetPath, { recursive: true, force: true });
+		console.log(`Packaged ${runtimeDirectory} into ${path.relative(appRoot, targetPath)}`);
 	}
 
 	const configSourcePath = path.join(buildRoot, 'server', 'pixelated.config.json');
