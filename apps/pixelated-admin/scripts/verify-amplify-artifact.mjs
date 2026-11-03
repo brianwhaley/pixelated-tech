@@ -89,11 +89,20 @@ async function main() {
 			routeErrors.push(`${routeModule}: ${error instanceof Error ? error.message : error}`);
 		}
 	}
+	const dataErrors = [];
+	try {
+		const sitesData = JSON.parse(await fs.readFile(path.join(stagingRoot, 'src', 'app', 'data', 'sites.json'), 'utf8'));
+		if (!Array.isArray(sitesData.sites)) {
+			dataErrors.push('src/app/data/sites.json is missing a sites array');
+		}
+	} catch (error) {
+		dataErrors.push(`src/app/data/sites.json: ${error instanceof Error ? error.message : error}`);
+	}
 	let configError = '';
 	try {
 		const config = JSON.parse(await fs.readFile(path.join(stagingRoot, 'pixelated.config.json'), 'utf8'));
-		if (!config.siteInfo || !config.integrations?.nextAuth?.secret) {
-			configError = 'pixelated.config.json is missing siteInfo or integrations.nextAuth.secret';
+		if (!config.siteInfo || !config.integrations?.nextAuth?.secret || !config.integrations?.aws?.region) {
+			configError = 'pixelated.config.json is missing siteInfo, integrations.nextAuth.secret, or integrations.aws.region';
 		}
 	} catch (error) {
 		configError = error instanceof Error ? error.message : String(error);
@@ -106,6 +115,8 @@ async function main() {
 	console.log(`Runtime modules missing: ${missingModules.length}`);
 	console.log(`Route bundles checked: ${routeModules.length}`);
 	console.log(`Route bundle errors: ${routeErrors.length}`);
+	console.log(`Data files checked: 1`);
+	console.log(`Data file errors: ${dataErrors.length}`);
 	console.log(`Artifact-root config: ${configError ? 'invalid' : 'valid'}`);
 
 	if (missingModules.length > 0) {
@@ -126,8 +137,14 @@ async function main() {
 			console.error(`- ${routeError}`);
 		}
 	}
+	if (dataErrors.length > 0) {
+		console.error('\nStaged data files are invalid:');
+		for (const dataError of dataErrors) {
+			console.error(`- ${dataError}`);
+		}
+	}
 
-	if (missingModules.length > 0 || routeErrors.length > 0 || artifactBytes > maxArtifactBytes || configError) {
+	if (missingModules.length > 0 || routeErrors.length > 0 || dataErrors.length > 0 || artifactBytes > maxArtifactBytes || configError) {
 		process.exitCode = 1;
 		return;
 	}

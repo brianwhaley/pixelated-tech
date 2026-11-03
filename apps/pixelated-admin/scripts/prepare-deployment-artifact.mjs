@@ -104,6 +104,15 @@ async function main() {
 		console.log(`Packaged ${runtimeDirectory} into ${path.relative(appRoot, targetPath)}`);
 	}
 
+	const sitesSourcePath = path.join(appRoot, 'src', 'app', 'data', 'sites.json');
+	const sitesTargetPath = path.join(buildRoot, 'src', 'app', 'data', 'sites.json');
+	if (!(await pathExists(sitesSourcePath))) {
+		throw new Error(`Missing billing data source: ${sitesSourcePath}`);
+	}
+	await fs.mkdir(path.dirname(sitesTargetPath), { recursive: true });
+	await fs.cp(sitesSourcePath, sitesTargetPath, { force: true });
+	console.log(`Packaged billing data into ${path.relative(appRoot, sitesTargetPath)}`);
+
 	const configSourcePath = path.join(buildRoot, 'server', 'pixelated.config.json');
 	const configTargetPath = path.join(buildRoot, 'pixelated.config.json');
 	if (!(await pathExists(configSourcePath))) {
