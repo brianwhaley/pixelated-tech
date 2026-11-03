@@ -99,7 +99,7 @@
       "url": "https://www.amavajanitorial.com",
       "blog_url": "https://amavajanitorial.wpcomstaging.com",
       "blogRss": "https://amavajanitorial.wpcomstaging.com/feed",
-      "ga4PropertyId": "407017441",
+      "ga4PropertyId": "552969878",
       "gscSiteUrl": "https://www.amavajanitorial.com",
       "googleMapsPlaceId": "",
       "monthlyBilling": {
@@ -515,13 +515,12 @@
           "2026-05": "Since The Three Muses of Bluffton was launched in May, billing for maintenance will begin starting in June, and will be billed $250 monthly at the end of each month.  Thank you!"
         },
         "additionalInvoiceItems": {
-          "2026-05": {
-            "amount": 1000.00,
-            "description": "Payment #1 and #2 of 5 for Initial Build of The Three Muses of Bluffton website"
-          },
-          "2026-06": {
+          "2026-10": {
+              "amount": 250.00,
+              "description": "Monthly Maintenance Fee Overdue for September 2026"          },
+          "2026-08": {
             "amount": 500.00,
-            "description": "Payment #3 of 5 for Initial Build of The Three Muses of Bluffton website"
+            "description": "Payment #5 of 5 for Initial Build of The Three Muses of Bluffton website"
           },
           "2026-07": [
             {
@@ -533,9 +532,13 @@
               "description": "Monthly Maintenance Fee Overdue for June 2026"
             }
           ],
-          "2026-08": {
+          "2026-06": {
             "amount": 500.00,
-            "description": "Payment #5 of 5 for Initial Build of The Three Muses of Bluffton website"
+            "description": "Payment #3 of 5 for Initial Build of The Three Muses of Bluffton website"
+          },
+          "2026-05": {
+            "amount": 1000.00,
+            "description": "Payment #1 and #2 of 5 for Initial Build of The Three Muses of Bluffton website"
           }
         }
       }
