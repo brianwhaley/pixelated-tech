@@ -1,5 +1,5 @@
 import { putDynamoStringItem, DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE } from '../../integrations/aws.dynamo.integration';
-import { sendSmtpMail } from '../../integrations/smtp.integration';
+import { sendSesMail } from '../../integrations/aws.ses.integration';
 import { getSitesConfigDomains, loadSitesConfig } from '../../admin/sites/sites.integration';
 
 const HONEYPOT_FIELDS = ['winnie', 'pooh', 'website'];
@@ -124,7 +124,7 @@ export async function processFormSubmission(
 	item.submissionId = submissionId;
 
 	await putDynamoStringItem(options.tableName ?? DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE, item);
-	await sendSmtpMail({
+	await sendSesMail({
 		from: sender,
 		to,
 		subject: String(payload.subject ?? 'Website form submission'),

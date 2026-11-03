@@ -6,6 +6,7 @@ import {
   FormLabel,
   FormSectionHeader,
   FormInput,
+  FormConfirmationEmail,
   FormSelect,
   FormTextarea,
   FormRadio,
@@ -52,6 +53,20 @@ describe('FormComponents', () => {
     );
 
     expect(screen.getByLabelText('Input Label')).toHaveValue('hello');
+  });
+
+  it('renders FormConfirmationEmail metadata as hidden inputs', () => {
+    const { container } = render(
+      <FormConfirmationEmail
+        recipientField="email"
+        subject="Thank you"
+        body="We received your request."
+      />
+    );
+
+    expect(container.querySelector('input[name="confirmationRecipientField"]')).toHaveValue('email');
+    expect(container.querySelector('input[name="confirmationSubject"]')).toHaveValue('Thank you');
+    expect(container.querySelector('input[name="confirmationBody"]')).toHaveValue('We received your request.');
   });
 
   it('renders FormSelect with option elements', () => {

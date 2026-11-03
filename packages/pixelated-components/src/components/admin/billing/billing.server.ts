@@ -5,7 +5,7 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import { headers } from 'next/headers';
 import { getFullPixelatedConfig } from '../../config/config';
-import { sendSmtpMail } from '../../integrations/smtp.integration';
+import { sendSesMail } from '../../integrations/aws.ses.integration';
 import { getLiveBillingStats } from '../../integrations/wordpress.jetpack.server';
 import {
 	listPixelatedFormSubmissionReportRows,
@@ -318,13 +318,8 @@ export async function dispatchInvoiceEmails(invoices: { siteName: string; pdfPat
 				]
 			};
 
-			const { info, hasSmtpConfig } = await sendSmtpMail(mailOptions, { allowStreamFallback: true });
-			if (!hasSmtpConfig) {
-				logs.push(`[${timestamp}] ℹ️ Running in Local Stream Mode (Nodemailer Compiled successfully).`);
-				logs.push(`[${timestamp}] ✅ Email dispatched successfully to ${targetEmail}! Message size: ${(info as any).message.length} bytes.`);
-			} else {
-				logs.push(`[${timestamp}] ✅ Email dispatched successfully over SMTP to ${targetEmail}! ID: ${info.messageId}`);
-			}
+			const { info } = await sendSesMail(mailOptions);
+			logs.push(`[${timestamp}] ✅ Email dispatched successfully through SES to ${targetEmail}! ID: ${info.MessageId}`);
 			logs.push('--------------------------------------------------');
 		} catch (err) {
 			const timestamp = new Date().toLocaleTimeString();

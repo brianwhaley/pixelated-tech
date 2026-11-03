@@ -3,13 +3,13 @@ import { compileAdHocInvoiceData, compileInvoiceData, getAdditionalInvoiceItems,
 import fs from 'fs';
 import { generateInvoicePdfsForSites, dispatchInvoiceEmails, loadBillingConfigData } from '../components/admin/billing/billing.server';
 import puppeteer from 'puppeteer';
-import nodemailer from 'nodemailer';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { getLiveBillingStats } from '../components/integrations/wordpress.jetpack.server';
 import * as dynamoIntegration from '../components/integrations/aws.dynamo.integration';
 import { billingSites } from '../test/test-data';
 
 const mockSend = vi.hoisted(() => vi.fn());
+const sendSesMailMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@aws-sdk/client-dynamodb', () => ({
 	DynamoDBClient: class {
@@ -45,12 +45,6 @@ vi.mock('puppeteer', () => ({
 	launch: vi.fn()
 }));
 
-vi.mock('nodemailer', () => ({
-	default: {
-		createTransport: vi.fn()
-	}
-}));
-
 vi.mock('next/headers', () => ({
 	headers: vi.fn().mockResolvedValue({
 		get: (key: string) => {
@@ -72,6 +66,10 @@ vi.mock('../components/integrations/aws.dynamo.integration', () => ({
 
 vi.mock('../components/integrations/wordpress.jetpack.server', () => ({
 	getLiveBillingStats: vi.fn()
+}));
+
+vi.mock('../components/integrations/aws.ses.integration', () => ({
+	sendSesMail: sendSesMailMock,
 }));
 
 describe('Billing Functions', () => {
@@ -467,20 +465,16 @@ describe('Billing Functions', () => {
 			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
 				paymentInfo: { fromEmail: 'billing@test.com' }
 			}));
-			vi.mocked(getFullPixelatedConfig).mockReturnValue({
-				integrations: { smtp: { smtpHost: 'smtp.test.com', smtpUser: 'user', smtpPass: 'pass' } }
-			} as any);
-
-			const mockTransporter = {
-				sendMail: vi.fn().mockResolvedValue({ messageId: '12345' })
-			};
-			vi.mocked(nodemailer.createTransport).mockReturnValue(mockTransporter as any);
+			sendSesMailMock.mockResolvedValueOnce({ info: { MessageId: '12345' }, hasSesConfig: true });
 
 			const invoices = [{ siteName: 'testsite', pdfPath: 'test.pdf', email: 'client@test.com' }];
 			const logs = await dispatchInvoiceEmails(invoices);
 			
 			expect(logs.some(log => log.includes('12345'))).toBe(true);
-			expect(mockTransporter.sendMail).toHaveBeenCalled();
+			expect(sendSesMailMock).toHaveBeenCalledWith(expect.objectContaining({
+				from: 'billing@test.com',
+				to: 'client@test.com',
+			}));
 		});
 
 		it('handles missing PDF files gracefully', async () => {
@@ -492,20 +486,14 @@ describe('Billing Functions', () => {
 			expect(logs.some(log => log.includes('Invoice PDF file not found'))).toBe(true);
 		});
 
-		it('handles missing smtp config by falling back to stream transport', async () => {
+		it('handles an SES send failure gracefully', async () => {
 			vi.mocked(fs.existsSync).mockReturnValue(true); // file exists
-			vi.mocked(getFullPixelatedConfig).mockReturnValue({} as any);
-
-			const mockTransporter = {
-				sendMail: vi.fn().mockResolvedValue({ message: Buffer.from('mock stream') })
-			};
-			vi.mocked(nodemailer.createTransport).mockReturnValue(mockTransporter as any);
+			sendSesMailMock.mockRejectedValueOnce(new Error('SES unavailable'));
 
 			const invoices = [{ siteName: 'testsite', pdfPath: 'test.pdf', email: 'client@test.com' }];
 			const logs = await dispatchInvoiceEmails(invoices);
 			
-			expect(logs.some(log => log.includes('Local Stream Mode'))).toBe(true);
-			expect(mockTransporter.sendMail).toHaveBeenCalled();
+			expect(logs.some(log => log.includes('SES unavailable'))).toBe(true);
 		});
 	});
 });

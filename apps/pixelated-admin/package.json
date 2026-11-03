@@ -1,14 +1,11 @@
 {
   "name": "pixelated-admin",
-  "version": "1.10.16",
+  "version": "1.10.17",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
     "build": "npm run clean && NODE_ENV=production next build --webpack",
     "prepare:artifact": "node scripts/prepare-deployment-artifact.mjs",
-    "verify:artifact": "node scripts/verify-amplify-artifact.mjs",
-    "verify:amplify-artifact": "node scripts/verify-amplify-artifact.mjs",
-    "verify:trace": "node scripts/verify-deployment-artifact.mjs",
     "start": "npm run clean && next build --webpack && next start",
     "lint": "eslint --fix",
     "clean": "rm -rf .next && rm -rf out",

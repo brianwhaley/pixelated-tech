@@ -1,27 +1,94 @@
 import nodemailer from "nodemailer";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { randomUUID } from "node:crypto";
 
+const platformSender = "info@pixelated.tech";
 const debug = false;
 const smtpUser = process.env.SMTP_USER;
 const smtpPassword = process.env.SMTP_PASSWORD;
-
-if (!smtpUser || !smtpPassword) {
-	throw new Error("SMTP_USER and SMTP_PASSWORD must be configured");
-}
-
-const transporter = nodemailer.createTransport({
-	host: "smtp.gmail.com",
-	port: 465,
-	secure: true,
-	auth: {
-		user: smtpUser,
-		pass: smtpPassword
-	}
-});
+const sesClient = new SESClient({ region: "us-east-1" });
+let transporter;
 
 const dynamodb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+
+const getGmailTransporter = () => {
+	if (!smtpUser || !smtpPassword) {
+		throw new Error("SMTP_USER and SMTP_PASSWORD must be configured for Gmail delivery");
+	}
+
+	transporter ??= nodemailer.createTransport({
+		host: "smtp.gmail.com",
+		port: 465,
+		secure: true,
+		auth: {
+			user: smtpUser,
+			pass: smtpPassword
+		}
+	});
+
+	return transporter;
+};
+
+export async function sendGmailEmail(message) {
+	const info = await getGmailTransporter().sendMail({
+		from: message.from,
+		to: message.to,
+		subject: message.subject,
+		html: message.html,
+		text: message.text
+	});
+
+	return { messageId: info.messageId };
+}
+
+export async function sendSesEmail(message) {
+	const result = await sesClient.send(new SendEmailCommand({
+		Source: message.from,
+		Destination: {
+			ToAddresses: [message.to]
+		},
+		Message: {
+			Subject: { Data: message.subject, Charset: "UTF-8" },
+			Body: {
+				Html: { Data: message.html, Charset: "UTF-8" },
+				Text: { Data: message.text, Charset: "UTF-8" }
+			}
+		}
+	}));
+
+	return { messageId: result.MessageId };
+}
+
+const sendEmail = sendSesEmail;
+
+export function getConfirmationMailOptions(body) {
+	const recipientField = String(body?.confirmationRecipientField ?? "").trim();
+	const recipient = recipientField ? String(body?.[recipientField] ?? "").trim() : "";
+	const subject = String(body?.confirmationSubject ?? "").trim();
+	const text = String(body?.confirmationBody ?? "");
+	const domain = String(body?.domain ?? "").trim().toLowerCase();
+
+	if (!recipient || !subject || !text.trim() || !domain || !domain.includes(".") || /[^a-z0-9.-]/.test(domain)) return null;
+
+	return {
+		from: `thankyou@${domain}`,
+		to: recipient,
+		subject,
+		text
+	};
+}
+
+export function getPrimaryMailOptions(body, html) {
+	return {
+		from: platformSender,
+		to: String(body?.to ?? "").trim() || platformSender,
+		subject: body?.subject ?? "Pixelated SendMail",
+		html,
+		text: html
+	};
+}
 
 export const handler = async (event) => {
 	try {
@@ -72,19 +139,23 @@ export const handler = async (event) => {
 			bodyText += `<p><strong>${formattedLabel} : </strong>${body[key]}</p>`;
 		}
 
-		const mailOptions = {
-			from: body.from ?? smtpUser,
-			to: body.to ?? smtpUser,
-			subject: body.subject ?? "Pixelated SendMail",
-			html: bodyText
-		};
-
-		const info = await transporter.sendMail(mailOptions);
+		const info = await sendEmail(getPrimaryMailOptions(body, bodyText));
 		if (debug) console.log("Message sent:", info.messageId);
+
+		let confirmationMessageId;
+		const confirmationMailOptions = getConfirmationMailOptions(body);
+		if (confirmationMailOptions) {
+			try {
+				const confirmationInfo = await sendEmail(confirmationMailOptions);
+				confirmationMessageId = confirmationInfo.messageId;
+			} catch (confirmationError) {
+				console.error("Confirmation email failed:", confirmationError);
+			}
+		}
 
 		return {
 			statusCode: 200,
-			body: JSON.stringify({ message: "success", messageId: info.messageId }),
+			body: JSON.stringify({ message: "success", messageId: info.messageId, confirmationMessageId }),
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Origin": "*",

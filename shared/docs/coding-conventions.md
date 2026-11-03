@@ -152,6 +152,12 @@ export function Component(props: ComponentType) { ... }
 - Log errors appropriately
 - Provide user-friendly error messages
 
+## Debug Logging
+
+- Define a module-level `const debug = false` in runtime entry points that contain optional diagnostic logs.
+- Guard diagnostic `console.log` calls with `if (debug)` so developers can enable or disable them locally without changing the logging statements.
+- Keep error logs unconditional when they describe failures that require operational attention.
+
 ## Configuration & environment variables
 - Prefer a single source-of-truth config file: `pixelated.config.json` (server-side) and access it via the `PixelatedClientConfigProvider` / `getFullPixelatedConfig()` APIs.
 - Environment variables must be avoided at all costs. The config provider exists so teams can use developer-friendly, code-first, and versioned configuration instead of brittle, environment-variable-based wiring — always explore provider-driven, build-time, or feature-flagging alternatives before considering an env var.

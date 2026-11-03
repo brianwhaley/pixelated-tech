@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
 	upsertRoute53Records: vi.fn(),
 	createSesEmailIdentity: vi.fn(),
 	getSesEmailIdentity: vi.fn(),
-	sendSmtpEmail: vi.fn(),
+	sendSesEmail: vi.fn(),
 }));
 
 vi.mock('../components/integrations/aws.dynamo.integration', () => ({
@@ -24,13 +24,10 @@ vi.mock('../components/integrations/aws.route53.integration', () => ({
 	upsertRoute53Records: mocks.upsertRoute53Records,
 }));
 
-vi.mock('../components/integrations/aws.ses.integration', () => ({
+	vi.mock('../components/integrations/aws.ses.integration', () => ({
 	createSesEmailIdentity: mocks.createSesEmailIdentity,
 	getSesEmailIdentity: mocks.getSesEmailIdentity,
-}));
-
-vi.mock('../components/integrations/smtp.integration', () => ({
-	sendSmtpEmail: mocks.sendSmtpEmail,
+	sendSesEmail: mocks.sendSesEmail,
 }));
 
 import {
@@ -157,6 +154,6 @@ describe('email forwarding integration', () => {
 			message: 'Forwarding test sent from brian.whaley@gmail.com to test@example.com. This is a test of the catch-all inbox for the forwarded copy.',
 		});
 
-		expect(mocks.sendSmtpEmail).toHaveBeenCalledWith('brian.whaley@gmail.com', 'test@example.com', 'Pixelated email forwarding test for example.com', 'Forwarding test sent from brian.whaley@gmail.com to test@example.com. This is a test of the catch-all inbox for the forwarded copy.');
+		expect(mocks.sendSesEmail).toHaveBeenCalledWith('brian.whaley@gmail.com', 'test@example.com', 'Pixelated email forwarding test for example.com', 'Forwarding test sent from brian.whaley@gmail.com to test@example.com. This is a test of the catch-all inbox for the forwarded copy.');
 	});
 });
