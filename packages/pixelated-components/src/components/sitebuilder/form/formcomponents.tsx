@@ -635,6 +635,32 @@ export function FormInput(props: FormInputType) {
 	);
 }
 
+/**
+ * FormConfirmationEmail — Adds non-visual confirmation email metadata to a form submission.
+ *
+ * @param {string} [props.recipientField] - Name of the submitted field containing the confirmation recipient.
+ * @param {string} [props.subject] - Confirmation email subject.
+ * @param {string} [props.body] - Confirmation email body.
+ */
+FormConfirmationEmail.propTypes = {
+	/** Name of the submitted recipient field */
+	recipientField: PropTypes.string.isRequired,
+	/** Confirmation email subject */
+	subject: PropTypes.string.isRequired,
+	/** Confirmation email body */
+	body: PropTypes.string.isRequired,
+};
+export type FormConfirmationEmailType = InferProps<typeof FormConfirmationEmail.propTypes>;
+export function FormConfirmationEmail(props: FormConfirmationEmailType) {
+	return (
+		<>
+			<input type="hidden" name="confirmationRecipientField" value={props.recipientField} readOnly />
+			<input type="hidden" name="confirmationSubject" value={props.subject} readOnly />
+			<input type="hidden" name="confirmationBody" value={props.body} readOnly />
+		</>
+	);
+}
+
 
 
 

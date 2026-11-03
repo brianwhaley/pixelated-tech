@@ -51,6 +51,13 @@
 			"component" : "FormHoneypot",
 			"props" : { }
 		},{
+			"component" : "FormConfirmationEmail",
+			"props" : {
+				"recipientField" : "email",
+				"subject" : "Thank you for contacting Pixelated Technologies",
+				"body" : "Thank you for contacting Pixelated Technologies. We received your request and will get back to you soon."
+			}
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",

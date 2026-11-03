@@ -8,11 +8,17 @@ import { getBillingSummary, getMonthlyBillingPrice, isMonthlyBillingActive } fro
 import { dispatchInvoiceEmails, generateAdHocInvoice, generateInvoicePdfsForSites, loadAdHocBillingConfigData, loadBillingConfigData } from './billing.server';
 import './billing.css';
 
-export const MonthlyBillingDashboard: React.FC = () => {
-	const [sites, setSites] = useState<SiteConfig[]>([]);
-	const [subscriptions, setSubscriptions] = useState<Subscriptions>({});
-	const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>({ method: '', details: '', terms: '' });
-	const [loading, setLoading] = useState(true);
+type BillingConfigData = Awaited<ReturnType<typeof loadBillingConfigData>>;
+
+interface MonthlyBillingDashboardProps {
+	initialData?: BillingConfigData;
+}
+
+export const MonthlyBillingDashboard: React.FC<MonthlyBillingDashboardProps> = ({ initialData }) => {
+	const [sites, setSites] = useState<SiteConfig[]>(initialData?.sites || []);
+	const [subscriptions, setSubscriptions] = useState<Subscriptions>(initialData?.subscriptions || {});
+	const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>(initialData?.paymentInfo || { method: '', details: '', terms: '' });
+	const [loading, setLoading] = useState(!initialData);
 
 	// Selection state
 	const today = new Date();
@@ -35,8 +41,19 @@ export const MonthlyBillingDashboard: React.FC = () => {
 
 	// Load data on mount
 	const monthStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`;
+	const initialMonth = `${prevMonth.getFullYear()}-${String(prevMonth.getMonth() + 1).padStart(2, '0')}`;
 
 	useEffect(() => {
+		if (initialData && monthStr === initialMonth) {
+			const billableSites = initialData.sites.filter(site => isMonthlyBillingActive(site, monthStr));
+			const preselected: { [name: string]: boolean } = {};
+			billableSites.forEach(site => {
+				preselected[site.name] = true;
+			});
+			setSelectedSites(preselected);
+			return;
+		}
+
 		async function fetchSites() {
 			setLoading(true);
 			try {
@@ -59,7 +76,7 @@ export const MonthlyBillingDashboard: React.FC = () => {
 			}
 		}
 		fetchSites();
-	}, [monthStr]);
+	}, [initialData, initialMonth, monthStr]);
 
 	const billableSites = sites.filter(site => isMonthlyBillingActive(site, monthStr));
 	const selectedSiteNames = useMemo(

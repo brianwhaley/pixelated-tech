@@ -115,6 +115,7 @@ vi.mock('@pixelated-tech/components/adminclient', async () => {
 
 vi.mock('@pixelated-tech/components/adminserver', () => ({
 	checkUptimeHealth: async () => ({ success: true, uptime: [] }),
+	loadBillingConfigData: async () => ({ sites: [], subscriptions: [], paymentInfo: {}, formCompletions: [] }),
 	performOnSiteSEOAnalysis: async () => ({ success: true, data: {} }),
 	performCoreWebVitalsAnalysis: async () => ({ success: true, metrics: [] }),
 	getGoogleAnalyticsData: async () => ({ success: true, data: {} }),
@@ -457,7 +458,7 @@ describe('pixelated-admin extra coverage', () => {
 	it('renders monthly billing page without errors', async () => {
 		const mod = await importModule('src/app/(pages)/billing/monthly/page.tsx');
 		const BillingPage = mod.default;
-		render(<BillingPage />);
+		render(await BillingPage());
 		expect(screen.getByTestId('MonthlyBillingDashboard')).toBeTruthy();
 	});
 
