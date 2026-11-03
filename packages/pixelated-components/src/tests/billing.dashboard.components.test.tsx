@@ -47,6 +47,22 @@ describe('MonthlyBillingDashboard Component', () => {
 		expect(screen.getByText('Loading billing metadata details...')).toBeInTheDocument();
 	});
 
+	it('uses server-provided billing data without an initial server action', async () => {
+		render(<MonthlyBillingDashboard
+		initialData={{
+			sites: [
+				{ name: 'server-site', url: 'https://server-site.com', monthlyBilling: { tier: 'growth', email: 'server@test.com', companyName: 'Server Site', address: '123 Server Ln' } }
+			],
+			subscriptions: { growth: { price: 200, services: [] } },
+			paymentInfo: { method: 'Cash', details: '', terms: '' },
+			formCompletions: []
+		}}
+	/>);
+
+		await waitFor(() => expect(screen.getByText('server-site (https://server-site.com)')).toBeInTheDocument());
+		expect(loadBillingConfigData).not.toHaveBeenCalled();
+	});
+
 	it('loads sites and filters non-billable ones out', async () => {
 		render(<MonthlyBillingDashboard />);
 		

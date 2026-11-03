@@ -3,7 +3,7 @@
 import { deleteDynamoStringItem, listDynamoStringItems, putDynamoStringItem } from '../../integrations/aws.dynamo.integration';
 import { getHostedZoneIdForDomain, getRoute53RecordValues, upsertRoute53Records } from '../../integrations/aws.route53.integration';
 import { createSesEmailIdentity, getSesEmailIdentity } from '../../integrations/aws.ses.integration';
-import { sendSmtpEmail } from '../../integrations/smtp.integration';
+import { sendSesEmail } from '../../integrations/aws.ses.integration';
 
 const AWS_REGION = 'us-east-1';
 const ROUTING_TABLE = 'PixelatedEmailRouting';
@@ -210,6 +210,6 @@ export async function sendEmailForwardingTestEmail(domainInput: string, recipien
 	const domain = normalizeDomain(domainInput);
 	const testAddress = recipientInput ? normalizeRecipientAddress(recipientInput, domain) : `test@${domain}`;
 	const message = `Forwarding test sent from ${FORWARDING_TEST_FROM} to ${testAddress}. This is a test of the catch-all inbox for the forwarded copy.`;
-	await sendSmtpEmail(FORWARDING_TEST_FROM, testAddress, `Pixelated email forwarding test for ${domain}`, message);
+	await sendSesEmail(FORWARDING_TEST_FROM, testAddress, `Pixelated email forwarding test for ${domain}`, message);
 	return { domain, targetEmail: '', message };
 }

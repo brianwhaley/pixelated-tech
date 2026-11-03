@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const putDynamoStringItemMock = vi.hoisted(() => vi.fn());
-const sendSmtpMailMock = vi.hoisted(() => vi.fn());
+const sendSesMailMock = vi.hoisted(() => vi.fn());
 const loadSitesConfigMock = vi.hoisted(() => vi.fn());
 const getSitesConfigDomainsMock = vi.hoisted(() => vi.fn());
 
@@ -10,8 +10,8 @@ vi.mock('../components/integrations/aws.dynamo.integration', () => ({
 	putDynamoStringItem: putDynamoStringItemMock,
 }));
 
-vi.mock('../components/integrations/smtp.integration', () => ({
-	sendSmtpMail: sendSmtpMailMock,
+vi.mock('../components/integrations/aws.ses.integration', () => ({
+	sendSesMail: sendSesMailMock,
 }));
 
 vi.mock('../components/admin/sites/sites.integration', () => ({
@@ -24,7 +24,7 @@ import { processFormSubmission, processFormSubmissionRequest } from '../componen
 describe('formsubmit-server', () => {
 	beforeEach(() => {
 		putDynamoStringItemMock.mockReset().mockResolvedValue({});
-		sendSmtpMailMock.mockReset().mockResolvedValue({ info: {} });
+		sendSesMailMock.mockReset().mockResolvedValue({ info: {} });
 		loadSitesConfigMock.mockReset().mockResolvedValue([
 			{ url: 'https://www.palmetto-epoxy.com', localPort: '3006' },
 		]);
@@ -92,7 +92,7 @@ describe('formsubmit-server', () => {
 		timestamp: now.toISOString(),
 		submissionId: 'submission-1',
 	}));
-		expect(sendSmtpMailMock).toHaveBeenCalledWith(expect.objectContaining({
+		expect(sendSesMailMock).toHaveBeenCalledWith(expect.objectContaining({
 		from: 'brian@pixelated.tech',
 		to: 'recipient@example.com',
 		subject: 'Contact request',
@@ -107,7 +107,7 @@ describe('formsubmit-server', () => {
 
 		expect(result).toEqual({ success: false, errorCode: 'invalid-domain' });
 		expect(putDynamoStringItemMock).not.toHaveBeenCalled();
-		expect(sendSmtpMailMock).not.toHaveBeenCalled();
+		expect(sendSesMailMock).not.toHaveBeenCalled();
 	});
 
 	it('silently ignores honeypot submissions', async () => {
@@ -119,6 +119,6 @@ describe('formsubmit-server', () => {
 
 		expect(result).toEqual({ success: true, ignored: true });
 		expect(putDynamoStringItemMock).not.toHaveBeenCalled();
-		expect(sendSmtpMailMock).not.toHaveBeenCalled();
+		expect(sendSesMailMock).not.toHaveBeenCalled();
 	});
 });

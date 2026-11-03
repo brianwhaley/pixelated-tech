@@ -4,6 +4,7 @@ const sendMock = vi.hoisted(() => vi.fn());
 const commands = vi.hoisted(() => ({
 	CreateEmailIdentityCommand: vi.fn(function(this: any, input: any) { this.input = input; }),
 	GetEmailIdentityCommand: vi.fn(function(this: any, input: any) { this.input = input; }),
+	SendEmailCommand: vi.fn(function(this: any, input: any) { this.input = input; }),
 }));
 let clientConfig: any;
 
@@ -17,7 +18,7 @@ vi.mock('../components/config/config', () => ({
 	getFullPixelatedConfig: () => ({ integrations: { aws: { access_key_id: 'key', secret_access_key: 'secret', session_token: 'token' } } }),
 }));
 
-import { createSesEmailIdentity, getSesEmailIdentity } from '../components/integrations/aws.ses.integration';
+import { createSesEmailIdentity, getSesEmailIdentity, sendSesMail } from '../components/integrations/aws.ses.integration';
 
 describe('aws ses integration', () => {
 	beforeEach(() => {
@@ -45,6 +46,51 @@ describe('aws ses integration', () => {
 			EmailIdentity: 'example.com',
 			DkimSigningAttributes: { NextSigningKeyLength: 'RSA_2048_BIT' },
 		});
+	});
+
+	it('sends through SES with the verified platform sender and reply-to envelope', async () => {
+		sendMock.mockResolvedValueOnce({ MessageId: 'message-1' });
+
+		await expect(sendSesMail({
+			from: 'brian@pixelated.tech',
+			to: 'recipient@example.com',
+			subject: 'Subject',
+			text: 'Body',
+		})).resolves.toMatchObject({ hasSesConfig: true, info: { MessageId: 'message-1' } });
+
+		expect(commands.SendEmailCommand).toHaveBeenCalledWith({
+			FromEmailAddress: 'info@pixelated.tech',
+			Destination: { ToAddresses: ['recipient@example.com'], CcAddresses: undefined, BccAddresses: undefined },
+			ReplyToAddresses: ['brian@pixelated.tech'],
+			Content: { Simple: {
+				Subject: { Data: 'Subject' },
+				Body: { Text: { Data: 'Body' }, Html: undefined },
+				Attachments: undefined,
+			} },
+		});
+	});
+
+	it('maps attachment content into the SES envelope', async () => {
+		sendMock.mockResolvedValueOnce({ MessageId: 'message-2' });
+
+		await sendSesMail({
+			to: 'recipient@example.com',
+			subject: 'Invoice',
+			text: 'Attached',
+			attachments: [{ filename: 'invoice.pdf', content: Buffer.from('pdf'), contentType: 'application/pdf' }],
+		});
+
+		expect(commands.SendEmailCommand).toHaveBeenCalledWith(expect.objectContaining({
+			Content: { Simple: expect.objectContaining({
+				Attachments: [{
+					FileName: 'invoice.pdf',
+					RawContent: Buffer.from('pdf'),
+					ContentType: 'application/pdf',
+					ContentDisposition: 'ATTACHMENT',
+					ContentTransferEncoding: 'BASE64',
+				}],
+			}) },
+		}));
 	});
 
 });
