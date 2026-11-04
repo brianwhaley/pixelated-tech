@@ -235,6 +235,14 @@ Resources:
       LogGroupName: /aws/apigateway/proxy
       RetentionInDays: 30
 
+  ProxyApiExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${ProxyApi}/prod
+      RetentionInDays: 30
+
   ProxyErrorsMetricFilter:
     Type: AWS::Logs::MetricFilter
     DeletionPolicy: Retain

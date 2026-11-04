@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act } from '../test/test-utils';
 import { usePageBuilder } from '../components/sitebuilder/page/lib/usePageBuilder';
 import { generateComponentObject } from '../components/sitebuilder/page/lib/componentGeneration';
 

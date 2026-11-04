@@ -99,7 +99,9 @@ Resources:
         - Variables:
             SMTP_USER: !Ref SmtpUser
             SMTP_PASSWORD: !Ref SmtpPassword
-        - !Ref AWS::NoValue
+        - Variables:
+            SMTP_USER: ''
+            SMTP_PASSWORD: ''
 
   SendmailApi:
     Type: AWS::ApiGateway::RestApi
@@ -423,6 +425,14 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       LogGroupName: /aws/apigateway/sendmail/access
+      RetentionInDays: 30
+
+  SendmailApiExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${SendmailApi}/default
       RetentionInDays: 30
 
   SendmailLogGroup:

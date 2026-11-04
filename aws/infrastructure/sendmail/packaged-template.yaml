@@ -515,6 +515,16 @@ Resources:
       RetentionInDays: 30
     Metadata:
       SamResourceId: SendmailApiAccessLogGroupV2
+  SendmailApiExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: API-Gateway-Execution-Logs_${SendmailApi}/default
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: SendmailApiExecutionLogGroup
   SendmailLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain

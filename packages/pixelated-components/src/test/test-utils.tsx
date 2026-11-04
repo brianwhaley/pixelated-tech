@@ -10,7 +10,7 @@
 
 
 import React, { ComponentType, ReactElement } from 'react';
-import { render, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, renderHook, RenderOptions, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 import { PixelatedClientConfigProvider } from '../components/config/config.client';
@@ -208,7 +208,7 @@ export function runErrorStateTest(
 
 export {
 	renderWithProviders as render,
-	screen, fireEvent, waitFor, userEvent,
+	act, renderHook, screen, fireEvent, waitFor, userEvent,
 	pixelatedEslintPlugin
 };
 

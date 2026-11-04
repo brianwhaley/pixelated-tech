@@ -1,6 +1,6 @@
 {
   "name": "gea-construction",
-  "version": "0.7.47",
+  "version": "0.7.48",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -50,5 +50,5 @@
     "vitest": "^5.1.0"
   },
   "overrides": {},
-  "deployMarker": "2026-10-22T15:05:55.551Z"
+  "deployMarker": "2026-11-04T04:33:53.000Z"
 }

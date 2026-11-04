@@ -228,7 +228,7 @@ describe('useFormSubmit', () => {
 
     expect(callback).toHaveBeenCalled();
     expect(smartFetch).toHaveBeenCalled();
-    expect(smartFetch).toHaveBeenCalledWith('https://sendmail.pixelated.tech/default/sendmail', expect.anything());
+    expect(smartFetch).toHaveBeenCalledWith('https://forms.pixelated.tech/default/forms', expect.anything());
   });
 
     it('processJSON should bypass submission when honeypot field is present', async () => {

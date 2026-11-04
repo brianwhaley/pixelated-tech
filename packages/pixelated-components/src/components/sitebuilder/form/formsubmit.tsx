@@ -51,7 +51,7 @@ export async function processFormData(
 export async function processJSON(jsonData: Record<string, unknown>, callback?: () => void): Promise<EmailFormDataResult> {
 	const debug = false;
 
-	const sendmail_api = "https://sendmail.pixelated.tech/default/sendmail";
+	const forms_api = "https://forms.pixelated.tech/default/forms";
 	// "https://admin.pixelated.tech/api/process-form-submit"
 	const myJsonData: Record<string, unknown> = {};
 	for (const [key, value] of Object.entries(jsonData)) {
@@ -70,9 +70,9 @@ export async function processJSON(jsonData: Record<string, unknown>, callback?: 
 	myJsonData.Date = new Date().toLocaleDateString() ;
 	myJsonData.Status = "Submitted" ;
 	const startTime = new Date().toISOString();
-	if (debug) console.info('[processJSON] submit-start', { sendmail_api, startTime, myJsonData });
+	if (debug) console.info('[processJSON] submit-start', { forms_api, startTime, myJsonData });
 	try {
-		const responseData = await smartFetch(sendmail_api, {
+		const responseData = await smartFetch(forms_api, {
 			requestInit: {
 				method: 'POST',
 				mode: 'cors',
@@ -84,7 +84,7 @@ export async function processJSON(jsonData: Record<string, unknown>, callback?: 
 			}
 		});
 		const elapsedMs = new Date().getTime() - new Date(startTime).getTime();
-		if (debug) console.info('[processJSON] submit-finish', { sendmail_api, elapsedMs, responseData });
+		if (debug) console.info('[processJSON] submit-finish', { forms_api, elapsedMs, responseData });
 		if (debug) console.debug('processJSON — submission data:', myJsonData, 'response:', responseData);
 		callback?.();
 		return { success: true, response: responseData };

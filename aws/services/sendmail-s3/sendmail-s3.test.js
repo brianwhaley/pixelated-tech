@@ -32,6 +32,7 @@ test('builds a confirmation email using the configured recipient field', () => {
 	assert.deepEqual(mailOptions, {
 		from: 'thankyou@customer.com',
 		to: 'customer@example.com',
+		cc: 'thankyou@customer.com',
 		subject: 'Thank you for contacting us',
 		text: 'We received your request.'
 	});

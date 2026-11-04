@@ -49,6 +49,14 @@ Resources:
       Repository: https://github.com/brianwhaley/pixelated-tech
       IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
 
+  SiteAmplifyLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/amplify/d2iyovuwvycoj0
+      RetentionInDays: 30
+
   SiteProductionBranch:
     Type: AWS::Amplify::Branch
     DeletionPolicy: Retain

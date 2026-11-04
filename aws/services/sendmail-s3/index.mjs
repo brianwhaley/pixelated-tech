@@ -41,6 +41,7 @@ export async function sendGmailEmail(message) {
 	const info = await getGmailTransporter().sendMail({
 		from: message.from,
 		to: message.to,
+		...(message.cc ? { cc: message.cc } : {}),
 		subject: message.subject,
 		html: message.html,
 		text: message.text
@@ -60,7 +61,8 @@ export async function sendSesEmail(message) {
 	const result = await sesClient.send(new SendEmailCommand({
 		Source: message.from,
 		Destination: {
-			ToAddresses: [message.to]
+			ToAddresses: [message.to],
+			...(message.cc ? { CcAddresses: [message.cc] } : {})
 		},
 		Message: {
 			Subject: { Data: message.subject, Charset: "UTF-8" },
@@ -84,6 +86,7 @@ export const getConfirmationMailOptions = (body) => {
 	return {
 		from: `thankyou@${domain}`,
 		to: recipient,
+		cc: `thankyou@${domain}`,
 		subject,
 		text
 	};
