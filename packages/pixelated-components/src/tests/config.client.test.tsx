@@ -431,7 +431,7 @@ describe('Config Utility Functions', () => {
       expect(clientConfig).toEqual({});
     });
 
-    it('should ignore heuristic patterns and only use explicit keys', async () => {
+    it('should strip explicit secret keys without filtering heuristic patterns', async () => {
       const fullConfig = {
         API_KEY: 'not-secret-because-not-exposed',
         password: 'not-secret-because-not-exposed',

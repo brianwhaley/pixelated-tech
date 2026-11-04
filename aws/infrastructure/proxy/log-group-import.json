@@ -1,0 +1,7 @@
+[
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "ProxyApiExecutionLogGroup",
+    "ResourceIdentifier": { "LogGroupName": "API-Gateway-Execution-Logs_ms23i0eg65/prod" }
+  }
+]

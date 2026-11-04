@@ -53,6 +53,28 @@ function describeError(error) {
 	return { errorName, errorMessage, statusCode, classification };
 }
 
+export function isDeliveryStatusMessage(rawEmail, recipients) {
+	const hasRelayRecipient = recipients.some((recipient) => recipient.toLowerCase() === `relay@${FORWARDING_DOMAIN}`);
+	const isDeliveryStatusReport = /^Content-Type:\s*multipart\/report\b/im.test(rawEmail)
+		&& /report-type\s*=\s*["']?delivery-status/i.test(rawEmail);
+	const hasDeliveryStatusPart = /^Content-Type:\s*message\/delivery-status\b/im.test(rawEmail);
+
+	return hasRelayRecipient && (isDeliveryStatusReport || hasDeliveryStatusPart);
+}
+
+export function summarizeDeliveryStatus(rawEmail) {
+	const finalRecipientMatch = rawEmail.match(/^Final-Recipient:\s*[^;]+;\s*(.+)$/im);
+	const actionMatch = rawEmail.match(/^Action:\s*(.+)$/im);
+	const diagnosticCodeMatch = rawEmail.match(/^Diagnostic-Code:\s*.*?\b([245]\d{2})\b/im);
+	const action = actionMatch?.[1].trim().toLowerCase();
+
+	return {
+		finalRecipient: finalRecipientMatch?.[1].trim(),
+		deliveryStatus: action === "failed" ? "rejected" : action === "delayed" ? "deferred" : action || "reported",
+		smtpStatus: diagnosticCodeMatch?.[1]
+	};
+}
+
 export const handler = async (event) => {
 	// FIX: Array index access required for SES payloads
 	const record = event?.Records?.[0];
@@ -163,6 +185,21 @@ export const handler = async (event) => {
 
 	// Read body into memory ONLY if size check passes
 	rawEmail = await s3Response.Body.transformToString();
+
+	if (isDeliveryStatusMessage(rawEmail, recipients)) {
+		console.warn("Delivery status received", {
+			messageId,
+			...summarizeDeliveryStatus(rawEmail),
+			classification: "delivery_status"
+		});
+		try {
+			await s3.send(new DeleteObjectCommand({ Bucket: S3_BUCKET, Key: messageId }));
+			console.log(`Deleted delivery status report ${messageId} from S3 bucket.`);
+		} catch (deleteError) {
+			console.error("Delivery status cleanup failed", { messageId, ...describeError(deleteError) });
+		}
+		return;
+	}
 
 	// Iterate over each targeted platform recipient
 	let sentSuccessfully = false;

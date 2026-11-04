@@ -1,0 +1,7 @@
+[
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "DyndnsApiExecutionLogGroup",
+    "ResourceIdentifier": { "LogGroupName": "API-Gateway-Execution-Logs_5l6n2qiyif/v1" }
+  }
+]

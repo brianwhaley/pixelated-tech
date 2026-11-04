@@ -326,6 +326,12 @@ export interface NextAuthConfig {
 	prod_url?: string;  // production
 }
 
+export interface NextdoorSiteConfig {
+	username: string;
+	password: string;
+	businessPageUrl: string;
+}
+
 export interface PaypalConfig {
 	sandboxPayPalApiKey: string;
 	sandboxPayPalSecret: string;
@@ -341,6 +347,16 @@ export interface PuppeteerConfig {
 	cache_dir?: string;
 	/** Internal auth token for Puppeteer invoice rendering */
 	internalToken?: string;
+}
+
+export interface SocialPublishConfig {
+	nextdoor?: {
+		sites?: Record<string, NextdoorSiteConfig>;
+	};
+	wordpress?: {
+		webhookSecrets?: Record<string, string>;
+	};
+	failureEmail?: string;
 }
 
 export interface ShoppingCartConfig {
@@ -453,6 +469,7 @@ export interface IntegrationsConfig {
 	nextAuth?: NextAuthConfig;
 	paypal?: PaypalConfig;
 	puppeteer?: PuppeteerConfig;
+	socialPublish?: SocialPublishConfig;
 	shoppingcart?: ShoppingCartConfig;
 	smtp?: SmtpConfig;
 	square?: SquareConfig;
@@ -511,6 +528,10 @@ export const SECRET_CONFIG_KEYS = {
 		],
 		puppeteer: [
 			'internalToken'
+		],
+		socialPublish: [
+			'password',
+			'webhookSecrets'
 		],
 		paypal: [
 			'sandboxPayPalSecret',

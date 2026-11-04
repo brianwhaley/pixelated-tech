@@ -1,0 +1,341 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Existing dyndns53 Route 53 update service.
+Parameters:
+  DyndnsUsername:
+    Type: String
+    NoEcho: true
+  DyndnsPassword:
+    Type: String
+    NoEcho: true
+  DyndnsExecutionRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/dyndns53_execution_role
+  ManageExecutionRole:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+    - 'true'
+    - 'false'
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+Conditions:
+  ManageExecutionRoleCondition:
+    Fn::Equals:
+    - Ref: ManageExecutionRole
+    - 'true'
+Resources:
+  DyndnsExecutionRole:
+    Type: AWS::IAM::Role
+    Condition: ManageExecutionRoleCondition
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: dyndns53_execution_role
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/AmazonRoute53FullAccess
+    Metadata:
+      SamResourceId: DyndnsExecutionRole
+  DyndnsFunction:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: dyndns53_lambda
+      CodeUri: s3://pixelated-sam-source-container/ad0ad3f192c3919116c23e4bf09f4e82
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.13
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 3
+      Role:
+        Ref: DyndnsExecutionRoleArn
+      Environment:
+        Variables:
+          DYNDNS_USERNAME:
+            Ref: DyndnsUsername
+          DYNDNS_PASSWORD:
+            Ref: DyndnsPassword
+    Metadata:
+      SamResourceId: DyndnsFunction
+  DyndnsApi:
+    Type: AWS::ApiGateway::RestApi
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: dyndns53
+      EndpointConfiguration:
+        Types:
+        - REGIONAL
+    Metadata:
+      SamResourceId: DyndnsApi
+  DyndnsNicResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+        - DyndnsApi
+        - RootResourceId
+      PathPart: nic
+      RestApiId:
+        Ref: DyndnsApi
+    Metadata:
+      SamResourceId: DyndnsNicResource
+  DyndnsUpdateResource:
+    Type: AWS::ApiGateway::Resource
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ParentId:
+        Ref: DyndnsNicResource
+      PathPart: update
+      RestApiId:
+        Ref: DyndnsApi
+    Metadata:
+      SamResourceId: DyndnsUpdateResource
+  DyndnsGetMethod:
+    Type: AWS::ApiGateway::Method
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.header.Authorization: false
+        method.request.querystring.hostname: false
+        method.request.querystring.myip: false
+        method.request.querystring.offline: false
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DyndnsFunction.Arn}/invocations
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        ContentHandling: CONVERT_TO_TEXT
+        TimeoutInMillis: 29000
+        RequestTemplates:
+          application/json: "#set($allParams = $input.params())\n{\n\"body-json\"\
+            \ : $input.json('$'),\n#foreach($type in $allParams.keySet())\n    #set($params\
+            \ = $allParams.get($type))\n\"$type\" : {\n    #foreach($paramName in\
+            \ $params.keySet())\n    \"$paramName\" : \"$util.escapeJavaScript($params.get($paramName))\"\
+            \n        #if($foreach.hasNext),#end\n    #end\n},\n#end\n\"context\"\
+            \ : {\n    \"http-method\" : \"$context.httpMethod\",\n    \"stage\" :\
+            \ \"$context.stage\",\n    \"source-ip\" : \"$context.identity.sourceIp\"\
+            ,\n    \"request-id\" : \"$context.requestId\",\n    \"resource-id\" :\
+            \ \"$context.resourceId\",\n    \"resource-path\" : \"$context.resourcePath\"\
+            \n    }\n}"
+        IntegrationResponses:
+        - StatusCode: '200'
+          ResponseTemplates:
+            application/json: $input.path('$.response')
+        - StatusCode: '400'
+          SelectionPattern: .*"status"\s*:\s*400.*
+          ResponseTemplates:
+            application/json: $util.parseJson($input.path('$.errorMessage')).response
+        - StatusCode: '401'
+          SelectionPattern: .*"status"\s*:\s*401.*
+          ResponseTemplates:
+            application/json: $util.parseJson($input.path('$.errorMessage')).response
+        - StatusCode: '403'
+          SelectionPattern: .*"status"\s*:\s*403.*
+          ResponseTemplates:
+            application/json: $util.parseJson($input.path('$.errorMessage')).response
+        - StatusCode: '404'
+          SelectionPattern: .*"status"\s*:\s*404.*
+          ResponseTemplates:
+            application/json: $util.parseJson($input.path('$.errorMessage')).response
+      MethodResponses:
+      - StatusCode: 200
+        ResponseModels:
+          text/plain: Empty
+      - StatusCode: 400
+        ResponseModels:
+          text/plain: Empty
+      - StatusCode: 401
+        ResponseModels:
+          text/plain: Empty
+      - StatusCode: 403
+        ResponseModels:
+          text/plain: Empty
+      - StatusCode: 404
+        ResponseModels:
+          text/plain: Empty
+      ResourceId:
+        Ref: DyndnsUpdateResource
+      RestApiId:
+        Ref: DyndnsApi
+    Metadata:
+      SamResourceId: DyndnsGetMethod
+  DyndnsDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    DependsOn:
+    - DyndnsGetMethod
+    Properties:
+      RestApiId:
+        Ref: DyndnsApi
+    Metadata:
+      SamResourceId: DyndnsDeployment
+  DyndnsStage:
+    Type: AWS::ApiGateway::Stage
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DeploymentId:
+        Ref: DyndnsDeployment
+      RestApiId:
+        Ref: DyndnsApi
+      StageName: v1
+      MethodSettings:
+      - ResourcePath: /*
+        HttpMethod: '*'
+        MetricsEnabled: true
+        LoggingLevel: INFO
+        DataTraceEnabled: false
+        ThrottlingBurstLimit: 5000
+        ThrottlingRateLimit: 10000
+        CachingEnabled: false
+        CacheTtlInSeconds: 300
+        CacheDataEncrypted: false
+      AccessLogSetting:
+        DestinationArn:
+          Fn::GetAtt:
+          - DyndnsApiAccessLogGroup
+          - Arn
+        Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}'
+    Metadata:
+      SamResourceId: DyndnsStage
+  DyndnsApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+    - DyndnsStage
+    Properties:
+      AlarmName: Pixelated Dyndns53 API 5XX Errors Alarm
+      AlarmDescription: Alerts when the dyndns53 production API Gateway stage returns
+        a server error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+      - Name: ApiName
+        Value: dyndns53
+      - Name: Stage
+        Value: v1
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: DyndnsApi5xxAlarm
+  DyndnsApiAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/dyndns53/v1
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: DyndnsApiAccessLogGroup
+  DyndnsApiExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: API-Gateway-Execution-Logs_${DyndnsApi}/v1
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: DyndnsApiExecutionLogGroup
+  DyndnsApiPermission:
+    Type: AWS::Lambda::Permission
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: DyndnsFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${DyndnsApi}/*/GET/nic/update
+    Metadata:
+      SamResourceId: DyndnsApiPermission
+  DyndnsLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/lambda/dyndns53_lambda
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: DyndnsLogGroup
+  DyndnsErrorsMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: '%ERROR|Error|error|FAILED|Failed|failed|Exception|exception|Authorization|Malformed|Invalid
+        IP|Headers|password|Task timed out|Runtime.ExitError%'
+      LogGroupName:
+        Ref: DyndnsLogGroup
+      MetricTransformations:
+      - MetricName: Pixelated Dyndns53 Errors Metric
+        MetricNamespace: Pixelated/Lambda
+        MetricValue: '1'
+        DefaultValue: 0
+    Metadata:
+      SamResourceId: DyndnsErrorsMetricFilter
+  DyndnsErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: Pixelated Dyndns53 Errors Alarm
+      AlarmDescription: Alerts when the dyndns53 Lambda emits an application or runtime
+        error.
+      ActionsEnabled: true
+      AlarmActions:
+      - Ref: AlarmTopicArn
+      Namespace: Pixelated/Lambda
+      MetricName: Pixelated Dyndns53 Errors Metric
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+    Metadata:
+      SamResourceId: DyndnsErrorsAlarm
+  DyndnsErrorsQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: Pixelated Dyndns53 Errors Query
+      LogGroupNames:
+      - Ref: DyndnsLogGroup
+      QueryString: 'fields @timestamp, @message, @logStream
+
+        | filter @message like /(?i)(authorization required|bad username|malformed
+        basicauth|invalid ip|headers not populated|multiple existing records|error|failed|exception|task
+        timed out|runtime\.exiterror)/
+
+        | sort @timestamp desc
+
+        '
+    Metadata:
+      SamResourceId: DyndnsErrorsQuery

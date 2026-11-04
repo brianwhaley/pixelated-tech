@@ -451,6 +451,16 @@ Resources:
       RetentionInDays: 30
     Metadata:
       SamResourceId: NerdjokesApiDevAccessLogGroup
+  NerdjokesApiDevExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: API-Gateway-Execution-Logs_${NerdjokesApi}/dev
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: NerdjokesApiDevExecutionLogGroup
   NerdjokesApiProdAccessLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
@@ -460,6 +470,16 @@ Resources:
       RetentionInDays: 30
     Metadata:
       SamResourceId: NerdjokesApiProdAccessLogGroup
+  NerdjokesApiProdExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName:
+        Fn::Sub: API-Gateway-Execution-Logs_${NerdjokesApi}/prod
+      RetentionInDays: 30
+    Metadata:
+      SamResourceId: NerdjokesApiProdExecutionLogGroup
   NerdjokesApiDomain:
     Type: AWS::ApiGateway::DomainName
     DeletionPolicy: Retain

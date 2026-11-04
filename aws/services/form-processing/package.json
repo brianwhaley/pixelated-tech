@@ -1,0 +1,18 @@
+{
+  "name": "@pixelated-tech/form-processing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "build": "node --check index.mjs",
+    "test": "node --test form-processing.test.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1150.0",
+    "@aws-sdk/client-s3": "^3.1150.0",
+    "@aws-sdk/client-ses": "^3.1161.0",
+    "@aws-sdk/lib-dynamodb": "^3.1150.0",
+    "nodemailer": "^6.9.7"
+  }
+}
