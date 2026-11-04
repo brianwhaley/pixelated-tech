@@ -394,12 +394,28 @@ Resources:
       LogGroupName: /aws/apigateway/nerdjokes/dev
       RetentionInDays: 30
 
+  NerdjokesApiDevExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${NerdjokesApi}/dev
+      RetentionInDays: 30
+
   NerdjokesApiProdAccessLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       LogGroupName: /aws/apigateway/nerdjokes/prod
+      RetentionInDays: 30
+
+  NerdjokesApiProdExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${NerdjokesApi}/prod
       RetentionInDays: 30
 
   NerdjokesApiDomain:

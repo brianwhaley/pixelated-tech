@@ -17,8 +17,8 @@ if (typeof globalThis.fetch === 'function') {
 	const originalFetch = globalThis.fetch.bind(globalThis);
 	globalThis.fetch = async (input: RequestInfo, init?: RequestInit) => {
 		const url = typeof input === 'string' ? input : input.url;
-		if (typeof url === 'string' && url.includes('sendmail.pixelated.tech')) {
-			return new Response(JSON.stringify({ success: true, message: 'Mocked sendmail endpoint' }), {
+		if (typeof url === 'string' && url.includes('forms.pixelated.tech')) {
+			return new Response(JSON.stringify({ success: true, message: 'Mocked forms endpoint' }), {
 				status: 200,
 				headers: { 'Content-Type': 'application/json' },
 			});

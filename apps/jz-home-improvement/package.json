@@ -1,6 +1,6 @@
 {
   "name": "jz-home-improvement",
-  "version": "1.6.28",
+  "version": "1.6.29",
   "private": true,
   "description": "JZ Home Improvement website built with the Pixelated template",
   "license": "MIT",
@@ -58,5 +58,5 @@
     "vitest": "^5.1.0"
   },
   "overrides": {},
-  "deployMarker": "2026-08-05T04:05:55.600Z"
+  "deployMarker": "2026-11-04T04:33:53.000Z"
 }

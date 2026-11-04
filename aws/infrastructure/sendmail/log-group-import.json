@@ -1,0 +1,7 @@
+[
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "SendmailApiExecutionLogGroup",
+    "ResourceIdentifier": { "LogGroupName": "API-Gateway-Execution-Logs_k3s7rhqqy0/default" }
+  }
+]

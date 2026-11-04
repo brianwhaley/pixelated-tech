@@ -1,5 +1,7 @@
 <?php
 
+require_once trailingslashit(get_template_directory()) . 'pixelated-social-publish.php';
+
 add_action('init', function() {
 	remove_theme_support('core-block-patterns');
 });

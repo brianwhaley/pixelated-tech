@@ -157,6 +157,17 @@ Resources:
       AccessToken: !If [HasAccessToken, !Ref AccessToken, !Ref AWS::NoValue]
       IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
 
+  SiteAmplifyLogGroup:
+    Condition: DeploymentEnabled
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub
+        - /aws/amplify/${AppId}
+        - AppId: !If [HasExistingAmplifyApp, !Ref ExistingAmplifyAppId, !GetAtt SiteAmplifyApp.AppId]
+      RetentionInDays: 30
+
   SiteProductionBranch:
     Condition: DeploymentEnabled
     Type: AWS::Amplify::Branch
@@ -181,6 +192,7 @@ Resources:
       DomainName: !Ref DomainName
       SubDomainSettings:
         - BranchName: main
+          Prefix: ''
         - !If
           - WwwIncluded
           - BranchName: main

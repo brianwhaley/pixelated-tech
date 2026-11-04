@@ -93,6 +93,14 @@ Resources:
       Repository: !Ref Repository
       IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
 
+  PixelatedAmplifyLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/amplify/${PixelatedAppId}
+      RetentionInDays: 30
+
   PixelatedProductionBranch:
     Type: AWS::Amplify::Branch
     DeletionPolicy: Retain
@@ -174,6 +182,14 @@ Resources:
       Platform: WEB_COMPUTE
       Repository: !Ref Repository
       IAMServiceRole: arn:aws:iam::971579260814:role/amplify-role
+
+  AdminAmplifyLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/amplify/${AdminAppId}
+      RetentionInDays: 30
 
   AdminProductionBranch:
     Type: AWS::Amplify::Branch

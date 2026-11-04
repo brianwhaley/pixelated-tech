@@ -2,10 +2,7 @@ import assert from 'node:assert/strict';
 // eslint-disable-next-line pixelated/package-json-missing-dependency
 import test from 'node:test';
 
-process.env.SMTP_USER = 'test@example.com';
-process.env.SMTP_PASSWORD = 'test-password';
-
-const { handler, getConfirmationMailOptions, getPrimaryMailOptions } = await import('./src/index.mjs');
+const { handler, getMailOptions, getSesMessageBody } = await import('./src/index.mjs');
 
 test('rejects an empty form submission', async () => {
 	const response = await handler({});
@@ -14,40 +11,26 @@ test('rejects an empty form submission', async () => {
 	assert.equal(JSON.parse(response.body).message, 'Bad Request: Request body cannot be empty.');
 });
 
-test('builds a confirmation email using the configured recipient field', () => {
-	const mailOptions = getConfirmationMailOptions({
-		domain: 'customer.com',
-		email: 'customer@example.com',
-		confirmationRecipientField: 'email',
-		confirmationSubject: 'Thank you for contacting us',
-		confirmationBody: 'We received your request.'
-	});
-
-	assert.deepEqual(mailOptions, {
-		from: 'thankyou@customer.com',
-		to: 'customer@example.com',
-		subject: 'Thank you for contacting us',
-		text: 'We received your request.'
-	});
-});
-
-test('does not build a confirmation email without complete metadata', () => {
-	assert.equal(getConfirmationMailOptions({
-		email: 'customer@example.com',
-		confirmationRecipientField: 'email',
-		confirmationSubject: 'Thank you'
-	}), null);
-});
-
-test('builds the primary email from the platform sender', () => {
-	assert.deepEqual(getPrimaryMailOptions({
+test('builds a generic SES message from the platform sender', () => {
+	assert.deepEqual(getMailOptions({
 		to: 'owner@customer.com',
-		subject: 'Contact submission'
-	}, '<p>Form details</p>'), {
+		subject: 'Contact submission',
+		html: '<p>Form details</p>'
+	}), {
 		from: 'info@pixelated.tech',
 		to: 'owner@customer.com',
 		subject: 'Contact submission',
 		html: '<p>Form details</p>',
 		text: '<p>Form details</p>'
+	});
+});
+
+test('builds an SES body with text and optional HTML', () => {
+	assert.deepEqual(getSesMessageBody({
+		html: '<p>Form details</p>',
+		text: 'Form details'
+	}), {
+		Html: { Data: '<p>Form details</p>', Charset: 'UTF-8' },
+		Text: { Data: 'Form details', Charset: 'UTF-8' }
 	});
 });

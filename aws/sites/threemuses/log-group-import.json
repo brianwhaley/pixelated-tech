@@ -1,0 +1,7 @@
+[
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "SiteAmplifyLogGroup",
+    "ResourceIdentifier": { "LogGroupName": "/aws/amplify/d1n9z3u3n9j9tp" }
+  }
+]

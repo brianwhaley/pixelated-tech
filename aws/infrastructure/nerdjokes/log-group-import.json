@@ -1,0 +1,12 @@
+[
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesApiDevExecutionLogGroup",
+    "ResourceIdentifier": { "LogGroupName": "API-Gateway-Execution-Logs_e3mum5cn7l/dev" }
+  },
+  {
+    "ResourceType": "AWS::Logs::LogGroup",
+    "LogicalResourceId": "NerdjokesApiProdExecutionLogGroup",
+    "ResourceIdentifier": { "LogGroupName": "API-Gateway-Execution-Logs_e3mum5cn7l/prod" }
+  }
+]

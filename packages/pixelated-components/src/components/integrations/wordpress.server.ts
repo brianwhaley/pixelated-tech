@@ -1,13 +1,20 @@
-"use server";
-
+import { createHmac, timingSafeEqual } from 'node:crypto';
 import { decode } from 'html-entities';
 import { CacheManager } from '../foundation/cache-manager';
 import { getDomain } from '../foundation/utilities';
 import { smartFetch } from '../foundation/smartfetch';
-import type { WordPressBlogLink } from './wordpress.functions';
+import type { BlogPostType, WordPressBlogLink } from './wordpress.functions';
 
 const feedCacheTTL = 1000 * 60 * 60 * 24 * 7;
 const feedCache = new CacheManager({ mode: 'local', ttl: feedCacheTTL, domain: getDomain(), namespace: 'wp-feed' });
+
+export function verifyWordPressWebhookSignature(payload: string, signature: string | null, secret: string): boolean {
+	if (!signature || !secret) return false;
+	const expected = createHmac('sha256', secret).update(payload).digest('hex');
+	const received = signature.replace(/^sha256=/, '').trim();
+	if (!/^[a-f0-9]{64}$/i.test(received)) return false;
+	return timingSafeEqual(Buffer.from(received, 'hex'), Buffer.from(expected, 'hex'));
+}
 
 /**
  * Fetch the most recent published post links from a WordPress RSS or Atom feed.
@@ -58,5 +65,39 @@ export async function getWordPressFeedLinks(feedUrl: string, count = 100): Promi
 	} catch (error) {
 		console.error('Error fetching WordPress feed links:', error);
 		return [];
+	}
+}
+
+export async function getWordPressPost(options: {
+	site: string;
+	postId?: string;
+	postUrl?: string;
+	baseURL?: string;
+}): Promise<BlogPostType | null> {
+	const site = options.site.trim();
+	if (!site || (!options.postId && !options.postUrl)) return null;
+	const baseURL = options.baseURL || 'https://public-api.wordpress.com/rest/v1/sites/';
+	let identifier = options.postId?.trim();
+	if (!identifier && options.postUrl) {
+		try {
+			const pathname = new URL(options.postUrl).pathname.replace(/\/+$/, '');
+			identifier = pathname.split('/').filter(Boolean).pop();
+		} catch {
+			return null;
+		}
+	}
+	if (!identifier) return null;
+
+	const apiUrl = new URL(`${site}/posts/${options.postId ? identifier : `slug:${identifier}`}`, baseURL.endsWith('/') ? baseURL : `${baseURL}/`);
+	try {
+		const post = await smartFetch(apiUrl.toString(), {
+			responseType: 'json',
+			timeout: 30000,
+		});
+		if (!post || typeof post !== 'object' || (typeof post.ID !== 'string' && typeof post.ID !== 'number')) return null;
+		return { ...post, ID: String(post.ID) } as BlogPostType;
+	} catch (error) {
+		console.error('Error fetching WordPress post:', error);
+		return null;
 	}
 }

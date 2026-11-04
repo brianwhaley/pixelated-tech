@@ -11,7 +11,6 @@ export default [
 		rules: {
 			"pixelated/enforce-single-h1": "off",
 			"pixelated/no-process-env": "off",
-			"pixelated/no-single-use-helpers": "off",
 			"@typescript-eslint/no-require-imports": "off",
 			"@typescript-eslint/no-unused-vars": "off",
 			"no-undef": "off",

@@ -240,6 +240,14 @@ Resources:
       LogGroupName: /aws/apigateway/dyndns53/v1
       RetentionInDays: 30
 
+  DyndnsApiExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${DyndnsApi}/v1
+      RetentionInDays: 30
+
   DyndnsApiPermission:
     Type: AWS::Lambda::Permission
     DeletionPolicy: Retain

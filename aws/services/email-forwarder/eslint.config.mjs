@@ -10,7 +10,7 @@ export default [
 		files: ["src/**/*.{js,mjs,cjs}"],
 		rules: {
 			"pixelated/enforce-single-h1": "off",
-			"pixelated/no-single-use-helpers": "off",
+			"pixelated/strict-pronoun-resolution": "off",
 			"pixelated/no-process-env": "off",
 		},
 	},
