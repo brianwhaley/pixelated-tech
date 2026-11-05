@@ -52,6 +52,13 @@
 			"component" : "FormHoneypot",
 			"props" : { }
 		},{
+			"component" : "FormConfirmationEmail",
+			"props" : {
+				"recipientField" : "email",
+				"subject" : "Thank you for contacting Palmetto Epoxy",
+				"body" : "Thank you for contacting Palmetto Epoxy.  Someone from our installation team will be reaching out to you shortly.  In the meantime, can you share the best time and contact method to reach you, along with any additional project information - address, project location (front porch, back porch, patio, garage floor, driveway, pool), area size, target dates, or anything else that would be helpful for you.  Thank you! - Martha and Dennis"
+			}
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",

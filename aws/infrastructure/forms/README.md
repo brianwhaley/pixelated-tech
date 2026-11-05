@@ -39,4 +39,4 @@ The `forms.pixelated.tech` DNS record must point to the regional API Gateway dom
 3. Confirm `form-processing` writes the submission to DynamoDB and sends the primary email through SES.
 4. Confirm the optional thank-you email path.
 5. Update consumers to use `https://forms.pixelated.tech/default/forms`.
-6. Only after validation, remove the legacy S3 route, `sendmail-s3` Lambda, and `pixelated-sendmail-east1-bucket` from the sendmail infrastructure. Preserve or back up any remaining objects before deletion.
+6. The sendmail cutover and validation are complete. The legacy S3 route, `sendmail-s3` Lambda, and empty `pixelated-sendmail-east1-bucket` are retired separately during final cleanup.
