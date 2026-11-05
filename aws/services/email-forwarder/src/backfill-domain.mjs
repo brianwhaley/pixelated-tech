@@ -4,12 +4,6 @@ const AWS_REGION = 'us-east-1';
 const TABLE_NAME = 'PixelatedEmailRouting';
 const shouldApply = process.argv.includes('--apply');
 
-function getDomainFromRecipient(recipient) {
-	const value = String(recipient || '').trim().toLowerCase();
-	const domain = value.startsWith('@') ? value.slice(1) : value.slice(value.lastIndexOf('@') + 1);
-	return domain.includes('.') ? domain : '';
-}
-
 async function backfillDomains() {
 	const client = new DynamoDBClient({ region: AWS_REGION });
 	let exclusiveStartKey;
@@ -30,8 +24,10 @@ async function backfillDomains() {
 			if (item.domain?.S) continue;
 
 			const recipient = item.recipient?.S || '';
-			const domain = getDomainFromRecipient(recipient);
-			if (!domain) {
+			const value = String(recipient || '').trim().toLowerCase();
+			const domain = value.startsWith('@') ? value.slice(1) : value.slice(value.lastIndexOf('@') + 1);
+			const normalizedDomain = domain.includes('.') ? domain : '';
+			if (!normalizedDomain) {
 				skippedCount += 1;
 				console.warn(`Skipped ${recipient || '(missing recipient)'}: unable to derive domain.`);
 				continue;
@@ -43,14 +39,14 @@ async function backfillDomains() {
 					Key: { recipient: { S: recipient } },
 					UpdateExpression: 'SET #domain = :domain',
 					ExpressionAttributeNames: { '#domain': 'domain' },
-					ExpressionAttributeValues: { ':domain': { S: domain } },
+					ExpressionAttributeValues: { ':domain': { S: normalizedDomain } },
 					ConditionExpression: 'attribute_not_exists(#domain)',
 				}));
 				updatedCount += 1;
-				console.log(`Updated ${recipient} with domain ${domain}.`);
+				console.log(`Updated ${recipient} with domain ${normalizedDomain}.`);
 			} else {
 				updatedCount += 1;
-				console.log(`Would update ${recipient} with domain ${domain}.`);
+				console.log(`Would update ${recipient} with domain ${normalizedDomain}.`);
 			}
 		}
 

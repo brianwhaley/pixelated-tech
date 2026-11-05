@@ -37,6 +37,7 @@ export async function sendGmailEmail(message) {
 		from: message.from,
 		to: message.to,
 		...(message.cc ? { cc: message.cc } : {}),
+		...(message.bcc ? { bcc: message.bcc } : {}),
 		subject: message.subject,
 		html: message.html,
 		text: message.text
@@ -50,7 +51,8 @@ export async function sendSesEmail(message) {
 		Source: message.from,
 		Destination: {
 			ToAddresses: [message.to],
-			...(message.cc ? { CcAddresses: [message.cc] } : {})
+			...(message.cc ? { CcAddresses: [message.cc] } : {}),
+			...(message.bcc ? { BccAddresses: [message.bcc] } : {})
 		},
 		Message: {
 			Subject: { Data: message.subject, Charset: "UTF-8" },

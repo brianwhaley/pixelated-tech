@@ -20,12 +20,12 @@ describe('Puppeteer helpers', () => {
 		expect(launch).toHaveBeenNthCalledWith(1, {
 			headless: true,
 			executablePath: undefined,
-			defaultViewport: null,
+			defaultViewport: { width: 1200, height: 772 },
 		});
 		expect(launch).toHaveBeenNthCalledWith(2, {
 			headless: false,
 			executablePath: '/browser/chrome',
-			defaultViewport: null,
+			defaultViewport: { width: 1200, height: 772 },
 		});
 	});
 

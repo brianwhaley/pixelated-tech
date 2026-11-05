@@ -49,6 +49,7 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 				throw new Error(`Nextdoor Business Page URL is not configured for site: ${request.site}`);
 			}
 			const browser = await launchPuppeteerBrowser({
+				headless: true,
 				executablePath: config.integrations?.puppeteer?.executable_path,
 			});
 			try {

@@ -69,7 +69,7 @@ describe('publishSocialPost', () => {
 			postUrl: undefined,
 			baseURL: 'https://public-api.example.com',
 		});
-		expect(launchPuppeteerBrowser).toHaveBeenCalledWith({ executablePath: '/browser/chrome' });
+		expect(launchPuppeteerBrowser).toHaveBeenCalledWith({ headless: true, executablePath: '/browser/chrome' });
 		expect(publishToNextdoor).toHaveBeenCalledWith({
 			page: { id: 'page' },
 			username: 'nextdoor-user',

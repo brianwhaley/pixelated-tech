@@ -16,12 +16,6 @@ const s3 = new S3Client({ region: AWS_REGION });
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: AWS_REGION }));
 const ses = new SESClient({ region: AWS_REGION });
 
-function extractEmailAddress(rawFrom) {
-	if (!rawFrom) return "";
-	const match = rawFrom.match(/<([^>]+)>/) || rawFrom.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
-	return match ? match[1].trim() : rawFrom.trim();
-}
-
 function extractCleanDisplayName(rawFrom) {
 	if (!rawFrom) return "Platform Relay";
 	const clean = rawFrom
@@ -29,12 +23,6 @@ function extractCleanDisplayName(rawFrom) {
 		.replace(/[\r\n"'\\]/g, "")
 		.trim();
 	return clean || "Platform Relay";
-}
-
-function safeReplyToAddress(raw) {
-	const email = extractEmailAddress(raw);
-	const name = extractCleanDisplayName(raw);
-	return email ? `"${name}" <${email}>` : `"Platform Relay" <relay@${FORWARDING_DOMAIN}>`;
 }
 
 function describeError(error) {
@@ -251,11 +239,14 @@ export const handler = async (event) => {
 			const fromHeaderMatch = workingEmail.match(/^From:([\s\S]*?)\r?\n(?![ \t])/im);
 			const rawFromHeader = fromHeaderMatch ? fromHeaderMatch[1].replace(/\r?\n\s+/g, " ").trim() : "Unknown Sender";
 
-			const cleanSenderEmail = extractEmailAddress(rawFromHeader);
+			const emailMatch = rawFromHeader.match(/<([^>]+)>/) || rawFromHeader.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+			const cleanSenderEmail = emailMatch ? emailMatch[1].trim() : rawFromHeader.trim();
 			const cleanSenderName = extractCleanDisplayName(rawFromHeader);
 
 			// Build safe address strings with quotes around display names
-			const safeReplyTo = cleanSenderEmail ? `"${cleanSenderName}" <${cleanSenderEmail}>` : safeReplyToAddress(rawFromHeader);
+			const safeReplyTo = cleanSenderEmail
+				? `"${cleanSenderName}" <${cleanSenderEmail}>`
+				: `"Platform Relay" <relay@${FORWARDING_DOMAIN}>`;
 			const safeFrom = `"${cleanSenderName}" <relay@${FORWARDING_DOMAIN}>`;
 
 			// Rewrite From header cleanly

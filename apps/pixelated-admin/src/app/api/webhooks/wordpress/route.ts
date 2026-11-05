@@ -3,15 +3,25 @@ import { publishSocialPost } from '@pixelated-tech/components/adminserver';
 
 export async function POST(request: Request) {
 	const rawBody = await request.text();
-	let payload: { site?: string; postId?: string; postUrl?: string; destinations?: Array<'nextdoor'> };
+	let payload: { postId?: string; postUrl?: string; destinations?: Array<'nextdoor'> };
 	try {
 		payload = JSON.parse(rawBody);
 	} catch {
 		return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
 	}
 
-	const site = typeof payload.site === 'string' ? payload.site.trim() : '';
+	let site = '';
+	if (typeof payload.postUrl === 'string' && payload.postUrl.trim()) {
+		try {
+			site = new URL(payload.postUrl).hostname.toLowerCase();
+		} catch {
+			site = '';
+		}
+	}
 	const secret = site ? getFullPixelatedConfig().integrations?.socialPublish?.wordpress?.webhookSecrets?.[site] : '';
+	if (!site) {
+		return Response.json({ error: 'A valid postUrl is required to identify the WordPress site.' }, { status: 400 });
+	}
 	if (!site || !secret || !verifyWordPressWebhookSignature(rawBody, request.headers.get('x-wordpress-signature'), secret)) {
 		return Response.json({ error: 'Invalid webhook signature.' }, { status: 401 });
 	}
