@@ -51,6 +51,13 @@
 			"component" : "FormHoneypot",
 			"props" : { }
 		},{
+			"component" : "FormConfirmationEmail",
+			"props" : {
+				"recipientField" : "email",
+				"subject" : "Thank you for your Palmetto Epoxy review",
+				"body" : "Thank you for sharing your experience with Palmetto Epoxy. We appreciate your feedback!  - Martha and Dennis"
+			}
+		},{
 			"component" : "FormInput",
 			"props" : {
 				"type" : "text",

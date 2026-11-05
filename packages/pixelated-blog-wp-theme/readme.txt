@@ -7,8 +7,8 @@ Contributors: pixelatedtech
 Requires at least: 6.1  
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.5.4
-Version: 1.5.4
+Stable tag: 1.5.5
+Version: 1.5.5
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 Tags: blog, one-column, two-columns, block-patterns, block-styles, custom-background, custom-colors, custom-header, custom-logo, custom-menu, editor-style, featured-images, full-site-editing, sticky-post, template-editing, threaded-comments, translation-ready, wide-blocks
@@ -22,6 +22,14 @@ The theme includes Google Fonts: Montserrat (https://fonts.google.com/specimen/M
 1. In your admin panel, go to Appearance > Themes and click the Add New button.
 2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
 3. Click Activate to use your new theme right away.
+
+== Social publish webhook ==
+
+After activating the theme, go to Settings > Pixelated Social Publish and configure the webhook secret. The webhook URL is built into the package and defaults to https://admin.pixelated.tech/api/webhooks/wordpress.
+
+The webhook automatically identifies the site from the hostname in the published post URL. In Pixelated Admin, use that hostname as the key in both the social publish WordPress webhook secrets and Nextdoor site configurations. Use the same secret in both systems. The secret is stored in the WordPress options database and is never displayed after it is saved.
+
+The same theme package can be installed on multiple sites. Configure each site's secret separately. The PIXELATED_SOCIAL_PUBLISH_WEBHOOK_URL and PIXELATED_SOCIAL_PUBLISH_SECRET constants in wp-config.php remain available as deployment overrides.
 
 == Frequently Asked Questions ==
 

@@ -9,26 +9,30 @@ exports.handler = async (event, context) => {
     if(log) console.log("NERD JOKE SKILL - Event Type : ", event.request.type);
     switch (event.request.type) {
         case "LaunchRequest":
-            return LaunchHandler();
+            if(log) console.log("NERD JOKE SKILL - Launch Handler");
+            return generateResponse(buildSpeechletResponse("Welcome to Nerd Jokes.  " + firstRequest , false));
         case "IntentRequest":
             switch (event.request.intent.name) {
                 case "NerdJoke":
                     return NerdJokeHandler();
                 case "AMAZON.FallbackIntent":
-                    return FallbackHandler();
+                    if(log) console.log("NERD JOKE SKILL - Fallback Handler");
+                    return generateResponse(buildSpeechletResponse(firstRequest, false));
                 case "AMAZON.HelpIntent":
-                    return HelpHandler();
+                    if(log) console.log("NERD JOKE SKILL - Help Handler");
+                    return generateResponse(buildSpeechletResponse(`
+    Thanks for using Nerd Jokes version ${process.env.AWS_LAMBDA_FUNCTION_VERSION}.  
+    There is not a lot to do with this skill, just a bunch of nerd jokes.  
+    Would you like to hear a Nerd Joke?  
+    Just say yes, or no.
+    `, false));
                 case "AMAZON.CancelIntent":
                 case "AMAZON.StopIntent":
-                    return StopHandler();
+                    if(log) console.log("NERD JOKE SKILL - Stop Handler");
+                    return generateResponse(buildSpeechletResponse("Thanks for listening to some nerd jokes.", true));
             }
         break;
     }
-};
-
-var LaunchHandler = () => {
-    if(log) console.log("NERD JOKE SKILL - Launch Handler");
-    return generateResponse(buildSpeechletResponse("Welcome to Nerd Jokes.  " + firstRequest , false));
 };
 
 
@@ -41,29 +45,6 @@ var NerdJokeHandler = async () => {
     var jokeBody = JSON.parse(jokePayload.body);
     if(log) console.log("RECEIVED Body : ", jokeBody);
     return generateResponse(buildJokeSpeechletResponse(jokeBody, false));
-};
-
-
-var FallbackHandler = () => {
-    if(log) console.log("NERD JOKE SKILL - Fallback Handler");
-    return generateResponse(buildSpeechletResponse(firstRequest, false));
-};
-
-
-var HelpHandler = () => {
-    if(log) console.log("NERD JOKE SKILL - Help Handler");
-    return generateResponse(buildSpeechletResponse(`
-    Thanks for using Nerd Jokes version ${process.env.AWS_LAMBDA_FUNCTION_VERSION}.  
-    There is not a lot to do with this skill, just a bunch of nerd jokes.  
-    Would you like to hear a Nerd Joke?  
-    Just say yes, or no.
-    `, false));
-};
-
-
-var StopHandler = () => {
-    if(log) console.log("NERD JOKE SKILL - Stop Handler");
-    return generateResponse(buildSpeechletResponse("Thanks for listening to some nerd jokes.", true));
 };
 
 
@@ -181,32 +162,12 @@ var randomResponse = () => {
         "Ouch.  That one hurt.",
         "" ,
     ];
-    var rnd = getRandomInt(0, responses.length - 1);
+    var randomNumbers = [];
+    for (var index = 0; index < 20; index++) {
+        const randomValue = CRYPTO.randomBytes(8).readUInt32LE() / 0xffffffff;
+        randomNumbers[index] = Math.floor(randomValue * responses.length);
+    }
+    var rnd = randomNumbers[Math.floor(Math.random() * randomNumbers.length)];
     if(log) console.log("RANDOM RESPONSE - Rnd :", rnd, " Text: ", responses[rnd]);
     return responses[rnd];
-};
-
-
-var getRandomInt = (min, max) => {
-    var numbers = [];
-    numbers.length = 20;
-    for (var i = 0; i < numbers.length ; i++) {
-        numbers[i] = randomCryptoInt(min, max);
-    }
-    if(log) console.log("GET RANDOM INT - Min: " , min , " Max: ", max , " Nums: ", numbers);
-    return numbers[randomInt(0, numbers.length - 1)];
-};
-var randomInt = (min, max) => {
-    // min and max are inclusive
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-var randomCryptoInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    if(min >= max) return false;
-    const diff = max - min + 1;
-    const rnd = CRYPTO.randomBytes(8).readUInt32LE() / 0xffffffff ;
-    return Math.floor( rnd * diff ) + min ; 
 };

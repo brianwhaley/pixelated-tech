@@ -162,10 +162,43 @@ Resources:
       Budget:
         BudgetName: pixelated-budget
         BudgetLimit:
-          Amount: 1
+          Amount: 125
           Unit: USD
         BudgetType: COST
         TimeUnit: MONTHLY
+        NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+            ThresholdType: PERCENTAGE
+          Subscribers:
+          - SubscriptionType: SNS
+            Address:
+              Fn::Sub: arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
+  ZeroCostBudget:
+    Type: AWS::Budgets::Budget
+    Condition: ManageBudget
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Budget:
+        BudgetName: pixelated-zero-cost-budget
+        BudgetLimit:
+          Amount: 0.01
+          Unit: USD
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+            ThresholdType: PERCENTAGE
+          Subscribers:
+          - SubscriptionType: SNS
+            Address:
+              Fn::Sub: arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
 Outputs:
   CloudWatchAlarmsTopicArn:
     Condition: ManageCloudWatchAlarmsTopic

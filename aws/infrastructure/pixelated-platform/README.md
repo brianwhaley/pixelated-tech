@@ -17,8 +17,10 @@ After the bootstrap stack exists, create and review an `IMPORT` change set using
 The Nerd Jokes stack owns and imports `tech-jokes-role`. Nerd Jokes, Proxy, and Sendmail continue consuming
 the shared east-one certificate ARN from their feature-stack configuration.
 
-The Amplify and Budget roles remain in the global platform stack. They are
-account-level resources and do not need to be recreated in `us-east-1`.
+The Amplify and Budget roles, along with the shared account budgets, are owned
+by the platform stack. Although the stack is deployed from `us-east-1`, these
+are account-level resources. The import manifest adopts the existing
+`pixelated-zero-cost-budget` budget under the `ZeroCostBudget` logical ID.
 
 The logging role is intentionally separate from the SAM deployment artifact stack. `pixelated-sam-cli-managed` owns the SAM deployment artifact bucket and is tooling infrastructure; API Gateway logging is application platform infrastructure and must not depend on SAM CLI regenerating or replacing its template.
 

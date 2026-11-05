@@ -6,7 +6,7 @@ export async function launchPuppeteerBrowser(options: { headless?: boolean; exec
 	return puppeteer.launch({
 		headless: options.headless ?? true,
 		executablePath: options.executablePath,
-		defaultViewport: null,
+		defaultViewport: { width: 1200, height: 772 },
 	});
 }
 

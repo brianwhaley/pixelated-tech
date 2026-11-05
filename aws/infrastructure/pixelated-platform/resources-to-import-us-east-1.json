@@ -26,5 +26,12 @@
     "ResourceIdentifier": {
       "RoleName": "budget-role"
     }
+  },
+  {
+    "ResourceType": "AWS::Budgets::Budget",
+    "LogicalResourceId": "ZeroCostBudget",
+    "ResourceIdentifier": {
+      "Id": "pixelated-zero-cost-budget"
+    }
   }
 ]
