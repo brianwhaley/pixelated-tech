@@ -1,15 +1,23 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import fs from 'fs';
-import { spawnSync } from 'child_process';
+import * as childProcess from 'child_process';
+
+vi.mock('child_process', () => ({
+  spawnSync: vi.fn(),
+}));
 
 import { zipPixelatedTheme, buildZipArgs } from '../scripts/zip-pixelated-theme.js';
 
 describe('zip-pixelated-theme script', () => {
   const fakeTheme = '/fake/theme/dir';
   const fakeZip = '/fake/theme/dir/Pixelated.zip';
+  const stagingParent = '/tmp/pixelated-theme-test';
 
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.spyOn(fs, 'mkdtempSync').mockReturnValue(stagingParent);
+    vi.spyOn(fs, 'cpSync').mockImplementation(() => undefined);
+    vi.spyOn(fs, 'rmSync').mockImplementation(() => undefined);
   });
 
   describe('zipPixelatedTheme Function', () => {
@@ -31,7 +39,7 @@ describe('zip-pixelated-theme script', () => {
       const unlink = vi.spyOn(fs, 'unlinkSync').mockImplementation(() => undefined);
 
       let capturedArgs: any[] | undefined;
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         const args = callArgs[1] as any[] | undefined;
         if (cmd === 'which') return { status: 0 } as any;
@@ -44,6 +52,7 @@ describe('zip-pixelated-theme script', () => {
 
       const out = zipPixelatedTheme(fakeTheme, 'Pixelated.zip');
       expect(unlink).toHaveBeenCalledWith(fakeZip);
+      expect(capturedArgs).toContain('Pixelated');
       expect(out).toBe(fakeZip);
     });
 
@@ -54,7 +63,7 @@ describe('zip-pixelated-theme script', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(true);
       vi.spyOn(fs, 'statSync').mockReturnValue({ isDirectory: () => true } as any);
       vi.spyOn(fs, 'unlinkSync').mockImplementation(() => undefined);
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         if (cmd === 'which') return { status: 0 } as any;
         if (cmd === 'zip') return { status: 0 } as any;
@@ -69,7 +78,7 @@ describe('zip-pixelated-theme script', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(true);
       vi.spyOn(fs, 'statSync').mockReturnValue({ isDirectory: () => true } as any);
       vi.spyOn(fs, 'unlinkSync').mockImplementation(() => undefined);
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         if (cmd === 'which') return { status: 0 } as any;
         if (cmd === 'zip') return { status: 0 } as any;
@@ -85,22 +94,22 @@ describe('zip-pixelated-theme script', () => {
   describe('buildZipArgs Function', () => {
     it('generates exclude patterns for excluded directories', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('.git/**');
-      expect(args).toContain('node_modules/**');
-      expect(args).toContain('dist/**');
-      expect(args).toContain('.cache/**');
-      expect(args).toContain('coverage/**');
+      expect(args).toContain('Pixelated/.git/**');
+      expect(args).toContain('Pixelated/node_modules/**');
+      expect(args).toContain('Pixelated/dist/**');
+      expect(args).toContain('Pixelated/.cache/**');
+      expect(args).toContain('Pixelated/coverage/**');
     });
 
     it('excludes system files', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('.DS_Store');
-      expect(args).toContain('.vscode/**');
+      expect(args).toContain('Pixelated/.DS_Store');
+      expect(args).toContain('Pixelated/.vscode/**');
     });
 
     it('excludes common build artifacts', () => {
       const args = buildZipArgs('theme.zip');
-      const excludePatterns = ['.git/**', 'node_modules/**', 'dist/**', '.cache/**', 'coverage/**'];
+      const excludePatterns = ['Pixelated/.git/**', 'Pixelated/node_modules/**', 'Pixelated/dist/**', 'Pixelated/.cache/**', 'Pixelated/coverage/**'];
       excludePatterns.forEach(pattern => {
         expect(args).toContain(pattern);
       });
@@ -137,7 +146,7 @@ describe('zip-pixelated-theme script', () => {
     it('errors when zip not on PATH', () => {
       vi.spyOn(fs, 'existsSync').mockImplementation((p: fs.PathLike) => String(p) === fakeTheme);
       vi.spyOn(fs, 'statSync').mockReturnValue({ isDirectory: () => true } as any);
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         if (cmd === 'which') return { status: 1 } as any; // not found
         throw Object.assign(new Error('spawn ENOENT'), { code: 'ENOENT' });
@@ -150,7 +159,7 @@ describe('zip-pixelated-theme script', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(true);
       vi.spyOn(fs, 'statSync').mockReturnValue({ isDirectory: () => true } as any);
       vi.spyOn(fs, 'unlinkSync').mockImplementation(() => undefined);
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         if (cmd === 'which') return { status: 0 } as any;
         if (cmd === 'zip') return { status: 0 } as any;
@@ -183,7 +192,7 @@ describe('zip-pixelated-theme script', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(true);
       const statSpy = vi.spyOn(fs, 'statSync').mockReturnValue({ isDirectory: () => true } as any);
       vi.spyOn(fs, 'unlinkSync').mockImplementation(() => undefined);
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         if (cmd === 'which') return { status: 0 } as any;
         if (cmd === 'zip') return { status: 0 } as any;
@@ -200,7 +209,7 @@ describe('zip-pixelated-theme script', () => {
       );
       vi.spyOn(fs, 'statSync').mockReturnValue({ isDirectory: () => true } as any);
       const unlinkSpy = vi.spyOn(fs, 'unlinkSync').mockImplementation(() => undefined);
-      vi.spyOn(require('child_process'), 'spawnSync' as any).mockImplementation((...callArgs: any[]) => {
+      vi.mocked(childProcess.spawnSync).mockImplementation((...callArgs: any[]) => {
         const cmd = String(callArgs[0]);
         if (cmd === 'which') return { status: 0 } as any;
         if (cmd === 'zip') return { status: 0 } as any;
@@ -215,28 +224,28 @@ describe('zip-pixelated-theme script', () => {
   describe('Exclusion Patterns', () => {
     it('excludes version control directories', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('.git/**');
+      expect(args).toContain('Pixelated/.git/**');
     });
 
     it('excludes node_modules to reduce size', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('node_modules/**');
+      expect(args).toContain('Pixelated/node_modules/**');
     });
 
     it('excludes build outputs', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('dist/**');
+      expect(args).toContain('Pixelated/dist/**');
     });
 
     it('excludes cache directories', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('.cache/**');
-      expect(args).toContain('coverage/**');
+      expect(args).toContain('Pixelated/.cache/**');
+      expect(args).toContain('Pixelated/coverage/**');
     });
 
     it('excludes IDE configurations', () => {
       const args = buildZipArgs('theme.zip');
-      expect(args).toContain('.vscode/**');
+      expect(args).toContain('Pixelated/.vscode/**');
     });
   });
 });

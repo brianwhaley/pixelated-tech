@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import * as childProcess from 'child_process';
 
 /**
@@ -9,22 +10,23 @@ import * as childProcess from 'child_process';
  *
  * Exported for unit testing.
  */
-export function buildZipArgs(zipName = 'Pixelated.zip') {
+export function buildZipArgs(zipName = 'Pixelated.zip', rootFolder = 'Pixelated') {
 	// exported for unit-testing
 	// Exclude: the zip itself, VCS, macOS metadata, dev/build artifacts and common folders
 	return [
 		'-r',
 		zipName,
-		'.',
-		'-x', zipName,
-		'-x', '.git/*',
-		'-x', '.git/**',
-		'-x', '.DS_Store',
-		'-x', 'node_modules/**',
-		'-x', 'dist/**',
-		'-x', '.cache/**',
-		'-x', 'coverage/**',
-		'-x', '.vscode/**',
+		rootFolder,
+		'-x', `${rootFolder}/${zipName}`,
+		'-x', `${rootFolder}/*.zip`,
+		'-x', `${rootFolder}/.git/*`,
+		'-x', `${rootFolder}/.git/**`,
+		'-x', `${rootFolder}/.DS_Store`,
+		'-x', `${rootFolder}/node_modules/**`,
+		'-x', `${rootFolder}/dist/**`,
+		'-x', `${rootFolder}/.cache/**`,
+		'-x', `${rootFolder}/coverage/**`,
+		'-x', `${rootFolder}/.vscode/**`,
 	];
 }
 
@@ -82,18 +84,24 @@ export function zipPixelatedTheme(inputPath, zipName = 'Pixelated.zip') {
 		throw new Error('`zip` command not found on PATH — please install zip (e.g. `brew install zip`)');
 	}
 
-	// Run: zip -r Pixelated.zip . (exclude the zip file itself and .git to avoid embedding repo history)
-	// Note: patterns are passed directly to zip; include both simple and recursive patterns to be safe.
-	const args = buildZipArgs(zipName);
+	const stagingParent = fs.mkdtempSync(path.join(os.tmpdir(), 'pixelated-theme-'));
+	const stagingThemeDir = path.join(stagingParent, 'Pixelated');
+	fs.cpSync(themeDir, stagingThemeDir, { recursive: true });
+
+	// Archive a stable theme directory so WordPress receives a predictable stylesheet slug.
+	const args = buildZipArgs(zipName, 'Pixelated');
+	args[1] = zipPath;
 	let result;
 	try {
-		result = childProcess.spawnSync('zip', args, { cwd: themeDir, stdio: 'inherit' });
+		result = childProcess.spawnSync('zip', args, { cwd: stagingParent, stdio: 'inherit' });
 	} catch (err) {
 		// Normalize ENOENT into a clearer message for callers/tests
 		if (err && err.code === 'ENOENT') {
 			throw new Error('`zip` command not found on PATH — please install zip (e.g. `brew install zip`)', { cause: err });
 		}
 		throw new Error(`Failed to run zip: ${String(err)}`, { cause: err });
+	} finally {
+		fs.rmSync(stagingParent, { recursive: true, force: true });
 	}
 
 	if (result && result.error) {
