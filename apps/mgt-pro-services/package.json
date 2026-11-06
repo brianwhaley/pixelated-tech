@@ -1,6 +1,6 @@
 {
   "name": "mgt-pro-services",
-  "version": "0.7.44",
+  "version": "0.7.45",
   "private": true,
   "description": "Mgt Pro Services website",
   "license": "MIT",
@@ -46,5 +46,5 @@
     "vitest": "^5.1.0"
   },
   "overrides": {},
-  "deployMarker": "2026-11-04T04:33:53.000Z"
+  "deployMarker": "2026-11-06T04:09:02.000Z"
 }

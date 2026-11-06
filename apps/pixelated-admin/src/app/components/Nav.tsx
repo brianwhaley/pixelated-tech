@@ -8,6 +8,7 @@ import { getAllowedAdminRoutes } from '@pixelated-tech/components/adminclient';
 import authorizationConfig from '../data/authorization.json';
 
 export default function Nav() {
+	const debug = true;
 	const pixelatedConfig = usePixelatedConfig();
 	const routes = pixelatedConfig?.routes ?? [];
 
@@ -16,7 +17,18 @@ export default function Nav() {
 
 	const allowedRoutes = useMemo(() => {
 		const email = session?.user?.email;
-		return getAllowedAdminRoutes(email, routes, authorizationConfig as any);
+		const filteredRoutes = getAllowedAdminRoutes(email, routes, authorizationConfig as any);
+		if (debug) {
+			console.log('[Admin Nav] config state', {
+				configPresent: Boolean(pixelatedConfig),
+				routeCount: routes.length,
+				routePaths: routes.map(route => route.path),
+				sessionEmail: email,
+				allowedRouteCount: filteredRoutes.length,
+				allowedRoutePaths: filteredRoutes.map(route => route.path),
+			});
+		}
+		return filteredRoutes;
 	}, [routes, session]);
 
 	const handleSignOut = () => {

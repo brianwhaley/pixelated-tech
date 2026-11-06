@@ -34,7 +34,7 @@ export async function getGoogleReviewsByPlaceId(params: {
 	placeId: string;
 	language?: string;
 	maxReviews?: number;
-	proxyBase?: string; // e.g. 'https://proxy.pixelated.tech/prod/proxy?url='
+	proxyBase?: string; // e.g. 'https://api.pixelated.tech/proxy?url='
 	apiKey: string;
 }): Promise<{ place?: GooglePlaceSummary; reviews: GoogleReview[] }> {
 	const { placeId, language, maxReviews, proxyBase, apiKey } = params;

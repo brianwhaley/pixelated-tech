@@ -254,7 +254,7 @@ export interface GitHubConfig {
 }
 
 export interface GlobalConfig {
-	proxyUrl?: string; // e.g. 'https://proxy.pixelated.tech/prod/proxy?url='
+	proxyUrl?: string; // e.g. 'https://api.pixelated.tech/proxy?url='
 	pagesDir?: string; // override pages directory used by page builder
 }
 

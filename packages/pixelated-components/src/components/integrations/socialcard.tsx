@@ -51,7 +51,7 @@ export function SocialCards(props: SocialCardsType) {
 	const debug = false;
 	// Get config values from provider
 	const config = usePixelatedConfig();
-	const proxyURL = config?.integrations?.global?.proxyUrl || 'https://proxy.pixelated.tech/prod/proxy';
+	const proxyURL = config?.integrations?.global?.proxyUrl || 'https://api.pixelated.tech/proxy';
 
 	const [ state, setState ] = useState({
 		loading: true,

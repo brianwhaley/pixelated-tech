@@ -6,6 +6,8 @@ type AdminRoute = {
   [key: string]: unknown;
 };
 
+const debug = true;
+
 export function normalizeRoutePath(value: string | undefined | null): string {
 	return normalizePath(value);
 }
@@ -16,12 +18,27 @@ export function getAllowedAdminRoutes(
 	config?: AuthorizationConfig
 ): AdminRoute[] {
 	const allowedRoutes = getAuthorizedRoutesByID(email, config);
-	return routes.filter(route => {
+	if (debug) {
+		console.log('[Admin Authorization] input', {
+			email,
+			routeCount: routes.length,
+			routePaths: routes.map(route => route?.path),
+			authorizedRoutePaths: allowedRoutes,
+		});
+	}
+	const filteredRoutes = routes.filter(route => {
 		if (!route?.path || typeof route.path !== 'string') return false;
 		const path = normalizePath(route.path);
 		if (path === '/login') return false;
 		return allowedRoutes.includes(path);
 	});
+	if (debug) {
+		console.log('[Admin Authorization] output', {
+			allowedRouteCount: filteredRoutes.length,
+			allowedRoutePaths: filteredRoutes.map(route => route.path),
+		});
+	}
+	return filteredRoutes;
 }
 
 export function getAuthorizedRoutePaths(

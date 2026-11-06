@@ -1,0 +1,534 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Unified Pixelated API Gateway for east-one service integrations.
+
+Parameters:
+  CertificateArn:
+    Type: String
+    Default: arn:aws:acm:us-east-1:971579260814:certificate/fcbcbe4a-0a02-4fe4-9ab3-c412da614f0d
+  HostedZoneId:
+    Type: String
+    Default: ''
+  CreateDnsRecord:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  AlarmTopicArn:
+    Type: String
+    Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+  SendmailFunctionArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:971579260814:function:sendmail
+  ProxyFunctionArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:971579260814:function:proxy
+  DyndnsFunctionArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:971579260814:function:dyndns53_lambda
+  NerdjokesFunctionArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:971579260814:function:nerdjokes:PROD
+  FormsBucketName:
+    Type: String
+    Default: pixelated-forms-bucket
+  FormsIntegrationRoleArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:role/forms_execution_role
+  NerdjokesClientId:
+    Type: String
+    NoEcho: true
+    Default: ''
+  NerdjokesClientSecret:
+    Type: String
+    NoEcho: true
+    Default: ''
+  NerdjokesVerificationToken:
+    Type: String
+    NoEcho: true
+    Default: ''
+
+Conditions:
+  CreateDnsRecordCondition: !And
+    - !Equals [!Ref CreateDnsRecord, 'true']
+    - !Not [!Equals [!Ref HostedZoneId, '']]
+
+Resources:
+  UnifiedApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: pixelated-api
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  UnifiedApiStage:
+    Type: AWS::ApiGateway::Stage
+    DependsOn:
+      - SendmailMethod
+      - FormsMethod
+      - DyndnsMethod
+      - ProxyMethod
+      - NerdjokesGetMethod
+      - NerdjokesPostMethod
+      - UnifiedApiExecutionLogGroup
+    Properties:
+      DeploymentId: !Ref UnifiedApiDeploymentV2
+      RestApiId: !Ref UnifiedApi
+      StageName: prod
+      Variables:
+        ENV: PROD
+        CLIENT_ID: !Ref NerdjokesClientId
+        CLIENT_SECRET: !Ref NerdjokesClientSecret
+        VERIFICATION_TOKEN: !Ref NerdjokesVerificationToken
+      MethodSettings:
+        - HttpMethod: '*'
+          ResourcePath: '/*'
+          MetricsEnabled: true
+          LoggingLevel: INFO
+          ThrottlingBurstLimit: 500
+          ThrottlingRateLimit: 100
+      AccessLogSetting:
+        DestinationArn: !GetAtt UnifiedApiAccessLogGroup.Arn
+        Format: >-
+          {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
+
+  UnifiedApiDeploymentV2:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - SendmailMethod
+      - SendmailOptionsMethod
+      - FormsMethod
+      - FormsOptionsMethod
+      - DyndnsMethod
+      - ProxyMethod
+      - ProxyOptionsMethod
+      - NerdjokesGetMethod
+      - NerdjokesPostMethod
+    Properties:
+      RestApiId: !Ref UnifiedApi
+      Description: Unified east-one API routes
+
+  ApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: api.pixelated.tech
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: !Ref CertificateArn
+      SecurityPolicy: TLS_1_2
+
+  ApiBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DependsOn:
+      - UnifiedApiStage
+    Properties:
+      DomainName: !Ref ApiDomain
+      RestApiId: !Ref UnifiedApi
+      Stage: prod
+
+  ApiDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateDnsRecordCondition
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: api.pixelated.tech
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ApiDomain.RegionalDomainName
+        HostedZoneId: !GetAtt ApiDomain.RegionalHostedZoneId
+        EvaluateTargetHealth: false
+
+  SendmailResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt UnifiedApi.RootResourceId
+      PathPart: sendmail
+      RestApiId: !Ref UnifiedApi
+
+  SendmailMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendmailFunctionArn}/invocations
+      ResourceId: !Ref SendmailResource
+      RestApiId: !Ref UnifiedApi
+
+  SendmailOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - StatusCode: '200'
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
+      ResourceId: !Ref SendmailResource
+      RestApiId: !Ref UnifiedApi
+
+  SendmailPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SendmailFunctionArn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/POST/sendmail
+
+  FormsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt UnifiedApi.RootResourceId
+      PathPart: forms
+      RestApiId: !Ref UnifiedApi
+
+  FormsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        Credentials: !Ref FormsIntegrationRoleArn
+        IntegrationHttpMethod: PUT
+        IntegrationResponses:
+          - StatusCode: '200'
+            SelectionPattern: '2\d{2}'
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: '{"message":"accepted"}'
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        RequestParameters:
+          integration.request.path.requestId: context.requestId
+        RequestTemplates:
+          application/json: $input.body
+        Type: AWS
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:s3:path/${FormsBucketName}/{requestId}.json
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: false
+      ResourceId: !Ref FormsResource
+      RestApiId: !Ref UnifiedApi
+
+  FormsOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - StatusCode: '200'
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
+      ResourceId: !Ref FormsResource
+      RestApiId: !Ref UnifiedApi
+
+  DyndnsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt UnifiedApi.RootResourceId
+      PathPart: dyndns53
+      RestApiId: !Ref UnifiedApi
+
+  DyndnsNicResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !Ref DyndnsResource
+      PathPart: nic
+      RestApiId: !Ref UnifiedApi
+
+  DyndnsUpdateResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !Ref DyndnsNicResource
+      PathPart: update
+      RestApiId: !Ref UnifiedApi
+
+  DyndnsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.header.Authorization: false
+        method.request.querystring.hostname: false
+        method.request.querystring.myip: false
+        method.request.querystring.offline: false
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DyndnsFunctionArn}/invocations
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        ContentHandling: CONVERT_TO_TEXT
+        TimeoutInMillis: 29000
+        RequestTemplates:
+          application/json: |-
+            #set($allParams = $input.params())
+            {
+            "body-json" : $input.json('$'),
+            #foreach($type in $allParams.keySet())
+                #set($params = $allParams.get($type))
+            "$type" : {
+                #foreach($paramName in $params.keySet())
+                "$paramName" : "$util.escapeJavaScript($params.get($paramName))"
+                    #if($foreach.hasNext),#end
+                #end
+            },
+            #end
+            "context" : {
+                "http-method" : "$context.httpMethod",
+                "stage" : "$context.stage",
+                "source-ip" : "$context.identity.sourceIp",
+                "request-id" : "$context.requestId",
+                "resource-id" : "$context.resourceId",
+                "resource-path" : "$context.resourcePath"
+                }
+            }
+        IntegrationResponses:
+          - StatusCode: '200'
+            ResponseTemplates:
+              application/json: "$input.path('$.response')"
+          - StatusCode: '400'
+            SelectionPattern: '.*"status"\s*:\s*400.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+          - StatusCode: '401'
+            SelectionPattern: '.*"status"\s*:\s*401.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+          - StatusCode: '403'
+            SelectionPattern: '.*"status"\s*:\s*403.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+          - StatusCode: '404'
+            SelectionPattern: '.*"status"\s*:\s*404.*'
+            ResponseTemplates:
+              application/json: "$util.parseJson($input.path('$.errorMessage')).response"
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: '400'
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: '401'
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: '403'
+          ResponseModels:
+            text/plain: Empty
+        - StatusCode: '404'
+          ResponseModels:
+            text/plain: Empty
+      ResourceId: !Ref DyndnsUpdateResource
+      RestApiId: !Ref UnifiedApi
+
+  DyndnsPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref DyndnsFunctionArn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/GET/dyndns53/nic/update
+
+  ProxyResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt UnifiedApi.RootResourceId
+      PathPart: proxy
+      RestApiId: !Ref UnifiedApi
+
+  ProxyMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      RequestParameters:
+        method.request.querystring.url: true
+      Integration:
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProxyFunctionArn}/invocations
+      ResourceId: !Ref ProxyResource
+      RestApiId: !Ref UnifiedApi
+
+  ProxyOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - StatusCode: '200'
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Credentials: "'true'"
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Expose-Headers: "'*'"
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Credentials: false
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
+            method.response.header.Access-Control-Expose-Headers: false
+      ResourceId: !Ref ProxyResource
+      RestApiId: !Ref UnifiedApi
+
+  ProxyPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ProxyFunctionArn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/*/proxy
+
+  NerdjokesResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt UnifiedApi.RootResourceId
+      PathPart: nerdjokes
+      RestApiId: !Ref UnifiedApi
+
+  NerdjokesGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NerdjokesFunctionArn}/invocations
+      ResourceId: !Ref NerdjokesResource
+      RestApiId: !Ref UnifiedApi
+
+  NerdjokesPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NerdjokesFunctionArn}/invocations
+      ResourceId: !Ref NerdjokesResource
+      RestApiId: !Ref UnifiedApi
+
+  NerdjokesPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref NerdjokesFunctionArn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/*/nerdjokes
+
+  UnifiedApiAccessLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /aws/apigateway/pixelated-api/prod
+      RetentionInDays: 30
+
+  UnifiedApiExecutionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub API-Gateway-Execution-Logs_${UnifiedApi}/prod
+      RetentionInDays: 30
+
+  UnifiedApi5xxAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn:
+      - UnifiedApiStage
+    Properties:
+      AlarmName: Pixelated Unified API 5XX Errors Alarm
+      AlarmDescription: Alerts when the unified production API Gateway stage returns a server error.
+      ActionsEnabled: true
+      AlarmActions:
+        - !Ref AlarmTopicArn
+      Namespace: AWS/ApiGateway
+      MetricName: 5XXError
+      Dimensions:
+        - Name: ApiName
+          Value: pixelated-api
+        - Name: Stage
+          Value: prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+Outputs:
+  UnifiedApiId:
+    Value: !Ref UnifiedApi
+  UnifiedApiRegionalDomainName:
+    Value: !GetAtt ApiDomain.RegionalDomainName
+  UnifiedApiEndpoint:
+    Value: https://api.pixelated.tech
+  StkrStatus:
+    Value: Not included; existing STKR gateway remains unchanged.

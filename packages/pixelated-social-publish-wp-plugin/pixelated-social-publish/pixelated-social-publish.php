@@ -7,7 +7,7 @@
 
 const PIXELATED_DEBUG = true;
 const PIXELATED_DEBUG_EMAIL = 'brian@pixelated.tech';
-const PIXELATED_SENDMAIL_URL = 'https://sendmail.pixelated.tech/default/sendmail';
+const PIXELATED_SENDMAIL_URL = 'https://api.pixelated.tech/sendmail';
 
 if (!defined('ABSPATH')) {
 	exit;

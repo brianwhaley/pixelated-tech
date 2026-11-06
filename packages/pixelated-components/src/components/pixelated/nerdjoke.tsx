@@ -66,6 +66,7 @@ export function NerdJoke(props: NerdJokeType) {
 
 		const myURL = "https://nerdjokes.pixelated.tech/prod/nerdjokes?";
 		const myURLProps = { command: "%2Fnerdjokes", text: "getjokejson" };
+		// https://api.pixelated.tech/nerdjokes?command=%2Fnerdjokes&text=getjokejson
 		try {
 			const url = myURL + "command=" + myURLProps.command + "&text=" + myURLProps.text;
 			const jokeData = await smartFetch(url);

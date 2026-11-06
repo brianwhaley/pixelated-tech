@@ -30,7 +30,7 @@ export async function generateMetadata (): Promise<Metadata> {
 		/// NO METADATA FOUND - EBAY STORE ITEM 
 		const itemID = pathname.split("/store/")[1];
 		let apiProps = {
-			proxyURL: "https://proxy.pixelated.tech/prod/proxy?url=",
+			proxyURL: "https://api.pixelated.tech/proxy?url=",
 			qsItemURL: `/v1|${itemID}|0?fieldgroups=PRODUCT,ADDITIONAL_SELLER_DETAILS`,
 			appId: 'BrianWha-Pixelate-PRD-1fb4458de-1a8431fe', // clientId
 			appCertId: 'PRD-fb4458deef01-0d54-496a-b572-a04b', // clientSecret
