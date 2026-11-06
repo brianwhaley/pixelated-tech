@@ -101,19 +101,10 @@ Resources:
       Budget:
         BudgetName: pixelated-budget
         BudgetLimit:
-          Amount: 125
+          Amount: 1
           Unit: USD
         BudgetType: COST
         TimeUnit: MONTHLY
-        NotificationsWithSubscribers:
-          - Notification:
-              NotificationType: ACTUAL
-              ComparisonOperator: GREATER_THAN
-              Threshold: 100
-              ThresholdType: PERCENTAGE
-            Subscribers:
-              - SubscriptionType: SNS
-                Address: !Sub arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
 
   ZeroCostBudget:
     Type: AWS::Budgets::Budget
@@ -127,16 +118,22 @@ Resources:
           Amount: 0.01
           Unit: USD
         BudgetType: COST
+        CostFilters:
+          Service:
+            - EC2 - Other
+            - EC2-Instances
+            - Glue
+            - Identity and Access Management Access Analyzer
+            - Inspector
+            - Key Management Service
+            - Location Service
+            - Refund
+            - Secrets Manager
+            - Step Functions
+            - Tax
+            - VPC
+            - WAF
         TimeUnit: MONTHLY
-        NotificationsWithSubscribers:
-          - Notification:
-              NotificationType: ACTUAL
-              ComparisonOperator: GREATER_THAN
-              Threshold: 100
-              ThresholdType: PERCENTAGE
-            Subscribers:
-              - SubscriptionType: SNS
-                Address: !Sub arn:aws:sns:us-east-1:${AWS::AccountId}:pixelated-cloudwatch-alarms
 
   CloudWatchAlarmsTopic:
     Type: AWS::SNS::Topic
@@ -210,4 +207,4 @@ Outputs:
   CloudWatchAlarmsTopicArn:
     Condition: ManageCloudWatchAlarmsTopic
     Description: Shared east-one CloudWatch alarm topic ARN.
-    Value: !GetAtt CloudWatchAlarmsTopic.TopicArn
+    Value: !Ref CloudWatchAlarmsTopic

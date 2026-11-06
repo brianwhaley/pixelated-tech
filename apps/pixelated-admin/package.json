@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.10.19",
+  "version": "1.10.20",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -27,12 +27,12 @@
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
   },
   "dependencies": {
-    "@aws-sdk/client-amplify": "^3.1161.0",
-    "@aws-sdk/client-cloudwatch": "^3.1161.0",
-    "@aws-sdk/client-dynamodb": "^3.1161.0",
-    "@aws-sdk/client-iam": "^3.1161.0",
-    "@aws-sdk/client-route-53": "^3.1161.0",
-    "@aws-sdk/client-sesv2": "^3.1161.0",
+    "@aws-sdk/client-amplify": "^3.1163.0",
+    "@aws-sdk/client-cloudwatch": "^3.1163.0",
+    "@aws-sdk/client-dynamodb": "^3.1163.0",
+    "@aws-sdk/client-iam": "^3.1163.0",
+    "@aws-sdk/client-route-53": "^3.1163.0",
+    "@aws-sdk/client-sesv2": "^3.1163.0",
     "@babel/parser": "^8.1.0",
     "@pixelated-tech/components": "*",
     "axe-core": "^4.14.0",
@@ -74,5 +74,5 @@
     "vitest": "^5.1.0"
   },
   "overrides": {},
-  "deployMarker": "2026-11-04T04:33:53.000Z"
+  "deployMarker": "2026-11-05T19:33:53.000Z"
 }
