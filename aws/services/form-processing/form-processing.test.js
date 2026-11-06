@@ -8,7 +8,8 @@ const {
 	handler,
 	getConfirmationMailOptions,
 	getPrimaryMailOptions,
-	getSesMessageBody
+	getSesMessageBody,
+	parseEmailAddresses
 } = await import('./index.mjs');
 
 test('rejects an S3 event without records', async () => {
@@ -54,6 +55,13 @@ test('builds the primary email from the platform sender', () => {
 		html: '<p>Form details</p>',
 		text: '<p>Form details</p>'
 	});
+});
+
+test('parses comma-separated SES recipient addresses', () => {
+	assert.deepEqual(parseEmailAddresses(' info@example.com, second@example.com '), [
+		'info@example.com',
+		'second@example.com'
+	]);
 });
 
 test('omits the SES HTML body when a message is text-only', () => {

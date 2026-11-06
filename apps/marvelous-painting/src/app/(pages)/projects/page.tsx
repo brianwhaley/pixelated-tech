@@ -1,5 +1,5 @@
 import React from 'react';
-import { getContentfulEntriesByType, getContentfulImagesFromEntries, ProjectsClient, PageTitleHeader } from '@pixelated-tech/components';
+import { getContentfulEntriesByType, getContentfulAssetsFromEntries, ProjectsClient, PageTitleHeader } from '@pixelated-tech/components';
 import type { ProjectTilesType } from '@pixelated-tech/components';
 import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 import sampleProjects from './projects.json';
@@ -32,7 +32,7 @@ export default async function ProjectsPage() {
 				if (typeof entry.fields?.title !== 'string' || typeof entry.fields?.description !== 'string') {
 					throw new Error('Project entries must include text title and description fields.');
 				}
-				const images = await getContentfulImagesFromEntries({
+				const images = await getContentfulAssetsFromEntries({
 					images: entry.fields.images ?? [],
 					assets: entries.includes?.Asset ?? [],
 				});
@@ -47,8 +47,9 @@ export default async function ProjectsPage() {
 						index: nextImageIndex++,
 						cardIndex: index,
 						cardLength: images.length,
-						image: image.image,
-						imageAlt: image.imageAlt ?? entry.fields.title,
+						image: image.url,
+						contentType: image.contentType,
+						imageAlt: image.description ?? image.title ?? entry.fields.title,
 					})),
 				});
 			}

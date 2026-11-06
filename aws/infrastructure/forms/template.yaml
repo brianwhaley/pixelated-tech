@@ -15,6 +15,15 @@ Parameters:
   AlarmTopicArn:
     Type: String
     Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+  RetireApi:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+
+Conditions:
+  KeepApiCondition: !Equals [!Ref RetireApi, 'false']
 
 Resources:
   FormsExecutionRole:
@@ -115,9 +124,10 @@ Resources:
       SourceArn: !Sub arn:${AWS::Partition}:s3:::${BucketName}
 
   FormsApi:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::RestApi
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Name: forms
       EndpointConfiguration:
@@ -125,18 +135,20 @@ Resources:
           - REGIONAL
 
   FormsApiResource:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Resource
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ParentId: !GetAtt FormsApi.RootResourceId
       PathPart: forms
       RestApiId: !Ref FormsApi
 
   FormsApiMethod:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -168,9 +180,10 @@ Resources:
       RestApiId: !Ref FormsApi
 
   FormsApiOptionsMethod:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -199,9 +212,10 @@ Resources:
       RestApiId: !Ref FormsApi
 
   FormsApiDeployment:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Deployment
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - FormsApiMethod
       - FormsApiOptionsMethod
@@ -210,9 +224,10 @@ Resources:
       RestApiId: !Ref FormsApi
 
   FormsApiStage:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Stage
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DeploymentId: !Ref FormsApiDeployment
       RestApiId: !Ref FormsApi
@@ -230,9 +245,10 @@ Resources:
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
   FormsApi5xxAlarm:
+    Condition: KeepApiCondition
     Type: AWS::CloudWatch::Alarm
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - FormsApiStage
     Properties:
@@ -257,9 +273,10 @@ Resources:
       TreatMissingData: notBreaching
 
   FormsApiDomain:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::DomainName
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DomainName: forms.pixelated.tech
       EndpointConfiguration:
@@ -269,9 +286,10 @@ Resources:
       SecurityPolicy: TLS_1_2
 
   FormsApiBasePathMapping:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::BasePathMapping
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - FormsApiStage
     Properties:
@@ -281,9 +299,10 @@ Resources:
       Stage: default
 
   FormsApiAccessLogGroup:
+    Condition: KeepApiCondition
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: /aws/apigateway/forms/access
       RetentionInDays: 30
@@ -331,8 +350,10 @@ Resources:
 
 Outputs:
   FormsApiId:
+    Condition: KeepApiCondition
     Value: !Ref FormsApi
   FormsApiRegionalDomainName:
+    Condition: KeepApiCondition
     Value: !GetAtt FormsApiDomain.RegionalDomainName
   FormsBucketName:
     Value: !Ref FormsBucket

@@ -607,7 +607,7 @@ describe('Contentful Delivery API', () => {
 		});
 	});
 
-	describe('getContentfulImagesFromEntries', () => {
+	describe('getContentfulAssetsFromEntries', () => {
 		const mockImages = [
 			{ sys: { id: 'image1' } },
 			{ sys: { id: 'image2' } }
@@ -631,18 +631,19 @@ describe('Contentful Delivery API', () => {
 		];
 
 		it('should match images to assets and return URLs', async () => {
-			const result = await contentfulModule.getContentfulImagesFromEntries({
+			const result = await contentfulModule.getContentfulAssetsFromEntries({
 				images: mockImages,
 				assets: mockAssets
 			});
 
 			expect(result).toHaveLength(2);
-			expect(result[0].image).toContain('image1.jpg');
-			expect(result[0].imageAlt).toBe('Image 1');
+			expect(result[0].url).toContain('image1.jpg');
+			expect(result[0].description).toBe('Image 1');
+			expect(result[0].id).toBe('image1');
 		});
 
 	it('should normalize protocol-relative asset URLs to https', async () => {
-		const result = await contentfulModule.getContentfulImagesFromEntries({
+		const result = await contentfulModule.getContentfulAssetsFromEntries({
 			images: mockImages,
 			assets: [
 				{
@@ -655,21 +656,43 @@ describe('Contentful Delivery API', () => {
 			]
 		});
 
-		expect(result[0].image).toContain('https://images.ctfassets.net/test/image1.jpg');
+		expect(result[0].url).toContain('https://images.ctfassets.net/test/image1.jpg');
 	});
 
 	it('should accept asset containers with items arrays', async () => {
-		const result = await contentfulModule.getContentfulImagesFromEntries({
+		const result = await contentfulModule.getContentfulAssetsFromEntries({
 			images: mockImages,
 			assets: { items: mockAssets }
 		});
 
 		expect(result).toHaveLength(2);
-		expect(result[1].image).toContain('image2.jpg');
+		expect(result[1].url).toContain('image2.jpg');
 	});
 
+		it('returns video metadata without image query parameters', async () => {
+			const result = await contentfulModule.getContentfulAssetsFromEntries({
+				images: [{ sys: { id: 'video1' } }],
+				assets: [{
+					sys: { id: 'video1' },
+					fields: {
+						title: 'Project video',
+						description: 'Project walkthrough',
+						file: { url: 'https://example.com/project.mp4', contentType: 'video/mp4' },
+					},
+				}],
+			});
+
+			expect(result[0]).toEqual({
+				id: 'video1',
+				title: 'Project video',
+				description: 'Project walkthrough',
+				contentType: 'video/mp4',
+				url: 'https://example.com/project.mp4',
+			});
+		});
+
 		it('should return empty array if no matches', async () => {
-			const result = await contentfulModule.getContentfulImagesFromEntries({
+			const result = await contentfulModule.getContentfulAssetsFromEntries({
 				images: [{ sys: { id: 'nonexistent' } }],
 				assets: mockAssets
 			});

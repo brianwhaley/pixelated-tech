@@ -74,14 +74,14 @@ describe('WordPress webhook route', () => {
 			destinations: ['nextdoor'],
 		});
 		expect(mocks.consoleLog).toHaveBeenCalledWith('WordPress webhook:', expect.objectContaining({
-		requestId: 'request-1',
-		stage: 'webhook-called',
-	}));
+			requestId: 'request-1',
+			stage: 'webhook-called',
+		}));
 		expect(mocks.consoleLog).toHaveBeenCalledWith('WordPress webhook:', expect.objectContaining({
-		requestId: 'request-1',
-		stage: 'social-publish-succeeded',
-		postId: 'post-1',
-	}));
+			requestId: 'request-1',
+			stage: 'social-publish-succeeded',
+			postId: 'post-1',
+		}));
 	});
 
 	it('requires a valid post URL to identify the site', async () => {
@@ -90,8 +90,8 @@ describe('WordPress webhook route', () => {
 		expect(response.status).toBe(400);
 		expect(await response.json()).toEqual({ error: 'A valid postUrl is required to identify the WordPress site.' });
 		expect(mocks.consoleError).toHaveBeenCalledWith('WordPress webhook error:', expect.objectContaining({
-		stage: 'invalid-site',
-	}));
+			stage: 'invalid-site',
+		}));
 	});
 
 	it('rejects an invalid signature for the derived site', async () => {
@@ -103,7 +103,7 @@ describe('WordPress webhook route', () => {
 		expect(response.status).toBe(401);
 		expect(mocks.publishSocialPost).not.toHaveBeenCalled();
 		expect(mocks.consoleError).toHaveBeenCalledWith('WordPress webhook error:', expect.objectContaining({
-		stage: 'invalid-signature',
-	}));
+			stage: 'invalid-signature',
+		}));
 	});
 });

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
 // import { Carousel } from "@pixelated-tech/components";
-import { usePixelatedConfig, getContentfulEntriesByType, getContentfulImagesFromEntries, Loading, contentfulValueToSlug } from "@pixelated-tech/components";
+import { usePixelatedConfig, getContentfulEntriesByType, getContentfulAssetsFromEntries, Loading, contentfulValueToSlug } from "@pixelated-tech/components";
 import type { CarouselCardType } from "@pixelated-tech/components";
 import { PageSection } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
@@ -34,13 +34,13 @@ export default function ProjectsPage() {
 			const reviewCards : CarouselCardType[] = [];
 			for (const card of typeCards.items) {
 				if ( card.sys.contentType.sys.id == contentType ) {
-					const images = await getContentfulImagesFromEntries({ images: [card.fields.image], assets: typeCards.includes.Asset });
+					const images = await getContentfulAssetsFromEntries({ images: [card.fields.image], assets: typeCards.includes.Asset });
 					reviewCards.push({
 						index: card.sys.contentType.sys.id.indexOf("card"),
 						cardIndex: reviewCards.length,
 						cardLength: typeCards.items.length,
-						image: images[0].image,
-						imageAlt: images[0].imageAlt,
+						image: images[0].url,
+						imageAlt: images[0].description ?? images[0].title,
 						headerText: card.fields.title,
 						bodyText: card.fields.description,
 						// link: card.fields.link,

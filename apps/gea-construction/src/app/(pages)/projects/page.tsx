@@ -1,5 +1,5 @@
 import React from "react";
-import { getContentfulEntriesByType, getContentfulImagesFromEntries, ProjectsClient, PageTitleHeader, ProjectTilesType } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulAssetsFromEntries, ProjectsClient, PageTitleHeader, ProjectTilesType } from "@pixelated-tech/components";
 import { PageSection } from "@pixelated-tech/components";
 import { getFullPixelatedConfig } from "@pixelated-tech/components/server";
 
@@ -24,13 +24,14 @@ export default async function ProjectsPage() {
 			cardCount++;
 			let images: any[] = [];
 			if (card.fields.images && card.fields.images.length > 0) {
-				images = await getContentfulImagesFromEntries({ images: [...card.fields.images], assets: typeCards.includes?.Asset ?? [] });
+				images = await getContentfulAssetsFromEntries({ images: [...card.fields.images], assets: typeCards.includes?.Asset ?? [] });
 				images = images.map((img: any, index: number) => ({
 					index: 100 * cardCount + index,
 					cardIndex: index,
 					cardLength: images.length,
-					image: img.image,
-					imageAlt: img.imageAlt ?? "",
+					image: img.url,
+					contentType: img.contentType,
+					imageAlt: img.description ?? img.title ?? "",
 				}));
 			}
 			projectCards.push({

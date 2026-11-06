@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import { Metadata } from 'next';
 import * as CalloutLibrary from "@/app/elements/calloutlibrary";
-import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulImagesFromEntries, usePixelatedConfig, Loading, contentfulSlugToValue, Tiles } from "@pixelated-tech/components";
+import { getContentfulEntriesByType, getContentfulEntryByField, getContentfulAssetsFromEntries, usePixelatedConfig, Loading, contentfulSlugToValue, Tiles } from "@pixelated-tech/components";
 import { PageSection } from '@pixelated-tech/components';
 
 export default function Project(){
@@ -33,7 +33,7 @@ export default function Project(){
 	};
 
 	const [ card , setCard ] = useState<Card | null>(null);
-	const [ tileCards , setTileCards ] = useState<{ image: any; imageAlt?: string }[]>([]);
+	const [ tileCards , setTileCards ] = useState<{ image: string; imageAlt?: string; contentType?: string }[]>([]);
 	const params = useParams();
 	// Decode the slug from URL back to original title
 	const projectSlug = typeof params?.project === 'string' ? params.project : '';
@@ -55,8 +55,12 @@ export default function Project(){
 				searchVal: project
 			});
 			setCard(card);
-			const images = await getContentfulImagesFromEntries({ images: card.fields.carouselImages, assets: cards.includes.Asset });
-			setTileCards(images);
+			const assets = await getContentfulAssetsFromEntries({ images: card.fields.carouselImages, assets: cards.includes.Asset });
+			setTileCards(assets.map((asset) => ({
+				image: asset.url,
+				imageAlt: asset.description ?? asset.title,
+				contentType: asset.contentType,
+			})));
 		}
 		getTileCards(project);
 	}, [project]);
@@ -85,6 +89,7 @@ export default function Project(){
 								cardIndex: index,
 								cardLength: tileCards.length,
 								image: tile.image,
+								contentType: tile.contentType,
 								imageAlt: tile.imageAlt ?? ''
 							}))}
 							variant="caption"

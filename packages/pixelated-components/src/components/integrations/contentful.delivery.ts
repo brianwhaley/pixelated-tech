@@ -378,26 +378,33 @@ export function normalizeContentfulAssetUrl(url: unknown): string | undefined {
 }
 
 /**
- * getContentfulImagesFromEntries — Resolve image asset URLs and alt text for entry image references.
+ * getContentfulAssetsFromEntries — Resolve Contentful asset metadata for entry asset references.
  *
  * @param {any} [props.images] - Entry image references (items with sys.id that map to assets).
  * @param {any} [props.assets] - Array of Contentful asset objects to resolve URLs from.
  */
-getContentfulImagesFromEntries.propTypes = {
+getContentfulAssetsFromEntries.propTypes = {
 /** Entry image references to resolve */
 	images: PropTypes.any.isRequired, 
 	/** Contentful asset objects containing file URLs and descriptions */
 	assets: PropTypes.any.isRequired,
 };
-export type getContentfulImagesFromEntriesType = InferProps<typeof getContentfulImagesFromEntries.propTypes>;
-export async function getContentfulImagesFromEntries(props: getContentfulImagesFromEntriesType){
+export type ContentfulAssetFromEntry = {
+	id: string;
+	title?: string;
+	description?: string;
+	contentType?: string;
+	url: string;
+};
+export type getContentfulAssetsFromEntriesType = InferProps<typeof getContentfulAssetsFromEntries.propTypes>;
+export async function getContentfulAssetsFromEntries(props: getContentfulAssetsFromEntriesType): Promise<ContentfulAssetFromEntry[]>{
 	const images = props.images ? (Array.isArray(props.images) ? props.images : [props.images]) : [];
 	const assets = Array.isArray(props.assets)
 		? props.assets
 		: props.assets && Array.isArray(props.assets.items)
 			? props.assets.items
 			: [];
-	const imageURLs: Array<{ image: string; imageAlt?: string }> = [];
+	const resolvedAssets: ContentfulAssetFromEntry[] = [];
 
 	for (const image of images) {
 		let asset: any;
@@ -411,15 +418,22 @@ export async function getContentfulImagesFromEntries(props: getContentfulImagesF
 		if (!asset) continue;
 		const fileUrl = asset.fields?.file?.url;
 		if (!fileUrl) continue;
+		const id = asset.sys?.id;
+		if (!id) continue;
 
 		const normalizedUrl = normalizeContentfulAssetUrl(fileUrl);
-		imageURLs.push({
-			image: normalizedUrl + ctfQSParams,
-			imageAlt: asset.fields?.description || asset.fields?.title || undefined,
+		if (!normalizedUrl) continue;
+		const contentType = asset.fields?.file?.contentType || undefined;
+		resolvedAssets.push({
+			id,
+			title: asset.fields?.title || undefined,
+			description: asset.fields?.description || undefined,
+			contentType,
+			url: contentType?.startsWith('video/') ? normalizedUrl : normalizedUrl + ctfQSParams,
 		});
 	}
 
-	return imageURLs;
+	return resolvedAssets;
 }
 
 

@@ -155,7 +155,7 @@ const defaultMocks: Record<string, any> = {
 		}
 		return null;
 	},
-	getContentfulImagesFromEntries: async ({ images, _assets }: any) => {
+	getContentfulAssetsFromEntries: async ({ images, _assets }: any) => {
 		if (contentfulImagesResponse && contentfulImagesResponse.length) {
 			return contentfulImagesResponse;
 		}
@@ -167,7 +167,13 @@ const defaultMocks: Record<string, any> = {
 	getGoogleReviewsByPlaceId: async () => googleReviewsResponse,
 	getContentfulEntriesByType: async () => contentfulEntriesResponse,
 	getContentfulEntryByField: async () => contentfulEntryResponse,
-	getContentfulImagesFromEntries: async () => contentfulImagesResponse,
+	getContentfulAssetsFromEntries: async () => contentfulImagesResponse.map((image: any, index: number) => ({
+		id: image.id ?? String(index),
+		url: image.url ?? image.image ?? '',
+		title: image.title,
+		description: image.description ?? image.imageAlt,
+		contentType: image.contentType,
+	})),
 	buildEventSchema: (event: any) => ({ title: event.fields.title }),
 	getGravatarProfile: async () => null,
 	ToggleLoading: () => null, GoogleFonts: () => null,

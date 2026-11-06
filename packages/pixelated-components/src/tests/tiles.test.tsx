@@ -18,6 +18,15 @@ vi.mock('@/components/elements/smartimage', () => ({
   })
 }));
 
+vi.mock('@/components/elements/smartvideo', () => ({
+  SmartVideo: (props: any) => React.createElement('video', {
+    src: props.src,
+    title: props.title,
+    'data-testid': 'smart-video',
+    onClick: props.onClick,
+  })
+}));
+
 // Mock Loading component
 vi.mock('@/components/foundation/loading', () => ({
   Loading: () => React.createElement('div', { id: 'loadingSpinner' }, 'Loading')
@@ -126,7 +135,7 @@ describe('Tiles Component', () => {
         bodyText: 'Body text'
       }];
       const { container } = render(<Tiles cards={cardsWithoutLinks as any} />);
-      expect(container.querySelector('.tile-image')).toBeInTheDocument();
+      expect(container.querySelector('.tile-media')).toBeInTheDocument();
     });
   });
 
@@ -311,9 +320,9 @@ describe('Tiles Component', () => {
       expect(container.querySelectorAll('.tile').length).toBe(3);
     });
 
-    it('should apply tile-image class to image containers', () => {
+    it('should apply tile-media class to media containers', () => {
       const { container } = render(<Tiles cards={mockCards} />);
-      const imageContainers = container.querySelectorAll('.tile-image');
+      const imageContainers = container.querySelectorAll('.tile-media');
       expect(imageContainers.length).toBe(mockCards.length);
     });
   });
@@ -444,7 +453,7 @@ describe('Tiles Component', () => {
       const { container } = render(<Tiles cards={mockCards} />);
       const links = container.querySelectorAll('.tile-link');
       links.forEach(link => {
-        expect(link.querySelector('.tile-image')).toBeInTheDocument();
+        expect(link.querySelector('.tile-media')).toBeInTheDocument();
       });
     });
 
@@ -453,7 +462,7 @@ describe('Tiles Component', () => {
       const tiles = container.querySelectorAll('.tile');
       
       tiles.forEach(tile => {
-        expect(tile.querySelector('.tile-image')).toBeInTheDocument();
+        expect(tile.querySelector('.tile-media')).toBeInTheDocument();
         expect(tile.querySelector('.tile-image-overlay')).toBeInTheDocument();
       });
     });
@@ -489,6 +498,16 @@ describe('Tiles Component', () => {
       expect(screen.getByText('Our Projects')).toBeInTheDocument();
       expect(screen.getByText('Project 1')).toBeInTheDocument();
       expect(screen.getByText('Desc 1')).toBeInTheDocument();
+    });
+
+    it('renders video cards with SmartVideo', () => {
+      render(
+        <Tiles
+          cards={[{ index: 0, cardIndex: 0, cardLength: 1, image: 'project.mp4', imageAlt: 'Project video', contentType: 'video/mp4' }]}
+        />
+      );
+
+      expect(screen.getByTestId('smart-video')).toHaveAttribute('src', 'project.mp4');
     });
   });
 });

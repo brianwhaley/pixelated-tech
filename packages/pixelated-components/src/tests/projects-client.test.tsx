@@ -18,6 +18,15 @@ vi.mock('@/components/elements/smartimage', () => ({
 	},
 }));
 
+vi.mock('@/components/elements/smartvideo', () => ({
+	SmartVideo: (props: any) => React.createElement('video', {
+		src: props.src,
+		title: props.title,
+		onClick: props.onClick,
+		'data-testid': 'smart-video',
+	}),
+}));
+
 // Mock modal and PageSection/PageSectionHeader for testing
 vi.mock('@/components/elements/modal', () => ({
 	Modal: (props: any) => React.createElement('div', {
@@ -171,6 +180,27 @@ describe('ProjectsClient Component', () => {
 			const { container } = render(<ProjectsClient {...mockProps} />);
 			const tileContainers = container.querySelectorAll('.tile-container');
 			expect(tileContainers.length).toBeGreaterThan(0);
+		});
+
+		it('should render video cards with SmartVideo', () => {
+			const videoProps: ProjectsClientType = {
+				projects: [{
+					title: 'Video Project',
+					description: 'Project video',
+					tileCards: [{
+						index: 0,
+						cardIndex: 0,
+						cardLength: 1,
+						image: 'https://example.com/project.mp4',
+						imageAlt: 'Project video',
+						contentType: 'video/mp4',
+					}],
+				}],
+			};
+
+			render(<ProjectsClient {...videoProps} />);
+
+			expect(screen.getByTestId('smart-video')).toHaveAttribute('src', 'https://example.com/project.mp4');
 		});
 	});
 

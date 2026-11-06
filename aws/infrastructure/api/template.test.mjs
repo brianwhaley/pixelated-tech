@@ -70,6 +70,7 @@ test("manages unified API Gateway logs and 5XX alarm", () => {
 	assert.match(resourceBlock("UnifiedApiAccessLogGroup"), /LogGroupName: \/aws\/apigateway\/pixelated-api\/prod/);
 	assert.match(resourceBlock("UnifiedApiExecutionLogGroup"), /API-Gateway-Execution-Logs_\$\{UnifiedApi\}\/prod/);
 	const alarm = resourceBlock("UnifiedApi5xxAlarm");
+	assert.match(alarm, /AlarmName: Pixelated API 5XX Errors Alarm/);
 	assert.match(alarm, /MetricName: 5XXError/);
 	assert.match(alarm, /Value: pixelated-api/);
 	assert.match(alarm, /Value: prod/);
