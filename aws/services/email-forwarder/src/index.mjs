@@ -258,6 +258,35 @@ export const handler = async (event) => {
 			} else {
 				workingEmail = `Reply-To: ${safeReplyTo}\r\n` + workingEmail;
 			}
+
+			const malformedMimeParameterPattern = /^(Content-(?:Type|Disposition):[^\r\n]*(?:\r?\n[ \t][^\r\n]*)*)(\r?\n)/gim;
+			const malformedMimeParameters = [...workingEmail.matchAll(malformedMimeParameterPattern)];
+			let mimeRepairApplied = false;
+
+			if (malformedMimeParameters.some(([, header]) => /\b(filename|name)=([^;"'\r\n]*\s[^;"'\r\n]*)/i.test(header))) {
+				workingEmail = workingEmail.replace(
+					malformedMimeParameterPattern,
+					(_, header, lineEnding) => {
+						const repairedHeader = header.replace(
+							/\b(filename|name)=([^;"'\r\n]*\s[^;"'\r\n]*)/gi,
+							(match, parameter, value) => {
+								mimeRepairApplied = true;
+								return `${parameter}="${value.trim()}"`;
+							}
+						);
+
+						return repairedHeader + lineEnding;
+					}
+				);
+			}
+
+			if (mimeRepairApplied) {
+				console.warn("Repaired malformed MIME parameters before forwarding", {
+					messageId,
+					originalRecipient,
+					destination
+				});
+			}
       
 			// 4. Dispatch forwarded email via SES
 			await ses.send(
@@ -268,7 +297,7 @@ export const handler = async (event) => {
 				})
 			);
 
-			console.log(`Successfully forwarded message ${messageId} to ${destination}`);
+			console.log("Successfully forwarded message", { messageId, destination, mimeRepairApplied });
 			sentSuccessfully = true;
 		} catch (recipientError) {
 			// Non-restrictive handling: If one client's routing crashes, don't break other recipients

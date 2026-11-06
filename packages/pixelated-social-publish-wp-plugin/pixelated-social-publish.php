@@ -2,11 +2,53 @@
 /**
  * Plugin Name: Pixelated Social Publish Webhook
  * Description: Sends newly published posts to the Pixelated social publishing webhook.
- * Version: 1.0.0
+ * Version: 1.0.1
  */
+
+const PIXELATED_DEBUG = true;
+const PIXELATED_DEBUG_EMAIL = 'brian@pixelated.tech';
+const PIXELATED_SENDMAIL_URL = 'https://sendmail.pixelated.tech/default/sendmail';
 
 if (!defined('ABSPATH')) {
 	exit;
+}
+
+function pixelated_social_publish_debug_email($request_id, $stage, $details = array()) {
+	if (!PIXELATED_DEBUG) {
+		return;
+	}
+
+	$lines = array(
+		'Request ID: ' . $request_id,
+		'Stage: ' . $stage,
+	);
+	foreach ($details as $key => $value) {
+		if (is_array($value) || is_object($value)) {
+			$value = wp_json_encode($value);
+		}
+		$lines[] = $key . ': ' . (string) $value;
+	}
+
+	$response = wp_remote_post(PIXELATED_SENDMAIL_URL, array(
+		'timeout' => 10,
+		'blocking' => true,
+		'headers' => array('Content-Type' => 'application/json'),
+		'body' => wp_json_encode(array(
+			'to' => PIXELATED_DEBUG_EMAIL,
+			'subject' => '[Pixelated Debug] Social webhook ' . $stage,
+			'text' => implode("\n", $lines),
+		)),
+	));
+
+	if (is_wp_error($response)) {
+		error_log('Pixelated social publish debug email failed: ' . $response->get_error_message());
+		return;
+	}
+
+	$status = wp_remote_retrieve_response_code($response);
+	if ($status < 200 || $status >= 300) {
+		error_log('Pixelated social publish debug email returned HTTP ' . $status . ': ' . wp_remote_retrieve_body($response));
+	}
 }
 
 function pixelated_social_publish_get_settings() {
@@ -106,14 +148,29 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
 		return;
 	}
 
+	$request_id = wp_generate_uuid4();
+	pixelated_social_publish_debug_email($request_id, 'publish-hook-called', array(
+		'post_id' => (string) $post->ID,
+		'old_status' => $old_status,
+		'new_status' => $new_status,
+		'post_type' => $post->post_type,
+	));
+
 	$settings = pixelated_social_publish_get_settings();
 	$post_url = get_permalink($post);
 	if (!$post_url || !$settings['secret']) {
-		error_log('Pixelated social publish webhook is not configured.');
+		if (PIXELATED_DEBUG) {
+			error_log('Pixelated social publish webhook is not configured.');
+		}
+		pixelated_social_publish_debug_email($request_id, 'configuration-error', array(
+			'has_post_url' => $post_url ? 'yes' : 'no',
+			'has_secret' => $settings['secret'] ? 'yes' : 'no',
+		));
 		return;
 	}
 
 	$payload = wp_json_encode(array(
+		'requestId' => $request_id,
 		'postId' => (string) $post->ID,
 		'postUrl' => $post_url,
 		'destinations' => array('nextdoor'),
@@ -121,14 +178,27 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
 	$signature = hash_hmac('sha256', $payload, $settings['secret']);
 	$response = wp_remote_post(pixelated_social_publish_get_webhook_url(), array(
 		'timeout' => 20,
-		'blocking' => false,
+		'blocking' => true,
 		'headers' => array(
 			'Content-Type' => 'application/json',
 			'X-WordPress-Signature' => 'sha256=' . $signature,
+			'X-Pixelated-Request-Id' => $request_id,
 		),
 		'body' => $payload,
 	));
 	if (is_wp_error($response)) {
-		error_log('Pixelated social publish webhook failed: ' . $response->get_error_message());
+		if (PIXELATED_DEBUG) {
+			error_log('Pixelated social publish webhook failed: ' . $response->get_error_message());
+		}
+		pixelated_social_publish_debug_email($request_id, 'webhook-request-error', array(
+			'error' => $response->get_error_message(),
+			'webhook_url' => pixelated_social_publish_get_webhook_url(),
+		));
+		return;
 	}
+
+	pixelated_social_publish_debug_email($request_id, 'webhook-response-received', array(
+		'http_status' => wp_remote_retrieve_response_code($response),
+		'response_body' => substr(wp_remote_retrieve_body($response), 0, 4000),
+	));
 }, 10, 3);

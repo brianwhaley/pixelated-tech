@@ -21,6 +21,11 @@ The Amplify and Budget roles, along with the shared account budgets, are owned
 by the platform stack. Although the stack is deployed from `us-east-1`, these
 are account-level resources. The import manifest adopts the existing
 `pixelated-zero-cost-budget` budget under the `ZeroCostBudget` logical ID.
+For an already-bootstrapped platform stack, use
+`template-us-east-1-budget-import.yaml` for the budget adoption change set.
+That import-only template omits budget notification properties because AWS
+CloudFormation rejects `NotificationsWithSubscribers` during budget import.
+Review normal budget update change sets for replacement before executing them.
 
 The logging role is intentionally separate from the SAM deployment artifact stack. `pixelated-sam-cli-managed` owns the SAM deployment artifact bucket and is tooling infrastructure; API Gateway logging is application platform infrastructure and must not depend on SAM CLI regenerating or replacing its template.
 

@@ -390,6 +390,11 @@
 			"area": "uncategorized",
 			"name": "comments",
 			"title": "Comments"
+		},
+		{
+			"area": "uncategorized",
+			"name": "summary",
+			"title": "Summary"
 		}
 	],
 	"version": 3

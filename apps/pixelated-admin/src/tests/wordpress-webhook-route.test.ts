@@ -1,8 +1,9 @@
 /* eslint-disable pixelated/no-hardcoded-config-keys */
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
 	publishSocialPost: vi.fn(),
+	fetch: vi.fn(),
 }));
 
 vi.mock('@pixelated-tech/components/server', () => ({
@@ -16,6 +17,10 @@ vi.mock('@pixelated-tech/components/server', () => ({
 				},
 			},
 		},
+	}),
+	smartFetch: vi.fn(async (url: string, options: { requestInit?: RequestInit }) => {
+		mocks.fetch(url, options.requestInit);
+		return new Response('{}', { status: 200 });
 	}),
 	verifyWordPressWebhookSignature: (_rawBody: string, signature: string | null, secret: string) => signature === `valid:${secret}`,
 }));
@@ -40,6 +45,9 @@ function makeRequest(body: unknown, signature = 'valid:site-secret') {
 describe('WordPress webhook route', () => {
 	beforeEach(() => {
 		mocks.publishSocialPost.mockReset();
+		mocks.fetch.mockReset();
+		mocks.fetch.mockResolvedValue(new Response('{}', { status: 200 }));
+		vi.stubGlobal('fetch', mocks.fetch);
 		mocks.publishSocialPost.mockResolvedValue({
 			site: 'blog.pixelated.tech',
 			postId: 'post-1',
@@ -48,8 +56,13 @@ describe('WordPress webhook route', () => {
 		});
 	});
 
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
 	it('derives the site from the post URL and publishes the post', async () => {
 		const response = await POST(makeRequest({
+			requestId: 'request-1',
 			postId: 'post-1',
 			postUrl: 'https://blog.pixelated.tech/post-1',
 			destinations: ['nextdoor'],
@@ -62,6 +75,8 @@ describe('WordPress webhook route', () => {
 			postUrl: 'https://blog.pixelated.tech/post-1',
 			destinations: ['nextdoor'],
 		});
+		expect(mocks.fetch).toHaveBeenCalled();
+		expect(JSON.parse(mocks.fetch.mock.calls[0][1].body as string).text).toContain('Request ID: request-1');
 	});
 
 	it('requires a valid post URL to identify the site', async () => {
