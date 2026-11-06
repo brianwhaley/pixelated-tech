@@ -10,6 +10,8 @@ import React, { useId, useState } from 'react';
 import PropTypes, { InferProps } from "prop-types";
 import { Loading } from "../foundation/loading";
 import { SmartImage } from "./smartimage";
+import { SmartVideo } from "./smartvideo";
+import { isVideoUrl } from "./smartmediautils";
 import { Modal, handleModalOpen } from "./modal";
 import { PageSection, PageSectionHeader } from "../structure/page-blocks";
 import { usePixelatedConfig } from '../config/config.client';
@@ -24,6 +26,10 @@ export type TileCardType = MediaCardType & {
 
 export const TilesVariants = [ 'caption', 'overlay' ] as const;
 export type TilesVariantType = typeof TilesVariants[number] | undefined;
+
+function isVideoMedia(contentType?: string, url?: string) {
+	return contentType?.startsWith('video/') || (url ? isVideoUrl(url) : false);
+}
 /**
  * Tiles — renders a responsive grid of image tiles with optional click handlers and visual variants.
  *
@@ -41,6 +47,7 @@ Tiles.propTypes = {
 		cardLength: PropTypes.number,
 		link: PropTypes.string,
 		image: PropTypes.string.isRequired,
+		contentType: PropTypes.string,
 		imageAlt: PropTypes.string,
 		bodyText: PropTypes.string,
 		imgClick: PropTypes.func,
@@ -69,9 +76,9 @@ export function Tiles(props: TilesType) {
 	const [modalContent, setModalContent] = useState<React.ReactNode | undefined>(undefined);
 	const modalID = useId();
 
-	const handleTileImageClick = props.imgClick ?? (modalOnClick ? (event: React.MouseEvent<HTMLImageElement>, url: string) => {
+	const handleTileImageClick = props.imgClick ?? (modalOnClick ? (event: React.MouseEvent<HTMLElement>, url: string, contentType?: string) => {
 		const myContent = <div className="modal-image-container">
-			<SmartImage src={url} alt="Image preview" />
+			{isVideoMedia(contentType, url) ? <SmartVideo src={url} /> : <SmartImage src={url} alt="Image preview" />}
 		</div>;
 		setModalContent(myContent);
 		handleModalOpen(event.nativeEvent as unknown as MouseEvent, modalID);
@@ -90,6 +97,7 @@ export function Tiles(props: TilesType) {
 									cardLength={card.cardLength ?? props.cards.length}
 									link={card.link}
 									image={card.image}
+									contentType={card.contentType}
 									imageAlt={card.imageAlt}
 									bodyText={card.bodyText}
 									imgClick={handleTileImageClick}
@@ -134,6 +142,8 @@ Tile.propTypes = {
 	link: PropTypes.string,
 	/** Image source URL to display (required). */
 	image: PropTypes.string.isRequired,
+	/** Contentful media MIME type used to select image or video rendering. */
+	contentType: PropTypes.string,
 	/** Alt text for the image; also used as caption fallback. */
 	imageAlt: PropTypes.string,
 	/** Optional caption or descriptive body text shown with the tile. */
@@ -151,12 +161,18 @@ function Tile( props: TileType ) {
 	const imgClick = props.imgClick;
 	const showOverlay = props.showOverlay ?? true;
 	const captionText = (props.bodyText && props.bodyText.length > 0) ? props.bodyText : (props.imageAlt ?? "");
-	const tileBody = <div className={"tile-image" + (imgClick ? " clickable" : "")}>
-		<SmartImage 
-			src={props.image} aboveFold={(props.index === 0) ? true : undefined} 
-			title={props?.imageAlt ?? undefined} alt={props?.imageAlt ?? ""}
-			onClick={imgClick ? (event) => imgClick(event, props.image) : undefined}
-			cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined} />
+	const mediaProps = {
+		src: props.image,
+		aboveFold: (props.index === 0) ? true : undefined,
+		title: props?.imageAlt ?? undefined,
+		onClick: imgClick ? (event: React.MouseEvent<HTMLElement>) => imgClick(event, props.image, props.contentType) : undefined,
+		cloudinaryEnv: config?.integrations?.cloudinary?.product_env ?? undefined,
+	};
+	const tileMedia = isVideoMedia(props.contentType ?? undefined, props.image)
+		? <SmartVideo {...mediaProps} controls />
+		: <SmartImage {...mediaProps} alt={props?.imageAlt ?? ""} />;
+	const tileBody = <div className={"tile-media" + (imgClick ? " clickable" : "")}>
+		{tileMedia}
 		{showOverlay ? (
 			<div className="tile-image-overlay">
 				<div className="tile-image-overlay-text">
@@ -201,6 +217,7 @@ ProjectTiles.propTypes = {
 			cardIndex: PropTypes.number.isRequired,
 			cardLength: PropTypes.number.isRequired,
 			image: PropTypes.string.isRequired,
+			contentType: PropTypes.string,
 			imageAlt: PropTypes.string.isRequired,
 		})
 	).isRequired,
@@ -245,6 +262,7 @@ ProjectsClient.propTypes = {
 			cardIndex: PropTypes.number.isRequired,
 			cardLength: PropTypes.number.isRequired,
 			image: PropTypes.string.isRequired,
+			contentType: PropTypes.string,
 			imageAlt: PropTypes.string,
 		})).isRequired,
 	})).isRequired,
@@ -269,6 +287,7 @@ export function ProjectsClient(props: ProjectsClientType) {
 								cardIndex: card?.cardIndex || cardIdx,
 								cardLength: card?.cardLength || project?.tileCards?.length || 0,
 								image: card?.image || "",
+								contentType: card?.contentType,
 								imageAlt: card?.imageAlt || `Project ${idx + 1} - Tile ${cardIdx + 1}`,
 							})) || []}
 							modalOnClick={modalOnClick ?? true}

@@ -12,6 +12,15 @@ Parameters:
   CertificateArn:
     Type: String
     Default: arn:aws:acm:us-east-2:971579260814:certificate/a4fa79cc-eaa3-4aa6-a835-eff0e9c97df9
+  RetireApi:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+
+Conditions:
+  KeepApiCondition: !Equals [!Ref RetireApi, 'false']
 
 Resources:
   ProxyExecutionRole:
@@ -48,8 +57,9 @@ Resources:
 
   ProxyApi:
     Type: AWS::ApiGateway::RestApi
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Name: proxy
       EndpointConfiguration:
@@ -58,8 +68,9 @@ Resources:
 
   ProxyApiResource:
     Type: AWS::ApiGateway::Resource
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ParentId: !GetAtt ProxyApi.RootResourceId
       PathPart: proxy
@@ -67,8 +78,9 @@ Resources:
 
   ProxyApiAnyMethod:
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -95,8 +107,9 @@ Resources:
 
   ProxyApiOptionsMethod:
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -130,8 +143,9 @@ Resources:
 
   ProxyApiDeploymentRefresh:
     Type: AWS::ApiGateway::Deployment
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - ProxyApiAnyMethod
       - ProxyApiOptionsMethod
@@ -141,8 +155,9 @@ Resources:
 
   ProxyApiStage:
     Type: AWS::ApiGateway::Stage
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DeploymentId: !Ref ProxyApiDeploymentRefresh
       Description: Created by AWS Lambda
@@ -162,8 +177,9 @@ Resources:
 
   ProxyApi5xxAlarm:
     Type: AWS::CloudWatch::Alarm
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - ProxyApiStage
     Properties:
@@ -189,8 +205,9 @@ Resources:
 
   ProxyApiPermissionAny:
     Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref ProxyFunction
@@ -199,8 +216,9 @@ Resources:
 
   ProxyApiDomain:
     Type: AWS::ApiGateway::DomainName
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DomainName: proxy.pixelated.tech
       EndpointConfiguration:
@@ -211,8 +229,9 @@ Resources:
 
   ProxyApiBasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       BasePath: prod
       DomainName: !Ref ProxyApiDomain
@@ -229,16 +248,18 @@ Resources:
 
   ProxyApiLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: /aws/apigateway/proxy
       RetentionInDays: 30
 
   ProxyApiExecutionLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Condition: KeepApiCondition
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub API-Gateway-Execution-Logs_${ProxyApi}/prod
       RetentionInDays: 30

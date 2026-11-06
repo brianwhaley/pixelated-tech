@@ -1,6 +1,6 @@
 {
   "name": "manningmetalworks",
-  "version": "0.7.39",
+  "version": "0.7.40",
   "private": true,
   "description": "Manning Metalworks - A custom metal fabrication company specializing in high-quality craftsmanship and personalized service.",
   "license": "MIT",
@@ -46,12 +46,12 @@
     "eslint": "9.39.4",
     "eslint-config-next": "^16.2.9",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "glob": "^14.0.3",
+    "glob": "^14.0.4",
     "html-entities": "^2.3.3",
     "react-dom": "^19.2.6",
     "typescript": "6.0.2",
     "vitest": "^5.1.0"
   },
   "overrides": {},
-  "deployMarker": "2026-11-06T04:09:02.000Z"
+  "deployMarker": "2026-11-06T15:58:54.000Z"
 }

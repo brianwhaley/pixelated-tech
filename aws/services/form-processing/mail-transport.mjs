@@ -6,6 +6,11 @@ const smtpPassword = process.env.SMTP_PASSWORD;
 const sesClient = new SESClient({ region: "us-east-1" });
 let gmailTransporter;
 
+export const parseEmailAddresses = (value) => String(value ?? "")
+	.split(",")
+	.map((address) => address.trim())
+	.filter(Boolean);
+
 export const getSesMessageBody = (message) => {
 	const body = {
 		Text: { Data: message.text, Charset: "UTF-8" }
@@ -47,12 +52,16 @@ export async function sendGmailEmail(message) {
 }
 
 export async function sendSesEmail(message) {
+	const toAddresses = parseEmailAddresses(message.to);
+	const ccAddresses = parseEmailAddresses(message.cc);
+	const bccAddresses = parseEmailAddresses(message.bcc);
+
 	const result = await sesClient.send(new SendEmailCommand({
 		Source: message.from,
 		Destination: {
-			ToAddresses: [message.to],
-			...(message.cc ? { CcAddresses: [message.cc] } : {}),
-			...(message.bcc ? { BccAddresses: [message.bcc] } : {})
+			ToAddresses: toAddresses,
+			...(ccAddresses.length ? { CcAddresses: ccAddresses } : {}),
+			...(bccAddresses.length ? { BccAddresses: bccAddresses } : {})
 		},
 		Message: {
 			Subject: { Data: message.subject, Charset: "UTF-8" },

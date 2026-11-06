@@ -298,6 +298,23 @@ footer {
     }
 }
 
+#home-reviews-section {
+    .contentful-reviews-card {
+        .carousel-cards-container {
+            width: 70% !important;
+        }
+    }
+}
+@media screen and (max-width: 480px) {
+    #home-reviews-section {
+        h3 {
+            font-size: var(--font-size4);
+        }
+    }
+}
+
+
+
 
 
 

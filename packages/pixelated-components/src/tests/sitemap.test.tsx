@@ -35,7 +35,7 @@ vi.mock('../components/integrations/contentful.delivery', async () => {
 		getContentfulEntryByEntryID: vi.fn(),
 		getContentfulEntryByField: vi.fn(),
 		getContentfulFieldValues: vi.fn(),
-		getContentfulImagesFromEntries: vi.fn(),
+		getContentfulAssetsFromEntries: vi.fn(),
 		getContentfulAssets: vi.fn(),
 		getContentfulAssetURLs: vi.fn(),
 		getContentfulDiscountCodes: vi.fn(),
@@ -580,8 +580,8 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
 			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
-			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
-			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/sample.jpg?fm=webp&q=50', imageAlt: 'Project image' }]);
+			const mockGetContentfulAssetsFromEntries = vi.mocked(contentfulModule.getContentfulAssetsFromEntries);
+			mockGetContentfulAssetsFromEntries.mockResolvedValue([{ id: 'img-1', url: 'https://images.ctfassets.net/sample.jpg?fm=webp&q=50', description: 'Project image' }]);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({});
@@ -599,7 +599,7 @@ describe('Sitemap Helper Functions', () => {
 				origin: 'https://example.com'
 			});
 
-			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+			expect(mockGetContentfulAssetsFromEntries).toHaveBeenCalledWith({
 				images: mockEntries.items[0].fields.images,
 				assets: mockEntries.includes.Asset
 			});
@@ -626,8 +626,8 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
 			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
-			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
-			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/sample.jpg?fm=webp&q=50' }]);
+			const mockGetContentfulAssetsFromEntries = vi.mocked(contentfulModule.getContentfulAssetsFromEntries);
+			mockGetContentfulAssetsFromEntries.mockResolvedValue([{ id: 'img-2', url: 'https://images.ctfassets.net/sample.jpg?fm=webp&q=50' }]);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({});
@@ -668,8 +668,8 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
 			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
-			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
-			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/single.jpg?fm=webp&q=50' }]);
+			const mockGetContentfulAssetsFromEntries = vi.mocked(contentfulModule.getContentfulAssetsFromEntries);
+			mockGetContentfulAssetsFromEntries.mockResolvedValue([{ id: 'img-2', url: 'https://images.ctfassets.net/single.jpg?fm=webp&q=50' }]);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({});
@@ -687,7 +687,7 @@ describe('Sitemap Helper Functions', () => {
 				origin: 'https://example.com'
 			});
 
-			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+			expect(mockGetContentfulAssetsFromEntries).toHaveBeenCalledWith({
 				images: [mockEntries.items[0].fields.image],
 				assets: mockEntries.includes.Asset
 			});
@@ -715,10 +715,10 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
 			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
-			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
-			mockGetContentfulImagesFromEntries.mockResolvedValue([
-				{ image: 'https://images.ctfassets.net/carousel1.jpg?fm=webp&q=50' },
-				{ image: 'https://images.ctfassets.net/carousel2.jpg?fm=webp&q=50' }
+			const mockGetContentfulAssetsFromEntries = vi.mocked(contentfulModule.getContentfulAssetsFromEntries);
+			mockGetContentfulAssetsFromEntries.mockResolvedValue([
+				{ id: 'img-3', url: 'https://images.ctfassets.net/carousel1.jpg?fm=webp&q=50' },
+				{ id: 'img-4', url: 'https://images.ctfassets.net/carousel2.jpg?fm=webp&q=50' }
 			]);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
@@ -737,7 +737,7 @@ describe('Sitemap Helper Functions', () => {
 				origin: 'https://example.com'
 			});
 
-			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+			expect(mockGetContentfulAssetsFromEntries).toHaveBeenCalledWith({
 				images: mockEntries.items[0].fields.carouselImages,
 				assets: mockEntries.includes.Asset
 			});
@@ -767,8 +767,8 @@ describe('Sitemap Helper Functions', () => {
 			const mockGetContentfulEntriesByType = vi.mocked(contentfulModule.getContentfulEntriesByType);
 			mockGetContentfulEntriesByType.mockResolvedValue(mockEntries as any);
 
-			const mockGetContentfulImagesFromEntries = vi.mocked(contentfulModule.getContentfulImagesFromEntries);
-			mockGetContentfulImagesFromEntries.mockResolvedValue([{ image: 'https://images.ctfassets.net/hero.jpg?fm=webp&q=50' }]);
+			const mockGetContentfulAssetsFromEntries = vi.mocked(contentfulModule.getContentfulAssetsFromEntries);
+			mockGetContentfulAssetsFromEntries.mockResolvedValue([{ id: 'img-hero', url: 'https://images.ctfassets.net/hero.jpg?fm=webp&q=50' }]);
 
 			const mockGetFullPixelatedConfig = vi.mocked(configModule.getFullPixelatedConfig);
 			mockGetFullPixelatedConfig.mockReturnValue({});
@@ -787,7 +787,7 @@ describe('Sitemap Helper Functions', () => {
 				origin: 'https://example.com'
 			});
 
-			expect(mockGetContentfulImagesFromEntries).toHaveBeenCalledWith({
+			expect(mockGetContentfulAssetsFromEntries).toHaveBeenCalledWith({
 				images: [mockEntries.items[0].fields.heroImage],
 				assets: mockEntries.includes.Asset
 			});

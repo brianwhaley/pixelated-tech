@@ -15,6 +15,12 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
+  ManageExecutionLogGroup:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
   AlarmTopicArn:
     Type: String
     Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
@@ -53,6 +59,7 @@ Conditions:
   CreateDnsRecordCondition: !And
     - !Equals [!Ref CreateDnsRecord, 'true']
     - !Not [!Equals [!Ref HostedZoneId, '']]
+  ManageExecutionLogGroupCondition: !Equals [!Ref ManageExecutionLogGroup, 'true']
 
 Resources:
   UnifiedApi:
@@ -72,7 +79,6 @@ Resources:
       - ProxyMethod
       - NerdjokesGetMethod
       - NerdjokesPostMethod
-      - UnifiedApiExecutionLogGroup
     Properties:
       DeploymentId: !Ref UnifiedApiDeploymentV2
       RestApiId: !Ref UnifiedApi
@@ -391,8 +397,10 @@ Resources:
       RequestParameters:
         method.request.querystring.url: true
       Integration:
+        ContentHandling: CONVERT_TO_TEXT
         IntegrationHttpMethod: POST
         PassthroughBehavior: WHEN_NO_MATCH
+        TimeoutInMillis: 29000
         Type: AWS_PROXY
         Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProxyFunctionArn}/invocations
       ResourceId: !Ref ProxyResource
@@ -491,6 +499,7 @@ Resources:
       RetentionInDays: 30
 
   UnifiedApiExecutionLogGroup:
+    Condition: ManageExecutionLogGroupCondition
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
@@ -503,7 +512,7 @@ Resources:
     DependsOn:
       - UnifiedApiStage
     Properties:
-      AlarmName: Pixelated Unified API 5XX Errors Alarm
+      AlarmName: Pixelated API 5XX Errors Alarm
       AlarmDescription: Alerts when the unified production API Gateway stage returns a server error.
       ActionsEnabled: true
       AlarmActions:
@@ -532,3 +541,4 @@ Outputs:
     Value: https://api.pixelated.tech
   StkrStatus:
     Value: Not included; existing STKR gateway remains unchanged.
+

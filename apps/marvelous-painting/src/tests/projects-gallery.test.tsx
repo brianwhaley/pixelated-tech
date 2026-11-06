@@ -24,7 +24,7 @@ vi.mock('@pixelated-tech/components', async () => ({
 	...createPageComponentMocks(),
 	usePixelatedConfig: mocks.config,
 	getContentfulEntriesByType: mocks.entries,
-	getContentfulImagesFromEntries: mocks.images,
+	getContentfulAssetsFromEntries: mocks.images,
 	FlickrWrapper: mocks.flickr,
 	ProjectsClient: mocks.projects,
 	Tiles: mocks.tiles,
@@ -59,7 +59,7 @@ beforeEach(() => {
 	vi.resetAllMocks();
 	mocks.config.mockReturnValue(integratedConfig());
 	mocks.entries.mockResolvedValue({ items: [], includes: { Asset: imageAssets.items } });
-	mocks.images.mockResolvedValue([{ image: imageAssets.items[0].fields.file.url, imageAlt: 'Project image' }]);
+	mocks.images.mockResolvedValue([{ id: 'image-1', url: imageAssets.items[0].fields.file.url, description: 'Project image' }]);
 	mocks.flickr.mockResolvedValue([]);
 	mocks.projects.mockImplementation(createPageComponentMocks().ProjectsClient);
 	mocks.tiles.mockImplementation(createPageComponentMocks().Tiles);

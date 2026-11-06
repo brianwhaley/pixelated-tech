@@ -5,7 +5,7 @@ import { encode } from 'html-entities';
 import { getAllRoutes } from "./metadata.functions";
 import type { Route } from '../config/config.types';
 import { getWordPressItems, getWordPressItemImages } from "../integrations/wordpress.functions";
-import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulImagesFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
+import { getContentfulEntriesByType, getContentfulFieldValues, getContentfulAssetsFromEntries, getContentfulAssets, contentfulValueToSlug } from "../integrations/contentful.delivery";
 import { getEbayAppToken, getEbayItemsSearch } from "../shoppingcart/ebay.functions";
 import { getSquareEventItems, getSquareStoreItems } from "../shoppingcart/square.server";
 import { getFullPixelatedConfig } from '../config/config';
@@ -651,10 +651,10 @@ export async function createContentfulURLs(props: createContentfulURLsType){
 		}
 
 		const images = imageRefs.length > 0
-			? await getContentfulImagesFromEntries({ images: imageRefs, assets: entries.includes?.Asset })
+			? await getContentfulAssetsFromEntries({ images: imageRefs, assets: entries.includes?.Asset })
 			: [];
 		const imageUrls = images
-			.map((image: any) => image.image ? encode(image.image) : image.image)
+			.map((image: any) => image.url ? encode(image.url) : image.url)
 			.filter(Boolean);
 
 		const base = props.origin ? props.origin : '';

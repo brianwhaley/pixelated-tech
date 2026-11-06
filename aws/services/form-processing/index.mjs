@@ -2,11 +2,11 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { DeleteObjectCommand, GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { randomUUID } from "node:crypto";
-import { getSesMessageBody, sendEmail } from "./mail-transport.mjs";
+import { getSesMessageBody, parseEmailAddresses, sendEmail } from "./mail-transport.mjs";
 
 const platformSender = "info@pixelated.tech";
 
-export { getSesMessageBody };
+export { getSesMessageBody, parseEmailAddresses };
 
 export const getConfirmationMailOptions = (body) => {
 	const recipientField = String(body?.confirmationRecipientField ?? "").trim();
