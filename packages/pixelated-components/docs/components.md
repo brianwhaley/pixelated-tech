@@ -786,7 +786,7 @@ import { BlogPostSummary } from '@pixelated-tech/components';
 
 Client-side helper for fetching placeholder text from `https://www.lipsum.com` and returning an array of paragraph strings. It is intended for Storybook playgrounds and client-side usage where `DOMParser` is available.
 
-**Default proxy**: `https://proxy.pixelated.tech/prod/proxy?url=` — requests are proxied by default to avoid CORS issues.
+**Default proxy**: `https://api.pixelated.tech/proxy?url=` — requests are proxied by default to avoid CORS issues.
 
 #### Parameters
 
@@ -2614,7 +2614,7 @@ export default function RootLayout({
           },
           // API proxy
           proxy: {
-            proxyURL: 'https://proxy.pixelated.tech/prod/proxy?url='
+            proxyURL: 'https://api.pixelated.tech/proxy?url='
           }
         }}>
           {children}

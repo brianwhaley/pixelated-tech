@@ -51,7 +51,7 @@ export async function processFormData(
 export async function processJSON(jsonData: Record<string, unknown>, callback?: () => void): Promise<EmailFormDataResult> {
 	const debug = false;
 
-	const forms_api = "https://forms.pixelated.tech/default/forms";
+	const forms_api = "https://api.pixelated.tech/forms";
 	// "https://admin.pixelated.tech/api/process-form-submit"
 	const myJsonData: Record<string, unknown> = {};
 	for (const [key, value] of Object.entries(jsonData)) {

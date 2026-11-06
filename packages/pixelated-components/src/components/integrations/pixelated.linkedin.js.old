@@ -27,7 +27,7 @@ export function LinkedIn(props: LinkedInType) {
 	
 	const [accessToken, setAccessToken] = useState();
 	const [recommendations, setRecommendations] = useState();
-	const proxyURL = 'https://proxy.pixelated.tech/prod/proxy?url=';
+	const proxyURL = 'https://api.pixelated.tech/proxy?url=';
 	
 	let codeParam, stateParam, myHref ; 
 	if (typeof window !== 'undefined') {

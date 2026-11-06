@@ -7,7 +7,7 @@ export type LinkedInType = InferProps<typeof LinkedIn.propTypes>;
 export function LinkedIn(props: LinkedInType) {
 
 	const [data, setData] = useState(null);
-	const proxyURL = 'https://proxy.pixelated.tech/prod/proxy?url=';
+	const proxyURL = 'https://api.pixelated.tech/proxy?url=';
 	const urlParams = new URLSearchParams(window.location.search);
 	const codeParam = urlParams.get('code');
 

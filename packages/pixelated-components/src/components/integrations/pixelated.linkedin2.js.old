@@ -7,7 +7,7 @@ const CLIENT_SECRET = 'WPL_AP1.dug4iQXjl3VjEGG0.tok/0A==';
 const REDIRECT_URI = 'http://localhost:6006/?path=/story/linkedin--linked-in-recommendations';
 const STATE = '96573480'; // Any random string
 const SCOPES = 'r_liteprofile';
-const proxyUrl = 'https://proxy.pixelated.tech/prod/proxy?url=';
+const proxyUrl = 'https://api.pixelated.tech/proxy?url=';
 
 LinkedInAuthRecommendations.propTypes = {};
 export type LinkedInAuthRecommendationsType = InferProps<typeof LinkedInAuthRecommendations.propTypes>;

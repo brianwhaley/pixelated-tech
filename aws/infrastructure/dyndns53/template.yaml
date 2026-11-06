@@ -21,9 +21,16 @@ Parameters:
   AlarmTopicArn:
     Type: String
     Default: arn:aws:sns:us-east-2:971579260814:CloudWatch_Alarms
+  RetireApi:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
 
 Conditions:
   ManageExecutionRoleCondition: !Equals [!Ref ManageExecutionRole, 'true']
+  KeepApiCondition: !Equals [!Ref RetireApi, 'false']
 
 Resources:
   DyndnsExecutionRole:
@@ -65,9 +72,10 @@ Resources:
           DYNDNS_PASSWORD: !Ref DyndnsPassword
 
   DyndnsApi:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::RestApi
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Name: dyndns53
       EndpointConfiguration:
@@ -75,27 +83,30 @@ Resources:
           - REGIONAL
 
   DyndnsNicResource:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Resource
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ParentId: !GetAtt DyndnsApi.RootResourceId
       PathPart: nic
       RestApiId: !Ref DyndnsApi
 
   DyndnsUpdateResource:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Resource
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ParentId: !Ref DyndnsNicResource
       PathPart: update
       RestApiId: !Ref DyndnsApi
 
   DyndnsGetMethod:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -175,18 +186,20 @@ Resources:
       RestApiId: !Ref DyndnsApi
 
   DyndnsDeployment:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Deployment
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - DyndnsGetMethod
     Properties:
       RestApiId: !Ref DyndnsApi
 
   DyndnsStage:
+    Condition: KeepApiCondition
     Type: AWS::ApiGateway::Stage
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DeploymentId: !Ref DyndnsDeployment
       RestApiId: !Ref DyndnsApi
@@ -208,6 +221,7 @@ Resources:
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
   DyndnsApi5xxAlarm:
+    Condition: KeepApiCondition
     Type: AWS::CloudWatch::Alarm
     DependsOn:
       - DyndnsStage
@@ -233,25 +247,28 @@ Resources:
       TreatMissingData: notBreaching
 
   DyndnsApiAccessLogGroup:
+    Condition: KeepApiCondition
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: /aws/apigateway/dyndns53/v1
       RetentionInDays: 30
 
   DyndnsApiExecutionLogGroup:
+    Condition: KeepApiCondition
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub API-Gateway-Execution-Logs_${DyndnsApi}/v1
       RetentionInDays: 30
 
   DyndnsApiPermission:
+    Condition: KeepApiCondition
     Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref DyndnsFunction

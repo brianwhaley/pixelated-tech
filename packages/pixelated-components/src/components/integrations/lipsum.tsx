@@ -21,7 +21,7 @@ getLipsum.propTypes = {
 export type LipsumType = InferProps<typeof getLipsum.propTypes>;
 export async function getLipsum(props: LipsumType): Promise<string[]> {
 	const { LipsumTypeId, Amount, StartWithLoremIpsum } = props;
-	const proxyURL = "https://proxy.pixelated.tech/prod/proxy?url=";
+	const proxyURL = "https://api.pixelated.tech/proxy?url=";
 	const baseURL = "https://www.lipsum.com/feed/html";
 	const qs = `?LipsumTypeId=${LipsumTypeId}&amount=${Amount}&StartWithLoremIpsum=${StartWithLoremIpsum}`;
 	const fulURL = `${proxyURL}${baseURL}${qs}`;
