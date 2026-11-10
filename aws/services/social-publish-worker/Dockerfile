@@ -11,7 +11,7 @@ RUN dnf install -y unzip findutils nspr nss atk at-spi2-atk cups-libs libdrm lib
 RUN npx puppeteer browsers install chrome
 RUN chrome_binary=$(find "${PUPPETEER_CACHE_DIR}/chrome" -type f -path "*/chrome-linux64/chrome" -print -quit) \
 	&& mv "$chrome_binary" "$chrome_binary.real" \
-	&& printf '%s\n' '#!/bin/sh' 'exec "$0.real" --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage "$@"' > "$chrome_binary" \
+	&& printf '%s\n' '#!/bin/sh' 'exec "$0.real" --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --disable-software-rasterizer --no-zygote --single-process "$@"' > "$chrome_binary" \
 	&& chmod +x "$chrome_binary"
 RUN npx esbuild ${LAMBDA_TASK_ROOT}/node_modules/@pixelated-tech/components/dist/scripts/config-vault.js --bundle --platform=node --format=esm --outfile=${LAMBDA_TASK_ROOT}/config-vault.mjs
 WORKDIR ${LAMBDA_TASK_ROOT}
