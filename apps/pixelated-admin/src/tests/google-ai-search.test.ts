@@ -8,7 +8,7 @@ const page = {
 	$eval: vi.fn(async () => '<a>result</a>'),
 	close: vi.fn(async () => undefined),
 };
-vi.mock('../lib/puppeteer', () => ({ openNewPage: vi.fn(async () => page) }));
+vi.mock('@pixelated-tech/components/server', () => ({ openPuppeteerPage: vi.fn(async () => page) }));
 
 describe('Google AI search helper', () => {
 	it('returns the main result HTML and closes the page', async () => {

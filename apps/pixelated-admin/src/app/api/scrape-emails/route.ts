@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { readCompaniesFromJson, extractEmailsFromResults } from '../../../lib/extract-functions';
 import { upsertCompanyToFile, makeDefaultFileNameFromUrl } from '../../../lib/json-store';
-import { launchBrowser, closeBrowser } from '../../../lib/puppeteer';
+import { launchPuppeteerBrowser as launchBrowser, closePuppeteerBrowser as closeBrowser } from '@pixelated-tech/components/server';
 import { searchMainColumnHtml } from '../../../lib/google-ai-search';
 async function requestHandler(req: NextRequest): Promise<NextResponse | undefined> {
 	// let page = parseInt(req.nextUrl.searchParams.get('page') || '1');

@@ -16,8 +16,6 @@ export default function Home() {
 						<li><a href="/api/scrape-websites">Scrape List for Websites</a></li>
 						<li><a href="/api/scrape-google-places">Scrape Google Places</a></li>
 						<li><a href="/api/scrape-gemini-hydration">Scrape Gemini - Hydrate</a></li>
-						<li><a href="/api/scrape-hhi">Scrape Hilton Head Chamber Site</a></li>
-						<li><a href="/api/scrape-morris">Scrape Morris County Chamber Site</a></li>
 					</ul>
 				</PageGridItem>
 

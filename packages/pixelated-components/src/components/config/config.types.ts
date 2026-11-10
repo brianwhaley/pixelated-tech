@@ -349,6 +349,48 @@ export interface PuppeteerConfig {
 	internalToken?: string;
 }
 
+export interface DomainScraperLoginConfig {
+	url: string;
+	username: string;
+	password: string;
+	usernameSelectors?: string[];
+	passwordSelectors?: string[];
+	submitSelectors?: string[];
+	loginButtonSelectors?: string[];
+}
+
+export interface DomainScraperCategoryRule {
+	category: string;
+	addressContains?: string[];
+	emailContains?: string[];
+	websiteContains?: string[];
+}
+
+export type DomainScraperDiscoveryType = "crawler" | "menu";
+export type DomainScraperMenuPaginationType = "kendo";
+
+export interface DomainScraperSiteConfig {
+	startUrls: string[];
+	discoveryType?: DomainScraperDiscoveryType;
+	menuPaginationType?: DomainScraperMenuPaginationType;
+	detailUrlPattern?: string;
+	detailPersonIdentifier?: string;
+	excludedUrlPatterns?: string[];
+	categoryRules?: DomainScraperCategoryRule[];
+	maxPages?: number;
+	maxDepth?: number;
+	requestDelay?: number;
+	login?: DomainScraperLoginConfig;
+}
+
+export interface DomainScraperConfig {
+	startUrl?: string;
+	maxPages?: number;
+	maxDepth?: number;
+	requestDelay?: number;
+	sites?: Record<string, DomainScraperSiteConfig>;
+}
+
 export interface SocialPublishConfig {
 	nextdoor?: {
 		sites?: Record<string, NextdoorSiteConfig>;
@@ -469,6 +511,7 @@ export interface IntegrationsConfig {
 	nextAuth?: NextAuthConfig;
 	paypal?: PaypalConfig;
 	puppeteer?: PuppeteerConfig;
+	domainScraper?: DomainScraperConfig;
 	socialPublish?: SocialPublishConfig;
 	shoppingcart?: ShoppingCartConfig;
 	smtp?: SmtpConfig;
@@ -528,6 +571,9 @@ export const SECRET_CONFIG_KEYS = {
 		],
 		puppeteer: [
 			'internalToken'
+		],
+		domainScraper: [
+			'password'
 		],
 		socialPublish: [
 			'password',

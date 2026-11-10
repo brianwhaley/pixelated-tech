@@ -37,7 +37,7 @@ if (!fs.existsSync(inFile)) {
 
 const raw = fs.readFileSync(inFile, 'utf8');
 let obj;
-try { obj = JSON.parse(raw); } catch (e) { console.error('Failed to parse JSON:', e); process.exit(1);} 
+try { obj = path.extname(inFile).toLowerCase() === '.jsonl' ? raw.split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line)) : JSON.parse(raw); } catch (e) { console.error('Failed to parse JSON:', e); process.exit(1);} 
 
 let rows;
 if (Array.isArray(obj)) rows = obj;

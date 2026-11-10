@@ -82,6 +82,12 @@ Use the repository's canonical configuration system:
 - Extend shared config types and accessors only through a Platform Build change when the setting is reusable across applications.
 - Prefer explicit configuration over duplicated branching while preserving clear validation and sensible defaults.
 
+### Config Vault Safety
+- Never manually encrypt or decrypt configuration unless the user explicitly asks for that exact operation.
+- Treat the existing decrypted `pixelated.config.json` as the working source of truth and preserve all local changes.
+- Build and deployment scripts handle encryption for deployment. Do not run vault commands during normal site implementation or validation.
+- Never decrypt the encrypted config to overwrite or replace the local decrypted config.
+
 ## Scope Boundaries
 
 - Modify the target client app and its approved content or configuration locations.
@@ -89,6 +95,13 @@ Use the repository's canonical configuration system:
 - If a shared change is required, explain the reuse case, affected apps, compatibility impact, migration path, and validation plan before making it.
 - Do not add unsupported claims, invented content, unapproved services, pricing, warranties, reviews, certifications, or business outcomes.
 - Preserve existing user changes and avoid destructive migrations.
+
+## Requirement Integrity
+
+- Never create, infer, embellish, or reintroduce client requirements, facts, audience counts, geography, pricing, dates, services, or outcomes.
+- Treat explicit client corrections and removals as authoritative constraints. Do not restore anything removed from an earlier draft or instruction unless explicitly asked.
+- Use only the current client instructions and verified sources. If information is unknown, leave it unknown or label it as pending client confirmation.
+- Before editing an existing artifact, reread the current file and check that superseded assumptions are not being carried forward.
 
 ## Mandatory Approval Gate
 

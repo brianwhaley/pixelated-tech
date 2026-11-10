@@ -1,5 +1,5 @@
 applications:
-  - appRoot: apps/amava-janitorial
+  - appRoot: apps/pixelated
     customHeaders: &default_headers
       - pattern: "/_next/static/**/*"
         headers: &static_headers
@@ -29,27 +29,21 @@ applications:
           - key: "Expires"
             value: "0"
 
-      - pattern: "/api/auth/*"
-        headers: *nocache_headers
-
-      - pattern: "/api/auth/**/*"
-        headers: *nocache_headers
-
       - pattern: "**/*"
         headers: &page_headers
           - key: "Cache-Control"
             value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
 
+  - appRoot: apps/amava-janitorial
+    customHeaders: *default_headers
+
   - appRoot: apps/brianwhaley
     customHeaders: *default_headers
 
-  - appRoot: apps/mgt-pro-services
+  - appRoot: apps/gea-construction
     customHeaders: *default_headers
 
   - appRoot: apps/informationfocus
-    customHeaders: *default_headers
-
-  - appRoot: apps/gea-construction
     customHeaders: *default_headers
 
   - appRoot: apps/jz-home-improvement
@@ -58,14 +52,37 @@ applications:
   - appRoot: apps/manningmetalworks
     customHeaders: *default_headers
 
+  - appRoot: apps/mgt-pro-services
+    customHeaders: *default_headers
+
   - appRoot: apps/palmetto-epoxy
     customHeaders: *default_headers
 
-  - appRoot: apps/pixelated
-    customHeaders: *default_headers
-
   - appRoot: apps/pixelated-admin
-    customHeaders: *default_headers
+    customHeaders:
+      - pattern: "/_next/static/**/*"
+        headers: *static_headers
+
+      - pattern: "/_next/image/**/*"
+        headers: *asset_headers
+
+      - pattern: "/images/**/*"
+        headers: *asset_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *asset_headers
+
+      - pattern: "/videos/**/*"
+        headers: *asset_headers
+
+      # Covered by the no-cache catch-all below.
+      # - pattern: "/api/auth/*" # *nocache_headers
+      # - pattern: "/api/auth/**/*" # *nocache_headers
+      # - pattern: "/login" # *nocache_headers
+      # - pattern: "/login/*" # *nocache_headers
+
+      - pattern: "**/*"
+        headers: *nocache_headers
 
   - appRoot: packages/pixelated-components
     customHeaders: *default_headers

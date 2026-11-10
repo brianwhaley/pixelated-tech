@@ -161,6 +161,12 @@ Components rely on a centralized config system (canonical source: `pixelated.con
 - Client-side: `getClientOnlyPixelatedConfig()` strips secrets (tokens, keys, passwords).
 - Config types are defined in `config.types.ts` for integrations like Contentful, Cloudinary, HubSpot.
 
+### Config Vault Safety
+- Never manually encrypt or decrypt configuration files unless the user explicitly asks for that exact operation.
+- The existing decrypted `pixelated.config.json` is the working source of truth. Preserve its contents and changes.
+- Build and deployment scripts handle encryption for deployment; do not run vault commands as part of ordinary implementation, testing, or validation.
+- Never decrypt `pixelated.config.json.enc` to overwrite or replace the existing local decrypted configuration.
+
 💡 **Canonical-config guidance:** prefer `pixelated.config.json` (encrypted in CI/production) for all runtime config. Environment variables are strongly discouraged and must be treated as an absolute last resort — the config provider exists so developers do not need to rely on env vars. `PIXELATED_CONFIG_KEY` is the **only** allowed environment variable for application configuration (used solely to decrypt `pixelated.config.json.enc` in local/CI debugging); all other uses of `process.env` must be migrated into `pixelated.config.json` with an accompanying PR and migration plan.
 
 > ⚠️ CI enforcement: PRs that introduce new `process.env` reads in `src/` will be blocked unless an approved migration plan is provided. Use `getClientOnlyPixelatedConfig()` / `useConfig()` in components instead.

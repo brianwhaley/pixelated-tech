@@ -7,6 +7,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default [
 	...getBaseESLintConfig(__dirname),
 	{
+		ignores: [".aws-sam/**"],
+	},
+	{
 		files: ["src/**/*.{js,mjs,cjs}"],
 		rules: {
 			"pixelated/enforce-single-h1": "off",

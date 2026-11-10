@@ -27,6 +27,14 @@ test("routes Sendmail directly to the existing Lambda", () => {
 	assert.match(resourceBlock("SendmailPermission"), /POST\/sendmail/);
 });
 
+test("routes social publishing to the intake Lambda", () => {
+	assert.match(resourceBlock("SocialPublishResource"), /PathPart: social-publish/);
+	const method = resourceBlock("SocialPublishMethod");
+	assert.match(method, /HttpMethod: POST/);
+	assert.match(method, /SocialPublishIntakeFunctionArn/);
+	assert.match(resourceBlock("SocialPublishPermission"), /POST\/social-publish/);
+});
+
 test("preserves Forms direct S3 ingestion", () => {
 	const method = resourceBlock("FormsMethod");
 	assert.match(method, /Credentials: !Ref FormsIntegrationRoleArn/);

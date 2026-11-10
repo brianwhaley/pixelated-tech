@@ -1,4 +1,23 @@
+
+export * from './auth/auth-components';
+export * from './auth/auth-functions';
+export * from './auth/authorization';
+
+// Billing Management components
+export * from './billing/billing.types';
+export * from './billing/billing.invoice.components';
+export * from './billing/billing.dashboard.components';
+
+export * from './filedata/filedata.components';
+export * from './filedata/filedata.functions';
+
+export * from './scraper/person.functions';
+export * from './scraper/domain-scraper.functions';
+export * from './scraper/domain-scraper.components';
+
 export * from './site-health/google.api.integration';
+export * from './site-health/google.api.utils';
+export * from './site-health/seo-constants';
 export * from './site-health/site-health-accessibility';
 export * from './site-health/site-health-axe-core';
 export * from './site-health/site-health-cloudwatch';
@@ -16,25 +35,8 @@ export * from './site-health/site-health-seo';
 export * from './site-health/site-health-template';
 export * from './site-health/site-health-uptime';
 export * from './site-health/site-health-mock-context';
-
-// Billing Management components
-export * from './billing/billing.types';
-export * from './billing/billing.invoice.components';
-export * from './billing/billing.dashboard.components';
-
-// Client-safe admin components (can run on both client and server)
-export * from './site-health/google.api.utils';
-export * from './site-health/seo-constants';
-
 export * from './site-health/site-health-indicators';
 export * from './site-health/site-health-on-site-seo.integration';
 export * from './site-health/site-health-performance';
 export * from './site-health/site-health-types';
 export * from './site-health/site-health-utils';
-
-export * from './auth/auth-components';
-export * from './auth/auth-functions';
-export * from './auth/authorization';
-
-export * from './filedata/filedata.components';
-export * from './filedata/filedata.functions';

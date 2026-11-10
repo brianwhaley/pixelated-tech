@@ -1,5 +1,6 @@
 import { PageTitleHeader } from "@pixelated-tech/components";
-import { DomainScraper } from "./domain-scraper.components";
+import { DomainScraper } from "@pixelated-tech/components/adminclient";
+import "./domain-scraper.css";
 
 export const metadata = {
 	title: "Domain Scraper | Pixelated Admin",

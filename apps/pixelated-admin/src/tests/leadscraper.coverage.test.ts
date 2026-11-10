@@ -14,10 +14,10 @@ const mockPage = {
 	$eval: vi.fn(async () => 'error body'),
 };
 
-vi.mock('../lib/puppeteer', () => ({
-	launchBrowser: vi.fn(async () => mockBrowser),
-	openNewPage: vi.fn(async () => mockPage),
-	closeBrowser: mockCloseBrowser,
+vi.mock('@pixelated-tech/components/server', () => ({
+	launchPuppeteerBrowser: vi.fn(async () => mockBrowser),
+	openPuppeteerPage: vi.fn(async () => mockPage),
+	closePuppeteerBrowser: mockCloseBrowser,
 }));
 
 describe('lead scraper data helpers', () => {
@@ -104,14 +104,14 @@ describe('domain scraper', () => {
 	});
 
 	it('rejects invalid URLs', async () => {
-		const { scrapeDomain } = await import('../app/(pages)/domain-scraper/actions.server');
+		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		const form = new FormData();
 		form.set('url', 'ftp://example.com');
 		expect(await scrapeDomain(form)).toMatchObject({ pagesCrawled: 0, error: 'Enter a valid http or https URL.' });
 	});
 
 	it('crawls same-host pages and records unique emails', async () => {
-		const { scrapeDomain } = await import('../app/(pages)/domain-scraper/actions.server');
+		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		const form = new FormData();
 		form.set('url', 'https://example.com/team#top');
 		form.set('maxPages', '1');
@@ -123,7 +123,7 @@ describe('domain scraper', () => {
 	});
 
 	it('logs failed browser responses without aborting the result', async () => {
-		const { scrapeDomain } = await import('../app/(pages)/domain-scraper/actions.server');
+		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		mockPage.goto.mockResolvedValue({ status: () => 503, url: () => 'https://example.com/team', headers: () => ({}) });
 		const form = new FormData();
 		form.set('url', 'https://example.com/team');
@@ -134,7 +134,7 @@ describe('domain scraper', () => {
 	});
 
 	it('applies depth limits and ignores external links', async () => {
-		const { scrapeDomain } = await import('../app/(pages)/domain-scraper/actions.server');
+		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		mockPage.content.mockResolvedValue('<a href="/team/member">member</a><a href="https://other.example/team">external</a><a href="mailto:skip@example.com">mail</a>');
 		const form = new FormData();
 		form.set('url', 'https://example.com/team');
@@ -146,7 +146,7 @@ describe('domain scraper', () => {
 	});
 
 	it('classifies HTTP 404 failures with evidence', async () => {
-		const { scrapeDomain } = await import('../app/(pages)/domain-scraper/actions.server');
+		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		mockPage.goto.mockResolvedValue({ status: () => 404, url: () => 'https://example.com/team', headers: () => ({}) });
 		const form = new FormData();
 		form.set('url', 'https://example.com/team');
@@ -155,7 +155,7 @@ describe('domain scraper', () => {
 	});
 
 	it('retries rate limits and records duplicate links', async () => {
-		const { scrapeDomain } = await import('../app/(pages)/domain-scraper/actions.server');
+		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		mockPage.goto
 			.mockResolvedValueOnce({ status: () => 429, url: () => 'https://example.com/team', headers: () => ({ 'retry-after': '0' }) })
 			.mockResolvedValueOnce({ status: () => 200, url: () => 'https://example.com/team', headers: () => ({}) });

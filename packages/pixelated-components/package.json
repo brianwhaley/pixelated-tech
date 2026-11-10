@@ -120,6 +120,7 @@
 		"@storybook/react-webpack5": "^10.6.6",
 		"@testing-library/dom": "^10.4.2",
 		"@types/md5": "^2.3.6",
+		"@types/jsdom": "^27.0.0",
 		"@types/node": "^26.6.6",
 		"@types/nodemailer": "^8.0.2",
 		"@types/prop-types": "^15.7.15",

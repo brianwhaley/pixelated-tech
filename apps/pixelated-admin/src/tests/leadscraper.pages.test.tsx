@@ -8,10 +8,6 @@ vi.mock('@pixelated-tech/components', () => ({
 	PageTitleHeader: ({ title }: { title: string }) => <h1>{title}</h1>,
 }));
 
-vi.mock('../app/(pages)/domain-scraper/actions.server', () => ({
-	scrapeDomain: vi.fn(),
-}));
-
 import LeadScraperPage from '../app/(pages)/lead-scraper/page';
 import DomainScraperPage from '../app/(pages)/domain-scraper/page';
 

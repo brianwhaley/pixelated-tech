@@ -9,6 +9,7 @@ Routes are intentionally direct and omit service stage names:
 - `GET /dyndns53/nic/update` -> existing DynDNS Lambda with its legacy event mapping
 - `ANY /proxy` -> existing Proxy Lambda
 - `GET|POST /nerdjokes` -> existing NerdJokes PROD alias
+- `POST /social-publish` -> social-publish intake Lambda
 
 STKR is not included. Its existing `us-east-2` API remains unchanged while that service is retired.
 

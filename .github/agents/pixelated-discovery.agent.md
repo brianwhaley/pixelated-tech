@@ -47,6 +47,13 @@ Use the existing project corpus as a reference for patterns and quality. Do not 
 - Do not deploy code, publish packages, push releases, trigger production deployments, or modify production data unless the user explicitly requests that deployment or release action.
 - Research, artifact creation, validation, and local rendering are preparation only and do not grant permission to deploy or publish.
 
+## Config Vault Safety
+
+- Never manually encrypt or decrypt configuration unless the user explicitly asks for that exact operation.
+- Preserve the existing decrypted `pixelated.config.json` as the working source of truth and retain all local changes.
+- Build and deployment scripts handle encryption for deployment; do not run vault commands during discovery, artifact creation, or validation.
+- Never decrypt the encrypted config to overwrite or replace the local decrypted config.
+
 ## Evidence Rules
 
 Separate verified facts, client-provided facts, sourced research, recommendations, and unknowns.
@@ -62,6 +69,13 @@ Every important external claim should have a source URL in an appropriate existi
 - warranties or performance guarantees
 - service capabilities
 - pricing, discounts, dates, or contact details
+
+## Requirement Integrity
+
+- Never create, infer, embellish, or reintroduce client requirements, facts, audience counts, geography, pricing, dates, services, or outcomes.
+- Treat explicit client corrections and removals as authoritative constraints. Do not restore anything removed from an earlier draft or instruction unless explicitly asked.
+- Use only the current client instructions and verified sources. If information is unknown, leave it unknown or label it as pending client confirmation.
+- Before editing an existing artifact, reread the current file and check that superseded assumptions are not being carried forward.
 
 Research should identify naming conflicts and strategic risks, not merely collect competitor links.
 

@@ -54,6 +54,9 @@ Parameters:
     Type: String
     NoEcho: true
     Default: ''
+  SocialPublishIntakeFunctionArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:971579260814:function:social-publish-intake
 
 Conditions:
   CreateDnsRecordCondition: !And
@@ -79,8 +82,9 @@ Resources:
       - ProxyMethod
       - NerdjokesGetMethod
       - NerdjokesPostMethod
+      - SocialPublishMethod
     Properties:
-      DeploymentId: !Ref UnifiedApiDeploymentV2
+      DeploymentId: !Ref UnifiedApiDeploymentV3
       RestApiId: !Ref UnifiedApi
       StageName: prod
       Variables:
@@ -100,7 +104,7 @@ Resources:
         Format: >-
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
-  UnifiedApiDeploymentV2:
+  UnifiedApiDeploymentV3:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
       - SendmailMethod
@@ -112,9 +116,10 @@ Resources:
       - ProxyOptionsMethod
       - NerdjokesGetMethod
       - NerdjokesPostMethod
+      - SocialPublishMethod
     Properties:
       RestApiId: !Ref UnifiedApi
-      Description: Unified east-one API routes
+      Description: Unified east-one API routes including social publish
 
   ApiDomain:
     Type: AWS::ApiGateway::DomainName
@@ -203,6 +208,34 @@ Resources:
       FunctionName: !Ref SendmailFunctionArn
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/POST/sendmail
+
+  SocialPublishResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt UnifiedApi.RootResourceId
+      PathPart: social-publish
+      RestApiId: !Ref UnifiedApi
+
+  SocialPublishMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SocialPublishIntakeFunctionArn}/invocations
+      ResourceId: !Ref SocialPublishResource
+      RestApiId: !Ref UnifiedApi
+
+  SocialPublishPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SocialPublishIntakeFunctionArn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/POST/social-publish
 
   FormsResource:
     Type: AWS::ApiGateway::Resource

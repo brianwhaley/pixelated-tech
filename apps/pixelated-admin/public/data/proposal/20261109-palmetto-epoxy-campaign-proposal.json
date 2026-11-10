@@ -1,0 +1,78 @@
+{
+  "companyName": "Palmetto Epoxy",
+  "companyContact": "Dennis and Martha Aberle",
+  "date": "11/8/2026",
+  "email": "palmettoepoxy@gmail.com",
+  "phone": "(516) 510-8186",
+  "address": {
+    "streetAddress": "116 Beckenridge Circle",
+    "addressLocality": "Bluffton",
+    "addressRegion": "SC",
+    "postalCode": "29909",
+    "addressCountry": "United States"
+  },
+  "proposalType": "Web Site Build",
+  "maintenancePackage": "",
+  "goal": [
+    "Build and launch an advertising campaign for Palmetto Epoxy targeting the residents of Sun City West.",
+    "Use direct-mail and email outreach to generate awareness and qualified estimate requests for Palmetto Epoxy services."
+  ],
+  "deliverables": [
+    "Construction of a targeted mailing list for Sun City West residents.",
+    "Design of a direct-mail postcard using client-approved campaign content and branding.",
+    "Production and mailing of a VistaPrint Mailing Service Postcard.",
+    "Targeted email campaign to the approved audience.",
+    "New Facebook ad campaign with new creative and narrow targeting for Sun City West geography and new home buyers.",
+    "Campaign coordination and delivery of the completed direct-mail and email assets."
+  ],
+  "features": [
+    {
+      "feature": "Target Audience",
+      "description": ["Residents of Sun City West", "Initial direct-mail list of 275 residents", "300 postcards for the direct-mail campaign"]
+    },
+    {
+      "feature": "Mailing List Creation",
+      "description": ["Construction of a mailing list for 275 Sun City West residents"]
+    },
+    {
+      "feature": "Postcard Design",
+      "description": ["Design of a direct-mail postcard using client-approved content and branding"]
+    },
+    {
+      "feature": "VistaPrint Mailing Service Postcard",
+      "description": ["300 direct-mailer cards via VistaPrint:", "Turn a list of addresses into a line of customers with our one-stop shop for direct mail postcards. We'll print, address and mail your cards."]
+    },
+    {
+      "feature": "Targeted Email Campaign",
+      "description": ["One targeted email campaign", "Campaign content and recipient list subject to client approval", "Email delivery costs and platform limitations subject to the selected service"]
+    },
+    {
+      "feature": "Facebook Ad Campaign",
+      "description": ["New Facebook ad campaign with new creative design, and targeting for new home buyers within Sun City West"]
+    }
+  ],
+  "startDate": "10/28/2026",
+  "milestones": [
+    {"milestone":"Approve Design","date":"11/13/2026"},
+    {"milestone":"Launch Direct Mail Campaign","date":"11/20/2026"},
+    {"milestone":"Launch Facebook Ad Campaign","date":"11/20/2026"},
+    {"milestone":"Launch Email Campaign","date":"12/4/2026"}
+  ],
+  "paymentTotal": {
+    "amount": 750,
+    "isDiscounted": false,
+    "description": [
+      "Mailing list creation: $200",
+      "Postcard design: $100",
+      "VistaPrint Mailing Service Postcard for 300 cards: $350",
+      "Targeted email campaign: $100",
+      "Facebook ad campaign: $0"
+    ]
+  },
+  "paymentSchedule": {
+    "paymentScheduleType": "custom",
+    "paymentScheduleDetails": [
+      "100% payment is due upon completion of the campaign."
+    ]
+  }
+}

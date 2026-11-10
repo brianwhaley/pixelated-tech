@@ -71,6 +71,13 @@ Do not create an abstraction merely because reuse is theoretically possible.
 - Create a shared abstraction only when multiple real consumers, complex domain logic, or a stable platform contract justify its maintenance cost.
 - Keep one-use transformations local to their consumer and do not create generic utility dumping grounds.
 
+## Requirement Integrity
+
+- Never create, infer, embellish, or reintroduce client requirements, facts, audience counts, geography, pricing, dates, services, or outcomes.
+- Treat explicit client corrections and removals as authoritative constraints. Do not restore anything removed from an earlier draft or instruction unless explicitly asked.
+- Use only the current client instructions and verified sources. If information is unknown, leave it unknown or label it as pending confirmation.
+- Before editing an existing artifact, reread the current file and check that superseded assumptions are not being carried forward.
+
 ## Pixelated Configuration
 
 The canonical runtime configuration is `pixelated.config.json` and its established encrypted/decrypted workflow.
@@ -82,6 +89,12 @@ The canonical runtime configuration is `pixelated.config.json` and its establish
 - Prefer configuration and data-driven behavior over repeated site-specific branching.
 - Validate configuration shape, defaults, client/server exposure, and migration behavior.
 - Document any new configuration fields and identify which applications need updates.
+
+### Config Vault Safety
+- Never manually encrypt or decrypt configuration unless the user explicitly asks for that exact operation.
+- Treat the existing decrypted `pixelated.config.json` as the working source of truth and preserve all local changes.
+- Build and deployment scripts handle encryption for deployment. Do not run vault commands during normal implementation or validation.
+- Never decrypt the encrypted config to overwrite or replace the local decrypted config.
 
 ## APIs, Libraries, and Integrations
 

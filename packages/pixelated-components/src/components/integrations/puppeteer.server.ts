@@ -2,18 +2,31 @@
 
 import puppeteer, { type Browser, type Page } from 'puppeteer';
 
-export async function launchPuppeteerBrowser(options: { headless?: boolean; executablePath?: string } = {}): Promise<Browser> {
+export type PuppeteerBrowserOptions = {
+	headless?: boolean;
+	executablePath?: string;
+	defaultViewport?: { width: number; height: number } | null;
+};
+
+export type PuppeteerPageOptions = {
+	bringToFront?: boolean;
+	navigationTimeout?: number;
+	timeout?: number;
+};
+
+export async function launchPuppeteerBrowser(options: PuppeteerBrowserOptions = {}): Promise<Browser> {
 	return puppeteer.launch({
 		headless: options.headless ?? true,
 		executablePath: options.executablePath,
-		defaultViewport: { width: 1200, height: 772 },
+		defaultViewport: options.defaultViewport === undefined ? { width: 1200, height: 772 } : options.defaultViewport,
 	});
 }
 
-export async function openPuppeteerPage(browser: Browser): Promise<Page> {
+export async function openPuppeteerPage(browser: Browser, options: PuppeteerPageOptions = {}): Promise<Page> {
 	const page = await browser.newPage();
-	page.setDefaultNavigationTimeout(30000);
-	page.setDefaultTimeout(15000);
+	if (options.bringToFront) await page.bringToFront();
+	page.setDefaultNavigationTimeout(options.navigationTimeout ?? 30000);
+	page.setDefaultTimeout(options.timeout ?? 15000);
 	return page;
 }
 

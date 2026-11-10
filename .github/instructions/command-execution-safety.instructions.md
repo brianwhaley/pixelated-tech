@@ -5,6 +5,13 @@ applyTo: "**"
 
 # Command Execution & Question Handling Rules
 
+## Config Vault Safety
+
+- Never manually encrypt or decrypt configuration unless the user explicitly asks for that exact operation.
+- The existing decrypted `pixelated.config.json` is the working source of truth; preserve all local changes.
+- Build and deployment scripts handle encryption for deployment. Do not run vault commands during ordinary implementation, testing, or validation.
+- Never decrypt `pixelated.config.json.enc` to overwrite or replace the existing local decrypted configuration.
+
 ## Rule 1: Inspect Before Answering, Edit Only With Permission
 
 **For repository-specific questions:**

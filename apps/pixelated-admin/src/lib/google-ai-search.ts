@@ -1,5 +1,5 @@
 import { Browser } from 'puppeteer';
-import { openNewPage } from './puppeteer';
+import { openPuppeteerPage as openNewPage } from '@pixelated-tech/components/server';
 
 /**
  * Run a Google search for `query` and return the innerHTML of [data-container-id="main-col"].

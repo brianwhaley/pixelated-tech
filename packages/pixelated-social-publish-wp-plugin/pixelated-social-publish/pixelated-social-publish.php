@@ -64,7 +64,7 @@ function pixelated_social_publish_get_settings() {
 function pixelated_social_publish_get_webhook_url() {
 	return defined('PIXELATED_SOCIAL_PUBLISH_WEBHOOK_URL')
 		? PIXELATED_SOCIAL_PUBLISH_WEBHOOK_URL
-		: 'https://admin.pixelated.tech/api/webhooks/wordpress';
+		: 'https://api.pixelated.tech/social-publish';
 }
 
 function pixelated_social_publish_sanitize_settings($input) {

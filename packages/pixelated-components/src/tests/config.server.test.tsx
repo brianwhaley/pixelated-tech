@@ -1,13 +1,12 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { PixelatedServerConfigProvider } from '../components/config/config.server';
+import { createMockConfig } from '../test/test-utils';
 
 describe('PixelatedServerConfigProvider', () => {
   describe('Server provider rendering', () => {
     it('should accept config prop', async () => {
-      const config = {
-        cloudinary: { product_env: 'production' }
-      };
+      const config = createMockConfig();
 
       const children = <div data-testid="child">Child content</div>;
 

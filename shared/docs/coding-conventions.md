@@ -163,6 +163,12 @@ export function Component(props: ComponentType) { ... }
 - Environment variables must be avoided at all costs. The config provider exists so teams can use developer-friendly, code-first, and versioned configuration instead of brittle, environment-variable-based wiring — always explore provider-driven, build-time, or feature-flagging alternatives before considering an env var.
 - Secrets must be injected into `pixelated.config.json.enc` and surfaced via the config loader; do **not** read secrets from ad-hoc `process.env` in application code. Consumer components must read configuration from the config provider (`useConfig()` / `usePixelatedConfig()`), not `process.env` directly — this ensures consistent defaulting, secret-stripping for client bundles, and server/client parity.
 
+### Config Vault Safety (mandatory)
+- Never manually encrypt or decrypt configuration files unless the user explicitly asks for that exact operation.
+- The existing decrypted `pixelated.config.json` is the working source of truth and must retain all local changes.
+- Build and deployment scripts perform the encryption needed for deployment. Do not run vault commands during ordinary implementation, testing, or validation.
+- Never decrypt `pixelated.config.json.enc` to overwrite or replace the existing local decrypted configuration.
+
 Exception (allowed env usage — single, narrowly-scoped):
 - `PIXELATED_CONFIG_KEY` — only to decrypt `pixelated.config.json.enc` in local/CI debugging; prefer injecting the key via the CI/platform secrets manager. This is the only permitted environment variable for application configuration in the codebase unless an explicit, documented approval and migration plan is provided.
 

@@ -1,0 +1,16 @@
+{
+  "name": "@pixelated-tech/social-publish-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+    "build": "node --check src/index.mjs",
+    "test": "node --test social-publish-worker.test.mjs"
+  },
+  "dependencies": {
+    "@pixelated-tech/components": "file:../../../packages/pixelated-components",
+    "esbuild": "^0.28.1",
+    "puppeteer": "^25.16.0"
+  }
+}
