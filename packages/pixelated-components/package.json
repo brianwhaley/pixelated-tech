@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.25",
+	"version": "3.22.27",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -119,8 +119,8 @@
 		"@storybook/react-dom-shim": "^10.6.6",
 		"@storybook/react-webpack5": "^10.6.6",
 		"@testing-library/dom": "^10.4.2",
+		"@types/jsdom": "^30.0.0",
 		"@types/md5": "^2.3.6",
-		"@types/jsdom": "^27.0.0",
 		"@types/node": "^26.6.6",
 		"@types/nodemailer": "^8.0.2",
 		"@types/prop-types": "^15.7.15",

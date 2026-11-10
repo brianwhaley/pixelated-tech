@@ -1,6 +1,6 @@
 {
   "name": "marvelous-painting",
-  "version": "0.7.45",
+  "version": "0.7.47",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",

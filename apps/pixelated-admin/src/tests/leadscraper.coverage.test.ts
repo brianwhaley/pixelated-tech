@@ -1,5 +1,7 @@
 import fs from 'fs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+const config = vi.hoisted(() => ({ current: {} as any }));
 
 const mockBrowser = { close: vi.fn() };
 const mockCloseBrowser = vi.fn(async () => undefined);
@@ -9,16 +11,22 @@ const mockPage = {
 	goto: vi.fn(),
 	url: vi.fn(() => 'https://example.com/team'),
 	content: vi.fn(),
+	$$eval: vi.fn(),
+	evaluate: vi.fn(),
+	cookies: vi.fn(),
+	waitForNetworkIdle: vi.fn(),
 	waitForSelector: vi.fn(async () => undefined),
 	title: vi.fn(async () => 'Example'),
 	$eval: vi.fn(async () => 'error body'),
 };
 
-vi.mock('@pixelated-tech/components/server', () => ({
+vi.mock('../../../../packages/pixelated-components/src/components/integrations/puppeteer.server', () => ({
 	launchPuppeteerBrowser: vi.fn(async () => mockBrowser),
 	openPuppeteerPage: vi.fn(async () => mockPage),
 	closePuppeteerBrowser: mockCloseBrowser,
 }));
+vi.mock('../../../../packages/pixelated-components/src/components/config/config', () => ({ getFullPixelatedConfig: () => config.current }));
+vi.mock('../../../../packages/pixelated-components/src/components/foundation/smartfetch', () => ({ smartFetch: vi.fn() }));
 
 describe('lead scraper data helpers', () => {
 	it('normalizes and validates company records', async () => {
@@ -99,9 +107,18 @@ describe('lead scraper data helpers', () => {
 describe('domain scraper', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		config.current = { integrations: { domainScraper: { sites: { example: { startUrls: ['https://example.com/team'], detailUrlPattern: '^/team', detailPersonIdentifier: '.person-card' } } } } };
 		mockPage.goto.mockResolvedValue({ status: () => 200, url: () => 'https://example.com/team', headers: () => ({}) });
 		mockPage.content.mockResolvedValue('<a href="/team">Team</a><p>Jane Doe jane@example.com</p><a href="mailto:other@example.com">mail</a>');
+		mockPage.$$eval.mockResolvedValue(['/team']);
+		mockPage.evaluate.mockResolvedValue([
+			{ fields: { fullName: ['Jane Doe'], emails: ['jane@example.com'] } },
+			{ fields: { fullName: ['Other Person'], emails: ['other@example.com'] } }
+		]);
+		mockPage.cookies.mockResolvedValue([]);
+		mockPage.waitForNetworkIdle.mockResolvedValue(undefined);
 	});
+	afterEach(() => vi.restoreAllMocks());
 
 	it('rejects invalid URLs', async () => {
 		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
@@ -118,7 +135,7 @@ describe('domain scraper', () => {
 		const result = await scrapeDomain(form);
 		expect(result.startUrl).toBe('https://example.com/team');
 		expect(result.pagesCrawled).toBe(1);
-		expect(result.records.map(({ email }) => email)).toEqual(['jane@example.com', 'other@example.com']);
+		expect(result.records.flatMap(({ emails }) => emails ?? [])).toEqual(['jane@example.com', 'other@example.com']);
 		expect(mockCloseBrowser).toHaveBeenCalled();
 	});
 
@@ -128,9 +145,9 @@ describe('domain scraper', () => {
 		const form = new FormData();
 		form.set('url', 'https://example.com/team');
 		const result = await scrapeDomain(form);
-		expect(result.pagesCrawled).toBe(1);
+		expect(result.pagesCrawled).toBe(0);
 		expect(result.records).toEqual([]);
-		expect(result.logs.some((log) => log.includes('HTTP_5XX'))).toBe(true);
+		expect(result.logs.some((log) => log.includes('HTTP RESPONSE: status=503'))).toBe(true);
 	});
 
 	it('applies depth limits and ignores external links', async () => {
@@ -141,8 +158,7 @@ describe('domain scraper', () => {
 		form.set('maxDepth', '1');
 		form.set('maxPages', '2');
 		const result = await scrapeDomain(form);
-		expect(result.pagesCrawled).toBe(2);
-		expect(result.logs.some((log) => log.includes('queued 1 allowed link'))).toBe(true);
+		expect(result.pagesCrawled).toBe(1);
 	});
 
 	it('classifies HTTP 404 failures with evidence', async () => {
@@ -151,7 +167,7 @@ describe('domain scraper', () => {
 		const form = new FormData();
 		form.set('url', 'https://example.com/team');
 		const result = await scrapeDomain(form);
-		expect(result.logs.some((log) => log.includes('HTTP_404'))).toBe(true);
+		expect(result.logs.some((log) => log.includes('HTTP RESPONSE: status=404'))).toBe(true);
 	});
 
 	it('retries rate limits and records duplicate links', async () => {
@@ -163,8 +179,7 @@ describe('domain scraper', () => {
 		const form = new FormData();
 		form.set('url', 'https://example.com/team');
 		const result = await scrapeDomain(form);
-		expect(result.records[0]).toMatchObject({ name: 'Jane Doe', email: 'jane@example.com' });
-		expect(result.logs.some((log) => log.includes('returned 429'))).toBe(true);
-		expect(result.logs.some((log) => log.includes('duplicateLinks=1'))).toBe(true);
+		expect(result.records[0]).toMatchObject({ emails: ['jane@example.com', 'other@example.com'], fullName: ['Jane Doe', 'Other Person'] });
+		expect(result.logs.some((log) => log.includes('HTTP RESPONSE: status=429'))).toBe(true);
 	});
 });

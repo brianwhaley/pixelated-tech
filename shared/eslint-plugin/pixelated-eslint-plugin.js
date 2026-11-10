@@ -22,6 +22,7 @@ import { requiredFaqRule } from './rules/required-faq.js';
 import { fileNameKebabCaseRule } from './rules/file-name-kebab-case.js';
 import { noDuplicateExportNamesRule } from './rules/no-duplicate-export-names.js';
 import { noHardcodedConfigKeysRule } from './rules/no-hardcoded-config-keys.js';
+import { noSecretLiteralsRule } from './rules/no-secret-literals.js';
 import { noGenericCtaTextRule } from './rules/no-generic-cta-text.js';
 import { noDirectFetchRule } from './rules/no-direct-fetch.js';
 import { noSingleUseHelpersRule } from './rules/no-single-use-helpers.js';
@@ -41,6 +42,7 @@ export default {
 		'no-duplicate-export-names': noDuplicateExportNamesRule,
 		'no-generic-cta-text': noGenericCtaTextRule,
 		'no-hardcoded-config-keys': noHardcodedConfigKeysRule,
+		'no-secret-literals': noSecretLiteralsRule,
 		'no-low-information-copy': noLowInformationCopyRule,
 		'no-process-env': noProcessEnvRule,
 		'no-raw-img': noRawImgRule,
@@ -75,6 +77,7 @@ export default {
 				'pixelated/no-duplicate-export-names': 'error',
 				'pixelated/no-generic-cta-text': 'error',
 				'pixelated/no-hardcoded-config-keys': 'error',
+				'pixelated/no-secret-literals': 'error',
 				'pixelated/no-low-information-copy': ['warn', { threshold: 1.5 }],
 				'pixelated/no-process-env': ['error', { allowed: ALLOWED_ENV_VARS }],
 				'pixelated/no-raw-img': 'warn',

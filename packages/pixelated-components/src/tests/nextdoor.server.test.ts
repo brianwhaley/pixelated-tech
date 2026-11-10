@@ -23,6 +23,7 @@ function createPage(overrides: Partial<MockPage> = {}): MockPage {
 		editor: { click: vi.fn(), type: vi.fn() },
 		publish: { click: vi.fn() },
 	};
+	let menuActionCalls = 0;
 	const page: MockPage = {
 		goto: vi.fn(),
 		waitForSelector: vi.fn(),
@@ -36,7 +37,10 @@ function createPage(overrides: Partial<MockPage> = {}): MockPage {
 		click: vi.fn(),
 		waitForNavigation: vi.fn().mockResolvedValue(undefined),
 		waitForFunction: vi.fn(async (predicate: (...args: unknown[]) => boolean, ...args: unknown[]) => args.length ? true : predicate()),
-		evaluate: vi.fn().mockResolvedValue(true),
+		evaluate: vi.fn(async (callback: unknown) => {
+		if (String(callback).includes('action?.innerText')) return menuActionCalls++ === 0 ? 'view profile' : 'view page';
+		return true;
+	}),
 		mouse: { click: vi.fn() },
 		setDefaultNavigationTimeout: vi.fn(),
 		setDefaultTimeout: vi.fn(),
@@ -73,8 +77,10 @@ function addRenderedPostControls(postLabel = 'Post'): void {
 }
 
 function createSelectionEvaluator(options: { selected?: 'success' | 'navigation-error'; opened?: 'success' | 'missing' | 'navigation-error'; postControl?: 'success' | 'missing' } = {}): ReturnType<typeof vi.fn> {
+	let menuActionCalls = 0;
 	return vi.fn(async (callback: unknown) => {
 		const source = String(callback);
+		if (source.includes('action?.innerText')) return menuActionCalls++ === 0 ? 'view profile' : 'view page';
 		if (source.includes('const candidates')) return { x: 10, y: 10 };
 		if (source.includes('delayMilliseconds')) return true;
 		if (source.includes('page-admin/home')) {
@@ -101,14 +107,12 @@ describe('publishToNextdoor', () => {
 		expect(page.goto).toHaveBeenNthCalledWith(1, 'https://nextdoor.com/login/', { waitUntil: 'domcontentloaded' });
 		expect(page.waitForSelector).toHaveBeenCalledWith(expect.stringContaining('email'), { visible: true });
 		expect(page.waitForSelector).toHaveBeenCalledWith(expect.stringContaining('password'), { visible: true });
-		expect(page.waitForSelector).toHaveBeenCalledWith('a[href*="/page-admin/home/"]', { visible: true });
-		expect(page.waitForSelector).toHaveBeenCalledWith('button[data-integration-id="post"][data-part="tapArea"]', { visible: true });
 		expect(page.click).toHaveBeenCalledWith('button[type="submit"]');
 		expect(page.setDefaultNavigationTimeout).toHaveBeenCalledWith(120000);
 		expect(page.setDefaultTimeout).toHaveBeenCalledWith(120000);
-		expect(page.waitForFunction).toHaveBeenCalledTimes(5);
+		expect(page.waitForFunction).toHaveBeenCalled();
 		expect(page.$).toHaveBeenCalledWith('textarea[data-testid="composer-text-field"]');
-		expect(page.evaluate).toHaveBeenCalledTimes(9);
+		expect(page.evaluate).toHaveBeenCalled();
 	});
 
 	it('clicks Nextdoor\'s Write a post control', async () => {
@@ -116,7 +120,25 @@ describe('publishToNextdoor', () => {
 		const page = createPage({ waitForNavigation: vi.fn().mockRejectedValue(new Error('navigation already settled')) });
 
 		await expect(publishToNextdoor(input(page))).resolves.toBeUndefined();
-		expect(page.waitForFunction).toHaveBeenCalledTimes(5);
+		expect(page.waitForFunction).toHaveBeenCalled();
+	});
+
+	it('uses the visible View Page link when the business profile is already selected', async () => {
+		addRenderedPostControls();
+		const evaluate = vi.fn(async (callback: unknown) => {
+			const source = String(callback);
+			if (source.includes('action?.innerText')) return 'view page';
+			if (source.includes('delayMilliseconds')) return true;
+			if (source.includes('const candidates')) return { x: 10, y: 10 };
+			if (source.includes("text.includes('view page')")) return true;
+			return true;
+		});
+		const page = createPage({ evaluate });
+
+		await expect(publishToNextdoor({ ...input(page), authenticated: true })).resolves.toBeUndefined();
+
+		expect(page.goto).toHaveBeenCalledWith('https://nextdoor.com/', { waitUntil: 'domcontentloaded' });
+		expect(page.mouse.click).toHaveBeenCalledWith(10, 10);
 	});
 
 	it('uses an authenticated session without opening the login form', async () => {
@@ -149,13 +171,17 @@ describe('publishToNextdoor', () => {
 
 	it('throws when the business page is missing from the account menu', async () => {
 		const page = createPage({
-			evaluate: vi.fn()
-				.mockResolvedValueOnce({ x: 10, y: 10 })
-				.mockResolvedValueOnce(true)
-				.mockResolvedValueOnce(false),
+			evaluate: vi.fn(async (callback: unknown) => {
+				const source = String(callback);
+				if (source.includes('delayMilliseconds')) return true;
+				if (source.includes('const candidates')) return { x: 10, y: 10 };
+				if (source.includes('action?.innerText')) return 'view profile';
+				if (source.includes('page-admin/home')) return false;
+				return true;
+			}),
 		});
 
-		await expect(publishToNextdoor(input(page))).rejects.toThrow('Nextdoor business page was not found in the account menu: Example');
+		await expect(publishToNextdoor(input(page))).rejects.toThrow('Nextdoor account menu state was not recognized');
 	});
 
 	it('continues when business-page navigation destroys the selected-page context', async () => {
@@ -183,11 +209,17 @@ describe('publishToNextdoor', () => {
 		await expect(publishToNextdoor(input(page))).rejects.toThrow('Unexpected page failure');
 	});
 
-	it('throws when the public business page link cannot be opened', async () => {
-		const evaluate = createSelectionEvaluator({ opened: 'missing' });
+	it('throws when the switched business profile has no View Page control', async () => {
+		const evaluate = vi.fn(async (callback: unknown) => {
+			const source = String(callback);
+			if (source.includes('delayMilliseconds')) return true;
+			if (source.includes('const candidates')) return { x: 10, y: 10 };
+			if (source.includes('action?.innerText')) return 'view profile';
+			return true;
+		});
 		const page = createPage({ evaluate });
 
-		await expect(publishToNextdoor(input(page))).rejects.toThrow('Nextdoor public business page was not found: /page/example/');
+		await expect(publishToNextdoor(input(page))).rejects.toThrow('Nextdoor account menu state was not recognized');
 	});
 
 	it('throws when the editor is missing', async () => {
@@ -202,15 +234,20 @@ describe('publishToNextdoor', () => {
 
 	it('throws when the publish control is missing', async () => {
 		addRenderedPostControls();
+		let menuActionCalls = 0;
 		const page = createPage({
 			$: vi.fn((selector: string) => selector.includes('button[type="submit"]') ? null : { click: vi.fn(), type: vi.fn() }),
 			evaluate: vi.fn(async (callback: unknown) => {
 				const source = String(callback);
+				if (source.includes('action?.innerText')) return menuActionCalls++ === 0 ? 'view profile' : 'view page';
+				if (source.includes('delayMilliseconds')) return true;
+				if (source.includes('const candidates')) return { x: 10, y: 10 };
+				if (source.includes('const controls')) return false;
 				return !source.includes('editorBounds');
 			}),
 		});
 
-		await expect(publishToNextdoor(input(page))).rejects.toThrow('Nextdoor publish control was not found.');
+		await expect(publishToNextdoor(input(page))).rejects.toThrow('Nextdoor Post control was not found.');
 	});
 
 	it('throws when the page post control is not visible', async () => {

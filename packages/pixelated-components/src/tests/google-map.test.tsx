@@ -63,7 +63,7 @@ describe('Google Map Components', () => {
 
 			const iframe = container.querySelector('iframe');
 			const src = iframe?.getAttribute('src');
-			expect(src).toContain('key=test-google-maps-key');
+			expect(src).toContain(`key=${pixelatedConfig.integrations?.googleMaps?.apiKey}`);
 		});
 
 		it('should use custom API key from provider config', () => {
@@ -76,6 +76,17 @@ describe('Google Map Components', () => {
 			const iframe = container.querySelector('iframe');
 			const src = iframe?.getAttribute('src');
 			expect(src).toContain('key=test-api-key-prop');
+		});
+
+		it('should use the legacy Google API key when configured', () => {
+			const legacyConfig = { integrations: { google: { api_key: 'legacy-google-key' } } } as any;
+			const { container } = renderWithProviders(
+				<GoogleMaps {...defaultProps} />,
+				{ config: legacyConfig }
+			);
+
+			const iframe = container.querySelector('iframe');
+			expect(iframe?.getAttribute('src')).toContain('key=legacy-google-key');
 		});
 
 		it('should set iframe title from prop', () => {

@@ -9,6 +9,7 @@ const page = {
 	click: vi.fn(),
 	waitForNavigation: vi.fn(),
 	waitForNetworkIdle: vi.fn(),
+	cookies: vi.fn(),
 	evaluate: vi.fn(),
 	$eval: vi.fn(),
 	$$eval: vi.fn(),
@@ -21,6 +22,7 @@ const extractState = vi.hoisted(() => ({ people: [] as Record<string, unknown>[]
 const launchBrowser = vi.fn(async () => browser);
 const openNewPage = vi.fn(async () => page);
 const closeBrowser = vi.fn(async () => undefined);
+const smartFetch = vi.fn(async () => ({ Directory: { member: [], total_count: 20 } }));
 
 vi.mock('../../../../packages/pixelated-components/src/components/integrations/puppeteer.server', () => ({ launchPuppeteerBrowser: launchBrowser, openPuppeteerPage: openNewPage, closePuppeteerBrowser: closeBrowser }));
 vi.mock('../../../../packages/pixelated-components/src/components/admin/scraper/domain-extract-writer.server', () => ({
@@ -44,6 +46,7 @@ vi.mock('../../../../packages/pixelated-components/src/components/admin/scraper/
 vi.mock('../../../../packages/pixelated-components/src/components/config/config', () => ({
 	getFullPixelatedConfig: () => config.current,
 }));
+vi.mock('../../../../packages/pixelated-components/src/components/foundation/smartfetch', () => ({ smartFetch }));
 vi.mock('../../../../packages/pixelated-components/src/components/admin/scraper/person.functions', () => ({
 	PERSON_FIELD_PATTERNS: {
 		emails: [/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g],
@@ -90,12 +93,13 @@ describe('domain scraper action branches', () => {
 		page.$.mockResolvedValue(null);
 		page.waitForNavigation.mockResolvedValue(undefined);
 		page.waitForNetworkIdle.mockResolvedValue(undefined);
+		page.cookies.mockResolvedValue([]);
 		config.current = {
 			integrations: {
 				domainScraper: {
 					sites: {
 						example: {
-							startUrl: 'https://example.com/start',
+							startUrls: ['https://example.com/start'],
 							detailUrlPattern: '^/detail/',
 							detailPersonIdentifier: '.person-card'
 						}
@@ -123,7 +127,7 @@ describe('domain scraper action branches', () => {
 		form.set('maxDepth', '1');
 		const result = await scrapeDomain(form);
 		expect(result.pagesCrawled).toBe(2);
-		expect(result.records).toEqual([{ name: 'Jane Doe', email: 'jane@example.com', sourceUrl: ['https://example.com/detail/jane'], person: { fullName: ['Jane Doe'], firstName: 'Jane', lastName: 'Doe', emails: ['jane@example.com'] } }]);
+		expect(result.records).toEqual([{ fullName: ['Jane Doe'], firstName: 'Jane', lastName: 'Doe', emails: ['jane@example.com'], sourceUrl: ['https://example.com/detail/jane'] }]);
 		expect(extractState.checkpoint.detailUrls).toEqual([]);
 		expect(extractState.checkpoint.extractedDetailUrls).toEqual(['https://example.com/detail/jane']);
 		expect(result.logs.some((log) => log.includes('PROGRESS:') && log.includes('started=') && log.includes('elapsed='))).toBe(true);
@@ -133,7 +137,7 @@ describe('domain scraper action branches', () => {
 
 	it('uses Kendo page requests and resumes the unfinished menu page', async () => {
 		config.current.integrations.domainScraper.sites.example = {
-			startUrl: 'https://example.com/start',
+			startUrls: ['https://example.com/start'],
 			discoveryType: 'menu',
 			menuPaginationType: 'kendo',
 			detailUrlPattern: '^/Member/',
@@ -158,12 +162,7 @@ describe('domain scraper action branches', () => {
 			phase: 'discovery',
 			updatedAt: '2026-11-06T14:32:10.000Z'
 		};
-		page.evaluate.mockImplementation(async (source: unknown, argument?: unknown) => {
-			if (typeof source === 'function' && argument && typeof argument === 'object' && 'page' in argument) {
-				return { totalPages: 2, members: [{ assnId: '1', memberId: '2' }] };
-			}
-			return [{ email: 'jane@example.com', fields: { fullName: 'Jane Doe', emails: ['jane@example.com'] } }];
-		});
+		page.evaluate.mockResolvedValue([{ email: 'jane@example.com', fields: { fullName: 'Jane Doe', emails: ['jane@example.com'] } }]);
 		const { scrapeDomain } = await import('../../../../packages/pixelated-components/src/components/admin/scraper/domain-scraper.server');
 		const form = new FormData();
 		form.set('url', 'https://example.com/start');
@@ -172,7 +171,10 @@ describe('domain scraper action branches', () => {
 		const result = await scrapeDomain(form);
 
 		expect(result.records).toHaveLength(1);
-		expect(page.evaluate).toHaveBeenCalledWith(expect.any(Function), { page: 2, pageSize: 10 });
+		expect(smartFetch).toHaveBeenCalledWith('https://example.com/Member/SearchData', expect.objectContaining({
+			responseType: 'json',
+			requestInit: expect.objectContaining({ method: 'POST', body: JSON.stringify({ g_search: '', search_letter: '', search_all: '0', page: 2, pageSize: 10 }) })
+		}));
 		expect(extractState.checkpoint.menuPagination).toMatchObject({ type: 'kendo', page: 2, totalPages: 2, status: 'fetched' });
 		expect(page.goto).toHaveBeenCalledTimes(0);
 	});
@@ -227,7 +229,7 @@ describe('domain scraper action branches', () => {
 		form.set('maxDepth', '1');
 		const result = await scrapeDomain(form);
 
-		expect(result.records[0]?.person?.category).toEqual(['Service Area', 'Personal Email', 'Social Profile']);
+		expect(result.records[0]?.category).toEqual(['Service Area', 'Personal Email', 'Social Profile']);
 	});
 
 	it('excludes authentication exit links during discovery', async () => {
@@ -264,11 +266,10 @@ describe('domain scraper action branches', () => {
 		form.set('maxPages', '2');
 		const result = await scrapeDomain(form);
 		expect(result.records).toHaveLength(1);
-		expect(result.records[0]).toMatchObject({ name: 'Jane Doe | Alex Smith', email: 'jane@example.com', sourceUrl: ['https://example.com/detail/jane'] });
-		expect(result.records[0].person?.fullName).toEqual(['Jane Doe', 'Alex Smith']);
-		expect(result.records[0].person?.firstName).toBe('Jane');
-		expect(result.records[0].person?.lastName).toBe('Doe');
-		expect(result.records[0].person?.address).toEqual(['2 Main Street, Denver, CO 80203', '4 Side Street, Denver, CO 80204']);
+		expect(result.records[0]).toMatchObject({ fullName: ['Jane Doe', 'Alex Smith'], sourceUrl: ['https://example.com/detail/jane'] });
+		expect(result.records[0].firstName).toBe('Jane');
+		expect(result.records[0].lastName).toBe('Doe');
+		expect(result.records[0].address).toEqual(['2 Main Street, Denver, CO 80203', '4 Side Street, Denver, CO 80204']);
 	});
 
 	it('extracts the configured detail selector', async () => {
@@ -286,7 +287,7 @@ describe('domain scraper action branches', () => {
 		form.set('url', 'https://example.com/start');
 		form.set('maxPages', '2');
 		const result = await scrapeDomain(form);
-		expect(result.records).toEqual([{ name: 'Jane Selector', email: 'jane.selector@example.com', sourceUrl: ['https://example.com/detail/jane'], person: { fullName: ['Jane Selector'], firstName: 'Jane', lastName: 'Selector', emails: ['jane.selector@example.com'], phone: ['555-0100'] } }]);
+		expect(result.records).toEqual([{ fullName: ['Jane Selector'], firstName: 'Jane', lastName: 'Selector', emails: ['jane.selector@example.com'], phone: ['555-0100'], sourceUrl: ['https://example.com/detail/jane'] }]);
 	});
 
 	it('parses names and member IDs before writing an extracted record', async () => {
@@ -298,7 +299,7 @@ describe('domain scraper action branches', () => {
 			.mockResolvedValueOnce([{ email: 'mary@example.com', fields: { fullName: 'Mary Anne Smith-Jones', emails: ['mary@example.com'] } }])
 			.mockResolvedValueOnce([{ fields: { fullName: 'Cher', emails: ['cher@example.com'] } }]);
 		config.current.integrations.domainScraper.sites.example = {
-			startUrl: 'https://example.com/start',
+			startUrls: ['https://example.com/start'],
 			detailUrlPattern: '^/Member/',
 			detailPersonIdentifier: '.person-card'
 		};
@@ -309,8 +310,8 @@ describe('domain scraper action branches', () => {
 		const result = await scrapeDomain(form);
 
 		expect(result.records).toEqual([
-			{ name: 'Cher', email: 'cher@example.com', sourceUrl: ['https://example.com/Member/46134~10593708'], person: { id: '10593708', fullName: ['Cher'], firstName: 'Cher', emails: ['cher@example.com'] } },
-			{ name: 'Mary Anne Smith-Jones', email: 'mary@example.com', sourceUrl: ['https://example.com/Member/46134~10593707'], person: { id: '10593707', fullName: ['Mary Anne Smith-Jones'], firstName: 'Mary Anne', lastName: 'Smith-Jones', emails: ['mary@example.com'] } }
+			{ id: '10593708', fullName: ['Cher'], firstName: 'Cher', emails: ['cher@example.com'], sourceUrl: ['https://example.com/Member/46134~10593708'] },
+			{ id: '10593707', fullName: ['Mary Anne Smith-Jones'], firstName: 'Mary Anne', lastName: 'Smith-Jones', emails: ['mary@example.com'], sourceUrl: ['https://example.com/Member/46134~10593707'] }
 		]);
 	});
 
@@ -357,7 +358,7 @@ describe('domain scraper action branches', () => {
 				domainScraper: {
 					sites: {
 						charterOne: {
-							startUrl: 'https://example.com/start',
+							startUrls: ['https://example.com/start'],
 							detailUrlPattern: '^/detail/',
 							detailPersonIdentifier: '.person-card',
 							maxPages: 1,
@@ -383,7 +384,7 @@ describe('domain scraper action branches', () => {
 				domainScraper: {
 					sites: {
 						privateDirectory: {
-							startUrl: 'https://example.com/start',
+							startUrls: ['https://example.com/start'],
 							detailUrlPattern: '^/detail/',
 							detailPersonIdentifier: '.person-card',
 							login: {
@@ -415,7 +416,7 @@ describe('domain scraper action branches', () => {
 				domainScraper: {
 					sites: {
 						privateDirectory: {
-							startUrl: 'https://example.com/start',
+							startUrls: ['https://example.com/start'],
 							detailUrlPattern: '^/detail/',
 							detailPersonIdentifier: '.person-card',
 							login: {
@@ -456,7 +457,7 @@ describe('domain scraper action branches', () => {
 				domainScraper: {
 					sites: {
 						privateDirectory: {
-							startUrl: 'https://example.com/start',
+							startUrls: ['https://example.com/start'],
 							detailUrlPattern: '^/detail/',
 							detailPersonIdentifier: '.person-card',
 							login: {

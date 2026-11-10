@@ -69,7 +69,12 @@ describe('publishSocialPost', () => {
 			postUrl: undefined,
 			baseURL: 'https://public-api.example.com',
 		});
-		expect(launchPuppeteerBrowser).toHaveBeenCalledWith({ headless: true, executablePath: '/browser/chrome', timeout: 120000 });
+		expect(launchPuppeteerBrowser).toHaveBeenCalledWith({
+			headless: true,
+			executablePath: '/browser/chrome',
+			defaultViewport: { width: 1050, height: 853 },
+			timeout: 120000,
+		});
 		expect(publishToNextdoor).toHaveBeenCalledWith({
 			page: { id: 'page' },
 			username: 'nextdoor-user',

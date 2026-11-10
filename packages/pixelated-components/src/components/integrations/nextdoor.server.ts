@@ -92,32 +92,94 @@ async function selectBusinessPage(page: Page, businessPageUrl: string): Promise<
 	const slug = businessPageUrlObject.pathname.split('/').filter(Boolean).pop();
 	if (!slug) throw new Error('Nextdoor business page URL does not contain a page name.');
 	const pageName = decodeURIComponent(slug).replace(/[-_]+/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
-	const avatarPoint = await page.evaluate(() => {
-		const candidates = Array.from(document.querySelectorAll<HTMLElement>('img, [role="img"]'))
-			.filter((candidate) => {
-				const bounds = candidate.getBoundingClientRect();
+	const expectedPath = businessPageUrlObject.pathname.replace(/\/+$/, '') || '/';
+	const clickAvatar = async (): Promise<void> => {
+		const avatarPoint = await page.evaluate(() => {
+			const candidates = Array.from(document.querySelectorAll<HTMLElement>('img, [role="img"]'))
+				.filter((candidate) => {
+					const bounds = candidate.getBoundingClientRect();
+					const style = window.getComputedStyle(candidate);
+					return style.display !== 'none'
+						&& style.visibility !== 'hidden'
+						&& bounds.width > 0
+						&& bounds.height > 0
+						&& bounds.y < 60
+						&& bounds.x > window.innerWidth * 0.75;
+				})
+				.sort((left, right) => right.getBoundingClientRect().x - left.getBoundingClientRect().x);
+			const avatar = candidates[0];
+			if (!avatar) return null;
+			const bounds = avatar.getBoundingClientRect();
+			return { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 };
+		});
+		if (!avatarPoint) throw new Error('Nextdoor account avatar was not found.');
+		await page.mouse.click(avatarPoint.x, avatarPoint.y);
+		await settlePage(page, 1000);
+	};
+	const getMenuAction = async (): Promise<string> => {
+		await page.waitForFunction(() => Array.from(document.querySelectorAll<HTMLElement>('button, [role="button"], a[href]')).some((candidate) => {
+			const style = window.getComputedStyle(candidate);
+			const bounds = candidate.getBoundingClientRect();
+			const text = (candidate.innerText || candidate.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+			return style.display !== 'none'
+				&& style.visibility !== 'hidden'
+				&& bounds.width > 0
+				&& bounds.height > 0
+				&& (text === 'view page' || text === 'view profile');
+		}), { timeout: nextdoorTimeout });
+		return page.evaluate(() => {
+			const candidates = Array.from(document.querySelectorAll<HTMLElement>('button, [role="button"], a[href]'));
+			const action = candidates.find((candidate) => {
 				const style = window.getComputedStyle(candidate);
+				const bounds = candidate.getBoundingClientRect();
+				const text = (candidate.innerText || candidate.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
 				return style.display !== 'none'
 					&& style.visibility !== 'hidden'
 					&& bounds.width > 0
 					&& bounds.height > 0
-					&& bounds.y < 60
-					&& bounds.x > window.innerWidth * 0.75;
-			})
-			.sort((left, right) => right.getBoundingClientRect().x - left.getBoundingClientRect().x);
-		const avatar = candidates[0];
-		if (!avatar) return null;
-		const bounds = avatar.getBoundingClientRect();
-		return { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 };
-	});
-	if (!avatarPoint) throw new Error('Nextdoor account avatar was not found.');
-	await page.mouse.click(avatarPoint.x, avatarPoint.y);
-	await settlePage(page, 1000);
+					&& (text === 'view page' || text === 'view profile');
+			});
+			return (action?.innerText || action?.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+		});
+	};
+	const clickViewPage = async (): Promise<void> => {
+		let clicked = false;
+		try {
+			clicked = await page.evaluate((path) => {
+				const candidate = Array.from(document.querySelectorAll<HTMLElement>('button, [role="button"], a[href]')).find((link) => {
+					const style = window.getComputedStyle(link);
+					const bounds = link.getBoundingClientRect();
+					const text = (link.innerText || link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+					return style.display !== 'none'
+						&& style.visibility !== 'hidden'
+						&& bounds.width > 0
+						&& bounds.height > 0
+						&& text.includes('view page')
+						&& (!link.hasAttribute('href') || new URL(link.getAttribute('href') || '', window.location.href).pathname === path);
+				});
+				if (!candidate) return false;
+				candidate.click();
+				return true;
+			}, expectedPath);
+		} catch (error) {
+			if (!(error instanceof Error) || !/execution context was destroyed|navigation/i.test(error.message)) throw error;
+			clicked = true;
+		}
+		if (!clicked) throw new Error(`Nextdoor View Page control was not found: ${expectedPath}`);
+		await page.waitForFunction((path) => window.location.pathname === path, { timeout: nextdoorTimeout }, expectedPath);
+	};
 
-	await page.waitForSelector('a[href*="/page-admin/home/"]', { visible: true });
+	await clickAvatar();
+	const menuAction = await getMenuAction();
+	if (menuAction === 'view page') {
+		await clickViewPage();
+		return;
+	}
+	if (menuAction !== 'view profile') throw new Error(`Nextdoor account menu state was not recognized: ${menuAction || 'unknown'}`);
+
 	await page.waitForFunction((expectedPageName) => {
 		const normalizedPageName = expectedPageName.replace(/\s+/g, ' ').trim().toLowerCase();
-		const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="/page-admin/home/"]');
+		const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="/page-admin/home/"][href*="profile_id="]');
 		for (const candidate of links) {
 			const style = window.getComputedStyle(candidate);
 			const bounds = candidate.getBoundingClientRect();
@@ -133,7 +195,7 @@ async function selectBusinessPage(page: Page, businessPageUrl: string): Promise<
 	try {
 		selected = await page.evaluate((expectedPageName) => {
 			const normalizedPageName = expectedPageName.replace(/\s+/g, ' ').trim().toLowerCase();
-			const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="/page-admin/home/"]');
+			const links = document.querySelectorAll<HTMLAnchorElement>('a[href*="/page-admin/home/"][href*="profile_id="]');
 			for (const candidate of links) {
 				const style = window.getComputedStyle(candidate);
 				const bounds = candidate.getBoundingClientRect();
@@ -154,54 +216,31 @@ async function selectBusinessPage(page: Page, businessPageUrl: string): Promise<
 	}
 	if (!selected) throw new Error(`Nextdoor business page was not found in the account menu: ${pageName}`);
 
-	const expectedPath = businessPageUrlObject.pathname.endsWith('/')
-		? businessPageUrlObject.pathname
-		: `${businessPageUrlObject.pathname}/`;
-	await page.waitForFunction((path) => Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href]')).some((candidate) => {
-		const style = window.getComputedStyle(candidate);
-		const bounds = candidate.getBoundingClientRect();
-		return style.display !== 'none'
-			&& style.visibility !== 'hidden'
-			&& bounds.width > 0
-			&& bounds.height > 0
-			&& new URL(candidate.href, window.location.href).pathname === path;
-	}), { timeout: nextdoorTimeout }, expectedPath);
-	let opened = false;
-	try {
-		opened = await page.evaluate((path) => {
-			const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href]'));
-			const candidate = links.find((link) => {
-				const style = window.getComputedStyle(link);
-				const bounds = link.getBoundingClientRect();
-				return style.display !== 'none'
-					&& style.visibility !== 'hidden'
-					&& bounds.width > 0
-					&& bounds.height > 0
-					&& new URL(link.href, window.location.href).pathname === path;
-			});
-			if (!candidate) return false;
-			candidate.click();
-			return true;
-		}, expectedPath);
-	} catch (error) {
-		if (!(error instanceof Error) || !/execution context was destroyed|navigation/i.test(error.message)) throw error;
-		opened = true;
-	}
-	if (!opened) throw new Error(`Nextdoor public business page was not found: ${expectedPath}`);
-	await page.waitForFunction((path) => window.location.pathname === path, { timeout: nextdoorTimeout }, expectedPath);
+	await page.waitForFunction(() => window.location.pathname.includes('/page-admin/home/'), { timeout: nextdoorTimeout });
+	await settlePage(page, 1000);
+	await clickAvatar();
+	if (await getMenuAction() !== 'view page') throw new Error('Nextdoor business profile did not expose a View Page control.');
+	await clickViewPage();
 }
 
 async function clickPostControl(page: Page, startedAt: number): Promise<void> {
 	await debugPageState(page, 'before-page-post-wait', startedAt);
 	try {
-		await page.waitForSelector(postControlSelector, { visible: true });
+		await page.waitForFunction(() => {
+			const selectors = ['#navigation button', 'button[data-integration-id="post"][data-part="tapArea"]'];
+			return selectors.some((selector) => Array.from(document.querySelectorAll<HTMLElement>(selector)).some((candidate) => {
+				const style = window.getComputedStyle(candidate);
+				const bounds = candidate.getBoundingClientRect();
+				return style.display !== 'none' && style.visibility !== 'hidden' && bounds.width > 0 && bounds.height > 0;
+			}));
+		}, { timeout: nextdoorTimeout });
 	} catch (error) {
 		await debugPageState(page, 'page-post-wait-failed', startedAt);
 		await debugScreenshot(page, 'page-post-wait-failed');
 		throw error;
 	}
 	const clicked = await page.evaluate(() => {
-		const controls = Array.from(document.querySelectorAll<HTMLElement>('button[data-integration-id="post"][data-part="tapArea"]'));
+		const controls = Array.from(document.querySelectorAll<HTMLElement>('#navigation button, button[data-integration-id="post"][data-part="tapArea"]'));
 		const control = controls.find((candidate) => {
 			const style = window.getComputedStyle(candidate);
 			const bounds = candidate.getBoundingClientRect();

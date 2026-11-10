@@ -127,6 +127,12 @@ export function Component(props: ComponentType) { ... }
 - Place CSS files alongside components: `component-name.css`
 - Use index files for clean imports
 
+### Re-export Rule
+- Re-exports are prohibited throughout the repository.
+- The only permitted re-exports are the established Pixelated Components entry points: the package root `packages/pixelated-components/src/index.js` and the `index.*` entry-point files for component subfolders under `packages/pixelated-components/src/components`.
+- Those entry points may re-export only the modules owned by their corresponding Pixelated Components folder.
+- Do not add barrel files, forwarding modules, compatibility re-exports, aliases, or any other re-export outside that structure. There are no other exceptions.
+
 ### File Naming and Usage
 - `*.components.tsx`: front-end UI components
 - `*.functions.ts`: shared helper functions usable by both front-end and server

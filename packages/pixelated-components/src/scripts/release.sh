@@ -56,6 +56,18 @@ check_plaintext_configs_not_tracked() {
         exit 1
     fi
 }
+
+run_secret_scan() {
+    local mode="${1:-tracked}"
+    echo ""
+    echo "--- Secret Scan ($mode files) ---"
+    if node "$MONOREPO_ROOT/packages/pixelated-components/src/scripts/secret-scanning.js" "--$mode" --quiet; then
+        echo "✅ Secret Scan ($mode files)"
+    else
+        echo "❌ Secret Scan ($mode files)"
+        return 1
+    fi
+}
 #!/bin/bash
 
 # Universal Release Script for Pixelated Projects
@@ -482,7 +494,9 @@ step_commit_changes() {
     echo "================================================="
     COMMIT_MESSAGE=$(prompt_commit_message)
     check_plaintext_configs_not_tracked
+    run_secret_scan tracked
     git add . -v
+    run_secret_scan staged
     if git diff --cached --quiet; then
         echo "ℹ️  No changes to commit"
     else
@@ -686,6 +700,8 @@ run_full_workflow() {
 
     echo "📦 Context: $PROJECT_NAME ($CONTEXT_TYPE)"
     echo ""
+
+    run_secret_scan tracked
     
     # Run full workflow steps
     step_check_dev_branch

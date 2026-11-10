@@ -5,6 +5,7 @@ import ts from 'typescript';
 import { spawn, spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { patchConfigLastModified } from './update-sitemap-lastmodified.js';
+import { formatFindings, scanGitFiles } from './secret-scanning.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,6 +74,18 @@ function getTrackedPlaintextConfigs(monorepoRoot) {
 		throw new Error(result.stderr || 'Unable to inspect tracked configuration files');
 	}
 	return result.stdout ? result.stdout.split('\n').filter(Boolean) : [];
+}
+
+async function runSecretScanStep(monorepoRoot, mode = 'tracked') {
+	console.log(`\n--- Secret Scan (${mode} files) ---`);
+	const findings = await scanGitFiles(monorepoRoot, mode);
+	if (findings.length === 0) {
+		console.log('');
+		return { status: 'success', label: `Secret Scan (${mode} files)` };
+	}
+	console.error(formatFindings(findings));
+	console.log('');
+	return { status: 'failed', label: `Secret Scan (${mode} files)` };
 }
 
 async function findWorkspaceRoot(startDir, monorepoRoot) {
@@ -255,15 +268,16 @@ function commandLabel(command, args) {
 }
 
 async function runInternalStep(workspaceDir, label, callback) {
-	console.log(`\n--- ${label} (${path.basename(workspaceDir)}) ---`);
+	console.log(`--- ${label} (${path.basename(workspaceDir)}) ---`);
 	const result = await callback();
 	if (result.status === 'failed' && result.detail) console.error(result.detail);
 	if (result.status === 'success' && result.label !== label) console.log(result.label);
+	console.log('');
 	return result;
 }
 
 function runExternalStep(workspaceDir, label, command, args) {
-	console.log(`\n--- ${label} (${path.basename(workspaceDir)}) ---`);
+	console.log(`--- ${label} (${path.basename(workspaceDir)}) ---`);
 	console.log(commandLabel(command, args));
 	const result = runCommand(command, args, { cwd: workspaceDir });
 	if (isVerbose) {
@@ -271,11 +285,13 @@ function runExternalStep(workspaceDir, label, command, args) {
 		if (result.stderr) console.error(result.stderr);
 	}
 	if (result.status === 0) {
+		console.log('');
 		return { status: 'success', label };
 	}
 
 	const detail = result.stderr || result.stdout || 'Unknown error';
 	console.error(detail);
+	console.log('');
 	return { status: 'failed', label, detail };
 }
 
@@ -329,10 +345,11 @@ async function runGenerateImagesStep(workspaceDir, pkgJson) {
 	return { status: 'skipped', label: 'Generate Images' };
 }
 
-async function runWorkspacePipeline(workspaceDir) {
+async function runWorkspacePipeline(workspaceDir, monorepoRoot) {
 	const pkgJson = await readPackageJson(workspaceDir);
 	const workspaceName = pkgJson.name || path.basename(workspaceDir);
 	const steps = {
+		secretScan: { label: 'Secret Scan (tracked files)', status: 'skipped' },
 		json: { label: 'JSON Validation', status: 'skipped' },
 		update: { label: 'Update', status: 'skipped' },
 		patchConfig: { label: 'Patch Config lastModified', status: 'skipped' },
@@ -342,6 +359,14 @@ async function runWorkspacePipeline(workspaceDir) {
 		routes: { label: 'Route Smoke', status: 'skipped' },
 		images: { label: 'Generate Images', status: 'skipped' },
 	};
+
+	steps.secretScan = await runSecretScanStep(monorepoRoot);
+	if (steps.secretScan.status === 'failed') {
+		for (const stepName of ['json', 'update', 'patchConfig', 'lint', 'test', 'build', 'routes', 'images']) {
+			steps[stepName] = { status: 'skipped', label: steps[stepName].label, detail: 'Skipped because secret scan failed' };
+		}
+		return { name: workspaceName, dir: workspaceDir, steps };
+	}
 
 	steps.json = await runInternalStep(workspaceDir, 'JSON Validation', () => runJsonValidationStep(workspaceDir));
 	if (steps.json.status === 'failed') {
@@ -416,11 +441,10 @@ async function run() {
 	for (const workspaceDir of workspaceDirs) {
 		const pkgJson = await readPackageJson(workspaceDir);
 		printWorkspaceHeader(pkgJson.name || path.basename(workspaceDir));
-		const result = await runWorkspacePipeline(workspaceDir);
+		const result = await runWorkspacePipeline(workspaceDir, monorepoRoot);
 		workspaceResults.push(result);
 		printWorkspaceSummary(result);
 	}
-
 	console.log('\n=================================================');
 	console.log('📊 Release-prep summary');
 	console.log('=================================================');

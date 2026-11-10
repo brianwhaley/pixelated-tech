@@ -62,6 +62,7 @@ export function getBaseESLintConfig(__dirname) {
 				"no-unused-vars": "off",
 				"@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
 				...pixelatedPlugin.configs.recommended.rules,
+				"pixelated/no-secret-literals": "error",
 				"pixelated/prop-types-inferprops": "warn",
 				"pixelated/required-faq": "off",
 			},
