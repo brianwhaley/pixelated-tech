@@ -67,6 +67,7 @@ export interface NextdoorPublishInput {
 	page: Page;
 	username: string;
 	password: string;
+	authenticated?: boolean;
 	businessPageUrl: string;
 	title: string;
 	excerpt: string;
@@ -220,26 +221,32 @@ export async function publishToNextdoor(input: NextdoorPublishInput): Promise<vo
 	const startedAt = Date.now();
 	input.page.setDefaultNavigationTimeout(nextdoorTimeout);
 	input.page.setDefaultTimeout(nextdoorTimeout);
-	await input.page.goto('https://nextdoor.com/login/', { waitUntil: 'domcontentloaded' });
-	await debugPageState(input.page, 'login-loaded', startedAt);
-	await fillFirst(input.page, [
-		'input[placeholder*="email" i]',
-		'input[aria-label*="email" i]',
-		'input[name="email"]',
-		'input[name="username"]',
-		'input[type="email"]',
-		'input[type="text"]',
-	], input.username);
-	await fillFirst(input.page, [
-		'input[placeholder*="password" i]',
-		'input[aria-label*="password" i]',
-		'input[name="password"]',
-		'input[type="password"]',
-	], input.password);
-	await input.page.click('button[type="submit"]');
-	await input.page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => undefined);
-	await settlePage(input.page, 3000);
-	await debugPageState(input.page, 'login-complete', startedAt);
+	if (input.authenticated) {
+		await input.page.goto('https://nextdoor.com/', { waitUntil: 'domcontentloaded' });
+		await settlePage(input.page, 3000);
+		await debugPageState(input.page, 'authenticated-session-loaded', startedAt);
+	} else {
+		await input.page.goto('https://nextdoor.com/login/', { waitUntil: 'domcontentloaded' });
+		await debugPageState(input.page, 'login-loaded', startedAt);
+		await fillFirst(input.page, [
+			'input[placeholder*="email" i]',
+			'input[aria-label*="email" i]',
+			'input[name="email"]',
+			'input[name="username"]',
+			'input[type="email"]',
+			'input[type="text"]',
+		], input.username);
+		await fillFirst(input.page, [
+			'input[placeholder*="password" i]',
+			'input[aria-label*="password" i]',
+			'input[name="password"]',
+			'input[type="password"]',
+		], input.password);
+		await input.page.click('button[type="submit"]');
+		await input.page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => undefined);
+		await settlePage(input.page, 3000);
+		await debugPageState(input.page, 'login-complete', startedAt);
+	}
 	await selectBusinessPage(input.page, input.businessPageUrl);
 	await debugPageState(input.page, 'public-page-selected', startedAt);
 

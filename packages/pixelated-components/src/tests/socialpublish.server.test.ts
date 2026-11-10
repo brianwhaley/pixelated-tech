@@ -88,6 +88,23 @@ describe('publishSocialPost', () => {
 		expect(getWordPressPost).toHaveBeenCalledWith(expect.objectContaining({ postId: undefined, postUrl: post.URL }));
 	});
 
+	it('loads an authenticated Nextdoor session without requiring credentials', async () => {
+		getFullPixelatedConfig.mockReturnValue({
+			...config,
+			integrations: {
+				...config.integrations,
+				socialPublish: { nextdoor: { sites: { example: { businessPageUrl: 'https://nextdoor.com/page/example' } } } },
+			},
+		});
+		const cookies = [{ name: 'session', value: 'cookie', domain: '.nextdoor.com', path: '/' }];
+		const page = { id: 'page', setCookie: vi.fn() };
+		openPuppeteerPage.mockResolvedValue(page);
+
+		await expect(publishSocialPost({ site: 'example', postId: '42', nextdoorSession: { cookies } })).resolves.toBeDefined();
+		expect(page.setCookie).toHaveBeenCalledWith(...cookies);
+		expect(publishToNextdoor).toHaveBeenCalledWith(expect.objectContaining({ authenticated: true }));
+	});
+
 	it('rejects missing WordPress configuration before fetching the post', async () => {
 		getFullPixelatedConfig.mockReturnValue({ integrations: {} });
 

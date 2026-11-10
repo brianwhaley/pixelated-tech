@@ -5,6 +5,7 @@ import { sendSmtpEmail } from '../../integrations/smtp.integration';
 import { publishToNextdoor } from '../../integrations/nextdoor.server';
 import { closePuppeteerBrowser, launchPuppeteerBrowser, openPuppeteerPage } from '../../integrations/puppeteer.server';
 import { getWordPressPost } from '../../integrations/wordpress.server';
+import type { CookieParam } from 'puppeteer';
 
 export type SocialPublishDestination = 'nextdoor';
 
@@ -13,6 +14,7 @@ export interface SocialPublishRequest {
 	postId?: string;
 	postUrl?: string;
 	destinations?: SocialPublishDestination[];
+	nextdoorSession?: { cookies: CookieParam[] };
 }
 
 export interface SocialPublishResult {
@@ -42,7 +44,7 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 	try {
 		for (const destination of destinations) {
 			if (destination !== 'nextdoor') throw new Error(`Unsupported social destination: ${destination}`);
-			if (!siteConfig?.username || !siteConfig.password) {
+			if (!request.nextdoorSession && (!siteConfig?.username || !siteConfig.password)) {
 				throw new Error(`Nextdoor credentials are not configured for site: ${request.site}`);
 			}
 			if (!siteConfig.businessPageUrl) {
@@ -54,15 +56,17 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 			});
 			try {
 				const page = await openPuppeteerPage(browser);
-				await publishToNextdoor({
+				if (request.nextdoorSession?.cookies.length) await page.setCookie(...request.nextdoorSession.cookies);
+				const publishInput = {
 					page,
-					username: siteConfig.username,
-					password: siteConfig.password,
+					username: siteConfig?.username || '',
+					password: siteConfig?.password || '',
 					businessPageUrl: siteConfig.businessPageUrl,
 					title: post.title,
 					excerpt: post.excerpt,
 					url: post.URL,
-				});
+				};
+				await publishToNextdoor(request.nextdoorSession ? { ...publishInput, authenticated: true } : publishInput);
 			} finally {
 				await closePuppeteerBrowser(browser);
 			}

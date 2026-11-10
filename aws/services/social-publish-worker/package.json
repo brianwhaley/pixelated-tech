@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@pixelated-tech/components": "file:../../../packages/pixelated-components",
+    "@aws-sdk/client-secrets-manager": "^3.946.0",
     "esbuild": "^0.28.1",
     "puppeteer": "^25.16.0"
   }

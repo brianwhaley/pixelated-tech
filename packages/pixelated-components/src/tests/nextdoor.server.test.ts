@@ -13,6 +13,7 @@ type MockPage = {
 	setDefaultNavigationTimeout: ReturnType<typeof vi.fn>;
 	setDefaultTimeout: ReturnType<typeof vi.fn>;
 	keyboard: { type: ReturnType<typeof vi.fn> };
+	setCookie: ReturnType<typeof vi.fn>;
 };
 
 function createPage(overrides: Partial<MockPage> = {}): MockPage {
@@ -40,6 +41,7 @@ function createPage(overrides: Partial<MockPage> = {}): MockPage {
 		setDefaultNavigationTimeout: vi.fn(),
 		setDefaultTimeout: vi.fn(),
 		keyboard: { type: vi.fn() },
+		setCookie: vi.fn(),
 		...overrides,
 	};
 	return page;
@@ -115,6 +117,15 @@ describe('publishToNextdoor', () => {
 
 		await expect(publishToNextdoor(input(page))).resolves.toBeUndefined();
 		expect(page.waitForFunction).toHaveBeenCalledTimes(5);
+	});
+
+	it('uses an authenticated session without opening the login form', async () => {
+		addRenderedPostControls();
+		const page = createPage();
+
+		await expect(publishToNextdoor({ ...input(page), authenticated: true })).resolves.toBeUndefined();
+		expect(page.goto).toHaveBeenNthCalledWith(1, 'https://nextdoor.com/', { waitUntil: 'domcontentloaded' });
+		expect(page.$).not.toHaveBeenCalledWith(expect.stringContaining('email'));
 	});
 
 	it('throws when no login field matches the configured selectors', async () => {
