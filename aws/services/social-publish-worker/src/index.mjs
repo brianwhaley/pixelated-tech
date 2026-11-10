@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 const imageEncryptedConfigPath = "/var/task/src/app/config/pixelated.config.json.enc";
 const runtimeEncryptedConfigPath = "/tmp/pixelated.config.json.enc";
 const runtimeConfigPath = "/tmp/pixelated.config.json";
-const configVaultPath = "/var/task/node_modules/@pixelated-tech/components/dist/scripts/config-vault.js";
+const configVaultPath = "/var/task/config-vault.mjs";
 
 function prepareRuntimeConfig() {
 	if (!fs.existsSync(imageEncryptedConfigPath)) return;
