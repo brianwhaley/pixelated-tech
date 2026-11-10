@@ -14,7 +14,9 @@ async function getNextdoorSession(site) {
 	const secretId = `${nextdoorSessionSecretPrefix}/${encodeURIComponent(site)}`;
 	let result;
 	try {
-		result = await secretsManager.send(new GetSecretValueCommand({ SecretId: secretId }));
+		result = await secretsManager.send(new GetSecretValueCommand({ SecretId: secretId }), {
+			abortSignal: AbortSignal.timeout(20000),
+		});
 	} catch (error) {
 		if (error?.name === "ResourceNotFoundException") return null;
 		throw error;
