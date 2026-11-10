@@ -6,6 +6,8 @@ COPY packages/pixelated-components/dist /workspace/packages/pixelated-components
 WORKDIR /workspace/aws/services/social-publish-worker
 RUN npm install --omit=dev --install-links
 RUN cp -R node_modules ${LAMBDA_TASK_ROOT}/node_modules
+RUN npx esbuild ${LAMBDA_TASK_ROOT}/node_modules/@pixelated-tech/components/dist/scripts/config-vault.js --bundle --platform=node --format=esm --outfile=/tmp/config-vault.js \
+	&& mv /tmp/config-vault.js ${LAMBDA_TASK_ROOT}/node_modules/@pixelated-tech/components/dist/scripts/config-vault.js
 WORKDIR ${LAMBDA_TASK_ROOT}
 COPY aws/services/social-publish-worker/package.json ${LAMBDA_TASK_ROOT}/package.json
 
