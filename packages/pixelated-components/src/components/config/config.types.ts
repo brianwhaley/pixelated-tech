@@ -330,6 +330,22 @@ export interface NextdoorSiteConfig {
 	username: string;
 	password: string;
 	businessPageUrl: string;
+	nextdoorSession?: {
+		cookies: Array<{
+			name: string;
+			value: string;
+			domain?: string;
+			path?: string;
+			expires?: number;
+			httpOnly?: boolean;
+			secure?: boolean;
+			session?: boolean;
+			sameSite?: 'Strict' | 'Lax' | 'None';
+			priority?: 'Low' | 'Medium' | 'High';
+			sourceScheme?: 'Unset' | 'NonSecure' | 'Secure';
+			size?: number;
+		}>;
+	};
 }
 
 export interface PaypalConfig {

@@ -1,38 +1,11 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import { randomUUID } from "node:crypto";
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 
 const imageEncryptedConfigPath = "/var/task/src/app/config/pixelated.config.json.enc";
 const runtimeEncryptedConfigPath = "/tmp/pixelated.config.json.enc";
 const runtimeConfigPath = "/tmp/pixelated.config.json";
 const configVaultPath = "/var/task/config-vault.mjs";
-const nextdoorSessionSecretPrefix = "social-publish/nextdoor-session";
-const secretsManager = new SecretsManagerClient({});
-
-async function getNextdoorSession(site) {
-	const secretId = `${nextdoorSessionSecretPrefix}/${encodeURIComponent(site)}`;
-	let result;
-	try {
-		result = await secretsManager.send(new GetSecretValueCommand({ SecretId: secretId }), {
-			abortSignal: AbortSignal.timeout(20000),
-		});
-	} catch (error) {
-		if (error?.name === "ResourceNotFoundException") return null;
-		throw error;
-	}
-	if (!result.SecretString) throw new Error("Nextdoor session secret is empty.");
-	let session;
-	try {
-		session = JSON.parse(result.SecretString);
-	} catch {
-		throw new Error("Nextdoor session secret is not valid JSON.");
-	}
-	if (!Array.isArray(session?.cookies) || session.cookies.length === 0) {
-		throw new Error("Nextdoor session secret does not contain cookies.");
-	}
-	return { cookies: session.cookies };
-}
 
 function prepareRuntimeConfig() {
 	if (!fs.existsSync(imageEncryptedConfigPath)) return;
@@ -98,7 +71,7 @@ export const handler = async (event) => {
 	});
 	try {
 		logDebug(requestId, "nextdoor-session-loading", { site });
-		const nextdoorSession = await getNextdoorSession(site);
+		const nextdoorSession = getFullPixelatedConfig().integrations?.socialPublish?.nextdoor?.sites?.[site]?.nextdoorSession || null;
 		logDebug(requestId, "nextdoor-session-loaded", { site, session_present: Boolean(nextdoorSession) });
 		logDebug(requestId, "social-publish-browser-starting", { site });
 		const result = await publishSocialPost({
@@ -120,5 +93,3 @@ export const handler = async (event) => {
 		throw error;
 	}
 };
-
-export { getNextdoorSession };
