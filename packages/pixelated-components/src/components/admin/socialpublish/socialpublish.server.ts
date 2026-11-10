@@ -47,7 +47,8 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 			if (!request.nextdoorSession && (!siteConfig?.username || !siteConfig.password)) {
 				throw new Error(`Nextdoor credentials are not configured for site: ${request.site}`);
 			}
-			if (!siteConfig.businessPageUrl) {
+			const businessPageUrl = siteConfig?.businessPageUrl;
+			if (!businessPageUrl) {
 				throw new Error(`Nextdoor Business Page URL is not configured for site: ${request.site}`);
 			}
 			const browser = await launchPuppeteerBrowser({
@@ -61,7 +62,7 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 					page,
 					username: siteConfig?.username || '',
 					password: siteConfig?.password || '',
-					businessPageUrl: siteConfig.businessPageUrl,
+					businessPageUrl,
 					title: post.title,
 					excerpt: post.excerpt,
 					url: post.URL,
