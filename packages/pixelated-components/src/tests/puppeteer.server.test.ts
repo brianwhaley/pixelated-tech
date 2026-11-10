@@ -21,11 +21,13 @@ describe('Puppeteer helpers', () => {
 			headless: true,
 			executablePath: undefined,
 			defaultViewport: { width: 1200, height: 772 },
+			timeout: undefined,
 		});
 		expect(launch).toHaveBeenNthCalledWith(2, {
 			headless: false,
 			executablePath: '/browser/chrome',
 			defaultViewport: { width: 1200, height: 772 },
+			timeout: undefined,
 		});
 	});
 

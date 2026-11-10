@@ -54,6 +54,7 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 			const browser = await launchPuppeteerBrowser({
 				headless: true,
 				executablePath: config.integrations?.puppeteer?.executable_path,
+				timeout: 120000,
 			});
 			try {
 				const page = await openPuppeteerPage(browser);

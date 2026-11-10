@@ -6,6 +6,7 @@ export type PuppeteerBrowserOptions = {
 	headless?: boolean;
 	executablePath?: string;
 	defaultViewport?: { width: number; height: number } | null;
+	timeout?: number;
 };
 
 export type PuppeteerPageOptions = {
@@ -19,6 +20,7 @@ export async function launchPuppeteerBrowser(options: PuppeteerBrowserOptions = 
 		headless: options.headless ?? true,
 		executablePath: options.executablePath,
 		defaultViewport: options.defaultViewport === undefined ? { width: 1200, height: 772 } : options.defaultViewport,
+		timeout: options.timeout,
 	});
 }
 
