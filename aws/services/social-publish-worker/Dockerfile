@@ -7,7 +7,7 @@ WORKDIR /workspace/aws/services/social-publish-worker
 RUN npm install --omit=dev --install-links
 RUN cp -R node_modules ${LAMBDA_TASK_ROOT}/node_modules
 ENV PUPPETEER_CACHE_DIR=${LAMBDA_TASK_ROOT}/.cache/puppeteer
-RUN dnf install -y unzip nspr nss atk at-spi2-atk cups-libs libdrm libXcomposite libXdamage libXext libXfixes libXrandr libxkbcommon mesa-libgbm pango alsa-lib && dnf clean all
+RUN dnf install -y unzip findutils nspr nss atk at-spi2-atk cups-libs libdrm libXcomposite libXdamage libXext libXfixes libXrandr libxkbcommon mesa-libgbm pango alsa-lib && dnf clean all
 RUN npx puppeteer browsers install chrome
 RUN chrome_binary=$(find "${PUPPETEER_CACHE_DIR}/chrome" -type f -path "*/chrome-linux64/chrome" -print -quit) \
 	&& mv "$chrome_binary" "$chrome_binary.real" \
