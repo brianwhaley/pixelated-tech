@@ -50,7 +50,7 @@ function prepareRuntimeConfig() {
 
 prepareRuntimeConfig();
 
-const debug = false;
+const debug = true;
 
 export const getWorkerPayload = (event) => {
 	if (!event || typeof event !== "object") return null;
@@ -88,21 +88,35 @@ export const handler = async (event) => {
 	}
 	if (!payload.postId && !payload.postUrl) throw new Error("Provide at least one of postId or postUrl.");
 
+	logDebug(requestId, "webhook-verified", { site });
 	logDebug(requestId, "social-publish-started", {
 		site,
 		post_id: payload.postId || "",
 		post_url: payload.postUrl || "",
 	});
-	const nextdoorSession = await getNextdoorSession(site);
-	const result = await publishSocialPost({
-		site,
-		postId: payload.postId,
-		postUrl: payload.postUrl,
-		destinations: payload.destinations,
-		nextdoorSession: nextdoorSession || undefined,
-	});
-	logDebug(requestId, "social-publish-succeeded", result);
-	return result;
+	try {
+		logDebug(requestId, "nextdoor-session-loading", { site });
+		const nextdoorSession = await getNextdoorSession(site);
+		logDebug(requestId, "nextdoor-session-loaded", { site, session_present: Boolean(nextdoorSession) });
+		logDebug(requestId, "social-publish-browser-starting", { site });
+		const result = await publishSocialPost({
+			site,
+			postId: payload.postId,
+			postUrl: payload.postUrl,
+			destinations: payload.destinations,
+			nextdoorSession: nextdoorSession || undefined,
+		});
+		logDebug(requestId, "social-publish-succeeded", result);
+		return result;
+	} catch (error) {
+		console.error("Social publish worker:", {
+			requestId,
+			stage: "social-publish-failed",
+			site,
+			error: error instanceof Error ? error.message : String(error),
+		});
+		throw error;
+	}
 };
 
 export { getNextdoorSession };
