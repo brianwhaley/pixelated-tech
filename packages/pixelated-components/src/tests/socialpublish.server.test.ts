@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const getFullPixelatedConfig = vi.hoisted(() => vi.fn());
-const sendSmtpEmail = vi.hoisted(() => vi.fn());
 const publishToNextdoor = vi.hoisted(() => vi.fn());
 const closePuppeteerBrowser = vi.hoisted(() => vi.fn());
 const launchPuppeteerBrowser = vi.hoisted(() => vi.fn());
@@ -9,7 +8,6 @@ const openPuppeteerPage = vi.hoisted(() => vi.fn());
 const getWordPressPost = vi.hoisted(() => vi.fn());
 
 vi.mock('../components/config/config', () => ({ getFullPixelatedConfig }));
-vi.mock('../components/integrations/smtp.integration', () => ({ sendSmtpEmail }));
 vi.mock('../components/integrations/nextdoor.server', () => ({ publishToNextdoor }));
 vi.mock('../components/integrations/puppeteer.server', () => ({
 	closePuppeteerBrowser,
@@ -24,7 +22,6 @@ const config = {
 	integrations: {
 		wordpress: { site: 'blog.example.com', baseURL: 'https://public-api.example.com' },
 		socialPublish: {
-		failureEmail: 'failures@example.com',
 		nextdoor: { sites: { example: { username: 'nextdoor-user', password: 'nextdoor-password', businessPageUrl: 'https://nextdoor.com/page/example' } } },
 		},
 		puppeteer: { executable_path: '/browser/chrome' },
@@ -46,7 +43,6 @@ function setSuccessfulDependencies() {
 	openPuppeteerPage.mockResolvedValue({ id: 'page' });
 	closePuppeteerBrowser.mockResolvedValue(undefined);
 	publishToNextdoor.mockResolvedValue(undefined);
-	sendSmtpEmail.mockResolvedValue(undefined);
 }
 
 describe('publishSocialPost', () => {
@@ -134,20 +130,14 @@ describe('publishSocialPost', () => {
 		await expect(publishSocialPost({ site: 'example', postId: '42' })).rejects.toThrow('WordPress post could not be found.');
 	});
 
-	it('rejects unsupported destinations and sends a failure email', async () => {
+	it('rejects unsupported destinations', async () => {
 		await expect(publishSocialPost({ site: 'example', postId: '42', destinations: ['facebook' as never] })).rejects.toThrow(
 			'Unsupported social destination: facebook'
 		);
 
-		expect(sendSmtpEmail).toHaveBeenCalledWith(
-			'smtp@example.com',
-			'failures@example.com',
-			'Social publish failed: Published title',
-			'Unsupported social destination: facebook\n\nhttps://blog.example.com/published-title',
-		);
 	});
 
-	it('rejects missing Nextdoor credentials and uses the default failure recipient', async () => {
+	it('rejects missing Nextdoor credentials', async () => {
 		getFullPixelatedConfig.mockReturnValue({
 			...config,
 			integrations: {
@@ -160,25 +150,13 @@ describe('publishSocialPost', () => {
 		await expect(publishSocialPost({ site: 'example', postId: '42' })).rejects.toThrow(
 			'Nextdoor credentials are not configured for site: example'
 		);
-		expect(sendSmtpEmail).toHaveBeenCalledWith(
-			'brian@pixelated.tech',
-			'brian@pixelated.tech',
-			expect.any(String),
-			expect.stringContaining('Nextdoor credentials are not configured'),
-		);
 	});
 
-	it('cleans up and emails when the Nextdoor publisher fails', async () => {
+	it('cleans up when the Nextdoor publisher fails', async () => {
 		const error = new Error('Nextdoor rejected the post');
 		publishToNextdoor.mockRejectedValue(error);
 
 		await expect(publishSocialPost({ site: 'example', postId: '42' })).rejects.toBe(error);
 		expect(closePuppeteerBrowser).toHaveBeenCalledWith({ id: 'browser' });
-		expect(sendSmtpEmail).toHaveBeenCalledWith(
-			'smtp@example.com',
-			'failures@example.com',
-			'Social publish failed: Published title',
-			'Nextdoor rejected the post\n\nhttps://blog.example.com/published-title',
-		);
 	});
 });

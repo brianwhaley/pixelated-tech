@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "extractFileName": "2026-11-11-12-33-03-example-extract.jsonl",
+  "startUrl": "https://example.com/team",
+  "siteName": "example",
+  "maxPages": 0,
+  "maxDepth": 0,
+  "requestDelayMs": 0,
+  "discoveryType": "crawler",
+  "crawlPages": [],
+  "detailUrls": [],
+  "extractedDetailUrls": [
+    "https://example.com/team"
+  ],
+  "counters": {
+    "fetchAttempts": 2,
+    "pagesFetched": 1,
+    "discoveryPagesFetched": 0,
+    "pagesFailed": 0,
+    "rateLimitResponses": 1,
+    "rateLimitedPages": 0
+  },
+  "phase": "complete",
+  "updatedAt": "2026-11-11T17:33:03.264Z"
+}

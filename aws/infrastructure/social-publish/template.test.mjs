@@ -30,3 +30,25 @@ test("passes only the approved config decryption key to the worker", () => {
 	assert.match(worker, /PIXELATED_CONFIG_KEY: !Ref PixelatedConfigKey/);
 	assert.doesNotMatch(worker, /SOCIAL_PUBLISH_PASSWORD|NEXTDOOR_PASSWORD/);
 });
+
+test("owns the worker image repository and deployment project", () => {
+	const repository = resourceBlock("SocialPublishEcrRepository");
+	const project = resourceBlock("SocialPublishCodeBuild");
+	const role = resourceBlock("SocialPublishCodeBuildRole");
+	assert.match(repository, /Type: AWS::ECR::Repository/);
+	assert.match(project, /Type: AWS::CodeBuild::Project/);
+	assert.match(project, /BuildSpec: aws\/services\/social-publish-worker\/buildspec\.yml/);
+	assert.match(project, /Pattern: \^refs\/heads\/main\$/);
+	assert.match(role, /Service: codebuild\.amazonaws\.com/);
+});
+
+test("keeps the external GitHub connection configurable", () => {
+	const project = resourceBlock("SocialPublishCodeBuild");
+	assert.match(project, /Type: CODECONNECTIONS/);
+	assert.match(project, /Resource: !Ref CodeBuildConnectionArn/);
+});
+
+test("preserves the external CodeConnections source policy", () => {
+	const role = resourceBlock("SocialPublishCodeBuildRole");
+	assert.match(role, /!Ref CodeBuildSourceCredentialsPolicyArn/);
+});

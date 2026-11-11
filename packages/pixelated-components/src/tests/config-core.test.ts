@@ -141,7 +141,6 @@ describe('config core logic', () => {
 						payPalSecret: 'prod-secret'
 					},
 					socialPublish: {
-						failureEmail: 'failures@example.com',
 						nextdoor: {
 							sites: {
 								example: {
@@ -166,7 +165,6 @@ describe('config core logic', () => {
 			expect((client.integrations?.paypal as any).payPalApiKey).toBe('prod-client-id');
 			expect((client.integrations?.paypal as any).sandboxPayPalSecret).toBeUndefined();
 			expect((client.integrations?.paypal as any).payPalSecret).toBeUndefined();
-			expect(client.integrations?.socialPublish?.failureEmail).toBe('failures@example.com');
 			expect((client.integrations?.socialPublish?.nextdoor?.sites?.example as any).username).toBe('user@example.com');
 			expect((client.integrations?.socialPublish?.nextdoor?.sites?.example as any).password).toBeUndefined();
 			expect(client.integrations?.socialPublish?.wordpress?.webhookSecrets).toBeUndefined();

@@ -516,6 +516,22 @@ export type BlogPostCategoryType = {
 	post_count: number;
 	feed_url: string;
 };
+
+/**
+ * getWordPressCategoryList — Retrieve the complete category records for a WordPress site.
+ */
+export async function getWordPressCategoryList(props: { site: string; baseURL?: string }): Promise<BlogPostCategoryType[] | undefined> {
+	const { baseURL = wpApiURL } = props;
+	const wpCategoriesURL = baseURL + props.site + wpCategoriesPath;
+	try {
+		const data = await smartFetch(wpCategoriesURL, {});
+		return Array.isArray(data?.categories) ? data.categories as BlogPostCategoryType[] : [];
+	} catch (error) {
+		console.error("Error fetching WP category list:", error);
+		return;
+	}
+}
+
 /**
  * getWordPressCategories — Retrieve categories for a WordPress site.
  *
@@ -530,20 +546,8 @@ getWordPressCategories.propTypes = {
 };
 export type getWordPressCategoriesType = InferProps<typeof getWordPressCategories.propTypes>;
 export async function getWordPressCategories(props: { site: string; baseURL?: string }){
-	const { baseURL = wpApiURL } = props;
-	const wpCategoriesURL = baseURL + props.site + wpCategoriesPath ;
-	const categories = [];
-	try {
-		const data = await smartFetch(wpCategoriesURL, {});
-		const myCategories = Array.isArray(data?.categories)
-			? data.categories.map((category: BlogPostCategoryType) => category.name)
-			: [];
-		categories.push(...myCategories);
-	} catch (error) {
-		console.error("Error fetching WP categories:", error);
-		return;
-	}
-	return categories; // Return the complete list of categories
+	const categoryList = await getWordPressCategoryList(props);
+	return categoryList?.map((category) => category.name);
 }
 
 /**

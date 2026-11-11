@@ -6,7 +6,7 @@ type AdminRoute = {
   [key: string]: unknown;
 };
 
-const debug = true;
+const debug = false;
 
 export function normalizeRoutePath(value: string | undefined | null): string {
 	return normalizePath(value);

@@ -13,7 +13,7 @@ phases:
       - npm run test --workspace=@pixelated-tech/social-publish-intake
       - export AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
       - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
-      - export ECR_REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/pixelatedsocialpublishe53f5c95/socialpublishworkerbd7fee1arepo"
+      - export ECR_REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME"
       - export IMAGE_TAG="${CODEBUILD_RESOLVED_SOURCE_VERSION:-$CODEBUILD_BUILD_NUMBER}"
       - export IMAGE_URI="$ECR_REPOSITORY:$IMAGE_TAG"
   build:
@@ -21,10 +21,10 @@ phases:
       - docker build --platform linux/amd64 --tag "$IMAGE_URI" --file aws/services/social-publish-worker/Dockerfile .
       - docker run --rm --entrypoint /bin/sh "$IMAGE_URI" -c 'test -f /var/task/index.mjs && test -f /var/task/config-vault.mjs && test -f /var/task/src/app/config/pixelated.config.json.enc && grep -q "\.nextdoor.com" /var/task/index.mjs'
       - docker push "$IMAGE_URI"
-      - export IMAGE_DIGEST="$(aws ecr describe-images --repository-name pixelatedsocialpublishe53f5c95/socialpublishworkerbd7fee1arepo --image-ids imageTag="$IMAGE_TAG" --query 'imageDetails[0].imageDigest' --output text)"
+      - export IMAGE_DIGEST="$(aws ecr describe-images --repository-name "$ECR_REPOSITORY_NAME" --image-ids imageTag="$IMAGE_TAG" --query 'imageDetails[0].imageDigest' --output text)"
       - test -n "$IMAGE_DIGEST" && test "$IMAGE_DIGEST" != "None"
-      - aws lambda update-function-code --function-name social-publish-worker --image-uri "$ECR_REPOSITORY@$IMAGE_DIGEST" --region "$AWS_DEFAULT_REGION"
+      - aws lambda update-function-code --function-name "$LAMBDA_FUNCTION_NAME" --image-uri "$ECR_REPOSITORY@$IMAGE_DIGEST" --region "$AWS_DEFAULT_REGION"
   post_build:
     commands:
-      - aws lambda wait function-updated --function-name social-publish-worker --region "$AWS_DEFAULT_REGION"
-      - aws lambda get-function-configuration --function-name social-publish-worker --region "$AWS_DEFAULT_REGION" --query '{FunctionName:FunctionName,PackageType:PackageType,Architectures:Architectures,Timeout:Timeout,MemorySize:MemorySize,LastUpdateStatus:LastUpdateStatus}' --output json
+      - aws lambda wait function-updated --function-name "$LAMBDA_FUNCTION_NAME" --region "$AWS_DEFAULT_REGION"
+      - aws lambda get-function-configuration --function-name "$LAMBDA_FUNCTION_NAME" --region "$AWS_DEFAULT_REGION" --query '{FunctionName:FunctionName,PackageType:PackageType,Architectures:Architectures,Timeout:Timeout,MemorySize:MemorySize,LastUpdateStatus:LastUpdateStatus}' --output json

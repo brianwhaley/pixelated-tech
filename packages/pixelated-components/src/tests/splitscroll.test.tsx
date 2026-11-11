@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { SplitScroll, SplitScrollSection } from '../components/structure/splitscroll';
 
 // Mock the SmartImage component
@@ -19,6 +19,10 @@ vi.mock('../components/elements/smartimage', () => ({
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {
+	callback: (entries: IntersectionObserverEntry[]) => void;
+	constructor(callback: (entries: IntersectionObserverEntry[]) => void) {
+		this.callback = callback;
+	}
 	observe = vi.fn()
 	unobserve = vi.fn()
 	disconnect = vi.fn()
@@ -222,6 +226,26 @@ describe('SplitScroll Component', () => {
 			
 			// IntersectionObserver should be called for observing sections
 			expect(mockIntersectionObserver).toHaveBeenCalled();
+		});
+
+		it('updates the active section and disconnects on unmount', () => {
+			const { container, unmount } = renderWithConfig(
+				<SplitScroll>
+					<SplitScrollSection img="/test1.jpg" title="Section 1">Content 1</SplitScrollSection>
+					<SplitScrollSection img="/test2.jpg" title="Section 2">Content 2</SplitScrollSection>
+				</SplitScroll>
+			);
+			const sections = container.querySelectorAll('.splitscroll-section');
+			const observer = mockIntersectionObserver.mock.instances.at(-1) as unknown as MockIntersectionObserver;
+
+			act(() => {
+				observer.callback([{ target: sections[1], isIntersecting: true } as IntersectionObserverEntry]);
+			});
+			expect(sections[1]).toHaveClass('active');
+			expect(sections[0]).not.toHaveClass('active');
+
+			unmount();
+			expect(observer.disconnect).toHaveBeenCalled();
 		});
 	});
 

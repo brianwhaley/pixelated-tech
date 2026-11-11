@@ -302,6 +302,7 @@ const defaultMocks: Record<string, any> = {
 	Markdown: mockComponent('Markdown'),
 	ListItems: ({ items }: any) => React.createElement('div', { 'data-testid': 'list-items' }, Array.isArray(items) ? items.length : 0),
 	GoogleReviewsCarousel: mockComponent('GoogleReviewsCarousel'),
+	WordpressCategoryList: mockComponent('WordpressCategoryList'),
 	BlogPostList: mockComponent('BlogPostList'),
 	SchemaBlogPosting: mockComponent('SchemaBlogPosting'),
 	StyleGuideUI: mockComponent('StyleGuideUI'),

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { compileAdHocInvoiceData, compileInvoiceData, getAdditionalInvoiceItems, getBillingNote, getBillingSummary, getMonthlyBillingPrice, isMonthlyBillingActive, loadBillingData } from '../components/admin/billing/billing.functions';
 import fs from 'fs';
-import { generateInvoicePdfsForSites, dispatchInvoiceEmails, loadBillingConfigData } from '../components/admin/billing/billing.server';
+import { generateAdHocInvoice, generateInvoicePdfsForSites, dispatchInvoiceEmails, loadBillingConfigData } from '../components/admin/billing/billing.server';
 import puppeteer from 'puppeteer';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { getLiveBillingStats } from '../components/integrations/wordpress.jetpack.server';
@@ -350,6 +350,44 @@ describe('Billing Functions', () => {
 		it('throws an error if site is not billable', () => {
 			const site = { name: 'unbillable', url: 'https://testsite.com' };
 			expect(() => compileInvoiceData(site, '2026-06', mockSubscriptions, mockPayment, [], [])).toThrow('is not a billable account');
+		});
+	});
+
+	describe('ad hoc invoice generation', () => {
+		it('returns compiled data in preview mode without launching Puppeteer', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+				subscriptions: {},
+				paymentInfo: { method: 'Cash', details: '', terms: '' },
+				sites: [{
+					name: 'testsite',
+					adHocBilling: [{ invoiceNumber: 'INV-1', invoiceDate: '2026-06-01', dueDate: '2026-06-15', items: [{ description: 'Work', amount: 25 }] }]
+				}]
+			}));
+
+			const result = await generateAdHocInvoice('INV-1', true);
+			expect(result).toMatchObject({ siteName: 'testsite', success: true, pdfPath: '' });
+			expect(puppeteer.launch).not.toHaveBeenCalled();
+		});
+
+		it('rejects unknown and duplicate invoice numbers', async () => {
+			vi.mocked(fs.existsSync).mockReturnValue(true);
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+				subscriptions: {},
+				paymentInfo: {},
+				sites: [{ name: 'testsite', adHocBilling: [] }]
+			}));
+			await expect(generateAdHocInvoice('missing', true)).rejects.toThrow('was not found');
+
+			vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
+				subscriptions: {},
+				paymentInfo: {},
+				sites: [
+					{ name: 'one', adHocBilling: [{ invoiceNumber: 'DUP' }] },
+					{ name: 'two', adHocBilling: [{ invoiceNumber: 'DUP' }] }
+				]
+			}));
+			await expect(generateAdHocInvoice('DUP', true)).rejects.toThrow('more than one site');
 		});
 	});
 

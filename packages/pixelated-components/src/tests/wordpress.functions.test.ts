@@ -15,6 +15,7 @@ const {
   photonToOriginalUrl,
   mapWordPressToBlogPosting,
   getWordPressItemImages,
+  getWordPressCategoryList,
   getWordPressCategories,
   htmlToWordPressBlocks,
   createWordPressDraft,
@@ -516,6 +517,12 @@ describe('WordPress Functions', () => {
       mockSmartFetch.mockResolvedValueOnce({ categories: [{ name: 'News' }, { name: 'Updates' }] });
       const categories = await getWordPressCategories({ site: 'example.com' });
       expect(categories).toEqual(['News', 'Updates']);
+    });
+
+    it('should preserve WordPress category slugs in the category list', async () => {
+      mockSmartFetch.mockResolvedValueOnce({ categories: [{ id: 1, name: 'News', slug: 'news' }] });
+      const categories = await getWordPressCategoryList({ site: 'example.com' });
+      expect(categories).toEqual([{ id: 1, name: 'News', slug: 'news' }]);
     });
 
     it('should return undefined when category fetch fails', async () => {

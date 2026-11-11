@@ -41,6 +41,15 @@ describe('site-health-utils', () => {
 		});
 	});
 
+	it('formats remaining timing contexts and fallback values', () => {
+		expect(formatAuditItem(10, 'Unknown timing')).toBe('10.00ms');
+		expect(formatAuditItem({ value: 12.5 })).toBe('12.50ms');
+		expect(formatAuditItem({ duration: 10, request: 'GET /health' })).toBe('10.00ms for GET /health');
+		expect(formatAuditItem({ responseTime: 250 })).toBe('250.00ms response time');
+		expect(formatAuditItem({ startTime: 10, endTime: 25, url: 'https://example.com' })).toBe('https://example.com');
+		expect(formatAuditItem({ mainThreadTime: 12.34 })).toBe('12.3ms');
+	});
+
 	describe('formatAuditItem', () => {
 		it('should prioritize descriptive strings over raw URLs when both present', () => {
 			// In the current "unrefactored" code, URL takes precedence

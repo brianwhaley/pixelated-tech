@@ -11,6 +11,24 @@ Parameters:
   AlarmTopicArn:
     Type: String
     Default: arn:aws:sns:us-east-1:971579260814:pixelated-cloudwatch-alarms
+  EcrRepositoryName:
+    Type: String
+    Default: pixelatedsocialpublishe53f5c95/socialpublishworkerbd7fee1arepo
+  CodeBuildProjectName:
+    Type: String
+    Default: pixelated-social-publish-worker
+  CodeBuildRoleName:
+    Type: String
+    Default: pixelated-social-publish-codebuild-role
+  CodeBuildConnectionArn:
+    Type: String
+    Default: arn:aws:codestar-connections:us-east-1:971579260814:connection/af6c24c0-2882-43e5-9591-ec84f25f2419
+  CodeBuildSourceCredentialsPolicyArn:
+    Type: String
+    Default: arn:aws:iam::971579260814:policy/service-role/CodeBuildCodeConnectionsSourceCredentialsPolicy-pixelated-social-publish-worker-us-east-1-971579260814
+  CodeBuildLogRetentionInDays:
+    Type: Number
+    Default: 30
 
 Resources:
   SocialPublishIntakeRole:
@@ -48,6 +66,81 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  SocialPublishEcrRepository:
+    Type: AWS::ECR::Repository
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RepositoryName: !Ref EcrRepositoryName
+
+  SocialPublishCodeBuildRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RoleName: !Ref CodeBuildRoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+        - !Ref CodeBuildSourceCredentialsPolicyArn
+
+  SocialPublishCodeBuildLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/codebuild/${CodeBuildProjectName}
+      RetentionInDays: !Ref CodeBuildLogRetentionInDays
+
+  SocialPublishCodeBuild:
+    Type: AWS::CodeBuild::Project
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref CodeBuildProjectName
+      ServiceRole: !GetAtt SocialPublishCodeBuildRole.Arn
+      Source:
+        Type: GITHUB
+        Location: https://github.com/brianwhaley/pixelated-tech.git
+        BuildSpec: aws/services/social-publish-worker/buildspec.yml
+        Auth:
+          Type: CODECONNECTIONS
+          Resource: !Ref CodeBuildConnectionArn
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_MEDIUM
+        Image: aws/codebuild/standard:7.0
+        PrivilegedMode: true
+        EnvironmentVariables:
+          - Name: ECR_REPOSITORY_NAME
+            Value: !Ref EcrRepositoryName
+          - Name: LAMBDA_FUNCTION_NAME
+            Value: !Ref SocialPublishWorker
+      LogsConfig:
+        CloudWatchLogs:
+          Status: ENABLED
+          GroupName: !Ref SocialPublishCodeBuildLogGroup
+      Triggers:
+        Webhook: true
+        FilterGroups:
+          - - Type: EVENT
+              Pattern: PUSH
+            - Type: HEAD_REF
+              Pattern: ^refs/heads/main$
 
   SocialPublishIntake:
     Type: AWS::Serverless::Function

@@ -9,7 +9,7 @@ import type { BlogPostType } from './wordpress.functions';
 import type { SiteInfo } from '../config/config.types';
 import { contentfulValueToSlug } from '../integrations/contentful.delivery';
 import { getServicePathPrefix } from '../elements/services.functions';
-import { getCachedWordPressItems, getWordPressCategories } from './wordpress.functions';
+import { getCachedWordPressItems, getWordPressCategories, getWordPressCategoryList, type BlogPostCategoryType } from './wordpress.functions';
 import { Loading, ToggleLoading } from '../foundation/loading';
 import "./wordpress.css";
 import { SchemaBlogPosting } from '../foundation/schema';
@@ -301,5 +301,60 @@ export function BlogPostCategories(props: BlogPostCategoriesType) {
 				) : null
 			)}
 		</div>
+	);
+}
+
+/**
+ * WordpressCategoryList — Render links to the categories for the configured WordPress site.
+ */
+WordpressCategoryList.propTypes = {
+	/** Category names or slugs to exclude, matched case-insensitively. */
+	excludeCategories: PropTypes.arrayOf(PropTypes.string),
+};
+export type WordpressCategoryListType = InferProps<typeof WordpressCategoryList.propTypes>;
+export function WordpressCategoryList(props: WordpressCategoryListType) {
+	const config = usePixelatedConfig();
+	const site = config?.integrations?.wordpress?.site;
+	const baseURL = config?.integrations?.wordpress?.baseURL;
+	const [categories, setCategories] = useState<BlogPostCategoryType[]>([]);
+
+	useEffect(() => {
+		if (!site) return;
+
+		let mounted = true;
+		getWordPressCategoryList({ site, baseURL })
+			.then((fetched) => {
+				if (mounted && Array.isArray(fetched)) setCategories(fetched);
+			})
+			.catch((error) => {
+				console.warn('WordpressCategoryList could not fetch categories:', error);
+			});
+
+		return () => {
+			mounted = false;
+		};
+	}, [site, baseURL]);
+
+	const excluded = new Set((props.excludeCategories ?? []).filter(Boolean).map((category) => category!.trim().toLowerCase()));
+	const visibleCategories = categories
+		.filter((category) => category.name.trim().toLowerCase() !== 'uncategorized')
+		.filter((category) => !excluded.has(category.name.trim().toLowerCase()) && !excluded.has(category.slug.trim().toLowerCase()))
+		.sort((first, second) => first.name.localeCompare(second.name));
+
+	if (visibleCategories.length === 0 || !site) return null;
+
+	const categorySite = site.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+	return (
+		<nav className="wordpress-category-list" aria-label="Blog categories">
+			<ul>
+				{visibleCategories.map((category) => (
+					<li key={category.id || category.slug}>
+						<a href={`https://${categorySite}/category/${encodeURIComponent(category.slug)}/`}>
+							{category.name}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
 	);
 }

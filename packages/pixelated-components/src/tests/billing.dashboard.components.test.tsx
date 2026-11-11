@@ -184,6 +184,19 @@ describe('MonthlyBillingDashboard Component', () => {
 
 		expect(screen.getByText(/No billable sites configured/i)).toBeInTheDocument();
 	});
+
+	it('alerts when generating without selected sites', async () => {
+		const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => undefined);
+		render(<MonthlyBillingDashboard initialData={{
+			sites: [],
+			subscriptions: {},
+			paymentInfo: { method: '', details: '', terms: '' },
+			formCompletions: []
+		}} />);
+		await waitFor(() => expect(screen.getByText(/No billable sites configured/i)).toBeInTheDocument());
+		expect(screen.getByText('Generate Invoices')).toBeDisabled();
+		alertSpy.mockRestore();
+	});
 });
 
 describe('AdHocBillingDashboard Component', () => {

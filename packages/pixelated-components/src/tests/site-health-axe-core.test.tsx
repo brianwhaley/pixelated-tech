@@ -273,4 +273,39 @@ describe('SiteHealthAxeCore', () => {
     expect(screen.getByText('Moderate :')).toBeInTheDocument();
     expect(screen.getByText('Minor :')).toBeInTheDocument();
   });
+
+  it('renders passing and incomplete audit sections', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({
+        success: true,
+        data: [{
+          ...mockData,
+          summary: { ...mockData.summary, violations: 0 },
+          result: {
+            ...mockData.result,
+            violations: [],
+            passes: [{ id: 'pass', impact: 'minor', help: 'Pass', description: 'Passed', helpUrl: '', nodes: [], tags: [] }],
+            incomplete: [{ id: 'incomplete', impact: 'minor', help: 'Needs review', description: 'Review', helpUrl: '', nodes: [], tags: [] }],
+          },
+        }],
+      }),
+    });
+
+    render(<SiteHealthAxeCore siteName="test-site" />);
+    await waitFor(() => expect(screen.getByText(/All Accessibility Checks Passed/)).toBeInTheDocument());
+    expect(screen.getByText('Incomplete Tests (1)')).toBeInTheDocument();
+  });
+
+  it('injects the local axe fallback when the CDN script fails', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ success: true, data: [] }),
+    });
+    render(<SiteHealthAxeCore siteName="test-site" />);
+    const script = document.head.querySelector('script[src="https://cdn.jsdelivr.net/npm/axe-core/axe.min.js"]');
+    expect(script).toBeInTheDocument();
+    script?.dispatchEvent(new Event('error'));
+    await waitFor(() => expect(document.head.querySelector('script[src="/api/axe-core"]')).toBeInTheDocument());
+  });
 });

@@ -25,7 +25,7 @@ function prepareRuntimeConfig() {
 
 prepareRuntimeConfig();
 
-const debug = true;
+const debug = false;
 
 export const getWorkerPayload = (event) => {
 	if (!event || typeof event !== "object") return null;

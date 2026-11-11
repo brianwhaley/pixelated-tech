@@ -51,6 +51,9 @@
     }
   },
   "enhancements": {
+	"2026-11": [
+      "New Blog Category Navigation Element for Blog pages"
+    ],
 	"2026-10": [
       "Migrated entire AWS Infrastructure stack from US East 2 to US East 1 using CloudFormation IAC to increase reliability and feature set.",
 	  "Created CloudWatch Alarms for all Amplify, Lambda, API Gateway, and HealthCheck objects",

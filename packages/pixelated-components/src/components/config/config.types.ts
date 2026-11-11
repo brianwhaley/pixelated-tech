@@ -414,7 +414,6 @@ export interface SocialPublishConfig {
 	wordpress?: {
 		webhookSecrets?: Record<string, string>;
 	};
-	failureEmail?: string;
 }
 
 export interface ShoppingCartConfig {

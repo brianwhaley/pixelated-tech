@@ -2,52 +2,18 @@
 /**
  * Plugin Name: Pixelated Social Publish Webhook
  * Description: Sends newly published posts to the Pixelated social publishing webhook.
- * Version: 1.0.1
+ * Version: 1.0.2
  */
 
-const PIXELATED_DEBUG = true;
-const PIXELATED_DEBUG_EMAIL = 'brian@pixelated.tech';
-const PIXELATED_SENDMAIL_URL = 'https://api.pixelated.tech/sendmail';
+const PIXELATED_DEBUG = false;
 
 if (!defined('ABSPATH')) {
 	exit;
 }
 
-function pixelated_social_publish_debug_email($request_id, $stage, $details = array()) {
-	if (!PIXELATED_DEBUG) {
-		return;
-	}
-
-	$lines = array(
-		'Request ID: ' . $request_id,
-		'Stage: ' . $stage,
-	);
-	foreach ($details as $key => $value) {
-		if (is_array($value) || is_object($value)) {
-			$value = wp_json_encode($value);
-		}
-		$lines[] = $key . ': ' . (string) $value;
-	}
-
-	$response = wp_remote_post(PIXELATED_SENDMAIL_URL, array(
-		'timeout' => 10,
-		'blocking' => true,
-		'headers' => array('Content-Type' => 'application/json'),
-		'body' => wp_json_encode(array(
-			'to' => PIXELATED_DEBUG_EMAIL,
-			'subject' => '[Pixelated Debug] Social webhook ' . $stage,
-			'text' => implode("\n", $lines),
-		)),
-	));
-
-	if (is_wp_error($response)) {
-		error_log('Pixelated social publish debug email failed: ' . $response->get_error_message());
-		return;
-	}
-
-	$status = wp_remote_retrieve_response_code($response);
-	if ($status < 200 || $status >= 300) {
-		error_log('Pixelated social publish debug email returned HTTP ' . $status . ': ' . wp_remote_retrieve_body($response));
+function pixelated_social_publish_debug_log($message) {
+	if (PIXELATED_DEBUG) {
+		error_log($message);
 	}
 }
 
@@ -136,7 +102,7 @@ function pixelated_social_publish_render_secret_field() {
 	$is_constant = defined('PIXELATED_SOCIAL_PUBLISH_SECRET');
 	?>
 	<input type="password" class="regular-text" name="pixelated_social_publish_settings[secret]" value="" autocomplete="new-password" <?php disabled($is_constant); ?> />
-	<p class="description"><?php echo $settings['secret'] ? 'A secret is configured. Leave blank to keep it unchanged.' : 'Enter the shared secret used by the admin webhook.'; ?></p>
+	<p class="description"><?php echo $settings['secret'] ? 'A secret is configured. Leave blank to keep it unchanged.' : 'Enter the shared secret used by the API Gateway webhook.'; ?></p>
 	<?php if ($is_constant) : ?>
 		<p class="description">This value is managed by PIXELATED_SOCIAL_PUBLISH_SECRET in wp-config.php.</p>
 	<?php endif; ?>
@@ -149,23 +115,12 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
 	}
 
 	$request_id = wp_generate_uuid4();
-	pixelated_social_publish_debug_email($request_id, 'publish-hook-called', array(
-		'post_id' => (string) $post->ID,
-		'old_status' => $old_status,
-		'new_status' => $new_status,
-		'post_type' => $post->post_type,
-	));
+	pixelated_social_publish_debug_log('Pixelated social publish hook called for post ' . $post->ID . '.');
 
 	$settings = pixelated_social_publish_get_settings();
 	$post_url = get_permalink($post);
 	if (!$post_url || !$settings['secret']) {
-		if (PIXELATED_DEBUG) {
-			error_log('Pixelated social publish webhook is not configured.');
-		}
-		pixelated_social_publish_debug_email($request_id, 'configuration-error', array(
-			'has_post_url' => $post_url ? 'yes' : 'no',
-			'has_secret' => $settings['secret'] ? 'yes' : 'no',
-		));
+		pixelated_social_publish_debug_log('Pixelated social publish webhook is not configured.');
 		return;
 	}
 
@@ -187,18 +142,9 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
 		'body' => $payload,
 	));
 	if (is_wp_error($response)) {
-		if (PIXELATED_DEBUG) {
-			error_log('Pixelated social publish webhook failed: ' . $response->get_error_message());
-		}
-		pixelated_social_publish_debug_email($request_id, 'webhook-request-error', array(
-			'error' => $response->get_error_message(),
-			'webhook_url' => pixelated_social_publish_get_webhook_url(),
-		));
+		error_log('Pixelated social publish webhook failed: ' . $response->get_error_message());
 		return;
 	}
 
-	pixelated_social_publish_debug_email($request_id, 'webhook-response-received', array(
-		'http_status' => wp_remote_retrieve_response_code($response),
-		'response_body' => substr(wp_remote_retrieve_body($response), 0, 4000),
-	));
+	pixelated_social_publish_debug_log('Pixelated social publish webhook response received with HTTP status ' . wp_remote_retrieve_response_code($response) . '.');
 }, 10, 3);

@@ -83,4 +83,28 @@ describe('LoremIpsum', () => {
     await waitFor(() => expect(screen.getByText('line one')).toBeInTheDocument());
     expect(screen.getByText('line two')).toBeInTheDocument();
   });
+
+  it('includes a seed and handles array and plaintext responses', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({ ok: true, text: async () => JSON.stringify(['array paragraph']) })
+      .mockResolvedValueOnce({ ok: true, text: async () => 'plain one\n\nplain two' });
+    // @ts-ignore
+    global.fetch = fetchMock;
+
+    const first = renderWithProviders(<LoremIpsum paragraphs={2} seed="stable" />);
+    await waitFor(() => expect(screen.getByText('array paragraph')).toBeInTheDocument());
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('seed=stable'), expect.anything());
+    first.unmount();
+
+    renderWithProviders(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText('plain one')).toBeInTheDocument());
+    expect(screen.getByText('plain two')).toBeInTheDocument();
+  });
+
+  it('renders the fetch error message', async () => {
+    // @ts-ignore
+    global.fetch = vi.fn().mockRejectedValue(new Error('service unavailable'));
+    renderWithProviders(<LoremIpsum />);
+    await waitFor(() => expect(screen.getByText(/service unavailable/)).toBeInTheDocument());
+  });
 });

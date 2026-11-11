@@ -4,7 +4,8 @@ import React from 'react';
 import {
 	BlogPostList,
 	BlogPostSummary,
-	BlogPostCategories
+	BlogPostCategories,
+	WordpressCategoryList
 } from '../components/integrations/wordpress.components';
 import { getCachedWordPressItems } from '../components/integrations/wordpress.functions';
 import * as wordpressFunctions from '../components/integrations/wordpress.functions';
@@ -13,6 +14,34 @@ import { renderWithProviders, createConfig } from '../test/test-utils';
 describe('WordPress Components', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+	});
+
+	describe('WordpressCategoryList', () => {
+		it('renders category links with slugs and excludes configured categories', async () => {
+			vi.spyOn(wordpressFunctions, 'getWordPressCategoryList').mockResolvedValue([
+				{ id: 1, name: 'News', slug: 'news', description: '', post_count: 2, feed_url: '' },
+				{ id: 2, name: 'Internal', slug: 'internal', description: '', post_count: 1, feed_url: '' },
+			]);
+
+			const config = createConfig({ integrations: { wordpress: { site: 'example.com' } } });
+			renderWithProviders(<WordpressCategoryList excludeCategories={['internal']} />, { config });
+
+			await waitFor(() => {
+				expect(screen.getByRole('link', { name: 'News' })).toHaveAttribute('href', 'https://example.com/category/news/');
+				expect(screen.queryByRole('link', { name: 'Internal' })).not.toBeInTheDocument();
+			});
+		});
+
+		it('does not render Uncategorized', async () => {
+			vi.spyOn(wordpressFunctions, 'getWordPressCategoryList').mockResolvedValue([
+				{ id: 1, name: 'Uncategorized', slug: 'uncategorized', description: '', post_count: 1, feed_url: '' },
+			]);
+
+			const config = createConfig({ integrations: { wordpress: { site: 'example.com' } } });
+			const { container } = renderWithProviders(<WordpressCategoryList />, { config });
+
+			await waitFor(() => expect(container.textContent).toBe(''));
+		});
 	});
 
 	describe('getCachedWordPressItems', () => {

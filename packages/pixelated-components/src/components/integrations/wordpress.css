@@ -63,3 +63,30 @@
         margin: 0 5px;
         vertical-align: middle;
     }
+
+.wordpress-category-list {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: var(--primary-color);
+}
+
+.wordpress-category-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wordpress-category-list a {
+    display: block;
+    padding: 10px 15px;
+    color: contrast-color(var(--primary-color));
+}
+
+.wordpress-category-list a:hover,
+.wordpress-category-list a:focus-visible {
+    background-color: var(--secondary-color);
+    color: contrast-color(var(--secondary-color));
+}

@@ -14,6 +14,21 @@ vi.mock('../components/admin/site-health/site-health-template', () => ({
 		React.useEffect(() => {
 			(async () => {
 				const mockSiteResponse = await createSiteHealthResponse(siteName || 'test-site', 'https://www.example.com');
+				if (siteName === 'empty-site') {
+					setData({ psiData: undefined });
+					setLoading(false);
+					return;
+				}
+				if (siteName === 'error-site') {
+					setData({ psiData: { ...mockSiteResponse, data: [{ ...mockSiteResponse.data[0], status: 'error', error: 'Security scan failed' }] } });
+					setLoading(false);
+					return;
+				}
+				if (siteName === 'null-score-site') {
+					setData({ psiData: { ...mockSiteResponse, data: [{ ...mockSiteResponse.data[0], scores: { ...mockSiteResponse.data[0].scores, 'best-practices': null } }] } });
+					setLoading(false);
+					return;
+				}
 
 				const transformedData = endpoint?.responseTransformer
 					? endpoint.responseTransformer(mockSiteResponse)
@@ -117,6 +132,20 @@ describe('SiteHealthSecurity Component', () => {
 		await waitFor(() => {
 			expect(screen.getByTestId('health-template')).toBeDefined();
 		});
+	});
+
+	it('renders empty and error security states', async () => {
+		render(<SiteHealthSecurity siteName="empty-site" />);
+		await waitFor(() => expect(screen.getByText('No security data available for this site.')).toBeInTheDocument());
+
+		render(<SiteHealthSecurity siteName="error-site" />);
+		await waitFor(() => expect(screen.getByText('Error: Security scan failed')).toBeInTheDocument());
+	});
+
+	it('omits the score panel when best practices score is null', async () => {
+		render(<SiteHealthSecurity siteName="null-score-site" />);
+		await waitFor(() => expect(screen.getByTestId('health-template')).toBeInTheDocument());
+		expect(screen.queryByText('Best Practices Score')).not.toBeInTheDocument();
 	});
 });
 

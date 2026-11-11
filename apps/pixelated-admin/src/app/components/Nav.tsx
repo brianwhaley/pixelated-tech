@@ -8,7 +8,7 @@ import { getAllowedAdminRoutes } from '@pixelated-tech/components/adminclient';
 import authorizationConfig from '../data/authorization.json';
 
 export default function Nav() {
-	const debug = true;
+	const debug = false;
 	const pixelatedConfig = usePixelatedConfig();
 	const routes = pixelatedConfig?.routes ?? [];
 

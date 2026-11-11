@@ -88,4 +88,39 @@ describe('InteractionGuardrail', () => {
 		const button = screen.getByTestId('pointer-button');
 		expect(() => fireEvent.pointerDown(button)).not.toThrow();
 	});
+
+	it('handles keyboard, link, nested, and editable targets', () => {
+		renderWithProviders(
+			<InteractionGuardrail>
+				<a href="/next" data-testid="link"><span data-testid="nested">Next</span></a>
+				<textarea data-testid="textarea" />
+				<div contentEditable data-testid="editable">Edit</div>
+			</InteractionGuardrail>
+		);
+
+		fireEvent.keyDown(screen.getByTestId('nested'), { key: 'Enter' });
+		fireEvent.keyDown(screen.getByTestId('nested'), { key: ' ' });
+		fireEvent.keyDown(screen.getByTestId('nested'), { key: 'Escape' });
+		fireEvent.keyDown(screen.getByTestId('textarea'), { key: 'Enter' });
+		fireEvent.keyDown(screen.getByTestId('editable'), { key: 'Enter' });
+		fireEvent.pointerDown(screen.getByTestId('link'));
+
+		expect(document.body.getAttribute('data-platform-inp-guardrail')).toBe('true');
+	});
+
+	it('skips default-prevented and secondary-button interactions', () => {
+		renderWithProviders(
+			<InteractionGuardrail>
+				<button type="button" data-testid="button">Action</button>
+				<form data-testid="form"><button type="submit">Submit</button></form>
+			</InteractionGuardrail>
+		);
+
+		const button = screen.getByTestId('button');
+		fireEvent.click(button, { button: 1 });
+		fireEvent.click(button, { defaultPrevented: true });
+		fireEvent.pointerDown(button, { defaultPrevented: true });
+		fireEvent.submit(screen.getByTestId('form'));
+		expect(document.body.getAttribute('data-platform-inp-guardrail')).toBe('true');
+	});
 });

@@ -1,7 +1,6 @@
 "use server";
 
 import { getFullPixelatedConfig } from '../../config/config';
-import { sendSmtpEmail } from '../../integrations/smtp.integration';
 import { publishToNextdoor } from '../../integrations/nextdoor.server';
 import { closePuppeteerBrowser, launchPuppeteerBrowser, openPuppeteerPage } from '../../integrations/puppeteer.server';
 import { getWordPressPost } from '../../integrations/wordpress.server';
@@ -79,17 +78,7 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 			}
 		}
 	} catch (error) {
-		const failureEmail = socialConfig?.failureEmail || 'brian@pixelated.tech';
-		try {
-			await sendSmtpEmail(
-				config.integrations?.smtp?.smtpUser || failureEmail,
-				failureEmail,
-				`Social publish failed: ${post.title}`,
-				`${error instanceof Error ? error.message : String(error)}\n\n${post.URL}`,
-			);
-		} catch (emailError) {
-			console.error('Failed to send social publish failure email:', emailError);
-		}
+		console.error('Social publish failed:', error);
 		throw error;
 	}
 

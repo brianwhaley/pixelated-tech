@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { MonthlyInvoiceBuilder } from '@/components/admin/billing/billing.invoicebuilder';
+import { AdHocInvoiceBuilder, MonthlyInvoiceBuilder } from '@/components/admin/billing/billing.invoicebuilder';
 import { notFound } from 'next/navigation';
 import { loadBillingConfigData } from '@/components/admin/billing/billing.server';
 import { compileInvoiceData } from '@/components/admin/billing/billing.functions';
+import { compileAdHocInvoiceData } from '@/components/admin/billing/billing.functions';
 import { getLiveBillingStats } from '@/components/integrations/wordpress.jetpack.server';
 
 vi.mock('@/components/admin/billing/billing.server', () => ({
@@ -10,7 +11,8 @@ vi.mock('@/components/admin/billing/billing.server', () => ({
 }));
 
 vi.mock('@/components/admin/billing/billing.functions', () => ({
-	compileInvoiceData: vi.fn()
+	compileInvoiceData: vi.fn(),
+	compileAdHocInvoiceData: vi.fn()
 }));
 
 vi.mock('@/components/integrations/wordpress.jetpack.server', () => ({
@@ -38,6 +40,7 @@ describe('InvoiceBuilder', () => {
 		});
 		vi.mocked(getLiveBillingStats).mockResolvedValue({ posts: [], socialReferrers: [] });
 		vi.mocked(compileInvoiceData).mockReturnValue({ invoice: 'compiled' } as any);
+		vi.mocked(compileAdHocInvoiceData).mockReturnValue({ invoice: 'ad-hoc-compiled' } as any);
 	});
 
 	afterEach(() => {
@@ -61,6 +64,36 @@ describe('InvoiceBuilder', () => {
 			enhancements: {}
 		});
 		await MonthlyInvoiceBuilder({ siteName: 'example-site', billingCycle: '2026-01' });
+		expect(notFound).toHaveBeenCalled();
+	});
+
+	it('uses a missing blog RSS value when loading live billing stats', async () => {
+		vi.mocked(loadBillingConfigData).mockResolvedValue({
+			sites: [{ name: 'example-site', monthlyBilling: { tier: 'growth' } }],
+			subscriptions: [],
+			paymentInfo: {},
+			formCompletions: [],
+			enhancements: {}
+		} as any);
+
+		await MonthlyInvoiceBuilder({ siteName: 'example-site', billingCycle: '2026-01' });
+		expect(getLiveBillingStats).toHaveBeenCalledWith(undefined, '2026-01', undefined);
+	});
+
+	it('renders an ad hoc invoice and calls notFound when it is missing', async () => {
+		vi.mocked(loadBillingConfigData).mockResolvedValue({
+			sites: [{ name: 'example-site', adHocBilling: [{ invoiceNumber: 'INV-1' }] }],
+			subscriptions: [],
+			paymentInfo: {},
+			formCompletions: [],
+			enhancements: {}
+		} as any);
+
+		const result = await AdHocInvoiceBuilder({ siteName: 'example-site', invoiceNumber: 'INV-1' });
+		expect(result).toBeDefined();
+		expect(compileAdHocInvoiceData).toHaveBeenCalled();
+
+		await AdHocInvoiceBuilder({ siteName: 'example-site', invoiceNumber: 'missing' });
 		expect(notFound).toHaveBeenCalled();
 	});
 });

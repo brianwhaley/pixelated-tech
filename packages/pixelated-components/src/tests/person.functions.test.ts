@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createEmptyPerson, getPersonFieldSelectors, matchPersonFieldPatterns, Person, PersonSpec } from '../components/admin/scraper/person.functions';
+import { createEmptyPerson, getPersonFieldSelectors, matchPersonFieldPatterns, normalizeEmail, Person, PersonSpec, splitEmails, splitValues } from '../components/admin/scraper/person.functions';
 
 describe('Person selector registry', () => {
 	it('builds a fresh default value for every person schema field', () => {
@@ -59,5 +59,24 @@ describe('Person selector registry', () => {
 		expect(matchPersonFieldPatterns('emails', 'Email ada@example.com')).toEqual(['ada@example.com']);
 		expect(matchPersonFieldPatterns('phone', 'Call (555) 111-2222')).toEqual(['(555) 111-2222']);
 		expect(matchPersonFieldPatterns('zip', 'ZIP 12345-6789')).toEqual(['12345-6789']);
+	});
+
+	it('normalizes and splits email and generic values', () => {
+		expect(normalizeEmail(' Ada%40Example.com ')).toBe('ada@example.com');
+		expect(normalizeEmail('')).toBe('');
+		expect(splitEmails('Ada@example.com; BOB@example.com\n')).toEqual(['ada@example.com', 'bob@example.com']);
+		expect(splitEmails(null)).toEqual([]);
+		expect(splitValues([' Ada ', '', 'Bob '])).toEqual(['Ada', 'Bob']);
+		expect(splitValues('Ada|Bob; Carol')).toEqual(['Ada', 'Bob', 'Carol']);
+	});
+
+	it('validates and normalizes person records', () => {
+		expect(Person.validate({}).valid).toBe(false);
+		expect(Person.validate({ firstName: 'Ada', lastName: 'Lovelace', socials: [] }).errors).toMatchObject({ socials: ['must be an object'] });
+		expect(Person.validate({ fullName: 'Ada', emails: [] }).errors.emails).toEqual(['must contain at least one value']);
+		expect(Person.from({ fullName: ' Ada ', socials: { facebook: ' ', instagram: ' https://instagram.com/ada ' } }).toJSON()).toMatchObject({
+		fullName: ['Ada'],
+		socials: { instagram: 'https://instagram.com/ada' },
+	});
 	});
 });

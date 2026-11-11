@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.28",
+	"version": "3.22.29",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -92,15 +92,15 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-dynamodb": "^3.1162.0",
-		"@aws-sdk/client-sesv2": "^3.1162.0",
+		"@aws-sdk/client-dynamodb": "^3.1166.0",
+		"@aws-sdk/client-sesv2": "^3.1166.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.8",
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
 		"marked": "^18.1.2",
-		"nodemailer": "^10.3.1",
+		"nodemailer": "^10.5.0",
 		"prop-types": "^15.8.1",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",
@@ -112,12 +112,12 @@
 		"@babel/preset-env": "^8.0.7",
 		"@babel/preset-react": "^8.0.1",
 		"@eslint/js": "9.39.4",
-		"@storybook/addon-a11y": "^10.6.6",
-		"@storybook/addon-docs": "^10.6.6",
+		"@storybook/addon-a11y": "^10.6.7",
+		"@storybook/addon-docs": "^10.6.7",
 		"@storybook/addon-webpack5-compiler-babel": "^4.0.1",
 		"@storybook/preset-scss": "^1.0.3",
-		"@storybook/react-dom-shim": "^10.6.6",
-		"@storybook/react-webpack5": "^10.6.6",
+		"@storybook/react-dom-shim": "^10.6.7",
+		"@storybook/react-webpack5": "^10.6.7",
 		"@testing-library/dom": "^10.4.2",
 		"@types/jsdom": "^30.0.0",
 		"@types/md5": "^2.3.6",
@@ -152,9 +152,9 @@
 		"node-fetch": "^3.3.2",
 		"null-loader": "^4.0.1",
 		"react-test-renderer": "^19.3.1",
-		"sass": "^1.108.0",
+		"sass": "^1.108.2",
 		"sass-loader": "^17.1.0",
-		"storybook": "^10.6.6",
+		"storybook": "^10.6.7",
 		"style-loader": "^4.0.0",
 		"ts-loader": "^9.6.2",
 		"url-loader": "^4.1.1",
@@ -166,13 +166,13 @@
 		"flatted": "^3.4.2"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1162.0",
-		"@aws-sdk/client-route-53": "^3.1162.0",
+		"@aws-sdk/client-cloudwatch": "^3.1166.0",
+		"@aws-sdk/client-route-53": "^3.1166.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^189.0.0",
 		"md5": "^2.3.0",
-		"puppeteer": "^25.16.0",
+		"puppeteer": "^25.17.0",
 		"recharts": "^3.10.1"
 	}
 }

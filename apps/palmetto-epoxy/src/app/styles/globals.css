@@ -236,6 +236,25 @@ footer {
 }
 
 
+/* ===== BLOG CATEGORY LIST STYLES ===== */
+nav.wordpress-category-list {
+    background-color: #FFF;
+    border-block: 1px solid #000;
+    a {
+        border: 1px solid transparent;
+        color: contrast-color(#FFF);
+    }
+    a:hover {
+        border: 1px solid #CCC;
+        background: linear-gradient(rgba(255, 255, 255, .5), rgba(255, 255, 255, .5)), url(/images/splatter.jpg) !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: cover !important;;
+    }
+}
+
+
+
 /* ===== FORM STYLES ===== */
 
 .display-vertical {

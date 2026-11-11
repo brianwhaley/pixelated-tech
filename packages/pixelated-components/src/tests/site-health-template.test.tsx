@@ -299,4 +299,56 @@ describe('SiteHealthTemplate', () => {
 
     // Component should be unmounted, no state updates should occur
   });
+
+  it('builds non-GET requests with headers, body, params, and cache control', async () => {
+    const mockData = { success: true, data: { saved: true } };
+    mockSmartFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve(mockData),
+    });
+    const originalSearch = window.location.search;
+    window.history.replaceState({}, '', '?cache=false');
+
+    render(
+      <SiteHealthTemplate
+        siteName="test-site"
+        enableCacheControl
+        endpoint={{
+          endpoint: '/api/test',
+          method: 'POST',
+          headers: { Authorization: 'Bearer test' },
+          params: { mode: 'full' },
+          body: { enabled: true },
+          responseTransformer: (result) => result.data,
+        }}
+      >
+        {(data: { saved: boolean } | null) => <div>Saved: {String(data?.saved)}</div>}
+      </SiteHealthTemplate>
+    );
+
+    await waitFor(() => expect(screen.getByText('Saved: true')).toBeInTheDocument());
+    expect(mockSmartFetch).toHaveBeenCalledWith(
+      'http://localhost:3000/api/test?siteName=test-site&mode=full&cache=false',
+      expect.objectContaining({
+        requestInit: {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test' },
+          body: JSON.stringify({ enabled: true }),
+        },
+      }),
+    );
+    window.history.replaceState({}, '', originalSearch || '/');
+  });
+
+  it('renders provided data without fetching', () => {
+    render(
+      <SiteHealthTemplate siteName="test-site" data={{ ready: true }} endpoint={{ endpoint: '/api/test' }}>
+        {(data: { ready: boolean } | null) => <div>Ready: {String(data?.ready)}</div>}
+      </SiteHealthTemplate>
+    );
+    expect(screen.getByText('Ready: true')).toBeInTheDocument();
+    expect(mockSmartFetch).not.toHaveBeenCalled();
+  });
 });
