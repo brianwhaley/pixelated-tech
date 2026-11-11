@@ -69,12 +69,7 @@ describe('publishSocialPost', () => {
 			postUrl: undefined,
 			baseURL: 'https://public-api.example.com',
 		});
-		expect(launchPuppeteerBrowser).toHaveBeenCalledWith({
-			headless: true,
-			executablePath: '/browser/chrome',
-			defaultViewport: { width: 1050, height: 853 },
-			timeout: 120000,
-		});
+		expect(launchPuppeteerBrowser).toHaveBeenCalledWith({ headless: true, executablePath: '/browser/chrome', timeout: 120000 });
 		expect(publishToNextdoor).toHaveBeenCalledWith({
 			page: { id: 'page' },
 			username: 'nextdoor-user',
@@ -108,6 +103,22 @@ describe('publishSocialPost', () => {
 		await expect(publishSocialPost({ site: 'example', postId: '42', nextdoorSession: { cookies } })).resolves.toBeDefined();
 		expect(page.setCookie).toHaveBeenCalledWith(...cookies);
 		expect(publishToNextdoor).toHaveBeenCalledWith(expect.objectContaining({ authenticated: true }));
+	});
+
+	it('adds the Nextdoor domain to session cookies missing cookie scope', async () => {
+		getFullPixelatedConfig.mockReturnValue({
+			...config,
+			integrations: {
+				...config.integrations,
+				socialPublish: { nextdoor: { sites: { example: { businessPageUrl: 'https://nextdoor.com/page/example' } } } },
+			},
+		});
+		const cookie = { name: 'session', value: 'cookie', path: '/' };
+		const page = { id: 'page', setCookie: vi.fn() };
+		openPuppeteerPage.mockResolvedValue(page);
+
+		await expect(publishSocialPost({ site: 'example', postId: '42', nextdoorSession: { cookies: [cookie] } })).resolves.toBeDefined();
+		expect(page.setCookie).toHaveBeenCalledWith({ ...cookie, domain: '.nextdoor.com' });
 	});
 
 	it('rejects missing WordPress configuration before fetching the post', async () => {

@@ -5,3 +5,11 @@ node_modules/
 coverage/
 certificates/
 *.tsbuildinfo
+**/node_modules/
+**/.next/
+**/coverage/
+**/public/
+**/dist/
+!packages/pixelated-components/dist/
+!packages/pixelated-components/dist/**
+shared/

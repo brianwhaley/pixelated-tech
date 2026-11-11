@@ -6,7 +6,9 @@
   "main": "src/index.mjs",
   "scripts": {
     "build": "node --check src/index.mjs",
-    "test": "node --test social-publish-worker.test.mjs"
+    "test": "node --test social-publish-worker.test.mjs",
+    "invoke:local": "node scripts/invoke-local.mjs",
+    "test:live-nextdoor": "node scripts/run-live-nextdoor.mjs"
   },
   "dependencies": {
     "@pixelated-tech/components": "file:../../../packages/pixelated-components",

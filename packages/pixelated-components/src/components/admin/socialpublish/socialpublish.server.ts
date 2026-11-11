@@ -54,12 +54,16 @@ export async function publishSocialPost(request: SocialPublishRequest): Promise<
 			const browser = await launchPuppeteerBrowser({
 				headless: true,
 				executablePath: config.integrations?.puppeteer?.executable_path,
-				defaultViewport: { width: 1050, height: 853 },
 				timeout: 120000,
 			});
 			try {
 				const page = await openPuppeteerPage(browser);
-				if (request.nextdoorSession?.cookies.length) await page.setCookie(...request.nextdoorSession.cookies);
+				if (request.nextdoorSession?.cookies.length) {
+					const cookies = request.nextdoorSession.cookies.map((cookie) => cookie.domain || cookie.url
+						? cookie
+						: { ...cookie, domain: '.nextdoor.com' });
+					await page.setCookie(...cookies);
+				}
 				const publishInput = {
 					page,
 					username: siteConfig?.username || '',
