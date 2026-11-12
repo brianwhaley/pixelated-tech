@@ -12,7 +12,7 @@ describe('passcode authentication handlers', () => {
 				saveUser,
 				sendPasscode,
 			},
-			loginPath: '/timesheets',
+			loginPath: '/timesheets/login',
 			getAuthenticatedPath: () => '/timesheets/summary',
 			now: () => new Date('2026-11-12T12:00:00Z'),
 		});
@@ -27,7 +27,7 @@ describe('passcode authentication handlers', () => {
 		}));
 
 		expect(response.status).toBe(303);
-		expect(response.headers.get('location')).toBe('https://www.amavajanitorial.com/timesheets?sent=1');
+		expect(response.headers.get('location')).toBe('https://www.amavajanitorial.com/timesheets/login?sent=1');
 		expect(saveUser).not.toHaveBeenCalled();
 		expect(sendPasscode).not.toHaveBeenCalled();
 	});
@@ -42,7 +42,7 @@ describe('passcode authentication handlers', () => {
 				saveUser: vi.fn(async (savedUser) => savedUsers.push(savedUser)),
 				sendPasscode: vi.fn(),
 			},
-			loginPath: '/timesheets',
+			loginPath: '/timesheets/login',
 			getAuthenticatedPath: () => '/timesheets/summary',
 			now: () => new Date('2026-11-12T12:00:00Z'),
 		});

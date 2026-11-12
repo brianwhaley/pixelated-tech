@@ -29,6 +29,34 @@ applications:
           - key: "Expires"
             value: "0"
 
+      # REMOVE TIMESHEET CACHING FOR AMAVA
+
+      - pattern: "/timesheets"
+        headers: *nocache_headers
+
+      - pattern: "/timesheets/"
+        headers: *nocache_headers
+
+      - pattern: "/timesheets/*"
+        headers: *nocache_headers
+
+      - pattern: "/timesheets/**/*"
+        headers: *nocache_headers
+
+      # REMOVE EVENTS REPORT CACHING FOR THREEMUSES
+
+      - pattern: "/events/report"
+        headers: *nocache_headers
+
+      - pattern: "/events/report/"
+        headers: *nocache_headers
+
+      - pattern: "/events/report/*"
+        headers: *nocache_headers
+
+      - pattern: "/events/report*"
+        headers: *nocache_headers
+
       - pattern: "**/*"
         headers: &page_headers
           - key: "Cache-Control"
@@ -94,33 +122,4 @@ applications:
     customHeaders: *default_headers
 
   - appRoot: apps/threemuses
-    customHeaders:
-      - pattern: "/events/report"
-        headers: *nocache_headers
-
-      - pattern: "/events/report/"
-        headers: *nocache_headers
-
-      - pattern: "/events/report/*"
-        headers: *nocache_headers
-
-      - pattern: "/events/report*"
-        headers: *nocache_headers
-
-      - pattern: "/_next/static/**/*"
-        headers: *static_headers
-
-      - pattern: "/_next/image/**/*"
-        headers: *asset_headers
-
-      - pattern: "/images/**/*"
-        headers: *asset_headers
-
-      - pattern: "/fonts/**/*"
-        headers: *asset_headers
-
-      - pattern: "/videos/**/*"
-        headers: *asset_headers
-
-      - pattern: "**/*"
-        headers: *page_headers
+    customHeaders: *default_headers

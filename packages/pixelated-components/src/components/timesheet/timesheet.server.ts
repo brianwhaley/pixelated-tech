@@ -92,7 +92,7 @@ export async function createTimesheetAuthHandlers(domain: string, siteName: stri
 	const store = createAuthStore(domain, siteName);
 	return createPasscodeAuthHandlers({
 		store,
-		loginPath: '/timesheets',
+		loginPath: '/timesheets/login',
 		getAuthenticatedPath: (user) => user.role === 'admin' ? '/timesheets/admin' : '/timesheets/summary',
 		cookieName: DEFAULT_PASSCODE_COOKIE,
 	});
