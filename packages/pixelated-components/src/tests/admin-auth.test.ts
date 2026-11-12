@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { getAuthorizedRoutesByID, isRouteAllowedForID } from '../components/admin/auth/authorization';
+import { getAuthorizedRoutesByID, isRouteAllowedForID } from '../components/foundation/auth/authorization';
 import {
   getAllowedAdminRoutes,
   getAuthorizedRoutePaths,
   normalizeRoutePath,
-} from '../components/admin/auth/auth-functions';
+} from '../components/foundation/auth/auth-functions';
 
 const authorizationConfig = {
   authorizedUsers: {

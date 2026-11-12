@@ -1,4 +1,4 @@
-import { TimesheetAdminPage } from '@pixelated-tech/components/adminserver';
+import { TimesheetAdminPage } from '@pixelated-tech/components/server';
 import { PageTitleHeader } from '@pixelated-tech/components';
 
 export default function TimesheetAdminPageWrapper({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

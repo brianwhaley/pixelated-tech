@@ -5,7 +5,7 @@ import {
 	getWeekStart,
 	isValidHours,
 	totalHours,
-} from '../components/admin/timesheet/timesheet.functions';
+} from '../components/timesheet/timesheet.functions';
 
 describe('timesheet functions', () => {
 	it('starts weeks on Sunday', () => {

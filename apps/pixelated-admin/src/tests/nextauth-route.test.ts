@@ -29,6 +29,11 @@ function makeContext(nextauth: string[]) {
 describe('nextauth/[...nextauth] route', () => {
 	beforeEach(() => {
 		vi.doMock('@pixelated-tech/components/server', () => ({
+			getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
+			getGoogleOAuthCredentials: () => ({
+				clientId: (TEST_CONFIG.integrations as any).google.client_id,
+				clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+			}),
 			getFullPixelatedConfig: () => ({
 				integrations: {
 					nextAuth: TEST_CONFIG.nextAuth,

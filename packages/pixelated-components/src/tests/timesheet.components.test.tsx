@@ -7,7 +7,7 @@ import {
 	TimesheetEntryForm,
 	TimesheetPasscodeForm,
 	TimesheetWeekSelector,
-} from '../components/admin/timesheet/timesheet.components';
+} from '../components/timesheet/timesheet.components';
 
 vi.mock('../components/sitebuilder/form/formengine', () => ({
 	FormEngine: ({ formData, method, onSubmitHandler }: {

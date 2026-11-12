@@ -23,13 +23,13 @@ vi.mock('../components/structure/page-blocks', () => ({
 	PageSection: ({ children }: { children: React.ReactNode }) => <section>{children}</section>,
 	PageSectionHeader: ({ title }: { title: string }) => <h2>{title}</h2>,
 }));
-vi.mock('../components/admin/timesheet/timesheet.components', () => ({
+vi.mock('../components/timesheet/timesheet.components', () => ({
 	TimesheetEmailForm: () => <div>email form</div>,
 	TimesheetEntryForm: ({ weekOf }: { weekOf: string }) => <div>entry form {weekOf}</div>,
 	TimesheetPasscodeForm: ({ email }: { email: string }) => <div>passcode form {email}</div>,
 	TimesheetWeekSelector: ({ weekOf }: { weekOf: string }) => <div>week selector {weekOf}</div>,
 }));
-vi.mock('../components/admin/timesheet/timesheet.server', () => ({
+vi.mock('../components/timesheet/timesheet.server', () => ({
 	getAuthenticatedTimesheetUser: mocks.getAuthenticatedTimesheetUser,
 	getTimesheetForWeek: mocks.getTimesheetForWeek,
 	isTimesheetAdmin: mocks.isTimesheetAdmin,
@@ -43,7 +43,7 @@ import {
 	TimesheetLoginPage,
 	TimesheetNewPage,
 	TimesheetSummaryPage,
-} from '../components/admin/timesheet/timesheet.pages.server';
+} from '../components/timesheet/timesheet.pages.server';
 
 describe('timesheet server pages', () => {
 	beforeEach(() => {

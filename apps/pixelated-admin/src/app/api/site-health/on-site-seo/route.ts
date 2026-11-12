@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { performOnSiteSEOAnalysis, CacheManager } from '@pixelated-tech/components/adminserver';
+import { performOnSiteSEOAnalysis } from '@pixelated-tech/components/adminserver';
+import { CacheManager } from '@pixelated-tech/components';
 import { getSiteConfig } from '@pixelated-tech/components/server';
 import { createErrorResponse } from '../../../lib/route-utils';
 
 const debug = false;
 
 // Cache for on-site SEO data (1 hour)
-const onSiteSEOCache = new CacheManager({ ttl: 60 * 60 * 1000, prefix: 'sitehealth-on-site-seo-' });
+const onSiteSEOCache = new CacheManager({ domain: 'sitehealth', namespace: 'on-site-seo', ttl: 60 * 60 * 1000 });
 
 export async function GET(request: NextRequest) {
 	let requestedSiteName: string | null = null;

@@ -75,6 +75,15 @@ vi.mock('@pixelated-tech/components', async () => {
 		LocalBusinessSchema: ({ children }: any) => <>{children}</>,
 		ServicesSchema: ({ children }: any) => <>{children}</>,
 		usePixelatedConfig: () => ({ routes: [{ name: 'Home', path: '/' }, { name: 'Login', path: '/login' }], siteInfo: {} }),
+		CacheManager: class {
+			constructor() {}
+			get() { return null; }
+			set() {}
+		},
+		getAllowedAdminRoutes: (email: string | undefined | null, routes: any[] = []) => routes.filter(route => typeof route?.path === 'string' && route.path !== '/login'),
+		isRouteAllowedForID: () => true,
+		normalizeRoutePath: (value: string | undefined | null) => String(value ?? '/').trim().replace(/\/+/g, '/') || '/',
+		Unauthorized: ({ children }: any) => <div data-testid="Unauthorized">{children}</div>,
 	};
 });
 
@@ -160,6 +169,8 @@ vi.mock('@/lib/authentication', () => ({
 }));
 
 vi.mock('@pixelated-tech/components/server', () => ({
+	getNextAuthCredentials: () => ({ secret: 'test-secret' }),
+	getGoogleOAuthCredentials: () => ({ clientId: 'g-id', clientSecret: 'g-secret' }),
 	getRouteByKey: () => ({ title: 'Test', description: 'Desc', keywords: ['a'] }),
 	generateMetaTags: () => <meta />, 
 	PageMetaTags: () => <meta data-testid="mock-page-meta-tags" />,
@@ -429,8 +440,8 @@ describe('pixelated-admin extra coverage', () => {
 			if (name === 'host') return 'admin.pixelated.tech';
 			return null;
 		};
-		const adminClient = await import('@pixelated-tech/components/adminclient');
-		const spy = vi.spyOn(adminClient, 'isRouteAllowedForID').mockReturnValue(false);
+		const foundation = await import('@pixelated-tech/components');
+		const spy = vi.spyOn(foundation, 'isRouteAllowedForID').mockReturnValue(false);
 		const mod = await importModule('src/app/layout.tsx');
 		const Layout = mod.default;
 		await Layout({ children: <div /> });

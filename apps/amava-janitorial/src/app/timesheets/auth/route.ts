@@ -1,4 +1,4 @@
-import { createTimesheetAuthHandlers } from '@pixelated-tech/components/adminserver';
+import { createTimesheetAuthHandlers } from '@pixelated-tech/components/server';
 import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 
 export async function GET(request: Request) {

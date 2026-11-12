@@ -2,7 +2,7 @@ import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { getGoogleOAuthCredentials, getNextAuthCredentials } from '@pixelated-tech/components/adminserver';
+import { getGoogleOAuthCredentials, getNextAuthCredentials } from '@pixelated-tech/components/server';
 
 const nextAuthCfg = getNextAuthCredentials();
 const googleCfg = getGoogleOAuthCredentials();

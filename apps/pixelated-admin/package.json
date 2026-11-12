@@ -1,6 +1,6 @@
 {
   "name": "pixelated-admin",
-  "version": "1.10.26",
+  "version": "1.10.27",
   "private": true,
   "scripts": {
     "dev": "npm run clean && NODE_OPTIONS='--inspect' next dev --webpack -p 3006 --experimental-https",
@@ -38,10 +38,10 @@
     "react": "^19.2.7"
   },
   "devDependencies": {
-    "@aws-sdk/client-amplify": "^3.1165.0",
+    "@aws-sdk/client-amplify": "^3.1167.0",
     "@aws-sdk/client-cloudwatch": "^3.1165.0",
     "@aws-sdk/client-dynamodb": "^3.1165.0",
-    "@aws-sdk/client-iam": "^3.1165.0",
+    "@aws-sdk/client-iam": "^3.1167.0",
     "@aws-sdk/client-route-53": "^3.1165.0",
     "@aws-sdk/client-sesv2": "^3.1165.0",
     "@eslint/eslintrc": "^3.3.5",
@@ -64,7 +64,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "^16.4.6",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "glob": "^14.0.4",
+    "glob": "^14.0.6",
     "googleapis": "^189.0.0",
     "jsdom": "^29.1.1",
     "marked": "^18.2.0",

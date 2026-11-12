@@ -56,6 +56,11 @@ vi.mock('@pixelated-tech/components/server', async () => {
 });
 
 vi.mock('@pixelated-tech/components', () => ({
+	CacheManager: class {
+		constructor() {}
+		get() { return null; }
+		set() {}
+	},
 	getContentTypes: async () => [{ id: 'type-1', name: 'Type 1' }],
 	migrateContentType: async () => ({ success: true, migrated: true }),
 	validateContentfulCredentials: async () => ({ valid: true }),

@@ -4,6 +4,13 @@ import { TEST_CONFIG } from './fixtures';
 
 // Stub @pixelated-tech/components to avoid requiring deep optional modules
 vi.mock('@pixelated-tech/components/server', () => ({
+	getNextAuthCredentials: () => ({
+		secret: TEST_CONFIG.nextAuth.secret,
+	}),
+	getGoogleOAuthCredentials: () => ({
+		clientId: (TEST_CONFIG.integrations as any).google.client_id,
+		clientSecret: (TEST_CONFIG.integrations as any).google.client_secret,
+	}),
 	getFullPixelatedConfig: () => ({
 		integrations: {
 			nextAuth: { secret: TEST_CONFIG.nextAuth.secret },
@@ -40,7 +47,7 @@ vi.mock('@pixelated-tech/components/server', () => ({
 }));
 
 vi.mock('@pixelated-tech/components', async (importOriginal) => {
-	const actual = await importOriginal();
+	const actual = await importOriginal<Record<string, unknown> & { server: Record<string, unknown> }>();
 	return {
 		__esModule: true,
 		...actual,
@@ -87,7 +94,7 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 
 // augment components mock with client-side utilities used by components
 vi.mock('@pixelated-tech/components', async (importOriginal) => {
-	const actual = await importOriginal();
+	const actual = await importOriginal<typeof import('@pixelated-tech/components')>();
 	return {
 		...actual,
 		PageSection: (props: any) => /*#__PURE__*/ (props.children),

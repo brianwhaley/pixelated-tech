@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createPasscodeAuthHandlers } from '../components/admin/auth/passcode-auth.server';
+import { createPasscodeAuthHandlers } from '../components/foundation/auth/passcode-auth.server';
 
 describe('passcode authentication handlers', () => {
 	it('issues a passcode without revealing whether an email is registered', async () => {

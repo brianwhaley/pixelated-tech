@@ -1,10 +1,11 @@
 import fs from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
-import { analyzeSecurityHealth, CacheManager } from '@pixelated-tech/components/adminserver';
+import { analyzeSecurityHealth } from '@pixelated-tech/components/adminserver';
+import { CacheManager } from '@pixelated-tech/components';
 import { getSiteConfig } from '@pixelated-tech/components/server';
 
 // Cache for security/dependency data (1 hour)
-const securityCache = new CacheManager({ ttl: 60 * 60 * 1000, prefix: 'sitehealth-security-' });
+const securityCache = new CacheManager({ domain: 'sitehealth', namespace: 'security', ttl: 60 * 60 * 1000 });
 
 export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);

@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { SidePanel, MenuAccordion } from '@pixelated-tech/components';
 import { useSession, signOut } from 'next-auth/react';
 import { usePixelatedConfig } from '@pixelated-tech/components';
-import { getAllowedAdminRoutes } from '@pixelated-tech/components/adminclient';
+import { getAllowedAdminRoutes } from '@pixelated-tech/components';
 import authorizationConfig from '../data/authorization.json';
 
 export default function Nav() {

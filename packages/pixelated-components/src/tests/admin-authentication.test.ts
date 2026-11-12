@@ -22,7 +22,7 @@ describe('admin authentication helpers', () => {
 			getFullPixelatedConfig: () => fakeConfig,
 		}));
 
-		const { getNextAuthCredentials, getGoogleOAuthCredentials } = await import('../components/admin/auth/authentication');
+		const { getNextAuthCredentials, getGoogleOAuthCredentials } = await import('../components/foundation/auth/authentication');
 
 		expect(getNextAuthCredentials()).toEqual({ secret: 'fake-secret' });
 		expect(getGoogleOAuthCredentials()).toEqual({ clientId: 'g-id', clientSecret: 'g-secret' });
@@ -37,7 +37,7 @@ describe('admin authentication helpers', () => {
 			}),
 		}));
 
-		const mod = await import('../components/admin/auth/authentication');
+		const mod = await import('../components/foundation/auth/authentication');
 		expect(() => mod.getNextAuthCredentials()).toThrow('nextAuth.secret not configured in pixelated.config.json');
 	});
 
@@ -50,7 +50,7 @@ describe('admin authentication helpers', () => {
 			}),
 		}));
 
-		const mod = await import('../components/admin/auth/authentication');
+		const mod = await import('../components/foundation/auth/authentication');
 		expect(() => mod.getGoogleOAuthCredentials()).toThrow('Google OAuth credentials not configured in pixelated.config.json');
 	});
 });

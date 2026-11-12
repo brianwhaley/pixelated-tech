@@ -1,4 +1,7 @@
 export * from './404';
+export * from './auth/auth-components';
+export * from './auth/auth-functions';
+export * from './auth/authorization';
 export * from './cache-manager';
 export * from './css';
 export * from './global-error';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { renderWithoutProviders, screen } from '../test/test-utils';
-import { Unauthorized } from '@/components/admin/auth/auth-components';
+import { Unauthorized } from '@/components/foundation/auth/auth-components';
 
 describe('Unauthorized component', () => {
 	it('renders unauthorized message section', () => {

@@ -1,13 +1,13 @@
 "use server";
 
-import { getDynamoStringItem, putDynamoStringItem, queryDynamoStringItems } from '../../integrations/aws.dynamo.integration';
+import { getDynamoStringItem, putDynamoStringItem, queryDynamoStringItems } from '../integrations/aws.dynamo.integration';
 import {
 	DEFAULT_PASSCODE_COOKIE,
 	createPasscodeAuthHandlers,
 	validatePasscodeSession,
 	type PasscodeAuthStore,
-} from '../auth/passcode-auth.server';
-import { smartFetch } from '../../foundation/smartfetch';
+} from '../foundation/auth/passcode-auth.server';
+import { smartFetch } from '../foundation/smartfetch';
 import { getWeekDates, getWeekStart, isValidHours, totalHours } from './timesheet.functions';
 import type { TimesheetHours, TimesheetRecord, TimesheetUser } from './timesheet.types';
 

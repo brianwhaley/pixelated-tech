@@ -3,8 +3,8 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { MenuSimple, Table } from '../../elements/index.elements';
-import { PageSection, PageSectionHeader } from '../../structure/page-blocks';
+import { MenuSimple, Table } from '../elements/index.elements';
+import { PageSection, PageSectionHeader } from '../structure/page-blocks';
 import { TimesheetEmailForm, TimesheetEntryForm, TimesheetPasscodeForm, TimesheetWeekSelector } from './timesheet.components';
 import { getWeekStart, formatWeekLabel } from './timesheet.functions';
 import {
@@ -15,7 +15,7 @@ import {
 	listUserTimesheets,
 	saveTimesheet,
 } from './timesheet.server';
-import { DEFAULT_PASSCODE_COOKIE } from '../auth/passcode-auth.server';
+import { DEFAULT_PASSCODE_COOKIE } from '../foundation/auth/passcode-auth.server';
 
 type SearchParams = Record<string, string | string[] | undefined>;
 

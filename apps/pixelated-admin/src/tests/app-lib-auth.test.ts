@@ -10,7 +10,7 @@ describe('NextAuth config (server)', () => {
 
 	it('exposes authOptions with values from pixelated config', async () => {
 		vi.resetModules();
-		vi.doMock('@pixelated-tech/components/adminserver', () => ({
+		vi.doMock('@pixelated-tech/components/server', () => ({
 			performAxeCoreAnalysis: vi.fn(),
 			getNextAuthCredentials: () => ({ secret: TEST_CONFIG.nextAuth.secret }),
 			getGoogleOAuthCredentials: () => ({
@@ -28,7 +28,7 @@ describe('NextAuth config (server)', () => {
 
 	it('throws when required values are missing', async () => {
 		vi.resetModules();
-		vi.doMock('@pixelated-tech/components/adminserver', () => ({
+		vi.doMock('@pixelated-tech/components/server', () => ({
 			performAxeCoreAnalysis: vi.fn(),
 			getNextAuthCredentials: () => { throw new Error('nextAuth.secret not configured in pixelated.config.json'); },
 			getGoogleOAuthCredentials: () => ({

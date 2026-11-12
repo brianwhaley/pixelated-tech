@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getAuthorizedRoutesByID, isRouteAllowedForID, getAllowedAdminRoutes } from '@pixelated-tech/components/adminclient';
+import { getAuthorizedRoutesByID, isRouteAllowedForID, getAllowedAdminRoutes } from '@pixelated-tech/components';
 
 const authorizationConfig = {
 	authorizedUsers: {

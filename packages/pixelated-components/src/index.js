@@ -11,6 +11,9 @@ export * from './components/config/config.client';
 export * from './components/config/config.types';
 export * from './components/config/config.validators';
 
+export * from './components/timesheet/index.timesheet';
+export * as TimesheetComponents from './components/timesheet/index.timesheet';
+
 export * from './components/elements/index.elements';
 export * as ElementsComponents from './components/elements/index.elements';
 

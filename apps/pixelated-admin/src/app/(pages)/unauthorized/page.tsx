@@ -1,4 +1,4 @@
-import { Unauthorized } from '@pixelated-tech/components/adminclient';
+import { Unauthorized } from '@pixelated-tech/components';
 import { PageTitleHeader } from '@pixelated-tech/components';
 
 export default function UnauthorizedPage() {

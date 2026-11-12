@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { DEFAULT_PASSCODE_COOKIE, getAuthenticatedTimesheetUser } from '@pixelated-tech/components/adminserver';
+import { getAuthenticatedTimesheetUser } from '@pixelated-tech/components/server';
+import { DEFAULT_PASSCODE_COOKIE } from '@pixelated-tech/components/server';
 import { PageTitleHeader } from '@pixelated-tech/components';
 
 const DOMAIN = 'amavajanitorial.com';

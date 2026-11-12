@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
-import { DEFAULT_PASSCODE_COOKIE, getAuthenticatedTimesheetUser } from '@pixelated-tech/components/adminserver';
+import { getAuthenticatedTimesheetUser } from '@pixelated-tech/components/server';
+import { DEFAULT_PASSCODE_COOKIE } from '@pixelated-tech/components/server';
 import { MenuSimple } from '@pixelated-tech/components';
 import { PixelatedFooter } from "@pixelated-tech/components";
 import { headers } from "next/headers";

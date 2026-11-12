@@ -23,7 +23,7 @@ import {
 	listAdminTimesheets,
 	listUserTimesheets,
 	saveTimesheet,
-} from '../components/admin/timesheet/timesheet.server';
+} from '../components/timesheet/timesheet.server';
 
 const user = {
 	domain: 'example.com',

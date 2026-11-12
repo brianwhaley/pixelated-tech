@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { FormEngine } from '../../sitebuilder/form/formengine';
+import { FormEngine } from '../sitebuilder/form/formengine';
 import { timesheetEmailForm, timesheetEntryForm, timesheetPasscodeForm, timesheetWeekForm } from './timesheet.forms';
 import type { TimesheetRecord } from './timesheet.types';
 import './timesheet.css';

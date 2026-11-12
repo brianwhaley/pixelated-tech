@@ -34,4 +34,7 @@ export * as StructureComponents from './components/structure/index.structure.ser
 export * from './components/sitebuilder/index.sitebuilder.server';
 export * as SiteBuilderComponents from './components/sitebuilder/index.sitebuilder.server';
 
+export * from './components/timesheet/index.timesheet.server';
+export * as TimesheetComponents from './components/timesheet/index.timesheet.server';
+
 export * from './version';

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkUptimeHealth, CacheManager } from '@pixelated-tech/components/adminserver';
+import { checkUptimeHealth } from '@pixelated-tech/components/adminserver';
+import { CacheManager } from '@pixelated-tech/components';
 import { getSiteConfig } from '@pixelated-tech/components/server';
 
 // Cache for uptime data (1 hour)
-const uptimeCache = new CacheManager({ ttl: 60 * 60 * 1000, prefix: 'sitehealth-uptime-' });
+const uptimeCache = new CacheManager({ domain: 'sitehealth', namespace: 'uptime', ttl: 60 * 60 * 1000 });
 
 export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);
