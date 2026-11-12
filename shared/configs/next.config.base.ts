@@ -9,6 +9,7 @@ import path from "path";
  */
 export function getBaseNextConfig(): NextConfig {
 	return {
+        agentRules: false,
 		experimental: {
 			optimizeCss: false,
 			externalDir: true,

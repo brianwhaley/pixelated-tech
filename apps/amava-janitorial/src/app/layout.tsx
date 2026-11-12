@@ -4,9 +4,6 @@ import { BreadcrumbListSchema } from '@pixelated-tech/components/server';
 import { SchemaWebPage } from '@pixelated-tech/components/server';
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import LayoutClient from '@/app/elements/layout-client';
-import Header from '@/app/elements/header';
-// import Nav from '@/app/elements/nav';
-import Footer from '@/app/elements/footer';
 import "@pixelated-tech/components/css/pixelated.global.css";
 import "@pixelated-tech/components/css/pixelated.grid.scss";
 import './styles/globals.css';
@@ -14,7 +11,7 @@ import './styles/globals.css';
 export default async function RootLayout({
 	children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactElement;
 }>) {
 	return (
 		<html lang="en">
@@ -31,10 +28,7 @@ export default async function RootLayout({
 			</head>
 			<body>
 				<PixelatedServerConfigProvider>
-					<header><Header /></header>
-					{ /* <nav><Nav /></nav> */ }
-					<main>{children}</main>
-					<footer><Footer /></footer>
+					{children}
 				</PixelatedServerConfigProvider>
 			</body>
 		</html>

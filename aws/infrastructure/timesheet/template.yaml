@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Shared Pixelated timesheet DynamoDB tables.
+
+Resources:
+  TimesheetUsersTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: PixelatedTimesheetUsersTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: domain
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: domain
+          KeyType: HASH
+        - AttributeName: email
+          KeyType: RANGE
+      Tags:
+        - Key: platform
+          Value: pixelated
+        - Key: feature
+          Value: timesheet
+
+  TimesheetsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: PixelatedTimesheetsTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: domain
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: domain
+          KeyType: HASH
+        - AttributeName: id
+          KeyType: RANGE
+      Tags:
+        - Key: platform
+          Value: pixelated
+        - Key: feature
+          Value: timesheet
+
+Outputs:
+  TimesheetUsersTableName:
+    Value: !Ref TimesheetUsersTable
+  TimesheetsTableName:
+    Value: !Ref TimesheetsTable

@@ -1,4 +1,4 @@
-import { DeleteItemCommand, DynamoDBClient, PutItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
+import { DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { getFullPixelatedConfig } from '../config/config';
 
 export const DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE = 'PixelatedFormSubmissionsTable';
@@ -128,6 +128,41 @@ export async function putDynamoStringItem(tableName: string, item: Record<string
 		TableName: tableName,
 		Item: Object.fromEntries(Object.entries(item).map(([key, value]) => [key, { S: value }])),
 	}));
+}
+
+export async function getDynamoStringItem(tableName: string, key: Record<string, string>, region?: string) {
+	const client = new DynamoDBClient(getDynamoConfig(region));
+	const response = await client.send(new GetItemCommand({
+		TableName: tableName,
+		Key: Object.fromEntries(Object.entries(key).map(([name, value]) => [name, { S: value }])),
+	}));
+	if (!response.Item) return null;
+	return Object.fromEntries(Object.entries(response.Item).map(([name, value]) => [name, value.S || '']));
+}
+
+export async function queryDynamoStringItems(
+	tableName: string,
+	partitionKey: string,
+	partitionValue: string,
+	region?: string,
+) {
+	const client = new DynamoDBClient(getDynamoConfig(region));
+	const items: Array<Record<string, string>> = [];
+	let exclusiveStartKey: Record<string, any> | undefined;
+	do {
+		const response = await client.send(new QueryCommand({
+			TableName: tableName,
+			KeyConditionExpression: '#partitionKey = :partitionValue',
+			ExpressionAttributeNames: { '#partitionKey': partitionKey },
+			ExpressionAttributeValues: { ':partitionValue': { S: partitionValue } },
+			ExclusiveStartKey: exclusiveStartKey,
+		}));
+		for (const item of response.Items || []) {
+			items.push(Object.fromEntries(Object.entries(item).map(([key, value]) => [key, value.S || ''])));
+		}
+		exclusiveStartKey = response.LastEvaluatedKey;
+	} while (exclusiveStartKey);
+	return items;
 }
 
 export async function listDynamoStringItems(tableName: string, region?: string) {

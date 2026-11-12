@@ -114,6 +114,24 @@ body.formglow {
 
 
 
+
+
+
+/* ========================================
+	BLOG POST CATEGORY LIST Styles
+ ======================================== */
+
+nav.wordpress-category-list {
+    a {
+        color: contrast-color(var(--primary-color));
+    }
+    a:hover {
+        color: contrast-color(var(--secondary-color));
+    }
+}
+
+
+
 /* ========================================
 	SHOPPING CART BUTTON Styles
  ======================================== */

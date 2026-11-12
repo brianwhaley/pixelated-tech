@@ -2,7 +2,6 @@ html, body { padding: 0; margin: 0; }
 * { box-sizing: border-box; }
 #root { min-height:100vh; }
 
-
 /* ========================================
     HEADER
 ======================================== */
@@ -201,4 +200,59 @@ footer .callout {
 #recent-blog-section .blog-post-summary {
     border: 4px solid var(--secondary-color);
     border-radius: 0px;
+}
+
+
+/* ========================================
+        TIMESHEETS
+======================================== */
+
+.timesheet-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f5f7fa;
+    color: #17212b;
+}
+
+.timesheet-shell-header {
+    background: #17212b;
+    color: #fff;
+    padding: 24px 20px;
+}
+
+.timesheet-shell-inner {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+}
+
+.timesheet-shell-brand {
+    margin: 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.timesheet-shell h1 {
+    margin: 8px 0 16px;
+    font-size: 2rem;
+}
+
+.timesheet-shell-header .menu-wrapper {
+    margin: 0;
+}
+
+.timesheet-shell-main {
+    flex: 1;
+    padding: 32px 20px;
+}
+
+.timesheet-shell-footer {
+    background: #dce3ea;
+    padding: 16px 20px;
+    color: #384653;
+}
+
+.timesheet-shell-footer p {
+    margin: 0;
 }

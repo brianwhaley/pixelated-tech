@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.29",
+	"version": "3.22.30",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -92,11 +92,11 @@
 		"update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
 	},
 	"dependencies": {
-		"@aws-sdk/client-dynamodb": "^3.1166.0",
-		"@aws-sdk/client-sesv2": "^3.1166.0",
+		"@aws-sdk/client-dynamodb": "^3.1167.0",
+		"@aws-sdk/client-sesv2": "^3.1167.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
-		"@testing-library/user-event": "^14.6.8",
+		"@testing-library/user-event": "^14.6.10",
 		"date-fns": "^4.3.0",
 		"html-entities": "^2.6.0",
 		"marked": "^18.1.2",
@@ -108,7 +108,7 @@
 		"vitest": "^5.1.0"
 	},
 	"devDependencies": {
-		"@babel/parser": "^8.0.10",
+		"@babel/parser": "^8.1.2",
 		"@babel/preset-env": "^8.0.7",
 		"@babel/preset-react": "^8.0.1",
 		"@eslint/js": "9.39.4",
@@ -142,7 +142,7 @@
 		"eslint-plugin-jsx-a11y": "^6.10.2",
 		"eslint-plugin-react": "^7.37.5",
 		"file-loader": "^6.2.0",
-		"glob": "^14.0.4",
+		"glob": "^14.0.6",
 		"globals": "^17.12.0",
 		"happy-dom": "^21.0.4",
 		"jsdom": "^29.1.1",
@@ -166,8 +166,8 @@
 		"flatted": "^3.4.2"
 	},
 	"optionalDependencies": {
-		"@aws-sdk/client-cloudwatch": "^3.1166.0",
-		"@aws-sdk/client-route-53": "^3.1166.0",
+		"@aws-sdk/client-cloudwatch": "^3.1167.0",
+		"@aws-sdk/client-route-53": "^3.1167.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^189.0.0",

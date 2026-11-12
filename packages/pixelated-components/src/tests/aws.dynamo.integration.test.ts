@@ -23,6 +23,20 @@ vi.mock('@aws-sdk/client-dynamodb', () => ({
 			this.input = input;
 		}
 	},
+	GetItemCommand: class {
+		input: any;
+
+		constructor(input: any) {
+			this.input = input;
+		}
+	},
+	QueryCommand: class {
+		input: any;
+
+		constructor(input: any) {
+			this.input = input;
+		}
+	},
 }));
 
 vi.mock('../components/config/config', async (importOriginal) => {
@@ -33,7 +47,11 @@ vi.mock('../components/config/config', async (importOriginal) => {
 	};
 });
 
-import { listPixelatedFormSubmissionReportRows } from '../components/integrations/aws.dynamo.integration';
+import {
+	getDynamoStringItem,
+	listPixelatedFormSubmissionReportRows,
+	queryDynamoStringItems,
+} from '../components/integrations/aws.dynamo.integration';
 import { getFullPixelatedConfig } from '../components/config/config';
 
 describe('aws dynamo integration', () => {
@@ -116,9 +134,9 @@ describe('aws dynamo integration', () => {
 			quantity: 1,
 			category: 'Adult',
 		});
-});
+	});
 
-it('preserves legacy item arrays inside parsed orderData', async () => {
+	it('preserves legacy item arrays inside parsed orderData', async () => {
 		mockSend.mockResolvedValueOnce({
 			Items: [
 				{
@@ -155,147 +173,165 @@ it('preserves legacy item arrays inside parsed orderData', async () => {
 				itemCategory: 'Adult',
 			},
 		]);
-});
+	});
 
-it('scans the report table with domain and formName filters', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
-			{
-				domain: { S: 'thethreemusesofbluffton.com' },
-				formName: { S: 'The Three Muses of Bluffton Order Form' },
-				timestamp: { S: '2026-05-05T10:00:00.000Z' },
-				createdAt: { S: '2026-05-05T10:00:00.000Z' },
-				orderData: {
-					S: JSON.stringify({
-						checkoutData: {
-							items: [],
-							shippingTo: {
-								name: 'Test User',
+	it('scans the report table with domain and formName filters', async () => {
+		mockSend.mockResolvedValueOnce({
+			Items: [
+				{
+					domain: { S: 'thethreemusesofbluffton.com' },
+					formName: { S: 'The Three Muses of Bluffton Order Form' },
+					timestamp: { S: '2026-05-05T10:00:00.000Z' },
+					createdAt: { S: '2026-05-05T10:00:00.000Z' },
+					orderData: {
+						S: JSON.stringify({
+							checkoutData: {
+								items: [],
+								shippingTo: {
+									name: 'Test User',
+								},
 							},
-						},
-						captureResponse: {
-							payment: {
-								created_at: '2026-05-05T10:00:00.000Z',
+							captureResponse: {
+								payment: {
+									created_at: '2026-05-05T10:00:00.000Z',
+								},
 							},
-						},
-					}),
-				},
-			},
-		],
-		LastEvaluatedKey: undefined,
-	});
-
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com',
-		formName: 'The Three Muses of Bluffton Order Form',
-	});
-
-	expect(mockSend).toHaveBeenCalledTimes(1);
-	expect(rows).toHaveLength(1);
-	expect(rows[0].created_at).toBe(new Date('2026-05-05T10:00:00.000Z').toISOString());
-	expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Test User');
-});
-
-it('returns generic rows without Three Muses-specific shipping fields', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
-			{
-				domain: { S: 'palmetto-epoxy.com' },
-				formName: { S: 'contact-form' },
-				Date: { S: '6/16/2025' },
-				subject: { S: 'Palmetto Epoxy Contact Us Submit' },
-				from: { S: 'palmettoepoxy@gmail.com' },
-				to: { S: 'palmettoepoxy@gmail.com' },
-				email: { S: 'test@example.com' },
-				domain: { S: 'palmetto-epoxy.com' },
-				message: { S: 'Test inquiry' },
-			},
-		],
-		LastEvaluatedKey: undefined,
-	});
-
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'palmetto-epoxy.com',
-	});
-
-	expect(rows).toHaveLength(1);
-	expect(rows[0]).toMatchObject({
-		created_at: '',
-		domain: 'palmetto-epoxy.com',
-		formName: 'contact-form',
-	});
-	expect(rows[0].orderData).toBeUndefined();
-});
-
-it('matches domain from nested orderData when top-level domain is missing', async () => {
-	mockSend.mockResolvedValueOnce({
-		Items: [
-			{
-				orderData: { S: JSON.stringify({
-					checkoutData: {
-						domain: 'palmetto-epoxy.com',
-						items: [],
-						shippingTo: { name: 'Nested Domain User' }
+						}),
 					},
-					captureResponse: { payment: { created_at: '2026-06-01T08:00:00.000Z' } }
-				}) },
-			},
-		],
-		LastEvaluatedKey: undefined,
+				},
+			],
+			LastEvaluatedKey: undefined,
+		});
+
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		});
+
+		expect(mockSend).toHaveBeenCalledTimes(1);
+		expect(rows).toHaveLength(1);
+		expect(rows[0].created_at).toBe(new Date('2026-05-05T10:00:00.000Z').toISOString());
+		expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Test User');
 	});
 
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'palmetto-epoxy.com',
+	it('returns generic rows without Three Muses-specific shipping fields', async () => {
+		mockSend.mockResolvedValueOnce({
+			Items: [
+				{
+					domain: { S: 'palmetto-epoxy.com' },
+					formName: { S: 'contact-form' },
+					Date: { S: '6/16/2025' },
+					subject: { S: 'Palmetto Epoxy Contact Us Submit' },
+					from: { S: 'palmettoepoxy@gmail.com' },
+					to: { S: 'palmettoepoxy@gmail.com' },
+					email: { S: 'test@example.com' },
+					domain: { S: 'palmetto-epoxy.com' },
+					message: { S: 'Test inquiry' },
+				},
+			],
+			LastEvaluatedKey: undefined,
+		});
+
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'palmetto-epoxy.com',
+		});
+
+		expect(rows).toHaveLength(1);
+		expect(rows[0]).toMatchObject({
+			created_at: '',
+			domain: 'palmetto-epoxy.com',
+			formName: 'contact-form',
+		});
+		expect(rows[0].orderData).toBeUndefined();
 	});
 
-	expect(rows).toHaveLength(1);
-	expect(rows[0].domain).toBe('palmetto-epoxy.com');
-	expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Nested Domain User');
-});
+	it('matches domain from nested orderData when top-level domain is missing', async () => {
+		mockSend.mockResolvedValueOnce({
+			Items: [
+				{
+					orderData: { S: JSON.stringify({
+						checkoutData: {
+							domain: 'palmetto-epoxy.com',
+							items: [],
+							shippingTo: { name: 'Nested Domain User' }
+						},
+						captureResponse: { payment: { created_at: '2026-06-01T08:00:00.000Z' } }
+					}) },
+				},
+			],
+			LastEvaluatedKey: undefined,
+		});
 
-it('creates a Dynamo client without credentials when only region is configured', async () => {
-	mockAwsConfig = { region: 'us-east-1' };
-	mockSend.mockResolvedValueOnce({ Items: [], LastEvaluatedKey: undefined });
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'palmetto-epoxy.com',
+		});
 
-	await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com',
-		formName: 'The Three Muses of Bluffton Order Form',
+		expect(rows).toHaveLength(1);
+		expect(rows[0].domain).toBe('palmetto-epoxy.com');
+		expect(rows[0].orderData.checkoutData.shippingTo.name).toBe('Nested Domain User');
 	});
 
-	expect(lastClientConfig).toMatchObject({ region: 'us-east-1' });
-	expect(lastClientConfig.credentials).toBeUndefined();
-});
+	it('creates a Dynamo client without credentials when only region is configured', async () => {
+		mockAwsConfig = { region: 'us-east-1' };
+		mockSend.mockResolvedValueOnce({ Items: [], LastEvaluatedKey: undefined });
 
-it('throws when the AWS region is missing', async () => {
-	mockAwsConfig = {};
+		await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		});
 
-	await expect(listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com',
-		formName: 'The Three Muses of Bluffton Order Form',
-	})).rejects.toThrow('AWS region is missing from pixelated.config.json.');
-});
-
-it('pages through scan results until LastEvaluatedKey is cleared', async () => {
-	mockAwsConfig = { region: 'us-east-1' };
-	mockSend
-		.mockResolvedValueOnce({ Items: [{ domain: { S: 'thethreemusesofbluffton.com' }, formName: { S: 'The Three Muses of Bluffton Order Form' }, created_at: { S: '2026-05-05T10:00:00.000Z' } }], LastEvaluatedKey: { id: { S: 'next' } } })
-		.mockResolvedValueOnce({ Items: [{ domain: { S: 'thethreemusesofbluffton.com' }, formName: { S: 'The Three Muses of Bluffton Order Form' }, created_at: { S: '2026-05-06T10:00:00.000Z' } }], LastEvaluatedKey: undefined });
-
-	const rows = await listPixelatedFormSubmissionReportRows({
-		tableName: 'PixelatedFormSubmissionsTable',
-		domain: 'thethreemusesofbluffton.com',
-		formName: 'The Three Muses of Bluffton Order Form',
+		expect(lastClientConfig).toMatchObject({ region: 'us-east-1' });
+		expect(lastClientConfig.credentials).toBeUndefined();
 	});
 
-	expect(mockSend).toHaveBeenCalledTimes(2);
-	expect(rows).toHaveLength(2);
-});
-it('normalizes DynamoDB attribute values into plain JavaScript values', async () => {
+	it('throws when the AWS region is missing', async () => {
+		mockAwsConfig = {};
+
+		await expect(listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		})).rejects.toThrow('AWS region is missing from pixelated.config.json.');
+	});
+
+	it('pages through scan results until LastEvaluatedKey is cleared', async () => {
+		mockAwsConfig = { region: 'us-east-1' };
+		mockSend
+			.mockResolvedValueOnce({ Items: [{ domain: { S: 'thethreemusesofbluffton.com' }, formName: { S: 'The Three Muses of Bluffton Order Form' }, created_at: { S: '2026-05-05T10:00:00.000Z' } }], LastEvaluatedKey: { id: { S: 'next' } } })
+			.mockResolvedValueOnce({ Items: [{ domain: { S: 'thethreemusesofbluffton.com' }, formName: { S: 'The Three Muses of Bluffton Order Form' }, created_at: { S: '2026-05-06T10:00:00.000Z' } }], LastEvaluatedKey: undefined });
+
+		const rows = await listPixelatedFormSubmissionReportRows({
+			tableName: 'PixelatedFormSubmissionsTable',
+			domain: 'thethreemusesofbluffton.com',
+			formName: 'The Three Muses of Bluffton Order Form',
+		});
+
+		expect(mockSend).toHaveBeenCalledTimes(2);
+		expect(rows).toHaveLength(2);
+	});
+
+	it('gets a string item by composite key', async () => {
+		mockSend.mockResolvedValueOnce({ Item: { domain: { S: 'amavajanitorial.com' }, email: { S: 'worker@example.com' } } });
+		const item = await getDynamoStringItem('PixelatedTimesheetUsersTable', {
+			domain: 'amavajanitorial.com',
+			email: 'worker@example.com',
+		});
+		expect(item).toEqual({ domain: 'amavajanitorial.com', email: 'worker@example.com' });
+	});
+
+	it('queries string items by partition key and paginates', async () => {
+		mockSend
+			.mockResolvedValueOnce({ Items: [{ domain: { S: 'amavajanitorial.com' }, email: { S: 'a@example.com' } }], LastEvaluatedKey: { id: { S: 'next' } } })
+			.mockResolvedValueOnce({ Items: [{ domain: { S: 'amavajanitorial.com' }, email: { S: 'b@example.com' } }], LastEvaluatedKey: undefined });
+		const items = await queryDynamoStringItems('PixelatedTimesheetsTable', 'domain', 'amavajanitorial.com');
+		expect(items).toHaveLength(2);
+		expect(mockSend).toHaveBeenCalledTimes(2);
+	});
+	it('normalizes DynamoDB attribute values into plain JavaScript values', async () => {
 		mockSend.mockResolvedValueOnce({
 			Items: [
 				{

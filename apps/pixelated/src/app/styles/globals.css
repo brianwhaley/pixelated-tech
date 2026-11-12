@@ -144,10 +144,20 @@ footer section:has(.footer-menu) {
     CUSTOM PIXELATED BLOG SUMMARY Styles
  ======================================== */
 
+nav.wordpress-category-list {
+    a {
+        color: contrast-color(var(--primary-color));
+    }
+    a:hover {
+        color: contrast-color(var(--secondary-color));
+    }
+}
+
 .blog-post-summary .article-featured-image img {
     border: 5px solid var(--primary-color);
     border-radius: 10px;
 }
+
 
 
 

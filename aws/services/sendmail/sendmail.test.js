@@ -25,6 +25,20 @@ test('builds a generic SES message from the platform sender', () => {
 	});
 });
 
+test('accepts an optional sender override', () => {
+	assert.equal(getMailOptions({
+		from: 'timesheets@amavajanitorial.com',
+		to: 'employee@example.com'
+	}).from, 'timesheets@amavajanitorial.com');
+});
+
+test('falls back to the platform sender when the override is blank', () => {
+	assert.equal(getMailOptions({
+		from: '  ',
+		to: 'employee@example.com'
+	}).from, 'info@pixelated.tech');
+});
+
 test('builds an SES body with text and optional HTML', () => {
 	assert.deepEqual(getSesMessageBody({
 		html: '<p>Form details</p>',

@@ -1,0 +1,11 @@
+#timesheet-week-selector {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+#timesheet-week-selector > .form-field {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0;
+}

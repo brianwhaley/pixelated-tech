@@ -5,7 +5,7 @@ const platformSender = "info@pixelated.tech";
 export { getSesMessageBody };
 
 export const getMailOptions = (body) => ({
-	from: platformSender,
+	from: String(body?.from ?? "").trim() || platformSender,
 	to: String(body?.to ?? "").trim() || platformSender,
 	subject: String(body?.subject ?? "Pixelated SendMail"),
 	html: String(body?.html ?? ""),
