@@ -1,5 +1,6 @@
 import { createHash, randomBytes, randomInt, timingSafeEqual } from 'node:crypto';
 import { NextResponse } from 'next/server';
+import { getOriginFromHeaders } from '../sitemap';
 
 export const DEFAULT_PASSCODE_COOKIE = 'pixelated-passcode-session';
 export const DEFAULT_PASSCODE_TTL_MS = 10 * 60 * 1000;
@@ -45,7 +46,7 @@ function hashToken(token: string) {
 }
 
 function redirect(request: Request, path: string, params?: Record<string, string>) {
-	const url = new URL(path, request.url);
+	const url = new URL(path, getOriginFromHeaders(request.headers) || request.url);
 	for (const [key, value] of Object.entries(params || {})) url.searchParams.set(key, value);
 	return NextResponse.redirect(url, 303);
 }

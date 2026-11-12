@@ -19,11 +19,15 @@ describe('passcode authentication handlers', () => {
 
 		const response = await handlers.POST(new Request('https://example.com/timesheets/auth', {
 			method: 'POST',
+			headers: {
+				'x-forwarded-host': 'www.amavajanitorial.com',
+				'x-forwarded-proto': 'https',
+			},
 			body: new URLSearchParams({ action: 'request', email: 'unknown@example.com' }),
 		}));
 
 		expect(response.status).toBe(303);
-		expect(response.headers.get('location')).toBe('https://example.com/timesheets?sent=1');
+		expect(response.headers.get('location')).toBe('https://www.amavajanitorial.com/timesheets?sent=1');
 		expect(saveUser).not.toHaveBeenCalled();
 		expect(sendPasscode).not.toHaveBeenCalled();
 	});

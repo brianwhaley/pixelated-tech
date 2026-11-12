@@ -175,3 +175,4 @@ This template defines the `@` path alias that resolves to `src`, so you can impo
 The alias is configured in `tsconfig.json` and `next.config.ts` (webpack alias), and ESLint is set up to resolve it.
 
 Notes: this repository uses `next.config.ts` as the canonical Next.js configuration. If you see a `next.config.js`, it's safe to delete it; `next.config.ts` is the authoritative file and includes the webpack alias configuration.
+
