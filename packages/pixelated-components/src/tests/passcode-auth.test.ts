@@ -28,6 +28,8 @@ describe('passcode authentication handlers', () => {
 
 		expect(response.status).toBe(303);
 		expect(response.headers.get('location')).toBe('https://www.amavajanitorial.com/timesheets/login?sent=1');
+		expect(response.headers.get('cache-control')).toBe('private, no-store, no-cache, max-age=0, s-maxage=0, must-revalidate');
+		expect(response.headers.get('pragma')).toBe('no-cache');
 		expect(saveUser).not.toHaveBeenCalled();
 		expect(sendPasscode).not.toHaveBeenCalled();
 	});

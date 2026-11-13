@@ -48,7 +48,11 @@ function hashToken(token: string) {
 function redirect(request: Request, path: string, params?: Record<string, string>) {
 	const url = new URL(path, getOriginFromHeaders(request.headers) || request.url);
 	for (const [key, value] of Object.entries(params || {})) url.searchParams.set(key, value);
-	return NextResponse.redirect(url, 303);
+	const response = NextResponse.redirect(url, 303);
+	response.headers.set('Cache-Control', 'private, no-store, no-cache, max-age=0, s-maxage=0, must-revalidate');
+	response.headers.set('Pragma', 'no-cache');
+	response.headers.set('Expires', '0');
+	return response;
 }
 
 function setCookie(response: NextResponse, name: string, value: string, maxAge: number) {
