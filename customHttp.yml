@@ -1,27 +1,44 @@
 applications:
   - appRoot: apps/pixelated
     customHeaders: &default_headers
-      - pattern: "/_next/static/**/*"
+      # RULES MATCH TOP TO BOTTOM
+      # LATER RULES OVERRIDE EARLIER ONES
+      # NON CONFLICTING HEADERS ARE PRESERVED
+      - &rule-catchall
+        pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+      - &rule-static
+        pattern: "/_next/static/**/*"
         headers: &static_headers
           - key: "Cache-Control"
             value: "public, max-age=31536000, s-maxage=31536000, immutable"
-
-      - pattern: "/_next/image/**/*"
+      - &rule-next-image
+        pattern: "/_next/image/**/*"
         headers: &asset_headers
           - key: "Cache-Control"
             value: "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800"
-
-      - pattern: "/images/**/*"
+      - &rule-images
+        pattern: "/images/**/*"
+        headers: *asset_headers
+      - &rule-fonts
+        pattern: "/fonts/**/*"
+        headers: *asset_headers
+      - &rule-videos
+        pattern: "/videos/**/*"
         headers: *asset_headers
 
-      - pattern: "/fonts/**/*"
-        headers: *asset_headers
-
-      - pattern: "/videos/**/*"
-        headers: *asset_headers
-
+  - appRoot: apps/brianwhaley
+    customHeaders:
+      - *rule-catchall
+      - *rule-static
+      - *rule-next-image
+      - *rule-images
+      - *rule-fonts
+      - *rule-videos
       # CUSTOM NO CACHE FOR BOOK DOWNLOAD PAGE FOR BRIANWHALEY
-
+      # ALSO CREATES A REUSABLE REFERENCE FOR NO CACHE HEADERS
       - pattern: "/supermarketshenanigans/arc/download*"
         headers: &nocache_headers
           - key: "Cache-Control"
@@ -31,47 +48,23 @@ applications:
           - key: "Expires"
             value: "0"
 
-      - pattern: "**/*"
-        headers: &page_headers
-          - key: "Cache-Control"
-            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
-
   - appRoot: apps/amava-janitorial
     customHeaders:
-      - pattern: "/_next/static/**/*"
-        headers: *static_headers
-
-      - pattern: "/_next/image/**/*"
-        headers: *asset_headers
-
-      - pattern: "/images/**/*"
-        headers: *asset_headers
-
-      - pattern: "/fonts/**/*"
-        headers: *asset_headers
-
-      - pattern: "/videos/**/*"
-        headers: *asset_headers
-
+      - *rule-catchall
+      - *rule-static
+      - *rule-next-image
+      - *rule-images
+      - *rule-fonts
+      - *rule-videos
       # CUSTOM NO CACHE FOR TIMESHEETS PAGES
-
       - pattern: "/timesheets"
         headers: *nocache_headers
-
       - pattern: "/timesheets/"
         headers: *nocache_headers
-
       - pattern: "/timesheets/*"
         headers: *nocache_headers
-
       - pattern: "/timesheets/**/*"
         headers: *nocache_headers
-
-      - pattern: "**/*"
-        headers: *page_headers
-
-  - appRoot: apps/brianwhaley
-    customHeaders: *default_headers
 
   - appRoot: apps/gea-construction
     customHeaders: *default_headers
@@ -93,29 +86,19 @@ applications:
 
   - appRoot: apps/pixelated-admin
     customHeaders:
-      - pattern: "/_next/static/**/*"
-        headers: *static_headers
-
-      - pattern: "/_next/image/**/*"
-        headers: *asset_headers
-
-      - pattern: "/images/**/*"
-        headers: *asset_headers
-
-      - pattern: "/fonts/**/*"
-        headers: *asset_headers
-
-      - pattern: "/videos/**/*"
-        headers: *asset_headers
-
-      # Covered by the no-cache catch-all below.
+      # CUSTOM NO CACHE FOR ALL PAGES IN PIXELATED ADMIN
+      - pattern: "**/*"
+        headers: *nocache_headers
+      - *rule-static
+      - *rule-next-image
+      - *rule-images
+      - *rule-fonts
+      - *rule-videos
+      # Covered by the no-cache catch-all
       # - pattern: "/api/auth/*" # *nocache_headers
       # - pattern: "/api/auth/**/*" # *nocache_headers
       # - pattern: "/login" # *nocache_headers
       # - pattern: "/login/*" # *nocache_headers
-
-      - pattern: "**/*"
-        headers: *nocache_headers
 
   - appRoot: packages/pixelated-components
     customHeaders: *default_headers
@@ -128,34 +111,18 @@ applications:
 
   - appRoot: apps/threemuses
     customHeaders:
-      - pattern: "/_next/static/**/*"
-        headers: *static_headers
-
-      - pattern: "/_next/image/**/*"
-        headers: *asset_headers
-
-      - pattern: "/images/**/*"
-        headers: *asset_headers
-
-      - pattern: "/fonts/**/*"
-        headers: *asset_headers
-
-      - pattern: "/videos/**/*"
-        headers: *asset_headers
-
+      - *rule-catchall
+      - *rule-static
+      - *rule-next-image
+      - *rule-images
+      - *rule-fonts
+      - *rule-videos
       # CUSTOM NO CACHE FOR EVENTS REPORT PAGES
-
       - pattern: "/events/report"
         headers: *nocache_headers
-
       - pattern: "/events/report/"
         headers: *nocache_headers
-
       - pattern: "/events/report/*"
         headers: *nocache_headers
-
       - pattern: "/events/report*"
         headers: *nocache_headers
-
-      - pattern: "**/*"
-        headers: *page_headers
