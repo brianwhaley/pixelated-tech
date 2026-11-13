@@ -1,6 +1,6 @@
 {
   "name": "brianwhaley",
-  "version": "2.14.13",
+  "version": "2.14.14",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -26,10 +26,10 @@
     "update": "bash $(node -e 'console.log(require.resolve(\"@pixelated-tech/components/scripts/update.sh\"))')"
   },
   "dependencies": {
-    "@aws-sdk/client-amplify": "^3.1166.0",
+    "@aws-sdk/client-amplify": "^3.1168.0",
     "@aws-sdk/client-cloudwatch": "^3.1144.0",
     "@aws-sdk/client-dynamodb": "^3.1144.0",
-    "@aws-sdk/client-iam": "^3.1166.0",
+    "@aws-sdk/client-iam": "^3.1168.0",
     "@aws-sdk/client-route-53": "^3.1144.0",
     "@aws-sdk/client-sesv2": "^3.1144.0",
     "@pixelated-tech/components": "*",
@@ -55,7 +55,7 @@
     "css-loader": "^7.1.4",
     "eslint": "9.39.4",
     "eslint-config-next": "^16.3.0",
-    "glob": "^14.0.4",
+    "glob": "^14.0.6",
     "html-entities": "^2.3.3",
     "react-dom": "^19.2.6",
     "sass": "^1.99.0",

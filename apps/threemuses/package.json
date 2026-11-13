@@ -1,6 +1,6 @@
 {
   "name": "threemuses",
-  "version": "0.8.22",
+  "version": "0.8.23",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -49,8 +49,8 @@
     "eslint": "9.39.4",
     "eslint-config-next": "^16.2.10",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "glob": "^14.0.4",
-    "googleapis": "^189.0.0",
+    "glob": "^14.0.6",
+    "googleapis": "^190.0.0",
     "html-entities": "^2.3.3",
     "jsdom": "^29.1.1",
     "nodemailer": "^10.5.0",

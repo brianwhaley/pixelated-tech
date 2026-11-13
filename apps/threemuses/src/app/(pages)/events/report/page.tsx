@@ -1,18 +1,18 @@
 /* eslint-disable pixelated/enforce-single-h1 */
 
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+// export const dynamic = 'force-dynamic';
+// export const fetchCache = 'force-no-store';
 
-export const headers = () => [{
-	key: 'Cache-Control',
-	value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
-},{
-	key: 'Pragma',
-	value: 'no-cache',
-},{
-	key: 'Expires',
-	value: '0',
-}];
+// export const headers = () => [{
+// 	key: 'Cache-Control',
+// 	value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+// },{
+// 	key: 'Pragma',
+// 	value: 'no-cache',
+// },{
+// 	key: 'Expires',
+// 	value: '0',
+// }];
 
 import React from 'react';
 import { redirect } from 'next/navigation';

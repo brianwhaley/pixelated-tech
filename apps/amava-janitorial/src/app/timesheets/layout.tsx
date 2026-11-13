@@ -9,8 +9,8 @@ import { PageSection, SmartImage } from "@pixelated-tech/components";
 
 const DOMAIN = 'amavajanitorial.com';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// export const dynamic = 'force-dynamic';
+// export const revalidate = 0;
 
 function menuItems(isAdmin: boolean) {
 	return [

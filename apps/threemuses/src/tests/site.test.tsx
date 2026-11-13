@@ -450,17 +450,6 @@ describe('ThreeMuses coverage harness', () => {
 			expect((result as any).request.headers.get('x-url')).toBe('https://example.com/test?a=1');
 		});
 
-		it('sets cache headers for /events/report proxy requests', () => {
-			const result = proxy({
-				nextUrl: { pathname: '/events/report', search: '', origin: 'https://example.com', href: 'https://example.com/events/report', hostname: 'example.com' },
-				headers: new Headers({}),
-				url: 'https://example.com/events/report',
-			} as any);
-			expect(result.headers.get('Cache-Control')).toBe('no-store, no-cache, max-age=0, s-maxage=0, must-revalidate');
-			expect(result.headers.get('Pragma')).toBe('no-cache');
-			expect(result.headers.get('Expires')).toBe('0');
-		});
-
 		it('renders Boutique page content', async () => {
 			const boutique = await BoutiquePage();
 			render(boutique as any);

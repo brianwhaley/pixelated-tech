@@ -16,14 +16,14 @@ export function proxy(req: NextRequest) {
 
 	const response = handlePixelatedProxy(req);
 
-	if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')) {
-		response.headers.set(
-			'Cache-Control',
-			'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
-		);
-		response.headers.set('Pragma', 'no-cache');
-		response.headers.set('Expires', '0');
-	}
+	// if (req.nextUrl.pathname === '/events/report' || req.nextUrl.pathname.startsWith('/events/report/')) {
+	// 	response.headers.set(
+	// 		'Cache-Control',
+	// 		'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+	// 	);
+	// 	response.headers.set('Pragma', 'no-cache');
+	// 	response.headers.set('Expires', '0');
+	// }
 
 	return response;
 }

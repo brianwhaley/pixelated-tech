@@ -13,36 +13,36 @@ const nextConfig: NextConfig = {
 		return config;
 	},
 	reactStrictMode: true,
-	async headers() {
-		return [
-			{
-				source: '/events/report',
-				headers: [{
-					key: 'Cache-Control',
-					value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
-				},{
-					key: 'Pragma',
-					value: 'no-cache',
-				},{
-					key: 'Expires',
-					value: '0',
-				}],
-			},
-			{
-				source: '/events/report/:path*',
-				headers: [{
-					key: 'Cache-Control',
-					value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
-				},{
-					key: 'Pragma',
-					value: 'no-cache',
-				},{
-					key: 'Expires',
-					value: '0',
-				}],
-			},
-		];
-	},
+	// async headers() {
+	// 	return [
+	// 		{
+	// 			source: '/events/report',
+	// 			headers: [{
+	// 				key: 'Cache-Control',
+	// 				value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+	// 			},{
+	// 				key: 'Pragma',
+	// 				value: 'no-cache',
+	// 			},{
+	// 				key: 'Expires',
+	// 				value: '0',
+	// 			}],
+	// 		},
+	// 		{
+	// 			source: '/events/report/:path*',
+	// 			headers: [{
+	// 				key: 'Cache-Control',
+	// 				value: 'no-store, no-cache, max-age=0, s-maxage=0, must-revalidate',
+	// 			},{
+	// 				key: 'Pragma',
+	// 				value: 'no-cache',
+	// 			},{
+	// 				key: 'Expires',
+	// 				value: '0',
+	// 			}],
+	// 		},
+	// 	];
+	// },
 	async redirects() {
 		return [
 			{

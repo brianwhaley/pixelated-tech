@@ -2,6 +2,7 @@ import fs from 'fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const config = vi.hoisted(() => ({ current: {} as any }));
+const extractState = vi.hoisted(() => ({ people: [] as Record<string, unknown>[] }));
 
 const mockBrowser = { close: vi.fn() };
 const mockCloseBrowser = vi.fn(async () => undefined);
@@ -27,6 +28,22 @@ vi.mock('../../../../packages/pixelated-components/src/components/integrations/p
 }));
 vi.mock('../../../../packages/pixelated-components/src/components/config/config', () => ({ getFullPixelatedConfig: () => config.current }));
 vi.mock('../../../../packages/pixelated-components/src/components/foundation/smartfetch', () => ({ smartFetch: vi.fn() }));
+vi.mock('../../../../packages/pixelated-components/src/components/admin/scraper/domain-extract-writer.server', () => ({
+	createDomainExtractFileName: vi.fn(() => 'test-extract.jsonl'),
+	createDomainExtractFileNameFromDiscoveryFile: vi.fn((fileName: string) => fileName.replace('-discovery.json', '-extract.jsonl')),
+	hasDomainExtractFile: vi.fn(() => true),
+	initializePeopleExtractFile: vi.fn(() => {
+		extractState.people = [];
+	}),
+	appendPeopleToExtractFile: vi.fn((_fileName: string, people: Record<string, unknown>[]) => {
+		extractState.people.push(...people);
+	}),
+	readPeopleFromExtractFile: vi.fn(() => extractState.people),
+	readExtractedSourceUrls: vi.fn(() => new Set<string>()),
+	readDomainDiscoveryCheckpoint: vi.fn(() => null),
+	listDomainDiscoveryFiles: vi.fn(() => []),
+	writeDomainDiscoveryCheckpoint: vi.fn(),
+}));
 
 describe('lead scraper data helpers', () => {
 	it('normalizes and validates company records', async () => {
@@ -107,6 +124,7 @@ describe('lead scraper data helpers', () => {
 describe('domain scraper', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		extractState.people = [];
 		config.current = { integrations: { domainScraper: { sites: { example: { startUrls: ['https://example.com/team'], detailUrlPattern: '^/team', detailPersonIdentifier: '.person-card' } } } } };
 		mockPage.goto.mockResolvedValue({ status: () => 200, url: () => 'https://example.com/team', headers: () => ({}) });
 		mockPage.content.mockResolvedValue('<a href="/team">Team</a><p>Jane Doe jane@example.com</p><a href="mailto:other@example.com">mail</a>');

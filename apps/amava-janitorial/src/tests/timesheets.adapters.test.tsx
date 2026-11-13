@@ -101,7 +101,7 @@ describe('Amava timesheet adapters', () => {
 
 		render(await TimesheetsLayout({ children: <div>Timesheet content</div> }));
 
-		expect(screen.getByText('View My Timesheets')).toBeInTheDocument();
+		expect(screen.getByText('My Timesheets')).toBeInTheDocument();
 		expect(screen.queryByText('Admin View')).not.toBeInTheDocument();
 	});
 
