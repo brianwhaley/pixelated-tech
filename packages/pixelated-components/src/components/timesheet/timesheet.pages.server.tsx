@@ -3,7 +3,7 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { MenuSimple, Table } from '../elements/index.elements';
+import { Table } from '../elements/index.elements';
 import { PageSection, PageSectionHeader } from '../structure/page-blocks';
 import { TimesheetEmailForm, TimesheetEntryForm, TimesheetPasscodeForm, TimesheetWeekSelector } from './timesheet.components';
 import { getWeekStart, formatWeekLabel } from './timesheet.functions';
@@ -22,15 +22,6 @@ type SearchParams = Record<string, string | string[] | undefined>;
 function value(params: SearchParams, name: string) {
 	const entry = params[name];
 	return Array.isArray(entry) ? entry[0] || '' : entry || '';
-}
-
-function menuItems(isAdmin: boolean) {
-	return [
-		{ name: 'View My Timesheets', path: '/timesheets/summary' },
-		{ name: 'Submit a New Timesheet', path: '/timesheets/new' },
-		...(isAdmin ? [{ name: 'Admin View', path: '/timesheets/admin' }] : []),
-		{ name: 'Logout', path: '/timesheets/auth?action=logout' },
-	];
 }
 
 async function getUser(domain: string) {
@@ -72,7 +63,6 @@ export async function TimesheetSummaryPage({ domain }: { domain: string }) {
 	}));
 	return (
 		<PageSection id="timesheet-summary" columns={1} maxWidth="1024px">
-			<MenuSimple menuItems={menuItems(user.role === 'admin')} />
 			<Table id="timesheet-summary-table" data={rows} sortable />
 		</PageSection>
 	);
@@ -100,7 +90,6 @@ export async function TimesheetNewPage({ domain, searchParams }: { domain: strin
 	const existing = await getTimesheetForWeek(domain, user.email, weekOf);
 	return (
 		<PageSection id="timesheet-new" columns={1} maxWidth="1024px">
-			<MenuSimple menuItems={menuItems(user.role === 'admin')} />
 			<PageSectionHeader title={`Week beginning ${weekOf}`} />
 			<TimesheetEntryForm weekOf={weekOf} values={existing || undefined} />
 		</PageSection>
@@ -124,7 +113,6 @@ export async function TimesheetAdminPage({ domain, searchParams }: { domain: str
 	}));
 	return (
 		<PageSection id="timesheet-admin" columns={1} maxWidth="1024px">
-			<MenuSimple menuItems={menuItems(true)} />
 			<TimesheetWeekSelector weekOf={weekOf} />
 			<Table id="timesheet-admin-table" data={rows} sortable />
 		</PageSection>

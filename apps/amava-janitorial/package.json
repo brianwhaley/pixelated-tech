@@ -1,6 +1,6 @@
 {
   "name": "AMAVA-Janitorial",
-  "version": "0.8.18",
+  "version": "0.8.19",
   "private": true,
   "description": "Pixelated starter template for Next.js, Typescript, and common configs",
   "license": "MIT",
@@ -54,5 +54,5 @@
     "vitest": "^5.1.0"
   },
   "overrides": {},
-  "deployMarker": "2026-11-12T04:09:02.000Z"
+  "deployMarker": "2026-11-23T04:09:02.000Z"
 }

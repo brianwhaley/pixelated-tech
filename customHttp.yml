@@ -20,6 +20,8 @@ applications:
       - pattern: "/videos/**/*"
         headers: *asset_headers
 
+      # BOOK DOWNLOAD PAGE FOR BRIANWHALEY
+
       - pattern: "/supermarketshenanigans/arc/download*"
         headers: &nocache_headers
           - key: "Cache-Control"

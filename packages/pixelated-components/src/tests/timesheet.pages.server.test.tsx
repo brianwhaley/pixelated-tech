@@ -17,7 +17,6 @@ vi.mock('next/headers', () => ({ cookies: mocks.cookies }));
 vi.mock('next/navigation', () => ({ redirect: mocks.redirect }));
 vi.mock('../components/elements/index.elements', () => ({
 	Table: ({ data }: { data: Array<Record<string, string>> }) => <div data-testid="table">{JSON.stringify(data)}</div>,
-	MenuSimple: () => <nav>timesheet menu</nav>,
 }));
 vi.mock('../components/structure/page-blocks', () => ({
 	PageSection: ({ children }: { children: React.ReactNode }) => <section>{children}</section>,
