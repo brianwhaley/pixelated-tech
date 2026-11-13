@@ -96,6 +96,15 @@ describe('Amava timesheet adapters', () => {
 		expect(screen.getByTestId('pixelated-footer')).toHaveTextContent('/timesheets/summary');
 	});
 
+	it('renders the regular user menu without admin navigation', async () => {
+		getAuthenticatedTimesheetUser.mockResolvedValue({ role: 'user' });
+
+		render(await TimesheetsLayout({ children: <div>Timesheet content</div> }));
+
+		expect(screen.getByText('View My Timesheets')).toBeInTheDocument();
+		expect(screen.queryByText('Admin View')).not.toBeInTheDocument();
+	});
+
 	it('delegates authentication requests using the configured hostname and site name', async () => {
 		const getHandler = vi.fn().mockResolvedValue(new Response('get'));
 		const postHandler = vi.fn().mockResolvedValue(new Response('post'));

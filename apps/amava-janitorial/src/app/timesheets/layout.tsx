@@ -9,10 +9,13 @@ import { PageSection, SmartImage } from "@pixelated-tech/components";
 
 const DOMAIN = 'amavajanitorial.com';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 function menuItems(isAdmin: boolean) {
 	return [
-		{ name: 'View My Timesheets', path: '/timesheets/summary' },
-		{ name: 'Submit a New Timesheet', path: '/timesheets/new' },
+		{ name: 'My Timesheets', path: '/timesheets/summary' },
+		{ name: 'New Timesheet', path: '/timesheets/new' },
 		...(isAdmin ? [{ name: 'Admin View', path: '/timesheets/admin' }] : []),
 		{ name: 'Logout', path: '/timesheets/auth?action=logout' },
 	];
