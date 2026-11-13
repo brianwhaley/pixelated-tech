@@ -20,7 +20,7 @@ applications:
       - pattern: "/videos/**/*"
         headers: *asset_headers
 
-      # BOOK DOWNLOAD PAGE FOR BRIANWHALEY
+      # CUSTOM NO CACHE FOR BOOK DOWNLOAD PAGE FOR BRIANWHALEY
 
       - pattern: "/supermarketshenanigans/arc/download*"
         headers: &nocache_headers
@@ -31,7 +31,29 @@ applications:
           - key: "Expires"
             value: "0"
 
-      # REMOVE TIMESHEET CACHING FOR AMAVA
+      - pattern: "**/*"
+        headers: &page_headers
+          - key: "Cache-Control"
+            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
+
+  - appRoot: apps/amava-janitorial
+    customHeaders:
+      - pattern: "/_next/static/**/*"
+        headers: *static_headers
+
+      - pattern: "/_next/image/**/*"
+        headers: *asset_headers
+
+      - pattern: "/images/**/*"
+        headers: *asset_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *asset_headers
+
+      - pattern: "/videos/**/*"
+        headers: *asset_headers
+
+      # CUSTOM NO CACHE FOR TIMESHEETS PAGES
 
       - pattern: "/timesheets"
         headers: *nocache_headers
@@ -45,27 +67,8 @@ applications:
       - pattern: "/timesheets/**/*"
         headers: *nocache_headers
 
-      # REMOVE EVENTS REPORT CACHING FOR THREEMUSES
-
-      - pattern: "/events/report"
-        headers: *nocache_headers
-
-      - pattern: "/events/report/"
-        headers: *nocache_headers
-
-      - pattern: "/events/report/*"
-        headers: *nocache_headers
-
-      - pattern: "/events/report*"
-        headers: *nocache_headers
-
       - pattern: "**/*"
-        headers: &page_headers
-          - key: "Cache-Control"
-            value: "public, max-age=604800, s-maxage=31536000, stale-while-revalidate=86400"
-
-  - appRoot: apps/amava-janitorial
-    customHeaders: *default_headers
+        headers: *page_headers
 
   - appRoot: apps/brianwhaley
     customHeaders: *default_headers
@@ -124,4 +127,35 @@ applications:
     customHeaders: *default_headers
 
   - appRoot: apps/threemuses
-    customHeaders: *default_headers
+    customHeaders:
+      - pattern: "/_next/static/**/*"
+        headers: *static_headers
+
+      - pattern: "/_next/image/**/*"
+        headers: *asset_headers
+
+      - pattern: "/images/**/*"
+        headers: *asset_headers
+
+      - pattern: "/fonts/**/*"
+        headers: *asset_headers
+
+      - pattern: "/videos/**/*"
+        headers: *asset_headers
+
+      # CUSTOM NO CACHE FOR EVENTS REPORT PAGES
+
+      - pattern: "/events/report"
+        headers: *nocache_headers
+
+      - pattern: "/events/report/"
+        headers: *nocache_headers
+
+      - pattern: "/events/report/*"
+        headers: *nocache_headers
+
+      - pattern: "/events/report*"
+        headers: *nocache_headers
+
+      - pattern: "**/*"
+        headers: *page_headers
