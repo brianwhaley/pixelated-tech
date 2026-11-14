@@ -317,6 +317,8 @@ export function PageSectionBackgroundImage(props: PageSectionBackgroundImageType
 				title={props.id ? `${props.id} background image` : undefined}
 				alt={props.id ? `${props.id} background image` : ""}
 				aboveFold={props.aboveFold}
+				width={1920}
+				height={1080}
 				cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 				cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
 				cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined}

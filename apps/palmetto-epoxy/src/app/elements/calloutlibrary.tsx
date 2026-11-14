@@ -24,7 +24,7 @@ export function PageTitle({title}: PageTitleType ) {
 				id="page-title-section"
 				columns={1}
 				backgroundImageAboveFold
-				backgroundImage="https://images.ctfassets.net/0b82pebh837v/10u8y8Qcv6hkLnp1stjZZx/b9b6be999291a643f2c1cb1c22e5fc58/IMG_5559.jpg?fm=webp"
+				backgroundImage="https://images.ctfassets.net/0b82pebh837v/3kzR1jzOMmnslxGbh2qANe/2fb6d64547d1a4fc82592d53fa28c8c6/black-white-chips.jpg?fm=webp"
 			>
 				<PageTitleHeader title={title} />
 			</PageSection>
@@ -41,15 +41,13 @@ ContactCTA.propTypes = {};
 export type ContactCTAType = InferProps<typeof ContactCTA.propTypes>;
 export function ContactCTA() {
 	return (
-		<div className="section-container">
-			<div className="contact-cta">
-				<div className="text-outline">
-                    Discover the transformative power of epoxy flooring
-					<br />
-                    Where durability meets modern elegance
-					<br />
-					<button type="button" onClick={() => { window.location.href = '/contact'; }}>CONTACT US</button>
-				</div>
+		<div className="contact-cta">
+			<div className="text-outline">
+                Discover the transformative power of epoxy flooring
+				<br />
+                Where durability meets modern elegance
+				<br />
+				<button type="button" onClick={() => { window.location.href = '/contact'; }}>CONTACT US</button>
 			</div>
 		</div>
 	);
@@ -109,25 +107,23 @@ LowCountrysBest.propTypes = {};
 export type LowCountrysBestType = InferProps<typeof LowCountrysBest.propTypes>;
 export function LowCountrysBest() {
 	return (
-		<div className="section-container">
-			<div className="row-12col ">
-				<div className="grid-s2-e12">
-					<Callout
-						variant='boxed grid'
-						url='https://www.votedlowcountrysbest.com/listing/palmetto-epoxy.html'
-						title="Lowcountrys Best 2025"
-						img='https://www.pixelated.tech/images/logos/lowcountrysbest-logo.jpg'
-						imgAlt="Lowcountrys Best 2025 Carpet & Flooring Store Silver Winner" 
-						content='The Island Packet and The Beaufort Gazette created Lowcountrys Best 
-								to honor the people, places, and businesses that capture what makes the 
-								Lowcountry such a treasured place to live, work, and visit. 
-								Congratulations to all the 2025 winners — and thank you to everyone 
-								who voted. Together, youve helped showcase the very best of 
-								Hilton Head and the Lowcountry, a region that continues to inspire, 
-								welcome, and shine.'
-						layout='horizontal' 
-						imgShape='square' />
-				</div>
+		<div className="row-12col ">
+			<div className="grid-s2-e12">
+				<Callout
+					variant='boxed grid'
+					url='https://www.votedlowcountrysbest.com/listing/palmetto-epoxy.html'
+					title="Lowcountrys Best 2025"
+					img='https://www.pixelated.tech/images/logos/lowcountrysbest-logo.jpg'
+					imgAlt="Lowcountrys Best 2025 Carpet & Flooring Store Silver Winner" 
+					content='The Island Packet and The Beaufort Gazette created Lowcountrys Best 
+                            to honor the people, places, and businesses that capture what makes the 
+                            Lowcountry such a treasured place to live, work, and visit. 
+                            Congratulations to all the 2025 winners — and thank you to everyone 
+                            who voted. Together, youve helped showcase the very best of 
+                            Hilton Head and the Lowcountry, a region that continues to inspire, 
+                            welcome, and shine.'
+					layout='horizontal' 
+					imgShape='square' />
 			</div>
 		</div>
 	);

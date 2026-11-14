@@ -120,50 +120,39 @@ body {
     /* font-size: 16px; */
 }
 
-main .section-container {
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
-
 #homeCTA-section {
 	padding: 30px 0;
 }
 
-section, 
-section.page-section {
-	padding: 30px 0 !important;
+main section, 
+main section.page-section {
+	/* padding: 30px 0 !important; */
+    padding: 0 !important;
+    .page-section-content {
+        margin: 50px auto !important;
+    }
 }
+
 
 .section-alt {
     background-color: #DDD;
 	padding: 30px 0 !important;
 }
 
-.section-bluechip {
-    background-image: 
-        linear-gradient(rgba(255,255,255,.25), 
-        rgba(255,255,255,.25));
-    background-position: center;
-    background-size: cover;
-	padding: 30px 0 !important;
-}
-
-.section-bwchip {
-    background-image: 
-        linear-gradient(rgba(255,255,255,.25), 
-        rgba(255,255,255,.25));
-    background-position: center;
-    background-size: cover;
-	padding: 30px 0 !important;
-}
-
+.section-bluechip, 
+.section-bwchip, 
 .section-pavers {
-    background-image: 
-        linear-gradient(rgba(255,255,255,.25), 
-        rgba(255,255,255,.25));
-    background-position: center;
-    background-size: cover;
 	padding: 30px 0 !important;
+    img {
+        object-position: bottom center;
+        opacity: 0.7;
+    }
+}
+
+#page-title-section {
+    .page-section-content {
+        margin: 30px auto !important;
+    }
 }
 
 

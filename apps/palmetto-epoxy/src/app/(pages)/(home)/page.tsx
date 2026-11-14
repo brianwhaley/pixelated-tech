@@ -85,31 +85,29 @@ export default function Home() {
 				</div>
 			</PageSection>
 
-			<section style={{backgroundColor: "var(--accent1-color)"}} id="lowcountrysbest-section">
+			<PageSection 
+				columns={1} 
+				background="var(--accent1-color)"
+				id="lowcountrysbest-section">
 				<CalloutLibrary.LowCountrysBest />
-			</section>
+			</PageSection>
 
-			<section id="sponsor-section">
-				<div className="section-container">
-					<div className="row-12col">
-						<div className="grid-s2-e12">
-							<Callout
-								variant='grid'
-								direction='right'
-								layout='horizontal'
-								img='https://images.ctfassets.net/0b82pebh837v/5AiTNJSyca5JJ9ZycxXJ2W/814eac82c120b5fa87505011cfe10609/MR_Sharks_2.jpg?fm=webp'
-								imgShape='square'  
-								title="Palmetto Epoxy is a proud Sponsor of May River High School Girls Soccer" />
-						</div>
-					</div>
+			<PageSection columns={12}  id="sponsor-section">
+				<div className="grid-s2-e12">
+					<Callout
+						variant='grid'
+						direction='right'
+						layout='horizontal'
+						img='https://images.ctfassets.net/0b82pebh837v/5AiTNJSyca5JJ9ZycxXJ2W/814eac82c120b5fa87505011cfe10609/MR_Sharks_2.jpg?fm=webp'
+						imgShape='square'  
+						title="Palmetto Epoxy is a proud Sponsor of May River High School Girls Soccer" />
 				</div>
-			</section>
+			</PageSection>
 
 			<PageSection
 				columns={1}
 				className="section-bluechip"
 				id="contact-section"
-				background="var(--accent1-color)"
 				backgroundImage="https://images.ctfassets.net/0b82pebh837v/72Ctu7oGaGNja5gHpTz4Fd/50984bad832c63d7845e3c6d511a1735/BluChips.jpg?fm=webp"
 			>
 				<CalloutLibrary.ContactCTA />
