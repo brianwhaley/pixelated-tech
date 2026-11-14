@@ -11,16 +11,6 @@ const mockUseSession = vi.fn(() => ({ data: null, status: 'unauthenticated' }));
 
 const mockSmartFetch = vi.fn(async (url: unknown) => {
 	const stringUrl = String(url);
-	if (stringUrl.includes('/api/component-usage')) {
-		return {
-			ok: true,
-			json: async () => ({
-				components: ['component-a'],
-				siteList: [{ name: 'site-a', localPath: '/site-a' }],
-				usageMatrix: { 'component-a': { 'site-a': true } },
-			}),
-		};
-	}
 	if (stringUrl.includes('/api/sites')) {
 		return { ok: true, json: async () => [] };
 	}
@@ -103,19 +93,10 @@ vi.mock('@pixelated-tech/components/adminclient', async () => {
 		AdHocBillingDashboard: make('AdHocBillingDashboard'),
 		InvoiceTemplate: make('InvoiceTemplate'),
 		Unauthorized: make('Unauthorized'),
-		SiteHealthGit: make('SiteHealthGit'),
-		SiteHealthUptime: make('SiteHealthUptime'),
-		SiteHealthSecurity: make('SiteHealthSecurity'),
 		SiteHealthOverview: make('SiteHealthOverview'),
-		SiteHealthPerformance: make('SiteHealthPerformance'),
-		SiteHealthAccessibility: make('SiteHealthAccessibility'),
-		SiteHealthAxeCore: make('SiteHealthAxeCore'),
-		SiteHealthDependencyVulnerabilities: make('SiteHealthDependencyVulnerabilities'),
-		SiteHealthSEO: make('SiteHealthSEO'),
 		SiteHealthGoogleAnalytics: make('SiteHealthGoogleAnalytics'),
-		SiteHealthGoogleSearchConsole: make('SiteHealthGoogleSearchConsole'),
-		SiteHealthOnSiteSEO: make('SiteHealthOnSiteSEO'),
 		SiteHealthCloudwatch: make('SiteHealthCloudwatch'),
+		SiteHealthGoogleSearchConsole: make('SiteHealthGoogleSearchConsole'),
 		normalizeRoutePath,
 		getAllowedAdminRoutes,
 		isRouteAllowedForID,
@@ -132,8 +113,6 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 	getCloudwatchHealthCheckData: async () => ({ success: true, data: {} }),
 	analyzeSecurityHealth: async () => ({ status: 'success', data: { summary: {}, vulnerabilities: [], dependencies: 0, totalDependencies: 0 } }),
 	analyzeGitHealth: async () => ({ success: true, data: {} }),
-	discoverComponentsFromLibrary: async () => [],
-	analyzeComponentUsage: async () => ({ components: [] }),
 	executeDeployment: async () => ({ success: true }),
 	loadBillingData: () => ({
 		sites: [{ name: 'site-a', monthlyBilling: true, blogRss: 'https://example.com/feed' }],
@@ -212,10 +191,8 @@ const appPages = [
 	['contentful-migrate', 'src/app/(pages)/contentful-migrate/page.tsx'],
 	['formbuilder', 'src/app/(pages)/formbuilder/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
-	['component-usage', 'src/app/(pages)/component-usage/page.tsx'],
 	['billing-monthly', 'src/app/(pages)/billing/monthly/page.tsx'],
 	['billing-adhoc', 'src/app/(pages)/billing/adhoc/page.tsx'],
-	['site-health', 'src/app/(pages)/site-health/page.tsx'],
 	['styleguide', 'src/app/(pages)/styleguide/page.tsx'],
 	['loading', 'src/app/loading.tsx'],
 	['not-found', 'src/app/not-found.tsx'],
@@ -240,7 +217,7 @@ describe('pixelated-admin app pages', () => {
 			const { container } = render(<Page error={new Error('test error')} reset={() => {}} />);
 			expect(container).toBeTruthy();
 
-			if (name === 'component-usage' || name === 'site-health') {
+			if (name === 'site-health') {
 				await waitFor(() => {
 					expect(mockSmartFetch).toHaveBeenCalled();
 				});

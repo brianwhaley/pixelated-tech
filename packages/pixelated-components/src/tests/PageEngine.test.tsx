@@ -1,11 +1,13 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '../test/test-utils';
+import { mockPageEngineData } from '../test/test-data';
 import { screen, fireEvent } from '@testing-library/react';
 
 vi.mock('../components/sitebuilder/page/lib/componentMap', () => ({
   componentMap: {
     TestComponent: ({ label }: any) => <div>{label}</div>,
+    Callout: ({ title }: any) => <div>{title}</div>,
     LayoutWrapper: ({ label, children }: any) => <div>{label}{children}</div>,
   },
   layoutComponents: ['LayoutWrapper'],
@@ -15,6 +17,12 @@ vi.mock('../components/sitebuilder/page/lib/componentMap', () => ({
 import { PageEngine, PageDataProvider } from '../components/sitebuilder/page/components/PageEngine';
 
 describe('PageEngine', () => {
+  it('renders the shared page engine fixture', () => {
+    render(<PageEngine pageData={{ components: mockPageEngineData.components.slice(0, 1) }} />);
+
+    expect(screen.getByText('Test Callout')).toBeInTheDocument();
+  });
+
   it('renders a known component from componentMap', () => {
     render(
       <PageEngine pageData={{ components: [{ component: 'TestComponent', props: { label: 'Hello World' } }] }} />

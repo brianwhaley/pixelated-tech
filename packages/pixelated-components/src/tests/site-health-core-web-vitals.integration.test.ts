@@ -9,11 +9,17 @@ import { mockConfig } from '../test/test-utils';
 describe('fetchPSIData', () => {
 	let getFullConfigSpy: any;
 	let smartFetchSpy: any;
+	const validPsiResponse = {
+		lighthouseResult: {
+			audits: { someAudit: {} },
+			categories: {},
+		},
+	};
 
 	beforeEach(() => {
 		// Ensure server-side code sees the standard test harness config by default
 		getFullConfigSpy = vi.spyOn(configModule, 'getFullPixelatedConfig').mockReturnValue(mockConfig as any);
-		smartFetchSpy = vi.spyOn(smartFetchModule, 'smartFetch').mockResolvedValue({ ok: true, json: async () => ({ lighthouseResult: { audits: { someAudit: {} }, categories: {} } }) });
+		smartFetchSpy = vi.spyOn(smartFetchModule, 'smartFetch').mockResolvedValue(validPsiResponse);
 	});
 
 	afterEach(() => {
@@ -52,7 +58,7 @@ describe('fetchPSIData', () => {
 
 	it('retries on transient failure and succeeds on second attempt', async () => {
 		smartFetchSpy.mockRejectedValueOnce(new Error('Network error'))
-			.mockResolvedValueOnce({ ok: true, json: async () => ({ lighthouseResult: { audits: { someAudit: {} }, categories: {} } }) });
+			.mockResolvedValueOnce(validPsiResponse);
 
 		await expect(fetchPSIData('https://example.com')).resolves.toBeDefined();
 		expect(smartFetchSpy).toHaveBeenCalledTimes(2);
@@ -70,7 +76,7 @@ describe('fetchPSIData', () => {
 	});
 
 	it('throws when PSI response contains no audits', async () => {
-		smartFetchSpy.mockResolvedValueOnce({ ok: true, json: async () => ({ lighthouseResult: { audits: {}, categories: {} } }) });
+		smartFetchSpy.mockResolvedValueOnce({ lighthouseResult: { audits: {}, categories: {} } });
 		await expect(fetchPSIData('https://example.com')).rejects.toThrow('Invalid PSI API response or rate limited');
 	});
 

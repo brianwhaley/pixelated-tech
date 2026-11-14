@@ -33,8 +33,7 @@ export const HEALTH_COLORS = {
 // Score-based scale (used by PageSpeed and similar metrics)
 export const SCORE_SCALE = {
 	EXCELLENT: { min: 0.9, icon: HEALTH_INDICATORS.PASSING, color: HEALTH_COLORS.PASSING },
-	GOOD: { min: 0.7, icon: HEALTH_INDICATORS.MODERATE, color: HEALTH_COLORS.MODERATE },
-	NEEDS_IMPROVEMENT: { min: 0.5, icon: HEALTH_INDICATORS.SERIOUS, color: HEALTH_COLORS.SERIOUS },
+	GOOD: { min: 0.5, icon: HEALTH_INDICATORS.MODERATE, color: HEALTH_COLORS.MODERATE },
 	POOR: { min: 0, icon: HEALTH_INDICATORS.CRITICAL, color: HEALTH_COLORS.CRITICAL }
 } as const;
 
@@ -52,7 +51,6 @@ export function getScoreIndicator(score: number | null): { icon: string; color: 
 
 	if (score >= SCORE_SCALE.EXCELLENT.min) return SCORE_SCALE.EXCELLENT;
 	if (score >= SCORE_SCALE.GOOD.min) return SCORE_SCALE.GOOD;
-	if (score >= SCORE_SCALE.NEEDS_IMPROVEMENT.min) return SCORE_SCALE.NEEDS_IMPROVEMENT;
 	return SCORE_SCALE.POOR;
 }
 

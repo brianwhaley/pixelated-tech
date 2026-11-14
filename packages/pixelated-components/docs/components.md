@@ -2376,56 +2376,6 @@ import { SiteHealthOverview } from '@pixelated-tech/components';
 <SiteHealthOverview siteName="my-site" />
 ```
 
-#### SiteHealthAxeCore
-
-Accessibility auditing using axe-core.
-
-```tsx
-import { SiteHealthAxeCore } from '@pixelated-tech/components';
-
-<SiteHealthAxeCore siteName="my-site" />
-```
-
-#### SiteHealthPerformance
-
-Performance monitoring and metrics.
-
-```tsx
-import { SiteHealthPerformance } from '@pixelated-tech/components';
-
-<SiteHealthPerformance siteName="my-site" />
-```
-
-#### SiteHealthSecurity
-
-Security scanning and vulnerability assessment.
-
-```tsx
-import { SiteHealthSecurity } from '@pixelated-tech/components';
-
-<SiteHealthSecurity siteName="my-site" />
-```
-
-#### SiteHealthSEO
-
-SEO analysis and recommendations.
-
-```tsx
-import { SiteHealthSEO } from '@pixelated-tech/components';
-
-<SiteHealthSEO siteName="my-site" />
-```
-
-#### SiteHealthOnSiteSEO
-
-Advanced on-page SEO analysis with Puppeteer rendering.
-
-```tsx
-import { SiteHealthOnSiteSEO } from '@pixelated-tech/components';
-
-<SiteHealthOnSiteSEO siteName="my-site" />
-```
-
 #### SiteHealthCloudwatch
 
 AWS CloudWatch uptime monitoring and availability tracking.
@@ -2450,44 +2400,14 @@ import { SiteHealthGoogleAnalytics } from '@pixelated-tech/components';
 <SiteHealthGoogleAnalytics siteName="my-site" />
 ```
 
-#### SiteHealthGoogleSearchConsole
+#### BillingSearchConsoleSummary
 
-Google Search Console data and insights.
-
-```tsx
-import { SiteHealthGoogleSearchConsole } from '@pixelated-tech/components';
-
-<SiteHealthGoogleSearchConsole siteName="my-site" />
-```
-
-#### SiteHealthDependencyVulnerabilities
-
-NPM package vulnerability scanning.
+Displays web-search clicks for the invoice month and the preceding calendar month.
 
 ```tsx
-import { SiteHealthDependencyVulnerabilities } from '@pixelated-tech/components';
+import { BillingSearchConsoleSummary } from '@pixelated-tech/components/adminclient';
 
-<SiteHealthDependencyVulnerabilities siteName="my-site" />
-```
-
-#### SiteHealthGit
-
-Git repository health and commit analysis.
-
-```tsx
-import { SiteHealthGit } from '@pixelated-tech/components';
-
-<SiteHealthGit siteName="my-site" />
-```
-
-#### SiteHealthUptime
-
-Website uptime monitoring.
-
-```tsx
-import { SiteHealthUptime } from '@pixelated-tech/components';
-
-<SiteHealthUptime siteName="my-site" />
+<BillingSearchConsoleSummary siteName="my-site" billingMonth="2026-03" />
 ```
 
 ### Sites

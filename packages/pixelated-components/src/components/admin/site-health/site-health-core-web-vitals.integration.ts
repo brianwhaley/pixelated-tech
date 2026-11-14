@@ -15,7 +15,22 @@ import { buildUrl } from '../../foundation/urlbuilder';
  */
 
 interface PSIAuditRef {
-  id: string;
+	id: string;
+}
+
+interface PSIAuditValue {
+	numericValue?: number;
+	displayValue?: string;
+}
+
+function getAuditMetricValue(audit: PSIAuditValue | undefined): number {
+	if (typeof audit?.numericValue === 'number') return audit.numericValue;
+
+	const match = audit?.displayValue?.match(/(-?\d+(?:\.\d+)?)\s*(ms|s)?/i);
+	if (!match) return 0;
+
+	const value = Number.parseFloat(match[1]);
+	return match[2]?.toLowerCase() === 's' ? value * 1000 : value;
 }
 
 // Simple in-memory cache for PSI results
@@ -81,14 +96,11 @@ export async function performCoreWebVitalsAnalysis(
 			url: url,
 			metrics: {
 				cls: 0,
-				fid: 0,
 				lcp: 0,
 				fcp: 0,
-				ttfb: 0,
+				serverResponseTime: 0,
 				speedIndex: 0,
-				interactive: 0,
 				totalBlockingTime: 0,
-				firstMeaningfulPaint: 0,
 			},
 			scores: {
 				performance: 0,
@@ -138,26 +150,26 @@ export async function fetchPSIData(url: string, strategy: 'mobile' | 'desktop' =
 		}
 	});
 
-	const fetchWithRetry = async (url: string, maxRetries = 2): Promise<Response> => {
+	const fetchWithRetry = async (url: string, maxRetries = 2): Promise<any> => {
 		for (let attempt = 0; attempt <= maxRetries; attempt++) {
 			try {
 				if (debug) console.info(`PSI request attempt=${attempt} url=${url}`);
-				const controller = new AbortController();
-				const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
 
 				const start = Date.now();
 				const response = await smartFetch(url, {
-					responseType: 'ok',
+					responseType: 'json',
+					cacheStrategy: 'next',
+					nextCache: { revalidate: 3600 },
+					retries: 0,
+					timeout: 60000,
 					requestInit: {
-						signal: controller.signal,
 						headers: {
 							'User-Agent': 'Mozilla/5.0 (compatible; SiteHealthMonitor/1.0)'
 						}
 					}
 				});
 				const elapsed = Date.now() - start;
-				if (debug) console.info(`PSI response: url=${url} status=${response.status} elapsed_ms=${elapsed}`);
-				clearTimeout(timeoutId);
+				if (debug) console.info(`PSI response: url=${url} status=success elapsed_ms=${elapsed}`);
 				return response;
 			} catch (error) {
 				if (attempt === maxRetries) {
@@ -175,21 +187,7 @@ export async function fetchPSIData(url: string, strategy: 'mobile' | 'desktop' =
 		throw new Error('Max retries exceeded');
 	};
 
-	const psiResponse = await fetchWithRetry(psiUrl);
-
-	if (!psiResponse.ok) {
-		// Log the error response for debugging
-		const errorText = await psiResponse.text();
-		console.error(`PSI API error for ${url}:`, {
-			status: psiResponse.status,
-			statusText: psiResponse.statusText,
-			url: psiUrl,
-			response: errorText
-		});
-		throw new Error(`PSI API returned ${psiResponse.status}: ${psiResponse.statusText}`);
-	}
-
-	const psiData = await psiResponse.json();
+	const psiData = await fetchWithRetry(psiUrl);
 
 	// Check if we have valid data
 	if (psiData.lighthouseResult?.audits &&
@@ -204,18 +202,24 @@ export async function fetchPSIData(url: string, strategy: 'mobile' | 'desktop' =
 export async function processPSIData(psiData: any, siteName: string, url: string): Promise<CoreWebVitalsData> {
 	const audits = psiData.lighthouseResult.audits;
 	const categories = psiData.lighthouseResult.categories;
+	const fieldMetrics = psiData.loadingExperience?.metrics;
 
 	// Extract metrics with proper fallbacks
 	const realMetrics = {
-		cls: audits['cumulative-layout-shift']?.numericValue || audits['cumulative-layout-shift']?.displayValue ? parseFloat(audits['cumulative-layout-shift'].displayValue || audits['cumulative-layout-shift'].numericValue) : 0,
-		fid: audits['max-potential-fid']?.numericValue || audits['max-potential-fid']?.displayValue ? parseFloat(audits['max-potential-fid'].displayValue || audits['max-potential-fid'].numericValue) : 0,
-		lcp: audits['largest-contentful-paint']?.numericValue || audits['largest-contentful-paint']?.displayValue ? parseFloat(audits['largest-contentful-paint'].displayValue || audits['largest-contentful-paint'].numericValue) : 0,
-		fcp: audits['first-contentful-paint']?.numericValue || audits['first-contentful-paint']?.displayValue ? parseFloat(audits['first-contentful-paint'].displayValue || audits['first-contentful-paint'].numericValue) : 0,
-		ttfb: audits['server-response-time']?.numericValue ? audits['server-response-time'].numericValue * 1000 : audits['server-response-time']?.displayValue ? parseFloat(audits['server-response-time'].displayValue) * 1000 : 0,
-		speedIndex: audits['speed-index']?.numericValue || audits['speed-index']?.displayValue ? parseFloat(audits['speed-index'].displayValue || audits['speed-index'].numericValue) : 0,
-		interactive: audits['interactive']?.numericValue || audits['interactive']?.displayValue ? parseFloat(audits['interactive'].displayValue || audits['interactive'].numericValue) : 0,
-		totalBlockingTime: audits['total-blocking-time']?.numericValue || audits['total-blocking-time']?.displayValue ? parseFloat(audits['total-blocking-time'].displayValue || audits['total-blocking-time'].numericValue) : 0,
-		firstMeaningfulPaint: audits['first-meaningful-paint']?.numericValue || audits['first-meaningful-paint']?.displayValue ? parseFloat(audits['first-meaningful-paint'].displayValue || audits['first-meaningful-paint'].numericValue) : 0,
+		cls: getAuditMetricValue(audits['cumulative-layout-shift']),
+		lcp: getAuditMetricValue(audits['largest-contentful-paint']),
+		fcp: getAuditMetricValue(audits['first-contentful-paint']),
+		serverResponseTime: getAuditMetricValue(audits['server-response-time']),
+		speedIndex: getAuditMetricValue(audits['speed-index']),
+		totalBlockingTime: getAuditMetricValue(audits['total-blocking-time']),
+		field: fieldMetrics ? {
+			cls: fieldMetrics['CUMULATIVE_LAYOUT_SHIFT_SCORE']?.percentile !== undefined
+				? fieldMetrics['CUMULATIVE_LAYOUT_SHIFT_SCORE'].percentile / 100
+				: undefined,
+			lcp: fieldMetrics['LARGEST_CONTENTFUL_PAINT_MS']?.percentile,
+			fcp: fieldMetrics['FIRST_CONTENTFUL_PAINT_MS']?.percentile,
+			inp: fieldMetrics['INTERACTION_TO_NEXT_PAINT']?.percentile,
+		} : undefined,
 	};
 
 	// Extract category scores

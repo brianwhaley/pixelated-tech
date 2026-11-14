@@ -1,6 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
+import { mockCards } from '../test/test-data';
 import { ProjectTiles } from '@/components/elements/tiles';
 
 // Mock SmartImage so rendering is deterministic and fast
@@ -18,10 +19,7 @@ describe('ProjectTiles component', () => {
       const sample = {
         title: 'Example Project',
         description: 'Project description',
-        tileCards: [
-          { index: 0, cardIndex: 0, cardLength: 2, image: 'img1.jpg', imageAlt: 'One' },
-          { index: 1, cardIndex: 1, cardLength: 2, image: 'img2.jpg', imageAlt: 'Two' }
-        ]
+        tileCards: mockCards.slice(0, 2),
       };
 
       const { container } = render(<ProjectTiles {...sample} /> as any);

@@ -113,22 +113,16 @@ export function SiteHealthOverview({ siteName, strategy = 'mobile' }: SiteHealth
 								})}
 						</div>
 
-						{/* Core Web Vitals Section */}
+						{/* Key Performance Metrics Section */}
 						<div style={{ marginBottom: '1.5rem' }}>
 							<h5 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem' }}>
-                        Core Web Vitals
+                        Key Performance Metrics
 							</h5>
 							<div className="health-cwv-grid">
 								<div className="health-cwv-item">
 									<span className="health-cwv-label">Cumulative Layout Shift:</span>
 									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.cls, { good: 0.1, poor: 0.25 })) }}>
 										{formatMetric(siteData.metrics.cls, '')}
-									</span>
-								</div>
-								<div className="health-cwv-item">
-									<span className="health-cwv-label">First Input Delay:</span>
-									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.fid, { good: 100, poor: 300 })) }}>
-										{formatMetric(siteData.metrics.fid, 'ms')}
 									</span>
 								</div>
 								<div className="health-cwv-item">
@@ -144,9 +138,9 @@ export function SiteHealthOverview({ siteName, strategy = 'mobile' }: SiteHealth
 									</span>
 								</div>
 								<div className="health-cwv-item">
-									<span className="health-cwv-label">Time to First Byte:</span>
-									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.ttfb, { good: 800, poor: 1800 })) }}>
-										{formatMetric(siteData.metrics.ttfb, 'ms')}
+									<span className="health-cwv-label">Server Response Time:</span>
+									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.serverResponseTime, { good: 800, poor: 1800 })) }}>
+										{formatMetric(siteData.metrics.serverResponseTime, 'ms')}
 									</span>
 								</div>
 								<div className="health-cwv-item">
@@ -156,23 +150,43 @@ export function SiteHealthOverview({ siteName, strategy = 'mobile' }: SiteHealth
 									</span>
 								</div>
 								<div className="health-cwv-item">
-									<span className="health-cwv-label">Time to Interactive:</span>
-									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.interactive, { good: 3800, poor: 7300 })) }}>
-										{formatMetric(siteData.metrics.interactive, 'ms')}
-									</span>
-								</div>
-								<div className="health-cwv-item">
 									<span className="health-cwv-label">Total Blocking Time:</span>
 									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.totalBlockingTime, { good: 200, poor: 600 })) }}>
 										{formatMetric(siteData.metrics.totalBlockingTime, 'ms')}
 									</span>
 								</div>
-								<div className="health-cwv-item">
-									<span className="health-cwv-label">First Meaningful Paint:</span>
-									<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.firstMeaningfulPaint, { good: 2000, poor: 4000 })) }}>
-										{formatMetric(siteData.metrics.firstMeaningfulPaint, 'ms')}
-									</span>
-								</div>
+								{siteData.metrics.field?.lcp !== undefined && (
+									<div className="health-cwv-item">
+										<span className="health-cwv-label">Field LCP:</span>
+										<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.field.lcp, { good: 2500, poor: 4000 })) }}>
+											{formatMetric(siteData.metrics.field.lcp, 'ms')}
+										</span>
+									</div>
+								)}
+								{siteData.metrics.field?.cls !== undefined && (
+									<div className="health-cwv-item">
+										<span className="health-cwv-label">Field CLS:</span>
+										<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.field.cls, { good: 0.1, poor: 0.25 })) }}>
+											{formatMetric(siteData.metrics.field.cls, '')}
+										</span>
+									</div>
+								)}
+								{siteData.metrics.field?.fcp !== undefined && (
+									<div className="health-cwv-item">
+										<span className="health-cwv-label">Field FCP:</span>
+										<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.field.fcp, { good: 1800, poor: 3000 })) }}>
+											{formatMetric(siteData.metrics.field.fcp, 'ms')}
+										</span>
+									</div>
+								)}
+								{siteData.metrics.field?.inp !== undefined && (
+									<div className="health-cwv-item">
+										<span className="health-cwv-label">INP:</span>
+										<span className="health-cwv-value" style={{ color: getStatusColor(getMetricStatus(siteData.metrics.field.inp, { good: 200, poor: 500 })) }}>
+											{formatMetric(siteData.metrics.field.inp, 'ms')}
+										</span>
+									</div>
+								)}
 							</div>
 						</div>
 

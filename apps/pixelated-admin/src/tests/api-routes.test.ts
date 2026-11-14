@@ -76,8 +76,6 @@ vi.mock('@pixelated-tech/components/adminserver', () => ({
 	getCloudwatchHealthCheckData: async () => ({ success: true, data: {} }),
 	analyzeSecurityHealth: async () => ({ status: 'success', data: { summary: {}, vulnerabilities: [], dependencies: 0, totalDependencies: 0 } }),
 	analyzeGitHealth: async () => ({ success: true, data: { commits: [], contributors: [] } }),
-	discoverComponentsFromLibrary: async () => [],
-	analyzeComponentUsage: async () => ({ components: [] }),
 	CacheManager: class {
 		constructor() {}
 		get() { return null; }
@@ -149,24 +147,6 @@ describe('pixelated-admin API routes', () => {
 		vi.resetAllMocks();
 		vi.resetModules();
 	});
-
-	it('returns component usage results', async () => {
-		const route = await importModule('src/app/api/component-usage/route.ts');
-		const response = await route.GET();
-		expect(response.status).toBe(200);
-		expect(await response.json()).toEqual({ components: [] });
-	}, 0);
-
-	it('returns component usage results from cache', async () => {
-		const route = await importModule('src/app/api/component-usage/route.ts');
-		const firstResponse = await route.GET();
-		expect(firstResponse.status).toBe(200);
-		expect(await firstResponse.json()).toEqual({ components: [] });
-
-		const secondResponse = await route.GET();
-		expect(secondResponse.status).toBe(200);
-		expect(await secondResponse.json()).toEqual({ components: [] });
-	}, 0);
 
 	it('returns sites JSON', async () => {
 		const route = await importModule('src/app/api/sites/route.ts');
@@ -357,42 +337,6 @@ describe('pixelated-admin API routes', () => {
 		expect(await response.json()).toMatchObject({ success: false, error: 'ai failure' });
 	});
 
-	it('returns axe-core success data for a valid siteName', async () => {
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: true, data: expect.any(Array) });
-		expect(response.headers.get('x-axe-cache-hit')).toBe('0');
-	});
-
-	it('returns axe-core purge-only response when purge is requested', async () => {
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test', purge: 'true', purgeOnly: 'true' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: true, data: [] });
-	});
-
-	it('returns on-site SEO data for valid siteName', async () => {
-		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toBeTruthy();
-	});
-
-	it('returns security health data for valid siteName', async () => {
-		const route = await importModule('src/app/api/site-health/security/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toBeTruthy();
-	});
-
-	it('returns uptime health data for valid siteName', async () => {
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toBeTruthy();
-	});
-
 	it('returns cloudwatch data for valid siteName', async () => {
 		const route = await importModule('src/app/api/site-health/cloudwatch/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
@@ -404,15 +348,6 @@ describe('pixelated-admin API routes', () => {
 		const server = await import('@pixelated-tech/components/server');
 		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toBeTruthy();
-	});
-
-	it('returns google search console data for valid siteName', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
 		expect(await response.json()).toBeTruthy();
@@ -440,12 +375,6 @@ describe('pixelated-admin API routes', () => {
 		expect(response.status).toBe(400);
 		expect(await response.json()).toMatchObject({ success: false, error: 'Site has no configured url' });
 		readFileSpy.mockRestore();
-	});
-
-	it('returns github health data for valid siteName', async () => {
-		const route = await importModule('src/app/api/site-health/github/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
 	});
 
 	it('returns contentful content types validation failure when missing credentials', async () => {
@@ -508,15 +437,6 @@ describe('pixelated-admin API routes', () => {
 		const response = await route.GET();
 		expect(response.status).toBe(500);
 		expect(await response.json()).toMatchObject({ error: 'Failed to load sites' });
-	});
-
-	it('returns component usage 500 when analysis fails', async () => {
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'analyzeComponentUsage').mockRejectedValue(new Error('boom'));
-		const route = await importModule('src/app/api/component-usage/route.ts');
-		const response = await route.GET();
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ error: 'Internal server error' });
 	});
 
 	it('returns humans.txt well-known response', async () => {
@@ -610,60 +530,6 @@ describe('pixelated-admin API routes', () => {
 		readSpy.mockRestore();
 	});
 
-	it('returns axe-core response from cache after first request', async () => {
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		const secondResponse = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(secondResponse.status).toBe(200);
-		expect(secondResponse.headers.get('x-axe-cache-hit')).toBe('1');
-	});
-
-	it('returns axe-core response with cache disabled when cache=false', async () => {
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test', cache: 'false' }));
-		expect(response.status).toBe(200);
-		expect(response.headers.get('x-axe-use-cache')).toBe('false');
-	});
-
-	it('clears axe-core cache and processes again when purge is requested without purgeOnly', async () => {
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test', purge: 'true', purgeOnly: 'false' }));
-		expect(response.status).toBe(200);
-		expect(response.headers.get('x-axe-purged')).toBeTruthy();
-	});
-
-	it('retries axe-core analysis when the first attempt fails', async () => {
-		const admin = await import('@pixelated-tech/components/adminserver');
-		let count = 0;
-		vi.spyOn(admin, 'performAxeCoreAnalysis').mockImplementation(async () => {
-			if (count++ === 0) throw new Error('boom');
-			return { site: 'test', status: 'success', data: {}, metrics: [], timestamp: new Date().toISOString() };
-		});
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect((await response.json()).success).toBe(true);
-	});
-
-	it('returns axe-core error result when analysis fails twice', async () => {
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'performAxeCoreAnalysis').mockRejectedValue(new Error('boom'));
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: true, data: [{ status: 'error', site: 'test', data: null }] });
-	});
-
-	it('falls back to origin parsing when getRuntimeEnvFromHeaders throws', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getRuntimeEnvFromHeaders').mockImplementation(() => { throw new Error('bad'); });
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect((await response.json()).success).toBe(true);
-	});
-
 	it('returns core web vitals 400 when siteName missing', async () => {
 		const route = await importModule('src/app/api/site-health/core-web-vitals/route.ts');
 		const response = await route.GET(makeGetRequest('/'));
@@ -716,63 +582,6 @@ describe('pixelated-admin API routes', () => {
 		expect(await response.json()).toMatchObject({ success: true });
 	});
 
-	it('returns google search console 400 when siteName missing', async () => {
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const response = await route.GET(makeGetRequest('/'));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
-	it('returns google search console 500 when integration returns a generic error', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'getSearchConsoleData').mockResolvedValue({ success: false, error: 'generic failure' });
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ success: false, error: 'generic failure' });
-	});
-
-	it('returns github health 400 when siteName missing', async () => {
-		const route = await importModule('src/app/api/site-health/github/route.ts');
-		const response = await route.GET(makeGetRequest('/'));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
-	it('returns on-site seo 400 when siteName missing', async () => {
-		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
-		const response = await route.GET(makeGetRequest('/'));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
-	it('returns on-site seo status error branch when analysis returns an error status', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'performOnSiteSEOAnalysis').mockResolvedValue({ status: 'error', error: 'analysis fail' });
-		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ success: false, error: 'analysis fail' });
-	});
-
-	it('returns security health 400 when siteName missing', async () => {
-		const route = await importModule('src/app/api/site-health/security/route.ts');
-		const response = await route.GET(makeGetRequest('/'));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
-	it('returns uptime health 400 when siteName missing', async () => {
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
-		const response = await route.GET(makeGetRequest('/'));
-		expect(response.status).toBe(400);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
 	it('returns cloudwatch 400 when siteName missing', async () => {
 		const route = await importModule('src/app/api/site-health/cloudwatch/route.ts');
 		const response = await route.GET(makeGetRequest('/'));
@@ -800,80 +609,6 @@ describe('pixelated-admin API routes', () => {
 		expect(await response.json()).toMatchObject({ success: false });
 	});
 
-	it('returns google search console 403 when permission is insufficient', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'getSearchConsoleData').mockResolvedValue({ success: false, error: 'insufficient_permission', details: 'no access', code: 403 });
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(403);
-		expect(await response.json()).toMatchObject({ success: false, error: 'insufficient_permission' });
-	});
-
-	it('returns uptime no healthCheckId branch', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: true, status: 'Unknown' });
-	});
-
-	it('returns uptime error branch when checkUptimeHealth throws', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'brianwhaley', healthCheckId: 'hc-123', url: 'https://example.com' } as any);
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'checkUptimeHealth').mockRejectedValue(new Error('uptime failure'));
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: true, status: 'Unknown' });
-	});
-
-	it('returns security no localPath branch', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', localPath: undefined, url: 'https://example.com' } as any);
-		const route = await importModule('src/app/api/site-health/security/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ status: 'Unknown' });
-	});
-
-	it('returns security 500 when analysis returns an error status', async () => {
-		const fs = await import('fs');
-		const tempSecurityPath = path.resolve(__dirname, '../../tmp-site-security');
-		fs.mkdirSync(tempSecurityPath, { recursive: true });
-
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', localPath: tempSecurityPath, repo: 'repo', url: 'https://example.com' } as any);
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'analyzeSecurityHealth').mockResolvedValue({ status: 'error', error: 'scan failed' } as any);
-		const route = await importModule('src/app/api/site-health/security/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		fs.rmSync(tempSecurityPath, { recursive: true, force: true });
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ success: false, error: 'scan failed' });
-	});
-
-	it('returns security 500 when getSiteConfig throws', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockRejectedValue(new Error('config fail'));
-		const route = await importModule('src/app/api/site-health/security/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ success: false, error: 'Failed to run dependency security scan' });
-	});
-
-	it('returns on-site SEO no url branch', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test' } as any);
-		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
 	it('returns cloudwatch no healthCheckId branch', async () => {
 		const server = await import('@pixelated-tech/components/server');
 		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
@@ -892,32 +627,10 @@ describe('pixelated-admin API routes', () => {
 		expect(await response.json()).toMatchObject({ success: true });
 	});
 
-	it('returns google search console success branch', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-	});
-
-	it('returns github success branch', async () => {
-		const route = await importModule('src/app/api/site-health/github/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-	});
-
 	it('returns cloudwatch success branch for valid site', async () => {
 		const server = await import('@pixelated-tech/components/server');
 		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'brianwhaley', healthCheckId: 'hc-123', url: 'https://example.com' } as any);
 		const route = await importModule('src/app/api/site-health/cloudwatch/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-	});
-
-	it('returns uptime success branch for valid site', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'brianwhaley', healthCheckId: 'hc-123', url: 'https://example.com' } as any);
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
 	});
@@ -934,63 +647,10 @@ describe('pixelated-admin API routes', () => {
 		readFileSpy.mockRestore();
 	});
 
-	it('returns google search console no site found 404 branch', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue(null);
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'missing' }));
-		expect(response.status).toBe(404);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
-	it('returns github site not found 404 branch', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'loadSitesConfig').mockResolvedValue([] as any);
-		const route = await importModule('src/app/api/site-health/github/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'missing' }));
-		expect(response.status).toBe(404);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
-	it('returns github 500 when analyzeGitHealth throws', async () => {
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'analyzeGitHealth').mockRejectedValue(new Error('boom'));
-		const route = await importModule('src/app/api/site-health/github/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(500);
-		expect(await response.json()).toMatchObject({ success: false, error: 'boom' });
-	});
-
-	it('returns on-site seo error branch when performOnSiteSEOAnalysis throws', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'performOnSiteSEOAnalysis').mockRejectedValue(new Error('analysis fail'));
-		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ success: false });
-	});
-
 	it('returns google analytics route success branch with configured credentials', async () => {
 		const server = await import('@pixelated-tech/components/server');
 		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleAnalytics: { serviceAccountKey: 'key' } } });
 		const route = await importModule('src/app/api/site-health/google-analytics/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-	});
-
-	it('returns google search console route success branch with configured credentials', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { google: { client_id: 'g-id', client_secret: 'g-secret', refresh_token: 'refresh' }, googleSearchConsole: { serviceAccountKey: 'key' } } });
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-	});
-
-	it('returns github route success branch for existing site', async () => {
-		const route = await importModule('src/app/api/site-health/github/route.ts');
 		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
 		expect(response.status).toBe(200);
 	});
@@ -1003,68 +663,6 @@ describe('pixelated-admin API routes', () => {
 		expect(response.status).toBe(200);
 	});
 
-	it('returns uptime route success branch for valid site', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'brianwhaley', healthCheckId: 'hc-123', url: 'https://example.com' } as any);
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'brianwhaley' }));
-		expect(response.status).toBe(200);
-	});
-
-	it('covers on-site SEO cache hits, cache bypass, and thrown errors', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'test', url: 'https://example.com' } as any);
-		vi.spyOn(admin, 'performOnSiteSEOAnalysis').mockResolvedValue({ status: 'success', data: { score: 90 } } as any);
-		const route = await importModule('src/app/api/site-health/on-site-seo/route.ts');
-		await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		const cached = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(cached.status).toBe(200);
-		const bypassed = await route.GET(makeGetRequest('/', { siteName: 'test', cache: 'false' }));
-		expect(bypassed.status).toBe(200);
-
-		vi.spyOn(server, 'getSiteConfig').mockRejectedValue(new Error('seo config failure'));
-		const failed = await route.GET(makeGetRequest('/', { siteName: 'failed', cache: 'false' }));
-		expect(failed.status).toBe(200);
-		expect(await failed.json()).toMatchObject({ success: false, error: 'seo config failure' });
-	});
-
-	it('covers axe cache hits and expired-cache recovery', async () => {
-		const route = await importModule('src/app/api/site-health/axe-core/route.ts');
-		const first = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(first.status).toBe(200);
-		const cached = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(cached.headers.get('x-axe-cache-hit')).toBe('1');
-		const bypassed = await route.GET(makeGetRequest('/', { siteName: 'test', cache: 'false' }));
-		expect(bypassed.headers.get('x-axe-cache-hit')).toBe('0');
-	});
-
-	it('covers security cache, missing path, and analyzer success branches', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'missing-path', localPath: '/definitely/missing-path', url: 'https://example.com' } as any);
-		const route = await importModule('src/app/api/site-health/security/route.ts');
-		const response = await route.GET(makeGetRequest('/', { siteName: 'missing-path' }));
-		expect(response.status).toBe(200);
-		expect(await response.json()).toMatchObject({ status: 'Unknown' });
-
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'nocache', url: 'https://example.com' } as any);
-		const uncached = await route.GET(makeGetRequest('/', { siteName: 'nocache', cache: 'false' }));
-		expect(uncached.status).toBe(200);
-	});
-
-	it('covers uptime cache hit and cache-disabled success branches', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(server, 'getSiteConfig').mockResolvedValue({ name: 'cached', healthCheckId: 'hc-123', url: 'https://example.com' } as any);
-		vi.spyOn(admin, 'checkUptimeHealth').mockResolvedValue({ data: { status: 'Healthy' } } as any);
-		const route = await importModule('src/app/api/site-health/uptime/route.ts');
-		await route.GET(makeGetRequest('/', { siteName: 'cached' }));
-		const cached = await route.GET(makeGetRequest('/', { siteName: 'cached' }));
-		expect(cached.status).toBe(200);
-		const uncached = await route.GET(makeGetRequest('/', { siteName: 'cached', cache: 'false' }));
-		expect(uncached.status).toBe(200);
-	});
-
 	it('covers core vitals desktop strategy and analyzer fallback data', async () => {
 		const admin = await import('@pixelated-tech/components/adminserver');
 		vi.spyOn(admin, 'performCoreWebVitalsAnalysis').mockRejectedValue(new Error('analysis unavailable'));
@@ -1072,21 +670,6 @@ describe('pixelated-admin API routes', () => {
 		const response = await route.GET(makeGetRequest('/', { siteName: 'test', strategy: 'desktop', cache: 'false' }));
 		expect(response.status).toBe(200);
 		expect(await response.json()).toMatchObject({ success: true, data: [{ status: 'error', error: 'analysis unavailable' }] });
-	});
-
-	it('covers search console missing credentials and thrown integration errors', async () => {
-		const server = await import('@pixelated-tech/components/server');
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: {} });
-		const route = await importModule('src/app/api/site-health/google-search-console/route.ts');
-		const missing = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(missing.status).toBe(500);
-
-		vi.spyOn(server, 'getFullPixelatedConfig').mockReturnValue({ integrations: { googleSearchConsole: { serviceAccountKey: 'key' } } });
-		const admin = await import('@pixelated-tech/components/adminserver');
-		vi.spyOn(admin, 'getSearchConsoleData').mockRejectedValue(new Error('search unavailable'));
-		const thrown = await route.GET(makeGetRequest('/', { siteName: 'test' }));
-		expect(thrown.status).toBe(500);
-		expect(await thrown.json()).toMatchObject({ success: false, error: 'search unavailable' });
 	});
 
 	it('returns pagebuilder route import response for delete route', async () => {
@@ -1111,15 +694,10 @@ describe('pixelated-admin API routes', () => {
 			'src/app/api/pagebuilder/list/route.ts',
 			'src/app/api/pagebuilder/load/route.ts',
 			'src/app/api/pagebuilder/save/route.ts',
-			'src/app/api/site-health/axe-core/route.ts',
 			'src/app/api/site-health/cloudwatch/route.ts',
 			'src/app/api/site-health/core-web-vitals/route.ts',
-			'src/app/api/site-health/github/route.ts',
 			'src/app/api/site-health/google-analytics/route.ts',
 			'src/app/api/site-health/google-search-console/route.ts',
-			'src/app/api/site-health/on-site-seo/route.ts',
-			'src/app/api/site-health/security/route.ts',
-			'src/app/api/site-health/uptime/route.ts',
 		];
 		for (const file of files) {
 			const importedModule = await importModule(file);

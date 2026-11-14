@@ -238,41 +238,6 @@ export const mockPayPalCapture = {
 	],
 };
 
-export const mockSiteHealthDependencyVulnerabilitiesData = {
-	success: true,
-	status: 'Low Risk',
-	timestamp: new Date().toISOString(),
-	url: 'https://test-site.com',
-	vulnerabilities: [
-		{
-			name: 'lodash',
-			severity: 'high',
-			range: '4.17.20',
-			fixAvailable: true,
-			title: 'Prototype pollution vulnerability',
-		},
-		{
-			name: 'react',
-			severity: 'low',
-			range: '16.0.0',
-			fixAvailable: true,
-			title: 'Minor security update',
-		},
-	],
-	summary: {
-		info: 0,
-		low: 1,
-		moderate: 0,
-		high: 1,
-		critical: 0,
-		total: 2,
-	},
-	dependencies: 150,
-	totalDependencies: 150,
-};
-
-
-
 export const contentfulAssetsResponseA = {
 	items: [
 		{

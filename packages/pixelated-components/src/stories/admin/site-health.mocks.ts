@@ -112,14 +112,17 @@ export const mockCoreWebVitalsResponse: CoreWebVitalsResponse = {
       url: 'https://www.pixelated.tech',
       metrics: {
         cls: 0.03,
-        fid: 15,
         lcp: 1580,
         fcp: 780,
-        ttfb: 170,
+        serverResponseTime: 170,
         speedIndex: 1900,
-        interactive: 2200,
         totalBlockingTime: 42,
-        firstMeaningfulPaint: 910
+        field: {
+          cls: 0.03,
+          lcp: 1580,
+          fcp: 780,
+          inp: 120
+        }
       },
       scores: {
         performance: 0.87,

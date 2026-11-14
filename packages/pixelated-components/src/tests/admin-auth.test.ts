@@ -9,7 +9,7 @@ import {
 const authorizationConfig = {
   authorizedUsers: {
     'brian@pixelated.tech': {
-      routes: ['/', '/billing', '/site-health'],
+      routes: ['/', '/billing'],
     },
   },
 };
@@ -23,11 +23,10 @@ describe('shared admin auth helpers', () => {
 
   it('returns normalized authorized routes', () => {
     const routes = getAuthorizedRoutesByID('brian@pixelated.tech', authorizationConfig as any);
-    expect(routes).toEqual(['/', '/billing', '/site-health']);
+    expect(routes).toEqual(['/', '/billing']);
     expect(getAuthorizedRoutePaths('brian@pixelated.tech', authorizationConfig as any)).toEqual([
       '/',
       '/billing',
-      '/site-health',
     ]);
   });
 
@@ -42,14 +41,13 @@ describe('shared admin auth helpers', () => {
       { path: '/' },
       { path: '/login' },
       { path: '/billing' },
-      { path: '/site-health' },
       { path: '/hidden' },
       {},
       { path: null },
       { path: 42 },
     ];
     const allowed = getAllowedAdminRoutes('brian@pixelated.tech', routes as any, authorizationConfig as any);
-    expect(allowed.map(route => route.path)).toEqual(['/', '/billing', '/site-health']);
+    expect(allowed.map(route => route.path)).toEqual(['/', '/billing']);
   });
 
   it('returns false for unknown users', () => {

@@ -5,6 +5,8 @@ import { InvoiceData } from './billing.types';
 import { SmartImage } from "../../elements/smartimage";
 import { SiteHealthGoogleAnalytics } from '../site-health/site-health-google-analytics';
 import { SiteHealthCloudwatch } from '../site-health/site-health-cloudwatch';
+import { SiteHealthOverview } from '../site-health/site-health-overview';
+import { SiteHealthGoogleSearchConsole } from '../site-health/site-health-google-search-console';
 import './billing.css';
 
 interface InvoiceTemplateProps {
@@ -202,6 +204,21 @@ export const InvoiceTemplate: React.FC<InvoiceTemplateProps> = ({ invoice, onBac
 							endDate={invoiceEndDate}
 						/>
 					</div>
+				)}
+
+				{shouldRenderSiteHealth && invoice.siteName && (
+					<>
+						<div className="invoice-addon-section no-break">
+							<SiteHealthOverview siteName={invoice.siteName} strategy="mobile" />
+						</div>
+						<div className="invoice-addon-section no-break">
+							<SiteHealthGoogleSearchConsole
+								siteName={invoice.siteName}
+								startDate={`${invoice.billingMonth}-01`}
+								endDate={invoiceEndDate}
+							/>
+						</div>
+					</>
 				)}
 			</div>
 		</div>

@@ -26,10 +26,10 @@ describe('Health Indicators System', () => {
         expect(result.color).toBe(HEALTH_COLORS.MODERATE);
       });
 
-      it('returns needs improvement indicators for scores >= 0.5 and < 0.7', () => {
+      it('returns needs improvement indicators for scores >= 0.5 and < 0.9', () => {
         const result = getScoreIndicator(0.65);
-        expect(result.icon).toBe(HEALTH_INDICATORS.SERIOUS);
-        expect(result.color).toBe(HEALTH_COLORS.SERIOUS);
+        expect(result.icon).toBe(HEALTH_INDICATORS.MODERATE);
+        expect(result.color).toBe(HEALTH_COLORS.MODERATE);
       });
 
       it('returns poor indicators for scores < 0.5', () => {
@@ -47,7 +47,7 @@ describe('Health Indicators System', () => {
       it('handles edge cases correctly', () => {
         expect(getScoreIndicator(1.0).icon).toBe(HEALTH_INDICATORS.PASSING);
         expect(getScoreIndicator(0.0).icon).toBe(HEALTH_INDICATORS.CRITICAL);
-        expect(getScoreIndicator(0.5).icon).toBe(HEALTH_INDICATORS.SERIOUS);
+        expect(getScoreIndicator(0.5).icon).toBe(HEALTH_INDICATORS.MODERATE);
         expect(getScoreIndicator(0.7).icon).toBe(HEALTH_INDICATORS.MODERATE);
         expect(getScoreIndicator(0.9).icon).toBe(HEALTH_INDICATORS.PASSING);
       });
@@ -125,15 +125,13 @@ describe('Health Indicators System', () => {
     describe('SCORE_SCALE', () => {
       it('defines correct thresholds for score ranges', () => {
         expect(SCORE_SCALE.EXCELLENT.min).toBe(0.9);
-        expect(SCORE_SCALE.GOOD.min).toBe(0.7);
-        expect(SCORE_SCALE.NEEDS_IMPROVEMENT.min).toBe(0.5);
+        expect(SCORE_SCALE.GOOD.min).toBe(0.5);
         expect(SCORE_SCALE.POOR.min).toBe(0);
       });
 
       it('associates correct indicators with score ranges', () => {
         expect(SCORE_SCALE.EXCELLENT.icon).toBe(HEALTH_INDICATORS.PASSING);
         expect(SCORE_SCALE.GOOD.icon).toBe(HEALTH_INDICATORS.MODERATE);
-        expect(SCORE_SCALE.NEEDS_IMPROVEMENT.icon).toBe(HEALTH_INDICATORS.SERIOUS);
         expect(SCORE_SCALE.POOR.icon).toBe(HEALTH_INDICATORS.CRITICAL);
       });
     });

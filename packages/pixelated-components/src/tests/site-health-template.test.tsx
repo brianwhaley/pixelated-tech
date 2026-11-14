@@ -1,6 +1,7 @@
 /// <reference types="vitest/globals" />
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
+import { mockGoogleAnalyticsData } from '../test/test-data';
 import { screen, waitFor, act } from '@testing-library/react';
 import { SiteHealthTemplate } from '../components/admin/site-health/site-health-template';
 import * as smartFetchModule from '../components/foundation/smartfetch';
@@ -349,6 +350,17 @@ describe('SiteHealthTemplate', () => {
       </SiteHealthTemplate>
     );
     expect(screen.getByText('Ready: true')).toBeInTheDocument();
+    expect(mockSmartFetch).not.toHaveBeenCalled();
+  });
+
+  it('renders a shared analytics fixture without fetching', () => {
+    render(
+      <SiteHealthTemplate siteName="test-site" data={mockGoogleAnalyticsData} endpoint={{ endpoint: '/api/test' }}>
+        {(data: typeof mockGoogleAnalyticsData | null) => <div>Points: {data?.traffic.length}</div>}
+      </SiteHealthTemplate>
+    );
+
+    expect(screen.getByText(`Points: ${mockGoogleAnalyticsData.traffic.length}`)).toBeInTheDocument();
     expect(mockSmartFetch).not.toHaveBeenCalled();
   });
 });

@@ -68,7 +68,12 @@ export default function Home() {
 				/>
 			</PageSection>
 
-			<PageSection  columns={1} className="section-pavers text-outline" id="reviewCTA-section">
+			<PageSection
+				columns={1}
+				className="section-pavers text-outline"
+				id="reviewCTA-section"
+				backgroundImage="https://images.ctfassets.net/0b82pebh837v/4vT6cKz1jGZNVnrLM8cNHG/6520f512d7dacd00224d13e87ae8084b/IMG_6229.jpg?fm=webp"
+			>
 				<div className="home-cta">
 					<div className="">
 						Voice your opinion and  
@@ -100,9 +105,15 @@ export default function Home() {
 				</div>
 			</section>
 
-			<section className="section-bluechip" id="contact-section">
+			<PageSection
+				columns={1}
+				className="section-bluechip"
+				id="contact-section"
+				background="var(--accent1-color)"
+				backgroundImage="https://images.ctfassets.net/0b82pebh837v/72Ctu7oGaGNja5gHpTz4Fd/50984bad832c63d7845e3c6d511a1735/BluChips.jpg?fm=webp"
+			>
 				<CalloutLibrary.ContactCTA />
-			</section>
+			</PageSection>
 
 		</>
 	);

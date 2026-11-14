@@ -100,6 +100,7 @@ export function PageTitleHeader( { title , url, children }: PageTitleHeaderType)
  * @param {string} [props.padding] - Section padding (CSS shorthand).
  * @param {string} [props.background] - Background color or CSS value.
  * @param {string} [props.backgroundImage] - Background image URL.
+ * @param {boolean} [props.backgroundImageAboveFold] - Whether the background image is above the fold and should be prioritized.
  * @param {number} [props.columns] - Number of grid columns when `layoutType` is 'grid'.
  * @param {oneOf} [props.autoFlow] - Grid auto-flow property (e.g., 'row', 'column', 'dense').
  * @param {oneOf} [props.justifyItems] - Grid justify-items value.
@@ -131,6 +132,8 @@ PageSection.propTypes = {
 	background: PropTypes.string,
 	/** Background image URL */
 	backgroundImage: PropTypes.string,
+	/** Prioritize an above-the-fold background image */
+	backgroundImageAboveFold: PropTypes.bool,
 	// Grid-specific props
 	/** Number of columns when using grid layout */
 	columns: PropTypes.number,
@@ -170,6 +173,7 @@ export function PageSection({
 	padding = '0 20px', /* 5px */
 	background,
 	backgroundImage,
+	backgroundImageAboveFold = false,
 	// Grid props
 	columns = 12,
 	autoFlow = 'row',
@@ -199,7 +203,7 @@ export function PageSection({
 				<section id={id || undefined} 
 					className={"page-section" + (className ? ` ${className}` : '') } 
 					style={sectionStyle}>
-					{backgroundImage && <PageSectionBackgroundImage backgroundImage={backgroundImage} id={id} />}
+					{backgroundImage && <PageSectionBackgroundImage backgroundImage={backgroundImage} aboveFold={backgroundImageAboveFold} id={id} />}
 					<div 
 						className={"page-section-content" + " row-" + columns + "col"}
 						style={{
@@ -220,7 +224,7 @@ export function PageSection({
 		return (
 			<SmartErrorBoundary boundaryName={boundaryName}>
 				<section id={id || undefined} className="page-section page-section-flex" style={sectionStyle}>
-					{backgroundImage && <PageSectionBackgroundImage backgroundImage={backgroundImage} id={id} />}
+					{backgroundImage && <PageSectionBackgroundImage backgroundImage={backgroundImage} aboveFold={backgroundImageAboveFold} id={id} />}
 					<div 
 						className="page-section-content"
 						style={{
@@ -295,6 +299,8 @@ export function PageSectionHeader( { title , url, children }: PageSectionHeaderT
 PageSectionBackgroundImage.propTypes = {
 /** Background image URL */
 	backgroundImage: PropTypes.string.isRequired,
+	/** Whether the background image is above the fold */
+	aboveFold: PropTypes.bool,
 	/** Optional id for the image element */
 	id: PropTypes.string,
 };
@@ -310,6 +316,7 @@ export function PageSectionBackgroundImage(props: PageSectionBackgroundImageType
 				// name={props.id ? `${props.id} background image` : undefined}
 				title={props.id ? `${props.id} background image` : undefined}
 				alt={props.id ? `${props.id} background image` : ""}
+				aboveFold={props.aboveFold}
 				cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 				cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
 				cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined}

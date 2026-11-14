@@ -14,6 +14,18 @@ vi.mock('../components/admin/site-health/site-health-cloudwatch', () => ({
 	),
 }));
 
+vi.mock('../components/admin/site-health/site-health-overview', () => ({
+	SiteHealthOverview: ({ siteName, strategy }: { siteName: string; strategy: string }) => (
+		<div data-testid="pagespeed-card">PageSpeed {strategy} for {siteName}</div>
+	),
+}));
+
+vi.mock('../components/admin/site-health/site-health-google-search-console', () => ({
+	SiteHealthGoogleSearchConsole: ({ siteName, startDate, endDate }: { siteName: string; startDate: string; endDate: string }) => (
+		<div data-testid="search-console-summary-card">Search clicks for {siteName} from {startDate} through {endDate}</div>
+	),
+}));
+
 import { InvoiceTemplate } from '../components/admin/billing/billing.invoice.components';
 
 describe('InvoiceTemplate Component', () => {
@@ -132,6 +144,8 @@ describe('InvoiceTemplate Component', () => {
 		render(<InvoiceTemplate invoice={invoiceWithAnalytics as any} html="<h1>Mock HTML</h1>" />);
 		expect(screen.getByTestId('ga-card')).toBeInTheDocument();
 		expect(screen.getByTestId('cloudwatch-card')).toBeInTheDocument();
+		expect(screen.getByTestId('pagespeed-card')).toHaveTextContent('PageSpeed mobile for Test Site');
+		expect(screen.getByTestId('search-console-summary-card')).toHaveTextContent('2026-06-01 through 2026-06-30');
 	});
 
 	it('does not render analytics card when GA4 property ID is missing or placeholder', () => {
@@ -165,6 +179,8 @@ describe('InvoiceTemplate Component', () => {
 		render(<InvoiceTemplate invoice={invoiceWithoutSiteHealth as any} html="<h1>Mock HTML</h1>" />);
 		expect(screen.queryByTestId('ga-card')).not.toBeInTheDocument();
 		expect(screen.queryByTestId('cloudwatch-card')).not.toBeInTheDocument();
+		expect(screen.queryByTestId('pagespeed-card')).not.toBeInTheDocument();
+		expect(screen.queryByTestId('search-console-summary-card')).not.toBeInTheDocument();
 	});
 
 	it('hides the billing cycle for ad hoc invoices', () => {

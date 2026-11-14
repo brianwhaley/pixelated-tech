@@ -9,7 +9,6 @@
     	"/billing/adhoc",
     	"/blog-post-generator",
         "/social-publish",
-        "/component-usage",
         "/form-submits",
         "/configbuilder",
         "/contentful-migrate",
@@ -22,7 +21,6 @@
         "/mail-merge",
         "/pagebuilder",
         "/security.txt",
-        "/site-health",
         "/styleguide"
       ]
     }

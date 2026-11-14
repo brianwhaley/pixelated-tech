@@ -6,8 +6,8 @@ describe('site-health-utils', () => {
 		it('should return check icon for high score', () => {
 			expect(getAuditScoreIcon(0.95)).toBe('🟢');
 		});
-		it('should return warning icon for medium score', () => {
-			expect(getAuditScoreIcon(0.6)).toBe('🟠');
+		it('should return needs-improvement icon for medium score', () => {
+			expect(getAuditScoreIcon(0.6)).toBe('🟡');
 		});
 		it('should return error icon for low score', () => {
 			expect(getAuditScoreIcon(0.2)).toBe('🔴');
@@ -21,8 +21,8 @@ describe('site-health-utils', () => {
 		it('should return green for high score', () => {
 			expect(getScoreColor(0.95)).toBe('#10b981');
 		});
-		it('should return orange/yellow for medium score', () => {
-			expect(getScoreColor(0.6)).toBe('#ea580c');
+		it('should return yellow for medium score', () => {
+			expect(getScoreColor(0.6)).toBe('#d97706');
 		});
 		it('should return red for low score', () => {
 			expect(getScoreColor(0.2)).toBe('#dc2626');

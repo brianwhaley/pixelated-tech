@@ -6,8 +6,8 @@ import React, { useEffect } from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { MicroInteractions } from "@pixelated-tech/components";
 // import { loadAllImagesFromCloudinary } from "@pixelated-tech/components";
-import { preloadAllCSS } from "@pixelated-tech/components";
-import { preloadImages } from "@pixelated-tech/components";
+// import { preloadAllCSS } from "@pixelated-tech/components";
+// import { preloadImages } from "@pixelated-tech/components";
 
 
 /**
@@ -17,11 +17,12 @@ import { preloadImages } from "@pixelated-tech/components";
 LayoutClient.propTypes = { /* No props expected */ };
 export type LayoutClientType = InferProps<typeof LayoutClient.propTypes>;
 export function LayoutClient() {
-
+	/*
 	useEffect(() => {
 		preloadImages();
 		preloadAllCSS();
 	}, []);
+	*/
 
 	useEffect(() => {
 		MicroInteractions({ 

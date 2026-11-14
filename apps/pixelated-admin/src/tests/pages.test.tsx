@@ -16,16 +16,6 @@ const mockSmartFetch = vi.fn(async (...args: any[]) => {
 	if (stringUrl.includes('/api/sites')) {
 		return { ok: true, json: async () => [] };
 	}
-	if (stringUrl.includes('/api/component-usage')) {
-		return {
-			ok: true,
-			json: async () => ({
-				components: ['component-a'],
-				siteList: [{ name: 'site-a', localPath: '/site-a' }],
-				usageMatrix: { 'component-a': { 'site-a': true } },
-			}),
-		};
-	}
 	if (stringUrl.includes('/api/contentful/validate')) {
 		return { ok: true, json: async () => ({ success: true }) };
 	}
@@ -156,7 +146,6 @@ const pageComponents = [
 	['form-submits', 'src/app/(pages)/form-submits/page.tsx'],
 	['formbuilder', 'src/app/(pages)/formbuilder/page.tsx'],
 	['pagebuilder', 'src/app/(pages)/pagebuilder/page.tsx'],
-	['component-usage', 'src/app/(pages)/component-usage/page.tsx'],
 	['styleguide', 'src/app/(pages)/styleguide/page.tsx'],
 	['mail-merge', 'src/app/(pages)/mail-merge/page.tsx'],
 	['loading', 'src/app/loading.tsx'],
@@ -180,9 +169,6 @@ describe('pixelated-admin page components', () => {
 			expect(Page).toBeTypeOf('function');
 			render(<Page />);
 
-			if (name === 'component-usage') {
-				await waitFor(() => expect(mockSmartFetch).toHaveBeenCalled());
-			}
 		});
 	}
 
@@ -222,55 +208,6 @@ describe('pixelated-admin page components', () => {
 		const updateFormData = action.mock.calls[1][1] as FormData;
 		expect(updateFormData.get('siteName')).toBe('site-b');
 		expect(updateFormData.get('calendarJson')).toBeNull();
-	});
-
-	it('shows an error when component usage fetch returns non-ok', async () => {
-		mockSmartFetch.mockImplementation(async (url: unknown) => {
-			if (String(url).includes('/api/component-usage')) {
-				return { ok: false, json: async () => ({ message: 'bad request' }) };
-			}
-			return { ok: true, json: async () => ({}) };
-		});
-
-		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(screen.getAllByText(/Error:/i).length).toBeGreaterThan(0));
-	});
-
-	it('renders warnings when component usage data contains warnings', async () => {
-		mockSmartFetch.mockImplementation(async (url: unknown) => {
-			if (String(url).includes('/api/component-usage')) {
-				return {
-					ok: true,
-					json: async () => ({
-						components: ['component-a'],
-						siteList: [{ name: 'site-a', localPath: '/site-a' }],
-						usageMatrix: { 'component-a': { 'site-a': true } },
-						warnings: ['warning-1'],
-					}),
-				};
-			}
-			return { ok: true, json: async () => ({}) };
-		});
-
-		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(screen.getByText(/Component scan warnings/i)).toBeTruthy());
-		expect(screen.getByText('warning-1')).toBeTruthy();
-	});
-
-	it('uses an extended timeout when requesting component usage data', async () => {
-		const mod = await importModule('src/app/(pages)/component-usage/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(mockSmartFetch).toHaveBeenCalled());
-		expect(mockSmartFetch.mock.calls[0][0]).toBe('/api/component-usage');
-		expect(mockSmartFetch.mock.calls[0][1]).toMatchObject({ responseType: 'ok', timeout: 0 });
 	});
 
 	it('downloads pixelated.config.json from the config builder page', async () => {
@@ -390,28 +327,6 @@ describe('pixelated-admin page components', () => {
 		await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Error loading content types: load failed'));
 	});
 
-	it('shows a fallback when site-health site loading fails', async () => {
-		mockSmartFetch.mockRejectedValueOnce(new Error('fail'));
-		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
-		expect(screen.getByLabelText(/Select Site/i)).toBeInTheDocument();
-	});
-
-	it('handles a non-OK site list response and injects axe when absent', async () => {
-		mockSmartFetch.mockResolvedValueOnce({ ok: false, json: async () => [] });
-		delete (window as any).axe;
-		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
-		expect(screen.getByLabelText(/Select Site/i)).toBeInTheDocument();
-		expect(document.querySelector('script[src="https://cdn.jsdelivr.net/npm/axe-core/axe.min.js"]')).toBeTruthy();
-	});
-
 	it('reports a validation error when required contentful fields are missing', async () => {
 		const mod = await importModule('src/app/(pages)/contentful-migrate/page.tsx');
 		const Page = mod.default;
@@ -419,40 +334,6 @@ describe('pixelated-admin page components', () => {
 
 		const validateButton = screen.getByRole('button', { name: /Validate & Load Content Types/i });
 		expect(validateButton).toBeDisabled();
-	});
-
-	it('loads site options and selects a site in site-health page', async () => {
-		mockSmartFetch.mockImplementation(async (url: unknown) => {
-			if (String(url).includes('/api/sites')) {
-				return { ok: true, json: async () => ([{ name: 'site-a', url: 'https://site-a.example' }]) };
-			}
-			return { ok: true, json: async () => ({}) };
-		});
-		(window as any).axe = true;
-		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
-		const select = screen.getByLabelText(/Select Site/i);
-		fireEvent.change(select, { target: { value: 'site-a' } });
-		expect((select as HTMLSelectElement).value).toBe('site-a');
-	});
-
-	it('updates site-health date inputs after loading', async () => {
-		const mod = await importModule('src/app/(pages)/site-health/page.tsx');
-		const Page = mod.default;
-		render(<Page />);
-
-		await waitFor(() => expect(screen.queryByText('Loading sites...')).toBeNull());
-		const startInput = screen.getByLabelText(/Start Date/i) as HTMLInputElement;
-		const endInput = screen.getByLabelText(/End Date/i) as HTMLInputElement;
-
-		fireEvent.change(startInput, { target: { value: '2026-01-01' } });
-		fireEvent.change(endInput, { target: { value: '2026-02-01' } });
-
-		expect(startInput.value).toBe('2026-01-01');
-		expect(endInput.value).toBe('2026-02-01');
 	});
 
 	it('renders mail merge page when no mailer files exist', async () => {

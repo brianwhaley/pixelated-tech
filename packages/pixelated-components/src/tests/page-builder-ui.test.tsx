@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
+import { mockPageEngineData } from '../test/test-data';
 import { screen } from '@testing-library/react';
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -89,7 +90,7 @@ describe('PageBuilderUI', () => {
 		// Override the mock to have components so PageEngine renders
 		mockUsePageBuilder.mockReturnValueOnce({
 			...mockPageBuilderState,
-			pageJSON: { components: [{ component: 'Test', props: {} }] }
+			pageJSON: mockPageEngineData
 		});
 
 		render(<PageBuilderUI />);

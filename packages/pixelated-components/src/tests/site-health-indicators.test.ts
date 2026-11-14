@@ -11,12 +11,12 @@ describe('site-health-indicators', () => {
 		expect(getScoreIndicator(0.95).color).toBe('#10b981');
 	});
 
-	it('should return good indicator for mid scores', () => {
+	it('should return PageSpeed needs-improvement indicator for mid scores', () => {
 		expect(getScoreIndicator(0.8).icon).toBe('🟡');
 	});
 
-	it('should return needs improvement indicator for average scores', () => {
-		expect(getScoreIndicator(0.55).icon).toBe('🟠');
+	it('should return PageSpeed needs-improvement indicator for average scores', () => {
+		expect(getScoreIndicator(0.55).icon).toBe('🟡');
 	});
 
 	it('should return poor indicator for low scores', () => {
@@ -27,12 +27,12 @@ describe('site-health-indicators', () => {
 		expect(getScoreIndicator(0.9)).toMatchObject({ icon: '🟢', color: '#10b981' });
 	});
 
-	it('should return good indicator at exact good threshold', () => {
-		expect(getScoreIndicator(0.7).icon).toBe('🟡');
+	it('should return needs-improvement indicator at exact PageSpeed threshold', () => {
+		expect(getScoreIndicator(0.5).icon).toBe('🟡');
 	});
 
-	it('should return needs improvement at exact needs improvement threshold', () => {
-		expect(getScoreIndicator(0.5).icon).toBe('🟠');
+	it('should return poor indicator below the PageSpeed threshold', () => {
+		expect(getScoreIndicator(0.49).icon).toBe('🔴');
 	});
 
 	it('should return critical impact indicator', () => {

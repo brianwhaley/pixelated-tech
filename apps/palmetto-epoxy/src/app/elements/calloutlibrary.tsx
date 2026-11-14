@@ -19,9 +19,15 @@ export function PageTitle({title}: PageTitleType ) {
 	return (
 		<>
 			<br />
-			<section className="section-bwchip text-outline" id="page-title-section">
+			<PageSection
+				className="section-bwchip text-outline"
+				id="page-title-section"
+				columns={1}
+				backgroundImageAboveFold
+				backgroundImage="https://images.ctfassets.net/0b82pebh837v/10u8y8Qcv6hkLnp1stjZZx/b9b6be999291a643f2c1cb1c22e5fc58/IMG_5559.jpg?fm=webp"
+			>
 				<PageTitleHeader title={title} />
-			</section>
+			</PageSection>
 		</>
 	);
 }

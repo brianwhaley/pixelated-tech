@@ -108,7 +108,7 @@ describe('SiteHealthOverview', () => {
       });
   });
 
-  it('renders Core Web Vitals metrics', async () => {
+  it('renders key performance metrics', async () => {
     mockFetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse)
     });
@@ -116,15 +116,17 @@ describe('SiteHealthOverview', () => {
     render(<SiteHealthOverview siteName="test-site" />);
 
     await waitFor(() => {
-      expect(screen.getByText('Core Web Vitals')).toBeInTheDocument();
+    expect(screen.getByText('Key Performance Metrics')).toBeInTheDocument();
     });
 
     expect(screen.getByText('Cumulative Layout Shift:')).toBeInTheDocument();
-    expect(screen.getByText(`${mockData.metrics.cls.toFixed(3)}`)).toBeInTheDocument();
-    expect(screen.getByText('First Input Delay:')).toBeInTheDocument();
-    expect(screen.getAllByText(`${Math.round(mockData.metrics.fid)}ms`).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(`${mockData.metrics.cls.toFixed(3)}`).length).toBeGreaterThan(0);
     expect(screen.getByText('Largest Contentful Paint:')).toBeInTheDocument();
     expect(screen.getAllByText(`${Math.round(mockData.metrics.lcp)}ms`).length).toBeGreaterThan(0);
+    expect(screen.getByText('Server Response Time:')).toBeInTheDocument();
+    expect(screen.getAllByText(`${Math.round(mockData.metrics.serverResponseTime)}ms`).length).toBeGreaterThan(0);
+    expect(screen.getByText('Field LCP:')).toBeInTheDocument();
+    expect(screen.getByText('INP:')).toBeInTheDocument();
   });
 
   it('displays error message when API fails', async () => {
@@ -212,5 +214,33 @@ describe('SiteHealthOverview', () => {
     // Other scores should still be displayed
     const otherScoreValue = Math.round((dataWithNulls.scores.accessibility ?? 0) * 100);
     expect(screen.getAllByText(`${otherScoreValue}%`).length).toBeGreaterThan(0);
+  });
+
+  it('hides field metrics when field data is unavailable', async () => {
+    const dataWithoutFieldMetrics = {
+      ...mockData,
+      metrics: {
+        ...mockData.metrics,
+        field: undefined,
+      },
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({
+        success: true,
+        data: [dataWithoutFieldMetrics]
+      })
+    });
+
+    render(<SiteHealthOverview siteName="test-site" />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Key Performance Metrics')).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText('Field LCP:')).not.toBeInTheDocument();
+    expect(screen.queryByText('Field CLS:')).not.toBeInTheDocument();
+    expect(screen.queryByText('Field FCP:')).not.toBeInTheDocument();
+    expect(screen.queryByText('INP:')).not.toBeInTheDocument();
   });
 });

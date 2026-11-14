@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { pixelatedConfig } from '../test/test-data';
+import { mockConfig } from '../test/test-utils';
 import { mockGoogleSearchConsoleData } from '../test/test-data';
 
 // Support either the legacy adapter shape { mockResponse, mockConfig }
@@ -7,8 +7,6 @@ import { mockGoogleSearchConsoleData } from '../test/test-data';
 const _mockGSC = mockGoogleSearchConsoleData as any;
 const mockGscResponse = _mockGSC?.mockResponse ?? _mockGSC;
 const mockGscConfig = _mockGSC?.mockConfig ?? {};
-
-// pixelatedConfig imported from test-data
 
 // Mock googleapis BEFORE importing integration module
 vi.mock('googleapis', () => ({
@@ -78,13 +76,13 @@ import { getFullPixelatedConfig } from '../components/config/config';
 describe('site-health-google-search-console.integration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(pixelatedConfig);
+		(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue(mockConfig);
 	});
 
 	it('should fetch Search Console data with valid service account', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
+			siteUrl: mockConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
+			serviceAccountKey: mockConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -96,8 +94,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should return queries with clicks, impressions, CTR, and position', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
+			siteUrl: mockConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
+			serviceAccountKey: mockConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -118,7 +116,7 @@ describe('site-health-google-search-console.integration', () => {
 	it('should handle missing site URL configuration', async () => {
 		const config: SearchConsoleConfig = {
 			siteUrl: '',
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || ''
+			serviceAccountKey: mockConfig.integrations?.googleSearchConsole?.serviceAccountKey || ''
 		};
 
 		const result = await getSearchConsoleData(config, 'test-site');
@@ -162,8 +160,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should use cache when available', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || 'https://example.com',
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || ''
+			siteUrl: mockConfig.integrations?.googleSearchConsole?.siteUrl || 'https://example.com',
+			serviceAccountKey: mockConfig.integrations?.googleSearchConsole?.serviceAccountKey || ''
 		};
 
 		const result1 = await getSearchConsoleData(config, 'test-site');
@@ -199,8 +197,8 @@ describe('site-health-google-search-console.integration', () => {
 
 	it('should work with different site names independently', async () => {
 		const config: SearchConsoleConfig = {
-			siteUrl: pixelatedConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
-			serviceAccountKey: pixelatedConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
+			siteUrl: mockConfig.integrations?.googleSearchConsole?.siteUrl || mockGscConfig.siteUrl || 'https://example.com',
+			serviceAccountKey: mockConfig.integrations?.googleSearchConsole?.serviceAccountKey || mockGscConfig.serviceAccountKey || JSON.stringify({ type: 'service_account', project_id: 'test', private_key: 'k', client_email: 'test@example.com' })
 		};
 
 		const result1 = await getSearchConsoleData(config, 'site-a');

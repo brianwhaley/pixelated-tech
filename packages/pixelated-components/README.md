@@ -178,20 +178,11 @@ Shared technical utilities and helpers:
 
 
 ### Site Health & Monitoring
-Comprehensive site health monitoring and analytics:
+Billing-facing site health and analytics components:
 - **SiteHealthOverview** - Dashboard overview of site health metrics
-- **SiteHealthPerformance** - Performance monitoring and optimization insights
-- **SiteHealthAccessibility** - Accessibility compliance testing with axe-core
-- **SiteHealthSecurity** - Security vulnerability scanning and recommendations
-- **SiteHealthSEO** - On-page SEO analysis and scoring
-- **SiteHealthOnSiteSEO** - Advanced on-page SEO metrics (browser caching, gzip compression, mobile-first indexing, etc.)
 - **SiteHealthGoogleAnalytics** - Google Analytics data integration
-- **SiteHealthGoogleSearchConsole** - Google Search Console integration
 - **SiteHealthCloudwatch** - AWS CloudWatch uptime monitoring
-- **SiteHealthGit** - Git repository health and status
-- **SiteHealthUptime** - Uptime monitoring and alerts
-- **SiteHealthAxeCore** - Automated accessibility testing
-- **SiteHealthDependencyVulnerabilities** - Dependency security scanning
+- **BillingSearchConsoleSummary** - Calendar-month web search click comparison for invoices
 
 
 

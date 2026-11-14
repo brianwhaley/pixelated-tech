@@ -114,6 +114,22 @@ describe('PageSection (unit)', () => {
 		const section = container.querySelector('section');
 		expect(section?.className).toContain('page-section-flex');
 	});
+
+	it('prioritizes only explicitly above-the-fold background images', () => {
+		const { rerender } = render(
+			<PageSection backgroundImage="/lazy-background.jpg">
+				<div>Content</div>
+			</PageSection>
+		);
+		expect(screen.getByTestId('smart-image')).toHaveAttribute('data-abovefold', 'false');
+
+		rerender(
+			<PageSection backgroundImage="/hero-background.jpg" backgroundImageAboveFold>
+				<div>Content</div>
+			</PageSection>
+		);
+		expect(screen.getByTestId('smart-image')).toHaveAttribute('data-abovefold', 'true');
+	});
 });
 
 

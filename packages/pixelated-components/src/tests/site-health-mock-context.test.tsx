@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import { render } from '../test/test-utils';
+import { siteHealthData } from '../test/test-data';
 import { SiteHealthMockProvider, useSiteHealthMockData } from '../components/admin/site-health/site-health-mock-context';
 
 const TestComponent = () => {
@@ -57,6 +58,16 @@ describe('SiteHealthMockProvider', () => {
 		);
 		
 		expect(container).toBeDefined();
+	});
+
+	it('should provide the shared Site Health fixture data', () => {
+		render(
+			<SiteHealthMockProvider mocks={siteHealthData}>
+				<TestComponent />
+			</SiteHealthMockProvider>
+		);
+
+		expect(screen.getByText(/dependencyVulnerabilities/)).toBeInTheDocument();
 	});
 });
 

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
-import { pixelatedConfig, mockGoogleAuth, mockGoogleApiResponses, mockGoogleDateRanges as googleDateRanges } from '../test/test-data';
+import { mockConfig } from '../test/test-utils';
+import { mockGoogleAuth, mockGoogleApiResponses, mockGoogleDateRanges as googleDateRanges } from '../test/test-data';
 
 const mockGoogleDateRanges = googleDateRanges ? {
   currentStart: new Date(googleDateRanges.currentStart),
@@ -256,7 +257,7 @@ describe('Google API Integration', () => {
 
   describe('getGoogleAnalyticsData', () => {
     const validConfig = {
-      ...pixelatedConfig.integrations?.googleAnalytics,
+      ...mockConfig.integrations?.googleAnalytics,
       serviceAccountKey: JSON.stringify(mockGoogleAuth)
     };
 

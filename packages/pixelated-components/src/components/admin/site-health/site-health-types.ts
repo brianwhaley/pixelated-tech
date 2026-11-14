@@ -179,14 +179,17 @@ export interface AxeCoreResponse {
 // Core Web Vitals types
 export interface CoreWebVitalsMetrics {
   cls: number;
-  fid: number;
   lcp: number;
   fcp: number;
-  ttfb: number;
+  serverResponseTime: number;
   speedIndex: number;
-  interactive: number;
   totalBlockingTime: number;
-  firstMeaningfulPaint: number;
+  field?: {
+    cls?: number;
+    lcp?: number;
+    fcp?: number;
+    inp?: number;
+  };
 }
 
 export interface CoreWebVitalsData {

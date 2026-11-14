@@ -6,6 +6,7 @@ import puppeteer from 'puppeteer';
 import { getFullPixelatedConfig } from '../components/config/config';
 import { getLiveBillingStats } from '../components/integrations/wordpress.jetpack.server';
 import * as dynamoIntegration from '../components/integrations/aws.dynamo.integration';
+import { createMockConfig } from '../test/test-utils';
 import { billingSites } from '../test/test-data';
 
 const mockSend = vi.hoisted(() => vi.fn());
@@ -75,11 +76,11 @@ vi.mock('../components/integrations/aws.ses.integration', () => ({
 describe('Billing Functions', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		vi.mocked(getFullPixelatedConfig).mockReturnValue({
+		vi.mocked(getFullPixelatedConfig).mockReturnValue(createMockConfig({
 			integrations: {
 				aws: { region: 'us-east-1' }
 			}
-		} as any);
+		}) as any);
 		vi.mocked(dynamoIntegration.listPixelatedFormSubmissionReportRows).mockResolvedValue([]);
 	});
 

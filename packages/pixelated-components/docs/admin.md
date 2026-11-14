@@ -53,37 +53,6 @@ const result = await DeploymentIntegration.deploy({
 - **Configuration Management**: Flexible deployment configurations
 - **Error Handling**: Comprehensive error reporting and recovery
 
-## Site Health
-
-Comprehensive site health monitoring components.
-
-```typescript
-import {
-  SiteHealthOverview,
-  SiteHealthAxeCore,
-  SiteHealthPerformance
-} from '@pixelated-tech/components';
-
-// Core Web Vitals overview
-<SiteHealthOverview siteName="example.com" />
-
-// Accessibility testing with axe-core
-<SiteHealthAxeCore siteName="example.com" />
-
-// Performance metrics
-<SiteHealthPerformance siteName="example.com" />
-```
-
-#### Available Health Checks
-
-- **Axe Core Accessibility**: Automated accessibility testing
-
-##### Axe-core (Puppeteer) runtime notes 🔧
-
-- **Modes**:
-  - **local** — for local development. Uses lighter Puppeteer launch args and prefers the `PUPPETEER_EXECUTABLE_PATH` environment variable so you can point at your local Chrome/Chromium.
-  - **prod** — for production (Amplify, CI). Uses conservative sandbox-friendly args and prefers the build-time path provided in `pixelated.config.json` under `puppeteer.executable_path`.
-
 - **Recommended Amplify preBuild steps** (example):
 
 ```bash

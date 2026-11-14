@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
+import { mockPageEngineData } from '../test/test-data';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SaveLoadSection } from "../components/sitebuilder/page/components/SaveLoadSection";
@@ -14,15 +15,7 @@ const { smartFetch } = await import('../components/foundation/smartfetch');
 
 describe('SaveLoadSection', () => {
 	const mockOnLoad = vi.fn();
-	const mockPageData = {
-		components: [
-			{
-				component: 'Callout',
-				props: { title: 'Test' },
-				children: []
-			}
-		]
-	};
+	const mockPageData = mockPageEngineData;
 
 	beforeEach(() => {
 		vi.clearAllMocks();

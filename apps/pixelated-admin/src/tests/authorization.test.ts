@@ -4,7 +4,7 @@ import { getAuthorizedRoutesByID, isRouteAllowedForID, getAllowedAdminRoutes } f
 const authorizationConfig = {
 	authorizedUsers: {
 		'brian@pixelated.tech': {
-			routes: ['/', '/billing/monthly', '/billing/adhoc', '/site-health'],
+			routes: ['/', '/billing/monthly', '/billing/adhoc'],
 		},
 	},
 };
@@ -15,7 +15,6 @@ describe('authorization helper', () => {
 		expect(routes).toContain('/');
 		expect(routes).toContain('/billing/monthly');
 		expect(routes).toContain('/billing/adhoc');
-		expect(routes).toContain('/site-health');
 	});
 
 	it('normalizes route paths when checking authorization', () => {
@@ -29,11 +28,10 @@ describe('authorization helper', () => {
 			{ path: '/login' },
 			{ path: '/billing/monthly' },
 			{ path: '/billing/adhoc' },
-			{ path: '/site-health' },
 			{ path: '/hidden' },
 		];
 		const allowed = getAllowedAdminRoutes('brian@pixelated.tech', routes as any, authorizationConfig as any);
-		expect(allowed.map(route => route.path)).toEqual(['/', '/billing/monthly', '/billing/adhoc', '/site-health']);
+		expect(allowed.map(route => route.path)).toEqual(['/', '/billing/monthly', '/billing/adhoc']);
 	});
 
 	it('returns false for unknown or unauthorized users', () => {

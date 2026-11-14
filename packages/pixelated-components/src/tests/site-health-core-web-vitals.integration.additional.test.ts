@@ -33,8 +33,39 @@ describe('Site health core web vitals integration', () => {
 		expect(result.status).toBe('success');
 		expect(typeof result.metrics.lcp).toBe('number');
 		expect(typeof result.metrics.fcp).toBe('number');
+		expect(result.metrics.serverResponseTime).toBe(
+			mockPsiData.lighthouseResult.audits['server-response-time'].numericValue
+		);
+		expect(result.metrics.lcp).toBe(
+			mockPsiData.lighthouseResult.audits['largest-contentful-paint'].numericValue
+		);
+		expect(result.metrics.fcp).toBe(
+			mockPsiData.lighthouseResult.audits['first-contentful-paint'].numericValue
+		);
+		expect(result.metrics.speedIndex).toBe(
+			mockPsiData.lighthouseResult.audits['speed-index'].numericValue
+		);
+		expect(result.metrics.field?.lcp).toBe(
+			mockPsiData.loadingExperience.metrics.LARGEST_CONTENTFUL_PAINT_MS.percentile
+		);
+		expect(result.metrics.field?.inp).toBe(
+			mockPsiData.loadingExperience.metrics.INTERACTION_TO_NEXT_PAINT.percentile
+		);
 		expect(result.categories.performance.id).toBe('performance');
 		expect(Array.isArray(result.categories.performance.audits)).toBe(true);
+	});
+
+	it('converts seconds in display values when numeric values are unavailable', async () => {
+		const displayOnlyPsiData = JSON.parse(JSON.stringify(mockPsiData));
+		delete displayOnlyPsiData.lighthouseResult.audits['largest-contentful-paint'].numericValue;
+		delete displayOnlyPsiData.lighthouseResult.audits['first-contentful-paint'].numericValue;
+		delete displayOnlyPsiData.lighthouseResult.audits['speed-index'].numericValue;
+
+		const result = await siteHealthModule.processPSIData(displayOnlyPsiData, 'Test Site', 'https://example.com');
+
+		expect(result.metrics.lcp).toBe(2500);
+		expect(result.metrics.fcp).toBe(800);
+		expect(result.metrics.speedIndex).toBe(800);
 	});
 
 	it('should cache results on repeated performCoreWebVitalsAnalysis calls', async () => {
