@@ -46,6 +46,8 @@ export type DirectionType = typeof directions[number];
  * @param {string} [props.url] - Optional CTA URL for the callout button.
  * @param {string} [props.img] - Image URL to display in the callout.
  * @param {string} [props.imgAlt] - Alternate text for the image (accessibility and caption fallback).
+ * @param {number} [props.imgWidth] - Preferred image width in pixels.
+ * @param {number} [props.imgHeight] - Preferred image height in pixels.
  * @param {oneOf} [props.imgShape] - Visual shape applied to the image container.
  * @param {function} [props.imgClick] - Optional image click handler (event, url).
  * @param {string} [props.title] - Primary title text for the callout.
@@ -77,6 +79,10 @@ Callout.propTypes = {
 	img: PropTypes.string,
 	/** Alt text for the image (used for accessibility and caption fallback). */
 	imgAlt: PropTypes.string,
+	/** Preferred image width in pixels. */
+	imgWidth: PropTypes.number,
+	/** Preferred image height in pixels. */
+	imgHeight: PropTypes.number,
 	/** Visual shape applied to the image container (e.g., 'square', 'round'). */
 	imgShape: PropTypes.oneOf([...shapes]),
 	/** Optional click handler for the image (event, url). */
@@ -103,6 +109,7 @@ export function Callout({
 	direction = 'left', 
 	gridColumns = {left: 1, right: 2},
 	url, img, imgAlt, 
+	imgWidth, imgHeight,
 	imgShape = 'square', 
 	imgClick, 
 	title, subtitle, content, children, buttonText,
@@ -134,6 +141,8 @@ export function Callout({
 						src={img} 
 						title={title ?? imgAlt ?? undefined} 
 						alt={imgAlt ?? title ?? ""} 
+						width={imgWidth ?? undefined}
+						height={imgHeight ?? undefined}
 						aboveFold={aboveFold}
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 						cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
@@ -146,6 +155,8 @@ export function Callout({
 						src={img} 
 						title={title ?? imgAlt ?? undefined} 
 						alt={imgAlt ?? title ?? ""} 
+						width={imgWidth ?? undefined}
+						height={imgHeight ?? undefined}
 						onClick={(event: React.MouseEvent<HTMLImageElement, MouseEvent>) => imgClick(event, url)}
 						aboveFold={aboveFold}
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
@@ -157,6 +168,8 @@ export function Callout({
 						src={img} 
 						title={title ?? imgAlt ?? undefined} 
 						alt={imgAlt ?? title ?? ""}
+						width={imgWidth ?? undefined}
+						height={imgHeight ?? undefined}
 						aboveFold={aboveFold}
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 						cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}

@@ -47,7 +47,9 @@ export function SocialTags(props: SocialTagsType) {
 							layout="vertical" 
 							url={social.url} 
 							img={social.img || getMyLogo(social.url)} 
-							imgAlt={siteInfo?.name ? `${siteInfo.name} on ${social.name}`: social.name} />
+							imgAlt={siteInfo?.name ? `${siteInfo.name} on ${social.name}`: social.name}
+							imgWidth={150}
+							imgHeight={150} />
 					</PageGridItem>
 				))}
 			</PageSection>
@@ -107,7 +109,9 @@ function PartnersBadge({ company, name, url, img }: { company: string; name: str
 				layout="vertical" 
 				url={url} 
 				img={myimg} 
-				imgAlt={`${company} on ${name}`} 
+				imgAlt={`${company} on ${name}`}
+				imgWidth={150}
+				imgHeight={150}
 				content={name} />
 		</PageFlexItem>
 	);

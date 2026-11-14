@@ -27,12 +27,16 @@ describe('SocialTags', () => {
 		expect(linkedinImage).toBeInTheDocument();
 		expect(linkedinImage.closest('a')).toHaveAttribute('href', 'https://linkedin.com/company/pixelated');
 		expect(linkedinImage.src).toContain('example.com/linkedin.png');
+		expect(linkedinImage).toHaveAttribute('width', '150');
+		expect(linkedinImage).toHaveAttribute('height', '150');
 
 		const expectedFacebookAlt = `${config.siteInfo.name} on ${config.siteInfo.socialProfiles[1].name}`;
 		const facebookImage = screen.getByAltText(expectedFacebookAlt) as HTMLImageElement;
 		expect(facebookImage).toBeInTheDocument();
 		expect(facebookImage.closest('a')).toHaveAttribute('href', 'https://facebook.com/pixelated');
 		expect(facebookImage.src).toContain('https://www.pixelated.tech/images/logos/facebook-logo.png');
+		expect(facebookImage).toHaveAttribute('width', '150');
+		expect(facebookImage).toHaveAttribute('height', '150');
 
 		const socialLinks = container.querySelectorAll('#socialtag-section a');
 		expect(socialLinks.length).toBe(2);
@@ -83,6 +87,8 @@ describe('PartnerTags', () => {
 		expect(pocketCastsImage).toBeInTheDocument();
 		expect(pocketCastsImage.closest('a')).toHaveAttribute('href', 'https://pca.st/o8v0icqv');
 		expect(pocketCastsImage.src).toContain('pocket-casts-logo.png');
+		expect(pocketCastsImage).toHaveAttribute('width', '150');
+		expect(pocketCastsImage).toHaveAttribute('height', '150');
 
 		const examplePartnerImage = screen.getByAltText('Pixelated Technologies on Example Partner') as HTMLImageElement;
 		expect(examplePartnerImage).toBeInTheDocument();
