@@ -32,32 +32,41 @@ const renderSmartImage = (ui: React.ReactElement, options = {}) => {
 	return render(ui, { config: config as any, ...options });
 };
 
-describe('SmartImage unoptimized regression', () => {
+describe('SmartImage Cloudinary loader', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		mockBuildCloudinaryUrl.mockReturnValue('https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_75/https://example.com/test-image.jpg');
 	});
 
-	it('should pass unoptimized to next/image for cloudinary variant', () => {
+	it('should pass a Cloudinary loader to next/image for cloudinary variant', () => {
 		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
 		expect(mockedNextImage).toHaveBeenCalled();
 		expect(mockedNextImage.mock.calls[0][0]).toEqual(expect.objectContaining({
-			unoptimized: true,
 			src: 'https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_75/https://example.com/test-image.jpg',
+			loader: expect.any(Function),
 		}));
 	});
 
-	it('should use a direct Cloudinary URL for cloudinary variant', () => {
+	it('should generate requested Cloudinary widths through the Next loader', () => {
+		mockBuildCloudinaryUrl.mockImplementation(({ width, quality }) =>
+			`https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_${quality ?? 75}/w_${width}/https://example.com/test-image.jpg`
+		);
 		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
 		expect(mockedNextImage).toHaveBeenCalled();
-		expect(mockedNextImage.mock.calls[0][0].src).toBe('https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_75/https://example.com/test-image.jpg');
+		const loader = mockedNextImage.mock.calls[0][0].loader;
+		expect(loader).toEqual(expect.any(Function));
+		expect(loader?.({
+			src: 'ignored-by-cloudinary-loader',
+			width: 960,
+			quality: 80,
+		})).toBe('https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_80/w_960/https://example.com/test-image.jpg');
 	});
 
-	it('should not pass unoptimized when Cloudinary builder returns the original src', () => {
+	it('should not pass a Cloudinary loader when the builder returns the original src', () => {
 		mockBuildCloudinaryUrl.mockReturnValue('https://example.com/test-image.jpg');
 		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
 		expect(mockedNextImage).toHaveBeenCalled();
-		expect(mockedNextImage.mock.calls[0][0]).not.toHaveProperty('unoptimized');
+		expect(mockedNextImage.mock.calls[0][0]).not.toHaveProperty('loader');
 		expect(mockedNextImage.mock.calls[0][0].src).toBe('https://example.com/test-image.jpg');
 	});
 
@@ -65,6 +74,7 @@ describe('SmartImage unoptimized regression', () => {
 		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="nextjs" />);
 		expect(mockedNextImage).toHaveBeenCalled();
 		expect(mockedNextImage.mock.calls[0][0]).not.toHaveProperty('unoptimized', true);
+		expect(mockedNextImage.mock.calls[0][0]).not.toHaveProperty('loader');
 	});
 
 	it('should render plain img for img variant without calling next/image', () => {

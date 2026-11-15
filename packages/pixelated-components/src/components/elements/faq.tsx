@@ -102,7 +102,6 @@ export function FAQ({ faqsData }: FAQType) {
 
 		const imageElement = answerImage?.contentUrl ? (
 			<SmartImage
-				variant="img"
 				src={answerImage.contentUrl}
 				alt={answerImage.name || faq.name}
 				width={typeof answerImage.width === 'number' ? answerImage.width : undefined}

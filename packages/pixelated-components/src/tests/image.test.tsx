@@ -48,28 +48,21 @@ describe('SmartImage Component', () => {
 			});
 		});
 
-		it('should support responsive images with srcSet', () => {
+		it('should preserve caller-supplied responsive candidates for the native image variant', () => {
 			const { container } = render(
 				<SmartImage
 					src='/image.jpg'
 					srcSet='image-320w.jpg 320w, image-640w.jpg 640w'
 					sizes='(max-width: 600px) 100vw, 50vw'
+					variant='img'
 					alt='Responsive'
 				/>
 			);
 			
 			const img = container.querySelector('img');
-			// Accept either a srcSet attribute or fallback to checking sizes for responsive behavior
-			const srcSet = img?.getAttribute('srcSet');
-			if (srcSet) {
-				expect(srcSet).toContain('w');
-			} else {
-				expect(img).not.toBeNull();
-				const sizes = img?.getAttribute('sizes') || '';
-				if (sizes) {
-					expect(sizes).toContain('vw');
-				}
-			}
+			expect(img).not.toBeNull();
+			expect(img).toHaveAttribute('srcset', 'image-320w.jpg 320w, image-640w.jpg 640w');
+			expect(img).toHaveAttribute('sizes', '(max-width: 600px) 100vw, 50vw');
 		});
 	});
 

@@ -12,25 +12,17 @@ const CLOUDINARY_TRANSFORMS = 'f_auto,c_limit,q_auto,dpr_auto';
 
 const debug = false;
 
-function generateSrcSet(
-	src: string, 
-	productEnv: string | null | undefined, 
-	widths: number[], 
-	opts: { 
-		quality?: number | null; 
-		transforms?: string | null; 
-		cloudinaryDomain?: string 
-	}) {
-	if (!productEnv) return '';
-	return widths.map(w => `${buildCloudinaryUrl({ 
-		src, productEnv, 
-		width: w, 
-		quality: opts.quality ?? 75, 
-		transforms: opts.transforms ?? undefined, 
-		cloudinaryDomain: opts.cloudinaryDomain })} ${w}w`).join(', ');
-}
-
 type smartImageVariant = 'cloudinary' | 'nextjs' | 'img';
+type CloudinaryLoaderProps = { src: string; width: number; quality?: number };
+type SmartImageRenderProps = SmartImageType & {
+	loader?: (props: CloudinaryLoaderProps) => string;
+};
+type SmartImageRendererProps = {
+	props: SmartImageRenderProps;
+	onError: React.ReactEventHandler<HTMLImageElement>;
+	imageKey: string;
+	imgRef: React.RefObject<HTMLImageElement | null>;
+};
 
 /**
  * SmartImage — unified image component that picks the best delivery variant (Cloudinary, Next.js Image, or plain <img>), generates srcset, and manages loading behavior.
@@ -137,7 +129,7 @@ export function SmartImage(props: SmartImageType) {
 	}, [props.src, props.variant]);
 	
 	const variant = currentVariant;
-	const newProps = { ...props };
+	const newProps = { ...props } as SmartImageRenderProps;
 	
 	// Always create ref to maintain consistent hook count across re-renders
 	const imgRef = React.useRef<HTMLImageElement | null>(null);
@@ -195,46 +187,25 @@ export function SmartImage(props: SmartImageType) {
 
 	if (variant === 'cloudinary' && newProps.cloudinaryEnv) {
 
+		const cloudinarySource = newProps.src;
 		const cloudinaryURL = buildCloudinaryUrl({ 
-			src: newProps.src, 
-			productEnv: newProps.cloudinaryEnv, 
-			cloudinaryDomain: newProps.cloudinaryDomain, 
+			src: cloudinarySource,
+			productEnv: newProps.cloudinaryEnv ?? undefined,
+			cloudinaryDomain: newProps.cloudinaryDomain ?? undefined,
 			quality: newProps.quality,
 			width: newProps.width ?? undefined, 
 			transforms: newProps.cloudinaryTransforms ?? undefined });
 		
 		if (cloudinaryURL !== newProps.src){
 			newProps.src = cloudinaryURL;
-			newProps.unoptimized = true; // Opt out of Next.js Image optimization since Cloudinary is handling it
-			if (newProps.width) {
-				const widths = [
-					Math.ceil(newProps.width * 0.25),
-					Math.ceil(newProps.width * 0.5),
-					Math.ceil(newProps.width * 0.75),
-					newProps.width,
-					Math.ceil(newProps.width * 1.5),
-					Math.ceil(newProps.width * 2),
-					Math.ceil(newProps.width * 3),
-				];
-				newProps.srcSet = generateSrcSet(
-					newProps.src, 
-					newProps.cloudinaryEnv, 
-					widths, { 
-						quality: newProps.quality, 
-						transforms: newProps.cloudinaryTransforms ?? undefined, 
-						cloudinaryDomain: newProps.cloudinaryDomain 
-					});
-			} else {
-				const breakpoints = [320, 640, 768, 1024, 1280, 1536];
-				newProps.srcSet = generateSrcSet(
-					newProps.src, 
-					newProps.cloudinaryEnv, 
-					breakpoints, { 
-						quality: newProps.quality, 
-						transforms: newProps.cloudinaryTransforms ?? undefined, 
-						cloudinaryDomain: newProps.cloudinaryDomain 
-					});
-			}
+			newProps.loader = ({ width, quality }: CloudinaryLoaderProps) => buildCloudinaryUrl({
+				src: cloudinarySource,
+				productEnv: newProps.cloudinaryEnv ?? undefined,
+				cloudinaryDomain: newProps.cloudinaryDomain ?? undefined,
+				quality: quality ?? newProps.quality ?? 75,
+				width,
+				transforms: newProps.cloudinaryTransforms,
+			});
 		}
 	} 
 
@@ -266,42 +237,85 @@ export function SmartImage(props: SmartImageType) {
 	delete newProps.cloudinaryDomain;
 	delete newProps.cloudinaryTransforms;
 
-	if (variant !== 'img') {
-		if (debug) console.warn('SmartImage: rendering nextjs variant', { ...(newProps as any) });
-		// Force remount of next/image when the delivery variant changes after a fallback.
-		// Without a key change, React may attempt to hydrate the previous DOM and cause a mismatch.
-		const imageKey = `${variant}-${newProps.id ?? newProps.src}`;
-		try {
-			return (
-				<Image 
-					key={imageKey}
-					{ ...(newProps as any) }
-					src={newProps.src} // required
-					alt={newProps.alt} // required
-					onError={handleError}
-					suppressHydrationWarning={true}
-				/>
-			);
-		} catch (e) {
-			if (debug) console.warn(`SmartImage: Next.js Image threw exception for "${props.src}", falling back to plain img`, e);
-			// Force fallback to img variant
-			setCurrentVariant('img');
-		}
+	// Force a remount when the delivery variant changes after a fallback.
+	// Without a key change, React may attempt to hydrate the previous DOM.
+	const imageKey = `${variant}-${newProps.id ?? newProps.src}`;
+	const rendererProps = {
+		props: newProps,
+		onError: handleError,
+		imageKey,
+		imgRef,
+	};
+
+	if (variant === 'cloudinary' && newProps.loader) {
+		return <SmartCloudinaryImage {...rendererProps} />;
 	}
 
-	/* ===== IMG VARIANT ===== */
+	if (variant !== 'img') {
+		if (debug) console.warn('SmartImage: rendering nextjs variant', { ...(newProps as any) });
+		return <SmartNextImage {...rendererProps} />;
+	}
 
-	/* clean up props */
-	delete newProps.priority;
-	
+	return <SmartHtmlImage {...rendererProps} />;
+
+}
+
+function SmartCloudinaryImage({
+	props,
+	onError,
+	imageKey,
+	imgRef,
+}: SmartImageRendererProps) {
+	const nextImageProps = { ...props };
+	delete nextImageProps.srcSet;
+
 	return (
-		/* eslint-disable-next-line pixelated/no-raw-img */
-		<img 
-			{...newProps as any} 
-			ref={imgRef}
-			alt={newProps.alt}
+		<Image
+			key={imageKey}
+			{ ...(nextImageProps as any) }
+			src={props.src}
+			alt={props.alt}
+			onError={onError}
 			suppressHydrationWarning={true}
 		/>
 	);
+}
 
+function SmartNextImage({
+	props,
+	onError,
+	imageKey,
+	imgRef,
+}: SmartImageRendererProps) {
+	return (
+		<Image
+			key={imageKey}
+			{ ...(props as any) }
+			src={props.src}
+			alt={props.alt}
+			onError={onError}
+			suppressHydrationWarning={true}
+		/>
+	);
+}
+
+function SmartHtmlImage({
+	props,
+	onError,
+	imgRef,
+}: SmartImageRendererProps) {
+	const htmlImageProps = { ...props };
+	delete htmlImageProps.priority;
+	delete htmlImageProps.loader;
+
+	return (
+		/* eslint-disable-next-line pixelated/no-raw-img */
+		<img
+			{...htmlImageProps as any}
+			ref={imgRef}
+			alt={htmlImageProps.alt}
+			onError={onError}
+			suppressHydrationWarning={true}
+		/>
+	);
 }

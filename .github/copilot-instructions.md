@@ -18,6 +18,33 @@ Before implementation:
 8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
 9. If the user says "stop," immediately stop all tool use and make no further changes.
 
+### Investigation vs. Implementation Approval
+
+Explicit approval is scoped to the action that was requested and described.
+
+- Approval to investigate, trace, inspect, measure, audit, or reproduce a problem authorizes read-only investigation and validation only.
+- It does not authorize edits, refactors, configuration changes, dependency changes, test changes, builds that mutate tracked/generated files, deployment, or implementation.
+- If investigation identifies a possible fix, stop and report:
+  - verified findings,
+  - affected consumers,
+  - proposed implementation,
+  - behavior and compatibility changes,
+  - validation plan.
+- Request separate explicit approval before editing.
+- If the assistant promised “no code changes during the investigation,” that promise remains binding until the user separately approves implementation.
+- Never infer implementation approval from “go,” “proceed,” or “continue” when the immediately preceding request was for investigation only.
+- Finding a root cause does not authorize fixing it. After investigating a shared component, inventory its consumers and present the proposed scope before changing the component or its tests.
+
+### Mutation Scope and Unexpected Files
+
+Implementation approval authorizes only the files, systems, behaviors, and actions explicitly included in the approved scope. It is not blanket permission to perform unrelated cleanup, formatting, renaming, moving, backup removal, generated-file removal, or repository housekeeping.
+
+- Treat every pre-existing, untracked, backup, temporary, generated, timestamped, or otherwise unexpected file as user-owned unless its ownership is proven.
+- Never delete, move, rename, overwrite, or restore an existing or unexpected file based only on its name, extension, timestamp, Git status, or apparent relationship to a build.
+- Cleanup is limited to disposable temporary files created by the assistant during the current task. Build or test completion does not authorize cleanup of files whose ownership is uncertain.
+- If a requested action would affect a path outside the approved scope, stop and ask for explicit authorization before mutating it.
+- Before finishing, compare all created, changed, deleted, moved, and restored paths with the approved scope. Report any unexpected mutation immediately and do not perform compensating cleanup or restoration without user direction.
+
 ### When to Answer vs. When to Code
 **Answer questions directly, after verifying repository-specific claims** - Do not write code unless specifically asked to implement something. Users ask questions to get information, not code implementations.
 
