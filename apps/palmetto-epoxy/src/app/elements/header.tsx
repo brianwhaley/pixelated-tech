@@ -19,7 +19,8 @@ export default function Header() {
 							alt="Palmetto Epoxy Logo" 
 							aboveFold={true} 
 							fetchPriority="high" 
-							loading="eager" />
+							loading="eager"
+							sizes="(max-width: 480px) 70vw, (max-width: 768px) 40vw, 20vw" />
 					</a>
 				</div>
 				<div className="grid-s3-e10 header-right">

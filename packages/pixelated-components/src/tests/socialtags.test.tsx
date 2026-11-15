@@ -29,6 +29,7 @@ describe('SocialTags', () => {
 		expect(linkedinImage.src).toContain('example.com/linkedin.png');
 		expect(linkedinImage).toHaveAttribute('width', '150');
 		expect(linkedinImage).toHaveAttribute('height', '150');
+		expect(linkedinImage).toHaveAttribute('sizes', '50vw');
 
 		const expectedFacebookAlt = `${config.siteInfo.name} on ${config.siteInfo.socialProfiles[1].name}`;
 		const facebookImage = screen.getByAltText(expectedFacebookAlt) as HTMLImageElement;
@@ -37,6 +38,7 @@ describe('SocialTags', () => {
 		expect(facebookImage.src).toContain('https://www.pixelated.tech/images/logos/facebook-logo.png');
 		expect(facebookImage).toHaveAttribute('width', '150');
 		expect(facebookImage).toHaveAttribute('height', '150');
+		expect(facebookImage).toHaveAttribute('sizes', '50vw');
 
 		const socialLinks = container.querySelectorAll('#socialtag-section a');
 		expect(socialLinks.length).toBe(2);

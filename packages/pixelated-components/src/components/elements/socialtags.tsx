@@ -33,6 +33,7 @@ export function SocialTags(props: SocialTagsType) {
 	const siteInfo = usePixelatedConfig()?.siteInfo as SiteInfo | null;
 	const socials = siteInfo?.socialProfiles ?? [];
 	const columns = props.columns ?? (socials.length < 12 ? socials.length : Math.min(Math.ceil(socials.length / 2), 12));
+	const imageSizes = columns > 0 ? `${100 / columns}vw` : undefined;
 	const sectionTitle = props.title ?? `Follow ${siteInfo?.name ?? ''} on Social Media`;
 
 	return (
@@ -49,7 +50,8 @@ export function SocialTags(props: SocialTagsType) {
 							img={social.img || getMyLogo(social.url)} 
 							imgAlt={siteInfo?.name ? `${siteInfo.name} on ${social.name}`: social.name}
 							imgWidth={150}
-							imgHeight={150} />
+							imgHeight={150}
+							imgSizes={imageSizes} />
 					</PageGridItem>
 				))}
 			</PageSection>
