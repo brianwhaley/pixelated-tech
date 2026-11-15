@@ -188,25 +188,17 @@ export function SmartImage(props: SmartImageType) {
 	if (variant === 'cloudinary' && newProps.cloudinaryEnv) {
 
 		const cloudinarySource = newProps.src;
-		const cloudinaryURL = buildCloudinaryUrl({ 
+		const cloudinaryEnv = newProps.cloudinaryEnv;
+		const cloudinaryDomain = newProps.cloudinaryDomain;
+		const cloudinaryTransforms = newProps.cloudinaryTransforms;
+		newProps.loader = ({ width, quality }: CloudinaryLoaderProps) => buildCloudinaryUrl({
 			src: cloudinarySource,
-			productEnv: newProps.cloudinaryEnv ?? undefined,
-			cloudinaryDomain: newProps.cloudinaryDomain ?? undefined,
-			quality: newProps.quality,
-			width: newProps.width ?? undefined, 
-			transforms: newProps.cloudinaryTransforms ?? undefined });
-		
-		if (cloudinaryURL !== newProps.src){
-			newProps.src = cloudinaryURL;
-			newProps.loader = ({ width, quality }: CloudinaryLoaderProps) => buildCloudinaryUrl({
-				src: cloudinarySource,
-				productEnv: newProps.cloudinaryEnv ?? undefined,
-				cloudinaryDomain: newProps.cloudinaryDomain ?? undefined,
-				quality: quality ?? newProps.quality ?? 75,
-				width,
-				transforms: newProps.cloudinaryTransforms,
-			});
-		}
+			productEnv: cloudinaryEnv,
+			cloudinaryDomain,
+			quality: quality ?? newProps.quality ?? 75,
+			width,
+			transforms: cloudinaryTransforms,
+		});
 	} 
 
 	// NEXT/IMAGE NEEDS SIZES TO GENERATE SRCSET

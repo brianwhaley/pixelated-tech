@@ -42,7 +42,7 @@ describe('SmartImage Cloudinary loader', () => {
 		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
 		expect(mockedNextImage).toHaveBeenCalled();
 		expect(mockedNextImage.mock.calls[0][0]).toEqual(expect.objectContaining({
-			src: 'https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_75/https://example.com/test-image.jpg',
+			src: 'https://example.com/test-image.jpg',
 			loader: expect.any(Function),
 		}));
 	});
@@ -62,9 +62,20 @@ describe('SmartImage Cloudinary loader', () => {
 		})).toBe('https://res.cloudinary.com/test/image/upload/f_auto,c_limit,q_80/w_960/https://example.com/test-image.jpg');
 	});
 
-	it('should not pass a Cloudinary loader when the builder returns the original src', () => {
+	it('should not pass a Cloudinary loader when Cloudinary configuration is unavailable', () => {
 		mockBuildCloudinaryUrl.mockReturnValue('https://example.com/test-image.jpg');
-		renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />);
+		renderSmartImage(
+			<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />,
+			{
+				config: {
+					...pixelatedConfig,
+					integrations: {
+						...pixelatedConfig.integrations,
+						cloudinary: undefined,
+					},
+				} as any,
+			},
+		);
 		expect(mockedNextImage).toHaveBeenCalled();
 		expect(mockedNextImage.mock.calls[0][0]).not.toHaveProperty('loader');
 		expect(mockedNextImage.mock.calls[0][0].src).toBe('https://example.com/test-image.jpg');
