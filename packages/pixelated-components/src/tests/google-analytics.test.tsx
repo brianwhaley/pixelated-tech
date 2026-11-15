@@ -1,20 +1,36 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
+import { cleanup } from '@testing-library/react';
 import { GoogleAnalytics, GoogleAnalyticsEvent } from '../components/integrations/googleanalytics';
 import { renderWithProviders, screen, expectErrorFallback } from '../test/test-utils';
 import { pixelatedConfigEmpty, pixelatedConfig as basePixelatedConfig } from '../test/test-data';
 
+const { mockNextScript } = vi.hoisted(() => ({
+	mockNextScript: vi.fn(),
+}));
+
+vi.mock('next/script', () => ({
+	default: ({ children, strategy, id, src, type, async: asyncAttribute }: { children?: React.ReactNode; strategy?: string; id?: string; src?: string; type?: string; async?: boolean }) => {
+		mockNextScript({ children, strategy, id, src, type, async: asyncAttribute });
+		return <script id={id} src={src} type={type} async={asyncAttribute} data-strategy={strategy}>{children}</script>;
+	},
+}));
+
 describe('Google Analytics Components', () => {
 	beforeEach(() => {
+		cleanup();
 		vi.clearAllMocks();
-		// Clear any scripts added to DOM during tests
-		document.querySelectorAll('script[id="ga"], script[id="ga-init"]').forEach(s => s.remove());
+		delete window.gtag;
+		delete window.dataLayer;
+		// Clear scripts manually added to the document head by individual tests.
+		document.head.querySelectorAll('script[id="ga"], script[id="ga-init"]').forEach(s => s.remove());
 	});
 
-	afterEach(() => {
-		// Clean up scripts after each test
-		document.querySelectorAll('script[id="ga"], script[id="ga-init"]').forEach(s => s.remove());
-	});
+	function getScriptProps(id: string) {
+		return mockNextScript.mock.calls
+			.map(([props]) => props as { id?: string; src?: string; strategy?: string; type?: string; async?: boolean })
+			.find(props => props.id === id);
+	}
 
 	describe('GoogleAnalytics Component', () => {
 const customGoogleAnalyticsConfig = {
@@ -73,8 +89,7 @@ const customGoogleAnalyticsConfig = {
 
 		it('should have correct script source with id', () => {
 			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsIdConfig });
-			const gaScript = document.querySelector('script#ga') as HTMLScriptElement;
-			expect(gaScript?.src).toContain('id=G-CUSTOM123');
+			expect(getScriptProps('ga')?.src).toContain('id=G-CUSTOM123');
 		});
 
 		it('should use config ID when prop not provided', () => {
@@ -92,14 +107,18 @@ const customGoogleAnalyticsConfig = {
 
 		it('should set script type to text/javascript', () => {
 			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
-			const gaScript = document.querySelector('script#ga');
-			expect(gaScript?.getAttribute('type')).toBe('text/javascript');
+			expect(getScriptProps('ga')?.type).toBe('text/javascript');
 		});
 
 		it('should set script async attribute', () => {
 			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
-			const gaScript = document.querySelector('script#ga');
-			expect(gaScript).toHaveAttribute('async');
+			expect(getScriptProps('ga')?.async).toBe(true);
+		});
+
+		it('should use Next lazyOnload strategy for both scripts', () => {
+			renderWithProviders(<GoogleAnalytics />, { config: customGoogleAnalyticsConfig });
+			expect(document.querySelector('script#ga-init')).toHaveAttribute('data-strategy', 'lazyOnload');
+			expect(getScriptProps('ga')?.strategy).toBe('lazyOnload');
 		});
 
 		it('should include measurement ID in gtag config', () => {

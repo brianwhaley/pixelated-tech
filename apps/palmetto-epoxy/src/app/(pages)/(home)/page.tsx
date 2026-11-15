@@ -56,18 +56,6 @@ export default function Home() {
 				<BlogPostList count={1} showCategories={false} />
 			</PageSection>
 
-			<PageSection columns={1} id="home-reviews-section">
-				<ContentfulReviewsCarousel
-					reviewContentType="reviews"
-					itemName="Epoxy Flooring Service"
-					itemType="Service"
-					publisherName="Palmetto Epoxy"
-					maxReviews={100}
-					draggable={true}
-					imgFit='contain'
-				/>
-			</PageSection>
-
 			<PageSection
 				columns={1}
 				className="section-pavers text-outline"
@@ -83,6 +71,18 @@ export default function Home() {
 						<button type="button" onClick={() => { window.location.href = '/submitreview'; }}>Submit your Review</button>
 					</div>
 				</div>
+			</PageSection>
+
+			<PageSection columns={1} id="home-reviews-section">
+				<ContentfulReviewsCarousel
+					reviewContentType="reviews"
+					itemName="Epoxy Flooring Service"
+					itemType="Service"
+					publisherName="Palmetto Epoxy"
+					maxReviews={100}
+					draggable={true}
+					imgFit='contain'
+				/>
 			</PageSection>
 
 			<PageSection 

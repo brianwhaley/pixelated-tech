@@ -35,6 +35,7 @@ describe('PageBg (unit)', () => {
 		const img = screen.getByTestId('smart-image');
 		expect(img).toHaveAttribute('width', '1920');
 		expect(img).toHaveAttribute('height', '1080');
+		expect(img).toHaveAttribute('sizes', '100vw');
 	});
 
 	it('marks the background image as above fold', () => {

@@ -935,6 +935,9 @@ describe('PageSectionBackgroundImage Component', () => {
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('src', 'test.jpg');
     expect(image).toHaveClass('section-background-image');
+    expect(image).toHaveAttribute('width', '1920');
+    expect(image).toHaveAttribute('height', '1080');
+    expect(image).toHaveAttribute('sizes', '100vw');
   });
 
   it('should apply id when provided', () => {

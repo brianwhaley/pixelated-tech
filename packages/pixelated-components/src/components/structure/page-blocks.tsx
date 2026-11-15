@@ -45,6 +45,7 @@ export function PageBg(props: PageBgType) {
 				alt=""
 				width={1920}
 				height={1080}
+				sizes="100vw"
 				className="page-bg-image"
 				aboveFold={true}
 			/>
@@ -319,6 +320,7 @@ export function PageSectionBackgroundImage(props: PageSectionBackgroundImageType
 				aboveFold={props.aboveFold}
 				width={1920}
 				height={1080}
+				sizes="100vw"
 				cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 				cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
 				cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined}

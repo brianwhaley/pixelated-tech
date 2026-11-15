@@ -131,6 +131,22 @@ describe('SmartImage Component', () => {
 			});
 		});
 
+		it('should generate width-scaled responsive Cloudinary candidates', () => {
+			renderSmartImage(
+				<SmartImage
+					src="https://example.com/test-image.jpg"
+					alt="Responsive image"
+					variant="cloudinary"
+					width={1920}
+				/>
+			);
+
+			const responsiveWidths = mockBuildCloudinaryUrl.mock.calls
+				.slice(1)
+				.map(([params]) => params.width);
+			expect(responsiveWidths).toEqual([480, 960, 1440, 1920, 2880, 3840, 5760]);
+		});
+
 		it('should fall back to Next.js Image when Cloudinary config unavailable for cloudinary variant', () => {
 			render(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" variant="cloudinary" />, {
 				config: {

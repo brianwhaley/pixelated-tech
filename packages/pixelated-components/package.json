@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.40",
+	"version": "3.22.41",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -107,6 +107,9 @@
 		"typescript": "6.0.2",
 		"vitest": "^5.1.0"
 	},
+	"peerDependencies": {
+		"next": "^16.4.3"
+	},
 	"devDependencies": {
 		"@babel/parser": "^8.1.2",
 		"@babel/preset-env": "^8.0.7",
@@ -148,7 +151,6 @@
 		"jsdom": "^29.1.1",
 		"less-loader": "^13.1.0",
 		"mini-css-extract-plugin": "^2.10.2",
-		"next": "^16.4.3",
 		"node-fetch": "^3.3.2",
 		"null-loader": "^4.0.1",
 		"react-test-renderer": "^19.3.1",

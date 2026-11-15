@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import PropTypes, { InferProps } from "prop-types";
+import Script from "next/script";
 import { usePixelatedConfig } from "../config/config.client";
 import { SmartErrorBoundary } from "../foundation/smarterrorboundary";
 
@@ -39,43 +40,33 @@ export function GoogleAnalytics( props: GoogleAnalyticsType ) {
 	const id = config?.integrations?.googleAnalytics?.id;
 	const adId = config?.integrations?.googleAnalytics?.adId;
 
-	useEffect(() => {
-		if (!id) {
-			console.warn('GoogleAnalytics is not configured. Skipping Google Analytics script injection.');
-			return;
-		}
-		if (typeof window === 'undefined') { return; }
-		if (typeof document === 'undefined') { return; }
-		if (isGA()) { return; }
-
-		const gaSRC = "https://www.googletagmanager.com/gtag/js?id=" + id;
-		const gaInit = document.createElement("script");
-		gaInit.setAttribute("id", "ga-init");
-		gaInit.type = "text/javascript";
-		gaInit.text = `
-window.dataLayer = window.dataLayer || [];
-window.gtag = function gtag(){ window.dataLayer.push(arguments); }
-window.gtag('js', new Date());
-window.gtag('config', '${id}');
-${adId ? `window.gtag('config', '${adId}');` : ''}
-`;
-		document.head.appendChild(gaInit);
-
-		const ga = document.createElement("script");
-		ga.setAttribute("id", "ga");
-		ga.type = "text/javascript";
-		ga.setAttribute("async", "true");
-		ga.src = gaSRC;
-		document.head.appendChild(ga);
-	}, [id, adId]);
-
 	if (!id) {
+		console.warn('GoogleAnalytics is not configured. Skipping Google Analytics script injection.');
 		return null;
 	}
 
 	return (
 		<SmartErrorBoundary boundaryName="GoogleAnalytics">
-			<div className="ga" suppressHydrationWarning />
+			{!isGA() ? (
+				<>
+					<Script id="ga-init" strategy="lazyOnload">
+						{`
+window.dataLayer = window.dataLayer || [];
+window.gtag = function gtag(){ window.dataLayer.push(arguments); }
+window.gtag('js', new Date());
+window.gtag('config', '${id}');
+${adId ? `window.gtag('config', '${adId}');` : ''}
+`}
+					</Script>
+					<Script
+						id="ga"
+						src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
+						strategy="lazyOnload"
+						type="text/javascript"
+						async
+					/>
+				</>
+			) : null}
 		</SmartErrorBoundary>
 	);
 }

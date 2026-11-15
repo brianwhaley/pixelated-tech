@@ -207,7 +207,15 @@ export function SmartImage(props: SmartImageType) {
 			newProps.src = cloudinaryURL;
 			newProps.unoptimized = true; // Opt out of Next.js Image optimization since Cloudinary is handling it
 			if (newProps.width) {
-				const widths = [Math.ceil(newProps.width * 0.5), newProps.width, Math.ceil(newProps.width * 1.5), Math.ceil(newProps.width * 2)];
+				const widths = [
+					Math.ceil(newProps.width * 0.25),
+					Math.ceil(newProps.width * 0.5),
+					Math.ceil(newProps.width * 0.75),
+					newProps.width,
+					Math.ceil(newProps.width * 1.5),
+					Math.ceil(newProps.width * 2),
+					Math.ceil(newProps.width * 3),
+				];
 				newProps.srcSet = generateSrcSet(
 					newProps.src, 
 					newProps.cloudinaryEnv, 
