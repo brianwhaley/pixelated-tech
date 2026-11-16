@@ -7,6 +7,9 @@ export * from './billing/billing.dashboard.components';
 export * from './filedata/filedata.components';
 export * from './filedata/filedata.functions';
 
+export * from '../sitebuilder/page/index.page';
+export * from '../sitebuilder/config/index.config';
+
 export * from './scraper/person.functions';
 export * from './scraper/domain-scraper.functions';
 export * from './scraper/domain-scraper.components';

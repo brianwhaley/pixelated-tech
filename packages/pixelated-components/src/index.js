@@ -29,7 +29,6 @@ export * as PixelatedComponents from './components/pixelated/index.pixelated';
 export * from './components/structure/index.structure';
 export * as StructureComponents from './components/structure/index.structure';
 
-export * from './components/sitebuilder/index.sitebuilder';
-export * as SiteBuilderComponents from './components/sitebuilder/index.sitebuilder';
+export * from './components/sitebuilder/form/index.form';
 
 export * from './version';

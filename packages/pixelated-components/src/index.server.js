@@ -28,8 +28,7 @@ export * as PixelatedComponents from './components/pixelated/index.pixelated.ser
 export * from './components/structure/index.structure.server';
 export * as StructureComponents from './components/structure/index.structure.server';
 
-export * from './components/sitebuilder/index.sitebuilder.server';
-export * as SiteBuilderComponents from './components/sitebuilder/index.sitebuilder.server';
+export * from './components/sitebuilder/form/index.form.server';
 
 export * from './components/timesheet/index.timesheet.server';
 export * as TimesheetComponents from './components/timesheet/index.timesheet.server';

@@ -13,6 +13,7 @@
  */
 
 import fs from 'fs';
+import path from 'path';
 import { glob } from 'glob';
 import { CLIENT_ONLY_PATTERNS, TS_FILE_IGNORE_PATTERNS, TSX_FILE_IGNORE_PATTERNS, SERVER_ONLY_PATTERNS } from '../components/foundation/utilities';
 
@@ -82,8 +83,12 @@ analyzedComponents.forEach(comp => {
 });
 
 // Separate admin and non-admin components
-const adminComponents = analyzedComponents.filter(comp => comp.exportPath.startsWith('./components/admin/'));
-const nonAdminComponents = analyzedComponents.filter(comp => !comp.exportPath.startsWith('./components/admin/'));
+const isAdminComponent = comp =>
+	comp.exportPath.startsWith('./components/admin/') ||
+	comp.exportPath.startsWith('./components/sitebuilder/page/') ||
+	comp.exportPath.startsWith('./components/sitebuilder/config/');
+const adminComponents = analyzedComponents.filter(isAdminComponent);
+const nonAdminComponents = analyzedComponents.filter(comp => !isAdminComponent(comp));
 
 // Create arrays of components for each bundle (non-admin only)
 // If a component has server-only patterns, it's server-only; if client-only and not server-only, client-only; else safe
@@ -126,7 +131,7 @@ export function extractExports(content, currentFilePath = 'src/index.js') {
 		const exportPath = match[1];
 		
 		// Determine full path for file existence check
-		let fullPath = currentDir + exportPath.replace('./', '');
+		let fullPath = path.normalize(currentDir + exportPath);
 		if (fs.existsSync(fullPath + '.js') || fs.existsSync(fullPath + '.ts') || fs.existsSync(fullPath + '.tsx')) {
 			if (exportPath.includes('index.')) {
 				// Barrel file, recurse
@@ -144,7 +149,7 @@ export function extractExports(content, currentFilePath = 'src/index.js') {
 	const exportRegex = /export\s+{\s*([^}]+)\s*}\s+from\s+['"]([^'"]+)['"]/g;
 	while ((match = exportRegex.exec(content)) !== null) {
 		const exportPath = match[2];
-		let fullPath = currentDir + exportPath.replace('./', '');
+		let fullPath = path.normalize(currentDir + exportPath);
 		const rootRelative = fullPath.replace('src/', './');
 		exports.push(rootRelative);
 	}

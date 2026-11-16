@@ -75,7 +75,6 @@ vi.mock('@pixelated-tech/components', async () => {
 		ToggleLoading: () => null,
 		Table: ({ children }: any) => <table>{children}</table>,
 		smartFetch: (...args: any[]) => mockSmartFetch(...args),
-		ConfigBuilder: ({ onSave }: any) => <button onClick={() => onSave({ routes: [{ path: '/test' }] })}>Save Config</button>,
 		FormBuilder: make('FormBuilder'),
 		FormEngine: ({ formData, onSubmitHandler }: any) => {
 			React.useEffect(() => {
@@ -123,7 +122,6 @@ vi.mock('@pixelated-tech/components', async () => {
 				</form>
 			);
 		},
-		PageBuilderUI: make('PageBuilderUI'),
 		Accordion: ({ items }: any) => (
 			<div>
 				{items?.map((item: any, index: number) => (
@@ -137,6 +135,19 @@ vi.mock('@pixelated-tech/components', async () => {
 		usePixelatedConfig: () => ({ routes: [{ name: 'Home', path: '/' }, { name: 'Login', path: '/login' }], siteInfo: {} }),
 	};
 });
+
+vi.mock('@pixelated-tech/components/adminclient', () => ({
+	ConfigBuilder: ({ onSave }: any) => <button onClick={() => onSave({ routes: [{ path: '/test' }] })}>Save Config</button>,
+	PageBuilderUI: ({ children }: any) => <div data-testid="PageBuilderUI">{children}</div>,
+	useAdminFileData: () => ({
+		files: [],
+		selectedFile: null,
+		setSelectedFile: () => undefined,
+		data: null,
+		loading: false,
+		error: null,
+	}),
+}));
 
 const pageComponents = [
 	['home', 'src/app/(pages)/(home)/page.tsx'],

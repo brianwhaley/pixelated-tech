@@ -1,6 +1,7 @@
 'use client';
 
-import { PageBuilderUI, PageSection } from '@pixelated-tech/components';
+import { PageSection } from '@pixelated-tech/components';
+import { PageBuilderUI } from '@pixelated-tech/components/adminclient';
 import '../builder-pages.css';
 
 export default function PageBuilderPage() {

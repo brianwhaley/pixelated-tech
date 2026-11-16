@@ -1,6 +1,7 @@
 'use client';
 
-import { ConfigBuilder, PageSection } from '@pixelated-tech/components';
+import { PageSection } from '@pixelated-tech/components';
+import { ConfigBuilder } from '@pixelated-tech/components/adminclient';
 import '../builder-pages.css';
 
 // Function to download JSON file

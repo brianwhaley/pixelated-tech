@@ -14,6 +14,9 @@ export * from './email-forwarding/email-forwarding.integration';
 export * from './filedata/filedata.functions';
 export * from './filedata/filedata.server';
 
+export * from '../sitebuilder/page/index.page.server';
+export * from '../sitebuilder/config/index.config.server';
+
 export * from './scraper/person.functions';
 export * from './scraper/domain-extract-writer.server';
 export * from './scraper/domain-scraper.server';
