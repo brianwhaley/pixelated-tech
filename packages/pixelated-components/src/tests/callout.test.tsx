@@ -220,6 +220,13 @@ describe('Callout Component', () => {
       );
     });
 
+    it('uses a narrower default image size for horizontal callouts', () => {
+      const { container } = render(
+        <Callout title="Horizontal" img="/test.jpg" layout="horizontal" />
+      );
+      expect(container.querySelector('img')).toHaveAttribute('sizes', '(max-width: 480px) 70vw, 33vw');
+    });
+
     it('preserves an explicit image sizing override', () => {
       const { container } = render(
         <Callout title="Override" img="/test.jpg" layout="vertical" variant="grid" imgSizes="400px" />

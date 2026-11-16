@@ -227,14 +227,14 @@ function getDefaultImageSizes({
 		const imageColumns = direction === 'right' ? right : left;
 		const totalColumns = left + right;
 		const imageFraction = totalColumns > 0 ? Math.round((imageColumns / totalColumns) * 100) : 50;
-		return `(max-width: 480px) 100vw, ${imageFraction}vw`;
+		return `(max-width: 480px) 70vw, ${imageFraction}vw`;
 	}
 
 	if (variant === 'full' || variant === 'split') {
 		return '50vw';
 	}
 
-	return '50vw';
+	return '(max-width: 480px) 70vw, 33vw';
 }
 
 

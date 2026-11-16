@@ -96,7 +96,11 @@ describe('Hero (unit)', () => {
 		const { container } = render(<Hero img="/images/test.jpg" variant="anchored-img" imgAlt="Alt" />);
 		const hero = container.querySelector('.hero.anchored-img');
 		expect(hero).toBeInTheDocument();
-		expect(screen.getByRole('img')).toBeInTheDocument();
+		const image = screen.getByRole('img');
+		expect(image).toBeInTheDocument();
+		expect(image).toHaveAttribute('width', '2000');
+		expect(image).toHaveAttribute('height', '1125');
+		expect(image).toHaveAttribute('sizes', '100vw');
 
 		window.IntersectionObserver = originalObserver;
 	});

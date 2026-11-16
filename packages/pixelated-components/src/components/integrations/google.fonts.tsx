@@ -1,20 +1,14 @@
 import React from 'react';
 import { getFullPixelatedConfig } from '../config/config';
-import { extractGoogleFonts, encodeFontFamily } from './google.fonts.functions';
+import { extractGoogleFonts, generateGoogleFontsUrl } from './google.fonts.functions';
 import PropTypes, { InferProps } from 'prop-types';
-
-
-const getSingleFontUrl = (family: string): string => {
-	return `https://fonts.googleapis.com/css2?family=${encodeFontFamily(family)}&display=swap`;
-};
-
 
 /* ========== REACT COMPONENT ========== */
 
 /**
  * Component to handle Google Fonts imports.
  * Extracts fonts from visualdesign configuration provided in pixelated.config.json.
- * Outputs preconnect and one stylesheet link per font for reliability.
+ * Outputs preconnect and one combined stylesheet link for the configured fonts.
  */
 GoogleFonts.propTypes = {
 	/** no props */
@@ -31,13 +25,7 @@ export function GoogleFonts(props: GoogleFontsType) {
 		<>
 			<link rel="preconnect" href="https://fonts.googleapis.com" />
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-			{uniqueFamilies.map(family => (
-				<link 
-					key={family}
-					href={getSingleFontUrl(family)} 
-					rel="stylesheet" 
-				/>
-			))}
+			<link href={generateGoogleFontsUrl(uniqueFamilies)} rel="stylesheet" />
 		</>
 	);
 }

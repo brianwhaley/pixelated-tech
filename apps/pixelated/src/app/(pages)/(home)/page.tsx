@@ -115,7 +115,6 @@ export default function Home() {
 			<PageSection id="products-section" columns={1}>
 				<PageGridItem >
 					<Callout
-						aboveFold={true}
 						variant="boxed"
 						layout='horizontal' 
 						direction="left"
@@ -127,7 +126,6 @@ export default function Home() {
 				</PageGridItem>
 				<PageGridItem >
 					<Callout
-						aboveFold={true}
 						variant="boxed"
 						layout='horizontal' 
 						direction="right"
@@ -143,7 +141,6 @@ export default function Home() {
 				</PageGridItem>
 				<PageGridItem >
 					<Callout
-						aboveFold={true}
 						variant="boxed"
 						layout='horizontal' 
 						direction="left"

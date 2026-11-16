@@ -75,7 +75,6 @@ export function SmartVideo(props: SmartVideoType) {
 	const cloudinaryEnv = safeString(props.cloudinaryEnv ?? cloudCfg?.product_env);
 	const cloudinaryDomain = safeString(props.cloudinaryDomain ?? cloudCfg?.baseUrl) ?? DEFAULT_CLOUDINARY_DOMAIN;
 	const isCloudinaryAvailable = !!cloudinaryEnv;
-	const effectiveVariant = currentVariant === 'cloudinary' ? 'cloudinary' : 'html';
 	const width = parseNumber(props.width ?? 1280);
 	const height = parseNumber(props.height ?? 720);
 	const quality = parseNumber(props.quality ?? 75);
@@ -84,12 +83,6 @@ export function SmartVideo(props: SmartVideoType) {
 	const id = deriveMediaId({ id: props.id, name: safeString(props.name), title: props.title, alt: undefined, src: normalizedSrc });
 	const posterSrc = normalizedPoster;
 	const title = safeString(props.title) || undefined;
-
-	useEffect(() => {
-		if (effectiveVariant === 'cloudinary' && !isCloudinaryAvailable) {
-			setCurrentVariant('html');
-		}
-	}, [effectiveVariant, isCloudinaryAvailable]);
 
 	const buildUrl = (src: string) => {
 		return buildCloudinaryUrl({

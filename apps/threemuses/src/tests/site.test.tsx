@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, expect, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { runCommonPageCoverage, runCommonElementCoverage, runCommonMarkdownPageCoverage, runPageSmokeTests } from '../../../../shared/test-utils/index.test-utils';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { config as pixelatedConfig, resetMockState, setCartItems, resetCartItems, setFileDataState, resetFileDataState, setPixelatedConfigOverride } from '@/tests/page-mocks';
@@ -17,7 +17,7 @@ vi.mock('@pixelated-tech/components', () => createPageComponentMocks({
 }));
 
 vi.mock('@pixelated-tech/components/server', async () => {
-	const actual = await vi.importActual<typeof import('@pixelated-tech/components/server')>('@pixelated-tech/components/server');
+	const actual = await vi.importActual<typeof import('../../../../packages/pixelated-components/src/index.server.js')>('../../../../packages/pixelated-components/src/index.server.js');
 	return {
 		__esModule: true,
 		...actual,
@@ -569,16 +569,24 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Gallery page filtering excluded titles and handling missing image URLs', async () => {
-			const components = await vi.importMock('@pixelated-tech/components');
+			const components = await vi.importMock<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
 			vi.spyOn(components, 'getContentfulAssetURLs').mockResolvedValueOnce([
 				{ image: 'https://example.com/dress-from-collection-museum-fine-arts.jpg', imageAlt: 'Excluded Image' },
 				{ image: 'https://example.com/unique_image.png?foo=bar', imageAlt: 'Included Image' },
-				{ image: undefined, imageAlt: 'Missing Image' },
+				{ image: '', imageAlt: 'Missing Image' },
 			]);
 			const page = await GalleryPage();
 			render(page as any);
 			expect(document.getElementById('gallery-section')).not.toBeNull();
 			expect(document.getElementById('gallery-items-section')).not.toBeNull();
+		});
+
+		it('renders Gallery page skeleton when Contentful fails', async () => {
+			const components = await vi.importMock<typeof import('@pixelated-tech/components')>('@pixelated-tech/components');
+			vi.spyOn(components, 'getContentfulAssetURLs').mockRejectedValueOnce(new Error('Contentful unavailable'));
+			const page = await GalleryPage();
+			render(page as any);
+			expect(screen.getByTestId('skeleton')).not.toBeNull();
 		});
 
 		it('renders EventReport page with year filter selected', async () => {

@@ -213,6 +213,7 @@ const defaultMocks: Record<string, any> = {
 	preloadAllCSS: () => null,
 	preloadImages: () => null,
 	SkeletonLoading: () => React.createElement('div', { 'data-testid': 'skeleton-loading' }, null),
+	Skeleton: mockComponent('Skeleton', 'skeleton'),
 	GlobalErrorUI: ({ error }: any) => React.createElement('div', { 'data-testid': 'global-error-ui' }, error?.message ?? 'error'),
 	FourOhFour: mockComponent('FourOhFour'),
 	PageTitleHeader: mockComponent('PageTitleHeader'),

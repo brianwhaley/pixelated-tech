@@ -235,7 +235,6 @@ const defaultMocks: Record<string, any> = {
 	MenuAccordionButton: mockComponent('MenuAccordionButton', 'menu-accordion-button'),
 	MenuSimple: mockComponent('MenuSimple', 'menu-simple'),
 	GoogleAnalytics: mockComponent('GoogleAnalytics', 'google-analytics'),
-	GoogleSearch: mockComponent('GoogleSearch', 'google-search'),
 	PixelatedFooter: mockComponent('PixelatedFooter', 'pixelated-footer'),
 	PageGridItem: mockComponent('PageGridItem'),
 	PageFlexItem: mockComponent('PageFlexItem'),

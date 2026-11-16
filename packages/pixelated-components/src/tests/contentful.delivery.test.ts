@@ -870,6 +870,34 @@ describe('Contentful Delivery API', () => {
 			expect(result[0].imageAlt).toBe('Asset 1');
 			expect(result[1].imageAlt).toBe('Asset 2');
 		});
+
+		it('should skip malformed assets and handle an unavailable response', async () => {
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => ({
+					items: [
+						{ fields: { file: { url: 'https://example.com/valid.jpg' } } },
+						{ fields: { title: 'Missing file URL' } },
+						{},
+					]
+				})
+			});
+
+			const validResult = await contentfulModule.getContentfulAssetURLs({
+				apiProps: mockContentfulApiProps as any
+			});
+			expect(validResult).toHaveLength(1);
+
+			(global.fetch as any).mockResolvedValueOnce({
+				ok: true,
+				json: async () => null
+			});
+
+			const emptyResult = await contentfulModule.getContentfulAssetURLs({
+				apiProps: mockContentfulApiProps as any
+			});
+			expect(emptyResult).toEqual([]);
+		});
 	});
 
 	describe('getContentfulDiscountCodes', () => {

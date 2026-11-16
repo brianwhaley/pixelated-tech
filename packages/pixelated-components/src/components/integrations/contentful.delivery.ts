@@ -6,6 +6,7 @@ import type { ContentfulConfig } from '../config/config.types';
 
 const debug = false;
 
+// consider adding &w=1920
 const ctfQSParams = "?fm=webp&q=50";
 
 
@@ -549,14 +550,16 @@ getContentfulAssetURLs.propTypes = {
 };
 export type getContentfulAssetURLsType = InferProps<typeof getContentfulAssetURLs.propTypes>;
 export async function getContentfulAssetURLs(props: getContentfulAssetURLsType) {
-	const assetURLs = [];
 	const assets: any = await getContentfulAssets(props);
-	for (const asset of assets.items) {
-		assetURLs.push({
-			image: asset.fields.file.url + ctfQSParams,
+	const items = Array.isArray(assets?.items) ? assets.items : [];
+	const assetURLs = items.flatMap((asset: any) => {
+		const fileUrl = asset?.fields?.file?.url;
+		if (!fileUrl) return [];
+		return [{
+			image: `${fileUrl}${ctfQSParams}&w=1920`,
 			imageAlt: asset.fields.description || asset.fields.title || '',
-		});
-	}
+		}];
+	});
 	if (debug) console.log("Asset URLs: ", assetURLs);
 	return assetURLs;
 }

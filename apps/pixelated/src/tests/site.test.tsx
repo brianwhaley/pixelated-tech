@@ -54,7 +54,6 @@ import SamplePage5 from '@/app/(pages)/samples/page5/page';
 import SamplePage6 from '@/app/(pages)/samples/page6/page';
 import InstagramPage from '@/app/(pages)/instagram/page';
 import HeaderNav from '@/app/elements/headernav';
-import Search from '@/app/elements/search';
 import ByTheWayPage from '@/app/(pages)/bytheway/page';
 import NerdJokesPage from '@/app/(pages)/nerdjokes/page';
 import StkrPage from '@/app/(pages)/stkr/page';
@@ -126,12 +125,6 @@ describe('Site coverage', () => {
 		render(React.createElement(Nav));
 		expect(screen.getByTestId('menuaccordion')).not.toBeNull();
 	});
-
-	it('renders Search component and GoogleSearch mock', () => {
-		render(React.createElement(Search));
-		expect(screen.getByTestId('google-search')).not.toBeNull();
-	});
-
 
 	it('renders Portfolio page and exercises Flickr callback sorting branches', async () => {
 		render(React.createElement(Portfolio));

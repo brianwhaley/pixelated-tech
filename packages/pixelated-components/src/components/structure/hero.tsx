@@ -36,6 +36,8 @@ Hero.propTypes = {
 	imgAlt: PropTypes.string,
 	/** ID for the hero section */
 	imgId: PropTypes.string,
+	/** Cloudinary transforms used for the hero image */
+	cloudinaryTransforms: PropTypes.string,
 	/** Video file URL (mp4/webm etc) when using the 'video' variant */
 	video: PropTypes.string,
 	/** Poster image to show before the video plays */
@@ -52,7 +54,7 @@ Hero.propTypes = {
 	caption: PropTypes.string,
 };
 export type HeroType = InferProps<typeof Hero.propTypes>;
-export function Hero({ img, imgAlt, video, poster, title, description, uploadDate, duration, caption, imgId, variant = 'static', height = '60vh', children }: HeroType) {
+export function Hero({ img, imgAlt, video, poster, title, description, uploadDate, duration, caption, imgId, cloudinaryTransforms, variant = 'static', height = '60vh', children }: HeroType) {
 	const id = imgId ?? imgAlt ?? img?.split('/').pop()?.split('.')[0] ?? '';
 	const hasVideo = variant === 'video' && !!video; // only play when variant explicitly video
 
@@ -111,10 +113,10 @@ export function Hero({ img, imgAlt, video, poster, title, description, uploadDat
 						id={id?.toString() || ''} 
 						quality={75} 
 						width={2000} 
-						height={1500} 
-						/* unoptimized={true} */
+						height={1125}
+						cloudinaryTransforms={cloudinaryTransforms}
 						fetchPriority="high" 
-						sizes="75vw"
+						sizes="100vw"
 						loading="eager"
 						aboveFold={true}
 						style={{height: height ?? '60vh'}} />

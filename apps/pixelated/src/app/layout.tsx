@@ -11,7 +11,6 @@ import { InteractionGuardrail } from "@pixelated-tech/components";
 import Header from "@/app/elements/header";
 import HeaderNav from "@/app/elements/headernav";
 import Nav from "@/app/elements/nav";
-import Search from '@/app/elements/search';
 import Footer from '@/app/elements/footer';
 // import { BlogPostsProvider } from "@/app/providers/blog-posts-provider";
 import "@pixelated-tech/components/css/pixelated.global.css";
@@ -37,9 +36,6 @@ export default async function RootLayout({children}: Readonly<{children: React.R
 				</div>
 				<div id="fixed-header-spacer"></div>
 				<div id="fixed-header-nav-spacer"></div>
-				<div id="page-search" className="no-mobile">
-					<Search />
-				</div>
 			</header>
 			<nav>
 				<Nav />

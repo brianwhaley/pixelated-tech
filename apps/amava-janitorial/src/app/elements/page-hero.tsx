@@ -1,10 +1,5 @@
-"use client";
-
-import { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { Hero } from "@pixelated-tech/components";
-
-const defaultHeroImage = "https://www.pixelated.tech/images/icons/1x1.png";
 
 const heroImages = [
 	"https://images.ctfassets.net/syybqad2lwuh/4JTD8dwWZ9QmbW0P6davyp/da5852378feacd701b81120eda5686e6/office-building.jpg?fm=webp", 
@@ -40,20 +35,14 @@ const heroImages = [
 PageHero.propTypes = PropTypes.exact({});
 export type PageHeroType = InferProps<typeof PageHero.propTypes>;
 export function PageHero() {
-	const [heroImage, setHeroImage] = useState(defaultHeroImage);
-
-	useEffect(() => {
-		setHeroImage(heroImages[Math.floor(Math.random() * heroImages.length)]);
-	}, []);
-
 	return ( 
 		<Hero
-			// variant="static"
 			variant="anchored-img"
-			img={heroImage}
+			img={heroImages[0]}
 			imgId="amava-page-hero"
 			imgAlt="AMAVA Janitorial Services"
 			height="50vh"
+			cloudinaryTransforms="f_auto,c_fill,g_auto,q_auto,dpr_auto"
 		/>
 	);
 }

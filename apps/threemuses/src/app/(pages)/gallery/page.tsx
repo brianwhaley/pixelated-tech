@@ -1,4 +1,4 @@
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, Tiles, getContentfulAssetURLs } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, Skeleton, Tiles, getContentfulAssetURLs } from '@pixelated-tech/components';
 import { getFullPixelatedConfig } from '@pixelated-tech/components/server';
 
 /*
@@ -62,7 +62,14 @@ async function fetchGalleryImages() {
 }
 
 export default async function GalleryPage() {
-	const galleryImages = await fetchGalleryImages();
+	let galleryImages: Awaited<ReturnType<typeof fetchGalleryImages>> = [];
+	let galleryError = false;
+	try {
+		galleryImages = await fetchGalleryImages();
+	} catch (error) {
+		galleryError = true;
+		console.error('Gallery images could not be loaded.', error);
+	}
 	const filteredGalleryImages = galleryImages.filter((image) => {
 		const title = (() => {
 			const url = image.image;
@@ -90,7 +97,13 @@ export default async function GalleryPage() {
 				<PageGridItem>
 					<PageSectionHeader title="Photo Gallery" />
 				</PageGridItem>
-				<Tiles cards={updatedGalleryImages} rowCount={3} variant="overlay" showOverlay={false} />
+				{galleryError ? (
+					<div role="status" aria-live="polite" aria-busy="true">
+						<Skeleton variant="rect" height={320} />
+					</div>
+				) : (
+					<Tiles cards={updatedGalleryImages} rowCount={3} variant="overlay" showOverlay={false} />
+				)}
 			</PageSection>
 		</>
 	);
