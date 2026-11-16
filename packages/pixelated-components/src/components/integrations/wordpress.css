@@ -9,6 +9,10 @@
     border-radius: 25px;
 }
 
+.blog-post-loading-list {
+    display: block;
+}
+
 .blog-post-loading {
     display: grid;
     grid-template-columns: 25% 1fr;
@@ -17,6 +21,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 25px;
+    min-height: 288px;
 }
 
 .blog-post-loading-image {

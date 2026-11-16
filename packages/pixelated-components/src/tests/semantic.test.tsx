@@ -940,6 +940,14 @@ describe('PageSectionBackgroundImage Component', () => {
     expect(image).toHaveAttribute('sizes', '100vw');
   });
 
+  it('should use the fixed quality transform for page-title backgrounds', () => {
+    render(<PageSectionBackgroundImage backgroundImage="test.jpg" />);
+    expect(screen.getByTestId('smart-image')).toHaveAttribute(
+      'cloudinaryTransforms',
+      'f_auto,c_limit,q_50,dpr_auto'
+    );
+  });
+
   it('should apply id when provided', () => {
     render(<PageSectionBackgroundImage backgroundImage="test.jpg" id="section1" />);
     const image = screen.getByTestId('smart-image');

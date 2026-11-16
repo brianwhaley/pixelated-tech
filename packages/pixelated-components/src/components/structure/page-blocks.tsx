@@ -323,7 +323,7 @@ export function PageSectionBackgroundImage(props: PageSectionBackgroundImageType
 				sizes="100vw"
 				cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 				cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
-				cloudinaryTransforms="f_auto,c_limit,q_auto:eco,dpr_auto"
+				cloudinaryTransforms="f_auto,c_limit,q_50,dpr_auto"
 			/>
 		</>
 	);

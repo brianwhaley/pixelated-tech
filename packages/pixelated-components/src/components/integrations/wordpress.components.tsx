@@ -28,9 +28,6 @@ function decodeString(str: string) {
 
 
 
-
-
-
 export function buildRelatedServiceReferences(post: BlogPostType, siteInfo?: SiteInfo | null) {
 	if (!siteInfo?.services || !Array.isArray(siteInfo.services) || !siteInfo.url) {
 		return [];
@@ -82,7 +79,6 @@ export function buildRelatedServiceReferences(post: BlogPostType, siteInfo?: Sit
 
 	return matched;
 }
-
 
 
 
@@ -140,15 +136,12 @@ export function BlogPostList(props: BlogPostListType) {
 		<SmartErrorBoundary boundaryName="BlogPostList">
 			<Loading key="loading" />
 			{loading && (
-				<div className="blog-post-loading" aria-busy="true">
-					<div className="blog-post-loading-image">
-						<Skeleton variant="rect" height={150} />
-					</div>
-					<div className="blog-post-loading-copy">
-						<Skeleton lines={2} />
-						<Skeleton lines={1} width="35%" />
-						<Skeleton lines={4} />
-					</div>
+				<div className="blog-post-loading-list" aria-busy="true">
+					{count === 1
+						? <BlogSkeleton />
+						: Array.from({ length: count ?? 4 }, (_, index) => (
+							<BlogSkeleton key={`blog-post-loading-${index}`} />
+						))}
 				</div>
 			)}
 			{posts.map((post: BlogPostType) => (
@@ -170,6 +163,23 @@ export function BlogPostList(props: BlogPostListType) {
 				</PageGridItem>
 			))}
 		</SmartErrorBoundary>
+	);
+}
+
+
+
+function BlogSkeleton() {
+	return (
+		<div className="blog-post-loading">
+			<div className="blog-post-loading-image">
+				<Skeleton variant="rect" height={150} />
+			</div>
+			<div className="blog-post-loading-copy">
+				<Skeleton lines={2} />
+				<Skeleton lines={1} width="35%" />
+				<Skeleton lines={7} />
+			</div>
+		</div>
 	);
 }
 
@@ -320,6 +330,9 @@ export function BlogPostCategories(props: BlogPostCategoriesType) {
 		</div>
 	);
 }
+
+
+
 
 /**
  * WordpressCategoryList — Render links to the categories for the configured WordPress site.

@@ -84,6 +84,57 @@ describe('WordPress Components', () => {
 				});
 			});
 
+			it('renders one consistent skeleton when count is one', () => {
+				const config = createConfig({
+					integrations: {
+						wordpress: {
+							site: 'example.com'
+						}
+					}
+				});
+				vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockImplementation(
+					() => new Promise(() => {})
+				);
+
+				const { container } = renderWithProviders(<BlogPostList count={1} />, { config });
+
+				expect(container.querySelectorAll('.blog-post-loading')).toHaveLength(1);
+			});
+
+			it('renders the default number of consistent skeletons without a count', () => {
+				const config = createConfig({
+					integrations: {
+						wordpress: {
+							site: 'example.com'
+						}
+					}
+				});
+				vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockImplementation(
+					() => new Promise(() => {})
+				);
+
+				const { container } = renderWithProviders(<BlogPostList />, { config });
+
+				expect(container.querySelectorAll('.blog-post-loading')).toHaveLength(4);
+			});
+
+			it('uses an explicit count for list skeletons', () => {
+				const config = createConfig({
+					integrations: {
+						wordpress: {
+							site: 'example.com'
+						}
+					}
+				});
+				vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockImplementation(
+					() => new Promise(() => {})
+				);
+
+				const { container } = renderWithProviders(<BlogPostList count={3} />, { config });
+
+				expect(container.querySelectorAll('.blog-post-loading')).toHaveLength(3);
+			});
+
 			it('renders without throwing when WordPress config is present', async () => {
 				const config = createConfig({
 					integrations: {
