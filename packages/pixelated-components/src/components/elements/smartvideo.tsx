@@ -99,6 +99,7 @@ export function SmartVideo(props: SmartVideoType) {
 			quality,
 			width,
 			transforms,
+			origin: config?.siteInfo?.url,
 		});
 	};
 

@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
 	...baseConfig,
 	experimental: {
 		...baseConfig.experimental,
-		inlineCss: true,
 		cssChunking: true
 	},
 	webpack: (config: any, options: any) => {

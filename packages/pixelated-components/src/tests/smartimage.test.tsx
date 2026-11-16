@@ -143,7 +143,17 @@ describe('SmartImage Component', () => {
 				quality: 75,
 				width: 500,
 				transforms: 'f_auto,c_limit,q_auto,dpr_auto',
+				origin: 'https://www.pixelated.tech',
 			});
+		});
+
+		it('passes relative sources and the configured origin to Cloudinary', () => {
+			renderSmartImage(<SmartImage src="/images/test-image.jpg" alt="Test image" variant="cloudinary" />);
+
+			expect(mockBuildCloudinaryUrl).toHaveBeenCalledWith(expect.objectContaining({
+				src: '/images/test-image.jpg',
+				origin: 'https://www.pixelated.tech',
+			}));
 		});
 
 		it('should preserve an explicit Cloudinary transform override', () => {

@@ -14,6 +14,9 @@ import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
 const mockBuildCloudinaryUrl = vi.mocked(buildCloudinaryUrl);
 
 const cloudinaryConfig = {
+	siteInfo: {
+		url: 'https://www.pixelated.tech',
+	},
 	integrations: {
 		cloudinary: {
 			product_env: 'test-env',
@@ -51,6 +54,19 @@ describe('SmartVideo Component', () => {
 		expect(mockBuildCloudinaryUrl).toHaveBeenCalledTimes(2);
 		expect(video).toHaveAttribute('src', 'https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/https://example.com/test-video.mp4');
 		expect(video).toHaveAttribute('poster', 'https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/https://example.com/poster.jpg');
+	});
+
+	it('passes relative sources and the configured origin to Cloudinary', () => {
+		const { container } = renderSmartVideo(
+			<SmartVideo src="/videos/test-video.mp4" variant="cloudinary" />
+		);
+		const video = container.querySelector('video');
+
+		expect(video).not.toBeNull();
+		expect(mockBuildCloudinaryUrl).toHaveBeenCalledWith(expect.objectContaining({
+			src: '/videos/test-video.mp4',
+			origin: 'https://www.pixelated.tech',
+		}));
 	});
 
 	it('falls back to html variant when Cloudinary config is missing', () => {

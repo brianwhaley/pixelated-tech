@@ -11,8 +11,9 @@ export function getBaseNextConfig(): NextConfig {
 	return {
         agentRules: false,
 		experimental: {
-			optimizeCss: false,
+			// optimizeCss: false,
 			externalDir: true,
+			inlineCss: true,
             // ppr: true,
 		},
         // cacheComponents: true,

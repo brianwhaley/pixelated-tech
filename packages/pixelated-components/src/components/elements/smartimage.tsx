@@ -201,6 +201,7 @@ export function SmartImage(props: SmartImageType) {
 			quality: quality ?? newProps.quality ?? 75,
 			width,
 			transforms: cloudinaryTransforms,
+			origin: config?.siteInfo?.url,
 		});
 	} 
 

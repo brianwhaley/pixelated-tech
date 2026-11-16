@@ -25,10 +25,25 @@ describe('cloudinary utilities', () => {
 			});
 		});
 
-		it('should return original src during SSR (no window) for relative src', () => {
+		it('should build a Cloudinary URL during SSR for relative src with an origin', () => {
 			vi.stubGlobal('window', undefined);
-			const result = cloudinaryModule.buildCloudinaryUrl({ src: '/images/photo.jpg', productEnv: 'test-env' });
-			expect(result).toBe('/images/photo.jpg');
+			const result = cloudinaryModule.buildCloudinaryUrl({
+				src: '/images/photo.jpg',
+				productEnv: 'test-env',
+				origin: 'https://example.com',
+			});
+			expect(result).toContain('https://res.cloudinary.com/test-env');
+			expect(result).toContain('https://example.com/images/photo.jpg');
+		});
+
+		it('should return the original relative src during SSR without an origin', () => {
+			vi.stubGlobal('window', undefined);
+			const src = '/images/photo.jpg';
+			const result = cloudinaryModule.buildCloudinaryUrl({
+				src,
+				productEnv: 'test-env',
+			});
+			expect(result).toBe(src);
 		});
 
 		it('should build cloudinary URL during SSR (no window) for absolute src', () => {
