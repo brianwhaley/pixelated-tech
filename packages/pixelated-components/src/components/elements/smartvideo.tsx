@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
-import { buildCloudinaryUrl } from '../integrations/cloudinary';
+import {
+	buildCloudinaryUrl,
+	DEFAULT_CLOUDINARY_DOMAIN,
+	DEFAULT_CLOUDINARY_TRANSFORMS,
+} from '../integrations/cloudinary';
 import { usePixelatedConfig } from '../config/config.client';
 import {
 	parseNumber,
@@ -69,13 +73,13 @@ export function SmartVideo(props: SmartVideoType) {
 	const normalizedSrc = normalizeProtocolRelativeUrl(safeString(props.src) ?? '');
 	const normalizedPoster = props.poster ? normalizeProtocolRelativeUrl(safeString(props.poster) ?? '') : undefined;
 	const cloudinaryEnv = safeString(props.cloudinaryEnv ?? cloudCfg?.product_env);
-	const cloudinaryDomain = safeString(props.cloudinaryDomain ?? cloudCfg?.baseUrl) ?? 'https://res.cloudinary.com/';
+	const cloudinaryDomain = safeString(props.cloudinaryDomain ?? cloudCfg?.baseUrl) ?? DEFAULT_CLOUDINARY_DOMAIN;
 	const isCloudinaryAvailable = !!cloudinaryEnv;
 	const effectiveVariant = currentVariant === 'cloudinary' ? 'cloudinary' : 'html';
 	const width = parseNumber(props.width ?? 1280);
 	const height = parseNumber(props.height ?? 720);
 	const quality = parseNumber(props.quality ?? 75);
-	const transforms = safeString(props.cloudinaryTransforms) || 'f_auto,c_limit,q_auto,dpr_auto';
+	const transforms = safeString(props.cloudinaryTransforms) || DEFAULT_CLOUDINARY_TRANSFORMS;
 	const preload = safeString(props.preload) as 'auto' | 'metadata' | 'none' | undefined;
 	const id = deriveMediaId({ id: props.id, name: safeString(props.name), title: props.title, alt: undefined, src: normalizedSrc });
 	const posterSrc = normalizedPoster;

@@ -5,8 +5,9 @@ https://cloudinary.com/blog/transparent_webp_format_cdn_delivery_based_on_visito
 https://cloudinary.com/blog/delivering_all_your_websites_images_through_a_cdn
 */
 
-const cloudinary_domain = "https://res.cloudinary.com";
-const cloudinary_props = "/image/fetch/f_auto,c_limit,dpr_auto";
+export const DEFAULT_CLOUDINARY_DOMAIN = 'https://res.cloudinary.com/';
+export const DEFAULT_CLOUDINARY_TRANSFORMS = 'f_auto,c_limit,q_auto,dpr_auto';
+const cloudinary_props = `/image/fetch/${DEFAULT_CLOUDINARY_TRANSFORMS}`;
 
 
 function joinWithSlash(a: string, b: string) {
@@ -14,7 +15,7 @@ function joinWithSlash(a: string, b: string) {
 }
 
 export function buildCloudinaryUrl(params: { src: string; productEnv: string | null | undefined; cloudinaryDomain?: string; quality?: number | null; width?: number | null; transforms?: string | null; }) {
-	const { src, productEnv, cloudinaryDomain = cloudinary_domain, quality = 75, width, transforms } = params;
+	const { src, productEnv, cloudinaryDomain = DEFAULT_CLOUDINARY_DOMAIN, quality = 75, width, transforms } = params;
 
 	const isAbsoluteUrl = /^https?:\/\//i.test(src) || /^\/\//.test(src); // https:// or // 
 
@@ -89,7 +90,7 @@ getCloudinaryRemoteFetchURL.propTypes = {
 };
 export type getCloudinaryRemoteFetchURLType = InferProps<typeof getCloudinaryRemoteFetchURL.propTypes>;
 export function getCloudinaryRemoteFetchURL(props: getCloudinaryRemoteFetchURLType) {
- 	const domainAndCloud = joinWithSlash(cloudinary_domain, props.product_env);
+	const domainAndCloud = joinWithSlash(DEFAULT_CLOUDINARY_DOMAIN, props.product_env);
  	const cloudinary_prefix = domainAndCloud + cloudinary_props;
  	const result = cloudinary_prefix + '/' + props.url;
  	return result;
@@ -131,7 +132,7 @@ export function loadAllImagesFromCloudinary(props: loadAllImagesFromCloudinaryTy
 		const built = buildCloudinaryUrl({
 			src: currentSrc,
 			productEnv: props.product_env,
-			cloudinaryDomain: cloudinary_domain,
+			cloudinaryDomain: DEFAULT_CLOUDINARY_DOMAIN,
 			// keep other options default (quality/width/transforms) for now
 		});
 

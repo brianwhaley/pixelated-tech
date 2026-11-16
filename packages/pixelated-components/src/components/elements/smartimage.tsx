@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import Image from 'next/image';
-import { buildCloudinaryUrl } from '../integrations/cloudinary';
+import {
+	buildCloudinaryUrl,
+	DEFAULT_CLOUDINARY_DOMAIN,
+	DEFAULT_CLOUDINARY_TRANSFORMS,
+} from '../integrations/cloudinary';
 import { usePixelatedConfig } from '../config/config.client';
 import { parseNumber, safeString, sanitizeMediaString } from './smartmediautils';
-
-const CLOUDINARY_DOMAIN = 'https://res.cloudinary.com/';
-const CLOUDINARY_TRANSFORMS = 'f_auto,c_limit,q_auto,dpr_auto';
 
 const debug = false;
 
@@ -134,8 +135,10 @@ export function SmartImage(props: SmartImageType) {
 	// Always create ref to maintain consistent hook count across re-renders
 	const imgRef = React.useRef<HTMLImageElement | null>(null);
 	newProps.cloudinaryEnv = safeString(props.cloudinaryEnv ?? cloudCfg?.product_env);
-	newProps.cloudinaryDomain = safeString(cloudCfg?.baseUrl ?? CLOUDINARY_DOMAIN);
-	newProps.cloudinaryTransforms = safeString(CLOUDINARY_TRANSFORMS ?? cloudCfg?.transforms);
+	newProps.cloudinaryDomain = safeString(cloudCfg?.baseUrl ?? DEFAULT_CLOUDINARY_DOMAIN);
+	newProps.cloudinaryTransforms = safeString(
+		props.cloudinaryTransforms ?? cloudCfg?.transforms ?? DEFAULT_CLOUDINARY_TRANSFORMS
+	);
 	newProps.fetchPriority = props.fetchPriority ?? (props.aboveFold ? 'high' : 'auto');
 	newProps.loading = props.loading ?? (props.aboveFold ? 'eager' : 'lazy');
 	newProps.decoding = props.decoding ?? (props.aboveFold ? 'sync' : 'async');

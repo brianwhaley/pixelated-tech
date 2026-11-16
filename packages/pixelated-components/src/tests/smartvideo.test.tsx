@@ -6,6 +6,8 @@ import { SmartVideo } from '@/components/elements/smartvideo';
 
 vi.mock('@/components/integrations/cloudinary', () => ({
 	buildCloudinaryUrl: vi.fn(),
+	DEFAULT_CLOUDINARY_DOMAIN: 'https://res.cloudinary.com/',
+	DEFAULT_CLOUDINARY_TRANSFORMS: 'f_auto,c_limit,q_auto,dpr_auto',
 }));
 
 import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';

@@ -5,6 +5,7 @@ import { assertSiteInfo } from '../config/config.validators';
 import { getFullPixelatedConfig } from '../config/config';
 import type { SiteInfo } from '../config/config.types';
 import { contentfulSlugToValue } from '../integrations/contentful.delivery';
+import { DEFAULT_CLOUDINARY_DOMAIN } from '../integrations/cloudinary';
 import { getRouteByKey } from './metadata.functions';
 import { normalizePath } from './utilities';
 
@@ -151,7 +152,7 @@ export async function generateMetaTags() {
 			<link rel="manifest" href="/manifest.webmanifest" />
 
 			<link rel="preconnect" href="https://images.ctfassets.net/" />
-			<link rel="preconnect" href="https://res.cloudinary.com/" />
+			<link rel="preconnect" href={DEFAULT_CLOUDINARY_DOMAIN} />
 			<link rel="preconnect" href="https://farm2.static.flickr.com" />
 			<link rel="preconnect" href="https://farm6.static.flickr.com" />
 			<link rel="preconnect" href="https://farm8.static.flickr.com" />

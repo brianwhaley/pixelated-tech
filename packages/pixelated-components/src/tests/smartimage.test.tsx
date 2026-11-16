@@ -8,6 +8,8 @@ import { mockCloudinary, pixelatedConfig } from '@/test/test-data';
 // Mock the buildCloudinaryUrl function
 vi.mock('@/components/integrations/cloudinary', () => ({
 buildCloudinaryUrl: vi.fn(),
+DEFAULT_CLOUDINARY_DOMAIN: 'https://res.cloudinary.com/',
+DEFAULT_CLOUDINARY_TRANSFORMS: 'f_auto,c_limit,q_auto,dpr_auto',
 }));
 
 import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
@@ -129,6 +131,21 @@ describe('SmartImage Component', () => {
 				width: 500,
 				transforms: 'f_auto,c_limit,q_auto,dpr_auto',
 			});
+		});
+
+		it('should preserve an explicit Cloudinary transform override', () => {
+			renderSmartImage(
+				<SmartImage
+					src="https://example.com/test-image.jpg"
+					alt="Test image"
+					variant="cloudinary"
+					cloudinaryTransforms="f_auto,c_limit,q_auto:eco,dpr_auto"
+				/>
+			);
+
+			expect(mockBuildCloudinaryUrl).toHaveBeenCalledWith(expect.objectContaining({
+				transforms: 'f_auto,c_limit,q_auto:eco,dpr_auto',
+			}));
 		});
 
 		it('should fall back to Next.js Image when Cloudinary config unavailable for cloudinary variant', () => {
