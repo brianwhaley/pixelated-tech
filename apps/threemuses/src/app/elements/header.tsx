@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PageSection, PageGridItem, CartButton, usePixelatedConfig } from "@pixelated-tech/components";
+import { PageSection, PageGridItem, usePixelatedConfig } from "@pixelated-tech/components";
+import { CartButton } from "@pixelated-tech/components/shoppingcartclient";
 import { SmartImage } from "@pixelated-tech/components";
 import { Hero } from "@pixelated-tech/components";
 import { MenuAccordion, MenuAccordionButton } from "@pixelated-tech/components";

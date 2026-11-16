@@ -1,4 +1,5 @@
-import { getCartItemCount, getCartSubTotal, formatAsHundredths, type CartItemType } from "@pixelated-tech/components";
+import { formatAsHundredths } from "@pixelated-tech/components";
+import { getCartItemCount, getCartSubTotal, type CartItemType } from "@pixelated-tech/components/shoppingcartclient";
 
 function normalizeItemCategories(item: CartItemType) {
 	if (!item?.itemCategory) return [];

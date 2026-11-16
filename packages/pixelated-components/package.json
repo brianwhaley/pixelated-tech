@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.44",
+	"version": "3.22.45",
 	"type": "module",
 	"private": false,
 	"repository": {
@@ -45,20 +45,30 @@
 			"import": "./dist/index.server.js",
 			"default": "./dist/index.server.js"
 		},
-		"./adminserver": {
-			"types": "./dist/components/admin/index.admin.server.d.ts",
-			"import": "./dist/components/admin/index.admin.server.js",
-			"default": "./dist/components/admin/index.admin.server.js"
-		},
 		"./adminclient": {
 			"types": "./dist/components/admin/index.admin.d.ts",
 			"import": "./dist/components/admin/index.admin.js",
 			"default": "./dist/components/admin/index.admin.js"
 		},
+		"./adminserver": {
+			"types": "./dist/components/admin/index.admin.server.d.ts",
+			"import": "./dist/components/admin/index.admin.server.js",
+			"default": "./dist/components/admin/index.admin.server.js"
+		},
 		"./config": {
 			"types": "./dist/index.configfiles.d.ts",
 			"import": "./dist/index.configfiles.js",
 			"default": "./dist/index.configfiles.js"
+		},
+		"./shoppingcartclient": {
+			"types": "./dist/components/shoppingcart/index.shoppingcart.d.ts",
+			"import": "./dist/components/shoppingcart/index.shoppingcart.js",
+			"default": "./dist/components/shoppingcart/index.shoppingcart.js"
+		},
+		"./shoppingcartserver": {
+			"types": "./dist/components/shoppingcart/index.shoppingcart.server.d.ts",
+			"import": "./dist/components/shoppingcart/index.shoppingcart.server.js",
+			"default": "./dist/components/shoppingcart/index.shoppingcart.server.js"
 		},
 		"./css/*": "./dist/css/*",
 		"./scripts/*": "./dist/scripts/*"

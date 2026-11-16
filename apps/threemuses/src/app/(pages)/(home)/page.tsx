@@ -1,6 +1,6 @@
 import { PageSection, PageSectionHeader, PageTitleHeader, PageGridItem, Callout, BlogPostList } from '@pixelated-tech/components';
-import { SquareFeaturedItems } from '@pixelated-tech/components';
-import { getSquareStoreItems } from '@pixelated-tech/components/server';
+import { SquareFeaturedItems } from '@pixelated-tech/components/shoppingcartclient';
+import { getSquareStoreItems } from '@pixelated-tech/components/shoppingcartserver';
 import * as componentLibrary from '../../elements/componentlibrary';
 
 // This page is intentionally a server component so it can fetch featured boutique

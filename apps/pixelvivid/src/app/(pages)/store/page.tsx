@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { ContentfulItems, EbayItems, usePixelatedConfig, Loading } from "@pixelated-tech/components";
+import { ContentfulItems, usePixelatedConfig, Loading } from "@pixelated-tech/components";
+import { EbayItems } from "@pixelated-tech/components/shoppingcartclient";
 import { PageTitleHeader } from "@pixelated-tech/components";
 
 export function createEbayStoreApiProps(pixelatedConfig: any) {

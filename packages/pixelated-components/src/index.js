@@ -26,9 +26,6 @@ export * as IntegrationsComponents from './components/integrations/index.integra
 export * from './components/pixelated/index.pixelated';
 export * as PixelatedComponents from './components/pixelated/index.pixelated';
 
-export * from './components/shoppingcart/index.shoppingcart';
-export * as ShoppingCartComponents from './components/shoppingcart/index.shoppingcart';
-
 export * from './components/structure/index.structure';
 export * as StructureComponents from './components/structure/index.structure';
 

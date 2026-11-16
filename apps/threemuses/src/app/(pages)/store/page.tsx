@@ -1,5 +1,5 @@
 import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
-import { SquareStoreItemsWrapper } from '@pixelated-tech/components/server';
+import { SquareStoreItemsWrapper } from '@pixelated-tech/components/shoppingcartserver';
 
 export default async function StorePage({
 	searchParams,

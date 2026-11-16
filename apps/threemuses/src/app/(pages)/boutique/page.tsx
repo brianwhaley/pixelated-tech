@@ -1,7 +1,7 @@
 import { PageSection, PageTitleHeader, ServicesSchema } from '@pixelated-tech/components';
 import { Callout } from '@pixelated-tech/components';
-import { SquareFeaturedItems } from '@pixelated-tech/components';
-import { getSquareStoreItems } from '@pixelated-tech/components/server';
+import { SquareFeaturedItems } from '@pixelated-tech/components/shoppingcartclient';
+import { getSquareStoreItems } from '@pixelated-tech/components/shoppingcartserver';
 import * as componentLibrary from "../../elements/componentlibrary";
 
 export default async function BoutiquePage() {

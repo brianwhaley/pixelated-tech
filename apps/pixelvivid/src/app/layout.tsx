@@ -1,7 +1,8 @@
 import React from "react";
 import { headers } from 'next/headers';
 import { PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig, SchemaWebPage } from "@pixelated-tech/components/server";
-import { descriptionToKeywords, getEbayItem } from "@pixelated-tech/components/server";
+import { descriptionToKeywords } from "@pixelated-tech/components/server";
+import { getEbayItem } from "@pixelated-tech/components/shoppingcartserver";
 import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
 import { GoogleFonts } from "@pixelated-tech/components/server";

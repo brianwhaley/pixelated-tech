@@ -2,7 +2,7 @@
 import React from 'react';
 import { PageSection, PageTitleHeader } from '@pixelated-tech/components';
 import { EventCalendar, CalendarEvent } from '@pixelated-tech/components';
-import { getSquareEventItems } from '@pixelated-tech/components/server';
+import { getSquareEventItems } from '@pixelated-tech/components/shoppingcartserver';
 
 
 export default async function EventsCalendarPage() {

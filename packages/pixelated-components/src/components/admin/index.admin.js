@@ -11,11 +11,8 @@ export * from './scraper/person.functions';
 export * from './scraper/domain-scraper.functions';
 export * from './scraper/domain-scraper.components';
 
-export * from './site-health/google.api.integration';
 export * from './site-health/google.api.utils';
 export * from './site-health/site-health-cloudwatch';
-export * from './site-health/site-health-cloudwatch.integration';
-export * from './site-health/site-health-core-web-vitals.integration';
 export * from './site-health/site-health-google-analytics';
 export * from './site-health/site-health-google-search-console';
 export * from './site-health/site-health-overview';

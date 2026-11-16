@@ -21,9 +21,9 @@ import { PageSection, PageSectionHeader, PageTitleHeader, Table } from '@pixelat
 import {
 	DEFAULT_PIXELATED_FORM_SUBMISSIONS_TABLE,
 	getFullPixelatedConfig,
-	getSquareEventItems,
 	listPixelatedFormSubmissionReportRows,
 } from '@pixelated-tech/components/server';
+import { getSquareEventItems } from '@pixelated-tech/components/shoppingcartserver';
 
 const EVENT_FILTER_KEYS = ['active', 'year', 'all'] as const;
 export type EventFilterKey = (typeof EVENT_FILTER_KEYS)[number];

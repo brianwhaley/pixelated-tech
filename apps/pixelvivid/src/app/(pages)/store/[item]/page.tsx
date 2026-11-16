@@ -1,7 +1,8 @@
 "use client";
 
 import React, { use } from 'react';
-import { EbayItemDetail, usePixelatedConfig } from "@pixelated-tech/components";
+import { usePixelatedConfig } from "@pixelated-tech/components";
+import { EbayItemDetail } from "@pixelated-tech/components/shoppingcartclient";
 import { ContentfulItemDetail } from "@pixelated-tech/components";
 import { PageTitleHeader } from "@pixelated-tech/components";
 

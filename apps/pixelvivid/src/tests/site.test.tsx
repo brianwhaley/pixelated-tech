@@ -41,6 +41,22 @@ vi.mock('@pixelated-tech/components', async () => {
 	};
 });
 
+vi.mock('@pixelated-tech/components/shoppingcartclient', () => ({
+	...createPageComponentMocks(),
+	CartButton: (props: any) => React.createElement('button', { 'data-testid': 'cart-button', ...props }, null),
+	EbayItems: (props: any) => React.createElement('div', { 'data-testid': 'ebay-items', ...props }, null),
+	EbayItemDetail: (props: any) => React.createElement('div', { 'data-testid': 'ebay-item-detail', ...props }, null),
+}));
+
+vi.mock('@pixelated-tech/components/shoppingcartserver', async () => {
+	const actual = await vi.importActual<typeof import('@pixelated-tech/components/shoppingcartserver')>('@pixelated-tech/components/shoppingcartserver');
+	return {
+		__esModule: true,
+		...actual,
+		getEbayItem: vi.fn(),
+	};
+});
+
 vi.mock('next/navigation', () => ({
 	useSearchParams: () => new URLSearchParams('?installed=true'),
 	usePathname: () => '/',

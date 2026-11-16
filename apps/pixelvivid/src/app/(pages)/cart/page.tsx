@@ -1,5 +1,5 @@
 import React from "react";
-import { ShoppingCart } from "@pixelated-tech/components";
+import { ShoppingCart } from "@pixelated-tech/components/shoppingcartclient";
 import { getFullPixelatedConfig } from "@pixelated-tech/components/server";
 import { PageTitleHeader } from "@pixelated-tech/components";
 

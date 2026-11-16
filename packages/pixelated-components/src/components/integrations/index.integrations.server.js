@@ -13,6 +13,7 @@ export * from './google.fonts';
 export * from './google.fonts.functions';
 export * from './google.reviews.functions';
 export * from './gravatar.functions';
+export * from './flickr';
 export * from './instagram.functions';
 export * from './contentful.contenttypes';
 export * from './cloudinary.server';

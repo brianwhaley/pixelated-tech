@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { PageTitleHeader, PageSection, ShoppingCart, getCart, type CartItemType, smartFetch, usePixelatedConfig } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSection, smartFetch, usePixelatedConfig } from "@pixelated-tech/components";
+import { ShoppingCart, getCart, type CartItemType } from "@pixelated-tech/components/shoppingcartclient";
 import { getThreeMusesSubtotalDiscount } from "../../lib/shoppingcart-discounts";
 import baseFormData from "@/app/data/register-base-form.json";
 import adultFormData from "@/app/data/register-adult-form.json";

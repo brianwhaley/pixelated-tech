@@ -1,8 +1,8 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { PageSection } from '@pixelated-tech/components';
-import { SquareStoreItemDetail } from '@pixelated-tech/components';
-import { getSquareStoreItemById } from '@pixelated-tech/components/server';
+import { SquareStoreItemDetail } from '@pixelated-tech/components/shoppingcartclient';
+import { getSquareStoreItemById } from '@pixelated-tech/components/shoppingcartserver';
 import { PageTitleHeader } from '@pixelated-tech/components';
 export default async function EventPage({ params }: { params: Promise<{ event: string }> }) {
 	const resolvedParams = await params;

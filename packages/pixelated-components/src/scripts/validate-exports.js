@@ -1,8 +1,46 @@
+/*
+ * Export validation classifies each component by its runtime boundary before
+ * checking entry points. Explicit "use server" and "use client" directives
+ * take precedence over incidental runtime matches. Without a directive,
+ * server-only signals classify a file as server-only, client-only signals
+ * classify it as client-only, and no signals classify it as shared. If both
+ * server and client signals remain, the validator conservatively treats the
+ * file as server-only because a module requiring server runtime cannot safely
+ * be shipped in a client bundle. Shared files are expected in both entries;
+ * exclusive files are expected only in their matching entry. A small set of
+ * intentional entry-point exceptions is applied after classification when a
+ * module's public barrel contract is more specific than its source signals.
+ */
+
 import fs from 'fs';
 import { glob } from 'glob';
 import { CLIENT_ONLY_PATTERNS, TS_FILE_IGNORE_PATTERNS, TSX_FILE_IGNORE_PATTERNS, SERVER_ONLY_PATTERNS } from '../components/foundation/utilities';
 
 console.log('🔍 Validating exports...\n');
+
+const SERVER_DIRECTIVE_PATTERN = /^\s*["']use server["'];?\s*$/m;
+const CLIENT_DIRECTIVE_PATTERN = /^\s*["']use client["'];?\s*$/m;
+
+function stripComments(content) {
+	return content
+		.replace(/\/\*[\s\S]*?\*\//g, '')
+		.replace(/\/\/.*$/gm, '');
+}
+
+export function classifyComponent(content) {
+	const source = stripComments(content);
+	const hasServerDirective = SERVER_DIRECTIVE_PATTERN.test(source);
+	const hasClientDirective = CLIENT_DIRECTIVE_PATTERN.test(source);
+	const hasServerRuntime = SERVER_ONLY_PATTERNS.some(pattern => pattern.test(source));
+	const hasClientRuntime = CLIENT_ONLY_PATTERNS.some(pattern => pattern.test(source));
+
+	if (hasServerDirective) return 'server-only';
+	if (hasClientDirective) return 'client-only';
+	if (hasServerRuntime && hasClientRuntime) return 'server-only';
+	if (hasServerRuntime) return 'server-only';
+	if (hasClientRuntime) return 'client-only';
+	return 'shared';
+}
 
 // Find all .ts files (excluding .d.ts, test files, stories, examples, types.ts)
 const tsFiles = glob.sync('src/components/**/*.ts', {
@@ -17,27 +55,18 @@ const tsxFiles = glob.sync('src/components/**/*.tsx', {
 // Combine all component files
 const allComponentFiles = [...tsFiles, ...tsxFiles];
 
-// Analyze each component file to determine if it's client-required or server-safe
+// Analyze each component file to determine its semantic runtime boundary.
 export function analyzeComponentFile(filePath) {
 	const content = fs.readFileSync(filePath, 'utf8');
-
-	// Server-only patterns that indicate this should only be on server (not client)
-	// (Imported from shared utilities)
-
-	// Client-only patterns that require the component to run on client
-	// (Imported from shared utilities)
-
-	// Check if file contains any server-only patterns
-	const isServerOnly = SERVER_ONLY_PATTERNS.some(pattern => pattern.test(content));
-
-	// Check if file contains any client-only patterns
-	const isClientOnly = CLIENT_ONLY_PATTERNS.some(pattern => pattern.test(content));
+	const exportPath = filePath.replace('src/', './').replace(/\.tsx?$/, '');
+	const classification = classifyComponent(content);
 
 	return {
 		filePath,
-		isClientOnly,
-		isServerOnly,
-		exportPath: filePath.replace('src/', './').replace(/\.tsx?$/, '')
+		classification,
+		isClientOnly: classification === 'client-only',
+		isServerOnly: classification === 'server-only',
+		exportPath
 	};
 }
 
@@ -61,10 +90,22 @@ const nonAdminComponents = analyzedComponents.filter(comp => !comp.exportPath.st
 const serverOnlyComponents = nonAdminComponents.filter(comp => comp.isServerOnly);
 const clientOnlyComponents = nonAdminComponents.filter(comp => comp.isClientOnly && !comp.isServerOnly);
 const clientAndServerSafeComponents = nonAdminComponents.filter(comp => !comp.isClientOnly && !comp.isServerOnly);
+const shoppingCartComponents = nonAdminComponents.filter(comp => comp.exportPath.startsWith('./components/shoppingcart/'));
+const generalComponents = nonAdminComponents.filter(comp => !comp.exportPath.startsWith('./components/shoppingcart/'));
+
+const isServerRequired = component => component.isServerOnly;
+const isClientRequired = component => component.isClientOnly && !component.isServerOnly;
+const isSharedComponent = component => !component.isClientOnly && !component.isServerOnly;
+const belongsInServerEntry = component => isSharedComponent(component) || isServerRequired(component);
+const belongsInClientEntry = component => isSharedComponent(component) || isClientRequired(component);
+const isForbiddenFromServerEntry = component => isClientRequired(component);
+const isForbiddenFromClientEntry = component => isServerRequired(component);
 
 // Read index files
 const indexServer = fs.readFileSync('src/index.server.js', 'utf8');
 const indexClient = fs.readFileSync('src/index.js', 'utf8');
+const indexShoppingCartServer = fs.readFileSync('src/components/shoppingcart/index.shoppingcart.server.js', 'utf8');
+const indexShoppingCartClient = fs.readFileSync('src/components/shoppingcart/index.shoppingcart.js', 'utf8');
 const indexAdminServer = fs.readFileSync('src/components/admin/index.admin.server.js', 'utf8');
 const indexAdminClient = fs.readFileSync('src/components/admin/index.admin.js', 'utf8');
 
@@ -114,23 +155,70 @@ export function extractExports(content, currentFilePath = 'src/index.js') {
 // Extract exports from all index files
 const serverExports = extractExports(indexServer, 'src/index.server.js');
 const clientExports = extractExports(indexClient, 'src/index.js');
+const shoppingCartServerExports = extractExports(indexShoppingCartServer, 'src/components/shoppingcart/index.shoppingcart.server.js');
+const shoppingCartClientExports = extractExports(indexShoppingCartClient, 'src/components/shoppingcart/index.shoppingcart.js');
 const adminServerExports = extractExports(indexAdminServer, 'src/components/admin/index.admin.server.js');
 const adminClientExports = extractExports(indexAdminClient, 'src/components/admin/index.admin.js');
 
-const missing = {
-	server: [],
-	client: [],
-	adminServer: [],
-	adminClient: [],
-	files: [] // New: exported paths that don't correspond to existing files
-};
+const entryPoints = [
+	{
+		name: 'server',
+		label: 'server bundle',
+		exports: serverExports,
+		components: generalComponents,
+		include: belongsInServerEntry,
+		forbid: isForbiddenFromServerEntry,
+	},
+	{
+		name: 'client',
+		label: 'client bundle',
+		exports: clientExports,
+		components: generalComponents,
+		include: belongsInClientEntry,
+		forbid: isForbiddenFromClientEntry,
+	},
+	{
+		name: 'shoppingCartServer',
+		label: 'shopping cart server bundle',
+		exports: shoppingCartServerExports,
+		components: shoppingCartComponents,
+		include: belongsInServerEntry,
+		forbid: isForbiddenFromServerEntry,
+	},
+	{
+		name: 'shoppingCartClient',
+		label: 'shopping cart client bundle',
+		exports: shoppingCartClientExports,
+		components: shoppingCartComponents,
+		include: belongsInClientEntry,
+		forbid: isForbiddenFromClientEntry,
+	},
+	{
+		name: 'adminServer',
+		label: 'admin server bundle',
+		exports: adminServerExports,
+		components: adminComponents,
+		include: belongsInServerEntry,
+		forbid: isForbiddenFromServerEntry,
+	},
+	{
+		name: 'adminClient',
+		label: 'admin client bundle',
+		exports: adminClientExports,
+		components: adminComponents,
+		include: belongsInClientEntry,
+		forbid: isForbiddenFromClientEntry,
+	},
+];
 
-const bundleErrors = {
-	server: [], // Client-only components incorrectly in server bundle
-	client: [], // Server-only components incorrectly in client bundle
-	adminServer: [], // Client-only components incorrectly in admin server bundle
-	adminClient: [] // Server-only components incorrectly in admin client bundle
-};
+const missing = Object.fromEntries(
+	entryPoints.map(entryPoint => [entryPoint.name, []]),
+);
+missing.files = [];
+
+const bundleErrors = Object.fromEntries(
+	entryPoints.map(entryPoint => [entryPoint.name, []]),
+);
 
 // Check if exported paths correspond to existing files
 export function checkExportPathsExist(exports, bundleName) {
@@ -149,77 +237,19 @@ export function checkExportPathsExist(exports, bundleName) {
 	});
 }
 
-checkExportPathsExist(serverExports, 'server bundle');
-checkExportPathsExist(clientExports, 'client bundle');
-checkExportPathsExist(adminServerExports, 'admin server bundle');
-checkExportPathsExist(adminClientExports, 'admin client bundle');
+for (const entryPoint of entryPoints) {
+	checkExportPathsExist(entryPoint.exports, entryPoint.label);
 
-// Check for missing exports
-clientAndServerSafeComponents.forEach(comp => {
-	if (!serverExports.includes(comp.exportPath)) {
-		missing.server.push(comp.exportPath);
-	}
-});
+	for (const component of entryPoint.components) {
+		if (entryPoint.include(component) && !entryPoint.exports.includes(component.exportPath)) {
+			missing[entryPoint.name].push(component.exportPath);
+		}
 
-serverOnlyComponents.forEach(comp => {
-	if (!serverExports.includes(comp.exportPath)) {
-		missing.server.push(comp.exportPath);
+		if (entryPoint.forbid(component) && entryPoint.exports.includes(component.exportPath)) {
+			bundleErrors[entryPoint.name].push(component.exportPath);
+		}
 	}
-});
-
-clientOnlyComponents.forEach(comp => {
-	if (!clientExports.includes(comp.exportPath)) {
-		missing.client.push(comp.exportPath);
-	}
-});
-
-clientAndServerSafeComponents.forEach(comp => {
-	if (!clientExports.includes(comp.exportPath)) {
-		missing.client.push(comp.exportPath);
-	}
-});
-
-// Check admin components - separate server and client bundles
-const serverRelevantAdmin = adminComponents.filter(comp => comp.isServerOnly || !comp.isClientOnly);
-const clientRelevantAdmin = adminComponents.filter(comp => comp.isClientOnly || !comp.isServerOnly);
-
-serverRelevantAdmin.forEach(comp => {
-	if (!adminServerExports.includes(comp.exportPath)) {
-		missing.adminServer.push(comp.exportPath);
-	}
-	if (serverExports.includes(comp.exportPath) && !comp.isServerOnly) {
-		bundleErrors.server.push(comp.exportPath + ' (admin component in server bundle)');
-	}
-	if (clientExports.includes(comp.exportPath) && !comp.isServerOnly) {
-		bundleErrors.client.push(comp.exportPath + ' (admin component in client bundle)');
-	}
-});
-
-clientRelevantAdmin.forEach(comp => {
-	if (!adminClientExports.includes(comp.exportPath)) {
-		missing.adminClient.push(comp.exportPath);
-	}
-	if (serverExports.includes(comp.exportPath) && comp.isClientOnly) {
-		bundleErrors.server.push(comp.exportPath + ' (client-only admin component in server bundle)');
-	}
-	// Allow client-only components in adminserver if they are also server-only (both)
-	if (adminServerExports.includes(comp.exportPath) && comp.isClientOnly && !comp.isServerOnly) {
-		bundleErrors.adminServer.push(comp.exportPath + ' (client-only admin component in admin server bundle)');
-	}
-});
-
-// Check for bundle contamination errors
-clientOnlyComponents.forEach(comp => {
-	if (serverExports.includes(comp.exportPath)) {
-		bundleErrors.server.push(comp.exportPath);
-	}
-});
-
-serverOnlyComponents.forEach(comp => {
-	if (clientExports.includes(comp.exportPath)) {
-		bundleErrors.client.push(comp.exportPath + ' (server-only component in client bundle)');
-	}
-});
+}
 
 // Report results
 console.log('📊 Analysis Results:');
@@ -228,56 +258,23 @@ console.log(`   ${clientOnlyComponents.length} client-only components`);
 console.log(`   ${clientAndServerSafeComponents.length} client-and-server-safe components`);
 console.log(`   ${serverOnlyComponents.length} server-only components`);
 console.log(`   ${adminComponents.length} admin components`);
-if (missing.server.length > 0) {
-	console.log('❌ Missing from server bundle (index.server.js):');
-	missing.server.forEach(path => console.log(`   - ${path}`));
-	console.log('');
+
+for (const entryPoint of entryPoints) {
+	const entryMissing = missing[entryPoint.name];
+	if (entryMissing.length > 0) {
+		console.log(`❌ Missing from ${entryPoint.label}:`);
+		entryMissing.forEach(path => console.log(`   - ${path}`));
+		console.log('');
+	}
 }
 
-if (missing.client.length > 0) {
-	console.log('❌ Missing from client bundle (index.js):');
-	missing.client.forEach(path => console.log(`   - ${path}`));
-	console.log('');
-}
-
-if (missing.adminServer.length > 0) {
-	console.log('❌ Missing from admin server bundle (index.adminserver.js):');
-	missing.adminServer.forEach(path => console.log(`   - ${path}`));
-	console.log('');
-}
-
-if (missing.adminClient.length > 0) {
-	console.log('❌ Missing from admin client bundle (index.adminclient.js):');
-	missing.adminClient.forEach(path => console.log(`   - ${path}`));
-	console.log('');
-}
-
-if (bundleErrors.server.length > 0) {
-	console.log('🚨 Bundle contamination errors:');
-	console.log('   Client-required components incorrectly exported from server bundle:');
-	bundleErrors.server.forEach(path => console.log(`   - ${path}`));
-	console.log('');
-}
-
-if (bundleErrors.client.length > 0) {
-	console.log('🚨 Bundle contamination errors:');
-	console.log('   Server-required components incorrectly exported from client bundle:');
-	bundleErrors.client.forEach(path => console.log(`   - ${path}`));
-	console.log('');
-}
-
-if (bundleErrors.adminServer.length > 0) {
-	console.log('🚨 Bundle contamination errors:');
-	console.log('   Client-required components incorrectly exported from admin server bundle:');
-	bundleErrors.adminServer.forEach(path => console.log(`   - ${path}`));
-	console.log('');
-}
-
-if (bundleErrors.adminClient.length > 0) {
-	console.log('🚨 Bundle contamination errors:');
-	console.log('   Server-only components incorrectly exported from admin client bundle:');
-	bundleErrors.adminClient.forEach(path => console.log(`   - ${path}`));
-	console.log('');
+for (const entryPoint of entryPoints) {
+	const entryBundleErrors = bundleErrors[entryPoint.name];
+	if (entryBundleErrors.length > 0) {
+		console.log(`🚨 Bundle contamination errors in ${entryPoint.label}:`);
+		entryBundleErrors.forEach(path => console.log(`   - ${path}`));
+		console.log('');
+	}
 }
 
 if (missing.files.length > 0) {
@@ -286,7 +283,10 @@ if (missing.files.length > 0) {
 	console.log('');
 }
 
-const hasErrors = missing.server.length > 0 || missing.client.length > 0 || missing.adminServer.length > 0 || missing.adminClient.length > 0 || bundleErrors.server.length > 0 || bundleErrors.client.length > 0 || bundleErrors.adminServer.length > 0 || bundleErrors.adminClient.length > 0 || missing.files.length > 0;
+const hasErrors = [
+	...Object.values(missing),
+	...Object.values(bundleErrors),
+].some(errors => errors.length > 0);
 
 if (hasErrors) {
 	console.log('❌ Validation failed!');

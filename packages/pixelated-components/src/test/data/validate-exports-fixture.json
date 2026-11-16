@@ -11,6 +11,8 @@
     "src/components/extra.js": "export const Extra = () => 'extra';\n",
     "src/components/exists.ts": "export const Foo = () => 'foo';\n",
     "src/components/extra.ts": "export const Extra = () => 'extra';\n",
+    "src/components/shoppingcart/index.shoppingcart.server.js": "",
+    "src/components/shoppingcart/index.shoppingcart.js": "",
     "src/components/admin/index.admin.server.js": "export * from '../exists';\n",
     "src/components/admin/index.admin.js": "export * from '../exists';\n"
   }

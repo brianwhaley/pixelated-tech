@@ -7,6 +7,7 @@ import { headers } from 'next/headers';
 
 import { createPageComponentMocks } from '@/tests/page-mocks';
 import * as componentsServer from '@pixelated-tech/components/server';
+import * as componentsShoppingCartServer from '@pixelated-tech/components/shoppingcartserver';
 
 const mockRouterPush = vi.fn();
 (globalThis as any).mockRouterPush = mockRouterPush;
@@ -33,12 +34,27 @@ vi.mock('@pixelated-tech/components/server', async () => {
 				},
 			},
 		} as any)),
+		listPixelatedFormSubmissionReportRows: vi.fn(async () => []),
+		FooterMenu: () => React.createElement('div', { 'data-testid': 'footer-menu' }, null),
+	};
+});
+
+vi.mock('@pixelated-tech/components/shoppingcartclient', () => ({
+	...createPageComponentMocks(),
+	SquareFeaturedItems: (props: any) => React.createElement('div', { 'data-testid': 'square-featured-items', ...props }, null),
+	SquareStoreItemDetail: (props: any) => React.createElement('div', { 'data-testid': 'square-store-item-detail', ...props }, null),
+}));
+
+vi.mock('@pixelated-tech/components/shoppingcartserver', async () => {
+	const actual = await vi.importActual<typeof import('@pixelated-tech/components/shoppingcartserver')>('@pixelated-tech/components/shoppingcartserver');
+	return {
+		__esModule: true,
+		...actual,
+		SquareStoreItemsWrapper: (props: any) => React.createElement('div', { 'data-testid': 'square-store-items-wrapper' }, props.title ? React.createElement('div', { 'data-testid': 'square-store-items-wrapper-title' }, props.title) : null),
 		getSquareStoreItems: vi.fn(async () => ({ items: [] })),
 		getSquareStoreItemById: vi.fn(async (id: string) => ({ id, title: 'Test Item', price: 10 })),
 		createSquareOrderAndCapturePayment: vi.fn(async (sourceId: any, checkoutData: any) => ({ status: 'ok', sourceId, checkoutData })),
 		getSquareEventItems: vi.fn(async () => []),
-		listPixelatedFormSubmissionReportRows: vi.fn(async () => []),
-		FooterMenu: () => React.createElement('div', { 'data-testid': 'footer-menu' }, null),
 	};
 });
 
@@ -241,7 +257,7 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Home page gracefully when featured boutique fetch throws', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockRejectedValueOnce(new Error('Service unavailable'));
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockRejectedValueOnce(new Error('Service unavailable'));
 			const HomeComponent = await Home();
 			render(HomeComponent as any);
 			await waitFor(() => expect(document.getElementById('home-services-section')).not.toBeNull());
@@ -251,7 +267,7 @@ describe('ThreeMuses coverage harness', () => {
 			const now = new Date();
 			const futureDate = new Date(now.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
 			const pastDate = new Date(now.getTime() - 1000 * 60 * 60 * 24).toISOString().split('T')[0];
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'future', title: 'Future Event', startDate: futureDate, endDate: futureDate, category: ['Event'] } },
 				{ fields: { id: 'past', title: 'Past Event', startDate: pastDate, endDate: pastDate, category: ['Event'] } },
 			] as any);
@@ -280,7 +296,7 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders EventReportPage year filter using registration year fallback for undated events', async () => {
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-unknown', title: 'Unknown Event' } },
 			] as any);
 			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
@@ -309,7 +325,7 @@ describe('ThreeMuses coverage harness', () => {
 		it('renders event report page with event filter links and uses the active filter by default', async () => {
 			const today = new Date();
 			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-active', title: 'Active Event', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
 				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
 			] as any);
@@ -328,7 +344,7 @@ describe('ThreeMuses coverage harness', () => {
 		it('excludes undated events from the active filter', async () => {
 			const today = new Date();
 			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-active', title: 'Active Event', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
 				{ fields: { id: 'event-unknown', title: 'Unknown Dates Event' } },
 			] as any);
@@ -344,7 +360,7 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders event report page with the all filter showing every event', async () => {
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-active', title: 'Active Event', startDate: '2024-01-01', endDate: '2099-12-31' } },
 				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
 			] as any);
@@ -457,14 +473,14 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Store page empty state', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
 			const store = await StorePage();
 			render(store as any);
 			expect(document.getElementById('store-items-section')).not.toBeNull();
 		});
 
 		it('renders Store page with items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'item-1', itemURL: '/item-1', itemTitle: 'Test Item', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'item-1', itemURL: '/item-1', itemTitle: 'Test Item', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const store = await StorePage();
 			render(store as any);
 			expect(document.getElementById('store-items-section')).not.toBeNull();
@@ -477,7 +493,7 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('throws notFound for a missing store item', async () => {
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce(null as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItemById).mockResolvedValueOnce(null as any);
 			await expect(StoreItemPage({ params: Promise.resolve({ item: 'missing-item' }) })).rejects.toThrow('NEXT_NOT_FOUND');
 		});
 
@@ -513,21 +529,21 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Home page when featured boutique items fail to load', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockRejectedValueOnce(new Error('boom'));
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockRejectedValueOnce(new Error('boom'));
 			const home = await Home();
 			render(home as any);
 			expect(document.getElementById('home-services-section')).not.toBeNull();
 		});
 
 		it('renders Home page when featured boutique items response has no items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({} as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({} as any);
 			const home = await Home();
 			render(home as any);
 			expect(document.getElementById('home-services-section')).not.toBeNull();
 		});
 
 		it('renders Boutique page when featured items response has no items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({} as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({} as any);
 			const boutique = await BoutiquePage();
 			render(boutique as any);
 			expect(document.getElementById('boutique-section')).not.toBeNull();
@@ -567,7 +583,7 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('renders EventReport page with year filter selected', async () => {
 			const currentYear = new Date().getUTCFullYear();
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'evt-1', title: 'Year Event', startDate: `${currentYear}-01-01`, endDate: `${currentYear}-12-31` } },
 			]);
 			vi.mocked(componentsServer.listPixelatedFormSubmissionReportRows).mockResolvedValueOnce([
@@ -666,14 +682,14 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders Events page with no items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page with items', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Event A', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Event A', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
@@ -681,28 +697,28 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('renders Events page when config is unavailable', async () => {
 			setPixelatedConfigOverride(null);
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [], filters: [] });
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page even with archived events', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-archived', itemURL: '/event-archived', itemTitle: 'Archived Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-archived', itemURL: '/event-archived', itemTitle: 'Archived Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page even with content types that do not match', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-wrong', itemURL: '/event-wrong', itemTitle: 'Wrong Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-wrong', itemURL: '/event-wrong', itemTitle: 'Wrong Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
 		});
 
 		it('renders Events page even when event images are missing', async () => {
-			vi.mocked(componentsServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-no-image', itemURL: '/event-no-image', itemTitle: 'No Image Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItems).mockResolvedValueOnce({ items: [{ itemID: 'event-no-image', itemURL: '/event-no-image', itemTitle: 'No Image Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 0, itemIsShippable: false }], filters: [] } as any);
 			const events = await EventsPage();
 			render(events as any);
 			expect(document.getElementById('events-section')).not.toBeNull();
@@ -710,28 +726,28 @@ describe('ThreeMuses coverage harness', () => {
 
 		it('renders EventDetailPage when config is unavailable', async () => {
 			setPixelatedConfigOverride(null);
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Test Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Test Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
 			const eventDetail = await EventDetailPage({ params: Promise.resolve({ event: 'event-1' }) });
 			render(eventDetail as any);
 			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders the event detail route page and loads event data', async () => {
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Test Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-1', itemURL: '/event-1', itemTitle: 'Test Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
 			const eventDetail = await EventDetailPage({ params: Promise.resolve({ event: 'event-1' }) });
 			render(eventDetail as any);
 			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders the event detail route page with carouselImages instead of image', async () => {
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-3', itemURL: '/event-3', itemTitle: 'Carousel Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItemById).mockResolvedValueOnce({ itemID: 'event-3', itemURL: '/event-3', itemTitle: 'Carousel Event', itemPrice: 10, itemCurrency: 'USD', itemInventory: 1, itemIsShippable: false });
 			const eventDetail = await EventDetailPage({ params: Promise.resolve({ event: 'event-3' }) });
 			render(eventDetail as any);
 			await waitFor(() => expect(document.getElementById('store-item-detail-section')).not.toBeNull());
 		});
 
 		it('renders EventDetailPage not found when the item is missing', async () => {
-			vi.mocked(componentsServer.getSquareStoreItemById).mockResolvedValueOnce(undefined);
+			vi.mocked(componentsShoppingCartServer.getSquareStoreItemById).mockResolvedValueOnce(undefined);
 			await expect(EventDetailPage({ params: Promise.resolve({ event: 'event-1' }) })).rejects.toThrow();
 		});
 
@@ -885,7 +901,7 @@ describe('ThreeMuses coverage harness', () => {
 			const today = new Date();
 			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
 
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: '1', title: 'A', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
 				{ fields: { id: '2', title: 'B', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
 			] as any);
@@ -903,7 +919,7 @@ describe('ThreeMuses coverage harness', () => {
 			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
 			const pastDate = new Date(today.getTime() - 1000 * 60 * 60 * 24).toISOString().split('T')[0];
 
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-active', title: 'Active Event', startDate: pastDate, endDate: futureDate } },
 				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
 			] as any);
@@ -925,7 +941,7 @@ describe('ThreeMuses coverage harness', () => {
 			const today = new Date();
 			const futureDate = new Date(today.getTime() + 1000 * 60 * 60 * 24).toISOString().split('T')[0];
 
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-active', title: 'Active Event', startDate: today.toISOString().split('T')[0], endDate: futureDate } },
 				{ fields: { id: 'event-unknown', title: 'Unknown Dates Event' } },
 			] as any);
@@ -942,7 +958,7 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('renders event report page with the all filter showing every event', async () => {
-			vi.mocked(componentsServer.getSquareEventItems).mockResolvedValueOnce([
+			vi.mocked(componentsShoppingCartServer.getSquareEventItems).mockResolvedValueOnce([
 				{ fields: { id: 'event-active', title: 'Active Event', startDate: '2024-01-01', endDate: '2099-12-31' } },
 				{ fields: { id: 'event-past', title: 'Past Event', startDate: '2024-01-01', endDate: '2024-01-02' } },
 			] as any);
@@ -1041,7 +1057,7 @@ describe('ThreeMuses coverage harness', () => {
 		});
 
 		it('returns capture payment server error when payment creation fails', async () => {
-			vi.mocked(componentsServer.createSquareOrderAndCapturePayment).mockRejectedValueOnce(new Error('boom'));
+			vi.mocked(componentsShoppingCartServer.createSquareOrderAndCapturePayment).mockRejectedValueOnce(new Error('boom'));
 			const response = await capturePaymentPOST(new Request('https://example.com/api/capture-payment', {
 				method: 'POST',
 				body: JSON.stringify({ sourceId: 'src', checkoutData: { amount: 1 } }),

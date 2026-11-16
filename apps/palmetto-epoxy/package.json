@@ -1,6 +1,6 @@
 {
   "name": "palmetto-epoxy",
-  "version": "0.10.61",
+  "version": "0.10.62",
   "private": true,
   "author": {
     "name": "Pixelated Technologies",
@@ -27,7 +27,9 @@
   },
   "dependencies": {
     "@pixelated-tech/components": "*",
+    "@testing-library/user-event": "^14.6.12",
     "next": "^16.2.9",
+    "nodemailer": "^10.6.0",
     "prop-types": "^15.8.1",
     "react": "^19.2.7"
   },
