@@ -136,6 +136,12 @@ export function Callout({
 	</div> ;
 
 	const config = usePixelatedConfig();
+	const resolvedImgSizes = imgSizes ?? getDefaultImageSizes({
+		layout,
+		variant,
+		direction,
+		gridColumns,
+	});
 	const image =  ( img ) ?
 		<div className={"callout-image" + (imgShape ? " " + imgShape : "")} >
 			{ (url && !imgClick)
@@ -146,7 +152,7 @@ export function Callout({
 						alt={imgAlt ?? title ?? ""} 
 						width={imgWidth ?? undefined}
 						height={imgHeight ?? undefined}
-						sizes={imgSizes ?? undefined}
+						sizes={resolvedImgSizes}
 						aboveFold={aboveFold}
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 						cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
@@ -161,7 +167,7 @@ export function Callout({
 						alt={imgAlt ?? title ?? ""} 
 						width={imgWidth ?? undefined}
 						height={imgHeight ?? undefined}
-						sizes={imgSizes ?? undefined}
+						sizes={resolvedImgSizes}
 						onClick={(event: React.MouseEvent<HTMLImageElement, MouseEvent>) => imgClick(event, url)}
 						aboveFold={aboveFold}
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
@@ -175,7 +181,7 @@ export function Callout({
 						alt={imgAlt ?? title ?? ""}
 						width={imgWidth ?? undefined}
 						height={imgHeight ?? undefined}
-						sizes={imgSizes ?? undefined}
+						sizes={resolvedImgSizes}
 						aboveFold={aboveFold}
 						cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 						cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
@@ -200,6 +206,35 @@ export function Callout({
 			{ (direction === "right") ? <>{body}{image}</> : <>{image}{body}</> }
 		</div>
 	);
+}
+
+function getDefaultImageSizes({
+	layout,
+	variant,
+	direction,
+	gridColumns,
+}: Pick<CalloutType, 'layout' | 'variant' | 'direction' | 'gridColumns'>): string | undefined {
+	if (layout === 'vertical') {
+		if (variant === 'default' || variant === 'grid') {
+			return '(max-width: 480px) 70vw, (max-width: 768px) 35vw, 22vw';
+		}
+		return variant === 'full' ? '100vw' : undefined;
+	}
+
+	if (variant === 'grid' || variant === 'boxed grid') {
+		const left = gridColumns?.left ?? 1;
+		const right = gridColumns?.right ?? 2;
+		const imageColumns = direction === 'right' ? right : left;
+		const totalColumns = left + right;
+		const imageFraction = totalColumns > 0 ? Math.round((imageColumns / totalColumns) * 100) : 50;
+		return `(max-width: 480px) 100vw, ${imageFraction}vw`;
+	}
+
+	if (variant === 'full' || variant === 'split') {
+		return '50vw';
+	}
+
+	return '50vw';
 }
 
 

@@ -60,6 +60,19 @@ describe('SmartImage Component', () => {
 			expect(img).toHaveAttribute('height', '600');
 		});
 
+		it('derives sizes from an explicit width', () => {
+			renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" width={150} height={150} />);
+			expect(screen.getByAltText('Test image')).toHaveAttribute('sizes', '(max-width: 150px) 100vw, 150px');
+		});
+
+		it('uses the general content fallback when width is not explicit', () => {
+			renderSmartImage(<SmartImage src="https://example.com/test-image.jpg" alt="Test image" />);
+			expect(screen.getByAltText('Test image')).toHaveAttribute(
+				'sizes',
+				'(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 1024px'
+			);
+		});
+
 		// URL-normalization edge-cases (regressions guarded by the recent fix)
 		describe('URL normalization', () => {
 			it('prepends https: to protocol-relative URLs for Next.js Image', () => {

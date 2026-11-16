@@ -21,6 +21,7 @@ import "./tiles.css";
 
 export type TileCardType = MediaCardType & {
 	variant?: 'caption' | 'overlay';
+	imageSizes?: string;
 	imgClick?: (...args: unknown[]) => void;
 };
 
@@ -29,6 +30,12 @@ export type TilesVariantType = typeof TilesVariants[number] | undefined;
 
 function isVideoMedia(contentType?: string, url?: string) {
 	return contentType?.startsWith('video/') || (url ? isVideoUrl(url) : false);
+}
+
+function getTileImageSizes(rowCount: number): string {
+	const desktopColumns = Math.max(1, rowCount);
+	const tabletColumns = Math.max(1, Math.ceil(desktopColumns / 2));
+	return `(max-width: 480px) 100vw, (max-width: 768px) ${Math.round(100 / tabletColumns)}vw, ${Math.round(100 / desktopColumns)}vw`;
 }
 /**
  * Tiles — renders a responsive grid of image tiles with optional click handlers and visual variants.
@@ -52,6 +59,7 @@ Tiles.propTypes = {
 		bodyText: PropTypes.string,
 		imgClick: PropTypes.func,
 		variant: PropTypes.oneOf(TilesVariants),
+		imageSizes: PropTypes.string,
 	})).isRequired,
 	/** Number of rows to display in the grid (controls layout). */
 	rowCount: PropTypes.number,
@@ -103,6 +111,7 @@ export function Tiles(props: TilesType) {
 									imgClick={handleTileImageClick}
 									variant={(props.variant ?? "overlay" ) as TilesVariantType}
 									showOverlay={showOverlay}
+									imageSizes={getTileImageSizes(rowCount)}
 								/>
 							</div>
 						))}
@@ -152,6 +161,7 @@ Tile.propTypes = {
 	imgClick: PropTypes.func,
 	/** Whether to show the overlay content for this tile. */
 	showOverlay: PropTypes.bool,
+	imageSizes: PropTypes.string,
 	/** 'caption' - caption beneath image; 'overlay' - overlay displayed on hover. */
 	variant: PropTypes.oneOf(TilesVariants),
 };
@@ -167,6 +177,7 @@ function Tile( props: TileType ) {
 		title: props?.imageAlt ?? undefined,
 		onClick: imgClick ? (event: React.MouseEvent<HTMLElement>) => imgClick(event, props.image, props.contentType) : undefined,
 		cloudinaryEnv: config?.integrations?.cloudinary?.product_env ?? undefined,
+		sizes: props.imageSizes ?? undefined,
 	};
 	const tileMedia = isVideoMedia(props.contentType ?? undefined, props.image)
 		? <SmartVideo {...mediaProps} controls />

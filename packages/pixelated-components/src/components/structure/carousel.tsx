@@ -250,6 +250,7 @@ export function CarouselCard( props: CarouselCardType ) {
 				<SmartImage draggable={false} src={props.image} title={props.imageAlt ?? undefined} 
 					alt={props?.imageAlt || ""} className={imgFit} 
 					aboveFold={ props?.index === 0 ? true : undefined }
+					sizes={props.variant === 'continuous' ? '(max-width: 480px) 300px, 400px' : '100vw'}
 					cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 					cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}
 					cloudinaryTransforms={config?.integrations?.cloudinary?.transforms ?? undefined} />

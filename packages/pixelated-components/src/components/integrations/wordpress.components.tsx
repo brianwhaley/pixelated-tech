@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { usePixelatedConfig } from "../config/config.client";
 import { SmartImage } from '../elements/smartimage';
+import { Skeleton } from '../foundation/skeleton';
 import { PageGridItem } from '../structure/page-blocks';
 import type { BlogPostType } from './wordpress.functions';
 import type { SiteInfo } from '../config/config.types';
@@ -105,11 +106,13 @@ export function BlogPostList(props: BlogPostListType) {
 	const site = config?.integrations?.wordpress?.site;
 	const baseURL = config?.integrations?.wordpress?.baseURL;
 	const [posts, setPosts] = useState<BlogPostType[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		// If no site is configured, don't fetch
 		if (!site) {
 			console.warn('WordPress site not configured. Provide wordpress.site in config.');
+			setLoading(false);
 			return;
 		}
 
@@ -128,6 +131,7 @@ export function BlogPostList(props: BlogPostListType) {
 				setPosts([]);
 			} finally {
 				ToggleLoading({ show: false });
+				setLoading(false);
 			}
 		})();
 	}, [site, baseURL, count]);
@@ -135,6 +139,18 @@ export function BlogPostList(props: BlogPostListType) {
 	return (
 		<SmartErrorBoundary boundaryName="BlogPostList">
 			<Loading key="loading" />
+			{loading && (
+				<div className="blog-post-loading" aria-busy="true">
+					<div className="blog-post-loading-image">
+						<Skeleton variant="rect" height={150} />
+					</div>
+					<div className="blog-post-loading-copy">
+						<Skeleton lines={2} />
+						<Skeleton lines={1} width="35%" />
+						<Skeleton lines={4} />
+					</div>
+				</div>
+			)}
 			{posts.map((post: BlogPostType) => (
 				<PageGridItem key={post.ID}>
 					<SchemaBlogPosting
@@ -209,6 +225,7 @@ export function BlogPostSummary(props: BlogPostSummaryType) {
 					<div className="article-body row-12col">
 						<div className="article-featured-image grid-s1-e4">
 							<SmartImage className="u-photo" src={props.featured_image} alt={props.title ? decodeString(props.title) : ''} title={props.title ? decodeString(props.title) : ''}
+								sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
 								style={{}}
 								cloudinaryEnv={config?.integrations?.cloudinary?.product_env ?? undefined}
 								cloudinaryDomain={config?.integrations?.cloudinary?.baseUrl ?? undefined}

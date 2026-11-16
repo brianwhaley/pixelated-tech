@@ -9,8 +9,8 @@ import {
 
 // Mock SmartImage component
 vi.mock('../components/elements/smartimage', () => ({
-	SmartImage: ({ src, alt, className }: any) => (
-		<img src={src} alt={alt} className={className} />
+	SmartImage: ({ src, alt, className, sizes }: any) => (
+		<img src={src} alt={alt} className={className} sizes={sizes} />
 	),
 }));
 
@@ -60,6 +60,11 @@ describe('Carousel Component', () => {
 			expect(track).toHaveStyle('--carousel-items: 3');
 			expect(container.querySelectorAll('.carousel-card-wrapper')).toHaveLength(mockCards.length * 2);
 			expect(container.querySelector('.carousel-buttons')).not.toBeInTheDocument();
+		});
+
+		it('uses fixed image sizing for continuous carousel cards', () => {
+			const { container } = render(<Carousel cards={mockCards} variant="continuous" />);
+			expect(container.querySelector('img')).toHaveAttribute('sizes', '(max-width: 480px) 300px, 400px');
 		});
 
 		it('should render carousel control buttons', () => {

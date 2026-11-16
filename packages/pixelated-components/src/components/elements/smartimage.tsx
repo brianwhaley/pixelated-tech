@@ -211,9 +211,9 @@ export function SmartImage(props: SmartImageType) {
 		newProps.sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
 	} */
 	if (!newProps.sizes) {
-		newProps.sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
-		// newProps.sizes = '(max-width: 768px) 100vw, 50vw';
-		// newProps.sizes = '100vw';
+		newProps.sizes = props.width != null && newProps.width
+			? `(max-width: ${newProps.width}px) 100vw, ${newProps.width}px`
+			: '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 1024px';
 	}
 	
 	/* ===== NEXTJS VARIANT ===== */

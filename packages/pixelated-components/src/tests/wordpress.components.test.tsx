@@ -62,6 +62,28 @@ describe('WordPress Components', () => {
 	});
 
 	describe('BlogPostList Component', () => {
+			it('renders a structural skeleton while posts are loading', async () => {
+				const config = createConfig({
+					integrations: {
+						wordpress: {
+							site: 'example.com'
+						}
+					}
+				});
+				let resolvePosts: ((posts: any[]) => void) | undefined;
+				vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockImplementation(
+					() => new Promise((resolve) => { resolvePosts = resolve; })
+				);
+
+				const { container } = renderWithProviders(<BlogPostList />, { config });
+
+				expect(container.querySelector('.blog-post-loading')).toBeInTheDocument();
+				resolvePosts?.([]);
+				await waitFor(() => {
+					expect(container.querySelector('.blog-post-loading')).not.toBeInTheDocument();
+				});
+			});
+
 			it('renders without throwing when WordPress config is present', async () => {
 				const config = createConfig({
 					integrations: {

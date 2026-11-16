@@ -210,6 +210,23 @@ describe('Callout Component', () => {
       expect(imageDiv?.children.length).toBeGreaterThan(0);
     });
 
+    it('uses the standard vertical grid image sizing default', () => {
+      const { container } = render(
+        <Callout title="Vertical" img="/test.jpg" layout="vertical" variant="grid" />
+      );
+      expect(container.querySelector('img')).toHaveAttribute(
+        'sizes',
+        '(max-width: 480px) 70vw, (max-width: 768px) 35vw, 22vw'
+      );
+    });
+
+    it('preserves an explicit image sizing override', () => {
+      const { container } = render(
+        <Callout title="Override" img="/test.jpg" layout="vertical" variant="grid" imgSizes="400px" />
+      );
+      expect(container.querySelector('img')).toHaveAttribute('sizes', '400px');
+    });
+
     it('should not render image when img is missing', () => {
       render(<Callout title="Title" />);
       const images = screen.queryAllByTestId('smart-image');

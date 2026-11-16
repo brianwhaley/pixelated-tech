@@ -13,6 +13,7 @@ vi.mock('@/components/elements/smartimage', () => ({
     src: props.src,
     alt: props.alt,
     title: props.title,
+    sizes: props.sizes,
     'data-testid': 'smart-image',
     onClick: props.onClick,
   })
@@ -337,6 +338,15 @@ describe('Tiles Component', () => {
         expect(img.src).toContain(`image${index + 1}.jpg`);
         expect(img.alt).toBe(`Tile ${index + 1}`);
       });
+    });
+
+    it('derives tile image sizes from the row count', () => {
+      const { container } = render(<Tiles cards={mockCards} rowCount={6} />);
+      const image = container.querySelector('img');
+      expect(image).toHaveAttribute(
+        'sizes',
+        '(max-width: 480px) 100vw, (max-width: 768px) 33vw, 17vw'
+      );
     });
   });
 
