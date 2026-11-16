@@ -253,18 +253,19 @@ export async function getCachedWordPressItems(props: { site?: string, count?: nu
 	const site = props.site ?? '';
 	if (!site) return undefined;
 	const baseURL = props.baseURL ?? wpApiURL;
-	const key = `posts-${site}-${encodeURIComponent(baseURL)}`;
+	const countKey = props.count ?? 'all';
+	const key = `posts-${site}-${encodeURIComponent(baseURL)}-${countKey}`;
 	let posts = wpCache.get<BlogPostType[]>(key) || undefined;
 	
 	if (!posts) {
-		posts = await getWordPressItems({ site, baseURL });
+		posts = await getWordPressItems({ site, baseURL, count: props.count });
 		if (posts) wpCache.set(key, posts);
 	}
 
 	if (posts && posts.length > 0 && posts[0].modified) {
 		const lastModified = await getWordPressLastModified({ site, baseURL });
 		if (lastModified && lastModified !== posts[0].modified) {
-			const freshPosts = await getWordPressItems({ site, baseURL: wpApiURL });
+			const freshPosts = await getWordPressItems({ site, baseURL, count: props.count });
 			if (freshPosts && freshPosts.length > 0) {
 				wpCache.set(key, freshPosts);
 				posts = freshPosts;

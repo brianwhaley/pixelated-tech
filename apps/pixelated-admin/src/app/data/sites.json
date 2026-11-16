@@ -52,7 +52,8 @@
   },
   "enhancements": {
 	"2026-11": [
-      "New Blog Category Navigation Element for Blog pages"
+      "New Blog Category Navigation Element for Blog pages",
+	  "Sitewide performance improvements and optimizations including image and video sizes, font loading; placeholder and lazy loading, caching, and more. "
     ],
 	"2026-10": [
       "Migrated entire AWS Infrastructure stack from US East 2 to US East 1 using CloudFormation IAC to increase reliability and feature set.",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import { render } from '../test/test-utils';
-import { Services as ServicesList, ServiceDetail } from '../components/elements/services.components';
+import { Services as ServicesList, ServiceDetail, ServicesTiles } from '../components/elements/services.components';
 
 const mockServices = [
 	{
@@ -29,6 +29,23 @@ describe('Services components', () => {
 		expect(screen.getByText('Protect and beautify concrete floors with long-lasting epoxy.')).toBeInTheDocument();
 		const floorLinks = screen.getAllByRole('link', { name: /Floor Coating/i });
 		expect(floorLinks.some((link) => link.getAttribute('href') === '/services/floor-coating')).toBe(true);
+	});
+
+	it('renders service tiles with configurable image shape and image sizes', () => {
+		const { container } = render(
+			<ServicesTiles imgShape="bevel" imgSizes="240px" />,
+			{ config: { siteInfo: { services: mockServices } } }
+		);
+
+		expect(container.querySelector('.callout .bevel')).toBeInTheDocument();
+		expect(container.querySelector('img')).toHaveAttribute('sizes', '240px');
+		expect(screen.getByRole('link', { name: /Floor Coating/i })).toHaveAttribute('href', '/services/floor-coating');
+	});
+
+	it('does not render service tiles when no services are configured', () => {
+		const { container } = render(<ServicesTiles />, { config: { siteInfo: { services: [] } } });
+
+		expect(container.firstChild).toBeNull();
 	});
 
 	it('forwards callout layout props to service callout cards', () => {

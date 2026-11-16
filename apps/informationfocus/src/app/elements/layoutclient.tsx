@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { loadAllImagesFromCloudinary, usePixelatedConfig } from "@pixelated-tech/components";
 import { MicroInteractions } from "@pixelated-tech/components";
 import { deferAllCSS } from "@pixelated-tech/components";
-import { preloadImages } from "@pixelated-tech/components";
+// import { preloadImages } from "@pixelated-tech/components";
 
 export default function LayoutClient() {
 
@@ -22,7 +22,7 @@ export default function LayoutClient() {
     
 	useEffect(() => {
 		document.addEventListener('DOMContentLoaded', deferAllCSS);
-		preloadImages();
+		// preloadImages();
 		deferAllCSS();
 		loadAllImagesFromCloudinary({ 
 			origin: window.location.origin,

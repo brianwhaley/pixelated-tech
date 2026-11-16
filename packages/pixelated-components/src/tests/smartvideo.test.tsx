@@ -6,12 +6,17 @@ import { SmartVideo } from '@/components/elements/smartvideo';
 
 vi.mock('@/components/integrations/cloudinary', () => ({
 	buildCloudinaryUrl: vi.fn(),
+	buildCloudinaryVideoPosterUrl: vi.fn(),
 	DEFAULT_CLOUDINARY_DOMAIN: 'https://res.cloudinary.com/',
 	DEFAULT_CLOUDINARY_TRANSFORMS: 'f_auto,c_limit,q_auto,dpr_auto',
 }));
 
-import { buildCloudinaryUrl } from '@/components/integrations/cloudinary';
+import {
+	buildCloudinaryUrl,
+	buildCloudinaryVideoPosterUrl,
+} from '@/components/integrations/cloudinary';
 const mockBuildCloudinaryUrl = vi.mocked(buildCloudinaryUrl);
+const mockBuildCloudinaryVideoPosterUrl = vi.mocked(buildCloudinaryVideoPosterUrl);
 
 const cloudinaryConfig = {
 	siteInfo: {
@@ -33,6 +38,7 @@ describe('SmartVideo Component', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		mockBuildCloudinaryUrl.mockImplementation(({ src }) => `https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/${src}`);
+		mockBuildCloudinaryVideoPosterUrl.mockImplementation(({ src }) => `https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/${src}.jpg`);
 	});
 
 	it('renders a video element with the provided src', () => {
@@ -54,6 +60,25 @@ describe('SmartVideo Component', () => {
 		expect(mockBuildCloudinaryUrl).toHaveBeenCalledTimes(2);
 		expect(video).toHaveAttribute('src', 'https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/https://example.com/test-video.mp4');
 		expect(video).toHaveAttribute('poster', 'https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/https://example.com/poster.jpg');
+	});
+
+	it('generates a Cloudinary poster when the cloudinary variant has no explicit poster', () => {
+		const { container } = renderSmartVideo(
+			<SmartVideo src="https://example.com/test-video.mp4" variant="cloudinary" />
+		);
+		const video = container.querySelector('video');
+
+		expect(video).not.toBeNull();
+		expect(mockBuildCloudinaryVideoPosterUrl).toHaveBeenCalledWith(expect.objectContaining({
+			src: 'https://example.com/test-video.mp4',
+			productEnv: 'test-env',
+			width: 1280,
+			seconds: 1,
+		}));
+		expect(video).toHaveAttribute(
+			'poster',
+			'https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/https://example.com/test-video.mp4.jpg'
+		);
 	});
 
 	it('passes relative sources and the configured origin to Cloudinary', () => {

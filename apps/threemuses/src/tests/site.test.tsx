@@ -579,6 +579,11 @@ describe('ThreeMuses coverage harness', () => {
 			render(page as any);
 			expect(document.getElementById('gallery-section')).not.toBeNull();
 			expect(document.getElementById('gallery-items-section')).not.toBeNull();
+			expect(vi.mocked(components.getContentfulAssetURLs)).toHaveBeenCalledWith({
+				apiProps: expect.objectContaining({
+					delivery_access_token: expect.any(String),
+				}),
+			});
 		});
 
 		it('renders Gallery page skeleton when Contentful fails', async () => {

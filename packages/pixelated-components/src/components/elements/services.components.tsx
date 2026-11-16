@@ -10,10 +10,7 @@ import { usePixelatedConfig } from '../config/config.client';
 import { SmartImage } from './smartimage';
 import { defaultServicePathPrefix, getServicePathPrefix, buildServiceUrl, resolveServices, findServiceBySlug } from './services.functions';
 
-
-
-
-
+const defaultServicesTilesImageSizes = '(max-width: 480px) calc(100vw - 40px), (max-width: 768px) calc(50vw - 30px), 240px';
 
 /**
  * Services renders a list of services offered by the business using the config provider's `siteInfo.services` data. Each service is displayed as a Callout card with its name, description, area served, and an optional link to learn more. The component also supports an optional title and introductory text for the section.
@@ -132,6 +129,52 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 				buttonText={`View ${service.name}`}
 			/>
 			<ServicesSchema />
+		</>
+	);
+}
+
+
+
+
+
+/**
+ * ServicesTiles component displays a grid of service tiles based on the available services in the site configuration.
+ * 
+ * @param {imgShape} The shape of the service images (e.g., 'bevel', 'square').
+ * @param {imgSizes} The sizes attribute for responsive images.
+ * @param {servicePathPrefix} The prefix to use for service URLs.
+ * @returns A grid of service tiles, or null if no services are available.
+ */
+ServicesTiles.propTypes = {
+	imgShape: PropTypes.oneOf([...shapes]),
+	imgSizes: PropTypes.string,
+	servicePathPrefix: PropTypes.string,
+};
+export type ServicesTilesType = InferProps<typeof ServicesTiles.propTypes>;
+export function ServicesTiles({
+	imgShape = 'bevel',
+	imgSizes = defaultServicesTilesImageSizes,
+	servicePathPrefix = defaultServicePathPrefix,
+}: ServicesTilesType) {
+	const config = usePixelatedConfig();
+	const items = resolveServices({ siteInfo: config?.siteInfo });
+	if (!items.length) { return null; }
+
+	return (
+		<>
+			{items.map((service, index) => (
+				<PageGridItem key={service.name ?? index}>
+					<Callout
+						layout="vertical"
+						subtitle={service.name}
+						img={service.image}
+						imgAlt={service.name}
+						imgSizes={imgSizes}
+						imgShape={imgShape}
+						url={buildServiceUrl(service, servicePathPrefix)}
+					/>
+				</PageGridItem>
+			))}
 		</>
 	);
 }

@@ -218,6 +218,7 @@ export function createPageComponentMocks(baseConfig: any = undefined, overrides:
 		ServicesSchema: () => null,
 		ServicesList: mockServicesList,
 		Services: mockServicesList,
+		ServicesTiles: mockServicesList,
 		ServiceAreas: mockComponent('ServiceAreas', 'service-areas'),
 		ServiceAreaDetail: mockComponent('ServiceAreaDetail', 'serviceareadetailpage'),
 		ServiceCard: mockComponent('ServiceCard'),

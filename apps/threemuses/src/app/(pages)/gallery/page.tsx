@@ -56,7 +56,7 @@ async function fetchGalleryImages() {
 		base_url: pixelatedConfig.integrations?.contentful?.base_url ?? '',
 		space_id: pixelatedConfig.integrations?.contentful?.space_id ?? '',
 		environment: pixelatedConfig.integrations?.contentful?.environment ?? '',
-		access_token: pixelatedConfig.integrations?.contentful?.delivery_access_token ?? '',
+		delivery_access_token: pixelatedConfig.integrations?.contentful?.delivery_access_token ?? '',
 	};
 	return await getContentfulAssetURLs({ apiProps });
 }

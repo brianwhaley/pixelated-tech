@@ -1,14 +1,12 @@
 "use client";
 
 import React from 'react';
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem } from '@pixelated-tech/components';
-import { Callout, buildServiceUrl, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, ServicesTiles } from '@pixelated-tech/components';
+import { Callout } from '@pixelated-tech/components';
 import { BlogPostList } from '@pixelated-tech/components';
 import { SocialTags } from '@pixelated-tech/components';
 
 export default function Home() {
-	const pixelatedConfig = usePixelatedConfig();
-	const services = pixelatedConfig?.siteInfo?.services ?? [];
 	return (
 		<>
 
@@ -29,22 +27,13 @@ export default function Home() {
 
 
 			<PageSection columns={4} maxWidth="1024px" gap="20px" id="home-services-section">
-				<PageGridItem columnStart={1} columnEnd={-1} >
+				<PageGridItem columnStart={1} columnEnd={-1}>
 					<PageSectionHeader title="Our Services" />
 				</PageGridItem>
-
-				{services.map((service: any, index: number) => (
-					<PageGridItem key={service.name ?? index}>
-						<Callout
-							layout="vertical"
-							subtitle={service.name}
-							img={service.image}
-							imgAlt={service.name}
-							imgShape="bevel"
-							url={buildServiceUrl(service, "/services")}
-						/>
-					</PageGridItem>
-				))}
+				<ServicesTiles
+					imgShape="bevel"
+					imgSizes="(max-width: 480px) calc(100vw - 40px), (max-width: 768px) calc(50vw - 30px), 240px"
+				/>
 			</PageSection>
 
 

@@ -72,6 +72,50 @@ export function buildCloudinaryUrl(params: { src: string; productEnv: string | n
 	return `${domainAndCloud}/${fetchType}/fetch/${t}/${encodedUrl}`;
 }
 
+export function buildCloudinaryVideoPosterUrl(params: {
+	src: string;
+	productEnv: string | null | undefined;
+	cloudinaryDomain?: string;
+	quality?: number | null;
+	width?: number | null;
+	seconds?: number | null;
+	origin?: string;
+}) {
+	const {
+		src,
+		productEnv,
+		cloudinaryDomain = DEFAULT_CLOUDINARY_DOMAIN,
+		quality = 75,
+		width,
+		seconds = 1,
+		origin: configuredOrigin,
+	} = params;
+
+	if (!productEnv) return src;
+
+	const origin = typeof window !== 'undefined' ? window.location.origin : configuredOrigin ?? '';
+	if (!isAbsoluteUrl(src) && !origin) return src;
+
+	let url = src;
+	if (!isAbsoluteUrl(src)) {
+		url = src.startsWith('/') ? `${origin}${src}` : `${origin}/${src}`;
+	}
+
+	if (/^\/\//.test(url)) {
+		url = `https:${url}`;
+	}
+
+	const frame = typeof seconds === 'number' && Number.isFinite(seconds) && seconds >= 0 ? seconds : 1;
+	const parts = [`so_${frame}`, 'f_jpg', 'c_limit', `q_${typeof quality === 'number' ? quality : 75}`];
+	if (typeof width === 'number' && Number.isFinite(width)) {
+		parts.push(`w_${width}`);
+	}
+
+	const domainAndCloud = joinWithSlash(cloudinaryDomain, productEnv);
+	const encodedUrl = encodeURIComponent(url);
+	return `${domainAndCloud}/video/fetch/${parts.join(',')}/${encodedUrl}.jpg`;
+}
+
 
 
 /**

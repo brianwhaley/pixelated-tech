@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import {
 	buildCloudinaryUrl,
+	buildCloudinaryVideoPosterUrl,
 	DEFAULT_CLOUDINARY_DOMAIN,
 	DEFAULT_CLOUDINARY_TRANSFORMS,
 } from '../integrations/cloudinary';
@@ -102,7 +103,10 @@ export function SmartVideo(props: SmartVideoType) {
 	const cloudinaryPoster = posterSrc && isCloudinaryAvailable ? buildUrl(posterSrc) : posterSrc;
 
 	const videoSrc = currentVariant === 'cloudinary' && isCloudinaryAvailable ? cloudinarySource : normalizedSrc;
-	const posterUrl = currentVariant === 'cloudinary' && cloudinaryPoster ? cloudinaryPoster : posterSrc;
+	const posterUrl = currentVariant === 'cloudinary' && isCloudinaryAvailable 
+		? cloudinaryPoster 
+        ?? buildCloudinaryVideoPosterUrl({ src: normalizedSrc, productEnv: cloudinaryEnv, cloudinaryDomain, quality, width, seconds: 1, origin: config?.siteInfo?.url }) 
+		: posterSrc;
 
 	const videoKey = `variant-${currentVariant}-${id || 'video'}`;
 	// Need the key here to force React to remount the video element when the variant changes.

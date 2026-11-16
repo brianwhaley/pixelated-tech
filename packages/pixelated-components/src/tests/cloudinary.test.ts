@@ -213,6 +213,35 @@ describe('cloudinary utilities', () => {
 		});
 	});
 
+	describe('buildCloudinaryVideoPosterUrl', () => {
+		it('builds a Cloudinary video frame URL for an absolute source', () => {
+			const result = cloudinaryModule.buildCloudinaryVideoPosterUrl({
+				src: 'https://videos.example.com/hero.mp4',
+				productEnv: 'test-env',
+				width: 1280,
+				seconds: 1,
+			});
+
+			expect(result).toBe(
+				'https://res.cloudinary.com/test-env/video/fetch/so_1,f_jpg,c_limit,q_75,w_1280/https%3A%2F%2Fvideos.example.com%2Fhero.mp4.jpg'
+			);
+		});
+
+		it('uses the configured origin for a relative source during SSR', () => {
+			vi.stubGlobal('window', undefined);
+
+			const result = cloudinaryModule.buildCloudinaryVideoPosterUrl({
+				src: '/videos/hero.mp4',
+				productEnv: 'test-env',
+				origin: 'https://www.example.com',
+			});
+
+			expect(result).toContain(
+				'https%3A%2F%2Fwww.example.com%2Fvideos%2Fhero.mp4.jpg'
+			);
+		});
+	});
+
 	describe('getCloudinaryRemoteFetchURL', () => {
 		it('should build remote fetch URL with valid props', () => {
 			const result = cloudinaryModule.getCloudinaryRemoteFetchURL({

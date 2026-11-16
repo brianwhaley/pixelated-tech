@@ -11,6 +11,7 @@ const mockSmartFetch = vi.mocked(smartFetch);
 
 const {
   getWordPressItems,
+  getCachedWordPressItems,
   getWordPressLastModified,
   photonToOriginalUrl,
   mapWordPressToBlogPosting,
@@ -400,6 +401,67 @@ describe('WordPress Functions', () => {
           expect(url).toContain(`page=${index + 1}`);
           expect(url).toContain('number=100');
         });
+      });
+    });
+
+    describe('getCachedWordPressItems', () => {
+      it('passes count through on a cache miss so limited requests fetch only the requested posts', async () => {
+        const post = {
+          ID: '1',
+          title: 'Latest post',
+          date: '2024-01-01',
+          modified: undefined,
+        };
+        mockSmartFetch.mockResolvedValueOnce({ posts: [post] });
+
+        const result = await getCachedWordPressItems({
+          site: 'limited-cache.example.com',
+          count: 1,
+        });
+
+        expect(result).toEqual([post]);
+        expect(mockSmartFetch).toHaveBeenCalledTimes(1);
+        expect(mockSmartFetch).toHaveBeenCalledWith(
+          'https://public-api.wordpress.com/rest/v1/sites/limited-cache.example.com/posts?number=1&page=1',
+          expect.any(Object)
+        );
+      });
+
+      it('keeps limited and uncapped collections in separate cache entries', async () => {
+        const post = {
+          ID: '1',
+          title: 'Latest post',
+          date: '2024-01-01',
+          modified: undefined,
+        };
+        mockSmartFetch
+          .mockResolvedValueOnce({ posts: [post] })
+          .mockResolvedValueOnce({ posts: [post] })
+          .mockResolvedValueOnce({ posts: [] });
+
+        await getCachedWordPressItems({
+          site: 'separate-cache.example.com',
+          count: 1,
+        });
+        await getCachedWordPressItems({
+          site: 'separate-cache.example.com',
+        });
+
+        expect(mockSmartFetch).toHaveBeenNthCalledWith(
+          1,
+          'https://public-api.wordpress.com/rest/v1/sites/separate-cache.example.com/posts?number=1&page=1',
+          expect.any(Object)
+        );
+        expect(mockSmartFetch).toHaveBeenNthCalledWith(
+          2,
+          'https://public-api.wordpress.com/rest/v1/sites/separate-cache.example.com/posts?number=100&page=1',
+          expect.any(Object)
+        );
+        expect(mockSmartFetch).toHaveBeenNthCalledWith(
+          3,
+          'https://public-api.wordpress.com/rest/v1/sites/separate-cache.example.com/posts?number=100&page=2',
+          expect.any(Object)
+        );
       });
     });
 
