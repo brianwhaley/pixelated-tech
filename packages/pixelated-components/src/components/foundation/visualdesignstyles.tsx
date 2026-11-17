@@ -1,8 +1,6 @@
 import React from 'react';
-import { ALL_WEBSAFE_FONTS } from '../sitebuilder/config/fonts';
 import { assertVisualDesign } from '../config/config.validators';
 import { getFullPixelatedConfig } from '../config/config';
-import type { VisualDesignType } from '../config/config.types';
 import { GoogleFonts } from '../integrations/google.fonts';
 
 export function VisualDesignStyles() {
@@ -95,6 +93,7 @@ export function VisualDesignStyles() {
 	return (
 		<>
 			<style dangerouslySetInnerHTML={{ __html: css }} />
+			<GoogleFonts />
 		</>
 	);
 }

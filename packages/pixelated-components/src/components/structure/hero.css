@@ -27,10 +27,21 @@ body:has(.hero.anchored-img) {
 }
 
 .hero.static {
-	/* Background image styles */
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	position: relative;
+}
+
+.hero.static > .hero-static-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: 0;
+}
+
+.hero.static > :not(.hero-static-image) {
+	position: relative;
+	z-index: 1;
 }
 
 .hero.anchored {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '../test/test-utils';
 import { VisualDesignStyles } from '../components/foundation/visualdesignstyles';
@@ -56,6 +57,38 @@ describe('ConfigEngine Components', () => {
       expect(styleElement?.textContent).toContain('--header-font-family: "Montserrat", "Arial", "sans-serif";');
       expect(styleElement?.textContent).toContain('--body-font-family: "Open Sans", "Helvetica", "sans-serif";');
     });
+
+		it('should emit typography rules and one combined Google Fonts stylesheet for declared web fonts', () => {
+			const tokens = buildVisualDesign({
+				'header-font': 'Lobster, cursive',
+				'body-font': 'Open Sans, sans-serif'
+			});
+			setVisualDesignConfig(tokens);
+
+			const { container } = render(<VisualDesignStyles />);
+			const styleElement = container.querySelector('style');
+			const markup = renderToStaticMarkup(<VisualDesignStyles />);
+
+			expect(styleElement?.textContent).toContain('font-family: var(--body-font);');
+			expect(styleElement?.textContent).toContain('font-family: var(--header-font);');
+			expect(markup.match(/rel="preload"/g)).toHaveLength(1);
+			expect(markup).toContain('Lobster');
+			expect(markup).toContain('Open+Sans');
+			expect(markup).toContain('display=swap');
+		});
+
+		it('should not emit a Google Fonts stylesheet for web-safe fonts', () => {
+			const tokens = buildVisualDesign({
+				'header-font': 'Arial, sans-serif',
+				'body-font': 'Times New Roman, serif'
+			});
+			setVisualDesignConfig(tokens);
+
+			const { container } = render(<VisualDesignStyles />);
+
+			expect(container.querySelector('style')).toBeInTheDocument();
+			expect(renderToStaticMarkup(<VisualDesignStyles />)).not.toContain('rel="preload"');
+		});
 
     it('should handle missing font fields gracefully', () => {
       const tokens = buildVisualDesign({}, {

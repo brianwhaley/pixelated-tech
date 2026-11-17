@@ -302,7 +302,6 @@ describe('Contentful Delivery API', () => {
 
 			expect(result).toEqual({
 				contentUrl: videoUrl,
-				poster: 'https://videos.ctfassets.net/6ewno74sai9a/asset123/video.mp4',
 				title: 'Hero video',
 				name: 'Hero video',
 				description: 'Hero animation',

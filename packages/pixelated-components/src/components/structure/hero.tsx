@@ -56,7 +56,6 @@ Hero.propTypes = {
 export type HeroType = InferProps<typeof Hero.propTypes>;
 export function Hero({ img, imgAlt, video, poster, title, description, uploadDate, duration, caption, imgId, cloudinaryTransforms, variant = 'static', height = '60vh', children }: HeroType) {
 	const id = imgId ?? imgAlt ?? img?.split('/').pop()?.split('.')[0] ?? '';
-	const hasVideo = variant === 'video' && !!video; // only play when variant explicitly video
 
 	// note: we don't validate in production – caller should pick correct props
 
@@ -89,7 +88,19 @@ export function Hero({ img, imgAlt, video, poster, title, description, uploadDat
 		return (
 			<>
 				<div id={id} className={"hero" + (variant ? " " + variant : '')} 
-					style={{ backgroundImage: `url(${img})`, height: height ?? '60vh' }}>
+					style={{ height: height ?? '60vh' }}>
+					<SmartImage
+						src={img}
+						alt={imgAlt || ''}
+						className="hero-static-image"
+						width={2000}
+						height={1125}
+						cloudinaryTransforms={cloudinaryTransforms}
+						fetchPriority="high"
+						sizes="100vw"
+						loading="eager"
+						aboveFold={true}
+					/>
 					{ children }
 				</div>
 			</>

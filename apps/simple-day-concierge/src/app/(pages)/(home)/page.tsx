@@ -1,7 +1,7 @@
 "use client"; 
 
 import React from 'react';
-import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, Callout, SmartImage, buildServiceUrl, usePixelatedConfig } from '@pixelated-tech/components';
+import { PageSection, PageTitleHeader, PageSectionHeader, PageGridItem, ServicesTiles, SmartImage } from '@pixelated-tech/components';
 
 const headers = [
 	"https://images.ctfassets.net/jc3fkpb2sdyr/1BnguPZQ497FdhDvo7XAsZ/d702761c01c20c69d83ca75a2f4474ac/phone-coffee.jpg?fm=webp",
@@ -11,8 +11,6 @@ const headers = [
 ];
 
 export default function Home() {
-	const pixelatedConfig = usePixelatedConfig();
-	const services = pixelatedConfig?.siteInfo?.services ?? [];
 	const headerImg = headers[Math.floor(Math.random() * headers.length)];
 	return (
 		<>
@@ -42,19 +40,11 @@ export default function Home() {
 				<PageGridItem columnStart={1} columnEnd={-1} >
 					<PageSectionHeader title="Our Services" />
 				</PageGridItem>
-				
-				{services.map((service: any, index: number) => (
-					<PageGridItem key={service.name ?? index}>
-						<Callout
-							layout="vertical"
-							subtitle={service.name}
-							img={service.image}
-							imgAlt={service.name}
-							imgShape="bevel"
-							url={buildServiceUrl(service, "/services")}
-						/>
-					</PageGridItem>
-				))}
+				<ServicesTiles
+					imgShape="bevel"
+					imgSizes="(max-width: 480px) calc(100vw - 40px), (max-width: 768px) calc(50vw - 30px), 477px"
+					servicePathPrefix="/services"
+				/>
 			</PageSection>
 
 			<PageSection columns={1} maxWidth="1024px" id="home-membership-section">

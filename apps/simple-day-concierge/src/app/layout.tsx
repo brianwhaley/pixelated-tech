@@ -3,7 +3,6 @@ import { PageMetaTags, PixelatedServerConfigProvider } from '@pixelated-tech/com
 import { SchemaWebPage } from '@pixelated-tech/components/server';
 import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
-import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import LayoutClient from '@/app/elements/layout-client';
 import { PageBg } from '@pixelated-tech/components';
@@ -32,7 +31,6 @@ export default async function RootLayout({
 					<WebsiteSchema />
 					<LocalBusinessSchema />
 					<VisualDesignStyles />
-					<GoogleFonts />
 				</PixelatedServerConfigProvider>
 			</head>
 			<body>

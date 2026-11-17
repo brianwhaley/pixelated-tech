@@ -2,7 +2,6 @@ import { headers } from 'next/headers';
 import { PageMetaTags, PixelatedServerConfigProvider, getRouteByKey, getFullPixelatedConfig, SchemaWebPage } from '@pixelated-tech/components/server';
 import { WebsiteSchema, LocalBusinessSchema } from "@pixelated-tech/components";
 import { BreadcrumbListSchema } from "@pixelated-tech/components/server";
-import { GoogleFonts } from "@pixelated-tech/components/server";
 import { VisualDesignStyles } from "@pixelated-tech/components/server";
 import { ContentfulAlerts } from '@pixelated-tech/components';
 import LayoutClient from '@/app/elements/layout-client';
@@ -35,7 +34,6 @@ export default async function RootLayout({
 					<WebsiteSchema />
 					<LocalBusinessSchema />
 					<VisualDesignStyles />
-					<GoogleFonts />
 				</PixelatedServerConfigProvider>
 			</head>
 			<body>

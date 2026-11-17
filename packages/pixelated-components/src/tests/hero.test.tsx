@@ -2,18 +2,18 @@
 import React from 'react';
 // stub entire components package so we don't load compiled dist files (404.js import causes missing CSS error)
 vi.mock('@pixelated-tech/components', () => ({
-	SmartImage: (props: any) => <img {...props} />,
+	SmartImage: (props: any) => <img alt={props.alt ?? ''} {...props} />,
 }));
 import { screen } from '@testing-library/react';
 import { render } from '../test/test-utils';
 import { Hero } from '@/components/structure/hero';
 
 describe('Hero (unit)', () => {
-	it('applies background image from `img` prop', () => {
+	it('renders the hero image from `img` prop', () => {
 		const { container } = render(<Hero img="/images/test.jpg" />);
 		const section = container.querySelector('.hero') as HTMLElement;
 		expect(section).not.toBeNull();
-		expect(section.style.backgroundImage).toContain('/images/test.jpg');
+		expect(section.querySelector('img')).toHaveAttribute('src', expect.stringContaining('/images/test.jpg'));
 	});
 
 	it('defaults to static variant when none provided', () => {

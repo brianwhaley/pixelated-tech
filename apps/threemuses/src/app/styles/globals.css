@@ -20,7 +20,9 @@ section.page-section {
 
 	.hero {
 		margin: 0px;
-    	background-position: 50% 38%;
+		.hero-static-image {
+			object-position: 50% 38%;
+		}
 		#logo-section {
 			padding: 0px;
 			img {

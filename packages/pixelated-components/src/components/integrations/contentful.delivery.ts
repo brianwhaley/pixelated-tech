@@ -288,11 +288,13 @@ export async function getContentfulVideoMetadata(videoUrl: string, contentfulCon
 	const fields = asset.fields ?? {};
 	const sys = asset.sys ?? {};
 	const file = fields.file ?? {};
+	const fileUrl = normalizeContentfulAssetUrl(file?.url);
+	const isVideoAsset = /\.(mp4|webm|mov|m4v)(?:\?.*)?$/i.test(fileUrl ?? '');
 	const duration = file?.details?.duration ? String(file.details.duration) : undefined;
 
 	return {
 		contentUrl: videoUrl,
-		poster: normalizeContentfulAssetUrl(file?.url),
+		...(fileUrl && !isVideoAsset ? { poster: fileUrl } : {}),
 		title: fields.title || file?.fileName || undefined,
 		name: fields.title || file?.fileName || undefined,
 		description: fields.description,

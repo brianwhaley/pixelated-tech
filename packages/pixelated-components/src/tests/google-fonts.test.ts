@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/integrations/google.fonts.server';
 import { generateGoogleFontsUrl, generateGoogleFontsLink, extractGoogleFonts, getFontOptionsClient } from '../components/integrations/google.fonts.functions';
@@ -11,6 +12,11 @@ import { render } from '../test/test-utils';
 
 vi.mock('../components/foundation/smartfetch', () => ({
 	smartFetch: vi.fn()
+}));
+
+vi.mock('next/script', () => ({
+	default: ({ id, children }: { id: string; children: React.ReactNode }) =>
+		React.createElement('script', { id }, children),
 }));
 
 vi.mock('../components/config/config', async (importOriginal) => {
@@ -201,16 +207,22 @@ describe('google-fonts', () => {
 			};
 
 			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign });
-			const { container } = render(React.createElement(GoogleFonts));
-			expect(container.querySelectorAll('link[rel="stylesheet"]').length).toBeGreaterThan(0);
-			expect(container.innerHTML).toContain('fonts.googleapis.com/css2');
+			const markup = renderToStaticMarkup(React.createElement(GoogleFonts));
+			expect(markup).toContain('rel="preload"');
+			expect(markup).toContain('as="style"');
+			expect(markup).toContain('data-pixelated-google-fonts-preload');
+			expect(markup).toContain('href="https://fonts.googleapis.com/css2');
+			expect(markup).toContain('id="pixelated-google-fonts"');
+			expect(markup).toContain("link.rel = 'stylesheet'");
+			expect(markup).toContain('<noscript><link');
+			expect(markup).toContain('rel="stylesheet"');
 		});
 
 		it('should render GoogleFonts links using config fallback when visualdesign prop is absent', () => {
 			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign: { 'header-font': 'Lobster, cursive' } });
-			const { container } = render(React.createElement(GoogleFonts, {} as any));
-			expect(container.querySelectorAll('link[rel="stylesheet"]').length).toBeGreaterThan(0);
-			expect(container.innerHTML).toContain('fonts.googleapis.com/css2');
+			const markup = renderToStaticMarkup(React.createElement(GoogleFonts, {} as any));
+			expect(markup).toContain('rel="preload"');
+			expect(markup).toContain('<noscript><link');
 		});
 
 		it('should return fallback font options in the client helper', () => {

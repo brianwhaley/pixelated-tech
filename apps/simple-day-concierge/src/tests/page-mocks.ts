@@ -232,6 +232,7 @@ const defaultMocks: Record<string, any> = {
 	Callout: mockComponent('Callout', 'callout'),
 	ServicesList: mockServicesList,
 	Services: mockServicesList,
+	ServicesTiles: mockServicesList,
 	ServiceAreasList: mockServiceAreasList,
 	ServiceAreas: mockServiceAreasList,
 	ServiceCard: mockComponent('ServiceCard'),

@@ -237,7 +237,7 @@ describe('Pixelated Template site coverage', () => {
 		render(<Header />);
 		await waitFor(() => {
 			expect(fetchSpy).toHaveBeenCalled();
-			expect(screen.getByTestId('hero')).toHaveAttribute('poster', 'https://videos.ctfassets.net/6ewno74sai9a/1TrFikTTfPiUfKYr65AfxK/2020008_Darwin_Nt_1280x720.mp4');
+			expect(screen.getByTestId('hero')).not.toHaveAttribute('poster', expect.stringContaining('.mp4'));
 		});
 
 		const hero = screen.getByTestId('hero');

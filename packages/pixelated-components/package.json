@@ -1,6 +1,7 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.53",
+	"version": "3.22.54",
+	"deployMarker": "2026-11-17T00:39:20.000Z",
 	"type": "module",
 	"private": false,
 	"repository": {

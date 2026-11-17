@@ -11,11 +11,8 @@ export default function Header() {
 	const videos = [
 		"https://videos.ctfassets.net/j4mgog9ij96e/5SrvQuZYq2bXRjEEtzNyYK/9d23f764e350ff8b9e1972a0b4b914b1/Welding_Metal_1920x1080.mp4",
 	];
-	const [heroVideo, setHeroVideo] = useState<string>();
+	const heroVideo = videos[0];
 	const [heroVideoMeta, setHeroVideoMeta] = useState<{ title?: string; description?: string; uploadDate?: string; duration?: string; poster?: string }>({});
-	useEffect(() => {
-		setHeroVideo(videos[Math.floor(Math.random() * videos.length)]);
-	}, []);
 
 	useEffect(() => {
 		if (!heroVideo) { return; }
@@ -50,6 +47,7 @@ export default function Header() {
 								<SmartImage 
 									src="/images/logo/mm-logo-white.webp" 
 									aboveFold={true}
+									sizes="(max-width: 480px) 100vw, 274px"
 									alt="Manning Metalworks Logo"/>
 							</a>
 						</div>
