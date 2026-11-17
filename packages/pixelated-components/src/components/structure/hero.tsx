@@ -138,11 +138,11 @@ export function Hero({ img, imgAlt, video, poster, title, description, uploadDat
 	} else if (variant === 'video' && !!video) {
 		return (
 			<>
-				{poster && <link rel="preload" as="image" href={poster} fetchPriority="high" />}
 				<div id={id} className="hero video" style={{ height: height ?? '60vh' }}>
 					<SmartVideo
 						src={video}
 						poster={poster || undefined}
+						preloadPoster={true}
 						title={title || undefined}
 						description={description || undefined}
 						uploadDate={uploadDate || undefined}

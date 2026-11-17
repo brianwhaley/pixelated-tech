@@ -64,7 +64,7 @@ describe('SmartVideo Component', () => {
 
 	it('generates a Cloudinary poster when the cloudinary variant has no explicit poster', () => {
 		const { container } = renderSmartVideo(
-			<SmartVideo src="https://example.com/test-video.mp4" variant="cloudinary" />
+			<SmartVideo src="https://example.com/test-video.mp4" variant="cloudinary" preloadPoster />
 		);
 		const video = container.querySelector('video');
 
@@ -79,6 +79,11 @@ describe('SmartVideo Component', () => {
 			'poster',
 			'https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/https://example.com/test-video.mp4'
 		);
+		const posterPreload = document.querySelector(
+			'link[rel="preload"][as="image"][href="https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/https://example.com/test-video.mp4"]'
+		);
+		expect(posterPreload).not.toBeNull();
+		expect(posterPreload).toHaveAttribute('fetchpriority', 'high');
 	});
 
 	it('passes relative sources and the configured origin to Cloudinary', () => {

@@ -59,7 +59,8 @@ describe('Hero (unit)', () => {
 		expect(videoEl.src).toContain('/videos/clip.mp4');
 		expect(videoEl).toHaveAttribute('poster');
 		expect(videoEl.getAttribute('poster')).toEqual(expect.stringContaining('/videos/poster.jpg'));
-		const posterPreload = document.querySelector('link[rel="preload"][as="image"][href="/videos/poster.jpg"]');
+		const posterPreload = Array.from(document.querySelectorAll('link[rel="preload"][as="image"]'))
+			.find((link) => link.getAttribute('href')?.includes('/videos/poster.jpg'));
 		expect(posterPreload).not.toBeNull();
 		expect(posterPreload).toHaveAttribute('fetchpriority', 'high');
 	});

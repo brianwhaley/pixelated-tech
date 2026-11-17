@@ -39,6 +39,7 @@ export type SmartVideoVariant = 'cloudinary' | 'html';
  * @param {boolean} [props.controls] - Whether playback controls should be visible.
  * @param {boolean} [props.playsInline] - Whether the video should play inline on mobile.
  * @param {oneOf} [props.preload] - The preload option: 'auto', 'metadata', or 'none'.
+ * @param {boolean} [props.preloadPoster] - Whether to preload the resolved poster image.
  * @param {string} [props.captionsSrc] - Optional captions track source URL.
  * @param {string} [props.className] - Optional CSS class name for the rendered video element.
  */
@@ -51,6 +52,7 @@ SmartVideo.propTypes = {
 	controls: PropTypes.bool,
 	playsInline: PropTypes.bool,
 	preload: PropTypes.oneOf(['auto', 'metadata', 'none']),
+	preloadPoster: PropTypes.bool,
 	captionsSrc: PropTypes.string,
 	title: PropTypes.string,
 	description: PropTypes.string,
@@ -136,6 +138,9 @@ export function SmartVideo(props: SmartVideoType) {
 
 	return (
 		<>
+			{props.preloadPoster && posterUrl && (
+				<link rel="preload" as="image" href={posterUrl} fetchPriority="high" />
+			)}
 			<SchemaVideoObject
 				contentUrl={videoSrc}
 				title={props.title || title}
