@@ -15,6 +15,7 @@ https://www.w3schools.com/howto/howto_css_modals.asp
  * @param {string} [props.modalID] - Optional suffix used to form DOM ids for compatibility with legacy event-based controls.
  * @param {boolean} [props.isOpen] - Whether the modal is currently open and visible.
  * @param {function} [props.handleCloseEvent] - Optional callback to close the modal (used by React-driven consumers).
+ * @param {oneOf} [props.variant] - Presentation mode: legacy modal, non-modal dialog, or popover.
  */
 Modal.propTypes = {
 /** Content rendered inside the modal dialog. */
@@ -25,13 +26,47 @@ Modal.propTypes = {
 	isOpen: PropTypes.bool,
 	/** Optional close callback invoked by escape key, overlay click, or controls. */
 	handleCloseEvent: PropTypes.func,
+	/** Presentation mode. */
+	variant: PropTypes.oneOf(['modal', 'dialog', 'popover']),
 };
 export type ModalType = InferProps<typeof Modal.propTypes>;
-export function Modal({ modalContent, modalID, isOpen = false, handleCloseEvent }: ModalType) {
+export function Modal({ modalContent, modalID, isOpen = false, handleCloseEvent, variant = 'modal' }: ModalType) {
 
 	const myModalID = "myModal" + (modalID ?? '');
 	const myModalCloseID = "myModalClose" + (modalID ?? '');
 	const modalRef = useRef<HTMLDivElement>(null);
+	const nativeDialogRef = useRef<HTMLDialogElement>(null);
+	const nativeOpenRef = useRef(false);
+
+	useEffect(() => {
+		if (variant === 'modal') return;
+
+		const dialog = nativeDialogRef.current;
+		if (!dialog || isOpen === nativeOpenRef.current) return;
+
+		if (variant === 'dialog') {
+			if (isOpen) {
+				dialog.show();
+				nativeOpenRef.current = true;
+			} else if (dialog.open) {
+				nativeOpenRef.current = false;
+				dialog.close();
+			}
+			return;
+		}
+
+		if (isOpen) {
+			if (typeof dialog.showPopover !== 'function') {
+				console.error('Modal popover variant requires browser popover support.');
+				return;
+			}
+			dialog.showPopover();
+			nativeOpenRef.current = true;
+		} else if (typeof dialog.hidePopover === 'function') {
+			nativeOpenRef.current = false;
+			dialog.hidePopover();
+		}
+	}, [isOpen, variant]);
 
 	useEffect(() => {
 		// Only use DOM event listeners for backward compatibility when handleCloseEvent is not provided
@@ -94,6 +129,69 @@ export function Modal({ modalContent, modalID, isOpen = false, handleCloseEvent 
 		}
 	} : undefined;
 
+	if (variant !== 'modal') {
+		const variantClassName = variant === 'dialog' ? 'modal-dialog' : 'modal-popover';
+		const handleNativeClose = () => {
+			const wasOpen = nativeOpenRef.current;
+			nativeOpenRef.current = false;
+			if (wasOpen) handleCloseEvent?.();
+		};
+		const requestNativeClose = () => {
+			if (variant === 'dialog') {
+				nativeOpenRef.current = false;
+				nativeDialogRef.current?.close();
+			} else if (typeof nativeDialogRef.current?.hidePopover === 'function') {
+				nativeOpenRef.current = false;
+				nativeDialogRef.current.hidePopover();
+			}
+			handleCloseEvent?.();
+		};
+		const handleNativeCancel = (event: React.SyntheticEvent<HTMLDialogElement>) => {
+			event.preventDefault();
+			if (handleCloseEvent) {
+				requestNativeClose();
+			} else {
+				requestNativeClose();
+			}
+		};
+		const handlePopoverToggle = (event: React.SyntheticEvent<HTMLDialogElement>) => {
+			const toggleEvent = event.nativeEvent as Event & { newState?: string };
+			if (toggleEvent.newState === 'closed') {
+				handleNativeClose();
+			}
+		};
+		const handleNativeCloseClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+			event.preventDefault();
+			requestNativeClose();
+		};
+
+		return (
+			<dialog
+				id={myModalID}
+				className={variantClassName}
+				ref={nativeDialogRef}
+				onCancel={handleNativeCancel}
+				onClose={handleNativeClose}
+				onToggle={variant === 'popover' ? handlePopoverToggle : undefined}
+				aria-label={variant === 'popover' ? 'Site alert' : 'Dialog'}
+				{...(variant === 'popover' ? { popover: 'manual' as const } : {})}
+			>
+				<div className="modal-content">
+					<button
+						id={myModalCloseID}
+						className="modal-close"
+						aria-label={`Close ${variant}`}
+						onClick={handleNativeCloseClick}
+						type="button"
+					>
+						&times;
+					</button>
+					{modalContent}
+				</div>
+			</dialog>
+		);
+	}
+
 	return (
 		<div
 			id={myModalID}
@@ -129,3 +227,5 @@ export const handleModalOpen = (event: MouseEvent, modalID?: string) => {
 	const myModal = document.getElementById(myModalID);
 	if (myModal) { myModal.style.display = 'block'; } ;
 };
+
+export type ModalVariant = 'modal' | 'dialog' | 'popover';

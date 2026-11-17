@@ -2,6 +2,28 @@ html, body { padding: 0; margin: 0; }
 * { box-sizing: border-box; }
 #root { min-height:100vh; }
 
+dialog.modal-popover#myModalcontentful-alerts {
+	top: max(env(safe-area-inset-top), 1rem);
+	left: 50%;
+	right: auto;
+	width: min(72rem, calc(100vw - 2rem));
+	max-width: calc(100vw - 2rem);
+	max-height: calc(100vh - 2rem);
+	transform: translateX(-50%);
+	z-index: 1000;
+}
+
+dialog.modal-popover#myModalcontentful-alerts .contentful-alerts-popover {
+	padding: 1rem;
+}
+
+@media screen and (max-width: 480px) {
+	dialog.modal-popover#myModalcontentful-alerts {
+		width: calc(100vw - 1rem);
+		max-width: calc(100vw - 1rem);
+	}
+}
+
 
 section.page-section {
     padding: 20px;

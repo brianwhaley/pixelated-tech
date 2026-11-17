@@ -518,4 +518,172 @@ describe('Modal Component', () => {
       expect(mockClose2).toHaveBeenCalled();
     });
   });
+
+  describe('Native variants', () => {
+    it('renders a non-modal native dialog and uses the native show method', () => {
+      const show = vi.fn(function(this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      });
+      const originalShow = HTMLDialogElement.prototype.show;
+      Object.defineProperty(HTMLDialogElement.prototype, 'show', { configurable: true, value: show });
+
+      try {
+        render(
+          <Modal
+            variant="dialog"
+            isOpen={true}
+            modalContent={<p>Dialog content</p>}
+          />
+        );
+
+        const dialog = document.getElementById('myModal');
+        expect(dialog?.tagName).toBe('DIALOG');
+        expect(dialog).toHaveClass('modal-dialog');
+        expect(show).toHaveBeenCalledOnce();
+        expect(screen.getByText('Dialog content')).toBeInTheDocument();
+      } finally {
+        Object.defineProperty(HTMLDialogElement.prototype, 'show', { configurable: true, value: originalShow });
+      }
+    });
+
+    it('renders a native popover and closes it through the React callback', () => {
+      const showPopover = vi.fn();
+      const hidePopover = vi.fn();
+      const originalShowPopover = HTMLDialogElement.prototype.showPopover;
+      const originalHidePopover = HTMLDialogElement.prototype.hidePopover;
+      Object.defineProperty(HTMLDialogElement.prototype, 'showPopover', { configurable: true, value: showPopover });
+      Object.defineProperty(HTMLDialogElement.prototype, 'hidePopover', { configurable: true, value: hidePopover });
+      const handleClose = vi.fn();
+
+      try {
+        render(
+          <Modal
+            variant="popover"
+            isOpen={true}
+            handleCloseEvent={handleClose}
+            modalContent={<p>Popover content</p>}
+          />
+        );
+
+        const popover = document.getElementById('myModal');
+        expect(popover?.tagName).toBe('DIALOG');
+        expect(popover).toHaveClass('modal-popover');
+        expect(popover).toHaveAttribute('popover', 'manual');
+        expect(showPopover).toHaveBeenCalledOnce();
+
+        fireEvent.click(document.getElementById('myModalClose')!);
+        expect(handleClose).toHaveBeenCalledOnce();
+      } finally {
+        Object.defineProperty(HTMLDialogElement.prototype, 'showPopover', { configurable: true, value: originalShowPopover });
+        Object.defineProperty(HTMLDialogElement.prototype, 'hidePopover', { configurable: true, value: originalHidePopover });
+      }
+    });
+
+    it('closes a controlled dialog when isOpen changes to false', () => {
+      const show = vi.fn(function(this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      });
+      const close = vi.fn();
+      const originalShow = HTMLDialogElement.prototype.show;
+      const originalClose = HTMLDialogElement.prototype.close;
+      Object.defineProperty(HTMLDialogElement.prototype, 'show', { configurable: true, value: show });
+      Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: close });
+
+      try {
+        const { rerender } = render(
+          <Modal variant="dialog" isOpen={true} modalContent={<p>Dialog content</p>} />
+        );
+
+        rerender(<Modal variant="dialog" isOpen={false} modalContent={<p>Dialog content</p>} />);
+
+        expect(show).toHaveBeenCalledOnce();
+        expect(close).toHaveBeenCalledOnce();
+      } finally {
+        Object.defineProperty(HTMLDialogElement.prototype, 'show', { configurable: true, value: originalShow });
+        Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: originalClose });
+      }
+    });
+
+    it('closes a dialog and invokes the callback when cancellation is requested', () => {
+      const show = vi.fn(function(this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      });
+      const close = vi.fn();
+      const originalShow = HTMLDialogElement.prototype.show;
+      const originalClose = HTMLDialogElement.prototype.close;
+      Object.defineProperty(HTMLDialogElement.prototype, 'show', { configurable: true, value: show });
+      Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: close });
+      const handleClose = vi.fn();
+
+      try {
+        render(
+          <Modal
+            variant="dialog"
+            isOpen={true}
+            handleCloseEvent={handleClose}
+            modalContent={<p>Dialog content</p>}
+          />
+        );
+
+        fireEvent(
+          document.getElementById('myModal')!,
+          new Event('cancel', { bubbles: false, cancelable: true })
+        );
+
+        expect(close).toHaveBeenCalledOnce();
+        expect(handleClose).toHaveBeenCalledOnce();
+      } finally {
+        Object.defineProperty(HTMLDialogElement.prototype, 'show', { configurable: true, value: originalShow });
+        Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: originalClose });
+      }
+    });
+
+    it('does not dismiss a manual popover when the page behind it is clicked', () => {
+      const showPopover = vi.fn();
+      const hidePopover = vi.fn();
+      const originalShowPopover = HTMLDialogElement.prototype.showPopover;
+      const originalHidePopover = HTMLDialogElement.prototype.hidePopover;
+      Object.defineProperty(HTMLDialogElement.prototype, 'showPopover', { configurable: true, value: showPopover });
+      Object.defineProperty(HTMLDialogElement.prototype, 'hidePopover', { configurable: true, value: hidePopover });
+      const handleClose = vi.fn();
+
+      try {
+        render(
+          <Modal
+            variant="popover"
+            isOpen={true}
+            handleCloseEvent={handleClose}
+            modalContent={<p>Popover content</p>}
+          />
+        );
+
+        fireEvent.click(document.body);
+
+        expect(handleClose).not.toHaveBeenCalled();
+        expect(hidePopover).not.toHaveBeenCalled();
+      } finally {
+        Object.defineProperty(HTMLDialogElement.prototype, 'showPopover', { configurable: true, value: originalShowPopover });
+        Object.defineProperty(HTMLDialogElement.prototype, 'hidePopover', { configurable: true, value: originalHidePopover });
+      }
+    });
+
+    it('reports unsupported popover browsers explicitly', () => {
+      const originalShowPopover = HTMLDialogElement.prototype.showPopover;
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+      Object.defineProperty(HTMLDialogElement.prototype, 'showPopover', { configurable: true, value: undefined });
+
+      try {
+        render(
+          <Modal variant="popover" isOpen={true} modalContent={<p>Popover content</p>} />
+        );
+
+        expect(consoleError).toHaveBeenCalledWith(
+          'Modal popover variant requires browser popover support.'
+        );
+      } finally {
+        Object.defineProperty(HTMLDialogElement.prototype, 'showPopover', { configurable: true, value: originalShowPopover });
+        consoleError.mockRestore();
+      }
+    });
+  });
 });

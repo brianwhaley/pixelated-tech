@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 import { Callout } from "@/components/structure/callout";
 import { Modal, handleModalOpen } from "@/components/elements/modal";
+import { LoremIpsum } from "@/components/integrations/loremipsum";
 
 export default {
 	title: 'General/Modal',
 	component: Modal,
+	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['modal', 'dialog', 'popover'],
+		},
+		isOpen: {
+			control: 'boolean',
+		},
+		modalID: {
+			control: 'text',
+		},
+	},
 };
 
 const PageModal = () => {
@@ -32,3 +45,28 @@ const PageModal = () => {
 };
 
 export const ModalPopup = () => <PageModal />;
+
+export const Playground = (args) => (
+	<>
+		<main>
+			<h1>Modal playground page</h1>
+			<p>Five chapters of page content remain behind the active presentation variant.</p>
+			<LoremIpsum paragraphs={15} seed="modal-playground" />
+		</main>
+		<Modal
+			{...args}
+			modalContent={
+				<div>
+					<h2>Modal playground</h2>
+					<p>Use the controls to test each presentation variant.</p>
+				</div>
+			}
+		/>
+	</>
+);
+
+Playground.args = {
+	variant: 'modal',
+	isOpen: true,
+	modalID: 'playground',
+};

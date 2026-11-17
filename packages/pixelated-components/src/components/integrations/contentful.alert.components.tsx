@@ -6,9 +6,24 @@ import { getContentfulEntriesByType, type getContentfulEntriesByTypeType } from 
 import type { ContentfulConfig } from '../config/config.types';
 import { usePixelatedConfig } from '../config/config.client';
 import { PageSection } from '../structure/page-blocks';
+import { Modal } from '../elements/modal';
+import { CacheManager } from '../foundation/cache-manager';
 import './contentful.alert.css';
 
 const debug = false;
+const CONTENTFUL_ALERT_DISMISSAL_TTL = 24 * 60 * 60 * 1000;
+
+function getAlertDismissalCache() {
+	return new CacheManager({
+		domain: 'pixelated',
+		namespace: 'contentful-alerts',
+		mode: 'session',
+	});
+}
+
+function getAlertDismissalKey(alertContentType: string, alertId: string) {
+	return `${alertContentType}:${alertId}`;
+}
 
 
 /**
@@ -25,6 +40,7 @@ export type ContentfulAlertsType = InferProps<typeof ContentfulAlerts.propTypes>
 export function ContentfulAlerts(props: ContentfulAlertsType) {
 	const config = usePixelatedConfig();
 	const [alerts, setAlerts] = useState<any[]>([]);
+	const [isDismissed, setIsDismissed] = useState(false);
 	const contentfulConfig = config?.integrations?.contentful;
 
 	const apiProps: getContentfulEntriesByTypeType['apiProps'] = {
@@ -83,7 +99,13 @@ export function ContentfulAlerts(props: ContentfulAlertsType) {
 						return aEnd - bEnd;
 					});
 
-				setAlerts(activeAlerts);
+				const dismissalCache = getAlertDismissalCache();
+				const visibleAlerts = activeAlerts.filter((alert: any, index: number) => {
+					const alertId = alert.sys?.id ?? `alert-${index}`;
+					return dismissalCache.get<boolean>(getAlertDismissalKey(alertContentType, alertId)) !== true;
+				});
+				setIsDismissed(false);
+				setAlerts(visibleAlerts);
 			} catch (fetchError: any) {
 				console.error('ContentfulAlerts fetch error:', fetchError);
 			}
@@ -103,18 +125,37 @@ export function ContentfulAlerts(props: ContentfulAlertsType) {
 
 	if (alerts.length === 0) { return null; }
 
+	const dismissAlerts = () => {
+		const dismissalCache = getAlertDismissalCache();
+		alerts.forEach((alert: any, index: number) => {
+			const alertId = alert.sys?.id ?? `alert-${index}`;
+			dismissalCache.set(
+				getAlertDismissalKey(alertContentType, alertId),
+				true,
+				CONTENTFUL_ALERT_DISMISSAL_TTL
+			);
+		});
+		setIsDismissed(true);
+	};
+
 	return (
-		<>
-			{alerts.map((alert: any, index: number) => (
-				<ContentfulAlert
-					key={alert.sys?.id ?? index}
-					title={alert.fields?.title ?? ''}
-					description={alert.fields?.description ?? ''}
-					id={alert.sys?.id ?? `alert-${index}`}
-					index={index}
-				/>
-			))}
-		</>
+		<Modal
+			variant="popover"
+			modalID="contentful-alerts"
+			isOpen={!isDismissed}
+			handleCloseEvent={dismissAlerts}
+			modalContent={
+				<div className="contentful-alerts-popover">
+					{alerts.map((alert: any, index: number) => (
+						<ContentfulAlertBody
+							key={alert.sys?.id ?? index}
+							title={alert.fields?.title ?? ''}
+							description={alert.fields?.description ?? ''}
+						/>
+					))}
+				</div>
+			}
+		/>
 	);
 }
 
@@ -133,13 +174,26 @@ ContentfulAlert.propTypes = {
 };
 export type ContentfulAlertType = InferProps<typeof ContentfulAlert.propTypes>;
 export function ContentfulAlert(props: ContentfulAlertType) {
-	const { title, description, id,index } = props;
+	const { title, description, index } = props;
 	return (
 		<PageSection columns={1} maxWidth="100%" id={`alerts-${index}-section`}>
-			<div className="contentful-alert contentful-alert-active">
-				{title && <h3 className="contentful-alert-title">{title}</h3>}
-				{description && <div className="contentful-alert-description">{description}</div>}
-			</div>
+			<ContentfulAlertBody title={title} description={description} />
 		</PageSection>
+	);
+}
+
+ContentfulAlertBody.propTypes = {
+	/** Alert title. */
+	title: PropTypes.string,
+	/** Alert description. */
+	description: PropTypes.string,
+};
+type ContentfulAlertBodyType = InferProps<typeof ContentfulAlertBody.propTypes>;
+function ContentfulAlertBody({ title, description }: ContentfulAlertBodyType) {
+	return (
+		<div className="contentful-alert contentful-alert-active">
+			{title && <h3 className="contentful-alert-title">{title}</h3>}
+			{description && <div className="contentful-alert-description">{description}</div>}
+		</div>
 	);
 }

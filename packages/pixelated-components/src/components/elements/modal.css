@@ -38,6 +38,61 @@
     height: 80vh;
 }
 
+dialog.modal-dialog,
+dialog.modal-popover {
+	position: fixed;
+	inset: auto;
+	border: 0;
+	padding: 0;
+	height: auto;
+	background: transparent;
+}
+
+dialog.modal-dialog {
+	top: 15vh;
+	left: 50%;
+	margin: 0;
+	max-width: 95vw;
+	max-height: 95vh;
+	transform: translateX(-50%);
+}
+
+dialog.modal-popover {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: auto;
+	width: 100%;
+	max-width: none;
+	height: auto;
+	max-height: 100vh;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	overflow: visible;
+}
+
+dialog.modal-dialog .modal-content {
+	margin: 0;
+}
+
+dialog.modal-popover .modal-content {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	max-height: inherit;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+dialog.modal-popover::backdrop {
+	background: transparent;
+}
+
 /* The Close Button */
 .modal-close {
 	color: #aaa;

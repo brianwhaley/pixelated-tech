@@ -569,7 +569,7 @@ const data = myCache.get('myKey');
 
 ### Modal
 
-Dialog overlay component with accessibility features.
+Dialog overlay component with legacy modal, non-modal dialog, and popover presentation modes.
 
 ```tsx
 import { Modal } from '@pixelated-tech/components';
@@ -578,12 +578,14 @@ const [isOpen, setIsOpen] = useState(false);
 
 <Modal
   isOpen={isOpen}
-  onClose={() => setIsOpen(false)}
-  title="Confirm Action"
+  handleCloseEvent={() => setIsOpen(false)}
+  modalContent={
+    <>
+      <h2>Confirm Action</h2>
+      <p>Are you sure you want to proceed?</p>
+    </>
+  }
 >
-  <p>Are you sure you want to proceed?</p>
-  <button onClick={() => setIsOpen(false)}>Cancel</button>
-  <button onClick={handleConfirm}>Confirm</button>
 </Modal>
 ```
 
@@ -591,11 +593,12 @@ const [isOpen, setIsOpen] = useState(false);
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `isOpen` | `boolean` | `false` | Modal visibility |
-| `onClose` | `() => void` | - | Close handler |
-| `title` | `string` | - | Modal title |
-| `children` | `ReactNode` | - | Modal content |
-| `size` | `'small' \| 'medium' \| 'large' \| 'fullscreen'` | `'medium'` | Modal size |
-| `closeOnOverlay` | `boolean` | `true` | Close when clicking overlay |
+| `modalContent` | `ReactNode` | required | Modal content |
+| `modalID` | `string` | - | ID suffix for legacy modal controls |
+| `handleCloseEvent` | `() => void` | - | Close handler |
+| `variant` | `'modal' \| 'dialog' \| 'popover'` | `'modal'` | Presentation mode |
+
+`modal` preserves the existing behavior. `dialog` uses a non-modal native `<dialog>`, while `popover` uses a native manual popover that remains open until its explicit close control is used. Existing consumers can omit `variant` without changes.
 
 ### SidePanel
 

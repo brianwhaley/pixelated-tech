@@ -29,3 +29,9 @@
 	background: var(--background-color);
 	color: var(--text-color);
 }
+
+.contentful-alerts-popover {
+	display: grid;
+	gap: 0.75rem;
+	padding: 1rem;
+}
