@@ -42,13 +42,21 @@ describe('BusinessFooter', () => {
     );
   });
 
-  it('renders opening hours in traditional AM/PM format and an embed iframe', () => {
-    render(<BusinessFooter />, { config: { siteInfo } });
+  it('renders opening hours in traditional AM/PM format and a static map image', () => {
+    render(<BusinessFooter />, {
+      config: createMockConfig({
+        siteInfo,
+        integrations: {
+          googleMaps: { apiKey: 'AIza_test_key' },
+        },
+      }),
+    });
 
     expect(screen.getByText('Mon: 9:00 AM - 5:00 PM')).toBeTruthy();
     expect(screen.getByText('Sat: Closed')).toBeTruthy();
-    const frame = screen.getByTitle('Business location map');
-    expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps'));
+    const map = screen.getByAltText('Map showing business location');
+    expect(map).toHaveAttribute('src', expect.stringContaining('https://maps.googleapis.com/maps/api/staticmap'));
+    expect(map).toHaveAttribute('loading', 'lazy');
   });
 
   it('renders opening hours additional info when provided', () => {
@@ -87,8 +95,8 @@ describe('BusinessFooter', () => {
       }),
     });
     
-    const frame = screen.getByTitle('Business location map');
-    expect(frame).toHaveAttribute('src', expect.stringContaining('https://www.google.com/maps/embed/v1/place?key=AIza_test_key'));
+    const map = screen.getByAltText('Map showing business location');
+    expect(map).toHaveAttribute('src', expect.stringContaining('key=AIza_test_key'));
   });
 
   it('handles string based opening hours', () => {

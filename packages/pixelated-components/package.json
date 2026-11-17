@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.57",
+	"version": "3.22.58",
 	"deployMarker": "2026-11-17T05:33:33.000Z",
 	"type": "module",
 	"private": false,
@@ -185,7 +185,7 @@
 		"copy-webpack-plugin": "^14.0.0",
 		"googleapis": "^190.0.0",
 		"md5": "^2.3.0",
-		"puppeteer": "^25.18.0",
+		"puppeteer": "^25.18.1",
 		"recharts": "^3.10.1"
 	}
 }

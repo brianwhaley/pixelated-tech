@@ -8,15 +8,10 @@ export default function Header() {
 	const videos = [
 		"https://videos.ctfassets.net/6ewno74sai9a/1TrFikTTfPiUfKYr65AfxK/bdd46b0f5b1ee4a315b0818c58d52ed6/2020008_Darwin_Nt_1280x720.mp4",
 	];
-	const [heroVideo, setHeroVideo] = useState<string>();
+	const heroVideo = videos[0];
 	const [heroVideoMeta, setHeroVideoMeta] = useState<{ title?: string; description?: string; uploadDate?: string; duration?: string; poster?: string }>({});
 
 	useEffect(() => {
-		setHeroVideo(videos[Math.floor(Math.random() * videos.length)]);
-	}, []);
-
-	useEffect(() => {
-		if (!heroVideo) { return; }
 		let cancelled = false;
 		getContentfulVideoMetadata(heroVideo, pixelatedConfig?.integrations?.contentful)
 			.then((metadata) => {

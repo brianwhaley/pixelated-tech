@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { usePixelatedConfig } from '../config/config.client';
 import { PageSection, PageSectionHeader } from './page-blocks';
+import { SmartImage } from '../elements/smartimage';
 import './businessfooter.css';
 
 function buildAddressQuery(address?: {
@@ -181,6 +182,47 @@ export function BusinessFooterMap(props: BusinessFooterMapType) {
 }
 
 
+/**
+ * BusinessFooterStaticMap
+ * Displays a lazy-loaded Google Maps Static API image linked to the business's location.
+ * @param no props
+ * @returns {JSX.Element}
+ */
+BusinessFooterStaticMap.propTypes = { /** no props */ };
+export type BusinessFooterStaticMapType = InferProps<typeof BusinessFooterStaticMap.propTypes>;
+export function BusinessFooterStaticMap(props: BusinessFooterStaticMapType) {
+	void props;
+	const config = usePixelatedConfig();
+	const siteInfo = config?.siteInfo;
+	const address = siteInfo?.address;
+	const googleMapsApiKey = config?.integrations?.googleMaps?.apiKey || config?.integrations?.google?.api_key;
+	const addressQuery = buildAddressQuery(address ?? null);
+	const mapsUrl = addressQuery
+		? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressQuery)}`
+		: undefined;
+	const staticMapUrl = addressQuery && googleMapsApiKey
+		? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(addressQuery)}&zoom=15&size=600x300&maptype=roadmap&markers=${encodeURIComponent(`color:red|${addressQuery}`)}&key=${encodeURIComponent(googleMapsApiKey)}`
+		: undefined;
+
+	return staticMapUrl && mapsUrl ? (
+		<a href={mapsUrl} target="_blank" rel="noopener noreferrer" aria-label="Open business location in Google Maps">
+			<SmartImage
+				src={staticMapUrl}
+				alt="Map showing business location"
+				width={600}
+				height={600}
+				loading="lazy"
+				decoding="async"
+				variant="img"
+				/* style={{ display: 'block', width: '100%', height: 'auto' }} */
+			/>
+		</a>
+	) : (
+		<div className="business-footer-map-placeholder">Map unavailable</div>
+	);
+}
+
+
 
 
 /**
@@ -247,7 +289,7 @@ export function BusinessFooter() {
 			</div>
 
 			<div className="business-footer-column business-footer-map">
-				<BusinessFooterMap />
+				<BusinessFooterStaticMap />
 			</div>
 
 			<div className="business-footer-column business-footer-hours">

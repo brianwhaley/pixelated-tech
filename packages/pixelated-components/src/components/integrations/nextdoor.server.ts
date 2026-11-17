@@ -1,6 +1,7 @@
 "use server";
 
 import type { Page } from 'puppeteer';
+import { decode } from 'html-entities';
 
 const debug = false;
 const nextdoorTimeout = 120000;
@@ -294,7 +295,7 @@ export async function publishToNextdoor(input: NextdoorPublishInput): Promise<vo
 	await input.page.waitForSelector('textarea[data-testid="composer-text-field"]', { visible: true });
 	await debugPageState(input.page, 'composer-loaded', startedAt);
 
-	const message = `${input.title}\n\n${input.excerpt}\n\n${input.url}`;
+	const message = `${input.title}\n\n${decode(input.excerpt).replace(/<[^>]*>/g, '').replace(/\[…\]/g, '…').trim()}\n\n${input.url}`;
 	const editor = await input.page.$('textarea[data-testid="composer-text-field"]');
 	if (!editor) throw new Error('Nextdoor composer text field was not found.');
 	await editor.click();

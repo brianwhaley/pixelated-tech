@@ -101,8 +101,11 @@ describe('publishToNextdoor', () => {
 	it('logs in, selects the business page, fills the text field, and publishes', async () => {
 		addRenderedPostControls();
 		const page = createPage({ waitForNavigation: vi.fn().mockRejectedValue(new Error('navigation already settled')) });
+		const editor = { click: vi.fn(), type: vi.fn() };
+		const originalQuery = page.$;
+		page.$ = vi.fn((selector: string) => selector.includes('composer-text-field') ? editor : originalQuery(selector));
 
-		await publishToNextdoor(input(page));
+		await publishToNextdoor({ ...input(page), excerpt: '<p>Today&#8217;s update &amp; details [&hellip;]</p>' });
 
 		expect(page.goto).toHaveBeenNthCalledWith(1, 'https://nextdoor.com/login/', { waitUntil: 'domcontentloaded' });
 		expect(page.waitForSelector).toHaveBeenCalledWith(expect.stringContaining('email'), { visible: true });
@@ -113,6 +116,7 @@ describe('publishToNextdoor', () => {
 		expect(page.waitForFunction).toHaveBeenCalled();
 		expect(page.$).toHaveBeenCalledWith('textarea[data-testid="composer-text-field"]');
 		expect(page.evaluate).toHaveBeenCalled();
+		expect(editor.type).toHaveBeenCalledWith(expect.stringContaining('Today’s update & details …'));
 	});
 
 	it('clicks Nextdoor\'s Write a post control', async () => {
