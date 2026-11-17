@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { PageSection, PageGridItem, usePixelatedConfig } from "@pixelated-tech/components";
 import { CartButton } from "@pixelated-tech/components/shoppingcartclient";
 import { SmartImage } from "@pixelated-tech/components";
@@ -23,10 +23,7 @@ export default function Header() {
 		"https://images.ctfassets.net/luf8eony1687/rX8FOFylfPZfkOJStyV4M/79247da0e8ebf8e767325de2924cbfc7/ThreeMusesFinal-6157.jpg?fm=webp&w=1600&q=60",
 		"https://images.ctfassets.net/luf8eony1687/3cr16xjAMX9RsZnoShMpaB/769b7c916f87a20816da7033a69e9282/ThreeMusesFinal-6671.jpg?fm=webp&w=1600&q=60",
 	];
-	const [heroImage, setHeroImage] = useState<string>();
-	useEffect(() => {
-		setHeroImage(heroImages[Math.floor(Math.random() * heroImages.length)]);
-	}, []);
+	const [heroImage] = useState<string>(heroImages[Math.floor(Math.random() * heroImages.length)]);
 
     
 	return (
@@ -48,6 +45,8 @@ export default function Header() {
 									id="logo"
 									src="/images/logo/three-muses-color-round.png" 
 									aboveFold={true} 
+									width={450}
+									height={450}
 									sizes="(max-width: 480px) 100vw, 432px"
 									alt="The Three Muses of Bluffton Logo"/>
 							</a>

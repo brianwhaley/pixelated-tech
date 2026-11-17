@@ -7,8 +7,9 @@ section.page-section {
     padding: 20px;
 }
 
+
 /* ========================================
-	ABOUT US REVIEWS Styles
+	HEADER SECTION Styles
  ======================================== */
 
  #header-section {
@@ -21,7 +22,10 @@ section.page-section {
 	.hero {
 		margin: 0px;
 		.hero-static-image {
-			object-position: 50% 150%;
+            width: 100%;
+            height: 100% !important;
+			object-position: 50% 40%;
+            object-fit: cover;
 		}
 		#logo-section {
 			padding: 0px;

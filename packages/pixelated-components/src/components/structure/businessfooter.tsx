@@ -201,7 +201,7 @@ export function BusinessFooterStaticMap(props: BusinessFooterStaticMapType) {
 		? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressQuery)}`
 		: undefined;
 	const staticMapUrl = addressQuery && googleMapsApiKey
-		? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(addressQuery)}&zoom=15&size=600x300&maptype=roadmap&markers=${encodeURIComponent(`color:red|${addressQuery}`)}&key=${encodeURIComponent(googleMapsApiKey)}`
+		? `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(addressQuery)}&zoom=15&size=400x400&maptype=roadmap&markers=${encodeURIComponent(`color:red|${addressQuery}`)}&key=${encodeURIComponent(googleMapsApiKey)}`
 		: undefined;
 
 	return staticMapUrl && mapsUrl ? (
@@ -209,8 +209,8 @@ export function BusinessFooterStaticMap(props: BusinessFooterStaticMapType) {
 			<SmartImage
 				src={staticMapUrl}
 				alt="Map showing business location"
-				width={600}
-				height={600}
+				width={400}
+				height={400}
 				loading="lazy"
 				decoding="async"
 				variant="img"

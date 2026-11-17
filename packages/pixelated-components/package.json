@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.58",
+	"version": "3.22.59",
 	"deployMarker": "2026-11-17T05:33:33.000Z",
 	"type": "module",
 	"private": false,
@@ -186,6 +186,6 @@
 		"googleapis": "^190.0.0",
 		"md5": "^2.3.0",
 		"puppeteer": "^25.18.1",
-		"recharts": "^3.10.1"
+		"recharts": "^3.11.0"
 	}
 }
