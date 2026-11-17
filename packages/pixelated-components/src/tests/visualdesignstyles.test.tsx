@@ -58,7 +58,7 @@ describe('ConfigEngine Components', () => {
       expect(styleElement?.textContent).toContain('--body-font-family: "Open Sans", "Helvetica", "sans-serif";');
     });
 
-		it('should emit typography rules and one combined Google Fonts stylesheet for declared web fonts', () => {
+		it('should emit typography rules and Google Fonts stylesheets for declared web fonts', () => {
 			const tokens = buildVisualDesign({
 				'header-font': 'Lobster, cursive',
 				'body-font': 'Open Sans, sans-serif'
@@ -71,7 +71,8 @@ describe('ConfigEngine Components', () => {
 
 			expect(styleElement?.textContent).toContain('font-family: var(--body-font);');
 			expect(styleElement?.textContent).toContain('font-family: var(--header-font);');
-			expect(markup.match(/rel="preload"/g)).toHaveLength(1);
+			expect(markup.match(/rel="stylesheet"/g)).toHaveLength(2);
+			expect(markup).not.toContain('rel="preload"');
 			expect(markup).toContain('Lobster');
 			expect(markup).toContain('Open+Sans');
 			expect(markup).toContain('display=swap');

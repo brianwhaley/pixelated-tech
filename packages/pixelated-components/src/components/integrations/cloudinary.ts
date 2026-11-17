@@ -113,7 +113,7 @@ export function buildCloudinaryVideoPosterUrl(params: {
 
 	const domainAndCloud = joinWithSlash(cloudinaryDomain, productEnv);
 	const encodedUrl = encodeURIComponent(url);
-	return `${domainAndCloud}/video/fetch/${parts.join(',')}/${encodedUrl}.jpg`;
+	return `${domainAndCloud}/video/fetch/${parts.join(',')}/${encodedUrl}`;
 }
 
 

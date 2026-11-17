@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import Image from 'next/image';
 import {
@@ -113,20 +113,26 @@ export function SmartImage(props: SmartImageType) {
 		(props.variant as smartImageVariant) || 'cloudinary'
 	);
 	
-	const handleError = (error?: any) => {
-		if (currentVariant === 'cloudinary') {
-			if (debug) console.warn(`SmartImage: Cloudinary variant failed for "${props.src}", falling back to Next.js Image`, error);
-			setCurrentVariant('nextjs');
-		} else if (currentVariant === 'nextjs') {
-			if (debug) console.warn(`SmartImage: Next.js Image variant failed for "${props.src}", falling back to HTML img`, error);
-			setCurrentVariant('img');
-		}
-		// No more fallbacks after 'img'
-	};
+	const handleError = useCallback((error?: any) => {
+		setCurrentVariant((variant) => {
+			if (variant === 'cloudinary') {
+				if (debug) console.warn(`SmartImage: Cloudinary variant failed for "${props.src}", falling back to Next.js Image`, error);
+			} else if (variant === 'nextjs') {
+				if (debug) console.warn(`SmartImage: Next.js Image failed for "${props.src}", falling back to HTML img`, error);
+			}
+			return variant === 'cloudinary' ? 'nextjs' : 'img';
+		});
+	}, [props.src]);
 	
 	// Reset variant if props change (different image)
+	const previousProps = useRef({ src: props.src, variant: props.variant });
 	React.useEffect(() => {
-		setCurrentVariant((props.variant as smartImageVariant) || 'cloudinary');
+		const srcChanged = previousProps.current.src !== props.src;
+		const variantChanged = previousProps.current.variant !== props.variant;
+		if (srcChanged || variantChanged) {
+			previousProps.current = { src: props.src, variant: props.variant };
+			setCurrentVariant((props.variant as smartImageVariant) || 'cloudinary');
+		}
 	}, [props.src, props.variant]);
 	
 	const variant = currentVariant;
@@ -271,6 +277,7 @@ function SmartCloudinaryImage({
 			{ ...(nextImageProps as any) }
 			src={props.src}
 			alt={props.alt}
+			ref={imgRef}
 			onError={onError}
 			suppressHydrationWarning={true}
 		/>
@@ -289,6 +296,7 @@ function SmartNextImage({
 			{ ...(props as any) }
 			src={props.src}
 			alt={props.alt}
+			ref={imgRef}
 			onError={onError}
 			suppressHydrationWarning={true}
 		/>

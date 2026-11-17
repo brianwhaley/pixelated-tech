@@ -62,7 +62,7 @@ export function handlePixelatedProxy(req: NextRequest) {
 	// Referrer Policy
 	response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 	// Permissions Policy: Lock down hardware access
-	response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), interest-cohort=()");
+	response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
 
 	// Content Security Policy (CSP)
 	// Includes all discovered domains in the workspace: HubSpot, Gravatar, Flickr, Contentful, Cloudinary, eBay, and Google Analytics + Search.

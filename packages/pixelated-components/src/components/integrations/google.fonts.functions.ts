@@ -100,8 +100,7 @@ export function extractGoogleFonts(visualdesign: Record<string, any>): string[] 
 }
 
 /**
- * Returns the URL for Google Fonts.
- * Note: Consolidates multiple fonts into one URL using the pipe separator.
+ * Returns a combined CSS2 URL for Google Fonts.
  */
 export function generateGoogleFontsUrl(fonts: string[]): string {
 	if (!fonts.length) return '';
@@ -109,9 +108,18 @@ export function generateGoogleFontsUrl(fonts: string[]): string {
 	const fontParams = [...new Set(fonts)]
 		.filter(f => f.trim().length > 0)
 		.map(encodeFontFamily)
-		.join('|');
+		.join('&family=');
 
 	return `https://fonts.googleapis.com/css2?family=${fontParams}&display=swap`;
+}
+
+/**
+ * Returns one valid Google Fonts CSS2 URL per family.
+ */
+export function generateGoogleFontsUrls(fonts: string[]): string[] {
+	return [...new Set(fonts)]
+		.filter(f => f.trim().length > 0)
+		.map(font => `https://fonts.googleapis.com/css2?family=${encodeFontFamily(font)}&display=swap`);
 }
 
 /**

@@ -38,7 +38,7 @@ describe('SmartVideo Component', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		mockBuildCloudinaryUrl.mockImplementation(({ src }) => `https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/${src}`);
-		mockBuildCloudinaryVideoPosterUrl.mockImplementation(({ src }) => `https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/${src}.jpg`);
+		mockBuildCloudinaryVideoPosterUrl.mockImplementation(({ src }) => `https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/${src}`);
 	});
 
 	it('renders a video element with the provided src', () => {
@@ -77,7 +77,7 @@ describe('SmartVideo Component', () => {
 		}));
 		expect(video).toHaveAttribute(
 			'poster',
-			'https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/https://example.com/test-video.mp4.jpg'
+			'https://res.cloudinary.com/test/video/fetch/so_1,f_jpg/https://example.com/test-video.mp4'
 		);
 	});
 

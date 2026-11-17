@@ -11,6 +11,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
-, "apps/amava-janitorial/src/app/elements/header.tsx.bak2"  ],
+, "apps/amava-janitorial/src/app/elements/header.tsx.bak2", "packages/pixelated-components/src/components/elements/smartimage.tsx.20261116.bak"  ],
   "exclude": ["node_modules", "**/storybook-static"]
 }

@@ -223,7 +223,7 @@ describe('cloudinary utilities', () => {
 			});
 
 			expect(result).toBe(
-				'https://res.cloudinary.com/test-env/video/fetch/so_1,f_jpg,c_limit,q_75,w_1280/https%3A%2F%2Fvideos.example.com%2Fhero.mp4.jpg'
+				'https://res.cloudinary.com/test-env/video/fetch/so_1,f_jpg,c_limit,q_75,w_1280/https%3A%2F%2Fvideos.example.com%2Fhero.mp4'
 			);
 		});
 
@@ -237,7 +237,7 @@ describe('cloudinary utilities', () => {
 			});
 
 			expect(result).toContain(
-				'https%3A%2F%2Fwww.example.com%2Fvideos%2Fhero.mp4.jpg'
+				'https%3A%2F%2Fwww.example.com%2Fvideos%2Fhero.mp4'
 			);
 		});
 	});

@@ -2,7 +2,7 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fetchGoogleFonts, getFontOptions, clearGoogleFontsCache } from '../components/integrations/google.fonts.server';
-import { generateGoogleFontsUrl, generateGoogleFontsLink, extractGoogleFonts, getFontOptionsClient } from '../components/integrations/google.fonts.functions';
+import { generateGoogleFontsUrl, generateGoogleFontsUrls, generateGoogleFontsLink, extractGoogleFonts, getFontOptionsClient } from '../components/integrations/google.fonts.functions';
 import { GoogleFonts } from '../components/integrations/google.fonts';
 import { buildUrl } from '../components/foundation/urlbuilder';
 import { smartFetch } from '../components/foundation/smartfetch';
@@ -126,10 +126,9 @@ describe('google-fonts', () => {
 			expect(url).toContain('Libre+Baskerville');
 		});
 
-		it('should join multiple fonts with pipe separator', () => {
+		it('should join multiple fonts with repeated family parameters', () => {
 			const url = generateGoogleFontsUrl(['Roboto', 'Lato', 'Poppins']);
-			// Google Fonts expects literal | separator
-			expect(url).toContain('Roboto|Lato|Poppins');
+			expect(url).toContain('family=Roboto&family=Lato&family=Poppins');
 		});
 
 		it('should handle fonts with special characters', () => {
@@ -144,6 +143,15 @@ describe('google-fonts', () => {
 			expect(url).not.toBe('');
 			expect(url).toContain('Roboto');
 			expect(url).toContain('Lato');
+		});
+	});
+
+	describe('generateGoogleFontsUrls', () => {
+		it('should return one valid CSS2 URL per family', () => {
+			expect(generateGoogleFontsUrls(['Young Serif', 'Roboto'])).toEqual([
+				'https://fonts.googleapis.com/css2?family=Young+Serif&display=swap',
+				'https://fonts.googleapis.com/css2?family=Roboto&display=swap',
+			]);
 		});
 	});
 
@@ -208,21 +216,18 @@ describe('google-fonts', () => {
 
 			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign });
 			const markup = renderToStaticMarkup(React.createElement(GoogleFonts));
-			expect(markup).toContain('rel="preload"');
-			expect(markup).toContain('as="style"');
-			expect(markup).toContain('data-pixelated-google-fonts-preload');
-			expect(markup).toContain('href="https://fonts.googleapis.com/css2');
-			expect(markup).toContain('id="pixelated-google-fonts"');
-			expect(markup).toContain("link.rel = 'stylesheet'");
-			expect(markup).toContain('<noscript><link');
+			expect(markup).toContain('href="https://fonts.googleapis.com/css2?family=Lobster');
 			expect(markup).toContain('rel="stylesheet"');
+			expect(markup).not.toContain('rel="preload"');
+			expect(markup).not.toContain('data-pixelated-google-fonts-preload');
+			expect(markup).not.toContain('id="pixelated-google-fonts"');
 		});
 
 		it('should render GoogleFonts links using config fallback when visualdesign prop is absent', () => {
 			(vi.mocked(getFullPixelatedConfig) as any).mockReturnValue({ visualdesign: { 'header-font': 'Lobster, cursive' } });
 			const markup = renderToStaticMarkup(React.createElement(GoogleFonts, {} as any));
-			expect(markup).toContain('rel="preload"');
-			expect(markup).toContain('<noscript><link');
+			expect(markup).toContain('href="https://fonts.googleapis.com/css2?family=Lobster');
+			expect(markup).toContain('rel="stylesheet"');
 		});
 
 		it('should return fallback font options in the client helper', () => {
