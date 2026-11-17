@@ -137,26 +137,29 @@ export function Hero({ img, imgAlt, video, poster, title, description, uploadDat
 		);
 	} else if (variant === 'video' && !!video) {
 		return (
-			<div id={id} className="hero video" style={{ height: height ?? '60vh' }}>
-				<SmartVideo
-					src={video}
-					poster={poster || undefined}
-					title={title || undefined}
-					description={description || undefined}
-					uploadDate={uploadDate || undefined}
-					duration={duration || undefined}
-					caption={caption || undefined}
-					autoPlay={true}
-					muted={true}
-					loop={true}
-					controls={false}
-					playsInline={true}
-					// preload: PropTypes.oneOf(['auto', 'metadata', 'none']),
-					// captionsSrc: PropTypes.string,
-					className="hero-video"
-				/>
-				{children}
-			</div>
+			<>
+				{poster && <link rel="preload" as="image" href={poster} fetchPriority="high" />}
+				<div id={id} className="hero video" style={{ height: height ?? '60vh' }}>
+					<SmartVideo
+						src={video}
+						poster={poster || undefined}
+						title={title || undefined}
+						description={description || undefined}
+						uploadDate={uploadDate || undefined}
+						duration={duration || undefined}
+						caption={caption || undefined}
+						autoPlay={true}
+						muted={true}
+						loop={true}
+						controls={false}
+						playsInline={true}
+						// preload: PropTypes.oneOf(['auto', 'metadata', 'none']),
+						// captionsSrc: PropTypes.string,
+						className="hero-video"
+					/>
+					{children}
+				</div>
+			</>
 		);
 	} else {
 		/* If no valid variant or required media is provided, render an empty hero container with children (if any) */

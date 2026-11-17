@@ -123,17 +123,20 @@ describe('SmartVideo Component', () => {
 		expect(video).toHaveAttribute('preload', 'auto');
 	});
 
-	it('falls back from Cloudinary to html on video error', () => {
+	it('does not fall back to the original source on Cloudinary video error', () => {
 		const { container } = renderSmartVideo(
 			<SmartVideo src="https://example.com/test-video.mp4" poster="https://example.com/poster.jpg" variant="cloudinary" />
 		);
 		const video = container.querySelector('video');
 		expect(video).not.toBeNull();
 		fireEvent.error(video!);
-		// After fallback, src should update to the plain source.
+		// A browser error must not trigger a second video download from the original source.
 		const updated = container.querySelector('video');
 		expect(updated).not.toBeNull();
-		expect(updated).toHaveAttribute('src', 'https://example.com/test-video.mp4');
+		expect(updated).toHaveAttribute(
+			'src',
+			'https://res.cloudinary.com/test/video/f_auto,c_limit,q_75/https://example.com/test-video.mp4'
+		);
 	});
 
 	it('renders JSON-LD schema with caption when caption prop is provided', () => {

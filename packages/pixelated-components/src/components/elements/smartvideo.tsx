@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import {
 	buildCloudinaryUrl,
@@ -26,7 +26,7 @@ export type SmartVideoVariant = 'cloudinary' | 'html';
 
 
 /**
- * SmartVideo — renders a video optimized for Cloudinary or browser HTML fallback.
+ * SmartVideo — selects Cloudinary or browser HTML video delivery before rendering.
  *
  * @param {string} [props.cloudinaryEnv] - Cloudinary environment key for URL generation.
  * @param {string} [props.cloudinaryDomain] - Cloudinary domain override.
@@ -63,19 +63,12 @@ export type SmartVideoType = InferProps<typeof SmartVideo.propTypes> & React.Vid
 export function SmartVideo(props: SmartVideoType) {
 	const config = usePixelatedConfig();
 	const cloudCfg = config?.integrations?.cloudinary;
-	const [currentVariant, setCurrentVariant] = useState<SmartVideoVariant>(
-		(props.variant as SmartVideoVariant) || 'cloudinary'
-	);
-
-	useEffect(() => {
-		setCurrentVariant((props.variant as SmartVideoVariant) || 'cloudinary');
-	}, [props.src, props.variant]);
-
 	const normalizedSrc = normalizeProtocolRelativeUrl(safeString(props.src) ?? '');
 	const normalizedPoster = props.poster ? normalizeProtocolRelativeUrl(safeString(props.poster) ?? '') : undefined;
 	const cloudinaryEnv = safeString(props.cloudinaryEnv ?? cloudCfg?.product_env);
 	const cloudinaryDomain = safeString(props.cloudinaryDomain ?? cloudCfg?.baseUrl) ?? DEFAULT_CLOUDINARY_DOMAIN;
-	const isCloudinaryAvailable = !!cloudinaryEnv;
+	const hasCloudinary = Boolean(cloudinaryEnv);
+	const variant: SmartVideoVariant = props.variant === 'html' || !hasCloudinary ? 'html' : 'cloudinary';
 	const width = parseNumber(props.width ?? 1280);
 	const height = parseNumber(props.height ?? 720);
 	const quality = parseNumber(props.quality ?? 75);
@@ -85,31 +78,38 @@ export function SmartVideo(props: SmartVideoType) {
 	const posterSrc = normalizedPoster;
 	const title = safeString(props.title) || undefined;
 
-	const buildUrl = (src: string) => {
-		return buildCloudinaryUrl({
-			src,
+	const videoSrc = variant === 'cloudinary'
+		? buildCloudinaryUrl({
+			src: normalizedSrc,
 			productEnv: cloudinaryEnv,
 			cloudinaryDomain,
 			quality,
 			width,
 			transforms,
 			origin: config?.siteInfo?.url,
-		});
-	};
-
-	const cloudinarySource = isCloudinaryAvailable
-		? buildUrl(normalizedSrc)
+		})
 		: normalizedSrc;
-	const cloudinaryPoster = posterSrc && isCloudinaryAvailable ? buildUrl(posterSrc) : posterSrc;
-
-	const videoSrc = currentVariant === 'cloudinary' && isCloudinaryAvailable ? cloudinarySource : normalizedSrc;
-	const posterUrl = currentVariant === 'cloudinary' && isCloudinaryAvailable 
-		? cloudinaryPoster 
-        ?? buildCloudinaryVideoPosterUrl({ src: normalizedSrc, productEnv: cloudinaryEnv, cloudinaryDomain, quality, width, seconds: 1, origin: config?.siteInfo?.url }) 
-		: posterSrc;
-
-	const videoKey = `variant-${currentVariant}-${id || 'video'}`;
-	// Need the key here to force React to remount the video element when the variant changes.
+	const posterUrl = variant === 'cloudinary'
+		? normalizedPoster
+			? buildCloudinaryUrl({
+				src: normalizedPoster,
+				productEnv: cloudinaryEnv,
+				cloudinaryDomain,
+				quality,
+				width,
+				transforms,
+				origin: config?.siteInfo?.url,
+			})
+			: buildCloudinaryVideoPosterUrl({
+				src: normalizedSrc,
+				productEnv: cloudinaryEnv,
+				cloudinaryDomain,
+				quality,
+				width,
+				seconds: 1,
+				origin: config?.siteInfo?.url,
+			})
+		: normalizedPoster;
 
 	const videoProps: React.VideoHTMLAttributes<HTMLVideoElement> = {
 		id: id || undefined,
@@ -127,13 +127,12 @@ export function SmartVideo(props: SmartVideoType) {
 		width: width,
 		height: height,
 		onError: (event) => {
-			if (currentVariant === 'cloudinary') {
-				if (debug) console.warn( `SmartVideo: Cloudinary video failed for "${normalizedSrc}", falling back to HTML video`, event );
-				setCurrentVariant('html');
-			}
+			if (debug) console.warn(`SmartVideo: ${variant} video failed for "${videoSrc}"`, event);
 			if (props.onError) props.onError(event);
 		},
 	};
+
+	const videoKey = `variant-${variant}-${id || 'video'}`;
 
 	return (
 		<>
@@ -150,12 +149,12 @@ export function SmartVideo(props: SmartVideoType) {
 			<video key={videoKey} suppressHydrationWarning={true} {...videoProps}>
 				<track
 					kind="captions"
-					src={props.captionsSrc || undefined}
+					src={props.captionsSrc ?? undefined}
 					srcLang="en"
 					label="English captions"
 					default
 				/>
-                Your browser does not support the HTML5 Video element.
+				Your browser does not support the HTML5 Video element.
 			</video>
 		</>
 	);
