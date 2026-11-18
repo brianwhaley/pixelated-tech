@@ -59,6 +59,10 @@
     background-image: url(/images/pix/pix-bg-sm-bw.gif);
 }
 
+header { 
+    margin-bottom: 20px;
+}
+
 @media screen and (max-width: 480px) {
 	#page-header h2 {
     	transform: scaleX(0.9);
@@ -153,13 +157,36 @@ nav.wordpress-category-list {
     }
 }
 
-.blog-post-summary .article-featured-image img {
-    border: 5px solid var(--primary-color);
-    border-radius: 10px;
+#recent-blog-section , #blog-section {
+    .blog-post-summary {
+        border: 1px solid var(--primary-color);
+        .article-featured-image img {
+            border: 5px solid var(--primary-color);
+            border-radius: 10px;
+        }
+    }
 }
 
 
 
+/* ========================================
+    CUSTOM PIXELATED BLOG COLLECTION Styles
+ ======================================== */
+#about-recent-launches-section {
+    .callout {
+        padding: 5px;
+        .callout-title { 
+            text-align: left;
+            font-size: var(--font-size3);
+        }
+        .callout-button { 
+            display: none;
+        }
+        img {
+            aspect-ratio: 16/9;
+        }
+    }
+}
 
 
 /* ========================================

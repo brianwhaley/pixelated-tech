@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { usePixelatedConfig } from "../config/config.client";
 import { SmartErrorBoundary } from "../foundation/smarterrorboundary";
+import { SmartImage } from '../elements/smartimage';
 
 
 /**
@@ -38,6 +39,10 @@ GoogleMap.propTypes = {
 	title: PropTypes.string,
 	/** Whether to show a frame around the map */
 	frameBorder: PropTypes.string,
+	/** Loading behavior for the map iframe */
+	loading: PropTypes.oneOf(['eager', 'lazy']),
+	/** Inline style for the map iframe */
+	style: PropTypes.object,
 };
 export type GoogleMapType = InferProps<typeof GoogleMap.propTypes>;
 export function GoogleMap(props: GoogleMapType) {
@@ -74,8 +79,9 @@ export function GoogleMap(props: GoogleMapType) {
 					title={props.title || "Google Map"}
 					width={props.width || "600"}
 					height={props.height || "450"}
-					style={{ border: 0 }}
 					frameBorder={props.frameBorder || "0"}
+					loading={props.loading === 'lazy' || props.loading === 'eager' ? props.loading : undefined}
+					style={props.style || { border: 0 }}
 					src={src}
 					allowFullScreen
 					referrerPolicy="no-referrer-when-downgrade"
@@ -83,4 +89,84 @@ export function GoogleMap(props: GoogleMapType) {
 			</div>
 		</SmartErrorBoundary>
 	);
+}
+
+/**
+ * GoogleStaticMap — Render a Google Static Maps image with an optional Maps link.
+ */
+GoogleStaticMap.propTypes = {
+	/** Address or location query for the map */
+	query: PropTypes.string.isRequired,
+	/** Static map image width */
+	width: PropTypes.number,
+	/** Static map image height */
+	height: PropTypes.number,
+	/** Static map zoom level */
+	zoom: PropTypes.string,
+	/** Static map type */
+	maptype: PropTypes.oneOf(['roadmap', 'satellite']),
+	/** Static map marker definition */
+	marker: PropTypes.string,
+	/** Accessible image title */
+	title: PropTypes.string,
+	/** Accessible image alt text */
+	alt: PropTypes.string,
+	/** Whether to link the image to Google Maps search */
+	link: PropTypes.bool,
+};
+export type GoogleStaticMapType = InferProps<typeof GoogleStaticMap.propTypes>;
+export function GoogleStaticMap({
+	query: queryProp,
+	width: widthProp,
+	height: heightProp,
+	zoom: zoomProp,
+	maptype: maptypeProp,
+	marker: markerProp,
+	title: titleProp,
+	alt: altProp,
+	link: linkProp,
+}: GoogleStaticMapType) {
+	const config = usePixelatedConfig();
+	const apiKey = config?.integrations?.google?.api_key || config?.integrations?.googleMaps?.apiKey;
+	const query = queryProp ?? '';
+	const width = widthProp ?? 400;
+	const height = heightProp ?? 400;
+	const zoom = zoomProp ?? '15';
+	const maptype = maptypeProp ?? 'roadmap';
+	const marker = markerProp ?? undefined;
+	const title = titleProp ?? 'Open business location in Google Maps';
+	const alt = altProp ?? 'Map showing business location';
+	const link = linkProp ?? true;
+	const normalizedQuery = query.trim();
+	const encodedQuery = encodeURIComponent(normalizedQuery);
+	const markerValue = encodeURIComponent(marker || `color:red|${normalizedQuery}`);
+	const staticMapUrl = normalizedQuery && apiKey
+		? `https://maps.googleapis.com/maps/api/staticmap?center=${encodedQuery}&zoom=${zoom}&size=${width}x${height}&maptype=${maptype}&markers=${markerValue}&key=${encodeURIComponent(apiKey)}`
+		: undefined;
+	const mapsUrl = normalizedQuery
+		? `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`
+		: undefined;
+
+	if (!staticMapUrl || (link && !mapsUrl)) {
+		return <div className="business-footer-map-placeholder">Map unavailable</div>;
+	}
+
+	const image = (
+		<SmartImage
+			src={staticMapUrl}
+			alt={alt}
+			title={title}
+			width={width}
+			height={height}
+			loading="lazy"
+			decoding="async"
+			variant="img"
+		/>
+	);
+
+	return link && mapsUrl ? (
+		<a href={mapsUrl} target="_blank" rel="noopener noreferrer" aria-label={title}>
+			{image}
+		</a>
+	) : image;
 }

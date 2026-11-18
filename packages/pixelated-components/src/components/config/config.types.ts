@@ -128,8 +128,9 @@ export interface SiteInfo {
 	favicon_type?: string | null;
 	services?: Array<{
 		name: string;
-		description: string[];
+		subtitle?: string | null;
 		short_description?: string | null;
+		description: string[];
 		provider?: string | null;
 		category?: string | null;
 		serviceType?: string | null;

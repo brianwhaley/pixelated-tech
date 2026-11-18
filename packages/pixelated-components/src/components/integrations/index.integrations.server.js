@@ -7,7 +7,6 @@ export * from './gemini-api.server';
 export * from './gemini-api.functions';
 export * from './googleplaces';
 export * from './gemini.search.server';
-export * from './google.maps';
 export * from './google.fonts.server';
 export * from './google.fonts';
 export * from './google.fonts.functions';

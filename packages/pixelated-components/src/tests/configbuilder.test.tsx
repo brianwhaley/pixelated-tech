@@ -350,8 +350,10 @@ describe('ConfigBuilder Component', () => {
         expect(screen.getByText('AI SEO Recommendations')).toBeInTheDocument();
       });
       
-      // Check suggestions are visible
-      expect(screen.getByText('AI Suggested Title')).toBeInTheDocument();
+      // Check suggestions are visible after the async recommendation response
+      await waitFor(() => {
+        expect(screen.getByText('AI Suggested Title')).toBeInTheDocument();
+      });
       
       // Accept suggestions
       const checkboxes = screen.getAllByRole('checkbox');

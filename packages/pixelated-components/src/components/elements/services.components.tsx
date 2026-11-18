@@ -84,6 +84,7 @@ ServiceCard.propTypes = {
 	service: PropTypes.shape({
 		name: PropTypes.string.isRequired,
 		description: PropTypes.arrayOf(PropTypes.string).isRequired,
+		subtitle: PropTypes.string,
 		short_description: PropTypes.string,
 		image: PropTypes.string,
 		url: PropTypes.string,
@@ -122,6 +123,7 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 				direction={effectiveDirection}
 				imgShape={effectiveImgShape}
 				title={service.name}
+				subtitle={service.subtitle}
 				content={service.short_description}
 				url={url}
 				img={service.image}
@@ -140,18 +142,24 @@ export function ServiceCard({ index, service, servicePathPrefix = defaultService
 /**
  * ServicesTiles component displays a grid of service tiles based on the available services in the site configuration.
  * 
+ * @param {boxShape} The shape of the callout when a boxed shape is provided.
+ * @param {variant} The Callout visual variant for each service tile.
  * @param {imgShape} The shape of the service images (e.g., 'bevel', 'square').
  * @param {imgSizes} The sizes attribute for responsive images.
  * @param {servicePathPrefix} The prefix to use for service URLs.
  * @returns A grid of service tiles, or null if no services are available.
  */
 ServicesTiles.propTypes = {
+	boxShape: PropTypes.oneOf([...shapes]),
+	variant: PropTypes.oneOf([...variants]),
 	imgShape: PropTypes.oneOf([...shapes]),
 	imgSizes: PropTypes.string,
 	servicePathPrefix: PropTypes.string,
 };
 export type ServicesTilesType = InferProps<typeof ServicesTiles.propTypes>;
 export function ServicesTiles({
+	boxShape,
+	variant,
 	imgShape = 'bevel',
 	imgSizes = defaultServicesTilesImageSizes,
 	servicePathPrefix = defaultServicePathPrefix,
@@ -165,6 +173,8 @@ export function ServicesTiles({
 			{items.map((service, index) => (
 				<PageGridItem key={service.name ?? index}>
 					<Callout
+						variant={variant ?? (boxShape ? 'boxed' : undefined)}
+						boxShape={boxShape}
 						layout="vertical"
 						subtitle={service.name}
 						img={service.image}
@@ -213,6 +223,18 @@ export function ServiceDetail({ serviceSlug, title, id }: ServiceDetailType) {
 			{serviceImage ? (
 				<SmartImage src={serviceImage} alt={activeService.name} style={{ width: '100%', height: '300px', objectFit: 'cover', margin: '20px 0px' }} />
 			) : null}
+			{ activeService.subtitle && (
+				<>
+					<div className="service-subtitle">
+						<h2>{activeService.subtitle}</h2>
+					</div>
+					<br />
+					<div className="service-short-description">
+						<div>{activeService.short_description}</div>
+					</div>
+					<br />
+				</>
+			)}
 			<div className="service-detail-copy">
 				{renderArrayToParagraphs(activeService.description)}
 				{serviceAreaItems.length ? (

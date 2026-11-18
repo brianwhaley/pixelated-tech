@@ -14,6 +14,14 @@ applyTo: "**"
 
 ## Rule 1: Inspect Before Answering, Edit Only With Permission
 
+### Mandatory Reuse Audit Before Mutation
+
+Before using any edit, file-creation, dependency, build, formatting, test-with-generated-output, repository, or external-system mutation tool, the agent must complete the repository's Required Reuse Audit and receive explicit approval for the exact proposal. This requirement is non-optional and overrides autopilot or bias-to-action behavior.
+
+The audit must identify inspected prior art, exact reusable components and props, existing consumers, the composition/extension decision, the exact mutation scope, compatibility impact, and validation plan. If reuse is not viable, the agent must state: **No reusable component or existing extension point was found for this requirement.**
+
+The agent must stop after presenting the audit under the headings `Reuse Audit`, `Implementation Proposal`, `Approved Mutation Scope`, `Behavior and Compatibility Impact`, `Validation Plan`, and `Approval Required: yes`. No mutation command or edit tool may run until the user approves that proposal. If the available harness cannot enforce tool permissions, the agent must still treat this as a hard process stop and must not proceed.
+
 **For repository-specific questions:**
 - Inspect the relevant source files and supporting tests/configuration before answering
 - Keep that inspection read-only; it is evidence gathering, not permission to change files
@@ -90,6 +98,13 @@ Before any implementation, refactoring, or feature work:
 - Review for framework-specific practices, naming conventions, configuration patterns, and code organization
 - Apply discovered conventions to all work in the project
 - If instructions conflict with user requests, clarify before proceeding
+
+## Closed Monorepo Cleanup
+
+This monorepo is consumed only by code within the repository. Consolidate equivalent behavior into one canonical implementation and update all in-repository consumers to use it in the same change.
+
+- Delete duplicate implementations, legacy exports, compatibility re-exports, aliases, wrappers, fallback paths, and deprecation shims.
+- Never preserve or recommend any of those compatibility paths for hypothetical consumers.
 
 ## File Naming Conventions for Component Library
 - `*.components.tsx`: front-end UI components

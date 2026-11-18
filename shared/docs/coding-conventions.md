@@ -22,6 +22,34 @@ Before implementation:
 8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
 9. If the user says "stop," immediately stop all tool use and make no further changes.
 
+### Required Reuse Audit
+
+The Mandatory Approval Gate is a hard prerequisite for every implementation, refactor, bug fix, configuration change, documentation change tied to code behavior, and test change. It is not optional and is not overridden by autopilot, urgency, a tagged file, or an instruction to "just do it."
+
+Before any edit, the agent must provide a written Reuse Audit containing:
+
+1. Existing components, helpers, services, schemas, fixtures, styles, and tests inspected.
+2. Exact reusable symbols and props/extension points considered, with file links.
+3. Existing consumers and prior-art examples inspected.
+4. A composition or extension plan that uses the existing capability where viable.
+5. If reuse is not viable, the verified reason and an explicit statement: **No reusable component or existing extension point was found for this requirement.**
+6. The exact files and systems proposed for change, behavior and compatibility impact, migration/deployment order, and validation commands.
+
+The agent must stop after presenting the Reuse Audit and implementation proposal. Editing is prohibited until the user explicitly approves that proposal. A generic approval such as "go" does not waive a missing Reuse Audit. If implementation reveals a new design decision or a reusable existing capability, stop and produce an updated audit before continuing.
+
+The required pre-edit response headings are:
+
+```text
+Reuse Audit
+Implementation Proposal
+Approved Mutation Scope
+Behavior and Compatibility Impact
+Validation Plan
+Approval Required: yes
+```
+
+Autopilot or bias-to-action instructions never override this gate. Text instructions cannot provide a mechanical tool lock; any agent harness or workflow integrating these instructions must keep mutation tools unavailable until the approval state is recorded. Repository checks are a backstop and do not replace this gate.
+
 **For AI agents and code reviewers:**
 - Separate evidence gathering from implementation: for repository-specific questions, inspect the relevant source, tests, and configuration read-only before answering; do not edit files unless the user explicitly requests implementation.
 - A question is not permission to implement a recommendation. Answer first using verified repository evidence, then wait for an explicit implementation request.
@@ -125,6 +153,13 @@ All platform work follows this order: reuse an existing component, harness, fixt
 - Do not create generic `utils` files as dumping grounds for unrelated functions.
 - When an abstraction is justified, give it a specific domain name, a small public surface, clear ownership, and focused tests.
 
+## Closed Monorepo Cleanup
+
+This monorepo is consumed only by code within the repository. Consolidate equivalent behavior into one canonical implementation and update all in-repository consumers to use it in the same change.
+
+- Delete duplicate implementations, legacy exports, compatibility re-exports, aliases, wrappers, fallback paths, and deprecation shims.
+- Never preserve or recommend any of those compatibility paths for hypothetical consumers.
+
 ## TypeScript & React
 
 ### PropTypes & Type Inference
@@ -155,10 +190,9 @@ export function Component(props: ComponentType) { ... }
 - Use index files for clean imports
 
 ### Re-export Rule
-- Re-exports are prohibited throughout the repository.
-- The only permitted re-exports are the established Pixelated Components entry points: the package root `packages/pixelated-components/src/index.js` and the `index.*` entry-point files for component subfolders under `packages/pixelated-components/src/components`.
-- Those entry points may re-export only the modules owned by their corresponding Pixelated Components folder.
-- Do not add barrel files, forwarding modules, compatibility re-exports, aliases, or any other re-export outside that structure. There are no other exceptions.
+- Re-exports are prohibited throughout the repository except for the existing canonical Pixelated Components entry points: the package root `packages/pixelated-components/src/index.js` and the `index.*` files under `packages/pixelated-components/src/components`.
+- Those entry points may export only modules owned by their corresponding folder; they are not permission to retain obsolete implementations or APIs.
+- Do not add forwarding modules, compatibility re-exports, aliases, legacy export paths, or new barrel files.
 
 ### File Naming and Usage
 - `*.components.tsx`: front-end UI components
@@ -342,9 +376,8 @@ Never adjust the coverage thresholds under any circumstances. Do not lower them,
   - MINOR: backward-compatible new features and new public APIs
   - PATCH: backward-compatible bug fixes and documentation/test updates
 - Deprecation policy:
-  - Mark API as deprecated in docs and types with the version it will be removed in.
-  - Provide migration notes and a codemod if the change is non-trivial.
-  - Keep deprecated behavior supported for at least one MINOR cycle where feasible.
+  - In this closed monorepo, remove unused APIs directly rather than adding deprecation windows or migration shims.
+  - Do not preserve deprecated behavior or add migration shims; update controlled in-repository consumers and delete the obsolete API directly.
 
 Release checklist (must-pass before publishing):
 - Tests: all unit/integration/e2e passing

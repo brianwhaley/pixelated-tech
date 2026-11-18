@@ -28,6 +28,7 @@ import { LayoutClient } from '@/app/elements/layoutclient';
 import NotFoundElement from '@/app/not-found';
 import RootLayout from '@/app/layout';
 import Home from '@/app/(pages)/(home)/page';
+import AboutPage from '@/app/(pages)/about/page';
 import StyleGuide from '@/app/(pages)/styleguide/page';
 import Portfolio from '@/app/(pages)/portfolio/page';
 import Schedule from '@/app/(pages)/schedule/page';
@@ -75,7 +76,6 @@ describe('Site coverage', () => {
 	runCommonPageCoverage({
 		appRoot,
 		ignoredPageTypes: [
-			'about',
 			'contact',
 			'updates',
 		],
@@ -136,6 +136,16 @@ describe('Site coverage', () => {
 		render(React.createElement(Home));
 		expect(await screen.findByTestId('hero')).not.toBeNull();
 		expect(await screen.findByTestId('page-title-header')).not.toBeNull();
+		expect(screen.getByText('Our Services')).not.toBeNull();
+		expect(document.getElementById('home-services-section')).not.toBeNull();
+	});
+
+	it('renders About page with the Recent Launches collection', async () => {
+		render(React.createElement(AboutPage));
+		expect(screen.getByTestId('page-title-header').textContent).toContain('About Us');
+		expect(screen.getByText('Recent Launches')).not.toBeNull();
+		expect(document.getElementById('about-recent-launches-section')).not.toBeNull();
+		await waitFor(() => expect(document.getElementById('wordpress-post-collection')).not.toBeNull());
 	});
 
 	it('renders Blog page with categories and posts', async () => {
@@ -276,6 +286,15 @@ describe('Site coverage', () => {
 			assertion: async () => {
 				await waitFor(() => expect(screen.getByTestId('page-title-header')).not.toBeNull());
 				expect(document.getElementById('blog-section')).not.toBeNull();
+			},
+		},
+		{
+			name: 'About',
+			Component: AboutPage,
+			assertion: async () => {
+				await waitFor(() => expect(screen.getByTestId('page-title-header')).not.toBeNull());
+				expect(document.getElementById('about-recent-launches-section')).not.toBeNull();
+				expect(document.getElementById('wordpress-post-collection')).not.toBeNull();
 			},
 		},
 		{

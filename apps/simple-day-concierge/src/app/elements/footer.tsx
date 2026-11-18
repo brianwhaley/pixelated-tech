@@ -17,7 +17,7 @@ export default async function Footer() {
 				</PageGridItem>
 
 				<PageGridItem>
-					<BusinessFooterMap />
+					<BusinessFooterMap variant="static" />
 				</PageGridItem>
 
 				<PageGridItem>

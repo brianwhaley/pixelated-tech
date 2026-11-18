@@ -68,6 +68,9 @@ Record platform opportunities without silently implementing them in shared packa
 - Avoid unnecessary client components, duplicate data transformations, hardcoded content branches, dependencies, JavaScript, CSS, image weight, and runtime work.
 - Prefer data-driven and configuration-driven behavior when it improves maintainability, but do not introduce configuration for trivial logic.
 - Prefer direct, readable code over one-use helpers, normalizers, wrappers, adapters, or generic utility layers.
+- This is a closed monorepo consumed only by code within the repository. Verify repository-wide consumers before preserving old APIs or implementations.
+- Consolidate equivalent behavior into one canonical implementation and update all in-repository consumers to use it in the same change.
+- Delete duplicate implementations, legacy exports, compatibility re-exports, aliases, wrappers, fallback paths, and deprecation shims. Never preserve or recommend them for compatibility with hypothetical consumers.
 - Keep one-use transformations near the consuming code unless the logic is complex, domain-significant, or has multiple real consumers.
 - Do not create a local `utils` layer as a dumping ground; escalate genuinely reusable behavior to Platform Build.
 
@@ -120,6 +123,14 @@ Before implementation:
 7. Never implement, modify, remove, replace, or otherwise change anything outside the scope of the explicit directions or architectural discussion without explicit approval for that specific change.
 8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
 9. If the user says "stop," immediately stop all tool use and make no further changes.
+
+### Required Reuse Audit (Non-Optional)
+
+Before any mutation, provide a written Reuse Audit naming the existing site components, shared components, helpers, services, schemas, fixtures, styles, tests, exact symbols/props, and prior-art consumers inspected. State the composition or extension plan. If reuse is not viable, include the verified statement: **No reusable component or existing extension point was found for this requirement.**
+
+The audit must also state the exact files and systems in scope, behavior and compatibility impact, migration/deployment order, and validation commands. Use these headings: `Reuse Audit`, `Implementation Proposal`, `Approved Mutation Scope`, `Behavior and Compatibility Impact`, `Validation Plan`, and `Approval Required: yes`.
+
+Stop after presenting the audit and proposal. Do not edit until the user explicitly approves that exact proposal. Autopilot, urgency, tagged files, and "just do it" requests never override this gate. If a new reusable capability or design decision appears, stop and re-audit before continuing. A supporting harness should keep mutation tools unavailable until approval is recorded.
 
 ## Investigation vs. Implementation Approval
 

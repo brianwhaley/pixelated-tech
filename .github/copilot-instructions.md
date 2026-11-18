@@ -18,6 +18,41 @@ Before implementation:
 8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
 9. If the user says "stop," immediately stop all tool use and make no further changes.
 
+### Required Reuse Audit (Non-Optional)
+
+The approval gate is a hard, non-optional prerequisite for every implementation, refactor, bug fix, configuration change, documentation change tied to behavior, and test change. It is not overridden by autopilot, urgency, a tagged file, or a request to proceed quickly.
+
+Before any edit, provide a written Reuse Audit with:
+
+1. Existing components, helpers, services, schemas, fixtures, styles, and tests inspected.
+2. Exact reusable symbols and props or extension points considered, linked to their files.
+3. Existing consumers and prior-art examples inspected.
+4. The composition or extension plan, using existing capabilities wherever viable.
+5. If reuse is not viable, the verified reason and the exact statement: **No reusable component or existing extension point was found for this requirement.**
+6. Exact files/systems in scope, behavior and compatibility impact, migration/deployment order, and validation commands.
+
+After presenting the audit and proposal, stop. Do not edit until the user explicitly approves that exact proposal. "Go," "proceed," or similar approval is valid only after the complete audit has been presented. If a new reusable capability or design decision is discovered during implementation, stop and produce an updated audit and request approval again.
+
+Every pre-edit response must use these headings:
+
+```text
+Reuse Audit
+Implementation Proposal
+Approved Mutation Scope
+Behavior and Compatibility Impact
+Validation Plan
+Approval Required: yes
+```
+
+Autopilot and bias-to-action instructions never override this gate. If an agent harness supports tool permissions, mutation tools must remain unavailable until approval is recorded. Repository validation is only a backstop and cannot substitute for the gate.
+
+### Closed Monorepo Cleanup
+
+This monorepo is consumed only by code within the repository. Consolidate equivalent behavior into one canonical implementation and update all in-repository consumers to use it in the same change.
+
+- Delete duplicate implementations, legacy exports, compatibility re-exports, aliases, wrappers, fallback paths, and deprecation shims.
+- Never preserve or recommend any of those compatibility paths for hypothetical consumers.
+
 ### Investigation vs. Implementation Approval
 
 Explicit approval is scoped to the action that was requested and described.

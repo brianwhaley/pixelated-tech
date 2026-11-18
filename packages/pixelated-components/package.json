@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.60",
+	"version": "3.22.61",
 	"deployMarker": "2026-11-17T05:33:33.000Z",
 	"type": "module",
 	"private": false,
@@ -116,7 +116,7 @@
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",
 		"typescript": "6.0.2",
-		"vitest": "^5.1.0"
+		"vitest": "^5.1.1"
 	},
 	"peerDependencies": {
 		"next": "^16.4.3"
@@ -143,8 +143,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.73.0",
 		"@typescript-eslint/parser": "^8.73.0",
 		"@vitejs/plugin-react": "^6.1.2",
-		"@vitest/coverage-v8": "^5.1.0",
-		"@vitest/ui": "^5.1.0",
+		"@vitest/coverage-v8": "^5.1.1",
+		"@vitest/ui": "^5.1.1",
 		"ajv": "^8.20.0",
 		"ajv-keywords": "^5.1.0",
 		"babel-loader": "^10.1.1",

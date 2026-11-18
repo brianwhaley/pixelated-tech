@@ -3,6 +3,8 @@ import { screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import {
 	BlogPostList,
+	BlogPostCollection,
+	BlogPostCallout,
 	BlogPostSummary,
 	BlogPostCategories,
 	WordpressCategoryList
@@ -191,6 +193,60 @@ describe('WordPress Components', () => {
 			});
 	});
 
+	describe('BlogPostCollection Component', () => {
+		it('filters to selected post IDs and sorts them newest first', async () => {
+			const config = createConfig({ integrations: { wordpress: { site: 'configured.example.com' } } });
+			vi.spyOn(wordpressFunctions, 'getCachedWordPressItems').mockResolvedValue([
+				{
+					ID: '1199',
+					title: 'Older launch',
+					date: '2024-01-01',
+					URL: 'https://blog.example.com/older-launch',
+					excerpt: '',
+					categories: [],
+				},
+				{
+					ID: '1500',
+					title: 'Newest launch',
+					date: '2024-03-01',
+					URL: 'https://blog.example.com/newest-launch',
+					excerpt: '',
+					categories: [],
+				},
+				{
+					ID: '9999',
+					title: 'Unselected post',
+					date: '2024-04-01',
+					URL: 'https://blog.example.com/unselected-post',
+					excerpt: '',
+					categories: [],
+				},
+			]);
+
+			renderWithProviders(
+				<BlogPostCollection
+					site="blog.pixelated.tech"
+					postIds={[1199, 1500]}
+				/>,
+				{ config }
+			);
+
+			await waitFor(() => {
+				expect(screen.getByRole('heading', { name: 'Newest launch' })).toBeInTheDocument();
+				expect(screen.getByRole('heading', { name: 'Older launch' })).toBeInTheDocument();
+				expect(screen.queryByText('Unselected post')).not.toBeInTheDocument();
+			});
+
+			const links = screen.getAllByRole('link');
+			expect(links[0]).toHaveAttribute('href', 'https://blog.example.com/newest-launch');
+			expect(links[1]).toHaveAttribute('href', 'https://blog.example.com/older-launch');
+			expect(vi.mocked(wordpressFunctions.getCachedWordPressItems)).toHaveBeenCalledWith({
+				site: 'blog.pixelated.tech',
+				baseURL: undefined,
+			});
+		});
+	});
+
 	describe('BlogPostSummary Component', () => {
 		const mockPost = {
 			ID: 1,
@@ -273,6 +329,23 @@ describe('WordPress Components', () => {
       );
       expect(container.querySelectorAll('.p-category').length).toBe(0);
     });
+
+		it('renders a post through the shared Callout component', () => {
+			const { container } = renderWithProviders(
+				<BlogPostCallout post={{
+					ID: mockPost.ID,
+					title: mockPost.title,
+					URL: mockPost.URL,
+					featured_image: 'https://example.com/featured.jpg',
+				}} />
+			);
+
+			expect(container.querySelector('.callout.grid.horizontal.left')).toBeInTheDocument();
+			expect(container.querySelector('.callout-grid-1-5')).toBeInTheDocument();
+			expect(screen.getByRole('heading', { name: 'Test Post Title' })).toBeInTheDocument();
+			expect(screen.getByRole('img', { name: 'Test Post Title' })).toBeInTheDocument();
+			expect(screen.getAllByRole('link')).toHaveLength(2);
+		});
   });
 
   describe('BlogPostCategories Component', () => {

@@ -1,7 +1,7 @@
 "use client"; 
 
 import React, { useState, useEffect } from "react";
-import { PageTitleHeader, PageSectionHeader, usePixelatedConfig } from "@pixelated-tech/components";
+import { PageTitleHeader, PageSectionHeader, ServicesTiles, usePixelatedConfig } from "@pixelated-tech/components";
 import { PageSection, PageGridItem } from "@pixelated-tech/components";
 import { Callout } from "@pixelated-tech/components";
 import { SocialTags } from "@pixelated-tech/components";
@@ -104,116 +104,20 @@ export default function Home() {
 				</PageGridItem>
 			</PageSection>
 
-			
 			<PageSection id="recent-blog-section" columns={1} background="var(--secondary-color)" >
 				<SocialTags />
 				<PageSectionHeader title="Read Our Most Recent Blog Post" />
 				<BlogPostList count={1} showCategories={false}  />
 			</PageSection>
 
-			<PageSectionHeader title="Our Value Proposition" />
-			<PageSection id="products-section" columns={1}>
-				<PageGridItem >
-					<Callout
-						variant="boxed"
-						layout='horizontal' 
-						direction="left"
-						img='https://images.ctfassets.net/ank9sh265hdu/4rEaVj4s5osjtd00QSmpBb/a6bce8b9f61c15431754dcfee2e86907/webdev.jpg?fm=webp'
-						imgAlt='Web Development'
-						title='Web Development'
-						subtitle='Do you need a new website or web application for your business? Is your current website outdated or not mobile-friendly? Have you focused on other parts of your business and need help with your online presence?' 
-						content='Pixelated Technologies can be your Virtual Technology Department, providing custom web development solutions tailored to your business needs.  We specialize in creating responsive, user-friendly websites and web applications that help small businesses succeed online.'/>
+
+			<PageSection id="home-services-section" columns={3}>
+				<PageGridItem columnStart={1} columnEnd={-1}>
+					<PageSectionHeader title="Our Services" />
 				</PageGridItem>
-				<PageGridItem >
-					<Callout
-						variant="boxed"
-						layout='horizontal' 
-						direction="right"
-						img='https://images.ctfassets.net/ank9sh265hdu/7CWE8PYdFYNsgMUdauCtRO/6ea882244e904c63c5540e43885709d2/socialmedia.jpg?fm=webp'
-						imgAlt='Social Media Marketing'
-						title='Social Media Marketing'
-						subtitle='Are your social media accounts active and engaging?
-							Are they integrated with your website and other online platforms?
-							Do they help convert prospective customers into current customers?' 
-						content='Let Pixelated Technologies help you develop a comprehensive social media strategy that aligns with your business goals.
-							We can help you create and manage your social media accounts, 
-							produce engaging content, and analyze performance metrics to optimize your social media presence.' />
-				</PageGridItem>
-				<PageGridItem >
-					<Callout
-						variant="boxed"
-						layout='horizontal' 
-						direction="left"
-						img='https://images.ctfassets.net/ank9sh265hdu/9YlHjpOEN66FuLTmCKIwT/41ba7b315fceef615761a40a44d913da/seo.jpg?fm=webp'
-						imgAlt='Search Engine Optimization'
-						title='Search Engine Optimization'
-						subtitle='Is your website optimized for search engines?
-							Does it stand out from your competition, ranking well for relevant keywords and phrases?
-							Do you have a plan to improve your search engine rankings over time?' 
-						content='Pixelated Technologies can help you improve your websites visibility and ranking on popular search engines.
-							We can conduct a thorough SEO audit of your website, identify areas for improvement,
-							and implement on-page and off-page SEO strategies to boost your search engine performance.' />
-				</PageGridItem>
-				<PageGridItem >
-					<Callout
-						variant="boxed"
-						layout='horizontal' 
-						direction="right"
-						img='https://images.ctfassets.net/ank9sh265hdu/4742vZFZ8ZYfNxDMKijzDQ/4533e5d62f5563358ae25b56593dc664/content.jpg?fm=webp'
-						imgAlt='Content Management'
-						title='Content Management'
-						subtitle='Do you have to rely on a web developer to make updates to your website?
-							Would you like to be able to make updates yourself, without needing technical skills?
-							Do you need a content management system that is easy to use and maintain?' 
-						content='Pixelated Technologies can help you implement a content management system (CMS) that allows you to easily update and manage your website content. We can help you choose the right CMS at the right cost for your business needs, set it up, and provide training and support to ensure you can manage your website effectively.'  />
-				</PageGridItem>
-				<PageGridItem >
-					<Callout
-						variant="boxed"
-						layout='horizontal' 
-						direction="left"
-						img='https://images.ctfassets.net/ank9sh265hdu/22E0F5qutkuHS9J4xJeG4r/7fa4e187d3f86ca07acaf5af14d8ae3e/ecommerce.jpg?fm=webp'
-						imgAlt='eCommerce Solutions'
-						title='eCommerce Solutions'
-						subtitle='Do you want to move your business online to 
-							sell your products or services digitally?
-							Do you need a secure and reliable eCommerce platform that integrates with your existing systems?
-							Are you looking for ways to improve your online sales and customer experience?' 
-						content='Pixelated Technologies can help you set up and manage an eCommerce platform that meets your business needs.
-							We can help you choose the right eCommerce solution, 
-							set it up, and provide ongoing support to ensure your online store runs smoothly.' />
-				</PageGridItem>
-				<PageGridItem >
-					<Callout
-						variant="boxed"
-						layout='horizontal' 
-						direction="right"
-						img='https://images.ctfassets.net/ank9sh265hdu/6d6ljEpeynadx8ONlRAosp/639ac8aa9561555970f504fcf8d6ba6f/modernization.jpg?fm=webp'
-						imgAlt='Small Business Modernization'
-						title='Small Business Modernization'
-						subtitle='Are you looking to integrate your site with other business systems,
-							such as marketing automation tools, billing and finance systems, 
-							scheduling or inventory systems, or other business applications?' 
-						content='Pixelated Technologies can help you develop custom business solutions that streamline your operations and improve your efficiency. We can work with you to understand your business processes, identify areas for improvement, and develop custom software solutions that meet your specific needs.' />
-				</PageGridItem>
+				<ServicesTiles variant="boxed" imgShape="square" />
 			</PageSection>
 
-			<PageSection columns={1} maxWidth="768px" background="var(--accent1-color)" id="spotlight-section">
-				<PageGridItem>
-					<Callout
-						variant='boxed'
-						layout='horizontal' 
-						img='/images/brianwhaley-headshot.jpg'
-						imgAlt='Brian T. Whaley'
-						title='Brian T. Whaley'
-						content='The owner of Pixelated Technologies.
-							Full Stack Developer, Passionate Technologist, 
-							Digital Transformation Professional, 
-							User Experience Champion, SEO and Social Media Ninja, 
-							Landscape and Macro Photographer, Avid World Traveler,
-							Advanced Open Water Scuba Diver, Enthusiast of Home-Cooked Food' />
-				</PageGridItem>
-			</PageSection>
 		</>
 	);
 }

@@ -19,6 +19,8 @@ Research the client primarily through current public web sources, understand the
 
 Always create all three dated artifacts for a client run. Do not omit either proposal when the user asks for an assessment, build proposal, or maintenance proposal.
 
+This is a closed monorepo consumed only by code within the repository. Consolidate equivalent behavior into one canonical implementation and update all in-repository consumers to use it. Delete duplicate implementations, legacy exports, compatibility re-exports, aliases, wrappers, fallback paths, and deprecation shims; never preserve or recommend them for compatibility with hypothetical consumers.
+
 The assessment is the source artifact. Do not create a separate site `blogcalendar.json` during discovery unless the user explicitly requests it.
 
 ## Required Research
@@ -172,6 +174,14 @@ Before implementation:
 7. Never implement, modify, remove, replace, or otherwise change anything outside the scope of the explicit directions or architectural discussion without explicit approval for that specific change.
 8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
 9. If the user says "stop," immediately stop all tool use and make no further changes.
+
+### Required Reuse Audit (Non-Optional)
+
+Before any mutation, provide a written Reuse Audit naming the existing discovery artifacts, schemas, validators, fixtures, services, helpers, styles, tests, exact symbols/props, and prior-art consumers inspected. State the composition or extension plan. If reuse is not viable, include the verified statement: **No reusable component or existing extension point was found for this requirement.**
+
+The audit must also state the exact files and systems in scope, behavior and compatibility impact, migration/deployment order, and validation commands. Use these headings: `Reuse Audit`, `Implementation Proposal`, `Approved Mutation Scope`, `Behavior and Compatibility Impact`, `Validation Plan`, and `Approval Required: yes`.
+
+Stop after presenting the audit and proposal. Do not edit until the user explicitly approves that exact proposal. Autopilot, urgency, tagged files, and "just do it" requests never override this gate. If a new reusable capability or design decision appears, stop and re-audit before continuing. A supporting harness should keep mutation tools unavailable until approval is recorded.
 
 ## Investigation vs. Implementation Approval
 

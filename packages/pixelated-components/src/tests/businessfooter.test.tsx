@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, createMockConfig } from '../test/test-utils';
 import { screen } from '@testing-library/react';
-import { BusinessFooter } from '@/components/structure/businessfooter';
+import { BusinessFooter, BusinessFooterMap } from '@/components/structure/businessfooter';
 import type { SiteInfo } from '@/components/config/config.types';
 
 const siteInfo: SiteInfo = {
@@ -94,9 +94,25 @@ describe('BusinessFooter', () => {
         },
       }),
     });
-    
+
     const map = screen.getByAltText('Map showing business location');
     expect(map).toHaveAttribute('src', expect.stringContaining('key=AIza_test_key'));
+  });
+
+  it('renders the iframe map only when explicitly requested', () => {
+    render(<BusinessFooterMap variant="iframe" />, {
+      config: createMockConfig({
+        siteInfo,
+        integrations: {
+          googleMaps: { apiKey: 'AIza_test_key' },
+        },
+      }),
+    });
+
+    expect(screen.getByTitle('Business location map')).toHaveAttribute(
+      'src',
+      expect.stringContaining('/maps/embed/v1/place')
+    );
   });
 
   it('handles string based opening hours', () => {

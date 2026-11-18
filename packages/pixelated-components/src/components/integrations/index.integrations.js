@@ -10,7 +10,6 @@ export * from './gemini-api.client';
 export * from './gemini-api.functions';
 export * from './google.fonts.functions';
 export * from './google.map';
-export * from './google.maps';
 export * from './google.reviews.components';
 export * from './google.reviews.functions';
 export * from './googleplaces';

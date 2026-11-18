@@ -7,6 +7,7 @@ const mockServices = [
 	{
 		name: 'Floor Coating',
 		description: ['Professional epoxy floor coating for residential and commercial spaces.'],
+		subtitle: 'Protect your floors with professional coatings.',
 		short_description: 'Protect and beautify concrete floors with long-lasting epoxy.',
 		image: '/images/floor-coating.jpg',
 		slug: 'floor-coating',
@@ -26,6 +27,7 @@ describe('Services components', () => {
 
 		expect(screen.getByRole('heading', { name: 'Our Work' })).toBeInTheDocument();
 		expect(screen.getByText('Choose a service')).toBeInTheDocument();
+		expect(screen.getByText('Protect your floors with professional coatings.')).toBeInTheDocument();
 		expect(screen.getByText('Protect and beautify concrete floors with long-lasting epoxy.')).toBeInTheDocument();
 		const floorLinks = screen.getAllByRole('link', { name: /Floor Coating/i });
 		expect(floorLinks.some((link) => link.getAttribute('href') === '/services/floor-coating')).toBe(true);
@@ -40,6 +42,15 @@ describe('Services components', () => {
 		expect(container.querySelector('.callout .bevel')).toBeInTheDocument();
 		expect(container.querySelector('img')).toHaveAttribute('sizes', '240px');
 		expect(screen.getByRole('link', { name: /Floor Coating/i })).toHaveAttribute('href', '/services/floor-coating');
+	});
+
+	it('exposes the callout box shape for service tiles', () => {
+		const { container } = render(
+			<ServicesTiles variant="boxed" boxShape="round" />,
+			{ config: { siteInfo: { services: mockServices } } }
+		);
+
+		expect(container.querySelector('.callout.boxed.round')).toBeInTheDocument();
 	});
 
 	it('does not render service tiles when no services are configured', () => {

@@ -17,7 +17,7 @@ Move genuinely reusable complexity into the correct shared platform boundary.
 - Keep individual site implementations thin after the shared capability is available.
 - Build shared features only when they have a clear cross-site, admin, or platform purpose.
 - Improve build speed, runtime footprint, bundle size, deployment size, maintainability, and consistency.
-- Preserve backwards compatibility where practical and provide migration guidance when compatibility cannot be preserved.
+- Do not preserve obsolete APIs or implementations for backwards compatibility. Update all in-repository consumers to the canonical replacement in the same change.
 
 ## Platform Scope
 
@@ -61,13 +61,16 @@ Do not create an abstraction merely because reuse is theoretically possible.
 - Use the existing component, package, schema, integration, and export conventions.
 - Do not delete or substantially change working code merely to satisfy brittle or outdated tests. Treat tests as validation signals, not the source of truth. Tests may be brittle or outdated. A failing or missing test is not by itself evidence that working code should be changed, removed, or weakened. When test results conflict with current code or explicit user intent, investigate and ask before making destructive or behavior-changing edits.
 - Add shared tests before or alongside shared implementation. Treat focused tests as part of every new function, integration, server action, and platform feature; create or update them in the same change without waiting for a separate request, including applicable success, error, empty, validation, and contract-boundary cases.
-- Keep public APIs small, explicit, typed, and backwards-compatible where possible.
+- Keep public APIs small, explicit, typed, and canonical; update controlled in-repository consumers when an API changes.
 - Separate client and server code using the repository's established boundaries.
 - Do not duplicate components, APIs, config readers, schemas, or test harnesses across packages.
 - Document consumer expectations, defaults, failure behavior, and migration steps.
 - Keep feature behavior composable so individual sites can configure it without forking implementation.
 - Do not force site-specific behavior into a shared abstraction without clear evidence of reuse.
 - Prefer direct code over one-use helpers, normalizers, wrappers, adapters, or generic utility layers.
+- This is a closed monorepo consumed only by code within the repository. Verify repository-wide consumers, update them to the canonical replacement, and delete obsolete APIs or implementations.
+- Consolidate equivalent behavior into one canonical implementation and update all in-repository consumers to use it in the same change.
+- Delete duplicate implementations, legacy exports, compatibility re-exports, aliases, wrappers, fallback paths, and deprecation shims. Never preserve or recommend them for compatibility with hypothetical consumers.
 - Create a shared abstraction only when multiple real consumers, complex domain logic, or a stable platform contract justify its maintenance cost.
 - Keep one-use transformations local to their consumer and do not create generic utility dumping grounds.
 
@@ -131,6 +134,14 @@ Before implementation:
 7. Never implement, modify, remove, replace, or otherwise change anything outside the scope of the explicit directions or architectural discussion without explicit approval for that specific change.
 8. If implementation requires a decision outside the approved scope, stop and ask before continuing.
 9. If the user says "stop," immediately stop all tool use and make no further changes.
+
+### Required Reuse Audit (Non-Optional)
+
+Before any mutation, provide a written Reuse Audit naming the existing shared components, helpers, services, schemas, fixtures, styles, tests, exact symbols/props, and prior-art consumers inspected. State the composition or extension plan. If reuse is not viable, include the verified statement: **No reusable component or existing extension point was found for this requirement.**
+
+The audit must also state the exact files and systems in scope, behavior and compatibility impact, migration/deployment order, and validation commands. Use these headings: `Reuse Audit`, `Implementation Proposal`, `Approved Mutation Scope`, `Behavior and Compatibility Impact`, `Validation Plan`, and `Approval Required: yes`.
+
+Stop after presenting the audit and proposal. Do not edit until the user explicitly approves that exact proposal. Autopilot, urgency, tagged files, and "just do it" requests never override this gate. If a new reusable capability or design decision appears, stop and re-audit before continuing. A supporting harness should keep mutation tools unavailable until approval is recorded.
 
 ## Investigation vs. Implementation Approval
 

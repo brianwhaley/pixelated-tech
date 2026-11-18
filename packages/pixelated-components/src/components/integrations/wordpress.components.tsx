@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes, { InferProps } from 'prop-types';
 import { usePixelatedConfig } from "../config/config.client";
 import { SmartImage } from '../elements/smartimage';
+import { Callout } from '../structure/callout';
 import { Skeleton } from '../foundation/skeleton';
+import { PageSection } from '../structure/page-blocks';
 import { PageGridItem } from '../structure/page-blocks';
 import type { BlogPostType } from './wordpress.functions';
 import type { SiteInfo } from '../config/config.types';
@@ -163,6 +165,122 @@ export function BlogPostList(props: BlogPostListType) {
 				</PageGridItem>
 			))}
 		</SmartErrorBoundary>
+	);
+}
+
+
+/**
+ * BlogPostCollection — Render selected WordPress posts as compact horizontal callouts.
+ *
+ * @param {string} [props.site] - WordPress site identifier (slug or domain).
+ * @param {array} [props.postIds] - Post IDs to include in the collection.
+ * @param {string} [props.baseURL] - Optional base URL for the WordPress API.
+ */
+BlogPostCollection.propTypes = {
+	/** WordPress site identifier (slug or domain). */
+	site: PropTypes.string.isRequired,
+	/** Post IDs to include in the collection. */
+	postIds: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+	/** Optional base URL for the WordPress API. */
+	baseURL: PropTypes.string,
+};
+export type BlogPostCollectionType = InferProps<typeof BlogPostCollection.propTypes>;
+export function BlogPostCollection(props: BlogPostCollectionType) {
+	const { site, postIds, baseURL } = props;
+	const postIdsKey = (postIds ?? []).map((postId) => String(postId)).join(',');
+	const [posts, setPosts] = useState<BlogPostType[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		let mounted = true;
+		const ids = (postIds ?? []).map((postId) => String(postId));
+
+		if (!site || ids.length === 0) {
+			setPosts([]);
+			setLoading(false);
+			return () => {
+				mounted = false;
+			};
+		}
+
+		(async () => {
+			try {
+				const fetchedPosts = (await getCachedWordPressItems({ site, baseURL: baseURL ?? undefined })) ?? [];
+				const requestedIds = new Set(ids);
+				const selectedPosts = fetchedPosts
+					.filter((post) => requestedIds.has(String(post.ID)))
+					.sort((first, second) => ((first.date ?? '') < (second.date ?? '')) ? 1 : -1);
+
+				if (mounted) {
+					setPosts(selectedPosts);
+				}
+			} catch (error) {
+				console.error('Error fetching WordPress post collection:', error);
+				if (mounted) {
+					setPosts([]);
+				}
+			} finally {
+				if (mounted) {
+					setLoading(false);
+				}
+			}
+		})();
+
+		return () => {
+			mounted = false;
+		};
+	}, [site, baseURL, postIdsKey]);
+
+	return (
+		<SmartErrorBoundary boundaryName="BlogPostCollection">
+			<PageSection className="wordpress-post-collection" id="wordpress-post-collection" maxWidth="100%" columns={1}>
+				{loading && (
+					<div className="blog-post-loading-list" aria-busy="true">
+						{(postIds ?? []).map((postId) => (
+							<BlogSkeleton key={`blog-post-collection-loading-${String(postId)}`} />
+						))}
+					</div>
+				)}
+				{!loading && posts.map((post) => (
+					<BlogPostCallout
+						key={post.ID}
+						post={post}
+					/>
+				))}
+			</PageSection>
+		</SmartErrorBoundary>
+	);
+}
+
+/**
+ * BlogPostCallout — Render a WordPress post as a compact horizontal callout.
+ *
+ * @param {object} [props.post] - WordPress post data.
+ */
+BlogPostCallout.propTypes = {
+	/** WordPress post data. */
+	post: PropTypes.shape({
+		ID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+		title: PropTypes.string,
+		URL: PropTypes.string,
+		featured_image: PropTypes.string,
+	}).isRequired,
+};
+export type BlogPostCalloutType = InferProps<typeof BlogPostCallout.propTypes>;
+export function BlogPostCallout(props: BlogPostCalloutType) {
+	const postTitle = props.post?.title ? decodeString(props.post.title) : '';
+	return (
+		<Callout
+			variant="grid"
+			layout="horizontal"
+			direction="left"
+			gridColumns={{ left: 1, right: 5 }}
+			img={props.post?.featured_image ?? undefined}
+			imgAlt={postTitle}
+			imgShape="square"
+			title={postTitle}
+			url={props.post?.URL ?? undefined}
+		/>
 	);
 }
 
