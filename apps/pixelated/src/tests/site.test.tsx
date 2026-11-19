@@ -55,6 +55,7 @@ import SamplePage5 from '@/app/(pages)/samples/page5/page';
 import SamplePage6 from '@/app/(pages)/samples/page6/page';
 import InstagramPage from '@/app/(pages)/instagram/page';
 import HeaderNav from '@/app/elements/headernav';
+import Privacy from '@/app/elements/privacy';
 import ByTheWayPage from '@/app/(pages)/bytheway/page';
 import NerdJokesPage from '@/app/(pages)/nerdjokes/page';
 import StkrPage from '@/app/(pages)/stkr/page';
@@ -113,6 +114,16 @@ describe('Site coverage', () => {
 		setPixelatedConfigOverride(null);
 		render(React.createElement(HeaderNav));
 		expect(screen.getByTestId('menu-simple')).not.toBeNull();
+	});
+
+	it('renders optional privacy data capture details between the policy sentences', () => {
+		const { container } = render(
+			<Privacy dataCaptureDetails="Additional data capture details." />,
+		);
+		const policyText = container.querySelector('.callout-body')?.textContent ?? '';
+
+		expect(policyText.indexOf('necessary.')).toBeLessThan(policyText.indexOf('Additional data capture details.'));
+		expect(policyText.indexOf('Additional data capture details.')).toBeLessThan(policyText.indexOf('We store this information'));
 	});
 
 	it('renders Nav with and without fullmenu query param', () => {

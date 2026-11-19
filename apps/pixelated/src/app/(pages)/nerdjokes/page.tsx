@@ -4,6 +4,7 @@ import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PageGridItem, PageTitleHeader } from "@pixelated-tech/components";
 import { PageSection } from "@pixelated-tech/components";
+import { PageSectionHeader } from "@pixelated-tech/components";
 import { CalloutHeader } from "@pixelated-tech/components";
 import { NerdJoke } from "@pixelated-tech/components";
 import { SmartImage } from "@pixelated-tech/components";
@@ -20,7 +21,7 @@ function UseQuery() {
 	);
 	const no = (
 		<div className="slackbutton centered">
-			<a href="https://slack.com/oauth/v2/authorize?client_id=1058085085824.1093097617364&scope=chat:write,chat:write.public,commands,im:write">
+			<a href="https://slack.com/oauth/v2/authorize?client_id=1058085085824.1093097617364&scope=chat:write,chat:write.public,commands">
 				<SmartImage alt="Add to Slack" height={40} width={139} src="https://platform.slack-edge.com/img/add_to_slack.png" /></a>
 			<br />
 		</div>
@@ -120,7 +121,7 @@ export default function NerdJokesPage() {
 
 			<PageSection columns={1} background={"var(--accent1-color)"} id="cust-support-section">
 				<PageGridItem>
-					<CalloutHeader title="Customer Support" />
+					<PageSectionHeader title="Customer Support" />
 					<div className="callout-body">
 						For Customer Support, please contact <a href="mailto:nerdjokes@pixelated.tech?subject=NerdJokes Customer Support">nerdjokes@pixelated.tech</a> or join the <a href="https://pixelated-tech.slack.com/archives/C013LBYFK9U">#nerdjokes-support</a> channel in the <a href="https://pixelated-tech.slack.com">Pixelated Technologies Slack Workspace</a>.
 						<br/>
@@ -136,7 +137,9 @@ export default function NerdJokesPage() {
 
 			<PageSection columns={1} background={"var(--accent1-color)"} id="privacy-policy-section">
 				<PageGridItem>
-					<Privacy />
+					<Privacy 
+						dataCaptureDetails="For NerdJokes, this includes access tokens, application ids, team ids, user ids, bot ids, event logs, and schedule information."
+					/>
 				</PageGridItem>
 			</PageSection>
 
