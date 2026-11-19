@@ -1,6 +1,6 @@
 {
 	"name": "@pixelated-tech/components",
-	"version": "3.22.61",
+	"version": "3.22.62",
 	"deployMarker": "2026-11-17T05:33:33.000Z",
 	"type": "module",
 	"private": false,
@@ -105,7 +105,7 @@
 	"dependencies": {
 		"@aws-sdk/client-dynamodb": "^3.1171.0",
 		"@aws-sdk/client-sesv2": "^3.1171.0",
-		"@testing-library/jest-dom": "^7.0.1",
+		"@testing-library/jest-dom": "^8.0.0",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.10",
 		"date-fns": "^4.3.0",

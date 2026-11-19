@@ -29,11 +29,12 @@ module.exports = class Event {
 
         if (data.httpMethod == "POST"){
             if(log) console.log("NERDJOKES - RECEIVED POST");
-            if(data.headers['Content-Type'] == "application/json"){
+            const contentType = Object.entries(data.headers || {}).find(([key]) => key.toLowerCase() === 'content-type')?.[1] || '';
+            if(contentType.toLowerCase().split(';')[0].trim() == "application/json"){
             if(log) console.log("NERDJOKES - RECEIVED POST - JSON");
                 temp = (typeof data.body == "string") ? JSON.parse(data.body) : data.body ;
                 for(var i in temp) this[i] = temp[i];
-            } else if(data.headers['Content-Type'] == 'application/x-www-form-urlencoded' ){
+            } else if(contentType.toLowerCase().split(';')[0].trim() == 'application/x-www-form-urlencoded' ){
                 if(log) console.log("NERDJOKES - RECEIVED POST - URLENCODED");
                 temp = this.querystringToJSON(data.body);
                 if(temp.payload) {

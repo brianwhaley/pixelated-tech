@@ -47,8 +47,7 @@ exports.handler = async function(data, context) {
                 case "url_verification": 
                     // ==#####== VERIFY EVENT CALLBACK URL ==#####==
                     if(log) console.log("NERDJOKES - URL Verification"); 
-                    result = event.verifyURL(); 
-                    break;
+                    return event.verifyURL();
                 case "app_uninstalled": 
                     // ==#####== APP UNINSTALLED _ DELETE ALL DATA FOR THAT WORKSPACE ==#####==
                     if(log) console.log("NERDJOKES - App Uninstalled");

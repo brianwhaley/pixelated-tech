@@ -4,6 +4,7 @@ const test = require('node:test');
 
 const Event = require('./event');
 const Joke = require('./joke');
+const { handler } = require('./index');
 
 const joke = {
     id: 'joke-1',
@@ -33,6 +34,26 @@ test('parses Slack form data with the expected content-type header', () => {
 
     assert.equal(event.command, '/nerdjokes');
     assert.equal(event.text, 'getjokejson');
+});
+
+test('returns the Slack URL verification challenge for lowercase JSON content type', async () => {
+    const response = await handler({
+        httpMethod: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        stageVariables: {
+            VERIFICATION_TOKEN: 'verification-token'
+        },
+        body: JSON.stringify({
+            type: 'url_verification',
+            token: 'verification-token',
+            challenge: 'nerdjokes-challenge'
+        })
+    }, {});
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body), { challenge: 'nerdjokes-challenge' });
 });
 
 test('loads a joke from the random-start scan', async () => {
