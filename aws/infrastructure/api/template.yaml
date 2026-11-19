@@ -36,24 +36,15 @@ Parameters:
   NerdjokesFunctionArn:
     Type: String
     Default: arn:aws:lambda:us-east-1:971579260814:function:nerdjokes:PROD
+  NerdjokesDevFunctionArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:971579260814:function:nerdjokes:DEV
   FormsBucketName:
     Type: String
     Default: pixelated-forms-bucket
   FormsIntegrationRoleArn:
     Type: String
     Default: arn:aws:iam::971579260814:role/forms_execution_role
-  NerdjokesClientId:
-    Type: String
-    NoEcho: true
-    Default: ''
-  NerdjokesClientSecret:
-    Type: String
-    NoEcho: true
-    Default: ''
-  NerdjokesVerificationToken:
-    Type: String
-    NoEcho: true
-    Default: ''
   SocialPublishIntakeFunctionArn:
     Type: String
     Default: arn:aws:lambda:us-east-1:971579260814:function:social-publish-intake
@@ -82,16 +73,13 @@ Resources:
       - ProxyMethod
       - NerdjokesGetMethod
       - NerdjokesPostMethod
+      - NerdjokesDevGetMethod
+      - NerdjokesDevPostMethod
       - SocialPublishMethod
     Properties:
-      DeploymentId: !Ref UnifiedApiDeploymentV3
+      DeploymentId: !Ref UnifiedApiDeploymentV4
       RestApiId: !Ref UnifiedApi
       StageName: prod
-      Variables:
-        ENV: PROD
-        CLIENT_ID: !Ref NerdjokesClientId
-        CLIENT_SECRET: !Ref NerdjokesClientSecret
-        VERIFICATION_TOKEN: !Ref NerdjokesVerificationToken
       MethodSettings:
         - HttpMethod: '*'
           ResourcePath: '/*'
@@ -104,7 +92,7 @@ Resources:
         Format: >-
           {"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}
 
-  UnifiedApiDeploymentV3:
+  UnifiedApiDeploymentV4:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
       - SendmailMethod
@@ -116,10 +104,12 @@ Resources:
       - ProxyOptionsMethod
       - NerdjokesGetMethod
       - NerdjokesPostMethod
+      - NerdjokesDevGetMethod
+      - NerdjokesDevPostMethod
       - SocialPublishMethod
     Properties:
       RestApiId: !Ref UnifiedApi
-      Description: Unified east-one API routes including social publish
+      Description: Unified east-one API routes including social publish and NerdJokes DEV
 
   ApiDomain:
     Type: AWS::ApiGateway::DomainName
@@ -522,6 +512,49 @@ Resources:
       FunctionName: !Ref NerdjokesFunctionArn
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/*/nerdjokes
+
+  NerdjokesDevResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !Ref NerdjokesResource
+      PathPart: dev
+      RestApiId: !Ref UnifiedApi
+
+  NerdjokesDevGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NerdjokesDevFunctionArn}/invocations
+      ResourceId: !Ref NerdjokesDevResource
+      RestApiId: !Ref UnifiedApi
+
+  NerdjokesDevPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        ContentHandling: CONVERT_TO_TEXT
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NerdjokesDevFunctionArn}/invocations
+      ResourceId: !Ref NerdjokesDevResource
+      RestApiId: !Ref UnifiedApi
+
+  NerdjokesDevPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref NerdjokesDevFunctionArn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${UnifiedApi}/*/*/nerdjokes/dev
 
   UnifiedApiAccessLogGroup:
     Type: AWS::Logs::LogGroup

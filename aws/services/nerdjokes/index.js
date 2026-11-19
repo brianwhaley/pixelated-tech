@@ -21,9 +21,8 @@ exports.handler = async function(data, context) {
         
         if (event.code) {
             // ==#####== OAUTH REQUEST - APP INSTALL ==#####==
-                console.log("NERDJOKES HANDLER WARNING Stack : ", JSON.stringify(error.stack));
             if(log) console.log("NERDJOKES - Event Code : " , event.code);
-            result = event.oAuthVerify();
+            result = await event.oAuthVerify();
             return result;
         } else if(event.command && event.text && event.text == "getjokejson"){
             // ==#####== SKIP OVER ACCESS TOKEN ==#####==

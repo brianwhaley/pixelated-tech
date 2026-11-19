@@ -14,12 +14,31 @@ module.exports = class Event {
         if(log) console.log("EVENT CONSTRUCTOR");
         if(log) console.log('NERDJOKES - Received DATA:', JSON.stringify(data));
         var temp;
+        const stageVariables = data.stageVariables || {};
+        const requestPath = data.path || data.resource || "";
+        const pathEnv = /\/dev\/?$/.test(requestPath) ? "DEV" : undefined;
+        const configuredEnv = pathEnv || stageVariables.ENV || "PROD";
+        const configPrefix = `NERDJOKES_${configuredEnv}_`;
+        const prefixedConfig = {
+            client_id: stageVariables[`${configPrefix}CLIENT_ID`],
+            client_secret: stageVariables[`${configPrefix}CLIENT_SECRET`],
+            verification_token: stageVariables[`${configPrefix}VERIFICATION_TOKEN`]
+        };
+        const prefixedValues = Object.values(prefixedConfig);
+        const hasPrefixedConfig = prefixedValues.some(Boolean);
+        if (hasPrefixedConfig && prefixedValues.some((value) => !value)) {
+            throw new Error(`Incomplete NerdJokes ${configuredEnv} stage configuration`);
+        }
+        if (!hasPrefixedConfig) {
+            throw new Error(`Missing NerdJokes ${configuredEnv} stage configuration`);
+        }
+
         this.b_token;
         this.u_token;
-        this.v_token = (data.stageVariables) ? data.stageVariables.VERIFICATION_TOKEN : undefined ;
-        this.client_id = (data.stageVariables) ? data.stageVariables.CLIENT_ID : undefined ;
-        this.client_secret = (data.stageVariables) ? data.stageVariables.CLIENT_SECRET : undefined ;
-        this.env = (data.stageVariables) ? data.stageVariables.ENV : "PROD" ;
+        this.v_token = prefixedConfig.verification_token;
+        this.client_id = prefixedConfig.client_id;
+        this.client_secret = prefixedConfig.client_secret;
+        this.env = configuredEnv;
         
         this.email = "nerdjokes@pixelated.tech" ;
         this.email_link = `<mailto:${this.email}|${this.email}>` ;
@@ -313,19 +332,32 @@ module.exports = class Event {
         var message = new Message(message_data);
         var oauthaccess = await message.slackApiGet();
         if(log) console.log("OAUTH VERIFY - OAuth - Verify : ", oauthaccess);
+        if(oauthaccess?.ok === false) {
+            throw new Error(`Slack OAuth failed: ${oauthaccess.error || "unknown_error"}`);
+        }
+        if(!oauthaccess?.access_token) {
+            throw new Error("Slack OAuth response did not include a bot access token");
+        }
+        // I DID NOT ASK FOR THIS CODE, IT MAY CAUSE A PROLEM LATER
+        if(!oauthaccess.team?.id) {
+            throw new Error("Slack OAuth response did not include a team id");
+        }
         this.team_id = oauthaccess.team.id;
         this.setTeamId();
         if(log) console.log("OAUTH VERIFY - Set Team ID : ", this.team_id);
+        const tokenRecord = {
+            team_id : this.team_id ,
+            access_token : oauthaccess.access_token ,
+            response : JSON.stringify(oauthaccess) ,
+            put_date : new Date().toISOString()
+        };
+        if(oauthaccess.authed_user?.access_token) {
+            tokenRecord.user_token = oauthaccess.authed_user.access_token;
+        }
         var ddbc = new AWS.DDBCLIENT();
         const storeAuth = await ddbc.writeToDynamo({
             tablename: ddbc.jokesTokenDB,
-            item: {
-                team_id : this.team_id ,
-                access_token : oauthaccess.access_token ,
-                user_token: oauthaccess.authed_user.access_token ,
-                response : JSON.stringify(oauthaccess) ,
-                put_date : new Date().toISOString() 
-            }
+            item: tokenRecord
         });
         if(log) console.log("OAUTH VERIFY - OAuth - Key Store : ", storeAuth);
         var ses = new AWS.SES();

@@ -2,22 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Existing Nerd Jokes Slack and Alexa infrastructure.
 Parameters:
-  DevClientId:
-    Type: String
-  DevClientSecret:
-    Type: String
-    NoEcho: true
-  DevVerificationToken:
-    Type: String
-    NoEcho: true
-  ProdClientId:
-    Type: String
-  ProdClientSecret:
-    Type: String
-    NoEcho: true
-  ProdVerificationToken:
-    Type: String
-    NoEcho: true
   AlexaEventSourceToken:
     Type: String
     NoEcho: true
@@ -361,14 +345,6 @@ Resources:
           - NerdjokesApiDevAccessLogGroup
           - Arn
         Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}'
-      Variables:
-        CLIENT_ID:
-          Ref: DevClientId
-        CLIENT_SECRET:
-          Ref: DevClientSecret
-        ENV: DEV
-        VERIFICATION_TOKEN:
-          Ref: DevVerificationToken
     Metadata:
       SamResourceId: NerdjokesApiDevStage
   NerdjokesApiProdDeployment:
@@ -405,14 +381,6 @@ Resources:
           - NerdjokesApiProdAccessLogGroup
           - Arn
         Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","responseLength":"$context.responseLength","integrationStatus":"$context.integration.status","integrationLatency":"$context.integration.latency"}'
-      Variables:
-        CLIENT_ID:
-          Ref: ProdClientId
-        CLIENT_SECRET:
-          Ref: ProdClientSecret
-        ENV: PROD
-        VERIFICATION_TOKEN:
-          Ref: ProdVerificationToken
     Metadata:
       SamResourceId: NerdjokesApiProdStage
   NerdjokesApi5xxAlarm:
@@ -589,9 +557,7 @@ Resources:
         Input:
           Fn::Sub: "{\n  \"httpMethod\": \"POST\",\n  \"headers\": {\"Content-Type\"\
             : \"application/x-www-form-urlencoded\"},\n  \"queryStringParameters\"\
-            : null,\n  \"stageVariables\": {\n    \"CLIENT_SECRET\": \"${ProdClientSecret}\"\
-            ,\n    \"VERIFICATION_TOKEN\": \"${ProdVerificationToken}\",\n    \"ENV\"\
-            : \"PROD\",\n    \"CLIENT_ID\": \"${ProdClientId}\"\n  },\n  \"body\"\
+            : null,\n  \"stageVariables\": {\n    \"ENV\": \"PROD\"\n  },\n  \"body\"\
             : \"command=%2Fnerdjokes&text=runschedule\"\n}\n"
     Metadata:
       SamResourceId: NerdjokesHourlyRule
@@ -610,9 +576,7 @@ Resources:
         Input:
           Fn::Sub: "{\n  \"httpMethod\": \"POST\",\n  \"headers\": {\"Content-Type\"\
             : \"application/x-www-form-urlencoded\"},\n  \"queryStringParameters\"\
-            : null,\n  \"stageVariables\": {\n    \"CLIENT_SECRET\": \"${DevClientSecret}\"\
-            ,\n    \"VERIFICATION_TOKEN\": \"${DevVerificationToken}\",\n    \"ENV\"\
-            : \"DEV\",\n    \"CLIENT_ID\": \"${DevClientId}\"\n  },\n  \"body\": \"\
+            : null,\n  \"stageVariables\": {\n    \"ENV\": \"DEV\"\n  },\n  \"body\": \"\
             command=%2Fnerdjokesdev&text=runschedule\"\n}\n"
     Metadata:
       SamResourceId: NerdjokesDevHourlyRule
