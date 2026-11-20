@@ -14,8 +14,15 @@ vi.mock('../components/foundation/smartfetch', () => ({
 }));
 
 const mockJokeData = {
+  id: 'nerdjokes-test-1',
   question: 'Why did the programmer quit his job?',
-  answer: 'Because he didn\'t get arrays.'
+  answer: 'Because he didn\'t get arrays.',
+  source: 'NerdJokes',
+  sourceUrl: 'https://example.com/jokes/nerdjokes-test-1',
+  raw: {
+    question: 'Why did the programmer quit his job?',
+    answer: 'Because he didn\'t get arrays.'
+  }
 };
 
 // Mock fetch
@@ -71,6 +78,39 @@ describe('NerdJoke Component', () => {
 
       await screen.findByText(/Why did the programmer quit his job\?/);
       expect(screen.getByText(/Because he didn't get arrays\./)).toBeInTheDocument();
+    });
+
+    it('should request jokes from the production normalized endpoint', async () => {
+      renderWithProviders(<NerdJoke />);
+
+      await screen.findByText(/Why did the programmer quit his job\?/);
+      expect(smartFetch).toHaveBeenCalledWith(
+        'https://api.pixelated.tech/nerdjokes?command=%2Fnerdjokes&text=getjokejson'
+      );
+    });
+
+    it('should render the normalized joke source', async () => {
+      renderWithProviders(<NerdJoke />);
+
+      await screen.findByText(/Why did the programmer quit his job\?/);
+      expect(screen.getByText(/NerdJokes/)).toBeInTheDocument();
+    });
+
+    it('should omit the answer row when a normalized joke has no answer', async () => {
+      vi.mocked(smartFetch).mockResolvedValueOnce({
+        id: 'nerdjokes-test-2',
+        question: 'What is a programmer\'s favorite place to hang out?',
+        source: 'NerdJokes',
+        sourceUrl: 'https://example.com/jokes/nerdjokes-test-2',
+        raw: {
+          question: 'What is a programmer\'s favorite place to hang out?'
+        }
+      } as any);
+
+      renderWithProviders(<NerdJoke />);
+
+      await screen.findByText(/What is a programmer's favorite place to hang out\?/);
+      expect(screen.queryByText('A:')).not.toBeInTheDocument();
     });
 
     it('should fetch a new joke when Next Joke button is clicked', async () => {

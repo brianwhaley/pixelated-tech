@@ -21,7 +21,7 @@ const TIME_LIMIT = 15;
 NerdJoke.propTypes = { /** no props */ };    
 export type NerdJokeType = InferProps<typeof NerdJoke.propTypes>;
 export function NerdJoke(props: NerdJokeType) {
-	const [joke, setJoke] = useState({ question: "", answer: "" });
+	const [joke, setJoke] = useState({ id: "",question: "", answer: "", source: "", sourceUrl: "", raw: "" });
 	const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 	const jokeIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 	const timePassedRef = useRef(0);
@@ -64,7 +64,7 @@ export function NerdJoke(props: NerdJokeType) {
 			}
 		}, TIME_LIMIT * 1000);
 
-		const myURL = "https://nerdjokes.pixelated.tech/prod/nerdjokes?";
+		const myURL = "https://api.pixelated.tech/nerdjokes?";
 		const myURLProps = { command: "%2Fnerdjokes", text: "getjokejson" };
 		// https://api.pixelated.tech/nerdjokes?command=%2Fnerdjokes&text=getjokejson
 		try {
@@ -145,9 +145,14 @@ export function NerdJoke(props: NerdJokeType) {
 						<span className="label">Q: </span>
 						<span className="question"> {joke.question} </span>
 					</div>
+					{ joke.answer && (
+						<div>
+							<span className="label">A: </span>
+							<span className="answer"> {joke.answer} </span>
+						</div>
+					)}
 					<div>
-						<span className="label">A: </span>
-						<span className="answer"> {joke.answer} </span>
+						<span className="answer"> - {joke.source} </span>
 					</div>
 				</div>
 			</div>

@@ -143,8 +143,14 @@ module.exports = class Event {
                 // ==#####== SEND RANDOM JOKE ==#####==
                 joke = new Joke();
                 await joke.load();
-                var result = joke.raw ;
-                return result;
+                return {
+                    id: joke.id,
+                    question: joke.question,
+                    answer: joke.answer,
+                    source: joke.source,
+                    sourceUrl: joke.sourceUrl,
+                    raw: joke.raw
+                };
                 // break; 
             case "addjoke": 
                 if(log) console.log("PROCESS SLASH COMMAND - Add");

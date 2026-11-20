@@ -6,6 +6,18 @@ Parameters:
   AlexaEventSourceToken:
     Type: String
     NoEcho: true
+  NerdjokesProdClientId:
+    Type: String
+  NerdjokesProdClientSecret:
+    Type: String
+    NoEcho: true
+  NerdjokesProdVerificationToken:
+    Type: String
+    NoEcho: true
+  NerdjokesProdVersion:
+    Type: String
+    Default: '1'
+    AllowedPattern: '^[0-9]+$'
   TechJokesRoleArn:
     Type: String
     Default: arn:aws:iam::971579260814:role/tech-jokes-role
@@ -190,7 +202,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       FunctionName: !Ref NerdjokesFunction
-      FunctionVersion: '$LATEST'
+      FunctionVersion: !Ref NerdjokesProdVersion
       Name: PROD
 
   NerdjokesSkillDevAlias:
@@ -213,8 +225,8 @@ Resources:
 
   NerdjokesApi:
     Type: AWS::ApiGateway::RestApi
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Name: nerdjokes
       EndpointConfiguration:
@@ -223,8 +235,8 @@ Resources:
 
   NerdjokesApiResource:
     Type: AWS::ApiGateway::Resource
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ParentId: !GetAtt NerdjokesApi.RootResourceId
       PathPart: nerdjokes
@@ -232,8 +244,8 @@ Resources:
 
   NerdjokesApiAnyMethod:
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: AWS_IAM
@@ -247,8 +259,8 @@ Resources:
 
   NerdjokesApiGetMethod:
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -263,8 +275,8 @@ Resources:
 
   NerdjokesApiPostMethod:
     Type: AWS::ApiGateway::Method
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -279,8 +291,8 @@ Resources:
 
   NerdjokesApiDevDeployment:
     Type: AWS::ApiGateway::Deployment
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - NerdjokesApiAnyMethod
       - NerdjokesApiGetMethod
@@ -290,8 +302,8 @@ Resources:
 
   NerdjokesApiDevStage:
     Type: AWS::ApiGateway::Stage
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DeploymentId: !Ref NerdjokesApiDevDeployment
       RestApiId: !Ref NerdjokesApi
@@ -308,8 +320,8 @@ Resources:
 
   NerdjokesApiProdDeployment:
     Type: AWS::ApiGateway::Deployment
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - NerdjokesApiAnyMethod
       - NerdjokesApiGetMethod
@@ -319,8 +331,8 @@ Resources:
 
   NerdjokesApiProdStage:
     Type: AWS::ApiGateway::Stage
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DeploymentId: !Ref NerdjokesApiProdDeployment
       RestApiId: !Ref NerdjokesApi
@@ -362,40 +374,40 @@ Resources:
 
   NerdjokesApiDevAccessLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: /aws/apigateway/nerdjokes/dev
       RetentionInDays: 30
 
   NerdjokesApiDevExecutionLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub API-Gateway-Execution-Logs_${NerdjokesApi}/dev
       RetentionInDays: 30
 
   NerdjokesApiProdAccessLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: /aws/apigateway/nerdjokes/prod
       RetentionInDays: 30
 
   NerdjokesApiProdExecutionLogGroup:
     Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub API-Gateway-Execution-Logs_${NerdjokesApi}/prod
       RetentionInDays: 30
 
   NerdjokesApiDomain:
     Type: AWS::ApiGateway::DomainName
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DomainName: nerdjokes.pixelated.tech
       EndpointConfiguration:
@@ -406,8 +418,8 @@ Resources:
 
   NerdjokesApiDevBasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - NerdjokesApiDevStage
     Properties:
@@ -418,8 +430,8 @@ Resources:
 
   NerdjokesApiProdBasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     DependsOn:
       - NerdjokesApiProdStage
     Properties:
@@ -430,8 +442,8 @@ Resources:
 
   NerdjokesApiPermission:
     Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref NerdjokesFunction
@@ -440,8 +452,8 @@ Resources:
 
   NerdjokesApiDevAliasPermission:
     Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref NerdjokesDevAlias
@@ -450,8 +462,8 @@ Resources:
 
   NerdjokesApiProdAliasPermission:
     Type: AWS::Lambda::Permission
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref NerdjokesProdAlias
@@ -484,7 +496,9 @@ Resources:
               "headers": {"Content-Type": "application/x-www-form-urlencoded"},
               "queryStringParameters": null,
               "stageVariables": {
-                "ENV": "PROD"
+                "NERDJOKES_PROD_CLIENT_ID": "${NerdjokesProdClientId}",
+                "NERDJOKES_PROD_CLIENT_SECRET": "${NerdjokesProdClientSecret}",
+                "NERDJOKES_PROD_VERIFICATION_TOKEN": "${NerdjokesProdVerificationToken}"
               },
               "body": "command=%2Fnerdjokes&text=runschedule"
             }

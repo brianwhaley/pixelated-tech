@@ -5,11 +5,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "node --check index.js && node --check aws.js && node --check event.js && node --check joke.js && node --check message.js && node --check schedule.js",
+    "build": "node --check index.js && node --check aws.js && node --check event.js && node --check joke.js && node --check message.js && node --check schedule.js && node --check providers/nerdjokes.js && node --check providers/jokeapi.js && node --check providers/icanhazdadjoke.js && node --check providers/official-joke-api.js && node --check providers/geek-jokes.js && node --check providers/teehee.js && node --check providers/chuck-norris.js",
     "lint": "eslint --fix",
     "test": "node --test nerdjokes.test.js"
   },
   "dependencies": {
-    "aws-sdk": "^2.1692.0"
+    "aws-sdk": "^2.1692.0",
+    "obscenity": "^0.4.6"
   }
 }

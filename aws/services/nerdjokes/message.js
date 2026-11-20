@@ -80,6 +80,7 @@ module.exports = class Message {
     async slackApiPost(){
         // ==#####== SLACK API POST ==#####===
         if(log) console.log("SLACK API POST ");
+        const requestBody = JSON.stringify(this.message);
         var options = {
             method: "POST",
             port: 443,
@@ -87,7 +88,7 @@ module.exports = class Message {
                 "Authorization": "Bearer " + this.option_data.b_token,
                 "Content-Type": "application/json; charset=utf-8", 
                 // "Access-Control-Allow-Origin": "*",
-                "Content-Length": JSON.stringify(this.message).length
+                "Content-Length": Buffer.byteLength(requestBody, "utf8")
             }
         };
         if(log) console.log("SLACK API POST - Request Options : ", options);
@@ -122,7 +123,7 @@ module.exports = class Message {
                 console.log("SLACK API POST WARNING Stack : ", JSON.stringify(error.stack));
                 reject(error);
             });
-            request.write(JSON.stringify(this.message));
+            request.write(requestBody);
             request.end();
             if(log) console.log("SLACK API POST - Request Results : ", request);
         });

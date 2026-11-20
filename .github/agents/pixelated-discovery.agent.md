@@ -159,6 +159,12 @@ Create a proposal using the appropriate existing blank template:
 
 ## Mandatory Approval Gate
 
+### Absolute Authorization Rule
+
+Open questions are not approval. If any behavioral, architectural, scope, implementation, or validation question remains unresolved, stop and ask for clarification before making any mutation. A response that answers some numbered items but leaves another item open does not authorize changes that depend on the unresolved item.
+
+Autopilot mode, "allow all" permissions, tool availability, urgency, prior approvals, or user unavailability never override this gate. If the user is unavailable, stop; never infer approval. After clarification changes the proposal, present the complete revised proposal and wait for explicit approval of that exact scope again. There are no exceptions.
+
 Before implementation:
 
 1. Inspect the current repository state and gather the relevant evidence.

@@ -1,11 +1,30 @@
 console.log('Loading Joke class');
 
 const CRYPTO = require('crypto');
+const HTTPS = require('https');
+const {
+    RegExpMatcher,
+    englishDataset,
+    englishRecommendedTransformers
+} = require('obscenity');
 var AWS = require("./aws");
 var Message = require("./message");
+const PROFANITY_MATCHER = new RegExpMatcher({
+    ...englishDataset.build(),
+    ...englishRecommendedTransformers
+});
+const EXTERNAL_PROVIDER_ATTEMPTS = 2;
+const providers = {
+    nerdjokes: require("./providers/nerdjokes"),
+    jokeapi: require("./providers/jokeapi"),
+    icanhazdadjoke: require("./providers/icanhazdadjoke"),
+    officialjokeapi: require("./providers/official-joke-api"),
+    geekjokes: require("./providers/geek-jokes"),
+    teehee: require("./providers/teehee"),
+    chucknorris: require("./providers/chuck-norris")
+};
 
 const log = false ;
-
 module.exports = class Joke {
 
     constructor(ddbc){
@@ -14,38 +33,91 @@ module.exports = class Joke {
         this.id ;
         this.question ;
         this.answer ;
+        this.source ;
+        this.sourceUrl ;
         this.raw ;
         this.tags ;
         this.email = "nerdjokes@pixelated.tech" ;
         return this ;
     }
  
-    async load(){
+    async load(provider = this.getRandomItems(Object.keys(providers), 1)[0]){
         if(log) console.log("JOKE LOAD");
-        const rnd = this.getGUID();
-        if(log) console.log("JOKE LOAD - GUID : ", rnd);
-        var ddbc = this.ddbc || new AWS.DDBCLIENT();
-        const scanParams = {
-            tablename: ddbc.jokesDB,
-            limit: 1
-        };
-        let myjoke = await ddbc.scanFromDynamo({
-            ...scanParams,
-            start_key: { "id": rnd }
+        const selectedProvider = providers[provider];
+        if(!selectedProvider){
+            throw new Error(`Unknown joke provider: ${provider}`);
+        }
+        const attempts = provider === "nerdjokes" ? 1 : EXTERNAL_PROVIDER_ATTEMPTS;
+        for(let attempt = 1; attempt <= attempts; attempt++){
+            try {
+                const result = await selectedProvider.load(this);
+                if(!["nerdjokes", "jokeapi"].includes(provider) && this.containsProfanity(result)){
+                    throw new Error(`${provider} returned blocked content`);
+                }
+                this.assign(result);
+                return;
+            } catch(error) {
+                console.log(`${provider} WARNING : `, JSON.stringify(error));
+                console.log(`${provider} WARNING Message : `, JSON.stringify(error.message));
+                if(provider === "nerdjokes"){
+                    throw error;
+                }
+                if(attempt < attempts){
+                    console.log(`${provider} RETRY : attempt ${attempt + 1} of ${attempts}`);
+                }
+            }
+        }
+        console.log(`${provider} FALLBACK : NerdJokes`);
+        this.assign(await providers.nerdjokes.load(this));
+    }
+
+    assign(result){
+        Object.assign(this, result);
+    }
+
+    containsProfanity(result){
+        return ["question", "answer"]
+            .some((field) => typeof result?.[field] === "string" &&
+                PROFANITY_MATCHER.hasMatch(result[field]));
+    }
+
+    async fetchJson(url, source, headers = {}){
+        return new Promise((resolve, reject) => {
+            const request = HTTPS.get(
+                url,
+                {
+                    headers: {
+                        "Accept": "application/json",
+                        ...(source === "icanhazdadjoke" && {
+                            "User-Agent": "NerdJokes development test"
+                        }),
+                        ...headers
+                    }
+                },
+                (response) => {
+                    let body = "";
+                    response.setEncoding("utf8");
+                    response.on("data", (chunk) => {
+                        body += chunk;
+                    });
+                    response.on("end", () => {
+                        if(response.statusCode < 200 || response.statusCode >= 300){
+                            reject(new Error(`${source} returned HTTP ${response.statusCode}`));
+                            return;
+                        }
+                        try {
+                            resolve(JSON.parse(body));
+                        } catch(error) {
+                            reject(new Error(`${source} returned invalid JSON`));
+                        }
+                    });
+                }
+            );
+            request.setTimeout(3000, () => {
+                request.destroy(new Error(`${source} request timed out`));
+            });
+            request.on("error", reject);
         });
-        if (!myjoke?.Items?.length) {
-            myjoke = await ddbc.scanFromDynamo(scanParams);
-        }
-        const joke = myjoke?.Items?.[0];
-        if (!joke) {
-            throw new Error(`No jokes available in DynamoDB table: ${ddbc.jokesDB}`);
-        }
-        if(log) console.log("JOKE LOAD - Joke : ", myjoke);
-        this.raw = joke;
-        this.id = joke.id;
-        this.question = joke.question;
-        this.answer = joke.answer;
-        return;
     }
 
 
@@ -64,6 +136,34 @@ module.exports = class Joke {
                 return -1;
             return 0;  
         }; 
+    }
+
+    getRandomItems(items, count){
+        if(!Array.isArray(items) || !items.length || !Number.isInteger(count) || count <= 0){
+            return [];
+        }
+        const remaining = [...items];
+        const selected = [];
+        const selectionCount = Math.min(count, remaining.length);
+        while(selected.length < selectionCount){
+            const index = this.getRandomInt(0, remaining.length - 1);
+            selected.push(...remaining.splice(index, 1));
+        }
+        return selected;
+    }
+
+    async getNerdJokesTags(count){
+        const ddbc = this.ddbc || new AWS.DDBCLIENT();
+        const result = await ddbc.scanFromDynamo({
+            tablename: ddbc.jokesTagsDB,
+            proj_expr: "tag"
+        });
+        const tags = [...new Set(
+            (result?.Items || [])
+                .map((item) => item.tag)
+                .filter((tag) => typeof tag === "string" && tag.trim())
+        )];
+        return Number.isInteger(count) ? this.getRandomItems(tags, count) : tags;
     }
     
     
@@ -230,19 +330,16 @@ module.exports = class Joke {
     
     async getTagOptions(event){
     	if(log) console.log("GET TAG OPTIONS ");
-        var ddbc = new AWS.DDBCLIENT();
-        const mytags = await ddbc.scanFromDynamo({
-            tablename: ddbc.jokesTagsDB
-        });
-        if(log) console.log("GET TAG OPTIONS - Tags : ", mytags);
+        const tags = await this.getNerdJokesTags();
+        if(log) console.log("GET TAG OPTIONS - Tags : ", tags);
         // ==#####== SORT ITEMS ==#####== 
-        mytags.Items = mytags.Items.sort(this.sortByProperty("tag"));
-        if(log) console.log("GET TAG OPTIONS - Tags Sorted : ", mytags);
+        tags.sort();
+        if(log) console.log("GET TAG OPTIONS - Tags Sorted : ", tags);
         var items = [];
-        for (var i = 0; i < mytags.Items.length; i++) {
+        for (var i = 0; i < tags.length; i++) {
             var item = {};
-            item.text = { "type": "plain_text", "text": mytags.Items[i].tag } ;
-            item.value = mytags.Items[i].tag ;
+            item.text = { "type": "plain_text", "text": tags[i] } ;
+            item.value = tags[i] ;
             items.push(item);
         }
         if(log) console.log("GET TAG OPTIONS : ", items);
@@ -336,7 +433,7 @@ module.exports = class Joke {
             replace_original: true,
             channel: event.channel_id,
             response_type: 'in_channel' ,
-            text: this.question.replace(/’/g, "'") ,
+            text: this.formatMessageText(this.question, !this.answer),
             b_token: event.b_token ,
             api_method: "chat.postMessage" ,
         };
@@ -350,12 +447,15 @@ module.exports = class Joke {
     async sendJokeAnswer(event, q_ts){
         if(log) console.log("SEND JOKE ANSWER - Even ");
         if(log) console.log("SEND JOKE ANSWER - Q TS : ", q_ts);
+        if(!this.answer){
+            return {ok: true};
+        }
         const message_data = {
             token: event.b_token,
             replace_original: true,
             channel: event.channel_id,
             response_type: 'in_channel' ,
-            text: this.answer.replace(/’/g, "'") ,
+            text: this.formatMessageText(this.answer, true),
             b_token: event.b_token ,
             api_method: "chat.postMessage" ,
             thread_ts: q_ts 
@@ -364,6 +464,14 @@ module.exports = class Joke {
         var message = new Message(message_data);
         var result = await message.slackApiPost() ;
         return result;
+    }
+
+    formatMessageText(text, includeSource){
+        const message = (text || "").replace(/’/g, "'");
+        if(!includeSource || !this.source){
+            return message;
+        }
+        return `${message}\n\n— Source: ${this.source}`;
     }
     
     

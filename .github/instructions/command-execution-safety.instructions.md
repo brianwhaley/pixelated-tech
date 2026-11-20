@@ -14,6 +14,12 @@ applyTo: "**"
 
 ## Rule 1: Inspect Before Answering, Edit Only With Permission
 
+### Absolute Authorization Rule
+
+Open questions are not approval. If any behavioral, architectural, scope, implementation, or validation question remains unresolved, stop and ask for clarification before making any mutation. A response that answers some numbered items but leaves another item open does not authorize changes that depend on the unresolved item.
+
+Autopilot mode, "allow all" permissions, tool availability, urgency, prior approvals, or user unavailability never override this gate. If the user is unavailable, stop; never infer approval. After clarification changes the proposal, present the complete revised proposal and wait for explicit approval of that exact scope again. There are no exceptions.
+
 ### Mandatory Reuse Audit Before Mutation
 
 Before using any edit, file-creation, dependency, build, formatting, test-with-generated-output, repository, or external-system mutation tool, the agent must complete the repository's Required Reuse Audit and receive explicit approval for the exact proposal. This requirement is non-optional and overrides autopilot or bias-to-action behavior.

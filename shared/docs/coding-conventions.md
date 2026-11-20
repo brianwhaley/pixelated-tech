@@ -133,6 +133,12 @@ When documentation conflicts with an active script, shared configuration, valida
 
 ## Shared-First Architecture
 
+## Absolute Approval and Authorization Gate
+
+Open questions are not approval. If any behavioral, architectural, scope, implementation, or validation question remains unresolved, stop and ask for clarification before making any mutation. A response that answers some numbered items but leaves another item open does not authorize changes that depend on the unresolved item.
+
+Autopilot mode, "allow all" permissions, tool availability, urgency, prior approvals, or user unavailability never override this gate. If the user is unavailable, stop; never infer approval. After clarification changes the proposal, present the complete revised proposal and wait for explicit approval of that exact scope again. There are no exceptions.
+
 All platform work follows this order: reuse an existing component, harness, fixture, data object, script, or test case first; if it needs more capability, extend or enhance the shared object and update its affected consumers as part of that work; create a net-new feature only when extending the existing capability is not viable.
 
 - Search existing applications, shared packages, components, integrations, schemas, configuration accessors, and test utilities before creating new code.
